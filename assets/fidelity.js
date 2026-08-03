@@ -2,6 +2,7 @@
   'use strict';
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
+  const MOBILE_QUERY = '(max-width: 700px)';
   const numberFormatters = new Map();
 
   function parseItalianNumber(text) {
@@ -67,7 +68,7 @@
       numberFormatters.set(key, new Intl.NumberFormat('it-IT', {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
-        useGrouping: true
+        useGrouping: 'always'
       }));
     }
     return `${numberFormatters.get(key).format(value)}${suffix}`;
@@ -123,6 +124,43 @@
     root.querySelectorAll?.('.trend-chart').forEach(addYAxisLabels);
   }
 
+  function stickyOffset(includeThemeNavigation = false) {
+    const headerHeight = document.getElementById('site-header-mount')?.getBoundingClientRect().height || 70;
+    const themeHeight = includeThemeNavigation
+      ? document.querySelector('.town-profile .theme-nav')?.getBoundingClientRect().height || 0
+      : 0;
+    return headerHeight + themeHeight + 12;
+  }
+
+  function scrollToUpdatedData(target, includeThemeNavigation = false) {
+    if (!target || !window.matchMedia(MOBILE_QUERY).matches) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset(includeThemeNavigation);
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: reduceMotion ? 'auto' : 'smooth'
+    });
+  }
+
+  function installMobileThemeJump() {
+    document.addEventListener('click', event => {
+      const homeTheme = event.target.closest?.('.theme-card');
+      if (homeTheme) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          scrollToUpdatedData(document.getElementById('home-explorer'));
+        }));
+        return;
+      }
+
+      const townTheme = event.target.closest?.('[data-profile-theme]');
+      if (townTheme) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          scrollToUpdatedData(document.getElementById('town-topic'), true);
+        }));
+      }
+    });
+  }
+
   let scheduled = false;
   function scheduleEnhancement() {
     if (scheduled) return;
@@ -135,5 +173,6 @@
 
   const observer = new MutationObserver(scheduleEnhancement);
   observer.observe(document.documentElement, { childList: true, subtree: true });
+  installMobileThemeJump();
   scheduleEnhancement();
 })();
