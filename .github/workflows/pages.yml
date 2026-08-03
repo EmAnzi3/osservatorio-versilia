@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          version="20260803-1720"
+          version="20260803-1735"
 
           find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
             -e "s#app\\.js(\\?v=[0-9-]+)?\"#app.js?v=${version}\"#g" \
@@ -38,7 +38,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          version = "20260803-1720"
+          version = "20260803-1735"
           marker = "data-ov-fidelity"
           bootstrap = f'''  <script data-ov-fidelity>
             (() => {{
@@ -99,7 +99,7 @@ jobs:
         run: |
           set -euo pipefail
           base="${{ steps.deployment.outputs.page_url }}"
-          version="20260803-1720"
+          version="20260803-1735"
 
           for attempt in {1..18}; do
             if curl -L --fail --silent --show-error "${base}crests/massarosa.png?verify=${version}" -o /tmp/massarosa.png \
