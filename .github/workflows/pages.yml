@@ -28,12 +28,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          version="20260803-1755"
+          version="20260803-1800"
 
           find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
             -e "s#app\\.js(\\?v=[0-9-]+)?\"#app.js?v=${version}\"#g" \
             -e "s#original\\.css(\\?v=[0-9-]+)?\"#original.css?v=${version}\"#g" \
-            -e "s#static\\.css(\\?v=[0-9-]+)?\"#static.css?v=${version}\"#g"
+            -e "s#static\\.css(\\?v=[0-9-]+)?\"#static.css?v=${version}\"#g" \
+            -e "s#fidelity\\.css(\\?v=[0-9-]+)?\"#fidelity.css?v=${version}\"#g" \
+            -e "s#fidelity\\.js(\\?v=[0-9-]+)?\"#fidelity.js?v=${version}\"#g"
 
           test -s crests/massarosa.png
           test -s crests/viareggio.svg
@@ -53,7 +55,9 @@ jobs:
           grep -q "fidelity.js" assets/app.js
           grep -q '#site-header-mount' assets/fidelity.css
           grep -q 'chart-y-label' assets/fidelity.js
-          grep -R "app.js?v=${version}" --include='*.html' . >/dev/null
+          grep -q "fidelity.css?v=${version}" comuni/massarosa/index.html
+          grep -q "fidelity.js?v=${version}" comuni/massarosa/index.html
+          grep -q "app.js?v=${version}" comuni/massarosa/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
