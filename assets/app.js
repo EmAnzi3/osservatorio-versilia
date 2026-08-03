@@ -6,8 +6,71 @@
   const partsRoot = new URL('./app-parts/', loader.src);
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
+  const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
+  const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
+  const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
+  const crestFiles = {
+    massarosa: 'massarosa.png',
+    viareggio: 'viareggio.svg',
+    camaiore: 'camaiore.svg',
+    pietrasanta: 'pietrasanta.svg',
+    seravezza: 'seravezza.png',
+    'forte dei marmi': 'forte-dei-marmi.svg',
+    stazzema: 'stazzema.webp'
+  };
+
+  const normalize = value => String(value || '')
+    .toLocaleLowerCase('it')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+
+  function identifyCrest(image) {
+    const alt = normalize(image.getAttribute('alt'));
+    for (const [town, file] of Object.entries(crestFiles)) {
+      if (alt.includes(town)) return file;
+    }
+    const src = image.getAttribute('src') || '';
+    const filename = src.split(/[/?#]/).filter(Boolean).at(-1);
+    return Object.values(crestFiles).includes(filename) ? filename : null;
+  }
+
+  function repairImage(image) {
+    if (!(image instanceof HTMLImageElement)) return;
+    const crest = identifyCrest(image);
+    if (crest && image.dataset.ovCrestFixed !== crest) {
+      image.dataset.ovCrestFixed = crest;
+      image.addEventListener('error', () => {
+        if (image.dataset.ovRawFallback === '1') return;
+        image.dataset.ovRawFallback = '1';
+        image.src = `${RAW_ROOT}crests/${crest}`;
+      });
+      image.src = `${CDN_ROOT}crests/${crest}`;
+      return;
+    }
+
+    const alt = normalize(image.getAttribute('alt'));
+    if (alt.includes('litorale di viareggio') && image.dataset.ovHeroFixed !== '1') {
+      image.dataset.ovHeroFixed = '1';
+      image.src = `${CDN_ROOT}images/versilia-viareggio-apuane.jpg`;
+    }
+  }
+
+  const imageObserver = new MutationObserver(records => {
+    for (const record of records) {
+      for (const node of record.addedNodes) {
+        if (!(node instanceof Element)) continue;
+        if (node.matches('img')) repairImage(node);
+        node.querySelectorAll?.('img').forEach(repairImage);
+      }
+    }
+  });
+  imageObserver.observe(document.documentElement, { childList: true, subtree: true });
+  document.querySelectorAll('img').forEach(repairImage);
+
   const loadStylesheet = href => new Promise(resolve => {
-    const existing = document.querySelector(`link[href="${href}"]`);
+    const existing = [...document.querySelectorAll('link[rel="stylesheet"]')]
+      .find(link => link.href === href);
     if (existing) {
       if (existing.sheet) resolve();
       else existing.addEventListener('load', resolve, { once: true });
@@ -22,7 +85,7 @@
   });
 
   const load = async () => {
-    await loadStylesheet(new URL('./fonts.css', loader.src).href);
+    await loadStylesheet(new URL('./fonts.css?v=20260803-1538', loader.src).href);
     if (document.fonts?.load) {
       await Promise.allSettled([
         document.fonts.load('400 1em Geist'),
@@ -34,7 +97,7 @@
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
         .map(async index => {
-          const response = await fetch(new URL(`${index}.txt`, partsRoot), { cache: 'no-store' });
+          const response = await fetch(new URL(`${index}.txt?v=20260803-1538`, partsRoot), { cache: 'no-store' });
           if (!response.ok) throw new Error(`Impossibile caricare il modulo ${index}: ${response.status}`);
           return response.text();
         })
@@ -43,6 +106,7 @@
     const moduleUrl = URL.createObjectURL(new Blob([parts.join('')], { type: 'text/javascript' }));
     try {
       await import(moduleUrl);
+      document.querySelectorAll('img').forEach(repairImage);
     } finally {
       URL.revokeObjectURL(moduleUrl);
     }
