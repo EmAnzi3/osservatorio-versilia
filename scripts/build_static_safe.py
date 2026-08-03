@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Build wrapper that localizes legacy asset URLs inside the private output."""
+"""Safe private build wrapper for the static pre-render migration."""
 
 from __future__ import annotations
 
 import json
+import os
+import re
+from pathlib import Path
 
 import build_static as build
 
@@ -32,7 +35,23 @@ def copy_source_tree_with_local_assets() -> None:
     )
 
 
+def normalize_prerendered_urls() -> None:
+    """Remove the temporary localhost origin serialized by the headless build."""
+    localhost = re.compile(r"https?://127\.0\.0\.1:\d+/")
+    for path in build.DIST.rglob("*.html"):
+        prefix = os.path.relpath(build.DIST, path.parent).replace(os.sep, "/")
+        replacement = "" if prefix == "." else f"{prefix}/"
+        text = path.read_text(encoding="utf-8")
+        text = localhost.sub(replacement, text)
+        text = text.replace(
+            '<body data-prerendered="true" class=',
+            '<body class=',
+        )
+        path.write_text(text, encoding="utf-8")
+
+
 build.copy_source_tree = copy_source_tree_with_local_assets
 
 if __name__ == "__main__":
     build.main()
+    normalize_prerendered_urls()
