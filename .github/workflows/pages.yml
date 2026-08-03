@@ -24,6 +24,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Prepare cache-busted site
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -name '*.html' -type f -print0 | xargs -0 sed -i \
+            -e 's#app\.js"#app.js?v=20260803-1538"#g' \
+            -e 's#original\.css"#original.css?v=20260803-1538"#g' \
+            -e 's#static\.css"#static.css?v=20260803-1538"#g'
+
+          test -s crests/massarosa.png
+          test -s crests/viareggio.svg
+          test -s crests/camaiore.svg
+          test -s crests/pietrasanta.svg
+          test -s crests/seravezza.png
+          test -s crests/forte-dei-marmi.svg
+          test -s crests/stazzema.webp
+          test -s assets/fonts/geist-latin.woff2
+          test -s assets/fonts/geist-mono-latin.woff2
+          grep -R "app.js?v=20260803-1538" --include='*.html' . >/dev/null
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -35,3 +55,20 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify public deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${{ steps.deployment.outputs.page_url }}"
+          for attempt in {1..12}; do
+            if curl -L --fail --silent --show-error "${base}crests/massarosa.png?verify=20260803-1538" -o /tmp/massarosa.png \
+              && curl -L --fail --silent --show-error "${base}?verify=20260803-1538" -o /tmp/index.html \
+              && test "$(stat -c%s /tmp/massarosa.png)" -gt 20000 \
+              && grep -q 'app.js?v=20260803-1538' /tmp/index.html; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'La pubblicazione pubblica non contiene ancora stemma e script aggiornato.' >&2
+          exit 1
