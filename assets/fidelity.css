@@ -1,0 +1,60 @@
+/* Fidelity layer: sticky navigation and readable chart ordinates. */
+
+/* The original site header was a direct child of body. In the GitHub build it
+   is mounted inside a short wrapper, which otherwise confines position:sticky. */
+#site-header-mount {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  width: 100%;
+}
+
+#site-header-mount .site-header {
+  position: relative;
+  inset: auto;
+}
+
+/* Keep the thematic navigation immediately below the 70px site header. */
+.town-profile .theme-nav {
+  position: sticky !important;
+  top: 70px !important;
+  z-index: 40 !important;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+}
+
+/* Content scrolls behind the two opaque/stippled sticky bars, not over them. */
+#site-header-mount,
+.town-profile .theme-nav {
+  isolation: isolate;
+}
+
+/* Numeric labels on the ordinate of historical charts. */
+.trend-chart svg .chart-y-label {
+  fill: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  #site-header-mount {
+    top: 0;
+  }
+
+  .town-profile .theme-nav {
+    top: 70px !important;
+  }
+
+  .trend-chart svg .chart-y-label {
+    font-size: 9px;
+  }
+}
+
+@media print {
+  #site-header-mount {
+    position: static;
+  }
+}
