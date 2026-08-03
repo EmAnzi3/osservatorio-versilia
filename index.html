@@ -13,14 +13,26 @@
   <link rel="icon" href="favicon.svg" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/original.css?v=20260803-1645">
-  <link rel="stylesheet" href="assets/static.css?v=20260803-1645">
+  <link rel="preload" as="image" href="images/versilia-viareggio-apuane.jpg?v=20260803-1658">
+  <link rel="stylesheet" href="assets/original.css?v=20260803-1658">
+  <link rel="stylesheet" href="assets/static.css?v=20260803-1658">
 </head>
 <body class="antialiased" data-page="home" data-theme="" data-town="">
   <div id="site-header-mount"></div>
   <div id="app"><div class="app-loading" role="status">Caricamento dei dati…</div></div>
   <div id="site-footer-mount"></div>
   <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
-  <script src="assets/app.js?v=20260803-1645" defer></script>
+  <script>
+    (() => {
+      const correctHero = new URL('images/versilia-viareggio-apuane.jpg?v=20260803-1658', document.baseURI).href;
+      const enforceHero = () => {
+        const image = document.querySelector('.hero-photo img');
+        if (image && image.src !== correctHero) image.src = correctHero;
+      };
+      new MutationObserver(enforceHero).observe(document.getElementById('app'), { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+      enforceHero();
+    })();
+  </script>
+  <script src="assets/app.js?v=20260803-1658" defer></script>
 </body>
 </html>
