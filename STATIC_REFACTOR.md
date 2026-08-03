@@ -17,7 +17,7 @@ modificare o distribuire il sito pubblico attuale.
 ## Comandi locali
 
 ```bash
-python scripts/build_static.py
+python scripts/build_static_safe.py
 python scripts/test_static.py
 ```
 
