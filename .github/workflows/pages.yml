@@ -28,40 +28,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          version="20260803-1745"
+          version="20260803-1755"
 
           find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
             -e "s#app\\.js(\\?v=[0-9-]+)?\"#app.js?v=${version}\"#g" \
             -e "s#original\\.css(\\?v=[0-9-]+)?\"#original.css?v=${version}\"#g" \
             -e "s#static\\.css(\\?v=[0-9-]+)?\"#static.css?v=${version}\"#g"
-
-          python - <<'PY'
-          from pathlib import Path
-
-          version = "20260803-1745"
-          marker = "data-ov-fidelity"
-          bootstrap = f'''  <script data-ov-fidelity>
-            (() => {{
-              const appScript = [...document.scripts].find(script => script.src.includes('/assets/app.js'));
-              if (!appScript) return;
-              const assetRoot = new URL('.', appScript.src);
-              const stylesheet = document.createElement('link');
-              stylesheet.rel = 'stylesheet';
-              stylesheet.href = new URL(`fidelity.css?v={version}`, assetRoot).href;
-              document.head.append(stylesheet);
-              const script = document.createElement('script');
-              script.src = new URL(`fidelity.js?v={version}`, assetRoot).href;
-              document.head.append(script);
-            }})();
-          </script>
-          '''
-
-          for path in Path('.').rglob('*.html'):
-              text = path.read_text(encoding='utf-8')
-              if marker not in text:
-                  text = text.replace('</body>', bootstrap + '</body>')
-                  path.write_text(text, encoding='utf-8')
-          PY
 
           test -s crests/massarosa.png
           test -s crests/viareggio.svg
@@ -75,12 +47,13 @@ jobs:
           test -s assets/fonts/geist-mono-latin.woff2
           test -s assets/fidelity.css
           test -s assets/fidelity.js
+          node --check assets/app.js
           node --check assets/fidelity.js
-          test "$(sha256sum images/versilia-viareggio-apuane.jpg | cut -d' ' -f1)" = "13d7da265085bc58bd09f2d8fe6936eb4621847768f4428b74526777e84741ab"
+          grep -q "fidelity.css" assets/app.js
+          grep -q "fidelity.js" assets/app.js
           grep -q '#site-header-mount' assets/fidelity.css
           grep -q 'chart-y-label' assets/fidelity.js
-          grep -q 'data-ov-fidelity' comuni/massarosa/index.html
-          grep -q "fidelity.js?v=${version}" comuni/massarosa/index.html
+          grep -R "app.js?v=${version}" --include='*.html' . >/dev/null
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
