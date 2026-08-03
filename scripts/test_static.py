@@ -56,12 +56,17 @@ def static_assertions() -> None:
         assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"
         assert "assets/app.js" not in text, f"Vecchio loader presente: {path}"
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"
+        assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
+        assert "search-icon" in text, f"Icona vettoriale della ricerca assente: {path}"
 
     massarosa = (DIST / "comuni" / "massarosa" / "index.html").read_text(encoding="utf-8")
     assert "Massarosa" in massarosa
     assert "Fonte" in massarosa or "fonte" in massarosa
     assert (DIST / "sitemap.xml").exists()
     assert (DIST / "assets" / "app-bundle.js").stat().st_size > 50_000
+    fonts_css = (DIST / "assets" / "fonts.css").read_text(encoding="utf-8")
+    assert "./fonts/geist-latin.woff2" in fonts_css
+    assert "cdn.jsdelivr.net" not in fonts_css
 
 
 def browser_assertions() -> None:
@@ -78,6 +83,9 @@ def browser_assertions() -> None:
         page.wait_for_selector(".town-profile")
         page.wait_for_timeout(200)
         assert page.locator("h1").first.text_content().strip() == "Massarosa"
+        assert "Geist" in page.evaluate("getComputedStyle(document.body).fontFamily"), "Font Geist non applicato"
+        assert page.evaluate("document.fonts.check('16px Geist')"), "File del font Geist non caricato"
+        assert page.locator(".global-search-trigger .search-icon").is_visible(), "Lente desktop assente"
         assert page.locator(".chart-y-label").count() >= 3, "Valori dell'ordinata assenti"
         broken = page.evaluate("[...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src)")
         assert not broken, f"Immagini non caricate: {broken}"
@@ -87,6 +95,17 @@ def browser_assertions() -> None:
         nav_top = page.locator(".town-profile .theme-nav").bounding_box()["y"]
         assert abs(header_top) <= 1, f"Header non sticky: {header_top}"
         assert 68 <= nav_top <= 72, f"Navigazione temi non sticky: {nav_top}"
+
+        mobile = browser.new_context(viewport={"width": 390, "height": 844})
+        mobile_page = mobile.new_page()
+        mobile_page.goto(base, wait_until="networkidle")
+        mobile_page.wait_for_selector(".global-search-trigger")
+        mobile_icon = mobile_page.locator(".global-search-trigger .search-icon")
+        assert mobile_icon.is_visible(), "Lente della ricerca non visibile su smartphone"
+        icon_box = mobile_icon.bounding_box()
+        assert icon_box and icon_box["width"] >= 17 and icon_box["height"] >= 17, f"Lente mobile troppo piccola: {icon_box}"
+        assert mobile_page.locator(".global-search-trigger span").last.is_hidden(), "Testo Cerca non nascosto su smartphone"
+        mobile.close()
 
         no_js = browser.new_context(java_script_enabled=False, viewport={"width": 1280, "height": 900})
         no_js_page = no_js.new_page()
