@@ -1,0 +1,46 @@
+name: Import static site
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".bootstrap/READY"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rebuild and import the site
+        shell: bash
+        run: |
+          cat \
+            .bootstrap/chunk00 \
+            .bootstrap/chunk01 \
+            .bootstrap/chunk02 \
+            .bootstrap/chunk03 \
+            .bootstrap/tail00 \
+            .bootstrap/tail01 \
+            .bootstrap/rest00 \
+            .bootstrap/rest01 \
+            .bootstrap/rest02 \
+            .bootstrap/rest03 \
+            .bootstrap/rest04 \
+            .bootstrap/rest05 \
+            .bootstrap/rest06 > /tmp/site.b64
+          base64 --decode /tmp/site.b64 > /tmp/site.zip
+          unzip -t /tmp/site.zip
+          mkdir -p /tmp/site
+          unzip -oq /tmp/site.zip -d /tmp/site
+          cp -a /tmp/site/. .
+          rm -rf .bootstrap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Importa il sito statico"
+          git push
