@@ -30,25 +30,38 @@
     return Number(value);
   }
 
-  function decimalsFromSample(sample) {
-    const match = String(sample || '').match(/-?[0-9.]+,([0-9]+)/);
-    return match ? Math.min(match[1].length, 2) : 0;
-  }
-
-  function unitSuffix(sample) {
+  function axisFormat(sample) {
     const text = String(sample || '').toLocaleLowerCase('it');
-    if (text.includes('mln €')) return ' mln €';
-    if (text.includes('€')) return ' €';
-    if (text.includes('%')) return '%';
-    if (text.includes(' anni')) return ' anni';
-    if (text.includes(' kg')) return ' kg';
-    if (text.includes(' ha')) return ' ha';
-    const every = text.match(/ ogni\s+[0-9.]+/);
-    return every ? every[0] : '';
+    const decimalMatch = text.match(/-?[0-9.]+,([0-9]+)/);
+    let decimals = decimalMatch ? Math.min(decimalMatch[1].length, 2) : 0;
+    let suffix = '';
+
+    /* The original ChatGPT Sites chart deliberately abbreviates these
+       long units on the ordinate and shows only one decimal place. */
+    if (text.includes(' anni') || text.includes(' ogni ')) {
+      decimals = 1;
+    } else if (text.includes('mln €')) {
+      decimals = 1;
+      suffix = ' mln €';
+    } else if (text.includes('€')) {
+      decimals = 0;
+      suffix = ' €';
+    } else if (text.includes('%')) {
+      decimals = 1;
+      suffix = '%';
+    } else if (text.includes(' kg')) {
+      decimals = 0;
+      suffix = ' kg';
+    } else if (text.includes(' ha')) {
+      decimals = 2;
+      suffix = ' ha';
+    }
+
+    return { decimals, suffix };
   }
 
   function formatAxisValue(value, sample) {
-    const decimals = decimalsFromSample(sample);
+    const { decimals, suffix } = axisFormat(sample);
     const key = String(decimals);
     if (!numberFormatters.has(key)) {
       numberFormatters.set(key, new Intl.NumberFormat('it-IT', {
@@ -57,7 +70,7 @@
         useGrouping: true
       }));
     }
-    return `${numberFormatters.get(key).format(value)}${unitSuffix(sample)}`;
+    return `${numberFormatters.get(key).format(value)}${suffix}`;
   }
 
   function addYAxisLabels(chart) {
@@ -78,6 +91,9 @@
     const grids = [...svg.querySelectorAll('.chart-grid')];
     if (points.length < 2 || !grids.length) return;
 
+    /* Recover the exact linear scale already used to draw the existing SVG.
+       This keeps labels aligned even though the GitHub reconstruction uses
+       slightly different chart margins from the original React component. */
     const meanY = points.reduce((sum, point) => sum + point.y, 0) / points.length;
     const meanValue = points.reduce((sum, point) => sum + point.value, 0) / points.length;
     const covariance = points.reduce((sum, point) => sum + (point.y - meanY) * (point.value - meanValue), 0);
