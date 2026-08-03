@@ -49,6 +49,7 @@ def static_assertions() -> None:
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert "app-loading" not in text, f"Skeleton residuo: {path}"
+        assert "127.0.0.1" not in text, f"URL temporaneo serializzato: {path}"
         assert re.search(r"<h1[ >]", text, re.I), f"H1 assente: {path}"
         assert 'rel="canonical"' in text, f"Canonical assente: {path}"
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
@@ -89,10 +90,12 @@ def browser_assertions() -> None:
 
         no_js = browser.new_context(java_script_enabled=False, viewport={"width": 1280, "height": 900})
         no_js_page = no_js.new_page()
-        no_js_page.goto(base + "comuni/massarosa/", wait_until="domcontentloaded")
+        no_js_page.goto(base + "comuni/massarosa/", wait_until="networkidle")
         assert no_js_page.locator("h1").first.text_content().strip() == "Massarosa"
         assert no_js_page.locator("#app main").count() == 1
         assert "Caricamento dei dati" not in no_js_page.locator("body").inner_text()
+        no_js_broken = no_js_page.evaluate("[...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src)")
+        assert not no_js_broken, f"Immagini rotte senza JavaScript: {no_js_broken}"
         no_js.close()
         browser.close()
 
