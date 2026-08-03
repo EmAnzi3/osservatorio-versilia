@@ -1,0 +1,17 @@
+{
+  "name": "Osservatorio Versilia",
+  "short_name": "Osservatorio",
+  "description": "Dati pubblici dei sette comuni della Versilia, leggibili e confrontabili.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F4EEE2",
+  "theme_color": "#145B78",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
