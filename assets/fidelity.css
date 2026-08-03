@@ -1,4 +1,4 @@
-/* Fidelity layer: sticky navigation and readable chart ordinates. */
+/* Fidelity layer: sticky navigation, readable chart ordinates and UI parity. */
 
 /* The original site header was a direct child of body. In the GitHub build it
    is mounted inside a short wrapper, which otherwise confines position:sticky. */
@@ -30,6 +30,15 @@
   isolation: isolate;
 }
 
+/* Use a real vector magnifying glass instead of a font glyph. */
+.global-search-trigger .search-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.9;
+}
+
 /* Numeric labels on the ordinate of historical charts. */
 .trend-chart svg .chart-y-label {
   fill: var(--muted);
@@ -46,6 +55,14 @@
 
   .town-profile .theme-nav {
     top: 70px !important;
+  }
+
+  /* The original stylesheet hides the text and shortcut in the compact
+     search control; the SVG remains visible and centered. */
+  .global-search-trigger .search-icon {
+    display: block !important;
+    width: 18px;
+    height: 18px;
   }
 
   .trend-chart svg .chart-y-label {
