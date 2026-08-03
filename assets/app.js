@@ -6,7 +6,7 @@
   const partsRoot = new URL('./app-parts/', loader.src);
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
-  const VERSION = '20260803-1755';
+  const VERSION = '20260803-1800';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
@@ -89,17 +89,13 @@
   const loadScript = src => new Promise((resolve, reject) => {
     const existing = [...document.scripts].find(script => script.src === src);
     if (existing) {
-      if (existing.dataset.loaded === 'true') resolve();
-      else existing.addEventListener('load', resolve, { once: true });
+      resolve();
       return;
     }
     const script = document.createElement('script');
     script.src = src;
     script.defer = true;
-    script.addEventListener('load', () => {
-      script.dataset.loaded = 'true';
-      resolve();
-    }, { once: true });
+    script.addEventListener('load', resolve, { once: true });
     script.addEventListener('error', () => reject(new Error(`Impossibile caricare ${src}`)), { once: true });
     document.head.append(script);
   });
