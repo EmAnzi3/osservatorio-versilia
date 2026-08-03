@@ -9,6 +9,7 @@
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
+  const ORIGINAL_HERO = 'https://upload.wikimedia.org/wikipedia/commons/2/29/Wv_Versilia_banner.jpg';
   const crestFiles = {
     massarosa: 'massarosa.png',
     viareggio: 'viareggio.svg',
@@ -52,7 +53,7 @@
     const alt = normalize(image.getAttribute('alt'));
     if (alt.includes('litorale di viareggio') && image.dataset.ovHeroFixed !== '1') {
       image.dataset.ovHeroFixed = '1';
-      image.src = `${CDN_ROOT}images/versilia-viareggio-apuane.jpg`;
+      image.src = ORIGINAL_HERO;
     }
   }
 
@@ -85,7 +86,7 @@
   });
 
   const load = async () => {
-    await loadStylesheet(new URL('./fonts.css?v=20260803-1538', loader.src).href);
+    await loadStylesheet(new URL('./fonts.css?v=20260803-1615', loader.src).href);
     if (document.fonts?.load) {
       await Promise.allSettled([
         document.fonts.load('400 1em Geist'),
@@ -97,7 +98,7 @@
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
         .map(async index => {
-          const response = await fetch(new URL(`${index}.txt?v=20260803-1538`, partsRoot), { cache: 'no-store' });
+          const response = await fetch(new URL(`${index}.txt?v=20260803-1615`, partsRoot), { cache: 'no-store' });
           if (!response.ok) throw new Error(`Impossibile caricare il modulo ${index}: ${response.status}`);
           return response.text();
         })
