@@ -6,11 +6,22 @@ from __future__ import annotations
 import json
 import os
 import re
-from pathlib import Path
 
 import build_static as build
 
 _original_copy_source_tree = build.copy_source_tree
+_original_bundle_application = build.bundle_application
+_original_prepare_shells = build.prepare_shells
+
+SEARCH_ICON = (
+    '<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" '
+    'width="16" height="16" viewBox="0 0 24 24" fill="none" '
+    'stroke="currentColor" stroke-width="1.9" stroke-linecap="round" '
+    'stroke-linejoin="round" aria-hidden="true">'
+    '<circle cx="11" cy="11" r="8"></circle>'
+    '<path d="m21 21-4.3-4.3"></path>'
+    '</svg>'
+)
 
 
 def copy_source_tree_with_local_assets() -> None:
@@ -35,6 +46,28 @@ def copy_source_tree_with_local_assets() -> None:
     )
 
 
+def bundle_application_with_vector_search_icon() -> None:
+    _original_bundle_application()
+    bundle_path = build.DIST / "assets" / "app-bundle.js"
+    bundle = bundle_path.read_text(encoding="utf-8")
+    old_icon = '<span aria-hidden="true">⌕</span>'
+    if old_icon not in bundle:
+        raise RuntimeError("Icona testuale della ricerca non trovata nel bundle")
+    bundle_path.write_text(bundle.replace(old_icon, SEARCH_ICON), encoding="utf-8")
+
+
+def prepare_shells_with_fonts() -> None:
+    _original_prepare_shells()
+    for path in build.DIST.rglob("*.html"):
+        prefix = build.relative_asset_prefix(path)
+        assets = "" if prefix == "." else f"{prefix}/"
+        text = path.read_text(encoding="utf-8")
+        if "assets/fonts.css" not in text:
+            font_link = f'  <link rel="stylesheet" href="{assets}assets/fonts.css">\n'
+            text = text.replace("</head>", font_link + "</head>")
+            path.write_text(text, encoding="utf-8")
+
+
 def normalize_prerendered_urls() -> None:
     """Remove the temporary localhost origin serialized by the headless build."""
     localhost = re.compile(r"https?://127\.0\.0\.1:\d+/")
@@ -51,6 +84,8 @@ def normalize_prerendered_urls() -> None:
 
 
 build.copy_source_tree = copy_source_tree_with_local_assets
+build.bundle_application = bundle_application_with_vector_search_icon
+build.prepare_shells = prepare_shells_with_fonts
 
 if __name__ == "__main__":
     build.main()
