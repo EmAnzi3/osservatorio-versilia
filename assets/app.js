@@ -9,7 +9,7 @@
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
-  const ORIGINAL_HERO = 'https://upload.wikimedia.org/wikipedia/commons/2/29/Wv_Versilia_banner.jpg';
+  const ORIGINAL_HERO = new URL('../images/versilia-viareggio-apuane.jpg?v=20260803-1645', loader.src).href;
   const crestFiles = {
     massarosa: 'massarosa.png',
     viareggio: 'viareggio.svg',
@@ -86,7 +86,7 @@
   });
 
   const load = async () => {
-    await loadStylesheet(new URL('./fonts.css?v=20260803-1615', loader.src).href);
+    await loadStylesheet(new URL('./fonts.css?v=20260803-1645', loader.src).href);
     if (document.fonts?.load) {
       await Promise.allSettled([
         document.fonts.load('400 1em Geist'),
@@ -98,7 +98,7 @@
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
         .map(async index => {
-          const response = await fetch(new URL(`${index}.txt?v=20260803-1615`, partsRoot), { cache: 'no-store' });
+          const response = await fetch(new URL(`${index}.txt?v=20260803-1645`, partsRoot), { cache: 'no-store' });
           if (!response.ok) throw new Error(`Impossibile caricare il modulo ${index}: ${response.status}`);
           return response.text();
         })
