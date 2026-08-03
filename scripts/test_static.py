@@ -63,7 +63,12 @@ def static_assertions() -> None:
     assert "Massarosa" in massarosa
     assert "Fonte" in massarosa or "fonte" in massarosa
     assert (DIST / "sitemap.xml").exists()
-    assert (DIST / "assets" / "app-bundle.js").stat().st_size > 50_000
+
+    bundle_path = DIST / "assets" / "app-bundle.js"
+    assert bundle_path.stat().st_size > 50_000
+    bundle = bundle_path.read_text(encoding="utf-8")
+    assert bundle.count("useGrouping: 'always'") >= 4, "Raggruppamento delle migliaia non forzato"
+
     fonts_css = (DIST / "assets" / "fonts.css").read_text(encoding="utf-8")
     assert "./fonts/geist-latin.woff2" in fonts_css
     assert "cdn.jsdelivr.net" not in fonts_css
@@ -105,6 +110,29 @@ def browser_assertions() -> None:
         icon_box = mobile_icon.bounding_box()
         assert icon_box and icon_box["width"] >= 17 and icon_box["height"] >= 17, f"Lente mobile troppo piccola: {icon_box}"
         assert mobile_page.locator(".global-search-trigger span").last.is_hidden(), "Testo Cerca non nascosto su smartphone"
+
+        population_values = mobile_page.locator("#home-explorer .bar-row strong").all_text_contents()
+        assert "6.550" in population_values, f"Separatore assente per 6550: {population_values}"
+        assert "2.783" in population_values, f"Separatore assente per 2783: {population_values}"
+
+        mobile_page.locator('.theme-card[data-theme="economia"]').click()
+        mobile_page.wait_for_timeout(900)
+        explorer = mobile_page.locator("#home-explorer")
+        assert explorer.get_attribute("data-theme") == "economia", "Il pannello non è stato aggiornato sul tema scelto"
+        explorer_top = explorer.bounding_box()["y"]
+        header_height = mobile_page.locator("#site-header-mount").bounding_box()["height"]
+        assert header_height + 5 <= explorer_top <= header_height + 30, f"Salto al confronto non allineato: {explorer_top}"
+
+        mobile_page.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        mobile_page.locator('[data-profile-theme="economia"]').click()
+        mobile_page.wait_for_timeout(900)
+        town_topic = mobile_page.locator("#town-topic")
+        assert town_topic.get_attribute("data-theme") == "economia", "Tema comunale non aggiornato"
+        town_topic_top = town_topic.bounding_box()["y"]
+        mobile_header_height = mobile_page.locator("#site-header-mount").bounding_box()["height"]
+        mobile_nav_height = mobile_page.locator(".town-profile .theme-nav").bounding_box()["height"]
+        expected_top = mobile_header_height + mobile_nav_height
+        assert expected_top + 5 <= town_topic_top <= expected_top + 30, f"Salto ai dati comunali non allineato: {town_topic_top}"
         mobile.close()
 
         no_js = browser.new_context(java_script_enabled=False, viewport={"width": 1280, "height": 900})
