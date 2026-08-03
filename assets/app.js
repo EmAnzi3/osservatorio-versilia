@@ -6,10 +6,11 @@
   const partsRoot = new URL('./app-parts/', loader.src);
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
+  const VERSION = '20260803-1755';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
-  const ORIGINAL_HERO = new URL('../images/versilia-viareggio-apuane.jpg?v=20260803-1645', loader.src).href;
+  const ORIGINAL_HERO = new URL(`../images/versilia-viareggio-apuane.jpg?v=${VERSION}`, loader.src).href;
   const crestFiles = {
     massarosa: 'massarosa.png',
     viareggio: 'viareggio.svg',
@@ -85,8 +86,30 @@
     document.head.append(link);
   });
 
+  const loadScript = src => new Promise((resolve, reject) => {
+    const existing = [...document.scripts].find(script => script.src === src);
+    if (existing) {
+      if (existing.dataset.loaded === 'true') resolve();
+      else existing.addEventListener('load', resolve, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.defer = true;
+    script.addEventListener('load', () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    }, { once: true });
+    script.addEventListener('error', () => reject(new Error(`Impossibile caricare ${src}`)), { once: true });
+    document.head.append(script);
+  });
+
   const load = async () => {
-    await loadStylesheet(new URL('./fonts.css?v=20260803-1645', loader.src).href);
+    await Promise.all([
+      loadStylesheet(new URL(`./fonts.css?v=${VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href)
+    ]);
+
     if (document.fonts?.load) {
       await Promise.allSettled([
         document.fonts.load('400 1em Geist'),
@@ -98,7 +121,7 @@
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
         .map(async index => {
-          const response = await fetch(new URL(`${index}.txt?v=20260803-1645`, partsRoot), { cache: 'no-store' });
+          const response = await fetch(new URL(`${index}.txt?v=${VERSION}`, partsRoot), { cache: 'no-store' });
           if (!response.ok) throw new Error(`Impossibile caricare il modulo ${index}: ${response.status}`);
           return response.text();
         })
@@ -108,6 +131,7 @@
     try {
       await import(moduleUrl);
       document.querySelectorAll('img').forEach(repairImage);
+      await loadScript(new URL(`./fidelity.js?v=${VERSION}`, loader.src).href);
     } finally {
       URL.revokeObjectURL(moduleUrl);
     }
