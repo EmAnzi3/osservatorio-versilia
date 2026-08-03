@@ -28,10 +28,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          find . -name '*.html' -type f -print0 | xargs -0 sed -i \
-            -e 's#app\.js"#app.js?v=20260803-1538"#g' \
-            -e 's#original\.css"#original.css?v=20260803-1538"#g' \
-            -e 's#static\.css"#static.css?v=20260803-1538"#g'
+          find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
+            -e 's#app\.js(\?v=[0-9-]+)?"#app.js?v=20260803-1615"#g' \
+            -e 's#original\.css(\?v=[0-9-]+)?"#original.css?v=20260803-1615"#g' \
+            -e 's#static\.css(\?v=[0-9-]+)?"#static.css?v=20260803-1615"#g'
 
           test -s crests/massarosa.png
           test -s crests/viareggio.svg
@@ -42,7 +42,8 @@ jobs:
           test -s crests/stazzema.webp
           test -s assets/fonts/geist-latin.woff2
           test -s assets/fonts/geist-mono-latin.woff2
-          grep -R "app.js?v=20260803-1538" --include='*.html' . >/dev/null
+          grep -R "app.js?v=20260803-1615" --include='*.html' . >/dev/null
+          grep -q "Wv_Versilia_banner.jpg" assets/app.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -62,13 +63,15 @@ jobs:
           set -euo pipefail
           base="${{ steps.deployment.outputs.page_url }}"
           for attempt in {1..12}; do
-            if curl -L --fail --silent --show-error "${base}crests/massarosa.png?verify=20260803-1538" -o /tmp/massarosa.png \
-              && curl -L --fail --silent --show-error "${base}?verify=20260803-1538" -o /tmp/index.html \
+            if curl -L --fail --silent --show-error "${base}crests/massarosa.png?verify=20260803-1615" -o /tmp/massarosa.png \
+              && curl -L --fail --silent --show-error "${base}?verify=20260803-1615" -o /tmp/index.html \
+              && curl -L --fail --silent --show-error "${base}assets/app.js?verify=20260803-1615" -o /tmp/app.js \
               && test "$(stat -c%s /tmp/massarosa.png)" -gt 20000 \
-              && grep -q 'app.js?v=20260803-1538' /tmp/index.html; then
+              && grep -q 'app.js?v=20260803-1615' /tmp/index.html \
+              && grep -q 'Wv_Versilia_banner.jpg' /tmp/app.js; then
               exit 0
             fi
             sleep 10
           done
-          echo 'La pubblicazione pubblica non contiene ancora stemma e script aggiornato.' >&2
+          echo 'La pubblicazione pubblica non contiene ancora stemmi e banner originali.' >&2
           exit 1
