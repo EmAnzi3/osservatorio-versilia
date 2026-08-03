@@ -1,0 +1,9 @@
+nderNotFound();
+    } catch (error) {
+      console.error(error);
+      app.innerHTML = `<div class="app-error"><strong>Impossibile caricare i dati.</strong><p>Controlla che il sito sia aperto tramite un server web e non direttamente come file locale.</p></div>`;
+    }
+  }
+
+  start();
+})();
