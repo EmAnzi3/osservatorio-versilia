@@ -4,7 +4,29 @@
   const loader = document.currentScript;
   const app = document.getElementById('app');
   const partsRoot = new URL('./app-parts/', loader.src);
+  const legacyMediaRoot = 'https://versilia-in-numeri.decent-raven-1888.chatgpt.site/';
   globalThis.__OV_SCRIPT_URL__ = loader.src;
+
+  const rewriteImage = image => {
+    const raw = image.getAttribute('src') || '';
+    let url;
+    try { url = new URL(raw, location.href); } catch { return; }
+    const marker = '/osservatorio-versilia/';
+    const relative = url.pathname.includes(marker) ? url.pathname.split(marker)[1] : url.pathname.replace(/^\//, '');
+    if (/^(crests\/|images\/versilia-viareggio-apuane\.jpg$)/i.test(relative) && url.hostname !== 'versilia-in-numeri.decent-raven-1888.chatgpt.site') {
+      image.src = new URL(relative, legacyMediaRoot).href;
+    }
+  };
+
+  const mediaObserver = new MutationObserver(records => {
+    records.forEach(record => record.addedNodes.forEach(node => {
+      if (!(node instanceof Element)) return;
+      if (node.matches('img')) rewriteImage(node);
+      node.querySelectorAll?.('img').forEach(rewriteImage);
+    }));
+  });
+  mediaObserver.observe(document.documentElement, { childList: true, subtree: true });
+  document.querySelectorAll('img').forEach(rewriteImage);
 
   const load = async () => {
     const parts = await Promise.all(
