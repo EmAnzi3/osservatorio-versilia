@@ -1,24 +1,16 @@
-name: Deploy GitHub Pages
+name: Validate static prerender
 
 on:
   push:
+    branches: ["refactor/static-prerender"]
+  pull_request:
     branches: ["main"]
-  workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,14 +33,11 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_static.py
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload static site
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload private build artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: osservatorio-versilia-static-preview
           path: dist
+          retention-days: 7
 
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+# Deliberately no deploy-pages job: this workflow cannot publish the site.
