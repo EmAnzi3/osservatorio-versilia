@@ -24,48 +24,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare site
-        shell: bash
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
         run: |
-          set -euo pipefail
-          version="20260803-1800"
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
 
-          find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
-            -e "s#app\\.js(\\?v=[0-9-]+)?\"#app.js?v=${version}\"#g" \
-            -e "s#original\\.css(\\?v=[0-9-]+)?\"#original.css?v=${version}\"#g" \
-            -e "s#static\\.css(\\?v=[0-9-]+)?\"#static.css?v=${version}\"#g" \
-            -e "s#fidelity\\.css(\\?v=[0-9-]+)?\"#fidelity.css?v=${version}\"#g" \
-            -e "s#fidelity\\.js(\\?v=[0-9-]+)?\"#fidelity.js?v=${version}\"#g"
+      - name: Build pre-rendered site
+        run: python scripts/build_static_safe.py
 
-          test -s crests/massarosa.png
-          test -s crests/viareggio.svg
-          test -s crests/camaiore.svg
-          test -s crests/pietrasanta.svg
-          test -s crests/seravezza.png
-          test -s crests/forte-dei-marmi.svg
-          test -s crests/stazzema.webp
-          test -s images/versilia-viareggio-apuane.jpg
-          test -s assets/fonts/geist-latin.woff2
-          test -s assets/fonts/geist-mono-latin.woff2
-          test -s assets/fidelity.css
-          test -s assets/fidelity.js
-          node --check assets/app.js
-          node --check assets/fidelity.js
-          grep -q "fidelity.css" assets/app.js
-          grep -q "fidelity.js" assets/app.js
-          grep -q '#site-header-mount' assets/fidelity.css
-          grep -q 'chart-y-label' assets/fidelity.js
-          grep -q "fidelity.css?v=${version}" comuni/massarosa/index.html
-          grep -q "fidelity.js?v=${version}" comuni/massarosa/index.html
-          grep -q "app.js?v=${version}" comuni/massarosa/index.html
+      - name: Run regression tests
+        run: python scripts/test_static.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist
 
       - name: Deploy
         id: deployment
