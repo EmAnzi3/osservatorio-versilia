@@ -23,6 +23,17 @@ SEARCH_ICON = (
     '</svg>'
 )
 
+NUMBER_FORMAT_REPLACEMENTS = {
+    "new Intl.NumberFormat('it-IT', { maximumFractionDigits: 0 })":
+        "new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 })",
+    "new Intl.NumberFormat('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 })":
+        "new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 1, maximumFractionDigits: 1 })",
+    "new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })":
+        "new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 2, maximumFractionDigits: 2 })",
+    "new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })":
+        "new Intl.NumberFormat('it-IT', { useGrouping: 'always', style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })",
+}
+
 
 def copy_source_tree_with_local_assets() -> None:
     _original_copy_source_tree()
@@ -46,14 +57,22 @@ def copy_source_tree_with_local_assets() -> None:
     )
 
 
-def bundle_application_with_vector_search_icon() -> None:
+def bundle_application_with_private_fixes() -> None:
     _original_bundle_application()
     bundle_path = build.DIST / "assets" / "app-bundle.js"
     bundle = bundle_path.read_text(encoding="utf-8")
+
     old_icon = '<span aria-hidden="true">⌕</span>'
     if old_icon not in bundle:
         raise RuntimeError("Icona testuale della ricerca non trovata nel bundle")
-    bundle_path.write_text(bundle.replace(old_icon, SEARCH_ICON), encoding="utf-8")
+    bundle = bundle.replace(old_icon, SEARCH_ICON)
+
+    for old, new in NUMBER_FORMAT_REPLACEMENTS.items():
+        if old not in bundle:
+            raise RuntimeError(f"Formatter numerico non trovato: {old}")
+        bundle = bundle.replace(old, new)
+
+    bundle_path.write_text(bundle, encoding="utf-8")
 
 
 def prepare_shells_with_fonts() -> None:
@@ -84,7 +103,7 @@ def normalize_prerendered_urls() -> None:
 
 
 build.copy_source_tree = copy_source_tree_with_local_assets
-build.bundle_application = bundle_application_with_vector_search_icon
+build.bundle_application = bundle_application_with_private_fixes
 build.prepare_shells = prepare_shells_with_fonts
 
 if __name__ == "__main__":
