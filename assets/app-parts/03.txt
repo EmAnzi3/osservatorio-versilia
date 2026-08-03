@@ -1,0 +1,135 @@
+ferrer">Fonte originale ↗</a></div></article>
+        <aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside></div>
+      <div class="data-actions town-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>
+      <section class="history-panel"><div class="panel-title"><div><span class="overline">${historical ? 'Andamento storico' : 'Confronto territoriale'}</span><h3>${historical ? `${html(metric.meta.shortLabel)} nel tempo` : html(metric.meta.label)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+        ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`}</section>
+      <section class="all-indicators"><div class="section-heading compact"><div><span class="overline">Quadro del tema</span><h3>Tutti gli indicatori</h3></div><p>Seleziona una carta per aggiornare grafico e contesto.</p></div>
+        <div class="indicator-card-grid">${theme.metrics.map(key => indicatorCard(data, town, themeKey, key, metricKey)).join('')}</div></section>
+      ${deepDiveMarkup(data, town, themeKey)}
+      ${townBenchmarkMarkup(metric, row, town)}`;
+
+    const tablist = container.querySelector('[role="tablist"]');
+    installTablist(tablist, onMetricSelect);
+    container.querySelectorAll('[data-indicator]').forEach(button => button.addEventListener('click', () => onMetricSelect(button.dataset.indicator)));
+    container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
+    container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
+    container.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    installChartInteractions(container);
+    scrollActiveControl(tablist);
+
+    const context = document.getElementById('town-context');
+    context.innerHTML = themeKey === 'mobilita' ? crimeMarkup(data) : '';
+    if (themeKey === 'mobilita') installCrimeInteractions(data);
+  }
+
+  function townBenchmarkMarkup(metric, row, town) {
+    const b = metric.meta.benchmark;
+    if (!b) return `<section class="benchmark-unavailable town-benchmark"><span class="overline">Confronto esterno</span><h2>Dato non perfettamente comparabile</h2><p>Per questo indicatore non è disponibile un confronto omogeneo con Toscana e Italia.</p></section>`;
+    const localValue = row.benchmarkValue ?? row.value;
+    return `<section class="town-benchmark"><div><div><span class="overline">Confronto omogeneo · ${html(b.year)}</span><h3>${html(town.name)}, Toscana${b.italy !== null && b.italy !== undefined ? ' e Italia' : ''}</h3></div><p>${html(b.note || '')}</p></div>
+      <div class="town-benchmark-values"><article><span>${html(town.name)}</span><strong>${html(formatValue(localValue, metric.meta.unit))}</strong><small>Dato comunale riferito al ${html(b.year)}.</small></article><article><span>Toscana</span><strong>${html(formatValue(b.tuscany, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>${b.italy !== null && b.italy !== undefined ? `<article><span>Italia</span><strong>${html(formatValue(b.italy, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>` : ''}</div>
+      <a class="benchmark-source" href="${html(b.url)}" target="_blank" rel="noreferrer">Apri la fonte del confronto ↗</a></section>`;
+  }
+
+  function indicatorCard(data, town, themeKey, key, activeKey) {
+    const metric = data.metrics[key];
+    const row = metric.rows.find(r => r.code === town.code);
+    const rank = metricRows(data, key).findIndex(item => item.code === town.code) + 1;
+    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><small>${html(metric.meta.year)} · ${rank}° valore</small></button>`;
+  }
+
+  function seriesChart(series, unit, label = 'Serie storica') {
+    const values = series.values.map(Number);
+    const years = series.years;
+    const rawMin = Math.min(...values), rawMax = Math.max(...values);
+    const rawRange = rawMax - rawMin || Math.max(Math.abs(rawMax) * .08, 1);
+    const min = rawMin - rawRange * .08;
+    const max = rawMax + rawRange * .08;
+    const range = max - min || 1;
+    const width = 760, height = 260, left = 52, right = 28, top = 24, bottom = 38;
+    const chartWidth = width - left - right, chartHeight = height - top - bottom;
+    const pts = values.map((value, index) => ({
+      x: left + index * chartWidth / Math.max(1, values.length - 1),
+      y: top + (max - value) / range * chartHeight,
+      value,
+      year: years[index]
+    }));
+    const line = pts.map(point => `${point.x},${point.y}`).join(' ');
+    const area = `${left},${height - bottom} ${line} ${width - right},${height - bottom}`;
+    const grid = [0, .5, 1].map(fraction => {
+      const y = top + fraction * chartHeight;
+      return `<line class="chart-grid" x1="${left}" y1="${y}" x2="${width - right}" y2="${y}"/>`;
+    }).join('');
+    const points = pts.map(point => {
+      const boxWidth = 198, boxHeight = 38;
+      const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, point.x - boxWidth / 2));
+      const boxY = point.y < 72 ? point.y + 18 : point.y - 54;
+      return `<g class="chart-point" tabindex="0" role="button" aria-label="${html(point.year)}: ${html(formatValue(point.value, unit))}">
+        <circle class="chart-hit" cx="${point.x}" cy="${point.y}" r="17"></circle>
+        <circle class="chart-dot" cx="${point.x}" cy="${point.y}" r="5"></circle>
+        <g class="chart-tooltip" hidden>
+          <line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY < point.y ? boxY + boxHeight : boxY}"></line>
+          <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+          <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${html(point.year)}</text>
+          <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 29}">${html(formatValue(point.value, unit))}</text>
+        </g>
+      </g>`;
+    }).join('');
+    return `<div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${html(label)}">
+      ${grid}<polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points}
+      ${pts.map(point => `<text class="chart-label" x="${point.x}" y="${height - 10}" text-anchor="middle">${html(point.year)}</text>`).join('')}
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>${html(label)}</strong>${pts.map(point => `<span>${html(point.year)}: ${html(formatValue(point.value, unit))}</span>`).join('')}</div>`;
+  }
+
+  function installChartInteractions(root) {
+    root.querySelectorAll('.trend-chart').forEach(chart => {
+      const points = [...chart.querySelectorAll('.chart-point')];
+      const hideAll = () => points.forEach(point => {
+        point.classList.remove('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.setAttribute('hidden', '');
+      });
+      const show = point => {
+        hideAll();
+        point.classList.add('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.removeAttribute('hidden');
+      };
+      points.forEach((point, index) => {
+        point.addEventListener('mouseenter', () => show(point));
+        point.addEventListener('mouseleave', hideAll);
+        point.addEventListener('focus', () => show(point));
+        point.addEventListener('blur', hideAll);
+        point.addEventListener('click', () => show(point));
+        point.addEventListener('keydown', event => {
+          if (event.key === 'Escape') { hideAll(); point.blur(); return; }
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          let next = index;
+          if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+          if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+          if (event.key === 'Home') next = 0;
+          if (event.key === 'End') next = points.length - 1;
+          points[next]?.focus();
+        });
+      });
+      chart.addEventListener('mouseleave', hideAll);
+    });
+  }
+
+  function deepDiveMarkup(data, town, themeKey) {
+    const detail = data.details[town.code];
+    if (!detail) return '';
+    if (themeKey === 'salute') {
+      const health = data.healthB?.[town.code];
+      if (!health) return '';
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Salute e uso dei servizi</h3></div><p>Indicatori standardizzati o rapportati alla popolazione. Non rappresentano una valutazione della qualità dei servizi e vanno letti insieme a definizione, anno e fonte.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Speranza di vita</span><strong>${number2.format(health.lifeExpectancy)} anni</strong><small>Indicatore demografico-sanitario</small></article><article class="deep-fact"><span>Accessi al pronto soccorso</span><strong>${number2.format(health.emergencyAccess)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Ricoverati</span><strong>${number2.format(health.hospitalizedAll)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Assistenza domiciliare anziani</span><strong>${number2.format(health.elderlyHomeCare)}</strong><small>Ogni 100 anziani</small></article></div>
+        <div class="deep-columns"><div><h4>Patologie croniche selezionate</h4><ul class="deep-list"><li><span>Diabete</span><strong>${number2.format(health.diabetes)} ogni 1.000</strong></li><li><span>Demenza</span><strong>${number2.format(health.dementia)} ogni 1.000</strong></li><li><span>Ipertensione</span><strong>${number2.format(health.hypertension)} ogni 1.000</strong></li><li><span>BPCO</span><strong>${number2.format(health.copd)} ogni 1.000</strong></li></ul></div><div><h4>Mortalità per causa</h4><ul class="deep-list"><li><span>Tumori</span><strong>${number2.format(health.mortalityTumors)} ogni 100.000</strong></li><li><span>Malattie circolatorie</span><strong>${number2.format(health.mortalityCirculatory)} ogni 100.000</strong></li><li><span>Malattie respiratorie</span><strong>${number2.format(health.mortalityRespiratory)} ogni 100.000</strong></li></ul></div></div></section>`;
+    }
+    if (themeKey === 'economia') {
+      const e = detail.economy;
+      const maxWorkers = Math.max(...e.topSectors.map(s => s.workers), 1);
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Struttura economica</h3></div><p>Fasce di reddito, capacità ricettiva e principali settori per presenza locale. I valori derivano dalle stesse fonti richiamate negli indicatori.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Strutture ricettive</span><strong>${number0.format(e.tourismStructures)}</strong><small>Anno ${html(e.tourismYear)}</small></article><article class="deep-fact"><span>Posti letto</span><strong>${number0.format(e.tourismBeds)}</strong><small>Hotel e altre struttur
