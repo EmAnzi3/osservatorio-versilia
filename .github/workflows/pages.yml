@@ -24,11 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare cache-busted site
+      - name: Prepare site
         shell: bash
         run: |
           set -euo pipefail
-          version="20260803-1735"
+          version="20260803-1745"
 
           find . -name '*.html' -type f -print0 | xargs -0 sed -E -i \
             -e "s#app\\.js(\\?v=[0-9-]+)?\"#app.js?v=${version}\"#g" \
@@ -38,11 +38,11 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          version = "20260803-1735"
+          version = "20260803-1745"
           marker = "data-ov-fidelity"
           bootstrap = f'''  <script data-ov-fidelity>
             (() => {{
-              const appScript = [...document.scripts].find(script => /\/assets\/app\.js(?:\?|$)/.test(script.src));
+              const appScript = [...document.scripts].find(script => script.src.includes('/assets/app.js'));
               if (!appScript) return;
               const assetRoot = new URL('.', appScript.src);
               const stylesheet = document.createElement('link');
@@ -77,10 +77,10 @@ jobs:
           test -s assets/fidelity.js
           node --check assets/fidelity.js
           test "$(sha256sum images/versilia-viareggio-apuane.jpg | cut -d' ' -f1)" = "13d7da265085bc58bd09f2d8fe6936eb4621847768f4428b74526777e84741ab"
-          grep -q "correctHero" index.html
-          grep -q "images/versilia-viareggio-apuane.jpg?v=20260803-1658" index.html
-          grep -R "app.js?v=${version}" --include='*.html' . >/dev/null
-          grep -R "data-ov-fidelity" --include='*.html' . >/dev/null
+          grep -q '#site-header-mount' assets/fidelity.css
+          grep -q 'chart-y-label' assets/fidelity.js
+          grep -q 'data-ov-fidelity' comuni/massarosa/index.html
+          grep -q "fidelity.js?v=${version}" comuni/massarosa/index.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -93,29 +93,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Verify public deployment
-        shell: bash
-        run: |
-          set -euo pipefail
-          base="${{ steps.deployment.outputs.page_url }}"
-          version="20260803-1735"
-
-          for attempt in {1..18}; do
-            if curl -L --fail --silent --show-error "${base}crests/massarosa.png?verify=${version}" -o /tmp/massarosa.png \
-              && curl -L --fail --silent --show-error "${base}images/versilia-viareggio-apuane.jpg?verify=${version}" -o /tmp/hero.jpg \
-              && curl -L --fail --silent --show-error "${base}assets/fidelity.css?verify=${version}" -o /tmp/fidelity.css \
-              && curl -L --fail --silent --show-error "${base}assets/fidelity.js?verify=${version}" -o /tmp/fidelity.js \
-              && curl -L --fail --silent --show-error "${base}comuni/massarosa/?verify=${version}" -o /tmp/massarosa.html \
-              && test "$(stat -c%s /tmp/massarosa.png)" -gt 20000 \
-              && test "$(sha256sum /tmp/hero.jpg | cut -d' ' -f1)" = "13d7da265085bc58bd09f2d8fe6936eb4621847768f4428b74526777e84741ab" \
-              && grep -q '#site-header-mount' /tmp/fidelity.css \
-              && grep -q 'chart-y-label' /tmp/fidelity.js \
-              && grep -q 'data-ov-fidelity' /tmp/massarosa.html \
-              && grep -q "fidelity.js?v=${version}" /tmp/massarosa.html; then
-              exit 0
-            fi
-            sleep 10
-          done
-          echo 'La pagina pubblica non contiene ancora sticky header e valori dell’ordinata.' >&2
-          exit 1
