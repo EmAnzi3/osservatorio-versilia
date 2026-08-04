@@ -63,14 +63,16 @@ def bundle_application_with_private_fixes() -> None:
     bundle = bundle_path.read_text(encoding="utf-8")
 
     old_icon = '<span aria-hidden="true">⌕</span>'
-    if old_icon not in bundle:
-        raise RuntimeError("Icona testuale della ricerca non trovata nel bundle")
-    bundle = bundle.replace(old_icon, SEARCH_ICON)
+    if old_icon in bundle:
+        bundle = bundle.replace(old_icon, SEARCH_ICON)
+    elif '<svg class="search-icon"' not in bundle:
+        raise RuntimeError("Né l'icona testuale né la lente SVG sono presenti nel bundle")
 
     for old, new in NUMBER_FORMAT_REPLACEMENTS.items():
-        if old not in bundle:
+        if old in bundle:
+            bundle = bundle.replace(old, new)
+        elif new not in bundle:
             raise RuntimeError(f"Formatter numerico non trovato: {old}")
-        bundle = bundle.replace(old, new)
 
     bundle_path.write_text(bundle, encoding="utf-8")
 
