@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "scripts/acquire_v12_diagnostics.py"
+      - "scripts/acquire_v12_payloads.py"
       - ".github/workflows/acquire-v12-local.yml"
   workflow_dispatch:
 
@@ -14,7 +15,7 @@ permissions:
 jobs:
   acquire:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,9 +31,19 @@ jobs:
       - name: Acquire and inspect official sources
         run: python scripts/acquire_v12_diagnostics.py
 
+      - name: Acquire official source payloads
+        run: python scripts/acquire_v12_payloads.py
+
       - name: Upload diagnostic artifact
         uses: actions/upload-artifact@v4
         with:
           name: v12-official-data-diagnostics
           path: acquisition-diagnostics
+          retention-days: 7
+
+      - name: Upload payload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v12-official-data-payloads
+          path: v12-payloads
           retention-days: 7
