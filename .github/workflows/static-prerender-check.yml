@@ -31,6 +31,10 @@ jobs:
         if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
         run: python scripts/apply_v12_local_data.py
 
+      - name: Apply local v1.2 UI
+        if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
+        run: python scripts/apply_v12_local_ui.py
+
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
 
