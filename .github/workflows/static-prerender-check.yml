@@ -27,6 +27,10 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
+      - name: Apply local v1.2 dataset
+        if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
+        run: python scripts/apply_v12_local_data.py
+
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
 
