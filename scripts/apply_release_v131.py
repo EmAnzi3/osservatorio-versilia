@@ -13,20 +13,24 @@ ROOT = Path(__file__).resolve().parents[1]
 CHUNKS = ROOT / "data" / "releases" / "v1.3.1"
 EXPECTED_SHA256 = "da54c66d139914e389f595371d442b5a9aab65f60da5693455540d5d0dd45ec9"
 EXPECTED_VERSION = "2026.08.05-v1.3.1"
-ALLOWED_PREFIXES = (
+ALLOWED_FILES = {
     "data/site-data.json",
-    "assets/app-parts/",
     "assets/static.css",
     "assets/fidelity.css",
     "assets/fidelity.js",
-)
+}
+ALLOWED_DIRECTORIES = {"assets/app-parts"}
 
 
 def safe_member(name: str) -> bool:
     path = Path(name)
     if path.is_absolute() or ".." in path.parts:
         return False
-    return any(name == prefix or name.startswith(prefix) for prefix in ALLOWED_PREFIXES)
+    return (
+        name in ALLOWED_FILES
+        or name in ALLOWED_DIRECTORIES
+        or any(name.startswith(f"{directory}/") for directory in ALLOWED_DIRECTORIES)
+    )
 
 
 def main() -> None:
