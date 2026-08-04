@@ -27,20 +27,15 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Apply local v1.2 dataset
+      - name: Restore published data baseline
         if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('scripts/apply_v12_local_data.py')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace(
-              'base64.b64decode(PAYLOAD)',
-              'base64.b64decode(PAYLOAD + "=" * (-len(PAYLOAD) % 4))',
-          )
-          path.write_text(text, encoding='utf-8')
-          PY
-          python scripts/apply_v12_local_data.py
+          git fetch origin main --depth=1
+          git show FETCH_HEAD:data/site-data.json > data/site-data.json
+
+      - name: Rebuild local v1.2 dataset
+        if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
+        run: python scripts/rebuild_v12_local_data.py
 
       - name: Apply local v1.2 UI
         if: github.head_ref == 'expansion/v1-1-local' || github.ref_name == 'expansion/v1-1-local'
