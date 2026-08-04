@@ -96,10 +96,16 @@ def browser_assertions() -> None:
         assert not broken, f"Immagini non caricate: {broken}"
         page.evaluate("window.scrollTo(0, 1500)")
         page.wait_for_timeout(100)
-        header_top = page.locator("#site-header-mount").bounding_box()["y"]
-        nav_top = page.locator(".town-profile .theme-nav").bounding_box()["y"]
-        assert abs(header_top) <= 1, f"Header non sticky: {header_top}"
-        assert 68 <= nav_top <= 72, f"Navigazione temi non sticky: {nav_top}"
+        header_box = page.locator("#site-header-mount").bounding_box()
+        context_box = page.locator(".town-context-nav").bounding_box()
+        theme_box = page.locator(".town-context-nav .theme-nav").bounding_box()
+        assert header_box and abs(header_box["y"]) <= 1, f"Header non sticky: {header_box}"
+        assert context_box and 68 <= context_box["y"] <= 72, f"Navigazione contestuale non sticky: {context_box}"
+        assert theme_box, "Navigazione dei temi assente dalla barra contestuale"
+        assert context_box["y"] <= theme_box["y"], "Navigazione temi sopra il contenitore sticky"
+        assert theme_box["y"] + theme_box["height"] <= context_box["y"] + context_box["height"] + 2, (
+            f"Navigazione temi fuori dal contenitore sticky: tema={theme_box}, contenitore={context_box}"
+        )
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844})
         mobile_page = mobile.new_page()
@@ -130,8 +136,8 @@ def browser_assertions() -> None:
         assert town_topic.get_attribute("data-theme") == "economia", "Tema comunale non aggiornato"
         town_topic_top = town_topic.bounding_box()["y"]
         mobile_header_height = mobile_page.locator("#site-header-mount").bounding_box()["height"]
-        mobile_nav_height = mobile_page.locator(".town-profile .theme-nav").bounding_box()["height"]
-        expected_top = mobile_header_height + mobile_nav_height
+        mobile_context_height = mobile_page.locator(".town-context-nav").bounding_box()["height"]
+        expected_top = mobile_header_height + mobile_context_height
         assert expected_top + 5 <= town_topic_top <= expected_top + 30, f"Salto ai dati comunali non allineato: {town_topic_top}"
         mobile.close()
 
