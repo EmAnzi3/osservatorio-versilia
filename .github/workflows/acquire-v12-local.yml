@@ -1,0 +1,38 @@
+name: Acquire v1.2 official data (local only)
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/acquire_v12_diagnostics.py"
+      - ".github/workflows/acquire-v12-local.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install acquisition dependencies
+        run: python -m pip install requests beautifulsoup4
+
+      - name: Acquire and inspect official sources
+        run: python scripts/acquire_v12_diagnostics.py
+
+      - name: Upload diagnostic artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v12-official-data-diagnostics
+          path: acquisition-diagnostics
+          retention-days: 7
