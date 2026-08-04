@@ -7,6 +7,7 @@ on:
       - "scripts/acquire_v12_diagnostics.py"
       - "scripts/acquire_v12_payloads.py"
       - "scripts/acquire_v12_extra.py"
+      - "scripts/acquire_v12_school_omi.py"
       - ".github/workflows/acquire-v12-local.yml"
   workflow_dispatch:
 
@@ -38,6 +39,9 @@ jobs:
       - name: Acquire extra official datasets
         run: python scripts/acquire_v12_extra.py
 
+      - name: Acquire school and OMI datasets
+        run: python scripts/acquire_v12_school_omi.py
+
       - name: Upload diagnostic artifact
         uses: actions/upload-artifact@v4
         with:
@@ -57,4 +61,11 @@ jobs:
         with:
           name: v12-official-data-extra
           path: v12-extra
+          retention-days: 7
+
+      - name: Upload school and OMI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: v12-official-school-omi
+          path: v12-school-omi
           retention-days: 7
