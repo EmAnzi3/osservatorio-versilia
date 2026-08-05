@@ -34,9 +34,12 @@ TOWN_META = {
 
 
 def format_value(value: float, unit: str) -> str:
+    formatted = f"{value:.1f}".replace(".", ",")
     if unit == "minutes":
-        return f"{value:.1f}".replace(".", ",") + " min"
-    return f"{value:.1f}".replace(".", ",") + "%"
+        return formatted + " min"
+    if unit == "per1000":
+        return formatted + " ogni 1.000"
+    return formatted + "%"
 
 
 def rows_from_snapshot(snapshot_metric: dict, unit: str) -> list[dict[str, object]]:

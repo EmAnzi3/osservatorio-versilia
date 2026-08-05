@@ -5423,7 +5423,7 @@
           "code": "046018",
           "slug": "massarosa",
           "value": 8.71112201705417,
-          "formatted": "8,7%",
+          "formatted": "8,7 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5452,7 +5452,7 @@
           "code": "046033",
           "slug": "viareggio",
           "value": 8.02992973811479,
-          "formatted": "8,0%",
+          "formatted": "8,0 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5481,7 +5481,7 @@
           "code": "046005",
           "slug": "camaiore",
           "value": 6.64996977286467,
-          "formatted": "6,6%",
+          "formatted": "6,6 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5510,7 +5510,7 @@
           "code": "046024",
           "slug": "pietrasanta",
           "value": 7.48098321493682,
-          "formatted": "7,5%",
+          "formatted": "7,5 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5539,7 +5539,7 @@
           "code": "046028",
           "slug": "seravezza",
           "value": 7.84893641223979,
-          "formatted": "7,8%",
+          "formatted": "7,8 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5568,7 +5568,7 @@
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 5.27160210864084,
-          "formatted": "5,3%",
+          "formatted": "5,3 ogni 1.000",
           "series": {
             "years": [
               2018,
@@ -5597,7 +5597,7 @@
           "code": "046030",
           "slug": "stazzema",
           "value": 10.3499260719566,
-          "formatted": "10,3%",
+          "formatted": "10,3 ogni 1.000",
           "series": {
             "years": [
               2018,
