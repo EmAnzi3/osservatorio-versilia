@@ -1,0 +1,48 @@
+name: Audit Toscana municipal data and budgets
+
+on:
+  push:
+    branches: ["audit/toscana-comunali-bilanci"]
+  pull_request:
+    branches: ["expansion/lavoro-istruzione-abitare"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests beautifulsoup4 pandas openpyxl xlrd odfpy playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Run catalogue audit
+        run: python scripts/audit_toscana_comunali_bilanci.py
+
+      - name: Run specific source audit
+        run: python scripts/audit_toscana_specific_sources.py
+
+      - name: Run OpenBDAP API audit
+        run: python scripts/audit_openbdap_api.py
+
+      - name: Upload private audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-toscana-comunali-bilanci
+          path: |
+            audit-toscana-comunali-bilanci
+            audit-toscana-specific-sources
+            audit-openbdap-api
+          retention-days: 7
