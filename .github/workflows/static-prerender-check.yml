@@ -119,6 +119,10 @@ jobs:
         if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
         run: python scripts/materialize_siope_sources.py
 
+      - name: Install official CKAN download fallback
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: python scripts/patch_siope_builder_download.py
+
       - name: Discover official SIOPE catalogue resources
         if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
         run: python scripts/discover_siope_resources.py
