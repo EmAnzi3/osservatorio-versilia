@@ -37,6 +37,9 @@ jobs:
       - name: Probe Tuscany budget documents
         run: python scripts/probe_openbdap_documents.py
 
+      - name: Inspect Tuscany budget archives
+        run: python scripts/inspect_openbdap_budget_zips.py
+
       - name: Upload OpenBDAP audit snapshots
         uses: actions/upload-artifact@v4
         with:
@@ -44,6 +47,7 @@ jobs:
           path: |
             data/source-snapshots/openbdap-budget-discovery.json
             data/source-snapshots/openbdap-budget-documents.json
+            data/source-snapshots/openbdap-budget-zip-inspection.json
           retention-days: 7
 
       - name: Build pre-rendered site
