@@ -51,6 +51,10 @@ jobs:
         if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
         run: python scripts/apply_history_series_v160.py
 
+      - name: Keep v1.5 checks compatible with explicit historical coverage
+        if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
+        run: python scripts/patch_v150_history_compat.py
+
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
 
