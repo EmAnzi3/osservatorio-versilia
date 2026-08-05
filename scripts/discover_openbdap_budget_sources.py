@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -15,6 +16,7 @@ OUT = ROOT / "data" / "source-snapshots" / "openbdap-budget-discovery.json"
 BASE = "https://bdap-opendata.rgs.mef.gov.it"
 CKAN = BASE + "/SpodCkanApi/api/3/action"
 FET_URL = "https://openbdap.rgs.mef.gov.it/it/FET/Analizza"
+FET_JS = "https://openbdap.rgs.mef.gov.it/Content/js/fet_analizza.js"
 TIMEOUT = 20
 
 QUERIES = [
@@ -75,6 +77,34 @@ def discover_ckan(session: requests.Session) -> dict:
     return result
 
 
+def quoted_strings(text: str) -> list[str]:
+    values: list[str] = []
+    for match in re.finditer(r"(['\"])(.*?)(?<!\\)\1", text, flags=re.S):
+        value = match.group(2).strip()
+        if not value or len(value) > 500:
+            continue
+        if any(token in value.lower() for token in (
+            "fet", "rendiconto", "bilanc", "download", "schema", "indicator", "regione", "anno", "ajax", "api", "zip", "csv"
+        )):
+            values.append(value)
+    return list(dict.fromkeys(values))[:300]
+
+
+def context_snippets(text: str) -> list[str]:
+    pattern = re.compile(
+        r".{0,240}(?:\$\.ajax|\$\.get|\$\.post|url\s*:|fetch\(|rendiconto|schemi?\s+di\s+bilancio|download|\.zip|\.csv).{0,420}",
+        flags=re.I | re.S,
+    )
+    snippets: list[str] = []
+    for match in pattern.finditer(text):
+        snippet = " ".join(match.group(0).split())
+        if snippet not in snippets:
+            snippets.append(snippet)
+        if len(snippets) >= 120:
+            break
+    return snippets
+
+
 def discover_page(session: requests.Session) -> dict:
     response = session.get(FET_URL, timeout=TIMEOUT)
     response.raise_for_status()
@@ -85,26 +115,29 @@ def discover_page(session: requests.Session) -> dict:
             for match in re.findall(r"(?:href|src|action)=[\"']([^\"']+)[\"']", html, flags=re.I)
         }
     )
+    js_response = session.get(FET_JS, timeout=TIMEOUT)
+    js_response.raise_for_status()
+    js = js_response.text
     return {
         "url": FET_URL,
         "status_code": response.status_code,
         "html_length": len(html),
+        "html_sha256": hashlib.sha256(html.encode("utf-8")).hexdigest(),
         "scripts": [u for u in urls if u.lower().split("?")[0].endswith(".js")],
         "interesting_urls": [
             u
             for u in urls
             if any(token in u.lower() for token in ("fet", "rend", "bilanc", "download", "zip", "csv", "api"))
         ],
-        "html_markers": {
-            marker: marker.lower() in html.lower()
-            for marker in (
-                "Rendiconto",
-                "Schemi di bilancio",
-                "Piano degli indicatori",
-                "Toscana",
-                "2025",
-                "2024",
-            )
+        "html_quoted_strings": quoted_strings(html),
+        "html_snippets": context_snippets(html),
+        "fet_js": {
+            "url": FET_JS,
+            "status_code": js_response.status_code,
+            "length": len(js),
+            "sha256": hashlib.sha256(js.encode("utf-8")).hexdigest(),
+            "quoted_strings": quoted_strings(js),
+            "snippets": context_snippets(js),
         },
     }
 
