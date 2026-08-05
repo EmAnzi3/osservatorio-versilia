@@ -34,11 +34,7 @@ jobs:
           python -m pip install requests playwright
           python -m playwright install --with-deps chromium
 
-      - name: Rebuild validated OpenBDAP base snapshot
-        if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
-        run: python scripts/build_bilanci_snapshot.py
-
-      - name: Expand OpenBDAP history with full coverage
+      - name: Expand the validated OpenBDAP snapshot with full historical coverage
         if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
         run: python scripts/expand_bilanci_history_v160.py
 
