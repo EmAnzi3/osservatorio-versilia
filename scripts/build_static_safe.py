@@ -13,6 +13,11 @@ _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 
+if "bilanci" not in build.THEME_SLUGS:
+    build.THEME_SLUGS.insert(2, "bilanci")
+if "confronta/bilanci/" not in build.ROUTES:
+    build.ROUTES.insert(build.ROUTES.index("progetto/"), "confronta/bilanci/")
+
 SEARCH_ICON = (
     '<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" '
     'width="16" height="16" viewBox="0 0 24 24" fill="none" '
