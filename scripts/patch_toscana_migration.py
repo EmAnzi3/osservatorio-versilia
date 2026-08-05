@@ -3,25 +3,23 @@ from pathlib import Path
 
 path = Path(__file__).resolve().parent / "update_toscana_indicators_v150.py"
 text = path.read_text(encoding="utf-8")
-text = text.replace(
-    "landslideExposure: ['frane', 'rischio frana', 'dissesto']",
-    "landslideExposure: ['frane', 'rischio geomorfologico']",
-    1,
-)
-old_block = '''        (
-            "    landslideExposure: ['frane', 'rischio geomorfologico'],\\n",
-            "    landslideExposure: ['frane', 'rischio geomorfologico'],\\n"
-            "    organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],\\n",
-        ),'''
-new_block = '''        (
+
+start_marker = '        (\n            "    landslideExposure:'
+end_marker = '        (\n            "      case \'studentsPerClass\''
+
+start = text.find(start_marker)
+end = text.find(end_marker, start + 1 if start >= 0 else 0)
+if start < 0 or end < 0:
+    raise RuntimeError("Blocco ambientale non trovato nella migrazione")
+
+replacement = '''        (
             "    landslideExposure: ['frane', 'rischio geomorfologico'], thirdSector: ['associazioni', 'volontariato'],\\n",
             "    landslideExposure: ['frane', 'rischio geomorfologico'],\\n"
             "    organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],\\n"
             "    thirdSector: ['associazioni', 'volontariato'],\\n",
-        ),'''
-if old_block in text:
-    text = text.replace(old_block, new_block, 1)
-elif new_block not in text:
-    raise RuntimeError("Blocco ambientale non trovato nella migrazione")
+        ),
+'''
+
+text = text[:start] + replacement + text[end:]
 path.write_text(text, encoding="utf-8")
 print("Migrazione Toscana allineata ai sorgenti correnti.")
