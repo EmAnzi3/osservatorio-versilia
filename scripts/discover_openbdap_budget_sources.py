@@ -138,6 +138,7 @@ def discover_page(session: requests.Session) -> dict:
             "sha256": hashlib.sha256(js.encode("utf-8")).hexdigest(),
             "quoted_strings": quoted_strings(js),
             "snippets": context_snippets(js),
+            "source": js,
         },
     }
 
