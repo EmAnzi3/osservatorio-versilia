@@ -34,6 +34,11 @@ jobs:
           python -m pip install requests playwright
           python -m playwright install --with-deps chromium
 
+      - name: Inspect official SIOPE catalogue resources
+        if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
+        continue-on-error: true
+        run: python scripts/discover_siope_resources.py
+
       - name: Expand the validated OpenBDAP snapshot with full historical coverage
         if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
         run: python scripts/expand_bilanci_history_v160.py
