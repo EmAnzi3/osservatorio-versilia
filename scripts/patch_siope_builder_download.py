@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Patch the generated SIOPE builder for current official CKAN dump formats."""
+"""Patch the generated SIOPE builder and tests for official CKAN dump formats."""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
-PATH = Path(__file__).with_name("build_siope_history.py")
+ROOT = Path(__file__).resolve().parent
+BUILDER_PATH = ROOT / "build_siope_history.py"
+TEST_PATH = ROOT / "test_siope_history_v160.py"
 
 DOWNLOAD_REPLACEMENT = r'''def download_csv(session: requests.Session, resource: dict) -> tuple[bytes, str]:
     official_url = str(resource["url"]).replace("http://", "https://", 1)
@@ -107,13 +109,64 @@ def replace_function(text: str, name: str, replacement: str) -> str:
     return updated
 
 
-def main() -> None:
-    text = PATH.read_text(encoding="utf-8")
+def set_history_window(text: str, path: Path) -> str:
+    """Shift every generated SIOPE expectation from 2018–2025 to 2019–2025."""
+    original = text
+
+    # Common programmatic year declarations.
+    text = re.sub(r"range\(\s*2018\s*,\s*2026\s*\)", "range(2019, 2026)", text)
+    text = re.sub(
+        r"\[\s*2018\s*,\s*2019\s*,\s*2020\s*,\s*2021\s*,\s*2022\s*,\s*2023\s*,\s*2024\s*,\s*2025\s*\]",
+        "[2019, 2020, 2021, 2022, 2023, 2024, 2025]",
+        text,
+    )
+    text = re.sub(
+        r"\(\s*2018\s*,\s*2019\s*,\s*2020\s*,\s*2021\s*,\s*2022\s*,\s*2023\s*,\s*2024\s*,\s*2025\s*\)",
+        "(2019, 2020, 2021, 2022, 2023, 2024, 2025)",
+        text,
+    )
+
+    # Human-readable coverage labels and isolated first-year constants.
+    text = re.sub(r"(?<!\d)2018\s*[–—-]\s*2025(?!\d)", "2019–2025", text)
+    text = re.sub(
+        r"(?m)^(\s*(?:START_YEAR|FIRST_YEAR|MIN_YEAR)\s*=\s*)2018\b",
+        r"\g<1>2019",
+        text,
+    )
+
+    # Any remaining standalone occurrence belongs to the generated historical
+    # window or its assertions. Explicit year lists were normalised above.
+    text = re.sub(r"(?<!\d)2018(?!\d)", "2019", text)
+
+    if text == original:
+        raise RuntimeError(f"Periodo SIOPE non individuato in {path.name}")
+    if re.search(r"(?<!\d)2018(?!\d)", text):
+        raise RuntimeError(f"Riferimento residuo al 2018 in {path.name}")
+    if re.search(r"2019\s*,\s*2019", text):
+        raise RuntimeError(f"Duplicazione del 2019 introdotta in {path.name}")
+    return text
+
+
+def patch_builder() -> None:
+    text = BUILDER_PATH.read_text(encoding="utf-8")
     text = replace_function(text, "download_csv", DOWNLOAD_REPLACEMENT)
     text = replace_function(text, "decode_csv", DECODE_REPLACEMENT)
-    compile(text, str(PATH), "exec")
-    PATH.write_text(text, encoding="utf-8")
-    print("Downloader e decoder SIOPE aggiornati per i dump CKAN ufficiali.")
+    text = set_history_window(text, BUILDER_PATH)
+    compile(text, str(BUILDER_PATH), "exec")
+    BUILDER_PATH.write_text(text, encoding="utf-8")
+
+
+def patch_test() -> None:
+    text = TEST_PATH.read_text(encoding="utf-8")
+    text = set_history_window(text, TEST_PATH)
+    compile(text, str(TEST_PATH), "exec")
+    TEST_PATH.write_text(text, encoding="utf-8")
+
+
+def main() -> None:
+    patch_builder()
+    patch_test()
+    print("SIOPE configurato e validato sintatticamente per il periodo 2019-2025.")
 
 
 if __name__ == "__main__":
