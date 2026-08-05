@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Scarica e verifica le fonti ufficiali candidate per Lavoro, Istruzione e Abitare.
 
-Non modifica il dataset del sito. Produce soltanto file di audit leggibili.
+Non modifica il dataset del sito. Produce soltanto file di audit leggibili e
+limitati ai sette Comuni dell'Osservatorio Versilia.
 """
 from __future__ import annotations
 
@@ -178,9 +179,8 @@ def audit_mim() -> dict:
 
 def download_istat_extract() -> tuple[Path, Path, str]:
     url = "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip"
-    with get(url, timeout=900) as response:
-        raw = response.content
-    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+    response = get(url, timeout=900)
+    with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
         tuscany_name = next(n for n in archive.namelist() if "R09_Toscana" in n)
         layout_name = next(n for n in archive.namelist() if "TRACCIATO" in n.upper())
         tmp = Path(tempfile.mkdtemp(prefix="lia-istat-"))
