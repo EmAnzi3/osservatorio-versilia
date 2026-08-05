@@ -279,9 +279,10 @@ def update_app() -> None:
             "    emsResponseTimeP75: ['118', 'ambulanza', 'tempo di soccorso', 'emergenza urgenza'],\n",
         ),
         (
-            "    landslideExposure: ['frane', 'rischio frana', 'dissesto'],\n",
-            "    landslideExposure: ['frane', 'rischio frana', 'dissesto'],\n"
-            "    organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],\n",
+            "    landslideExposure: ['frane', 'rischio geomorfologico'], thirdSector: ['associazioni', 'volontariato'],\n",
+            "    landslideExposure: ['frane', 'rischio geomorfologico'],\n"
+            "    organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],\n"
+            "    thirdSector: ['associazioni', 'volontariato'],\n",
         ),
         (
             "      case 'studentsPerClass': return `${number1.format(v)} alunni/classe`;\n",

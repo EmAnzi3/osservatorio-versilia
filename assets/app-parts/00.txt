@@ -42,12 +42,15 @@
     industryWorkerShare: ['operai', 'occupati industria', 'addetti industria'],
     localUnits: ['imprese', 'aziende', 'attività economiche'],
     microUnits: ['pmi', 'piccole imprese', 'microimprese'],
+    foreignBornSoleProprietorShare: ['imprenditori stranieri', 'titolari nati all estero', 'ditte individuali'],
+    innovationBusinessShare: ['innovazione', 'imprese innovative', 'settori innovativi'],
     employmentRate: ['occupati', 'lavoratori', 'occupazione'],
     unemploymentRate: ['disoccupati', 'senza lavoro', 'disoccupazione'],
     activityRate: ['forza lavoro', 'attivi', 'partecipazione'],
     femaleEmploymentRate: ['occupazione femminile', 'donne occupate', 'lavoro donne'],
     maleEmploymentRate: ['occupazione maschile', 'uomini occupati', 'lavoro uomini'],
     employmentGenderGap: ['divario di genere', 'gender gap', 'differenza occupazione donne uomini'],
+    youthOtherStatus: ['giovani', '15 24 anni', 'altra condizione professionale', 'neet'],
     diplomaPlus: ['diplomati', 'titolo di studio', 'scuola superiore'],
     tertiary: ['laureati', 'laurea', 'università'],
     schoolSites: ['scuole', 'istituti scolastici'],
@@ -57,9 +60,11 @@
     lifeExpectancy: ['speranza di vita', 'longevità', 'salute'],
     mortalityAll: ['mortalità', 'decessi', 'cause di morte'],
     chronicTotal: ['cronici', 'malattie croniche', 'patologie croniche'],
+    disability064Per1000: ['disabilita', 'persone con disabilita', 'invalidita'],
     diabetes: ['diabete', 'malattie croniche'],
     dementia: ['demenza', 'alzheimer', 'non autosufficienza'],
     emergencyAccess: ['pronto soccorso', 'emergenza', 'accessi ps'],
+    emsResponseTimeP75: ['118', 'ambulanza', 'tempo di soccorso', 'emergenza urgenza'],
     hospitalizedAll: ['ricoveri', 'ospedalizzazione', 'ospedale'],
     elderlyHomeCare: ['assistenza domiciliare', 'anziani', 'adi'],
     pharmaciesPer1000: ['farmacie', 'sanità'], hospitals: ['ospedali', 'posti letto', 'presidi'],
@@ -116,6 +121,7 @@
       case 'nights': return `${number2.format(v)} notti`;
       case 'people': return `${number0.format(v)} persone`;
       case 'studentsPerClass': return `${number1.format(v)} alunni/classe`;
+      case 'minutes': return `${number1.format(v)} min`;
       case 'per100': return `${number2.format(v)} ogni 100`;
       case 'per10k': return `${number1.format(v)} ogni 10.000`;
       case 'per1000': return `${number2.format(v)} ogni 1.000`;
