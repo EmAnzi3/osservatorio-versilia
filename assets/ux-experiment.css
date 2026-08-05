@@ -1,0 +1,413 @@
+/* Esperimento v1.6: sezioni espandibili e confronto storico tra comuni. */
+
+.ux-section-toggle {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  padding-right: 74px;
+  transition: background-color .18s ease;
+}
+
+.ux-section-toggle:hover {
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.ux-section-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.ux-section-tools {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ux-section-chevron {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform .18s ease, background-color .18s ease;
+}
+
+.metric-group.is-open .ux-section-chevron,
+.indicator-group.is-open .ux-section-chevron {
+  transform: rotate(180deg);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+
+.metric-group-buttons[hidden],
+.indicator-card-grid[hidden],
+.ux-view-pane[hidden] {
+  display: none !important;
+}
+
+.metric-group:not(.is-open),
+.indicator-group:not(.is-open) {
+  padding-bottom: 2px;
+}
+
+.indicator-group-heading.ux-section-toggle {
+  min-height: 58px;
+  padding-top: 8px;
+  padding-right: 92px;
+}
+
+.ux-view-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.ux-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  padding-bottom: 12px;
+}
+
+.ux-view-toolbar-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.ux-view-toolbar-copy strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ux-view-toolbar-copy span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.ux-view-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 3px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 92%, white);
+  padding: 3px;
+}
+
+.ux-view-toggle button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 13px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ux-view-toggle button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.ux-view-toggle button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+
+.ux-view-toggle button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.ux-view-note {
+  margin: -8px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.ux-history-card {
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--paper) 96%, white);
+  padding: 18px;
+}
+
+.ux-history-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.ux-history-head div {
+  display: grid;
+  gap: 3px;
+}
+
+.ux-history-head strong {
+  font-size: 14px;
+}
+
+.ux-history-head span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.ux-history-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.ux-history-chart svg {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+}
+
+.ux-history-grid {
+  stroke: color-mix(in srgb, var(--ink) 12%, transparent);
+  stroke-width: 1;
+}
+
+.ux-history-zero {
+  stroke: color-mix(in srgb, var(--ink) 32%, transparent);
+  stroke-dasharray: 4 4;
+}
+
+.ux-history-axis-label {
+  fill: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ux-series-line {
+  fill: none;
+  stroke: var(--series-color);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .6;
+  cursor: pointer;
+  transition: opacity .16s ease, stroke-width .16s ease;
+}
+
+.ux-series-point {
+  fill: var(--paper);
+  stroke: var(--series-color);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: opacity .16s ease, r .16s ease;
+}
+
+.ux-series-group:hover .ux-series-line,
+.ux-series-group:hover .ux-series-point,
+.ux-series-group.is-selected .ux-series-line,
+.ux-series-group.is-selected .ux-series-point {
+  opacity: 1;
+}
+
+.ux-series-group.is-selected .ux-series-line {
+  stroke-width: 4;
+}
+
+.ux-series-group.is-selected .ux-series-point {
+  r: 5.5;
+}
+
+.ux-history-chart.has-selection .ux-series-group:not(.is-selected) .ux-series-line,
+.ux-history-chart.has-selection .ux-series-group:not(.is-selected) .ux-series-point {
+  opacity: .12;
+}
+
+.ux-history-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.ux-history-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.ux-history-legend button::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--series-color);
+}
+
+.ux-history-legend button[aria-pressed="true"] {
+  border-color: var(--series-color);
+  background: color-mix(in srgb, var(--series-color) 10%, transparent);
+  font-weight: 750;
+}
+
+.ux-history-summary {
+  min-height: 45px;
+  margin-top: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  padding-top: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.ux-history-summary strong {
+  color: var(--ink);
+}
+
+.ux-comparison-bars {
+  display: grid;
+  gap: 9px;
+}
+
+.ux-bar-row {
+  display: grid;
+  grid-template-columns: 24px minmax(105px, 150px) minmax(140px, 1fr) minmax(92px, auto);
+  gap: 10px;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ux-bar-row:hover .ux-bar-track,
+.ux-bar-row.selected .ux-bar-track {
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.ux-bar-rank {
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+}
+
+.ux-bar-town {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ux-bar-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+  overflow: hidden;
+}
+
+.ux-bar-zero {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+.ux-bar-fill {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  min-width: 2px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.ux-bar-row.selected .ux-bar-fill {
+  background: var(--accent, var(--ink));
+}
+
+.ux-bar-row strong {
+  text-align: right;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ux-history-unavailable {
+  border: 1px dashed color-mix(in srgb, var(--ink) 20%, transparent);
+  border-radius: 12px;
+  padding: 24px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .ux-section-toggle {
+    padding-right: 68px;
+  }
+
+  .ux-view-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ux-view-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .ux-view-toggle button {
+    width: 100%;
+  }
+
+  .ux-history-card {
+    padding: 13px;
+  }
+
+  .ux-history-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .ux-bar-row {
+    grid-template-columns: 20px minmax(92px, 120px) minmax(80px, 1fr);
+    gap: 7px;
+  }
+
+  .ux-bar-row strong {
+    grid-column: 2 / 4;
+    justify-self: end;
+    margin-top: -4px;
+  }
+}
+
+@media print {
+  .ux-view-toggle,
+  .ux-section-tools {
+    display: none !important;
+  }
+
+  .metric-group-buttons[hidden],
+  .indicator-card-grid[hidden],
+  .ux-view-pane[hidden] {
+    display: block !important;
+  }
+}
