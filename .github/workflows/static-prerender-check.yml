@@ -43,6 +43,9 @@ jobs:
       - name: Run v1.6.0 budget checks
         run: python scripts/test_release_v160.py
 
+      - name: Run accordion and history checks
+        run: python scripts/test_ux_experiment.py
+
       - name: Upload private build artifact
         uses: actions/upload-artifact@v4
         with:
