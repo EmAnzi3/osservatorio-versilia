@@ -1,3 +1,71 @@
+etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>
+      <div class="explorer-stat"><span>${html(metric.aggregate.label)}</span><strong>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</strong><small>${html(metric.aggregate.note)}</small></div>
+      <a class="source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Apri la fonte originale <span aria-hidden="true">↗</span></a>
+      <a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}" class="button-link">Esplora tutte le sezioni <span>→</span></a></div>
+      <div class="explorer-chart"><div class="comparison-bars">${barRows(data, metricKey)}</div></div>`;
+    installTablist(panel.querySelector('[role="tablist"]'), key => renderHomeExplorer(data, themeKey, key));
+  }
+
+  function metricControls(data, themeKey, metricKey, compact = true) {
+    const theme = data.themes[themeKey];
+    const groups = themeSections(theme);
+    return `<div class="metric-switch metric-catalog ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatori di ${html(theme.label)}">${groups.map(section => `<section class="metric-group" data-section="${html(section.key)}">
+      <div class="metric-group-heading"><strong>${html(section.label)}</strong>${section.description ? `<span>${html(section.description)}</span>` : ''}</div>
+      <div class="metric-group-buttons">${section.metrics.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>
+    </section>`).join('')}</div>`;
+  }
+
+  function groupedIndicatorCards(data, town, themeKey, activeKey) {
+    const theme = data.themes[themeKey];
+    return themeSections(theme).map(section => `<section class="indicator-group" data-section="${html(section.key)}">
+      <div class="indicator-group-heading"><div><span class="overline">Sezione</span><h4>${html(section.label)}</h4></div><p>${html(section.description || '')}</p></div>
+      <div class="indicator-card-grid">${section.metrics.map(key => indicatorCard(data, town, themeKey, key, activeKey)).join('')}</div>
+    </section>`).join('');
+  }
+
+
+  function compareContextNav(data, activeTheme) {
+    return `<nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
+      <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
+      <div class="context-nav-links">${Object.values(data.themes).map(theme => `<a href="${route(`confronta/${theme.key}/?indicatore=${theme.metrics[0]}`)}" data-context-theme="${theme.key}" class="${theme.key === activeTheme ? 'active' : ''}" ${theme.key === activeTheme ? 'aria-current="page"' : ''}><small>${html(theme.number)}</small><span>${html(theme.label)}</span></a>`).join('')}</div>
+    </nav>`;
+  }
+
+  function townContextNav(data, town, themeKey, metricKey) {
+    const activeSlug = normalize(town.name).replaceAll(' ', '-');
+    const townLinks = data.towns.map(item => {
+      const slug = normalize(item.name).replaceAll(' ', '-');
+      return `<a href="${route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`)}" data-town-link="${slug}" class="${slug === activeSlug ? 'active' : ''}" ${slug === activeSlug ? 'aria-current="page"' : ''}>${html(item.name)}</a>`;
+    }).join('');
+    const themeButtons = Object.values(data.themes).map(theme => `<button type="button" data-profile-theme="${theme.key}" class="${theme.key === themeKey ? 'active' : ''}">${themeIcon(theme.key, 15)}<span>${html(theme.number)}</span>${html(theme.label)}</button>`).join('');
+    return `<div class="town-context-nav">
+      <div class="context-nav-row"><div class="context-nav-title"><small>Esplora</small><strong>Comuni</strong></div><div class="context-nav-links">${townLinks}</div></div>
+      <nav class="theme-nav" aria-label="Temi della scheda">${themeButtons}</nav>
+    </div>`;
+  }
+
+  function updateTownContextLinks(data, themeKey, metricKey) {
+    document.querySelectorAll('[data-town-link]').forEach(link => {
+      link.href = route(`comuni/${link.dataset.townLink}/?tema=${themeKey}&indicatore=${metricKey}`);
+    });
+  }
+
+  function renderCompare(data) {
+    const themeKey = pageTheme || Object.keys(data.themes)[0];
+    const theme = data.themes[themeKey];
+    if (!theme) return renderNotFound();
+    const params = new URLSearchParams(location.search);
+    let metricKey = params.get('indicatore');
+    if (!theme.metrics.includes(metricKey)) metricKey = theme.metrics[0];
+    app.innerHTML = `<main class="inner-page" data-theme="${themeKey}">
+      <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
+      ${compareContextNav(data, themeKey)}
+      <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
+        <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
+      <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
+      <section id="compare-benchmark" class="page-width"></section>
+      ${themeKey === 'mobilita' ? crimeMarkup(data) : ''}
+      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
     </main>`;
     const update = key => {
       metricKey = key;
@@ -29,7 +97,7 @@
     def.innerHTML = `${hasNormalized ? `<div class="scale-switch" role="group" aria-label="Scala"><button type="button" data-scale="raw" class="${normalized ? '' : 'active'}">Valore assoluto</button><button type="button" data-scale="normalized" class="${normalized ? 'active' : ''}">Rapportato</button></div>` : ''}
       <div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p>
         <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(aggregate.label)}</dt><dd>${html(formatValue(aggregate.value, unit))}</dd></div></dl>
-        <small class="aggregate-note">${html(aggregate.note)}</small><div class="data-actions"><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></div>`;
+        <small class="aggregate-note">${html(aggregate.note)}</small>${methodDisclosure(metric)}<div class="data-actions"><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></div>`;
     bars.innerHTML = `<div class="topic-bars"><div class="comparison-bars">${barRows(data, metricKey, { normalized })}</div></div>`;
     def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data, themeKey, metricKey, button.dataset.scale === 'normalized')));
     def.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey, normalized));
@@ -67,68 +135,4 @@
   function renderTown(data) {
     const town = findTown(data, pageTown);
     if (!town) return renderNotFound();
-    const params = new URLSearchParams(location.search);
-    let themeKey = params.get('tema') || 'demografia';
-    if (!data.themes[themeKey]) themeKey = 'demografia';
-    let metricKey = params.get('indicatore');
-    if (!data.themes[themeKey].metrics.includes(metricKey)) metricKey = data.themes[themeKey].metrics[0];
-    const pop = data.metrics.population.rows.find(r => r.code === town.code);
-    const income = data.metrics.income.rows.find(r => r.code === town.code);
-    const employment = data.metrics.employmentRate.rows.find(r => r.code === town.code);
-    const popValues = pop.series?.values || town.population || [];
-    const populationChange = popValues.length > 1 ? ((popValues.at(-1) / popValues[0]) - 1) * 100 : 0;
-    const employmentDifference = Number(employment.value) - Number(data.metrics.employmentRate.aggregate.value);
-    const incomeDifference = (Number(income.value) / Number(data.metrics.income.aggregate.value) - 1) * 100;
-
-    app.innerHTML = `<main class="page-width inner-page town-profile" data-theme="${themeKey}">
-      <div class="breadcrumbs"><a href="${route('')}">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>${html(town.name)}</strong></div>
-      <header class="town-hero"><div class="town-identity"><img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}"><div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div></div>
-        <dl class="town-headline-stats"><div><dt>Residenti · ${html(data.metrics.population.meta.year)}</dt><dd>${html(pop.formatted)}</dd></div><div><dt>Reddito medio · ${html(data.metrics.income.meta.year)}</dt><dd>${html(income.formatted)}</dd></div><div><dt>Occupazione · ${html(data.metrics.employmentRate.meta.year)}</dt><dd>${html(employment.formatted)}</dd></div></dl></header>
-      <section class="town-brief" aria-labelledby="town-brief-title"><div><span class="overline">Sintesi</span><h2 id="town-brief-title">${html(town.name)} in breve</h2></div>
-        <article><span>Popolazione dal ${html(pop.series?.years?.[0] || '2019')}</span><strong>${populationChange >= 0 ? 'In crescita' : 'In calo'}</strong><small>${html(number1.format(Math.abs(populationChange)))}% ${populationChange >= 0 ? 'in più' : 'in meno'}</small></article>
-        <article><span>Occupazione 25–64</span><strong>${employmentDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(employmentDifference)))} punti di differenza</small></article>
-        <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>
-      <nav class="theme-nav" aria-label="Temi della scheda">${Object.values(data.themes).map(theme => `<button type="button" data-profile-theme="${theme.key}" class="${theme.key === themeKey ? 'active' : ''}">${themeIcon(theme.key, 15)}<span>${html(theme.number)}</span>${html(theme.label)}</button>`).join('')}</nav>
-      <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
-      <div id="town-context"></div>
-    </main>`;
-
-    const updateUrl = (theme, metric) => {
-      const url = new URL(location.href);
-      url.searchParams.set('tema', theme);
-      url.searchParams.set('indicatore', metric);
-      history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
-    };
-    const selectMetric = key => {
-      metricKey = key;
-      updateUrl(themeKey, metricKey);
-      renderTownMetric(data, town, themeKey, metricKey, selectMetric);
-    };
-    const selectTheme = key => {
-      themeKey = key;
-      metricKey = data.themes[key].metrics[0];
-      document.querySelector('main.town-profile').dataset.theme = key;
-      document.querySelectorAll('[data-profile-theme]').forEach(button => button.classList.toggle('active', button.dataset.profileTheme === key));
-      updateUrl(themeKey, metricKey);
-      renderTownMetric(data, town, themeKey, metricKey, selectMetric);
-      scrollActiveControl(document.querySelector('.theme-nav'));
-    };
-    document.querySelectorAll('[data-profile-theme]').forEach(button => button.addEventListener('click', () => selectTheme(button.dataset.profileTheme)));
-    renderTownMetric(data, town, themeKey, metricKey, selectMetric);
-    scrollActiveControl(document.querySelector('.theme-nav'));
-  }
-
-  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {
-    const theme = data.themes[themeKey];
-    const metric = data.metrics[metricKey];
-    const row = metric.rows.find(r => r.code === town.code);
-    const ranked = metricRows(data, metricKey);
-    const rank = ranked.findIndex(r => r.code === town.code) + 1;
-    const container = document.getElementById('town-topic');
-    container.dataset.theme = themeKey;
-    const historical = Boolean(row.series?.values?.length);
-    container.innerHTML = `<div class="town-topic-heading"><div><span class="overline">${html(theme.number)} · ${html(theme.label)}</span><h2>${html(theme.question)}</h2><p>${html(theme.description)}</p></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
-      ${metricControls(data, themeKey, metricKey, false)}
-      <div class="town-metric-layout"><article class="town-metric-primary"><span>${html(metric.meta.label)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
-        ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
-        <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="nore
+    const params = new URLSearchPa

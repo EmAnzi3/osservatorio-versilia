@@ -127,7 +127,7 @@
   function stickyOffset(includeThemeNavigation = false) {
     const headerHeight = document.getElementById('site-header-mount')?.getBoundingClientRect().height || 70;
     const themeHeight = includeThemeNavigation
-      ? document.querySelector('.town-profile .theme-nav')?.getBoundingClientRect().height || 0
+      ? document.querySelector('.town-profile .town-context-nav')?.getBoundingClientRect().height || 0
       : 0;
     return headerHeight + themeHeight + 12;
   }

@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.3",
-  "updated": "2 agosto 2026",
+  "version": "2026.08.05-v1.3.1",
+  "updated": "5 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -11,7 +11,35 @@
       "metrics": [
         "population",
         "oldAgeIndex",
-        "share65"
+        "share65",
+        "share014",
+        "populationChange"
+      ],
+      "sections": [
+        {
+          "key": "quadro",
+          "label": "Consistenza e struttura",
+          "description": "Quanti siamo e come si distribuisce la popolazione per età.",
+          "metrics": [
+            "population",
+            "oldAgeIndex",
+            "share65",
+            "share014"
+          ]
+        },
+        {
+          "key": "dinamica",
+          "label": "Dinamica demografica",
+          "description": "Come cambia nel tempo il numero dei residenti.",
+          "metrics": [
+            "populationChange"
+          ]
+        }
+      ],
+      "featured": [
+        "population",
+        "oldAgeIndex",
+        "populationChange"
       ]
     },
     "economia": {
@@ -30,7 +58,59 @@
         "localUnits",
         "microUnits",
         "tourismPresences",
-        "tourismBeds"
+        "tourismArrivals",
+        "tourismAverageStay",
+        "tourismBeds",
+        "tourismSeasonality",
+        "foreignTourismShare",
+        "tourismIntensity",
+        "tourismBedsPer1000",
+        "tourismStructuresPer1000"
+      ],
+      "sections": [
+        {
+          "key": "redditi",
+          "label": "Redditi",
+          "description": "Livelli e distribuzione dei redditi dichiarati.",
+          "metrics": [
+            "income",
+            "incomeUnder15k"
+          ]
+        },
+        {
+          "key": "produzione",
+          "label": "Sistema produttivo",
+          "description": "Unità locali, addetti, produttività e specializzazione.",
+          "metrics": [
+            "businessValueAdded",
+            "labourProductivity",
+            "industryValueAddedShare",
+            "industryWorkerShare",
+            "localUnits",
+            "microUnits"
+          ]
+        },
+        {
+          "key": "turismo",
+          "label": "Turismo",
+          "description": "Flussi, capacità ricettiva e pressione stagionale.",
+          "metrics": [
+            "tourismPresences",
+            "tourismArrivals",
+            "tourismAverageStay",
+            "tourismBeds",
+            "tourismSeasonality",
+            "foreignTourismShare",
+            "tourismIntensity",
+            "tourismBedsPer1000",
+            "tourismStructuresPer1000"
+          ]
+        }
+      ],
+      "featured": [
+        "income",
+        "localUnits",
+        "tourismIntensity"
       ]
     },
     "lavoro": {
@@ -43,6 +123,23 @@
         "employmentRate",
         "unemploymentRate",
         "activityRate"
+      ],
+      "sections": [
+        {
+          "key": "mercato",
+          "label": "Partecipazione e occupazione",
+          "description": "Occupazione, disoccupazione e partecipazione al mercato del lavoro.",
+          "metrics": [
+            "employmentRate",
+            "unemploymentRate",
+            "activityRate"
+          ]
+        }
+      ],
+      "featured": [
+        "employmentRate",
+        "unemploymentRate",
+        "activityRate"
       ]
     },
     "istruzione": {
@@ -52,6 +149,30 @@
       "question": "Qual è il livello di istruzione?",
       "description": "Titoli di studio e presenza delle scuole.",
       "metrics": [
+        "diplomaPlus",
+        "tertiary",
+        "schoolSites"
+      ],
+      "sections": [
+        {
+          "key": "capitale",
+          "label": "Capitale umano",
+          "description": "Livello di istruzione della popolazione.",
+          "metrics": [
+            "diplomaPlus",
+            "tertiary"
+          ]
+        },
+        {
+          "key": "rete",
+          "label": "Rete e sedi scolastiche",
+          "description": "Presenza delle sedi scolastiche sul territorio.",
+          "metrics": [
+            "schoolSites"
+          ]
+        }
+      ],
+      "featured": [
         "diplomaPlus",
         "tertiary",
         "schoolSites"
@@ -74,6 +195,44 @@
         "elderlyHomeCare",
         "pharmaciesPer1000",
         "hospitals"
+      ],
+      "sections": [
+        {
+          "key": "esiti",
+          "label": "Condizioni di salute",
+          "description": "Speranza di vita, mortalità e cronicità.",
+          "metrics": [
+            "lifeExpectancy",
+            "mortalityAll",
+            "chronicTotal",
+            "diabetes",
+            "dementia"
+          ]
+        },
+        {
+          "key": "servizi",
+          "label": "Uso dei servizi",
+          "description": "Pronto soccorso, ricoveri e assistenza domiciliare.",
+          "metrics": [
+            "emergencyAccess",
+            "hospitalizedAll",
+            "elderlyHomeCare"
+          ]
+        },
+        {
+          "key": "presidi",
+          "label": "Presìdi territoriali",
+          "description": "Farmacie e strutture ospedaliere.",
+          "metrics": [
+            "pharmaciesPer1000",
+            "hospitals"
+          ]
+        }
+      ],
+      "featured": [
+        "lifeExpectancy",
+        "chronicTotal",
+        "emergencyAccess"
       ]
     },
     "mobilita": {
@@ -84,11 +243,56 @@
       "description": "Pendolarismo, parco veicolare, incidenti stradali e contesto provinciale della criminalità.",
       "metrics": [
         "outsideMunicipality",
+        "outboundCommuters",
         "inboundCommuters",
+        "commuterBalance",
         "selfContainment",
+        "commuterBalanceRate",
+        "outboundCommutersRate",
+        "inboundCommutersRate",
         "motorization",
         "pollutingCars",
         "evPoints",
+        "roadInjuries"
+      ],
+      "sections": [
+        {
+          "key": "pendolarismo",
+          "label": "Flussi reali",
+          "description": "Entrate, uscite, saldo e capacità del Comune di trattenere lavoro.",
+          "metrics": [
+            "outsideMunicipality",
+            "outboundCommuters",
+            "inboundCommuters",
+            "commuterBalance",
+            "selfContainment",
+            "commuterBalanceRate",
+            "outboundCommutersRate",
+            "inboundCommutersRate"
+          ]
+        },
+        {
+          "key": "veicoli",
+          "label": "Mezzi e infrastrutture",
+          "description": "Motorizzazione, veicoli più inquinanti e ricarica elettrica.",
+          "metrics": [
+            "motorization",
+            "pollutingCars",
+            "evPoints"
+          ]
+        },
+        {
+          "key": "sicurezza",
+          "label": "Sicurezza stradale",
+          "description": "Incidenti e persone coinvolte.",
+          "metrics": [
+            "roadInjuries"
+          ]
+        }
+      ],
+      "featured": [
+        "outsideMunicipality",
+        "commuterBalanceRate",
         "roadInjuries"
       ]
     },
@@ -99,6 +303,30 @@
       "question": "Come sono composte famiglie e abitazioni?",
       "description": "Case non occupate, persone sole e nuclei familiari.",
       "metrics": [
+        "vacantHomes",
+        "singleHouseholds",
+        "householdSize"
+      ],
+      "sections": [
+        {
+          "key": "abitazioni",
+          "label": "Patrimonio abitativo",
+          "description": "Utilizzo delle abitazioni.",
+          "metrics": [
+            "vacantHomes"
+          ]
+        },
+        {
+          "key": "famiglie",
+          "label": "Struttura delle famiglie",
+          "description": "Persone sole e dimensione dei nuclei.",
+          "metrics": [
+            "singleHouseholds",
+            "householdSize"
+          ]
+        }
+      ],
+      "featured": [
         "vacantHomes",
         "singleHouseholds",
         "householdSize"
@@ -113,10 +341,39 @@
       "metrics": [
         "landUse",
         "landUseChange",
+        "floodExposure",
+        "landslideExposure",
         "recycling",
         "wastePerResident",
-        "floodExposure",
-        "landslideExposure"
+        "residualWaste"
+      ],
+      "sections": [
+        {
+          "key": "territorio",
+          "label": "Territorio e rischi",
+          "description": "Consumo di suolo ed esposizione idrogeologica.",
+          "metrics": [
+            "landUse",
+            "landUseChange",
+            "floodExposure",
+            "landslideExposure"
+          ]
+        },
+        {
+          "key": "rifiuti",
+          "label": "Rifiuti e circolarità",
+          "description": "Produzione, raccolta differenziata e residuo.",
+          "metrics": [
+            "recycling",
+            "wastePerResident",
+            "residualWaste"
+          ]
+        }
+      ],
+      "featured": [
+        "recycling",
+        "residualWaste",
+        "landUse"
       ]
     },
     "comunita": {
@@ -128,10 +385,48 @@
       "metrics": [
         "siopePayments",
         "currentPayments",
+        "capitalPayments",
+        "cashReceiptsPerResident",
+        "cashBalancePerResident",
         "publicWorks",
         "pnrrFunding",
         "pnrrConcluded",
         "thirdSector"
+      ],
+      "sections": [
+        {
+          "key": "bilancio",
+          "label": "Risorse correnti e cassa",
+          "description": "Pagamenti, incassi e saldi comunali rapportati alla popolazione.",
+          "metrics": [
+            "siopePayments",
+            "currentPayments",
+            "capitalPayments",
+            "cashReceiptsPerResident",
+            "cashBalancePerResident"
+          ]
+        },
+        {
+          "key": "investimenti",
+          "label": "Investimenti e opere",
+          "description": "Opere monitorate, pagamenti in conto capitale e PNRR.",
+          "metrics": [
+            "publicWorks",
+            "pnrrFunding",
+            "pnrrConcluded"
+          ]
+        },
+        {
+          "key": "societa",
+          "label": "Comunità organizzata",
+          "description": "Presenza del Terzo settore.",
+          "metrics": [
+            "thirdSector"
+          ]
+        }
+      ],
+      "featured": [
+        "currentPayments"
       ]
     }
   },
@@ -984,7 +1279,13 @@
         "label": "Totale Versilia",
         "note": "Somma dei valori dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "oldAgeIndex": {
       "meta": {
@@ -1231,7 +1532,13 @@
         "label": "Indice aggregato Versilia",
         "note": "Rapporto tra i residenti 65+ e 0–14 dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "residenti 65+ / residenti 0–14 × 100",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "share65": {
       "meta": {
@@ -1323,7 +1630,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sulla popolazione residente."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "residenti 65+ / popolazione residente × 100",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "income": {
       "meta": {
@@ -1478,7 +1791,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sul numero dei dichiaranti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "incomeUnder15k": {
       "meta": {
@@ -1570,7 +1889,13 @@
         "label": "Quota ponderata Versilia",
         "note": "Ponderata sul numero dei dichiaranti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "dichiaranti fino a 15.000 euro / dichiaranti totali × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "businessValueAdded": {
       "meta": {
@@ -1662,7 +1987,13 @@
         "label": "Totale Versilia",
         "note": "Somma dei valori dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "labourProductivity": {
       "meta": {
@@ -1762,7 +2093,13 @@
         "label": "Valore Versilia",
         "note": "Valore aggiunto complessivo diviso per gli addetti complessivi delle unità locali."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "valore aggiunto / addetti",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "industryValueAddedShare": {
       "meta": {
@@ -1862,7 +2199,13 @@
         "label": "Quota Versilia",
         "note": "Valore aggiunto industriale sul totale di industria e servizi dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "valore aggiunto industria / valore aggiunto totale × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "industryWorkerShare": {
       "meta": {
@@ -1962,7 +2305,13 @@
         "label": "Quota Versilia",
         "note": "Addetti dell’industria sul totale di industria e servizi dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "addetti industria / addetti totali × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "tourismPresences": {
       "meta": {
@@ -2161,6 +2510,12 @@
         "value": 14.041963159222812,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
+      },
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
       }
     },
     "tourismBeds": {
@@ -2297,6 +2652,12 @@
         "value": 218.91874842291193,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
+      },
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
       }
     },
     "localUnits": {
@@ -2433,6 +2794,12 @@
         "value": 113.34216502649508,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
+      },
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
       }
     },
     "microUnits": {
@@ -2525,7 +2892,13 @@
         "label": "Quota ponderata Versilia",
         "note": "Ponderata sul numero delle unità locali."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "unità locali con 0–9 addetti / unità locali totali × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
     },
     "employmentRate": {
       "meta": {
@@ -2617,7 +2990,13 @@
         "label": "Tasso ponderato Versilia",
         "note": "Calcolato sugli occupati e sulla popolazione 25–64 complessivi."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "unemploymentRate": {
       "meta": {
@@ -2709,7 +3088,13 @@
         "label": "Tasso ponderato Versilia",
         "note": "Calcolato sulle persone in cerca di lavoro e sulle forze di lavoro complessive."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "activityRate": {
       "meta": {
@@ -2801,7 +3186,13 @@
         "label": "Tasso ponderato Versilia",
         "note": "Calcolato sulle forze di lavoro e sulla popolazione 25–64 complessive."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "diplomaPlus": {
       "meta": {
@@ -2901,7 +3292,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sulla popolazione comunale 25–64 anni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "tertiary": {
       "meta": {
@@ -2993,7 +3390,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sulla popolazione comunale 25–64 anni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "schoolSites": {
       "meta": {
@@ -3129,6 +3532,12 @@
         "value": 0.9210194297249559,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
+      },
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
       }
     },
     "lifeExpectancy": {
@@ -3228,7 +3637,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "mortalityAll": {
       "meta": {
@@ -3327,7 +3742,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "chronicTotal": {
       "meta": {
@@ -3426,7 +3847,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "diabetes": {
       "meta": {
@@ -3525,7 +3952,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "dementia": {
       "meta": {
@@ -3624,7 +4057,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "emergencyAccess": {
       "meta": {
@@ -3723,7 +4162,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "hospitalizedAll": {
       "meta": {
@@ -3822,7 +4267,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "elderlyHomeCare": {
       "meta": {
@@ -3921,7 +4372,13 @@
         "label": "Valore ARS Versilia",
         "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "pharmaciesPer1000": {
       "meta": {
@@ -4013,7 +4470,13 @@
         "label": "Densità Versilia",
         "note": "Farmacie complessive ogni 1.000 residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "farmacie / popolazione residente × 1.000",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
     },
     "hospitals": {
       "meta": {
@@ -4149,6 +4612,12 @@
         "value": 37.15619480191774,
         "label": "Valore rapportato Versilia",
         "note": "Calcolato sul totale dei sette comuni, ponderato per popolazione."
+      },
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
       }
     },
     "outsideMunicipality": {
@@ -4241,7 +4710,13 @@
         "label": "Media semplice dei 7 comuni",
         "note": "Ogni comune pesa allo stesso modo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "selfContainment": {
       "meta": {
@@ -4333,7 +4808,13 @@
         "label": "Media semplice dei 7 comuni",
         "note": "Ogni comune pesa allo stesso modo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "roadInjuries": {
       "meta": {
@@ -4538,21 +5019,27 @@
         "label": "Tasso Versilia",
         "note": "Feriti complessivi ogni 10.000 residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "feriti in incidenti / popolazione residente × 10.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "inboundCommuters": {
       "meta": {
         "key": "inboundCommuters",
         "theme": "mobilita",
-        "label": "Pendolari in entrata",
-        "shortLabel": "Pendolari in entrata",
-        "description": "Persone che si spostano quotidianamente verso il comune per motivi di lavoro o studio.",
+        "label": "Pendolari in entrata per lavoro",
+        "shortLabel": "Entrate per lavoro",
+        "description": "Persone residenti in altri Comuni che raggiungono abitualmente il Comune osservato per motivi di lavoro.",
         "unit": "number",
         "year": "2021",
-        "source": "Istat — matrice del pendolarismo",
+        "source": "Istat — matrice di pendolarismo per lavoro",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.istat.it/notizia/nuovi-dati-del-censimento-permanente-sulla-mobilita-per-studio-o-lavoro/",
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
       "rows": [
         {
           "town": "Massarosa",
@@ -4630,7 +5117,13 @@
         "label": "Totale Versilia",
         "note": "Somma dei valori dei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Somma dei flussi con Comune di destinazione coincidente con il Comune osservato e origine diversa.",
+        "caveat": "Il dato riguarda gli occupati che si recano almeno tre giorni a settimana al luogo abituale di lavoro e rientrano giornalmente.",
+        "coverage": "7/7"
+      }
     },
     "motorization": {
       "meta": {
@@ -4722,7 +5215,13 @@
         "label": "Tasso Versilia",
         "note": "Autovetture complessive ogni 1.000 residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "autovetture / popolazione residente × 1.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "pollutingCars": {
       "meta": {
@@ -4814,7 +5313,13 @@
         "label": "Quota ponderata Versilia",
         "note": "Ponderata sul numero delle autovetture."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "autovetture Euro 0–3 / autovetture totali × 100",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "evPoints": {
       "meta": {
@@ -4906,7 +5411,13 @@
         "label": "Densità Versilia",
         "note": "Punti di ricarica attivi complessivi ogni 1.000 residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "punti di ricarica attivi / popolazione residente × 1.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
     },
     "vacantHomes": {
       "meta": {
@@ -4998,7 +5509,13 @@
         "label": "Quota Versilia",
         "note": "Abitazioni non occupate sul patrimonio abitativo complessivo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "singleHouseholds": {
       "meta": {
@@ -5090,7 +5607,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sul numero delle famiglie."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "householdSize": {
       "meta": {
@@ -5182,7 +5705,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sul numero delle famiglie."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
     },
     "landUse": {
       "meta": {
@@ -5282,7 +5811,13 @@
         "label": "Media semplice dei 7 comuni",
         "note": "Ogni comune pesa allo stesso modo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "landUseChange": {
       "meta": {
@@ -5563,7 +6098,13 @@
         "label": "Totale Versilia",
         "note": "Somma dell’incremento netto nei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "floodExposure": {
       "meta": {
@@ -5655,7 +6196,13 @@
         "label": "Media semplice dei 7 comuni",
         "note": "Ogni comune pesa allo stesso modo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "landslideExposure": {
       "meta": {
@@ -5747,7 +6294,13 @@
         "label": "Media semplice dei 7 comuni",
         "note": "Ogni comune pesa allo stesso modo."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "wastePerResident": {
       "meta": {
@@ -6084,7 +6637,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sulla popolazione residente."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "rifiuti urbani prodotti / popolazione residente",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "thirdSector": {
       "meta": {
@@ -6176,7 +6735,13 @@
         "label": "Densità Versilia",
         "note": "Enti complessivi ogni 1.000 residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "enti RUNTS / popolazione residente × 1.000",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
     },
     "recycling": {
       "meta": {
@@ -6513,7 +7078,13 @@
         "label": "Media ponderata Versilia",
         "note": "Ponderata sulla popolazione residente."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
+        "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
     },
     "currentPayments": {
       "meta": {
@@ -6605,7 +7176,13 @@
         "label": "Valore pro capite Versilia",
         "note": "Pagamenti correnti complessivi divisi per i residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pagamenti correnti / popolazione residente",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
     },
     "siopePayments": {
       "meta": {
@@ -6697,7 +7274,13 @@
         "label": "Valore pro capite Versilia",
         "note": "Uscite di cassa complessive divise per i residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pagamenti complessivi / popolazione residente",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
     },
     "publicWorks": {
       "meta": {
@@ -6789,7 +7372,13 @@
         "label": "Valore pro capite Versilia",
         "note": "Valore delle opere monitorate diviso per i residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "valore complessivo opere monitorate / popolazione residente",
+        "caveat": "Stock di opere monitorate, non spesa annua né avanzamento; escluso il duplicato publicWorksValuePerResident.",
+        "coverage": "7/7"
+      }
     },
     "pnrrFunding": {
       "meta": {
@@ -6881,7 +7470,13 @@
         "label": "Valore pro capite Versilia",
         "note": "Risorse assegnate complessive divise per i residenti."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "finanziamenti PNRR / popolazione residente",
+        "caveat": "Finanziamento censito, non importo erogato o speso; escluso il duplicato pnrrFundingPerResident.",
+        "coverage": "7/7"
+      }
     },
     "pnrrConcluded": {
       "meta": {
@@ -6973,17 +7568,2032 @@
         "label": "Quota Versilia",
         "note": "Progetti conclusi sul totale dei progetti censiti nei sette comuni."
       },
-      "normalizedAggregate": null
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "progetti conclusi / progetti PNRR monitorati × 100",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
+    },
+    "share014": {
+      "meta": {
+        "key": "share014",
+        "theme": "demografia",
+        "label": "Residenti tra 0 e 14 anni",
+        "shortLabel": "0–14 anni",
+        "description": "Quota della popolazione residente con età compresa tra 0 e 14 anni.",
+        "unit": "percent",
+        "year": "2026",
+        "source": "Istat — popolazione per età",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 10.2,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 10.2
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 10.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 10.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 9.7,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9.7
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 9.1,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9.1
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 9.6,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9.6
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 8.2,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 8.2
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 8.2,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 8.2
+        }
+      ],
+      "aggregate": {
+        "value": 9.701642064092859,
+        "label": "Media ponderata Versilia",
+        "note": "Ponderata sulla popolazione residente."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "residenti 0–14 / popolazione residente × 100",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "populationChange": {
+      "meta": {
+        "key": "populationChange",
+        "theme": "demografia",
+        "label": "Variazione della popolazione dal 2019",
+        "shortLabel": "Variazione dal 2019",
+        "description": "Variazione percentuale dei residenti tra il 1° gennaio 2019 e il 1° gennaio 2026.",
+        "unit": "percent",
+        "year": "2019–2026",
+        "source": "Istat — popolazione residente",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://demo.istat.it/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 0.3963864306784748,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.3963864306784748
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0.12870862347778012,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.12870862347778012
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 0.29365329965267417,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.29365329965267417
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": -1.7119576994755747,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -1.7119576994755747
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": -4.367458154924098,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -4.367458154924098
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": -8.468418110676357,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -8.468418110676357
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": -6.327835745540222,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -6.327835745540222
+        }
+      ],
+      "aggregate": {
+        "value": -0.9330491897533322,
+        "label": "Variazione Versilia",
+        "note": "Calcolata sul totale dei residenti dei sette comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "((residenti anno finale - residenti 2019) / residenti 2019) × 100",
+        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismSeasonality": {
+      "meta": {
+        "key": "tourismSeasonality",
+        "theme": "economia",
+        "label": "Concentrazione turistica nei tre mesi principali",
+        "shortLabel": "Stagionalità",
+        "description": "Quota delle presenze annuali concentrata nei tre mesi con il maggior numero di pernottamenti.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "Regione Toscana — movimento turistico mensile",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 50.85756504301019,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 50.85756504301019
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 63.71711502971945,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 63.71711502971945
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 55.69144840034739,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.69144840034739
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 56.81186156006498,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.81186156006498
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 50.33885934730476,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 50.33885934730476
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 60.05249044331603,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 60.05249044331603
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 56.92045212198763,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.92045212198763
+        }
+      ],
+      "aggregate": {
+        "value": 59.59009529491467,
+        "label": "Quota Versilia",
+        "note": "Calcolata sulle presenze mensili complessive dei sette comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "(presenze nei tre mesi con più presenze / presenze annue) × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
+    },
+    "foreignTourismShare": {
+      "meta": {
+        "key": "foreignTourismShare",
+        "theme": "economia",
+        "label": "Presenze turistiche straniere",
+        "shortLabel": "Turismo straniero",
+        "description": "Quota delle presenze turistiche attribuita a ospiti residenti all’estero.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "Regione Toscana — movimento turistico",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 47.8,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 47.8
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 40.3,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 40.3
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 46.2,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 46.2
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 43.7,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 43.7
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 17.5,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.5
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 61.7,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 61.7
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 28.5,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 28.5
+        }
+      ],
+      "aggregate": {
+        "value": 45.74126015529675,
+        "label": "Quota Versilia",
+        "note": "Media ponderata sul numero delle presenze turistiche."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "(presenze straniere / presenze totali) × 100",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
+    },
+    "commuterBalanceRate": {
+      "meta": {
+        "key": "commuterBalanceRate",
+        "theme": "mobilita",
+        "label": "Saldo dei pendolari per lavoro",
+        "shortLabel": "Saldo pendolare",
+        "description": "Differenza tra lavoratori in entrata e in uscita, rapportata a 1.000 residenti. Valori positivi indicano più entrate che uscite.",
+        "unit": "per1000",
+        "year": "2021",
+        "source": "Istat — matrice di pendolarismo per lavoro",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": -170.97170971709716,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -170.97170971709716
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 2.399960816966254,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.399960816966254
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 4.156040426938699,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4.156040426938699
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 21.6686129492669,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 21.6686129492669
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": -61.96240841032176,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -61.96240841032176
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 319.8004711098795,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 319.8004711098795
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": -157.0048309178744,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -157.0048309178744
+        }
+      ],
+      "aggregate": {
+        "value": -11.806786725140743,
+        "label": "Saldo Versilia",
+        "note": "Somma dei saldi comunali rapportata alla popolazione 2021."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "(pendolari in entrata - pendolari in uscita) / popolazione residente × 1.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
+    },
+    "residualWaste": {
+      "meta": {
+        "key": "residualWaste",
+        "theme": "ambiente",
+        "label": "Rifiuto residuo per residente",
+        "shortLabel": "Rifiuto residuo",
+        "description": "Quantità pro capite di rifiuto urbano non avviato a raccolta differenziata, elaborata sui dati ISPRA.",
+        "unit": "kg",
+        "year": "2024",
+        "source": "Elaborazione Osservatorio su dati ISPRA",
+        "polarity": "negative"
+      },
+      "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 94.36950000000004,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              375.375,
+              375.19680000000005,
+              358.846,
+              335.84849999999994,
+              336.0258,
+              341.37969999999996,
+              288.0288,
+              271.0526,
+              221.69039999999998,
+              111.99600000000004,
+              94.8444,
+              93.46700000000004,
+              92.44799999999998,
+              89.47289999999997,
+              94.36950000000004
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 94.36950000000004
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 216.48340000000002,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              488.77139999999997,
+              486.1945,
+              458.496,
+              446.92859999999996,
+              442.2016,
+              413.802,
+              386.24,
+              272.29320000000007,
+              239.96319999999994,
+              228.53829999999996,
+              212.64720000000003,
+              214.3833,
+              210.4095,
+              213.56759999999997,
+              216.48340000000002
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 216.48340000000002
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 172.9641,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              643.8942,
+              629.7329,
+              578.7704,
+              622.5236000000001,
+              550.924,
+              539.9625,
+              468.37440000000004,
+              447.00499999999994,
+              472.42079999999993,
+              371.8435,
+              138.81780000000003,
+              156.742,
+              160.1613,
+              169.00840000000002,
+              172.9641
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 172.9641
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 177.39000000000001,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              451.94160000000005,
+              456.4170000000001,
+              450.9282,
+              439.93699999999995,
+              576.6318,
+              240.24000000000004,
+              194.31720000000007,
+              153.12369999999999,
+              160.6404,
+              161.65760000000003,
+              151.12120000000007,
+              164.31800000000004,
+              164.667,
+              171.76950000000002,
+              177.39000000000001
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 177.39000000000001
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 110.10719999999999,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              138.59759999999997,
+              137.69799999999998,
+              126.55799999999999,
+              141.0608,
+              145.36500000000004,
+              176.16589999999994,
+              131.43340000000003,
+              125.31480000000003,
+              116.64900000000002,
+              116.23000000000003,
+              122.16159999999999,
+              123.69610000000003,
+              122.77860000000001,
+              110.60970000000003,
+              110.10719999999999
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 110.10719999999999
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 358.1549999999999,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1004.304,
+              945.4754,
+              897.166,
+              975.4874999999998,
+              453.6539999999999,
+              388.43600000000004,
+              307.1661,
+              312.4341,
+              318.85499999999996,
+              313.18819999999994,
+              270.9375999999999,
+              294.75929999999994,
+              331.08000000000004,
+              349.09839999999997,
+              358.1549999999999
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 358.1549999999999
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 210.3984,
+          "formatted": null,
+          "series": {
+            "years": [
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              395.06309999999996,
+              407.0316,
+              364.7212,
+              359.7054,
+              360.0464,
+              375.6696,
+              360.1037,
+              295.5868,
+              299.4147,
+              298.1028,
+              297.3184,
+              300.02799999999996,
+              241.17719999999997,
+              234.15569999999997,
+              210.3984
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 210.3984
+        }
+      ],
+      "aggregate": {
+        "value": 183.05580448279974,
+        "label": "Valore pro capite Versilia",
+        "note": "Produzione totale stimata di rifiuto residuo divisa per i residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "rifiuto urbano totale pro capite × (1 - quota raccolta differenziata)",
+        "caveat": "Indicatore derivato: la formula e le componenti ISPRA devono restare visibili; escluso il duplicato residualWastePerResident.",
+        "coverage": "7/7"
+      }
+    },
+    "capitalPayments": {
+      "meta": {
+        "key": "capitalPayments",
+        "theme": "comunita",
+        "label": "Pagamenti in conto capitale per residente",
+        "shortLabel": "Conto capitale",
+        "description": "Pagamenti di cassa in conto capitale del Comune rapportati alla popolazione residente. Non equivalgono automaticamente a opere concluse.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "SIOPE — pagamenti di cassa",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.siope.it/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 264.54125699348805,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 264.54125699348805
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 397.6800737404731,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 397.6800737404731
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 328.2265735737622,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 328.2265735737622
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 665.9789843028624,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 665.9789843028624
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 527.9647257895161,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 527.9647257895161
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 2024.7042589258926,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2024.7042589258926
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 392.0897648686031,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 392.0897648686031
+        }
+      ],
+      "aggregate": {
+        "value": 482.1814742226529,
+        "label": "Valore pro capite Versilia",
+        "note": "Pagamenti complessivi in conto capitale divisi per i residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pagamenti in conto capitale / popolazione residente",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismIntensity": {
+      "meta": {
+        "key": "tourismIntensity",
+        "theme": "economia",
+        "label": "Presenze turistiche per residente",
+        "shortLabel": "Pressione turistica",
+        "description": "Pernottamenti registrati nel 2025 per ogni residente.",
+        "unit": "decimal",
+        "year": "2025",
+        "source": "Regione Toscana — movimento turistico comunale",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1.7398769626296942,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.7398769626296942
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 14.154004614370468,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 14.154004614370468
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 16.639517677801216,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 16.639517677801216
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 19.218096833935974,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.218096833935974
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 0.7807717355910126,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.7807717355910126
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 53.5175572519084,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.5175572519084
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1.6848724398131514,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.6848724398131514
+        }
+      ],
+      "aggregate": {
+        "value": 14.041963159222812,
+        "label": "Intensità Versilia",
+        "note": "Presenze complessive rapportate ai residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "presenze turistiche annue / popolazione residente",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismBedsPer1000": {
+      "meta": {
+        "key": "tourismBedsPer1000",
+        "theme": "economia",
+        "label": "Posti letto turistici ogni 1.000 residenti",
+        "shortLabel": "Posti letto / residenti",
+        "description": "Capacità ricettiva rapportata alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2025",
+        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 39.84941694977504,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 39.84941694977504
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 251.8622280817403,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 251.8622280817403
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 222.01933066775808,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 222.01933066775808
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 281.37401887291645,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 281.37401887291645
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 47.54151742103549,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 47.54151742103549
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 653.2824427480915,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 653.2824427480915
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 91.98706431908013,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 91.98706431908013
+        }
+      ],
+      "aggregate": {
+        "value": 218.91874842291193,
+        "label": "Dotazione Versilia",
+        "note": "Posti letto complessivi rapportati ai residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "posti letto / popolazione residente × 1.000",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismStructuresPer1000": {
+      "meta": {
+        "key": "tourismStructuresPer1000",
+        "theme": "economia",
+        "label": "Strutture ricettive ogni 1.000 residenti",
+        "shortLabel": "Strutture ricettive",
+        "description": "Strutture ricettive rapportate alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2025",
+        "source": "Regione Toscana — consistenza dell’offerta ricettiva",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 2.3872922596639428,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.3872922596639428
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 3.3783783783783785,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.3783783783783785
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 8.406006989264238,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 8.406006989264238
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 9.171884645912337,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9.171884645912337
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1.3025073266037122,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.3025073266037122
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 20.916030534351144,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 20.916030534351144
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 6.827164929931728,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 6.827164929931728
+        }
+      ],
+      "aggregate": {
+        "value": 5.702750441584658,
+        "label": "Dotazione Versilia",
+        "note": "Strutture complessive rapportate ai residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "strutture ricettive / popolazione residente × 1.000",
+        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "coverage": "7/7"
+      }
+    },
+    "outboundCommutersRate": {
+      "meta": {
+        "key": "outboundCommutersRate",
+        "theme": "mobilita",
+        "label": "Pendolari in uscita ogni 1.000 residenti",
+        "shortLabel": "Pendolari in uscita",
+        "description": "Residenti che lavorano fuori Comune, rapportati alla popolazione.",
+        "unit": "per1000",
+        "year": "2021",
+        "source": "Istat — matrice di pendolarismo per lavoro",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 255.62390965016985,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 255.62390965016985
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 126.68094924192485,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 126.68094924192485
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 173.0315146554167,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 173.0315146554167
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 169.67986594937827,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 169.67986594937827
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 211.3318137414523,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 211.3318137414523
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 161.22137404580153,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 161.22137404580153
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 226.01509162773985,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 226.01509162773985
+        }
+      ],
+      "aggregate": {
+        "value": 169.5685087055261,
+        "label": "Tasso Versilia",
+        "note": "Pendolari in uscita complessivi rapportati ai residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pendolari in uscita / popolazione residente × 1.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
+    },
+    "inboundCommutersRate": {
+      "meta": {
+        "key": "inboundCommutersRate",
+        "theme": "mobilita",
+        "label": "Pendolari in entrata ogni 1.000 residenti",
+        "shortLabel": "Pendolari in entrata / residenti",
+        "description": "Lavoratori provenienti da altri Comuni, rapportati alla popolazione.",
+        "unit": "per1000",
+        "year": "2021",
+        "source": "Istat — matrice di pendolarismo per lavoro",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 83.325681755578,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 83.325681755578
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 129.10349373764006,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 129.10349373764006
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 177.18729339168215,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 177.18729339168215
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 191.7717611782344,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 191.7717611782344
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 147.99739498534677,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 147.99739498534677
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 513.587786259542,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 513.587786259542
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 62.522457779374776,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 62.522457779374776
+        }
+      ],
+      "aggregate": {
+        "value": 157.5952561191017,
+        "label": "Tasso Versilia",
+        "note": "Pendolari in entrata complessivi rapportati ai residenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pendolari in entrata / popolazione residente × 1.000",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "coverage": "7/7"
+      }
+    },
+    "cashReceiptsPerResident": {
+      "meta": {
+        "key": "cashReceiptsPerResident",
+        "theme": "comunita",
+        "label": "Incassi di cassa per residente",
+        "shortLabel": "Incassi per residente",
+        "description": "Incassi registrati in SIOPE, rapportati alla popolazione.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "SIOPE — incassi degli enti territoriali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.siope.it/Siope2Web/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1665.2993774676338,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1665.2993774676338
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1998.6164596242584,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1998.6164596242584
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 3307.5875842961937,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3307.5875842961937
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2671.6869944439545,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2671.6869944439545
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1669.03301286226,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1669.03301286226
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 6747.857815267175,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 6747.857815267175
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2433.867808120733,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2433.867808120733
+        }
+      ],
+      "aggregate": {
+        "value": 2489.725865758264,
+        "label": "Media Versilia",
+        "note": "Incassi complessivi rapportati alla popolazione."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "incassi complessivi / popolazione residente",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
+    },
+    "cashBalancePerResident": {
+      "meta": {
+        "key": "cashBalancePerResident",
+        "theme": "comunita",
+        "label": "Saldo di cassa per residente",
+        "shortLabel": "Saldo di cassa",
+        "description": "Differenza tra incassi e pagamenti dell’anno, rapportata alla popolazione.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "SIOPE — incassi e pagamenti",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.siope.it/Siope2Web/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": -109.0677059039574,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -109.0677059039574
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": -261.54037788398153,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -261.54037788398153
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": -28.027237351635552,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -28.027237351635552
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 153.96026148690362,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 153.96026148690362
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": -235.83378134158255,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -235.83378134158255
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": -349.6328183206107,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -349.6328183206107
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": -16.256572044556236,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -16.256572044556236
+        }
+      ],
+      "aggregate": {
+        "value": -131.69959878879638,
+        "label": "Saldo Versilia",
+        "note": "Saldo complessivo rapportato alla popolazione."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "(incassi complessivi - pagamenti complessivi) / popolazione residente",
+        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismArrivals": {
+      "meta": {
+        "key": "tourismArrivals",
+        "theme": "economia",
+        "label": "Arrivi turistici",
+        "shortLabel": "Arrivi turistici",
+        "description": "Clienti registrati nelle strutture ricettive del Comune durante l’anno, indipendentemente dalla durata del soggiorno.",
+        "unit": "number",
+        "year": "2025",
+        "source": "Regione Toscana — movimento turistico comunale",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 9936.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9936.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 224210.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 224210.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 154693.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 154693.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 128700.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 128700.0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 3249.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3249.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 108324.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 108324.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2247.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2247.0
+        }
+      ],
+      "aggregate": {
+        "value": 631359,
+        "label": "Totale Versilia",
+        "note": "Somma degli arrivi registrati nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Somma degli arrivi registrati nelle strutture ricettive del Comune nel 2025.",
+        "caveat": "Dato regionale provvisorio fino alla pubblicazione definitiva Istat; non coincide con il numero di persone uniche.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismAverageStay": {
+      "meta": {
+        "key": "tourismAverageStay",
+        "theme": "economia",
+        "label": "Permanenza media",
+        "shortLabel": "Permanenza media",
+        "description": "Numero medio di notti trascorse nelle strutture ricettive per ogni arrivo registrato.",
+        "unit": "nights",
+        "year": "2025",
+        "source": "Elaborazione Osservatorio su dati Regione Toscana",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 3.8142109500805152,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.8142109500805152
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 3.8306275366843585,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.8306275366843585
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 3.416579935743699,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.416579935743699
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 3.3863869463869465,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.3863869463869465
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2.9519852262234534,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.9519852262234534
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 3.2360326428123036,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3.2360326428123036
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2.086782376502003,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.086782376502003
+        }
+      ],
+      "aggregate": {
+        "value": 3.5256201305437953,
+        "label": "Media Versilia",
+        "note": "Presenze complessive divise per gli arrivi complessivi dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "presenze turistiche / arrivi turistici",
+        "caveat": "La media non descrive la distribuzione dei soggiorni e risente della composizione delle strutture ricettive.",
+        "coverage": "7/7"
+      }
+    },
+    "outboundCommuters": {
+      "meta": {
+        "key": "outboundCommuters",
+        "theme": "mobilita",
+        "label": "Pendolari in uscita per lavoro",
+        "shortLabel": "Uscite per lavoro",
+        "description": "Residenti che si spostano abitualmente in un altro Comune per raggiungere il luogo di lavoro.",
+        "unit": "people",
+        "year": "2021",
+        "source": "Istat — matrice di pendolarismo per lavoro",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 5568.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5568.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 7687.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7687.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 5496.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5496.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 3848.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3848.0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2596.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2596.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1056.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1056.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 629.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 629.0
+        }
+      ],
+      "aggregate": {
+        "value": 26880,
+        "label": "Totale dei sette Comuni",
+        "note": "Somma dei pendolari in uscita dai sette Comuni; comprende anche gli spostamenti interni alla Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Somma dei flussi con Comune di origine coincidente con il Comune osservato e destinazione diversa.",
+        "caveat": "Il dato riguarda gli occupati che si recano almeno tre giorni a settimana al luogo abituale di lavoro e rientrano giornalmente.",
+        "coverage": "7/7"
+      }
+    },
+    "commuterBalance": {
+      "meta": {
+        "key": "commuterBalance",
+        "theme": "mobilita",
+        "label": "Saldo pendolare assoluto",
+        "shortLabel": "Saldo assoluto",
+        "description": "Differenza tra pendolari in entrata e pendolari in uscita per motivi di lavoro.",
+        "unit": "people",
+        "year": "2021",
+        "source": "Elaborazione Osservatorio su matrice Istat",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": -3753.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -3753.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 147.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 147.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 132.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 132.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 501.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 501.0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": -778.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -778.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 2308.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2308.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": -455.0,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": -455.0
+        }
+      ],
+      "aggregate": {
+        "value": -1898,
+        "label": "Saldo dei sette Comuni",
+        "note": "Somma dei saldi comunali: i flussi interni tra i sette Comuni si compensano."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "pendolari in entrata - pendolari in uscita",
+        "caveat": "Un saldo positivo non misura la qualità della mobilità né la disponibilità complessiva di lavoro.",
+        "coverage": "7/7"
+      }
     }
   },
   "crests": {
-    "Camaiore": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/camaiore.svg",
-    "Forte dei Marmi": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/forte-dei-marmi.svg",
-    "Massarosa": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/massarosa.png",
-    "Pietrasanta": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/pietrasanta.svg",
-    "Seravezza": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/seravezza.png",
-    "Stazzema": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/stazzema.webp",
-    "Viareggio": "https://versilia-in-numeri.decent-raven-1888.chatgpt.site/viareggio.svg"
+    "Camaiore": "/crests/camaiore.svg",
+    "Forte dei Marmi": "/crests/forte-dei-marmi.svg",
+    "Massarosa": "/crests/massarosa.png",
+    "Pietrasanta": "/crests/pietrasanta.svg",
+    "Seravezza": "/crests/seravezza.png",
+    "Stazzema": "/crests/stazzema.webp",
+    "Viareggio": "/crests/viareggio.svg"
   },
   "details": {
     "046018": {
