@@ -4,10 +4,14 @@ on:
   push:
     branches: ["refactor/static-prerender"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "expansion/lavoro-istruzione-abitare"]
 
 permissions:
   contents: read
+
+concurrency:
+  group: static-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
@@ -33,8 +37,8 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_static.py
 
-      - name: Run v1.3.1 release checks
-        run: python scripts/test_release_v131.py
+      - name: Run v1.5.0 regional indicator checks
+        run: python scripts/test_release_v150.py
 
       - name: Upload private build artifact
         uses: actions/upload-artifact@v4

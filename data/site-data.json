@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.05-v1.3.1",
-  "updated": "5 agosto 2026",
+  "version": "2026.08.05-local-v1.5.0-toscana",
+  "updated": "anteprima locale · 5 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -47,7 +47,7 @@
       "number": "02",
       "label": "Economia",
       "question": "Come è fatta l’economia del territorio?",
-      "description": "Redditi, risultati delle imprese, struttura produttiva e capacità turistica.",
+      "description": "Redditi, risultati delle imprese, struttura produttiva, imprenditorialità e capacità turistica.",
       "metrics": [
         "income",
         "incomeUnder15k",
@@ -57,6 +57,8 @@
         "industryWorkerShare",
         "localUnits",
         "microUnits",
+        "foreignBornSoleProprietorShare",
+        "innovationBusinessShare",
         "tourismPresences",
         "tourismArrivals",
         "tourismAverageStay",
@@ -91,6 +93,15 @@
           ]
         },
         {
+          "key": "imprenditorialita",
+          "label": "Imprenditorialità e innovazione",
+          "description": "Caratteristiche delle ditte individuali e presenza dei settori individuati come innovativi.",
+          "metrics": [
+            "foreignBornSoleProprietorShare",
+            "innovationBusinessShare"
+          ]
+        },
+        {
           "key": "turismo",
           "label": "Turismo",
           "description": "Flussi, capacità ricettiva e pressione stagionale.",
@@ -109,7 +120,7 @@
       ],
       "featured": [
         "income",
-        "localUnits",
+        "innovationBusinessShare",
         "tourismIntensity"
       ]
     },
@@ -117,12 +128,16 @@
       "key": "lavoro",
       "number": "03",
       "label": "Lavoro",
-      "question": "Quante persone lavorano o cercano lavoro?",
-      "description": "Occupazione, disoccupazione e partecipazione.",
+      "question": "Quante persone lavorano e quali divari emergono tra genere e generazioni?",
+      "description": "Occupazione, disoccupazione, partecipazione, differenze di genere e condizione dei giovani.",
       "metrics": [
         "employmentRate",
         "unemploymentRate",
-        "activityRate"
+        "activityRate",
+        "femaleEmploymentRate",
+        "maleEmploymentRate",
+        "employmentGenderGap",
+        "youthOtherStatus"
       ],
       "sections": [
         {
@@ -134,30 +149,51 @@
             "unemploymentRate",
             "activityRate"
           ]
+        },
+        {
+          "key": "genere",
+          "label": "Divari di genere",
+          "description": "Occupazione femminile e maschile nella stessa fascia di età, con il relativo divario.",
+          "metrics": [
+            "femaleEmploymentRate",
+            "maleEmploymentRate",
+            "employmentGenderGap"
+          ]
+        },
+        {
+          "key": "giovani",
+          "label": "Condizione dei giovani",
+          "description": "Una misura comunale della condizione professionale dei giovani tra 15 e 24 anni.",
+          "metrics": [
+            "youthOtherStatus"
+          ]
         }
       ],
       "featured": [
         "employmentRate",
-        "unemploymentRate",
-        "activityRate"
+        "employmentGenderGap",
+        "youthOtherStatus"
       ]
     },
     "istruzione": {
       "key": "istruzione",
       "number": "04",
       "label": "Istruzione",
-      "question": "Qual è il livello di istruzione?",
-      "description": "Titoli di studio e presenza delle scuole.",
+      "question": "Qual è il livello di istruzione e come è organizzata la rete scolastica?",
+      "description": "Titoli di studio, popolazione scolastica, classi e tempo pieno.",
       "metrics": [
         "diplomaPlus",
         "tertiary",
-        "schoolSites"
+        "schoolSites",
+        "schoolStudents",
+        "studentsPerClass",
+        "primaryFullTimeShare"
       ],
       "sections": [
         {
           "key": "capitale",
           "label": "Capitale umano",
-          "description": "Livello di istruzione della popolazione.",
+          "description": "Livello di istruzione della popolazione residente.",
           "metrics": [
             "diplomaPlus",
             "tertiary"
@@ -165,17 +201,27 @@
         },
         {
           "key": "rete",
-          "label": "Rete e sedi scolastiche",
-          "description": "Presenza delle sedi scolastiche sul territorio.",
+          "label": "Rete e popolazione scolastica",
+          "description": "Sedi e alunni delle scuole localizzate nel territorio comunale.",
           "metrics": [
-            "schoolSites"
+            "schoolSites",
+            "schoolStudents"
+          ]
+        },
+        {
+          "key": "organizzazione",
+          "label": "Classi e tempo scuola",
+          "description": "Dimensione media delle classi e diffusione del tempo pieno nella primaria.",
+          "metrics": [
+            "studentsPerClass",
+            "primaryFullTimeShare"
           ]
         }
       ],
       "featured": [
         "diplomaPlus",
-        "tertiary",
-        "schoolSites"
+        "schoolStudents",
+        "primaryFullTimeShare"
       ]
     },
     "salute": {
@@ -183,14 +229,16 @@
       "number": "05",
       "label": "Salute",
       "question": "Come sta la popolazione e come usa i servizi sanitari?",
-      "description": "Speranza di vita, mortalità, cronicità, ricoveri, pronto soccorso, assistenza territoriale e presìdi.",
+      "description": "Speranza di vita, mortalità, cronicità, disabilità riconosciuta, emergenza, ricoveri, assistenza e presìdi.",
       "metrics": [
         "lifeExpectancy",
         "mortalityAll",
         "chronicTotal",
         "diabetes",
         "dementia",
+        "disability064Per1000",
         "emergencyAccess",
+        "emsResponseTimeP75",
         "hospitalizedAll",
         "elderlyHomeCare",
         "pharmaciesPer1000",
@@ -200,30 +248,32 @@
         {
           "key": "esiti",
           "label": "Condizioni di salute",
-          "description": "Speranza di vita, mortalità e cronicità.",
+          "description": "Speranza di vita, mortalità, cronicità e disabilità riconosciuta.",
           "metrics": [
             "lifeExpectancy",
             "mortalityAll",
             "chronicTotal",
             "diabetes",
-            "dementia"
+            "dementia",
+            "disability064Per1000"
           ]
         },
         {
-          "key": "servizi",
-          "label": "Uso dei servizi",
-          "description": "Pronto soccorso, ricoveri e assistenza domiciliare.",
+          "key": "emergenza",
+          "label": "Emergenza e ricoveri",
+          "description": "Ricorso al pronto soccorso, tempi del 118 e ospedalizzazione.",
           "metrics": [
             "emergencyAccess",
-            "hospitalizedAll",
-            "elderlyHomeCare"
+            "emsResponseTimeP75",
+            "hospitalizedAll"
           ]
         },
         {
-          "key": "presidi",
-          "label": "Presìdi territoriali",
-          "description": "Farmacie e strutture ospedaliere.",
+          "key": "territorio",
+          "label": "Assistenza e presìdi territoriali",
+          "description": "Assistenza domiciliare, farmacie e strutture ospedaliere.",
           "metrics": [
+            "elderlyHomeCare",
             "pharmaciesPer1000",
             "hospitals"
           ]
@@ -231,8 +281,8 @@
       ],
       "featured": [
         "lifeExpectancy",
-        "chronicTotal",
-        "emergencyAccess"
+        "emsResponseTimeP75",
+        "disability064Per1000"
       ]
     },
     "mobilita": {
@@ -300,36 +350,49 @@
       "key": "abitare",
       "number": "07",
       "label": "Abitare",
-      "question": "Come sono composte famiglie e abitazioni?",
-      "description": "Case non occupate, persone sole e nuclei familiari.",
+      "question": "Come viene utilizzato il patrimonio abitativo e come vivono le famiglie?",
+      "description": "Patrimonio, abitazioni non occupate, struttura familiare e coabitazione.",
       "metrics": [
+        "housingStockPer1000",
         "vacantHomes",
+        "nonOccupiedHomesPer1000",
         "singleHouseholds",
-        "householdSize"
+        "householdSize",
+        "cohabitingHouseholds"
       ],
       "sections": [
         {
-          "key": "abitazioni",
-          "label": "Patrimonio abitativo",
-          "description": "Utilizzo delle abitazioni.",
+          "key": "patrimonio",
+          "label": "Patrimonio e utilizzo",
+          "description": "Consistenza del patrimonio e abitazioni non occupate.",
           "metrics": [
-            "vacantHomes"
+            "housingStockPer1000",
+            "vacantHomes",
+            "nonOccupiedHomesPer1000"
           ]
         },
         {
           "key": "famiglie",
           "label": "Struttura delle famiglie",
-          "description": "Persone sole e dimensione dei nuclei.",
+          "description": "Persone sole e dimensione dei nuclei residenti.",
           "metrics": [
             "singleHouseholds",
             "householdSize"
+          ]
+        },
+        {
+          "key": "coabitazione",
+          "label": "Coabitazione",
+          "description": "Famiglie registrate in coabitazione nella stessa abitazione.",
+          "metrics": [
+            "cohabitingHouseholds"
           ]
         }
       ],
       "featured": [
         "vacantHomes",
-        "singleHouseholds",
-        "householdSize"
+        "housingStockPer1000",
+        "cohabitingHouseholds"
       ]
     },
     "ambiente": {
@@ -337,12 +400,13 @@
       "number": "08",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Suolo, rifiuti ed esposizione concreta ai rischi idrogeologici.",
+      "description": "Suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.",
       "metrics": [
         "landUse",
         "landUseChange",
         "floodExposure",
         "landslideExposure",
+        "organicAgriculturalAreaShare",
         "recycling",
         "wastePerResident",
         "residualWaste"
@@ -360,6 +424,14 @@
           ]
         },
         {
+          "key": "agricoltura",
+          "label": "Agricoltura e territorio",
+          "description": "Diffusione delle coltivazioni biologiche sulla superficie agricola utilizzata.",
+          "metrics": [
+            "organicAgriculturalAreaShare"
+          ]
+        },
+        {
           "key": "rifiuti",
           "label": "Rifiuti e circolarità",
           "description": "Produzione, raccolta differenziata e residuo.",
@@ -372,7 +444,7 @@
       ],
       "featured": [
         "recycling",
-        "residualWaste",
+        "organicAgriculturalAreaShare",
         "landUse"
       ]
     },
@@ -2900,6 +2972,468 @@
         "coverage": "7/7"
       }
     },
+    "foreignBornSoleProprietorShare": {
+      "meta": {
+        "key": "foreignBornSoleProprietorShare",
+        "theme": "economia",
+        "label": "Ditte individuali con titolare nato all’estero",
+        "shortLabel": "Titolari nati all’estero",
+        "description": "Quota delle ditte individuali attive il cui conduttore è nato all’estero.",
+        "unit": "percent",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 12.861136999068,
+          "formatted": "12,9%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              11.64,
+              12.15,
+              12.33,
+              13.19,
+              15.5,
+              13.18,
+              12.861136999068
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 12.861136999068
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 19.5686647637171,
+          "formatted": "19,6%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              18.58,
+              19.61,
+              20.03,
+              20.38,
+              24.3,
+              20.14,
+              19.5686647637171
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 19.5686647637171
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 9.56569543705333,
+          "formatted": "9,6%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              8.81,
+              8.93,
+              9.04,
+              9.34,
+              9.2,
+              9.72,
+              9.56569543705333
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 9.56569543705333
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 11.7123795404003,
+          "formatted": "11,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              12.29,
+              12.42,
+              13.18,
+              12.83,
+              18.9,
+              12.33,
+              11.7123795404003
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 11.7123795404003
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 14.3533123028391,
+          "formatted": "14,4%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              15.32,
+              15.63,
+              14.94,
+              15.41,
+              15.3,
+              13.88,
+              14.3533123028391
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 14.3533123028391
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 7.4235807860262,
+          "formatted": "7,4%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.11,
+              7.47,
+              7.16,
+              7.46,
+              7.7,
+              7.26,
+              7.4235807860262
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.4235807860262
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 13.4328358208955,
+          "formatted": "13,4%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              19.75,
+              21.15,
+              19.38,
+              19.62,
+              20.0,
+              16.06,
+              13.4328358208955
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 13.4328358208955
+        }
+      ],
+      "aggregate": {
+        "value": 12.861136999068,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "La nascita all’estero non coincide necessariamente con la cittadinanza straniera. L’indicatore riguarda soltanto le ditte individuali attive.",
+        "coverage": "7/7"
+      }
+    },
+    "innovationBusinessShare": {
+      "meta": {
+        "key": "innovationBusinessShare",
+        "theme": "economia",
+        "label": "Imprese attive nei settori dell’innovazione",
+        "shortLabel": "Imprese dell’innovazione",
+        "description": "Quota delle imprese attive appartenenti alle divisioni Ateco individuate dalla Regione Toscana come settori dell’innovazione.",
+        "unit": "percent",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 8.70818915801615,
+          "formatted": "8,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.97,
+              8.07,
+              7.9,
+              8.06,
+              8.4,
+              8.6,
+              8.70818915801615
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 8.70818915801615
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 10.1537097250961,
+          "formatted": "10,2%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              10.23,
+              10.27,
+              10.14,
+              10.07,
+              10.0,
+              9.85,
+              10.1537097250961
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 10.1537097250961
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.98158051099228,
+          "formatted": "7,0%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.78,
+              6.94,
+              6.84,
+              6.73,
+              6.6,
+              6.57,
+              6.98158051099228
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.98158051099228
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6.27537836840162,
+          "formatted": "6,3%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.2,
+              6.41,
+              6.48,
+              6.7,
+              6.5,
+              6.54,
+              6.27537836840162
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.27537836840162
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 5.4421768707483,
+          "formatted": "5,4%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.06,
+              5.98,
+              5.7,
+              5.01,
+              5.0,
+              5.15,
+              5.4421768707483
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 5.4421768707483
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 5.71151984511133,
+          "formatted": "5,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              3.89,
+              3.87,
+              4.28,
+              4.44,
+              4.5,
+              5.13,
+              5.71151984511133
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 5.71151984511133
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 5.23809523809524,
+          "formatted": "5,2%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.76,
+              5.5,
+              4.85,
+              4.46,
+              5.0,
+              5.03,
+              5.23809523809524
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 5.23809523809524
+        }
+      ],
+      "aggregate": {
+        "value": 6.27537836840162,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "La classificazione comprende un insieme definito di divisioni Ateco e non equivale a una misura diretta dell’innovazione prodotta o degli investimenti in ricerca.",
+        "coverage": "7/7"
+      }
+    },
     "employmentRate": {
       "meta": {
         "key": "employmentRate",
@@ -3191,6 +3725,517 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "femaleEmploymentRate": {
+      "meta": {
+        "key": "femaleEmploymentRate",
+        "theme": "lavoro",
+        "label": "Tasso di occupazione femminile 15–64 anni",
+        "shortLabel": "Occupazione femminile",
+        "description": "Donne occupate tra 15 e 64 anni sul totale delle donne residenti della stessa fascia d’età.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 56.43635321100918,
+          "formatted": "56,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.43635321100918
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 56.339951675596176,
+          "formatted": "56,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.339951675596176
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 55.84045584045584,
+          "formatted": "55,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.84045584045584
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 53.942953020134226,
+          "formatted": "53,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.942953020134226
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 53.10186367117692,
+          "formatted": "53,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.10186367117692
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 49.36086529006883,
+          "formatted": "49,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.36086529006883
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 49.941656942823805,
+          "formatted": "49,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.941656942823805
+        }
+      ],
+      "aggregate": {
+        "value": 55.26488943831875,
+        "label": "Tasso ponderato Versilia",
+        "note": "Calcolato sulle donne occupate e sulla popolazione femminile 15–64 anni complessive."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "donne occupate 15–64 anni / donne residenti 15–64 anni × 100",
+        "caveat": "La fascia 15–64 anni e l’anno 2023 non coincidono con i tre indicatori generali della sezione, riferiti ai 25–64enni nel 2024.",
+        "coverage": "7/7"
+      }
+    },
+    "maleEmploymentRate": {
+      "meta": {
+        "key": "maleEmploymentRate",
+        "theme": "lavoro",
+        "label": "Tasso di occupazione maschile 15–64 anni",
+        "shortLabel": "Occupazione maschile",
+        "description": "Uomini occupati tra 15 e 64 anni sul totale degli uomini residenti della stessa fascia d’età.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 73.24876673713884,
+          "formatted": "73,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 73.24876673713884
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 70.24260197280725,
+          "formatted": "70,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 70.24260197280725
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 71.95942552977804,
+          "formatted": "72,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.95942552977804
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 69.71267772511848,
+          "formatted": "69,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 69.71267772511848
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 71.2913553895411,
+          "formatted": "71,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.2913553895411
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 64.37699680511182,
+          "formatted": "64,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 64.37699680511182
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 69.27966101694915,
+          "formatted": "69,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 69.27966101694915
+        }
+      ],
+      "aggregate": {
+        "value": 70.78914693968939,
+        "label": "Tasso ponderato Versilia",
+        "note": "Calcolato sugli uomini occupati e sulla popolazione maschile 15–64 anni complessivi."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "uomini occupati 15–64 anni / uomini residenti 15–64 anni × 100",
+        "caveat": "La fascia 15–64 anni e l’anno 2023 non coincidono con i tre indicatori generali della sezione, riferiti ai 25–64enni nel 2024.",
+        "coverage": "7/7"
+      }
+    },
+    "employmentGenderGap": {
+      "meta": {
+        "key": "employmentGenderGap",
+        "theme": "lavoro",
+        "label": "Divario occupazionale di genere 15–64 anni",
+        "shortLabel": "Divario di genere",
+        "description": "Differenza, in punti percentuali, tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
+        "unit": "percentagePoints",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "negative"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 16.81241352612966,
+          "formatted": "16,8 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 16.81241352612966
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 13.902650297211075,
+          "formatted": "13,9 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.902650297211075
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 16.118969689322206,
+          "formatted": "16,1 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 16.118969689322206
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 15.769724704984256,
+          "formatted": "15,8 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15.769724704984256
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 18.189491718364174,
+          "formatted": "18,2 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.189491718364174
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 15.016131515042986,
+          "formatted": "15,0 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15.016131515042986
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 19.338004074125344,
+          "formatted": "19,3 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.338004074125344
+        }
+      ],
+      "aggregate": {
+        "value": 15.524257501370641,
+        "label": "Divario Versilia",
+        "note": "Differenza tra i due tassi ponderati calcolati sulle rispettive popolazioni 15–64 anni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "tasso di occupazione maschile 15–64 anni − tasso di occupazione femminile 15–64 anni",
+        "caveat": "Misura una differenza statistica e non ne identifica le cause. La fascia e l’anno differiscono dagli indicatori generali 25–64 anni del 2024.",
+        "coverage": "7/7"
+      }
+    },
+    "youthOtherStatus": {
+      "meta": {
+        "key": "youthOtherStatus",
+        "theme": "lavoro",
+        "label": "Giovani 15–24 anni in altra condizione professionale",
+        "shortLabel": "Giovani in altra condizione",
+        "description": "Quota dei giovani tra 15 e 24 anni classificati dalla fonte in altra condizione professionale.",
+        "unit": "percent",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 6.01649783701882,
+          "formatted": "6,0%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.25,
+              5.49,
+              6.32,
+              6.5,
+              5.09,
+              6.01649783701882
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.01649783701882
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 6.7105179355484,
+          "formatted": "6,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.85,
+              5.26,
+              7.53,
+              7.3,
+              5.9,
+              6.7105179355484
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.7105179355484
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.20175997079088,
+          "formatted": "6,2%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.03,
+              6.21,
+              6.47,
+              6.8,
+              6.02,
+              6.20175997079088
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.20175997079088
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6.96695107846779,
+          "formatted": "7,0%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.87,
+              5.9,
+              7.83,
+              7.4,
+              7.08,
+              6.96695107846779
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.96695107846779
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 6.73719009172747,
+          "formatted": "6,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.38,
+              6.19,
+              8.59,
+              8.0,
+              7.16,
+              6.73719009172747
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.73719009172747
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 7.88433291387651,
+          "formatted": "7,9%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.47,
+              6.36,
+              8.79,
+              8.9,
+              8.44,
+              7.88433291387651
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.88433291387651
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 7.75701353743076,
+          "formatted": "7,8%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              8.94,
+              9.54,
+              9.4,
+              8.6,
+              8.27,
+              7.75701353743076
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.75701353743076
+        }
+      ],
+      "aggregate": {
+        "value": 6.73719009172747,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "Non è il tasso di disoccupazione giovanile e non coincide automaticamente con la definizione europea di NEET. Il dato 2020 non è disponibile dalla fonte.",
         "coverage": "7/7"
       }
     },
@@ -3537,6 +4582,300 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "schoolStudents": {
+      "meta": {
+        "key": "schoolStudents",
+        "theme": "istruzione",
+        "label": "Alunni nelle scuole del Comune",
+        "shortLabel": "Alunni frequentanti",
+        "description": "Alunni delle scuole primarie e secondarie, statali e paritarie, localizzate nel territorio comunale.",
+        "unit": "people",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1282,
+          "formatted": "1.282",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1282
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 7508,
+          "formatted": "7.508",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7508
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2739,
+          "formatted": "2.739",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2739
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1490,
+          "formatted": "1.490",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1490
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 978,
+          "formatted": "978",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 978
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1065,
+          "formatted": "1.065",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1065
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 106,
+          "formatted": "106",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 106
+        }
+      ],
+      "aggregate": {
+        "value": 15168,
+        "label": "Totale Versilia",
+        "note": "Somma degli alunni delle scuole primarie e secondarie localizzate nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "somma di alunni maschi e femmine per scuola, unendo anagrafe e dati di classe di istituti statali e paritari",
+        "caveat": "Misura gli alunni delle scuole localizzate nel Comune, non gli alunni residenti; non comprende la scuola dell’infanzia.",
+        "coverage": "7/7"
+      }
+    },
+    "studentsPerClass": {
+      "meta": {
+        "key": "studentsPerClass",
+        "theme": "istruzione",
+        "label": "Alunni per classe",
+        "shortLabel": "Alunni per classe",
+        "description": "Rapporto tra gli alunni e le classi delle scuole primarie e secondarie, statali e paritarie, localizzate nel Comune.",
+        "unit": "studentsPerClass",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 17.805555555555557,
+          "formatted": "17,8 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.805555555555557
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 19.400516795865634,
+          "formatted": "19,4 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.400516795865634
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 18.632653061224488,
+          "formatted": "18,6 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.632653061224488
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 18.170731707317074,
+          "formatted": "18,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.170731707317074
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 17.157894736842106,
+          "formatted": "17,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.157894736842106
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 19.72222222222222,
+          "formatted": "19,7 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.72222222222222
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 13.25,
+          "formatted": "13,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.25
+        }
+      ],
+      "aggregate": {
+        "value": 18.79553903345725,
+        "label": "Rapporto Versilia",
+        "note": "Totale degli alunni diviso per il totale delle classi dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "alunni delle scuole primarie e secondarie / classi delle stesse scuole",
+        "caveat": "È un rapporto territoriale complessivo, non la dimensione di ogni singola classe; scuole e alunni sono attribuiti al Comune di localizzazione.",
+        "coverage": "7/7"
+      }
+    },
+    "primaryFullTimeShare": {
+      "meta": {
+        "key": "primaryFullTimeShare",
+        "theme": "istruzione",
+        "label": "Alunni della primaria a tempo pieno",
+        "shortLabel": "Tempo pieno primaria",
+        "description": "Quota degli alunni della scuola primaria iscritti a classi con organizzazione a tempo pieno.",
+        "unit": "percent",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 55.287817938420346,
+          "formatted": "55,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.287817938420346
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 46.80073126142596,
+          "formatted": "46,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 46.80073126142596
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 38.4321223709369,
+          "formatted": "38,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 38.4321223709369
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 62.58389261744966,
+          "formatted": "62,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 62.58389261744966
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 20.754716981132077,
+          "formatted": "20,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 20.754716981132077
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 18.574514038876888,
+          "formatted": "18,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.574514038876888
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0
+        }
+      ],
+      "aggregate": {
+        "value": 44.780523791958686,
+        "label": "Quota Versilia",
+        "note": "Ponderata sul totale degli alunni della scuola primaria nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "alunni della primaria con TEMPOSCUOLA = “TEMPO PIENO” / alunni totali della primaria × 100",
+        "caveat": "Descrive l’organizzazione dell’offerta scolastica, non la qualità didattica. Nei Comuni piccoli il valore dipende da pochi alunni.",
         "coverage": "7/7"
       }
     },
@@ -4065,6 +5404,237 @@
         "coverage": "7/7"
       }
     },
+    "disability064Per1000": {
+      "meta": {
+        "key": "disability064Per1000",
+        "theme": "salute",
+        "label": "Persone 0–64 anni con disabilità riconosciuta",
+        "shortLabel": "Disabilità riconosciuta",
+        "description": "Persone tra 0 e 64 anni con disabilità, anche grave, ogni 1.000 residenti della stessa fascia d’età.",
+        "unit": "per1000",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 8.71112201705417,
+          "formatted": "8,7 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.32,
+              5.34,
+              3.66,
+              5.46,
+              4.9,
+              3.22,
+              8.71112201705417
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 8.71112201705417
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 8.02992973811479,
+          "formatted": "8,0 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.68,
+              5.11,
+              4.62,
+              4.63,
+              5.0,
+              3.76,
+              8.02992973811479
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 8.02992973811479
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.64996977286467,
+          "formatted": "6,6 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              3.84,
+              4.77,
+              3.96,
+              4.61,
+              4.8,
+              3.55,
+              6.64996977286467
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.64996977286467
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 7.48098321493682,
+          "formatted": "7,5 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.71,
+              5.05,
+              3.7,
+              4.32,
+              4.4,
+              4.28,
+              7.48098321493682
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.48098321493682
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 7.84893641223979,
+          "formatted": "7,8 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.11,
+              5.45,
+              4.88,
+              4.91,
+              4.6,
+              4.16,
+              7.84893641223979
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.84893641223979
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 5.27160210864084,
+          "formatted": "5,3 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              3.48,
+              3.52,
+              3.56,
+              3.08,
+              5.8,
+              2.22,
+              5.27160210864084
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 5.27160210864084
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 10.3499260719566,
+          "formatted": "10,3 ogni 1.000",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.03,
+              4.62,
+              7.31,
+              4.4,
+              4.4,
+              4.43,
+              10.3499260719566
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 10.3499260719566
+        }
+      ],
+      "aggregate": {
+        "value": 7.84893641223979,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "L’indicatore riflette riconoscimenti e registrazioni amministrative; non rappresenta la prevalenza sanitaria complessiva della disabilità nella popolazione.",
+        "coverage": "7/7"
+      }
+    },
     "emergencyAccess": {
       "meta": {
         "key": "emergencyAccess",
@@ -4167,6 +5737,237 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
+        "coverage": "7/7"
+      }
+    },
+    "emsResponseTimeP75": {
+      "meta": {
+        "key": "emsResponseTimeP75",
+        "theme": "salute",
+        "label": "Tempo di risposta del 118 — 75° percentile",
+        "shortLabel": "Risposta del 118",
+        "description": "Minuti entro i quali si colloca il 75% degli intervalli tra la ricezione della chiamata e l’arrivo del primo mezzo di soccorso.",
+        "unit": "minutes",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "negative"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 13.7666666666667,
+          "formatted": "13,8 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              11.4,
+              12.0,
+              12.2,
+              13.0,
+              13.7,
+              13.42,
+              13.7666666666667
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 13.7666666666667
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 7.58333333333333,
+          "formatted": "7,6 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.3,
+              6.5,
+              7.1,
+              7.6,
+              7.7,
+              7.48,
+              7.58333333333333
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.58333333333333
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 10.8166666666667,
+          "formatted": "10,8 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              8.4,
+              8.5,
+              9.6,
+              9.9,
+              10.1,
+              9.98,
+              10.8166666666667
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 10.8166666666667
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 9.03333333333333,
+          "formatted": "9,0 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.9,
+              8.0,
+              8.8,
+              8.6,
+              9.0,
+              8.88,
+              9.03333333333333
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 9.03333333333333
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 8.7,
+          "formatted": "8,7 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.7,
+              7.8,
+              8.4,
+              8.4,
+              8.7,
+              8.38,
+              8.7
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 8.7
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 7.5,
+          "formatted": "7,5 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.6,
+              6.8,
+              7.3,
+              7.7,
+              7.9,
+              7.18,
+              7.5
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.5
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 21.2166666666667,
+          "formatted": "21,2 min",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              19.8,
+              18.7,
+              21.6,
+              20.9,
+              20.8,
+              24.02,
+              21.2166666666667
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 21.2166666666667
+        }
+      ],
+      "aggregate": {
+        "value": 9.03333333333333,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "Non è un tempo medio. Nei Comuni con pochi interventi il valore può oscillare sensibilmente tra un anno e l’altro e non misura da solo la qualità complessiva dell’emergenza-urgenza.",
         "coverage": "7/7"
       }
     },
@@ -5425,13 +7226,13 @@
         "theme": "abitare",
         "label": "Abitazioni non occupate",
         "shortLabel": "Case non occupate",
-        "description": "Abitazioni che non risultano occupate da residenti sul totale delle abitazioni censite.",
+        "description": "Abitazioni vuote o occupate soltanto da persone non residenti sul totale delle abitazioni censite.",
         "unit": "percent",
-        "year": "2021",
-        "source": "Istat — Censimento abitazioni",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
       "rows": [
         {
           "town": "Massarosa",
@@ -5511,9 +7312,205 @@
       },
       "normalizedAggregate": null,
       "method": {
-        "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni vuote o occupate solo da non residenti / abitazioni totali × 100",
+        "caveat": "La categoria comprende anche abitazioni occupate soltanto da persone non residenti e non coincide necessariamente con gli immobili inutilizzati.",
+        "coverage": "7/7"
+      }
+    },
+    "housingStockPer1000": {
+      "meta": {
+        "key": "housingStockPer1000",
+        "theme": "abitare",
+        "label": "Abitazioni ogni 1.000 residenti",
+        "shortLabel": "Patrimonio abitativo",
+        "description": "Numero complessivo di abitazioni censite rapportato alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 503.224331122799,
+          "formatted": "503,22 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 503.224331122799
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 640.111924944449,
+          "formatted": "640,11 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 640.111924944449
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 702.4855636454934,
+          "formatted": "702,49 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 702.4855636454934
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 804.2829559417237,
+          "formatted": "804,28 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 804.2829559417237
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 605.3880176919984,
+          "formatted": "605,39 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 605.3880176919984
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1250.8484580197728,
+          "formatted": "1250,85 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1250.8484580197728
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1211.8498105408198,
+          "formatted": "1211,85 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1211.8498105408198
+        }
+      ],
+      "aggregate": {
+        "value": 690.9471914271553,
+        "label": "Rapporto Versilia",
+        "note": "Totale delle abitazioni diviso per la popolazione complessiva dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni totali / popolazione residente × 1.000",
+        "caveat": "Un valore elevato può riflettere seconde case o un patrimonio non utilizzato stabilmente e non equivale, da solo, a maggiore disponibilità abitativa per i residenti.",
+        "coverage": "7/7"
+      }
+    },
+    "nonOccupiedHomesPer1000": {
+      "meta": {
+        "key": "nonOccupiedHomesPer1000",
+        "theme": "abitare",
+        "label": "Abitazioni non occupate ogni 1.000 residenti",
+        "shortLabel": "Non occupate per residente",
+        "description": "Abitazioni vuote o occupate soltanto da persone non residenti rapportate alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 90.32700663160301,
+          "formatted": "90,33 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 90.32700663160301
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 172.67714591391655,
+          "formatted": "172,68 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 172.67714591391655
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 260.074064775295,
+          "formatted": "260,07 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 260.074064775295
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 348.8678251711427,
+          "formatted": "348,87 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 348.8678251711427
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 163.8118214716526,
+          "formatted": "163,81 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 163.8118214716526
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 758.4476907186071,
+          "formatted": "758,45 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 758.4476907186071
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 741.991043747847,
+          "formatted": "741,99 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 741.991043747847
+        }
+      ],
+      "aggregate": {
+        "value": 238.62673869261607,
+        "label": "Rapporto Versilia",
+        "note": "Totale delle abitazioni non occupate da residenti diviso per la popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni vuote o occupate solo da non residenti / popolazione residente × 1.000",
+        "caveat": "Integra la quota sul patrimonio con una misura rapportata ai residenti, ma non distingue seconde case, immobili inutilizzati e altre forme d’uso.",
         "coverage": "7/7"
       }
     },
@@ -5710,6 +7707,104 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "cohabitingHouseholds": {
+      "meta": {
+        "key": "cohabitingHouseholds",
+        "theme": "abitare",
+        "label": "Famiglie coabitanti",
+        "shortLabel": "Famiglie coabitanti",
+        "description": "Famiglie residenti registrate in coabitazione con un’altra famiglia sul totale delle famiglie residenti.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1.471234079929732,
+          "formatted": "1,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.471234079929732
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 2.7579795475674,
+          "formatted": "2,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.7579795475674
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2.1514389494272144,
+          "formatted": "2,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.1514389494272144
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2.665022761760243,
+          "formatted": "2,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.665022761760243
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2.082211452162987,
+          "formatted": "2,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.082211452162987
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1.7761989342806395,
+          "formatted": "1,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.7761989342806395
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 0.87527352297593,
+          "formatted": "0,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.87527352297593
+        }
+      ],
+      "aggregate": {
+        "value": 2.334619737900751,
+        "label": "Quota Versilia",
+        "note": "Ponderata sul totale delle famiglie residenti nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "famiglie residenti coabitanti / famiglie residenti totali × 100",
+        "caveat": "La coabitazione anagrafica non identifica automaticamente una condizione di disagio abitativo e non ne spiega le cause.",
         "coverage": "7/7"
       }
     },
@@ -6299,6 +8394,237 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
+        "coverage": "7/7"
+      }
+    },
+    "organicAgriculturalAreaShare": {
+      "meta": {
+        "key": "organicAgriculturalAreaShare",
+        "theme": "ambiente",
+        "label": "Superficie agricola utilizzata biologica",
+        "shortLabel": "SAU biologica",
+        "description": "Quota della superficie agricola utilizzata coltivata con metodo biologico.",
+        "unit": "percent",
+        "year": "2024",
+        "source": "Regione Toscana — Indicatori comunali per le politiche locali",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 4.30272899101345,
+          "formatted": "4,3%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              3.55,
+              3.89,
+              3.99,
+              4.01,
+              2.9,
+              3.02,
+              4.30272899101345
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 4.30272899101345
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 4.08454773885472,
+          "formatted": "4,1%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              5.36,
+              6.14,
+              7.19,
+              4.14,
+              6.3,
+              3.97,
+              4.08454773885472
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 4.08454773885472
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.25655376895405,
+          "formatted": "6,3%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.79,
+              8.98,
+              11.42,
+              5.42,
+              5.1,
+              5.84,
+              6.25655376895405
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.25655376895405
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6.86842706193545,
+          "formatted": "6,9%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1.62,
+              1.25,
+              1.29,
+              2.86,
+              2.4,
+              2.3,
+              6.86842706193545
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.86842706193545
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 8.10702094156546,
+          "formatted": "8,1%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1.51,
+              0.0,
+              2.49,
+              3.2,
+              3.7,
+              3.89,
+              8.10702094156546
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 8.10702094156546
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1.51614991696822,
+          "formatted": "1,5%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.5,
+              1.51,
+              1.51614991696822
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.51614991696822
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 9.66115955114865,
+          "formatted": "9,7%",
+          "series": {
+            "years": [
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              19.8,
+              18.24,
+              20.59,
+              21.16,
+              20.6,
+              11.05,
+              9.66115955114865
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 9.66115955114865
+        }
+      ],
+      "aggregate": {
+        "value": 6.25655376895405,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata dei valori comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale regionale",
+        "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
+        "caveat": "La quota dipende anche dalla dimensione e dalla struttura agricola del Comune. Un valore basso nei territori poco agricoli non costituisce da solo una valutazione ambientale negativa.",
         "coverage": "7/7"
       }
     },

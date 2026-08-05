@@ -42,18 +42,29 @@
     industryWorkerShare: ['operai', 'occupati industria', 'addetti industria'],
     localUnits: ['imprese', 'aziende', 'attività economiche'],
     microUnits: ['pmi', 'piccole imprese', 'microimprese'],
+    foreignBornSoleProprietorShare: ['imprenditori stranieri', 'titolari nati all estero', 'ditte individuali'],
+    innovationBusinessShare: ['innovazione', 'imprese innovative', 'settori innovativi'],
     employmentRate: ['occupati', 'lavoratori', 'occupazione'],
     unemploymentRate: ['disoccupati', 'senza lavoro', 'disoccupazione'],
     activityRate: ['forza lavoro', 'attivi', 'partecipazione'],
+    femaleEmploymentRate: ['occupazione femminile', 'donne occupate', 'lavoro donne'],
+    maleEmploymentRate: ['occupazione maschile', 'uomini occupati', 'lavoro uomini'],
+    employmentGenderGap: ['divario di genere', 'gender gap', 'differenza occupazione donne uomini'],
+    youthOtherStatus: ['giovani', '15 24 anni', 'altra condizione professionale', 'neet'],
     diplomaPlus: ['diplomati', 'titolo di studio', 'scuola superiore'],
     tertiary: ['laureati', 'laurea', 'università'],
     schoolSites: ['scuole', 'istituti scolastici'],
+    schoolStudents: ['alunni', 'studenti', 'popolazione scolastica'],
+    studentsPerClass: ['alunni per classe', 'dimensione classi', 'classi scolastiche'],
+    primaryFullTimeShare: ['tempo pieno', 'scuola primaria', 'orario scolastico'],
     lifeExpectancy: ['speranza di vita', 'longevità', 'salute'],
     mortalityAll: ['mortalità', 'decessi', 'cause di morte'],
     chronicTotal: ['cronici', 'malattie croniche', 'patologie croniche'],
+    disability064Per1000: ['disabilita', 'persone con disabilita', 'invalidita'],
     diabetes: ['diabete', 'malattie croniche'],
     dementia: ['demenza', 'alzheimer', 'non autosufficienza'],
     emergencyAccess: ['pronto soccorso', 'emergenza', 'accessi ps'],
+    emsResponseTimeP75: ['118', 'ambulanza', 'tempo di soccorso', 'emergenza urgenza'],
     hospitalizedAll: ['ricoveri', 'ospedalizzazione', 'ospedale'],
     elderlyHomeCare: ['assistenza domiciliare', 'anziani', 'adi'],
     pharmaciesPer1000: ['farmacie', 'sanità'], hospitals: ['ospedali', 'posti letto', 'presidi'],
@@ -62,10 +73,16 @@
     roadInjuries: ['incidenti', 'feriti', 'sicurezza stradale'], motorization: ['auto', 'motorizzazione'],
     pollutingCars: ['auto inquinanti', 'euro 0', 'euro 3'], evPoints: ['ricarica', 'auto elettriche'],
     vacantHomes: ['case vuote', 'abitazioni non occupate'], singleHouseholds: ['persone sole', 'famiglie'],
-    householdSize: ['componenti famiglia', 'nucleo familiare'], landUse: ['consumo di suolo', 'cementificazione'],
+    householdSize: ['componenti famiglia', 'nucleo familiare'],
+    housingStockPer1000: ['patrimonio abitativo', 'abitazioni per residenti', 'case per abitante'],
+    nonOccupiedHomesPer1000: ['case non occupate per residenti', 'abitazioni vuote', 'seconde case'],
+    cohabitingHouseholds: ['famiglie coabitanti', 'coabitazione', 'disagio abitativo'],
+    landUse: ['consumo di suolo', 'cementificazione'],
     landUseChange: ['nuovo suolo consumato'], recycling: ['raccolta differenziata', 'rifiuti'],
     wastePerResident: ['rifiuti pro capite', 'kg'], floodExposure: ['alluvione', 'rischio idraulico'],
-    landslideExposure: ['frane', 'rischio geomorfologico'], thirdSector: ['associazioni', 'volontariato'],
+    landslideExposure: ['frane', 'rischio geomorfologico'],
+    organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],
+    thirdSector: ['associazioni', 'volontariato'],
     currentPayments: ['spesa corrente', 'pagamenti'], siopePayments: ['cassa', 'uscite'],
     publicWorks: ['opere pubbliche', 'cantieri'], pnrrFunding: ['pnrr', 'finanziamenti'],
     pnrrConcluded: ['pnrr', 'progetti conclusi'],
@@ -99,11 +116,14 @@
       case 'currency': return currency0.format(v);
       case 'millionCurrency': return `${number1.format(v)} mln €`;
       case 'percent': return `${number1.format(v)}%`;
+      case 'percentagePoints': return `${number1.format(v)} p.p.`;
       case 'index': return number1.format(v);
       case 'decimal': return number2.format(v);
       case 'years': return `${number2.format(v)} anni`;
       case 'nights': return `${number2.format(v)} notti`;
       case 'people': return `${number0.format(v)} persone`;
+      case 'studentsPerClass': return `${number1.format(v)} alunni/classe`;
+      case 'minutes': return `${number1.format(v)} min`;
       case 'per100': return `${number2.format(v)} ogni 100`;
       case 'per10k': return `${number1.format(v)} ogni 10.000`;
       case 'per1000': return `${number2.format(v)} ogni 1.000`;
