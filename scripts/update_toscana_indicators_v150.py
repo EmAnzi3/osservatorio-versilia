@@ -294,8 +294,7 @@ def update_app() -> None:
         ),
     ]
     for old, new in replacements:
-        marker = new.splitlines()[-1].strip()
-        if marker in text:
+        if new in text:
             continue
         if old not in text:
             raise RuntimeError(f"Punto di aggiornamento non trovato: {old.strip()}")
