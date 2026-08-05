@@ -4,9 +4,9 @@ on:
   push:
     branches: ["expansion/bilanci-comunali-v160"]
     paths:
-      - "scripts/probe_siope_api.py"
-      - "scripts/diagnose_siope_2018.py"
+      - "scripts/diagnose_siope_2019.py"
       - "scripts/patch_siope_builder_download.py"
+      - "scripts/discover_siope_resources.py"
       - ".github/workflows/probe-siope-v160.yml"
   workflow_dispatch:
 
@@ -33,10 +33,10 @@ jobs:
       - name: Install current official CKAN dump support
         run: python scripts/patch_siope_builder_download.py
 
-      - name: Discover official catalogue resources
+      - name: Materialize verified SIOPE 2019-2025 manifest
         run: python scripts/discover_siope_resources.py
 
-      - name: Diagnose municipality recognition in 2018 Entrata
-        run: python scripts/diagnose_siope_2018.py
+      - name: Diagnose official 2019 Entrata dump format
+        run: python scripts/diagnose_siope_2019.py
 
 # Read-only diagnostic workflow. It cannot deploy, commit or merge.
