@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Probe leggero degli endpoint ufficiali usati dall'espansione LIA."""
 from __future__ import annotations
 
 import json
