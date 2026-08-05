@@ -1,86 +1,150 @@
 #!/usr/bin/env python3
-"""Read-only diagnostic for the official SIOPE 2019 Entrata resource."""
+"""Read-only diagnostic for municipality recognition in SIOPE 2019 Entrata."""
 from __future__ import annotations
 
+import csv
 import json
+import re
+import unicodedata
+from collections import Counter, defaultdict
 from pathlib import Path
-from urllib.parse import urljoin
 
 import build_siope_history as builder
 
 ROOT = Path(__file__).resolve().parents[1]
 DISCOVERY = ROOT / "data" / "source-snapshots" / "siope-resource-discovery.json"
 DUMP_BASE = "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+TOWNS = [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio",
+]
 
 
-def describe_response(session, url: str) -> None:
-    try:
-        response = session.get(url, timeout=45, allow_redirects=True)
-        content = response.content
-        print(
-            json.dumps(
-                {
-                    "requested_url": url,
-                    "final_url": response.url,
-                    "status": response.status_code,
-                    "content_type": response.headers.get("content-type"),
-                    "content_disposition": response.headers.get("content-disposition"),
-                    "bytes": len(content),
-                    "magic_hex": content[:24].hex(),
-                    "preview": content[:220].decode("utf-8", errors="replace"),
-                },
-                ensure_ascii=False,
-                indent=2,
-            )
-        )
-    except Exception as exc:
-        print(json.dumps({"requested_url": url, "error": f"{type(exc).__name__}: {exc}"}, ensure_ascii=False))
+def norm(value: object) -> str:
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = "".join(character for character in text if not unicodedata.combining(character))
+    return re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip()
+
+
+def choose_csv_resource(metadata: dict) -> dict:
+    candidates = [
+        item for item in metadata.get("resources", [])
+        if str(item.get("mimetype", "")).casefold() == "text/csv"
+    ]
+    if not candidates:
+        candidates = [
+            item for item in metadata.get("resources", [])
+            if str(item.get("format", "")).casefold() == "csv"
+            and not str(item.get("url", "")).casefold().endswith(".pdf")
+        ]
+    if len(candidates) != 1:
+        raise RuntimeError(f"Risorsa CSV SIOPE 2019 non univoca: {candidates}")
+    return candidates[0]
 
 
 def main() -> None:
     discovery = json.loads(DISCOVERY.read_text(encoding="utf-8"))
     package = discovery["datasets"]["entrata-2019-toscana"]
     package_id = str(package["id"])
-    package_url = f"{DUMP_BASE}{package_id}"
 
     session = builder.requests.Session()
-    session.headers.update({
-        "User-Agent": "OsservatorioVersilia/1.0",
-        "Accept": "application/json,text/csv,application/octet-stream,*/*;q=0.8",
-    })
+    session.headers.update({"User-Agent": "OsservatorioVersilia/1.0"})
+    metadata_response = session.get(f"{DUMP_BASE}{package_id}", timeout=45)
+    metadata_response.raise_for_status()
+    metadata = metadata_response.json()
+    resource = choose_csv_resource(metadata)
 
-    response = session.get(package_url, timeout=45)
-    response.raise_for_status()
-    metadata = response.json()
-    resources = metadata.get("resources", [])
+    content, url = builder.download_csv(session, resource)
+    text, encoding = builder.decode_csv(content)
+    sample = text[:500_000]
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=";,\t|")
+        delimiter = dialect.delimiter
+    except csv.Error:
+        delimiter = ";"
 
-    print("=== SIOPE 2019 ENTRATA: PACCHETTO CKAN ===")
-    print(f"Package ID: {package_id}")
-    print(f"Package URL effettivo: {response.url}")
-    print(f"Risorse dichiarate: {len(resources)}")
-    print(json.dumps(resources, ensure_ascii=False, indent=2, sort_keys=True))
+    reader = csv.DictReader(text.splitlines(), delimiter=delimiter)
+    headers = list(reader.fieldnames or [])
+    normalized_headers = {header: norm(header) for header in headers}
+    interesting_headers = [
+        header for header, normalized in normalized_headers.items()
+        if any(token in normalized for token in (
+            "ente", "denomin", "comune", "territ", "prov", "codice", "cod ",
+            "istat", "fisc", "mese", "period", "data", "import", "categoria",
+            "comparto", "siope",
+        ))
+    ]
 
-    candidate_urls: list[str] = []
-    for resource in resources:
-        resource_id = str(resource.get("id") or "").strip()
-        for key in ("url", "download_url"):
-            value = str(resource.get(key) or "").strip()
+    row_count = 0
+    matches: dict[str, list[dict[str, str]]] = defaultdict(list)
+    broad_matches: dict[str, int] = defaultdict(int)
+    lucca_rows: list[dict[str, str]] = []
+    code_046_rows: list[dict[str, str]] = []
+    samples: list[dict[str, str]] = []
+    value_counts: dict[str, Counter[str]] = {header: Counter() for header in interesting_headers}
+
+    for row in reader:
+        row_count += 1
+        if len(samples) < 8:
+            samples.append(row)
+        joined = " | ".join(norm(value) for value in row.values())
+        for town in TOWNS:
+            town_norm = norm(town)
+            if town_norm in joined:
+                broad_matches[town] += 1
+                if len(matches[town]) < 12:
+                    matches[town].append(row)
+        if "lucca" in joined and len(lucca_rows) < 20:
+            lucca_rows.append(row)
+        if re.search(r"(?:^|\D)046(?:\D|$)", joined) and len(code_046_rows) < 20:
+            code_046_rows.append(row)
+        for header in interesting_headers:
+            value = str(row.get(header, "")).strip()
             if value:
-                candidate_urls.append(urljoin(response.url, value))
-        if resource_id:
-            candidate_urls.extend([
-                f"{DUMP_BASE}{resource_id}",
-                f"{DUMP_BASE}{resource_id}.csv",
-                f"{DUMP_BASE}{resource_id}?format=csv",
-            ])
+                value_counts[header][value] += 1
 
-    unique_candidates = list(dict.fromkeys(candidate_urls))
-    print("\n=== PROVA ENDPOINT DELLE RISORSE ===")
-    for candidate in unique_candidates:
-        describe_response(session, candidate)
+    print("=== SIOPE 2019 ENTRATA: DIAGNOSTICA ENTI ===")
+    print(f"URL CSV effettivo: {url}")
+    print(f"Risorsa CKAN: {json.dumps(resource, ensure_ascii=False, sort_keys=True)}")
+    print(f"Byte: {len(content)}")
+    print(f"Decodifica: {encoding}")
+    print(f"Separatore: {delimiter!r}")
+    print(f"Righe dati: {row_count}")
+    print(f"Intestazioni ({len(headers)}): {headers}")
+    print(f"Colonne candidate: {interesting_headers}")
 
-    if not resources:
-        raise RuntimeError("Il pacchetto CKAN non dichiara risorse")
+    for town in TOWNS:
+        print(f"\n=== MATCH {town}: {broad_matches[town]} righe; campioni {len(matches[town])} ===")
+        for row in matches[town]:
+            print({header: row.get(header) for header in interesting_headers if row.get(header)})
+
+    print(f"\n=== RIGHE CONTENENTI LUCCA: {len(lucca_rows)} campioni ===")
+    for row in lucca_rows:
+        print({header: row.get(header) for header in interesting_headers if row.get(header)})
+
+    print(f"\n=== RIGHE CONTENENTI CODICE 046: {len(code_046_rows)} campioni ===")
+    for row in code_046_rows:
+        print({header: row.get(header) for header in interesting_headers if row.get(header)})
+
+    print("\n=== VALORI PIÙ FREQUENTI NELLE COLONNE CANDIDATE ===")
+    for header in interesting_headers:
+        print(f"-- {header} --")
+        for value, count in value_counts[header].most_common(50):
+            print(f"{count}\t{value}")
+
+    print("\n=== PRIME RIGHE, COLONNE CANDIDATE ===")
+    for row in samples:
+        print({header: row.get(header) for header in interesting_headers if row.get(header)})
+
+    if broad_matches["Camaiore"] == 0:
+        raise RuntimeError(
+            "Nessuna cella contiene letteralmente Camaiore: usare le colonne e i codici stampati."
+        )
 
 
 if __name__ == "__main__":
