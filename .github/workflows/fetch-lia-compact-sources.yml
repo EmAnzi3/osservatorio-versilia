@@ -1,0 +1,32 @@
+name: Fetch LIA compact sources
+
+on:
+  push:
+    branches: ["expansion/lavoro-istruzione-abitare"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install requests
+      - name: Fetch compact sources
+        run: python scripts/fetch_lia_compact_sources.py
+      - name: Upload compact sources
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lia-compact-sources
+          path: lia-compact-sources
+          retention-days: 7
