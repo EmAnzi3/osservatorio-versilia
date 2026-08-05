@@ -1,0 +1,41 @@
+name: Audit OpenBDAP budgets
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: budget-audit-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency
+        run: python -m pip install requests
+
+      - name: Discover sources and APIs
+        run: python scripts/discover_openbdap_budget_sources.py
+
+      - name: Probe Tuscany documents
+        run: python scripts/probe_openbdap_documents.py
+
+      - name: Inspect Tuscany archives
+        run: python scripts/inspect_openbdap_budget_zips.py
+
+      - name: Upload audit snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: openbdap-budget-audit
+          path: data/source-snapshots/openbdap-budget-*.json
+          retention-days: 7
