@@ -26,7 +26,7 @@ DOWNLOAD_REPLACEMENT = r'''def download_csv(session: requests.Session, resource:
             response.raise_for_status()
             content = response.content
             content_type = str(response.headers.get("content-type") or "").casefold()
-            prefix = content.lstrip()[:32].casefold()
+            prefix = content.lstrip()[:32].lower()
             rejected_kind = None
             if "application/json" in content_type or prefix.startswith((b"{", b"[", b'"')):
                 rejected_kind = "JSON/metadati"
