@@ -13,7 +13,7 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -24,16 +24,21 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests beautifulsoup4 pandas openpyxl odfpy playwright
+          python -m pip install requests beautifulsoup4 pandas openpyxl xlrd odfpy playwright
           python -m playwright install --with-deps chromium
 
-      - name: Run audit
+      - name: Run catalogue audit
         run: python scripts/audit_toscana_comunali_bilanci.py
+
+      - name: Run specific source audit
+        run: python scripts/audit_toscana_specific_sources.py
 
       - name: Upload private audit artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: audit-toscana-comunali-bilanci
-          path: audit-toscana-comunali-bilanci
+          path: |
+            audit-toscana-comunali-bilanci
+            audit-toscana-specific-sources
           retention-days: 7
