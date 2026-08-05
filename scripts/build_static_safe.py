@@ -99,6 +99,11 @@ def prepare_shells_with_fonts() -> None:
                 "</head>",
                 f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css">\n</head>',
             )
+        if "assets/ux-background-match.css" not in text:
+            text = text.replace(
+                "</head>",
+                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css">\n</head>',
+            )
 
         experiment_scripts = (
             f'  <script src="{assets}assets/ux-accordion.js" defer></script>\n'
