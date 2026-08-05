@@ -26,23 +26,29 @@ def info(response: requests.Response, first: bytes = b"") -> dict:
     }
 
 
-def probe_mim(label: str, url: str) -> None:
+def probe_urls(label: str, urls: list[tuple[str, str]]) -> None:
     session = requests.Session()
     session.headers.update({"User-Agent": UA})
-    page = session.get(url, timeout=90)
-    records = [{"variant": "page", **info(page, page.content[:4096])}]
-    variants = [
-        ("referer", url, {"Referer": page.url, "Accept": "text/csv,*/*;q=0.8"}),
-        ("download", url + "?download=true", {"Referer": page.url, "Accept": "text/csv,*/*;q=0.8"}),
-        ("raw", url + "?raw=1", {"Referer": page.url, "Accept": "text/csv,*/*;q=0.8"}),
-    ]
-    for name, target, headers in variants:
+    records = []
+    for name, target in urls:
         try:
-            with session.get(target, headers=headers, stream=True, timeout=90, allow_redirects=True) as response:
+            with session.get(
+                target,
+                headers={
+                    "Accept": "text/csv,application/octet-stream,*/*;q=0.8",
+                    "Sec-Fetch-Dest": "document",
+                    "Sec-Fetch-Mode": "navigate",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Sec-Fetch-User": "?1",
+                },
+                stream=True,
+                timeout=120,
+                allow_redirects=True,
+            ) as response:
                 first = next(response.iter_content(4096), b"")
                 records.append({"variant": name, **info(response, first)})
         except Exception as exc:
-            records.append({"variant": name, "error": repr(exc)})
+            records.append({"variant": name, "url": target, "error": repr(exc)})
     (OUT / f"{label}.json").write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
     print(label, json.dumps(records, ensure_ascii=False), flush=True)
 
@@ -96,15 +102,31 @@ def tourism() -> None:
 
 
 def main() -> None:
-    mim = {
-        "anagrafe_statali": "https://dati.istruzione.it/opendata/opendata/catalog/SCUANAGRAFESTAT/SCUANAGRAFESTAT20242520250831.csv",
-        "studenti_classi_statali": "https://dati.istruzione.it/opendata/opendata/catalog/ALUCORSOINDCLASTA/ALUCORSOINDCLASTA20242520250831.csv",
-        "tempo_statali": "https://dati.istruzione.it/opendata/opendata/catalog/ALUTEMPOSCUOLASTA/ALUTEMPOSCUOLASTA20242520250831.csv",
+    base = "https://dati.istruzione.it/opendata/opendata/catalog/"
+    datasets = {
+        "anagrafe_statali": ("SCUANAGRAFESTAT", "SCUANAGRAFESTAT20242520250831.csv"),
+        "studenti_classi_statali": ("ALUCORSOINDCLASTA", "ALUCORSOINDCLASTA20242520250831.csv"),
+        "tempo_statali": ("ALUTEMPOSCUOLASTA", "ALUTEMPOSCUOLASTA20242520250831.csv"),
     }
-    for label, url in mim.items():
-        probe_mim(label, url)
+    for label, (folder, filename) in datasets.items():
+        probe_urls(label, [
+            ("folder", base + folder + "/" + filename),
+            ("root", base + filename),
+            ("root_download", base + filename + "?download=true"),
+        ])
+
     inspect_html("sil_avviamenti_comuni", "https://rtbi.regione.toscana.it/SIL/Avviamenti_04_Comuni_index.html")
     inspect_html("sil_disoccupazione_residenza", "https://rtbi.regione.toscana.it/SIL/Disoccupazione_02_Residenza_index.html")
+    probe_urls("sas_avviamenti_package", [
+        ("package", "https://rtbi.regione.toscana.it/SIL/Avviamenti_04_Comuni"),
+        ("package_json", "https://rtbi.regione.toscana.it/SIL/Avviamenti_04_Comuni.json"),
+        ("package_zip", "https://rtbi.regione.toscana.it/SIL/Avviamenti_04_Comuni.zip"),
+    ])
+    probe_urls("sas_disoccupazione_package", [
+        ("package", "https://rtbi.regione.toscana.it/SIL/Disoccupazione_02_Residenza"),
+        ("package_json", "https://rtbi.regione.toscana.it/SIL/Disoccupazione_02_Residenza.json"),
+        ("package_zip", "https://rtbi.regione.toscana.it/SIL/Disoccupazione_02_Residenza.zip"),
+    ])
     tourism()
 
 
