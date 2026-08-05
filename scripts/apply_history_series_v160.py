@@ -10,6 +10,8 @@ DATA_PATH = ROOT / "data" / "site-data.json"
 BUDGET_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
 SIOPE_PATH = ROOT / "data" / "source-snapshots" / "siope-history-v1.6.0.json"
 TEST_PATH = ROOT / "scripts" / "test_ux_experiment.py"
+TEST_V150_PATH = ROOT / "scripts" / "test_release_v150.py"
+HISTORY_VERSION = "2026.08.05-local-v1.6.0-bilanci-storici"
 
 
 def apply_snapshot(data: dict, snapshot: dict, keys: list[str]) -> None:
@@ -87,6 +89,15 @@ def update_tests() -> None:
         text = text.replace(two_point_anchor, two_point_block, 1)
     TEST_PATH.write_text(text, encoding="utf-8")
 
+    v150 = TEST_V150_PATH.read_text(encoding="utf-8")
+    version_line = f'    "{HISTORY_VERSION}",\n'
+    if version_line not in v150:
+        anchor = '    "2026.08.05-local-v1.6.0-bilanci",\n'
+        if anchor not in v150:
+            raise RuntimeError("Whitelist versioni v1.5.0 non riconosciuta")
+        v150 = v150.replace(anchor, anchor + version_line, 1)
+        TEST_V150_PATH.write_text(v150, encoding="utf-8")
+
 
 def main() -> None:
     data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
@@ -103,7 +114,7 @@ def main() -> None:
         siope = json.loads(SIOPE_PATH.read_text(encoding="utf-8"))
         apply_snapshot(data, siope, list(siope["metrics"]))
 
-    data["version"] = "2026.08.05-local-v1.6.0-bilanci-storici"
+    data["version"] = HISTORY_VERSION
     data["updated"] = "anteprima locale · 5 agosto 2026"
     DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     update_tests()
