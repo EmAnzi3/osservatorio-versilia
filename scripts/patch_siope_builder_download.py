@@ -25,16 +25,49 @@ DOWNLOAD_REPLACEMENT = r'''def download_csv(session: requests.Session, resource:
             )
             response.raise_for_status()
             content = response.content
-            if len(content) >= 1_000:
+            content_type = str(response.headers.get("content-type") or "").casefold()
+            prefix = content.lstrip()[:32].casefold()
+            rejected_kind = None
+            if "application/json" in content_type or prefix.startswith((b"{", b"[", b'"')):
+                rejected_kind = "JSON/metadati"
+            elif "text/html" in content_type or prefix.startswith(b"<html") or prefix.startswith(b"<!doctype"):
+                rejected_kind = "HTML"
+            elif "application/pdf" in content_type or content.startswith(b"%PDF"):
+                rejected_kind = "PDF"
+            if rejected_kind is not None:
+                preview = content[:500].decode("utf-8", errors="replace")
+                errors.append(
+                    f"{candidate}: {rejected_kind} non utilizzabile come CSV, "
+                    f"content-type={content_type!r}, {len(content)} byte, {preview!r}"
+                )
+                continue
+
+            sample = content[:200_000]
+            plausible = False
+            for encoding in ("utf-8-sig", "utf-16", "cp1252", "latin-1"):
+                try:
+                    text = sample.decode(encoding)
+                except UnicodeDecodeError:
+                    continue
+                lines = [line for line in text.splitlines() if line.strip()]
+                if len(lines) >= 2 and any(
+                    delimiter in "\n".join(lines[:5])
+                    for delimiter in (";", ",", "\t", "|")
+                ):
+                    plausible = True
+                    break
+            if len(content) >= 1_000 and plausible:
                 return content, candidate
-            preview = content[:300].decode("utf-8", errors="replace")
+
+            preview = content[:500].decode("utf-8", errors="replace")
             errors.append(
-                f"{candidate}: risposta troppo piccola, {len(content)} byte, {preview!r}"
+                f"{candidate}: contenuto non tabellare, content-type={content_type!r}, "
+                f"{len(content)} byte, {preview!r}"
             )
         except requests.RequestException as exc:
             errors.append(f"{candidate}: {type(exc).__name__}: {exc}")
     raise RuntimeError(
-        "Risorsa SIOPE non scaricabile tramite i dump CKAN ufficiali:\n"
+        "Risorsa SIOPE non scaricabile come tabella tramite i dump CKAN ufficiali:\n"
         + "\n".join(errors)
     )
 
@@ -113,7 +146,6 @@ def set_history_window(text: str, path: Path) -> str:
     """Shift every generated SIOPE expectation from 2018–2025 to 2019–2025."""
     original = text
 
-    # Common programmatic year declarations.
     text = re.sub(r"range\(\s*2018\s*,\s*2026\s*\)", "range(2019, 2026)", text)
     text = re.sub(
         r"\[\s*2018\s*,\s*2019\s*,\s*2020\s*,\s*2021\s*,\s*2022\s*,\s*2023\s*,\s*2024\s*,\s*2025\s*\]",
@@ -126,16 +158,12 @@ def set_history_window(text: str, path: Path) -> str:
         text,
     )
 
-    # Human-readable coverage labels and isolated first-year constants.
     text = re.sub(r"(?<!\d)2018\s*[–—-]\s*2025(?!\d)", "2019–2025", text)
     text = re.sub(
         r"(?m)^(\s*(?:START_YEAR|FIRST_YEAR|MIN_YEAR)\s*=\s*)2018\b",
         r"\g<1>2019",
         text,
     )
-
-    # Any remaining standalone occurrence belongs to the generated historical
-    # window or its assertions. Explicit year lists were normalised above.
     text = re.sub(r"(?<!\d)2018(?!\d)", "2019", text)
 
     if text == original:
