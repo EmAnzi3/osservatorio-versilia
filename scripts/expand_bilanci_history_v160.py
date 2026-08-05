@@ -2,10 +2,13 @@
 """Extend the validated OpenBDAP snapshot with homogeneous historical years."""
 from __future__ import annotations
 
+import io
 import json
 import math
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 
 import requests
 import build_bilanci_snapshot as base
@@ -15,6 +18,7 @@ DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
 FIRST_YEAR = 2019
 LAST_YEAR = 2025
+TRANSPORTS: dict[str, str] = {}
 
 
 def archive_paths(year: int) -> dict[str, str]:
@@ -23,6 +27,40 @@ def archive_paths(year: int) -> dict[str, str]:
         f"{year}-schemi": prefix + " - Schemi di bilancio_TOSCANA.zip",
         f"{year}-indicatori": prefix + " - Piano degli indicatori_TOSCANA.zip",
     }
+
+
+def validate_zip(content: bytes, label: str) -> None:
+    if len(content) < 10_000 or not content.startswith(b"PK"):
+        raise RuntimeError(f"Risposta non ZIP o troppo piccola per {label}: {len(content)} byte")
+    with zipfile.ZipFile(io.BytesIO(content)) as archive:
+        if not archive.infolist():
+            raise RuntimeError(f"Archivio vuoto: {label}")
+        bad = archive.testzip()
+        if bad:
+            raise RuntimeError(f"Archivio corrotto {label}, primo file errato: {bad}")
+
+
+def download_archive(session: requests.Session, path: str) -> tuple[bytes, str]:
+    official_url = base.BASE + quote(path, safe="/:_-.")
+    encoded = quote(official_url, safe="")
+    attempts = [
+        ("diretto RGS", official_url),
+        ("proxy raw AllOrigins", f"https://api.allorigins.win/raw?url={encoded}"),
+        ("proxy raw CorsProxy", f"https://corsproxy.io/?url={encoded}"),
+    ]
+    errors = []
+    for label, transport_url in attempts:
+        try:
+            response = session.get(transport_url, timeout=base.TIMEOUT)
+            response.raise_for_status()
+            validate_zip(response.content, f"{path} via {label}")
+            TRANSPORTS[official_url] = label
+            return response.content, official_url
+        except (requests.RequestException, RuntimeError, zipfile.BadZipFile) as exc:
+            errors.append(f"{label}: {type(exc).__name__}: {exc}")
+    raise RuntimeError(
+        f"Archivio OpenBDAP non recuperabile: {official_url}\n" + "\n".join(errors)
+    )
 
 
 def main() -> None:
@@ -34,6 +72,13 @@ def main() -> None:
         missing = [year for year in years if year not in populations[town]]
         if missing:
             raise RuntimeError(f"Popolazione Istat mancante per {town}: {missing}")
+
+    # The already validated 2024–2025 snapshot is retained unchanged. Only missing
+    # historical years are downloaded and appended.
+    for year in (2024, 2025):
+        for town in base.TOWN_CODES:
+            if str(year) not in snapshot["raw"][town]["years"]:
+                raise RuntimeError(f"Snapshot base validato incompleto: {town}, {year}")
 
     session = requests.Session()
     session.headers.update({
@@ -47,10 +92,12 @@ def main() -> None:
         if all(key in snapshot["raw"][town]["years"] for town in base.TOWN_CODES):
             continue
         downloaded = {
-            label: base.download_archive(session, path)
+            label: download_archive(session, path)
             for label, path in archive_paths(year).items()
         }
         year_raw, sources[key] = base.build_year(year, populations, downloaded)
+        if set(year_raw) != set(base.TOWN_CODES):
+            raise RuntimeError(f"Copertura comunale incompleta per {year}: {sorted(year_raw)}")
         for town, values in year_raw.items():
             snapshot["raw"][town]["years"][key] = values
 
@@ -89,9 +136,7 @@ def main() -> None:
 
     snapshot["version"] = "2026.08.05-local-v1.6.0-bilanci-storici"
     snapshot["generated_at"] = datetime.now(timezone.utc).isoformat()
-    snapshot["scope"] = (
-        f"Rendiconti OpenBDAP {FIRST_YEAR}–{LAST_YEAR} dei sette Comuni dell’Osservatorio Versilia."
-    )
+    snapshot["scope"] = f"Rendiconti OpenBDAP {FIRST_YEAR}–{LAST_YEAR} dei sette Comuni dell’Osservatorio Versilia."
     snapshot["source"]["years"] = dict(sorted(sources.items(), key=lambda item: int(item[0])))
     snapshot["selection_rules"]["years"] = years
     snapshot["metrics"] = metrics
@@ -99,6 +144,8 @@ def main() -> None:
         "accepted_years": years,
         "coverage": "7/7 per ogni annualità e indicatore ammesso",
         "population_denominator": "Serie Istat al 1° gennaio già materializzata nel progetto.",
+        "download_transport": TRANSPORTS,
+        "integrity": "Ogni risposta deve essere un archivio ZIP integro; SHA-256 degli archivi e dei CSV selezionati conservati nello snapshot.",
         "rigid_expenditure_excluded_years": excluded_rigid,
     }
     caveat = (
