@@ -14,10 +14,20 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "source-snapshots" / "openbdap-budget-discovery.json"
 BASE = "https://bdap-opendata.rgs.mef.gov.it"
+OPENBDAP = "https://openbdap.rgs.mef.gov.it"
 CKAN = BASE + "/SpodCkanApi/api/3/action"
-FET_URL = "https://openbdap.rgs.mef.gov.it/it/FET/Analizza"
-FET_JS = "https://openbdap.rgs.mef.gov.it/Content/js/fet_analizza.js"
-TIMEOUT = 20
+FET_URL = OPENBDAP + "/it/FET/Analizza"
+SCRIPT_URLS = {
+    "fet_analizza": OPENBDAP + "/Content/js/fet_analizza.js",
+    "commons": OPENBDAP + "/Content/js/commons.js",
+    "fet_a1": OPENBDAP + "/Content/js/graph/fet_a1.js",
+    "fet_a2": OPENBDAP + "/Content/js/graph/fet_a2.js",
+    "fet_a3": OPENBDAP + "/Content/js/graph/fet_a3.js",
+    "fet_a4": OPENBDAP + "/Content/js/graph/fet_a4.js",
+    "fet_a5": OPENBDAP + "/Content/js/graph/fet_a5.js",
+    "fet_a6": OPENBDAP + "/Content/js/graph/fet_a6.js",
+}
+TIMEOUT = 25
 
 QUERIES = [
     "Finanza degli Enti Territoriali",
@@ -81,18 +91,18 @@ def quoted_strings(text: str) -> list[str]:
     values: list[str] = []
     for match in re.finditer(r"(['\"])(.*?)(?<!\\)\1", text, flags=re.S):
         value = match.group(2).strip()
-        if not value or len(value) > 500:
+        if not value or len(value) > 700:
             continue
         if any(token in value.lower() for token in (
-            "fet", "rendiconto", "bilanc", "download", "schema", "indicator", "regione", "anno", "ajax", "api", "zip", "csv"
+            "fet", "rendiconto", "bilanc", "download", "schema", "indicator", "regione", "anno", "ajax", "api", "zip", "csv", "city"
         )):
             values.append(value)
-    return list(dict.fromkeys(values))[:300]
+    return list(dict.fromkeys(values))[:500]
 
 
 def context_snippets(text: str) -> list[str]:
     pattern = re.compile(
-        r".{0,240}(?:\$\.ajax|\$\.get|\$\.post|url\s*:|fetch\(|rendiconto|schemi?\s+di\s+bilancio|download|\.zip|\.csv).{0,420}",
+        r".{0,280}(?:\$\.ajax|\$\.get|\$\.post|url\s*:|fetch\(|webAPIAddress|api/fet|rendiconto|schemi?\s+di\s+bilancio|download|\.zip|\.csv).{0,520}",
         flags=re.I | re.S,
     )
     snippets: list[str] = []
@@ -100,9 +110,25 @@ def context_snippets(text: str) -> list[str]:
         snippet = " ".join(match.group(0).split())
         if snippet not in snippets:
             snippets.append(snippet)
-        if len(snippets) >= 120:
+        if len(snippets) >= 180:
             break
     return snippets
+
+
+def fetch_script(session: requests.Session, name: str, url: str) -> dict:
+    response = session.get(url, timeout=TIMEOUT)
+    response.raise_for_status()
+    text = response.text
+    return {
+        "name": name,
+        "url": url,
+        "status_code": response.status_code,
+        "length": len(text),
+        "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "quoted_strings": quoted_strings(text),
+        "snippets": context_snippets(text),
+        "source": text,
+    }
 
 
 def discover_page(session: requests.Session) -> dict:
@@ -115,15 +141,19 @@ def discover_page(session: requests.Session) -> dict:
             for match in re.findall(r"(?:href|src|action)=[\"']([^\"']+)[\"']", html, flags=re.I)
         }
     )
-    js_response = session.get(FET_JS, timeout=TIMEOUT)
-    js_response.raise_for_status()
-    js = js_response.text
+    scripts = {}
+    script_errors = []
+    for name, url in SCRIPT_URLS.items():
+        try:
+            scripts[name] = fetch_script(session, name, url)
+        except Exception as exc:  # noqa: BLE001
+            script_errors.append({"name": name, "url": url, "error": repr(exc)})
     return {
         "url": FET_URL,
         "status_code": response.status_code,
         "html_length": len(html),
         "html_sha256": hashlib.sha256(html.encode("utf-8")).hexdigest(),
-        "scripts": [u for u in urls if u.lower().split("?")[0].endswith(".js")],
+        "scripts_listed_in_html": [u for u in urls if u.lower().split("?")[0].endswith(".js")],
         "interesting_urls": [
             u
             for u in urls
@@ -131,15 +161,8 @@ def discover_page(session: requests.Session) -> dict:
         ],
         "html_quoted_strings": quoted_strings(html),
         "html_snippets": context_snippets(html),
-        "fet_js": {
-            "url": FET_JS,
-            "status_code": js_response.status_code,
-            "length": len(js),
-            "sha256": hashlib.sha256(js.encode("utf-8")).hexdigest(),
-            "quoted_strings": quoted_strings(js),
-            "snippets": context_snippets(js),
-            "source": js,
-        },
+        "scripts": scripts,
+        "script_errors": script_errors,
     }
 
 
@@ -153,7 +176,7 @@ def main() -> None:
     )
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "purpose": "Individuare fonti ufficiali e risorse elaborabili per i bilanci comunali della Versilia.",
+        "purpose": "Individuare fonti ufficiali, documenti e API elaborabili per i bilanci comunali della Versilia.",
         "ckan_api": CKAN,
         "fet_page": FET_URL,
     }
