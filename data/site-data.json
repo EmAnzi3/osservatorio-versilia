@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.05-v1.5.0",
-  "updated": "5 agosto 2026",
+  "version": "2026.08.05-local-v1.6.0-bilanci",
+  "updated": "anteprima locale · 5 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -448,28 +448,60 @@
         "landUse"
       ]
     },
-    "comunita": {
-      "key": "comunita",
+    "bilanci": {
+      "key": "bilanci",
       "number": "09",
-      "label": "Comune e comunità",
-      "question": "Come vengono usate le risorse pubbliche?",
-      "description": "Cassa, opere pubbliche, PNRR e presenza del Terzo settore.",
+      "label": "Bilanci comunali",
+      "question": "Da dove provengono le risorse e come vengono impiegate?",
+      "description": "Rendiconto, capacità di riscossione e pagamento, risultato di amministrazione, cassa e priorità di spesa.",
       "metrics": [
+        "currentRevenueAccruedPerResident",
+        "currentExpenditureCommittedPerResident",
+        "capitalExpenditureCommittedPerResident",
+        "ownRevenueShare",
+        "currentCollectionCapacity",
+        "currentPaymentCapacity",
+        "availableAdministrationResultPerResident",
+        "rigidExpenditureShare",
         "siopePayments",
         "currentPayments",
         "capitalPayments",
         "cashReceiptsPerResident",
         "cashBalancePerResident",
-        "publicWorks",
-        "pnrrFunding",
-        "pnrrConcluded",
-        "thirdSector"
+        "educationMissionExpenditurePerResident",
+        "socialMissionExpenditurePerResident",
+        "environmentMissionExpenditurePerResident",
+        "mobilityMissionExpenditurePerResident",
+        "cultureSportMissionExpenditurePerResident",
+        "tourismDevelopmentMissionExpenditurePerResident"
       ],
       "sections": [
         {
-          "key": "bilancio",
-          "label": "Risorse correnti e cassa",
-          "description": "Pagamenti, incassi e saldi comunali rapportati alla popolazione.",
+          "key": "rendiconto",
+          "label": "Entrate e spese di competenza",
+          "description": "Accertamenti e impegni registrati nel rendiconto, distinti dai movimenti di cassa.",
+          "metrics": [
+            "currentRevenueAccruedPerResident",
+            "currentExpenditureCommittedPerResident",
+            "capitalExpenditureCommittedPerResident"
+          ]
+        },
+        {
+          "key": "equilibri",
+          "label": "Autonomia, riscossione ed equilibri",
+          "description": "Composizione delle entrate, capacità di incasso e pagamento, risultato disponibile e rigidità della spesa.",
+          "metrics": [
+            "ownRevenueShare",
+            "currentCollectionCapacity",
+            "currentPaymentCapacity",
+            "availableAdministrationResultPerResident",
+            "rigidExpenditureShare"
+          ]
+        },
+        {
+          "key": "cassa",
+          "label": "Movimenti di cassa",
+          "description": "Pagamenti, incassi e saldo registrati da SIOPE nell’anno.",
           "metrics": [
             "siopePayments",
             "currentPayments",
@@ -479,9 +511,42 @@
           ]
         },
         {
+          "key": "priorita",
+          "label": "Spesa per missione",
+          "description": "Impegni complessivi per alcune principali finalità di intervento, rapportati ai residenti.",
+          "metrics": [
+            "educationMissionExpenditurePerResident",
+            "socialMissionExpenditurePerResident",
+            "environmentMissionExpenditurePerResident",
+            "mobilityMissionExpenditurePerResident",
+            "cultureSportMissionExpenditurePerResident",
+            "tourismDevelopmentMissionExpenditurePerResident"
+          ]
+        }
+      ],
+      "featured": [
+        "currentExpenditureCommittedPerResident",
+        "capitalExpenditureCommittedPerResident",
+        "currentCollectionCapacity"
+      ]
+    },
+    "comunita": {
+      "key": "comunita",
+      "number": "10",
+      "label": "Investimenti e comunità",
+      "question": "Quali progetti e reti sostengono il territorio?",
+      "description": "Opere pubbliche, PNRR e presenza del Terzo settore.",
+      "metrics": [
+        "publicWorks",
+        "pnrrFunding",
+        "pnrrConcluded",
+        "thirdSector"
+      ],
+      "sections": [
+        {
           "key": "investimenti",
           "label": "Investimenti e opere",
-          "description": "Opere monitorate, pagamenti in conto capitale e PNRR.",
+          "description": "Opere monitorate e stato dei progetti finanziati dal PNRR.",
           "metrics": [
             "publicWorks",
             "pnrrFunding",
@@ -498,7 +563,9 @@
         }
       ],
       "featured": [
-        "currentPayments"
+        "publicWorks",
+        "pnrrFunding",
+        "thirdSector"
       ]
     }
   },
@@ -9415,7 +9482,7 @@
     "currentPayments": {
       "meta": {
         "key": "currentPayments",
-        "theme": "comunita",
+        "theme": "bilanci",
         "label": "Pagamenti correnti per residente",
         "shortLabel": "Spesa corrente",
         "description": "Pagamenti di parte corrente del comune rapportati alla popolazione residente.",
@@ -9513,7 +9580,7 @@
     "siopePayments": {
       "meta": {
         "key": "siopePayments",
-        "theme": "comunita",
+        "theme": "bilanci",
         "label": "Pagamenti complessivi per residente",
         "shortLabel": "Pagamenti totali",
         "description": "Uscite di cassa complessive registrate in SIOPE, rapportate alla popolazione residente.",
@@ -10738,7 +10805,7 @@
     "capitalPayments": {
       "meta": {
         "key": "capitalPayments",
-        "theme": "comunita",
+        "theme": "bilanci",
         "label": "Pagamenti in conto capitale per residente",
         "shortLabel": "Conto capitale",
         "description": "Pagamenti di cassa in conto capitale del Comune rapportati alla popolazione residente. Non equivalgono automaticamente a opere concluse.",
@@ -11326,7 +11393,7 @@
     "cashReceiptsPerResident": {
       "meta": {
         "key": "cashReceiptsPerResident",
-        "theme": "comunita",
+        "theme": "bilanci",
         "label": "Incassi di cassa per residente",
         "shortLabel": "Incassi per residente",
         "description": "Incassi registrati in SIOPE, rapportati alla popolazione.",
@@ -11424,7 +11491,7 @@
     "cashBalancePerResident": {
       "meta": {
         "key": "cashBalancePerResident",
-        "theme": "comunita",
+        "theme": "bilanci",
         "label": "Saldo di cassa per residente",
         "shortLabel": "Saldo di cassa",
         "description": "Differenza tra incassi e pagamenti dell’anno, rapportata alla popolazione.",
@@ -11908,6 +11975,2197 @@
         "type": "Elaborazione Osservatorio",
         "formula": "pendolari in entrata - pendolari in uscita",
         "caveat": "Un saldo positivo non misura la qualità della mobilità né la disponibilità complessiva di lavoro.",
+        "coverage": "7/7"
+      }
+    },
+    "currentRevenueAccruedPerResident": {
+      "meta": {
+        "key": "currentRevenueAccruedPerResident",
+        "theme": "bilanci",
+        "label": "Entrate correnti accertate per residente",
+        "shortLabel": "Entrate correnti",
+        "description": "Accertamenti dei primi tre titoli delle entrate, rapportati alla popolazione residente.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1446.8854737228287,
+          "formatted": "1.447 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1107.219472673222,
+              1446.8854737228287
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1446.8854737228287
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1633.8676678544327,
+          "formatted": "1.634 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1666.5218423175045,
+              1633.8676678544327
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1633.8676678544327
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1368.783681515456,
+          "formatted": "1.369 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1355.011424805423,
+              1368.783681515456
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1368.783681515456
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1882.291013058963,
+          "formatted": "1.882 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1918.3504111813236,
+              1882.291013058963
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1882.291013058963
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1219.1742379452387,
+          "formatted": "1.219 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1135.5602830719743,
+              1219.1742379452387
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1219.1742379452387
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 4801.790475547555,
+          "formatted": "4.802 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              5027.912201564114,
+              4801.790475547555
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 4801.790475547555
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1503.0158195020747,
+          "formatted": "1.503 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1384.6358697898727,
+              1503.0158195020747
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1503.0158195020747
+        }
+      ],
+      "aggregate": {
+        "value": 1688.851595527816,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "(accertamenti titoli 1 + 2 + 3 delle entrate) / popolazione residente",
+        "caveat": "Gli accertamenti sono crediti giuridicamente riconosciuti dal Comune e non coincidono con gli incassi di cassa.",
+        "coverage": "7/7"
+      }
+    },
+    "currentExpenditureCommittedPerResident": {
+      "meta": {
+        "key": "currentExpenditureCommittedPerResident",
+        "theme": "bilanci",
+        "label": "Spesa corrente impegnata per residente",
+        "shortLabel": "Spesa corrente impegnata",
+        "description": "Impegni del titolo 1 della spesa, destinati a servizi e funzionamento, rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1197.5711006145098,
+          "formatted": "1.198 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              918.5601696775668,
+              1197.5711006145098
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1197.5711006145098
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1402.356574944736,
+          "formatted": "1.402 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1346.554161139001,
+              1402.356574944736
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1402.356574944736
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1261.7685973234481,
+          "formatted": "1.262 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1240.5108191062013,
+              1261.7685973234481
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1261.7685973234481
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1576.3342017324012,
+          "formatted": "1.576 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1600.083941109356,
+              1576.3342017324012
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1576.3342017324012
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1064.0306291898878,
+          "formatted": "1.064 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1051.2877056694813,
+              1064.0306291898878
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1064.0306291898878
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 4415.859086408641,
+          "formatted": "4.416 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              4191.902821307363,
+              4415.859086408641
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 4415.859086408641
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1249.0129910096819,
+          "formatted": "1.249 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1249.2142817774716,
+              1249.0129910096819
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1249.0129910096819
+        }
+      ],
+      "aggregate": {
+        "value": 1468.2423239250527,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni del titolo 1 della spesa / popolazione residente",
+        "caveat": "Gli impegni sono obbligazioni di spesa assunte nell’esercizio e non coincidono con i pagamenti di cassa.",
+        "coverage": "7/7"
+      }
+    },
+    "capitalExpenditureCommittedPerResident": {
+      "meta": {
+        "key": "capitalExpenditureCommittedPerResident",
+        "theme": "bilanci",
+        "label": "Spesa in conto capitale impegnata per residente",
+        "shortLabel": "Investimenti impegnati",
+        "description": "Impegni del titolo 2 della spesa, prevalentemente destinati agli investimenti, rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 207.712042098505,
+          "formatted": "208 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              230.22141962039788,
+              207.712042098505
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 207.712042098505
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 370.77184120228316,
+          "formatted": "371 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              346.15562620360464,
+              370.77184120228316
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 370.77184120228316
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 755.7527648278462,
+          "formatted": "756 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              253.0933762239518,
+              755.7527648278462
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 755.7527648278462
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 696.0845697577276,
+          "formatted": "696 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              697.03799104792,
+              696.0845697577276
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 696.0845697577276
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 611.0339512155722,
+          "formatted": "611 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              171.32536550060314,
+              611.0339512155722
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 611.0339512155722
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1958.4869021902189,
+          "formatted": "1.958 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              2598.288007968127,
+              1958.4869021902189
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1958.4869021902189
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 261.31397302904566,
+          "formatted": "261 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              508.14461246985877,
+              261.31397302904566
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 261.31397302904566
+        }
+      ],
+      "aggregate": {
+        "value": 555.3687267362116,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni del titolo 2 della spesa / popolazione residente",
+        "caveat": "Il valore può oscillare molto tra gli anni per la concentrazione di singole opere; non misura da solo la qualità o l’effettiva conclusione degli investimenti.",
+        "coverage": "7/7"
+      }
+    },
+    "ownRevenueShare": {
+      "meta": {
+        "key": "ownRevenueShare",
+        "theme": "bilanci",
+        "label": "Quota delle entrate proprie",
+        "shortLabel": "Entrate proprie",
+        "description": "Incidenza delle entrate tributarie ed extratributarie accertate sul totale delle entrate correnti.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 95.56009818461364,
+          "formatted": "95,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              85.90601499562456,
+              95.56009818461364
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 95.56009818461364
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 86.84915821708941,
+          "formatted": "86,8%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              88.01159706427738,
+              86.84915821708941
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 86.84915821708941
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 94.2059861545246,
+          "formatted": "94,2%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              94.70298254033138,
+              94.2059861545246
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 94.2059861545246
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 92.932466509906,
+          "formatted": "92,9%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              94.05482735398343,
+              92.932466509906
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 92.932466509906
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 85.63239515971314,
+          "formatted": "85,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              87.15485994180857,
+              85.63239515971314
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 85.63239515971314
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 95.9269487301715,
+          "formatted": "95,9%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              96.53044595772451,
+              95.9269487301715
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 95.9269487301715
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 71.57445424244145,
+          "formatted": "71,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              73.71700134197253,
+              71.57445424244145
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 71.57445424244145
+        }
+      ],
+      "aggregate": {
+        "value": 90.80414945162687,
+        "label": "Valore ponderato Versilia",
+        "note": "Rapporto calcolato sui totali dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "(accertamenti titolo 1 + titolo 3) / accertamenti titoli 1 + 2 + 3 × 100",
+        "caveat": "È un’elaborazione dell’Osservatorio. Un valore elevato dipende anche da fiscalità locale, tariffe, patrimonio e caratteristiche turistiche del Comune.",
+        "coverage": "7/7"
+      }
+    },
+    "currentCollectionCapacity": {
+      "meta": {
+        "key": "currentCollectionCapacity",
+        "theme": "bilanci",
+        "label": "Capacità di riscossione corrente",
+        "shortLabel": "Riscossione corrente",
+        "description": "Quota delle entrate correnti accertate nell’anno effettivamente riscossa in conto competenza.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 74.73251568554335,
+          "formatted": "74,7%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              81.19259120562639,
+              74.73251568554335
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 74.73251568554335
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 83.26936138625811,
+          "formatted": "83,3%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              85.35146297822689,
+              83.26936138625811
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 83.26936138625811
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 82.45021811998477,
+          "formatted": "82,5%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              83.95957372237874,
+              82.45021811998477
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 82.45021811998477
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 86.01036778984113,
+          "formatted": "86,0%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              83.30466145300541,
+              86.01036778984113
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 86.01036778984113
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 73.14993541026308,
+          "formatted": "73,1%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              74.63263450856968,
+              73.14993541026308
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 73.14993541026308
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 81.5611560942987,
+          "formatted": "81,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              82.27644521673663,
+              81.5611560942987
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 81.5611560942987
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 80.62845108500446,
+          "formatted": "80,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              80.23078915258571,
+              80.62845108500446
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 80.62845108500446
+        }
+      ],
+      "aggregate": {
+        "value": 81.75458252884691,
+        "label": "Valore ponderato Versilia",
+        "note": "Rapporto calcolato sui totali dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "riscossioni in conto competenza dei titoli 1 + 2 + 3 / accertamenti dei titoli 1 + 2 + 3 × 100",
+        "caveat": "Esclude le riscossioni riferite ai residui degli anni precedenti. Tempi e modalità di incasso differiscono tra tributi, trasferimenti ed entrate extratributarie.",
+        "coverage": "7/7"
+      }
+    },
+    "currentPaymentCapacity": {
+      "meta": {
+        "key": "currentPaymentCapacity",
+        "theme": "bilanci",
+        "label": "Capacità di pagamento corrente",
+        "shortLabel": "Pagamento corrente",
+        "description": "Quota degli impegni di spesa corrente dell’anno pagata in conto competenza.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 85.36574585265035,
+          "formatted": "85,4%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              80.7055565502592,
+              85.36574585265035
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 85.36574585265035
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 83.07582042588668,
+          "formatted": "83,1%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              83.71115943668981,
+              83.07582042588668
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 83.07582042588668
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 83.86308446500425,
+          "formatted": "83,9%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              84.19590659798195,
+              83.86308446500425
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 83.86308446500425
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 84.56345705812546,
+          "formatted": "84,6%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              81.30128233176704,
+              84.56345705812546
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 84.56345705812546
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 80.30326561463733,
+          "formatted": "80,3%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              80.24382500414438,
+              80.30326561463733
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 80.30326561463733
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 77.17314934803186,
+          "formatted": "77,2%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              80.14899127418349,
+              77.17314934803186
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 77.17314934803186
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 71.5190855389585,
+          "formatted": "71,5%",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              72.85682702060609,
+              71.5190855389585
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 71.5190855389585
+        }
+      ],
+      "aggregate": {
+        "value": 82.61614822870527,
+        "label": "Valore ponderato Versilia",
+        "note": "Rapporto calcolato sui totali dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "pagamenti in conto competenza del titolo 1 / impegni del titolo 1 × 100",
+        "caveat": "Esclude i pagamenti relativi ai residui degli esercizi precedenti e non rappresenta da sola la tempestività dei pagamenti ai fornitori.",
+        "coverage": "7/7"
+      }
+    },
+    "availableAdministrationResultPerResident": {
+      "meta": {
+        "key": "availableAdministrationResultPerResident",
+        "theme": "bilanci",
+        "label": "Parte disponibile del risultato di amministrazione per residente",
+        "shortLabel": "Risultato disponibile",
+        "description": "Quota disponibile del risultato di amministrazione, positiva o negativa, rapportata ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 24.20266807300743,
+          "formatted": "24 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              75.66915572833295,
+              24.20266807300743
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 24.20266807300743
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 22.20165396416906,
+          "formatted": "22 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              131.40065574849805,
+              22.20165396416906
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 22.20165396416906
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": -92.1586670645891,
+          "formatted": "-92 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              -115.78864423801154,
+              -92.1586670645891
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": -92.1586670645891
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 382.5921646220815,
+          "formatted": "383 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              54.61897446024223,
+              382.5921646220815
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 382.5921646220815
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 139.01650593651564,
+          "formatted": "139 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              149.60430800160836,
+              139.01650593651564
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 139.01650593651564
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1388.7801935193518,
+          "formatted": "1.389 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1368.8878854950567,
+              1388.7801935193518
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1388.7801935193518
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": -499.4419536652835,
+          "formatted": "-499 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              -309.6902652428522,
+              -499.4419536652835
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": -499.4419536652835
+        }
+      ],
+      "aggregate": {
+        "value": 108.0652087606488,
+        "label": "Valore pro capite Versilia",
+        "note": "Somma delle parti disponibili dei sette Comuni rapportata alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "voce 0502 “Totale parte disponibile” dell’allegato A / popolazione residente",
+        "caveat": "Non equivale al saldo di cassa. Un valore positivo non è automaticamente interamente spendibile né costituisce da solo una misura di buona gestione; un valore negativo segnala un disavanzo da considerare nel contesto del rendiconto.",
+        "coverage": "7/7"
+      }
+    },
+    "rigidExpenditureShare": {
+      "meta": {
+        "key": "rigidExpenditureShare",
+        "theme": "bilanci",
+        "label": "Incidenza delle spese rigide",
+        "shortLabel": "Spese rigide",
+        "description": "Peso di ripiano del disavanzo, personale e servizio del debito sulle entrate correnti.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "negative"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 20.66,
+          "formatted": "20,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 20.66
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 24.48,
+          "formatted": "24,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 24.48
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 35.18,
+          "formatted": "35,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 35.18
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 20.97,
+          "formatted": "21,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 20.97
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 22.75,
+          "formatted": "22,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 22.75
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 21.78,
+          "formatted": "21,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 21.78
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 25.16,
+          "formatted": "25,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 25.16
+        }
+      ],
+      "aggregate": {
+        "value": 22.75,
+        "label": "Mediana dei 7 Comuni",
+        "note": "Mediana non ponderata degli indicatori ufficiali comunali; non rappresenta un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Indicatore ufficiale OpenBDAP",
+        "formula": "Indicatore ufficiale 1.1 del Piano degli indicatori allegato al rendiconto",
+        "caveat": "L’indicatore è pubblicato direttamente da OpenBDAP. La serie viene mostrata solo dal 2025 perché nel file 2024 è stato rilevato almeno un valore formalmente anomalo.",
+        "coverage": "7/7"
+      }
+    },
+    "educationMissionExpenditurePerResident": {
+      "meta": {
+        "key": "educationMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per istruzione e diritto allo studio per residente",
+        "shortLabel": "Istruzione",
+        "description": "Impegni della missione 04 “Istruzione e diritto allo studio” rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 201.81435017884985,
+          "formatted": "202 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              139.04851817973932,
+              201.81435017884985
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 201.81435017884985
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 68.69374921640437,
+          "formatted": "69 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              63.258939181960336,
+              68.69374921640437
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 68.69374921640437
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 171.66993465694898,
+          "formatted": "172 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              135.25914166457443,
+              171.66993465694898
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 171.66993465694898
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 315.3903996834191,
+          "formatted": "315 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              222.2143505353695,
+              315.3903996834191
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 315.3903996834191
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 90.73388740812536,
+          "formatted": "91 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              80.05653799758745,
+              90.73388740812536
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 90.73388740812536
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 974.5021737173718,
+          "formatted": "975 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              749.5381053563524,
+              974.5021737173718
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 974.5021737173718
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 152.19946058091287,
+          "formatted": "152 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              134.97044781260766,
+              152.19946058091287
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 152.19946058091287
+        }
+      ],
+      "aggregate": {
+        "value": 184.10909423800476,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missione 04 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
+        "coverage": "7/7"
+      }
+    },
+    "socialMissionExpenditurePerResident": {
+      "meta": {
+        "key": "socialMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per diritti sociali e politiche familiari per residente",
+        "shortLabel": "Politiche sociali",
+        "description": "Impegni della missione 12 “Diritti sociali, politiche sociali e famiglia” rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 196.48336971475743,
+          "formatted": "196 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              126.6757283329522,
+              196.48336971475743
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 196.48336971475743
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 286.4576005476921,
+          "formatted": "286 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              306.64474249033,
+              286.4576005476921
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 286.4576005476921
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 154.1092174541342,
+          "formatted": "154 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              155.3292119633442,
+              154.1092174541342
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 154.1092174541342
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 161.9384804115552,
+          "formatted": "162 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              162.58949008249957,
+              161.9384804115552
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 161.9384804115552
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 153.67170422421452,
+          "formatted": "154 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              166.02021632488942,
+              153.67170422421452
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 153.67170422421452
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 375.0847719771977,
+          "formatted": "375 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              331.5729703408588,
+              375.0847719771977
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 375.0847719771977
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 126.0000172890733,
+          "formatted": "126 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              121.68732690320358,
+              126.0000172890733
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 126.0000172890733
+        }
+      ],
+      "aggregate": {
+        "value": 220.24242893455312,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missione 12 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
+        "coverage": "7/7"
+      }
+    },
+    "environmentMissionExpenditurePerResident": {
+      "meta": {
+        "key": "environmentMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per territorio e ambiente per residente",
+        "shortLabel": "Ambiente",
+        "description": "Impegni della missione 09 “Sviluppo sostenibile e tutela del territorio e dell’ambiente” rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 391.04207053104653,
+          "formatted": "391 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              276.8820992453693,
+              391.04207053104653
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 391.04207053104653
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 436.29425434689364,
+          "formatted": "436 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              414.3656625792116,
+              436.29425434689364
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 436.29425434689364
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 474.7045146393566,
+          "formatted": "475 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              447.2830297514437,
+              474.7045146393566
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 474.7045146393566
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 569.2415156311832,
+          "formatted": "569 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              532.383070475689,
+              569.2415156311832
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 569.2415156311832
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 334.62678620466846,
+          "formatted": "335 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              308.8049955770004,
+              334.62678620466846
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 334.62678620466846
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1425.594723972397,
+          "formatted": "1.426 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              1336.6386026265309,
+              1425.594723972397
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1425.594723972397
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 368.35937759336105,
+          "formatted": "368 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              444.5579538408543,
+              368.35937759336105
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 368.35937759336105
+        }
+      ],
+      "aggregate": {
+        "value": 489.1386980457789,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missione 09 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
+        "coverage": "7/7"
+      }
+    },
+    "mobilityMissionExpenditurePerResident": {
+      "meta": {
+        "key": "mobilityMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per trasporti e mobilità per residente",
+        "shortLabel": "Mobilità",
+        "description": "Impegni della missione 10 “Trasporti e diritto alla mobilità” rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 78.02908052829495,
+          "formatted": "78 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              37.54669837640064,
+              78.02908052829495
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 78.02908052829495
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 75.32882015242997,
+          "formatted": "75 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              50.615520368693936,
+              75.32882015242997
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 75.32882015242997
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 162.16322003015833,
+          "formatted": "162 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              153.29784741400954,
+              162.16322003015833
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 162.16322003015833
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 290.0676146506617,
+          "formatted": "290 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              200.2965029840267,
+              290.0676146506617
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 290.0676146506617
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 220.95259429771423,
+          "formatted": "221 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              111.24615118616806,
+              220.95259429771423
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 220.95259429771423
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 361.1953465346535,
+          "formatted": "361 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              630.3999601593625,
+              361.1953465346535
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 361.1953465346535
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 172.19423928077455,
+          "formatted": "172 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              89.09678608336203,
+              172.19423928077455
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 172.19423928077455
+        }
+      ],
+      "aggregate": {
+        "value": 148.91404145012518,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missione 10 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
+        "coverage": "7/7"
+      }
+    },
+    "cultureSportMissionExpenditurePerResident": {
+      "meta": {
+        "key": "cultureSportMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per cultura e sport per residente",
+        "shortLabel": "Cultura e sport",
+        "description": "Somma degli impegni delle missioni 05 “Tutela e valorizzazione dei beni e attività culturali” e 06 “Politiche giovanili, sport e tempo libero”, rapportata ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 29.380317343850315,
+          "formatted": "29 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              10.440777955636863,
+              29.380317343850315
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 29.380317343850315
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 68.28854465670263,
+          "formatted": "68 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              60.24652785778949,
+              68.28854465670263
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 68.28854465670263
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 103.85184468459411,
+          "formatted": "104 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              52.25965603816219,
+              103.85184468459411
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 103.85184468459411
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 135.41357648507233,
+          "formatted": "135 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              306.1245440582763,
+              135.41357648507233
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 135.41357648507233
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 49.28866892819643,
+          "formatted": "49 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              57.512269400884605,
+              49.28866892819643
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 49.28866892819643
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 341.66930093009296,
+          "formatted": "342 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              442.0917957798436,
+              341.66930093009296
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 341.66930093009296
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 37.8754633471646,
+          "formatted": "38 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              179.79263864967274,
+              37.8754633471646
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 37.8754633471646
+        }
+      ],
+      "aggregate": {
+        "value": 89.1105431048585,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missioni 05 + 06 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
+        "coverage": "7/7"
+      }
+    },
+    "tourismDevelopmentMissionExpenditurePerResident": {
+      "meta": {
+        "key": "tourismDevelopmentMissionExpenditurePerResident",
+        "theme": "bilanci",
+        "label": "Spesa impegnata per turismo e sviluppo economico per residente",
+        "shortLabel": "Turismo e sviluppo",
+        "description": "Somma degli impegni delle missioni 07 “Turismo” e 14 “Sviluppo economico e competitività”, rapportata ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "OpenBDAP — rendiconto della gestione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 7.360818123452261,
+          "formatted": "7 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              6.494196203978962,
+              7.360818123452261
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 7.360818123452261
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 39.62685538948828,
+          "formatted": "40 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              30.749835898279972,
+              39.62685538948828
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 39.62685538948828
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 213.99989444584065,
+          "formatted": "214 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              66.9455059000753,
+              213.99989444584065
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 213.99989444584065
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 69.62520687684122,
+          "formatted": "70 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              53.02115148323679,
+              69.62520687684122
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 69.62520687684122
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 12.432612066876665,
+          "formatted": "12 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              12.269784479292321,
+              12.432612066876665
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 12.432612066876665
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 139.93280228022803,
+          "formatted": "140 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              161.39821897594805,
+              139.93280228022803
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 139.93280228022803
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 31.09155601659751,
+          "formatted": "31 €",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              23.861260764726147,
+              31.09155601659751
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 31.09155601659751
+        }
+      ],
+      "aggregate": {
+        "value": 76.34913268066794,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "impegni missioni 07 + 14 / popolazione residente",
+        "caveat": "La classificazione per missione comprende spesa corrente e in conto capitale. Differenze organizzative, servizi associati e investimenti straordinari possono incidere sul confronto.",
         "coverage": "7/7"
       }
     }
