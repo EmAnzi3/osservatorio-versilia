@@ -1,38 +1,43 @@
-# Refactoring statico — area di lavoro non pubblicata
+# Pipeline statica pre-renderizzata
 
-Questa branch costruisce una versione pre-renderizzata dell'Osservatorio senza
-modificare o distribuire il sito pubblico attuale.
+Il sito pubblico dell’Osservatorio Versilia viene generato con una build statica pre-renderizzata e distribuito tramite GitHub Pages.
 
-## Obiettivi
+## Stato attuale
 
-- HTML completo per home, 7 pagine comunali, 9 confronti e pagine editoriali;
-- contenuti leggibili e indicizzabili anche senza JavaScript;
-- un solo bundle JavaScript ordinario, senza concatenazione runtime dei file
-  `00.txt`–`06.txt`, `Blob` o `import()` dinamico;
-- immagini e font locali;
-- canonical URL, JSON-LD e `sitemap.xml`;
-- test automatici per contenuti senza JavaScript, grafici, ordinate, sticky
-  header, immagini e collegamenti fondamentali.
+- i sorgenti pubblicati sono conservati direttamente nel repository in formato leggibile;
+- `data/site-data.json` contiene il dataset effettivamente usato dalla build;
+- `assets/app-parts/` contiene i moduli JavaScript sorgente;
+- `assets/static.css`, `assets/fidelity.css` e `assets/fidelity.js` sono revisionabili normalmente tramite diff Git;
+- non vengono applicati payload Base64 o archivi opachi durante il deploy;
+- la build genera un unico `assets/app-bundle.js` cacheabile;
+- l’HTML completo viene prodotto con Playwright in fase di build;
+- canonical URL, JSON-LD e `sitemap.xml` vengono generati automaticamente.
+
+## Pipeline di pubblicazione
+
+Il workflow `.github/workflows/pages.yml`, attivato dai push su `main`, esegue nell’ordine:
+
+1. installazione degli strumenti di build;
+2. generazione del sito pre-renderizzato in `dist/`;
+3. test di regressione desktop, mobile e senza JavaScript;
+4. controlli specifici sulla versione dei dati, sui 69 indicatori, sui 9 temi e sui 7 Comuni;
+5. pubblicazione su GitHub Pages soltanto se tutti i controlli sono superati.
+
+Il workflow `.github/workflows/static-prerender-check.yml` esegue gli stessi controlli sulle pull request, ma non contiene alcun job di pubblicazione.
 
 ## Comandi locali
 
 ```bash
 python scripts/build_static_safe.py
 python scripts/test_static.py
+python scripts/test_release_v131.py
 ```
 
-L'output viene scritto in `dist/`, che non viene pubblicato. Il workflow della
-branch carica soltanto un artefatto privato di GitHub Actions e non contiene
-alcun job `deploy-pages`.
+L’output locale viene scritto in `dist/`.
 
-## Strategia di migrazione
+## Principi di manutenzione
 
-Durante questa prima fase l'applicazione esistente viene eseguita in un browser
-headless **solo in fase di build**, così da preservare fedelmente il markup e la
-grafica. Il risultato completo viene salvato nell'HTML. L'interattività resta
-attiva tramite `assets/app-bundle.js`, creato in fase di build concatenando i
-sette moduli sorgente in un unico file cacheabile.
-
-Il passaggio successivo, sempre fuori produzione, sarà separare la sola logica
-interattiva dal rendering e rimuovere progressivamente il re-rendering lato
-client.
+- ogni cambiamento ai dati o al codice deve essere visibile nel diff della pull request;
+- il contenuto di `main` deve rappresentare direttamente ciò che viene compilato e pubblicato;
+- per congelare una versione approvata si usano commit, tag e branch Git;
+- file codificati o archiviati possono essere utilizzati come artefatti temporanei di build, non come sorgente nascosta della produzione.
