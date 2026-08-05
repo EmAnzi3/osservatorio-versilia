@@ -2,9 +2,18 @@ name: Materialize Bilanci v1.6.0
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["expansion/bilanci-comunali-v160"]
+    paths:
+      - "scripts/discover_siope_resources.py"
+      - "scripts/apply_v160_review.py"
 
 permissions:
   contents: write
+
+concurrency:
+  group: materialize-bilanci-v160
+  cancel-in-progress: true
 
 jobs:
   materialize:
@@ -19,16 +28,43 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependency
+      - name: Install dependencies
         run: python -m pip install requests
 
-      - name: Rebuild OpenBDAP snapshot
+      - name: Inspect official SIOPE resources
+        if: ${{ hashFiles('scripts/discover_siope_resources.py') != '' }}
+        run: python scripts/discover_siope_resources.py
+
+      - name: Apply approved UX and history changes
+        if: ${{ hashFiles('scripts/apply_v160_review.py') != '' }}
+        run: python scripts/apply_v160_review.py
+
+      - name: Rebuild OpenBDAP history
+        if: ${{ hashFiles('scripts/apply_v160_review.py') != '' }}
         run: python scripts/build_bilanci_snapshot.py
 
+      - name: Rebuild SIOPE history
+        if: ${{ hashFiles('scripts/apply_v160_review.py') != '' }}
+        run: python scripts/build_siope_history.py
+
       - name: Materialize private preview sources
+        if: ${{ hashFiles('scripts/apply_v160_review.py') != '' }}
         run: python scripts/update_bilanci_v160.py
 
       - name: Validate budget data
+        if: ${{ hashFiles('scripts/apply_v160_review.py') != '' }}
         run: python scripts/test_release_v160.py
 
-# Manual maintenance workflow only. It does not deploy GitHub Pages.
+      - name: Commit generated branch changes
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets data docs scripts README.md
+          git commit -m "Materializza correzioni UX e serie storiche v1.6.0"
+          git push origin HEAD:expansion/bilanci-comunali-v160
+
+# Branch-only maintenance workflow. It never deploys GitHub Pages and never merges the PR.
