@@ -3,6 +3,8 @@ name: Audit Toscana municipal data and budgets
 on:
   push:
     branches: ["audit/toscana-comunali-bilanci"]
+  pull_request:
+    branches: ["expansion/lavoro-istruzione-abitare"]
   workflow_dispatch:
 
 permissions:
