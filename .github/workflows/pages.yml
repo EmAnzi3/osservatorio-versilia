@@ -44,6 +44,9 @@ jobs:
       - name: Run v1.5.0 regional indicator checks
         run: python scripts/test_release_v150.py
 
+      - name: Run v1.6.0 budget checks
+        run: python scripts/test_release_v160.py
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
