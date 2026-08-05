@@ -2,7 +2,7 @@ name: Validate static prerender
 
 on:
   push:
-    branches: ["refactor/static-prerender", "release/v1.3.1"]
+    branches: ["refactor/static-prerender"]
   pull_request:
     branches: ["main"]
 
@@ -27,9 +27,6 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Apply reviewed v1.3.1 release
-        run: python scripts/apply_release_v131.py
-
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
 
@@ -46,4 +43,4 @@ jobs:
           path: dist
           retention-days: 7
 
-# Deliberately no deploy-pages job: this workflow cannot publish the site.
+# Deliberately no deploy-pages job: this workflow validates PRs but cannot publish the site.
