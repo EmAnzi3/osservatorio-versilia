@@ -126,12 +126,12 @@ def browser_assertions() -> None:
                 "Bilanci: selettore storico non attivato")
         require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
                 "Bilanci: pannello storico non visibile")
-        require(page.locator(".ux-series-group").count() == 7,
-                "Bilanci: lo storico non contiene sette serie comunali")
-        require("Confronto 2024–2025" in page.locator(".ux-history-head").inner_text(),
+        require(page.locator(".ux-two-point-row").count() == 7,
+                "Bilanci: il confronto a due punti non contiene sette Comuni")
+        require("Confronto a due punti 2024–2025" in page.locator(".ux-history-head").inner_text(),
                 "Bilanci: confronto a due anni non riconosciuto")
         page.locator('[data-history-select="massarosa"]').click()
-        require(page.locator('.ux-series-group[data-history-town="massarosa"].is-selected').count() == 1,
+        require(page.locator('.ux-two-point-row[data-history-town="massarosa"].is-selected').count() == 1,
                 "Bilanci: selezione di Massarosa non applicata")
 
         page.goto(
@@ -157,11 +157,34 @@ def browser_assertions() -> None:
         visible_groups = mobile_page.locator(".topic-controls .metric-group-buttons:not([hidden])")
         require(visible_groups.count() == 1,
                 f"Mobile: devono essere aperte una sola sezione, trovate {visible_groups.count()}")
+        mobile_page.locator('[data-view-mode="history"]').click()
+        require(mobile_page.locator(".ux-two-point-row").count() == 7,
+                "Mobile: confronto a due punti incompleto")
+        widths = mobile_page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
+        require(widths["scroll"] <= widths["client"],
+                f"Mobile: overflow orizzontale della pagina {widths}")
+        require("€" in mobile_page.locator(".ux-history-card").inner_text(),
+                "Mobile: unità monetaria assente nello storico")
         headings = mobile_page.locator(".topic-controls .ux-section-toggle")
         require(headings.count() >= 2, "Mobile: sezioni insufficienti per il test")
         headings.nth(1).click()
         require(visible_groups.count() == 1,
                 "Mobile: l’apertura di una sezione non ha chiuso la precedente")
+
+        mobile_page.goto(
+            base + "comuni/massarosa/?tema=demografia&indicatore=population",
+            wait_until="networkidle",
+        )
+        mobile_page.wait_for_selector(".history-panel .ux-view-shell")
+        mobile_page.locator('.history-panel [data-view-mode="history"]').click()
+        widths = mobile_page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
+        require(widths["scroll"] <= widths["client"],
+                f"Mobile storico lungo: overflow orizzontale della pagina {widths}")
+        scroll = mobile_page.locator(".history-panel .ux-history-scroll")
+        require(scroll.evaluate("el => el.scrollWidth > el.clientWidth"),
+                "Mobile storico lungo: il grafico non scorre nel proprio contenitore")
+        require(mobile_page.locator(".history-panel .ux-series-group").count() == 7,
+                "Mobile storico lungo: serie comunali incomplete")
         mobile.close()
         browser.close()
 
