@@ -113,7 +113,8 @@ def main() -> None:
         close(non_occupied[town]["value"], 1000 * ir["A3"] / ir["P1"],
               f"{town}: non occupate/residenti")
         close(cohabiting[town]["value"], 100 * ir["PF9"] / ir["PF1"], f"{town}: coabitazione")
-        close(vacant[town]["value"], 100 * ir["A3"] / ir["A8"], f"{town}: non occupate/patrimonio")
+        close(vacant[town]["value"], round(100 * ir["A3"] / ir["A8"], 1),
+              f"{town}: non occupate/patrimonio")
 
     require(source["metrics"]["vacantHomes"]["meta"]["year"] == "2023",
             "Anno delle abitazioni non occupate non corretto")
