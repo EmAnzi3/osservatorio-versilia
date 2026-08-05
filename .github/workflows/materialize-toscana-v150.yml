@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Align migration with current sources
+        run: python scripts/patch_toscana_migration.py
+
       - name: Validate source snapshot
         run: python scripts/repair_toscana_snapshot.py
 
@@ -34,12 +37,12 @@ jobs:
 
       - name: Commit generated files
         run: |
-          if git diff --quiet -- data/site-data.json assets/app-parts/00.txt data/source-snapshots/toscana-indicatori-v1.5.0.json; then
+          if git diff --quiet -- data/site-data.json assets/app-parts/00.txt data/source-snapshots/toscana-indicatori-v1.5.0.json scripts/update_toscana_indicators_v150.py; then
             echo "Sorgenti già materializzati."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site-data.json assets/app-parts/00.txt data/source-snapshots/toscana-indicatori-v1.5.0.json
+          git add data/site-data.json assets/app-parts/00.txt data/source-snapshots/toscana-indicatori-v1.5.0.json scripts/update_toscana_indicators_v150.py
           git commit -m "Materializza gli indicatori comunali toscani v1.5.0"
           git push origin HEAD:expansion/toscana-indicatori-comunali
