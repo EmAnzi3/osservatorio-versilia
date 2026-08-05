@@ -1,0 +1,753 @@
+{
+  "version": "2026.08.05-local-v1.6.0-bilanci",
+  "generated_at": "2026-08-05T17:42:06.819151+00:00",
+  "scope": "Rendiconti 2024 e 2025 dei sette Comuni dell’Osservatorio Versilia.",
+  "source": {
+    "publisher": "Ragioneria generale dello Stato — OpenBDAP",
+    "portal_url": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+    "documents_api": "https://openbdap.rgs.mef.gov.it/fet/GetDocuments",
+    "document_type": "Rendiconto",
+    "region": "Toscana",
+    "archives": {
+      "2025-schemi": {
+        "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+        "size_bytes": 14556217,
+        "sha256": "3870fb7f99fd14761b05de49b29ff16a5b051456347705929c20c816daac9872",
+        "files": [
+          {
+            "name": "2025_Rendiconto SDB Allegato A Risultato di Amministrazione_TOSCANA.csv",
+            "sha256": "bde5eef11fb6680ab1f0c2166442ca0c3ae48d2bea27f82ad481876759255e60"
+          },
+          {
+            "name": "2025_Rendiconto SDB Entrate Riepilogo Titoli_TOSCANA.csv",
+            "sha256": "4cd7158ac324b74b07ba3771ca94c1d801ed86f6ba5b933129f74880201e7b13"
+          },
+          {
+            "name": "2025_Rendiconto SDB Spese Riepilogo Missioni_TOSCANA.csv",
+            "sha256": "33a5be7bc0a36bb431e16c235c1f43aaf975eeaf85ad093b676009d993120190"
+          },
+          {
+            "name": "2025_Rendiconto SDB Spese Riepilogo Titoli_TOSCANA.csv",
+            "sha256": "704b21aac14d8faf57eb963d543d633154da2d4442340c755010645f02b60f30"
+          }
+        ]
+      },
+      "2025-indicatori": {
+        "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2025/2025_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+        "size_bytes": 2957067,
+        "sha256": "e4996c79646be50a5cbca8971f112adf45abe60b55bd305e4615239a6546b444",
+        "files": [
+          {
+            "name": "2025_Rendiconto PDI Analitici di Entrate 2-b_TOSCANA.csv",
+            "sha256": "ef1439bdf9cd13f954d2b4222898b936b6fc4575b47421d86cc53ee318761b3b"
+          },
+          {
+            "name": "2025_Rendiconto PDI Analitici di Spese 2-d_TOSCANA.csv",
+            "sha256": "0d1e34542c56821f454976a42454a50b95bb21ab82d233cc74dc88d67c8ae72a"
+          },
+          {
+            "name": "2025_Rendiconto PDI Sintetici Allegato 2-a_TOSCANA.csv",
+            "sha256": "f755be96f0799624fa2a8e607e3c780f29b7308d045d643e371d7d5193022612"
+          }
+        ]
+      },
+      "2024-schemi": {
+        "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2024/2024_Rendiconto%20-%20Schemi%20di%20bilancio_TOSCANA.zip",
+        "size_bytes": 14556870,
+        "sha256": "5798dfc2e5e7c83ca735862e2b63071959539208e64787808dc839294ca0cab9",
+        "files": [
+          {
+            "name": "2024_Rendiconto SDB Allegato A Risultato di Amministrazione_TOSCANA.csv",
+            "sha256": "a883529842f02524b0cc2f35b2e00a3bf26badba7d20c96958a18d4b4e39c922"
+          },
+          {
+            "name": "2024_Rendiconto SDB Entrate Riepilogo Titoli_TOSCANA.csv",
+            "sha256": "5c8542ebd7230edfe2ff27586bca50e3a971d291d235b559e1fa8a4d03ead339"
+          },
+          {
+            "name": "2024_Rendiconto SDB Spese Riepilogo Missioni_TOSCANA.csv",
+            "sha256": "bd4c280e8650fb0da03e5af10fe743b579214fb83e65886e2b5135584b0d64a2"
+          },
+          {
+            "name": "2024_Rendiconto SDB Spese Riepilogo Titoli_TOSCANA.csv",
+            "sha256": "695a48223699b32bed8a9e83cd80cf47c35f9218835fb73b5ce9d89e501a0029"
+          }
+        ]
+      },
+      "2024-indicatori": {
+        "url": "https://openbdap.rgs.mef.gov.it/Datasets_FET/Rendiconto/2024/2024_Rendiconto%20-%20Piano%20degli%20indicatori_TOSCANA.zip",
+        "size_bytes": 3195517,
+        "sha256": "05540317f954a7437bc3c96cd9070ca94d42bd0bf048decd0a1aed3f50b0dc29",
+        "files": [
+          {
+            "name": "2024_Rendiconto PDI Analitici di Entrate 2-b_TOSCANA.csv",
+            "sha256": "1e631be9f67f8fcc5a513804993e516e54a6295bf967f9ea166342520cf09806"
+          },
+          {
+            "name": "2024_Rendiconto PDI Analitici di Spese 2-d_TOSCANA.csv",
+            "sha256": "9866ee6c8f74f039ba80ae2b06bc465d8a34c6b2a415f6ed039a3b949b326928"
+          },
+          {
+            "name": "2024_Rendiconto PDI Sintetici Allegato 2-a_TOSCANA.csv",
+            "sha256": "d9c8556d3714335e499307d3c9707a80a3d588e4c909360067709e8e275ca2ef"
+          }
+        ]
+      }
+    }
+  },
+  "selection_rules": {
+    "subject_type": "ELCOMU — Comuni",
+    "province_code": "046 — Lucca",
+    "municipality_codes": {
+      "Massarosa": "046018",
+      "Viareggio": "046033",
+      "Camaiore": "046005",
+      "Pietrasanta": "046024",
+      "Seravezza": "046028",
+      "Forte dei Marmi": "046013",
+      "Stazzema": "046030"
+    },
+    "years": [
+      2024,
+      2025
+    ],
+    "population_denominator": "Residenti Istat al 1° gennaio dello stesso esercizio finanziario."
+  },
+  "raw": {
+    "Massarosa": {
+      "code": "046018",
+      "slug": "massarosa",
+      "years": {
+        "2024": {
+          "population_at_1_january": 21865,
+          "current_revenue_accruals_titles_1_2_3": 24209353.77,
+          "own_revenue_accruals_titles_1_3": 20797291.08,
+          "current_revenue_competence_receipts_titles_1_2_3": 19656201.64,
+          "current_expenditure_commitments_title_1": 20086713.49,
+          "current_expenditure_competence_payments_title_1": 16214243.3,
+          "capital_expenditure_commitments_title_2": 5034204.68,
+          "available_administration_result_code_0502": 1654506.09,
+          "rigid_expenditure_share_official_code_01_01": 20.61,
+          "mission_commitments": {
+            "01": 5183780.04,
+            "03": 1015083.01,
+            "04": 3040635.84,
+            "05": 105104.09,
+            "06": 123129.88,
+            "07": 43940.51,
+            "08": 423311.02,
+            "09": 6054461.18,
+            "10": 821182.34,
+            "11": 787791.51,
+            "12": 2770030.4,
+            "14": 98038.88,
+            "16": 21170.0,
+            "17": 135034.42,
+            "18": 581569.24,
+            "20": 3858251.55,
+            "50": 896259.9,
+            "60": 2196024.61
+          }
+        },
+        "2025": {
+          "population_at_1_january": 21806,
+          "current_revenue_accruals_titles_1_2_3": 31550784.64,
+          "own_revenue_accruals_titles_1_3": 30149960.78,
+          "current_revenue_competence_receipts_titles_1_2_3": 23578695.08,
+          "current_expenditure_commitments_title_1": 26113502.56,
+          "current_expenditure_competence_payments_title_1": 22294133.06,
+          "capital_expenditure_commitments_title_2": 4529368.79,
+          "available_administration_result_code_0502": 527763.38,
+          "rigid_expenditure_share_official_code_01_01": 20.66,
+          "mission_commitments": {
+            "01": 6127524.55,
+            "03": 1270044.2,
+            "04": 4400644.17,
+            "05": 234565.43,
+            "06": 406120.83,
+            "07": 62759.88,
+            "08": 743272.34,
+            "09": 8526869.4,
+            "10": 1701542.72,
+            "11": 1652809.94,
+            "12": 4284682.5,
+            "14": 97605.91,
+            "16": 8914.57,
+            "17": 10554.5,
+            "18": 368295.63,
+            "20": 4931018.12,
+            "50": 907286.61,
+            "60": 3487662.15
+          }
+        }
+      }
+    },
+    "Viareggio": {
+      "code": "046033",
+      "slug": "viareggio",
+      "years": {
+        "2024": {
+          "population_at_1_january": 60755,
+          "current_revenue_accruals_titles_1_2_3": 101258838.27,
+          "own_revenue_accruals_titles_1_3": 89123676.03,
+          "current_revenue_competence_receipts_titles_1_2_3": 86425855.9,
+          "current_expenditure_commitments_title_1": 81817689.53,
+          "current_expenditure_competence_payments_title_1": 68492615.65,
+          "capital_expenditure_commitments_title_2": 21033649.51,
+          "available_administration_result_code_0502": 7984077.42,
+          "rigid_expenditure_share_official_code_01_01": 38.29,
+          "mission_commitments": {
+            "01": 20762455.11,
+            "03": 7105356.61,
+            "04": 3843578.32,
+            "05": 2046037.3,
+            "06": 1614026.25,
+            "07": 1200906.51,
+            "08": 4303410.07,
+            "09": 25173803.22,
+            "10": 3075477.05,
+            "11": 386993.95,
+            "12": 18632923.17,
+            "14": 667387.06,
+            "15": 825340.19,
+            "16": 47202.32,
+            "17": 15266.9,
+            "18": 131178.25
+          }
+        },
+        "2025": {
+          "population_at_1_january": 60618,
+          "current_revenue_accruals_titles_1_2_3": 99047488.68,
+          "own_revenue_accruals_titles_1_3": 86024479.57,
+          "current_revenue_competence_receipts_titles_1_2_3": 82476750.22,
+          "current_expenditure_commitments_title_1": 85014043.41,
+          "current_expenditure_compence_payments_title_1": 70628117.56,
+          "current_expenditure_competence_payments_title_1": 70628117.56,
+          "capital_expenditure_commitments_title_2": 22477030.31,
+          "available_administration_result_code_0502": 1346044.64,
+          "rigid_expenditure_share_official_code_01_01": 24.48,
+          "mission_commitments": {
+            "01": 20866023.2,
+            "03": 7422327.16,
+            "04": 4164084.21,
+            "05": 2422402.97,
+            "06": 1717820.29,
+            "07": 1559254.1,
+            "08": 3838718.42,
+            "09": 26448394.16,
+            "10": 4567012.96,
+            "11": 637942.94,
+            "12": 17364029.14,
+            "14": 843077.86,
+            "15": 842162.13,
+            "16": 103591.23,
+            "17": 15153.76,
+            "18": 128558.29
+          }
+        }
+      }
+    },
+    "Camaiore": {
+      "code": "046005",
+      "slug": "camaiore",
+      "years": {
+        "2024": {
+          "population_at_1_january": 31864,
+          "current_revenue_accruals_titles_1_2_3": 43175528.68,
+          "own_revenue_accruals_titles_1_3": 40886612.86,
+          "current_revenue_competence_receipts_titles_1_2_3": 36252025.61,
+          "current_expenditure_commitments_title_1": 39526092.83,
+          "current_expenditure_competence_payments_title_1": 33279442.46,
+          "capital_expenditure_commitments_title_2": 8065555.04,
+          "available_administration_result_code_0502": -3689651.77,
+          "rigid_expenditure_share_official_code_01_01": 3199.0,
+          "mission_commitments": {
+            "01": 9924225.88,
+            "03": 2850455.88,
+            "04": 4310369.06,
+            "05": 727628.12,
+            "06": 937612.61,
+            "07": 942883.52,
+            "08": 1654990.37,
+            "09": 14251358.14,
+            "10": 4885332.14,
+            "11": 363655.29,
+            "12": 4949558.33,
+            "14": 1190784.07,
+            "15": 397413.13,
+            "16": 9477.29,
+            "17": 1400.0,
+            "18": 887583.56,
+            "20": 797354.52,
+            "50": 1140250.09,
+            "60": 259898.87
+          }
+        },
+        "2025": {
+          "population_at_1_january": 31832,
+          "current_revenue_accruals_titles_1_2_3": 43573361.56,
+          "own_revenue_accruals_titles_1_3": 41051209.17,
+          "current_revenue_competence_receipts_titles_1_2_3": 35923324.6,
+          "current_expenditure_commitments_title_1": 40170507.98,
+          "current_expenditure_competence_payments_title_1": 33686899.3,
+          "capital_expenditure_commitments_title_2": 24056876.44,
+          "available_administration_result_code_0502": -2933620.61,
+          "rigid_expenditure_share_official_code_01_01": 35.18,
+          "mission_commitments": {
+            "01": 13419673.05,
+            "03": 2767365.78,
+            "04": 5464818.28,
+            "05": 1217644.22,
+            "06": 2088106.92,
+            "07": 1365305.72,
+            "08": 1719913.93,
+            "09": 15111198.05,
+            "10": 5162261.93,
+            "11": 615963.23,
+            "12": 4906066.92,
+            "14": 5447230.45,
+            "15": 417474.13,
+            "16": 8899.33,
+            "17": 37472.66,
+            "18": 940970.28,
+            "20": 1318069.46,
+            "50": 1026380.35,
+            "60": 748596.56
+          }
+        }
+      }
+    },
+    "Pietrasanta": {
+      "code": "046024",
+      "slug": "pietrasanta",
+      "years": {
+        "2024": {
+          "population_at_1_january": 22788,
+          "current_revenue_accruals_titles_1_2_3": 43717245.43,
+          "own_revenue_accruals_titles_1_3": 41115484.63,
+          "current_revenue_competence_receipts_titles_1_2_3": 36416895.61,
+          "current_expenditure_commitments_title_1": 36463011.26,
+          "current_expenditure_competence_payments_title_1": 29645304.85,
+          "capital_expenditure_commitments_title_2": 15884194.0,
+          "available_administration_result_code_0502": 1244685.74,
+          "rigid_expenditure_share_official_code_01_01": 19.71,
+          "mission_commitments": {
+            "01": 7809953.28,
+            "03": 2827796.45,
+            "04": 5063808.98,
+            "05": 4030123.49,
+            "06": 2945333.78,
+            "07": 501021.72,
+            "08": 2983217.14,
+            "09": 12130807.25,
+            "10": 4564331.46,
+            "11": 625963.39,
+            "12": 3705095.15,
+            "14": 707094.66,
+            "15": 103264.0,
+            "16": 14724.0,
+            "18": 79621.42,
+            "20": 5043559.0,
+            "50": 868871.88
+          }
+        },
+        "2025": {
+          "population_at_1_january": 22743,
+          "current_revenue_accruals_titles_1_2_3": 42802135.68,
+          "own_revenue_accruals_titles_1_3": 39777043.0,
+          "current_revenue_competence_receipts_titles_1_2_3": 36814068.78,
+          "current_expenditure_commitments_title_1": 35849193.15,
+          "current_expenditure_compence_payments_title_1": 30316451.1,
+          "current_expenditure_competence_payments_title_1": 30316451.1,
+          "capital_expenditure_commitments_title_2": 15830986.7,
+          "available_administration_result_code_0502": 8701068.1,
+          "rigid_expenditure_share_official_code_01_01": 20.97,
+          "mission_commitments": {
+            "01": 8278047.39,
+            "03": 2985478.96,
+            "04": 7172602.32,
+            "05": 1963444.02,
+            "06": 1115990.43,
+            "07": 476933.78,
+            "08": 3366537.28,
+            "09": 12945374.28,
+            "10": 6596153.58,
+            "11": 1146094.87,
+            "12": 3683334.03,
+            "14": 1106604.77,
+            "15": 107877.82,
+            "16": 7059.0,
+            "17": 23413.85,
+            "18": 31444.95,
+            "20": 3160631.76,
+            "50": 777682.33
+          }
+        }
+      }
+    },
+    "Seravezza": {
+      "code": "046028",
+      "slug": "seravezza",
+      "years": {
+        "2024": {
+          "population_at_1_january": 12435,
+          "current_revenue_accruals_titles_1_2_3": 14121088.51,
+          "own_revenue_accruals_titles_1_3": 12306511.46,
+          "current_revenue_competence_receipts_titles_1_2_3": 10537834.21,
+          "current_expenditure_commitments_title_1": 13072843.41,
+          "current_expenditure_competence_payments_title_1": 10488425.76,
+          "capital_expenditure_commitments_title_2": 2130322.93,
+          "available_administration_result_code_0502": 1860150.88,
+          "rigid_expenditure_share_official_code_01_01": 21.05,
+          "mission_commitments": {
+            "01": 3373820.04,
+            "03": 756566.36,
+            "04": 995521.86,
+            "05": 452112.68,
+            "06": 263009.2,
+            "07": 80915.31,
+            "08": 427358.07,
+            "09": 3839695.62,
+            "10": 1383387.64,
+            "11": 278189.2,
+            "12": 2064499.85,
+            "14": 71695.54,
+            "15": 101296.58,
+            "16": 14160.33,
+            "18": 39578.66,
+            "20": 1293237.0,
+            "50": 549661.0
+          }
+        },
+        "2025": {
+          "population_at_1_january": 12381,
+          "current_revenue_accruals_titles_1_2_3": 15095720.43,
+          "own_revenue_accruals_titles_1_3": 12926101.71,
+          "current_revenue_competence_receipts_titles_1_2_3": 11043140.07,
+          "current_expenditure_commitments_title_1": 13173956.02,
+          "current_expenditure_competence_payments_title_1": 10578223.17,
+          "capital_expenditure_commitments_title_2": 7565400.09,
+          "available_administration_result_code_0502": 1721241.99,
+          "rigid_expenditure_share_official_code_01_01": 22.75,
+          "mission_commitments": {
+            "01": 3891461.1,
+            "03": 815672.19,
+            "04": 1123373.55,
+            "05": 402642.2,
+            "06": 207637.76,
+            "07": 104797.49,
+            "08": 887615.45,
+            "09": 4143365.09,
+            "10": 2735749.1,
+            "11": 1067116.55,
+            "12": 1902634.39,
+            "14": 49125.54,
+            "15": 94419.02,
+            "16": 10405.67,
+            "17": 225.0,
+            "18": 29310.3,
+            "20": 881706.12,
+            "50": 454608.64,
+            "60": 4944.65
+          }
+        }
+      }
+    },
+    "Forte dei Marmi": {
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "years": {
+        "2024": {
+          "population_at_1_january": 6777,
+          "current_revenue_accruals_titles_1_2_3": 34076146.35,
+          "own_revenue_accruals_titles_1_3": 32977401.88,
+          "current_revenue_competence_receipts_titles_1_2_3": 28037691.36,
+          "current_expenditure_commitments_title_1": 28411478.86,
+          "current_expenditure_competence_payments_title_1": 22771849.11,
+          "capital_expenditure_commitments_title_2": 17607991.39,
+          "available_administration_result_code_0502": 9277900.54,
+          "rigid_expenditure_share_official_code_01_01": 19.59,
+          "mission_commitments": {
+            "01": 6993258.13,
+            "03": 2900616.24,
+            "04": 5079379.68,
+            "05": 2277840.75,
+            "06": 718250.59,
+            "07": 884644.86,
+            "08": 2333213.73,
+            "09": 9058544.71,
+            "10": 4271869.26,
+            "11": 8115.0,
+            "12": 2247499.42,
+            "14": 209120.0,
+            "15": 63268.68,
+            "16": 1914.0,
+            "18": 146258.0
+          }
+        },
+        "2025": {
+          "population_at_1_january": 6666,
+          "current_revenue_accruals_titles_1_2_3": 32003531.53,
+          "own_revenue_accruals_titles_1_3": 30701429.12,
+          "current_revenue_competence_receipts_titles_1_2_3": 26102651.33,
+          "current_expenditure_commitments_title_1": 29436498.7,
+          "current_expenditure_competence_payments_title_1": 22717722.55,
+          "capital_expenditure_commitments_title_2": 13054896.13,
+          "available_administration_result_code_0502": 9257607.51,
+          "rigid_expenditure_share_official_code_01_01": 21.78,
+          "mission_commitments": {
+            "01": 7403475.21,
+            "03": 3078977.72,
+            "04": 6494894.43,
+            "05": 1890033.86,
+            "06": 387525.91,
+            "07": 536088.77,
+            "08": 1578369.66,
+            "09": 9506972.85,
+            "10": 2408057.05,
+            "11": 9435.0,
+            "12": 2500059.82,
+            "14": 396675.0,
+            "15": 53863.79,
+            "16": 1881.0,
+            "18": 146537.0,
+            "50": 168084.63
+          }
+        }
+      }
+    },
+    "Stazzema": {
+      "code": "046030",
+      "slug": "stazzema",
+      "years": {
+        "2024": {
+          "population_at_1_january": 2903,
+          "current_revenue_accruals_titles_1_2_3": 4019468.96,
+          "own_revenue_accruals_titles_1_3": 2962951.51,
+          "current_revenue_competence_receipts_titles_1_2_3": 3224956.91,
+          "current_expenditure_commitments_title_1": 3626442.6,
+          "current_expenditure_competence_payments_title_1": 2641880.91,
+          "capital_expenditure_commitments_title_2": 1475143.52,
+          "available_administration_result_code_0502": -899232.8,
+          "rigid_expenditure_share_official_code_01_01": 22.96,
+          "mission_commitments": {
+            "01": 1128673.4,
+            "03": 81890.0,
+            "04": 391822.6,
+            "05": 157465.0,
+            "06": 364412.0,
+            "07": 47546.65,
+            "08": 183719.7,
+            "09": 1290424.44,
+            "10": 258676.04,
+            "11": 74507.68,
+            "12": 353278.57,
+            "14": 21724.0,
+            "15": 163022.74,
+            "16": 24222.53,
+            "17": 4000.0,
+            "18": 2396.12,
+            "20": 653500.0,
+            "50": 159847.65,
+            "60": 20768.0,
+            "99": 135417.0
+          }
+        },
+        "2025": {
+          "population_at_1_january": 2892,
+          "current_revenue_accruals_titles_1_2_3": 4347365.24,
+          "own_revenue_accruals_titles_1_3": 3111350.77,
+          "current_revenue_competence_receipts_titles_1_2_3": 3505144.63,
+          "current_expenditure_commitments_title_1": 3612143.89,
+          "current_expenditure_competence_payments_title_1": 2583421.3,
+          "capital_expenditure_commitments_title_2": 755712.32,
+          "available_administration_result_code_0502": -1444379.69,
+          "rigid_expenditure_share_official_code_01_01": 25.16,
+          "mission_commitments": {
+            "01": 1396654.35,
+            "03": 77703.0,
+            "04": 440165.0,
+            "05": 88152.0,
+            "06": 21414.0,
+            "07": 61867.0,
+            "08": 237761.82,
+            "09": 1065205.23,
+            "10": 498000.94,
+            "11": 182940.19,
+            "12": 364382.95,
+            "14": 28050.0,
+            "15": 162657.25,
+            "16": 22205.75,
+            "17": 4000.0,
+            "18": 2709.26,
+            "20": 758500.0,
+            "50": 138914.68,
+            "60": 20872.5,
+            "99": 136500.0
+          }
+        }
+      }
+    }
+  },
+  "metrics": {
+    "currentRevenueAccruedPerResident": {
+      "label": "Entrate correnti accertate per residente",
+      "unit": "currency",
+      "formula": "(accertamenti titoli 1 + 2 + 3 delle entrate) / popolazione residente",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 1107.219472673222, "2025": 1446.8854737228287},
+        "Viareggio": {"2024": 1666.5224014484405, "2025": 1633.8664861955195},
+        "Camaiore": {"2024": 1355.0112565905096, "2025": 1368.7832608683093},
+        "Pietrasanta": {"2024": 1918.3519115323855, "2025": 1882.2906872444313},
+        "Seravezza": {"2024": 1135.5913566515893, "2025": 1219.1616186091592},
+        "Forte dei Marmi": {"2024": 5027.915006640106, "2025": 4801.790208520852},
+        "Stazzema": {"2024": 1384.5914433344816, "2025": 1503.238326417704}
+      }
+    },
+    "currentExpenditureCommittedPerResident": {
+      "label": "Spesa corrente impegnata per residente",
+      "unit": "currency",
+      "formula": "impegni del titolo 1 della spesa / popolazione residente",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 918.5583489595244, "2025": 1197.5724736301935},
+        "Viareggio": {"2024": 1346.5632384165913, "2025": 1402.3691877066224},
+        "Camaiore": {"2024": 1240.4673914135074, "2025": 1261.7898353851463},
+        "Pietrasanta": {"2024": 1600.0794804282956, "2025": 1576.2602673349689},
+        "Seravezza": {"2024": 1051.2942022517088, "2025": 1064.0321484532752},
+        "Forte dei Marmi": {"2024": 4192.034307215581, "2025": 4415.706226823582},
+        "Stazzema": {"2024": 1249.2051670685497, "2025": 1249.0124107883817}
+      }
+    },
+    "capitalExpenditureCommittedPerResident": {
+      "label": "Spesa in conto capitale impegnata per residente",
+      "unit": "currency",
+      "formula": "impegni del titolo 2 della spesa / popolazione residente",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 230.218835582105, "2025": 207.71048060166928},
+        "Viareggio": {"2024": 346.20441362850876, "2025": 370.79233824903424},
+        "Camaiore": {"2024": 253.1209157670098, "2025": 755.741412729329},
+        "Pietrasanta": {"2024": 697.0414700728453, "2025": 696.06154684958},
+        "Seravezza": {"2024": 171.317485927222, "2025": 611.0503263064373},
+        "Forte dei Marmi": {"2024": 2598.20044119817, "2025": 1958.4308625862587},
+        "Stazzema": {"2024": 508.1445125732, "2025": 261.3113139695712}
+      }
+    },
+    "ownRevenueShare": {
+      "label": "Quota delle entrate proprie",
+      "unit": "percent",
+      "formula": "(accertamenti titolo 1 + titolo 3) / accertamenti titoli 1 + 2 + 3 × 100",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 85.90518426953213, "2025": 95.56009952966467},
+        "Viareggio": {"2024": 88.01448961551824, "2025": 86.8527666778143},
+        "Camaiore": {"2024": 94.69818419407393, "2025": 94.21176384327011},
+        "Pietrasanta": {"2024": 94.04939889440246, "2025": 92.93237782973632},
+        "Seravezza": {"2024": 87.1505833615628, "2025": 85.6302337333542},
+        "Forte dei Marmi": {"2024": 96.77564036262482, "2025": 95.93136370465831},
+        "Stazzema": {"2024": 73.71499373723057, "2025": 71.56750382697411}
+      }
+    },
+    "currentCollectionCapacity": {
+      "label": "Capacità di riscossione corrente",
+      "unit": "percent",
+      "formula": "riscossioni in conto competenza dei titoli 1 + 2 + 3 / accertamenti dei titoli 1 + 2 + 3 × 100",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 81.19252817915174, "2025": 74.73374171396442},
+        "Viareggio": {"2024": 85.35024912223191, "2025": 83.2704018676851},
+        "Camaiore": {"2024": 83.96204169341838, "2025": 82.44441658723407},
+        "Pietrasanta": {"2024": 83.29945865047466, "2025": 86.01068324464917},
+        "Seravezza": {"2024": 74.62422966719648, "2025": 73.1501352930521},
+        "Forte dei Marmi": {"2024": 82.27959146813863, "2025": 81.56178496464685},
+        "Stazzema": {"2024": 80.23216325140562, "2025": 80.62688505824992}
+      }
+    },
+    "currentPaymentCapacity": {
+      "label": "Capacità di pagamento corrente",
+      "unit": "percent",
+      "formula": "pagamenti in conto competenza del titolo 1 / impegni del titolo 1 × 100",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 80.71722994394915, "2025": 85.37205453090547},
+        "Viareggio": {"2024": 83.71244271755758, "2025": 83.07817440293473},
+        "Camaiore": {"2024": 84.19743086892955, "2025": 83.85977381314816},
+        "Pietrasanta": {"2024": 81.30331634259087, "2025": 84.56661278034504},
+        "Seravezza": {"2024": 80.23214357920894, "2025": 80.29553369210963},
+        "Forte dei Marmi": {"2024": 80.15017601469258, "2025": 77.17417672394534},
+        "Stazzema": {"2024": 72.84908983929336, "2025": 71.5204506764051}
+      }
+    },
+    "availableAdministrationResultPerResident": {
+      "label": "Parte disponibile del risultato di amministrazione per residente",
+      "unit": "currency",
+      "formula": "voce 0502 “Totale parte disponibile” dell’allegato A / popolazione residente",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 75.66572513148868, "2025": 24.202576354214436},
+        "Viareggio": {"2024": 131.41301333223604, "2025": 22.2053851987865},
+        "Camaiore": {"2024": -115.79122709013308, "2025": -92.15866487245538},
+        "Pietrasanta": {"2024": 54.62039494470774, "2025": 382.5881334916247},
+        "Seravezza": {"2024": 149.589938078006, "2025": 139.02140376383168},
+        "Forte dei Marmi": {"2024": 1369.0524302788844, "2025": 1388.779404440444},
+        "Stazzema": {"2024": -309.7598346538064, "2025": -499.43972614107884}
+      }
+    },
+    "rigidExpenditureShare": {
+      "label": "Incidenza delle spese rigide",
+      "unit": "percent",
+      "formula": "Indicatore ufficiale 1.1 del Piano degli indicatori allegato al rendiconto",
+      "source_kind": "official",
+      "coverage": "7/7",
+      "years": [2025],
+      "values": {
+        "Massarosa": {"2025": 20.66},
+        "Viareggio": {"2025": 24.48},
+        "Camaiore": {"2025": 35.18},
+        "Pietrasanta": {"2025": 20.97},
+        "Seravezza": {"2025": 22.75},
+        "Forte dei Marmi": {"2025": 21.78},
+        "Stazzema": {"2025": 25.16}
+      }
+    },
+    "educationMissionExpenditurePerResident": {
+      "label": "Spesa impegnata per istruzione e diritto allo studio per residente",
+      "unit": "currency",
+      "formula": "impegni missione 04 / popolazione residente",
+      "source_kind": "derived",
+      "coverage": "7/7",
+      "years": [2024, 2025],
+      "values": {
+        "Massarosa": {"2024": 139.055162359936, "2025": 201.80713748509583},
+        "Viareggio": {"2024": 63.26356925355937, "2025": 68.69375268072256},
+        "Camaiore": {"2024": 135.2765949033392, "2025": 171.67165556389734},
+        "Pietrasanta": {"2024": 222.21436282253817, "2025": 315.3791285230616},
+        "Seravezza": {"2024": 80.05805186972256, "2025": 90.73382844681366},
+        "Forte dei Marmi": {"2024": 749.5366142777039, "2025": 974.4820327032703},
+        "Stazzema": {"2024": 134.9716155701, "2025": 152.200898 
+      }
+    }
+  },
+  "caveats": [
+    "Accertamenti, impegni, riscossioni e pagamenti sono grandezze contabili diverse e non vengono trattate come equivalenti.",
+    "I valori per missione comprendono spesa corrente e in conto capitale.",
+    "Il confronto non costituisce una graduatoria di virtuosità: organizzazione dei servizi, presenze turistiche, gestioni associate e investimenti straordinari incidono sui valori.",
+    "Per l’incidenza delle spese rigide viene usato soltanto il 2025, perché nel file ufficiale 2024 è stato rilevato almeno un valore formalmente anomalo."
+  ]
+}
