@@ -1,59 +1,86 @@
-e</small></article><article class="deep-fact"><span>Dichiaranti</span><strong>${number0.format(town.taxpayers)}</strong><small>Anno ${html(e.incomeYear)}</small></article><article class="deep-fact"><span>Permanenza media</span><strong>${number2.format(town.tourism.averageStay)}</strong><small>Notti per arrivo</small></article></div>
-        <div class="deep-columns"><div><h4>Principali settori per addetti</h4><div class="deep-bar-list">${e.topSectors.map(s => `<div class="deep-bar-row"><div><span>${html(s.label)}</span><strong>${number2.format(s.workers)}</strong></div><div class="deep-bar-track"><span style="width:${s.workers / maxWorkers * 100}%"></span></div><small>${number0.format(s.localUnits)} unità locali</small></div>`).join('')}</div></div>
-        <div><h4>Dichiaranti per fascia di reddito</h4><ul class="deep-list">${e.incomeBands.map(b => `<li><span>${html(b.label)}</span><strong>${number0.format(b.people)}</strong></li>`).join('')}</ul></div></div></section>`;
+hidden>
+          <line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY < point.y ? boxY + boxHeight : boxY}"></line>
+          <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+          <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${html(point.year)}</text>
+          <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 29}">${html(formatValue(point.value, unit))}</text>
+        </g>
+      </g>`;
+    }).join('');
+    return `<div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${html(label)}">
+      ${grid}<polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points}
+      ${pts.map(point => `<text class="chart-label" x="${point.x}" y="${height - 10}" text-anchor="middle">${html(point.year)}</text>`).join('')}
+      </svg></div></div>
+      <div class="chart-a11y-table"><strong>${html(label)}</strong>${pts.map(point => `<span>${html(point.year)}: ${html(formatValue(point.value, unit))}</span>`).join('')}</div>`;
+  }
+
+  function installChartInteractions(root) {
+    root.querySelectorAll('.trend-chart').forEach(chart => {
+      const points = [...chart.querySelectorAll('.chart-point')];
+      const hideAll = () => points.forEach(point => {
+        point.classList.remove('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.setAttribute('hidden', '');
+      });
+      const show = point => {
+        hideAll();
+        point.classList.add('active');
+        const tooltip = point.querySelector('.chart-tooltip');
+        if (tooltip) tooltip.removeAttribute('hidden');
+      };
+      points.forEach((point, index) => {
+        point.addEventListener('mouseenter', () => show(point));
+        point.addEventListener('mouseleave', hideAll);
+        point.addEventListener('focus', () => show(point));
+        point.addEventListener('blur', hideAll);
+        point.addEventListener('click', () => show(point));
+        point.addEventListener('keydown', event => {
+          if (event.key === 'Escape') { hideAll(); point.blur(); return; }
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault();
+          let next = index;
+          if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+          if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+          if (event.key === 'Home') next = 0;
+          if (event.key === 'End') next = points.length - 1;
+          points[next]?.focus();
+        });
+      });
+      chart.addEventListener('mouseleave', hideAll);
+    });
+  }
+
+  function deepDiveMarkup(data, town, themeKey) {
+    const detail = data.details[town.code];
+    if (!detail) return '';
+    if (themeKey === 'salute') {
+      const health = data.healthB?.[town.code];
+      if (!health) return '';
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Salute e uso dei servizi</h3></div><p>Indicatori standardizzati o rapportati alla popolazione. Non rappresentano una valutazione della qualità dei servizi e vanno letti insieme a definizione, anno e fonte.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Speranza di vita</span><strong>${number2.format(health.lifeExpectancy)} anni</strong><small>Indicatore demografico-sanitario</small></article><article class="deep-fact"><span>Accessi al pronto soccorso</span><strong>${number2.format(health.emergencyAccess)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Ricoverati</span><strong>${number2.format(health.hospitalizedAll)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Assistenza domiciliare anziani</span><strong>${number2.format(health.elderlyHomeCare)}</strong><small>Ogni 100 anziani</small></article></div>
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio sanitario</span><small>Patologie croniche e mortalità per causa</small></summary><div class="deep-columns"><div><h4>Patologie croniche selezionate</h4><ul class="deep-list deep-list--rates"><li><span>Diabete</span><span class="deep-list-value"><strong>${number2.format(health.diabetes)}</strong><small>ogni 1.000 residenti</small></span></li><li><span>Demenza</span><span class="deep-list-value"><strong>${number2.format(health.dementia)}</strong><small>ogni 1.000 residenti</small></span></li><li><span>Ipertensione</span><span class="deep-list-value"><strong>${number2.format(health.hypertension)}</strong><small>ogni 1.000 residenti</small></span></li><li><span>BPCO</span><span class="deep-list-value"><strong>${number2.format(health.copd)}</strong><small>ogni 1.000 residenti</small></span></li></ul></div><div><h4>Mortalità per causa</h4><ul class="deep-list deep-list--rates"><li><span>Tumori</span><span class="deep-list-value"><strong>${number2.format(health.mortalityTumors)}</strong><small>ogni 100.000 residenti</small></span></li><li><span>Malattie circolatorie</span><span class="deep-list-value"><strong>${number2.format(health.mortalityCirculatory)}</strong><small>ogni 100.000 residenti</small></span></li><li><span>Malattie respiratorie</span><span class="deep-list-value"><strong>${number2.format(health.mortalityRespiratory)}</strong><small>ogni 100.000 residenti</small></span></li></ul></div></div></details></section>`;
+    }
+    if (themeKey === 'economia') {
+      const e = detail.economy;
+      const maxWorkers = Math.max(...e.topSectors.map(s => s.workers), 1);
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Struttura economica</h3></div><p>Fasce di reddito, capacità ricettiva e principali settori per presenza locale. I valori derivano dalle stesse fonti richiamate negli indicatori.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Strutture ricettive</span><strong>${number0.format(e.tourismStructures)}</strong><small>Anno ${html(e.tourismYear)}</small></article><article class="deep-fact"><span>Posti letto</span><strong>${number0.format(e.tourismBeds)}</strong><small>Hotel e altre strutture</small></article><article class="deep-fact"><span>Dichiaranti</span><strong>${number0.format(town.taxpayers)}</strong><small>Anno ${html(e.incomeYear)}</small></article><article class="deep-fact"><span>Permanenza media</span><strong>${number2.format(town.tourism.averageStay)}</strong><small>Notti per arrivo</small></article></div>
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio economico</span><small>Settori produttivi e fasce di reddito</small></summary><div class="deep-columns"><div><h4>Principali settori per addetti</h4><div class="deep-bar-list">${e.topSectors.map(s => `<div class="deep-bar-row"><div class="deep-bar-heading"><span>${html(s.label)}</span><span class="deep-bar-value"><strong>${number2.format(s.workers)}</strong><small>addetti</small></span></div><div class="deep-bar-track"><span style="width:${s.workers / maxWorkers * 100}%"></span></div><small>${number0.format(s.localUnits)} unità locali</small></div>`).join('')}</div></div>
+        <div><h4>Dichiaranti per fascia di reddito</h4><ul class="deep-list deep-list--income">${e.incomeBands.map(b => `<li><span>${html(b.label)}</span><span class="deep-list-value"><strong>${number0.format(b.people)}</strong><small>dichiaranti</small></span></li>`).join('')}</ul></div></div></details></section>`;
     }
     if (themeKey === 'mobilita') {
       const m = detail.mobility;
       return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Flussi e parco veicolare</h3></div><p>Pendolarismo rilevato dal censimento e consistenza del parco veicolare. Il saldo non misura la qualità della mobilità.</p></div>
         <div class="deep-facts-grid"><article class="deep-fact"><span>Escono dal comune</span><strong>${number0.format(m.outbound)}</strong><small>Pendolari · ${html(m.year)}</small></article><article class="deep-fact"><span>Entrano nel comune</span><strong>${number0.format(m.inbound)}</strong><small>Pendolari · ${html(m.year)}</small></article><article class="deep-fact"><span>Saldo</span><strong>${number0.format(m.balance)}</strong><small>Entrate meno uscite</small></article><article class="deep-fact"><span>Autocontenimento</span><strong>${number1.format(m.selfContainment)}%</strong><small>Lavora nello stesso comune</small></article></div>
-        <div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><strong>${number0.format(x.people)}</strong></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><strong>${number0.format(x.people)}</strong></li>`).join('')}</ul></div></div>
+        <details class="detail-disclosure"><summary><span>Mostra origini e destinazioni</span><small>Prime cinque relazioni di pendolarismo</small></summary><div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></details>
         <div class="deep-inline-note"><span>Autovetture registrate</span><strong>${number0.format(m.cars)}</strong><small>${number1.format(m.motorization)} auto ogni 1.000 residenti; ${number1.format(m.pollutingCars)}% nelle classi più inquinanti.</small></div></section>`;
     }
     if (themeKey === 'ambiente') {
       const e = detail.environment;
       return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Pressioni ambientali</h3></div><p>Andamento dei rifiuti, incremento netto di suolo consumato ed esposizione della popolazione ai rischi territoriali.</p></div>
         <div class="deep-facts-grid"><article class="deep-fact"><span>Raccolta differenziata</span><strong>${number2.format(e.recycling.at(-1))}%</strong><small>${html(e.wasteYears.at(-1))}</small></article><article class="deep-fact"><span>Rifiuti per residente</span><strong>${number0.format(e.wasteKgPerResident.at(-1))} kg</strong><small>${html(e.wasteYears.at(-1))}</small></article><article class="deep-fact"><span>Nuovo suolo consumato</span><strong>${number2.format(e.landUseNetHa.reduce((sum, value) => sum + Number(value || 0), 0))} ha</strong><small>Somma degli intervalli disponibili</small></article><article class="deep-fact"><span>Intervalli ISPRA</span><strong>${number0.format(e.landIntervals.length)}</strong><small>Serie monitorata</small></article></div>
-        <div class="risk-grid"><article><span>Esposizione al rischio alluvioni</span><strong>${number0.format(e.flood.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(e.flood.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(e.flood.buildings)}</dd></div></dl></article><article><span>Esposizione al rischio frane</span><strong>${number0.format(e.landslide.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(e.landslide.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(e.landslide.buildings)}</dd></div></dl></article></div></section>`;
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio dei rischi</span><small>Popolazione, famiglie ed edifici esposti</small></summary><div class="risk-grid"><article><span>Esposizione al rischio alluvioni</span><strong>${number0.format(e.flood.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(e.flood.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(e.flood.buildings)}</dd></div></dl></article><article><span>Esposizione al rischio frane</span><strong>${number0.format(e.landslide.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(e.landslide.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(e.landslide.buildings)}</dd></div></dl></article></div></details></section>`;
     }
     if (themeKey === 'comunita') {
       const g = detail.government;
       const completed = g.pnrrProjects ? g.pnrrConcluded / g.pnrrProjects * 100 : 0;
-      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Cassa, opere e PNRR</h3></div><p>Pagamenti e incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censiti.</p></div>
-        <div class="government-grid"><article><span>Pagamenti</span><strong>${currency0.format(g.payments)}</strong><small>Anno ${html(g.year)}</small></article><article><span>Incassi</span><strong>${currency0.format(g.receipts)}</strong><small>Saldo ${currency0.format(g.cashBalance)}</small></article><article><span>Opere monitorate</span><strong>${number0.format(g.publicWorks)}</strong><small>Valore ${currency0.format(g.publicWorksValue)}</small></article><article><span>Progetti PNRR conclusi</span><strong>${number0.format(g.pnrrConcluded)} su ${number0.format(g.pnrrProjects)}</strong><div class="progress-track"><span style="width:${completed}%"></span></div><p>${currency0.format(g.pnrrFunding)} di risorse assegnate.</p></article></div></section>`;
-    }
-    return '';
-  }
-
-  function crimeMarkup(data) {
-    return `<section class="crime-context page-width" id="criminalita"><div class="crime-context-copy"><span class="overline">Contesto sovracomunale</span><h2>Criminalità e delitti denunciati</h2><p>Il dato non è disponibile in forma omogenea per comune. Viene quindi mostrato per Provincia di Lucca, Toscana e Italia, senza attribuirlo ai singoli territori.</p><a class="source-pill" href="https://www.istat.it/" target="_blank" rel="noreferrer">Fonte Istat ↗</a></div>
-      <div class="crime-context-data"><div class="crime-tabs">${['total','theft','burglary','fraud'].map((k, i) => `<button type="button" class="${i === 0 ? 'active' : ''}" data-crime="${k}">${{total:'Totale',theft:'Furti',burglary:'In abitazione',fraud:'Truffe e frodi'}[k]}</button>`).join('')}</div><div id="crime-data"></div></div></section>`;
-  }
-
-  function installCrimeInteractions(data) {
-    const root = document.querySelector('.crime-context'); if (!root) return;
-    const update = key => {
-      root.querySelectorAll('[data-crime]').forEach(b => b.classList.toggle('active', b.dataset.crime === key));
-      const labels = { total:'Delitti denunciati', theft:'Furti denunciati', burglary:'Furti in abitazione', fraud:'Truffe e frodi informatiche' };
-      document.getElementById('crime-data').innerHTML = `<h3>${labels[key]} · ${html(data.crime.year)}</h3><div class="crime-stats">${data.crime.areas.map(area => `<article><span>${html(area.name)}</span><strong>${number1.format(area.values[key])}</strong><small>ogni 100.000 abitanti</small></article>`).join('')}</div>`;
-    };
-    root.querySelectorAll('[data-crime]').forEach(b => b.addEventListener('click', () => update(b.dataset.crime)));
-    update('total');
-  }
-
-  function renderProject(data) {
-    const sources = [
-      ['Istat','https://www.istat.it/'],['Istat — Frame SBS Territoriale',data.businessSource],['Eurostat','https://ec.europa.eu/eurostat/'],['Regione Toscana','https://www.regione.toscana.it/statistiche'],['Ministero dell’economia e delle finanze','https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php'],['ARS Toscana — La salute dei comuni',data.arsSource],['ISPRO — Registro di mortalità regionale','https://www.ispro.toscana.it/registro-mortalita-regionale-rmr'],['ISPRA','https://www.isprambiente.gov.it/'],['BDAP','https://openbdap.rgs.mef.gov.it/'],['SIOPE','https://www.siope.it/'],['Italia Domani — Open data PNRR','https://www.italiadomani.gov.it/it/catalogo-open-data.html'],['ANAC — Open data','https://dati.anticorruzione.it/opendata'],['Cruscotto Italia — AgID','https://cruscotto-italia.dati.gov.it/']
-    ];
-    const versions = [
-      ['2026.08.3','2 agosto 2026','51 indicatori. Ampliata la salute con speranza di vita, mortalità, cronicità, pronto soccorso, ricoveri e assistenza domiciliare, usando tassi comunali e aggregati ufficiali ARS Toscana.'],
-      ['2026.08.2','2 agosto 2026','43 indicatori. Aggiunti valore aggiunto delle unità locali, produttività per addetto e quote dell’industria, con confronti omogenei Toscana–Italia e perimetro distinto dal PIL.'],
-      ['2026.08.1','2 agosto 2026','39 indicatori e nuovi approfondimenti comunali su struttura economica, pendolarismo reale, pressioni ambientali, cassa pubblica, opere, PNRR e contratti.'],
-      ['2026.08','agosto 2026','7 comuni, 9 temi e 27 indicatori con fonti dirette, confronti ponderati, valori normalizzati ed esportazione CSV.'],
-      ['2026.07','luglio 2026','Prima raccolta strutturata e prototipo delle viste comparative e comunali.']
-    ];
-    app.innerHTML = `<main class="editorial-page"><section class="editorial-hero page-width"><span class="overline">Il progetto</span><h1>Un solo posto per capire la Versilia.</h1><p>I dati pubblici esistono, ma spesso sono dispersi tra portali, allegati e fogli di calcolo. Osservatorio Versilia li riunisce, li spiega e li rende confrontabili senza nasconderne limiti e provenienza.</p></section>
-      <section class="project-story page-width"><div><span class="section-number">01</span><h2>Perché nasce</h2></div><div class="prose"><p>Per trovare un numero comunale non dovrebbe essere necessario conoscere decine di banche dati, interpretare formati diversi o ricostruire ogni volta il significato di una voce.</p><p>Il progetto è ideato e curato da <strong>Emanuele Anzilotti</strong> con un obiettivo semplice: offrire un punto di accesso chiaro ai dati che aiutano a leggere Massarosa e gli altri comuni della Versilia storica.</p></div></section>
-      <section class="independence-note page-width" aria-label="Natura del progetto"><div><span class="overline">Un progetto civico indipendente</span><h2>Le fonti sono istituzionali.<br>L’osservatorio non lo è.</h2></div><p>Osservatorio Versilia non rappresenta Comuni, Provincia, Regione, Istat o altri enti citati. Le amministrazioni e gli istituti produttori restano la fonte autorevole dei dati; eventuali errori di trascrizione, elaborazione o interpretazione sono responsabilità del progetto.</p></section>
-      <section class="method-detail page-width" id="metodo"><div class="section-heading"><div><span class="section-number">02</span><h2>Il metodo</h2></div><p>Cinque regole per evitare confronti solo apparentemente precisi.</p></div><ol class="principles-grid">
-        ${[['Scala certa','Un dato entra nelle schede comunali solo quando è davvero disponibile a quel livello territoriale.'],['Contesto visibile','Anno, unità, definizione e fonte accompagnano sempre il numero.'],['Confronti omogenei','Toscana e Italia compaiono soltanto quando perimetro e periodo sono compatibili.'],['Aggregazioni dichiarate','Totali e medie della Versilia indicano come sono stati calcolati, incluse le ponderazioni.'],['Nessun voto','Posizioni e distanze descrivono i valori: non diventano pagelle o giudizi politici automatici.']].map((x,i)=>`<li><span>0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></li>`).join('')}</ol></section>
-      <section class="source-directory page-width"><div><span class="section-number">03</span><h2>Le fonti</h2></div><div><p>Ogni indicatore rimanda alla propria fonte. Tra i principali produttori e portali utilizzati:</p><ul>${sources.map(([name,url])=>`<li><a href="${html(url)}" target="_blank" rel="
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Cassa, opere e PNRR</h3></div><p>Pagamenti e 

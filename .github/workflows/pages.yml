@@ -35,9 +35,6 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Apply reviewed v1.3.1 release
-        run: python scripts/apply_release_v131.py
-
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
 

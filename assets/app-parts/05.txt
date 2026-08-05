@@ -1,4 +1,42 @@
-noreferrer">${html(name)} <span>↗</span></a></li>`).join('')}</ul></div></section>
+incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censiti.</p></div>
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio amministrativo</span><small>Cassa, opere monitorate e progetti PNRR</small></summary><div class="government-grid"><article><span>Pagamenti</span><strong>${currency0.format(g.payments)}</strong><small>Anno ${html(g.year)}</small></article><article><span>Incassi</span><strong>${currency0.format(g.receipts)}</strong><small>Saldo ${currency0.format(g.cashBalance)}</small></article><article><span>Opere monitorate</span><strong>${number0.format(g.publicWorks)}</strong><small>Valore ${currency0.format(g.publicWorksValue)}</small></article><article><span>Progetti PNRR conclusi</span><strong>${number0.format(g.pnrrConcluded)} su ${number0.format(g.pnrrProjects)}</strong><div class="progress-track"><span style="width:${completed}%"></span></div><p>${currency0.format(g.pnrrFunding)} di risorse assegnate.</p></article></div></details></section>`;
+    }
+    return '';
+  }
+
+  function crimeMarkup(data) {
+    return `<section class="crime-context page-width" id="criminalita"><div class="crime-context-copy"><span class="overline">Contesto sovracomunale</span><h2>Criminalità e delitti denunciati</h2><p>Il dato non è disponibile in forma omogenea per comune. Viene quindi mostrato per Provincia di Lucca, Toscana e Italia, senza attribuirlo ai singoli territori.</p><a class="source-pill" href="https://www.istat.it/" target="_blank" rel="noreferrer">Fonte Istat ↗</a></div>
+      <div class="crime-context-data"><div class="crime-tabs">${['total','theft','burglary','fraud'].map((k, i) => `<button type="button" class="${i === 0 ? 'active' : ''}" data-crime="${k}">${{total:'Totale',theft:'Furti',burglary:'In abitazione',fraud:'Truffe e frodi'}[k]}</button>`).join('')}</div><div id="crime-data"></div></div></section>`;
+  }
+
+  function installCrimeInteractions(data) {
+    const root = document.querySelector('.crime-context'); if (!root) return;
+    const update = key => {
+      root.querySelectorAll('[data-crime]').forEach(b => b.classList.toggle('active', b.dataset.crime === key));
+      const labels = { total:'Delitti denunciati', theft:'Furti denunciati', burglary:'Furti in abitazione', fraud:'Truffe e frodi informatiche' };
+      document.getElementById('crime-data').innerHTML = `<h3>${labels[key]} · ${html(data.crime.year)}</h3><div class="crime-stats">${data.crime.areas.map(area => `<article><span>${html(area.name)}</span><strong>${number1.format(area.values[key])}</strong><small>ogni 100.000 abitanti</small></article>`).join('')}</div>`;
+    };
+    root.querySelectorAll('[data-crime]').forEach(b => b.addEventListener('click', () => update(b.dataset.crime)));
+    update('total');
+  }
+
+  function renderProject(data) {
+    const sources = [
+      ['Istat','https://www.istat.it/'],['Istat — Frame SBS Territoriale',data.businessSource],['Eurostat','https://ec.europa.eu/eurostat/'],['Regione Toscana','https://www.regione.toscana.it/statistiche'],['Ministero dell’economia e delle finanze','https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php'],['ARS Toscana — La salute dei comuni',data.arsSource],['ISPRO — Registro di mortalità regionale','https://www.ispro.toscana.it/registro-mortalita-regionale-rmr'],['ISPRA','https://www.isprambiente.gov.it/'],['BDAP','https://openbdap.rgs.mef.gov.it/'],['SIOPE','https://www.siope.it/'],['Italia Domani — Open data PNRR','https://www.italiadomani.gov.it/it/catalogo-open-data.html'],['ANAC — Open data','https://dati.anticorruzione.it/opendata'],['Cruscotto Italia — AgID','https://cruscotto-italia.dati.gov.it/']
+    ];
+    const versions = [
+      ['2026.08.3','2 agosto 2026','51 indicatori. Ampliata la salute con speranza di vita, mortalità, cronicità, pronto soccorso, ricoveri e assistenza domiciliare, usando tassi comunali e aggregati ufficiali ARS Toscana.'],
+      ['2026.08.2','2 agosto 2026','43 indicatori. Aggiunti valore aggiunto delle unità locali, produttività per addetto e quote dell’industria, con confronti omogenei Toscana–Italia e perimetro distinto dal PIL.'],
+      ['2026.08.1','2 agosto 2026','39 indicatori e nuovi approfondimenti comunali su struttura economica, pendolarismo reale, pressioni ambientali, cassa pubblica, opere, PNRR e contratti.'],
+      ['2026.08','agosto 2026','7 comuni, 9 temi e 27 indicatori con fonti dirette, confronti ponderati, valori normalizzati ed esportazione CSV.'],
+      ['2026.07','luglio 2026','Prima raccolta strutturata e prototipo delle viste comparative e comunali.']
+    ];
+    app.innerHTML = `<main class="editorial-page"><section class="editorial-hero page-width"><span class="overline">Il progetto</span><h1>Un solo posto per capire la Versilia.</h1><p>I dati pubblici esistono, ma spesso sono dispersi tra portali, allegati e fogli di calcolo. Osservatorio Versilia li riunisce, li spiega e li rende confrontabili senza nasconderne limiti e provenienza.</p></section>
+      <section class="project-story page-width"><div><span class="section-number">01</span><h2>Perché nasce</h2></div><div class="prose"><p>Per trovare un numero comunale non dovrebbe essere necessario conoscere decine di banche dati, interpretare formati diversi o ricostruire ogni volta il significato di una voce.</p><p>Il progetto è ideato e curato da <strong>Emanuele Anzilotti</strong> con un obiettivo semplice: offrire un punto di accesso chiaro ai dati che aiutano a leggere Massarosa e gli altri comuni della Versilia storica.</p></div></section>
+      <section class="independence-note page-width" aria-label="Natura del progetto"><div><span class="overline">Un progetto civico indipendente</span><h2>Le fonti sono istituzionali.<br>L’osservatorio non lo è.</h2></div><p>Osservatorio Versilia non rappresenta Comuni, Provincia, Regione, Istat o altri enti citati. Le amministrazioni e gli istituti produttori restano la fonte autorevole dei dati; eventuali errori di trascrizione, elaborazione o interpretazione sono responsabilità del progetto.</p></section>
+      <section class="method-detail page-width" id="metodo"><div class="section-heading"><div><span class="section-number">02</span><h2>Il metodo</h2></div><p>Cinque regole per evitare confronti solo apparentemente precisi.</p></div><ol class="principles-grid">
+        ${[['Scala certa','Un dato entra nelle schede comunali solo quando è davvero disponibile a quel livello territoriale.'],['Contesto visibile','Anno, unità, definizione e fonte accompagnano sempre il numero.'],['Confronti omogenei','Toscana e Italia compaiono soltanto quando perimetro e periodo sono compatibili.'],['Aggregazioni dichiarate','Totali e medie della Versilia indicano come sono stati calcolati, incluse le ponderazioni.'],['Nessun voto','Posizioni e distanze descrivono i valori: non diventano pagelle o giudizi politici automatici.']].map((x,i)=>`<li><span>0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></li>`).join('')}</ol></section>
+      <section class="source-directory page-width"><div><span class="section-number">03</span><h2>Le fonti</h2></div><div><p>Ogni indicatore rimanda alla propria fonte. Tra i principali produttori e portali utilizzati:</p><ul>${sources.map(([name,url])=>`<li><a href="${html(url)}" target="_blank" rel="noreferrer">${html(name)} <span>↗</span></a></li>`).join('')}</ul></div></section>
       <section class="license-section page-width" id="licenza"><div><span class="section-number">04</span><h2>Licenza e riuso</h2></div><div class="prose"><p>Salvo diversa indicazione, testi, elaborazioni e visualizzazioni originali di Osservatorio Versilia sono disponibili con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noreferrer">CC BY 4.0</a>: possono essere condivisi e adattati citando la fonte.</p><p>Dati, stemmi, fotografie e materiali di terzi mantengono le condizioni d’uso e le licenze indicate dai rispettivi titolari. Per un uso ufficiale o amministrativo va sempre consultata la fonte originaria.</p></div></section>
       <section class="versions-section page-width" id="versioni"><div><span class="section-number">05</span><h2>Versioni dei dati</h2></div><div class="version-list">${versions.map(v=>`<article><div><strong>${v[0]}</strong><time>${v[1]}</time></div><p>${v[2]}</p></article>`).join('')}<p class="update-policy">Le correzioni puntuali possono essere pubblicate subito; gli aggiornamenti organici ricevono un nuovo numero di versione e una data visibile in tutto il sito.</p></div></section>
       <section class="contact-panel page-width"><div><span class="overline">Manca qualcosa?</span><h2>Un osservatorio migliora anche grazie alle segnalazioni.</h2></div><div><p>Puoi indicare un errore, una fonte più recente o proporre un nuovo indicatore comunale verificabile.</p><a class="button-link" href="${route('segnala/')}">Invia una segnalazione</a><a class="plain-contact" href="mailto:contatti@osservatorioversilia.it">contatti@osservatorioversilia.it</a></div></section>
@@ -16,78 +54,4 @@ noreferrer">${html(name)} <span>↗</span></a></li>`).join('')}</ul></div></sect
       event.preventDefault(); const fd = new FormData(form);
       const category = String(fd.get('category') || ''), town = String(fd.get('town') || '');
       const subject = `[Osservatorio Versilia] ${category} · ${town}`;
-      const body = [`Tipo: ${category}`,`Comune/territorio: ${town}`,`Indicatore o tema: ${fd.get('indicator') || 'non specificato'}`,`Fonte proposta: ${fd.get('source') || 'non specificata'}`,'',String(fd.get('message') || ''),'',`Nome: ${fd.get('name') || 'non indicato'}`,`Email: ${fd.get('email') || 'non indicata'}`].join('\n');
-      document.querySelector('.form-status').hidden = false;
-      location.href = `mailto:contatti@osservatorioversilia.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    });
-  }
-
-  function installSearch(data) {
-    const trigger = document.querySelector('.global-search-trigger');
-    const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];
-    const items = [
-      ...Object.entries(data.metrics).map(([key,m]) => ({ id:`metric-${key}`, label:m.meta.label, description:`${data.themes[m.meta.theme].label} · ${m.meta.year} · ${m.meta.description}`, category:'Indicatori comunali', href:route(`confronta/${m.meta.theme}/?indicatore=${key}`), badge:data.themes[m.meta.theme].label, keywords:normalize([m.meta.label,m.meta.shortLabel,m.meta.description,m.meta.source,data.themes[m.meta.theme].label,...(searchSynonyms[key]||[])].join(' ')) })),
-      { id:'context-crime', label:'Criminalità e delitti denunciati', description:'Provincia di Lucca, Toscana e Italia · 2024. Il dato non è disponibile in forma omogenea per comune.', category:'Contesti sovracomunali', href:route('confronta/mobilita/#criminalita'), badge:'Dato provinciale', keywords:normalize('criminalità reati delitti furti truffe sicurezza provincia lucca') },
-      ...Object.values(data.themes).map(t => ({ id:`theme-${t.key}`, label:t.label, description:`${t.question} ${t.description}`, category:'Temi', href:route(`confronta/${t.key}/`), badge:`${t.metrics.length} indicatori`, keywords:normalize(`${t.label} ${t.question} ${t.description}`) })),
-      ...data.towns.map(t => ({ id:`town-${t.code}`, label:t.name, description:`Profilo comunale · codice Istat ${t.code}`, category:'Comuni', href:route(`comuni/${normalize(t.name).replaceAll(' ','-')}/`), badge:'Comune', keywords:normalize(`${t.name} comune territorio codice Istat ${t.code}`) }))
-    ];
-    const suggested = new Set(['metric-population','metric-income','metric-employmentRate','metric-businessValueAdded','metric-roadInjuries','context-crime']);
-    let overlay = null, historyPushed = false;
-
-    function resultMarkup(query) {
-      const q = normalize(query); const words = q.split(' ').filter(Boolean);
-      let results = q ? items.filter(item => words.every(word => item.keywords.includes(word) || normalize(item.label).includes(word))) : items.filter(item => suggested.has(item.id));
-      results = results.sort((a,b) => {
-        const al = normalize(a.label), bl = normalize(b.label); const score = x => x === q ? 0 : x.startsWith(q) ? 1 : x.includes(q) ? 2 : 3;
-        return score(al)-score(bl) || a.label.localeCompare(b.label,'it');
-      }).slice(0,14);
-      if (!results.length) return `<div class="search-empty"><strong>Nessun risultato</strong><p>Prova un termine più generale oppure cerca il tema o il nome del comune.</p></div>`;
-      return `${!q ? '<p class="search-hint">Ricerche suggerite</p>' : ''}${categories.map(category => {
-        const group = results.filter(item => item.category === category); if (!group.length) return '';
-        return `<div class="search-group"><h3>${category}</h3>${group.map(item => `<a href="${item.href}" data-search-result><span><strong>${html(item.label)}</strong><small>${html(item.description)}</small></span><b>${html(item.badge)}</b></a>`).join('')}</div>`;
-      }).join('')}`;
-    }
-
-    function finalizeClose() {
-      if (!overlay) return; overlay.hidden = true; trigger.setAttribute('aria-expanded','false'); document.body.classList.remove('search-open'); historyPushed = false;
-    }
-    function closeSearch() { if (!overlay || overlay.hidden) return; if (historyPushed) history.back(); else finalizeClose(); }
-    function openSearch() {
-      if (!overlay) {
-        overlay = document.createElement('div'); overlay.className = 'search-overlay'; overlay.hidden = true;
-        overlay.innerHTML = `<section class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-title"><div class="search-dialog-head"><div><span class="overline">Esplora i dati</span><h2 id="search-title">Cerca un indicatore</h2></div><button type="button" data-close-search aria-label="Chiudi la ricerca"><span aria-hidden="true">×</span><span class="search-close-label">Chiudi</span></button></div><label class="search-field"><span aria-hidden="true">⌕</span><input type="search" placeholder="Prova: PIL, reati, disoccupati, farmacie…" autocomplete="off"></label><div class="search-results" aria-live="polite"></div><footer class="search-footer"><span><kbd>Esc</kbd> chiude</span><span>La ricerca porta al dato: non inventa corrispondenze.</span></footer></section>`;
-        document.body.appendChild(overlay);
-        const input = overlay.querySelector('input'), results = overlay.querySelector('.search-results');
-        const update = () => { results.innerHTML = resultMarkup(input.value); results.querySelectorAll('[data-search-result]').forEach(a => a.addEventListener('click', () => { historyPushed = false; finalizeClose(); })); };
-        input.addEventListener('input', update); overlay.querySelector('[data-close-search]').addEventListener('click', closeSearch);
-        overlay.addEventListener('mousedown', e => { if (e.target === overlay) closeSearch(); }); update();
-      }
-      overlay.hidden = false; trigger.setAttribute('aria-expanded','true'); document.body.classList.add('search-open');
-      history.pushState({ ...(history.state || {}), __versiliaSearch: true }, '', location.href); historyPushed = true;
-      setTimeout(() => overlay.querySelector('input')?.focus(), 0);
-    }
-    trigger.addEventListener('click', openSearch);
-    window.addEventListener('popstate', () => { if (overlay && !overlay.hidden) finalizeClose(); });
-    window.addEventListener('keydown', e => {
-      const target = e.target; const typing = target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
-      if ((e.key === '/' && !typing) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); openSearch(); }
-      if (e.key === 'Escape' && overlay && !overlay.hidden) { e.preventDefault(); closeSearch(); }
-    });
-  }
-
-  function renderNotFound() {
-    app.innerHTML = `<main class="editorial-page"><section class="editorial-hero compact page-width"><span class="overline">Pagina non trovata</span><h1>Questo indirizzo non esiste.</h1><p>Torna alla pagina iniziale oppure usa la ricerca per aprire un indicatore o un comune.</p><a class="button-link" href="${route('')}">Torna alla home</a></section></main>`;
-  }
-
-  async function start() {
-    try {
-      const response = await fetch(asset('data/site-data.json'));
-      if (!response.ok) throw new Error(`Errore ${response.status}`);
-      const data = await response.json();
-      mountShell(data);
-      if (pageType === 'home') renderHome(data);
-      else if (pageType === 'compare') renderCompare(data);
-      else if (pageType === 'town') renderTown(data);
-      else if (pageType === 'project') renderProject(data);
-      else if (pageType === 'feedback') renderFeedback(data);
-      else re
+      const body = [`Tipo: ${category}`,`Comune/territorio: ${town}`,`Indicatore o tema: ${fd.get('indicator') || 'non specificato'}`,`Fonte proposta: ${fd.get('source') || 'non sp

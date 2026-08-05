@@ -1,10 +1,77 @@
-ferrer">Fonte originale ↗</a></div></article>
+rams(location.search);
+    let themeKey = params.get('tema') || 'demografia';
+    if (!data.themes[themeKey]) themeKey = 'demografia';
+    let metricKey = params.get('indicatore');
+    if (!data.themes[themeKey].metrics.includes(metricKey)) metricKey = data.themes[themeKey].metrics[0];
+    const pop = data.metrics.population.rows.find(r => r.code === town.code);
+    const income = data.metrics.income.rows.find(r => r.code === town.code);
+    const employment = data.metrics.employmentRate.rows.find(r => r.code === town.code);
+    const popValues = pop.series?.values || town.population || [];
+    const populationChange = popValues.length > 1 ? ((popValues.at(-1) / popValues[0]) - 1) * 100 : 0;
+    const employmentDifference = Number(employment.value) - Number(data.metrics.employmentRate.aggregate.value);
+    const incomeDifference = (Number(income.value) / Number(data.metrics.income.aggregate.value) - 1) * 100;
+
+    app.innerHTML = `<main class="page-width inner-page town-profile" data-theme="${themeKey}">
+      <div class="breadcrumbs"><a href="${route('')}">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>${html(town.name)}</strong></div>
+      <header class="town-hero"><div class="town-identity"><img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}"><div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div></div>
+        <dl class="town-headline-stats"><div><dt>Residenti · ${html(data.metrics.population.meta.year)}</dt><dd>${html(pop.formatted)}</dd></div><div><dt>Reddito medio · ${html(data.metrics.income.meta.year)}</dt><dd>${html(income.formatted)}</dd></div><div><dt>Occupazione · ${html(data.metrics.employmentRate.meta.year)}</dt><dd>${html(employment.formatted)}</dd></div></dl></header>
+      <section class="town-brief" aria-labelledby="town-brief-title"><div><span class="overline">Sintesi</span><h2 id="town-brief-title">${html(town.name)} in breve</h2></div>
+        <article><span>Popolazione dal ${html(pop.series?.years?.[0] || '2019')}</span><strong>${populationChange >= 0 ? 'In crescita' : 'In calo'}</strong><small>${html(number1.format(Math.abs(populationChange)))}% ${populationChange >= 0 ? 'in più' : 'in meno'}</small></article>
+        <article><span>Occupazione 25–64</span><strong>${employmentDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(employmentDifference)))} punti di differenza</small></article>
+        <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>
+      ${townContextNav(data, town, themeKey, metricKey)}
+      <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
+      <div id="town-context"></div>
+    </main>`;
+
+    const updateUrl = (theme, metric) => {
+      const url = new URL(location.href);
+      url.searchParams.set('tema', theme);
+      url.searchParams.set('indicatore', metric);
+      history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    };
+    const selectMetric = key => {
+      metricKey = key;
+      updateUrl(themeKey, metricKey);
+      updateTownContextLinks(data, themeKey, metricKey);
+      renderTownMetric(data, town, themeKey, metricKey, selectMetric);
+    };
+    const selectTheme = key => {
+      themeKey = key;
+      metricKey = data.themes[key].metrics[0];
+      document.querySelector('main.town-profile').dataset.theme = key;
+      document.querySelectorAll('[data-profile-theme]').forEach(button => button.classList.toggle('active', button.dataset.profileTheme === key));
+      updateUrl(themeKey, metricKey);
+      updateTownContextLinks(data, themeKey, metricKey);
+      renderTownMetric(data, town, themeKey, metricKey, selectMetric);
+      scrollActiveControl(document.querySelector('.theme-nav'));
+    };
+    document.querySelectorAll('[data-profile-theme]').forEach(button => button.addEventListener('click', () => selectTheme(button.dataset.profileTheme)));
+    renderTownMetric(data, town, themeKey, metricKey, selectMetric);
+    scrollActiveControl(document.querySelector('.theme-nav'));
+  }
+
+  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {
+    const theme = data.themes[themeKey];
+    const metric = data.metrics[metricKey];
+    const row = metric.rows.find(r => r.code === town.code);
+    const ranked = metricRows(data, metricKey);
+    const rank = ranked.findIndex(r => r.code === town.code) + 1;
+    const container = document.getElementById('town-topic');
+    container.dataset.theme = themeKey;
+    const historical = Boolean(row.series?.values?.length);
+    container.innerHTML = `<div class="town-topic-heading"><div><span class="overline">${html(theme.number)} · ${html(theme.label)}</span><h2>${html(theme.question)}</h2><p>${html(theme.description)}</p></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
+      ${metricControls(data, themeKey, metricKey, false)}
+      <div class="town-metric-layout"><article class="town-metric-primary"><span>${html(metric.meta.label)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
+        ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
+        <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         <aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside></div>
+      ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>
       <section class="history-panel"><div class="panel-title"><div><span class="overline">${historical ? 'Andamento storico' : 'Confronto territoriale'}</span><h3>${historical ? `${html(metric.meta.shortLabel)} nel tempo` : html(metric.meta.label)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`}</section>
       <section class="all-indicators"><div class="section-heading compact"><div><span class="overline">Quadro del tema</span><h3>Tutti gli indicatori</h3></div><p>Seleziona una carta per aggiornare grafico e contesto.</p></div>
-        <div class="indicator-card-grid">${theme.metrics.map(key => indicatorCard(data, town, themeKey, key, metricKey)).join('')}</div></section>
+        <div class="indicator-groups">${groupedIndicatorCards(data, town, themeKey, metricKey)}</div></section>
       ${deepDiveMarkup(data, town, themeKey)}
       ${townBenchmarkMarkup(metric, row, town)}`;
 
@@ -67,69 +134,4 @@ ferrer">Fonte originale ↗</a></div></article>
       return `<g class="chart-point" tabindex="0" role="button" aria-label="${html(point.year)}: ${html(formatValue(point.value, unit))}">
         <circle class="chart-hit" cx="${point.x}" cy="${point.y}" r="17"></circle>
         <circle class="chart-dot" cx="${point.x}" cy="${point.y}" r="5"></circle>
-        <g class="chart-tooltip" hidden>
-          <line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY < point.y ? boxY + boxHeight : boxY}"></line>
-          <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
-          <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${html(point.year)}</text>
-          <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 29}">${html(formatValue(point.value, unit))}</text>
-        </g>
-      </g>`;
-    }).join('');
-    return `<div class="chart-shell"><div class="trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${html(label)}">
-      ${grid}<polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points}
-      ${pts.map(point => `<text class="chart-label" x="${point.x}" y="${height - 10}" text-anchor="middle">${html(point.year)}</text>`).join('')}
-      </svg></div></div>
-      <div class="chart-a11y-table"><strong>${html(label)}</strong>${pts.map(point => `<span>${html(point.year)}: ${html(formatValue(point.value, unit))}</span>`).join('')}</div>`;
-  }
-
-  function installChartInteractions(root) {
-    root.querySelectorAll('.trend-chart').forEach(chart => {
-      const points = [...chart.querySelectorAll('.chart-point')];
-      const hideAll = () => points.forEach(point => {
-        point.classList.remove('active');
-        const tooltip = point.querySelector('.chart-tooltip');
-        if (tooltip) tooltip.setAttribute('hidden', '');
-      });
-      const show = point => {
-        hideAll();
-        point.classList.add('active');
-        const tooltip = point.querySelector('.chart-tooltip');
-        if (tooltip) tooltip.removeAttribute('hidden');
-      };
-      points.forEach((point, index) => {
-        point.addEventListener('mouseenter', () => show(point));
-        point.addEventListener('mouseleave', hideAll);
-        point.addEventListener('focus', () => show(point));
-        point.addEventListener('blur', hideAll);
-        point.addEventListener('click', () => show(point));
-        point.addEventListener('keydown', event => {
-          if (event.key === 'Escape') { hideAll(); point.blur(); return; }
-          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-          event.preventDefault();
-          let next = index;
-          if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
-          if (event.key === 'ArrowRight') next = (index + 1) % points.length;
-          if (event.key === 'Home') next = 0;
-          if (event.key === 'End') next = points.length - 1;
-          points[next]?.focus();
-        });
-      });
-      chart.addEventListener('mouseleave', hideAll);
-    });
-  }
-
-  function deepDiveMarkup(data, town, themeKey) {
-    const detail = data.details[town.code];
-    if (!detail) return '';
-    if (themeKey === 'salute') {
-      const health = data.healthB?.[town.code];
-      if (!health) return '';
-      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Salute e uso dei servizi</h3></div><p>Indicatori standardizzati o rapportati alla popolazione. Non rappresentano una valutazione della qualità dei servizi e vanno letti insieme a definizione, anno e fonte.</p></div>
-        <div class="deep-facts-grid"><article class="deep-fact"><span>Speranza di vita</span><strong>${number2.format(health.lifeExpectancy)} anni</strong><small>Indicatore demografico-sanitario</small></article><article class="deep-fact"><span>Accessi al pronto soccorso</span><strong>${number2.format(health.emergencyAccess)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Ricoverati</span><strong>${number2.format(health.hospitalizedAll)}</strong><small>Ogni 100 residenti</small></article><article class="deep-fact"><span>Assistenza domiciliare anziani</span><strong>${number2.format(health.elderlyHomeCare)}</strong><small>Ogni 100 anziani</small></article></div>
-        <div class="deep-columns"><div><h4>Patologie croniche selezionate</h4><ul class="deep-list"><li><span>Diabete</span><strong>${number2.format(health.diabetes)} ogni 1.000</strong></li><li><span>Demenza</span><strong>${number2.format(health.dementia)} ogni 1.000</strong></li><li><span>Ipertensione</span><strong>${number2.format(health.hypertension)} ogni 1.000</strong></li><li><span>BPCO</span><strong>${number2.format(health.copd)} ogni 1.000</strong></li></ul></div><div><h4>Mortalità per causa</h4><ul class="deep-list"><li><span>Tumori</span><strong>${number2.format(health.mortalityTumors)} ogni 100.000</strong></li><li><span>Malattie circolatorie</span><strong>${number2.format(health.mortalityCirculatory)} ogni 100.000</strong></li><li><span>Malattie respiratorie</span><strong>${number2.format(health.mortalityRespiratory)} ogni 100.000</strong></li></ul></div></div></section>`;
-    }
-    if (themeKey === 'economia') {
-      const e = detail.economy;
-      const maxWorkers = Math.max(...e.topSectors.map(s => s.workers), 1);
-      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Struttura economica</h3></div><p>Fasce di reddito, capacità ricettiva e principali settori per presenza locale. I valori derivano dalle stesse fonti richiamate negli indicatori.</p></div>
-        <div class="deep-facts-grid"><article class="deep-fact"><span>Strutture ricettive</span><strong>${number0.format(e.tourismStructures)}</strong><small>Anno ${html(e.tourismYear)}</small></article><article class="deep-fact"><span>Posti letto</span><strong>${number0.format(e.tourismBeds)}</strong><small>Hotel e altre struttur
+        <g class="chart-tooltip" 

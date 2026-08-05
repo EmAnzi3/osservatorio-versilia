@@ -1,4 +1,31 @@
-splayValue, row.displayUnit))}</strong>
+ function mountShell(data) {
+    document.getElementById('site-header-mount').innerHTML = headerMarkup(data);
+    document.getElementById('site-footer-mount').innerHTML = footerMarkup(data);
+    installSearch(data);
+  }
+
+  function metricRows(data, metricKey, normalized = false) {
+    const metric = data.metrics[metricKey];
+    return metric.rows.map(row => ({
+      ...row,
+      displayValue: normalized && row.normalized ? row.normalized.value : row.value,
+      displayUnit: normalized && row.normalized ? row.normalized.unit : metric.meta.unit
+    })).sort((a, b) => (b.displayValue ?? -Infinity) - (a.displayValue ?? -Infinity));
+  }
+
+  function barRows(data, metricKey, options = {}) {
+    const normalized = Boolean(options.normalized);
+    const selectedTown = options.selectedTown || '';
+    const rows = metricRows(data, metricKey, normalized);
+    const max = Math.max(...rows.map(r => Number(r.displayValue) || 0), 0.0001);
+    return rows.map((row, index) => {
+      const query = new URLSearchParams({ tema: data.metrics[metricKey].meta.theme, indicatore: metricKey });
+      const href = route(`comuni/${row.slug}/?${query}`);
+      return `<a href="${href}" class="bar-row ${row.slug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
+        <span class="bar-rank">${index + 1}</span><span class="bar-town">${html(row.town)}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
+          <span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue, row.displayUnit))}</span></span>
+        <strong>${html(formatValue(row.displayValue, row.displayUnit))}</strong>
       </a>`;
     }).join('');
   }
@@ -48,11 +75,25 @@ splayValue, row.displayUnit))}</strong>
     }
   }
 
+  function themeSections(theme) {
+    if (Array.isArray(theme.sections) && theme.sections.length) return theme.sections;
+    return [{ key: 'indicatori', label: 'Indicatori', description: '', metrics: theme.metrics || [] }];
+  }
+
+  function featuredMetrics(theme) {
+    const candidates = Array.isArray(theme.featured) && theme.featured.length
+      ? theme.featured
+      : themeSections(theme).map(section => section.metrics[0]).filter(Boolean);
+    return candidates.filter(key => theme.metrics.includes(key)).slice(0, 3);
+  }
+
   function themeCard(theme) {
+    const sections = themeSections(theme);
     return `<button type="button" data-theme="${html(theme.key)}" class="theme-card" aria-pressed="false">
       <span class="theme-number">${html(theme.number)}</span>
       <span class="theme-icon">${themeIcon(theme.key, 26)}</span>
-      <strong>${html(theme.label)}</strong><span class="theme-question">${html(theme.question)}</span><i aria-hidden="true">→</i>
+      <strong>${html(theme.label)}</strong><span class="theme-question">${html(theme.question)}</span>
+      <span class="theme-card-meta">${sections.length} ${sections.length === 1 ? 'sezione' : 'sezioni'} · ${theme.metrics.length} indicatori</span><i aria-hidden="true">→</i>
     </button>`;
   }
 
@@ -105,11 +146,11 @@ splayValue, row.displayUnit))}</strong>
     </main>`;
 
     let selectedTheme = 'demografia';
-    let selectedMetric = data.themes[selectedTheme].metrics[0];
+    let selectedMetric = featuredMetrics(data.themes[selectedTheme])[0] || data.themes[selectedTheme].metrics[0];
     const cards = [...document.querySelectorAll('.theme-card')];
     cards.forEach(card => card.addEventListener('click', () => {
       selectedTheme = card.dataset.theme;
-      selectedMetric = data.themes[selectedTheme].metrics[0];
+      selectedMetric = featuredMetrics(data.themes[selectedTheme])[0] || data.themes[selectedTheme].metrics[0];
       cards.forEach(c => { c.classList.toggle('active', c === card); c.setAttribute('aria-pressed', c === card ? 'true' : 'false'); });
       renderHomeExplorer(data, selectedTheme, selectedMetric);
     }));
@@ -120,34 +161,10 @@ splayValue, row.displayUnit))}</strong>
   function renderHomeExplorer(data, themeKey, metricKey) {
     const panel = document.getElementById('home-explorer');
     const theme = data.themes[themeKey];
+    const keys = featuredMetrics(theme);
+    if (!keys.includes(metricKey)) metricKey = keys[0] || theme.metrics[0];
     const metric = data.metrics[metricKey];
     panel.dataset.theme = themeKey;
     panel.innerHTML = `<div class="explorer-copy"><span class="overline">Confronto · ${html(theme.label)}</span><h2>${html(metric.meta.label)}</h2><p>${html(metric.meta.description)}</p>
-      <div class="metric-switch" role="tablist" aria-label="Indicatore">${theme.metrics.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>
-      <div class="explorer-stat"><span>${html(metric.aggregate.label)}</span><strong>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</strong><small>${html(metric.aggregate.note)}</small></div>
-      <a class="source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Apri la fonte originale <span aria-hidden="true">↗</span></a>
-      <a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}" class="button-link">Apri il confronto completo <span>→</span></a></div>
-      <div class="explorer-chart"><div class="comparison-bars">${barRows(data, metricKey)}</div></div>`;
-    installTablist(panel.querySelector('[role="tablist"]'), key => renderHomeExplorer(data, themeKey, key));
-  }
-
-  function metricControls(data, themeKey, metricKey, compact = true) {
-    const theme = data.themes[themeKey];
-    return `<div class="metric-switch ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatore">${theme.metrics.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>`;
-  }
-
-  function renderCompare(data) {
-    const themeKey = pageTheme || Object.keys(data.themes)[0];
-    const theme = data.themes[themeKey];
-    if (!theme) return renderNotFound();
-    const params = new URLSearchParams(location.search);
-    let metricKey = params.get('indicatore');
-    if (!theme.metrics.includes(metricKey)) metricKey = theme.metrics[0];
-    app.innerHTML = `<main class="inner-page" data-theme="${themeKey}">
-      <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
-      <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
-        <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
-      <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
-      <section id="compare-benchmark" class="page-width"></section>
-      ${themeKey === 'mobilita' ? crimeMarkup(data) : ''}
-      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
+      <div class="featured-metric-label">Indicatori chiave</div>
+      <div class="metric-switch featured-switch" role="tablist" aria-label="Indicatori chiave">${keys.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === m
