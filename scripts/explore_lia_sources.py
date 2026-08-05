@@ -16,7 +16,7 @@ S.headers.update({"User-Agent": "OsservatorioVersilia/1.0 source verification"})
 
 def head(label: str, url: str) -> None:
     try:
-        r = S.head(url, timeout=60, allow_redirects=True)
+        r = S.head(url, timeout=30, allow_redirects=True)
         record = {
             "label": label,
             "url": url,
@@ -26,38 +26,38 @@ def head(label: str, url: str) -> None:
             "content_length": r.headers.get("content-length"),
             "last_modified": r.headers.get("last-modified"),
         }
-        print("HEAD", record)
+        print("HEAD", record, flush=True)
     except Exception as exc:
         record = {"label": label, "url": url, "error": repr(exc)}
-        print(record)
+        print(record, flush=True)
     (OUT / f"{label}.json").write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def inspect_istat_dataflows() -> None:
-    url = "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/all/latest"
-    r = S.get(url, timeout=120, allow_redirects=True)
-    print("ISTAT DATAFLOW", r.status_code, len(r.content), r.headers.get("content-type"))
+    url = "https://esploradati.istat.it/SDMXWS/rest/dataflow/IT1/all/latest?detail=allstubs"
+    r = S.get(url, timeout=60, allow_redirects=True)
+    print("ISTAT DATAFLOW", r.status_code, len(r.content), r.headers.get("content-type"), flush=True)
     r.raise_for_status()
     text = r.text
     (OUT / "istat_dataflows.xml").write_text(text, encoding="utf-8")
     soup = BeautifulSoup(text, "xml")
     matches = []
     words = ("cens", "occup", "lavor", "istruz", "titolo", "abitaz", "famigl")
-    for flow in soup.find_all(["Dataflow", "structure:Dataflow"]):
-        names = [n.get_text(" ", strip=True) for n in flow.find_all(["Name", "common:Name"])]
+    for flow in soup.find_all("Dataflow"):
+        names = [n.get_text(" ", strip=True) for n in flow.find_all("Name")]
         label = " | ".join(names)
         if any(word in label.lower() for word in words):
             matches.append({"id": flow.get("id"), "agency": flow.get("agencyID"), "version": flow.get("version"), "name": label})
     (OUT / "istat_candidate_flows.json").write_text(json.dumps(matches, ensure_ascii=False, indent=2), encoding="utf-8")
-    print("ISTAT candidate flows", len(matches))
+    print("ISTAT candidate flows", len(matches), flush=True)
     for row in matches:
-        print(row)
+        print(row, flush=True)
 
 
 def inspect_page(label: str, url: str) -> None:
     try:
-        r = S.get(url, timeout=90, allow_redirects=True)
-        print("PAGE", label, r.status_code, len(r.content), r.url)
+        r = S.get(url, timeout=45, allow_redirects=True)
+        print("PAGE", label, r.status_code, len(r.content), r.url, flush=True)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         rows = []
@@ -70,11 +70,11 @@ def inspect_page(label: str, url: str) -> None:
             if any(k in absolute.lower() for k in ("csv", "xls", "ods", "tableau", "powerbi", "dashboard", "download", "sil", "open_data")):
                 rows.append({"tag": tag.name, "text": tag.get_text(" ", strip=True)[:200], "url": absolute})
         (OUT / f"{label}_links.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(label, "interesting links", len(rows))
+        print(label, "interesting links", len(rows), flush=True)
         for row in rows[:100]:
-            print(row)
+            print(row, flush=True)
     except Exception as exc:
-        print(label, repr(exc))
+        print(label, repr(exc), flush=True)
         (OUT / f"{label}_error.txt").write_text(repr(exc), encoding="utf-8")
 
 
