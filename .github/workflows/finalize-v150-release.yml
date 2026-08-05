@@ -1,0 +1,66 @@
+name: Finalize v1.5.0 release labels
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-v150-release
+  cancel-in-progress: true
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Replace preview labels
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              '"version": "2026.08.05-local-v1.5.0-toscana"': '"version": "2026.08.05-v1.5.0"',
+              '"updated": "anteprima locale · 5 agosto 2026"': '"updated": "5 agosto 2026"',
+          }
+
+          paths = [
+              Path("data/site-data.json"),
+              Path("scripts/update_toscana_indicators_v150.py"),
+          ]
+
+          changed = False
+          for path in paths:
+              text = path.read_text(encoding="utf-8")
+              original = text
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              if text != original:
+                  path.write_text(text, encoding="utf-8")
+                  changed = True
+
+          print("Etichette pubbliche applicate." if changed else "Etichette già pubbliche.")
+          PY
+
+      - name: Commit public labels
+        run: |
+          if git diff --quiet -- data/site-data.json scripts/update_toscana_indicators_v150.py; then
+            echo "Nessuna modifica necessaria."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json scripts/update_toscana_indicators_v150.py
+          git commit -m "Rimuove le etichette di anteprima dalla v1.5.0"
+          git push origin HEAD:main
