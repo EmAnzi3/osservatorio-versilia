@@ -35,6 +35,7 @@ SUPPORTED_VERSIONS = {
     "2026.08.05-local-v1.5.0-toscana",
     "2026.08.05-v1.5.0",
     "2026.08.05-local-v1.6.0-bilanci",
+    "2026.08.05-local-v1.6.0-bilanci-storici",
     "2026.08.05-v1.6.0",
 }
 
@@ -115,7 +116,7 @@ def main() -> None:
         require(meta.get("year") not in (None, ""), f"{key}: anno mancante")
         require(meta.get("source") not in (None, ""), f"{key}: fonte mancante")
         require(
-            metric.get("method", {}).get("coverage") == "7/7",
+            str(metric.get("method", {}).get("coverage", "")).startswith("7/7"),
             f"{key}: copertura metodologica mancante",
         )
 

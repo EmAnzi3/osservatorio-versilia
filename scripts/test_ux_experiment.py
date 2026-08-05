@@ -80,8 +80,8 @@ def static_assertions(data: dict) -> int:
         if len(common_years(metric)) >= 2
     }
     require(len(comparable) >= 20, "Troppo pochi indicatori dispongono di uno storico comparabile")
-    require(len(comparable.get("currentRevenueAccruedPerResident", [])) == 2,
-            "I bilanci devono offrire il confronto 2024–2025")
+    require(len(comparable.get("currentRevenueAccruedPerResident", [])) >= 7,
+            "I bilanci devono offrire una serie storica estesa con copertura 7/7")
     require(len(comparable.get("population", [])) >= 3,
             "La popolazione deve offrire una serie storica estesa")
 
@@ -126,13 +126,24 @@ def browser_assertions() -> None:
                 "Bilanci: selettore storico non attivato")
         require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
                 "Bilanci: pannello storico non visibile")
-        require(page.locator(".ux-two-point-row").count() == 7,
-                "Bilanci: il confronto a due punti non contiene sette Comuni")
-        require("Confronto a due punti 2024–2025" in page.locator(".ux-history-head").inner_text(),
-                "Bilanci: confronto a due anni non riconosciuto")
+        require(page.locator(".ux-series-group").count() == 7,
+                "Bilanci: lo storico esteso non contiene sette serie comunali")
+        require("Andamento 2019–2025" in page.locator(".ux-history-head").inner_text(),
+                "Bilanci: intervallo storico esteso non riconosciuto")
         page.locator('[data-history-select="massarosa"]').click()
-        require(page.locator('.ux-two-point-row[data-history-town="massarosa"].is-selected').count() == 1,
+        require(page.locator('.ux-series-group[data-history-town="massarosa"].is-selected').count() == 1,
                 "Bilanci: selezione di Massarosa non applicata")
+
+        page.goto(
+            base + "confronta/economia/?indicatore=income",
+            wait_until="networkidle",
+        )
+        page.wait_for_selector(".ux-view-shell")
+        page.locator('[data-view-mode="history"]').click()
+        require(page.locator(".ux-two-point-row").count() == 7,
+                "Economia: confronto a due punti incompleto")
+        require("Confronto a due punti 2023–2024" in page.locator(".ux-history-head").inner_text(),
+                "Economia: intervallo a due punti non riconosciuto")
 
         page.goto(
             base + "comuni/massarosa/?tema=demografia&indicatore=population",
@@ -158,8 +169,8 @@ def browser_assertions() -> None:
         require(visible_groups.count() == 1,
                 f"Mobile: devono essere aperte una sola sezione, trovate {visible_groups.count()}")
         mobile_page.locator('[data-view-mode="history"]').click()
-        require(mobile_page.locator(".ux-two-point-row").count() == 7,
-                "Mobile: confronto a due punti incompleto")
+        require(mobile_page.locator(".ux-series-group").count() == 7,
+                "Mobile: storico esteso dei bilanci incompleto")
         widths = mobile_page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
         require(widths["scroll"] <= widths["client"],
                 f"Mobile: overflow orizzontale della pagina {widths}")
