@@ -33,6 +33,9 @@ jobs:
       - name: Inspect Tuscany archives
         run: python scripts/inspect_openbdap_budget_zips.py
 
+      - name: Extract municipal candidates
+        run: python scripts/extract_openbdap_budget_candidates.py
+
       - name: Upload audit snapshots
         uses: actions/upload-artifact@v4
         with:
