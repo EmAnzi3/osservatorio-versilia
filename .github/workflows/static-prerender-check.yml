@@ -16,7 +16,12 @@ concurrency:
 jobs:
   extract-openbdap-history:
     if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
-    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout experimental branch
         uses: actions/checkout@v4
@@ -33,10 +38,16 @@ jobs:
         run: python -m pip install requests
 
       - name: Restore validated OpenBDAP archives
-        uses: actions/cache@v4
+        id: openbdap-cache
+        uses: actions/cache/restore@v4
         with:
           path: .cache/openbdap
-          key: openbdap-toscana-rendiconto-2019-2023-v1
+          key: openbdap-toscana-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            openbdap-toscana-${{ runner.os }}-
+
+      - name: Bound CI network retries
+        run: python scripts/prepare_openbdap_fast_retry.py
 
       - name: Expand the validated OpenBDAP snapshot
         run: python scripts/expand_bilanci_history_v160.py
@@ -44,13 +55,20 @@ jobs:
       - name: Preserve the validated historical snapshot
         uses: actions/upload-artifact@v4
         with:
-          name: bilanci-openbdap-history-snapshot
+          name: bilanci-openbdap-history-snapshot-${{ runner.os }}
           path: data/source-snapshots/bilanci-v1.6.0.json
           if-no-files-found: error
           retention-days: 7
 
+      - name: Save validated or partial OpenBDAP archive cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/openbdap
+          key: openbdap-toscana-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+
   build-and-test:
-    if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
+    if: ${{ always() && github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
     needs: extract-openbdap-history
     runs-on: ubuntu-latest
     steps:
@@ -60,11 +78,31 @@ jobs:
           ref: expansion/bilanci-comunali-v160
           fetch-depth: 0
 
-      - name: Restore the validated historical snapshot
+      - name: Download successful historical snapshots
         uses: actions/download-artifact@v4
         with:
-          name: bilanci-openbdap-history-snapshot
-          path: data/source-snapshots
+          pattern: bilanci-openbdap-history-snapshot-*
+          path: .history-artifacts
+
+      - name: Select one fully validated snapshot deterministically
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('.history-artifacts')
+          candidates = [
+              root / 'bilanci-openbdap-history-snapshot-Linux' / 'bilanci-v1.6.0.json',
+              root / 'bilanci-openbdap-history-snapshot-Windows' / 'bilanci-v1.6.0.json',
+              root / 'bilanci-openbdap-history-snapshot-macOS' / 'bilanci-v1.6.0.json',
+          ]
+          source = next((item for item in candidates if item.exists()), None)
+          if source is None:
+              raise SystemExit('Nessun runner ha prodotto uno snapshot OpenBDAP completo e validato')
+          target = Path('data/source-snapshots/bilanci-v1.6.0.json')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          shutil.copy2(source, target)
+          print(f'Snapshot selezionato: {source}')
+          PY
 
       - name: Set up Python
         uses: actions/setup-python@v5
