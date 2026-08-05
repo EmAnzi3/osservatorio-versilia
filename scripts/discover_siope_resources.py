@@ -105,6 +105,18 @@ def main() -> None:
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Risorse SIOPE censite in {OUT}")
 
+    # Temporary read-only diagnostics while aligning the historical parser with
+    # the current official dump schema. Failure here is reported but does not
+    # replace the strict validation performed by build_siope_history.py.
+    diagnostic = ROOT / "scripts" / "diagnose_siope_2018.py"
+    builder = ROOT / "scripts" / "build_siope_history.py"
+    if diagnostic.exists() and builder.exists():
+        try:
+            import diagnose_siope_2018
+            diagnose_siope_2018.main()
+        except Exception as exc:  # diagnostic output must remain visible in CI
+            print(f"DIAGNOSTICA SIOPE 2018 CONCLUSA CON ESITO: {type(exc).__name__}: {exc}")
+
 
 if __name__ == "__main__":
     main()
