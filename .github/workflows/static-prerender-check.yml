@@ -109,11 +109,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install browser and data tooling
+      - name: Install data tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests playwright
-          python -m playwright install --with-deps chromium
+          python -m pip install requests
 
       - name: Materialize reviewed SIOPE sources
         if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
@@ -127,7 +126,7 @@ jobs:
         if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
         run: python scripts/discover_siope_resources.py
 
-      - name: Build and validate SIOPE history 2018–2025
+      - name: Build and validate SIOPE history 2019–2025
         if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
         run: python scripts/build_siope_history.py
 
@@ -154,6 +153,11 @@ jobs:
 
       - name: Run SIOPE history checks
         run: python scripts/test_siope_history_v160.py
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
 
       - name: Run accordion and history browser checks
         run: python scripts/test_ux_experiment.py
