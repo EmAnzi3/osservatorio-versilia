@@ -7,6 +7,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: materialize-toscana-v150
+  cancel-in-progress: true
+
 jobs:
   materialize:
     runs-on: ubuntu-latest
