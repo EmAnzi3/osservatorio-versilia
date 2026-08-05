@@ -3,6 +3,8 @@ name: Probe LIA data endpoints
 on:
   push:
     branches: ["expansion/lavoro-istruzione-abitare"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
