@@ -66,6 +66,17 @@ def main() -> None:
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Manifesto ufficiale SIOPE 2019-2025 materializzato in {OUT}")
 
+    # Temporary read-only diagnostics. It runs only when the generated builder
+    # is present and does not write data or alter validation outcomes.
+    diagnostic = ROOT / "scripts" / "diagnose_siope_2019.py"
+    builder = ROOT / "scripts" / "build_siope_history.py"
+    if diagnostic.exists() and builder.exists():
+        try:
+            import diagnose_siope_2019
+            diagnose_siope_2019.main()
+        except Exception as exc:
+            print(f"DIAGNOSTICA SIOPE 2019 CONCLUSA CON ESITO: {type(exc).__name__}: {exc}")
+
 
 if __name__ == "__main__":
     main()
