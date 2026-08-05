@@ -11,12 +11,9 @@ OUT = ROOT / "data" / "source-snapshots" / "siope-resource-discovery.json"
 DUMP_BASE = "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump"
 
 # Exact package/resource identifiers previously resolved through the official
-# BDAP CKAN catalogue by exact dataset title. Freezing them removes a flaky
-# catalogue lookup from every CI run; the actual data are still downloaded
-# from the official RGS datastore and validated independently.
+# BDAP CKAN catalogue by exact dataset title. The 2018 resources are excluded:
+# the published historical series intentionally starts from 2019.
 VERIFIED_DATASETS = {
-    "entrata-2018-toscana": ("fe942e7e-b701-4597-a7f3-e5480ccd033e", "2018 - Toscana - SIOPE Movimenti cumulati mensili di Entrata"),
-    "spesa-2018-toscana": ("eee7695a-0c0b-4070-b20c-a4530af76fab", "2018 - Toscana - SIOPE Movimenti cumulati mensili di Spesa"),
     "entrata-2019-toscana": ("7deb457c-3207-481f-bed0-ffd45be4ff59", "2019 - Toscana - SIOPE Movimenti cumulati mensili di Entrata"),
     "spesa-2019-toscana": ("3a937353-ee1f-43a7-86be-1c753adec130", "2019 - Toscana - SIOPE Movimenti cumulati mensili di Spesa"),
     "entrata-2020-toscana": ("5cb68fcb-af2b-41f6-8fbc-f7da82a4581c", "2020 - Toscana - SIOPE Movimenti cumulati mensili di Entrata"),
@@ -58,6 +55,7 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "catalogue": "BDAP Open Data — API CKAN v3",
         "api": "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3",
+        "coverage": "2019-2025",
         "manifest_method": "Identificativi risolti per titolo ufficiale esatto e congelati per riproducibilità.",
         "datasets": {
             label: package(identifier, title)
@@ -66,16 +64,7 @@ def main() -> None:
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Manifesto ufficiale SIOPE materializzato in {OUT}")
-
-    diagnostic = ROOT / "scripts" / "diagnose_siope_2018.py"
-    builder = ROOT / "scripts" / "build_siope_history.py"
-    if diagnostic.exists() and builder.exists():
-        try:
-            import diagnose_siope_2018
-            diagnose_siope_2018.main()
-        except Exception as exc:
-            print(f"DIAGNOSTICA SIOPE 2018 CONCLUSA CON ESITO: {type(exc).__name__}: {exc}")
+    print(f"Manifesto ufficiale SIOPE 2019-2025 materializzato in {OUT}")
 
 
 if __name__ == "__main__":
