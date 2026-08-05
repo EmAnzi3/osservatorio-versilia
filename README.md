@@ -6,7 +6,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 9 aree tematiche;
-- 69 indicatori;
+- 78 indicatori;
 - confronti territoriali e benchmark disponibili;
 - serie storiche;
 - sottosezioni tematiche e dettagli analitici espandibili;
@@ -33,6 +33,7 @@ Il sito usa collegamenti relativi e funziona sia come GitHub Project Page sia co
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine dei nove temi;
 - `data/site-data.json`: dati e metadati degli indicatori;
+- `data/source-snapshots/`: conteggi grezzi, formule, file originali e impronte SHA-256 delle elaborazioni comunali;
 - `assets/app.js`: logica di caricamento per lo sviluppo;
 - `assets/app-parts/`: moduli sorgente dell'applicazione;
 - `assets/original.css`: stile recuperato dal sito pubblico;
@@ -51,6 +52,8 @@ I valori sono centralizzati in `data/site-data.json`. Per aggiornamenti struttur
 - formula degli indicatori derivati;
 - eventuale serie storica;
 - eventuali benchmark Toscana/Italia.
+
+Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot leggibili conservati in `data/source-snapshots/`. Gli snapshot riportano il perimetro territoriale, i conteggi utilizzati, le formule, i candidati esclusi e le impronte dei file ufficiali originari.
 
 ## Licenze e attribuzioni
 
