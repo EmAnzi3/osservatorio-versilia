@@ -5,6 +5,7 @@ from __future__ import annotations
 import io
 import json
 import math
+import time
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,6 +17,7 @@ import build_bilanci_snapshot as base
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
+CACHE_DIR = ROOT / ".cache" / "openbdap"
 FIRST_YEAR = 2019
 LAST_YEAR = 2025
 TRANSPORTS: dict[str, str] = {}
@@ -29,6 +31,10 @@ def archive_paths(year: int) -> dict[str, str]:
     }
 
 
+def cache_path(path: str) -> Path:
+    return CACHE_DIR / path.lstrip("/")
+
+
 def validate_zip(content: bytes, label: str) -> None:
     if len(content) < 10_000 or not content.startswith(b"PK"):
         raise RuntimeError(f"Risposta non ZIP o troppo piccola per {label}: {len(content)} byte")
@@ -40,24 +46,58 @@ def validate_zip(content: bytes, label: str) -> None:
             raise RuntimeError(f"Archivio corrotto {label}, primo file errato: {bad}")
 
 
+def read_cached_archive(path: str, official_url: str) -> tuple[bytes, str] | None:
+    target = cache_path(path)
+    if not target.exists():
+        return None
+    try:
+        content = target.read_bytes()
+        validate_zip(content, f"cache {target}")
+    except (OSError, RuntimeError, zipfile.BadZipFile):
+        target.unlink(missing_ok=True)
+        return None
+    TRANSPORTS[official_url] = "cache persistente GitHub Actions"
+    print(f"Archivio OpenBDAP riutilizzato dalla cache: {target}")
+    return content, official_url
+
+
+def save_cached_archive(path: str, content: bytes) -> None:
+    target = cache_path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary = target.with_suffix(target.suffix + ".tmp")
+    temporary.write_bytes(content)
+    temporary.replace(target)
+
+
 def download_archive(session: requests.Session, path: str) -> tuple[bytes, str]:
     official_url = base.BASE + quote(path, safe="/:_-.")
+    cached = read_cached_archive(path, official_url)
+    if cached is not None:
+        return cached
+
     encoded = quote(official_url, safe="")
-    attempts = [
+    transports = [
         ("diretto RGS", official_url),
         ("proxy raw AllOrigins", f"https://api.allorigins.win/raw?url={encoded}"),
         ("proxy raw CorsProxy", f"https://corsproxy.io/?url={encoded}"),
     ]
-    errors = []
-    for label, transport_url in attempts:
-        try:
-            response = session.get(transport_url, timeout=base.TIMEOUT)
-            response.raise_for_status()
-            validate_zip(response.content, f"{path} via {label}")
-            TRANSPORTS[official_url] = label
-            return response.content, official_url
-        except (requests.RequestException, RuntimeError, zipfile.BadZipFile) as exc:
-            errors.append(f"{label}: {type(exc).__name__}: {exc}")
+    errors: list[str] = []
+    for round_number in range(1, 5):
+        for label, transport_url in transports:
+            try:
+                response = session.get(transport_url, timeout=base.TIMEOUT)
+                response.raise_for_status()
+                validate_zip(response.content, f"{path} via {label}")
+                save_cached_archive(path, response.content)
+                TRANSPORTS[official_url] = label
+                print(f"Archivio OpenBDAP acquisito al tentativo {round_number}: {official_url}")
+                return response.content, official_url
+            except (requests.RequestException, RuntimeError, zipfile.BadZipFile, OSError) as exc:
+                errors.append(
+                    f"round {round_number}, {label}: {type(exc).__name__}: {exc}"
+                )
+        if round_number < 4:
+            time.sleep(10 * round_number)
     raise RuntimeError(
         f"Archivio OpenBDAP non recuperabile: {official_url}\n" + "\n".join(errors)
     )
@@ -87,6 +127,7 @@ def main() -> None:
     })
 
     sources = dict(snapshot["source"].get("years", {}))
+    added_years: list[int] = []
     for year in years:
         key = str(year)
         if all(key in snapshot["raw"][town]["years"] for town in base.TOWN_CODES):
@@ -100,6 +141,7 @@ def main() -> None:
             raise RuntimeError(f"Copertura comunale incompleta per {year}: {sorted(year_raw)}")
         for town, values in year_raw.items():
             snapshot["raw"][town]["years"][key] = values
+        added_years.append(year)
 
     metric_keys = list(base.compute_values(snapshot["raw"]["Massarosa"]["years"][str(LAST_YEAR)]))
     metrics: dict[str, dict] = {}
@@ -134,8 +176,13 @@ def main() -> None:
         if len(metric["years"]) < minimum:
             raise RuntimeError(f"Serie insufficiente per {key}: {metric['years']}")
 
+    previous_audit = snapshot.get("history_audit", {})
+    previous_transports = dict(previous_audit.get("download_transport", {}))
+    previous_transports.update(TRANSPORTS)
+
     snapshot["version"] = "2026.08.05-local-v1.6.0-bilanci-storici"
-    snapshot["generated_at"] = datetime.now(timezone.utc).isoformat()
+    if added_years or not snapshot.get("generated_at"):
+        snapshot["generated_at"] = datetime.now(timezone.utc).isoformat()
     snapshot["scope"] = f"Rendiconti OpenBDAP {FIRST_YEAR}–{LAST_YEAR} dei sette Comuni dell’Osservatorio Versilia."
     snapshot["source"]["years"] = dict(sorted(sources.items(), key=lambda item: int(item[0])))
     snapshot["selection_rules"]["years"] = years
@@ -144,7 +191,7 @@ def main() -> None:
         "accepted_years": years,
         "coverage": "7/7 per ogni annualità e indicatore ammesso",
         "population_denominator": "Serie Istat al 1° gennaio già materializzata nel progetto.",
-        "download_transport": TRANSPORTS,
+        "download_transport": previous_transports,
         "integrity": "Ogni risposta deve essere un archivio ZIP integro; SHA-256 degli archivi e dei CSV selezionati conservati nello snapshot.",
         "rigid_expenditure_excluded_years": excluded_rigid,
     }
@@ -155,7 +202,10 @@ def main() -> None:
     if caveat not in snapshot["caveats"]:
         snapshot["caveats"].append(caveat)
     SNAPSHOT_PATH.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Serie OpenBDAP estese al periodo {FIRST_YEAR}–{LAST_YEAR} con copertura 7/7.")
+    if added_years:
+        print(f"Serie OpenBDAP estese al periodo {FIRST_YEAR}–{LAST_YEAR} con copertura 7/7; aggiunti gli anni {added_years}.")
+    else:
+        print(f"Serie OpenBDAP {FIRST_YEAR}–{LAST_YEAR} già complete e nuovamente validate 7/7.")
 
 
 if __name__ == "__main__":
