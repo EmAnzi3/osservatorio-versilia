@@ -1,6 +1,6 @@
 {
-  "version": "2026.08.05-v1.3.1",
-  "updated": "5 agosto 2026",
+  "version": "2026.08.05-local-v1.4.0-lia",
+  "updated": "anteprima locale · 5 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -117,12 +117,15 @@
       "key": "lavoro",
       "number": "03",
       "label": "Lavoro",
-      "question": "Quante persone lavorano o cercano lavoro?",
-      "description": "Occupazione, disoccupazione e partecipazione.",
+      "question": "Quante persone lavorano e quali divari emergono?",
+      "description": "Occupazione, disoccupazione, partecipazione e differenze tra uomini e donne.",
       "metrics": [
         "employmentRate",
         "unemploymentRate",
-        "activityRate"
+        "activityRate",
+        "femaleEmploymentRate",
+        "maleEmploymentRate",
+        "employmentGenderGap"
       ],
       "sections": [
         {
@@ -134,30 +137,43 @@
             "unemploymentRate",
             "activityRate"
           ]
+        },
+        {
+          "key": "genere",
+          "label": "Divari di genere",
+          "description": "Occupazione femminile e maschile nella stessa fascia di età, con il relativo divario.",
+          "metrics": [
+            "femaleEmploymentRate",
+            "maleEmploymentRate",
+            "employmentGenderGap"
+          ]
         }
       ],
       "featured": [
         "employmentRate",
-        "unemploymentRate",
-        "activityRate"
+        "femaleEmploymentRate",
+        "employmentGenderGap"
       ]
     },
     "istruzione": {
       "key": "istruzione",
       "number": "04",
       "label": "Istruzione",
-      "question": "Qual è il livello di istruzione?",
-      "description": "Titoli di studio e presenza delle scuole.",
+      "question": "Qual è il livello di istruzione e come è organizzata la rete scolastica?",
+      "description": "Titoli di studio, popolazione scolastica, classi e tempo pieno.",
       "metrics": [
         "diplomaPlus",
         "tertiary",
-        "schoolSites"
+        "schoolSites",
+        "schoolStudents",
+        "studentsPerClass",
+        "primaryFullTimeShare"
       ],
       "sections": [
         {
           "key": "capitale",
           "label": "Capitale umano",
-          "description": "Livello di istruzione della popolazione.",
+          "description": "Livello di istruzione della popolazione residente.",
           "metrics": [
             "diplomaPlus",
             "tertiary"
@@ -165,17 +181,27 @@
         },
         {
           "key": "rete",
-          "label": "Rete e sedi scolastiche",
-          "description": "Presenza delle sedi scolastiche sul territorio.",
+          "label": "Rete e popolazione scolastica",
+          "description": "Sedi e alunni delle scuole localizzate nel territorio comunale.",
           "metrics": [
-            "schoolSites"
+            "schoolSites",
+            "schoolStudents"
+          ]
+        },
+        {
+          "key": "organizzazione",
+          "label": "Classi e tempo scuola",
+          "description": "Dimensione media delle classi e diffusione del tempo pieno nella primaria.",
+          "metrics": [
+            "studentsPerClass",
+            "primaryFullTimeShare"
           ]
         }
       ],
       "featured": [
         "diplomaPlus",
-        "tertiary",
-        "schoolSites"
+        "schoolStudents",
+        "primaryFullTimeShare"
       ]
     },
     "salute": {
@@ -300,36 +326,49 @@
       "key": "abitare",
       "number": "07",
       "label": "Abitare",
-      "question": "Come sono composte famiglie e abitazioni?",
-      "description": "Case non occupate, persone sole e nuclei familiari.",
+      "question": "Come viene utilizzato il patrimonio abitativo e come vivono le famiglie?",
+      "description": "Patrimonio, abitazioni non occupate, struttura familiare e coabitazione.",
       "metrics": [
+        "housingStockPer1000",
         "vacantHomes",
+        "nonOccupiedHomesPer1000",
         "singleHouseholds",
-        "householdSize"
+        "householdSize",
+        "cohabitingHouseholds"
       ],
       "sections": [
         {
-          "key": "abitazioni",
-          "label": "Patrimonio abitativo",
-          "description": "Utilizzo delle abitazioni.",
+          "key": "patrimonio",
+          "label": "Patrimonio e utilizzo",
+          "description": "Consistenza del patrimonio e abitazioni non occupate.",
           "metrics": [
-            "vacantHomes"
+            "housingStockPer1000",
+            "vacantHomes",
+            "nonOccupiedHomesPer1000"
           ]
         },
         {
           "key": "famiglie",
           "label": "Struttura delle famiglie",
-          "description": "Persone sole e dimensione dei nuclei.",
+          "description": "Persone sole e dimensione dei nuclei residenti.",
           "metrics": [
             "singleHouseholds",
             "householdSize"
+          ]
+        },
+        {
+          "key": "coabitazione",
+          "label": "Coabitazione",
+          "description": "Famiglie registrate in coabitazione nella stessa abitazione.",
+          "metrics": [
+            "cohabitingHouseholds"
           ]
         }
       ],
       "featured": [
         "vacantHomes",
-        "singleHouseholds",
-        "householdSize"
+        "housingStockPer1000",
+        "cohabitingHouseholds"
       ]
     },
     "ambiente": {
@@ -3194,6 +3233,300 @@
         "coverage": "7/7"
       }
     },
+    "femaleEmploymentRate": {
+      "meta": {
+        "key": "femaleEmploymentRate",
+        "theme": "lavoro",
+        "label": "Tasso di occupazione femminile 15–64 anni",
+        "shortLabel": "Occupazione femminile",
+        "description": "Donne occupate tra 15 e 64 anni sul totale delle donne residenti della stessa fascia d’età.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 56.43635321100918,
+          "formatted": "56,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.43635321100918
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 56.339951675596176,
+          "formatted": "56,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56.339951675596176
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 55.84045584045584,
+          "formatted": "55,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.84045584045584
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 53.942953020134226,
+          "formatted": "53,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.942953020134226
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 53.10186367117692,
+          "formatted": "53,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.10186367117692
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 49.36086529006883,
+          "formatted": "49,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.36086529006883
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 49.941656942823805,
+          "formatted": "49,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.941656942823805
+        }
+      ],
+      "aggregate": {
+        "value": 55.26488943831875,
+        "label": "Tasso ponderato Versilia",
+        "note": "Calcolato sulle donne occupate e sulla popolazione femminile 15–64 anni complessive."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "donne occupate 15–64 anni / donne residenti 15–64 anni × 100",
+        "caveat": "La fascia 15–64 anni e l’anno 2023 non coincidono con i tre indicatori generali della sezione, riferiti ai 25–64enni nel 2024.",
+        "coverage": "7/7"
+      }
+    },
+    "maleEmploymentRate": {
+      "meta": {
+        "key": "maleEmploymentRate",
+        "theme": "lavoro",
+        "label": "Tasso di occupazione maschile 15–64 anni",
+        "shortLabel": "Occupazione maschile",
+        "description": "Uomini occupati tra 15 e 64 anni sul totale degli uomini residenti della stessa fascia d’età.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "positive"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 73.24876673713884,
+          "formatted": "73,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 73.24876673713884
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 70.24260197280725,
+          "formatted": "70,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 70.24260197280725
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 71.95942552977804,
+          "formatted": "72,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.95942552977804
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 69.71267772511848,
+          "formatted": "69,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 69.71267772511848
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 71.2913553895411,
+          "formatted": "71,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.2913553895411
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 64.37699680511182,
+          "formatted": "64,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 64.37699680511182
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 69.27966101694915,
+          "formatted": "69,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 69.27966101694915
+        }
+      ],
+      "aggregate": {
+        "value": 70.78914693968939,
+        "label": "Tasso ponderato Versilia",
+        "note": "Calcolato sugli uomini occupati e sulla popolazione maschile 15–64 anni complessivi."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "uomini occupati 15–64 anni / uomini residenti 15–64 anni × 100",
+        "caveat": "La fascia 15–64 anni e l’anno 2023 non coincidono con i tre indicatori generali della sezione, riferiti ai 25–64enni nel 2024.",
+        "coverage": "7/7"
+      }
+    },
+    "employmentGenderGap": {
+      "meta": {
+        "key": "employmentGenderGap",
+        "theme": "lavoro",
+        "label": "Divario occupazionale di genere 15–64 anni",
+        "shortLabel": "Divario di genere",
+        "description": "Differenza, in punti percentuali, tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
+        "unit": "percentagePoints",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "negative"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 16.81241352612966,
+          "formatted": "16,8 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 16.81241352612966
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 13.902650297211075,
+          "formatted": "13,9 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.902650297211075
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 16.118969689322206,
+          "formatted": "16,1 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 16.118969689322206
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 15.769724704984256,
+          "formatted": "15,8 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15.769724704984256
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 18.189491718364174,
+          "formatted": "18,2 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.189491718364174
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 15.016131515042986,
+          "formatted": "15,0 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15.016131515042986
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 19.338004074125344,
+          "formatted": "19,3 p.p.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.338004074125344
+        }
+      ],
+      "aggregate": {
+        "value": 15.524257501370641,
+        "label": "Divario Versilia",
+        "note": "Differenza tra i due tassi ponderati calcolati sulle rispettive popolazioni 15–64 anni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "tasso di occupazione maschile 15–64 anni − tasso di occupazione femminile 15–64 anni",
+        "caveat": "Misura una differenza statistica e non ne identifica le cause. La fascia e l’anno differiscono dagli indicatori generali 25–64 anni del 2024.",
+        "coverage": "7/7"
+      }
+    },
     "diplomaPlus": {
       "meta": {
         "key": "diplomaPlus",
@@ -3537,6 +3870,300 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "schoolStudents": {
+      "meta": {
+        "key": "schoolStudents",
+        "theme": "istruzione",
+        "label": "Alunni nelle scuole del Comune",
+        "shortLabel": "Alunni frequentanti",
+        "description": "Alunni delle scuole primarie e secondarie, statali e paritarie, localizzate nel territorio comunale.",
+        "unit": "people",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1282,
+          "formatted": "1.282",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1282
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 7508,
+          "formatted": "7.508",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7508
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2739,
+          "formatted": "2.739",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2739
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1490,
+          "formatted": "1.490",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1490
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 978,
+          "formatted": "978",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 978
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1065,
+          "formatted": "1.065",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1065
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 106,
+          "formatted": "106",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 106
+        }
+      ],
+      "aggregate": {
+        "value": 15168,
+        "label": "Totale Versilia",
+        "note": "Somma degli alunni delle scuole primarie e secondarie localizzate nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "somma di alunni maschi e femmine per scuola, unendo anagrafe e dati di classe di istituti statali e paritari",
+        "caveat": "Misura gli alunni delle scuole localizzate nel Comune, non gli alunni residenti; non comprende la scuola dell’infanzia.",
+        "coverage": "7/7"
+      }
+    },
+    "studentsPerClass": {
+      "meta": {
+        "key": "studentsPerClass",
+        "theme": "istruzione",
+        "label": "Alunni per classe",
+        "shortLabel": "Alunni per classe",
+        "description": "Rapporto tra gli alunni e le classi delle scuole primarie e secondarie, statali e paritarie, localizzate nel Comune.",
+        "unit": "studentsPerClass",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 17.805555555555557,
+          "formatted": "17,8 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.805555555555557
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 19.400516795865634,
+          "formatted": "19,4 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.400516795865634
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 18.632653061224488,
+          "formatted": "18,6 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.632653061224488
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 18.170731707317074,
+          "formatted": "18,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.170731707317074
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 17.157894736842106,
+          "formatted": "17,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.157894736842106
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 19.72222222222222,
+          "formatted": "19,7 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.72222222222222
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 13.25,
+          "formatted": "13,2 alunni/classe",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.25
+        }
+      ],
+      "aggregate": {
+        "value": 18.79553903345725,
+        "label": "Rapporto Versilia",
+        "note": "Totale degli alunni diviso per il totale delle classi dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "alunni delle scuole primarie e secondarie / classi delle stesse scuole",
+        "caveat": "È un rapporto territoriale complessivo, non la dimensione di ogni singola classe; scuole e alunni sono attribuiti al Comune di localizzazione.",
+        "coverage": "7/7"
+      }
+    },
+    "primaryFullTimeShare": {
+      "meta": {
+        "key": "primaryFullTimeShare",
+        "theme": "istruzione",
+        "label": "Alunni della primaria a tempo pieno",
+        "shortLabel": "Tempo pieno primaria",
+        "description": "Quota degli alunni della scuola primaria iscritti a classi con organizzazione a tempo pieno.",
+        "unit": "percent",
+        "year": "a.s. 2024/25",
+        "source": "MIM — Portale unico dei dati della scuola",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 55.287817938420346,
+          "formatted": "55,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.287817938420346
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 46.80073126142596,
+          "formatted": "46,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 46.80073126142596
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 38.4321223709369,
+          "formatted": "38,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 38.4321223709369
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 62.58389261744966,
+          "formatted": "62,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 62.58389261744966
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 20.754716981132077,
+          "formatted": "20,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 20.754716981132077
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 18.574514038876888,
+          "formatted": "18,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.574514038876888
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0
+        }
+      ],
+      "aggregate": {
+        "value": 44.780523791958686,
+        "label": "Quota Versilia",
+        "note": "Ponderata sul totale degli alunni della scuola primaria nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "alunni della primaria con TEMPOSCUOLA = “TEMPO PIENO” / alunni totali della primaria × 100",
+        "caveat": "Descrive l’organizzazione dell’offerta scolastica, non la qualità didattica. Nei Comuni piccoli il valore dipende da pochi alunni.",
         "coverage": "7/7"
       }
     },
@@ -5425,13 +6052,13 @@
         "theme": "abitare",
         "label": "Abitazioni non occupate",
         "shortLabel": "Case non occupate",
-        "description": "Abitazioni che non risultano occupate da residenti sul totale delle abitazioni censite.",
+        "description": "Abitazioni vuote o occupate soltanto da persone non residenti sul totale delle abitazioni censite.",
         "unit": "percent",
-        "year": "2021",
-        "source": "Istat — Censimento abitazioni",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
       "rows": [
         {
           "town": "Massarosa",
@@ -5511,9 +6138,205 @@
       },
       "normalizedAggregate": null,
       "method": {
-        "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni vuote o occupate solo da non residenti / abitazioni totali × 100",
+        "caveat": "La categoria comprende anche abitazioni occupate soltanto da persone non residenti e non coincide necessariamente con gli immobili inutilizzati.",
+        "coverage": "7/7"
+      }
+    },
+    "housingStockPer1000": {
+      "meta": {
+        "key": "housingStockPer1000",
+        "theme": "abitare",
+        "label": "Abitazioni ogni 1.000 residenti",
+        "shortLabel": "Patrimonio abitativo",
+        "description": "Numero complessivo di abitazioni censite rapportato alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 503.224331122799,
+          "formatted": "503,22 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 503.224331122799
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 640.111924944449,
+          "formatted": "640,11 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 640.111924944449
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 702.4855636454934,
+          "formatted": "702,49 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 702.4855636454934
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 804.2829559417237,
+          "formatted": "804,28 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 804.2829559417237
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 605.3880176919984,
+          "formatted": "605,39 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 605.3880176919984
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1250.8484580197728,
+          "formatted": "1250,85 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1250.8484580197728
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1211.8498105408198,
+          "formatted": "1211,85 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1211.8498105408198
+        }
+      ],
+      "aggregate": {
+        "value": 690.9471914271553,
+        "label": "Rapporto Versilia",
+        "note": "Totale delle abitazioni diviso per la popolazione complessiva dei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni totali / popolazione residente × 1.000",
+        "caveat": "Un valore elevato può riflettere seconde case o un patrimonio non utilizzato stabilmente e non equivale, da solo, a maggiore disponibilità abitativa per i residenti.",
+        "coverage": "7/7"
+      }
+    },
+    "nonOccupiedHomesPer1000": {
+      "meta": {
+        "key": "nonOccupiedHomesPer1000",
+        "theme": "abitare",
+        "label": "Abitazioni non occupate ogni 1.000 residenti",
+        "shortLabel": "Non occupate per residente",
+        "description": "Abitazioni vuote o occupate soltanto da persone non residenti rapportate alla popolazione residente.",
+        "unit": "per1000",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 90.32700663160301,
+          "formatted": "90,33 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 90.32700663160301
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 172.67714591391655,
+          "formatted": "172,68 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 172.67714591391655
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 260.074064775295,
+          "formatted": "260,07 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 260.074064775295
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 348.8678251711427,
+          "formatted": "348,87 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 348.8678251711427
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 163.8118214716526,
+          "formatted": "163,81 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 163.8118214716526
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 758.4476907186071,
+          "formatted": "758,45 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 758.4476907186071
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 741.991043747847,
+          "formatted": "741,99 ogni 1.000",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 741.991043747847
+        }
+      ],
+      "aggregate": {
+        "value": 238.62673869261607,
+        "label": "Rapporto Versilia",
+        "note": "Totale delle abitazioni non occupate da residenti diviso per la popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "abitazioni vuote o occupate solo da non residenti / popolazione residente × 1.000",
+        "caveat": "Integra la quota sul patrimonio con una misura rapportata ai residenti, ma non distingue seconde case, immobili inutilizzati e altre forme d’uso.",
         "coverage": "7/7"
       }
     },
@@ -5710,6 +6533,104 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "coverage": "7/7"
+      }
+    },
+    "cohabitingHouseholds": {
+      "meta": {
+        "key": "cohabitingHouseholds",
+        "theme": "abitare",
+        "label": "Famiglie coabitanti",
+        "shortLabel": "Famiglie coabitanti",
+        "description": "Famiglie residenti registrate in coabitazione con un’altra famiglia sul totale delle famiglie residenti.",
+        "unit": "percent",
+        "year": "2023",
+        "source": "Istat — Censimento permanente, dati per sezione",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1.471234079929732,
+          "formatted": "1,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.471234079929732
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 2.7579795475674,
+          "formatted": "2,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.7579795475674
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2.1514389494272144,
+          "formatted": "2,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.1514389494272144
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2.665022761760243,
+          "formatted": "2,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.665022761760243
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2.082211452162987,
+          "formatted": "2,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2.082211452162987
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1.7761989342806395,
+          "formatted": "1,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.7761989342806395
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 0.87527352297593,
+          "formatted": "0,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.87527352297593
+        }
+      ],
+      "aggregate": {
+        "value": 2.334619737900751,
+        "label": "Quota Versilia",
+        "note": "Ponderata sul totale delle famiglie residenti nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "famiglie residenti coabitanti / famiglie residenti totali × 100",
+        "caveat": "La coabitazione anagrafica non identifica automaticamente una condizione di disagio abitativo e non ne spiega le cause.",
         "coverage": "7/7"
       }
     },

@@ -45,9 +45,15 @@
     employmentRate: ['occupati', 'lavoratori', 'occupazione'],
     unemploymentRate: ['disoccupati', 'senza lavoro', 'disoccupazione'],
     activityRate: ['forza lavoro', 'attivi', 'partecipazione'],
+    femaleEmploymentRate: ['occupazione femminile', 'donne occupate', 'lavoro donne'],
+    maleEmploymentRate: ['occupazione maschile', 'uomini occupati', 'lavoro uomini'],
+    employmentGenderGap: ['divario di genere', 'gender gap', 'differenza occupazione donne uomini'],
     diplomaPlus: ['diplomati', 'titolo di studio', 'scuola superiore'],
     tertiary: ['laureati', 'laurea', 'università'],
     schoolSites: ['scuole', 'istituti scolastici'],
+    schoolStudents: ['alunni', 'studenti', 'popolazione scolastica'],
+    studentsPerClass: ['alunni per classe', 'dimensione classi', 'classi scolastiche'],
+    primaryFullTimeShare: ['tempo pieno', 'scuola primaria', 'orario scolastico'],
     lifeExpectancy: ['speranza di vita', 'longevità', 'salute'],
     mortalityAll: ['mortalità', 'decessi', 'cause di morte'],
     chronicTotal: ['cronici', 'malattie croniche', 'patologie croniche'],
@@ -62,7 +68,11 @@
     roadInjuries: ['incidenti', 'feriti', 'sicurezza stradale'], motorization: ['auto', 'motorizzazione'],
     pollutingCars: ['auto inquinanti', 'euro 0', 'euro 3'], evPoints: ['ricarica', 'auto elettriche'],
     vacantHomes: ['case vuote', 'abitazioni non occupate'], singleHouseholds: ['persone sole', 'famiglie'],
-    householdSize: ['componenti famiglia', 'nucleo familiare'], landUse: ['consumo di suolo', 'cementificazione'],
+    householdSize: ['componenti famiglia', 'nucleo familiare'],
+    housingStockPer1000: ['patrimonio abitativo', 'abitazioni per residenti', 'case per abitante'],
+    nonOccupiedHomesPer1000: ['case non occupate per residenti', 'abitazioni vuote', 'seconde case'],
+    cohabitingHouseholds: ['famiglie coabitanti', 'coabitazione', 'disagio abitativo'],
+    landUse: ['consumo di suolo', 'cementificazione'],
     landUseChange: ['nuovo suolo consumato'], recycling: ['raccolta differenziata', 'rifiuti'],
     wastePerResident: ['rifiuti pro capite', 'kg'], floodExposure: ['alluvione', 'rischio idraulico'],
     landslideExposure: ['frane', 'rischio geomorfologico'], thirdSector: ['associazioni', 'volontariato'],
@@ -99,11 +109,13 @@
       case 'currency': return currency0.format(v);
       case 'millionCurrency': return `${number1.format(v)} mln €`;
       case 'percent': return `${number1.format(v)}%`;
+      case 'percentagePoints': return `${number1.format(v)} p.p.`;
       case 'index': return number1.format(v);
       case 'decimal': return number2.format(v);
       case 'years': return `${number2.format(v)} anni`;
       case 'nights': return `${number2.format(v)} notti`;
       case 'people': return `${number0.format(v)} persone`;
+      case 'studentsPerClass': return `${number1.format(v)} alunni/classe`;
       case 'per100': return `${number2.format(v)} ogni 100`;
       case 'per10k': return `${number1.format(v)} ogni 10.000`;
       case 'per1000': return `${number2.format(v)} ogni 1.000`;
