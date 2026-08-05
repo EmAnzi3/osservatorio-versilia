@@ -3,6 +3,8 @@ name: Materialize Toscana v1.5.0 sources
 on:
   push:
     branches: ["expansion/toscana-indicatori-comunali"]
+  pull_request:
+    branches: ["expansion/lavoro-istruzione-abitare"]
 
 permissions:
   contents: write
