@@ -28,8 +28,18 @@ jobs:
       - name: Install browser tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install playwright
+          python -m pip install playwright requests
           python -m playwright install --with-deps chromium
+
+      - name: Discover OpenBDAP budget sources
+        run: python scripts/discover_openbdap_budget_sources.py
+
+      - name: Upload OpenBDAP discovery snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: openbdap-budget-discovery
+          path: data/source-snapshots/openbdap-budget-discovery.json
+          retention-days: 7
 
       - name: Build pre-rendered site
         run: python scripts/build_static_safe.py
