@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
+import time
 
 import build_siope_history as builder
 
@@ -15,6 +15,20 @@ METRIC_COMPONENTS = {
     "cashReceiptsPerResident": "cash_receipts",
     "cashBalancePerResident": "cash_balance",
 }
+
+
+def download_with_retry(session, resource: dict, label: str) -> tuple[bytes, str]:
+    errors: list[str] = []
+    for attempt in range(1, 7):
+        try:
+            return builder.download_csv(session, resource)
+        except Exception as exc:
+            errors.append(f"tentativo {attempt}: {type(exc).__name__}: {exc}")
+            if attempt < 6:
+                delay = attempt * 5
+                print(f"{label}: fonte temporaneamente indisponibile; nuovo tentativo tra {delay}s")
+                time.sleep(delay)
+    raise RuntimeError(f"{label} non scaricabile dopo 6 tentativi:\n" + "\n".join(errors))
 
 
 def main() -> None:
@@ -32,7 +46,7 @@ def main() -> None:
         label = f"{movement}-2025-toscana"
         package = discovery["datasets"][label]
         resource = builder.csv_resource(package)
-        content, url = builder.download_csv(session, resource)
+        content, url = download_with_retry(session, resource, label)
         parsed, audit = builder.parse_dataset(content, 2025, movement)
         yearly[movement] = parsed
         sources[label] = {
