@@ -1,0 +1,168 @@
+name: Controllo mensile dati
+
+on:
+  schedule:
+    - cron: "17 5 5 * *"
+  workflow_dispatch:
+    inputs:
+      probe_sources:
+        description: "Controlla anche le fonti online"
+        required: true
+        default: true
+        type: boolean
+  pull_request:
+    paths:
+      - ".github/workflows/monthly-data-refresh.yml"
+      - "scripts/monthly_data_check.py"
+      - "scripts/test_monthly_data_check.py"
+      - "data/source-registry.json"
+      - "data/source-monitor-state.json"
+      - "data/site-data.json"
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: monthly-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run monitor unit tests
+        run: python scripts/test_monthly_data_check.py
+
+      - name: Prepare check
+        id: prepare
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PROBE_SOURCES: ${{ github.event.inputs.probe_sources }}
+        run: |
+          MODE="live"
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            MODE="offline"
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$PROBE_SOURCES" == "false" ]]; then
+            MODE="offline"
+          fi
+          STAMP="$(date -u +%Y-%m)"
+          RUN_STAMP="$(date -u +%Y-%m-%dT%H-%M-%SZ)"
+          mkdir -p reports/runtime
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
+          echo "run_stamp=$RUN_STAMP" >> "$GITHUB_OUTPUT"
+
+      - name: Validate dataset and check sources
+        id: monitor
+        run: |
+          python scripts/monthly_data_check.py \
+            --mode "${{ steps.prepare.outputs.mode }}" \
+            --report-md "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.md" \
+            --report-json "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.json" \
+            --next-state "reports/runtime/source-monitor-state.next.json"
+
+      - name: Upload complete report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-check-${{ steps.prepare.outputs.run_stamp }}
+          path: reports/runtime/
+          retention-days: 90
+
+      - name: Create or update annual register
+        if: github.event_name != 'pull_request'
+        env:
+          REPORT_MD: ${{ steps.monitor.outputs.report_md }}
+        run: |
+          YEAR="$(date -u +%Y)"
+          TITLE="Registro controlli dati $YEAR"
+          ISSUE_NUMBER="$(gh issue list --state open --search "$TITLE in:title" --json number,title --jq '.[] | select(.title == env.TITLE) | .number' | head -n 1)"
+          if [[ -z "$ISSUE_NUMBER" ]]; then
+            cat > /tmp/data-check-register.md <<EOF
+          @EmAnzi3
+
+          Questa issue raccoglie gli esiti del controllo mensile delle fonti e del dataset di Osservatorio Versilia per il $YEAR.
+
+          - nessun valore viene pubblicato automaticamente;
+          - le anomalie bloccano il controllo;
+          - le variazioni sostanziali aprono una PR in bozza;
+          - ogni commento mensile menziona il responsabile del progetto.
+          EOF
+            ISSUE_URL="$(gh issue create --title "$TITLE" --body-file /tmp/data-check-register.md)"
+            ISSUE_NUMBER="${ISSUE_URL##*/}"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --body-file "$REPORT_MD"
+
+      - name: Open draft PR for a new baseline or source changes
+        if: >-
+          github.event_name != 'pull_request' &&
+          steps.prepare.outputs.mode == 'live' &&
+          (steps.monitor.outputs.status == 'baseline_required' ||
+           steps.monitor.outputs.status == 'changes_detected')
+        env:
+          REPORT_MD: ${{ steps.monitor.outputs.report_md }}
+          NEXT_STATE: ${{ steps.monitor.outputs.next_state }}
+          STAMP: ${{ steps.prepare.outputs.stamp }}
+          CHECK_STATUS: ${{ steps.monitor.outputs.status }}
+        run: |
+          BRANCH="automation/data-check-$STAMP"
+          REPORT_DEST="reports/data-checks/$STAMP.md"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          mkdir -p "$(dirname "$REPORT_DEST")"
+          cp "$NEXT_STATE" data/source-monitor-state.json
+          cp "$REPORT_MD" "$REPORT_DEST"
+          git add data/source-monitor-state.json "$REPORT_DEST"
+          git commit -m "Registra il controllo dati $STAMP"
+          git push --force origin "$BRANCH"
+
+          cat > /tmp/data-check-pr.md <<EOF
+          ## Stato
+
+          **BOZZA — nessun dato viene pubblicato automaticamente.**
+
+          Il controllo mensile ha restituito: \`$CHECK_STATUS\`.
+
+          Questa PR registra la nuova baseline o i segnali di variazione delle fonti. Prima del merge occorre verificare se siano disponibili nuove annualità o revisioni ufficiali e, solo in quel caso, aggiornare separatamente i valori di \`data/site-data.json\` e gli snapshot di fonte.
+
+          ---
+
+          $(cat "$REPORT_MD")
+          EOF
+
+          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --json number --jq '.[0].number // empty')"
+          if [[ -z "$PR_NUMBER" ]]; then
+            gh pr create \
+              --draft \
+              --base main \
+              --head "$BRANCH" \
+              --title "Controllo dati $STAMP" \
+              --body-file /tmp/data-check-pr.md
+          else
+            gh pr edit "$PR_NUMBER" \
+              --title "Controllo dati $STAMP" \
+              --body-file /tmp/data-check-pr.md
+          fi
+
+      - name: Fail on structural errors
+        if: steps.monitor.outputs.status == 'attention_required'
+        run: |
+          echo "Il dataset non supera i controlli strutturali. Consultare il rapporto e l'issue annuale."
+          exit 1
