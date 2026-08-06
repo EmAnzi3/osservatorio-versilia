@@ -35,6 +35,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install preview browser
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+
       - name: Run extractor unit tests
         run: python scripts/test_agid_indicators.py
 
@@ -51,6 +57,53 @@ jobs:
             --next-state /tmp/agid-data-check/state.json
           python scripts/build_static_safe.py
           python scripts/test_static.py
+
+      - name: Capture desktop and mobile preview
+        run: |
+          python -m http.server 8765 --directory dist >/tmp/agid-preview-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          python scripts/capture_agid_preview.py \
+            --base-url http://127.0.0.1:8765 \
+            --output-dir reports/previews/imprese-banda-larga
+
+      - name: Package local preview
+        run: |
+          mkdir -p preview-imprese-banda-larga/site
+          mkdir -p preview-imprese-banda-larga/schermate
+          cp -a dist/. preview-imprese-banda-larga/site/
+          cp reports/previews/imprese-banda-larga/*.png \
+            preview-imprese-banda-larga/schermate/
+          cat > preview-imprese-banda-larga/AVVIA_PREVIEW.bat <<'EOF'
+          @echo off
+          cd /d "%~dp0site"
+          start "" "http://127.0.0.1:8765/confronta/economia/?indicatore=localEmployees"
+          py -m http.server 8765
+          pause
+          EOF
+          cat > preview-imprese-banda-larga/LEGGIMI.txt <<'EOF'
+          PREVIEW NON PUBBLICATA — OSSERVATORIO VERSILIA
+
+          1. Estrai completamente il file ZIP.
+          2. Apri AVVIA_PREVIEW.bat.
+          3. Il browser mostrerà la preview locale.
+          4. Per chiuderla, torna alla finestra nera e premi Ctrl+C.
+
+          Pagine da controllare:
+          - Economia: addetti e unità locali
+          - Mobilità e infrastrutture: connettività digitale
+
+          La cartella "schermate" contiene anche quattro immagini già pronte,
+          due desktop e due mobile.
+          EOF
+
+      - name: Upload non-published preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-imprese-banda-larga
+          path: preview-imprese-banda-larga
+          retention-days: 14
+          if-no-files-found: error
 
       - name: Create or update draft pull request
         env:
@@ -100,6 +153,8 @@ jobs:
           - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
           - nessun dato mancante viene stimato;
           - tutti i sette Comuni devono superare la validazione prima della creazione della PR.
+
+          La preview non pubblicata è disponibile negli **Artifacts** del workflow che ha creato questa PR.
           EOF
 
           if gh pr view "$branch" --json number >/dev/null 2>&1; then
@@ -116,7 +171,8 @@ jobs:
           fi
           echo "PR: $pr_url"
 
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             gh issue comment "${{ github.event.issue.number }}" \
-              --body "Aggiornamento completato: $pr_url"
+              --body "Aggiornamento completato: $pr_url\n\nPreview non pubblicata: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
           fi
