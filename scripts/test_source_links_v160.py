@@ -23,17 +23,20 @@ EXPECTED = {
     "cashReceiptsPerResident": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
 }
 
-FORBIDDEN = (
+FORBIDDEN_SUBSTRINGS = (
     "dati-censimentipermanenti.istat.it",
     "esploradati.istat.it",
     "Dati_regionali_2023.zip",
     "unica.istruzione.gov.it",
-    "https://dati.istruzione.it/opendata/",
-    "https://idrogeo.isprambiente.it/app/",
-    "https://www.piattaformaunicanazionale.it/",
+    "idrogeo.isprambiente.it/app",
     "Siope2Web",
     "/it/catalogo-open-data/Progetti_del_PNRR.html",
 )
+
+FORBIDDEN_EXACT = {
+    "https://dati.istruzione.it/opendata/",
+    "https://www.piattaformaunicanazionale.it/",
+}
 
 
 def require(condition: bool, message: str) -> None:
@@ -52,8 +55,10 @@ def main() -> None:
         require(parsed.scheme == "https", f"Fonte non HTTPS: {key} -> {url}")
         require(bool(parsed.netloc), f"Fonte senza dominio: {key} -> {url}")
         require(url == url.strip(), f"Spazi nel link fonte: {key} -> {url!r}")
-        for fragile in FORBIDDEN:
-            require(url != fragile and fragile not in url,
+        require(url not in FORBIDDEN_EXACT,
+                f"Link fonte troppo generico: {key} -> {url}")
+        for fragile in FORBIDDEN_SUBSTRINGS:
+            require(fragile not in url,
                     f"Link fonte fragile o obsoleto: {key} -> {url}")
 
     require(len(links) == len(DATA["metrics"]),
