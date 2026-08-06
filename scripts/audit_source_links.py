@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Audit the official source links exposed by indicator cards.
 
-The audit is intentionally diagnostic: institutional portals can block automated
-clients even when they remain usable in a browser. Hard failures and apparently
-empty HTML pages are printed separately from access restrictions.
+The audit is diagnostic: institutional portals can block automated clients even
+when they remain usable in a browser. It never downloads complete datasets or
+large archives; for HTML it reads only a bounded sample.
 """
 from __future__ import annotations
 
@@ -20,7 +20,8 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
 REPORT_PATH = Path("/tmp/osservatorio-versilia-source-link-audit.json")
-TIMEOUT = (8, 18)
+TIMEOUT = (5, 8)
+MAX_SAMPLE = 600_000
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -59,6 +60,18 @@ def visible_text(payload: bytes, encoding: str | None) -> tuple[str, str]:
     return title, plain
 
 
+def read_sample(response: requests.Response) -> bytes:
+    sample = bytearray()
+    for chunk in response.iter_content(chunk_size=32_768):
+        if not chunk:
+            continue
+        remaining = MAX_SAMPLE - len(sample)
+        sample.extend(chunk[:remaining])
+        if len(sample) >= MAX_SAMPLE:
+            break
+    return bytes(sample)
+
+
 def inspect(url: str) -> dict:
     result = {
         "url": url,
@@ -74,55 +87,61 @@ def inspect(url: str) -> dict:
     last_error: Exception | None = None
     for _attempt in range(2):
         try:
-            response = requests.get(
+            with requests.get(
                 url,
                 headers=HEADERS,
                 timeout=TIMEOUT,
                 allow_redirects=True,
-            )
-            payload = response.content[:600_000]
-            content_type = response.headers.get("content-type", "").lower()
-            result.update(
-                status=response.status_code,
-                final_url=response.url,
-                content_type=content_type,
-                bytes=len(response.content),
-            )
-            if response.status_code in {401, 403, 429}:
-                result["classification"] = "blocked"
-                return result
-            if response.status_code in {404, 410} or 400 <= response.status_code < 500:
-                result["classification"] = "broken"
-                return result
-            if response.status_code >= 500:
-                result["classification"] = "unavailable"
-                return result
-            if not payload:
-                result["classification"] = "empty"
-                return result
-            if "text/html" not in content_type and "application/xhtml" not in content_type:
-                result["classification"] = "ok"
-                return result
+                stream=True,
+            ) as response:
+                content_type = response.headers.get("content-type", "").lower()
+                content_length = response.headers.get("content-length")
+                result.update(
+                    status=response.status_code,
+                    final_url=response.url,
+                    content_type=content_type,
+                    bytes=int(content_length) if content_length and content_length.isdigit() else 0,
+                )
+                if response.status_code in {401, 403, 429}:
+                    result["classification"] = "blocked"
+                    return result
+                if response.status_code in {404, 410} or 400 <= response.status_code < 500:
+                    result["classification"] = "broken"
+                    return result
+                if response.status_code >= 500:
+                    result["classification"] = "unavailable"
+                    return result
+                if "text/html" not in content_type and "application/xhtml" not in content_type:
+                    result["classification"] = "ok"
+                    return result
 
-            title, plain = visible_text(payload, response.encoding)
-            result["title"] = title
-            result["visible_text_length"] = len(plain)
-            error_markers = (
-                "pagina non trovata",
-                "page not found",
-                "errore 404",
-                "404 not found",
-                "contenuto non disponibile",
-            )
-            sample = f"{title} {plain[:1500]}".lower()
-            if any(marker in sample for marker in error_markers):
-                result["classification"] = "broken"
-            elif len(plain) < 80:
-                script_count = len(re.findall(r"<script\b", payload.decode(response.encoding or "utf-8", errors="ignore"), flags=re.I))
-                result["classification"] = "interactive_shell" if script_count >= 2 else "empty"
-            else:
-                result["classification"] = "ok"
-            return result
+                payload = read_sample(response)
+                if not result["bytes"]:
+                    result["bytes"] = len(payload)
+                if not payload:
+                    result["classification"] = "empty"
+                    return result
+
+                title, plain = visible_text(payload, response.encoding)
+                result["title"] = title
+                result["visible_text_length"] = len(plain)
+                error_markers = (
+                    "pagina non trovata",
+                    "page not found",
+                    "errore 404",
+                    "404 not found",
+                    "contenuto non disponibile",
+                )
+                sample = f"{title} {plain[:1500]}".lower()
+                if any(marker in sample for marker in error_markers):
+                    result["classification"] = "broken"
+                elif len(plain) < 80:
+                    source = payload.decode(response.encoding or "utf-8", errors="ignore")
+                    script_count = len(re.findall(r"<script\b", source, flags=re.I))
+                    result["classification"] = "interactive_shell" if script_count >= 2 else "empty"
+                else:
+                    result["classification"] = "ok"
+                return result
         except requests.RequestException as exc:
             last_error = exc
     result["error"] = str(last_error) if last_error else "errore sconosciuto"
@@ -135,7 +154,7 @@ def inspect(url: str) -> dict:
 def main() -> None:
     data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
     links = collect_links(data)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         inspected = list(executor.map(inspect, links))
     for item in inspected:
         item["references"] = links[item["url"]]
