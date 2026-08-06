@@ -14,6 +14,7 @@ if new not in text:
 path.write_text(text, encoding="utf-8")
 print("Compatibilità v1.5.0 aggiornata per etichette di copertura storica 7/7.")
 
-review_patch = Path(__file__).with_name("apply_manual_review_v160.py")
-if review_patch.exists():
-    runpy.run_path(str(review_patch), run_name="__main__")
+for script_name in ("apply_manual_review_v160.py", "audit_source_links.py"):
+    script = Path(__file__).with_name(script_name)
+    if script.exists():
+        runpy.run_path(str(script), run_name="__main__")
