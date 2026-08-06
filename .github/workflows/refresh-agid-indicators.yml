@@ -35,18 +35,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run extractor unit tests
+      - name: Run extractor and coverage tests
         run: |
           python scripts/test_agid_indicators.py
-          python -m py_compile scripts/update_agid_indicators_resilient.py
+          python -m py_compile \
+            scripts/update_agid_indicators_resilient.py \
+            scripts/restore_partial_agcom_metrics.py \
+            scripts/monthly_data_check_coverage.py
 
       - name: Fetch and integrate official indicators
-        run: python scripts/update_agid_indicators_resilient.py
+        run: |
+          python scripts/update_agid_indicators_resilient.py
+          python scripts/restore_partial_agcom_metrics.py
 
-      - name: Validate complete dataset
+      - name: Validate dataset with declared coverage
         run: |
           mkdir -p /tmp/agid-data-check
-          python scripts/monthly_data_check.py \
+          python scripts/monthly_data_check_coverage.py \
             --mode offline \
             --report-md /tmp/agid-data-check/report.md \
             --report-json /tmp/agid-data-check/report.json \
@@ -69,13 +74,17 @@ jobs:
             --base-url http://127.0.0.1:8765 \
             --output-dir reports/previews/imprese-banda-larga
 
-      - name: Package local preview
+      - name: Package local preview and outputs
         run: |
           mkdir -p preview-imprese-banda-larga/site
           mkdir -p preview-imprese-banda-larga/schermate
           cp -a dist/. preview-imprese-banda-larga/site/
           cp reports/previews/imprese-banda-larga/*.png \
             preview-imprese-banda-larga/schermate/
+          cp reports/previews/imprese-banda-larga/indicatori.md \
+            preview-imprese-banda-larga/OUTPUT_INDICATORI.md
+          cp reports/previews/imprese-banda-larga/indicatori.csv \
+            preview-imprese-banda-larga/OUTPUT_INDICATORI.csv
           cat > preview-imprese-banda-larga/AVVIA_PREVIEW.bat <<'EOF'
           @echo off
           cd /d "%~dp0site"
@@ -95,14 +104,8 @@ jobs:
           - Economia: addetti e unità locali
           - Mobilità e infrastrutture: connettività digitale
 
-          La cartella "schermate" contiene anche quattro immagini già pronte,
-          due desktop e due mobile.
-
-          Nota metodologica AGCOM:
-          la preview pubblica soltanto le due percentuali di copertura FTTH
-          disponibili per tutti i sette Comuni. I conteggi assoluti delle
-          famiglie raggiunte/non raggiunte sono esclusi perché la fonte non
-          valorizza il dato DESI per Forte dei Marmi. Nessun valore è stimato.
+          OUTPUT_INDICATORI.md e OUTPUT_INDICATORI.csv contengono tutti i valori.
+          La cartella "schermate" contiene quattro immagini, due desktop e due mobile.
           EOF
 
       - name: Upload non-published preview
@@ -142,27 +145,33 @@ jobs:
           - addetti per unità locale;
           - variazione 2018–2023 di unità locali e addetti;
           - copertura FTTH DESI;
+          - famiglie raggiunte e non raggiunte da FTTH;
           - copertura FTTH entro 20 metri.
 
           La serie delle **unità locali attive** già pubblicata viene estesa al periodo 2018–2023, senza creare un indicatore duplicato.
+
+          ## Copertura
+
+          - indicatori ASIA: **7/7**;
+          - percentuali di copertura FTTH: **7/7**;
+          - famiglie raggiunte e non raggiunte da FTTH: **6/7**;
+          - Forte dei Marmi è mostrato come **n.d.** nei due conteggi assoluti;
+          - gli aggregati dei conteggi assoluti sono dichiarati come totali parziali 6/7.
 
           ## Fonti
 
           - **ISTAT ASIA-UL**, dati 2018–2023, acquisiti tramite gli shard comunali di AgID — Cruscotto Italia;
           - **AGCOM Broadband Map**, rilevazione al 31 dicembre 2025, acquisita tramite gli shard comunali di AgID — Cruscotto Italia.
 
-          Lo snapshot leggibile conserva valori, annualità, formule, URL e impronte SHA-256 dei file acquisiti.
-
           ## Garanzie metodologiche
 
           - unità locali e imprese giuridiche non vengono confuse;
           - gli addetti sono riferiti al luogo di lavoro, non alla residenza;
           - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
-          - nessun dato mancante viene stimato;
-          - i conteggi assoluti delle famiglie raggiunte/non raggiunte non vengono pubblicati perché `famiglie_ftth` non è valorizzato per Forte dei Marmi;
-          - le due percentuali FTTH pubblicate hanno copertura completa 7/7.
+          - nessun dato mancante viene stimato o ricostruito;
+          - la copertura dichiarata deve coincidere con i valori realmente disponibili.
 
-          La preview non pubblicata è disponibile negli **Artifacts** del workflow che ha creato questa PR.
+          La preview non pubblicata e gli output completi in Markdown e CSV sono disponibili negli **Artifacts** del workflow che ha creato questa PR.
           EOF
 
           if gh pr view "$branch" --json number >/dev/null 2>&1; then
@@ -182,5 +191,5 @@ jobs:
           run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             gh issue comment "${{ github.event.issue.number }}" \
-              --body "Aggiornamento completato: $pr_url\n\nPreview non pubblicata: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
+              --body "Aggiornamento completato: $pr_url\n\nPreview e output completi: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
           fi
