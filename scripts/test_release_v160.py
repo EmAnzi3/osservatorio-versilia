@@ -112,7 +112,7 @@ def expected_aggregate(key: str) -> float:
 
 
 def main() -> None:
-    require(DATA["version"] == "2026.08.05-local-v1.6.0-bilanci-storici", "Versione storica v1.6.0 assente")
+    require(DATA["version"] == "v1.6.0", "Versione pubblica v1.6.0 assente")
     require(len(DATA["themes"]) == 10, "Il sito deve avere 10 temi")
     require(len(DATA["metrics"]) == 98, "Il sito deve avere 98 indicatori")
     require(list(DATA["themes"])[-2:] == ["bilanci", "comunita"], "Ordine dei temi inatteso")
