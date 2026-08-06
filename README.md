@@ -31,8 +31,10 @@ Il sito usa collegamenti relativi e funziona sia come GitHub Project Page sia co
 
 - `index.html`: homepage;
 - `comuni/`: pagine dei sette Comuni;
-- `confronta/`: pagine dei nove temi;
+- `confronta/`: pagine dei dieci temi;
 - `data/site-data.json`: dati e metadati degli indicatori;
+- `data/source-registry.json`: perimetro e regole del controllo mensile;
+- `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
 - `assets/app.js`: logica di caricamento per lo sviluppo;
 - `assets/app-parts/`: moduli sorgente dell'applicazione;
@@ -54,6 +56,21 @@ I valori sono centralizzati in `data/site-data.json`. Per aggiornamenti struttur
 - eventuali benchmark Toscana/Italia.
 
 Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot leggibili conservati in `data/source-snapshots/`. Gli snapshot riportano il perimetro territoriale, i conteggi o valori ufficiali utilizzati, le formule, le serie e i candidati esclusi.
+
+### Controllo mensile automatico
+
+Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorno 5 di ogni mese e può essere avviato manualmente da GitHub Actions.
+
+La procedura:
+
+- valida i 98 indicatori e la copertura completa dei sette Comuni;
+- controlla metadati, formule, annualità e serie storiche;
+- verifica la raggiungibilità delle fonti;
+- rileva modifiche dei file ufficiali direttamente scaricabili;
+- pubblica un rapporto nell'issue annuale `Registro controlli dati <anno>` menzionando `@EmAnzi3`;
+- apre una PR in bozza quando deve essere registrata una nuova baseline o quando una fonte cambia.
+
+Il controllo non modifica automaticamente i dati e non effettua merge. La procedura completa è descritta in `docs/aggiornamento-mensile-dati.md`.
 
 ## Licenze e attribuzioni
 
