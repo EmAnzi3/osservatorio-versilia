@@ -7,6 +7,7 @@
   if (!toolkit) return;
 
   let scheduled = false;
+  const wiredShells = new WeakSet();
   const dataPromise = fetch(new URL('data/site-data.json', ROOT))
     .then(response => {
       if (!response.ok) throw new Error(`Errore dati ${response.status}`);
@@ -17,15 +18,42 @@
       return null;
     });
 
+  function safeStorageGet(key) {
+    try {
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
   function selectedMetric(data) {
-    const key = new URL(location.href).searchParams.get('indicatore');
+    const urlKey = new URL(location.href).searchParams.get('indicatore');
+    const activeKey = document.querySelector('[data-metric].active')?.dataset.metric || '';
+    const key = urlKey && data.metrics[urlKey] ? urlKey : activeKey;
     return key && data.metrics[key] ? { key, metric: { ...data.metrics[key], key } } : null;
+  }
+
+  function wireShell(shell, storageKey, selectedTown, allowClear) {
+    if (!shell || wiredShells.has(shell)) return;
+    wiredShells.add(shell);
+    const historyButton = shell.querySelector('[data-view-mode="history"]');
+    const historyAvailable = Boolean(historyButton && !historyButton.disabled);
+    toolkit.wireViewShell(shell, storageKey, historyAvailable);
+    toolkit.wireHistorySelection(shell, selectedTown, allowClear);
   }
 
   function enhanceCompare(data) {
     if (document.body.dataset.page !== 'compare') return;
     const target = document.getElementById('compare-bars');
-    if (!target || target.querySelector(':scope > .ux-view-shell') || !target.innerHTML.trim()) return;
+    if (!target || !target.innerHTML.trim()) return;
+
+    const selectedTown = safeStorageGet('ov-history-town') || '';
+    const existingShell = target.querySelector(':scope > .ux-view-shell');
+    if (existingShell) {
+      wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+      return;
+    }
+
     const selected = selectedMetric(data);
     if (!selected) return;
 
@@ -33,7 +61,6 @@
     const series = normalized ? null : toolkit.comparableSeries(selected.metric);
     const historyAvailable = Boolean(series);
     const currentMarkup = target.innerHTML;
-    const selectedTown = sessionStorage.getItem('ov-history-town') || '';
     const historyMarkup = toolkit.historicalChartMarkup(selected.metric, series, selectedTown);
     const note = normalized
       ? 'La vista storica è disponibile sulla scala assoluta, perché le serie normalizzate non sono presenti per tutti gli anni.'
@@ -42,19 +69,24 @@
         : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
-    const shell = target.querySelector('.ux-view-shell');
-    toolkit.wireViewShell(shell, 'ov-compare-view', historyAvailable);
-    toolkit.wireHistorySelection(shell, selectedTown, true);
+    wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
   }
 
   function enhanceTown(data) {
     if (document.body.dataset.page !== 'town') return;
     const panel = document.querySelector('.history-panel');
-    if (!panel || panel.querySelector('.ux-view-shell')) return;
+    if (!panel) return;
+
+    const selectedTown = document.body.dataset.town || '';
+    const existingShell = panel.querySelector('.ux-view-shell');
+    if (existingShell) {
+      wireShell(existingShell, 'ov-town-view', selectedTown, false);
+      return;
+    }
+
     const selected = selectedMetric(data);
     if (!selected) return;
 
-    const selectedTown = document.body.dataset.town || '';
     const series = toolkit.comparableSeries(selected.metric);
     const historyAvailable = Boolean(series);
     const currentMarkup = toolkit.comparisonBarsMarkup(selected.metric, selectedTown);
@@ -64,9 +96,7 @@
       : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>${toolkit.escapeHtml(selected.metric.meta.label)}</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
-    const shell = panel.querySelector('.ux-view-shell');
-    toolkit.wireViewShell(shell, 'ov-town-view', historyAvailable);
-    toolkit.wireHistorySelection(shell, selectedTown, false);
+    wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
   }
 
   function enhance(data) {
