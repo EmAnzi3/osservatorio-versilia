@@ -50,6 +50,21 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def static_assertions() -> None:
+    for asset in ("export-v161.js", "export-v161.css"):
+        require((DIST / "assets" / asset).exists(), f"Asset export mancante: {asset}")
+
+    for page in (
+        DIST / "confronta" / "demografia" / "index.html",
+        DIST / "comuni" / "massarosa" / "index.html",
+    ):
+        text = page.read_text(encoding="utf-8")
+        require("assets/export-v161.js?v=20260806-3" in text,
+                f"Script export non incluso in {page}")
+        require("assets/export-v161.css?v=20260806-3" in text,
+                f"Stili di stampa non inclusi in {page}")
+
+
 def download_csv(page: Page, path: str) -> list[list[str]]:
     with page.expect_download() as download_info:
         page.locator("[data-download]").click()
@@ -66,6 +81,7 @@ def pdf_text(path: Path) -> tuple[int, str]:
 
 
 def main() -> None:
+    static_assertions()
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
     if chromium_path:
