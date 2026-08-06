@@ -35,17 +35,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install preview browser
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install playwright
-          python -m playwright install --with-deps chromium
-
       - name: Run extractor unit tests
-        run: python scripts/test_agid_indicators.py
+        run: |
+          python scripts/test_agid_indicators.py
+          python -m py_compile scripts/update_agid_indicators_resilient.py
 
       - name: Fetch and integrate official indicators
-        run: python scripts/update_agid_indicators.py
+        run: python scripts/update_agid_indicators_resilient.py
 
       - name: Validate complete dataset
         run: |
@@ -57,6 +53,12 @@ jobs:
             --next-state /tmp/agid-data-check/state.json
           python scripts/build_static_safe.py
           python scripts/test_static.py
+
+      - name: Install preview browser
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
 
       - name: Capture desktop and mobile preview
         run: |
@@ -95,6 +97,12 @@ jobs:
 
           La cartella "schermate" contiene anche quattro immagini già pronte,
           due desktop e due mobile.
+
+          Nota metodologica AGCOM:
+          la preview pubblica soltanto le due percentuali di copertura FTTH
+          disponibili per tutti i sette Comuni. I conteggi assoluti delle
+          famiglie raggiunte/non raggiunte sono esclusi perché la fonte non
+          valorizza il dato DESI per Forte dei Marmi. Nessun valore è stimato.
           EOF
 
       - name: Upload non-published preview
@@ -134,7 +142,6 @@ jobs:
           - addetti per unità locale;
           - variazione 2018–2023 di unità locali e addetti;
           - copertura FTTH DESI;
-          - famiglie raggiunte e non raggiunte da FTTH;
           - copertura FTTH entro 20 metri.
 
           La serie delle **unità locali attive** già pubblicata viene estesa al periodo 2018–2023, senza creare un indicatore duplicato.
@@ -152,7 +159,8 @@ jobs:
           - gli addetti sono riferiti al luogo di lavoro, non alla residenza;
           - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
           - nessun dato mancante viene stimato;
-          - tutti i sette Comuni devono superare la validazione prima della creazione della PR.
+          - i conteggi assoluti delle famiglie raggiunte/non raggiunte non vengono pubblicati perché `famiglie_ftth` non è valorizzato per Forte dei Marmi;
+          - le due percentuali FTTH pubblicate hanno copertura completa 7/7.
 
           La preview non pubblicata è disponibile negli **Artifacts** del workflow che ha creato questa PR.
           EOF
