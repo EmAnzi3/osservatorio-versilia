@@ -13,8 +13,26 @@ TEST_PATH = ROOT / "scripts" / "test_ux_experiment.py"
 TEST_V150_PATH = ROOT / "scripts" / "test_release_v150.py"
 HISTORY_VERSION = "2026.08.05-local-v1.6.0-bilanci-storici"
 
+SIOPE_COMPONENTS = {
+    "siopePayments": "cash_payments",
+    "currentPayments": "current_payments",
+    "capitalPayments": "capital_payments",
+    "cashReceiptsPerResident": "cash_receipts",
+    "cashBalancePerResident": "cash_balance",
+}
 
-def apply_snapshot(data: dict, snapshot: dict, keys: list[str]) -> None:
+
+def format_currency(value: float) -> str:
+    return f"{value:,.0f}".replace(",", ".") + "\u00a0€"
+
+
+def apply_snapshot(
+    data: dict,
+    snapshot: dict,
+    keys: list[str],
+    *,
+    update_current: bool = False,
+) -> None:
     for key in keys:
         source_metric = snapshot["metrics"][key]
         years = [int(year) for year in source_metric["years"]]
@@ -22,9 +40,38 @@ def apply_snapshot(data: dict, snapshot: dict, keys: list[str]) -> None:
         for town, row in lookup.items():
             values = [float(source_metric["values"][town][str(year)]) for year in years]
             row["series"] = {"years": years, "values": values} if len(years) >= 2 else None
-        data["metrics"][key]["method"]["coverage"] = (
-            f"7/7 per ciascun anno ammesso ({years[0]}–{years[-1]})"
-        )
+            if update_current:
+                latest = values[-1]
+                row["value"] = latest
+                row["benchmarkValue"] = latest
+                if data["metrics"][key]["meta"].get("unit") == "currency":
+                    row["formatted"] = format_currency(latest)
+
+        method = data["metrics"][key]["method"]
+        method["coverage"] = f"7/7 per ciascun anno ammesso ({years[0]}–{years[-1]})"
+        if update_current:
+            method["formula"] = snapshot["formulas"][key]
+            method["caveat"] = (
+                "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione "
+                "residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. "
+                "Flussi di cassa e stock finanziari non sono intercambiabili."
+            )
+
+    if update_current:
+        latest_year = max(int(year) for year in snapshot["selection_rules"]["years"])
+        for key in keys:
+            component = SIOPE_COMPONENTS[key]
+            numerator = sum(
+                float(snapshot["raw"][town][str(latest_year)][component])
+                for town in snapshot["raw"]
+            )
+            population = sum(
+                float(snapshot["raw"][town][str(latest_year)]["population_resident"])
+                for town in snapshot["raw"]
+            )
+            aggregate = data["metrics"][key].get("aggregate")
+            if aggregate is not None:
+                aggregate["value"] = numerator / population
 
 
 def update_tests() -> None:
@@ -112,7 +159,7 @@ def main() -> None:
 
     if SIOPE_PATH.exists():
         siope = json.loads(SIOPE_PATH.read_text(encoding="utf-8"))
-        apply_snapshot(data, siope, list(siope["metrics"]))
+        apply_snapshot(data, siope, list(siope["metrics"]), update_current=True)
 
     data["version"] = HISTORY_VERSION
     data["updated"] = "anteprima locale · 5 agosto 2026"
