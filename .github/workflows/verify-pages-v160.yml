@@ -1,0 +1,72 @@
+name: Verify effective Pages deployment v1.6.0
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/verify-pages-v160.yml"
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: verify-pages-v160
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_SHA: fb2d21109814170faad6c7f658529a9acd0eaa82
+      COMMENT_ID: "5202778804"
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Read the effective Pages deployment
+        run: |
+          set -euo pipefail
+          status=""
+          conclusion=""
+          run_url=""
+          for attempt in $(seq 1 24); do
+            response="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?branch=main&per_page=50")"
+            status="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .status' <<<"$response" | head -n1)"
+            conclusion="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .conclusion // ""' <<<"$response" | head -n1)"
+            run_url="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .html_url' <<<"$response" | head -n1)"
+            echo "Tentativo ${attempt}: status=${status:-non trovato}, conclusion=${conclusion:-in attesa}"
+            if [ "$status" = "completed" ]; then
+              break
+            fi
+            sleep 5
+          done
+          echo "PAGES_STATUS=${status:-non trovato}" >> "$GITHUB_ENV"
+          echo "PAGES_CONCLUSION=${conclusion:-non disponibile}" >> "$GITHUB_ENV"
+          echo "PAGES_RUN_URL=${run_url:-non disponibile}" >> "$GITHUB_ENV"
+
+      - name: Update the deployment result on PR 8
+        run: |
+          if [ "$PAGES_CONCLUSION" = "success" ]; then
+            body="✅ Pubblicazione GitHub Pages di Osservatorio Versilia v1.6.0 verificata con esito positivo. Commit distribuito: \`${TARGET_SHA}\`. Il build utilizza i metadati finali \`v1.6.0 · 6 agosto 2026\`. Workflow: ${PAGES_RUN_URL}"
+          else
+            body="❌ Pubblicazione GitHub Pages di Osservatorio Versilia v1.6.0 non conclusa con successo: stato ${PAGES_STATUS}, esito ${PAGES_CONCLUSION}. Commit controllato: \`${TARGET_SHA}\`. Workflow: ${PAGES_RUN_URL}"
+          fi
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -f body="$body"
+
+      - name: Remove the one-shot verifier
+        run: |
+          git rm .github/workflows/verify-pages-v160.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rimuove il verificatore temporaneo del deploy v1.6.0"
+          git push origin HEAD:main
+
+# One-shot verifier for a non-bot commit that effectively triggered Pages.
