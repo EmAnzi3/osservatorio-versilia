@@ -175,6 +175,11 @@ jobs:
           if old_resources not in text:
               raise SystemExit('Asserzione risorse SIOPE non trovata')
           text = text.replace(old_resources, new_resources)
+          old_raw_years = 'require(sorted(map(int, SNAPSHOT["raw"][town])) == YEARS, f"Annualità SIOPE incomplete: {town}")'
+          new_raw_years = 'require(sorted(map(int, SNAPSHOT["raw"][town])) == list(YEARS), f"Annualità SIOPE incomplete: {town}")'
+          if old_raw_years not in text:
+              raise SystemExit('Asserzione annualità comunali SIOPE non trovata')
+          text = text.replace(old_raw_years, new_raw_years)
           path.write_text(text, encoding='utf-8')
           PY
 
