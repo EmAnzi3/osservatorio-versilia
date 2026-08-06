@@ -67,9 +67,60 @@ jobs:
           path: .cache/openbdap
           key: openbdap-toscana-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
 
+  extract-siope-history:
+    if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
+    continue-on-error: true
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout experimental branch
+        uses: actions/checkout@v4
+        with:
+          ref: expansion/bilanci-comunali-v160
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install SIOPE data tooling
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: python -m pip install requests
+
+      - name: Materialize reviewed SIOPE sources
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' && hashFiles('scripts/materialize_siope_sources.py') != '' }}
+        run: python scripts/materialize_siope_sources.py
+
+      - name: Install official CKAN download fallback
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: python scripts/patch_siope_builder_download.py
+
+      - name: Discover official SIOPE catalogue resources
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: python scripts/discover_siope_resources.py
+
+      - name: Build and validate SIOPE history 2019–2025
+        id: acquire
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: python scripts/build_siope_history.py
+
+      - name: Preserve validated SIOPE snapshot
+        if: ${{ steps.acquire.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilanci-siope-history-snapshot-${{ runner.os }}
+          path: data/source-snapshots/siope-history-v1.6.0.json
+          if-no-files-found: error
+          retention-days: 7
+
   build-and-test:
     if: ${{ always() && github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
-    needs: extract-openbdap-history
+    needs: [extract-openbdap-history, extract-siope-history]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout experimental branch
@@ -84,7 +135,7 @@ jobs:
           pattern: bilanci-openbdap-history-snapshot-*
           path: .history-artifacts
 
-      - name: Select one fully validated snapshot deterministically
+      - name: Select one fully validated OpenBDAP snapshot deterministically
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -101,7 +152,35 @@ jobs:
           target = Path('data/source-snapshots/bilanci-v1.6.0.json')
           target.parent.mkdir(parents=True, exist_ok=True)
           shutil.copy2(source, target)
-          print(f'Snapshot selezionato: {source}')
+          print(f'Snapshot OpenBDAP selezionato: {source}')
+          PY
+
+      - name: Download successful SIOPE snapshots
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bilanci-siope-history-snapshot-*
+          path: .siope-artifacts
+
+      - name: Select one fully validated SIOPE snapshot deterministically
+        if: ${{ hashFiles('data/source-snapshots/siope-history-v1.6.0.json') == '' }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          root = Path('.siope-artifacts')
+          candidates = [
+              root / 'bilanci-siope-history-snapshot-Linux' / 'siope-history-v1.6.0.json',
+              root / 'bilanci-siope-history-snapshot-Windows' / 'siope-history-v1.6.0.json',
+              root / 'bilanci-siope-history-snapshot-macOS' / 'siope-history-v1.6.0.json',
+          ]
+          source = next((item for item in candidates if item.exists()), None)
+          if source is None:
+              raise SystemExit('Nessun runner ha prodotto uno snapshot SIOPE 2019–2025 completo e validato')
+          target = Path('data/source-snapshots/siope-history-v1.6.0.json')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          shutil.copy2(source, target)
+          print(f'Snapshot SIOPE selezionato: {source}')
           PY
 
       - name: Set up Python
@@ -174,7 +253,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets data docs scripts README.md
-          git commit -m "Materializza serie storiche SIOPE validate"
+          git commit -m "Materializza snapshot SIOPE 2019-2025 validato"
           git push origin HEAD:expansion/bilanci-comunali-v160
 
       - name: Upload private build artifact
