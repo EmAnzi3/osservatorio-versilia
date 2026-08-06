@@ -161,25 +161,22 @@ jobs:
           )
           if count != 1:
               raise SystemExit('Costante YEARS del test SIOPE non trovata')
-          old_years = 'require(SNAPSHOT["selection_rules"]["years"] == YEARS, "Intervallo SIOPE inatteso")'
-          normalized_years = 'require(list(SNAPSHOT["selection_rules"]["years"]) == list(YEARS), "Intervallo SIOPE inatteso")'
-          if old_years in text:
-              text = text.replace(old_years, normalized_years)
-          old_entity = 'SNAPSHOT["selection_rules"]["entity_type_bki"]'
-          new_entity = 'SNAPSHOT["selection_rules"]["entity_type_bdap"]'
-          if old_entity not in text:
-              raise SystemExit('Asserzione tipo ente SIOPE non trovata')
-          text = text.replace(old_entity, new_entity)
-          old_resources = 'require(len(SNAPSHOT["source"]["resources"]) == 16, "Risorse SIOPE 2018–2025 incomplete")'
-          new_resources = 'require(len(SNAPSHOT["source"]["resources"]) == 14, "Risorse SIOPE 2019–2025 incomplete")'
-          if old_resources not in text:
-              raise SystemExit('Asserzione risorse SIOPE non trovata')
-          text = text.replace(old_resources, new_resources)
-          old_raw_years = 'require(sorted(map(int, SNAPSHOT["raw"][town])) == YEARS, f"Annualità SIOPE incomplete: {town}")'
-          new_raw_years = 'require(sorted(map(int, SNAPSHOT["raw"][town])) == list(YEARS), f"Annualità SIOPE incomplete: {town}")'
-          if old_raw_years not in text:
-              raise SystemExit('Asserzione annualità comunali SIOPE non trovata')
-          text = text.replace(old_raw_years, new_raw_years)
+          replacements = {
+              'require(SNAPSHOT["selection_rules"]["years"] == YEARS, "Intervallo SIOPE inatteso")':
+                  'require(list(SNAPSHOT["selection_rules"]["years"]) == list(YEARS), "Intervallo SIOPE inatteso")',
+              'SNAPSHOT["selection_rules"]["entity_type_bki"]':
+                  'SNAPSHOT["selection_rules"]["entity_type_bdap"]',
+              'require(len(SNAPSHOT["source"]["resources"]) == 16, "Risorse SIOPE 2018–2025 incomplete")':
+                  'require(len(SNAPSHOT["source"]["resources"]) == 14, "Risorse SIOPE 2019–2025 incomplete")',
+              'require(sorted(map(int, SNAPSHOT["raw"][town])) == YEARS, f"Annualità SIOPE incomplete: {town}")':
+                  'require(sorted(map(int, SNAPSHOT["raw"][town])) == list(YEARS), f"Annualità SIOPE incomplete: {town}")',
+              'require(metric_snapshot["years"] == YEARS, f"Anni errati per {key}")':
+                  'require(list(metric_snapshot["years"]) == list(YEARS), f"Anni errati per {key}")',
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Asserzione SIOPE non trovata: {old}')
+              text = text.replace(old, new)
           path.write_text(text, encoding='utf-8')
           PY
 
