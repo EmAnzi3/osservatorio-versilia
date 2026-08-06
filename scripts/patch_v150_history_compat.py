@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Keep v1.5 regression checks strict while accepting richer 7/7 coverage labels."""
 from pathlib import Path
+import runpy
 
 path = Path(__file__).with_name("test_release_v150.py")
 text = path.read_text(encoding="utf-8")
@@ -12,3 +13,7 @@ if new not in text:
     text = text.replace(old, new, 1)
 path.write_text(text, encoding="utf-8")
 print("Compatibilità v1.5.0 aggiornata per etichette di copertura storica 7/7.")
+
+review_patch = Path(__file__).with_name("apply_manual_review_v160.py")
+if review_patch.exists():
+    runpy.run_path(str(review_patch), run_name="__main__")
