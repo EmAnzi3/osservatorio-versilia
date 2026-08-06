@@ -1,0 +1,405 @@
+@page {
+  size: A4 portrait;
+  margin: 12mm 11mm 14mm;
+}
+
+@media print {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background: #fff !important;
+    color: var(--ink);
+    font-size: 9.5pt;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .site-header,
+  .site-footer,
+  .breadcrumbs,
+  .theme-nav,
+  .metric-switch,
+  .metric-catalog,
+  .scale-switch,
+  .data-actions,
+  .button-link,
+  .topic-town-links,
+  .neighbor-section,
+  .global-search-trigger,
+  .search-overlay,
+  .skip-link,
+  .ux-view-toolbar,
+  .ux-section-tools,
+  .all-indicators,
+  .topic-deep-dive,
+  .benchmark-unavailable,
+  #town-context {
+    display: none !important;
+  }
+
+  .page-width {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  main,
+  .inner-page {
+    padding-bottom: 0 !important;
+  }
+
+  main,
+  .inner-page,
+  .town-profile,
+  .topic-dashboard,
+  .town-topic,
+  .history-panel,
+  .benchmark-section,
+  .benchmark-unavailable,
+  .town-benchmark {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .town-hero,
+  .town-brief,
+  .town-topic-heading,
+  .town-metric-layout,
+  .method-disclosure,
+  .indicator-definition,
+  .ux-view-pane,
+  .ux-history-card,
+  .topic-bars,
+  .benchmark-section,
+  .benchmark-unavailable,
+  .town-benchmark,
+  .town-benchmark-values article,
+  .benchmark-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .town-hero {
+    padding: 0 0 7mm !important;
+  }
+
+  .topic-hero {
+    display: grid !important;
+    grid-template-columns: 16mm 1fr !important;
+    gap: 6mm !important;
+    min-height: 0 !important;
+    padding: 0 0 7mm !important;
+  }
+
+  .topic-symbol {
+    width: 16mm !important;
+    height: 16mm !important;
+    border-radius: 4mm 4mm 4mm 1mm !important;
+  }
+
+  .topic-symbol svg {
+    width: 8mm !important;
+    height: 8mm !important;
+  }
+
+  .topic-hero h1 {
+    margin: 1mm 0 2mm !important;
+    font-size: 30pt !important;
+    line-height: 1 !important;
+  }
+
+  .topic-hero p {
+    max-width: 150mm !important;
+    margin: 0 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .town-identity {
+    gap: 5mm !important;
+  }
+
+  .town-identity img {
+    width: 16mm !important;
+    height: 16mm !important;
+    flex-basis: 16mm !important;
+  }
+
+  .town-identity h1 {
+    margin: 1mm 0 0 !important;
+    font-size: 29pt !important;
+    line-height: 1 !important;
+  }
+
+  .town-identity p {
+    margin-top: 2mm !important;
+    font-size: 10pt !important;
+  }
+
+  .town-headline-stats {
+    margin-top: 6mm !important;
+  }
+
+  .town-headline-stats div {
+    padding-block: 3mm !important;
+  }
+
+  .town-headline-stats dd {
+    margin-top: 1.5mm !important;
+    font-size: 17pt !important;
+  }
+
+  .town-brief {
+    gap: 3mm !important;
+    margin: 6mm 0 7mm !important;
+    padding: 5mm 0 !important;
+  }
+
+  .town-brief h2,
+  .town-topic-heading h2,
+  .section-heading h2,
+  .section-heading h3,
+  .town-benchmark h3 {
+    margin: 1mm 0 !important;
+    font-size: 19pt !important;
+    line-height: 1.08 !important;
+  }
+
+  .town-brief article {
+    min-height: 0 !important;
+    padding: 4mm !important;
+  }
+
+  .town-topic-heading {
+    margin-bottom: 5mm !important;
+  }
+
+  .town-topic-heading > a {
+    display: none !important;
+  }
+
+  .town-metric-layout {
+    gap: 4mm !important;
+  }
+
+  .town-metric-primary,
+  .versilia-position {
+    min-height: 0 !important;
+    padding: 5mm !important;
+    box-shadow: none !important;
+  }
+
+  .town-metric-primary > strong {
+    margin: 3mm 0 !important;
+    font-size: 28pt !important;
+  }
+
+  .versilia-position > strong {
+    margin: 3mm 0 !important;
+    font-size: 25pt !important;
+  }
+
+  .method-disclosure {
+    margin-block: 4mm !important;
+  }
+
+  .history-panel,
+  .topic-bars,
+  .explorer-panel,
+  .benchmark-section,
+  .benchmark-unavailable,
+  .town-benchmark {
+    background: #fff !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 4mm !important;
+    box-shadow: none !important;
+    padding: 5mm !important;
+  }
+
+  .history-panel {
+    margin-top: 6mm !important;
+  }
+
+  .town-profile .history-panel {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .panel-title {
+    margin-bottom: 4mm !important;
+  }
+
+  .source-pill,
+  .inline-source-link,
+  .benchmark-source,
+  .benchmark-note a {
+    color: var(--blue) !important;
+    overflow-wrap: anywhere;
+  }
+
+  .ux-view-note {
+    margin: 0 0 4mm !important;
+    font-size: 8.5pt !important;
+  }
+
+  .ux-view-pane[hidden] {
+    display: block !important;
+  }
+
+  .ux-view-pane[data-view-pane="current"]::before,
+  .ux-view-pane[data-view-pane="history"]::before {
+    display: block;
+    margin: 0 0 3mm;
+    color: var(--theme-color, var(--blue));
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 8pt;
+    font-weight: 750;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .ux-view-pane[data-view-pane="current"]::before {
+    content: "Valore attuale";
+  }
+
+  .ux-view-pane[data-view-pane="history"]::before {
+    content: "Storico";
+  }
+
+  .ux-view-pane[data-view-pane="history"] {
+    margin-top: 7mm;
+  }
+
+  .ux-view-pane[data-view-pane="history"]:has(.ux-history-unavailable) {
+    display: none !important;
+  }
+
+  .comparison-bars,
+  .ux-comparison-bars {
+    gap: 2mm !important;
+  }
+
+  .bar-row,
+  .ux-bar-row {
+    min-height: 0 !important;
+    padding-block: 2mm !important;
+  }
+
+  .ux-history-card {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ux-history-head {
+    margin-bottom: 3mm !important;
+  }
+
+  .ux-history-scroll,
+  .chart-shell {
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .ux-history-chart,
+  .trend-chart {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .ux-history-chart svg,
+  .trend-chart svg {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 94mm;
+  }
+
+  .ux-history-scroll-hint {
+    display: none !important;
+  }
+
+  .ux-history-legend {
+    gap: 2mm 4mm !important;
+    margin-top: 3mm !important;
+  }
+
+  .ux-history-legend button {
+    padding: 1.5mm 2mm !important;
+    font-size: 7.5pt !important;
+  }
+
+  .ux-history-summary {
+    margin-top: 3mm !important;
+    padding: 3mm !important;
+    font-size: 8pt !important;
+  }
+
+  .ux-two-point-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .benchmark-section,
+  .benchmark-unavailable,
+  .town-benchmark {
+    margin-top: 7mm !important;
+  }
+
+  .benchmark-grid,
+  .town-benchmark-values {
+    gap: 3mm !important;
+    margin-top: 4mm !important;
+  }
+
+  .benchmark-card,
+  .town-benchmark-values article {
+    min-height: 0 !important;
+    padding: 4mm !important;
+  }
+
+  .town-benchmark > div:first-child {
+    gap: 5mm !important;
+  }
+
+  .topic-dashboard {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .topic-dashboard > .topic-controls {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  #compare-definition,
+  #compare-bars,
+  #compare-benchmark {
+    width: 100% !important;
+    margin: 0 0 7mm !important;
+  }
+
+  #compare-bars .ux-view-pane[data-view-pane="history"] {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  #compare-definition .indicator-definition {
+    padding: 5mm !important;
+    border: 1px solid var(--line);
+    border-radius: 4mm;
+  }
+
+  #compare-definition .indicator-definition h2 {
+    font-size: 22pt !important;
+    line-height: 1.08 !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+}

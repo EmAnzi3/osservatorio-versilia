@@ -13,7 +13,7 @@ _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 
-UX_ASSET_VERSION = "20260806-2"
+UX_ASSET_VERSION = "20260806-3"
 
 if "bilanci" not in build.THEME_SLUGS:
     build.THEME_SLUGS.insert(2, "bilanci")
@@ -28,6 +28,15 @@ SEARCH_ICON = (
     '<circle cx="11" cy="11" r="8"></circle>'
     '<path d="m21 21-4.3-4.3"></path>'
     '</svg>'
+)
+
+OLD_PROJECT_COPY = (
+    "offrire un punto di accesso chiaro ai dati che aiutano a leggere "
+    "Massarosa e gli altri comuni della Versilia storica."
+)
+NEW_PROJECT_COPY = (
+    "offrire un punto di accesso chiaro ai dati che aiutano a leggere "
+    "i sette comuni della Versilia storica e il territorio nel suo insieme."
 )
 
 NUMBER_FORMAT_REPLACEMENTS = {
@@ -81,6 +90,11 @@ def bundle_application_with_private_fixes() -> None:
         elif new not in bundle:
             raise RuntimeError(f"Formatter numerico non trovato: {old}")
 
+    if OLD_PROJECT_COPY in bundle:
+        bundle = bundle.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
+    elif NEW_PROJECT_COPY not in bundle:
+        raise RuntimeError("Testo della pagina Il progetto non trovato nel bundle")
+
     bundle_path.write_text(bundle, encoding="utf-8")
 
 
@@ -91,29 +105,35 @@ def prepare_shells_with_fonts() -> None:
         assets = "" if prefix == "." else f"{prefix}/"
         text = path.read_text(encoding="utf-8")
 
-        if "assets/fonts.css" not in text:
+        stylesheets = (
+            "fonts.css",
+            "ux-experiment.css",
+            "ux-background-match.css",
+            "export-v161.css",
+        )
+        for stylesheet in stylesheets:
+            token = f"assets/{stylesheet}"
+            if token in text:
+                continue
+            version = "" if stylesheet == "fonts.css" else f"?v={UX_ASSET_VERSION}"
             text = text.replace(
                 "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/fonts.css">\n</head>',
-            )
-        if "assets/ux-experiment.css" not in text:
-            text = text.replace(
-                "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css?v={UX_ASSET_VERSION}">\n</head>',
-            )
-        if "assets/ux-background-match.css" not in text:
-            text = text.replace(
-                "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css?v={UX_ASSET_VERSION}">\n</head>',
+                f'  <link rel="stylesheet" href="{assets}{token}{version}">\n</head>',
             )
 
-        experiment_scripts = (
-            f'  <script src="{assets}assets/ux-accordion.js?v={UX_ASSET_VERSION}" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history-core.js?v={UX_ASSET_VERSION}" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history.js?v={UX_ASSET_VERSION}" defer></script>\n'
+        scripts = (
+            "ux-accordion.js",
+            "ux-history-core.js",
+            "ux-history.js",
+            "export-v161.js",
         )
-        if "assets/ux-history.js" not in text:
-            text = text.replace("</body>", experiment_scripts + "</body>")
+        missing_scripts = [
+            f'  <script src="{assets}assets/{script}?v={UX_ASSET_VERSION}" defer></script>\n'
+            for script in scripts
+            if f"assets/{script}" not in text
+        ]
+        if missing_scripts:
+            text = text.replace("</body>", "".join(missing_scripts) + "</body>")
 
         path.write_text(text, encoding="utf-8")
 
@@ -130,7 +150,13 @@ def normalize_prerendered_urls() -> None:
             '<body data-prerendered="true" class=',
             '<body class=',
         )
+        text = text.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
         path.write_text(text, encoding="utf-8")
+
+    project_path = build.DIST / "progetto" / "index.html"
+    project_text = project_path.read_text(encoding="utf-8")
+    if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
+        raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
 
 
 build.copy_source_tree = copy_source_tree_with_local_assets
