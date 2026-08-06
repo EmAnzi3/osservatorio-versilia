@@ -1,6 +1,597 @@
 {
   "schemaVersion": 1,
-  "checkedAt": null,
-  "mode": null,
-  "sources": {}
+  "checkedAt": "2026-08-06T21:16:48+00:00",
+  "mode": "live",
+  "sources": {
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole",
+      "contentType": "text/html",
+      "contentLength": "373901",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolSites"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
+      "contentType": "text/html",
+      "contentLength": "1322655",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "primaryFullTimeShare",
+        "schoolStudents",
+        "studentsPerClass"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://demo.istat.it/": {
+      "url": "https://demo.istat.it/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://demo.istat.it/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "population",
+        "populationChange"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://openbdap.rgs.mef.gov.it/it/FET/Analizza": {
+      "url": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "availableAdministrationResultPerResident",
+        "capitalExpenditureCommittedPerResident",
+        "cashBalancePerResident",
+        "cashReceiptsPerResident",
+        "cultureSportMissionExpenditurePerResident",
+        "currentCollectionCapacity",
+        "currentExpenditureCommittedPerResident",
+        "currentPaymentCapacity",
+        "currentRevenueAccruedPerResident",
+        "educationMissionExpenditurePerResident",
+        "environmentMissionExpenditurePerResident",
+        "mobilityMissionExpenditurePerResident",
+        "ownRevenueShare",
+        "publicWorks",
+        "rigidExpenditureShare",
+        "socialMissionExpenditurePerResident",
+        "tourismDevelopmentMissionExpenditurePerResident"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": {
+      "url": "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti",
+      "contentType": "text/html",
+      "contentLength": "1179280",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "thirdSector"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti": {
+      "url": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "chronicTotal",
+        "dementia",
+        "diabetes",
+        "elderlyHomeCare",
+        "emergencyAccess",
+        "hospitalizedAll",
+        "lifeExpectancy",
+        "mortalityAll"
+      ],
+      "roles": [
+        "benchmark",
+        "primary"
+      ]
+    },
+    "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune": {
+      "url": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "recycling",
+        "residualWaste",
+        "wastePerResident"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.dati.salute.gov.it/": {
+      "url": "https://www.dati.salute.gov.it/",
+      "ok": false,
+      "status": null,
+      "finalUrl": "https://www.dati.salute.gov.it/",
+      "contentType": "",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1010)>",
+      "metrics": [
+        "pharmaciesPer1000"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": {
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "contentType": "text/html",
+      "contentLength": "35257",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "landUse",
+        "landUseChange"
+      ],
+      "roles": [
+        "benchmark",
+        "primary"
+      ]
+    },
+    "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali": {
+      "url": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
+      "contentType": "text/html",
+      "contentLength": "34319",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "floodExposure",
+        "landslideExposure"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/comunicato-stampa/censimento-e-dinamica-della-popolazione-anno-2024/": {
+      "url": "https://www.istat.it/comunicato-stampa/censimento-e-dinamica-della-popolazione-anno-2024/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/comunicato-stampa/censimento-e-dinamica-della-popolazione-anno-2024/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "oldAgeIndex"
+      ],
+      "roles": [
+        "benchmark"
+      ]
+    },
+    "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/": {
+      "url": "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "roadInjuries"
+      ],
+      "roles": [
+        "benchmark",
+        "primary"
+      ]
+    },
+    "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/": {
+      "url": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "motorization",
+        "pollutingCars"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/": {
+      "url": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "tourismBeds"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/": {
+      "url": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "cohabitingHouseholds",
+        "employmentGenderGap",
+        "femaleEmploymentRate",
+        "housingStockPer1000",
+        "maleEmploymentRate",
+        "nonOccupiedHomesPer1000",
+        "vacantHomes"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/": {
+      "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "commuterBalance",
+        "inboundCommuters",
+        "inboundCommutersRate",
+        "outboundCommuters",
+        "outboundCommutersRate"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/": {
+      "url": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "localUnits",
+        "microUnits"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/": {
+      "url": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "activityRate",
+        "commuterBalanceRate",
+        "diplomaPlus",
+        "employmentRate",
+        "householdSize",
+        "oldAgeIndex",
+        "outsideMunicipality",
+        "selfContainment",
+        "share014",
+        "share65",
+        "singleHouseholds",
+        "tertiary",
+        "unemploymentRate"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/": {
+      "url": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "businessValueAdded",
+        "industryValueAddedShare",
+        "industryWorkerShare",
+        "labourProductivity"
+      ],
+      "roles": [
+        "benchmark",
+        "primary"
+      ]
+    },
+    "https://www.istat.it/wp-content/uploads/2025/11/02-Istruzione-e-formazione.pdf": {
+      "url": "https://www.istat.it/wp-content/uploads/2025/11/02-Istruzione-e-formazione.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.istat.it/wp-content/uploads/2025/11/02-Istruzione-e-formazione.pdf",
+      "contentType": "application/pdf",
+      "contentLength": "945630",
+      "etag": "\"69159e43-e6dde\"",
+      "lastModified": "Thu, 13 Nov 2025 09:00:51 GMT",
+      "contentSha256": "2767e4b440770181e1a9489a287c97708e9f86babefe8086a98486bdf5a0b166",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "diplomaPlus"
+      ],
+      "roles": [
+        "benchmark"
+      ]
+    },
+    "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": {
+      "url": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
+      "ok": false,
+      "status": 403,
+      "finalUrl": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
+      "contentType": "",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "HTTP 403",
+      "metrics": [
+        "pnrrConcluded",
+        "pnrrFunding"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.piattaformaunicanazionale.it/idr": {
+      "url": "https://www.piattaformaunicanazionale.it/idr",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.piattaformaunicanazionale.it/idr",
+      "contentType": "text/html",
+      "contentLength": "1371",
+      "etag": "\"6a70ace3-55b\"",
+      "lastModified": "Mon, 03 Aug 2026 14:59:47 GMT",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "evPoints"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0": {
+      "url": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "foreignTourismShare",
+        "tourismArrivals",
+        "tourismAverageStay",
+        "tourismBedsPer1000",
+        "tourismIntensity",
+        "tourismPresences",
+        "tourismSeasonality",
+        "tourismStructuresPer1000"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": {
+      "url": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+      "contentType": "text/html",
+      "contentLength": "174880",
+      "etag": "\"0\"",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "disability064Per1000",
+        "emsResponseTimeP75",
+        "foreignBornSoleProprietorShare",
+        "innovationBusinessShare",
+        "organicAgriculturalAreaShare",
+        "youthOtherStatus"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie": {
+      "url": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "hospitals"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www.siope.it/": {
+      "url": "https://www.siope.it/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.siope.it/Siope/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "capitalPayments",
+        "currentPayments",
+        "siopePayments"
+      ],
+      "roles": [
+        "primary"
+      ]
+    },
+    "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": {
+      "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?t=1786051037&tree=2013",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "income",
+        "incomeUnder15k"
+      ],
+      "roles": [
+        "primary"
+      ]
+    }
+  }
 }
