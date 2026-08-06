@@ -92,7 +92,7 @@ jobs:
         run: |
           YEAR="$(date -u +%Y)"
           TITLE="Registro controlli dati $YEAR"
-          ISSUE_NUMBER="$(gh issue list --state open --search "$TITLE in:title" --json number,title --jq '.[] | select(.title == env.TITLE) | .number' | head -n 1)"
+          ISSUE_NUMBER="$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')"
           if [[ -z "$ISSUE_NUMBER" ]]; then
             cat > /tmp/data-check-register.md <<EOF
           @EmAnzi3
