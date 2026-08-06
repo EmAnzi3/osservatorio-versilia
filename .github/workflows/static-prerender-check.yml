@@ -1,4 +1,4 @@
-name: Diagnose SIOPE 2025
+name: Inspect population series
 
 on:
   pull_request:
@@ -8,11 +8,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: siope-2025-diagnostic-${{ github.event.pull_request.number || github.ref }}
+  group: population-series-inspection-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  diagnose:
+  inspect:
     if: ${{ github.event.pull_request.head.ref == 'expansion/bilanci-comunali-v160' }}
     runs-on: ubuntu-latest
     steps:
@@ -20,26 +20,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: expansion/bilanci-comunali-v160
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install data tooling
-        run: python -m pip install requests
+      - name: Inspect annual population data
+        run: python scripts/inspect_population_data.py
 
-      - name: Materialize reviewed SIOPE sources
-        run: python scripts/materialize_siope_sources.py
-
-      - name: Install current SIOPE parser corrections
-        run: python scripts/patch_siope_builder_download.py
-
-      - name: Materialize verified SIOPE 2019-2025 manifest
-        run: python scripts/discover_siope_resources.py
-
-      - name: Compare all published and reconstructed 2025 values
-        run: python scripts/diagnose_siope_2025.py
-
-# Temporary private diagnostic: read-only, no commit, deploy, merge or main write.
+# Temporary read-only inspection: no commit, deploy, merge or main write.
