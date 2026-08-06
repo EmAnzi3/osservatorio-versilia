@@ -8,6 +8,8 @@ Il controllo viene eseguito una volta al mese e può essere avviato anche manual
 
 Il workflow `Controllo mensile dati` è programmato per il giorno 5 di ogni mese alle 05:17 UTC. L'orario non tondo riduce la probabilità di attese nelle code dei runner GitHub.
 
+Durante la revisione di una pull request il controllo viene eseguito in modalità offline: verifica integralmente struttura, copertura e coerenza del dataset senza contattare le fonti e senza generare notifiche.
+
 ## Cosa controlla
 
 - presenza dei 98 indicatori attesi;
