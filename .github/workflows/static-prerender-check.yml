@@ -145,7 +145,7 @@ jobs:
         if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
         run: python scripts/materialize_siope_sources.py
 
-      - name: Align SIOPE test interval with 2019–2025
+      - name: Align SIOPE test with 2019–2025 BDAP metadata
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -161,10 +161,15 @@ jobs:
           )
           if count != 1:
               raise SystemExit('Costante YEARS del test SIOPE non trovata')
-          old = 'require(SNAPSHOT["selection_rules"]["years"] == YEARS, "Intervallo SIOPE inatteso")'
-          normalized = 'require(list(SNAPSHOT["selection_rules"]["years"]) == list(YEARS), "Intervallo SIOPE inatteso")'
-          if old in text:
-              text = text.replace(old, normalized)
+          old_years = 'require(SNAPSHOT["selection_rules"]["years"] == YEARS, "Intervallo SIOPE inatteso")'
+          normalized_years = 'require(list(SNAPSHOT["selection_rules"]["years"]) == list(YEARS), "Intervallo SIOPE inatteso")'
+          if old_years in text:
+              text = text.replace(old_years, normalized_years)
+          old_entity = 'SNAPSHOT["selection_rules"]["entity_type_bki"]'
+          new_entity = 'SNAPSHOT["selection_rules"]["entity_type_bdap"]'
+          if old_entity not in text:
+              raise SystemExit('Asserzione tipo ente SIOPE non trovata')
+          text = text.replace(old_entity, new_entity)
           path.write_text(text, encoding='utf-8')
           PY
 
