@@ -1,0 +1,89 @@
+name: Patch release pipeline v1.6.0
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/patch-release-pipeline-v160.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: patch-release-pipeline-v160
+  cancel-in-progress: true
+
+jobs:
+  patch:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Accept the public v1.6.0 identifier
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/test_release_v150.py")
+          text = path.read_text(encoding="utf-8")
+          if '    "v1.6.0",' not in text:
+              anchor = '    "2026.08.05-v1.6.0",\n}'
+              replacement = '    "2026.08.05-v1.6.0",\n    "v1.6.0",\n}'
+              if anchor not in text:
+                  raise SystemExit("Elenco SUPPORTED_VERSIONS non riconosciuto")
+              text = text.replace(anchor, replacement, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Align public deployment checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/workflows/pages.yml")
+          text = path.read_text(encoding="utf-8")
+          if "Run source-link checks" not in text:
+              anchor = '''      - name: Run v1.6.0 budget checks
+        run: python scripts/test_release_v160.py
+
+      - name: Run accordion and history checks
+'''
+              replacement = '''      - name: Run v1.6.0 budget checks
+        run: python scripts/test_release_v160.py
+
+      - name: Run source-link checks
+        run: python scripts/test_source_links_v160.py
+
+      - name: Run SIOPE history checks
+        run: python scripts/test_siope_history_v160.py
+
+      - name: Run accordion and history checks
+'''
+              if anchor not in text:
+                  raise SystemExit("Blocco dei test Pages non riconosciuto")
+              text = text.replace(anchor, replacement, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Validate the patch
+        run: |
+          python -m py_compile scripts/test_release_v150.py
+          grep -F '"v1.6.0",' scripts/test_release_v150.py
+          grep -F 'Run source-link checks' .github/workflows/pages.yml
+          grep -F 'Run SIOPE history checks' .github/workflows/pages.yml
+
+      - name: Remove one-shot patcher and commit
+        run: |
+          git rm .github/workflows/patch-release-pipeline-v160.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/test_release_v150.py .github/workflows/pages.yml
+          git commit -m "Allinea la pipeline pubblica a Osservatorio Versilia v1.6.0"
+          git push origin HEAD:main
+
+# One-shot release pipeline patcher. It removes itself after applying the fix.
