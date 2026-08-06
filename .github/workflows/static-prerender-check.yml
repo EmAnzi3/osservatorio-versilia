@@ -145,6 +145,19 @@ jobs:
         if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
         run: python scripts/materialize_siope_sources.py
 
+      - name: Normalize SIOPE year interval assertion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/test_siope_history_v160.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'require(SNAPSHOT["selection_rules"]["years"] == YEARS, "Intervallo SIOPE inatteso")'
+          new = 'require(list(SNAPSHOT["selection_rules"]["years"]) == list(YEARS), "Intervallo SIOPE inatteso")'
+          if old not in text:
+              raise SystemExit('Asserzione intervallo SIOPE non trovata')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+
       - name: Materialize Bilanci theme
         run: python scripts/update_bilanci_v160.py
 
