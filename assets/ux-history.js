@@ -3,12 +3,13 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
+  const HOTFIX_VERSION = '20260806-2';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
 
   let scheduled = false;
   const wiredShells = new WeakSet();
-  const dataPromise = fetch(new URL('data/site-data.json', ROOT))
+  const dataPromise = fetch(new URL(`data/site-data.json?v=${HOTFIX_VERSION}`, ROOT))
     .then(response => {
       if (!response.ok) throw new Error(`Errore dati ${response.status}`);
       return response.json();
