@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "expectedMetricCount": 98,
+  "expectedTowns": [
+    { "name": "Camaiore", "code": "046005" },
+    { "name": "Forte dei Marmi", "code": "046013" },
+    { "name": "Massarosa", "code": "046018" },
+    { "name": "Pietrasanta", "code": "046024" },
+    { "name": "Seravezza", "code": "046028" },
+    { "name": "Stazzema", "code": "046030" },
+    { "name": "Viareggio", "code": "046033" }
+  ],
+  "defaults": {
+    "frequency": "annual_or_irregular",
+    "monitorMode": "availability",
+    "unreachableIsBlocker": false
+  },
+  "requestTimeoutSeconds": 20,
+  "maxDownloadBytes": 4194304,
+  "contentExtensions": [
+    ".csv",
+    ".json",
+    ".geojson",
+    ".xlsx",
+    ".xls",
+    ".ods",
+    ".zip",
+    ".pdf"
+  ],
+  "metricOverrides": {}
+}
