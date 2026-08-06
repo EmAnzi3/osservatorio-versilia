@@ -23,39 +23,46 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Harden history controls and storage
+      - name: Harden history controls and browser storage
         run: |
           python - <<'PY'
           from pathlib import Path
 
           path = Path('assets/ux-history-core.js')
           text = path.read_text(encoding='utf-8')
-          anchor = "  let shellCounter = 0;\n"
-          helpers = """  let shellCounter = 0;
-
-  function storageGet(key) {
-    try {
-      return sessionStorage.getItem(key);
-    } catch {
-      return null;
-    }
-  }
-
-  function storageSet(key, value) {
-    try {
-      sessionStorage.setItem(key, value);
-    } catch {
-      // The controls remain functional when browser storage is unavailable.
-    }
-  }
-"""
           if 'function storageGet(key)' not in text:
-              if anchor not in text:
+              marker = '  function escapeHtml(value) {\n'
+              helper = (
+                  '  function storageGet(key) {\n'
+                  '    try {\n'
+                  '      return sessionStorage.getItem(key);\n'
+                  '    } catch {\n'
+                  '      return null;\n'
+                  '    }\n'
+                  '  }\n\n'
+                  '  function storageSet(key, value) {\n'
+                  '    try {\n'
+                  '      sessionStorage.setItem(key, value);\n'
+                  '    } catch {\n'
+                  '      // Controls remain functional when storage is unavailable.\n'
+                  '    }\n'
+                  '  }\n\n'
+              )
+              if marker not in text:
                   raise SystemExit('Punto di inserimento storage non trovato')
-              text = text.replace(anchor, helpers, 1)
-          text = text.replace("if (selected) sessionStorage.setItem('ov-history-town', selected);", "if (selected) storageSet('ov-history-town', selected);")
-          text = text.replace('const stored = sessionStorage.getItem(storageKey);', 'const stored = storageGet(storageKey);')
-          text = text.replace('sessionStorage.setItem(storageKey, mode);', 'storageSet(storageKey, mode);')
+              text = text.replace(marker, helper + marker, 1)
+          text = text.replace(
+              "if (selected) sessionStorage.setItem('ov-history-town', selected);",
+              "if (selected) storageSet('ov-history-town', selected);",
+          )
+          text = text.replace(
+              'const stored = sessionStorage.getItem(storageKey);',
+              'const stored = storageGet(storageKey);',
+          )
+          text = text.replace(
+              'sessionStorage.setItem(storageKey, mode);',
+              'storageSet(storageKey, mode);',
+          )
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -66,11 +73,12 @@ jobs:
 
           path = Path('scripts/build_static_safe.py')
           text = path.read_text(encoding='utf-8')
-          if 'UX_ASSET_VERSION = "20260806-2"' not in text:
-              anchor = '_original_prepare_shells = build.prepare_shells\n'
-              if anchor not in text:
+          version_line = 'UX_ASSET_VERSION = "20260806-2"'
+          if version_line not in text:
+              marker = '_original_prepare_shells = build.prepare_shells\n'
+              if marker not in text:
                   raise SystemExit('Punto di inserimento versione asset non trovato')
-              text = text.replace(anchor, anchor + '\nUX_ASSET_VERSION = "20260806-2"\n', 1)
+              text = text.replace(marker, marker + '\n' + version_line + '\n', 1)
           replacements = {
               'assets/ux-experiment.css">': 'assets/ux-experiment.css?v={UX_ASSET_VERSION}">',
               'assets/ux-background-match.css">': 'assets/ux-background-match.css?v={UX_ASSET_VERSION}">',
@@ -83,7 +91,7 @@ jobs:
           path.write_text(text, encoding='utf-8')
           PY
 
-      - name: Add public-route regressions
+      - name: Add permanent public-route regressions
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -91,26 +99,26 @@ jobs:
           path = Path('scripts/test_ux_experiment.py')
           text = path.read_text(encoding='utf-8')
           marker = '        page = browser.new_page(viewport={"width": 1440, "height": 950})\n'
-          block = '''        page = browser.new_page(viewport={"width": 1440, "height": 950})
-
-        page.goto(base + "confronta/bilanci/", wait_until="networkidle")
-        page.wait_for_selector(".ux-view-shell")
-        require(not page.locator('[data-view-mode="history"]').is_disabled(),
-                "Percorso pubblico Bilanci: vista storica disabilitata sul primo indicatore")
-        page.locator('[data-view-mode="history"]').click()
-        require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
-                "Percorso pubblico Bilanci: vista storica non attivabile senza parametro indicatore")
-
-        page.goto(base + "comuni/massarosa/", wait_until="networkidle")
-        page.wait_for_selector(".history-panel .ux-view-shell")
-        page.locator('.history-panel [data-view-mode="history"]').click()
-        require(page.locator('.history-panel .ux-view-pane[data-view-pane="history"]').is_visible(),
-                "Percorso pubblico comunale: vista storica non attivabile senza parametri")
-'''
+          block = (
+              '\n'
+              '        page.goto(base + "confronta/bilanci/", wait_until="networkidle")\n'
+              '        page.wait_for_selector(".ux-view-shell")\n'
+              '        require(not page.locator(\'[data-view-mode="history"]\').is_disabled(),\n'
+              '                "Percorso pubblico Bilanci: vista storica disabilitata sul primo indicatore")\n'
+              '        page.locator(\'[data-view-mode="history"]\').click()\n'
+              '        require(page.locator(\'.ux-view-pane[data-view-pane="history"]\').is_visible(),\n'
+              '                "Percorso pubblico Bilanci: vista storica non attivabile senza parametro indicatore")\n'
+              '\n'
+              '        page.goto(base + "comuni/massarosa/", wait_until="networkidle")\n'
+              '        page.wait_for_selector(".history-panel .ux-view-shell")\n'
+              '        page.locator(\'.history-panel [data-view-mode="history"]\').click()\n'
+              '        require(page.locator(\'.history-panel .ux-view-pane[data-view-pane="history"]\').is_visible(),\n'
+              '                "Percorso pubblico comunale: vista storica non attivabile senza parametri")\n'
+          )
           if 'Percorso pubblico Bilanci' not in text:
               if marker not in text:
                   raise SystemExit('Punto di inserimento test browser non trovato')
-              text = text.replace(marker, block, 1)
+              text = text.replace(marker, marker + block, 1)
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -120,7 +128,7 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Build and run release checks
+      - name: Build and run all release checks
         run: |
           python scripts/build_static_safe.py
           python scripts/test_static.py
