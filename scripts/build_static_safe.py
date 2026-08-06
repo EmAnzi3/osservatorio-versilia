@@ -30,6 +30,15 @@ SEARCH_ICON = (
     '</svg>'
 )
 
+OLD_PROJECT_COPY = (
+    "offrire un punto di accesso chiaro ai dati che aiutano a leggere "
+    "Massarosa e gli altri comuni della Versilia storica."
+)
+NEW_PROJECT_COPY = (
+    "offrire un punto di accesso chiaro ai dati che aiutano a leggere "
+    "i sette comuni della Versilia storica e il territorio nel suo insieme."
+)
+
 NUMBER_FORMAT_REPLACEMENTS = {
     "new Intl.NumberFormat('it-IT', { maximumFractionDigits: 0 })":
         "new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 })",
@@ -80,6 +89,11 @@ def bundle_application_with_private_fixes() -> None:
             bundle = bundle.replace(old, new)
         elif new not in bundle:
             raise RuntimeError(f"Formatter numerico non trovato: {old}")
+
+    if OLD_PROJECT_COPY in bundle:
+        bundle = bundle.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
+    elif NEW_PROJECT_COPY not in bundle:
+        raise RuntimeError("Testo della pagina Il progetto non trovato nel bundle")
 
     bundle_path.write_text(bundle, encoding="utf-8")
 
@@ -136,7 +150,13 @@ def normalize_prerendered_urls() -> None:
             '<body data-prerendered="true" class=',
             '<body class=',
         )
+        text = text.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
         path.write_text(text, encoding="utf-8")
+
+    project_path = build.DIST / "progetto" / "index.html"
+    project_text = project_path.read_text(encoding="utf-8")
+    if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
+        raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
 
 
 build.copy_source_tree = copy_source_tree_with_local_assets
