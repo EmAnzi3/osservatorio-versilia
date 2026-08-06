@@ -114,6 +114,7 @@ jobs:
               '        page.locator(\'.history-panel [data-view-mode="history"]\').click()\n'
               '        require(page.locator(\'.history-panel .ux-view-pane[data-view-pane="history"]\').is_visible(),\n'
               '                "Percorso pubblico comunale: vista storica non attivabile senza parametri")\n'
+              '        page.evaluate("sessionStorage.clear()")\n'
           )
           if 'Percorso pubblico Bilanci' not in text:
               if marker not in text:
