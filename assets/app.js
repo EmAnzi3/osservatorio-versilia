@@ -7,6 +7,7 @@
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
   const VERSION = '20260803-1800';
+  const PREVIEW_VERSION = '20260806-3';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
@@ -103,7 +104,10 @@
   const load = async () => {
     await Promise.all([
       loadStylesheet(new URL(`./fonts.css?v=${VERSION}`, loader.src).href),
-      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href)
+      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./ux-experiment.css?v=${PREVIEW_VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./ux-background-match.css?v=${PREVIEW_VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./export-v161.css?v=${PREVIEW_VERSION}`, loader.src).href)
     ]);
 
     if (document.fonts?.load) {
@@ -128,6 +132,10 @@
       await import(moduleUrl);
       document.querySelectorAll('img').forEach(repairImage);
       await loadScript(new URL(`./fidelity.js?v=${VERSION}`, loader.src).href);
+      await loadScript(new URL(`./ux-accordion.js?v=${PREVIEW_VERSION}`, loader.src).href);
+      await loadScript(new URL(`./ux-history-core.js?v=${PREVIEW_VERSION}`, loader.src).href);
+      await loadScript(new URL(`./ux-history.js?v=${PREVIEW_VERSION}`, loader.src).href);
+      await loadScript(new URL(`./export-v161.js?v=${PREVIEW_VERSION}`, loader.src).href);
     } finally {
       URL.revokeObjectURL(moduleUrl);
     }
