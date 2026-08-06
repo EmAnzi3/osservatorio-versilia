@@ -59,6 +59,16 @@ jobs:
       - name: Run export checks
         run: python scripts/test_exports_v161.py
 
+      - name: Run monthly monitor checks
+        run: |
+          python scripts/test_monthly_data_check.py
+          mkdir -p /tmp/monthly-data-check
+          python scripts/monthly_data_check.py \
+            --mode offline \
+            --report-md /tmp/monthly-data-check/report.md \
+            --report-json /tmp/monthly-data-check/report.json \
+            --next-state /tmp/monthly-data-check/state.json
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
