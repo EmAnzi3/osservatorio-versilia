@@ -1,0 +1,84 @@
+name: Finalize v1.6.0 metadata
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/finalize-v160.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-v160-metadata
+  cancel-in-progress: true
+
+jobs:
+  finalize:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Finalize release metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data_path = Path("data/site-data.json")
+          data = json.loads(data_path.read_text(encoding="utf-8"))
+          data["version"] = "v1.6.0"
+          data["updated"] = "6 agosto 2026"
+          data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          generator_path = Path("scripts/update_bilanci_v160.py")
+          generator = generator_path.read_text(encoding="utf-8")
+          replacements = {
+              'VERSION = "2026.08.05-local-v1.6.0-bilanci"': 'VERSION = "v1.6.0"',
+              'UPDATED = "anteprima locale · 5 agosto 2026"': 'UPDATED = "6 agosto 2026"',
+          }
+          for old, new in replacements.items():
+              if old not in generator and new not in generator:
+                  raise SystemExit(f"Metadato atteso non trovato: {old}")
+              generator = generator.replace(old, new)
+          generator_path.write_text(generator, encoding="utf-8")
+
+          ignore_path = Path(".gitignore")
+          existing = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
+          lines = existing.splitlines()
+          for pattern in ("__pycache__/", "*.pyc"):
+              if pattern not in lines:
+                  lines.append(pattern)
+          ignore_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+
+          check = json.loads(data_path.read_text(encoding="utf-8"))
+          assert check["version"] == "v1.6.0"
+          assert check["updated"] == "6 agosto 2026"
+          assert "anteprima locale" not in generator
+          print("Metadati di produzione v1.6.0 finalizzati.")
+          PY
+
+      - name: Remove generated and one-shot files
+        run: |
+          git rm --ignore-unmatch scripts/__pycache__/expand_bilanci_history_v160.cpython-312.pyc
+          git rm --ignore-unmatch .github/workflows/finalize-v160.yml
+
+      - name: Run deterministic checks
+        run: |
+          python scripts/test_source_links_v160.py
+          python -m json.tool data/site-data.json >/dev/null
+
+      - name: Commit the production hotfix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .gitignore data/site-data.json scripts/update_bilanci_v160.py
+          git commit -m "Finalizza i metadati di Osservatorio Versilia v1.6.0"
+          git push origin HEAD:main
+
+# One-shot release finalizer. It removes itself after the metadata-only hotfix.
