@@ -9497,71 +9497,204 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1176.7111157479592,
-          "formatted": "1.177 €",
-          "series": null,
+          "value": 1178.0076480580294,
+          "formatted": "1.178 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              832.6613652556097,
+              533.9673340622297,
+              416.4993433533429,
+              944.3379882687195,
+              719.526182026069,
+              865.4538947995969,
+              1178.0076480580294
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1176.7111157479592
+          "benchmarkValue": 1178.0076480580294
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 1351.4119883532944,
-          "formatted": "1.351 €",
-          "series": null,
+          "value": 1350.0311784772575,
+          "formatted": "1.350 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1070.1589764013745,
+              1026.8467905830105,
+              1190.4017688590388,
+              1299.639382985712,
+              1298.2153251584236,
+              1327.6653274604896,
+              1350.0311784772575
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1351.4119883532944
+          "benchmarkValue": 1350.0311784772575
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 1232.887587333501,
-          "formatted": "1.233 €",
-          "series": null,
+          "value": 1235.5658369801342,
+          "formatted": "1.236 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1213.0497283073896,
+              1082.2220396083248,
+              1186.899954746865,
+              1212.7844961458923,
+              1250.062730354004,
+              1265.9955582432772,
+              1235.5658369801342
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1232.887587333501
+          "benchmarkValue": 1235.5658369801342
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 1576.5148282988173,
-          "formatted": "1.577 €",
-          "series": null,
+          "value": 1581.033457094982,
+          "formatted": "1.581 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1315.3339061616741,
+              1284.6777241468792,
+              1446.593403277551,
+              1435.0351384467797,
+              1601.11527031771,
+              1535.4483766433627,
+              1581.033457094982
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1576.5148282988173
+          "benchmarkValue": 1581.033457094982
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1047.9034310637267,
-          "formatted": "1.048 €",
-          "series": null,
+          "value": 1056.1781488114616,
+          "formatted": "1.056 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              866.2956098324723,
+              912.731608792609,
+              921.8377148139218,
+              973.1629737797494,
+              1070.1594402895057,
+              1026.7058218237623,
+              1056.1781488114616
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1047.9034310637267
+          "benchmarkValue": 1056.1781488114616
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 4144.557293729373,
-          "formatted": "4.145 €",
-          "series": null,
+          "value": 4217.957087022904,
+          "formatted": "4.218 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              3354.86684291942,
+              3210.0034959124305,
+              3862.918129050843,
+              3987.1130178805065,
+              3977.484425261915,
+              4147.544837983799,
+              4217.957087022904
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 4144.557293729373
+          "benchmarkValue": 4217.957087022904
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 1182.4965594744122,
-          "formatted": "1.182 €",
-          "series": null,
+          "value": 1228.8106539705357,
+          "formatted": "1.229 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1118.829736308317,
+              1164.457684610076,
+              1361.3786989619373,
+              1250.1189224887034,
+              1152.626276265932,
+              1215.3160373443982,
+              1228.8106539705357
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1182.4965594744122
+          "benchmarkValue": 1228.8106539705357
         }
       ],
       "aggregate": {
@@ -9572,9 +9705,9 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "pagamenti correnti / popolazione residente",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "formula": "pagamenti cumulati a dicembre con Titolo CG 1 / popolazione residente Istat al 1° gennaio dell’anno successivo",
+        "caveat": "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. Flussi di cassa e stock finanziari non sono intercambiabili.",
+        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
       }
     },
     "siopePayments": {
@@ -9595,11 +9728,30 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1774.3670833715914,
+          "value": 1774.367083371591,
           "formatted": "1.774 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1730.8247161693273,
+              990.1278629675187,
+              766.6465485955187,
+              1240.4410150307026,
+              1062.815939629545,
+              1218.3824525359994,
+              1774.367083371591
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1774.3670833715914
+          "benchmarkValue": 1774.367083371591
         },
         {
           "town": "Viareggio",
@@ -9607,7 +9759,26 @@
           "slug": "viareggio",
           "value": 2260.15683750824,
           "formatted": "2.260 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1446.4032142384976,
+              1325.8364074055937,
+              1525.8557986731093,
+              1664.7254825094424,
+              2240.9655593778284,
+              2143.6482623973075,
+              2260.15683750824
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 2260.15683750824
         },
@@ -9615,21 +9786,59 @@
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 3335.614821647829,
+          "value": 3335.61482164783,
           "formatted": "3.336 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              2971.5521925625335,
+              2519.549449639495,
+              1845.7393695986923,
+              2320.148418875729,
+              2815.1125376600544,
+              2638.9518340035183,
+              3335.61482164783
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 3335.614821647829
+          "benchmarkValue": 3335.61482164783
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2517.726732957051,
+          "value": 2517.726732957052,
           "formatted": "2.518 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1712.6326807844514,
+              1669.6406431382723,
+              2263.3062065377594,
+              2427.752932891467,
+              2464.455256714059,
+              2405.2780024622957,
+              2517.726732957052
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 2517.726732957051
+          "benchmarkValue": 2517.726732957052
         },
         {
           "town": "Seravezza",
@@ -9637,7 +9846,26 @@
           "slug": "seravezza",
           "value": 1904.8667942038423,
           "formatted": "1.905 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1397.9625238766246,
+              1149.277691143676,
+              1392.2940020898645,
+              1345.5351077047196,
+              1645.3038118214722,
+              1380.1006437282938,
+              1904.8667942038423
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 1904.8667942038423
         },
@@ -9645,11 +9873,30 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 7097.490633587786,
+          "value": 7097.4906335877895,
           "formatted": "7.097 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              4323.735106173532,
+              4877.160418456424,
+              5176.042602621347,
+              5736.1792557057715,
+              5730.940907481186,
+              6792.102187218719,
+              7097.4906335877895
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 7097.490633587786
+          "benchmarkValue": 7097.4906335877895
         },
         {
           "town": "Stazzema",
@@ -9657,22 +9904,41 @@
           "slug": "stazzema",
           "value": 2450.1243801652895,
           "formatted": "2.450 €",
-          "series": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              2877.9819844489534,
+              2176.2083091787445,
+              2094.915470588235,
+              2162.5591240875906,
+              1821.1828522218395,
+              1907.5249377593354,
+              2450.1243801652895
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 2450.1243801652895
         }
       ],
       "aggregate": {
-        "value": 2621.42546454706,
+        "value": 2621.4254645470605,
         "label": "Valore pro capite Versilia",
         "note": "Uscite di cassa complessive divise per i residenti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "pagamenti complessivi / popolazione residente",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "formula": "pagamenti complessivi cumulati a dicembre / popolazione residente Istat al 1° gennaio dell’anno successivo",
+        "caveat": "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. Flussi di cassa e stock finanziari non sono intercambiabili.",
+        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
       }
     },
     "publicWorks": {
@@ -10820,84 +11086,217 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 264.54125699348805,
-          "formatted": null,
-          "series": null,
+          "value": 264.83273574511065,
+          "formatted": "265 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              75.6517131621559,
+              38.893641747528584,
+              19.64882646748843,
+              68.66198836037026,
+              135.92789572375946,
+              169.0180303586169,
+              264.83273574511065
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 264.54125699348805
+          "benchmarkValue": 264.83273574511065
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 397.6800737404731,
-          "formatted": null,
-          "series": null,
+          "value": 397.2737427488464,
+          "formatted": "397 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              55.67024276176627,
+              79.37467551550182,
+              84.10884576951432,
+              104.87531006733455,
+              222.71406155871946,
+              307.14667540994424,
+              397.2737427488464
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 397.6800737404731
+          "benchmarkValue": 397.2737427488464
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 328.2265735737622,
-          "formatted": null,
-          "series": null,
+          "value": 328.93959292258285,
+          "formatted": "329 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              114.02862029610374,
+              89.97415194735682,
+              214.3985628987147,
+              201.19136272482297,
+              164.3203094401205,
+              192.49037949233474,
+              328.93959292258285
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 328.2265735737622
+          "benchmarkValue": 328.93959292258285
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 665.9789843028624,
-          "formatted": null,
-          "series": null,
+          "value": 667.8878225593086,
+          "formatted": "668 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              117.24632125929466,
+              201.64858137623804,
+              331.4181943119744,
+              542.3449339379933,
+              576.9512826926451,
+              618.3151176186078,
+              667.8878225593086
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 665.9789843028624
+          "benchmarkValue": 667.8878225593086
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 527.9647257895161,
-          "formatted": null,
-          "series": null,
+          "value": 532.1337732009118,
+          "formatted": "532 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              170.13108031939876,
+              96.2775836253584,
+              261.48670605256814,
+              190.65624526018556,
+              355.46119823080016,
+              190.19192633874482,
+              532.1337732009118
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 527.9647257895161
+          "benchmarkValue": 532.1337732009118
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 2024.7042589258926,
-          "formatted": null,
-          "series": null,
+          "value": 2060.561616793893,
+          "formatted": "2.061 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              472.63138939670927,
+              956.4554399334904,
+              756.7575385280139,
+              1060.8131923244657,
+              1047.666595838867,
+              1400.5572457245726,
+              2060.561616793893
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 2024.7042589258926
+          "benchmarkValue": 2060.561616793893
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 392.0897648686031,
-          "formatted": null,
-          "series": null,
+          "value": 407.4464965864176,
+          "formatted": "407 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              436.4309634888438,
+              320.31682539682544,
+              355.58203460207613,
+              281.6949044143205,
+              349.2729693420599,
+              311.02826071922544,
+              407.4464965864176
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 392.0897648686031
+          "benchmarkValue": 407.4464965864176
         }
       ],
       "aggregate": {
-        "value": 482.1814742226529,
+        "value": 483.45293433005304,
         "label": "Valore pro capite Versilia",
         "note": "Pagamenti complessivi in conto capitale divisi per i residenti."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "pagamenti in conto capitale / popolazione residente",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "formula": "pagamenti cumulati a dicembre con Titolo CG 2 / popolazione residente Istat al 1° gennaio dell’anno successivo",
+        "caveat": "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. Flussi di cassa e stock finanziari non sono intercambiabili.",
+        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
       }
     },
     "tourismIntensity": {
@@ -11408,71 +11807,204 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 1665.2993774676338,
-          "formatted": null,
-          "series": null,
+          "value": 1665.2993774676327,
+          "formatted": "1.665 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1730.880635207032,
+              1040.1743360211374,
+              1098.6095413096275,
+              1127.2392397580425,
+              1091.740043905785,
+              1351.3522200311843,
+              1665.2993774676327
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1665.2993774676338
+          "benchmarkValue": 1665.2993774676327
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 1998.6164596242584,
-          "formatted": null,
-          "series": null,
+          "value": 1998.6164596242593,
+          "formatted": "1.999 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1610.3703063855103,
+              1530.5389691596865,
+              1615.7321159800156,
+              2274.359136804073,
+              1786.7785337832265,
+              2039.2643859909592,
+              1998.6164596242593
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1998.6164596242584
+          "benchmarkValue": 1998.6164596242593
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 3307.5875842961937,
-          "formatted": null,
-          "series": null,
+          "value": 3307.587584296193,
+          "formatted": "3.308 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              2943.321459594839,
+              2722.4703346871947,
+              1886.4123660475789,
+              2231.250724760293,
+              2779.9513472884755,
+              2765.542527645138,
+              3307.587584296193
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 3307.5875842961937
+          "benchmarkValue": 3307.587584296193
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 2671.6869944439545,
-          "formatted": null,
-          "series": null,
+          "value": 2671.686994443954,
+          "formatted": "2.672 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              2044.088955950777,
+              2082.5874352320398,
+              2257.5006503078125,
+              2425.692532158898,
+              2352.242622432859,
+              2466.9929156223893,
+              2671.686994443954
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 2671.6869944439545
+          "benchmarkValue": 2671.686994443954
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 1669.03301286226,
-          "formatted": null,
-          "series": null,
+          "value": 1669.0330128622602,
+          "formatted": "1.669 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1441.8965390637236,
+              1270.046387384517,
+              1659.0313069688937,
+              1349.0509237595807,
+              1506.1523795737837,
+              1484.1918948388661,
+              1669.0330128622602
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 1669.03301286226
+          "benchmarkValue": 1669.0330128622602
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 6747.857815267175,
-          "formatted": null,
-          "series": null,
+          "value": 6747.857815267177,
+          "formatted": "6.748 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              4957.311070172973,
+              5028.283238187611,
+              5585.326922079794,
+              6138.5818999854655,
+              6409.628460970931,
+              6942.556878187817,
+              6747.857815267177
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 6747.857815267175
+          "benchmarkValue": 6747.857815267177
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 2433.867808120733,
-          "formatted": null,
-          "series": null,
+          "value": 2433.8678081207336,
+          "formatted": "2.434 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              2756.4261933739003,
+              2409.4679123533474,
+              1934.287235294118,
+              2149.156496350365,
+              1854.879193937306,
+              1971.6023029045639,
+              2433.8678081207336
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 2433.867808120733
+          "benchmarkValue": 2433.8678081207336
         }
       ],
       "aggregate": {
@@ -11483,9 +12015,9 @@
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "incassi complessivi / popolazione residente",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "formula": "incassi complessivi cumulati a dicembre / popolazione residente Istat al 1° gennaio dell’anno successivo",
+        "caveat": "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. Flussi di cassa e stock finanziari non sono intercambiabili.",
+        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
       }
     },
     "cashBalancePerResident": {
@@ -11506,84 +12038,217 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": -109.0677059039574,
-          "formatted": null,
-          "series": null,
+          "value": -109.06770590395823,
+          "formatted": "-109 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              0.055919037704497555,
+              50.0464730536187,
+              331.96299271410885,
+              -113.2017752726603,
+              28.924104276240016,
+              132.96976749518498,
+              -109.06770590395823
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -109.0677059039574
+          "benchmarkValue": -109.06770590395823
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": -261.54037788398153,
-          "formatted": null,
-          "series": null,
+          "value": -261.54037788398074,
+          "formatted": "-262 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              163.96709214701278,
+              204.70256175409284,
+              89.87631730690632,
+              609.6336542946306,
+              -454.1870255946019,
+              -104.38387640634808,
+              -261.54037788398074
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -261.54037788398153
+          "benchmarkValue": -261.54037788398074
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": -28.027237351635552,
-          "formatted": null,
-          "series": null,
+          "value": -28.027237351636977,
+          "formatted": "-28 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              -28.23073296769459,
+              202.92088504770015,
+              40.67299644888648,
+              -88.89769411543587,
+              -35.1611903715788,
+              126.59069364161923,
+              -28.027237351636977
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -28.027237351635552
+          "benchmarkValue": -28.027237351636977
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 153.96026148690362,
-          "formatted": null,
-          "series": null,
+          "value": 153.96026148690206,
+          "formatted": "154 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              331.4562751663258,
+              412.9467920937673,
+              -5.805556229946943,
+              -2.06040073256919,
+              -112.21263428119988,
+              61.71491316009369,
+              153.96026148690206
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 153.96026148690362
+          "benchmarkValue": 153.96026148690206
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": -235.83378134158255,
-          "formatted": null,
-          "series": null,
+          "value": -235.8337813415821,
+          "formatted": "-236 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              43.93401518709904,
+              120.76869624084088,
+              266.7373048790292,
+              3.515816054860909,
+              -139.15143224768846,
+              104.09125111057244,
+              -235.8337813415821
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -235.83378134158255
+          "benchmarkValue": -235.8337813415821
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": -349.6328183206107,
-          "formatted": null,
-          "series": null,
+          "value": -349.632818320612,
+          "formatted": "-350 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              633.5759639994411,
+              151.12281973118723,
+              409.2843194584465,
+              402.40264427969385,
+              678.6875534897454,
+              150.45469096909784,
+              -349.632818320612
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -349.6328183206107
+          "benchmarkValue": -349.632818320612
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": -16.256572044556236,
-          "formatted": null,
-          "series": null,
+          "value": -16.256572044555913,
+          "formatted": "-16 €",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              -121.55579107505332,
+              233.2596031746029,
+              -160.62823529411688,
+              -13.402627737225746,
+              33.69634171546627,
+              64.0773651452283,
+              -16.256572044555913
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": -16.256572044556236
+          "benchmarkValue": -16.256572044555913
         }
       ],
       "aggregate": {
-        "value": -131.69959878879638,
+        "value": -131.6995987887967,
         "label": "Saldo Versilia",
         "note": "Saldo complessivo rapportato alla popolazione."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "(incassi complessivi - pagamenti complessivi) / popolazione residente",
-        "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
+        "formula": "(incassi complessivi - pagamenti complessivi) / popolazione residente Istat al 1° gennaio dell’anno successivo",
+        "caveat": "Il numeratore è il flusso SIOPE cumulato a dicembre; il denominatore è la popolazione residente Istat al 1° gennaio dell’anno successivo, applicata in modo uniforme a tutta la serie. Flussi di cassa e stock finanziari non sono intercambiabili.",
+        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
       }
     },
     "tourismArrivals": {
