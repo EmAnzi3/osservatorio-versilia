@@ -14,8 +14,8 @@ APP01_PATH = ROOT / "assets" / "app-parts" / "01.txt"
 APP05_PATH = ROOT / "assets" / "app-parts" / "05.txt"
 README_PATH = ROOT / "README.md"
 
-VERSION = "2026.08.05-local-v1.6.0-bilanci"
-UPDATED = "anteprima locale · 5 agosto 2026"
+VERSION = "v1.6.0"
+UPDATED = "6 agosto 2026"
 SOURCE_URL = "https://openbdap.rgs.mef.gov.it/it/FET/Analizza"
 
 TOWN_ORDER = [
