@@ -15,7 +15,9 @@ on:
     paths:
       - ".github/workflows/monthly-data-refresh.yml"
       - "scripts/monthly_data_check.py"
+      - "scripts/monthly_data_check_coverage.py"
       - "scripts/test_monthly_data_check.py"
+      - "scripts/restore_partial_agcom_metrics.py"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
       - "data/site-data.json"
@@ -48,7 +50,9 @@ jobs:
           python-version: "3.12"
 
       - name: Run monitor unit tests
-        run: python scripts/test_monthly_data_check.py
+        run: |
+          python scripts/test_monthly_data_check.py
+          python -m py_compile scripts/monthly_data_check_coverage.py
 
       - name: Prepare check
         id: prepare
@@ -72,7 +76,7 @@ jobs:
       - name: Validate dataset and check sources
         id: monitor
         run: |
-          python scripts/monthly_data_check.py \
+          python scripts/monthly_data_check_coverage.py \
             --mode "${{ steps.prepare.outputs.mode }}" \
             --report-md "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.md" \
             --report-json "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.json" \
