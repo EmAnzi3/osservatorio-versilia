@@ -13,6 +13,8 @@ _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 
+UX_ASSET_VERSION = "20260806-2"
+
 if "bilanci" not in build.THEME_SLUGS:
     build.THEME_SLUGS.insert(2, "bilanci")
 if "confronta/bilanci/" not in build.ROUTES:
@@ -97,18 +99,18 @@ def prepare_shells_with_fonts() -> None:
         if "assets/ux-experiment.css" not in text:
             text = text.replace(
                 "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css">\n</head>',
+                f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css?v={UX_ASSET_VERSION}">\n</head>',
             )
         if "assets/ux-background-match.css" not in text:
             text = text.replace(
                 "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css">\n</head>',
+                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css?v={UX_ASSET_VERSION}">\n</head>',
             )
 
         experiment_scripts = (
-            f'  <script src="{assets}assets/ux-accordion.js" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history-core.js" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history.js" defer></script>\n'
+            f'  <script src="{assets}assets/ux-accordion.js?v={UX_ASSET_VERSION}" defer></script>\n'
+            f'  <script src="{assets}assets/ux-history-core.js?v={UX_ASSET_VERSION}" defer></script>\n'
+            f'  <script src="{assets}assets/ux-history.js?v={UX_ASSET_VERSION}" defer></script>\n'
         )
         if "assets/ux-history.js" not in text:
             text = text.replace("</body>", experiment_scripts + "</body>")

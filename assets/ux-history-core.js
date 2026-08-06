@@ -7,6 +7,22 @@
   const formatters = new Map();
   let shellCounter = 0;
 
+  function storageGet(key) {
+    try {
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  function storageSet(key, value) {
+    try {
+      sessionStorage.setItem(key, value);
+    } catch {
+      // Controls remain functional when storage is unavailable.
+    }
+  }
+
   function escapeHtml(value) {
     return String(value ?? '')
       .replaceAll('&', '&amp;')
@@ -208,7 +224,7 @@
       groups.forEach(group => group.classList.toggle('is-selected', group.dataset.historyTown === selected));
       buttons.forEach(button => button.setAttribute('aria-pressed', button.dataset.historySelect === selected ? 'true' : 'false'));
       if (summary) summary.innerHTML = summaryMarkup(buttons.find(button => button.dataset.historySelect === selected), unit);
-      if (selected) sessionStorage.setItem('ov-history-town', selected);
+      if (selected) storageSet('ov-history-town', selected);
     };
 
     buttons.forEach(button => button.addEventListener('click', () => select(button.dataset.historySelect)));
@@ -224,7 +240,7 @@
   function wireViewShell(shell, storageKey, historyAvailable, preferred = 'current') {
     const buttons = [...shell.querySelectorAll('[data-view-mode]')];
     const panes = [...shell.querySelectorAll('[data-view-pane]')];
-    const stored = sessionStorage.getItem(storageKey);
+    const stored = storageGet(storageKey);
     const initial = (stored === 'history' || preferred === 'history') && historyAvailable ? 'history' : 'current';
 
     const activate = mode => {
@@ -236,7 +252,7 @@
         button.tabIndex = active ? 0 : -1;
       });
       panes.forEach(pane => { pane.hidden = pane.dataset.viewPane !== mode; });
-      sessionStorage.setItem(storageKey, mode);
+      storageSet(storageKey, mode);
     };
 
     buttons.forEach((button, index) => {

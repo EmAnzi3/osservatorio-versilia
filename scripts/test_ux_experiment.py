@@ -112,6 +112,21 @@ def browser_assertions() -> None:
         browser = playwright.chromium.launch(**launch_args)
 
         page = browser.new_page(viewport={"width": 1440, "height": 950})
+
+        page.goto(base + "confronta/bilanci/", wait_until="networkidle")
+        page.wait_for_selector(".ux-view-shell")
+        require(not page.locator('[data-view-mode="history"]').is_disabled(),
+                "Percorso pubblico Bilanci: vista storica disabilitata sul primo indicatore")
+        page.locator('[data-view-mode="history"]').click()
+        require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
+                "Percorso pubblico Bilanci: vista storica non attivabile senza parametro indicatore")
+
+        page.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        page.wait_for_selector(".history-panel .ux-view-shell")
+        page.locator('.history-panel [data-view-mode="history"]').click()
+        require(page.locator('.history-panel .ux-view-pane[data-view-pane="history"]').is_visible(),
+                "Percorso pubblico comunale: vista storica non attivabile senza parametri")
+        page.evaluate("sessionStorage.clear()")
         page.goto(
             base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident",
             wait_until="networkidle",
