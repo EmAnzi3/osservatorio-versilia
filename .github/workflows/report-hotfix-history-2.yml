@@ -1,0 +1,40 @@
+name: Report secondo hotfix storico
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/report-hotfix-history-2.yml"
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Report latest hotfix run
+        run: |
+          sleep 10
+          response="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/hotfix-history-v160.yml/runs?per_page=1")"
+          run_id="$(jq -r '.workflow_runs[0].id // ""' <<<"$response")"
+          status="$(jq -r '.workflow_runs[0].status // "non trovato"' <<<"$response")"
+          conclusion="$(jq -r '.workflow_runs[0].conclusion // "in attesa"' <<<"$response")"
+          url="$(jq -r '.workflow_runs[0].html_url // ""' <<<"$response")"
+          gh api "repos/${GITHUB_REPOSITORY}/issues/8/comments" -f body="Secondo collaudo vista storica: **${status}**, esito **${conclusion}**. Run ${run_id}: ${url}"
+      - name: Remove reporter
+        run: |
+          git rm .github/workflows/report-hotfix-history-2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rimuove il secondo reporter temporaneo"
+          git push origin HEAD:main
