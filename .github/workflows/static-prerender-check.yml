@@ -172,6 +172,8 @@ jobs:
                   'require(sorted(map(int, SNAPSHOT["raw"][town])) == list(YEARS), f"Annualità SIOPE incomplete: {town}")',
               'require(metric_snapshot["years"] == YEARS, f"Anni errati per {key}")':
                   'require(list(metric_snapshot["years"]) == list(YEARS), f"Anni errati per {key}")',
+              'require(series["years"] == YEARS, f"Serie anni errata: {key}/{town}")':
+                  'require(list(series["years"]) == list(YEARS), f"Serie anni errata: {key}/{town}")',
           }
           for old, new in replacements.items():
               if old not in text:
