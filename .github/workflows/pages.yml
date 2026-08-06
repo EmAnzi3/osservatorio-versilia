@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -46,6 +46,12 @@ jobs:
 
       - name: Run v1.6.0 budget checks
         run: python scripts/test_release_v160.py
+
+      - name: Run source-link checks
+        run: python scripts/test_source_links_v160.py
+
+      - name: Run SIOPE history checks
+        run: python scripts/test_siope_history_v160.py
 
       - name: Run accordion and history checks
         run: python scripts/test_ux_experiment.py
