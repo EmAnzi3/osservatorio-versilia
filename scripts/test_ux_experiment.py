@@ -121,9 +121,17 @@ def browser_assertions() -> None:
                 "Bilanci: sezioni espandibili non installate")
         require(page.locator('[data-view-mode="current"].active').count() == 1,
                 "Bilanci: vista attuale non selezionata inizialmente")
+        current_background = page.locator(".topic-bars").evaluate(
+            "el => getComputedStyle(el).backgroundColor"
+        )
         page.locator('[data-view-mode="history"]').click()
         require(page.locator('[data-view-mode="history"].active').count() == 1,
                 "Bilanci: selettore storico non attivato")
+        history_background = page.locator(".ux-history-card").evaluate(
+            "el => getComputedStyle(el).backgroundColor"
+        )
+        require(history_background == current_background,
+                f"Sfondo storico diverso dal pannello del valore attuale: {history_background} != {current_background}")
         require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
                 "Bilanci: pannello storico non visibile")
         require(page.locator(".ux-series-group").count() == 7,
@@ -144,6 +152,14 @@ def browser_assertions() -> None:
                 "Economia: confronto a due punti incompleto")
         require("Confronto a due punti 2023–2024" in page.locator(".ux-history-head").inner_text(),
                 "Economia: intervallo a due punti non riconosciuto")
+
+        page.goto(
+            base + "confronta/bilanci/?indicatore=rigidExpenditureShare",
+            wait_until="networkidle",
+        )
+        page.wait_for_selector(".ux-view-shell")
+        require(page.locator('[data-view-mode="history"]').is_disabled(),
+                "Spese rigide: la vista storica deve restare disabilitata")
 
         page.goto(
             base + "comuni/massarosa/?tema=demografia&indicatore=population",

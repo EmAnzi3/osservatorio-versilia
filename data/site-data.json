@@ -1446,7 +1446,7 @@
           "note": "Il confronto usa per tutti il 2024; nella scheda il dato principale resta aggiornato al 2026."
         }
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -1691,7 +1691,7 @@
         "source": "Istat — popolazione per età",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -2674,7 +2674,7 @@
           "unit": "per1000"
         }
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z1000SER,1.0/SER_TOURISM",
+      "sourceUrl": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
       "rows": [
         {
           "town": "Massarosa",
@@ -3513,7 +3513,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "positive"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -3611,7 +3611,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "negative"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -3709,7 +3709,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "positive"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -3807,7 +3807,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "positive"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -3905,7 +3905,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "positive"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -4003,7 +4003,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "negative"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -4326,7 +4326,7 @@
           "note": "Definizione e anno coincidono; gli aggregati regionale e nazionale derivano dalla rilevazione sulle forze di lavoro e sono indicati come riferimento statistico."
         }
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -4424,7 +4424,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "positive"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -4527,7 +4527,7 @@
           "unit": "per1000"
         }
       },
-      "sourceUrl": "https://unica.istruzione.gov.it/portale/it/scuola-in-chiaro",
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole",
       "rows": [
         {
           "town": "Massarosa",
@@ -4664,7 +4664,7 @@
         "source": "MIM — Portale unico dei dati della scuola",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
       "rows": [
         {
           "town": "Massarosa",
@@ -4762,7 +4762,7 @@
         "source": "MIM — Portale unico dei dati della scuola",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
       "rows": [
         {
           "town": "Massarosa",
@@ -4860,7 +4860,7 @@
         "source": "MIM — Portale unico dei dati della scuola",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati.istruzione.it/opendata/",
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
       "rows": [
         {
           "town": "Massarosa",
@@ -6363,7 +6363,7 @@
           "unit": "per10k"
         }
       },
-      "sourceUrl": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero",
+      "sourceUrl": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
       "rows": [
         {
           "town": "Massarosa",
@@ -6500,7 +6500,7 @@
         "source": "Istat — Censimento permanente, mobilità",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -6598,7 +6598,7 @@
         "source": "Istat — Censimento permanente, mobilità",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7005,7 +7005,7 @@
         "source": "ACI / Istat — parco veicolare",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://esploradati.istat.it/",
+      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7103,7 +7103,7 @@
         "source": "ACI / Istat — parco veicolare",
         "polarity": "negative"
       },
-      "sourceUrl": "https://esploradati.istat.it/",
+      "sourceUrl": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7201,7 +7201,7 @@
         "source": "GSE / MASE — Piattaforma Unica Nazionale",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.piattaformaunicanazionale.it/",
+      "sourceUrl": "https://www.piattaformaunicanazionale.it/idr",
       "rows": [
         {
           "town": "Massarosa",
@@ -7299,7 +7299,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7397,7 +7397,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7495,7 +7495,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7593,7 +7593,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7691,7 +7691,7 @@
         "source": "Istat — Censimento permanente",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -7789,7 +7789,7 @@
         "source": "Istat — Censimento permanente, dati per sezione",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+      "sourceUrl": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
       "rows": [
         {
           "town": "Massarosa",
@@ -8280,7 +8280,7 @@
         "source": "ISPRA IdroGEO / Istat",
         "polarity": "negative"
       },
-      "sourceUrl": "https://idrogeo.isprambiente.it/app/",
+      "sourceUrl": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
       "rows": [
         {
           "town": "Massarosa",
@@ -8378,7 +8378,7 @@
         "source": "ISPRA IdroGEO / Istat",
         "polarity": "negative"
       },
-      "sourceUrl": "https://idrogeo.isprambiente.it/app/",
+      "sourceUrl": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
       "rows": [
         {
           "town": "Massarosa",
@@ -10051,7 +10051,7 @@
         "source": "Italia Domani / ReGiS",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.italiadomani.gov.it/it/catalogo-open-data/Progetti_del_PNRR.html",
+      "sourceUrl": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
       "rows": [
         {
           "town": "Massarosa",
@@ -10149,7 +10149,7 @@
         "source": "Italia Domani — Open data PNRR",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.italiadomani.gov.it/it/catalogo-open-data/Progetti_del_PNRR.html",
+      "sourceUrl": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
       "rows": [
         {
           "town": "Massarosa",
@@ -10247,7 +10247,7 @@
         "source": "Istat — popolazione per età",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -10639,7 +10639,7 @@
         "source": "Istat — matrice di pendolarismo per lavoro",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://dati-censimentipermanenti.istat.it/",
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
         {
           "town": "Massarosa",
@@ -11801,7 +11801,7 @@
         "source": "SIOPE — incassi degli enti territoriali",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.siope.it/Siope2Web/",
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [
         {
           "town": "Massarosa",
@@ -12032,7 +12032,7 @@
         "source": "SIOPE — incassi e pagamenti",
         "polarity": "neutral"
       },
-      "sourceUrl": "https://www.siope.it/Siope2Web/",
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [
         {
           "town": "Massarosa",
@@ -14280,22 +14280,6 @@
           "slug": "massarosa",
           "value": 20.66,
           "formatted": "20,7%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              31.91,
-              29.54,
-              25.1,
-              24.41,
-              20.66
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 20.66
         },
@@ -14305,22 +14289,6 @@
           "slug": "viareggio",
           "value": 24.48,
           "formatted": "24,5%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              26.34,
-              29.22,
-              22.61,
-              13.76,
-              24.48
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 24.48
         },
@@ -14330,22 +14298,6 @@
           "slug": "camaiore",
           "value": 35.18,
           "formatted": "35,2%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              31.0,
-              25.0,
-              30.0,
-              32.0,
-              35.18
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 35.18
         },
@@ -14355,22 +14307,6 @@
           "slug": "pietrasanta",
           "value": 20.97,
           "formatted": "21,0%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              21.7,
-              17.82,
-              26.93,
-              23.72,
-              20.97
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 20.97
         },
@@ -14380,22 +14316,6 @@
           "slug": "seravezza",
           "value": 22.75,
           "formatted": "22,8%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              19.95,
-              17.15,
-              19.99,
-              17.71,
-              22.75
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 22.75
         },
@@ -14405,22 +14325,6 @@
           "slug": "forte-dei-marmi",
           "value": 21.78,
           "formatted": "21,8%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              22.0,
-              22.24,
-              22.24,
-              20.51,
-              21.78
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 21.78
         },
@@ -14430,22 +14334,6 @@
           "slug": "stazzema",
           "value": 25.16,
           "formatted": "25,2%",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2025
-            ],
-            "values": [
-              31.21,
-              28.51,
-              28.49,
-              27.35,
-              25.16
-            ]
-          },
           "normalized": null,
           "benchmarkValue": 25.16
         }
@@ -14459,8 +14347,8 @@
       "method": {
         "type": "Indicatore ufficiale OpenBDAP",
         "formula": "Indicatore ufficiale 1.1 del Piano degli indicatori allegato al rendiconto",
-        "caveat": "Indicatore ufficiale OpenBDAP. La serie include soltanto gli anni in cui tutti e sette i valori sono formalmente compresi tra 0 e 100; il 2024 resta escluso per l’anomalia rilevata nel file ufficiale.",
-        "coverage": "7/7 per ciascun anno ammesso (2019–2025)"
+        "caveat": "Indicatore ufficiale OpenBDAP. Nei file 2023 e 2024 il valore di Camaiore è formalmente anomalo (3100 e 3199). Per evitare di collegare come continua una serie interrotta, lo storico non viene pubblicato; resta disponibile il valore 2025.",
+        "coverage": "7/7 nel 2025; storico non pubblicato per discontinuità della fonte."
       }
     },
     "educationMissionExpenditurePerResident": {

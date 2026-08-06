@@ -116,7 +116,7 @@ def main() -> None:
         require(meta.get("year") not in (None, ""), f"{key}: anno mancante")
         require(meta.get("source") not in (None, ""), f"{key}: fonte mancante")
         require(
-            str(metric.get("method", {}).get("coverage", "")).startswith("7/7"),
+            "7/7" in str(metric.get("method", {}).get("coverage", "")),
             f"{key}: copertura metodologica mancante",
         )
 

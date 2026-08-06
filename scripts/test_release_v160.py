@@ -154,7 +154,10 @@ def main() -> None:
         for town in TOWNS:
             row = rows[town]
             close(row["value"], expected_value(key, town, 2025), f"{key} {town} 2025")
-            if len(source_years) >= 2:
+            if key == "rigidExpenditureShare":
+                require(not row.get("series"),
+                        "Spese rigide: lo storico discontinuo non deve essere pubblicato")
+            elif len(source_years) >= 2:
                 require(row["series"]["years"] == source_years, f"Serie anni errata per {key} {town}")
                 require(len(row["series"]["values"]) == len(source_years), f"Serie valori incompleta per {key} {town}")
                 for year, value in zip(source_years, row["series"]["values"], strict=True):
@@ -169,6 +172,10 @@ def main() -> None:
     for town in TOWNS:
         for year in rigid_years:
             require(0 <= expected_value("rigidExpenditureShare", town, year) <= 100, f"Spese rigide fuori scala: {town} {year}")
+    require(all(not row.get("series") for row in DATA["metrics"]["rigidExpenditureShare"]["rows"]),
+            "Spese rigide: serie pubblicata nonostante la discontinuità")
+    require("storico non viene pubblicato" in DATA["metrics"]["rigidExpenditureShare"]["method"]["caveat"],
+            "Spese rigide: motivazione metodologica assente")
 
     require(DATA["metrics"]["availableAdministrationResultPerResident"]["rows"][2]["value"] < 0, "I valori negativi devono essere conservati")
     require(DATA["metrics"]["rigidExpenditureShare"]["meta"]["polarity"] == "negative", "Polarità spese rigide errata")
