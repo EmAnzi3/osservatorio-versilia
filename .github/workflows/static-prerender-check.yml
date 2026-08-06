@@ -170,6 +170,11 @@ jobs:
           if old_entity not in text:
               raise SystemExit('Asserzione tipo ente SIOPE non trovata')
           text = text.replace(old_entity, new_entity)
+          old_resources = 'require(len(SNAPSHOT["source"]["resources"]) == 16, "Risorse SIOPE 2018–2025 incomplete")'
+          new_resources = 'require(len(SNAPSHOT["source"]["resources"]) == 14, "Risorse SIOPE 2019–2025 incomplete")'
+          if old_resources not in text:
+              raise SystemExit('Asserzione risorse SIOPE non trovata')
+          text = text.replace(old_resources, new_resources)
           path.write_text(text, encoding='utf-8')
           PY
 
