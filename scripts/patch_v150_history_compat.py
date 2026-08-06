@@ -6,11 +6,15 @@ import runpy
 path = Path(__file__).with_name("test_release_v150.py")
 text = path.read_text(encoding="utf-8")
 old = 'metric.get("method", {}).get("coverage") == "7/7",'
-new = 'str(metric.get("method", {}).get("coverage", "")).startswith("7/7"),'
+previous = 'str(metric.get("method", {}).get("coverage", "")).startswith("7/7"),'
+new = '"7/7" in str(metric.get("method", {}).get("coverage", "")),'
 if new not in text:
-    if old not in text:
+    if previous in text:
+        text = text.replace(previous, new, 1)
+    elif old in text:
+        text = text.replace(old, new, 1)
+    else:
         raise RuntimeError("Controllo copertura v1.5.0 non riconosciuto")
-    text = text.replace(old, new, 1)
 path.write_text(text, encoding="utf-8")
 print("Compatibilità v1.5.0 aggiornata per etichette di copertura storica 7/7.")
 
