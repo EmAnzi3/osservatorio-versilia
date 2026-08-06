@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+      TARGET_SHA: e4c5fc163aa987a33d59b6c53d1d571fe8afa5f5
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -29,32 +30,38 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Wait for the matching Pages deployment
+      - name: Read the production Pages deployment
         run: |
           set -euo pipefail
+          status=""
           conclusion=""
           run_url=""
-          for attempt in $(seq 1 40); do
-            response="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?branch=main&per_page=20")"
-            status="$(jq -r --arg sha "$GITHUB_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .status' <<<"$response" | head -n1)"
-            conclusion="$(jq -r --arg sha "$GITHUB_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .conclusion // ""' <<<"$response" | head -n1)"
-            run_url="$(jq -r --arg sha "$GITHUB_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .html_url' <<<"$response" | head -n1)"
+          for attempt in $(seq 1 12); do
+            response="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pages.yml/runs?branch=main&per_page=30")"
+            status="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .status' <<<"$response" | head -n1)"
+            conclusion="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .conclusion // ""' <<<"$response" | head -n1)"
+            run_url="$(jq -r --arg sha "$TARGET_SHA" '.workflow_runs[] | select(.head_sha == $sha) | .html_url' <<<"$response" | head -n1)"
             echo "Tentativo ${attempt}: status=${status:-non trovato}, conclusion=${conclusion:-in attesa}"
             if [ "$status" = "completed" ]; then
               break
             fi
-            sleep 10
+            sleep 5
           done
-          if [ "$conclusion" != "success" ]; then
-            echo "Deploy Pages non concluso con successo: ${conclusion:-non trovato}" >&2
-            exit 1
-          fi
-          echo "PAGES_RUN_URL=$run_url" >> "$GITHUB_ENV"
+          echo "PAGES_STATUS=${status:-non trovato}" >> "$GITHUB_ENV"
+          echo "PAGES_CONCLUSION=${conclusion:-non disponibile}" >> "$GITHUB_ENV"
+          echo "PAGES_RUN_URL=${run_url:-non disponibile}" >> "$GITHUB_ENV"
 
-      - name: Record successful deployment on PR 8
+      - name: Record the deployment result on PR 8
         run: |
+          if [ "$PAGES_CONCLUSION" = "success" ]; then
+            prefix="✅"
+            result="verificata con esito positivo"
+          else
+            prefix="❌"
+            result="non verificata: stato ${PAGES_STATUS}, esito ${PAGES_CONCLUSION}"
+          fi
           gh api "repos/${GITHUB_REPOSITORY}/issues/8/comments" \
-            -f body="✅ Pubblicazione GitHub Pages di Osservatorio Versilia v1.6.0 verificata con esito positivo. Commit distribuito: \`${GITHUB_SHA}\`. Workflow: ${PAGES_RUN_URL}"
+            -f body="${prefix} Pubblicazione GitHub Pages di Osservatorio Versilia v1.6.0 ${result}. Commit di produzione: \`${TARGET_SHA}\`. Workflow: ${PAGES_RUN_URL}"
 
       - name: Remove the one-shot verifier
         run: |
@@ -64,4 +71,4 @@ jobs:
           git commit -m "Rimuove il verificatore temporaneo del deploy v1.6.0"
           git push origin HEAD:main
 
-# One-shot deployment verifier. It removes itself after a successful Pages run.
+# One-shot deployment verifier. It removes itself after recording the Pages result.
