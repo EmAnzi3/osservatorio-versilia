@@ -1,6 +1,13 @@
 name: Aggiorna imprese e banda larga
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/refresh-agid-indicators.yml"
+      - "scripts/update_agid_indicators_resilient.py"
+      - "scripts/restore_partial_agcom_metrics.py"
+      - "scripts/monthly_data_check_coverage.py"
   workflow_dispatch:
   issue_comment:
     types: [created]
@@ -17,6 +24,7 @@ concurrency:
 jobs:
   update:
     if: >-
+      github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request == null &&
@@ -189,7 +197,9 @@ jobs:
           echo "PR: $pr_url"
 
           run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          issue_number="14"
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            gh issue comment "${{ github.event.issue.number }}" \
-              --body "Aggiornamento completato: $pr_url\n\nPreview e output completi: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
+            issue_number="${{ github.event.issue.number }}"
           fi
+          gh issue comment "$issue_number" \
+            --body "Aggiornamento completato: $pr_url\n\nPreview e output completi: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
