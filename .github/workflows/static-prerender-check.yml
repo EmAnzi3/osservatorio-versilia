@@ -145,7 +145,8 @@ jobs:
         if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
         run: python scripts/materialize_siope_sources.py
 
-      - name: Align SIOPE test with 2019–2025 BDAP metadata
+      - name: Align newly materialized SIOPE test with 2019–2025 BDAP metadata
+        if: ${{ hashFiles('scripts/materialize_siope_sources.py') != '' }}
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -185,8 +186,7 @@ jobs:
               text,
           )
           if population_count < 1:
-              population_lines = [line for line in text.splitlines() if 'population' in line.lower()]
-              raise SystemExit('Denominatore SIOPE non trovato: ' + ' | '.join(population_lines))
+              raise SystemExit('Denominatore SIOPE non trovato')
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -196,7 +196,7 @@ jobs:
       - name: Apply validated histories
         run: python scripts/apply_history_series_v160.py
 
-      - name: Keep v1.5 checks compatible with explicit historical coverage
+      - name: Apply compatibility, manual review and source-link audit
         run: python scripts/patch_v150_history_compat.py
 
       - name: Build pre-rendered site
@@ -231,7 +231,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets data docs scripts README.md
-          git commit -m "Materializza snapshot SIOPE 2019-2025 validato"
+          git commit -m "Applica le correzioni della verifica manuale v1.6.0"
           git push origin HEAD:expansion/bilanci-comunali-v160
 
       - name: Upload private build artifact
