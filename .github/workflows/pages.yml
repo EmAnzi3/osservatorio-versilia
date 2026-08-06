@@ -56,6 +56,9 @@ jobs:
       - name: Run export checks
         run: python scripts/test_exports_v161.py
 
+      - name: Run ASIA and AGCOM extractor tests
+        run: python scripts/test_agid_indicators.py
+
       - name: Run monthly monitor checks
         run: |
           python scripts/test_monthly_data_check.py

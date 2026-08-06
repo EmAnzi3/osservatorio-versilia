@@ -1,0 +1,122 @@
+name: Aggiorna imprese e banda larga
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: refresh-agid-indicators
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request == null &&
+       github.event.comment.user.login == 'EmAnzi3' &&
+       github.event.comment.body == '/aggiorna-imprese-banda-larga')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run extractor unit tests
+        run: python scripts/test_agid_indicators.py
+
+      - name: Fetch and integrate official indicators
+        run: python scripts/update_agid_indicators.py
+
+      - name: Validate complete dataset
+        run: |
+          mkdir -p /tmp/agid-data-check
+          python scripts/monthly_data_check.py \
+            --mode offline \
+            --report-md /tmp/agid-data-check/report.md \
+            --report-json /tmp/agid-data-check/report.json \
+            --next-state /tmp/agid-data-check/state.json
+          python scripts/build_static_safe.py
+          python scripts/test_static.py
+
+      - name: Create or update draft pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          branch="automation/imprese-banda-larga"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add data/site-data.json data/source-registry.json \
+            data/source-snapshots/agid-asia-agcom-2026-08.json \
+            README.md docs/aggiornamento-mensile-dati.md
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da proporre."
+            exit 0
+          fi
+          git commit -m "Aggiunge imprese, addetti e copertura FTTH"
+          git push --force origin "$branch"
+
+          body_file="$(mktemp)"
+          cat > "$body_file" <<'EOF'
+          ## Contenuto
+
+          Integra nell’Osservatorio i dati comunali su:
+
+          - addetti medi annui nelle unità locali;
+          - addetti per unità locale;
+          - variazione 2018–2023 di unità locali e addetti;
+          - copertura FTTH DESI;
+          - famiglie raggiunte e non raggiunte da FTTH;
+          - copertura FTTH entro 20 metri.
+
+          La serie delle **unità locali attive** già pubblicata viene estesa al periodo 2018–2023, senza creare un indicatore duplicato.
+
+          ## Fonti
+
+          - **ISTAT ASIA-UL**, dati 2018–2023, acquisiti tramite gli shard comunali di AgID — Cruscotto Italia;
+          - **AGCOM Broadband Map**, rilevazione al 31 dicembre 2025, acquisita tramite gli shard comunali di AgID — Cruscotto Italia.
+
+          Lo snapshot leggibile conserva valori, annualità, formule, URL e impronte SHA-256 dei file acquisiti.
+
+          ## Garanzie metodologiche
+
+          - unità locali e imprese giuridiche non vengono confuse;
+          - gli addetti sono riferiti al luogo di lavoro, non alla residenza;
+          - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
+          - nessun dato mancante viene stimato;
+          - tutti i sette Comuni devono superare la validazione prima della creazione della PR.
+          EOF
+
+          if gh pr view "$branch" --json number >/dev/null 2>&1; then
+            gh pr edit "$branch" \
+              --title "Aggiunge imprese, addetti e copertura FTTH" \
+              --body-file "$body_file"
+            pr_url="$(gh pr view "$branch" --json url --jq .url)"
+          else
+            pr_url="$(gh pr create --draft \
+              --base main \
+              --head "$branch" \
+              --title "Aggiunge imprese, addetti e copertura FTTH" \
+              --body-file "$body_file")"
+          fi
+          echo "PR: $pr_url"
+
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "Aggiornamento completato: $pr_url"
+          fi
