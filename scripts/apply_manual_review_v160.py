@@ -10,9 +10,53 @@ DATA_PATH = ROOT / "data" / "site-data.json"
 RELEASE_TEST_PATH = ROOT / "scripts" / "test_release_v160.py"
 UX_TEST_PATH = ROOT / "scripts" / "test_ux_experiment.py"
 
+SOURCE_LINKS = {
+    "census": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+    "census_sections": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+    "tourism_capacity": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+    "schools": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole",
+    "students": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti",
+    "hospitals": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
+    "vehicles": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
+    "ev_map": "https://www.piattaformaunicanazionale.it/idr",
+    "hydrogeological": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
+    "pnrr_catalog": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
+    "openbdap": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+}
 
-def patch_rigid_expenditure_history() -> None:
-    data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+SOURCE_LINK_GROUPS = {
+    "census": {
+        "oldAgeIndex", "share65", "employmentRate", "unemploymentRate", "activityRate",
+        "diplomaPlus", "tertiary", "outsideMunicipality", "selfContainment",
+        "singleHouseholds", "householdSize", "share014", "commuterBalanceRate",
+    },
+    "census_sections": {
+        "femaleEmploymentRate", "maleEmploymentRate", "employmentGenderGap", "vacantHomes",
+        "housingStockPer1000", "nonOccupiedHomesPer1000", "cohabitingHouseholds",
+    },
+    "tourism_capacity": {"tourismBeds"},
+    "schools": {"schoolSites"},
+    "students": {"schoolStudents", "studentsPerClass", "primaryFullTimeShare"},
+    "hospitals": {"hospitals"},
+    "vehicles": {"motorization", "pollutingCars"},
+    "ev_map": {"evPoints"},
+    "hydrogeological": {"floodExposure", "landslideExposure"},
+    "pnrr_catalog": {"pnrrFunding", "pnrrConcluded"},
+    "openbdap": {"cashReceiptsPerResident", "cashBalancePerResident"},
+}
+
+
+def load_data() -> dict:
+    return json.loads(DATA_PATH.read_text(encoding="utf-8"))
+
+
+def save_data(data: dict) -> None:
+    DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def patch_data() -> None:
+    data = load_data()
+
     metric = data["metrics"]["rigidExpenditureShare"]
     for row in metric["rows"]:
         row.pop("series", None)
@@ -24,7 +68,15 @@ def patch_rigid_expenditure_history() -> None:
     metric["method"]["coverage"] = (
         "Valore corrente 2025 con copertura 7/7; storico non pubblicato per discontinuità della fonte."
     )
-    DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    for group, metric_keys in SOURCE_LINK_GROUPS.items():
+        url = SOURCE_LINKS[group]
+        for key in metric_keys:
+            if key not in data["metrics"]:
+                raise RuntimeError(f"Indicatore atteso non trovato durante l'audit fonti: {key}")
+            data["metrics"][key]["sourceUrl"] = url
+
+    save_data(data)
 
 
 def patch_release_test() -> None:
@@ -114,10 +166,10 @@ def patch_ux_test() -> None:
 
 
 def main() -> None:
-    patch_rigid_expenditure_history()
+    patch_data()
     patch_release_test()
     patch_ux_test()
-    print("Correzioni della verifica manuale v1.6.0 applicate.")
+    print("Correzioni della verifica manuale v1.6.0 e link fonte applicati.")
 
 
 if __name__ == "__main__":
