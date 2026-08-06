@@ -37,6 +37,7 @@ SUPPORTED_VERSIONS = {
     "2026.08.05-local-v1.6.0-bilanci",
     "2026.08.05-local-v1.6.0-bilanci-storici",
     "2026.08.05-v1.6.0",
+    "v1.6.0",
 }
 
 
