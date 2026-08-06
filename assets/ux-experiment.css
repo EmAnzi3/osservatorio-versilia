@@ -1,0 +1,632 @@
+/* Esperimento v1.6: sezioni espandibili e confronto storico tra comuni. */
+
+.ux-section-toggle {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  padding-right: 74px;
+  transition: background-color .18s ease;
+}
+
+.ux-section-toggle:hover {
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.ux-section-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.ux-section-tools {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ux-section-chevron {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform .18s ease, background-color .18s ease;
+}
+
+.metric-group.is-open .ux-section-chevron,
+.indicator-group.is-open .ux-section-chevron {
+  transform: rotate(180deg);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+
+.metric-group-buttons[hidden],
+.indicator-card-grid[hidden],
+.ux-view-pane[hidden] {
+  display: none !important;
+}
+
+.metric-group:not(.is-open),
+.indicator-group:not(.is-open) {
+  padding-bottom: 2px;
+}
+
+.indicator-group-heading.ux-section-toggle {
+  min-height: 58px;
+  padding-top: 8px;
+  padding-right: 92px;
+}
+
+#compare-bars,
+.history-panel,
+.ux-view-shell,
+.ux-view-pane,
+.ux-history-card,
+.ux-history-scroll {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ux-view-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.ux-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  padding-bottom: 12px;
+}
+
+.ux-view-toolbar-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.ux-view-toolbar-copy strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ux-view-toolbar-copy span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.ux-view-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 3px;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 92%, white);
+  padding: 3px;
+}
+
+.ux-view-toggle button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 13px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ux-view-toggle button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.ux-view-toggle button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+
+.ux-view-toggle button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.ux-view-note {
+  margin: -8px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.ux-history-card {
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 14px;
+  background: transparent;
+  padding: 18px;
+}
+
+.ux-history-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.ux-history-head div {
+  display: grid;
+  gap: 3px;
+}
+
+.ux-history-head strong {
+  font-size: 14px;
+}
+
+.ux-history-head span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.ux-history-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding-bottom: 4px;
+}
+
+.ux-history-chart {
+  min-width: 700px;
+}
+
+.ux-history-chart svg {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  background: transparent;
+}
+
+.ux-history-scroll-hint {
+  display: none;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.ux-history-grid {
+  stroke: color-mix(in srgb, var(--ink) 12%, transparent);
+  stroke-width: 1;
+}
+
+.ux-history-zero {
+  stroke: color-mix(in srgb, var(--ink) 32%, transparent);
+  stroke-dasharray: 4 4;
+}
+
+.ux-history-axis-label {
+  fill: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ux-series-line {
+  fill: none;
+  stroke: var(--series-color);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .6;
+  cursor: pointer;
+  transition: opacity .16s ease, stroke-width .16s ease;
+}
+
+.ux-series-point {
+  fill: var(--paper);
+  stroke: var(--series-color);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: opacity .16s ease, r .16s ease;
+}
+
+.ux-series-group:hover .ux-series-line,
+.ux-series-group:hover .ux-series-point,
+.ux-series-group.is-selected .ux-series-line,
+.ux-series-group.is-selected .ux-series-point {
+  opacity: 1;
+}
+
+.ux-series-group.is-selected .ux-series-line {
+  stroke-width: 4;
+}
+
+.ux-series-group.is-selected .ux-series-point {
+  r: 5.5;
+}
+
+.ux-history-chart.has-selection .ux-series-group:not(.is-selected) .ux-series-line,
+.ux-history-chart.has-selection .ux-series-group:not(.is-selected) .ux-series-point {
+  opacity: .12;
+}
+
+
+.ux-two-point-chart {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.ux-two-point-heading,
+.ux-two-point-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.15fr) minmax(82px, auto) minmax(180px, 2fr) minmax(82px, auto) minmax(92px, auto);
+  gap: 12px;
+  align-items: center;
+}
+
+.ux-two-point-heading {
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  padding: 0 8px 8px;
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.ux-two-point-heading span:nth-child(2),
+.ux-two-point-heading span:nth-child(4),
+.ux-two-point-heading span:nth-child(5) {
+  text-align: right;
+}
+
+.ux-two-point-row {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  background: transparent;
+  color: inherit;
+  padding: 11px 8px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .16s ease, opacity .16s ease;
+}
+
+.ux-two-point-row:hover,
+.ux-two-point-row.is-selected {
+  background: color-mix(in srgb, var(--series-color) 7%, transparent);
+}
+
+.ux-two-point-row:focus-visible {
+  outline: 2px solid var(--series-color);
+  outline-offset: -2px;
+}
+
+.ux-two-point-town {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.ux-two-point-town i {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--series-color);
+}
+
+.ux-two-point-value {
+  display: grid;
+  justify-items: end;
+  gap: 1px;
+  white-space: nowrap;
+}
+
+.ux-two-point-value small {
+  display: none;
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 8px;
+}
+
+.ux-two-point-value strong,
+.ux-two-point-delta {
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ux-two-point-track {
+  position: relative;
+  display: block;
+  height: 18px;
+}
+
+.ux-two-point-track::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.ux-two-point-track > i {
+  position: absolute;
+  top: 7px;
+  left: var(--line-start);
+  width: var(--line-width);
+  height: 4px;
+  border-radius: 999px;
+  background: var(--series-color);
+  opacity: .72;
+}
+
+.ux-two-point-track > b {
+  position: absolute;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--series-color);
+  border-radius: 999px;
+  background: var(--paper);
+  transform: translateX(-50%);
+}
+
+.ux-two-point-track > b.start {
+  left: var(--start);
+}
+
+.ux-two-point-track > b.end {
+  left: var(--end);
+  background: var(--series-color);
+}
+
+.ux-two-point-delta {
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ux-two-point-chart.has-selection .ux-two-point-row:not(.is-selected) {
+  opacity: .28;
+}
+
+.ux-history-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.ux-history-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.ux-history-legend button::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--series-color);
+}
+
+.ux-history-legend button[aria-pressed="true"] {
+  border-color: var(--series-color);
+  background: color-mix(in srgb, var(--series-color) 10%, transparent);
+  font-weight: 750;
+}
+
+.ux-history-summary {
+  min-height: 45px;
+  margin-top: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  padding-top: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.ux-history-summary strong {
+  color: var(--ink);
+}
+
+.ux-comparison-bars {
+  display: grid;
+  gap: 9px;
+}
+
+.ux-bar-row {
+  display: grid;
+  grid-template-columns: 24px minmax(105px, 150px) minmax(140px, 1fr) minmax(92px, auto);
+  gap: 10px;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ux-bar-row:hover .ux-bar-track,
+.ux-bar-row.selected .ux-bar-track {
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+
+.ux-bar-rank {
+  color: var(--muted);
+  font-family: var(--font-geist-mono), "Geist Mono", monospace;
+  font-size: 10px;
+}
+
+.ux-bar-town {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ux-bar-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+  overflow: hidden;
+}
+
+.ux-bar-zero {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+.ux-bar-fill {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  min-width: 2px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.ux-bar-row.selected .ux-bar-fill {
+  background: var(--accent, var(--ink));
+}
+
+.ux-bar-row strong {
+  text-align: right;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ux-history-unavailable {
+  border: 1px dashed color-mix(in srgb, var(--ink) 20%, transparent);
+  border-radius: 12px;
+  padding: 24px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .ux-section-toggle {
+    padding-right: 68px;
+  }
+
+  .ux-view-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ux-view-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .ux-view-toggle button {
+    width: 100%;
+  }
+
+  .ux-history-card {
+    padding: 13px;
+  }
+
+  .ux-history-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .ux-bar-row {
+    grid-template-columns: 20px minmax(92px, 120px) minmax(80px, 1fr);
+    gap: 7px;
+  }
+
+  .ux-bar-row strong {
+    grid-column: 2 / 4;
+    justify-self: end;
+    margin-top: -4px;
+  }
+
+  .ux-history-scroll-hint {
+    display: block;
+  }
+
+  .ux-two-point-heading {
+    display: none;
+  }
+
+  .ux-two-point-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "town delta"
+      "start end"
+      "track track";
+    gap: 6px 12px;
+    padding: 12px 5px;
+  }
+
+  .ux-two-point-town {
+    grid-area: town;
+  }
+
+  .ux-two-point-start {
+    grid-area: start;
+    justify-items: start;
+  }
+
+  .ux-two-point-end {
+    grid-area: end;
+  }
+
+  .ux-two-point-value small {
+    display: block;
+  }
+
+  .ux-two-point-track {
+    grid-area: track;
+  }
+
+  .ux-two-point-delta {
+    grid-area: delta;
+  }
+}
+
+@media print {
+  .ux-view-toggle,
+  .ux-section-tools {
+    display: none !important;
+  }
+
+  .metric-group-buttons[hidden],
+  .indicator-card-grid[hidden],
+  .ux-view-pane[hidden] {
+    display: block !important;
+  }
+}

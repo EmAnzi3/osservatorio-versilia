@@ -5,8 +5,8 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 ## Contenuto
 
 - 7 schede comunali;
-- 9 aree tematiche;
-- 84 indicatori;
+- 10 aree tematiche;
+- 98 indicatori;
 - confronti territoriali e benchmark disponibili;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;

@@ -91,7 +91,7 @@ def browser_assertions() -> None:
         assert "Geist" in page.evaluate("getComputedStyle(document.body).fontFamily"), "Font Geist non applicato"
         assert page.evaluate("document.fonts.check('16px Geist')"), "File del font Geist non caricato"
         assert page.locator(".global-search-trigger .search-icon").is_visible(), "Lente desktop assente"
-        assert page.locator(".chart-y-label").count() >= 3, "Valori dell'ordinata assenti"
+        assert page.locator(".chart-y-label, .ux-history-axis-label").count() >= 3, "Valori dell'ordinata assenti"
         broken = page.evaluate("[...document.images].filter(img => !img.complete || img.naturalWidth === 0).map(img => img.src)")
         assert not broken, f"Immagini non caricate: {broken}"
         page.evaluate("window.scrollTo(0, 1500)")

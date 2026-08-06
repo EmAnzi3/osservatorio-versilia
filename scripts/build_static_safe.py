@@ -13,6 +13,11 @@ _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 
+if "bilanci" not in build.THEME_SLUGS:
+    build.THEME_SLUGS.insert(2, "bilanci")
+if "confronta/bilanci/" not in build.ROUTES:
+    build.ROUTES.insert(build.ROUTES.index("progetto/"), "confronta/bilanci/")
+
 SEARCH_ICON = (
     '<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" '
     'width="16" height="16" viewBox="0 0 24 24" fill="none" '
@@ -83,10 +88,32 @@ def prepare_shells_with_fonts() -> None:
         prefix = build.relative_asset_prefix(path)
         assets = "" if prefix == "." else f"{prefix}/"
         text = path.read_text(encoding="utf-8")
+
         if "assets/fonts.css" not in text:
-            font_link = f'  <link rel="stylesheet" href="{assets}assets/fonts.css">\n'
-            text = text.replace("</head>", font_link + "</head>")
-            path.write_text(text, encoding="utf-8")
+            text = text.replace(
+                "</head>",
+                f'  <link rel="stylesheet" href="{assets}assets/fonts.css">\n</head>',
+            )
+        if "assets/ux-experiment.css" not in text:
+            text = text.replace(
+                "</head>",
+                f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css">\n</head>',
+            )
+        if "assets/ux-background-match.css" not in text:
+            text = text.replace(
+                "</head>",
+                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css">\n</head>',
+            )
+
+        experiment_scripts = (
+            f'  <script src="{assets}assets/ux-accordion.js" defer></script>\n'
+            f'  <script src="{assets}assets/ux-history-core.js" defer></script>\n'
+            f'  <script src="{assets}assets/ux-history.js" defer></script>\n'
+        )
+        if "assets/ux-history.js" not in text:
+            text = text.replace("</body>", experiment_scripts + "</body>")
+
+        path.write_text(text, encoding="utf-8")
 
 
 def normalize_prerendered_urls() -> None:
