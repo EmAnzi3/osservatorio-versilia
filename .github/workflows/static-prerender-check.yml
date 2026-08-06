@@ -196,7 +196,7 @@ jobs:
       - name: Apply validated histories
         run: python scripts/apply_history_series_v160.py
 
-      - name: Apply compatibility, manual review and source-link audit
+      - name: Apply compatibility and manual review
         run: python scripts/patch_v150_history_compat.py
 
       - name: Build pre-rendered site
@@ -210,6 +210,9 @@ jobs:
 
       - name: Run v1.6.0 budget checks
         run: python scripts/test_release_v160.py
+
+      - name: Run source-link checks
+        run: python scripts/test_source_links_v160.py
 
       - name: Run SIOPE history checks
         run: python scripts/test_siope_history_v160.py
