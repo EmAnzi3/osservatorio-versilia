@@ -1,6 +1,6 @@
 /* Allinea il fondo della vista storica al pannello dei dati correnti. */
 .ux-history-card {
-  background: transparent;
+  background: var(--surface);
 }
 
 .ux-history-chart svg {
