@@ -11,6 +11,7 @@ on:
         default: true
         type: boolean
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - ".github/workflows/monthly-data-refresh.yml"
       - "scripts/monthly_data_check.py"
