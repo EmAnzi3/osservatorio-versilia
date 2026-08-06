@@ -13,7 +13,7 @@ _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 
-UX_ASSET_VERSION = "20260806-2"
+UX_ASSET_VERSION = "20260806-3"
 
 if "bilanci" not in build.THEME_SLUGS:
     build.THEME_SLUGS.insert(2, "bilanci")
@@ -91,29 +91,35 @@ def prepare_shells_with_fonts() -> None:
         assets = "" if prefix == "." else f"{prefix}/"
         text = path.read_text(encoding="utf-8")
 
-        if "assets/fonts.css" not in text:
+        stylesheets = (
+            "fonts.css",
+            "ux-experiment.css",
+            "ux-background-match.css",
+            "export-v161.css",
+        )
+        for stylesheet in stylesheets:
+            token = f"assets/{stylesheet}"
+            if token in text:
+                continue
+            version = "" if stylesheet == "fonts.css" else f"?v={UX_ASSET_VERSION}"
             text = text.replace(
                 "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/fonts.css">\n</head>',
-            )
-        if "assets/ux-experiment.css" not in text:
-            text = text.replace(
-                "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-experiment.css?v={UX_ASSET_VERSION}">\n</head>',
-            )
-        if "assets/ux-background-match.css" not in text:
-            text = text.replace(
-                "</head>",
-                f'  <link rel="stylesheet" href="{assets}assets/ux-background-match.css?v={UX_ASSET_VERSION}">\n</head>',
+                f'  <link rel="stylesheet" href="{assets}{token}{version}">\n</head>',
             )
 
-        experiment_scripts = (
-            f'  <script src="{assets}assets/ux-accordion.js?v={UX_ASSET_VERSION}" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history-core.js?v={UX_ASSET_VERSION}" defer></script>\n'
-            f'  <script src="{assets}assets/ux-history.js?v={UX_ASSET_VERSION}" defer></script>\n'
+        scripts = (
+            "ux-accordion.js",
+            "ux-history-core.js",
+            "ux-history.js",
+            "export-v161.js",
         )
-        if "assets/ux-history.js" not in text:
-            text = text.replace("</body>", experiment_scripts + "</body>")
+        missing_scripts = [
+            f'  <script src="{assets}assets/{script}?v={UX_ASSET_VERSION}" defer></script>\n'
+            for script in scripts
+            if f"assets/{script}" not in text
+        ]
+        if missing_scripts:
+            text = text.replace("</body>", "".join(missing_scripts) + "</body>")
 
         path.write_text(text, encoding="utf-8")
 
