@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/refresh-agid-indicators.yml"
       - "scripts/update_agid_indicators*.py"
+      - "scripts/test_agid_refresh_idempotent.py"
       - "scripts/restore_partial_agcom_metrics.py"
       - "scripts/enrich_ateco_agcom_audit.py"
       - "scripts/audit_agcom_primary.py"
@@ -56,6 +57,7 @@ jobs:
       - name: Run extractor and source tests
         run: |
           python scripts/test_agid_indicators.py
+          python scripts/test_agid_refresh_idempotent.py
           python scripts/test_ateco_agcom_audit.py
           python scripts/test_agcom_primary_percentages.py
           python -m py_compile \
