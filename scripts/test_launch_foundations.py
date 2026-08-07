@@ -19,9 +19,17 @@ def main() -> None:
     html_files = list(DIST.rglob("*.html"))
     assert html_files, "Nessuna pagina HTML nella build"
 
+    social_pages = 0
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert LEGACY_CONTACT not in text, f"Recapito legacy ancora presente: {path}"
+
+        if path.name == "offline.html":
+            assert 'name="robots" content="noindex,nofollow"' in text, "Fallback offline non marcato noindex"
+            assert 'property="og:image"' not in text, "Il fallback offline non deve avere metadata social"
+            continue
+
+        social_pages += 1
         assert 'property="og:image"' in text, f"og:image mancante: {path}"
         assert SOCIAL_IMAGE in text, f"Immagine social non canonica: {path}"
         assert 'name="twitter:card" content="summary_large_image"' in text, f"Twitter card mancante: {path}"
@@ -39,7 +47,7 @@ def main() -> None:
     assert PUBLIC_CONTACT in bundle, "Recapito pubblico assente dal bundle"
     assert "2026.08.07-v1.7.0" in bundle, "v1.7.0 assente dal bundle"
 
-    print(f"OK: identità pubblica, release v1.7 e social metadata verificati su {len(html_files)} pagine")
+    print(f"OK: identità pubblica, release v1.7 e social metadata verificati su {social_pages} pagine; fallback offline noindex")
 
 
 if __name__ == "__main__":
