@@ -69,6 +69,11 @@ jobs:
       - name: Run accordion and history checks
         run: python scripts/test_ux_experiment.py
 
+      - name: Run mobile interaction checks
+        run: |
+          node --check assets/ux-accordion.js
+          python scripts/test_mobile_interactions.py
+
       - name: Run export checks
         run: python scripts/test_exports_v161.py
 

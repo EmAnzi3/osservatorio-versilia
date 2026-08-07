@@ -11,6 +11,7 @@
 
   let deferredPrompt = null;
   let mountScheduled = false;
+  let bootstrapObserver = null;
 
   const isStandalone = () =>
     window.matchMedia?.('(display-mode: standalone)').matches ||
@@ -20,8 +21,8 @@
     /iphone|ipad|ipod/i.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  const isSamsungInternet = () => /SamsungBrowser/i.test(navigator.userAgent);
-
+  const isAndroid = () => /Android/i.test(navigator.userAgent || '');
+  const isSamsungInternet = () => /SamsungBrowser/i.test(navigator.userAgent || '');
   const isChromeAndroid = () => {
     const ua = navigator.userAgent || '';
     return /Android/i.test(ua) && /Chrome\//i.test(ua) && !/(SamsungBrowser|EdgA|OPR|Opera)/i.test(ua);
@@ -38,37 +39,41 @@
     const chromeAndroid = isChromeAndroid();
     let title = 'Installa Osservatorio Versilia';
     let body = `
-      <p>Apri il menu del browser e scegli <b>Installa app</b>, quando disponibile.</p>
-      <p class="pwa-dialog-note">L'app usa lo stesso sito: dati e aggiornamenti restano sempre allineati.</p>`;
+      <p>Usa il comando <b>Installa app</b> del browser, quando disponibile.</p>
+      <p class="pwa-dialog-note">Il browser decide la modalità di installazione disponibile sul dispositivo.</p>`;
 
     if (ios) {
       title = 'Installa su iPhone o iPad';
       body = `
         <ol class="pwa-ios-steps">
-          <li><strong>1</strong><span>Tocca <b>Condividi</b> nella barra di Safari.</span></li>
-          <li><strong>2</strong><span>Scegli <b>Aggiungi alla schermata Home</b>.</span></li>
-          <li><strong>3</strong><span>Tocca <b>Aggiungi</b>: l'icona OV comparirà tra le app.</span></li>
+          <li><strong>1</strong><span>Apri il sito in <b>Safari</b>.</span></li>
+          <li><strong>2</strong><span>Tocca <b>Condividi → Aggiungi alla schermata Home</b>.</span></li>
+          <li><strong>3</strong><span>Conferma con <b>Aggiungi</b>.</span></li>
         </ol>
-        <p class="pwa-dialog-note">Su iPhone e iPad l'installazione passa dal menu Condividi di Safari.</p>`;
+        <p class="pwa-dialog-note">Su iPhone e iPad l'installazione delle web app passa da Safari.</p>`;
     } else if (samsung) {
       title = 'Installa con Samsung Internet';
       body = `
         <ol class="pwa-ios-steps pwa-samsung-steps">
-          <li><strong>1</strong><span>Usa il comando <b>Installa app</b> di Samsung Internet oppure il suo badge PWA, quando compare.</span></li>
-          <li><strong>2</strong><span>Conferma <b>Installa nella schermata App</b>.</span></li>
-          <li><strong>3</strong><span>Troverai <b>Osservatorio Versilia</b> nell'elenco delle app, come una normale applicazione.</span></li>
+          <li><strong>1</strong><span>Usa il <b>badge di installazione PWA</b> di Samsung Internet oppure il comando <b>Installa app</b>, quando compare.</span></li>
+          <li><strong>2</strong><span>Se compare <b>Installa nella schermata App</b>, conferma: è la modalità che integra la PWA tra le applicazioni.</span></li>
+          <li><strong>3</strong><span>Se invece compare soltanto <b>Aggiungere alla schermata Home?</b> con un riquadro 1×1, il browser sta offrendo un semplice collegamento.</span></li>
         </ol>
-        <p class="pwa-dialog-note"><b>Non usare “Aggiungi pagina a → Schermata Home”</b> se vuoi l'app nell'elenco delle applicazioni: quel comando crea solo un collegamento sulla Home.</p>`;
+        <p class="pwa-dialog-note">Il sito non può trasformare un collegamento 1×1 in un'app: quella scelta è gestita dal browser e da Android.</p>`;
     } else if (chromeAndroid) {
       title = 'Installa con Chrome';
       body = `
-        <p>Chrome rende disponibile il proprio pannello di installazione solo dopo un minimo di utilizzo del sito.</p>
         <ol class="pwa-ios-steps pwa-chrome-steps">
-          <li><strong>1</strong><span>Interagisci almeno una volta con la pagina.</span></li>
-          <li><strong>2</strong><span>Resta sul sito per circa <b>30 secondi</b>. Quando Chrome è pronto, il pulsante qui sul sito passa a <b>Installa app</b>.</span></li>
-          <li><strong>3</strong><span>In alternativa usa <b>⋮ → Installa e crea scorciatoia → Installa</b>.</span></li>
+          <li><strong>1</strong><span>Apri il menu <b>⋮</b> di Chrome.</span></li>
+          <li><strong>2</strong><span>Scegli <b>Installa app</b> oppure, se presente, <b>Installa e crea scorciatoia → Installa</b>.</span></li>
+          <li><strong>3</strong><span>Se Chrome mostra soltanto <b>Aggiungere alla schermata Home?</b> con il riquadro 1×1, in quel momento sta offrendo un collegamento e non un'installazione WebAPK.</span></li>
         </ol>
-        <p class="pwa-dialog-note">Per avere Osservatorio Versilia nell'elenco delle applicazioni scegli <b>Installa</b>, non la semplice creazione di una scorciatoia.</p>`;
+        <p class="pwa-dialog-note">La modalità finale di installazione è decisa da Chrome e dal dispositivo; il sito non può forzare un WebAPK.</p>`;
+    } else if (isAndroid()) {
+      title = 'Installa su Android';
+      body = `
+        <p>Apri il menu del browser e scegli <b>Installa app</b>, se disponibile.</p>
+        <p class="pwa-dialog-note">Se il browser propone soltanto “Aggiungi alla schermata Home”, creerà un collegamento: la modalità di installazione dipende dal browser Android.</p>`;
     }
 
     return `
@@ -99,25 +104,36 @@
   }
 
   function installLabel() {
-    if (isChromeAndroid() && !deferredPrompt) return 'Come installare';
-    return 'Installa app';
+    if (isAndroid() || isIos()) return 'Come installare';
+    return deferredPrompt ? 'Installa app' : 'Come installare';
   }
 
   function syncInstallControls() {
     const label = installLabel();
-    const ready = Boolean(deferredPrompt);
+    const ready = Boolean(deferredPrompt) && !isAndroid() && !isIos();
     document.querySelectorAll('[data-pwa-install-action]').forEach(button => {
       const span = button.querySelector('span');
-      if (span) span.textContent = label;
-      button.dataset.pwaState = ready ? 'ready' : 'waiting';
-      button.title = `${label} · Osservatorio Versilia`;
-      button.setAttribute('aria-label', `${label} Osservatorio Versilia come app`);
+      if (span && span.textContent !== label) span.textContent = label;
+      const state = ready ? 'ready' : 'instructions';
+      if (button.dataset.pwaState !== state) button.dataset.pwaState = state;
+      const title = `${label} · Osservatorio Versilia`;
+      if (button.title !== title) button.title = title;
+      const aria = `${label} Osservatorio Versilia come app`;
+      if (button.getAttribute('aria-label') !== aria) button.setAttribute('aria-label', aria);
     });
   }
 
   async function requestInstall() {
     if (isStandalone()) {
       hideInstallUi();
+      return;
+    }
+
+    // Su Android la pagina non può sapere se il prompt diventerà un WebAPK o
+    // un semplice collegamento 1×1. Per evitare promesse false lasciamo la
+    // scelta all'interfaccia nativa del browser e mostriamo istruzioni precise.
+    if (isAndroid() || isIos()) {
+      openInstructions();
       return;
     }
 
@@ -174,21 +190,35 @@
       <div class="pwa-callout-copy">
         <span class="pwa-callout-kicker">Disponibile anche come app</span>
         <strong>Porta l'Osservatorio sul telefono.</strong>
-        <p>Installalo come app: si apre a schermo intero, resta aggiornato con il sito e le pagine già visitate possono restare disponibili anche senza rete.</p>
+        <p>Puoi installare il sito come web app quando il browser lo supporta. Su Android usa il comando <b>Installa app</b>: “Aggiungi alla schermata Home” può creare soltanto un collegamento.</p>
       </div>
       <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>${installLabel()}</span></button>`;
     bindInstallButton(section.querySelector('button'));
     hero.insertAdjacentElement('afterend', section);
   }
 
+  function bootstrapReady() {
+    const headerReady = Boolean(document.querySelector('[data-pwa-header-install]'));
+    const homeNeedsCallout = document.body?.dataset.page === 'home';
+    const homeReady = !homeNeedsCallout || Boolean(document.querySelector('.pwa-install-callout'));
+    return headerReady && homeReady;
+  }
+
+  function stopBootstrapObserver() {
+    bootstrapObserver?.disconnect();
+    bootstrapObserver = null;
+  }
+
   function mountUi() {
     if (isStandalone()) {
+      stopBootstrapObserver();
       hideInstallUi();
       return;
     }
     mountHeaderButton();
     mountHomeCallout();
     syncInstallControls();
+    if (bootstrapReady()) stopBootstrapObserver();
   }
 
   function scheduleMount() {
@@ -200,18 +230,25 @@
     });
   }
 
+  function startBootstrapObserver() {
+    if (bootstrapObserver || isStandalone()) return;
+    const root = document.body || document.documentElement;
+    bootstrapObserver = new MutationObserver(() => scheduleMount());
+    bootstrapObserver.observe(root, { childList: true, subtree: true });
+    scheduleMount();
+  }
+
   window.addEventListener('beforeinstallprompt', event => {
     event.preventDefault();
     deferredPrompt = event;
     document.documentElement.classList.add('pwa-install-ready');
-    document.querySelector('#pwa-install-dialog')?.close?.();
-    scheduleMount();
     syncInstallControls();
   });
 
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     document.documentElement.classList.remove('pwa-install-ready');
+    stopBootstrapObserver();
     hideInstallUi();
   });
 
@@ -225,7 +262,12 @@
     });
   }
 
-  new MutationObserver(scheduleMount).observe(document.documentElement, { childList: true, subtree: true });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleMount, { once: true });
-  else scheduleMount();
+  // L'app costruisce header e contenuto dopo un fetch iniziale. L'observer serve
+  // soltanto durante quel bootstrap e viene disconnesso appena i CTA esistono.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startBootstrapObserver, { once: true });
+  } else {
+    startBootstrapObserver();
+  }
+  window.addEventListener('load', scheduleMount, { once: true });
 })();
