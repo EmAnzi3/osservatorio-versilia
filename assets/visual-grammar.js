@@ -8,6 +8,14 @@
   let data = null;
   let scheduled = false;
 
+  function unitKind(unit) {
+    const token = String(unit || '').trim().toLowerCase();
+    if (token === 'percent' || token === '%') return 'percent';
+    if (token === 'percentagepoints' || token === 'percentage-points' || token === 'p.p.') return 'percentage-points';
+    if (token === 'currency' || token === 'eur' || token === '€' || token === '€/ab.') return 'currency';
+    return token;
+  }
+
   function metricKeyFor(root) {
     const home = root.closest?.('#home-explorer');
     const dashboard = root.closest?.('.topic-dashboard');
@@ -51,11 +59,14 @@
   function formatAxis(value, unit) {
     if (finite(value) === null) return 'n.d.';
     const n = Number(value);
-    const abs = Math.abs(n);
-    const formatted = abs >= 100 ? number0.format(n) : number1.format(n);
-    if (unit === '%') return `${formatted}%`;
-    if (unit === '€') return `${formatted} €`;
-    if (unit === '€/ab.') return `${formatted} €/ab.`;
+    const formatted = Math.abs(n) >= 100 ? number0.format(n) : number1.format(n);
+    const kind = unitKind(unit);
+    if (kind === 'percent') return `${formatted}%`;
+    if (kind === 'percentage-points') return `${formatted} p.p.`;
+    if (kind === 'currency') return `${formatted} €`;
+    if (kind === 'millioncurrency') return `${formatted} mln €`;
+    if (kind === 'years') return `${formatted} anni`;
+    if (kind === 'nights') return `${formatted} notti`;
     return unit ? `${formatted} ${unit}` : formatted;
   }
 
@@ -65,7 +76,7 @@
     if (reference !== null) numeric.push(reference);
     if (!numeric.length) return { min: 0, max: 1, kind: 'absolute' };
 
-    const allPercent = unit === '%' && numeric.every(value => value >= 0 && value <= 100);
+    const allPercent = unitKind(unit) === 'percent' && numeric.every(value => value >= 0 && value <= 100);
     if (allPercent) return { min: 0, max: 100, kind: 'percent' };
 
     let min = Math.min(...numeric);
@@ -98,7 +109,8 @@
       return { headline: 'n.d.', direction: 'confronto non disponibile', compact: 'confronto non disponibile' };
     }
 
-    if (metric.meta.unit === '%') {
+    const kind = unitKind(metric?.meta?.unit);
+    if (kind === 'percent' || kind === 'percentage-points') {
       const diff = local - aggregate;
       if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: 'in linea con Versilia' };
       const sign = diff > 0 ? '+' : '−';
@@ -187,9 +199,7 @@
         <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
         <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
       if (track.innerHTML !== markup) track.innerHTML = markup;
-      if (row) {
-        rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
-      }
+      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
     });
 
     const axis = document.createElement('div');
@@ -257,13 +267,9 @@
     });
 
     const intro = document.querySelector('.hero-intro p');
-    if (intro?.textContent.includes('posizione rispetto alla Versilia')) {
-      intro.textContent = intro.textContent.replace('posizione rispetto alla Versilia', 'confronto con la Versilia');
-    }
+    if (intro?.textContent.includes('posizione rispetto alla Versilia')) intro.textContent = intro.textContent.replace('posizione rispetto alla Versilia', 'confronto con la Versilia');
     const townsIntro = document.querySelector('.towns-section .section-heading > p');
-    if (townsIntro?.textContent.includes('posizione nel contesto')) {
-      townsIntro.textContent = townsIntro.textContent.replace('posizione nel contesto', 'confronto nel contesto');
-    }
+    if (townsIntro?.textContent.includes('posizione nel contesto')) townsIntro.textContent = townsIntro.textContent.replace('posizione nel contesto', 'confronto nel contesto');
   }
 
   function enhance() {
