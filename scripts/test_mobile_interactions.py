@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regressioni touch reali per fisarmoniche e interazioni mobile."""
+"""Regressioni touch reali e interazioni responsive."""
 from __future__ import annotations
 
 import contextlib
@@ -106,6 +106,41 @@ def verify_touch_accordion(page: Page, selector: str, label: str) -> None:
             f"{label}: il contenuto resta visibile dopo la chiusura")
 
 
+def verify_desktop_theme_scroll(page: Page, base: str) -> None:
+    page.goto(base, wait_until="networkidle")
+    page.wait_for_selector(".theme-card")
+    page.wait_for_selector("#home-explorer")
+    page.evaluate("window.scrollTo(0, 0)")
+
+    # Il click su una tematica deve portare il pannello dei grafici subito
+    # sotto l'header anche su desktop, come già avviene su smartphone.
+    page.locator(".theme-card").nth(1).click()
+    page.wait_for_function(
+        """() => {
+          const target = document.getElementById('home-explorer');
+          const header = document.getElementById('site-header-mount');
+          const targetTop = target?.getBoundingClientRect().top ?? -1;
+          const expectedTop = (header?.getBoundingClientRect().height || 70) + 12;
+          return window.scrollY > 0 && Math.abs(targetTop - expectedTop) <= 6;
+        }""",
+        timeout=2500,
+    )
+    geometry = page.evaluate(
+        """() => {
+          const target = document.getElementById('home-explorer');
+          const header = document.getElementById('site-header-mount');
+          return {
+            scrollY: window.scrollY,
+            targetTop: target?.getBoundingClientRect().top ?? -1,
+            expectedTop: (header?.getBoundingClientRect().height || 70) + 12
+          };
+        }"""
+    )
+    require(geometry["scrollY"] > 0, "Desktop: il click sulla tematica non scorre la pagina")
+    require(abs(geometry["targetTop"] - geometry["expectedTop"]) <= 6,
+            f"Desktop: pannello grafici non allineato sotto l'header: {geometry}")
+
+
 def main() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
@@ -149,9 +184,20 @@ def main() -> None:
 
         require(not errors, f"Errori JavaScript durante le interazioni touch: {errors}")
         context.close()
+
+        desktop = browser.new_context(
+            viewport={"width": 1440, "height": 900},
+            reduced_motion="reduce",
+        )
+        desktop_page = desktop.new_page()
+        desktop_errors: list[str] = []
+        desktop_page.on("pageerror", lambda error: desktop_errors.append(str(error)))
+        verify_desktop_theme_scroll(desktop_page, base)
+        require(not desktop_errors, f"Errori JavaScript durante lo scroll desktop: {desktop_errors}")
+        desktop.close()
         browser.close()
 
-    print("Interazioni mobile verificate: i tap aprono e chiudono la sezione corretta su confronto e scheda comunale.")
+    print("Interazioni verificate: fisarmoniche touch corrette e scroll automatico dei temi attivo anche su desktop.")
 
 
 if __name__ == "__main__":

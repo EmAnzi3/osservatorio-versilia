@@ -2,7 +2,6 @@
   'use strict';
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  const MOBILE_QUERY = '(max-width: 700px)';
   const numberFormatters = new Map();
 
   function parseItalianNumber(text) {
@@ -133,7 +132,7 @@
   }
 
   function scrollToUpdatedData(target, includeThemeNavigation = false) {
-    if (!target || !window.matchMedia(MOBILE_QUERY).matches) return;
+    if (!target) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset(includeThemeNavigation);
     window.scrollTo({
