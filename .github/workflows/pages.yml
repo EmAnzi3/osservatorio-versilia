@@ -33,7 +33,9 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Build pre-rendered site
-        run: python scripts/build_static_safe.py
+        run: |
+          python scripts/build_static_safe.py
+          python scripts/inject_ateco_assets.py
 
       - name: Run regression tests
         run: python scripts/test_static.py
@@ -56,12 +58,14 @@ jobs:
       - name: Run export checks
         run: python scripts/test_exports_v161.py
 
-      - name: Run ASIA and AGCOM extractor tests
+      - name: Run ASIA, ATECO and AGCOM checks
         run: |
           python scripts/test_agid_indicators.py
           python -m py_compile \
             scripts/update_agid_indicators_resilient.py \
-            scripts/restore_partial_agcom_metrics.py \
+            scripts/enrich_ateco_details.py \
+            scripts/audit_agcom_broadband.py \
+            scripts/inject_ateco_assets.py \
             scripts/monthly_data_check_coverage.py
 
       - name: Run monthly monitor checks
