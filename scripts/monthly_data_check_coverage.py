@@ -86,7 +86,15 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
 
 def main(argv: list[str] | None = None) -> int:
     base.validate_dataset = validate_dataset
-    return base.main(argv)
+    if argv is None:
+        return base.main()
+
+    original_argv = sys.argv
+    try:
+        sys.argv = [original_argv[0], *argv]
+        return base.main()
+    finally:
+        sys.argv = original_argv
 
 
 if __name__ == "__main__":
