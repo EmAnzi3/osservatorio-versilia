@@ -9,8 +9,10 @@ on:
       - "scripts/restore_partial_agcom_metrics.py"
       - "scripts/enrich_ateco_agcom_audit.py"
       - "scripts/audit_agcom_primary.py"
+      - "scripts/apply_agcom_primary_percentages.py"
       - "scripts/apply_agcom_absolute_policy.py"
       - "scripts/test_ateco_agcom_audit.py"
+      - "scripts/test_agcom_primary_percentages.py"
       - "scripts/build_static.py"
       - "scripts/capture_agid_preview.py"
       - "assets/ateco-detail.js"
@@ -24,8 +26,10 @@ on:
       - "scripts/restore_partial_agcom_metrics.py"
       - "scripts/enrich_ateco_agcom_audit.py"
       - "scripts/audit_agcom_primary.py"
+      - "scripts/apply_agcom_primary_percentages.py"
       - "scripts/apply_agcom_absolute_policy.py"
       - "scripts/test_ateco_agcom_audit.py"
+      - "scripts/test_agcom_primary_percentages.py"
       - "scripts/build_static.py"
       - "scripts/capture_agid_preview.py"
       - "assets/ateco-detail.js"
@@ -56,11 +60,13 @@ jobs:
         run: |
           python scripts/test_agid_indicators.py
           python scripts/test_ateco_agcom_audit.py
+          python scripts/test_agcom_primary_percentages.py
           python -m py_compile \
             scripts/update_agid_indicators_resilient.py \
             scripts/restore_partial_agcom_metrics.py \
             scripts/enrich_ateco_agcom_audit.py \
             scripts/audit_agcom_primary.py \
+            scripts/apply_agcom_primary_percentages.py \
             scripts/apply_agcom_absolute_policy.py \
             scripts/monthly_data_check_coverage.py \
             scripts/capture_agid_preview.py
@@ -70,6 +76,7 @@ jobs:
           python scripts/update_agid_indicators_resilient.py
           python scripts/enrich_ateco_agcom_audit.py
           python scripts/audit_agcom_primary.py
+          python scripts/apply_agcom_primary_percentages.py
           python scripts/apply_agcom_absolute_policy.py
 
       - name: Validate dataset with declared coverage
@@ -166,7 +173,7 @@ jobs:
           Controlli principali:
           - Economia: nuovi indicatori e confronto ATECO per settore.
           - Scheda Massarosa / Economia: Top 10 ATECO per unità locali e addetti + tabella completa.
-          - Mobilità e infrastrutture: indicatori FTTH effettivamente validati.
+          - Mobilità e infrastrutture: percentuali e conteggi FTTH ricavati dal CSV primario AGCOM.
 
           File di verifica:
           - OUTPUT_INDICATORI.md / .csv
