@@ -9,14 +9,17 @@
   let scheduled = false;
 
   function metricKeyFor(root) {
-    const local = root.closest('#home-explorer, .topic-dashboard, #town-topic, .history-panel');
+    const home = root.closest?.('#home-explorer');
+    const dashboard = root.closest?.('.topic-dashboard');
+    const townTopic = root.closest?.('#town-topic');
+    const local = home || dashboard || townTopic;
     const active = local?.querySelector('[data-metric].active, [data-metric][aria-selected="true"]');
     if (active?.dataset.metric) return active.dataset.metric;
     return new URLSearchParams(location.search).get('indicatore');
   }
 
   function normalizedFor(root) {
-    const dashboard = root.closest('.topic-dashboard');
+    const dashboard = root.closest?.('.topic-dashboard');
     return Boolean(dashboard?.querySelector('[data-scale="normalized"].active'));
   }
 
@@ -58,25 +61,25 @@
     const numeric = values.map(finite).filter(value => value !== null);
     const reference = finite(aggregateValue);
     if (reference !== null) numeric.push(reference);
-    if (!numeric.length) return { min: 0, max: 1, zero: 0, kind: 'absolute' };
+    if (!numeric.length) return { min: 0, max: 1, kind: 'absolute' };
 
     const allPercent = unit === '%' && numeric.every(value => value >= 0 && value <= 100);
-    if (allPercent) return { min: 0, max: 100, zero: 0, kind: 'percent' };
+    if (allPercent) return { min: 0, max: 100, kind: 'percent' };
 
     let min = Math.min(...numeric);
     let max = Math.max(...numeric);
     if (min >= 0) {
       min = 0;
       max = max === 0 ? 1 : max * 1.05;
-      return { min, max, zero: 0, kind: 'absolute' };
+      return { min, max, kind: 'absolute' };
     }
     if (max <= 0) {
       max = 0;
       min = min === 0 ? -1 : min * 1.05;
-      return { min, max, zero: 0, kind: 'signed' };
+      return { min, max, kind: 'signed' };
     }
     const padding = (max - min) * 0.06 || 1;
-    return { min: min - padding, max: max + padding, zero: 0, kind: 'signed' };
+    return { min: min - padding, max: max + padding, kind: 'signed' };
   }
 
   function position(value, scale) {
@@ -139,14 +142,16 @@
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
-      return { rowEl, townName, row, value: valueFor(row, metric, normalized) };
+      return { rowEl, row, value: valueFor(row, metric, normalized) };
     });
     const firstRow = mapped.find(item => item.row)?.row;
     const unit = unitFor(firstRow, metric, normalized);
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
     const referencePosition = position(aggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
-
+    const signature = [metricKey, normalized ? 'n' : 'r', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
+    if (container.dataset.visualGrammarSignature === signature && container.querySelector(':scope > .comparison-legend')) return;
+    container.dataset.visualGrammarSignature = signature;
     container.dataset.viz = scale.kind === 'percent' ? 'percent-dotplot' : scale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
 
     container.querySelector(':scope > .comparison-legend')?.remove();
@@ -165,19 +170,21 @@
       if (!track) return;
       const x = position(value, scale);
       if (x === null) {
-        track.innerHTML = '<span class="comparison-missing">Dato non disponibile</span>';
+        const missing = '<span class="comparison-missing">Dato non disponibile</span>';
+        if (track.innerHTML !== missing) track.innerHTML = missing;
         rowEl.classList.add('missing');
         return;
       }
       rowEl.classList.remove('missing');
       const stemLeft = Math.min(zeroPosition, x);
       const stemWidth = Math.abs(x - zeroPosition);
-      track.innerHTML = `
+      const markup = `
         <span class="comparison-axis-line" aria-hidden="true"></span>
         ${scale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
         ${referencePosition !== null ? `<span class="comparison-reference" style="left:${referencePosition}%" aria-hidden="true"></span>` : ''}
         <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
         <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
+      if (track.innerHTML !== markup) track.innerHTML = markup;
       if (row) {
         rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
       }
@@ -198,16 +205,21 @@
     if (!data) return;
     const panel = document.querySelector('.versilia-position');
     const townName = document.querySelector('.town-identity h1')?.textContent?.trim();
-    const metricKey = metricKeyFor(panel || document.body);
+    if (!panel || !townName) return;
+    const metricKey = metricKeyFor(panel);
     const metric = data.metrics?.[metricKey];
     const row = townRow(metric, townName);
-    if (!panel || !metric || !row) return;
+    if (!metric || !row) return;
 
     const delta = deltaFor(metric, row);
+    const signature = `${metricKey}|${delta.headline}|${delta.direction}`;
+    if (panel.dataset.visualGrammarSignature === signature) return;
+    panel.dataset.visualGrammarSignature = signature;
     const overline = panel.querySelector('.overline');
     const strong = panel.querySelector(':scope > strong');
-    if (overline) overline.textContent = 'Rispetto alla Versilia';
-    if (strong) strong.innerHTML = `${delta.headline}<small>${delta.direction}</small>`;
+    if (overline && overline.textContent !== 'Rispetto alla Versilia') overline.textContent = 'Rispetto alla Versilia';
+    const strongMarkup = `${delta.headline}<small>${delta.direction}</small>`;
+    if (strong && strong.innerHTML !== strongMarkup) strong.innerHTML = strongMarkup;
   }
 
   function enhanceIndicatorCards() {
@@ -220,7 +232,8 @@
       const small = button.querySelector('small');
       if (!metric || !row || !small) return;
       const delta = deltaFor(metric, row);
-      small.textContent = `${metric.meta.year} · ${delta.compact}`;
+      const text = `${metric.meta.year} · ${delta.compact}`;
+      if (small.textContent !== text) small.textContent = text;
     });
   }
 
@@ -236,7 +249,8 @@
     document.querySelectorAll('.principles-grid h3').forEach(heading => {
       if (heading.textContent.trim() === 'Nessun voto') {
         const paragraph = heading.nextElementSibling;
-        if (paragraph) paragraph.textContent = 'Distanze e confronti descrivono i valori: non diventano pagelle, podi o giudizi politici automatici.';
+        const text = 'Distanze e confronti descrivono i valori: non diventano pagelle, podi o giudizi politici automatici.';
+        if (paragraph && paragraph.textContent !== text) paragraph.textContent = text;
       }
     });
 
