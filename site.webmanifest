@@ -2,16 +2,50 @@
   "name": "Osservatorio Versilia",
   "short_name": "Osservatorio",
   "description": "Dati pubblici dei sette comuni della Versilia, leggibili e confrontabili.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#F4EEE2",
   "theme_color": "#0F3654",
+  "categories": ["education", "utilities"],
   "icons": [
+    {
+      "src": "pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "favicon.svg?v=20260807-ov",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Confronta i comuni",
+      "short_name": "Confronta",
+      "url": "./#temi"
+    },
+    {
+      "name": "Schede comunali",
+      "short_name": "Comuni",
+      "url": "./#comuni"
     }
   ]
 }
