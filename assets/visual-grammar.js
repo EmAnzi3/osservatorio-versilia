@@ -43,17 +43,19 @@
   }
 
   function finite(value) {
+    if (value === null || value === undefined || value === '') return null;
     const n = Number(value);
     return Number.isFinite(n) ? n : null;
   }
 
   function formatAxis(value, unit) {
-    if (value === null || value === undefined || !Number.isFinite(Number(value))) return 'n.d.';
+    if (finite(value) === null) return 'n.d.';
     const n = Number(value);
     const abs = Math.abs(n);
     const formatted = abs >= 100 ? number0.format(n) : number1.format(n);
     if (unit === '%') return `${formatted}%`;
-    if (unit === '€' || unit === '€/ab.') return `${formatted} €`;
+    if (unit === '€') return `${formatted} €`;
+    if (unit === '€/ab.') return `${formatted} €/ab.`;
     return unit ? `${formatted} ${unit}` : formatted;
   }
 
