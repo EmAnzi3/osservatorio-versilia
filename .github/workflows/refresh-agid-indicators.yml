@@ -64,14 +64,17 @@ jobs:
             --report-md /tmp/agid-data-check/report.md \
             --report-json /tmp/agid-data-check/report.json \
             --next-state /tmp/agid-data-check/state.json
-          python scripts/build_static_safe.py
-          python scripts/test_static.py
 
       - name: Install preview browser
         run: |
           python -m pip install --upgrade pip
           python -m pip install playwright
           python -m playwright install --with-deps chromium
+
+      - name: Build and validate static preview
+        run: |
+          python scripts/build_static_safe.py
+          python scripts/test_static.py
 
       - name: Capture desktop and mobile preview
         run: |
