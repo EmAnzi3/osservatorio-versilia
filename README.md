@@ -57,13 +57,15 @@ I valori sono centralizzati in `data/site-data.json`. Per aggiornamenti struttur
 
 Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot leggibili conservati in `data/source-snapshots/`. Gli snapshot riportano il perimetro territoriale, i conteggi o valori ufficiali utilizzati, le formule, le serie e i candidati esclusi.
 
+La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito.
+
 ### Controllo mensile automatico
 
 Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorno 5 di ogni mese e può essere avviato manualmente da GitHub Actions.
 
 La procedura:
 
-- valida i 106 indicatori e la copertura completa dei sette Comuni;
+- valida i 106 indicatori e la coerenza della copertura dichiarata per ciascuno;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;
