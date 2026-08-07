@@ -35,13 +35,16 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Build pre-rendered site
-        run: python scripts/build_static_safe.py
+        run: python scripts/build_static_brand.py
 
       - name: Run regression tests
         run: python scripts/test_static.py
 
       - name: Run launch foundation checks
         run: python scripts/test_launch_foundations.py
+
+      - name: Run brand identity checks
+        run: python scripts/test_brand_identity.py
 
       - name: Run visual grammar checks
         run: |
