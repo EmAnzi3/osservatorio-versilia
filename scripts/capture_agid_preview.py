@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cattura schermate desktop e mobile della preview ASIA/AGCOM."""
+"""Cattura schermate desktop e mobile della preview ASIA/AGCOM/ATECO."""
 from __future__ import annotations
 
 import argparse
@@ -13,6 +13,10 @@ PAGES = (
     (
         "economia",
         "/confronta/economia/?indicatore=localEmployees",
+    ),
+    (
+        "massarosa-ateco",
+        "/comuni/massarosa/?tema=economia&indicatore=localUnits",
     ),
     (
         "mobilita-infrastrutture",
@@ -42,6 +46,8 @@ async def capture(base_url: str, output_dir: Path) -> None:
                         wait_until="networkidle",
                         timeout=60_000,
                     )
+                    if "economia" in name or "ateco" in name:
+                        await page.wait_for_timeout(600)
                     await page.screenshot(
                         path=output_dir / f"{name}-{profile}.png",
                         full_page=True,

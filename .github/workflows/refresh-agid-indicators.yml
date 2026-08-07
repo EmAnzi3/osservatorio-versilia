@@ -1,13 +1,23 @@
-name: Aggiorna imprese e banda larga
+name: Aggiorna imprese, ATECO e banda larga
 
 on:
   push:
     branches: ["main"]
     paths:
       - ".github/workflows/refresh-agid-indicators.yml"
-      - "scripts/update_agid_indicators_resilient.py"
+      - "scripts/update_agid_indicators*.py"
       - "scripts/restore_partial_agcom_metrics.py"
+      - "scripts/enrich_ateco_agcom_audit.py"
+      - "scripts/audit_agcom_primary.py"
+      - "scripts/apply_agcom_primary_percentages.py"
+      - "scripts/apply_agcom_absolute_policy.py"
+      - "scripts/test_ateco_agcom_audit.py"
+      - "scripts/test_agcom_primary_percentages.py"
       - "scripts/monthly_data_check_coverage.py"
+      - "scripts/build_static.py"
+      - "scripts/capture_agid_preview.py"
+      - "assets/ateco-detail.js"
+      - "assets/ateco-detail.css"
   workflow_dispatch:
   issue_comment:
     types: [created]
@@ -43,18 +53,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run extractor and coverage tests
+      - name: Run extractor and source tests
         run: |
           python scripts/test_agid_indicators.py
+          python scripts/test_ateco_agcom_audit.py
+          python scripts/test_agcom_primary_percentages.py
           python -m py_compile \
             scripts/update_agid_indicators_resilient.py \
             scripts/restore_partial_agcom_metrics.py \
-            scripts/monthly_data_check_coverage.py
+            scripts/enrich_ateco_agcom_audit.py \
+            scripts/audit_agcom_primary.py \
+            scripts/apply_agcom_primary_percentages.py \
+            scripts/apply_agcom_absolute_policy.py \
+            scripts/monthly_data_check_coverage.py \
+            scripts/capture_agid_preview.py
 
-      - name: Fetch and integrate official indicators
+      - name: Fetch official ASIA and AGCOM data
         run: |
           python scripts/update_agid_indicators_resilient.py
-          python scripts/restore_partial_agcom_metrics.py
+          python scripts/enrich_ateco_agcom_audit.py
+          python scripts/audit_agcom_primary.py
+          python scripts/apply_agcom_primary_percentages.py
+          python scripts/apply_agcom_absolute_policy.py
 
       - name: Validate dataset with declared coverage
         run: |
@@ -75,6 +95,23 @@ jobs:
         run: |
           python scripts/build_static_safe.py
           python scripts/test_static.py
+          grep -q 'ateco-detail.js' dist/confronta/economia/index.html
+          grep -q 'ateco-detail.css' dist/comuni/massarosa/index.html
+          python - <<'PY'
+          from pathlib import Path
+          import mimetypes
+          crests = [
+              'massarosa.png', 'viareggio.svg', 'camaiore.svg',
+              'pietrasanta.svg', 'seravezza.png', 'forte-dei-marmi.svg',
+              'stazzema.webp'
+          ]
+          for crest in crests:
+              p = Path('dist/crests') / crest
+              assert p.exists() and p.stat().st_size > 0, f'Stemma mancante: {crest}'
+          for crest in ['viareggio.svg','camaiore.svg','pietrasanta.svg','forte-dei-marmi.svg']:
+              assert mimetypes.guess_type(crest)[0] == 'image/svg+xml'
+          print('Stemmi verificati: 7/7')
+          PY
 
       - name: Capture desktop and mobile preview
         run: |
@@ -85,49 +122,66 @@ jobs:
             --base-url http://127.0.0.1:8765 \
             --output-dir reports/previews/imprese-banda-larga
 
-      - name: Package local preview and outputs
+      - name: Package local preview and audit outputs
         run: |
-          mkdir -p preview-imprese-banda-larga/site
-          mkdir -p preview-imprese-banda-larga/schermate
+          mkdir -p preview-imprese-banda-larga/site preview-imprese-banda-larga/schermate
           cp -a dist/. preview-imprese-banda-larga/site/
-          cp reports/previews/imprese-banda-larga/*.png \
-            preview-imprese-banda-larga/schermate/
-          cp reports/previews/imprese-banda-larga/indicatori.md \
-            preview-imprese-banda-larga/OUTPUT_INDICATORI.md
-          cp reports/previews/imprese-banda-larga/indicatori.csv \
-            preview-imprese-banda-larga/OUTPUT_INDICATORI.csv
-          cat > preview-imprese-banda-larga/AVVIA_PREVIEW.bat <<'EOF'
+          cp reports/previews/imprese-banda-larga/*.png preview-imprese-banda-larga/schermate/
+          cp reports/previews/imprese-banda-larga/indicatori.md preview-imprese-banda-larga/OUTPUT_INDICATORI.md
+          cp reports/previews/imprese-banda-larga/indicatori.csv preview-imprese-banda-larga/OUTPUT_INDICATORI.csv
+          cp reports/previews/imprese-banda-larga/ateco-agcom-audit.md preview-imprese-banda-larga/AUDIT_ATECO_AGID.md
+          cp reports/previews/imprese-banda-larga/agcom-primary-audit.md preview-imprese-banda-larga/AUDIT_AGCOM_PRIMARIO.md
+          cp data/source-snapshots/agid-asia-agcom-2026-08.json preview-imprese-banda-larga/SNAPSHOT_FONTI.json
+          cat > preview-imprese-banda-larga/serve_preview.py <<'PY'
+          import http.server
+          import os
+          import sys
+          from pathlib import Path
+          root = Path(sys.argv[1] if len(sys.argv) > 1 else "site").resolve()
+          os.chdir(root)
+          server = http.server.ThreadingHTTPServer(("127.0.0.1", 8765), http.server.SimpleHTTPRequestHandler)
+          print("Preview: http://127.0.0.1:8765/confronta/economia/?indicatore=localEmployees")
+          print("Per chiudere: Ctrl+C")
+          server.serve_forever()
+          PY
+          cat > preview-imprese-banda-larga/AVVIA_PREVIEW.bat <<'BAT'
           @echo off
-          cd /d "%~dp0site"
+          setlocal
+          cd /d "%~dp0"
+          where py >nul 2>&1
+          if %errorlevel%==0 (
+            set "PY=py"
+          ) else (
+            where python >nul 2>&1
+            if %errorlevel%==0 (
+              set "PY=python"
+            ) else (
+              echo Python non trovato. Apri le immagini nella cartella schermate oppure installa Python 3.
+              pause
+              exit /b 1
+            )
+          )
+          start "Osservatorio Versilia - server preview" %PY% "%~dp0serve_preview.py" "%~dp0site"
+          timeout /t 2 /nobreak >nul
           start "" "http://127.0.0.1:8765/confronta/economia/?indicatore=localEmployees"
-          py -m http.server 8765
+          echo Preview avviata. Per fermare il server chiudi la finestra del server.
           pause
-          EOF
-          cat > preview-imprese-banda-larga/LEGGIMI.txt <<'EOF'
+          BAT
+          cat > preview-imprese-banda-larga/LEGGIMI.txt <<'TXT'
           PREVIEW NON PUBBLICATA — OSSERVATORIO VERSILIA
-
-          1. Estrai completamente il file ZIP.
-          2. Apri AVVIA_PREVIEW.bat.
-          3. Il browser mostrerà la preview locale.
-          4. Per chiuderla, torna alla finestra nera e premi Ctrl+C.
-
-          Pagine da controllare:
-          - Economia: addetti e unità locali
-          - Mobilità e infrastrutture: connettività digitale
-
-          OUTPUT_INDICATORI.md e OUTPUT_INDICATORI.csv contengono tutti i valori.
-          La cartella "schermate" contiene quattro immagini, due desktop e due mobile.
-          EOF
+          Estrai completamente lo ZIP e apri AVVIA_PREVIEW.bat. Non aprire gli HTML con doppio clic.
+          Il server Python assegna correttamente anche il MIME image/svg+xml agli stemmi SVG.
+          TXT
 
       - name: Upload non-published preview
         uses: actions/upload-artifact@v4
         with:
-          name: preview-imprese-banda-larga
+          name: preview-imprese-banda-larga-ateco-audit
           path: preview-imprese-banda-larga
           retention-days: 14
           if-no-files-found: error
 
-      - name: Create or update draft pull request
+      - name: Create or update draft data pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -136,73 +190,40 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add data/site-data.json data/source-registry.json \
+          git add \
+            data/site-data.json \
+            data/source-registry.json \
             data/source-snapshots/agid-asia-agcom-2026-08.json \
-            README.md docs/aggiornamento-mensile-dati.md
+            README.md \
+            docs/aggiornamento-mensile-dati.md
           if git diff --cached --quiet; then
             echo "Nessuna modifica da proporre."
             exit 0
           fi
-          git commit -m "Aggiunge imprese, addetti e copertura FTTH"
+          git commit -m "Aggiorna ASIA, ATECO e copertura FTTH"
           git push --force origin "$branch"
 
           body_file="$(mktemp)"
           cat > "$body_file" <<'EOF'
-          ## Contenuto
+          ## Aggiornamento dati
 
-          Integra nell’Osservatorio i dati comunali su:
+          - ISTAT ASIA-UL: unità locali, addetti e dettaglio ATECO a 2 cifre;
+          - AGCOM Broadband Map: percentuali e conteggi FTTH letti dal CSV comunale primario ufficiale;
+          - soglia di pubblicabilità: 7/7 standard, 6/7 ammesso con un solo Comune privo di conteggio valido;
+          - nessuna stima o ricostruzione dei valori mancanti.
 
-          - addetti medi annui nelle unità locali;
-          - addetti per unità locale;
-          - variazione 2018–2023 di unità locali e addetti;
-          - copertura FTTH DESI;
-          - famiglie raggiunte e non raggiunte da FTTH;
-          - copertura FTTH entro 20 metri.
-
-          La serie delle **unità locali attive** già pubblicata viene estesa al periodo 2018–2023, senza creare un indicatore duplicato.
-
-          ## Copertura
-
-          - indicatori ASIA: **7/7**;
-          - percentuali di copertura FTTH: **7/7**;
-          - famiglie raggiunte e non raggiunte da FTTH: **6/7**;
-          - Forte dei Marmi è mostrato come **n.d.** nei due conteggi assoluti;
-          - gli aggregati dei conteggi assoluti sono dichiarati come totali parziali 6/7.
-
-          ## Fonti
-
-          - **ISTAT ASIA-UL**, dati 2018–2023, acquisiti tramite gli shard comunali di AgID — Cruscotto Italia;
-          - **AGCOM Broadband Map**, rilevazione al 31 dicembre 2025, acquisita tramite gli shard comunali di AgID — Cruscotto Italia.
-
-          ## Garanzie metodologiche
-
-          - unità locali e imprese giuridiche non vengono confuse;
-          - gli addetti sono riferiti al luogo di lavoro, non alla residenza;
-          - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
-          - nessun dato mancante viene stimato o ricostruito;
-          - la copertura dichiarata deve coincidere con i valori realmente disponibili.
-
-          La preview non pubblicata e gli output completi in Markdown e CSV sono disponibili negli **Artifacts** del workflow che ha creato questa PR.
+          La preview e gli audit sono disponibili negli Artifacts del workflow.
           EOF
 
           if gh pr view "$branch" --json number >/dev/null 2>&1; then
-            gh pr edit "$branch" \
-              --title "Aggiunge imprese, addetti e copertura FTTH" \
-              --body-file "$body_file"
+            gh pr edit "$branch" --title "Aggiorna ASIA, ATECO e banda larga" --body-file "$body_file"
             pr_url="$(gh pr view "$branch" --json url --jq .url)"
           else
-            pr_url="$(gh pr create --draft \
-              --base main \
-              --head "$branch" \
-              --title "Aggiunge imprese, addetti e copertura FTTH" \
-              --body-file "$body_file")"
+            pr_url="$(gh pr create --draft --base main --head "$branch" --title "Aggiorna ASIA, ATECO e banda larga" --body-file "$body_file")"
           fi
           echo "PR: $pr_url"
 
-          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          issue_number="14"
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            issue_number="${{ github.event.issue.number }}"
+            run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            gh issue comment "${{ github.event.issue.number }}" --body "Aggiornamento completato: $pr_url\n\nPreview e audit: $run_url"
           fi
-          gh issue comment "$issue_number" \
-            --body "Aggiornamento completato: $pr_url\n\nPreview e output completi: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."

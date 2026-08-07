@@ -119,11 +119,15 @@ def prepare_shells() -> None:
         text = re.sub(r"(?:\.\./)*assets/original\.css(?:\?v=[^\"]+)?", f"{assets}assets/original.css", text)
         text = re.sub(r"(?:\.\./)*assets/static\.css(?:\?v=[^\"]+)?", f"{assets}assets/static.css", text)
         text = re.sub(r"(?:\.\./)*assets/fidelity\.css(?:\?v=[^\"]+)?", f"{assets}assets/fidelity.css", text)
+        text = re.sub(r"(?:\.\./)*assets/ateco-detail\.css(?:\?v=[^\"]+)?", f"{assets}assets/ateco-detail.css", text)
         text = re.sub(r"(?:\.\./)*assets/(?:app|app-bundle)\.js(?:\?v=[^\"]+)?", f"{assets}assets/app-bundle.js", text)
         text = re.sub(r"(?:\.\./)*assets/fidelity\.js(?:\?v=[^\"]+)?", f"{assets}assets/fidelity.js", text)
+        text = re.sub(r"(?:\.\./)*assets/ateco-detail\.js(?:\?v=[^\"]+)?", f"{assets}assets/ateco-detail.js", text)
 
         if "assets/fidelity.css" not in text:
             text = text.replace("</head>", f'  <link rel="stylesheet" href="{assets}assets/fidelity.css">\n</head>')
+        if "assets/ateco-detail.css" not in text:
+            text = text.replace("</head>", f'  <link rel="stylesheet" href="{assets}assets/ateco-detail.css">\n</head>')
         if "assets/fidelity.js" not in text:
             text = text.replace(
                 "</body>",
@@ -133,6 +137,11 @@ def prepare_shells() -> None:
             text = text.replace(
                 "</body>",
                 f'  <script src="{assets}assets/app-bundle.js" defer></script>\n</body>',
+            )
+        if "assets/ateco-detail.js" not in text:
+            text = text.replace(
+                "</body>",
+                f'  <script src="{assets}assets/ateco-detail.js" defer></script>\n</body>',
             )
 
         path.write_text(text, encoding="utf-8")
@@ -266,7 +275,7 @@ def prerender() -> None:
         for route in ROUTES:
             page.goto(server_url + route, wait_until="networkidle")
             page.wait_for_selector("#app main", timeout=30_000)
-            page.wait_for_timeout(150)
+            page.wait_for_timeout(350)
             page.evaluate("document.body.dataset.prerendered = 'true'")
             document = page.evaluate("'<!doctype html>\\n' + document.documentElement.outerHTML")
             route_file(route).write_text(inject_metadata(document, route, data), encoding="utf-8")
@@ -275,7 +284,7 @@ def prerender() -> None:
 
 def write_sitemap() -> None:
     urls = [canonical_url(route) for route in ROUTES if route != "404.html"]
-    content = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    content = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/sitemap/0.9">']
     content.extend(f"  <url><loc>{html.escape(url)}</loc></url>" for url in urls)
     content.append("</urlset>")
     (DIST / "sitemap.xml").write_text("\n".join(content) + "\n", encoding="utf-8")

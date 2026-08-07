@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-07T09:26:28+00:00",
+  "scope": "Sette Comuni della Versilia storica",
+  "acquisitionLayer": {
+    "name": "AgID — Cruscotto Italia",
+    "url": "https://cruscotto-italia.dati.gov.it/",
+    "note": "Cruscotto Italia normalizza gli shard comunali; titolari dei dati restano ISTAT e AGCOM."
+  },
+  "sources": {
+    "asia": {
+      "owner": "ISTAT",
+      "dataset": "Archivio Statistico Imprese Attive — Unità Locali (ASIA-UL)",
+      "url": "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7",
+      "license": "CC BY 3.0 IT",
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    "agcom": {
+      "owner": "AGCOM",
+      "dataset": "Broadband Map — reportistica comunale rete cablata",
+      "url": "https://geo.agcom.it/reportistica/ai/index.html",
+      "license": "CC BY 4.0",
+      "dataPeriod": "31/12/2025"
+    }
+  },
+  "formulas": {
+    "employeesPerLocalUnit": "addetti medi annui / unità locali attive",
+    "localUnitsChange": "((UL 2023 / UL 2018) - 1) * 100",
+    "localEmployeesChange": "((addetti 2023 / addetti 2018) - 1) * 100",
+    "ftthUnreachedHouseholds": "famiglie residenti - famiglie FTTH DESI"
+  },
+  "towns": [
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "slug": "massarosa",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          1602,
+          1550,
+          1616,
+          1649,
+          1704,
+          1714
+        ],
+        "employeesAverageAnnual": [
+          4359.18,
+          4377.05,
+          4396.51,
+          4630.05,
+          4758.76,
+          4938.33
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 8982,
+        "ftthHouseholds": 4219,
+        "ftthHouseholdsWithin20m": 3084,
+        "ftthDesiCoveragePercent": 47.0,
+        "ftthWithin20mCoveragePercent": 34.3,
+        "auditRawShard": {
+          "residentHouseholds": 15,
+          "ftthHouseholds": 9,
+          "ftthHouseholdsWithin20m": 3
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "15",
+            "famiglie_ftth": "9",
+            "famiglie_ftth_20m": "3",
+            "copertura_ftth_desi_pct": "57%",
+            "copertura_ftth_20m_pct": "21%"
+          },
+          "famiglie_residenti": 15,
+          "famiglie_ftth": 9,
+          "famiglie_ftth_20m": 3,
+          "copertura_ftth_desi_pct": 57.0,
+          "copertura_ftth_20m_pct": 21.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.43 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Massarosa",
+          "famiglie_residenti": 8982,
+          "famiglie_ftth": 4219,
+          "famiglie_ftth_20m": 3084,
+          "copertura_ftth_desi_pct": 47.0,
+          "copertura_ftth_20m_pct": 34.3,
+          "raw": {
+            "famiglie_residenti": "8982",
+            "famiglie_ftth": "4219",
+            "famiglie_ftth_20m": "3084",
+            "copertura_ftth_desi_pct": "47,0%",
+            "copertura_ftth_20m_pct": "34,3%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "slug": "viareggio",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          6427,
+          6456,
+          6564,
+          6688,
+          6979,
+          7020
+        ],
+        "employeesAverageAnnual": [
+          19964.72,
+          20155.87,
+          19839.08,
+          20510.82,
+          21591.67,
+          22358.35
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 25039,
+        "ftthHouseholds": 23734,
+        "ftthHouseholdsWithin20m": 21536,
+        "ftthDesiCoveragePercent": 94.8,
+        "ftthWithin20mCoveragePercent": 86.0,
+        "auditRawShard": {
+          "residentHouseholds": 25737,
+          "ftthHouseholds": 24543,
+          "ftthHouseholdsWithin20m": 21744
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "25737",
+            "famiglie_ftth": "24543",
+            "famiglie_ftth_20m": "21744",
+            "copertura_ftth_desi_pct": "95%",
+            "copertura_ftth_20m_pct": "84%"
+          },
+          "famiglie_residenti": 25737,
+          "famiglie_ftth": 24543,
+          "famiglie_ftth_20m": 21744,
+          "copertura_ftth_desi_pct": 95.0,
+          "copertura_ftth_20m_pct": 84.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.42 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Viareggio",
+          "famiglie_residenti": 25039,
+          "famiglie_ftth": 23734,
+          "famiglie_ftth_20m": 21536,
+          "copertura_ftth_desi_pct": 94.8,
+          "copertura_ftth_20m_pct": 86.0,
+          "raw": {
+            "famiglie_residenti": "25039",
+            "famiglie_ftth": "23734",
+            "famiglie_ftth_20m": "21536",
+            "copertura_ftth_desi_pct": "94,8%",
+            "copertura_ftth_20m_pct": "86,0%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "slug": "camaiore",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          3206,
+          3185,
+          3246,
+          3370,
+          3535,
+          3539
+        ],
+        "employeesAverageAnnual": [
+          9061.73,
+          9171.11,
+          8903.53,
+          9407.78,
+          9856.89,
+          9957.33
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 13119,
+        "ftthHouseholds": 11978,
+        "ftthHouseholdsWithin20m": 10512,
+        "ftthDesiCoveragePercent": 91.3,
+        "ftthWithin20mCoveragePercent": 80.1,
+        "auditRawShard": {
+          "residentHouseholds": 14408,
+          "ftthHouseholds": 12316,
+          "ftthHouseholdsWithin20m": 9344
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "14408",
+            "famiglie_ftth": "12316",
+            "famiglie_ftth_20m": "9344",
+            "copertura_ftth_desi_pct": "85%",
+            "copertura_ftth_20m_pct": "65%"
+          },
+          "famiglie_residenti": 14408,
+          "famiglie_ftth": 12316,
+          "famiglie_ftth_20m": 9344,
+          "copertura_ftth_desi_pct": 85.0,
+          "copertura_ftth_20m_pct": 65.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.42 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Camaiore",
+          "famiglie_residenti": 13119,
+          "famiglie_ftth": 11978,
+          "famiglie_ftth_20m": 10512,
+          "copertura_ftth_desi_pct": 91.3,
+          "copertura_ftth_20m_pct": 80.1,
+          "raw": {
+            "famiglie_residenti": "13119",
+            "famiglie_ftth": "11978",
+            "famiglie_ftth_20m": "10512",
+            "copertura_ftth_desi_pct": "91,3%",
+            "copertura_ftth_20m_pct": "80,1%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "slug": "pietrasanta",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          2807,
+          2738,
+          2774,
+          2849,
+          2948,
+          2923
+        ],
+        "employeesAverageAnnual": [
+          7857.09,
+          7914.05,
+          7496.38,
+          8030.21,
+          8463.96,
+          8725.91
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 9353,
+        "ftthHouseholds": 5546,
+        "ftthHouseholdsWithin20m": 4133,
+        "ftthDesiCoveragePercent": 59.3,
+        "ftthWithin20mCoveragePercent": 44.2,
+        "auditRawShard": {
+          "residentHouseholds": 11287,
+          "ftthHouseholds": 4672,
+          "ftthHouseholdsWithin20m": 3370
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "11287",
+            "famiglie_ftth": "4672",
+            "famiglie_ftth_20m": "3370",
+            "copertura_ftth_desi_pct": "41%",
+            "copertura_ftth_20m_pct": "30%"
+          },
+          "famiglie_residenti": 11287,
+          "famiglie_ftth": 4672,
+          "famiglie_ftth_20m": 3370,
+          "copertura_ftth_desi_pct": 41.0,
+          "copertura_ftth_20m_pct": 30.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.42 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Pietrasanta",
+          "famiglie_residenti": 9353,
+          "famiglie_ftth": 5546,
+          "famiglie_ftth_20m": 4133,
+          "copertura_ftth_desi_pct": 59.3,
+          "copertura_ftth_20m_pct": 44.2,
+          "raw": {
+            "famiglie_residenti": "9353",
+            "famiglie_ftth": "5546",
+            "famiglie_ftth_20m": "4133",
+            "copertura_ftth_desi_pct": "59,3%",
+            "copertura_ftth_20m_pct": "44,2%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "slug": "seravezza",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          1197,
+          1181,
+          1197,
+          1210,
+          1252,
+          1292
+        ],
+        "employeesAverageAnnual": [
+          3452.04,
+          3387.52,
+          3229.62,
+          3454.8,
+          3564.97,
+          3677.72
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 5068,
+        "ftthHouseholds": 35,
+        "ftthHouseholdsWithin20m": 4,
+        "ftthDesiCoveragePercent": 0.7,
+        "ftthWithin20mCoveragePercent": 0.1,
+        "auditRawShard": {
+          "residentHouseholds": 5876,
+          "ftthHouseholds": 20,
+          "ftthHouseholdsWithin20m": 1
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "5876",
+            "famiglie_ftth": "20",
+            "famiglie_ftth_20m": "1",
+            "copertura_ftth_desi_pct": "0%",
+            "copertura_ftth_20m_pct": "0%"
+          },
+          "famiglie_residenti": 5876,
+          "famiglie_ftth": 20,
+          "famiglie_ftth_20m": 1,
+          "copertura_ftth_desi_pct": 0.0,
+          "copertura_ftth_20m_pct": 0.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.42 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Seravezza",
+          "famiglie_residenti": 5068,
+          "famiglie_ftth": 35,
+          "famiglie_ftth_20m": 4,
+          "copertura_ftth_desi_pct": 0.7,
+          "copertura_ftth_20m_pct": 0.1,
+          "raw": {
+            "famiglie_residenti": "5068",
+            "famiglie_ftth": "35",
+            "famiglie_ftth_20m": "4",
+            "copertura_ftth_desi_pct": "0,7%",
+            "copertura_ftth_20m_pct": "0,1%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          1178,
+          1147,
+          1201,
+          1256,
+          1328,
+          1298
+        ],
+        "employeesAverageAnnual": [
+          3987.28,
+          3965.48,
+          3546.95,
+          3824.44,
+          4345.93,
+          4328.57
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 4034,
+        "ftthHouseholds": null,
+        "ftthHouseholdsWithin20m": null,
+        "ftthDesiCoveragePercent": 0.0,
+        "ftthWithin20mCoveragePercent": 0.0,
+        "auditRawShard": {
+          "residentHouseholds": 4034,
+          "ftthHouseholds": null,
+          "ftthHouseholdsWithin20m": null
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "4034",
+            "famiglie_ftth": "",
+            "famiglie_ftth_20m": "",
+            "copertura_ftth_desi_pct": "0%",
+            "copertura_ftth_20m_pct": "0%"
+          },
+          "famiglie_residenti": 4034,
+          "famiglie_ftth": null,
+          "famiglie_ftth_20m": null,
+          "copertura_ftth_desi_pct": 0.0,
+          "copertura_ftth_20m_pct": 0.0
+        },
+        "absoluteCountsValid": false,
+        "absoluteCountsValidation": "famiglie FTTH mancanti",
+        "primaryOfficialCsv": {
+          "comune": "Forte dei Marmi",
+          "famiglie_residenti": 2707,
+          "famiglie_ftth": null,
+          "famiglie_ftth_20m": null,
+          "copertura_ftth_desi_pct": 0.0,
+          "copertura_ftth_20m_pct": 0.0,
+          "raw": {
+            "famiglie_residenti": "2707",
+            "famiglie_ftth": "",
+            "famiglie_ftth_20m": "",
+            "copertura_ftth_desi_pct": "0,0%",
+            "copertura_ftth_20m_pct": "0,0%"
+          }
+        }
+      }
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "slug": "stazzema",
+      "asia": {
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "localUnits": [
+          189,
+          169,
+          178,
+          180,
+          184,
+          181
+        ],
+        "employeesAverageAnnual": [
+          420.96,
+          401.49,
+          392.8,
+          413.53,
+          416.02,
+          405.96
+        ]
+      },
+      "agcom": {
+        "dataPeriod": "31/12/2025",
+        "residentHouseholds": 1148,
+        "ftthHouseholds": 1009,
+        "ftthHouseholdsWithin20m": 889,
+        "ftthDesiCoveragePercent": 87.9,
+        "ftthWithin20mCoveragePercent": 77.4,
+        "auditRawShard": {
+          "residentHouseholds": 1235,
+          "ftthHouseholds": 1014,
+          "ftthHouseholdsWithin20m": 899
+        },
+        "auditOfficialCsv": {
+          "raw": {
+            "famiglie_residenti": "1235",
+            "famiglie_ftth": "1014",
+            "famiglie_ftth_20m": "899",
+            "copertura_ftth_desi_pct": "82%",
+            "copertura_ftth_20m_pct": "73%"
+          },
+          "famiglie_residenti": 1235,
+          "famiglie_ftth": 1014,
+          "famiglie_ftth_20m": 899,
+          "copertura_ftth_desi_pct": 82.0,
+          "copertura_ftth_20m_pct": 73.0
+        },
+        "absoluteCountsValid": true,
+        "absoluteCountsValidation": "2.42 residenti per famiglia impliciti",
+        "primaryOfficialCsv": {
+          "comune": "Stazzema",
+          "famiglie_residenti": 1148,
+          "famiglie_ftth": 1009,
+          "famiglie_ftth_20m": 889,
+          "copertura_ftth_desi_pct": 87.9,
+          "copertura_ftth_20m_pct": 77.4,
+          "raw": {
+            "famiglie_residenti": "1148",
+            "famiglie_ftth": "1009",
+            "famiglie_ftth_20m": "889",
+            "copertura_ftth_desi_pct": "87,9%",
+            "copertura_ftth_20m_pct": "77,4%"
+          }
+        }
+      }
+    }
+  ],
+  "coveragePolicy": {
+    "standardCoverage": "7/7",
+    "minimumAcceptedCoverage": "6/7",
+    "maximumMissingTownsPerMetric": 1,
+    "publishedBroadbandMetrics": [
+      "ftthCoverageDesi",
+      "ftthReachedHouseholds",
+      "ftthUnreachedHouseholds",
+      "ftthCoverage20m"
+    ],
+    "partialMetrics": {
+      "ftthReachedHouseholds": {
+        "coverage": "6/7",
+        "missingTownCodes": [
+          "046013"
+        ],
+        "missingTowns": [
+          "Forte dei Marmi"
+        ]
+      },
+      "ftthUnreachedHouseholds": {
+        "coverage": "6/7",
+        "missingTownCodes": [
+          "046013"
+        ],
+        "missingTowns": [
+          "Forte dei Marmi"
+        ]
+      }
+    },
+    "note": "Un indicatore può essere pubblicato con copertura 6/7 quando un solo Comune presenta un dato ufficiale mancante. Il valore resta n.d.; nessuna stima o ricostruzione viene effettuata."
+  },
+  "provenance": {
+    "046018": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046018.json",
+      "asiaSha256": "bed29765b43339dd8ce235a51ec01fe3c46489651b1b79305bd9f78d6023ef2f",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046018.json",
+      "agcomSha256": "5700d35e8d537ba8360bbc7c8fed87e046c3c8fb233e48815e19645aaa2e3503"
+    },
+    "046033": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046033.json",
+      "asiaSha256": "23eb4b21ba5f7e875c3f9e596609e4372d86744ad9ba273a0ea13e23ca4dc1d2",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046033.json",
+      "agcomSha256": "cc74927e14ebbd481725747ee5b6da16bd2ff673e44bccc8533a9902215c21de"
+    },
+    "046005": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046005.json",
+      "asiaSha256": "57b4e6c8706dabdf3e3496e6484018522c0c357d26a2c449c86b2485d451e5da",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046005.json",
+      "agcomSha256": "f6db14758f75dbf27e49144ebb343e2d3b3bc4cf8a8bf3339c9efa9b42c73ce5"
+    },
+    "046024": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046024.json",
+      "asiaSha256": "1ccf9cb1a8050e9211bbb644c5c68743e7caf6066f8fda357b748b68f72d7ae1",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046024.json",
+      "agcomSha256": "b59abf17c178229e234959bd372e9c2a17091338cbc29b0f8bc64b7f6fd38c02"
+    },
+    "046028": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046028.json",
+      "asiaSha256": "32293b737bfc4758152b0b85e17d871aa35423cf6137f6e461ec9ccb069ae437",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046028.json",
+      "agcomSha256": "8265e8bcbe2918cecf80ea15148d2cbb89b59b6c21e15ee6a71d69c88f8563e6"
+    },
+    "046013": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046013.json",
+      "asiaSha256": "68ced494bb0c38b6248e7a4f2c238c6d96325daf7db371cc0f57fc581f0ba41d",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046013.json",
+      "agcomSha256": "ed9c5fa9b768532b0fb89fea8d716e80e8366669aebc2a9447654d53716d7687"
+    },
+    "046030": {
+      "asiaUrl": "https://cruscotto-italia.dati.gov.it/data/asia/046030.json",
+      "asiaSha256": "dfaa9e004e875bd3025ec90bdd26510d9862b5e3603d7ef0b9a983fb79c332df",
+      "agcomUrl": "https://cruscotto-italia.dati.gov.it/data/agcom_bbmap/046030.json",
+      "agcomSha256": "a960e255200efe681222e71998b6d8e5b90c8a7e3f26dafc70d26f6c97f0681d"
+    }
+  },
+  "agcomAudit": {
+    "sourceType": "primary_official_csv",
+    "aiReadyPage": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+    "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+    "discovery": "discovered_from_ai_ready_page",
+    "rowCount": 7896,
+    "invalidAbsoluteTownCodes": [
+      "046013"
+    ],
+    "invalidAbsoluteTowns": [
+      "Forte dei Marmi"
+    ],
+    "rows": [
+      {
+        "code": "046018",
+        "town": "Massarosa",
+        "valid": true,
+        "reason": "2.43 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Massarosa",
+          "famiglie_residenti": 8982,
+          "famiglie_ftth": 4219,
+          "famiglie_ftth_20m": 3084,
+          "copertura_ftth_desi_pct": 47.0,
+          "copertura_ftth_20m_pct": 34.3,
+          "raw": {
+            "famiglie_residenti": "8982",
+            "famiglie_ftth": "4219",
+            "famiglie_ftth_20m": "3084",
+            "copertura_ftth_desi_pct": "47,0%",
+            "copertura_ftth_20m_pct": "34,3%"
+          }
+        }
+      },
+      {
+        "code": "046033",
+        "town": "Viareggio",
+        "valid": true,
+        "reason": "2.42 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Viareggio",
+          "famiglie_residenti": 25039,
+          "famiglie_ftth": 23734,
+          "famiglie_ftth_20m": 21536,
+          "copertura_ftth_desi_pct": 94.8,
+          "copertura_ftth_20m_pct": 86.0,
+          "raw": {
+            "famiglie_residenti": "25039",
+            "famiglie_ftth": "23734",
+            "famiglie_ftth_20m": "21536",
+            "copertura_ftth_desi_pct": "94,8%",
+            "copertura_ftth_20m_pct": "86,0%"
+          }
+        }
+      },
+      {
+        "code": "046005",
+        "town": "Camaiore",
+        "valid": true,
+        "reason": "2.42 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Camaiore",
+          "famiglie_residenti": 13119,
+          "famiglie_ftth": 11978,
+          "famiglie_ftth_20m": 10512,
+          "copertura_ftth_desi_pct": 91.3,
+          "copertura_ftth_20m_pct": 80.1,
+          "raw": {
+            "famiglie_residenti": "13119",
+            "famiglie_ftth": "11978",
+            "famiglie_ftth_20m": "10512",
+            "copertura_ftth_desi_pct": "91,3%",
+            "copertura_ftth_20m_pct": "80,1%"
+          }
+        }
+      },
+      {
+        "code": "046024",
+        "town": "Pietrasanta",
+        "valid": true,
+        "reason": "2.42 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Pietrasanta",
+          "famiglie_residenti": 9353,
+          "famiglie_ftth": 5546,
+          "famiglie_ftth_20m": 4133,
+          "copertura_ftth_desi_pct": 59.3,
+          "copertura_ftth_20m_pct": 44.2,
+          "raw": {
+            "famiglie_residenti": "9353",
+            "famiglie_ftth": "5546",
+            "famiglie_ftth_20m": "4133",
+            "copertura_ftth_desi_pct": "59,3%",
+            "copertura_ftth_20m_pct": "44,2%"
+          }
+        }
+      },
+      {
+        "code": "046028",
+        "town": "Seravezza",
+        "valid": true,
+        "reason": "2.42 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Seravezza",
+          "famiglie_residenti": 5068,
+          "famiglie_ftth": 35,
+          "famiglie_ftth_20m": 4,
+          "copertura_ftth_desi_pct": 0.7,
+          "copertura_ftth_20m_pct": 0.1,
+          "raw": {
+            "famiglie_residenti": "5068",
+            "famiglie_ftth": "35",
+            "famiglie_ftth_20m": "4",
+            "copertura_ftth_desi_pct": "0,7%",
+            "copertura_ftth_20m_pct": "0,1%"
+          }
+        }
+      },
+      {
+        "code": "046013",
+        "town": "Forte dei Marmi",
+        "valid": false,
+        "reason": "famiglie FTTH mancanti",
+        "official": {
+          "comune": "Forte dei Marmi",
+          "famiglie_residenti": 2707,
+          "famiglie_ftth": null,
+          "famiglie_ftth_20m": null,
+          "copertura_ftth_desi_pct": 0.0,
+          "copertura_ftth_20m_pct": 0.0,
+          "raw": {
+            "famiglie_residenti": "2707",
+            "famiglie_ftth": "",
+            "famiglie_ftth_20m": "",
+            "copertura_ftth_desi_pct": "0,0%",
+            "copertura_ftth_20m_pct": "0,0%"
+          }
+        }
+      },
+      {
+        "code": "046030",
+        "town": "Stazzema",
+        "valid": true,
+        "reason": "2.42 residenti per famiglia impliciti",
+        "official": {
+          "comune": "Stazzema",
+          "famiglie_residenti": 1148,
+          "famiglie_ftth": 1009,
+          "famiglie_ftth_20m": 889,
+          "copertura_ftth_desi_pct": 87.9,
+          "copertura_ftth_20m_pct": 77.4,
+          "raw": {
+            "famiglie_residenti": "1148",
+            "famiglie_ftth": "1009",
+            "famiglie_ftth_20m": "889",
+            "copertura_ftth_desi_pct": "87,9%",
+            "copertura_ftth_20m_pct": "77,4%"
+          }
+        }
+      }
+    ],
+    "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal CSV comunale AGCOM; il controllo demografico segnala valori palesemente incompatibili con la popolazione residente."
+  },
+  "agcomPrimarySource": {
+    "aiReadyPage": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+    "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
+    "period": "31/12/2025",
+    "role": "Fonte primaria utilizzata per percentuali e conteggi FTTH"
+  }
+}
