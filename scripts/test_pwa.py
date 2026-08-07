@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260807-pwa6"
+PWA_VERSION = "20260807-pwa7"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -78,7 +78,7 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260807-6" in service_worker, "Versione cache PWA non aggiornata")
+    require("ov-pwa-20260807-7" in service_worker, "Versione cache PWA non aggiornata")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first assente")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset assente")
@@ -89,8 +89,11 @@ def static_checks() -> None:
     require("beforeinstallprompt" in pwa_js, "Evento installazione mancante")
     require("isAndroid" in pwa_js and "isChromeAndroid" in pwa_js, "Rilevamento Android incompleto")
     require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung mancanti")
-    require("Aggiungere alla schermata Home?" in pwa_js, "Distinzione shortcut Android mancante")
-    require("il sito non può forzare un WebAPK" in pwa_js, "Limite WebAPK non dichiarato")
+    require("Crea scorciatoia" in pwa_js, "Distinzione installazione/scorciatoia Chrome mancante")
+    require("Installazione di Osservatorio in corso" in pwa_js,
+            "Manca la spiegazione del pannello Home durante l'installazione Chrome")
+    require("Tocca <b>Annulla</b>" in pwa_js,
+            "Manca l'istruzione per evitare l'icona Home senza interrompere l'installazione")
     require("subtree: true" not in pwa_js,
             "Il lifecycle PWA osserva ancora ricorsivamente il DOM")
     require("startLifecycleObservers" in pwa_js,
@@ -209,8 +212,6 @@ def browser_checks() -> None:
         chrome_internal.locator(".pwa-dialog-close").tap()
         chrome_internal.close()
 
-        # Nuovo tab nello stesso contesto: il Service Worker resta attivo, ma il
-        # test home non eredita il DOM volutamente clonato nel test precedente.
         chrome_page = chrome.new_page()
         chrome_page.goto(base, wait_until="networkidle")
         chrome_page.wait_for_selector(".pwa-install-callout")
@@ -223,8 +224,12 @@ def browser_checks() -> None:
                 "Il sito ha invocato direttamente il prompt Android")
         dialog = chrome_page.locator("#pwa-install-dialog").inner_text().lower()
         require("installa con chrome" in dialog, "Istruzioni Chrome Android assenti")
-        require("riquadro 1×1" in dialog, "Shortcut 1×1 non spiegato")
-        require("non può forzare un webapk" in dialog, "Limite WebAPK non spiegato")
+        require("installa e crea scorciatoia" in dialog and "crea scorciatoia" in dialog,
+                "Scelta Chrome Installa/Crea scorciatoia non spiegata")
+        require("installazione di osservatorio in corso" in dialog,
+                "Pannello Home durante l'installazione non spiegato")
+        require("annulla" in dialog and "l'app è già in installazione" in dialog,
+                "Non è spiegato come evitare l'icona Home senza confonderla con un fallback")
         verify_no_idle_pwa_mutation(chrome_page)
         chrome.close()
 
@@ -256,7 +261,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: pulsante header persistente, lifecycle deterministico e istruzioni Android corrette.")
+    print("PWA verificata: lifecycle stabile e istruzioni Chrome coerenti con il flusso reale su Android.")
 
 
 if __name__ == "__main__":

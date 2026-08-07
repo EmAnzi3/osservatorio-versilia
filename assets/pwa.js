@@ -65,16 +65,16 @@
       title = 'Installa con Chrome';
       body = `
         <ol class="pwa-ios-steps pwa-chrome-steps">
-          <li><strong>1</strong><span>Apri il menu <b>⋮</b> di Chrome.</span></li>
-          <li><strong>2</strong><span>Scegli <b>Installa app</b> oppure, se presente, <b>Installa e crea scorciatoia → Installa</b>.</span></li>
-          <li><strong>3</strong><span>Se Chrome mostra soltanto <b>Aggiungere alla schermata Home?</b> con il riquadro 1×1, in quel momento sta offrendo un collegamento e non un'installazione WebAPK.</span></li>
+          <li><strong>1</strong><span>Apri il menu <b>⋮</b> di Chrome e scegli <b>Installa e crea scorciatoia</b>.</span></li>
+          <li><strong>2</strong><span>Nel pannello successivo scegli la prima voce <b>Installa</b>. Non scegliere <b>Crea scorciatoia</b>: quella apre il sito dentro Chrome.</span></li>
+          <li><strong>3</strong><span>Dopo <b>Installa</b>, se appare <b>Aggiungere alla schermata Home?</b> mentre vedi <b>Installazione di Osservatorio in corso…</b>, l'app è già in installazione. Tocca <b>Annulla</b> se non vuoi anche l'icona sulla Home: l'installazione continua e l'app resta disponibile tra le applicazioni.</span></li>
         </ol>
-        <p class="pwa-dialog-note">La modalità finale di installazione è decisa da Chrome e dal dispositivo; il sito non può forzare un WebAPK.</p>`;
+        <p class="pwa-dialog-note">Su Galaxy la richiesta di aggiungere l'icona alla Home può comparire anche durante una vera installazione. È separata dalla scelta “Installa”.</p>`;
     } else if (isAndroid()) {
       title = 'Installa su Android';
       body = `
         <p>Apri il menu del browser e scegli <b>Installa app</b>, se disponibile.</p>
-        <p class="pwa-dialog-note">Se il browser propone soltanto “Aggiungi alla schermata Home”, creerà un collegamento: la modalità di installazione dipende dal browser Android.</p>`;
+        <p class="pwa-dialog-note">Se il browser propone una scelta tra installazione e scorciatoia, usa l'installazione. L'eventuale richiesta successiva di aggiungere l'icona alla Home può essere opzionale.</p>`;
     }
 
     return `
@@ -130,9 +130,6 @@
       return;
     }
 
-    // Su Android la pagina non può sapere se il prompt diventerà un WebAPK o
-    // un semplice collegamento 1×1. Per evitare promesse false lasciamo la
-    // scelta all'interfaccia nativa del browser e mostriamo istruzioni precise.
     if (isAndroid() || isIos()) {
       openInstructions();
       return;
@@ -191,7 +188,7 @@
       <div class="pwa-callout-copy">
         <span class="pwa-callout-kicker">Disponibile anche come app</span>
         <strong>Porta l'Osservatorio sul telefono.</strong>
-        <p>Puoi installare il sito come web app quando il browser lo supporta. Su Android usa il comando <b>Installa app</b>: “Aggiungi alla schermata Home” può creare soltanto un collegamento.</p>
+        <p>Puoi installare il sito come web app quando il browser lo supporta. Su Android scegli <b>Installa</b>, non <b>Crea scorciatoia</b>. L'eventuale richiesta successiva di mettere l'icona sulla Home può essere annullata.</p>
       </div>
       <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>${installLabel()}</span></button>`;
     bindInstallButton(section.querySelector('button'));
@@ -273,9 +270,6 @@
     });
   }
 
-  // L'app sostituisce i figli diretti di questi due mount point dopo il fetch
-  // iniziale. Osserviamo solo quel livello: il pulsante e il callout vengono
-  // inseriti più in profondità e quindi non possono riattivare gli observer.
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startLifecycleObservers, { once: true });
   } else {
