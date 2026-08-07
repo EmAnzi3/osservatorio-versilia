@@ -56,6 +56,7 @@ jobs:
       - name: Run ASIA, ATECO and AGCOM tests
         run: |
           python scripts/test_agid_indicators.py
+          python scripts/test_agid_refresh_idempotent.py
           python scripts/test_ateco_agcom_audit.py
           python scripts/test_agcom_primary_percentages.py
           python -m py_compile \
