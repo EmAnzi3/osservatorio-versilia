@@ -91,12 +91,14 @@ def static_checks() -> None:
     require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung mancanti")
     require("Aggiungere alla schermata Home?" in pwa_js, "Distinzione shortcut Android mancante")
     require("il sito non può forzare un WebAPK" in pwa_js, "Limite WebAPK non dichiarato")
-    require("new MutationObserver(scheduleMount)" not in pwa_js,
-            "Il bootstrap PWA osserva ancora ricorsivamente l'intero DOM")
-    require("keepHeaderInstallButtonAlive" in pwa_js,
-            "Manca la protezione contro il remount dell'header")
-    require("observer.observe(mount, { childList: true })" in pwa_js,
-            "La protezione header non è limitata al contenitore diretto")
+    require("subtree: true" not in pwa_js,
+            "Il lifecycle PWA osserva ancora ricorsivamente il DOM")
+    require("startLifecycleObservers" in pwa_js,
+            "Lifecycle PWA sui mount point mancante")
+    require("headerObserver.observe(headerMount, { childList: true })" in pwa_js,
+            "Observer header non limitato ai figli diretti")
+    require("appObserver.observe(appMount, { childList: true })" in pwa_js,
+            "Observer app non limitato ai figli diretti")
 
     for page in (
         DIST / "index.html",
@@ -254,7 +256,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: pulsante header persistente, nessun loop DOM e istruzioni Android corrette.")
+    print("PWA verificata: pulsante header persistente, lifecycle deterministico e istruzioni Android corrette.")
 
 
 if __name__ == "__main__":
