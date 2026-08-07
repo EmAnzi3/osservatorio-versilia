@@ -20,6 +20,8 @@
     /iphone|ipad|ipod/i.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
+  const isSamsungInternet = () => /SamsungBrowser/i.test(navigator.userAgent);
+
   function hideInstallUi() {
     document.querySelectorAll('[data-pwa-install-ui]').forEach(node => node.remove());
     document.querySelector('#pwa-install-dialog')?.close?.();
@@ -27,22 +29,38 @@
 
   function dialogMarkup() {
     const ios = isIos();
+    const samsung = isSamsungInternet();
+    let title = 'Installa Osservatorio Versilia';
+    let body = `
+      <p>Se il browser non mostra il pulsante automatico, apri il suo menu e scegli <b>Installa app</b> oppure <b>Aggiungi alla schermata Home</b>.</p>
+      <p class="pwa-dialog-note">L'app usa lo stesso sito: dati e aggiornamenti restano sempre allineati.</p>`;
+
+    if (ios) {
+      title = 'Installa su iPhone o iPad';
+      body = `
+        <ol class="pwa-ios-steps">
+          <li><strong>1</strong><span>Tocca <b>Condividi</b> nella barra di Safari.</span></li>
+          <li><strong>2</strong><span>Scegli <b>Aggiungi alla schermata Home</b>.</span></li>
+          <li><strong>3</strong><span>Tocca <b>Aggiungi</b>: l'icona OV comparirà tra le app.</span></li>
+        </ol>
+        <p class="pwa-dialog-note">Su iPhone e iPad l'installazione passa dal menu Condividi di Safari.</p>`;
+    } else if (samsung) {
+      title = 'Installa con Samsung Internet';
+      body = `
+        <ol class="pwa-ios-steps pwa-samsung-steps">
+          <li><strong>1</strong><span>Tocca il pulsante <b>+</b> nella barra del browser, accanto all'indirizzo.</span></li>
+          <li><strong>2</strong><span>Conferma <b>Installa nella schermata App</b>.</span></li>
+          <li><strong>3</strong><span>Apri poi <b>Osservatorio Versilia</b> dalla sua icona, come una normale app.</span></li>
+        </ol>
+        <p class="pwa-dialog-note">Il + nella barra di Samsung Internet indica che questa PWA è installabile.</p>`;
+    }
+
     return `
       <dialog class="pwa-install-dialog" id="pwa-install-dialog" aria-labelledby="pwa-dialog-title">
         <button class="pwa-dialog-close" type="button" aria-label="Chiudi">×</button>
         <span class="pwa-dialog-kicker">Osservatorio Versilia · app</span>
-        <h2 id="pwa-dialog-title">${ios ? 'Installa su iPhone o iPad' : 'Installa Osservatorio Versilia'}</h2>
-        ${ios ? `
-          <ol class="pwa-ios-steps">
-            <li><strong>1</strong><span>Tocca <b>Condividi</b> nella barra di Safari.</span></li>
-            <li><strong>2</strong><span>Scegli <b>Aggiungi alla schermata Home</b>.</span></li>
-            <li><strong>3</strong><span>Tocca <b>Aggiungi</b>: l'icona OV comparirà tra le app.</span></li>
-          </ol>
-          <p class="pwa-dialog-note">Su iPhone e iPad l'installazione passa dal menu Condividi di Safari.</p>
-        ` : `
-          <p>Se il browser non mostra il pulsante automatico, apri il suo menu e scegli <b>Installa app</b> oppure <b>Aggiungi alla schermata Home</b>.</p>
-          <p class="pwa-dialog-note">L'app usa lo stesso sito: dati e aggiornamenti restano sempre allineati.</p>
-        `}
+        <h2 id="pwa-dialog-title">${title}</h2>
+        ${body}
       </dialog>`;
   }
 
@@ -70,6 +88,13 @@
       return;
     }
 
+    // Samsung Internet espone l'installazione tramite il proprio badge "+"
+    // nella barra del browser, non tramite un prompt controllabile dalla pagina.
+    if (isSamsungInternet()) {
+      openInstructions();
+      return;
+    }
+
     if (!deferredPrompt) {
       openInstructions();
       return;
@@ -80,6 +105,10 @@
     deferredPrompt = null;
     document.documentElement.classList.remove('pwa-install-ready');
     if (choice?.outcome === 'accepted') hideInstallUi();
+  }
+
+  function installLabel() {
+    return isSamsungInternet() ? 'Come installare' : 'Installa app';
   }
 
   function bindInstallButton(button) {
@@ -93,14 +122,15 @@
     const actions = document.querySelector('.site-header-actions');
     if (!actions) return;
 
+    const label = installLabel();
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'pwa-install-button';
     button.dataset.pwaInstallUi = '1';
     button.dataset.pwaHeaderInstall = '1';
-    button.title = 'Installa Osservatorio Versilia';
-    button.setAttribute('aria-label', 'Installa Osservatorio Versilia come app');
-    button.innerHTML = `${INSTALL_ICON}<span>Installa app</span>`;
+    button.title = `${label} · Osservatorio Versilia`;
+    button.setAttribute('aria-label', `${label} Osservatorio Versilia come app`);
+    button.innerHTML = `${INSTALL_ICON}<span>${label}</span>`;
     bindInstallButton(button);
 
     const search = actions.querySelector('.global-search-trigger');
@@ -112,6 +142,7 @@
     const hero = document.querySelector('.home-hero');
     if (!hero) return;
 
+    const label = installLabel();
     const section = document.createElement('section');
     section.className = 'pwa-install-callout page-width';
     section.dataset.pwaInstallUi = '1';
@@ -125,7 +156,7 @@
         <strong>Porta l'Osservatorio sul telefono.</strong>
         <p>Installalo dalla schermata Home: si apre come un'app e le pagine già visitate restano disponibili anche senza rete.</p>
       </div>
-      <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>Installa app</span></button>`;
+      <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>${label}</span></button>`;
     bindInstallButton(section.querySelector('button'));
     hero.insertAdjacentElement('afterend', section);
   }
