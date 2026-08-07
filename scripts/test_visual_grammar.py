@@ -83,11 +83,13 @@ def browser_checks() -> None:
 
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
-        assert page.locator(".versilia-position .overline").inner_text().strip() == "Rispetto alla Versilia"
-        assert "su 7" not in page.locator(".versilia-position").inner_text()
-        assert "punti" in page.locator(".versilia-position").inner_text(), "Scostamento percentuale non espresso in punti"
+        overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
+        assert overline_text == "rispetto alla versilia", f"Etichetta inattesa: {overline_text!r}"
+        position_text = page.locator(".versilia-position").inner_text().lower()
+        assert "su 7" not in position_text
+        assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
         card_notes = page.locator(".indicator-card-grid button small").all_text_contents()
-        assert card_notes and all("° valore" not in text for text in card_notes)
+        assert card_notes and all("° valore" not in text.lower() for text in card_notes)
 
         browser.close()
 
