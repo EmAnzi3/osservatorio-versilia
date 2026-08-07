@@ -91,7 +91,9 @@ def static_checks() -> None:
     require("Aggiungi alla schermata Home" in pwa_js, "Istruzioni iOS mancanti")
     require("SamsungBrowser" in pwa_js, "Rilevamento Samsung Internet mancante")
     require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung Internet mancanti")
-    require("pulsante <b>+</b>" in pwa_js, "Indicazione del badge + Samsung mancante")
+    require("badge PWA <b>+</b>" in pwa_js, "Indicazione del badge + Samsung mancante")
+    require("Aggiungi pagina a" in pwa_js and "Schermata Home" in pwa_js,
+            "Percorso menu Samsung Internet mancante")
     require("serviceWorker.register" in pwa_js, "Registrazione service worker mancante")
 
     pages = (
@@ -160,8 +162,10 @@ def browser_checks() -> None:
         samsung_page.wait_for_selector("#pwa-install-dialog[open]")
         dialog = samsung_page.locator("#pwa-install-dialog").inner_text().lower()
         require("installa con samsung internet" in dialog, "Titolo istruzioni Samsung inatteso")
-        require("pulsante +" in dialog, "Istruzione sul badge + Samsung mancante")
+        require("badge pwa +" in dialog, "Istruzione sul badge + Samsung mancante")
         require("installa nella schermata app" in dialog, "Conferma installazione Samsung mancante")
+        require("aggiungi pagina a" in dialog and "schermata home" in dialog,
+                "Fallback menu Samsung Internet mancante")
         samsung.close()
 
         browser.close()
