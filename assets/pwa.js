@@ -22,6 +22,11 @@
 
   const isSamsungInternet = () => /SamsungBrowser/i.test(navigator.userAgent);
 
+  const isChromeAndroid = () => {
+    const ua = navigator.userAgent || '';
+    return /Android/i.test(ua) && /Chrome\//i.test(ua) && !/(SamsungBrowser|EdgA|OPR|Opera)/i.test(ua);
+  };
+
   function hideInstallUi() {
     document.querySelectorAll('[data-pwa-install-ui]').forEach(node => node.remove());
     document.querySelector('#pwa-install-dialog')?.close?.();
@@ -30,6 +35,7 @@
   function dialogMarkup() {
     const ios = isIos();
     const samsung = isSamsungInternet();
+    const chromeAndroid = isChromeAndroid();
     let title = 'Installa Osservatorio Versilia';
     let body = `
       <p>Apri il menu del browser e scegli <b>Installa app</b>, quando disponibile.</p>
@@ -53,6 +59,16 @@
           <li><strong>3</strong><span>Troverai <b>Osservatorio Versilia</b> nell'elenco delle app, come una normale applicazione.</span></li>
         </ol>
         <p class="pwa-dialog-note"><b>Non usare “Aggiungi pagina a → Schermata Home”</b> se vuoi l'app nell'elenco delle applicazioni: quel comando crea solo un collegamento sulla Home.</p>`;
+    } else if (chromeAndroid) {
+      title = 'Installa con Chrome';
+      body = `
+        <p>Chrome rende disponibile il proprio pannello di installazione solo dopo un minimo di utilizzo del sito.</p>
+        <ol class="pwa-ios-steps pwa-chrome-steps">
+          <li><strong>1</strong><span>Interagisci almeno una volta con la pagina.</span></li>
+          <li><strong>2</strong><span>Resta sul sito per circa <b>30 secondi</b>. Quando Chrome è pronto, il pulsante qui sul sito passa a <b>Installa app</b>.</span></li>
+          <li><strong>3</strong><span>In alternativa usa <b>⋮ → Installa e crea scorciatoia → Installa</b>.</span></li>
+        </ol>
+        <p class="pwa-dialog-note">Per avere Osservatorio Versilia nell'elenco delle applicazioni scegli <b>Installa</b>, non la semplice creazione di una scorciatoia.</p>`;
     }
 
     return `
@@ -82,19 +98,35 @@
     else dialog.setAttribute('open', '');
   }
 
+  function installLabel() {
+    if (isChromeAndroid() && !deferredPrompt) return 'Come installare';
+    return 'Installa app';
+  }
+
+  function syncInstallControls() {
+    const label = installLabel();
+    const ready = Boolean(deferredPrompt);
+    document.querySelectorAll('[data-pwa-install-action]').forEach(button => {
+      const span = button.querySelector('span');
+      if (span) span.textContent = label;
+      button.dataset.pwaState = ready ? 'ready' : 'waiting';
+      button.title = `${label} · Osservatorio Versilia`;
+      button.setAttribute('aria-label', `${label} Osservatorio Versilia come app`);
+    });
+  }
+
   async function requestInstall() {
     if (isStandalone()) {
       hideInstallUi();
       return;
     }
 
-    // Il prompt nativo è sempre la scelta preferita, anche su Samsung Internet.
-    // Quando è disponibile installa la PWA come vera app invece di creare un semplice shortcut.
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice.catch(() => null);
       deferredPrompt = null;
       document.documentElement.classList.remove('pwa-install-ready');
+      syncInstallControls();
       if (choice?.outcome === 'accepted') hideInstallUi();
       return;
     }
@@ -105,6 +137,7 @@
   function bindInstallButton(button) {
     if (button.dataset.pwaBound === '1') return;
     button.dataset.pwaBound = '1';
+    button.dataset.pwaInstallAction = '1';
     button.addEventListener('click', requestInstall);
   }
 
@@ -118,9 +151,7 @@
     button.className = 'pwa-install-button';
     button.dataset.pwaInstallUi = '1';
     button.dataset.pwaHeaderInstall = '1';
-    button.title = 'Installa app · Osservatorio Versilia';
-    button.setAttribute('aria-label', 'Installa Osservatorio Versilia come app');
-    button.innerHTML = `${INSTALL_ICON}<span>Installa app</span>`;
+    button.innerHTML = `${INSTALL_ICON}<span>${installLabel()}</span>`;
     bindInstallButton(button);
 
     const search = actions.querySelector('.global-search-trigger');
@@ -145,7 +176,7 @@
         <strong>Porta l'Osservatorio sul telefono.</strong>
         <p>Installalo come app: si apre a schermo intero, resta aggiornato con il sito e le pagine già visitate possono restare disponibili anche senza rete.</p>
       </div>
-      <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>Installa app</span></button>`;
+      <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>${installLabel()}</span></button>`;
     bindInstallButton(section.querySelector('button'));
     hero.insertAdjacentElement('afterend', section);
   }
@@ -157,6 +188,7 @@
     }
     mountHeaderButton();
     mountHomeCallout();
+    syncInstallControls();
   }
 
   function scheduleMount() {
@@ -172,7 +204,9 @@
     event.preventDefault();
     deferredPrompt = event;
     document.documentElement.classList.add('pwa-install-ready');
+    document.querySelector('#pwa-install-dialog')?.close?.();
     scheduleMount();
+    syncInstallControls();
   });
 
   window.addEventListener('appinstalled', () => {
