@@ -270,4 +270,46 @@
     startBootstrapObserver();
   }
   window.addEventListener('load', scheduleMount, { once: true });
+
+  // L'header dell'app può essere ricostruito anche dopo il bootstrap. Conserviamo
+  // il nodo già configurato (e quindi il suo listener) e lo reinseriamo soltanto
+  // quando il contenitore dell'header viene davvero sostituito. L'observer è
+  // limitato ai figli diretti di #site-header-mount, quindi non reagisce alle
+  // modifiche del pulsante stesso e non crea loop di mutazioni.
+  function keepHeaderInstallButtonAlive() {
+    const mount = document.getElementById('site-header-mount');
+    if (!mount || isStandalone()) return;
+    let retainedButton = null;
+
+    const reconcile = () => {
+      if (isStandalone()) return;
+      const actions = mount.querySelector('.site-header-actions');
+      if (!actions) return;
+      const current = actions.querySelector('[data-pwa-header-install]');
+      if (current) {
+        retainedButton = current;
+        return;
+      }
+      if (!retainedButton) {
+        // Il bootstrap PWA monta il pulsante al frame successivo.
+        requestAnimationFrame(() => {
+          const mounted = mount.querySelector('[data-pwa-header-install]');
+          if (mounted) retainedButton = mounted;
+        });
+        return;
+      }
+      const search = actions.querySelector('.global-search-trigger');
+      actions.insertBefore(retainedButton, search || null);
+    };
+
+    const observer = new MutationObserver(() => requestAnimationFrame(reconcile));
+    observer.observe(mount, { childList: true });
+    requestAnimationFrame(reconcile);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', keepHeaderInstallButtonAlive, { once: true });
+  } else {
+    keepHeaderInstallButtonAlive();
+  }
 })();
