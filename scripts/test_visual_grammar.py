@@ -78,11 +78,13 @@ def browser_checks() -> None:
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .comparison-bars").get_attribute("data-viz") == "percent-dotplot"
         assert "scala 0–100%" in page.locator("#compare-bars .comparison-axis").inner_text()
+        assert "%" in page.locator("#compare-bars .comparison-axis").inner_text()
 
-        page.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         assert page.locator(".versilia-position .overline").inner_text().strip() == "Rispetto alla Versilia"
         assert "su 7" not in page.locator(".versilia-position").inner_text()
+        assert "punti" in page.locator(".versilia-position").inner_text(), "Scostamento percentuale non espresso in punti"
         card_notes = page.locator(".indicator-card-grid button small").all_text_contents()
         assert card_notes and all("° valore" not in text for text in card_notes)
 
