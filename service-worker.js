@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260807-4';
+const VERSION = 'ov-pwa-20260807-5';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
@@ -93,6 +93,13 @@ self.addEventListener('fetch', event => {
   }
 
   if (url.pathname.endsWith('/data/site-data.json')) {
+    event.respondWith(networkFirst(request).catch(() => caches.match(request, { ignoreSearch: true })));
+    return;
+  }
+
+  // Il codice applicativo deve aggiornarsi insieme all'HTML. Evitiamo di
+  // servire al primo caricamento JS/CSS obsoleti da una cache precedente.
+  if (/\.(?:js|css)$/.test(url.pathname) || url.pathname.endsWith('/site.webmanifest')) {
     event.respondWith(networkFirst(request).catch(() => caches.match(request, { ignoreSearch: true })));
     return;
   }
