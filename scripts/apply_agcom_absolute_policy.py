@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
 from pathlib import Path
@@ -13,6 +14,17 @@ if str(SCRIPT_DIR) not in sys.path:
 
 import update_agid_indicators as base  # noqa: E402
 import restore_partial_agcom_metrics as restore  # noqa: E402
+
+OUTPUT_KEYS = [
+    "localEmployees",
+    "employeesPerLocalUnit",
+    "localUnitsChange",
+    "localEmployeesChange",
+    "ftthCoverageDesi",
+    "ftthReachedHouseholds",
+    "ftthUnreachedHouseholds",
+    "ftthCoverage20m",
+]
 
 
 def apply_policy(data, snapshot):
@@ -61,10 +73,65 @@ def apply_policy(data, snapshot):
     return data, snapshot, status, sorted(invalid)
 
 
+def display_value(row):
+    if row.get("value") is None:
+        return "n.d."
+    return row.get("formatted") or str(row.get("value"))
+
+
+def write_outputs(data, snapshot, report_md: Path, report_csv: Path):
+    keys = [key for key in OUTPUT_KEYS if key in data.get("metrics", {})]
+    lines = ["# Output nuovi indicatori", "", f"**Indicatori presenti:** {len(keys)}/8", ""]
+    omitted = [key for key in OUTPUT_KEYS if key not in data.get("metrics", {})]
+    if omitted:
+        lines.extend([
+            "> I conteggi assoluti FTTH non sono inclusi perché non raggiungono la copertura minima 6/7 prevista dalla policy. Nessun valore è stato stimato.",
+            "",
+        ])
+    for key in keys:
+        metric = data["metrics"][key]
+        meta = metric["meta"]
+        aggregate = metric.get("aggregate") or {}
+        lines.extend([
+            f"## {meta['label']}",
+            "",
+            f"- **Anno:** {meta['year']}",
+            f"- **Copertura:** {metric.get('method', {}).get('coverage', 'n.d.')}",
+            f"- **Aggregato:** {aggregate.get('label', 'n.d.')} — {aggregate.get('value', 'n.d.')}",
+            "",
+            "| Comune | Valore |",
+            "|---|---:|",
+        ])
+        for row in metric.get("rows", []):
+            lines.append(f"| {row['town']} | {display_value(row)} |")
+        lines.append("")
+    coverage_note = snapshot.get("coveragePolicy", {}).get("note")
+    if coverage_note:
+        lines.extend(["## Policy di copertura", "", coverage_note, ""])
+    report_md.parent.mkdir(parents=True, exist_ok=True)
+    report_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    report_csv.parent.mkdir(parents=True, exist_ok=True)
+    with report_csv.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle, delimiter=";")
+        writer.writerow(["indicatore", "comune", "codice_istat", "valore", "visualizzazione", "anno", "copertura"])
+        for key in keys:
+            metric = data["metrics"][key]
+            for row in metric.get("rows", []):
+                writer.writerow([
+                    metric["meta"]["label"], row["town"], row["code"],
+                    "" if row.get("value") is None else row.get("value"),
+                    display_value(row), metric["meta"]["year"],
+                    metric.get("method", {}).get("coverage", "n.d."),
+                ])
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--site-data", type=Path, default=base.SITE_DATA)
     parser.add_argument("--snapshot", type=Path, default=base.SNAPSHOT)
+    parser.add_argument("--report-md", type=Path, default=base.ROOT / "reports" / "previews" / "imprese-banda-larga" / "indicatori.md")
+    parser.add_argument("--report-csv", type=Path, default=base.ROOT / "reports" / "previews" / "imprese-banda-larga" / "indicatori.csv")
     args = parser.parse_args(argv)
     data = base._json_load(args.site_data)
     snapshot = base._json_load(args.snapshot)
@@ -73,10 +140,12 @@ def main(argv=None):
     base._json_write(args.site_data, data)
     base._json_write(args.snapshot, snapshot)
     after = len(data.get("metrics", {}))
+    write_outputs(data, snapshot, args.report_md, args.report_csv)
     if args.site_data.resolve() == base.SITE_DATA.resolve() and after != before:
         base.update_count_files(after, before)
     print(json.dumps({"status": status, "invalidCodes": invalid, "metricCount": after,
-                      "coveragePolicy": snapshot.get("coveragePolicy")}, ensure_ascii=False))
+                      "coveragePolicy": snapshot.get("coveragePolicy"),
+                      "reportMd": str(args.report_md), "reportCsv": str(args.report_csv)}, ensure_ascii=False))
     return 0
 
 
