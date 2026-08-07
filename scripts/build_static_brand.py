@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260807-ov"
 PWA_ASSET_VERSION = "20260807-pwa7"
+PWA_JS_REVISION = "callout-off"
 OLD_MARK = '<span class="site-brand-mark">O</span>'
 PWA_FILES = ("service-worker.js", "offline.html", "site.webmanifest")
 PWA_ICONS = (
@@ -115,7 +116,7 @@ def inject_pwa(document: str, relative_root: str) -> str:
     if "assets/pwa.js" not in document:
         document = document.replace(
             "</body>",
-            f'  <script src="{relative_root}assets/pwa.js?v={PWA_ASSET_VERSION}" defer></script>\n</body>',
+            f'  <script src="{relative_root}assets/pwa.js?v={PWA_ASSET_VERSION}&rev={PWA_JS_REVISION}" defer></script>\n</body>',
         )
     return document
 
