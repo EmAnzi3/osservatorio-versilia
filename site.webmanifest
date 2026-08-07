@@ -6,10 +6,10 @@
   "scope": "./",
   "display": "standalone",
   "background_color": "#F4EEE2",
-  "theme_color": "#145B78",
+  "theme_color": "#0F3654",
   "icons": [
     {
-      "src": "favicon.svg",
+      "src": "favicon.svg?v=20260807-ov",
       "sizes": "any",
       "type": "image/svg+xml"
     }
