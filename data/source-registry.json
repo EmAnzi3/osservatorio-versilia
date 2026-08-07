@@ -1,14 +1,35 @@
 {
   "schemaVersion": 1,
-  "expectedMetricCount": 98,
+  "expectedMetricCount": 106,
   "expectedTowns": [
-    { "name": "Camaiore", "code": "046005" },
-    { "name": "Forte dei Marmi", "code": "046013" },
-    { "name": "Massarosa", "code": "046018" },
-    { "name": "Pietrasanta", "code": "046024" },
-    { "name": "Seravezza", "code": "046028" },
-    { "name": "Stazzema", "code": "046030" },
-    { "name": "Viareggio", "code": "046033" }
+    {
+      "name": "Camaiore",
+      "code": "046005"
+    },
+    {
+      "name": "Forte dei Marmi",
+      "code": "046013"
+    },
+    {
+      "name": "Massarosa",
+      "code": "046018"
+    },
+    {
+      "name": "Pietrasanta",
+      "code": "046024"
+    },
+    {
+      "name": "Seravezza",
+      "code": "046028"
+    },
+    {
+      "name": "Stazzema",
+      "code": "046030"
+    },
+    {
+      "name": "Viareggio",
+      "code": "046033"
+    }
   ],
   "defaults": {
     "frequency": "annual_or_irregular",

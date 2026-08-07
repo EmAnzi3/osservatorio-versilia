@@ -6,7 +6,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 10 aree tematiche;
-- 98 indicatori;
+- 106 indicatori;
 - confronti territoriali e benchmark disponibili;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;
@@ -63,7 +63,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida i 98 indicatori e la copertura completa dei sette Comuni;
+- valida i 106 indicatori e la copertura completa dei sette Comuni;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;
