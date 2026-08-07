@@ -11,6 +11,7 @@
 
   let deferredPrompt = null;
   let mountScheduled = false;
+  let bootstrapObserver = null;
 
   const isStandalone = () =>
     window.matchMedia?.('(display-mode: standalone)').matches ||
@@ -196,14 +197,28 @@
     hero.insertAdjacentElement('afterend', section);
   }
 
+  function bootstrapReady() {
+    const headerReady = Boolean(document.querySelector('[data-pwa-header-install]'));
+    const homeNeedsCallout = document.body?.dataset.page === 'home';
+    const homeReady = !homeNeedsCallout || Boolean(document.querySelector('.pwa-install-callout'));
+    return headerReady && homeReady;
+  }
+
+  function stopBootstrapObserver() {
+    bootstrapObserver?.disconnect();
+    bootstrapObserver = null;
+  }
+
   function mountUi() {
     if (isStandalone()) {
+      stopBootstrapObserver();
       hideInstallUi();
       return;
     }
     mountHeaderButton();
     mountHomeCallout();
     syncInstallControls();
+    if (bootstrapReady()) stopBootstrapObserver();
   }
 
   function scheduleMount() {
@@ -213,6 +228,14 @@
       mountScheduled = false;
       mountUi();
     });
+  }
+
+  function startBootstrapObserver() {
+    if (bootstrapObserver || isStandalone()) return;
+    const root = document.body || document.documentElement;
+    bootstrapObserver = new MutationObserver(() => scheduleMount());
+    bootstrapObserver.observe(root, { childList: true, subtree: true });
+    scheduleMount();
   }
 
   window.addEventListener('beforeinstallprompt', event => {
@@ -225,6 +248,7 @@
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     document.documentElement.classList.remove('pwa-install-ready');
+    stopBootstrapObserver();
     hideInstallUi();
   });
 
@@ -238,9 +262,12 @@
     });
   }
 
-  // Gli script dell'app vengono eseguiti prima di questo bootstrap. Non serve
-  // osservare continuamente l'intero DOM: era una fonte di mutazioni ricorsive.
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleMount, { once: true });
-  else scheduleMount();
+  // L'app costruisce header e contenuto dopo un fetch iniziale. L'observer serve
+  // soltanto durante quel bootstrap e viene disconnesso appena i CTA esistono.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startBootstrapObserver, { once: true });
+  } else {
+    startBootstrapObserver();
+  }
   window.addEventListener('load', scheduleMount, { once: true });
 })();
