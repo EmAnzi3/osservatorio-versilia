@@ -197,15 +197,19 @@ def browser_checks() -> None:
         chrome = browser.new_context(
             viewport={"width": 390, "height": 844}, user_agent=chrome_ua, is_mobile=True, has_touch=True
         )
-        chrome_page = chrome.new_page()
-        chrome_page.goto(base + "comuni/massarosa/", wait_until="networkidle")
-        verify_header_button_survives_remount(chrome_page)
-        header_action = chrome_page.locator(".site-header .pwa-install-button")
+        chrome_internal = chrome.new_page()
+        chrome_internal.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        verify_header_button_survives_remount(chrome_internal)
+        header_action = chrome_internal.locator(".site-header .pwa-install-button")
         require(header_action.is_visible(), "Pulsante installazione non visibile nell'header mobile")
         header_action.tap()
-        chrome_page.wait_for_selector("#pwa-install-dialog[open]")
-        chrome_page.locator(".pwa-dialog-close").tap()
+        chrome_internal.wait_for_selector("#pwa-install-dialog[open]")
+        chrome_internal.locator(".pwa-dialog-close").tap()
+        chrome_internal.close()
 
+        # Nuovo tab nello stesso contesto: il Service Worker resta attivo, ma il
+        # test home non eredita il DOM volutamente clonato nel test precedente.
+        chrome_page = chrome.new_page()
         chrome_page.goto(base, wait_until="networkidle")
         chrome_page.wait_for_selector(".pwa-install-callout")
         chrome_action = chrome_page.locator(".pwa-callout-action")
