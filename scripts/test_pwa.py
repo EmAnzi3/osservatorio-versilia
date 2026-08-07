@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260807-pwa1"
+PWA_VERSION = "20260807-pwa2"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -80,6 +80,7 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable nel manifest mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
+    require("ov-pwa-20260807-2" in service_worker, "Versione cache PWA non aggiornata")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first non configurata")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset non configurata")
@@ -88,7 +89,9 @@ def static_checks() -> None:
     pwa_js = (DIST / "assets" / "pwa.js").read_text(encoding="utf-8")
     require("beforeinstallprompt" in pwa_js, "Prompt installazione Android/desktop mancante")
     require("Aggiungi alla schermata Home" in pwa_js, "Istruzioni iOS mancanti")
-    require("Installa app" in pwa_js, "Istruzioni fallback browser mancanti")
+    require("SamsungBrowser" in pwa_js, "Rilevamento Samsung Internet mancante")
+    require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung Internet mancanti")
+    require("pulsante <b>+</b>" in pwa_js, "Indicazione del badge + Samsung mancante")
     require("serviceWorker.register" in pwa_js, "Registrazione service worker mancante")
 
     pages = (
@@ -141,15 +144,33 @@ def browser_checks() -> None:
         page.goto(base + "comuni/massarosa/", wait_until="networkidle")
         page.wait_for_selector(".site-header .pwa-install-button")
         require(page.locator(".pwa-install-callout").count() == 0, "Callout home presente in una pagina interna")
-
         context.close()
+
+        samsung_ua = (
+            "Mozilla/5.0 (Linux; Android 16; SM-S942B) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) SamsungBrowser/28.0 Chrome/130.0.0.0 Mobile Safari/537.36"
+        )
+        samsung = browser.new_context(viewport={"width": 390, "height": 844}, user_agent=samsung_ua)
+        samsung_page = samsung.new_page()
+        samsung_page.goto(base, wait_until="networkidle")
+        samsung_page.wait_for_selector(".pwa-install-callout")
+        samsung_action = samsung_page.locator(".pwa-callout-action")
+        require("come installare" in samsung_action.inner_text().lower(), "CTA Samsung ancora fuorviante")
+        samsung_action.click()
+        samsung_page.wait_for_selector("#pwa-install-dialog[open]")
+        dialog = samsung_page.locator("#pwa-install-dialog").inner_text().lower()
+        require("installa con samsung internet" in dialog, "Titolo istruzioni Samsung inatteso")
+        require("pulsante +" in dialog, "Istruzione sul badge + Samsung mancante")
+        require("installa nella schermata app" in dialog, "Conferma installazione Samsung mancante")
+        samsung.close()
+
         browser.close()
 
 
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: manifest, icone, service worker, offline e installazione visibile nel sito.")
+    print("PWA verificata: installazione Chrome/iOS e istruzioni specifiche Samsung Internet coerenti.")
 
 
 if __name__ == "__main__":
