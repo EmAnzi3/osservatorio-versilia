@@ -106,6 +106,105 @@ def verify_touch_accordion(page: Page, selector: str, label: str) -> None:
             f"{label}: il contenuto resta visibile dopo la chiusura")
 
 
+def rectangles_overlap(first: dict | None, second: dict | None) -> bool:
+    if not first or not second:
+        return False
+    return not (
+        first["x"] + first["width"] <= second["x"] + 1
+        or second["x"] + second["width"] <= first["x"] + 1
+        or first["y"] + first["height"] <= second["y"] + 1
+        or second["y"] + second["height"] <= first["y"] + 1
+    )
+
+
+def require_visible_chevron(heading: Locator, label: str) -> None:
+    chevron = heading.locator(":scope > .ux-section-tools .ux-section-chevron")
+    require(chevron.count() == 1, f"{label}: freccia mancante")
+    require(chevron.is_visible(), f"{label}: freccia non visibile")
+    box = chevron.bounding_box()
+    require(bool(box and box["width"] >= 20 and box["height"] >= 20),
+            f"{label}: freccia senza area visibile: {box}")
+    style = chevron.evaluate(
+        """element => {
+          const style = getComputedStyle(element);
+          return { opacity: style.opacity, visibility: style.visibility, color: style.color };
+        }"""
+    )
+    require(style["opacity"] != "0" and style["visibility"] != "hidden",
+            f"{label}: freccia nascosta via CSS: {style}")
+
+
+def verify_mobile_heading_layout(
+    heading: Locator,
+    title_selector: str,
+    description_selector: str,
+    label: str,
+) -> None:
+    tools = heading.locator(":scope > .ux-section-tools")
+    title = heading.locator(title_selector)
+    description = heading.locator(description_selector)
+    require(tools.count() == 1, f"{label}: strumenti fisarmonica mancanti")
+    require(title.count() == 1, f"{label}: titolo sezione mancante")
+
+    tools_box = tools.bounding_box()
+    title_box = title.bounding_box()
+    require(not rectangles_overlap(title_box, tools_box),
+            f"{label}: titolo e strumenti si sovrappongono: titolo={title_box}, tools={tools_box}")
+
+    if description.count() == 1 and description.is_visible():
+        description_box = description.bounding_box()
+        require(not rectangles_overlap(description_box, tools_box),
+                f"{label}: descrizione e strumenti si sovrappongono: descrizione={description_box}, tools={tools_box}")
+        if title_box and tools_box and description_box:
+            first_row_bottom = max(
+                title_box["y"] + title_box["height"],
+                tools_box["y"] + tools_box["height"],
+            )
+            require(description_box["y"] >= first_row_bottom - 1,
+                    f"{label}: descrizione non disposta sotto la prima riga")
+
+    require_visible_chevron(heading, label)
+
+
+def verify_mobile_accordion_layout(page: Page, base: str) -> None:
+    page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
+    page.wait_for_selector(".topic-controls .metric-group-heading.ux-section-toggle")
+    headings = page.locator(".topic-controls .metric-group-heading.ux-section-toggle")
+    require(headings.count() >= 4, "Economia mobile: attese almeno quattro sottosezioni")
+
+    for index in range(min(headings.count(), 4)):
+        verify_mobile_heading_layout(
+            headings.nth(index),
+            ":scope > strong",
+            ":scope > span:not(.ux-section-tools)",
+            f"Economia mobile, sezione {index + 1}",
+        )
+
+    first_open = expanded_index(headings)
+    target_index = closed_index(headings, first_open)
+    require(target_index >= 0, "Economia mobile: nessuna sezione chiusa da aprire")
+    target = headings.nth(target_index)
+    target.tap()
+    page.wait_for_timeout(100)
+    require(target.get_attribute("aria-expanded") == "true",
+            "Economia mobile: la sezione scelta non risulta aperta")
+    require_visible_chevron(target, "Economia mobile, freccia dopo apertura")
+
+    page.goto(
+        base + "comuni/massarosa/?tema=economia&indicatore=income",
+        wait_until="networkidle",
+    )
+    page.wait_for_selector(".indicator-groups .indicator-group-heading.ux-section-toggle")
+    town_headings = page.locator(".indicator-groups .indicator-group-heading.ux-section-toggle")
+    for index in range(min(town_headings.count(), 4)):
+        verify_mobile_heading_layout(
+            town_headings.nth(index),
+            ":scope > div:first-child",
+            ":scope > p",
+            f"Scheda Massarosa mobile, sezione {index + 1}",
+        )
+
+
 def verify_desktop_theme_scroll(page: Page, base: str) -> None:
     page.goto(base, wait_until="networkidle")
     page.wait_for_selector(".theme-card")
@@ -160,6 +259,8 @@ def main() -> None:
         errors: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
 
+        verify_mobile_accordion_layout(page, base)
+
         page.goto(
             base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident",
             wait_until="networkidle",
@@ -197,7 +298,7 @@ def main() -> None:
         desktop.close()
         browser.close()
 
-    print("Interazioni verificate: fisarmoniche touch corrette e scroll automatico dei temi attivo anche su desktop.")
+    print("Interazioni verificate: layout mobile delle fisarmoniche stabile, frecce visibili e scroll temi desktop attivo.")
 
 
 if __name__ == "__main__":

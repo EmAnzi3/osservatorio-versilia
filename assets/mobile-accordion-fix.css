@@ -1,0 +1,73 @@
+/* Stabilizzazione mobile delle intestazioni a fisarmonica. */
+
+@media (max-width: 700px) {
+  .metric-group-heading.ux-section-toggle,
+  .indicator-group-heading.ux-section-toggle {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title tools"
+      "description description";
+    column-gap: 12px;
+    row-gap: 6px;
+    align-items: start;
+    box-sizing: border-box;
+    min-width: 0;
+    padding-right: 0;
+  }
+
+  .metric-group-heading.ux-section-toggle > strong {
+    grid-area: title;
+    min-width: 0;
+  }
+
+  .metric-group-heading.ux-section-toggle > span:not(.ux-section-tools) {
+    grid-area: description;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .indicator-group-heading.ux-section-toggle {
+    min-height: 0;
+    padding-top: 8px;
+  }
+
+  .indicator-group-heading.ux-section-toggle > div:first-child {
+    grid-area: title;
+    min-width: 0;
+  }
+
+  .indicator-group-heading.ux-section-toggle > p {
+    grid-area: description;
+    min-width: 0;
+    max-width: 100%;
+    margin-right: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .metric-group-heading.ux-section-toggle > .ux-section-tools,
+  .indicator-group-heading.ux-section-toggle > .ux-section-tools {
+    grid-area: tools;
+    position: static;
+    top: auto;
+    right: auto;
+    transform: none;
+    align-self: center;
+    justify-self: end;
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+
+  .ux-section-chevron,
+  .metric-group.is-open .ux-section-chevron,
+  .indicator-group.is-open .ux-section-chevron {
+    flex: 0 0 auto;
+    color: var(--ink);
+    opacity: 1;
+    visibility: visible;
+  }
+}
