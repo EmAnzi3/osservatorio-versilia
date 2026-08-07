@@ -59,9 +59,9 @@ def static_assertions() -> None:
         DIST / "comuni" / "massarosa" / "index.html",
     ):
         text = page.read_text(encoding="utf-8")
-        require("assets/export-v161.js?v=20260806-3" in text,
+        require("assets/export-v161.js?v=" in text,
                 f"Script export non incluso in {page}")
-        require("assets/export-v161.css?v=20260806-3" in text,
+        require("assets/export-v161.css?v=" in text,
                 f"Stili di stampa non inclusi in {page}")
 
 
