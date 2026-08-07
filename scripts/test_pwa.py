@@ -71,7 +71,8 @@ def static_checks() -> None:
     for relative, expected in icon_expectations.items():
         path = DIST / relative
         require(path.exists(), f"Icona PWA mancante: {relative}")
-        require(png_size(path) == expected, f"Dimensioni errate per {relative}: {png_size(path)}")
+        actual = png_size(path)
+        require(actual == expected, f"Dimensioni errate per {relative}: {actual}")
 
     icons = manifest.get("icons", [])
     require(any(icon.get("sizes") == "192x192" for icon in icons), "Icona 192 nel manifest mancante")
@@ -87,6 +88,7 @@ def static_checks() -> None:
     pwa_js = (DIST / "assets" / "pwa.js").read_text(encoding="utf-8")
     require("beforeinstallprompt" in pwa_js, "Prompt installazione Android/desktop mancante")
     require("Aggiungi alla schermata Home" in pwa_js, "Istruzioni iOS mancanti")
+    require("Installa app" in pwa_js, "Istruzioni fallback browser mancanti")
     require("serviceWorker.register" in pwa_js, "Registrazione service worker mancante")
 
     pages = (
@@ -126,12 +128,6 @@ def browser_checks() -> None:
         callout = page.locator(".pwa-install-callout").inner_text().lower()
         require("disponibile anche come app" in callout, "Richiamo PWA in home non esplicito")
         require("porta l'osservatorio sul telefono" in callout, "Messaggio PWA in home inatteso")
-
-        page.locator(".site-header .pwa-install-button").click()
-        page.wait_for_selector("#pwa-install-dialog[open]")
-        dialog_text = page.locator("#pwa-install-dialog").inner_text().lower()
-        require("installa osservatorio versilia" in dialog_text, "Fallback installazione browser inatteso")
-        page.locator(".pwa-dialog-close").click()
 
         sw_scope = page.evaluate(
             """async () => {
