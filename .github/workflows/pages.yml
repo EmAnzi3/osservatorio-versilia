@@ -2,6 +2,8 @@ name: Deploy GitHub Pages
 
 on:
   push:
+    branches: ["main", "agent/**"]
+  pull_request:
     branches: ["main"]
   workflow_dispatch:
 
@@ -11,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -37,6 +39,9 @@ jobs:
 
       - name: Run regression tests
         run: python scripts/test_static.py
+
+      - name: Run launch foundation checks
+        run: python scripts/test_launch_foundations.py
 
       - name: Run release compatibility checks
         run: python scripts/test_release_v170_compat.py
@@ -97,13 +102,13 @@ jobs:
             --next-state /tmp/monthly-data-check/state.json
 
       - name: Upload static site for deployment
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
     environment:
       name: github-pages

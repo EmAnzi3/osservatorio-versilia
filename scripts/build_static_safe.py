@@ -18,6 +18,14 @@ _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
 UX_ASSET_VERSION = "20260806-3"
+PUBLIC_CONTACT = "info@osservatorioversilia.it"
+LEGACY_CONTACT = "contatti@osservatorioversilia.it"
+SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
+V170_VERSION_ENTRY = (
+    "      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. "
+    "Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, "
+    "dati AGCOM FTTH verificati e controlli automatici rafforzati sulle fonti.'],\n"
+)
 
 if "bilanci" not in build.THEME_SLUGS:
     build.THEME_SLUGS.insert(2, "bilanci")
@@ -99,6 +107,17 @@ def bundle_application_with_private_fixes() -> None:
     elif NEW_PROJECT_COPY not in bundle:
         raise RuntimeError("Testo della pagina Il progetto non trovato nel bundle")
 
+    if LEGACY_CONTACT in bundle:
+        bundle = bundle.replace(LEGACY_CONTACT, PUBLIC_CONTACT)
+    elif PUBLIC_CONTACT not in bundle:
+        raise RuntimeError("Recapito pubblico dell'Osservatorio non trovato nel bundle")
+
+    if "2026.08.07-v1.7.0" not in bundle:
+        marker = "    const versions = [\n"
+        if marker not in bundle or "2026.08.05-v1.6.0" not in bundle:
+            raise RuntimeError("Elenco versioni del progetto non trovato nel bundle")
+        bundle = bundle.replace(marker, marker + V170_VERSION_ENTRY, 1)
+
     bundle_path.write_text(bundle, encoding="utf-8")
 
 
@@ -143,18 +162,26 @@ def prepare_shells_with_fonts() -> None:
 
 
 def inject_metadata_with_open_graph(document: str, route: str, data: dict) -> str:
-    """Aggiunge l'URL Open Graph coerente con canonical e sitemap."""
+    """Aggiunge metadati social coerenti con canonical e dominio pubblico."""
     document = _original_inject_metadata(document, route, data)
     canonical = build.canonical_url(route)
-    document = re.sub(
+    patterns = (
         r'\s*<meta\s+property="og:url"[^>]*>',
-        "",
-        document,
-        flags=re.IGNORECASE,
+        r'\s*<meta\s+property="og:site_name"[^>]*>',
+        r'\s*<meta\s+property="og:image"[^>]*>',
+        r'\s*<meta\s+property="og:image:alt"[^>]*>',
+        r'\s*<meta\s+name="twitter:card"[^>]*>',
+        r'\s*<meta\s+name="twitter:image"[^>]*>',
     )
+    for pattern in patterns:
+        document = re.sub(pattern, "", document, flags=re.IGNORECASE)
     social = (
         f'\n  <meta property="og:url" content="{canonical}">'
-        '\n  <meta property="og:site_name" content="Osservatorio Versilia">\n'
+        '\n  <meta property="og:site_name" content="Osservatorio Versilia">'
+        f'\n  <meta property="og:image" content="{SOCIAL_IMAGE}">'
+        '\n  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">'
+        '\n  <meta name="twitter:card" content="summary_large_image">'
+        f'\n  <meta name="twitter:image" content="{SOCIAL_IMAGE}">\n'
     )
     return document.replace("</head>", social + "</head>")
 
@@ -172,12 +199,17 @@ def normalize_prerendered_urls() -> None:
             '<body class=',
         )
         text = text.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
+        text = text.replace(LEGACY_CONTACT, PUBLIC_CONTACT)
         path.write_text(text, encoding="utf-8")
 
     project_path = build.DIST / "progetto" / "index.html"
     project_text = project_path.read_text(encoding="utf-8")
     if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
         raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
+    if "2026.08.07-v1.7.0" not in project_text or "106 indicatori" not in project_text:
+        raise RuntimeError("Versione v1.7.0 non visibile nella pagina Il progetto")
+    if LEGACY_CONTACT in project_text or PUBLIC_CONTACT not in project_text:
+        raise RuntimeError("Recapito pubblico non coerente nella pagina Il progetto")
 
 
 build.copy_source_tree = copy_source_tree_with_local_assets
