@@ -17,7 +17,7 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260806-3"
+UX_ASSET_VERSION = "20260807-1"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -133,6 +133,7 @@ def prepare_shells_with_fonts() -> None:
             "ux-experiment.css",
             "ux-background-match.css",
             "export-v161.css",
+            "visual-grammar.css",
         )
         for stylesheet in stylesheets:
             token = f"assets/{stylesheet}"
@@ -149,6 +150,7 @@ def prepare_shells_with_fonts() -> None:
             "ux-history-core.js",
             "ux-history.js",
             "export-v161.js",
+            "visual-grammar.js",
         )
         missing_scripts = [
             f'  <script src="{assets}assets/{script}?v={UX_ASSET_VERSION}" defer></script>\n'
