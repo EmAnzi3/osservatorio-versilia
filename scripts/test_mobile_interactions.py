@@ -115,7 +115,16 @@ def verify_desktop_theme_scroll(page: Page, base: str) -> None:
     # Il click su una tematica deve portare il pannello dei grafici subito
     # sotto l'header anche su desktop, come già avviene su smartphone.
     page.locator(".theme-card").nth(1).click()
-    page.wait_for_timeout(100)
+    page.wait_for_function(
+        """() => {
+          const target = document.getElementById('home-explorer');
+          const header = document.getElementById('site-header-mount');
+          const targetTop = target?.getBoundingClientRect().top ?? -1;
+          const expectedTop = (header?.getBoundingClientRect().height || 70) + 12;
+          return window.scrollY > 0 && Math.abs(targetTop - expectedTop) <= 6;
+        }""",
+        timeout=2500,
+    )
     geometry = page.evaluate(
         """() => {
           const target = document.getElementById('home-explorer');
