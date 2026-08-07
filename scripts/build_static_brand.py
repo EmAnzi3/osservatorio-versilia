@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260807-ov"
-PWA_ASSET_VERSION = "20260807-pwa3"
+PWA_ASSET_VERSION = "20260807-pwa4"
 OLD_MARK = '<span class="site-brand-mark">O</span>'
 PWA_FILES = ("service-worker.js", "offline.html", "site.webmanifest")
 PWA_ICONS = (
