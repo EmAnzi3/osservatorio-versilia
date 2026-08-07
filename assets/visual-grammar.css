@@ -225,6 +225,12 @@
 }
 
 @media print {
+  .comparison-legend,
+  .comparison-axis,
+  .comparison-note {
+    display: none !important;
+  }
+
   .comparison-dot,
   .comparison-reference,
   .comparison-stem,
