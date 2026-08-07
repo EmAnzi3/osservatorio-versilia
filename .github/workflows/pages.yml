@@ -2,7 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "agent/**"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -44,7 +44,9 @@ jobs:
         run: python scripts/test_launch_foundations.py
 
       - name: Run visual grammar checks
-        run: python scripts/test_visual_grammar.py
+        run: |
+          node --check assets/visual-grammar.js
+          python scripts/test_visual_grammar.py
 
       - name: Run release compatibility checks
         run: python scripts/test_release_v170_compat.py
