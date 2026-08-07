@@ -9,9 +9,13 @@ import re
 
 import build_static as build
 
+# Dominio pubblico canonico dell'Osservatorio.
+build.BASE_URL = "https://osservatorioversilia.it/"
+
 _original_copy_source_tree = build.copy_source_tree
 _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
+_original_inject_metadata = build.inject_metadata
 
 UX_ASSET_VERSION = "20260806-3"
 
@@ -138,6 +142,23 @@ def prepare_shells_with_fonts() -> None:
         path.write_text(text, encoding="utf-8")
 
 
+def inject_metadata_with_open_graph(document: str, route: str, data: dict) -> str:
+    """Aggiunge l'URL Open Graph coerente con canonical e sitemap."""
+    document = _original_inject_metadata(document, route, data)
+    canonical = build.canonical_url(route)
+    document = re.sub(
+        r'\s*<meta\s+property="og:url"[^>]*>',
+        "",
+        document,
+        flags=re.IGNORECASE,
+    )
+    social = (
+        f'\n  <meta property="og:url" content="{canonical}">'
+        '\n  <meta property="og:site_name" content="Osservatorio Versilia">\n'
+    )
+    return document.replace("</head>", social + "</head>")
+
+
 def normalize_prerendered_urls() -> None:
     """Remove the temporary localhost origin serialized by the headless build."""
     localhost = re.compile(r"https?://127\.0\.0\.1:\d+/")
@@ -162,6 +183,7 @@ def normalize_prerendered_urls() -> None:
 build.copy_source_tree = copy_source_tree_with_local_assets
 build.bundle_application = bundle_application_with_private_fixes
 build.prepare_shells = prepare_shells_with_fonts
+build.inject_metadata = inject_metadata_with_open_graph
 
 if __name__ == "__main__":
     build.main()
