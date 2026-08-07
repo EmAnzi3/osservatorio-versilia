@@ -6,6 +6,9 @@ conteggio assoluto ``famiglie_ftth`` non è valorizzato nello shard normalizzato
 In quel caso non ricostruiamo il conteggio da una percentuale arrotondata:
 pubblichiamo soltanto gli indicatori percentuali con copertura 7/7 e conserviamo
 il valore nullo nello snapshot della fonte.
+
+Lo script è idempotente: gli indicatori ASIA/FTTH gestiti da questa pipeline
+vengono sostituiti, non conteggiati come nuove aggiunte a ogni esecuzione.
 """
 from __future__ import annotations
 
@@ -26,6 +29,7 @@ import update_agid_indicators as base  # noqa: E402
 
 PUBLISHED_BROADBAND_KEYS = ["ftthCoverageDesi", "ftthCoverage20m"]
 OMITTED_ABSOLUTE_KEYS = ["ftthReachedHouseholds", "ftthUnreachedHouseholds"]
+MANAGED_KEYS = set(base.NEW_ECONOMY_KEYS + base.NEW_BROADBAND_KEYS)
 
 
 def _number(value: Any, label: str) -> float:
@@ -107,6 +111,13 @@ def _prepare_for_base(
     return technical, missing_desi_counts, missing_20m_counts
 
 
+def expected_metric_count(source_data: dict[str, Any]) -> int:
+    """Numero atteso dopo la fase prudenziale, indipendente dalla release di partenza."""
+    unmanaged = [key for key in source_data.get("metrics", {}) if key not in MANAGED_KEYS]
+    regenerated = base.NEW_ECONOMY_KEYS + PUBLISHED_BROADBAND_KEYS
+    return len(unmanaged) + len(regenerated)
+
+
 def apply_policy(
     source_data: dict[str, Any],
     asia: dict[str, dict[str, Any]],
@@ -118,7 +129,9 @@ def apply_policy(
         source_data, asia, technical_agcom, generated_at
     )
 
-    # I conteggi assoluti non sono pubblicati se la fonte non garantisce 7/7.
+    # I conteggi assoluti non sono pubblicati in questa fase prudenziale; una
+    # fase successiva li ripristina dal CSV primario AGCOM quando la copertura
+    # validata raggiunge almeno 6/7.
     for key in OMITTED_ABSOLUTE_KEYS:
         data["metrics"].pop(key, None)
 
@@ -188,9 +201,9 @@ def apply_policy(
         "missingDesiHouseholdCounts": missing_desi,
         "missingWithin20mHouseholdCounts": missing_20m,
         "note": (
-            "I conteggi assoluti sono esclusi perché non disponibili con "
-            "copertura completa 7/7. Nessun valore nullo è stato ricostruito "
-            "da percentuali arrotondate."
+            "I conteggi assoluti sono sospesi in questa fase se gli shard "
+            "intermedi non sono completi; la pubblicazione finale usa il CSV "
+            "primario AGCOM e la soglia minima 6/7, senza stime."
         ),
     }
     return data, snapshot
@@ -216,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     previous_count = len(source_data["metrics"])
     expected_new = base.NEW_ECONOMY_KEYS + PUBLISHED_BROADBAND_KEYS
     metric_count = len(updated["metrics"])
-    expected_count = previous_count + len(expected_new)
+    expected_count = expected_metric_count(source_data)
     if metric_count != expected_count:
         raise base.DataError(
             f"Conteggio indicatori inatteso: {metric_count}; previsto {expected_count}"
@@ -232,7 +245,8 @@ def main(argv: list[str] | None = None) -> int:
             {
                 "status": "ok",
                 "metricCount": metric_count,
-                "newMetrics": expected_new,
+                "managedMetrics": sorted(MANAGED_KEYS),
+                "regeneratedMetrics": expected_new,
                 "omittedMetrics": OMITTED_ABSOLUTE_KEYS,
                 "snapshot": str(args.snapshot),
                 "coveragePolicy": snapshot["coveragePolicy"],
