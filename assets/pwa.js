@@ -48,11 +48,11 @@
       title = 'Installa con Samsung Internet';
       body = `
         <ol class="pwa-ios-steps pwa-samsung-steps">
-          <li><strong>1</strong><span>Tocca il pulsante <b>+</b> nella barra del browser, accanto all'indirizzo.</span></li>
+          <li><strong>1</strong><span>Se Samsung Internet mostra il badge PWA <b>+</b> nella barra dell'indirizzo, toccalo.</span></li>
           <li><strong>2</strong><span>Conferma <b>Installa nella schermata App</b>.</span></li>
-          <li><strong>3</strong><span>Apri poi <b>Osservatorio Versilia</b> dalla sua icona, come una normale app.</span></li>
+          <li><strong>3</strong><span>Se il + non compare o apre una nuova scheda, usa <b>⋮ → Aggiungi pagina a → Schermata Home</b>.</span></li>
         </ol>
-        <p class="pwa-dialog-note">Il + nella barra di Samsung Internet indica che questa PWA è installabile.</p>`;
+        <p class="pwa-dialog-note">Samsung Internet gestisce l'installazione dalla propria interfaccia: la pagina non può aprire direttamente quel pannello.</p>`;
     }
 
     return `
@@ -88,8 +88,8 @@
       return;
     }
 
-    // Samsung Internet espone l'installazione tramite il proprio badge "+"
-    // nella barra del browser, non tramite un prompt controllabile dalla pagina.
+    // Samsung Internet espone l'installazione tramite la propria interfaccia
+    // (badge PWA o menu), non tramite un pannello controllabile dalla pagina.
     if (isSamsungInternet()) {
       openInstructions();
       return;
