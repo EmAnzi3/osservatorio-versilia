@@ -77,8 +77,9 @@ def browser_checks() -> None:
         page.goto(base + "confronta/demografia/?indicatore=share65", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .comparison-bars").get_attribute("data-viz") == "percent-dotplot"
-        assert "scala 0–100%" in page.locator("#compare-bars .comparison-axis").inner_text()
-        assert "%" in page.locator("#compare-bars .comparison-axis").inner_text()
+        axis_text = page.locator("#compare-bars .comparison-axis").inner_text().lower()
+        assert "scala 0–100%" in axis_text
+        assert "%" in axis_text
 
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
