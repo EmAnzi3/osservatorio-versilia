@@ -1,5 +1,7 @@
 # Osservatorio Versilia
 
+Sito pubblico: **https://osservatorioversilia.it**
+
 Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub Pages a partire dalle risorse pubbliche del precedente ChatGPT Site.
 
 ## Contenuto
@@ -19,13 +21,14 @@ La ricerca mobile usa un pannello a piena altezza con `100dvh`, pulsante di chiu
 
 ## Pubblicazione
 
-1. Creare su GitHub un repository vuoto, preferibilmente `osservatorio-versilia`.
-2. Caricare nella radice del repository **il contenuto di questa cartella**, non la cartella contenitore.
-3. Aprire **Settings → Pages**.
-4. In **Build and deployment → Source**, selezionare **GitHub Actions**.
-5. Il workflow `.github/workflows/pages.yml` pubblicherà automaticamente il sito a ogni aggiornamento del ramo `main`, esclusivamente dopo build e test riusciti.
+Il sito è pubblicato con GitHub Pages tramite GitHub Actions e usa come dominio canonico **https://osservatorioversilia.it**.
 
-Il sito usa collegamenti relativi e funziona sia come GitHub Project Page sia con un eventuale dominio personalizzato.
+1. Il repository mantiene il codice e i dati del sito.
+2. In **Settings → Pages**, la sorgente è **GitHub Actions**.
+3. Il workflow `.github/workflows/pages.yml` pubblica automaticamente il sito a ogni aggiornamento del ramo `main`, esclusivamente dopo build e test riusciti.
+4. Canonical, JSON-LD, Open Graph, sitemap e `robots.txt` vengono generati usando il dominio ufficiale.
+
+Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltanto l'infrastruttura tecnica sottostante di GitHub Pages e non è l'URL pubblico da indicizzare o condividere.
 
 ## Struttura
 
