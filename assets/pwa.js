@@ -172,29 +172,6 @@
     actions.insertBefore(button, search || null);
   }
 
-  function mountHomeCallout() {
-    if (isStandalone() || document.body.dataset.page !== 'home' || document.querySelector('.pwa-install-callout')) return;
-    const hero = document.querySelector('.home-hero');
-    if (!hero) return;
-
-    const section = document.createElement('section');
-    section.className = 'pwa-install-callout page-width';
-    section.dataset.pwaInstallUi = '1';
-    section.setAttribute('aria-label', 'Installa Osservatorio Versilia come app');
-    section.innerHTML = `
-      <div class="pwa-callout-icon" aria-hidden="true">
-        <img src="${new URL('pwa/icon-192.png', ROOT).href}" alt="">
-      </div>
-      <div class="pwa-callout-copy">
-        <span class="pwa-callout-kicker">Disponibile anche come app</span>
-        <strong>Porta l'Osservatorio sul telefono.</strong>
-        <p>Puoi installare il sito come web app quando il browser lo supporta. Su Android scegli <b>Installa</b>, non <b>Crea scorciatoia</b>. L'eventuale richiesta successiva di mettere l'icona sulla Home può essere annullata.</p>
-      </div>
-      <button type="button" class="pwa-callout-action">${INSTALL_ICON}<span>${installLabel()}</span></button>`;
-    bindInstallButton(section.querySelector('button'));
-    hero.insertAdjacentElement('afterend', section);
-  }
-
   function stopLifecycleObservers() {
     headerObserver?.disconnect();
     appObserver?.disconnect();
@@ -209,7 +186,6 @@
       return;
     }
     mountHeaderButton();
-    mountHomeCallout();
     syncInstallControls();
   }
 
