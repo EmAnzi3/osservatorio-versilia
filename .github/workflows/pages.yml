@@ -46,6 +46,12 @@ jobs:
       - name: Run brand identity checks
         run: python scripts/test_brand_identity.py
 
+      - name: Run PWA checks
+        run: |
+          node --check assets/pwa.js
+          node --check service-worker.js
+          python scripts/test_pwa.py
+
       - name: Run visual grammar checks
         run: |
           node --check assets/visual-grammar.js

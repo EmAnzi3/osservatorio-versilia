@@ -51,6 +51,14 @@ def static_assertions() -> None:
         assert "app-loading" not in text, f"Skeleton residuo: {path}"
         assert "127.0.0.1" not in text, f"URL temporaneo serializzato: {path}"
         assert re.search(r"<h1[ >]", text, re.I), f"H1 assente: {path}"
+
+        if path.name == "offline.html":
+            assert "Sei offline" in text, "Messaggio della pagina offline assente"
+            assert "Riprova" in text, "Azione di recupero della pagina offline assente"
+            assert "assets/app-bundle.js" not in text, "La pagina offline non deve avviare l'app completa"
+            assert 'rel="canonical"' not in text, "La pagina offline non deve essere indicizzabile come contenuto"
+            continue
+
         assert 'rel="canonical"' in text, f"Canonical assente: {path}"
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
         assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"

@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
-"""Build di produzione con applicazione dell'identità visiva OV."""
+"""Build di produzione con identità OV e PWA installabile."""
 from __future__ import annotations
 
 import os
 import re
 import runpy
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260807-ov"
+PWA_ASSET_VERSION = "20260807-pwa1"
 OLD_MARK = '<span class="site-brand-mark">O</span>'
+PWA_FILES = ("service-worker.js", "offline.html", "site.webmanifest")
+PWA_ICONS = (
+    "icon-180.png",
+    "icon-192.png",
+    "icon-512.png",
+    "icon-maskable-512.png",
+)
 
 
 def decorative_mark() -> str:
@@ -26,10 +35,10 @@ def decorative_mark() -> str:
     return f'<span class="site-brand-mark" aria-hidden="true">{svg}</span>'
 
 
-def inject_brand_styles(document: str, relative_assets: str) -> str:
+def inject_brand_styles(document: str, relative_root: str) -> str:
     token = "assets/brand.css"
     if token not in document:
-        href = f"{relative_assets}{token}?v={BRAND_ASSET_VERSION}"
+        href = f"{relative_root}{token}?v={BRAND_ASSET_VERSION}"
         document = document.replace(
             "</head>",
             f'  <link rel="stylesheet" href="{href}">\n</head>',
@@ -45,7 +54,74 @@ def cache_bust_favicon(document: str) -> str:
     )
 
 
-def apply_brand() -> None:
+def ensure_pwa_files() -> None:
+    """Copia esplicitamente gli asset PWA nella build, indipendentemente dal builder base."""
+    DIST.mkdir(parents=True, exist_ok=True)
+    for name in PWA_FILES:
+        source = ROOT / name
+        if not source.exists():
+            raise RuntimeError(f"File PWA sorgente mancante: {source}")
+        shutil.copy2(source, DIST / name)
+
+    target_dir = DIST / "pwa"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for name in PWA_ICONS:
+        source = ROOT / "pwa" / name
+        if not source.exists():
+            raise RuntimeError(f"Icona PWA sorgente mancante: {source}")
+        shutil.copy2(source, target_dir / name)
+
+
+def inject_pwa(document: str, relative_root: str) -> str:
+    """Aggiunge metadata Apple/Android, CSS e bootstrap PWA a una pagina del sito."""
+    document = re.sub(
+        r'<meta\s+name="theme-color"\s+content="[^"]*"\s*/?>',
+        '<meta name="theme-color" content="#0F3654">',
+        document,
+        flags=re.IGNORECASE,
+    )
+
+    metadata = []
+    if 'name="theme-color"' not in document:
+        metadata.append('<meta name="theme-color" content="#0F3654">')
+    if 'name="mobile-web-app-capable"' not in document:
+        metadata.append('<meta name="mobile-web-app-capable" content="yes">')
+    if 'name="apple-mobile-web-app-capable"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-capable" content="yes">')
+    if 'name="apple-mobile-web-app-status-bar-style"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-status-bar-style" content="default">')
+    if 'name="apple-mobile-web-app-title"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">')
+    if 'rel="apple-touch-icon"' not in document:
+        metadata.append(
+            f'<link rel="apple-touch-icon" sizes="180x180" '
+            f'href="{relative_root}pwa/icon-180.png?v={PWA_ASSET_VERSION}">'
+        )
+    if metadata:
+        document = document.replace("</head>", "  " + "\n  ".join(metadata) + "\n</head>")
+
+    document = re.sub(
+        r'href="([^"?]*site\.webmanifest)(?:\?[^\"]*)?"',
+        rf'href="\1?v={PWA_ASSET_VERSION}"',
+        document,
+    )
+
+    if "assets/pwa.css" not in document:
+        document = document.replace(
+            "</head>",
+            f'  <link rel="stylesheet" href="{relative_root}assets/pwa.css?v={PWA_ASSET_VERSION}">\n</head>',
+        )
+
+    if "assets/pwa.js" not in document:
+        document = document.replace(
+            "</body>",
+            f'  <script src="{relative_root}assets/pwa.js?v={PWA_ASSET_VERSION}" defer></script>\n</body>',
+        )
+    return document
+
+
+def apply_brand_and_pwa() -> None:
+    ensure_pwa_files()
     mark = decorative_mark()
 
     bundle_path = DIST / "assets" / "app-bundle.js"
@@ -59,19 +135,21 @@ def apply_brand() -> None:
     html_files = list(DIST.rglob("*.html"))
     if not html_files:
         raise RuntimeError("Nessuna pagina HTML trovata nella build")
+    site_pages = [path for path in html_files if path.name != "offline.html"]
 
-    for path in html_files:
+    for path in site_pages:
         text = path.read_text(encoding="utf-8")
         if OLD_MARK in text:
             text = text.replace(OLD_MARK, mark)
         prefix = os.path.relpath(DIST, path.parent).replace(os.sep, "/")
-        relative_assets = "" if prefix == "." else f"{prefix}/"
-        text = inject_brand_styles(text, relative_assets)
+        relative_root = "" if prefix == "." else f"{prefix}/"
+        text = inject_brand_styles(text, relative_root)
         text = cache_bust_favicon(text)
+        text = inject_pwa(text, relative_root)
         path.write_text(text, encoding="utf-8")
 
     missing_mark = [
-        path for path in html_files
+        path for path in site_pages
         if 'class="ov-mark-svg"' not in path.read_text(encoding="utf-8")
     ]
     if missing_mark:
@@ -80,8 +158,13 @@ def apply_brand() -> None:
     if OLD_MARK in bundle_path.read_text(encoding="utf-8"):
         raise RuntimeError("Il vecchio marchio O è ancora presente nell'app bundle")
 
+    for relative in (*PWA_FILES, *(f"pwa/{name}" for name in PWA_ICONS)):
+        path = DIST / relative
+        if not path.exists() or path.stat().st_size == 0:
+            raise RuntimeError(f"Asset PWA non incluso nella build: {relative}")
+
 
 if __name__ == "__main__":
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
-    apply_brand()
-    print("Build statica completata con identità OV.")
+    apply_brand_and_pwa()
+    print("Build statica completata con identità OV e PWA installabile.")
