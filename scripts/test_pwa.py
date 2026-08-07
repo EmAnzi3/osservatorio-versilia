@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controlli statici e browser della PWA di Osservatorio Versilia."""
+"""Controlli tecnici PWA senza UI di installazione."""
 from __future__ import annotations
 
 import contextlib
@@ -78,32 +78,22 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260807-7" in service_worker, "Versione cache PWA non aggiornata")
+    require("ov-pwa-20260807-7" in service_worker, "Versione cache PWA inattesa")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first assente")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset assente")
-    require("\\.(?:js|css)$" in service_worker, "JS/CSS non protetti da network-first")
-    require("site.webmanifest" in service_worker, "Manifest non aggiornato network-first")
 
     pwa_js = (DIST / "assets" / "pwa.js").read_text(encoding="utf-8")
-    require("beforeinstallprompt" in pwa_js, "Evento installazione mancante")
-    require("isAndroid" in pwa_js and "isChromeAndroid" in pwa_js, "Rilevamento Android incompleto")
-    require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung mancanti")
-    require("Crea scorciatoia" in pwa_js, "Distinzione installazione/scorciatoia Chrome mancante")
-    require("Installazione di Osservatorio in corso" in pwa_js,
-            "Manca la spiegazione del pannello Home durante l'installazione Chrome")
-    require("Tocca <b>Annulla</b>" in pwa_js,
-            "Manca l'istruzione per evitare l'icona Home senza interrompere l'installazione")
-    require("pwa-install-callout" not in pwa_js,
-            "Il callout promozionale PWA è ancora montato nella home")
-    require("subtree: true" not in pwa_js,
-            "Il lifecycle PWA osserva ancora ricorsivamente il DOM")
-    require("startLifecycleObservers" in pwa_js,
-            "Lifecycle PWA sui mount point mancante")
-    require("headerObserver.observe(headerMount, { childList: true })" in pwa_js,
-            "Observer header non limitato ai figli diretti")
-    require("appObserver.observe(appMount, { childList: true })" in pwa_js,
-            "Observer app non limitato ai figli diretti")
+    require("navigator.serviceWorker.register" in pwa_js, "Registrazione service worker assente")
+    for forbidden in (
+        "beforeinstallprompt",
+        "pwa-install-button",
+        "pwa-install-callout",
+        "pwa-install-dialog",
+        "Come installare",
+        "Installa app",
+    ):
+        require(forbidden not in pwa_js, f"UI installazione ancora presente nel runtime: {forbidden}")
 
     for page in (
         DIST / "index.html",
@@ -113,7 +103,8 @@ def static_checks() -> None:
     ):
         text = page.read_text(encoding="utf-8")
         require(f"assets/pwa.css?v={PWA_VERSION}" in text, f"CSS PWA assente in {page}")
-        require(f"assets/pwa.js?v={PWA_VERSION}" in text, f"JS PWA assente in {page}")
+        require(f"assets/pwa.js?v={PWA_VERSION}&rev=install-ui-off" in text,
+                f"JS PWA non forzato alla versione senza UI in {page}")
         require(f"site.webmanifest?v={PWA_VERSION}" in text, f"Manifest non versionato in {page}")
         require("apple-mobile-web-app-capable" in text, f"Meta iOS assente in {page}")
 
@@ -121,54 +112,11 @@ def static_checks() -> None:
     require("Sei offline" in offline and "Riprova" in offline, "Pagina offline incompleta")
 
 
-def simulate_install_prompt(page, marker: str) -> None:
-    page.evaluate(
-        f"""() => {{
-          window.{marker} = false;
-          const event = new Event('beforeinstallprompt', {{ cancelable: true }});
-          Object.defineProperty(event, 'prompt', {{
-            value: () => {{ window.{marker} = true; return Promise.resolve(); }}
-          }});
-          Object.defineProperty(event, 'userChoice', {{
-            value: Promise.resolve({{ outcome: 'dismissed' }})
-          }});
-          window.dispatchEvent(event);
-        }}"""
-    )
-
-
-def verify_no_idle_pwa_mutation(page) -> None:
-    page.evaluate(
-        """() => {
-          window.__ovPwaMutations = 0;
-          const target = document.querySelector('[data-pwa-install-action] span');
-          window.__ovObserver = new MutationObserver(records => {
-            window.__ovPwaMutations += records.length;
-          });
-          if (target) window.__ovObserver.observe(target, { childList: true, subtree: true, characterData: true });
-        }"""
-    )
-    page.wait_for_timeout(300)
-    mutations = page.evaluate("window.__ovPwaMutations")
-    page.evaluate("window.__ovObserver?.disconnect()")
-    require(mutations == 0, f"Bootstrap PWA continua a mutare il DOM a riposo: {mutations} mutazioni")
-
-
-def verify_header_button_survives_remount(page) -> None:
-    page.wait_for_selector(".site-header .pwa-install-button")
-    page.evaluate(
-        """() => {
-          const mount = document.getElementById('site-header-mount');
-          const header = mount?.querySelector('.site-header');
-          if (!mount || !header) throw new Error('Header mount non trovato');
-          const clone = header.cloneNode(true);
-          clone.querySelector('[data-pwa-header-install]')?.remove();
-          mount.replaceChildren(clone);
-        }"""
-    )
-    page.wait_for_selector(".site-header .pwa-install-button")
-    require(page.locator(".site-header .pwa-install-button").count() == 1,
-            "Il pulsante installazione non è stato ripristinato dopo il remount dell'header")
+def verify_no_install_ui(page, context: str) -> None:
+    page.wait_for_selector(".site-header")
+    require(page.locator(".pwa-install-button").count() == 0, f"Pulsante installazione presente: {context}")
+    require(page.locator(".pwa-install-callout").count() == 0, f"Callout installazione presente: {context}")
+    require(page.locator("#pwa-install-dialog").count() == 0, f"Dialog installazione presente: {context}")
 
 
 def browser_checks() -> None:
@@ -183,86 +131,24 @@ def browser_checks() -> None:
         desktop = browser.new_context(viewport={"width": 1280, "height": 900})
         page = desktop.new_page()
         page.goto(base, wait_until="networkidle")
-        page.wait_for_selector(".site-header .pwa-install-button")
-        require(page.locator(".pwa-install-callout").count() == 0,
-                "Il callout PWA è ancora presente nella home")
-        require(page.locator(".site-header .pwa-install-button").count() == 1, "Pulsante header duplicato")
-        verify_header_button_survives_remount(page)
-        verify_no_idle_pwa_mutation(page)
-        simulate_install_prompt(page, "__ovDesktopPrompt")
-        page.wait_for_timeout(50)
-        action = page.locator(".site-header .pwa-install-button")
-        require("installa app" in action.inner_text().lower(), "Desktop non passa allo stato installabile")
-        action.click()
-        page.wait_for_timeout(100)
-        require(page.evaluate("window.__ovDesktopPrompt === true"), "Desktop non usa il prompt nativo")
+        verify_no_install_ui(page, "desktop home")
+        registration = page.evaluate("navigator.serviceWorker?.controller !== undefined")
+        require(registration is True, "API service worker non disponibile nel contesto di test")
         desktop.close()
 
-        chrome_ua = (
+        android_ua = (
             "Mozilla/5.0 (Linux; Android 16; SM-S942B) AppleWebKit/537.36 "
             "(KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36"
         )
-        chrome = browser.new_context(
-            viewport={"width": 390, "height": 844}, user_agent=chrome_ua, is_mobile=True, has_touch=True
+        mobile = browser.new_context(
+            viewport={"width": 390, "height": 844}, user_agent=android_ua, is_mobile=True, has_touch=True
         )
-        chrome_internal = chrome.new_page()
-        chrome_internal.goto(base + "comuni/massarosa/", wait_until="networkidle")
-        verify_header_button_survives_remount(chrome_internal)
-        header_action = chrome_internal.locator(".site-header .pwa-install-button")
-        require(header_action.is_visible(), "Pulsante installazione non visibile nell'header mobile")
-        header_action.tap()
-        chrome_internal.wait_for_selector("#pwa-install-dialog[open]")
-        chrome_internal.locator(".pwa-dialog-close").tap()
-        chrome_internal.close()
-
-        chrome_page = chrome.new_page()
-        chrome_page.goto(base, wait_until="networkidle")
-        require(chrome_page.locator(".pwa-install-callout").count() == 0,
-                "Il callout PWA è ancora presente nella home mobile")
-        chrome_action = chrome_page.locator(".site-header .pwa-install-button")
-        chrome_action.wait_for(state="visible")
-        chrome_aria = (chrome_action.get_attribute("aria-label") or "").lower()
-        require("come installare" in chrome_aria, "CTA Chrome Android ambiguo")
-        simulate_install_prompt(chrome_page, "__ovChromePrompt")
-        chrome_action.tap()
-        chrome_page.wait_for_selector("#pwa-install-dialog[open]")
-        require(chrome_page.evaluate("window.__ovChromePrompt === false"),
-                "Il sito ha invocato direttamente il prompt Android")
-        dialog = chrome_page.locator("#pwa-install-dialog").inner_text().lower()
-        require("installa con chrome" in dialog, "Istruzioni Chrome Android assenti")
-        require("installa e crea scorciatoia" in dialog and "crea scorciatoia" in dialog,
-                "Scelta Chrome Installa/Crea scorciatoia non spiegata")
-        require("installazione di osservatorio in corso" in dialog,
-                "Pannello Home durante l'installazione non spiegato")
-        require("annulla" in dialog and "l'app è già in installazione" in dialog,
-                "Non è spiegato come evitare l'icona Home senza confonderla con un fallback")
-        verify_no_idle_pwa_mutation(chrome_page)
-        chrome.close()
-
-        samsung_ua = (
-            "Mozilla/5.0 (Linux; Android 16; SM-S942B) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) SamsungBrowser/28.0 Chrome/130.0.0.0 Mobile Safari/537.36"
-        )
-        samsung = browser.new_context(
-            viewport={"width": 390, "height": 844}, user_agent=samsung_ua, is_mobile=True, has_touch=True
-        )
-        samsung_page = samsung.new_page()
-        samsung_page.goto(base, wait_until="networkidle")
-        require(samsung_page.locator(".pwa-install-callout").count() == 0,
-                "Il callout PWA è ancora presente nella home Samsung")
-        samsung_action = samsung_page.locator(".site-header .pwa-install-button")
-        samsung_action.wait_for(state="visible")
-        samsung_aria = (samsung_action.get_attribute("aria-label") or "").lower()
-        require("come installare" in samsung_aria, "CTA Samsung ambiguo")
-        simulate_install_prompt(samsung_page, "__ovSamsungPrompt")
-        samsung_action.tap()
-        samsung_page.wait_for_selector("#pwa-install-dialog[open]")
-        require(samsung_page.evaluate("window.__ovSamsungPrompt === false"),
-                "Il sito ha invocato direttamente il prompt Samsung")
-        samsung_dialog = samsung_page.locator("#pwa-install-dialog").inner_text().lower()
-        require("installa nella schermata app" in samsung_dialog, "Percorso Samsung app assente")
-        require("riquadro 1×1" in samsung_dialog, "Shortcut Samsung non distinto")
-        samsung.close()
+        mobile_page = mobile.new_page()
+        mobile_page.goto(base, wait_until="networkidle")
+        verify_no_install_ui(mobile_page, "Android home")
+        mobile_page.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        verify_no_install_ui(mobile_page, "Android scheda comune")
+        mobile.close()
 
         browser.close()
 
@@ -270,7 +156,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: callout home rimosso; header, lifecycle e istruzioni restano invariati.")
+    print("PWA verificata: supporto tecnico/offline attivo, UI di installazione assente.")
 
 
 if __name__ == "__main__":
