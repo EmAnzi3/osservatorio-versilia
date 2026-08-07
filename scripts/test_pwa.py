@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260807-pwa5"
+PWA_VERSION = "20260807-pwa6"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -78,7 +78,7 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260807-5" in service_worker, "Versione cache PWA non aggiornata")
+    require("ov-pwa-20260807-6" in service_worker, "Versione cache PWA non aggiornata")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first assente")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset assente")
@@ -91,8 +91,14 @@ def static_checks() -> None:
     require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung mancanti")
     require("Aggiungere alla schermata Home?" in pwa_js, "Distinzione shortcut Android mancante")
     require("il sito non può forzare un WebAPK" in pwa_js, "Limite WebAPK non dichiarato")
-    require("new MutationObserver(scheduleMount)" not in pwa_js,
-            "Il bootstrap PWA osserva ancora ricorsivamente l'intero DOM")
+    require("subtree: true" not in pwa_js,
+            "Il lifecycle PWA osserva ancora ricorsivamente il DOM")
+    require("startLifecycleObservers" in pwa_js,
+            "Lifecycle PWA sui mount point mancante")
+    require("headerObserver.observe(headerMount, { childList: true })" in pwa_js,
+            "Observer header non limitato ai figli diretti")
+    require("appObserver.observe(appMount, { childList: true })" in pwa_js,
+            "Observer app non limitato ai figli diretti")
 
     for page in (
         DIST / "index.html",
@@ -143,6 +149,23 @@ def verify_no_idle_pwa_mutation(page) -> None:
     require(mutations == 0, f"Bootstrap PWA continua a mutare il DOM a riposo: {mutations} mutazioni")
 
 
+def verify_header_button_survives_remount(page) -> None:
+    page.wait_for_selector(".site-header .pwa-install-button")
+    page.evaluate(
+        """() => {
+          const mount = document.getElementById('site-header-mount');
+          const header = mount?.querySelector('.site-header');
+          if (!mount || !header) throw new Error('Header mount non trovato');
+          const clone = header.cloneNode(true);
+          clone.querySelector('[data-pwa-header-install]')?.remove();
+          mount.replaceChildren(clone);
+        }"""
+    )
+    page.wait_for_selector(".site-header .pwa-install-button")
+    require(page.locator(".site-header .pwa-install-button").count() == 1,
+            "Il pulsante installazione non è stato ripristinato dopo il remount dell'header")
+
+
 def browser_checks() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
@@ -158,6 +181,7 @@ def browser_checks() -> None:
         page.wait_for_selector(".pwa-install-callout")
         page.wait_for_selector(".site-header .pwa-install-button")
         require(page.locator(".site-header .pwa-install-button").count() == 1, "Pulsante header duplicato")
+        verify_header_button_survives_remount(page)
         verify_no_idle_pwa_mutation(page)
         simulate_install_prompt(page, "__ovDesktopPrompt")
         page.wait_for_timeout(50)
@@ -175,6 +199,18 @@ def browser_checks() -> None:
         chrome = browser.new_context(
             viewport={"width": 390, "height": 844}, user_agent=chrome_ua, is_mobile=True, has_touch=True
         )
+        chrome_internal = chrome.new_page()
+        chrome_internal.goto(base + "comuni/massarosa/", wait_until="networkidle")
+        verify_header_button_survives_remount(chrome_internal)
+        header_action = chrome_internal.locator(".site-header .pwa-install-button")
+        require(header_action.is_visible(), "Pulsante installazione non visibile nell'header mobile")
+        header_action.tap()
+        chrome_internal.wait_for_selector("#pwa-install-dialog[open]")
+        chrome_internal.locator(".pwa-dialog-close").tap()
+        chrome_internal.close()
+
+        # Nuovo tab nello stesso contesto: il Service Worker resta attivo, ma il
+        # test home non eredita il DOM volutamente clonato nel test precedente.
         chrome_page = chrome.new_page()
         chrome_page.goto(base, wait_until="networkidle")
         chrome_page.wait_for_selector(".pwa-install-callout")
@@ -220,7 +256,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: nessun loop DOM e installazione Android descritta senza forzare shortcut/WebAPK.")
+    print("PWA verificata: pulsante header persistente, lifecycle deterministico e istruzioni Android corrette.")
 
 
 if __name__ == "__main__":
