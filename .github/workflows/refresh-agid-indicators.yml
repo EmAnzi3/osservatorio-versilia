@@ -1,62 +1,47 @@
-name: Aggiorna imprese e banda larga
+name: Preview imprese ATECO e banda larga
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - ".github/workflows/refresh-agid-indicators.yml"
-      - "scripts/update_agid_indicators_resilient.py"
-      - "scripts/restore_partial_agcom_metrics.py"
-      - "scripts/monthly_data_check_coverage.py"
   workflow_dispatch:
-  issue_comment:
-    types: [created]
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+  contents: read
 
 concurrency:
-  group: refresh-agid-indicators
-  cancel-in-progress: false
+  group: preview-ateco-broadband-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  update:
-    if: >-
-      github.event_name == 'push' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' &&
-       github.event.issue.pull_request == null &&
-       github.event.comment.user.login == 'EmAnzi3' &&
-       github.event.comment.body == '/aggiorna-imprese-banda-larga')
+  preview:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout selected branch
         uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0
+          ref: ${{ github.ref_name }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Run extractor and coverage tests
+      - name: Validate scripts
         run: |
           python scripts/test_agid_indicators.py
           python -m py_compile \
             scripts/update_agid_indicators_resilient.py \
-            scripts/restore_partial_agcom_metrics.py \
-            scripts/monthly_data_check_coverage.py
+            scripts/enrich_ateco_details.py \
+            scripts/audit_agcom_broadband.py \
+            scripts/monthly_data_check_coverage.py \
+            scripts/inject_ateco_assets.py \
+            scripts/capture_agid_preview.py
 
-      - name: Fetch and integrate official indicators
+      - name: Fetch official data and build preview dataset
         run: |
           python scripts/update_agid_indicators_resilient.py
-          python scripts/restore_partial_agcom_metrics.py
+          python scripts/enrich_ateco_details.py
+          python scripts/audit_agcom_broadband.py
 
-      - name: Validate dataset with declared coverage
+      - name: Validate dataset
         run: |
           mkdir -p /tmp/agid-data-check
           python scripts/monthly_data_check_coverage.py \
@@ -65,15 +50,16 @@ jobs:
             --report-json /tmp/agid-data-check/report.json \
             --next-state /tmp/agid-data-check/state.json
 
-      - name: Install preview browser
+      - name: Install browser tooling
         run: |
           python -m pip install --upgrade pip
           python -m pip install playwright
           python -m playwright install --with-deps chromium
 
-      - name: Build and validate static preview
+      - name: Build static preview
         run: |
           python scripts/build_static_safe.py
+          python scripts/inject_ateco_assets.py
           python scripts/test_static.py
 
       - name: Capture desktop and mobile preview
@@ -85,124 +71,76 @@ jobs:
             --base-url http://127.0.0.1:8765 \
             --output-dir reports/previews/imprese-banda-larga
 
-      - name: Package local preview and outputs
+      - name: Prepare readable outputs
         run: |
-          mkdir -p preview-imprese-banda-larga/site
-          mkdir -p preview-imprese-banda-larga/schermate
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          data=json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          out=Path('reports/previews/imprese-banda-larga'); out.mkdir(parents=True,exist_ok=True)
+          keys=['localEmployees','employeesPerLocalUnit','localUnitsChange','localEmployeesChange','ftthCoverageDesi','ftthCoverage20m']
+          lines=['# Output nuovi indicatori','']
+          with (out/'indicatori.csv').open('w',encoding='utf-8',newline='') as f:
+              w=csv.writer(f,delimiter=';'); w.writerow(['indicatore','comune','codice_istat','valore','visualizzazione','anno','copertura'])
+              for key in keys:
+                  m=data['metrics'][key]; lines += [f"## {m['meta']['label']}",'',f"- **Anno:** {m['meta']['year']}",f"- **Copertura:** {m['method']['coverage']}",'','| Comune | Valore |','|---|---:|']
+                  for r in m['rows']:
+                      shown=r.get('formatted') or str(r.get('value'))
+                      lines.append(f"| {r['town']} | {shown} |")
+                      w.writerow([m['meta']['label'],r['town'],r['code'],r.get('value',''),shown,m['meta']['year'],m['method']['coverage']])
+                  lines.append('')
+          ateco=data.get('ateco',{}); lines += ['## Dettaglio ATECO','',f"- **Anno:** {ateco.get('year')}",f"- **Copertura:** {ateco.get('coverage')}",'']
+          for code,town in ateco.get('towns',{}).items():
+              top=(town.get('topByLocalUnits') or [{}])[0]
+              lines.append(f"- **{town.get('town')}**: {top.get('code','')} {top.get('label','')} — {top.get('localUnits','')} unità locali")
+          audit=data.get('broadbandAudit',{}); lines += ['','## Audit conteggi AGCOM','',f"- Copertura affidabile dei conteggi assoluti: **{audit.get('absoluteCountsReliableCoverage')}**",f"- Pubblicabili secondo la soglia minima 6/7: **{'sì' if audit.get('absoluteCountsPublishable') else 'no'}**",'']
+          for row in audit.get('rows',[]):
+              if not row.get('absoluteCountsReliable'):
+                  lines.append(f"- **{row['town']}**: {'; '.join(row.get('reasons',[]))}")
+          (out/'indicatori.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          PY
+
+      - name: Package local preview
+        run: |
+          mkdir -p preview-imprese-banda-larga/site preview-imprese-banda-larga/schermate
           cp -a dist/. preview-imprese-banda-larga/site/
-          cp reports/previews/imprese-banda-larga/*.png \
-            preview-imprese-banda-larga/schermate/
-          cp reports/previews/imprese-banda-larga/indicatori.md \
-            preview-imprese-banda-larga/OUTPUT_INDICATORI.md
-          cp reports/previews/imprese-banda-larga/indicatori.csv \
-            preview-imprese-banda-larga/OUTPUT_INDICATORI.csv
+          cp reports/previews/imprese-banda-larga/*.png preview-imprese-banda-larga/schermate/
+          cp reports/previews/imprese-banda-larga/indicatori.md preview-imprese-banda-larga/OUTPUT_INDICATORI.md
+          cp reports/previews/imprese-banda-larga/indicatori.csv preview-imprese-banda-larga/OUTPUT_INDICATORI.csv
+          cp reports/previews/imprese-banda-larga/audit-agcom.json preview-imprese-banda-larga/AUDIT_AGCOM.json
+          cat > preview-imprese-banda-larga/AVVIA_PREVIEW.ps1 <<'EOF'
+          $ErrorActionPreference = "Stop"
+          $root = Join-Path $PSScriptRoot "site"
+          $listener = New-Object System.Net.HttpListener
+          $listener.Prefixes.Add("http://127.0.0.1:8765/")
+          $listener.Start()
+          Start-Process "http://127.0.0.1:8765/confronta/economia/?indicatore=localEmployees"
+          Write-Host "Preview attiva su http://127.0.0.1:8765/ - Ctrl+C per chiudere"
+          while ($listener.IsListening) {
+            $context = $listener.GetContext(); $rel = $context.Request.Url.AbsolutePath.TrimStart('/')
+            $file = Join-Path $root $rel
+            if (Test-Path $file -PathType Container) { $file = Join-Path $file 'index.html' }
+            if (!(Test-Path $file)) { $file = Join-Path $root '404.html'; $context.Response.StatusCode = 404 }
+            $bytes = [IO.File]::ReadAllBytes($file); $context.Response.ContentLength64 = $bytes.Length
+            $context.Response.OutputStream.Write($bytes,0,$bytes.Length); $context.Response.OutputStream.Close()
+          }
+          EOF
           cat > preview-imprese-banda-larga/AVVIA_PREVIEW.bat <<'EOF'
           @echo off
-          cd /d "%~dp0site"
-          start "" "http://127.0.0.1:8765/confronta/economia/?indicatore=localEmployees"
-          py -m http.server 8765
+          powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0AVVIA_PREVIEW.ps1"
           pause
           EOF
           cat > preview-imprese-banda-larga/LEGGIMI.txt <<'EOF'
           PREVIEW NON PUBBLICATA — OSSERVATORIO VERSILIA
-
-          1. Estrai completamente il file ZIP.
-          2. Apri AVVIA_PREVIEW.bat.
-          3. Il browser mostrerà la preview locale.
-          4. Per chiuderla, torna alla finestra nera e premi Ctrl+C.
-
-          Pagine da controllare:
-          - Economia: addetti e unità locali
-          - Mobilità e infrastrutture: connettività digitale
-
-          OUTPUT_INDICATORI.md e OUTPUT_INDICATORI.csv contengono tutti i valori.
-          La cartella "schermate" contiene quattro immagini, due desktop e due mobile.
+          Estrai lo ZIP e avvia AVVIA_PREVIEW.bat. Non aprire direttamente gli HTML.
+          Controllare Economia, scheda Massarosa (tema Economia) e Mobilità/Infrastrutture.
+          OUTPUT_INDICATORI.* contiene i valori; AUDIT_AGCOM.json documenta le anomalie dei conteggi FTTH.
           EOF
 
       - name: Upload non-published preview
         uses: actions/upload-artifact@v4
         with:
-          name: preview-imprese-banda-larga
+          name: preview-imprese-banda-larga-ateco
           path: preview-imprese-banda-larga
           retention-days: 14
           if-no-files-found: error
-
-      - name: Create or update draft pull request
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          branch="automation/imprese-banda-larga"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
-          git add data/site-data.json data/source-registry.json \
-            data/source-snapshots/agid-asia-agcom-2026-08.json \
-            README.md docs/aggiornamento-mensile-dati.md
-          if git diff --cached --quiet; then
-            echo "Nessuna modifica da proporre."
-            exit 0
-          fi
-          git commit -m "Aggiunge imprese, addetti e copertura FTTH"
-          git push --force origin "$branch"
-
-          body_file="$(mktemp)"
-          cat > "$body_file" <<'EOF'
-          ## Contenuto
-
-          Integra nell’Osservatorio i dati comunali su:
-
-          - addetti medi annui nelle unità locali;
-          - addetti per unità locale;
-          - variazione 2018–2023 di unità locali e addetti;
-          - copertura FTTH DESI;
-          - famiglie raggiunte e non raggiunte da FTTH;
-          - copertura FTTH entro 20 metri.
-
-          La serie delle **unità locali attive** già pubblicata viene estesa al periodo 2018–2023, senza creare un indicatore duplicato.
-
-          ## Copertura
-
-          - indicatori ASIA: **7/7**;
-          - percentuali di copertura FTTH: **7/7**;
-          - famiglie raggiunte e non raggiunte da FTTH: **6/7**;
-          - Forte dei Marmi è mostrato come **n.d.** nei due conteggi assoluti;
-          - gli aggregati dei conteggi assoluti sono dichiarati come totali parziali 6/7.
-
-          ## Fonti
-
-          - **ISTAT ASIA-UL**, dati 2018–2023, acquisiti tramite gli shard comunali di AgID — Cruscotto Italia;
-          - **AGCOM Broadband Map**, rilevazione al 31 dicembre 2025, acquisita tramite gli shard comunali di AgID — Cruscotto Italia.
-
-          ## Garanzie metodologiche
-
-          - unità locali e imprese giuridiche non vengono confuse;
-          - gli addetti sono riferiti al luogo di lavoro, non alla residenza;
-          - la copertura FTTH descrive disponibilità dichiarata della rete, non abbonamenti o velocità effettiva;
-          - nessun dato mancante viene stimato o ricostruito;
-          - la copertura dichiarata deve coincidere con i valori realmente disponibili.
-
-          La preview non pubblicata e gli output completi in Markdown e CSV sono disponibili negli **Artifacts** del workflow che ha creato questa PR.
-          EOF
-
-          if gh pr view "$branch" --json number >/dev/null 2>&1; then
-            gh pr edit "$branch" \
-              --title "Aggiunge imprese, addetti e copertura FTTH" \
-              --body-file "$body_file"
-            pr_url="$(gh pr view "$branch" --json url --jq .url)"
-          else
-            pr_url="$(gh pr create --draft \
-              --base main \
-              --head "$branch" \
-              --title "Aggiunge imprese, addetti e copertura FTTH" \
-              --body-file "$body_file")"
-          fi
-          echo "PR: $pr_url"
-
-          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          issue_number="14"
-          if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            issue_number="${{ github.event.issue.number }}"
-          fi
-          gh issue comment "$issue_number" \
-            --body "Aggiornamento completato: $pr_url\n\nPreview e output completi: $run_url — scaricare l'artifact **preview-imprese-banda-larga**."
