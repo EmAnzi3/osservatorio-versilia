@@ -38,82 +38,133 @@ def decorative_mark() -> str:
 def inject_brand_styles(document: str, relative_root: str) -> str:
     token = "assets/brand.css"
     if token not in document:
-        link = f'<link rel="stylesheet" href="{relative_root}{token}?v={BRAND_ASSET_VERSION}">'
-        document = document.replace("</head>", f"  {link}\n</head>", 1)
+        href = f"{relative_root}{token}?v={BRAND_ASSET_VERSION}"
+        document = document.replace(
+            "</head>",
+            f'  <link rel="stylesheet" href="{href}">\n</head>',
+        )
     return document
 
 
-def inject_brand_markup(document: str) -> str:
-    mark = decorative_mark()
-    if OLD_MARK in document:
-        document = document.replace(OLD_MARK, mark)
-    return document
+def cache_bust_favicon(document: str) -> str:
+    return re.sub(
+        r'href="([^"?]*favicon\.svg)(?:\?[^\"]*)?"',
+        rf'href="\1?v={BRAND_ASSET_VERSION}"',
+        document,
+    )
 
 
-def inject_favicon(document: str, relative_root: str) -> str:
-    href = f"{relative_root}favicon.svg?v={BRAND_ASSET_VERSION}"
-    tag = f'<link rel="icon" type="image/svg+xml" href="{href}">'
-    document = re.sub(r'<link rel="icon"[^>]*>', tag, document, count=1)
-    return document
+def ensure_pwa_files() -> None:
+    """Copia esplicitamente gli asset PWA nella build, indipendentemente dal builder base."""
+    DIST.mkdir(parents=True, exist_ok=True)
+    for name in PWA_FILES:
+        source = ROOT / name
+        if not source.exists():
+            raise RuntimeError(f"File PWA sorgente mancante: {source}")
+        shutil.copy2(source, DIST / name)
+
+    target_dir = DIST / "pwa"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for name in PWA_ICONS:
+        source = ROOT / "pwa" / name
+        if not source.exists():
+            raise RuntimeError(f"Icona PWA sorgente mancante: {source}")
+        shutil.copy2(source, target_dir / name)
 
 
 def inject_pwa(document: str, relative_root: str) -> str:
-    if "offline.html" in relative_root:
-        return document
-    css = f'<link rel="stylesheet" href="{relative_root}assets/pwa.css?v={PWA_ASSET_VERSION}">'
-    js = f'<script src="{relative_root}assets/pwa.js?v={PWA_ASSET_VERSION}" defer></script>'
-    manifest = f'<link rel="manifest" href="{relative_root}site.webmanifest?v={PWA_ASSET_VERSION}">'
-    apple_icon = f'<link rel="apple-touch-icon" sizes="180x180" href="{relative_root}pwa/icon-180.png?v={PWA_ASSET_VERSION}">'
-    ios_meta = (
-        '<meta name="apple-mobile-web-app-capable" content="yes">\n'
-        '  <meta name="apple-mobile-web-app-status-bar-style" content="default">\n'
-        '  <meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">'
+    """Aggiunge metadata Apple/Android, CSS e bootstrap PWA a una pagina del sito."""
+    document = re.sub(
+        r'<meta\s+name="theme-color"\s+content="[^"]*"\s*/?>',
+        '<meta name="theme-color" content="#0F3654">',
+        document,
+        flags=re.IGNORECASE,
     )
-    theme = '<meta name="theme-color" content="#123d59">'
-    additions = [css, manifest, apple_icon, ios_meta, theme]
-    for item in additions:
-        if item.split("?v=")[0] not in document:
-            document = document.replace("</head>", f"  {item}\n</head>", 1)
+
+    metadata = []
+    if 'name="theme-color"' not in document:
+        metadata.append('<meta name="theme-color" content="#0F3654">')
+    if 'name="mobile-web-app-capable"' not in document:
+        metadata.append('<meta name="mobile-web-app-capable" content="yes">')
+    if 'name="apple-mobile-web-app-capable"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-capable" content="yes">')
+    if 'name="apple-mobile-web-app-status-bar-style"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-status-bar-style" content="default">')
+    if 'name="apple-mobile-web-app-title"' not in document:
+        metadata.append('<meta name="apple-mobile-web-app-title" content="Osservatorio Versilia">')
+    if 'rel="apple-touch-icon"' not in document:
+        metadata.append(
+            f'<link rel="apple-touch-icon" sizes="180x180" '
+            f'href="{relative_root}pwa/icon-180.png?v={PWA_ASSET_VERSION}">'
+        )
+    if metadata:
+        document = document.replace("</head>", "  " + "\n  ".join(metadata) + "\n</head>")
+
+    document = re.sub(
+        r'href="([^"?]*site\.webmanifest)(?:\?[^\"]*)?"',
+        rf'href="\1?v={PWA_ASSET_VERSION}"',
+        document,
+    )
+
+    if "assets/pwa.css" not in document:
+        document = document.replace(
+            "</head>",
+            f'  <link rel="stylesheet" href="{relative_root}assets/pwa.css?v={PWA_ASSET_VERSION}">\n</head>',
+        )
+
     if "assets/pwa.js" not in document:
-        document = document.replace("</body>", f"  {js}\n</body>", 1)
+        document = document.replace(
+            "</body>",
+            f'  <script src="{relative_root}assets/pwa.js?v={PWA_ASSET_VERSION}" defer></script>\n</body>',
+        )
     return document
 
 
-def patch_html() -> None:
-    for html_path in DIST.rglob("*.html"):
-        rel = os.path.relpath(ROOT, html_path.parent).replace(os.sep, "/")
-        relative_root = "" if rel == "." else rel.rstrip("/") + "/"
-        document = html_path.read_text(encoding="utf-8")
-        document = inject_brand_styles(document, relative_root)
-        document = inject_brand_markup(document)
-        document = inject_favicon(document, relative_root)
-        if html_path.name != "offline.html":
-            document = inject_pwa(document, relative_root)
-        html_path.write_text(document, encoding="utf-8")
+def apply_brand_and_pwa() -> None:
+    ensure_pwa_files()
+    mark = decorative_mark()
 
+    bundle_path = DIST / "assets" / "app-bundle.js"
+    bundle = bundle_path.read_text(encoding="utf-8")
+    if OLD_MARK in bundle:
+        bundle = bundle.replace(OLD_MARK, mark)
+    elif 'class="ov-mark-svg"' not in bundle:
+        raise RuntimeError("Marchio precedente non trovato nell'app bundle")
+    bundle_path.write_text(bundle, encoding="utf-8")
 
-def copy_assets() -> None:
-    for name in ("brand.css", "brand-mark.svg", "pwa.css", "pwa.js"):
-        source = ROOT / "assets" / name
-        target = DIST / "assets" / name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
+    html_files = list(DIST.rglob("*.html"))
+    if not html_files:
+        raise RuntimeError("Nessuna pagina HTML trovata nella build")
+    site_pages = [path for path in html_files if path.name != "offline.html"]
 
-    shutil.copy2(ROOT / "favicon.svg", DIST / "favicon.svg")
-    for name in PWA_FILES:
-        shutil.copy2(ROOT / name, DIST / name)
-    pwa_dir = DIST / "pwa"
-    pwa_dir.mkdir(parents=True, exist_ok=True)
-    for name in PWA_ICONS:
-        shutil.copy2(ROOT / "pwa" / name, pwa_dir / name)
+    for path in site_pages:
+        text = path.read_text(encoding="utf-8")
+        if OLD_MARK in text:
+            text = text.replace(OLD_MARK, mark)
+        prefix = os.path.relpath(DIST, path.parent).replace(os.sep, "/")
+        relative_root = "" if prefix == "." else f"{prefix}/"
+        text = inject_brand_styles(text, relative_root)
+        text = cache_bust_favicon(text)
+        text = inject_pwa(text, relative_root)
+        path.write_text(text, encoding="utf-8")
 
+    missing_mark = [
+        path for path in site_pages
+        if 'class="ov-mark-svg"' not in path.read_text(encoding="utf-8")
+    ]
+    if missing_mark:
+        raise RuntimeError(f"Nuovo marchio assente in {len(missing_mark)} pagine")
 
-def main() -> None:
-    runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
-    copy_assets()
-    patch_html()
-    print("Build statica completata con identità OV e PWA installabile.")
+    if OLD_MARK in bundle_path.read_text(encoding="utf-8"):
+        raise RuntimeError("Il vecchio marchio O è ancora presente nell'app bundle")
+
+    for relative in (*PWA_FILES, *(f"pwa/{name}" for name in PWA_ICONS)):
+        path = DIST / relative
+        if not path.exists() or path.stat().st_size == 0:
+            raise RuntimeError(f"Asset PWA non incluso nella build: {relative}")
 
 
 if __name__ == "__main__":
-    main()
+    runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
+    apply_brand_and_pwa()
+    print("Build statica completata con identità OV e PWA installabile.")
