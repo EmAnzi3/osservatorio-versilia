@@ -38,11 +38,8 @@ jobs:
       - name: Run regression tests
         run: python scripts/test_static.py
 
-      - name: Run v1.5.0 regional indicator checks
-        run: python scripts/test_release_v150.py
-
-      - name: Run v1.6.0 budget checks
-        run: python scripts/test_release_v160.py
+      - name: Run release compatibility checks
+        run: python scripts/test_release_v170_compat.py
 
       - name: Run source-link checks
         run: python scripts/test_source_links_v160.py
@@ -56,13 +53,37 @@ jobs:
       - name: Run export checks
         run: python scripts/test_exports_v161.py
 
-      - name: Run ASIA and AGCOM extractor tests
+      - name: Run ASIA, ATECO and AGCOM tests
         run: |
           python scripts/test_agid_indicators.py
+          python scripts/test_ateco_agcom_audit.py
+          python scripts/test_agcom_primary_percentages.py
           python -m py_compile \
             scripts/update_agid_indicators_resilient.py \
             scripts/restore_partial_agcom_metrics.py \
+            scripts/enrich_ateco_agcom_audit.py \
+            scripts/audit_agcom_primary.py \
+            scripts/apply_agcom_primary_percentages.py \
+            scripts/apply_agcom_absolute_policy.py \
             scripts/monthly_data_check_coverage.py
+
+      - name: Verify municipal crests
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import mimetypes
+          crests = [
+              'massarosa.png', 'viareggio.svg', 'camaiore.svg',
+              'pietrasanta.svg', 'seravezza.png', 'forte-dei-marmi.svg',
+              'stazzema.webp'
+          ]
+          for crest in crests:
+              path = Path('dist/crests') / crest
+              assert path.exists() and path.stat().st_size > 0, f'Stemma mancante: {crest}'
+          for crest in ['viareggio.svg', 'camaiore.svg', 'pietrasanta.svg', 'forte-dei-marmi.svg']:
+              assert mimetypes.guess_type(crest)[0] == 'image/svg+xml'
+          print('Stemmi verificati: 7/7')
+          PY
 
       - name: Run monthly monitor checks
         run: |
