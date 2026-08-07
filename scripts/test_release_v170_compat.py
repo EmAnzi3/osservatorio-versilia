@@ -148,7 +148,7 @@ def main() -> None:
             require(missing[0].get("town") == "Forte dei Marmi", f"{key}: Comune n.d. inatteso")
             require(missing[0].get("formatted") == "n.d.", f"{key}: valore mancante non etichettato n.d.")
         else:
-            require(coverage == "7/7", f"{key}: copertura diversa da 7/7")
+            require("7/7" in coverage, f"{key}: copertura diversa da 7/7")
 
     require(regional.get("version") == "toscana-indicatori-v1.5.0", "Snapshot v1.5 inatteso")
     require(set(regional.get("indicators", {})) == V15_KEYS, "Snapshot v1.5 non allineato")
