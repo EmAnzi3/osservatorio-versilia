@@ -11,7 +11,8 @@
 
   let deferredPrompt = null;
   let mountScheduled = false;
-  let bootstrapObserver = null;
+  let headerObserver = null;
+  let appObserver = null;
 
   const isStandalone = () =>
     window.matchMedia?.('(display-mode: standalone)').matches ||
@@ -197,28 +198,22 @@
     hero.insertAdjacentElement('afterend', section);
   }
 
-  function bootstrapReady() {
-    const headerReady = Boolean(document.querySelector('[data-pwa-header-install]'));
-    const homeNeedsCallout = document.body?.dataset.page === 'home';
-    const homeReady = !homeNeedsCallout || Boolean(document.querySelector('.pwa-install-callout'));
-    return headerReady && homeReady;
-  }
-
-  function stopBootstrapObserver() {
-    bootstrapObserver?.disconnect();
-    bootstrapObserver = null;
+  function stopLifecycleObservers() {
+    headerObserver?.disconnect();
+    appObserver?.disconnect();
+    headerObserver = null;
+    appObserver = null;
   }
 
   function mountUi() {
     if (isStandalone()) {
-      stopBootstrapObserver();
+      stopLifecycleObservers();
       hideInstallUi();
       return;
     }
     mountHeaderButton();
     mountHomeCallout();
     syncInstallControls();
-    if (bootstrapReady()) stopBootstrapObserver();
   }
 
   function scheduleMount() {
@@ -230,11 +225,24 @@
     });
   }
 
-  function startBootstrapObserver() {
-    if (bootstrapObserver || isStandalone()) return;
-    const root = document.body || document.documentElement;
-    bootstrapObserver = new MutationObserver(() => scheduleMount());
-    bootstrapObserver.observe(root, { childList: true, subtree: true });
+  function startLifecycleObservers() {
+    if (isStandalone()) {
+      mountUi();
+      return;
+    }
+
+    const headerMount = document.getElementById('site-header-mount');
+    if (headerMount && !headerObserver) {
+      headerObserver = new MutationObserver(scheduleMount);
+      headerObserver.observe(headerMount, { childList: true });
+    }
+
+    const appMount = document.getElementById('app');
+    if (appMount && !appObserver) {
+      appObserver = new MutationObserver(scheduleMount);
+      appObserver.observe(appMount, { childList: true });
+    }
+
     scheduleMount();
   }
 
@@ -248,11 +256,14 @@
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     document.documentElement.classList.remove('pwa-install-ready');
-    stopBootstrapObserver();
+    stopLifecycleObservers();
     hideInstallUi();
   });
 
-  window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', scheduleMount);
+  window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', () => {
+    if (isStandalone()) mountUi();
+    else startLifecycleObservers();
+  });
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -262,54 +273,13 @@
     });
   }
 
-  // L'app costruisce header e contenuto dopo un fetch iniziale. L'observer serve
-  // soltanto durante quel bootstrap e viene disconnesso appena i CTA esistono.
+  // L'app sostituisce i figli diretti di questi due mount point dopo il fetch
+  // iniziale. Osserviamo solo quel livello: il pulsante e il callout vengono
+  // inseriti più in profondità e quindi non possono riattivare gli observer.
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startBootstrapObserver, { once: true });
+    document.addEventListener('DOMContentLoaded', startLifecycleObservers, { once: true });
   } else {
-    startBootstrapObserver();
+    startLifecycleObservers();
   }
-  window.addEventListener('load', scheduleMount, { once: true });
-
-  // L'header dell'app può essere ricostruito anche dopo il bootstrap. Conserviamo
-  // il nodo già configurato (e quindi il suo listener) e lo reinseriamo soltanto
-  // quando il contenitore dell'header viene davvero sostituito. L'observer è
-  // limitato ai figli diretti di #site-header-mount, quindi non reagisce alle
-  // modifiche del pulsante stesso e non crea loop di mutazioni.
-  function keepHeaderInstallButtonAlive() {
-    const mount = document.getElementById('site-header-mount');
-    if (!mount || isStandalone()) return;
-    let retainedButton = null;
-
-    const reconcile = () => {
-      if (isStandalone()) return;
-      const actions = mount.querySelector('.site-header-actions');
-      if (!actions) return;
-      const current = actions.querySelector('[data-pwa-header-install]');
-      if (current) {
-        retainedButton = current;
-        return;
-      }
-      if (!retainedButton) {
-        // Il bootstrap PWA monta il pulsante al frame successivo.
-        requestAnimationFrame(() => {
-          const mounted = mount.querySelector('[data-pwa-header-install]');
-          if (mounted) retainedButton = mounted;
-        });
-        return;
-      }
-      const search = actions.querySelector('.global-search-trigger');
-      actions.insertBefore(retainedButton, search || null);
-    };
-
-    const observer = new MutationObserver(() => requestAnimationFrame(reconcile));
-    observer.observe(mount, { childList: true });
-    requestAnimationFrame(reconcile);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', keepHeaderInstallButtonAlive, { once: true });
-  } else {
-    keepHeaderInstallButtonAlive();
-  }
+  window.addEventListener('load', startLifecycleObservers, { once: true });
 })();
