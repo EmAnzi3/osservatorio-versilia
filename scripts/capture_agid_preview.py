@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cattura schermate desktop e mobile della preview ASIA/AGCOM."""
+"""Cattura schermate desktop e mobile della preview ASIA/AGCOM/ATECO."""
 from __future__ import annotations
 
 import argparse
@@ -13,10 +13,17 @@ PAGES = (
     (
         "economia",
         "/confronta/economia/?indicatore=localEmployees",
+        "#ateco-compare-module",
+    ),
+    (
+        "massarosa-ateco",
+        "/comuni/massarosa/?tema=economia&indicatore=localEmployees",
+        "#ateco-town-module",
     ),
     (
         "mobilita-infrastrutture",
         "/confronta/mobilita/?indicatore=ftthCoverageDesi",
+        "#compare-bars",
     ),
 )
 
@@ -36,12 +43,13 @@ async def capture(base_url: str, output_dir: Path) -> None:
                     locale="it-IT",
                 )
                 page = await context.new_page()
-                for name, path in PAGES:
+                for name, path, selector in PAGES:
                     await page.goto(
                         f"{base_url.rstrip('/')}{path}",
                         wait_until="networkidle",
                         timeout=60_000,
                     )
+                    await page.wait_for_selector(selector, timeout=30_000)
                     await page.screenshot(
                         path=output_dir / f"{name}-{profile}.png",
                         full_page=True,
