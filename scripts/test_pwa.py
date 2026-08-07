@@ -94,6 +94,8 @@ def static_checks() -> None:
             "Manca la spiegazione del pannello Home durante l'installazione Chrome")
     require("Tocca <b>Annulla</b>" in pwa_js,
             "Manca l'istruzione per evitare l'icona Home senza interrompere l'installazione")
+    require("pwa-install-callout" not in pwa_js,
+            "Il callout promozionale PWA è ancora montato nella home")
     require("subtree: true" not in pwa_js,
             "Il lifecycle PWA osserva ancora ricorsivamente il DOM")
     require("startLifecycleObservers" in pwa_js,
@@ -181,14 +183,15 @@ def browser_checks() -> None:
         desktop = browser.new_context(viewport={"width": 1280, "height": 900})
         page = desktop.new_page()
         page.goto(base, wait_until="networkidle")
-        page.wait_for_selector(".pwa-install-callout")
         page.wait_for_selector(".site-header .pwa-install-button")
+        require(page.locator(".pwa-install-callout").count() == 0,
+                "Il callout PWA è ancora presente nella home")
         require(page.locator(".site-header .pwa-install-button").count() == 1, "Pulsante header duplicato")
         verify_header_button_survives_remount(page)
         verify_no_idle_pwa_mutation(page)
         simulate_install_prompt(page, "__ovDesktopPrompt")
         page.wait_for_timeout(50)
-        action = page.locator(".pwa-callout-action")
+        action = page.locator(".site-header .pwa-install-button")
         require("installa app" in action.inner_text().lower(), "Desktop non passa allo stato installabile")
         action.click()
         page.wait_for_timeout(100)
@@ -214,9 +217,12 @@ def browser_checks() -> None:
 
         chrome_page = chrome.new_page()
         chrome_page.goto(base, wait_until="networkidle")
-        chrome_page.wait_for_selector(".pwa-install-callout")
-        chrome_action = chrome_page.locator(".pwa-callout-action")
-        require("come installare" in chrome_action.inner_text().lower(), "CTA Chrome Android ambiguo")
+        require(chrome_page.locator(".pwa-install-callout").count() == 0,
+                "Il callout PWA è ancora presente nella home mobile")
+        chrome_action = chrome_page.locator(".site-header .pwa-install-button")
+        chrome_action.wait_for(state="visible")
+        chrome_aria = (chrome_action.get_attribute("aria-label") or "").lower()
+        require("come installare" in chrome_aria, "CTA Chrome Android ambiguo")
         simulate_install_prompt(chrome_page, "__ovChromePrompt")
         chrome_action.tap()
         chrome_page.wait_for_selector("#pwa-install-dialog[open]")
@@ -242,9 +248,12 @@ def browser_checks() -> None:
         )
         samsung_page = samsung.new_page()
         samsung_page.goto(base, wait_until="networkidle")
-        samsung_page.wait_for_selector(".pwa-install-callout")
-        samsung_action = samsung_page.locator(".pwa-callout-action")
-        require("come installare" in samsung_action.inner_text().lower(), "CTA Samsung ambiguo")
+        require(samsung_page.locator(".pwa-install-callout").count() == 0,
+                "Il callout PWA è ancora presente nella home Samsung")
+        samsung_action = samsung_page.locator(".site-header .pwa-install-button")
+        samsung_action.wait_for(state="visible")
+        samsung_aria = (samsung_action.get_attribute("aria-label") or "").lower()
+        require("come installare" in samsung_aria, "CTA Samsung ambiguo")
         simulate_install_prompt(samsung_page, "__ovSamsungPrompt")
         samsung_action.tap()
         samsung_page.wait_for_selector("#pwa-install-dialog[open]")
@@ -261,7 +270,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: lifecycle stabile e istruzioni Chrome coerenti con il flusso reale su Android.")
+    print("PWA verificata: callout home rimosso; header, lifecycle e istruzioni restano invariati.")
 
 
 if __name__ == "__main__":
