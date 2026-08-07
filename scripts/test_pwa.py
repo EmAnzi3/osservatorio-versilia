@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260807-pwa2"
+PWA_VERSION = "20260807-pwa3"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -80,7 +80,7 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable nel manifest mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260807-2" in service_worker, "Versione cache PWA non aggiornata")
+    require("ov-pwa-20260807-3" in service_worker, "Versione cache PWA non aggiornata")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first non configurata")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset non configurata")
@@ -91,10 +91,16 @@ def static_checks() -> None:
     require("Aggiungi alla schermata Home" in pwa_js, "Istruzioni iOS mancanti")
     require("SamsungBrowser" in pwa_js, "Rilevamento Samsung Internet mancante")
     require("Installa nella schermata App" in pwa_js, "Istruzioni Samsung Internet mancanti")
-    require("badge PWA <b>+</b>" in pwa_js, "Indicazione del badge + Samsung mancante")
-    require("Aggiungi pagina a" in pwa_js and "Schermata Home" in pwa_js,
-            "Percorso menu Samsung Internet mancante")
+    require("Non usare “Aggiungi pagina a → Schermata Home”" in pwa_js,
+            "Avvertenza contro il semplice shortcut Samsung mancante")
+    require("nell'elenco delle app" in pwa_js, "Risultato installazione Samsung non chiarito")
     require("serviceWorker.register" in pwa_js, "Registrazione service worker mancante")
+
+    request_start = pwa_js.index("async function requestInstall")
+    prompt_branch = pwa_js.index("if (deferredPrompt)", request_start)
+    fallback_call = pwa_js.index("openInstructions();", prompt_branch)
+    require(prompt_branch < fallback_call,
+            "Il prompt nativo non ha precedenza sul fallback manuale")
 
     pages = (
         DIST / "index.html",
@@ -157,15 +163,38 @@ def browser_checks() -> None:
         samsung_page.goto(base, wait_until="networkidle")
         samsung_page.wait_for_selector(".pwa-install-callout")
         samsung_action = samsung_page.locator(".pwa-callout-action")
-        require("come installare" in samsung_action.inner_text().lower(), "CTA Samsung ancora fuorviante")
+        require("installa app" in samsung_action.inner_text().lower(), "CTA Samsung non propone l'installazione vera")
+
+        # Simula l'evento installabile: anche con user-agent Samsung deve vincere il prompt nativo.
+        samsung_page.evaluate(
+            """() => {
+              window.__ovPromptCalled = false;
+              const event = new Event('beforeinstallprompt', { cancelable: true });
+              Object.defineProperty(event, 'prompt', {
+                value: () => { window.__ovPromptCalled = true; return Promise.resolve(); }
+              });
+              Object.defineProperty(event, 'userChoice', {
+                value: Promise.resolve({ outcome: 'dismissed' })
+              });
+              window.dispatchEvent(event);
+            }"""
+        )
+        samsung_action.click()
+        samsung_page.wait_for_timeout(100)
+        require(samsung_page.evaluate("window.__ovPromptCalled === true"),
+                "Samsung Internet non usa il prompt nativo quando disponibile")
+        require(samsung_page.locator("#pwa-install-dialog[open]").count() == 0,
+                "Il fallback manuale ha scavalcato il prompt nativo Samsung")
+
+        # Dopo il prompt simulato, una seconda richiesta senza evento mostra istruzioni manuali corrette.
         samsung_action.click()
         samsung_page.wait_for_selector("#pwa-install-dialog[open]")
         dialog = samsung_page.locator("#pwa-install-dialog").inner_text().lower()
         require("installa con samsung internet" in dialog, "Titolo istruzioni Samsung inatteso")
-        require("badge pwa +" in dialog, "Istruzione sul badge + Samsung mancante")
         require("installa nella schermata app" in dialog, "Conferma installazione Samsung mancante")
-        require("aggiungi pagina a" in dialog and "schermata home" in dialog,
-                "Fallback menu Samsung Internet mancante")
+        require("elenco delle app" in dialog, "Destinazione app drawer non dichiarata")
+        require("non usare" in dialog and "aggiungi pagina a" in dialog and "schermata home" in dialog,
+                "Differenza tra app e shortcut Samsung non esplicitata")
         samsung.close()
 
         browser.close()
@@ -174,7 +203,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("PWA verificata: installazione Chrome/iOS e istruzioni specifiche Samsung Internet coerenti.")
+    print("PWA verificata: prompt nativo prioritario e distinzione app/shortcut corretta su Samsung Internet.")
 
 
 if __name__ == "__main__":
