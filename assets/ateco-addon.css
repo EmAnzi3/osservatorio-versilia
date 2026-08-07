@@ -1,0 +1,33 @@
+.ateco-module { margin-top: 48px; }
+.ateco-top-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin-top: 24px; }
+.ateco-top-grid > div, .ateco-compare { min-width: 0; }
+.ateco-bar-list, .ateco-compare-bars { display: grid; gap: 16px; }
+.ateco-bar-row, .ateco-compare-row { display: grid; gap: 7px; }
+.ateco-bar-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.ateco-bar-head span { min-width: 0; }
+.ateco-bar-head b { font-family: var(--font-geist-mono), monospace; font-size: .82em; color: var(--muted); margin-right: 5px; }
+.ateco-bar-head strong { white-space: nowrap; }
+.ateco-bar-track { height: 8px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--theme-color, var(--blue)) 10%, var(--surface)); }
+.ateco-bar-track > span { display: block; height: 100%; border-radius: inherit; background: var(--theme-color, var(--blue)); min-width: 2px; }
+.ateco-bar-row small, .ateco-compare-row small, .ateco-source-note { color: var(--muted); }
+.ateco-full { margin-top: 28px; }
+.ateco-table-wrap { overflow-x: auto; margin-top: 18px; }
+.ateco-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ateco-table th, .ateco-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; white-space: nowrap; }
+.ateco-table th:nth-child(2), .ateco-table td:nth-child(2) { text-align: left; white-space: normal; min-width: 260px; }
+.ateco-table th:first-child, .ateco-table td:first-child { text-align: left; font-family: var(--font-geist-mono), monospace; }
+.ateco-source-note { margin-top: 16px; line-height: 1.55; }
+.ateco-source-note a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.ateco-compare { padding-top: 44px; padding-bottom: 26px; }
+.ateco-compare-controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 14px 20px; align-items: end; margin: 24px 0; }
+.ateco-compare-controls label { grid-column: 1; font-size: 12px; color: var(--muted); }
+.ateco-compare-controls select { grid-column: 1; width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); }
+.ateco-compare-controls .scale-switch { grid-column: 2; grid-row: 1 / span 2; align-self: end; }
+.ateco-compare-bars { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+@media (max-width: 800px) {
+  .ateco-top-grid { grid-template-columns: 1fr; }
+  .ateco-compare-controls { grid-template-columns: 1fr; }
+  .ateco-compare-controls label, .ateco-compare-controls select, .ateco-compare-controls .scale-switch { grid-column: 1; grid-row: auto; }
+  .ateco-compare-controls .scale-switch { justify-self: start; }
+  .ateco-table { font-size: 12px; }
+}
