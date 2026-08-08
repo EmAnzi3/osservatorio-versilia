@@ -425,7 +425,8 @@
 @media print {
   .comparison-legend,
   .comparison-axis,
-  .comparison-note {
+  .comparison-note,
+  .reading-scale {
     display: none !important;
   }
 
@@ -438,7 +439,6 @@
     print-color-adjust: exact;
   }
 
-  .reading-scale,
   .system-reading-grid article,
   .system-reading-caution {
     background: white !important;
