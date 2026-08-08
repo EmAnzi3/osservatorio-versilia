@@ -3,10 +3,75 @@
 
   const scriptUrl = document.currentScript?.src || new URL('assets/visual-grammar.js', document.baseURI).href;
   const dataUrl = new URL('../data/site-data.json', scriptUrl).href;
+  const projectSystemUrl = new URL('../progetto/#sistema-territoriale', scriptUrl).href;
   const number1 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const number0 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 });
   let data = null;
   let scheduled = false;
+
+  const scopeProfiles = {
+    administrative: {
+      label: 'Amministrativo',
+      description: 'Il confine comunale è parte del fenomeno osservato: il dato misura attività, risorse o servizi attribuiti direttamente all’amministrazione o al perimetro comunale.'
+    },
+    territorial: {
+      label: 'Territoriale',
+      description: 'Il dato descrive residenti, stock o fenomeni localizzati nel Comune. Il confine è utile per leggere il territorio, ma non implica che il Comune sia un sistema autonomo.'
+    },
+    functional: {
+      label: 'Funzionale',
+      description: 'Il fenomeno supera strutturalmente i confini comunali. Il valore indica dove persone, imprese o servizi sono localizzati o censiti, non delimita un sistema economico-sociale autonomo.'
+    }
+  };
+
+  const themeScopeDefaults = {
+    demografia: 'territorial',
+    economia: 'functional',
+    lavoro: 'functional',
+    istruzione: 'territorial',
+    salute: 'functional',
+    mobilita: 'functional',
+    abitare: 'territorial',
+    ambiente: 'territorial',
+    bilanci: 'administrative',
+    comunita: 'administrative'
+  };
+
+  const administrativeMetrics = new Set([
+    'currentRevenueAccruedPerResident',
+    'currentExpenditureCommittedPerResident',
+    'capitalExpenditureCommittedPerResident',
+    'ownRevenueShare',
+    'currentCollectionCapacity',
+    'currentPaymentCapacity',
+    'availableAdministrationResultPerResident',
+    'rigidExpenditureShare',
+    'currentPayments',
+    'capitalPayments',
+    'siopePayments',
+    'educationMissionExpenditurePerResident',
+    'socialMissionExpenditurePerResident',
+    'environmentMissionExpenditurePerResident',
+    'mobilityMissionExpenditurePerResident',
+    'cultureSportMissionExpenditurePerResident',
+    'tourismDevelopmentMissionExpenditurePerResident',
+    'publicWorks',
+    'pnrrFunding',
+    'pnrrConcluded',
+    'recycling',
+    'wastePerResident',
+    'residualWaste'
+  ]);
+
+  const territorialMetrics = new Set([
+    'income',
+    'incomeUnder15k',
+    'motorization',
+    'pollutingCars',
+    'evPoints',
+    'roadInjuries',
+    'thirdSector'
+  ]);
 
   function unitKind(unit) {
     const token = String(unit || '').trim().toLowerCase();
@@ -54,6 +119,21 @@
     if (value === null || value === undefined || value === '') return null;
     const n = Number(value);
     return Number.isFinite(n) ? n : null;
+  }
+
+  function metricScope(metricKey, metric) {
+    if (administrativeMetrics.has(metricKey)) return 'administrative';
+    if (territorialMetrics.has(metricKey)) return 'territorial';
+    return themeScopeDefaults[metric?.meta?.theme] || 'territorial';
+  }
+
+  function readingScaleMarkup(metricKey, metric) {
+    const scope = metricScope(metricKey, metric);
+    const profile = scopeProfiles[scope];
+    return `<aside class="reading-scale" data-reading-scale="${scope}" data-reading-metric="${metricKey}">
+      <div><span class="overline">Scala di lettura</span><strong>${profile.label}</strong></div>
+      <p>${profile.description}</p>
+    </aside>`;
   }
 
   function formatAxis(value, unit) {
@@ -229,6 +309,43 @@
     container.append(note);
   }
 
+  function enhanceReadingScales() {
+    if (!data) return;
+
+    const definition = document.querySelector('#compare-definition .indicator-definition');
+    if (definition) {
+      const metricKey = metricKeyFor(definition);
+      const metric = data.metrics?.[metricKey];
+      if (metric) {
+        const existing = definition.querySelector(':scope > .reading-scale');
+        if (!existing || existing.dataset.readingMetric !== metricKey) {
+          existing?.remove();
+          const actions = definition.querySelector(':scope > .data-actions');
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
+          const block = wrapper.firstElementChild;
+          if (actions) definition.insertBefore(block, actions);
+          else definition.append(block);
+        }
+      }
+    }
+
+    const townLayout = document.querySelector('#town-topic .town-metric-layout');
+    if (townLayout) {
+      const metricKey = metricKeyFor(townLayout);
+      const metric = data.metrics?.[metricKey];
+      if (metric) {
+        const existing = townLayout.parentElement?.querySelector(':scope > .reading-scale');
+        if (!existing || existing.dataset.readingMetric !== metricKey) {
+          existing?.remove();
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
+          townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
+        }
+      }
+    }
+  }
+
   function enhanceTownPosition() {
     if (!data) return;
     const panel = document.querySelector('.versilia-position');
@@ -270,6 +387,69 @@
     });
   }
 
+  function enhanceHomeMethod() {
+    const method = document.querySelector('.method-section');
+    if (!method) return;
+    const articles = [...method.querySelectorAll('.method-list article')];
+    const scaleArticle = articles.find(article => article.querySelector('h3')?.textContent.trim() === 'La scala conta');
+    if (scaleArticle) {
+      const heading = scaleArticle.querySelector('h3');
+      const paragraph = scaleArticle.querySelector('p');
+      if (heading) heading.textContent = 'Il Comune non è sempre il sistema';
+      if (paragraph) paragraph.textContent = 'Ogni indicatore dichiara se il confine comunale è amministrativo, territoriale o soltanto una localizzazione dentro un fenomeno sovracomunale.';
+    }
+    if (!method.querySelector('.system-reading-link')) {
+      const link = document.createElement('a');
+      link.className = 'system-reading-link';
+      link.href = projectSystemUrl;
+      link.innerHTML = '<span>Comune e sistema territoriale</span><strong>Come cambia la lettura di lavoro, economia e mobilità →</strong>';
+      method.append(link);
+    }
+  }
+
+  function enhanceProjectMethod() {
+    const method = document.querySelector('.method-detail');
+    if (!method) return;
+    const headingCopy = method.querySelector('.section-heading > p');
+    if (headingCopy) headingCopy.textContent = 'Sei regole per evitare confronti solo apparentemente precisi.';
+
+    const principles = method.querySelector('.principles-grid');
+    if (principles) {
+      const items = [...principles.querySelectorAll(':scope > li')];
+      const first = items[0];
+      if (first) {
+        const heading = first.querySelector('h3');
+        const paragraph = first.querySelector('p');
+        if (heading) heading.textContent = 'Scala esplicita';
+        if (paragraph) paragraph.textContent = 'Ogni indicatore dichiara se va letto come dato amministrativo, territoriale o funzionale: il Comune non viene trattato automaticamente come un sistema chiuso.';
+      }
+      if (!principles.querySelector('.base-size-principle')) {
+        const last = items.at(-1);
+        if (last?.querySelector('span')) last.querySelector('span').textContent = '06';
+        const item = document.createElement('li');
+        item.className = 'base-size-principle';
+        item.innerHTML = '<span>05</span><h3>Basi numeriche diverse</h3><p>Tassi e variazioni percentuali possono essere più instabili nei comuni piccoli: quando pochi casi spostano molto una percentuale, il dato va letto insieme ai valori assoluti e alla serie storica disponibili.</p>';
+        if (last) principles.insertBefore(item, last);
+        else principles.append(item);
+      }
+    }
+
+    if (!document.getElementById('sistema-territoriale')) {
+      const section = document.createElement('section');
+      section.id = 'sistema-territoriale';
+      section.className = 'system-reading page-width';
+      section.innerHTML = `<div class="system-reading-intro"><span class="section-number">03</span><div><span class="overline">Comune e sistema territoriale</span><h2>Sette amministrazioni, un territorio interdipendente.</h2><p>I confini comunali sono essenziali per bilanci, servizi e responsabilità amministrative. Lo sono molto meno per mercato del lavoro, sistema produttivo, mobilità, sanità e turismo, che funzionano su reti sovracomunali.</p></div></div>
+        <div class="system-reading-grid">
+          <article data-scope="administrative"><strong>Amministrativo</strong><p>Il confine comunale è parte del fenomeno. È il caso, per esempio, di bilanci, opere e risorse attribuite all’ente.</p></article>
+          <article data-scope="territorial"><strong>Territoriale</strong><p>Il Comune è una buona unità descrittiva per residenti, abitazioni o fenomeni localizzati, ma non è necessariamente un sistema autonomo.</p></article>
+          <article data-scope="functional"><strong>Funzionale</strong><p>Flussi di lavoro, imprese, servizi e mobilità superano i confini. Il valore comunale indica localizzazione o residenza, non il perimetro reale del sistema.</p></article>
+        </div>
+        <div class="system-reading-caution"><div><span class="overline">Comuni di dimensioni diverse</span><h3>Una percentuale non pesa sempre allo stesso modo.</h3></div><p>Viareggio e Stazzema hanno basi numeriche molto diverse. Normalizzare per abitante rende i valori confrontabili, ma non elimina la maggiore volatilità dei tassi nei territori piccoli: pochi casi possono produrre variazioni percentuali ampie.</p></div>
+        <div class="system-reading-links"><a href="${new URL('../confronta/lavoro/', scriptUrl).href}">Lavoro <span>→</span></a><a href="${new URL('../confronta/economia/', scriptUrl).href}">Economia <span>→</span></a><a href="${new URL('../confronta/mobilita/', scriptUrl).href}">Mobilità <span>→</span></a></div>`;
+      method.insertAdjacentElement('afterend', section);
+    }
+  }
+
   function reviseCopy() {
     document.querySelectorAll('.method-list h3').forEach(heading => {
       if (heading.textContent.trim() === 'Posizione, non giudizio') {
@@ -291,12 +471,16 @@
     if (intro?.textContent.includes('posizione rispetto alla Versilia')) intro.textContent = intro.textContent.replace('posizione rispetto alla Versilia', 'confronto con la Versilia');
     const townsIntro = document.querySelector('.towns-section .section-heading > p');
     if (townsIntro?.textContent.includes('posizione nel contesto')) townsIntro.textContent = townsIntro.textContent.replace('posizione nel contesto', 'confronto nel contesto');
+
+    enhanceHomeMethod();
+    enhanceProjectMethod();
   }
 
   function enhance() {
     scheduled = false;
     if (!data) return;
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
+    enhanceReadingScales();
     enhanceTownPosition();
     enhanceIndicatorCards();
     reviseCopy();
