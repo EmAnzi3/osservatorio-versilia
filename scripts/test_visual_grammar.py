@@ -56,9 +56,9 @@ def static_checks() -> None:
     assert "Quota sulla Versilia" in massarosa
     assert "13,7%" in massarosa
     assert "della popolazione versiliese" in massarosa
-    assert "Scala di lettura" in massarosa
     assert "Ordine del valore" not in massarosa
     assert "° valore" not in massarosa
+    assert "data-indicator=\"population\"" not in massarosa, "Il dato selezionato è duplicato nel Quadro del tema"
     assert "pagelle, podi o giudizi politici automatici" in project
     assert "Sette amministrazioni, un territorio interdipendente" in project
     assert "Basi numeriche diverse" in project
@@ -74,7 +74,7 @@ def assert_reading_scale(page, expected: str) -> None:
 
 def browser_checks() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
-    launch_args = {"headless": True}
+    launch_args: dict[str, object] = {"headless": True}
     if chromium_path:
         launch_args["executable_path"] = chromium_path
 
@@ -90,6 +90,8 @@ def browser_checks() -> None:
         assert page.locator("#home-explorer .comparison-note").count() == 1
         assert page.locator(".system-reading-link").count() == 1
 
+        # Nella scheda comunale la posizione resta descrittiva, ma il dato aperto
+        # non viene duplicato nel Quadro del tema.
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         population_overline = page.locator(".versilia-position .overline").inner_text().strip().lower()
@@ -99,10 +101,12 @@ def browser_checks() -> None:
         assert "della popolazione versiliese" in population_text
         assert "sopra la versilia" not in population_text
         assert "sotto la versilia" not in population_text
-        population_card = page.locator('.indicator-card-grid button[data-indicator="population"] small').first
-        assert "13,7% della popolazione versiliese" in population_card.inner_text().lower()
-        assert_reading_scale(page, "Territoriale")
+        assert page.locator('.town-overview [data-indicator="population"]').count() == 0
+        card_notes = page.locator(".town-overview .indicator-card-grid button small").all_text_contents()
+        assert card_notes and all("° valore" not in text.lower() for text in card_notes)
 
+        # La scala di lettura resta nelle pagine comparative, dove serve a
+        # interpretare correttamente il perimetro dell'indicatore.
         page.goto(base + "confronta/demografia/?indicatore=share65", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .comparison-bars").get_attribute("data-viz") == "percent-dotplot"
@@ -137,10 +141,6 @@ def browser_checks() -> None:
         page.goto(base + "confronta/mobilita/?indicatore=ftthCoverageDesi", wait_until="networkidle")
         assert_reading_scale(page, "Territoriale")
 
-        page.goto(base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded", wait_until="networkidle")
-        page.wait_for_selector(".town-metric-layout")
-        assert_reading_scale(page, "Funzionale")
-
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
@@ -148,7 +148,8 @@ def browser_checks() -> None:
         position_text = page.locator(".versilia-position").inner_text().lower()
         assert "su 7" not in position_text
         assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
-        card_notes = page.locator(".indicator-card-grid button small").all_text_contents()
+        assert page.locator('.town-overview [data-indicator="share65"]').count() == 0
+        card_notes = page.locator(".town-overview .indicator-card-grid button small").all_text_contents()
         assert card_notes and all("° valore" not in text.lower() for text in card_notes)
 
         page.goto(base + "progetto/", wait_until="networkidle")
@@ -165,7 +166,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("Grammatica visuale e scala territoriale verificate.")
+    print("Grammatica visuale verificata: confronti, scala territoriale e schede comunali senza duplicazioni.")
 
 
 if __name__ == "__main__":
