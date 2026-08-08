@@ -2,7 +2,7 @@
   'use strict';
 
   const ENABLE_TOWN_LAYOUT_V2 = true;
-  if (!ENABLE_TOWN_LAYOUT_V2) return;
+  if (!ENABLE_TOWN_LAYOUT_V2 || document.body?.dataset?.page !== 'town') return;
 
   const scriptUrl = document.currentScript?.src || new URL('assets/town-layout-v2.js', document.baseURI).href;
   const stylesheetUrl = new URL('./town-layout-v2.css?v=20260808-1', scriptUrl).href;
