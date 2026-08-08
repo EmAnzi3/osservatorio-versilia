@@ -1,0 +1,90 @@
+/* Superficie coerente per tutti i pannelli che contengono grafici e visualizzazioni. */
+:root {
+  --ov-chart-surface: var(--surface);
+  --ov-chart-border: color-mix(in srgb, var(--ink) 14%, transparent);
+  --ov-chart-radius: 16px;
+}
+
+/* Home: confronto in evidenza. */
+.explorer-chart,
+/* Pagine tema: confronto corrente. */
+.topic-bars,
+/* Schede comunali: confronto corrente / storico. */
+.history-panel,
+/* Vista storica e confronto a due punti. */
+.ux-history-card,
+/* Approfondimento economico: barre settoriali. */
+.deep-bar-list,
+/* Dettaglio ISTAT ASIA / ATECO. */
+.ateco-panel,
+.ateco-town-detail {
+  box-sizing: border-box;
+  background: var(--ov-chart-surface) !important;
+  border: 1px solid var(--ov-chart-border);
+  border-radius: var(--ov-chart-radius);
+}
+
+.explorer-chart,
+.topic-bars,
+.history-panel {
+  padding: 22px;
+}
+
+/* La card storica ha già una propria spaziatura nel componente. */
+.ux-history-card {
+  background: var(--ov-chart-surface) !important;
+}
+
+/* I grafici SVG devono lasciare visibile la superficie del pannello. */
+.trend-chart svg,
+.ux-history-chart svg {
+  background: transparent !important;
+}
+
+/* I punti cavi delle serie storiche devono usare la stessa superficie. */
+.ux-series-point {
+  fill: var(--ov-chart-surface);
+}
+
+.deep-bar-list {
+  padding: 16px;
+}
+
+/* I pannelli ATECO usavano una variante quasi uguale: ora adottano la superficie comune. */
+.ateco-panel,
+.ateco-town-detail {
+  background: var(--ov-chart-surface) !important;
+}
+
+@media (max-width: 700px) {
+  .explorer-chart,
+  .topic-bars,
+  .history-panel {
+    padding: 15px;
+    border-radius: 13px;
+  }
+
+  .ux-history-card,
+  .deep-bar-list,
+  .ateco-panel,
+  .ateco-town-detail {
+    border-radius: 13px;
+  }
+
+  .deep-bar-list {
+    padding: 13px;
+  }
+}
+
+@media print {
+  .explorer-chart,
+  .topic-bars,
+  .history-panel,
+  .ux-history-card,
+  .deep-bar-list,
+  .ateco-panel,
+  .ateco-town-detail {
+    background: white !important;
+    box-shadow: none !important;
+  }
+}

@@ -14,6 +14,7 @@ BRAND_ASSET_VERSION = "20260807-ov"
 PWA_ASSET_VERSION = "20260807-pwa7"
 PWA_JS_REVISION = "install-ui-off"
 MOBILE_ACCORDION_ASSET_VERSION = "20260808-2"
+CHART_SURFACE_ASSET_VERSION = "20260808-1"
 OLD_MARK = '<span class="site-brand-mark">O</span>'
 PWA_FILES = ("service-worker.js", "offline.html", "site.webmanifest")
 PWA_ICONS = (
@@ -52,6 +53,17 @@ def inject_mobile_accordion_styles(document: str, relative_root: str) -> str:
     token = "assets/mobile-accordion-fix.css"
     if token not in document:
         href = f"{relative_root}{token}?v={MOBILE_ACCORDION_ASSET_VERSION}"
+        document = document.replace(
+            "</head>",
+            f'  <link rel="stylesheet" href="{href}">\n</head>',
+        )
+    return document
+
+
+def inject_chart_surface_styles(document: str, relative_root: str) -> str:
+    token = "assets/chart-surfaces.css"
+    if token not in document:
+        href = f"{relative_root}{token}?v={CHART_SURFACE_ASSET_VERSION}"
         document = document.replace(
             "</head>",
             f'  <link rel="stylesheet" href="{href}">\n</head>',
@@ -158,6 +170,7 @@ def apply_brand_and_pwa() -> None:
         relative_root = "" if prefix == "." else f"{prefix}/"
         text = inject_brand_styles(text, relative_root)
         text = inject_mobile_accordion_styles(text, relative_root)
+        text = inject_chart_surface_styles(text, relative_root)
         text = cache_bust_favicon(text)
         text = inject_pwa(text, relative_root)
         path.write_text(text, encoding="utf-8")

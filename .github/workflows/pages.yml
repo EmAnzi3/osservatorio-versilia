@@ -57,6 +57,9 @@ jobs:
           node --check assets/visual-grammar.js
           python scripts/test_visual_grammar.py
 
+      - name: Run chart surface checks
+        run: python scripts/test_chart_surfaces.py
+
       - name: Run release compatibility checks
         run: python scripts/test_release_v170_compat.py
 
