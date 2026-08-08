@@ -153,12 +153,11 @@ def verify_all_town_pages(page: Page, base: str) -> None:
         town_slug = slug(town["name"])
         url = f"{base}comuni/{town_slug}/?tema=demografia&indicatore=population"
         page.goto(url, wait_until="networkidle")
-        page.wait_for_selector(".history-panel")
-        assert_surface(page, ".history-panel", f"Comune {town['name']} · pannello grafico")
+        page.wait_for_selector(".town-history-panel")
+        assert_surface(page, ".town-history-panel", f"Comune {town['name']} · storico comunale")
 
 
 def verify_history_variants(page: Page, base: str) -> None:
-    # Reddito: due annualità, cioè lo stesso pannello mostrato nello screenshot di riferimento.
     page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
     page.wait_for_selector("#compare-bars .ux-history-card", state="attached")
     assert_surface(
@@ -168,7 +167,6 @@ def verify_history_variants(page: Page, base: str) -> None:
         visible=False,
     )
 
-    # Popolazione: serie lunga a linee, per verificare anche l'altro renderer storico.
     page.goto(base + "confronta/demografia/?indicatore=population", wait_until="networkidle")
     page.wait_for_selector("#compare-bars .ux-history-card", state="attached")
     assert_surface(
@@ -187,14 +185,10 @@ def verify_economy_specials(page: Page, base: str) -> None:
     page.goto(base + "comuni/massarosa/?tema=economia&indicatore=localUnits", wait_until="networkidle")
     page.wait_for_selector(".ateco-town-detail")
     assert_surface(page, ".ateco-town-detail", "Massarosa · dettaglio ATECO")
-
-    disclosure = page.locator(".topic-deep-dive .detail-disclosure").first
-    if disclosure.count() == 1:
-        summary = disclosure.locator(":scope > summary")
-        if disclosure.get_attribute("open") is None:
-            summary.click()
-        page.wait_for_selector(".topic-deep-dive .deep-bar-list", state="visible")
-        assert_surface(page, ".topic-deep-dive .deep-bar-list", "Massarosa · barre struttura economica")
+    require(page.locator(".town-supplementary .deep-bar-list").count() == 0,
+            "Massarosa · il dettaglio economico duplica ancora le barre ATECO")
+    require(page.locator(".town-supplementary .deep-list--income").count() == 1,
+            "Massarosa · distribuzione dei redditi aggiuntiva assente")
 
 
 def main() -> None:
@@ -222,7 +216,7 @@ def main() -> None:
         context.close()
         browser.close()
 
-    print("Superfici grafiche verificate: home, 10 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
+    print("Superfici grafiche verificate: home, 10 temi, 7 comuni, storico comparato e dettagli ATECO non duplicati.")
 
 
 if __name__ == "__main__":
