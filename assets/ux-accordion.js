@@ -54,6 +54,9 @@
   }
 
   function scheduleDecorationRecovery(container, groupSelector) {
+    // Alcuni rendering dell'app possono sostituire il contenuto delle intestazioni
+    // subito dopo un'interazione. Ripristiniamo gli strumenti in più fasi senza
+    // alterare lo stato aperto/chiuso della fisarmonica.
     queueMicrotask(() => restoreDecorations(container, groupSelector));
     requestAnimationFrame(() => restoreDecorations(container, groupSelector));
     window.setTimeout(() => restoreDecorations(container, groupSelector), 250);
