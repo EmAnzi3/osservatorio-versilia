@@ -51,7 +51,9 @@ def static_checks() -> None:
     assert "comparison-legend" in home, "Confronto prerenderizzato senza nuova grammatica"
     assert "bar-rank" not in home, "Numerazione ordinale ancora presente nel confronto home"
     assert "Differenze, non podi" in home
-    assert "Rispetto alla Versilia" in massarosa
+    assert "Quota sulla Versilia" in massarosa
+    assert "13,7%" in massarosa
+    assert "della popolazione versiliese" in massarosa
     assert "Ordine del valore" not in massarosa
     assert "° valore" not in massarosa
     assert "pagelle, podi o giudizi politici automatici" in project
@@ -73,6 +75,18 @@ def browser_checks() -> None:
         assert page.locator("#home-explorer .comparison-dot").count() == 7
         assert page.locator("#home-explorer .comparison-reference").count() == 7
         assert page.locator("#home-explorer .comparison-note").count() == 1
+
+        page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
+        page.wait_for_selector(".versilia-position")
+        population_overline = page.locator(".versilia-position .overline").inner_text().strip().lower()
+        assert population_overline == "quota sulla versilia", f"Etichetta popolazione inattesa: {population_overline!r}"
+        population_text = page.locator(".versilia-position").inner_text().lower()
+        assert "13,7%" in population_text, f"Quota popolazione Massarosa inattesa: {population_text!r}"
+        assert "della popolazione versiliese" in population_text
+        assert "sopra la versilia" not in population_text
+        assert "sotto la versilia" not in population_text
+        population_card = page.locator('.indicator-card-grid button[data-indicator="population"] small').first
+        assert "13,7% della popolazione versiliese" in population_card.inner_text().lower()
 
         page.goto(base + "confronta/demografia/?indicatore=share65", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")
