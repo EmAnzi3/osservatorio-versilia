@@ -19,7 +19,7 @@ rams(location.search);
         <article><span>Popolazione dal ${html(pop.series?.years?.[0] || '2019')}</span><strong>${populationChange >= 0 ? 'In crescita' : 'In calo'}</strong><small>${html(number1.format(Math.abs(populationChange)))}% ${populationChange >= 0 ? 'in più' : 'in meno'}</small></article>
         <article><span>Occupazione 25–64</span><strong>${employmentDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(employmentDifference)))} punti di differenza</small></article>
         <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>
-      ${townContextNav(data, town, themeKey, metricKey)}
+      ${townThemeOnlyNav(data, themeKey)}
       <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
       <div id="town-context"></div>
     </main>`;
@@ -33,7 +33,6 @@ rams(location.search);
     const selectMetric = key => {
       metricKey = key;
       updateUrl(themeKey, metricKey);
-      updateTownContextLinks(data, themeKey, metricKey);
       renderTownMetric(data, town, themeKey, metricKey, selectMetric);
     };
     const selectTheme = key => {
@@ -42,13 +41,33 @@ rams(location.search);
       document.querySelector('main.town-profile').dataset.theme = key;
       document.querySelectorAll('[data-profile-theme]').forEach(button => button.classList.toggle('active', button.dataset.profileTheme === key));
       updateUrl(themeKey, metricKey);
-      updateTownContextLinks(data, themeKey, metricKey);
       renderTownMetric(data, town, themeKey, metricKey, selectMetric);
       scrollActiveControl(document.querySelector('.theme-nav'));
     };
     document.querySelectorAll('[data-profile-theme]').forEach(button => button.addEventListener('click', () => selectTheme(button.dataset.profileTheme)));
     renderTownMetric(data, town, themeKey, metricKey, selectMetric);
     scrollActiveControl(document.querySelector('.theme-nav'));
+  }
+
+  function townThemeOnlyNav(data, activeTheme) {
+    const themeButtons = Object.values(data.themes).map(theme => `<button type="button" data-profile-theme="${theme.key}" class="${theme.key === activeTheme ? 'active' : ''}">${themeIcon(theme.key, 15)}<span>${html(theme.number)}</span>${html(theme.label)}</button>`).join('');
+    return `<div class="town-context-nav town-context-nav-themes-only"><nav class="theme-nav" aria-label="Temi della scheda">${themeButtons}</nav></div>`;
+  }
+
+  function townMetricPicker(data, themeKey, metricKey) {
+    const theme = data.themes[themeKey];
+    const metric = data.metrics[metricKey];
+    const options = themeSections(theme).map(section => `<optgroup label="${html(section.label)}">${section.metrics.map(key => `<option value="${key}" ${key === metricKey ? 'selected' : ''}>${html(data.metrics[key].meta.shortLabel)}</option>`).join('')}</optgroup>`).join('');
+    return `<div class="town-indicator-picker"><div><span class="overline">Indicatore selezionato</span><strong>${html(metric.meta.shortLabel)}</strong></div><label><span>Cambia indicatore</span><select data-town-metric-select>${options}</select></label></div>`;
+  }
+
+  function townOverviewCards(data, town, themeKey, activeKey) {
+    const theme = data.themes[themeKey];
+    return themeSections(theme).map(section => {
+      const keys = section.metrics.filter(key => key !== activeKey);
+      if (!keys.length) return '';
+      return `<section class="town-overview-group" data-section="${html(section.key)}"><div class="town-overview-group-heading"><div><span class="overline">Sezione</span><h4>${html(section.label)}</h4></div><p>${html(section.description || '')}</p></div><div class="indicator-card-grid">${keys.map(key => indicatorCard(data, town, themeKey, key, activeKey)).join('')}</div></section>`;
+    }).join('');
   }
 
   function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {
@@ -59,30 +78,29 @@ rams(location.search);
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
     container.dataset.theme = themeKey;
-    const historical = Boolean(row.series?.values?.length);
+    const historical = Boolean(row.series?.values?.length >= 2);
     container.innerHTML = `<div class="town-topic-heading"><div><span class="overline">${html(theme.number)} · ${html(theme.label)}</span><h2>${html(theme.question)}</h2><p>${html(theme.description)}</p></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
-      ${metricControls(data, themeKey, metricKey, false)}
-      <div class="town-metric-layout"><article class="town-metric-primary"><span>${html(metric.meta.label)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
+      ${townMetricPicker(data, themeKey, metricKey)}
+      <div class="town-metric-layout town-metric-layout-single"><article class="town-metric-primary"><span>${html(metric.meta.label)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
-        <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
-        <aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside></div>
+        <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article></div>
+      <aside class="versilia-position town-versilia-strip"><div><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong></div><p>${html(interpretation(metric.meta))}</p><div class="town-versilia-value"><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>
+      <section class="town-history-panel"><div class="panel-title"><div><span class="overline">Andamento storico</span><h3>${html(metric.meta.shortLabel)} nel tempo</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+        ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="town-history-empty"><strong>Serie storica non disponibile</strong><p>Per questo indicatore non è disponibile una serie comunale con almeno due anni confrontabili.</p></div>`}</section>
       ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>
-      <section class="history-panel"><div class="panel-title"><div><span class="overline">${historical ? 'Andamento storico' : 'Confronto territoriale'}</span><h3>${historical ? `${html(metric.meta.shortLabel)} nel tempo` : html(metric.meta.label)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
-        ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`}</section>
-      <section class="all-indicators"><div class="section-heading compact"><div><span class="overline">Quadro del tema</span><h3>Tutti gli indicatori</h3></div><p>Seleziona una carta per aggiornare grafico e contesto.</p></div>
-        <div class="indicator-groups">${groupedIndicatorCards(data, town, themeKey, metricKey)}</div></section>
+      <section class="all-indicators town-overview"><div class="section-heading compact"><div><span class="overline">Quadro del tema</span><h3>Gli altri indicatori di ${html(theme.label)}</h3></div><p>Il dato aperto non viene ripetuto. Seleziona una carta per cambiare approfondimento.</p></div>
+        <div class="town-overview-groups">${townOverviewCards(data, town, themeKey, metricKey)}</div></section>
       ${deepDiveMarkup(data, town, themeKey)}
       ${townBenchmarkMarkup(metric, row, town)}`;
 
-    const tablist = container.querySelector('[role="tablist"]');
-    installTablist(tablist, onMetricSelect);
+    const picker = container.querySelector('[data-town-metric-select]');
+    picker?.addEventListener('change', () => onMetricSelect(picker.value));
     container.querySelectorAll('[data-indicator]').forEach(button => button.addEventListener('click', () => onMetricSelect(button.dataset.indicator)));
     container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());
     installChartInteractions(container);
-    scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');
     context.innerHTML = themeKey === 'mobilita' ? crimeMarkup(data) : '';
