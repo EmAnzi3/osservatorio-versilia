@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controlli geometrici e screenshot del layout comunale renderizzato."""
+"""Controlli geometrici, anti-duplicazione e screenshot del layout comunale."""
 from __future__ import annotations
 
 import contextlib
@@ -69,6 +69,16 @@ def desktop_checks(page, base: str) -> None:
     require(page.locator('.town-overview [data-indicator="chronicTotal"]').count() == 0,
             "Il dato aperto non deve ricomparire nel Quadro del tema")
 
+    supplementary = page.locator(".town-supplementary")
+    require(supplementary.count() == 1, "Salute: dettaglio aggiuntivo assente")
+    supplementary_text = supplementary.inner_text().lower()
+    for repeated in ("speranza di vita", "accessi al pronto soccorso", "ricoverati", "assistenza domiciliare", "diabete", "demenza"):
+        require(repeated not in supplementary_text,
+                f"Salute: il dettaglio aggiuntivo ripete un indicatore del quadro: {repeated}")
+    for unique in ("ipertensione", "bpco", "tumori", "malattie circolatorie", "malattie respiratorie"):
+        require(unique in supplementary_text,
+                f"Salute: dettaglio realmente aggiuntivo mancante: {unique}")
+
     primary = geometry(page, ".town-metric-primary")
     versilia = geometry(page, ".town-versilia-strip")
     history = geometry(page, ".town-history-panel")
@@ -97,8 +107,12 @@ def desktop_checks(page, base: str) -> None:
             "Il nuovo indicatore selezionato ricompare nel quadro")
     require(page.locator('.town-overview [data-indicator="chronicTotal"]').count() == 1,
             "L'indicatore precedente deve rientrare nel quadro dopo il cambio")
+    supplementary_text = page.locator(".town-supplementary").inner_text().lower()
+    require("diabete" not in supplementary_text,
+            "Il dato selezionato viene ripetuto anche nel dettaglio aggiuntivo")
 
-    page.locator("#town-topic").scroll_into_view_if_needed()
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(80)
     page.screenshot(path=str(REVIEW / "seravezza-salute-desktop.png"), full_page=True)
 
 
@@ -113,6 +127,7 @@ def mobile_checks(browser, base: str) -> None:
     require(widths["scroll"] <= widths["client"] + 1, f"Mobile: overflow orizzontale {widths}")
     require(page.locator('.town-overview [data-indicator="population"]').count() == 0,
             "Mobile: il dato selezionato è duplicato nel quadro")
+    page.evaluate("window.scrollTo(0, 0)")
     page.screenshot(path=str(REVIEW / "massarosa-demografia-mobile.png"), full_page=True)
     context.close()
 
@@ -131,7 +146,7 @@ def main() -> None:
         mobile_checks(browser, base)
         browser.close()
 
-    print("Layout comunale verificato geometricamente; screenshot di revisione generati.")
+    print("Layout comunale verificato: geometria, anti-duplicazione e screenshot di revisione generati.")
 
 
 if __name__ == "__main__":
