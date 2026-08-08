@@ -409,7 +409,8 @@
 
   function enhanceProjectMethod() {
     const method = document.querySelector('.method-detail');
-    if (!method) return;
+    if (!method || method.dataset.territorialReadingEnhanced === 'true') return;
+    method.dataset.territorialReadingEnhanced = 'true';
     const headingCopy = method.querySelector('.section-heading > p');
     if (headingCopy) headingCopy.textContent = 'Sei regole per evitare confronti solo apparentemente precisi.';
 
