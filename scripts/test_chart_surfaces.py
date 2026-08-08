@@ -160,7 +160,7 @@ def verify_all_town_pages(page: Page, base: str) -> None:
 def verify_history_variants(page: Page, base: str) -> None:
     # Reddito: due annualità, cioè lo stesso pannello mostrato nello screenshot di riferimento.
     page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
-    page.wait_for_selector("#compare-bars .ux-history-card")
+    page.wait_for_selector("#compare-bars .ux-history-card", state="attached")
     assert_surface(
         page,
         "#compare-bars .ux-history-card",
@@ -170,7 +170,7 @@ def verify_history_variants(page: Page, base: str) -> None:
 
     # Popolazione: serie lunga a linee, per verificare anche l'altro renderer storico.
     page.goto(base + "confronta/demografia/?indicatore=population", wait_until="networkidle")
-    page.wait_for_selector("#compare-bars .ux-history-card")
+    page.wait_for_selector("#compare-bars .ux-history-card", state="attached")
     assert_surface(
         page,
         "#compare-bars .ux-history-card",
