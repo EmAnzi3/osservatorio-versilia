@@ -54,9 +54,6 @@
   }
 
   function scheduleDecorationRecovery(container, groupSelector) {
-    // Alcuni rendering dell'app possono sostituire il contenuto delle intestazioni
-    // subito dopo un'interazione. Ripristiniamo gli strumenti in più fasi senza
-    // alterare lo stato aperto/chiuso della fisarmonica.
     queueMicrotask(() => restoreDecorations(container, groupSelector));
     requestAnimationFrame(() => restoreDecorations(container, groupSelector));
     window.setTimeout(() => restoreDecorations(container, groupSelector), 250);
@@ -148,10 +145,7 @@
 
   function enhance() {
     document.querySelectorAll('.metric-catalog').forEach(container => prepare(container, '.metric-group'));
-    document.querySelectorAll('.indicator-groups').forEach(container => {
-      if (container.closest('.town-layout-v2')) return;
-      prepare(container, '.indicator-group');
-    });
+    document.querySelectorAll('.indicator-groups').forEach(container => prepare(container, '.indicator-group'));
   }
 
   function schedule() {
