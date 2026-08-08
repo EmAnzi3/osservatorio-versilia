@@ -80,7 +80,7 @@ jobs:
       - name: Run mobile interaction checks
         run: |
           node --check assets/ux-accordion.js
-          python scripts/test_mobile_interactions.py
+          python scripts/test_mobile_interactions_v2.py
           python scripts/test_accordion_tools_persistence.py
 
       - name: Run export checks
