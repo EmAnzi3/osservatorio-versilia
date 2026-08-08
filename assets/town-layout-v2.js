@@ -71,6 +71,44 @@
     return details;
   }
 
+  function flattenOverview(allIndicators) {
+    const groups = allIndicators?.querySelector(':scope > .indicator-groups');
+    if (!groups) return;
+
+    if (groups.dataset.townV2Flat !== 'true') {
+      groups.dataset.townV2Flat = 'true';
+      groups.addEventListener('click', event => {
+        if (event.target.closest?.('.indicator-group-heading')) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, true);
+      groups.addEventListener('keydown', event => {
+        if ((event.key === 'Enter' || event.key === ' ') && event.target.closest?.('.indicator-group-heading')) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, true);
+    }
+
+    groups.querySelectorAll(':scope > .indicator-group').forEach(group => {
+      group.classList.add('is-open', 'town-v2-flat-group');
+      group.dataset.uxAccordion = 'false';
+      const heading = group.querySelector(':scope > .indicator-group-heading');
+      const cards = group.querySelector(':scope > .indicator-card-grid');
+      if (cards) cards.hidden = false;
+      if (heading) {
+        heading.classList.remove('ux-section-toggle');
+        heading.removeAttribute('role');
+        heading.removeAttribute('tabindex');
+        heading.removeAttribute('aria-controls');
+        heading.removeAttribute('aria-expanded');
+        heading.removeAttribute('data-ux-accordion-heading');
+        heading.querySelector(':scope > .ux-section-tools')?.remove();
+      }
+    });
+  }
+
   function enhanceTownTopic() {
     scheduled = false;
     const root = document.getElementById('town-topic');
@@ -100,6 +138,7 @@
       const wantedHeading = `Quadro della ${themeLabel(root).toLocaleLowerCase('it')} a ${townName()}`;
       if (heading && heading.textContent !== wantedHeading) heading.textContent = wantedHeading;
       if (copy) copy.textContent = 'Panoramica degli indicatori del tema. Seleziona una carta per approfondire il dato.';
+      flattenOverview(allIndicators);
     }
   }
 
