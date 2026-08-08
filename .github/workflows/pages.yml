@@ -57,6 +57,17 @@ jobs:
           node --check assets/visual-grammar.js
           python scripts/test_visual_grammar.py
 
+      - name: Run town renderer layout checks
+        run: python scripts/test_town_renderer_layout.py
+
+      - name: Upload town layout review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: town-layout-review
+          path: artifacts/town-layout/*.png
+          if-no-files-found: ignore
+
       - name: Run chart surface checks
         run: python scripts/test_chart_surfaces.py
 
