@@ -6,7 +6,7 @@ Il sito pubblico dell’Osservatorio Versilia viene generato con una build stati
 
 - i sorgenti pubblicati sono conservati direttamente nel repository in formato leggibile;
 - `data/site-data.json` contiene il dataset effettivamente usato dalla build;
-- `assets/app-parts/` contiene i moduli JavaScript sorgente;
+- `assets/app-core.js` contiene il sorgente JavaScript unico dell’applicazione;
 - `assets/static.css`, `assets/fidelity.css` e `assets/fidelity.js` sono revisionabili normalmente tramite diff Git;
 - non vengono applicati payload Base64 o archivi opachi durante il deploy;
 - la build genera un unico `assets/app-bundle.js` cacheabile;
@@ -20,17 +20,17 @@ Il workflow `.github/workflows/pages.yml`, attivato dai push su `main`, esegue n
 1. installazione degli strumenti di build;
 2. generazione del sito pre-renderizzato in `dist/`;
 3. test di regressione desktop, mobile e senza JavaScript;
-4. controlli specifici sulla versione dei dati, sui 69 indicatori, sui 9 temi e sui 7 Comuni;
+4. controlli specifici sulla versione dei dati, sui 106 indicatori, sui 10 temi e sui 7 Comuni;
 5. pubblicazione su GitHub Pages soltanto se tutti i controlli sono superati.
 
-Il workflow `.github/workflows/static-prerender-check.yml` esegue gli stessi controlli sulle pull request, ma non contiene alcun job di pubblicazione.
+Lo stesso workflow viene eseguito sulle pull request verso `main`, senza alcun job di pubblicazione.
 
 ## Comandi locali
 
 ```bash
 python scripts/build_static_safe.py
 python scripts/test_static.py
-python scripts/test_release_v131.py
+python scripts/test_release_v170_compat.py
 ```
 
 L’output locale viene scritto in `dist/`.

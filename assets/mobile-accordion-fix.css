@@ -1,8 +1,7 @@
 /* Stabilizzazione mobile delle intestazioni a fisarmonica. */
 
 @media (max-width: 700px) {
-  .metric-group-heading.ux-section-toggle,
-  .indicator-group-heading.ux-section-toggle {
+  .metric-group-heading.ux-section-toggle {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
@@ -30,27 +29,7 @@
     overflow-wrap: anywhere;
   }
 
-  .indicator-group-heading.ux-section-toggle {
-    min-height: 0;
-    padding-top: 8px;
-  }
-
-  .indicator-group-heading.ux-section-toggle > div:first-child {
-    grid-area: title;
-    min-width: 0;
-  }
-
-  .indicator-group-heading.ux-section-toggle > p {
-    grid-area: description;
-    min-width: 0;
-    max-width: 100%;
-    margin-right: 0;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .metric-group-heading.ux-section-toggle > .ux-section-tools,
-  .indicator-group-heading.ux-section-toggle > .ux-section-tools {
+  .metric-group-heading.ux-section-toggle > .ux-section-tools {
     grid-area: tools;
     position: static;
     top: auto;
@@ -69,8 +48,7 @@
   }
 
   .ux-section-chevron,
-  .metric-group.is-open .ux-section-chevron,
-  .indicator-group.is-open .ux-section-chevron {
+  .metric-group.is-open .ux-section-chevron {
     display: inline-grid !important;
     place-items: center;
     flex: 0 0 auto;
@@ -84,7 +62,11 @@
   .topic-controls,
   .topic-controls .metric-catalog,
   .topic-controls .metric-group,
-  .topic-controls .metric-group-heading.ux-section-toggle {
+  .topic-controls .metric-group-heading.ux-section-toggle,
+  .town-indicator-selector,
+  .town-indicator-selector .metric-catalog,
+  .town-indicator-selector .metric-group,
+  .town-indicator-selector .metric-group-heading.ux-section-toggle {
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -92,11 +74,14 @@
   }
 
   .topic-controls .metric-catalog,
-  .topic-controls .metric-group {
+  .topic-controls .metric-group,
+  .town-indicator-selector .metric-catalog,
+  .town-indicator-selector .metric-group {
     overflow-x: hidden;
   }
 
-  .topic-controls .metric-group-buttons {
+  .topic-controls .metric-group-buttons,
+  .town-indicator-selector .metric-group-buttons {
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
@@ -110,11 +95,13 @@
     scrollbar-width: none;
   }
 
-  .topic-controls .metric-group-buttons::-webkit-scrollbar {
+  .topic-controls .metric-group-buttons::-webkit-scrollbar,
+  .town-indicator-selector .metric-group-buttons::-webkit-scrollbar {
     display: none;
   }
 
-  .topic-controls .metric-group-buttons > * {
+  .topic-controls .metric-group-buttons > *,
+  .town-indicator-selector .metric-group-buttons > * {
     flex: 0 0 auto;
   }
 }

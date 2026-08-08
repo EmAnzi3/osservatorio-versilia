@@ -2,13 +2,13 @@
   'use strict';
 
   const MOBILE_QUERY = '(max-width: 700px)';
-  const HEADING_SELECTOR = '.metric-group-heading, .indicator-group-heading';
+  const HEADING_SELECTOR = '.metric-group-heading';
   let counter = 0;
   let scheduled = false;
 
   function setOpen(group, open) {
-    const content = group.querySelector(':scope > .metric-group-buttons, :scope > .indicator-card-grid');
-    const heading = group.querySelector(':scope > .metric-group-heading, :scope > .indicator-group-heading');
+    const content = group.querySelector(':scope > .metric-group-buttons');
+    const heading = group.querySelector(':scope > .metric-group-heading');
     if (!content || !heading) return;
     group.classList.toggle('is-open', open);
     content.hidden = !open;
@@ -20,8 +20,8 @@
   }
 
   function decorateGroup(group) {
-    const heading = group.querySelector(':scope > .metric-group-heading, :scope > .indicator-group-heading');
-    const content = group.querySelector(':scope > .metric-group-buttons, :scope > .indicator-card-grid');
+    const heading = group.querySelector(':scope > .metric-group-heading');
+    const content = group.querySelector(':scope > .metric-group-buttons');
     if (!heading || !content) return;
 
     const count = content.querySelectorAll('button').length;
@@ -148,7 +148,6 @@
 
   function enhance() {
     document.querySelectorAll('.metric-catalog').forEach(container => prepare(container, '.metric-group'));
-    document.querySelectorAll('.indicator-groups').forEach(container => prepare(container, '.indicator-group'));
   }
 
   function schedule() {

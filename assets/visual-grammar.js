@@ -397,22 +397,6 @@
     if (note && note.textContent !== noteText) note.textContent = noteText;
   }
 
-  function enhanceIndicatorCards() {
-    if (!data) return;
-    const townName = document.querySelector('.town-identity h1')?.textContent?.trim();
-    if (!townName) return;
-    document.querySelectorAll('.indicator-card-grid button[data-indicator]').forEach(button => {
-      const metricKey = button.dataset.indicator;
-      const metric = data.metrics?.[metricKey];
-      const row = townRow(metric, townName);
-      const small = button.querySelector('small');
-      if (!metric || !row || !small) return;
-      const delta = deltaFor(metric, row, metricKey);
-      const text = `${metric.meta.year} · ${delta.compact}`;
-      if (small.textContent !== text) small.textContent = text;
-    });
-  }
-
   function enhanceHomeMethod() {
     const method = document.querySelector('.method-section');
     if (!method) return;
@@ -509,7 +493,6 @@
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
     enhanceReadingScales();
     enhanceTownPosition();
-    enhanceIndicatorCards();
     reviseCopy();
   }
 

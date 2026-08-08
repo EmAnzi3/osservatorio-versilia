@@ -13,7 +13,7 @@ from statistics import median
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
-APP_PATH = ROOT / "assets" / "app-parts" / "00.txt"
+APP_PATH = ROOT / "assets" / "app-core.js"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "toscana-indicatori-v1.5.0.json"
 
 SOURCE_URL = "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali"

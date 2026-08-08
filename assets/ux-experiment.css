@@ -44,27 +44,18 @@
   transition: transform .18s ease, background-color .18s ease;
 }
 
-.metric-group.is-open .ux-section-chevron,
-.indicator-group.is-open .ux-section-chevron {
+.metric-group.is-open .ux-section-chevron {
   transform: rotate(180deg);
   background: color-mix(in srgb, var(--ink) 7%, transparent);
 }
 
 .metric-group-buttons[hidden],
-.indicator-card-grid[hidden],
 .ux-view-pane[hidden] {
   display: none !important;
 }
 
-.metric-group:not(.is-open),
-.indicator-group:not(.is-open) {
+.metric-group:not(.is-open) {
   padding-bottom: 2px;
-}
-
-.indicator-group-heading.ux-section-toggle {
-  min-height: 58px;
-  padding-top: 8px;
-  padding-right: 92px;
 }
 
 #compare-bars,
@@ -625,7 +616,6 @@
   }
 
   .metric-group-buttons[hidden],
-  .indicator-card-grid[hidden],
   .ux-view-pane[hidden] {
     display: block !important;
   }

@@ -9,9 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
-APP00_PATH = ROOT / "assets" / "app-parts" / "00.txt"
-APP01_PATH = ROOT / "assets" / "app-parts" / "01.txt"
-APP05_PATH = ROOT / "assets" / "app-parts" / "05.txt"
+APP_PATH = ROOT / "assets" / "app-core.js"
 README_PATH = ROOT / "README.md"
 
 VERSION = "v1.6.0"
@@ -500,9 +498,9 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 
 
 def update_app() -> None:
-    app00 = APP00_PATH.read_text(encoding="utf-8")
-    app00 = replace_once(
-        app00,
+    app = APP_PATH.read_text(encoding="utf-8")
+    app = replace_once(
+        app,
         "    comunita: '<path d=\"M10 12h4\"></path>",
         "    bilanci: '<path d=\"M3 22h18\"></path><path d=\"M6 18v-7\"></path><path d=\"M10 18v-7\"></path><path d=\"M14 18v-7\"></path><path d=\"M18 18v-7\"></path><path d=\"M12 2 2 7h20Z\"></path>',\n"
         "    comunita: '<path d=\"M10 12h4\"></path>",
@@ -523,26 +521,20 @@ def update_app() -> None:
     cultureSportMissionExpenditurePerResident: ['spesa cultura', 'spesa sport', 'missioni 05 06'],
     tourismDevelopmentMissionExpenditurePerResident: ['spesa turismo', 'sviluppo economico', 'missioni 07 14'],
 """
-    app00 = replace_once(
-        app00,
+    app = replace_once(
+        app,
         "    thirdSector: ['associazioni', 'volontariato'],\n",
         synonym_block + "    thirdSector: ['associazioni', 'volontariato'],\n",
         "sinonimi Bilanci",
     )
-    app00 = app00.replace(
+    app = app.replace(
         '<span>7 comuni · 9 temi</span>',
         '<span>7 comuni · ${Object.keys(data.themes).length} temi</span>',
     )
-    APP00_PATH.write_text(app00, encoding="utf-8")
-
-    app01 = APP01_PATH.read_text(encoding="utf-8")
-    app01 = app01.replace(
+    app = app.replace(
         "<span>9 temi</span>",
         "<span>${Object.keys(data.themes).length} temi</span>",
     )
-    APP01_PATH.write_text(app01, encoding="utf-8")
-
-    app05 = APP05_PATH.read_text(encoding="utf-8")
     version_row = (
         "      ['2026.08.05-v1.6.0','5 agosto 2026','98 indicatori. "
         "Aggiunto il tema Bilanci comunali con rendiconto 2024–2025, "
@@ -550,11 +542,11 @@ def update_app() -> None:
         "e spesa per missione.'],\n"
     )
     marker = "    const versions = [\n"
-    if version_row not in app05:
-        if marker not in app05:
+    if version_row not in app:
+        if marker not in app:
             raise RuntimeError("Elenco versioni non trovato")
-        app05 = app05.replace(marker, marker + version_row, 1)
-    APP05_PATH.write_text(app05, encoding="utf-8")
+        app = app.replace(marker, marker + version_row, 1)
+    APP_PATH.write_text(app, encoding="utf-8")
 
 
 def update_readme() -> None:

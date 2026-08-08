@@ -188,7 +188,7 @@ def main() -> None:
     ]:
         require(DATA["metrics"][key]["meta"]["polarity"] == "neutral", f"{key} non deve produrre una pagella")
 
-    bundle = "\n".join((ROOT / "assets" / "app-parts" / f"{index:02d}.txt").read_text(encoding="utf-8") for index in range(7))
+    bundle = (ROOT / "assets" / "app-core.js").read_text(encoding="utf-8")
     for token in ["bilanci:", *NEW_METRICS]:
         require(token in bundle, f"Bundle privo di {token}")
     require("Object.keys(data.themes).length" in bundle, "Conteggio temi ancora statico")
