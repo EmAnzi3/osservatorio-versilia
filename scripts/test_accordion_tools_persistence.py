@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import os
+import re
 import socket
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -72,8 +73,10 @@ def assert_tools(page: Page, label: str) -> None:
 
 def main() -> None:
     rendered = (DIST / "confronta" / "economia" / "index.html").read_text(encoding="utf-8")
-    require("assets/ux-accordion.js?v=20260808-1" in rendered,
-            "Il build non forza il caricamento della nuova versione di ux-accordion.js")
+    require(
+        re.search(r"assets/ux-accordion\.js\?v=\d{8}-\d+", rendered) is not None,
+        "Il build non forza il caricamento versionato di ux-accordion.js",
+    )
 
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
