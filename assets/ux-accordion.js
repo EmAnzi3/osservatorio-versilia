@@ -148,7 +148,10 @@
 
   function enhance() {
     document.querySelectorAll('.metric-catalog').forEach(container => prepare(container, '.metric-group'));
-    document.querySelectorAll('.indicator-groups').forEach(container => prepare(container, '.indicator-group'));
+    document.querySelectorAll('.indicator-groups').forEach(container => {
+      if (container.closest('.town-layout-v2')) return;
+      prepare(container, '.indicator-group');
+    });
   }
 
   function schedule() {
