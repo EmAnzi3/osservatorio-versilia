@@ -56,18 +56,26 @@
     top: auto;
     right: auto;
     transform: none;
+    display: inline-flex !important;
+    align-items: center;
     align-self: center;
     justify-self: end;
+    gap: 8px;
     max-width: 100%;
     flex: 0 0 auto;
+    color: var(--muted);
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .ux-section-chevron,
   .metric-group.is-open .ux-section-chevron,
   .indicator-group.is-open .ux-section-chevron {
+    display: inline-grid !important;
+    place-items: center;
     flex: 0 0 auto;
     color: var(--ink);
-    opacity: 1;
-    visibility: visible;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
