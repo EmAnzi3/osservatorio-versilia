@@ -61,7 +61,7 @@ def static_assertions() -> None:
 
         assert 'rel="canonical"' in text, f"Canonical assente: {path}"
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
-        assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"
+        assert "app-parts/" not in text, f"Riferimento a frammenti applicativi obsoleti: {path}"
         assert "assets/app.js" not in text, f"Vecchio loader presente: {path}"
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"
         assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
@@ -70,6 +70,9 @@ def static_assertions() -> None:
     massarosa = (DIST / "comuni" / "massarosa" / "index.html").read_text(encoding="utf-8")
     assert "Massarosa" in massarosa
     assert "Fonte" in massarosa or "fonte" in massarosa
+    assert massarosa.count('class="town-indicator-selector"') == 1, "Selettore comunale duplicato o assente"
+    assert "Tutti gli indicatori" not in massarosa, "Catalogo comunale ridondante ancora presente"
+    assert "indicator-groups" not in massarosa, "Gruppi indicatori duplicati ancora presenti"
     assert (DIST / "sitemap.xml").exists()
 
     bundle_path = DIST / "assets" / "app-bundle.js"
@@ -113,6 +116,19 @@ def browser_assertions() -> None:
         assert context_box["y"] <= theme_box["y"], "Navigazione temi sopra il contenitore sticky"
         assert theme_box["y"] + theme_box["height"] <= context_box["y"] + context_box["height"] + 2, (
             f"Navigazione temi fuori dal contenitore sticky: tema={theme_box}, contenitore={context_box}"
+        )
+        assert page.locator(".theme-nav-shell").count() == 1, "Contenitore di scorrimento temi assente"
+        assert page.locator(".theme-nav-arrow").count() == 2, "Controlli laterali dei temi assenti"
+        overflow = page.locator(".town-context-nav .theme-nav").evaluate(
+            "element => ({ width: element.clientWidth, scrollWidth: element.scrollWidth, left: element.scrollLeft })"
+        )
+        assert overflow["scrollWidth"] > overflow["width"], f"I temi desktop non risultano scorrevoli: {overflow}"
+        next_arrow = page.locator('[data-theme-scroll="next"]')
+        assert next_arrow.is_enabled(), "Freccia temi successivi disabilitata nonostante l'overflow"
+        next_arrow.click()
+        page.wait_for_timeout(350)
+        assert page.locator(".town-context-nav .theme-nav").evaluate("element => element.scrollLeft") > 20, (
+            "La freccia non sposta la navigazione dei temi"
         )
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844})

@@ -21,6 +21,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Iterable
 
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,7 @@ TOWN_SLUGS = [
 THEME_SLUGS = [
     "abitare",
     "ambiente",
+    "bilanci",
     "comunita",
     "demografia",
     "economia",
@@ -89,11 +91,10 @@ def copy_source_tree() -> None:
 
 
 def bundle_application() -> None:
-    parts = sorted((ROOT / "assets" / "app-parts").glob("[0-9][0-9].txt"))
-    if len(parts) != 7:
-        raise RuntimeError(f"Attesi 7 moduli applicativi, trovati {len(parts)}")
-    bundle = "".join(path.read_text(encoding="utf-8") for path in parts)
-    (DIST / "assets" / "app-bundle.js").write_text(bundle, encoding="utf-8")
+    source = ROOT / "assets" / "app-core.js"
+    if not source.exists():
+        raise RuntimeError(f"Sorgente applicativo mancante: {source}")
+    shutil.copy2(source, DIST / "assets" / "app-bundle.js")
 
 
 def relative_asset_prefix(path: Path) -> str:
@@ -272,9 +273,26 @@ def prerender() -> None:
             launch_args["executable_path"] = chromium_path
         browser = playwright.chromium.launch(**launch_args)
         page = browser.new_page(viewport={"width": 1440, "height": 1100})
+        browser_errors: list[str] = []
+
+        def record_page_error(error: object) -> None:
+            browser_errors.append(f"pageerror: {error}")
+
+        def record_console(message: object) -> None:
+            if getattr(message, "type", "") == "error":
+                browser_errors.append(f"console: {getattr(message, 'text', message)}")
+
+        page.on("pageerror", record_page_error)
+        page.on("console", record_console)
         for route in ROUTES:
+            browser_errors.clear()
             page.goto(server_url + route, wait_until="networkidle")
-            page.wait_for_selector("#app main", timeout=30_000)
+            try:
+                page.wait_for_selector("#app main", timeout=30_000)
+            except PlaywrightTimeoutError as error:
+                diagnostics = "; ".join(browser_errors) or "nessun errore JavaScript registrato"
+                label = route or "/"
+                raise RuntimeError(f"Prerender non riuscito per {label}: {diagnostics}") from error
             page.wait_for_timeout(350)
             page.evaluate("document.body.dataset.prerendered = 'true'")
             document = page.evaluate("'<!doctype html>\\n' + document.documentElement.outerHTML")

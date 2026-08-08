@@ -3,10 +3,9 @@
 
   const loader = document.currentScript;
   const app = document.getElementById('app');
-  const partsRoot = new URL('./app-parts/', loader.src);
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
-  const VERSION = '20260803-1800';
+  const VERSION = '20260808-town-ui';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
@@ -114,23 +113,9 @@
       ]);
     }
 
-    const parts = await Promise.all(
-      Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
-        .map(async index => {
-          const response = await fetch(new URL(`${index}.txt?v=${VERSION}`, partsRoot), { cache: 'no-store' });
-          if (!response.ok) throw new Error(`Impossibile caricare il modulo ${index}: ${response.status}`);
-          return response.text();
-        })
-    );
-
-    const moduleUrl = URL.createObjectURL(new Blob([parts.join('')], { type: 'text/javascript' }));
-    try {
-      await import(moduleUrl);
-      document.querySelectorAll('img').forEach(repairImage);
-      await loadScript(new URL(`./fidelity.js?v=${VERSION}`, loader.src).href);
-    } finally {
-      URL.revokeObjectURL(moduleUrl);
-    }
+    await import(new URL(`./app-core.js?v=${VERSION}`, loader.src).href);
+    document.querySelectorAll('img').forEach(repairImage);
+    await loadScript(new URL(`./fidelity.js?v=${VERSION}`, loader.src).href);
   };
 
   load().catch(error => {

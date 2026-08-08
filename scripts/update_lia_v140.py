@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "site-data.json"
-APP_PATH = ROOT / "assets" / "app-parts" / "00.txt"
+APP_PATH = ROOT / "assets" / "app-core.js"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "lia-v1.4.0.json"
 
 TOWN_ORDER = [

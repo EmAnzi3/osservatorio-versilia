@@ -39,8 +39,8 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
-- `assets/app.js`: logica di caricamento per lo sviluppo;
-- `assets/app-parts/`: moduli sorgente dell'applicazione;
+- `assets/app.js`: loader leggero usato durante lo sviluppo;
+- `assets/app-core.js`: sorgente JavaScript unico e revisionabile dell'applicazione;
 - `assets/original.css`: stile recuperato dal sito pubblico;
 - `assets/static.css` e `assets/fidelity.css`: adattamenti statici, responsive e navigazione contestuale;
 - `progetto/` e `segnala/`: pagine informative.

@@ -27,11 +27,6 @@ V170_VERSION_ENTRY = (
     "dati AGCOM FTTH verificati e controlli automatici rafforzati sulle fonti.'],\n"
 )
 
-if "bilanci" not in build.THEME_SLUGS:
-    build.THEME_SLUGS.insert(2, "bilanci")
-if "confronta/bilanci/" not in build.ROUTES:
-    build.ROUTES.insert(build.ROUTES.index("progetto/"), "confronta/bilanci/")
-
 SEARCH_ICON = (
     '<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" '
     'width="16" height="16" viewBox="0 0 24 24" fill="none" '

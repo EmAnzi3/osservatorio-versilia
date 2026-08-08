@@ -99,8 +99,8 @@ def browser_checks() -> None:
         assert "della popolazione versiliese" in population_text
         assert "sopra la versilia" not in population_text
         assert "sotto la versilia" not in population_text
-        population_card = page.locator('.indicator-card-grid button[data-indicator="population"] small').first
-        assert "13,7% della popolazione versiliese" in population_card.inner_text().lower()
+        assert page.locator(".town-indicator-selector").count() == 1
+        assert page.locator(".all-indicators, .indicator-groups").count() == 0
         assert_reading_scale(page, "Territoriale")
 
         page.goto(base + "confronta/demografia/?indicatore=share65", wait_until="networkidle")
@@ -148,8 +148,7 @@ def browser_checks() -> None:
         position_text = page.locator(".versilia-position").inner_text().lower()
         assert "su 7" not in position_text
         assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
-        card_notes = page.locator(".indicator-card-grid button small").all_text_contents()
-        assert card_notes and all("° valore" not in text.lower() for text in card_notes)
+        assert page.locator(".all-indicators, .indicator-groups").count() == 0
 
         page.goto(base + "progetto/", wait_until="networkidle")
         page.wait_for_selector("#sistema-territoriale")

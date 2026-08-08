@@ -187,10 +187,6 @@
   letter-spacing: 0;
 }
 
-.indicator-card-grid button > small {
-  line-height: 1.35;
-}
-
 /* Scala territoriale: chiarisce il significato del perimetro comunale. */
 .reading-scale {
   display: grid;

@@ -281,13 +281,13 @@ def verify_mobile_accordion_layout(page: Page, base: str) -> None:
         base + "comuni/massarosa/?tema=economia&indicatore=income",
         wait_until="networkidle",
     )
-    page.wait_for_selector(".indicator-groups .indicator-group-heading.ux-section-toggle")
-    town_headings = page.locator(".indicator-groups .indicator-group-heading.ux-section-toggle")
+    page.wait_for_selector(".town-indicator-selector .metric-group-heading.ux-section-toggle")
+    town_headings = page.locator(".town-indicator-selector .metric-group-heading.ux-section-toggle")
     for index in range(min(town_headings.count(), 4)):
         verify_mobile_heading_layout(
             town_headings.nth(index),
-            ":scope > div:first-child",
-            ":scope > p",
+            ":scope > strong",
+            ":scope > span:not(.ux-section-tools)",
             f"Scheda Massarosa mobile, sezione {index + 1}",
         )
 
@@ -363,10 +363,10 @@ def main() -> None:
             base + "comuni/massarosa/?tema=demografia&indicatore=population",
             wait_until="networkidle",
         )
-        page.wait_for_selector(".indicator-groups .ux-section-toggle")
+        page.wait_for_selector(".town-indicator-selector .ux-section-toggle")
         verify_touch_accordion(
             page,
-            ".indicator-groups .ux-section-toggle",
+            ".town-indicator-selector .ux-section-toggle",
             "Scheda comunale",
         )
 

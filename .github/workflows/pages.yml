@@ -48,6 +48,8 @@ jobs:
 
       - name: Run PWA checks
         run: |
+          node --check assets/app-core.js
+          node --check assets/app.js
           node --check assets/pwa.js
           node --check service-worker.js
           python scripts/test_pwa.py
