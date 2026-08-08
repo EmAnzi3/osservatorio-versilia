@@ -57,6 +57,11 @@ jobs:
           node --check assets/visual-grammar.js
           python scripts/test_visual_grammar.py
 
+      - name: Run town profile layout v2 checks
+        run: |
+          node --check assets/town-layout-v2.js
+          python scripts/test_town_layout_v2.py
+
       - name: Run chart surface checks
         run: python scripts/test_chart_surfaces.py
 
