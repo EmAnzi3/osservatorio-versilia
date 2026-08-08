@@ -119,23 +119,23 @@ def main() -> None:
                 "CSV rapportato: unità inattesa")
 
         pdf_cases = (
-            ("confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", "bilanci.pdf", "Andamento 2019–2025"),
-            ("confronta/economia/?indicatore=income", "economia.pdf", "Confronto a due punti 2023–2024"),
-            ("comuni/massarosa/?tema=demografia&indicatore=population", "massarosa.pdf", "Andamento 2019–2026"),
+            ("confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", "bilanci.pdf", ".ux-view-shell", "Andamento 2019–2025"),
+            ("confronta/economia/?indicatore=income", "economia.pdf", ".ux-view-shell", "Confronto a due punti 2023–2024"),
+            ("comuni/massarosa/?tema=demografia&indicatore=population", "massarosa.pdf", ".town-history-panel", "Residenti nel tempo"),
         )
-        for route, filename, expected in pdf_cases:
+        for route, filename, ready_selector, expected in pdf_cases:
             page.goto(base + route, wait_until="networkidle")
-            page.wait_for_selector(".ux-view-shell")
+            page.wait_for_selector(ready_selector)
             target = temp / filename
             page.pdf(path=str(target), print_background=True, prefer_css_page_size=True)
             pages, text = pdf_text(target)
             require(pages == 2, f"PDF {filename}: attese 2 pagine A4, trovate {pages}")
-            require(expected in text, f"PDF {filename}: storico non incluso")
+            require(expected in text, f"PDF {filename}: contenuto storico non incluso")
             require(target.stat().st_size > 50_000, f"PDF {filename}: output anormalmente piccolo")
 
         browser.close()
 
-    print("Export v1.6.1 validati: CSV storico completo e PDF A4 in due pagine.")
+    print("Export v1.6.1 validati: CSV storico completo e PDF A4 in due pagine, incluso lo storico comunale lineare.")
 
 
 if __name__ == "__main__":
