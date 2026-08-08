@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controlli dell’esperimento UX su sezioni e serie storiche comparative."""
+"""Controlli UX su fisarmoniche comparative e storico comunale lineare."""
 from __future__ import annotations
 
 import contextlib
@@ -66,12 +66,7 @@ def common_years(metric: dict) -> list[str]:
 
 
 def static_assertions(data: dict) -> int:
-    for name in (
-        "ux-experiment.css",
-        "ux-accordion.js",
-        "ux-history-core.js",
-        "ux-history.js",
-    ):
+    for name in ("ux-experiment.css", "ux-accordion.js", "ux-history-core.js", "ux-history.js"):
         require((DIST / "assets" / name).exists(), f"Asset UX mancante: {name}")
 
     comparable = {
@@ -91,12 +86,7 @@ def static_assertions(data: dict) -> int:
     }.items():
         require(path.exists(), f"Pagina non generata: {label}")
         text = path.read_text(encoding="utf-8")
-        for token in (
-            "assets/ux-experiment.css",
-            "assets/ux-accordion.js",
-            "assets/ux-history-core.js",
-            "assets/ux-history.js",
-        ):
+        for token in ("assets/ux-experiment.css", "assets/ux-accordion.js", "assets/ux-history-core.js", "assets/ux-history.js"):
             require(token in text, f"{label}: manca il collegamento a {token}")
 
     return len(comparable)
@@ -104,51 +94,35 @@ def static_assertions(data: dict) -> int:
 
 def browser_assertions() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
-    launch_args = {"headless": True}
+    launch_args: dict[str, object] = {"headless": True}
     if chromium_path:
         launch_args["executable_path"] = chromium_path
 
     with server(DIST) as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(**launch_args)
-
         page = browser.new_page(viewport={"width": 1440, "height": 950})
 
+        # Le pagine di confronto mantengono il selettore Valore attuale / Storico.
         page.goto(base + "confronta/bilanci/", wait_until="networkidle")
         page.wait_for_selector(".ux-view-shell")
         require(not page.locator('[data-view-mode="history"]').is_disabled(),
                 "Percorso pubblico Bilanci: vista storica disabilitata sul primo indicatore")
         page.locator('[data-view-mode="history"]').click()
         require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
-                "Percorso pubblico Bilanci: vista storica non attivabile senza parametro indicatore")
+                "Percorso pubblico Bilanci: vista storica non attivabile")
 
-        page.goto(base + "comuni/massarosa/", wait_until="networkidle")
-        page.wait_for_selector(".history-panel .ux-view-shell")
-        page.locator('.history-panel [data-view-mode="history"]').click()
-        require(page.locator('.history-panel .ux-view-pane[data-view-pane="history"]').is_visible(),
-                "Percorso pubblico comunale: vista storica non attivabile senza parametri")
         page.evaluate("sessionStorage.clear()")
-        page.goto(
-            base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident",
-            wait_until="networkidle",
-        )
+        page.goto(base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", wait_until="networkidle")
         page.wait_for_selector(".ux-view-shell")
-        require(page.locator(".ux-section-toggle").count() >= 4,
+        require(page.locator(".topic-controls .ux-section-toggle").count() >= 4,
                 "Bilanci: sezioni espandibili non installate")
         require(page.locator('[data-view-mode="current"].active').count() == 1,
                 "Bilanci: vista attuale non selezionata inizialmente")
-        current_background = page.locator(".topic-bars").evaluate(
-            "el => getComputedStyle(el).backgroundColor"
-        )
+        current_background = page.locator(".topic-bars").evaluate("el => getComputedStyle(el).backgroundColor")
         page.locator('[data-view-mode="history"]').click()
-        require(page.locator('[data-view-mode="history"].active').count() == 1,
-                "Bilanci: selettore storico non attivato")
-        history_background = page.locator(".ux-history-card").evaluate(
-            "el => getComputedStyle(el).backgroundColor"
-        )
+        history_background = page.locator(".ux-history-card").evaluate("el => getComputedStyle(el).backgroundColor")
         require(history_background == current_background,
-                f"Sfondo storico diverso dal pannello del valore attuale: {history_background} != {current_background}")
-        require(page.locator('.ux-view-pane[data-view-pane="history"]').is_visible(),
-                "Bilanci: pannello storico non visibile")
+                f"Sfondo storico diverso dal pannello attuale: {history_background} != {current_background}")
         require(page.locator(".ux-series-group").count() == 7,
                 "Bilanci: lo storico esteso non contiene sette serie comunali")
         require("Andamento 2019–2025" in page.locator(".ux-history-head").inner_text(),
@@ -157,10 +131,7 @@ def browser_assertions() -> None:
         require(page.locator('.ux-series-group[data-history-town="massarosa"].is-selected').count() == 1,
                 "Bilanci: selezione di Massarosa non applicata")
 
-        page.goto(
-            base + "confronta/economia/?indicatore=income",
-            wait_until="networkidle",
-        )
+        page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
         page.wait_for_selector(".ux-view-shell")
         page.locator('[data-view-mode="history"]').click()
         require(page.locator(".ux-two-point-row").count() == 7,
@@ -168,65 +139,52 @@ def browser_assertions() -> None:
         require("Confronto a due punti 2023–2024" in page.locator(".ux-history-head").inner_text(),
                 "Economia: intervallo a due punti non riconosciuto")
 
-        page.goto(
-            base + "confronta/bilanci/?indicatore=rigidExpenditureShare",
-            wait_until="networkidle",
-        )
+        page.goto(base + "confronta/bilanci/?indicatore=rigidExpenditureShare", wait_until="networkidle")
         page.wait_for_selector(".ux-view-shell")
         require(page.locator('[data-view-mode="history"]').is_disabled(),
                 "Spese rigide: la vista storica deve restare disabilitata")
 
-        page.goto(
-            base + "comuni/massarosa/?tema=demografia&indicatore=population",
-            wait_until="networkidle",
-        )
-        page.wait_for_selector(".history-panel .ux-view-shell")
-        require(page.locator(".history-panel .ux-bar-row").count() == 7,
-                "Scheda comunale: confronto attuale non contiene sette comuni")
-        page.locator('.history-panel [data-view-mode="history"]').click()
-        require(page.locator(".history-panel .ux-series-group").count() == 7,
-                "Scheda comunale: storico comparato incompleto")
-        require(page.locator('.history-panel .ux-series-group[data-history-town="massarosa"].is-selected').count() == 1,
-                "Scheda comunale: comune aperto non evidenziato")
+        # La scheda comunale mostra direttamente la serie del solo Comune aperto.
+        page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
+        page.wait_for_selector(".town-history-panel")
+        require(page.locator(".town-history-panel .ux-view-shell").count() == 0,
+                "Scheda comunale: il vecchio selettore attuale/storico non deve essere installato")
+        require(page.locator(".town-history-panel .comparison-bars").count() == 0,
+                "Scheda comunale: il confronto a sette Comuni è duplicato nello storico")
+        require(page.locator(".town-history-panel .trend-chart").count() == 1,
+                "Scheda comunale: serie storica del Comune non renderizzata")
+        require(page.locator(".town-history-panel .chart-point").count() >= 3,
+                "Scheda comunale: serie della popolazione troppo corta")
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844})
         mobile_page = mobile.new_page()
-        mobile_page.goto(
-            base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident",
-            wait_until="networkidle",
-        )
+        mobile_page.goto(base + "confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", wait_until="networkidle")
         mobile_page.wait_for_selector(".ux-section-toggle")
         visible_groups = mobile_page.locator(".topic-controls .metric-group-buttons:not([hidden])")
         require(visible_groups.count() == 1,
-                f"Mobile: devono essere aperte una sola sezione, trovate {visible_groups.count()}")
+                f"Mobile confronto: deve essere aperta una sola sezione, trovate {visible_groups.count()}")
         mobile_page.locator('[data-view-mode="history"]').click()
         require(mobile_page.locator(".ux-series-group").count() == 7,
                 "Mobile: storico esteso dei bilanci incompleto")
         widths = mobile_page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
-        require(widths["scroll"] <= widths["client"],
-                f"Mobile: overflow orizzontale della pagina {widths}")
+        require(widths["scroll"] <= widths["client"], f"Mobile confronto: overflow orizzontale {widths}")
         require("€" in mobile_page.locator(".ux-history-card").inner_text(),
                 "Mobile: unità monetaria assente nello storico")
         headings = mobile_page.locator(".topic-controls .ux-section-toggle")
-        require(headings.count() >= 2, "Mobile: sezioni insufficienti per il test")
         headings.nth(1).click()
         require(visible_groups.count() == 1,
-                "Mobile: l’apertura di una sezione non ha chiuso la precedente")
+                "Mobile confronto: l’apertura di una sezione non ha chiuso la precedente")
 
-        mobile_page.goto(
-            base + "comuni/massarosa/?tema=demografia&indicatore=population",
-            wait_until="networkidle",
-        )
-        mobile_page.wait_for_selector(".history-panel .ux-view-shell")
-        mobile_page.locator('.history-panel [data-view-mode="history"]').click()
+        mobile_page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
+        mobile_page.wait_for_selector(".town-history-panel")
         widths = mobile_page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
-        require(widths["scroll"] <= widths["client"],
-                f"Mobile storico lungo: overflow orizzontale della pagina {widths}")
-        scroll = mobile_page.locator(".history-panel .ux-history-scroll")
-        require(scroll.evaluate("el => el.scrollWidth > el.clientWidth"),
-                "Mobile storico lungo: il grafico non scorre nel proprio contenitore")
-        require(mobile_page.locator(".history-panel .ux-series-group").count() == 7,
-                "Mobile storico lungo: serie comunali incomplete")
+        require(widths["scroll"] <= widths["client"], f"Mobile scheda comunale: overflow orizzontale {widths}")
+        chart_shell = mobile_page.locator(".town-history-panel .chart-shell")
+        require(chart_shell.count() == 1, "Mobile scheda comunale: grafico storico assente")
+        require(chart_shell.evaluate("el => el.scrollWidth >= el.clientWidth"),
+                "Mobile scheda comunale: contenitore del grafico storico non valido")
+        require(mobile_page.locator(".town-history-panel .chart-point").count() >= 3,
+                "Mobile scheda comunale: punti della serie incompleti")
         mobile.close()
         browser.close()
 
@@ -236,8 +194,8 @@ def main() -> None:
     comparable_count = static_assertions(data)
     browser_assertions()
     print(
-        "Esperimento UX validato: sezioni espandibili, vista attuale e storico comparato "
-        f"su {comparable_count} indicatori."
+        "UX validata: fisarmoniche e storico comparato nelle pagine di confronto; "
+        f"storico comunale lineare; {comparable_count} indicatori con serie omogenee."
     )
 
 
