@@ -146,9 +146,9 @@ rams(location.search);
   function townBenchmarkMarkup(metric, row, town) {
     const b = metric.meta.benchmark;
     if (!b) return `<section class="benchmark-unavailable town-benchmark"><span class="overline">Confronto esterno</span><h2>Dato non perfettamente comparabile</h2><p>Per questo indicatore non è disponibile un confronto omogeneo con Toscana e Italia.</p></section>`;
-    const localValue = row.benchmarkValue ?? row.value;
-    return `<section class="town-benchmark"><div><div><span class="overline">Confronto omogeneo · ${html(b.year)}</span><h3>${html(town.name)}, Toscana${b.italy !== null && b.italy !== undefined ? ' e Italia' : ''}</h3></div><p>${html(b.note || '')}</p></div>
-      <div class="town-benchmark-values"><article><span>${html(town.name)}</span><strong>${html(formatValue(localValue, metric.meta.unit))}</strong><small>Dato comunale riferito al ${html(b.year)}.</small></article><article><span>Toscana</span><strong>${html(formatValue(b.tuscany, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>${b.italy !== null && b.italy !== undefined ? `<article><span>Italia</span><strong>${html(formatValue(b.italy, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>` : ''}</div>
+    const externalCards = `<article><span>Toscana</span><strong>${html(formatValue(b.tuscany, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>${b.italy !== null && b.italy !== undefined ? `<article><span>Italia</span><strong>${html(formatValue(b.italy, metric.meta.unit))}</strong><small>${html(b.source)}</small></article>` : ''}`;
+    return `<section class="town-benchmark"><div><div><span class="overline">Confronto esterno · ${html(b.year)}</span><h3>${b.italy !== null && b.italy !== undefined ? 'Toscana e Italia' : 'Toscana'}</h3></div><p>${html(b.note || '')} Il valore di ${html(town.name)} è già mostrato nell’indicatore principale e qui non viene ripetuto.</p></div>
+      <div class="town-benchmark-values town-benchmark-values-external">${externalCards}</div>
       <a class="benchmark-source" href="${html(b.url)}" target="_blank" rel="noreferrer">Apri la fonte del confronto ↗</a></section>`;
   }
 
