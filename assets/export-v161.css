@@ -23,6 +23,7 @@
   .theme-nav,
   .metric-switch,
   .metric-catalog,
+  .town-indicator-picker,
   .scale-switch,
   .data-actions,
   .button-link,
@@ -57,6 +58,7 @@
   .topic-dashboard,
   .town-topic,
   .history-panel,
+  .town-history-panel,
   .benchmark-section,
   .benchmark-unavailable,
   .town-benchmark {
@@ -69,6 +71,8 @@
   .town-brief,
   .town-topic-heading,
   .town-metric-layout,
+  .town-metric-layout-single,
+  .town-versilia-strip,
   .method-disclosure,
   .indicator-definition,
   .ux-view-pane,
@@ -182,7 +186,8 @@
     display: none !important;
   }
 
-  .town-metric-layout {
+  .town-metric-layout,
+  .town-metric-layout-single {
     gap: 4mm !important;
   }
 
@@ -203,11 +208,18 @@
     font-size: 25pt !important;
   }
 
+  .town-versilia-strip {
+    margin-top: 4mm !important;
+    grid-template-columns: 32mm 35mm 1fr 42mm !important;
+    gap: 4mm !important;
+  }
+
   .method-disclosure {
     margin-block: 4mm !important;
   }
 
   .history-panel,
+  .town-history-panel,
   .topic-bars,
   .explorer-panel,
   .benchmark-section,
@@ -220,11 +232,13 @@
     padding: 5mm !important;
   }
 
-  .history-panel {
+  .history-panel,
+  .town-history-panel {
     margin-top: 6mm !important;
   }
 
-  .town-profile .history-panel {
+  .town-profile .history-panel,
+  .town-profile .town-history-panel {
     break-before: page;
     page-break-before: always;
   }
