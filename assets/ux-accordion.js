@@ -48,6 +48,21 @@
     heading.dataset.uxAccordionHeading = 'true';
   }
 
+  function restoreDecorations(container, groupSelector) {
+    if (!container?.isConnected) return;
+    directGroups(container, groupSelector).forEach(decorateGroup);
+  }
+
+  function scheduleDecorationRecovery(container, groupSelector) {
+    // Alcuni rendering dell'app possono sostituire il contenuto delle intestazioni
+    // subito dopo un'interazione. Ripristiniamo gli strumenti in più fasi senza
+    // alterare lo stato aperto/chiuso della fisarmonica.
+    queueMicrotask(() => restoreDecorations(container, groupSelector));
+    requestAnimationFrame(() => restoreDecorations(container, groupSelector));
+    window.setTimeout(() => restoreDecorations(container, groupSelector), 250);
+    window.setTimeout(() => restoreDecorations(container, groupSelector), 800);
+  }
+
   function toggleGroup(container, groupSelector, group) {
     const groups = directGroups(container, groupSelector);
     const opening = !group.classList.contains('is-open');
@@ -55,6 +70,7 @@
       groups.forEach(other => { if (other !== group) setOpen(other, false); });
     }
     setOpen(group, opening);
+    scheduleDecorationRecovery(container, groupSelector);
   }
 
   function installDelegatedHandlers(container, groupSelector) {
