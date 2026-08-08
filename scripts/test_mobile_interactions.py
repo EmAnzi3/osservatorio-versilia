@@ -166,6 +166,91 @@ def verify_mobile_heading_layout(
     require_visible_chevron(heading, label)
 
 
+def verify_indicator_scroll_containment(page: Page) -> None:
+    headings = page.locator(".topic-controls .metric-group-heading.ux-section-toggle")
+    system_heading = headings.filter(has_text="Sistema produttivo").first
+    require(system_heading.count() == 1, "Economia mobile: intestazione Sistema produttivo non trovata")
+
+    if system_heading.get_attribute("aria-expanded") != "true":
+        system_heading.tap()
+        page.wait_for_timeout(120)
+    require(system_heading.get_attribute("aria-expanded") == "true",
+            "Economia mobile: Sistema produttivo non si apre")
+
+    group = system_heading.locator("xpath=..")
+    buttons = group.locator(":scope > .metric-group-buttons")
+    require(buttons.count() == 1 and buttons.is_visible(),
+            "Economia mobile: riga indicatori di Sistema produttivo assente")
+
+    before = page.evaluate(
+        """() => {
+          const heading = [...document.querySelectorAll('.topic-controls .metric-group-heading.ux-section-toggle')]
+            .find(el => el.textContent.includes('Sistema produttivo'));
+          const group = heading?.parentElement;
+          const buttons = group?.querySelector(':scope > .metric-group-buttons');
+          const tools = heading?.querySelector(':scope > .ux-section-tools');
+          const hb = heading?.getBoundingClientRect();
+          const tb = tools?.getBoundingClientRect();
+          return {
+            viewport: window.innerWidth,
+            documentScrollWidth: document.documentElement.scrollWidth,
+            bodyScrollWidth: document.body.scrollWidth,
+            headingLeft: hb?.left ?? -1,
+            headingRight: hb?.right ?? -1,
+            toolsLeft: tb?.left ?? -1,
+            toolsRight: tb?.right ?? -1,
+            buttonsClientWidth: buttons?.clientWidth ?? 0,
+            buttonsScrollWidth: buttons?.scrollWidth ?? 0,
+            buttonsScrollLeft: buttons?.scrollLeft ?? -1
+          };
+        }"""
+    )
+    require(before["documentScrollWidth"] <= before["viewport"] + 1,
+            f"Economia mobile: il documento scorre orizzontalmente: {before}")
+    require(before["bodyScrollWidth"] <= before["viewport"] + 1,
+            f"Economia mobile: il body si allarga oltre il viewport: {before}")
+    require(before["headingLeft"] >= -1 and before["headingRight"] <= before["viewport"] + 1,
+            f"Economia mobile: intestazione fuori viewport: {before}")
+    require(before["toolsLeft"] >= -1 and before["toolsRight"] <= before["viewport"] + 1,
+            f"Economia mobile: conteggio/freccia fuori viewport: {before}")
+    require(before["buttonsScrollWidth"] > before["buttonsClientWidth"] + 20,
+            f"Economia mobile: la riga lunga non ha un proprio overflow orizzontale: {before}")
+
+    # Scorre soltanto la riga dei pill: la testata deve restare immobile.
+    buttons.evaluate("el => { el.scrollLeft = el.scrollWidth; }")
+    page.wait_for_timeout(100)
+    after = page.evaluate(
+        """() => {
+          const heading = [...document.querySelectorAll('.topic-controls .metric-group-heading.ux-section-toggle')]
+            .find(el => el.textContent.includes('Sistema produttivo'));
+          const group = heading?.parentElement;
+          const buttons = group?.querySelector(':scope > .metric-group-buttons');
+          const tools = heading?.querySelector(':scope > .ux-section-tools');
+          const hb = heading?.getBoundingClientRect();
+          const tb = tools?.getBoundingClientRect();
+          return {
+            viewport: window.innerWidth,
+            documentScrollWidth: document.documentElement.scrollWidth,
+            headingLeft: hb?.left ?? -1,
+            headingRight: hb?.right ?? -1,
+            toolsLeft: tb?.left ?? -1,
+            toolsRight: tb?.right ?? -1,
+            buttonsScrollLeft: buttons?.scrollLeft ?? 0
+          };
+        }"""
+    )
+    require(after["buttonsScrollLeft"] > 20,
+            f"Economia mobile: la riga indicatori non scorre autonomamente: {after}")
+    require(after["documentScrollWidth"] <= after["viewport"] + 1,
+            f"Economia mobile: lo scroll dei pill allarga il documento: {after}")
+    require(abs(after["headingLeft"] - before["headingLeft"]) <= 1
+            and abs(after["headingRight"] - before["headingRight"]) <= 1,
+            f"Economia mobile: la testata si sposta insieme ai pill: prima={before}, dopo={after}")
+    require(abs(after["toolsLeft"] - before["toolsLeft"]) <= 1
+            and abs(after["toolsRight"] - before["toolsRight"]) <= 1,
+            f"Economia mobile: conteggio/freccia si spostano insieme ai pill: prima={before}, dopo={after}")
+
+
 def verify_mobile_accordion_layout(page: Page, base: str) -> None:
     page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
     page.wait_for_selector(".topic-controls .metric-group-heading.ux-section-toggle")
@@ -179,6 +264,8 @@ def verify_mobile_accordion_layout(page: Page, base: str) -> None:
             ":scope > span:not(.ux-section-tools)",
             f"Economia mobile, sezione {index + 1}",
         )
+
+    verify_indicator_scroll_containment(page)
 
     first_open = expanded_index(headings)
     target_index = closed_index(headings, first_open)
@@ -298,7 +385,7 @@ def main() -> None:
         desktop.close()
         browser.close()
 
-    print("Interazioni verificate: layout mobile delle fisarmoniche stabile, frecce visibili e scroll temi desktop attivo.")
+    print("Interazioni verificate: fisarmoniche mobili contenute nel viewport, scroll dei soli indicatori e salto temi desktop attivo.")
 
 
 if __name__ == "__main__":
