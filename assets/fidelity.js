@@ -1,6 +1,7 @@
 (() => {
   'use strict';
 
+  const fidelityScriptUrl = document.currentScript?.src || new URL('assets/fidelity.js', document.baseURI).href;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const numberFormatters = new Map();
 
@@ -174,4 +175,12 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installMobileThemeJump();
   scheduleEnhancement();
+
+  if (!document.querySelector('script[data-town-layout-v2]')) {
+    const script = document.createElement('script');
+    script.src = new URL('./town-layout-v2.js?v=20260808-1', fidelityScriptUrl).href;
+    script.defer = true;
+    script.dataset.townLayoutV2 = 'true';
+    document.head.appendChild(script);
+  }
 })();
