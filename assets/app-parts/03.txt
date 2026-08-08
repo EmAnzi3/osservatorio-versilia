@@ -58,7 +58,7 @@ rams(location.search);
     const theme = data.themes[themeKey];
     const metric = data.metrics[metricKey];
     const options = themeSections(theme).map(section => `<optgroup label="${html(section.label)}">${section.metrics.map(key => `<option value="${key}" ${key === metricKey ? 'selected' : ''}>${html(data.metrics[key].meta.shortLabel)}</option>`).join('')}</optgroup>`).join('');
-    return `<div class="town-indicator-picker"><div><span class="overline">Indicatore selezionato</span><strong>${html(metric.meta.shortLabel)}</strong></div><label><span>Cambia indicatore</span><select data-town-metric-select>${options}</select></label></div>`;
+    return `<div class="town-indicator-picker"><div><span class="overline">Indicatore selezionato</span><strong>${html(metric.meta.shortLabel)}</strong></div><label><span>Cambia indicatore</span><select data-town-metric-select data-metric="${metricKey}" class="active">${options}</select></label></div>`;
   }
 
   function townOverviewCards(data, town, themeKey, activeKey) {
@@ -78,6 +78,7 @@ rams(location.search);
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
     container.dataset.theme = themeKey;
+    container.dataset.metric = metricKey;
     const historical = Boolean(row.series?.values?.length >= 2);
     container.innerHTML = `<div class="town-topic-heading"><div><span class="overline">${html(theme.number)} · ${html(theme.label)}</span><h2>${html(theme.question)}</h2><p>${html(theme.description)}</p></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${townMetricPicker(data, themeKey, metricKey)}
