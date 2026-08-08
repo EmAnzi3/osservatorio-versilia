@@ -105,6 +105,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .town-overview-group-heading h4 { margin: 5px 0 0; font-size: 22px; letter-spacing: -.03em; }
 .town-overview-group-heading p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .town-overview .indicator-card-grid button.active { box-shadow: none; }
+.town-supplementary .single-detail-column { grid-template-columns: minmax(0, 1fr); }
+.town-benchmark-values-external { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.town-benchmark-values-external article:first-child { background: #ffffff80; color: var(--ink); }
+.town-benchmark-values-external article:first-child small { color: #60757e; }
 
 /* Critical correction for the mobile global search */
 @media (max-width: 700px) {
