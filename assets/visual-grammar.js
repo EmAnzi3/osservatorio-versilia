@@ -102,11 +102,27 @@
     return Math.max(0, Math.min(100, ((n - scale.min) / span) * 100));
   }
 
-  function deltaFor(metric, row) {
+  function deltaFor(metric, row, metricKey = '') {
     const local = finite(row?.value);
     const aggregate = finite(metric?.aggregate?.value);
     if (local === null || aggregate === null) {
       return { headline: 'n.d.', direction: 'confronto non disponibile', compact: 'confronto non disponibile' };
+    }
+
+    const key = metricKey || metric?.meta?.key || '';
+    if (key === 'population') {
+      if (aggregate <= 0) {
+        return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: 'Quota sulla Versilia' };
+      }
+      const share = local / aggregate * 100;
+      const formattedShare = number1.format(share);
+      return {
+        headline: `${formattedShare}%`,
+        direction: 'della popolazione versiliese',
+        compact: `${formattedShare}% della popolazione versiliese`,
+        overline: 'Quota sulla Versilia',
+        note: 'Quota dei residenti del comune sul totale della popolazione dei sette comuni.',
+      };
     }
 
     const kind = unitKind(metric?.meta?.unit);
@@ -223,15 +239,19 @@
     const row = townRow(metric, townName);
     if (!metric || !row) return;
 
-    const delta = deltaFor(metric, row);
-    const signature = `${metricKey}|${delta.headline}|${delta.direction}`;
+    const delta = deltaFor(metric, row, metricKey);
+    const overlineText = delta.overline || 'Rispetto alla Versilia';
+    const noteText = delta.note || 'Il confronto con la Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.';
+    const signature = `${metricKey}|${delta.headline}|${delta.direction}|${overlineText}|${noteText}`;
     if (panel.dataset.visualGrammarSignature === signature) return;
     panel.dataset.visualGrammarSignature = signature;
     const overline = panel.querySelector('.overline');
     const strong = panel.querySelector(':scope > strong');
-    if (overline && overline.textContent !== 'Rispetto alla Versilia') overline.textContent = 'Rispetto alla Versilia';
+    const note = panel.querySelector(':scope > p');
+    if (overline && overline.textContent !== overlineText) overline.textContent = overlineText;
     const strongMarkup = `${delta.headline}<small>${delta.direction}</small>`;
     if (strong && strong.innerHTML !== strongMarkup) strong.innerHTML = strongMarkup;
+    if (note && note.textContent !== noteText) note.textContent = noteText;
   }
 
   function enhanceIndicatorCards() {
@@ -239,11 +259,12 @@
     const townName = document.querySelector('.town-identity h1')?.textContent?.trim();
     if (!townName) return;
     document.querySelectorAll('.indicator-card-grid button[data-indicator]').forEach(button => {
-      const metric = data.metrics?.[button.dataset.indicator];
+      const metricKey = button.dataset.indicator;
+      const metric = data.metrics?.[metricKey];
       const row = townRow(metric, townName);
       const small = button.querySelector('small');
       if (!metric || !row || !small) return;
-      const delta = deltaFor(metric, row);
+      const delta = deltaFor(metric, row, metricKey);
       const text = `${metric.meta.year} · ${delta.compact}`;
       if (small.textContent !== text) small.textContent = text;
     });
