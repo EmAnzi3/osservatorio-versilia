@@ -66,11 +66,36 @@
   const territorialMetrics = new Set([
     'income',
     'incomeUnder15k',
+    'diplomaPlus',
+    'tertiary',
+    'lifeExpectancy',
+    'mortalityAll',
+    'chronicTotal',
+    'diabetes',
+    'dementia',
+    'disability064Per1000',
     'motorization',
     'pollutingCars',
     'evPoints',
+    'ftthCoverageDesi',
+    'ftthReachedHouseholds',
+    'ftthUnreachedHouseholds',
+    'ftthCoverage20m',
     'roadInjuries',
     'thirdSector'
+  ]);
+
+  const functionalMetrics = new Set([
+    'schoolSites',
+    'schoolStudents',
+    'studentsPerClass',
+    'primaryFullTimeShare',
+    'emergencyAccess',
+    'emsResponseTimeP75',
+    'hospitalizedAll',
+    'elderlyHomeCare',
+    'pharmaciesPer1000',
+    'hospitals'
   ]);
 
   function unitKind(unit) {
@@ -124,6 +149,7 @@
   function metricScope(metricKey, metric) {
     if (administrativeMetrics.has(metricKey)) return 'administrative';
     if (territorialMetrics.has(metricKey)) return 'territorial';
+    if (functionalMetrics.has(metricKey)) return 'functional';
     return themeScopeDefaults[metric?.meta?.theme] || 'territorial';
   }
 

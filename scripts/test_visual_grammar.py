@@ -121,6 +121,22 @@ def browser_checks() -> None:
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert_reading_scale(page, "Amministrativo")
 
+        # Temi misti: la scala dipende dall'indicatore, non solo dal tema.
+        page.goto(base + "confronta/salute/?indicatore=lifeExpectancy", wait_until="networkidle")
+        assert_reading_scale(page, "Territoriale")
+        page.goto(base + "confronta/salute/?indicatore=hospitals", wait_until="networkidle")
+        assert_reading_scale(page, "Funzionale")
+
+        page.goto(base + "confronta/istruzione/?indicatore=diplomaPlus", wait_until="networkidle")
+        assert_reading_scale(page, "Territoriale")
+        page.goto(base + "confronta/istruzione/?indicatore=schoolSites", wait_until="networkidle")
+        assert_reading_scale(page, "Funzionale")
+
+        page.goto(base + "confronta/mobilita/?indicatore=outsideMunicipality", wait_until="networkidle")
+        assert_reading_scale(page, "Funzionale")
+        page.goto(base + "confronta/mobilita/?indicatore=ftthCoverageDesi", wait_until="networkidle")
+        assert_reading_scale(page, "Territoriale")
+
         page.goto(base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded", wait_until="networkidle")
         page.wait_for_selector(".town-metric-layout")
         assert_reading_scale(page, "Funzionale")
