@@ -70,6 +70,41 @@ rams(location.search);
     }).join('');
   }
 
+  function townSupplementaryMarkup(data, town, themeKey) {
+    const detail = data.details?.[town.code];
+    if (!detail) return '';
+
+    if (themeKey === 'salute') {
+      const health = data.healthB?.[town.code];
+      if (!health) return '';
+      return `<section class="topic-deep-dive town-supplementary"><div class="deep-heading"><div><span class="overline">Dettaglio aggiuntivo</span><h3>Patologie e cause di mortalità</h3></div><p>Solo sottodimensioni che non compaiono già nel Quadro del tema.</p></div>
+        <div class="deep-columns"><div><h4>Patologie croniche aggiuntive</h4><ul class="deep-list deep-list--rates"><li><span>Ipertensione</span><span class="deep-list-value"><strong>${number2.format(health.hypertension)}</strong><small>ogni 1.000 residenti</small></span></li><li><span>BPCO</span><span class="deep-list-value"><strong>${number2.format(health.copd)}</strong><small>ogni 1.000 residenti</small></span></li></ul></div><div><h4>Mortalità per causa</h4><ul class="deep-list deep-list--rates"><li><span>Tumori</span><span class="deep-list-value"><strong>${number2.format(health.mortalityTumors)}</strong><small>ogni 100.000 residenti</small></span></li><li><span>Malattie circolatorie</span><span class="deep-list-value"><strong>${number2.format(health.mortalityCirculatory)}</strong><small>ogni 100.000 residenti</small></span></li><li><span>Malattie respiratorie</span><span class="deep-list-value"><strong>${number2.format(health.mortalityRespiratory)}</strong><small>ogni 100.000 residenti</small></span></li></ul></div></div></section>`;
+    }
+
+    if (themeKey === 'economia') {
+      const economy = detail.economy;
+      if (!economy?.incomeBands?.length) return '';
+      return `<section class="topic-deep-dive town-supplementary"><div class="deep-heading"><div><span class="overline">Dettaglio aggiuntivo</span><h3>Distribuzione dei redditi dichiarati</h3></div><p>Le fasce completano il dato medio senza ripetere gli indicatori già presenti nel quadro. Il dettaglio ATECO è mostrato separatamente.</p></div>
+        <div class="deep-columns single-detail-column"><div><h4>Dichiaranti per fascia di reddito</h4><ul class="deep-list deep-list--income">${economy.incomeBands.map(b => `<li><span>${html(b.label)}</span><span class="deep-list-value"><strong>${number0.format(b.people)}</strong><small>dichiaranti</small></span></li>`).join('')}</ul></div></div></section>`;
+    }
+
+    if (themeKey === 'mobilita') {
+      const mobility = detail.mobility;
+      if (!mobility?.topDestinations?.length && !mobility?.topOrigins?.length) return '';
+      return `<section class="topic-deep-dive town-supplementary"><div class="deep-heading"><div><span class="overline">Dettaglio aggiuntivo</span><h3>Origini e destinazioni del pendolarismo</h3></div><p>Le principali relazioni territoriali completano i flussi aggregati senza ripeterli.</p></div>
+        <div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${(mobility.topDestinations || []).map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${(mobility.topOrigins || []).map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></section>`;
+    }
+
+    if (themeKey === 'ambiente') {
+      const environment = detail.environment;
+      if (!environment?.flood || !environment?.landslide) return '';
+      return `<section class="topic-deep-dive town-supplementary"><div class="deep-heading"><div><span class="overline">Dettaglio aggiuntivo</span><h3>Persone ed edifici esposti</h3></div><p>Il quadro mostra gli indicatori sintetici; qui resta soltanto il dettaglio fisico dell’esposizione ai rischi territoriali.</p></div>
+        <div class="risk-grid"><article><span>Rischio alluvioni</span><strong>${number0.format(environment.flood.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(environment.flood.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(environment.flood.buildings)}</dd></div></dl></article><article><span>Rischio frane</span><strong>${number0.format(environment.landslide.population)} persone</strong><dl><div><dt>Quota residenti</dt><dd>${number1.format(environment.landslide.populationPct)}%</dd></div><div><dt>Edifici</dt><dd>${number0.format(environment.landslide.buildings)}</dd></div></dl></article></div></section>`;
+    }
+
+    return '';
+  }
+
   function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {
     const theme = data.themes[themeKey];
     const metric = data.metrics[metricKey];
@@ -92,7 +127,7 @@ rams(location.search);
       <div class="data-actions town-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>
       <section class="all-indicators town-overview"><div class="section-heading compact"><div><span class="overline">Quadro del tema</span><h3>Gli altri indicatori di ${html(theme.label)}</h3></div><p>Il dato aperto non viene ripetuto. Seleziona una carta per cambiare approfondimento.</p></div>
         <div class="town-overview-groups">${townOverviewCards(data, town, themeKey, metricKey)}</div></section>
-      ${deepDiveMarkup(data, town, themeKey)}
+      ${townSupplementaryMarkup(data, town, themeKey)}
       ${townBenchmarkMarkup(metric, row, town)}`;
 
     const picker = container.querySelector('[data-town-metric-select]');
