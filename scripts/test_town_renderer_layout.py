@@ -111,6 +111,17 @@ def desktop_checks(page, base: str) -> None:
     require("diabete" not in supplementary_text,
             "Il dato selezionato viene ripetuto anche nel dettaglio aggiuntivo")
 
+    benchmark = page.locator(".town-benchmark:not(.benchmark-unavailable)")
+    require(benchmark.count() == 1, "Benchmark esterno atteso ma assente")
+    require(benchmark.locator(".town-benchmark-values article").count() >= 1,
+            "Benchmark esterno privo di valori")
+    benchmark_text = benchmark.inner_text().lower()
+    require("toscana" in benchmark_text, "Benchmark Toscana assente")
+    require("seravezza\n64,32" not in benchmark_text,
+            "Il benchmark ripete ancora il valore comunale già mostrato sopra")
+    require("qui non viene ripetuto" in benchmark_text,
+            "Il benchmark non esplicita la scelta anti-duplicazione")
+
     page.evaluate("window.scrollTo(0, 0)")
     page.wait_for_timeout(80)
     page.screenshot(path=str(REVIEW / "seravezza-salute-desktop.png"), full_page=True)
