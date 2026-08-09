@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "scripts/meteo_poc.py"
+      - "scripts/lamma_inventory.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -25,10 +26,15 @@ jobs:
           python-version: "3.12"
 
       - name: Compile POC
-        run: python -m py_compile scripts/meteo_poc.py
+        run: |
+          python -m py_compile scripts/meteo_poc.py
+          python -m py_compile scripts/lamma_inventory.py
 
-      - name: Build climate proof of concept
+      - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
+
+      - name: Discover LaMMA climate resources
+        run: python scripts/lamma_inventory.py --output reports/runtime/meteo-poc/lamma-inventory.json
 
       - name: Upload POC outputs
         if: always()
