@@ -1,4 +1,3 @@
-ecificata'}`,'',String(fd.get('message') || ''),'',`Nome: ${fd.get('name') || 'non indicato'}`,`Email: ${fd.get('email') || 'non indicata'}`].join('\n');
       document.querySelector('.form-status').hidden = false;
       location.href = `mailto:contatti@osservatorioversilia.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });

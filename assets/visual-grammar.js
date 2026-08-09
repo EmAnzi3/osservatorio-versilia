@@ -366,7 +366,9 @@
           existing?.remove();
           const wrapper = document.createElement('div');
           wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
-          townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          const benchmark = townLayout.parentElement?.querySelector(':scope > .town-benchmark');
+          if (benchmark) benchmark.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          else townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
         }
       }
     }

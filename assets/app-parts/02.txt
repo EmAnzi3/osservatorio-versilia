@@ -9,9 +9,14 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
   function metricControls(data, themeKey, metricKey, compact = true) {
     const theme = data.themes[themeKey];
     const groups = themeSections(theme);
+    const labelCounts = theme.metrics.reduce((counts, key) => {
+      const label = data.metrics[key].meta.shortLabel;
+      counts[label] = (counts[label] || 0) + 1;
+      return counts;
+    }, {});
     return `<div class="metric-switch metric-catalog ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatori di ${html(theme.label)}">${groups.map(section => `<section class="metric-group" data-section="${html(section.key)}">
-      <div class="metric-group-heading"><strong>${html(section.label)}</strong>${section.description ? `<span>${html(section.description)}</span>` : ''}</div>
-      <div class="metric-group-buttons">${section.metrics.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>
+      <div class="metric-group-heading"><strong>${html(section.label)}</strong>${compact && section.description ? `<span>${html(section.description)}</span>` : ''}</div>
+      <div class="metric-group-buttons">${section.metrics.map(key => { const meta = data.metrics[key].meta; const label = labelCounts[meta.shortLabel] > 1 ? meta.label : meta.shortLabel; return `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(label)}</button>`; }).join('')}</div>
     </section>`).join('')}</div>`;
   }
 
@@ -135,4 +140,4 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
   function renderTown(data) {
     const town = findTown(data, pageTown);
     if (!town) return renderNotFound();
-    const params = new URLSearchPa
+    const params = new URLSearchParams

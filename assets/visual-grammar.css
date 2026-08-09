@@ -191,6 +191,22 @@
   line-height: 1.35;
 }
 
+/* Scheda comunale: il selettore degli indicatori deve distinguersi dal fondo pagina. */
+.town-topic > .metric-switch.metric-catalog {
+  padding: 20px 22px;
+  border: 1px solid var(--theme-line, var(--line));
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--theme-soft, var(--blue-soft)) 82%, var(--surface));
+  box-shadow: 0 13px 34px color-mix(in srgb, var(--theme-accent, var(--blue)) 9%, transparent);
+}
+
+/* Il confronto esterno resta leggibile anche quando il benchmark non è disponibile. */
+.town-topic .town-benchmark.benchmark-unavailable {
+  border: 1px solid var(--theme-line, var(--line));
+  background: color-mix(in srgb, var(--theme-soft, var(--blue-soft)) 76%, var(--surface));
+  box-shadow: 0 13px 34px color-mix(in srgb, var(--theme-accent, var(--blue)) 8%, transparent);
+}
+
 /* Scala territoriale: chiarisce il significato del perimetro comunale. */
 .reading-scale {
   display: grid;
@@ -370,6 +386,11 @@
 }
 
 @media (max-width: 700px) {
+  .town-topic > .metric-switch.metric-catalog {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
   .bar-row.comparison-row {
     grid-template-columns: minmax(78px, .9fr) minmax(88px, 1.55fr) auto;
     gap: 8px;
