@@ -24,6 +24,7 @@ EXPECTED = {
     "housingStockPer1000": lambda row: 1000 * row["A8"] / row["P1"],
     "nonOccupiedHomesPer1000": lambda row: 1000 * row["A3"] / row["P1"],
     "vacantHomes": lambda row: 100 * row["A3"] / row["A8"],
+    "singleHouseholds": lambda row: 100 * row["PF3"] / row["PF1"],
 }
 
 
@@ -56,7 +57,7 @@ def main() -> None:
             expected_2021 = formula(raw["2021"][row["town"]])
             expected_2023 = formula(raw["2023"][row["town"]])
             require(abs(series["values"][0] - expected_2021) < 1e-9, f"Valore 2021 errato: {metric_key}/{row['town']}")
-            tolerance = 0.051 if metric_key == "vacantHomes" else 1e-9
+            tolerance = 0.051 if metric_key in {"vacantHomes", "singleHouseholds"} else 1e-9
             require(abs(series["values"][1] - expected_2023) <= tolerance, f"Valore 2023 errato: {metric_key}/{row['town']}")
             require(series["values"][1] == row["value"], f"Ultimo punto non coincide col valore corrente: {metric_key}/{row['town']}")
 
@@ -64,12 +65,16 @@ def main() -> None:
         all(not row.get("series") for row in DATA["metrics"]["cohabitingHouseholds"]["rows"]),
         "Famiglie coabitanti non deve avere uno storico: PF9 manca nel tracciato 2021",
     )
+    require(
+        all(not row.get("series") for row in DATA["metrics"]["householdSize"]["rows"]),
+        "Componenti medi non deve avere uno storico: PF8 non consente un valore esatto",
+    )
     history_count = sum(
         1 for metric in DATA["metrics"].values()
         if any(row.get("series") for row in metric["rows"])
     )
-    require(history_count >= 42, "Copertura storica inferiore al livello v1.8")
-    print("Storico v1.8 verificato: 6 nuove serie, 7/7 Comuni, 2021–2023.")
+    require(history_count >= 43, "Copertura storica inferiore al livello v1.8")
+    print("Storico v1.8 verificato: 7 nuove serie, 7/7 Comuni, 2021–2023.")
 
 
 if __name__ == "__main__":

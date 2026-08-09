@@ -29,7 +29,7 @@ V170_VERSION_ENTRY = (
 V180_VERSION_ENTRY = (
     "      ['2026.08.09-v1.8.0','9 agosto 2026','106 indicatori. "
     "Aggiunte 106 schede canoniche degli indicatori, politica esplicita di aggiornamento "
-    "delle fonti e sei serie comunali Istat omogenee 2021–2023.'],\n"
+    "delle fonti e sette serie comunali Istat omogenee 2021–2023.'],\n"
 )
 
 if "bilanci" not in build.THEME_SLUGS:

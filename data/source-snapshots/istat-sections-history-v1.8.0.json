@@ -73,13 +73,15 @@
   },
   "comparabilityCheck": {
     "result": "accepted",
-    "criterion": "Stesse variabili elementari e stessa formula nel 2021 e nel 2023; il ricalcolo 2023 coincide con i valori già pubblicati.",
+    "criterion": "Stesse variabili elementari e stessa formula nel 2021 e nel 2023; il ricalcolo 2023 coincide con i valori già pubblicati entro la loro precisione.",
     "variables": [
       "P1",
       "P33-P42",
       "P70-P79",
       "P102",
       "P103",
+      "PF1",
+      "PF3",
       "A3",
       "A8"
     ]
@@ -94,6 +96,8 @@
         "female1564": 6989,
         "P102": 4968,
         "P103": 3731,
+        "PF1": 9030,
+        "PF3": 2616,
         "A3": 1996,
         "A8": 10931
       },
@@ -105,6 +109,8 @@
         "female1564": 19087,
         "P102": 12919,
         "P103": 10108,
+        "PF1": 28903,
+        "PF3": 11741,
         "A3": 10627,
         "A8": 38806
       },
@@ -116,6 +122,8 @@
         "female1564": 10156,
         "P102": 7039,
         "P103": 5329,
+        "PF1": 14173,
+        "PF3": 5159,
         "A3": 8343,
         "A8": 22303
       },
@@ -127,6 +135,8 @@
         "female1564": 7307,
         "P102": 4700,
         "P103": 3714,
+        "PF1": 10493,
+        "PF3": 3942,
         "A3": 7932,
         "A8": 18196
       },
@@ -138,6 +148,8 @@
         "female1564": 3962,
         "P102": 2600,
         "P103": 1999,
+        "PF1": 5488,
+        "PF3": 1896,
         "A3": 2058,
         "A8": 7472
       },
@@ -149,6 +161,8 @@
         "female1564": 2081,
         "P102": 1249,
         "P103": 1013,
+        "PF1": 3416,
+        "PF3": 1542,
         "A3": 5135,
         "A8": 8493
       },
@@ -160,6 +174,8 @@
         "female1564": 872,
         "P102": 632,
         "P103": 385,
+        "PF1": 1364,
+        "PF3": 566,
         "A3": 2181,
         "A8": 3532
       }
@@ -173,6 +189,8 @@
         "female1564": 6976,
         "P102": 5197,
         "P103": 3937,
+        "PF1": 9108,
+        "PF3": 2664,
         "A3": 1975,
         "A8": 11003
       },
@@ -184,6 +202,8 @@
         "female1564": 19038,
         "P102": 13174,
         "P103": 10726,
+        "PF1": 29043,
+        "PF3": 11981,
         "A3": 10491,
         "A8": 38890
       },
@@ -195,6 +215,8 @@
         "female1564": 10179,
         "P102": 7165,
         "P103": 5684,
+        "PF1": 14316,
+        "PF3": 5237,
         "A3": 8287,
         "A8": 22384
       },
@@ -206,6 +228,8 @@
         "female1564": 7152,
         "P102": 4707,
         "P103": 3858,
+        "PF1": 10544,
+        "PF3": 4066,
         "A3": 7950,
         "A8": 18328
       },
@@ -217,6 +241,8 @@
         "female1564": 3917,
         "P102": 2672,
         "P103": 2080,
+        "PF1": 5571,
+        "PF3": 1946,
         "A3": 2037,
         "A8": 7528
       },
@@ -228,6 +254,8 @@
         "female1564": 2034,
         "P102": 1209,
         "P103": 1004,
+        "PF1": 3378,
+        "PF3": 1549,
         "A3": 5140,
         "A8": 8477
       },
@@ -239,6 +267,8 @@
         "female1564": 857,
         "P102": 654,
         "P103": 428,
+        "PF1": 1371,
+        "PF3": 579,
         "A3": 2154,
         "A8": 3518
       }
@@ -292,12 +322,24 @@
         2021,
         2023
       ]
+    },
+    {
+      "key": "singleHouseholds",
+      "formula": "PF3 / PF1 × 100",
+      "years": [
+        2021,
+        2023
+      ]
     }
   ],
   "rejectedCandidates": [
     {
       "key": "cohabitingHouseholds",
       "reason": "La variabile PF9, usata nel 2023, non è presente nel tracciato regionale 2021; la serie non viene costruita."
+    },
+    {
+      "key": "householdSize",
+      "reason": "La classe PF8 raggruppa le famiglie con sei o più componenti; il valore medio esatto non è ricostruibile senza introdurre un'approssimazione."
     }
   ]
 }
