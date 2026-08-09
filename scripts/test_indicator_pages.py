@@ -137,6 +137,9 @@ def browser_checks() -> None:
         assert page.locator(".indicator-source-policy").count() == 1
         assert page.locator('[data-share]').count() == 1
         assert page.locator('.data-actions a[href*="/confronta/economia/"]').count() == 1
+        page.wait_for_function(
+            "document.querySelectorAll('.topic-bars .comparison-row').length === 7"
+        )
         assert page.locator(".topic-bars .comparison-row").count() == 7
         assert page.locator(".bar-rank").count() == 0
 
