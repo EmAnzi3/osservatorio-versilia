@@ -43,6 +43,8 @@ def main() -> None:
         text = page.read_text(encoding="utf-8")
         require('class="ov-mark-svg"' in text, f"Logo OV assente in {page}")
         require("assets/brand.css?v=20260807-ov" in text, f"CSS brand assente in {page}")
+        require("assets/app-bundle.js?v=20260809-4" in text,
+                f"Bundle applicativo non cache-bustato in {page}")
         require("favicon.svg?v=20260807-ov" in text, f"Favicon non cache-bustata in {page}")
         require(OLD_MARK not in text, f"Vecchia O ancora presente in {page}")
 
