@@ -42,22 +42,17 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     }
   }
 
-  function indicatorComparisonTable(data, metricKey) {
-    const metric = data.metrics[metricKey];
-    const rows = [...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
-    return `<div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th scope="col">Comune</th><th scope="col">Valore · ${html(metric.meta.year)}</th><th scope="col">Apri il territorio</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${html(row.town)}</th><td>${html(formatValue(row.value, metric.meta.unit))}</td><td><a href="${route(`comuni/${row.slug}/?tema=${metric.meta.theme}&indicatore=${metricKey}`)}">Scheda comunale <span aria-hidden="true">→</span></a></td></tr>`).join('')}</tbody></table></div>`;
-  }
-
-  function indicatorHistoryTable(metric) {
+  function indicatorHistoryExplorer(metric) {
     const historicalRows = metric.rows.filter(row => row.series?.years?.length && row.series?.values?.length);
     if (!historicalRows.length) {
       return `<div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div>`;
     }
-    const years = [...new Set(historicalRows.flatMap(row => row.series.years))].sort((a, b) => Number(a) - Number(b));
-    return `<div class="indicator-table-scroll"><table class="indicator-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year => `<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${historicalRows.sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => {
-      const values = new Map(row.series.years.map((year, index) => [String(year), row.series.values[index]]));
-      return `<tr><th scope="row">${html(row.town)}</th>${years.map(year => `<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)), metric.meta.unit)) : '—'}</td>`).join('')}</tr>`;
-    }).join('')}</tbody></table></div>`;
+    const rows = [...historicalRows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
+    return `<div class="indicator-history-explorer"><div class="indicator-history-tabs" role="tablist" aria-label="Seleziona il comune">${rows.map((row, index) => `<button type="button" role="tab" data-metric="${html(row.code)}" class="${index === 0 ? 'active' : ''}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}">${html(row.town)}</button>`).join('')}</div><div id="indicator-history-chart" class="indicator-history-chart" aria-live="polite"></div></div>`;
+  }
+
+  function indicatorSourcePolicy(policy, checkedAt, license) {
+    return `<details class="method-disclosure indicator-source-policy"><summary><span>Fonte e aggiornamento</span><small>Produttore, frequenza, licenza e ultimo controllo</small></summary><div class="method-disclosure-body"><dl><div><dt>Produttore</dt><dd>${html(policy.publisher || 'Fonte istituzionale')}</dd></div><div><dt>Frequenza</dt><dd>${html(policy.frequencyLabel || 'Secondo la fonte')}</dd></div><div><dt>Prossimo aggiornamento</dt><dd>${html(policy.expectedRelease || 'Secondo il calendario della fonte')}</dd></div><div><dt>Ultimo controllo</dt><dd>${html(checkedAt)}</dd></div><div><dt>Licenza o riuso</dt><dd>${license}</dd></div></dl><p><strong>Acquisizione:</strong> ${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p></div></details>`;
   }
 
   function renderIndicator(data, registry, monitorState) {
@@ -71,30 +66,46 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     const checkedAt = sourceProbe && monitorState?.checkedAt
       ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(monitorState.checkedAt))
       : 'Controllo non ancora registrato';
-    const historyCount = metric.rows.filter(row => row.series?.years?.length).length;
+    const historicalRows = metric.rows.filter(row => row.series?.years?.length && row.series?.values?.length).sort((a, b) => a.town.localeCompare(b.town, 'it'));
     const license = policy.licenseUrl
       ? `<a href="${html(policy.licenseUrl)}" target="_blank" rel="noreferrer">${html(policy.licenseName)} ↗</a>`
       : html(policy.licenseName || 'Condizioni indicate dalla fonte');
 
     app.innerHTML = `<main class="inner-page indicator-page" data-theme="${html(theme.key)}">
       <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="${route('')}">Home</a><span>›</span><a href="${route(`confronta/${theme.key}/`)}">${html(theme.label)}</a><span>›</span><strong>${html(metric.meta.label)}</strong></nav>
-      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · ${html(theme.label)}</span><h1>${html(metric.meta.label)}</h1><p>${html(metric.meta.description)}</p></div>
-        <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Copertura</dt><dd>${html(metric.method?.coverage || '7/7')}</dd></div><div><dt>Serie storica</dt><dd>${historyCount ? `${historyCount}/7 comuni` : 'Non disponibile'}</dd></div></dl>
-        <div class="indicator-hero-actions"><a class="button-link" href="${route(`confronta/${theme.key}/?indicatore=${pageMetric}`)}">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
-      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title">Il dato nei sette comuni</h2></div><p>Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
-        <div class="indicator-current-layout">${indicatorComparisonTable(data, pageMetric)}<aside><span>${html(metric.aggregate.label)}</span><strong>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.aggregate.note)}</p></aside></div></section>
-      <section class="indicator-benchmark page-width">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
-      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div>${indicatorHistoryTable(metric)}</section>
-      <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
-        <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>${html(policy.publisher || metric.meta.source)}</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Frequenza</dt><dd>${html(policy.frequencyLabel || 'Secondo la fonte')}</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>${html(policy.expectedRelease || 'Secondo il calendario della fonte')}</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>${html(checkedAt)}</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd>${license}</dd></div></dl>
-          <div><h3>Acquisizione</h3><p>${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p>${methodDisclosure(metric)}</div></div>
-        <div class="data-actions indicator-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></section>
+      ${compareContextNav(data, theme.key)}
+      <section class="topic-hero indicator-topic-hero page-width" data-theme="${html(theme.key)}"><div class="topic-symbol">${themeIcon(theme.key, 26)}<small>${html(theme.number)}</small></div><div><span class="overline">Indicatore · ${html(theme.label)}</span><h1>${html(metric.meta.label)}</h1><p>${html(metric.meta.description)}</p></div></section>
+      <section class="topic-dashboard indicator-dashboard page-width" data-theme="${html(theme.key)}"><span data-metric="${html(pageMetric)}" class="active indicator-metric-context" hidden></span><aside id="compare-definition" class="topic-controls"></aside><div id="compare-bars"></div></section>
+      <section id="compare-benchmark" class="page-width"></section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div class="history-panel"><div class="panel-title"><div><span class="overline">Andamento storico</span><h3>${historicalRows.length ? 'Scegli il comune' : 'Disponibilità della serie'}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>${indicatorHistoryExplorer(metric)}</div></section>
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${[...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => `<a href="${route(`comuni/${row.slug}/?tema=${theme.key}&indicatore=${pageMetric}`)}"><span>${html(row.town)}</span><b>→</b></a>`).join('')}</div></section>
     </main>`;
 
-    document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
-    document.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, pageMetric));
-    document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    renderCompareMetric(data, theme.key, pageMetric, false, {
+      indicatorPage: true,
+      policyMarkup: indicatorSourcePolicy(policy, checkedAt, license),
+    });
+
+    if (historicalRows.length) {
+      const tabs = document.querySelector('.indicator-history-tabs');
+      const chart = document.getElementById('indicator-history-chart');
+      const selectTown = code => {
+        const row = historicalRows.find(item => item.code === code) || historicalRows[0];
+        tabs?.querySelectorAll('[role="tab"]').forEach(tab => {
+          const active = tab.dataset.metric === row.code;
+          tab.classList.toggle('active', active);
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+          tab.tabIndex = active ? 0 : -1;
+        });
+        if (chart) {
+          chart.innerHTML = `<div class="indicator-history-current"><span>Comune selezionato</span><strong>${html(row.town)}</strong></div>${seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${row.town}`)}`;
+          installChartInteractions(chart);
+        }
+      };
+      installTablist(tabs, selectTown);
+      selectTown(historicalRows[0].code);
+    }
+
   }
 
   function renderProject(data) {

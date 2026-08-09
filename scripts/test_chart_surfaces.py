@@ -157,6 +157,13 @@ def verify_all_town_pages(page: Page, base: str) -> None:
         assert_surface(page, ".history-panel", f"Comune {town['name']} · pannello grafico")
 
 
+def verify_indicator_page(page: Page, base: str) -> None:
+    page.goto(base + "indicatori/popolazione-residente/", wait_until="networkidle")
+    page.wait_for_selector(".indicator-page .topic-bars")
+    assert_surface(page, ".indicator-page .topic-bars", "Indicatore · confronto corrente")
+    assert_surface(page, ".indicator-page .history-panel", "Indicatore · andamento storico")
+
+
 def verify_history_variants(page: Page, base: str) -> None:
     # Reddito: due annualità, cioè lo stesso pannello mostrato nello screenshot di riferimento.
     page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
@@ -215,6 +222,7 @@ def main() -> None:
         verify_home(page, base)
         verify_all_theme_pages(page, base)
         verify_all_town_pages(page, base)
+        verify_indicator_page(page, base)
         verify_history_variants(page, base)
         verify_economy_specials(page, base)
 

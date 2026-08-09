@@ -91,7 +91,7 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
     installCrimeInteractions(data);
   }
 
-  function renderCompareMetric(data, themeKey, metricKey, normalized) {
+  function renderCompareMetric(data, themeKey, metricKey, normalized, options = {}) {
     const metric = data.metrics[metricKey];
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
@@ -102,9 +102,10 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
     def.innerHTML = `${hasNormalized ? `<div class="scale-switch" role="group" aria-label="Scala"><button type="button" data-scale="raw" class="${normalized ? '' : 'active'}">Valore assoluto</button><button type="button" data-scale="normalized" class="${normalized ? 'active' : ''}">Rapportato</button></div>` : ''}
       <div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p>
         <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(aggregate.label)}</dt><dd>${html(formatValue(aggregate.value, unit))}</dd></div></dl>
-        <small class="aggregate-note">${html(aggregate.note)}</small>${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></div>`;
+        <small class="aggregate-note">${html(aggregate.note)}</small>${methodDisclosure(metric)}${options.policyMarkup || ''}<div class="data-actions"><a href="${options.indicatorPage ? route(`confronta/${themeKey}/?indicatore=${metricKey}`) : indicatorHref(metric)}">${options.indicatorPage ? `Tutti gli indicatori di ${html(data.themes[themeKey].label)}` : 'Scheda indicatore'}</a>${options.indicatorPage ? '<button type="button" data-share>Condividi</button>' : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></div>`;
     bars.innerHTML = `<div class="topic-bars"><div class="comparison-bars">${barRows(data, metricKey, { normalized })}</div></div>`;
-    def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data, themeKey, metricKey, button.dataset.scale === 'normalized')));
+    def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data, themeKey, metricKey, button.dataset.scale === 'normalized', options)));
+    def.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     def.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey, normalized));
     def.querySelector('[data-print]')?.addEventListener('click', () => window.print());
     benchmark.innerHTML = benchmarkMarkup(metric, aggregate, unit, null);

@@ -78,7 +78,8 @@ def static_checks() -> None:
         assert metric["meta"]["label"] in document
         assert '<main class="inner-page indicator-page"' in document
         assert 'assets/indicator-pages.css' in document
-        assert 'nessuna graduatoria' in document.lower()
+        assert 'topic-dashboard indicator-dashboard' in document
+        assert 'comparison-note' in document
 
         structured = extract_json_ld(document)
         graph = structured.get("@graph", [])
@@ -114,16 +115,30 @@ def browser_checks() -> None:
         page.goto(base + "indicatori/popolazione-residente/", wait_until="networkidle")
         page.wait_for_selector(".indicator-page")
         assert page.locator("h1").first.inner_text() == "Popolazione residente"
-        assert page.locator(".indicator-values-table tbody tr").count() == 7
-        assert page.locator(".indicator-history-table tbody tr").count() == 7
+        assert page.locator(".compare-context-nav").count() == 1
+        assert page.locator(".topic-hero .topic-symbol").count() == 1
+        assert page.locator(".topic-bars .comparison-row").count() == 7
+        assert page.locator(".indicator-history-tabs [role=tab]").count() == 7
+        assert page.locator("#indicator-history-chart .trend-chart").count() == 1
         assert page.locator(".bar-rank").count() == 0
         assert "Politica fonte" not in page.locator("body").inner_text()
-        assert page.locator(".indicator-governance-grid").count() == 1
+        assert page.locator(".indicator-governance-grid").count() == 0
+        assert page.locator(".indicator-source-policy").count() == 1
+        page.locator('.indicator-history-tabs [role=tab]', has_text="Viareggio").click()
+        assert page.locator(".indicator-history-current strong").inner_text() == "Viareggio"
 
         page.goto(base + "indicatori/persone-con-almeno-una-patologia-cronica/", wait_until="networkidle")
         page.wait_for_selector(".indicator-page")
         assert page.locator(".indicator-history-empty").count() == 1
         assert page.locator(".benchmark-grid").count() == 1
+
+        page.goto(base + "indicatori/presenze-turistiche/", wait_until="networkidle")
+        page.locator('[data-scale="normalized"]').click()
+        assert page.locator(".indicator-source-policy").count() == 1
+        assert page.locator('[data-share]').count() == 1
+        assert page.locator('.data-actions a[href*="/confronta/economia/"]').count() == 1
+        assert page.locator(".topic-bars .comparison-row").count() == 7
+        assert page.locator(".bar-rank").count() == 0
 
         page.goto(base, wait_until="networkidle")
         page.locator(".global-search-trigger").click()
@@ -142,7 +157,8 @@ def browser_checks() -> None:
         no_js_page = no_js.new_page()
         no_js_page.goto(base + "indicatori/popolazione-residente/", wait_until="networkidle")
         assert no_js_page.locator("h1").first.inner_text() == "Popolazione residente"
-        assert no_js_page.locator(".indicator-values-table tbody tr").count() == 7
+        assert no_js_page.locator(".topic-bars .comparison-row").count() == 7
+        assert no_js_page.locator("#indicator-history-chart .trend-chart").count() == 1
         no_js.close()
         browser.close()
 
