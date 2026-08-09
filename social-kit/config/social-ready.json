@@ -1,0 +1,19 @@
+{
+  "policy": {
+    "require_source_url": true,
+    "require_year": true,
+    "require_full_coverage_for_seven_towns": true,
+    "town_order": "alphabetical",
+    "bars_start_at_zero": true,
+    "external_benchmark_requires_matching_year": true
+  },
+  "approved_metrics": {
+    "population": {"scope": "comunale", "comparable": true},
+    "income": {"scope": "comunale", "comparable": true},
+    "roadInjuries": {"scope": "comunale", "comparable": true},
+    "localUnits": {"scope": "comunale", "comparable": true},
+    "ftthCoverageDesi": {"scope": "comunale", "comparable": true},
+    "recycling": {"scope": "comunale", "comparable": true},
+    "capitalExpenditureCommittedPerResident": {"scope": "amministrativo", "comparable": true}
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "campaign": "Mese campione",
+  "cadence": {
+    "data_post": "martedì",
+    "context_post": "venerdì"
+  },
+  "weeks": [
+    {
+      "id": "settimana-01",
+      "theme": "demografia",
+      "metric": "population",
+      "data_question": "Nel tuo Comune, quale cambiamento demografico noti di più?",
+      "context_question": "Quale servizio locale risente maggiormente del cambiamento demografico?"
+    },
+    {
+      "id": "settimana-02",
+      "theme": "economia",
+      "metric": "income",
+      "data_question": "Quale differenza tra Comuni ti sorprende di più, e perché?",
+      "context_question": "Quale dato affiancheresti al reddito medio prima di interpretarlo?"
+    },
+    {
+      "id": "settimana-03",
+      "theme": "mobilita",
+      "metric": "roadInjuries",
+      "data_question": "Dove incontri più spesso problemi di sicurezza stradale?",
+      "context_question": "Quale informazione manca per spiegare le differenze tra territori?"
+    },
+    {
+      "id": "settimana-04",
+      "theme": "ambiente",
+      "metric": "recycling",
+      "data_question": "La raccolta differenziata dichiarata coincide con la tua esperienza?",
+      "context_question": "Quale dato sul servizio rifiuti dovrebbe essere più accessibile?"
+    }
+  ]
+}

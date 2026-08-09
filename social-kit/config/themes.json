@@ -1,0 +1,23 @@
+{
+  "brand": {
+    "paper": "#F4EEE2",
+    "surface": "#FFFAF1",
+    "ink": "#102F45",
+    "muted": "#526B7A",
+    "blue": "#145B78",
+    "green": "#58A28F",
+    "line": "#C9D5D5"
+  },
+  "themes": {
+    "demografia": {"label": "Demografia", "accent": "#8A4F3D", "soft": "#F8EEE9", "line": "#DFBFB3"},
+    "economia": {"label": "Economia", "accent": "#7A5B16", "soft": "#FAF4DF", "line": "#DCCB8D"},
+    "lavoro": {"label": "Lavoro", "accent": "#5D4778", "soft": "#F2EEF8", "line": "#CBBDDE"},
+    "istruzione": {"label": "Istruzione", "accent": "#315D8B", "soft": "#EDF3F9", "line": "#B9CEE2"},
+    "salute": {"label": "Salute", "accent": "#8A3F55", "soft": "#F8EDF1", "line": "#DFBCC7"},
+    "mobilita": {"label": "Mobilità e infrastrutture", "accent": "#27636D", "soft": "#EAF4F5", "line": "#AFD0D4"},
+    "abitare": {"label": "Abitare", "accent": "#8B5C35", "soft": "#F7F0E9", "line": "#DEC5AD"},
+    "ambiente": {"label": "Ambiente", "accent": "#3F6D43", "soft": "#EDF5ED", "line": "#B9D1BB"},
+    "bilanci": {"label": "Bilanci comunali", "accent": "#315F63", "soft": "#EDF4F2", "line": "#B8CBC7"},
+    "comunita": {"label": "Investimenti e comunità", "accent": "#5B596F", "soft": "#F0F0F5", "line": "#C7C5D2"}
+  }
+}
