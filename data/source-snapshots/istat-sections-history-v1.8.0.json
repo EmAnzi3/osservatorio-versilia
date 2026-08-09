@@ -1,0 +1,303 @@
+{
+  "version": "istat-sections-history-v1.8.0",
+  "created": "2026-08-09",
+  "scope": {
+    "towns": [
+      {
+        "name": "Massarosa",
+        "code": "046018"
+      },
+      {
+        "name": "Viareggio",
+        "code": "046033"
+      },
+      {
+        "name": "Camaiore",
+        "code": "046005"
+      },
+      {
+        "name": "Pietrasanta",
+        "code": "046024"
+      },
+      {
+        "name": "Seravezza",
+        "code": "046028"
+      },
+      {
+        "name": "Forte dei Marmi",
+        "code": "046013"
+      },
+      {
+        "name": "Stazzema",
+        "code": "046030"
+      }
+    ],
+    "coverage": "7/7",
+    "years": [
+      2021,
+      2023
+    ]
+  },
+  "source": {
+    "publisher": "Istat",
+    "landing": "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/",
+    "license": "CC BY 4.0",
+    "files": {
+      "2021": {
+        "download": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2021.zip",
+        "data": {
+          "name": "R09_indicatori_2021_sezioni.xlsx",
+          "sha256": "408cc0d50ed81dd5a73e9c137d919613c316fb64b2866e4bcd84dd09e318d858",
+          "bytes": 18296161
+        },
+        "layout": {
+          "name": "TRACCIATO FILE REGIONALI.xlsx",
+          "sha256": "24bb72159ec554bbafa5ea2dfd5b9a712cad6077ee50b70e5ee0ed7a0c2a44b7",
+          "bytes": 13611
+        }
+      },
+      "2023": {
+        "download": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+        "data": {
+          "name": "R09_Toscana_2023_sezioni.xlsx",
+          "sha256": "ac4a4068e5ed2fb93ecbed96bc882914e7feef3d4d0db17013dceb4dcac95fdf",
+          "bytes": 18784761
+        },
+        "layout": {
+          "name": "TRACCIATO FILE REGIONALI.xlsx",
+          "sha256": "98071eb0f9e71a1bc59f5eb49503b8d31e7adc010aaa6c30d96ff3d9d1bfe3be",
+          "bytes": 13786
+        }
+      }
+    }
+  },
+  "comparabilityCheck": {
+    "result": "accepted",
+    "criterion": "Stesse variabili elementari e stessa formula nel 2021 e nel 2023; il ricalcolo 2023 coincide con i valori già pubblicati.",
+    "variables": [
+      "P1",
+      "P33-P42",
+      "P70-P79",
+      "P102",
+      "P103",
+      "A3",
+      "A8"
+    ]
+  },
+  "raw": {
+    "2021": [
+      {
+        "town": "Massarosa",
+        "code": "046018",
+        "P1": 21823,
+        "male1564": 7000,
+        "female1564": 6989,
+        "P102": 4968,
+        "P103": 3731,
+        "A3": 1996,
+        "A8": 10931
+      },
+      {
+        "town": "Viareggio",
+        "code": "046033",
+        "P1": 61045,
+        "male1564": 18817,
+        "female1564": 19087,
+        "P102": 12919,
+        "P103": 10108,
+        "A3": 10627,
+        "A8": 38806
+      },
+      {
+        "town": "Camaiore",
+        "code": "046005",
+        "P1": 31821,
+        "male1564": 10010,
+        "female1564": 10156,
+        "P102": 7039,
+        "P103": 5329,
+        "A3": 8343,
+        "A8": 22303
+      },
+      {
+        "town": "Pietrasanta",
+        "code": "046024",
+        "P1": 23066,
+        "male1564": 6843,
+        "female1564": 7307,
+        "P102": 4700,
+        "P103": 3714,
+        "A3": 7932,
+        "A8": 18196
+      },
+      {
+        "town": "Seravezza",
+        "code": "046028",
+        "P1": 12441,
+        "male1564": 3780,
+        "female1564": 3962,
+        "P102": 2600,
+        "P103": 1999,
+        "A3": 2058,
+        "A8": 7472
+      },
+      {
+        "town": "Forte dei Marmi",
+        "code": "046013",
+        "P1": 6943,
+        "male1564": 1960,
+        "female1564": 2081,
+        "P102": 1249,
+        "P103": 1013,
+        "A3": 5135,
+        "A8": 8493
+      },
+      {
+        "town": "Stazzema",
+        "code": "046030",
+        "P1": 2890,
+        "male1564": 928,
+        "female1564": 872,
+        "P102": 632,
+        "P103": 385,
+        "A3": 2181,
+        "A8": 3532
+      }
+    ],
+    "2023": [
+      {
+        "town": "Massarosa",
+        "code": "046018",
+        "P1": 21865,
+        "male1564": 7095,
+        "female1564": 6976,
+        "P102": 5197,
+        "P103": 3937,
+        "A3": 1975,
+        "A8": 11003
+      },
+      {
+        "town": "Viareggio",
+        "code": "046033",
+        "P1": 60755,
+        "male1564": 18755,
+        "female1564": 19038,
+        "P102": 13174,
+        "P103": 10726,
+        "A3": 10491,
+        "A8": 38890
+      },
+      {
+        "town": "Camaiore",
+        "code": "046005",
+        "P1": 31864,
+        "male1564": 9957,
+        "female1564": 10179,
+        "P102": 7165,
+        "P103": 5684,
+        "A3": 8287,
+        "A8": 22384
+      },
+      {
+        "town": "Pietrasanta",
+        "code": "046024",
+        "P1": 22788,
+        "male1564": 6752,
+        "female1564": 7152,
+        "P102": 4707,
+        "P103": 3858,
+        "A3": 7950,
+        "A8": 18328
+      },
+      {
+        "town": "Seravezza",
+        "code": "046028",
+        "P1": 12435,
+        "male1564": 3748,
+        "female1564": 3917,
+        "P102": 2672,
+        "P103": 2080,
+        "A3": 2037,
+        "A8": 7528
+      },
+      {
+        "town": "Forte dei Marmi",
+        "code": "046013",
+        "P1": 6777,
+        "male1564": 1878,
+        "female1564": 2034,
+        "P102": 1209,
+        "P103": 1004,
+        "A3": 5140,
+        "A8": 8477
+      },
+      {
+        "town": "Stazzema",
+        "code": "046030",
+        "P1": 2903,
+        "male1564": 944,
+        "female1564": 857,
+        "P102": 654,
+        "P103": 428,
+        "A3": 2154,
+        "A8": 3518
+      }
+    ]
+  },
+  "acceptedIndicators": [
+    {
+      "key": "femaleEmploymentRate",
+      "formula": "P103 / somma(P70:P79) × 100",
+      "years": [
+        2021,
+        2023
+      ]
+    },
+    {
+      "key": "maleEmploymentRate",
+      "formula": "P102 / somma(P33:P42) × 100",
+      "years": [
+        2021,
+        2023
+      ]
+    },
+    {
+      "key": "employmentGenderGap",
+      "formula": "maleEmploymentRate − femaleEmploymentRate",
+      "years": [
+        2021,
+        2023
+      ]
+    },
+    {
+      "key": "housingStockPer1000",
+      "formula": "A8 / P1 × 1.000",
+      "years": [
+        2021,
+        2023
+      ]
+    },
+    {
+      "key": "nonOccupiedHomesPer1000",
+      "formula": "A3 / P1 × 1.000",
+      "years": [
+        2021,
+        2023
+      ]
+    },
+    {
+      "key": "vacantHomes",
+      "formula": "A3 / A8 × 100",
+      "years": [
+        2021,
+        2023
+      ]
+    }
+  ],
+  "rejectedCandidates": [
+    {
+      "key": "cohabitingHouseholds",
+      "reason": "La variabile PF9, usata nel 2023, non è presente nel tracciato regionale 2021; la serie non viene costruita."
+    }
+  ]
+}

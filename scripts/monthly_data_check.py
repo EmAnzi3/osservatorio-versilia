@@ -21,6 +21,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from source_policy import resolve_metric_policy, validate_registry
+
 USER_AGENT = (
     "OsservatorioVersiliaDataMonitor/1.0 "
     "(https://github.com/EmAnzi3/osservatorio-versilia)"
@@ -73,6 +75,10 @@ def validate_dataset(
     data: dict[str, Any], registry: dict[str, Any]
 ) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]], dict[str, int]]:
     findings: list[dict[str, Any]] = []
+    findings.extend(
+        finding("error", item["code"], item["message"], item.get("metric") or None)
+        for item in validate_registry(data, registry)
+    )
     metrics = data.get("metrics")
     towns = data.get("towns")
 
@@ -114,6 +120,7 @@ def validate_dataset(
 
     source_map: dict[str, dict[str, Any]] = {}
     metrics_with_series = 0
+    governed_metrics = 0
     rows_total = 0
 
     for metric_key, metric in metrics.items():
@@ -224,6 +231,10 @@ def validate_dataset(
         if has_series:
             metrics_with_series += 1
 
+        policy = resolve_metric_policy(metric_key, metric, registry)
+        if policy.get("resolved"):
+            governed_metrics += 1
+
         source_count = 0
         for role, raw_url in iter_metric_sources(metric):
             source_count += 1
@@ -240,11 +251,20 @@ def validate_dataset(
                     finding("error", "source_url", f"URL fonte non HTTP(S): {raw_url}", metric_key)
                 )
                 continue
-            source = source_map.setdefault(url, {"url": url, "metrics": [], "roles": []})
+            source = source_map.setdefault(
+                url,
+                {"url": url, "metrics": [], "roles": [], "profileIds": [], "frequencies": []},
+            )
             if metric_key not in source["metrics"]:
                 source["metrics"].append(metric_key)
             if role not in source["roles"]:
                 source["roles"].append(role)
+            profile_id = str(policy.get("profileId") or "")
+            if profile_id and profile_id not in source["profileIds"]:
+                source["profileIds"].append(profile_id)
+            frequency = str(policy.get("frequency") or "")
+            if frequency and frequency not in source["frequencies"]:
+                source["frequencies"].append(frequency)
         if not source_count:
             findings.append(finding("error", "source_missing", "URL della fonte assente.", metric_key))
 
@@ -253,6 +273,7 @@ def validate_dataset(
         "townCount": len(towns),
         "rowCount": rows_total,
         "metricsWithSeries": metrics_with_series,
+        "governedMetricCount": governed_metrics,
         "uniqueSourceCount": len(source_map),
     }
 
@@ -443,6 +464,7 @@ def build_report(
         f"| Comuni verificati | {summary['townCount']} |",
         f"| Righe comunali | {summary['rowCount']} |",
         f"| Indicatori con serie storica | {summary['metricsWithSeries']} |",
+        f"| Indicatori con politica fonte esplicita | {summary['governedMetricCount']} |",
         f"| Fonti uniche verificate | {summary['uniqueSourceCount']} |",
         f"| Fonti non raggiungibili | {len(unavailable)} |",
         f"| Errori strutturali | {len(errors)} |",
@@ -538,6 +560,8 @@ def main() -> int:
         probe = offline_source(url) if args.mode == "offline" else probe_source(url, registry)
         probe["metrics"] = sorted(source["metrics"])
         probe["roles"] = sorted(source["roles"])
+        probe["profileIds"] = sorted(source.get("profileIds", []))
+        probe["frequencies"] = sorted(source.get("frequencies", []))
         probes[url] = probe
 
     changes = compare_states(previous, probes)

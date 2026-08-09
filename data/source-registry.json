@@ -1,40 +1,270 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "expectedMetricCount": 106,
   "expectedTowns": [
-    {
-      "name": "Camaiore",
-      "code": "046005"
-    },
-    {
-      "name": "Forte dei Marmi",
-      "code": "046013"
-    },
-    {
-      "name": "Massarosa",
-      "code": "046018"
-    },
-    {
-      "name": "Pietrasanta",
-      "code": "046024"
-    },
-    {
-      "name": "Seravezza",
-      "code": "046028"
-    },
-    {
-      "name": "Stazzema",
-      "code": "046030"
-    },
-    {
-      "name": "Viareggio",
-      "code": "046033"
-    }
+    { "name": "Camaiore", "code": "046005" },
+    { "name": "Forte dei Marmi", "code": "046013" },
+    { "name": "Massarosa", "code": "046018" },
+    { "name": "Pietrasanta", "code": "046024" },
+    { "name": "Seravezza", "code": "046028" },
+    { "name": "Stazzema", "code": "046030" },
+    { "name": "Viareggio", "code": "046033" }
   ],
   "defaults": {
     "frequency": "annual_or_irregular",
+    "frequencyLabel": "Annuale o irregolare",
+    "expectedRelease": "Secondo il calendario della fonte",
     "monitorMode": "availability",
-    "unreachableIsBlocker": false
+    "unreachableIsBlocker": false,
+    "acquisitionMethod": "Verifica manuale della fonte ufficiale",
+    "licenseName": "Condizioni indicate dalla fonte",
+    "licenseUrl": ""
+  },
+  "sourceProfiles": {
+    "istat-demography-annual": {
+      "publisher": "Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Primo semestre dell'anno di riferimento",
+      "acquisitionMethod": "Download o consultazione del sistema demografico Istat; serie e trasformazioni conservate negli snapshot della repository.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "istat-census-annual": {
+      "publisher": "Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, secondo disponibilità censuaria",
+      "expectedRelease": "Secondo il calendario del Censimento permanente",
+      "acquisitionMethod": "Download o consultazione dei dati del Censimento permanente; aggregazione comunale documentata negli snapshot.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "istat-business-annual": {
+      "publisher": "Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Con ritardo fisiologico di circa due anni",
+      "acquisitionMethod": "Download o interrogazione del dataset ufficiale Istat; elaborazioni comunali ricostruibili dagli snapshot.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "istat-commuting-irregular": {
+      "publisher": "Istat",
+      "frequency": "census_or_irregular",
+      "frequencyLabel": "Censuaria o irregolare",
+      "expectedRelease": "Quando Istat pubblica una nuova matrice comunale omogenea",
+      "acquisitionMethod": "Elaborazione della matrice ufficiale dei flussi comunali, senza stime per gli anni intermedi.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "istat-tourism-annual": {
+      "publisher": "Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Secondo il calendario della rilevazione sulla capacità ricettiva",
+      "acquisitionMethod": "Consultazione o download della rilevazione ufficiale Istat.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "istat-road-annual": {
+      "publisher": "Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Secondo semestre dell'anno successivo",
+      "acquisitionMethod": "Download dei dati comunali sugli incidenti e calcolo del tasso con popolazione Istat coerente.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "aci-istat-annual": {
+      "publisher": "ACI / Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Anno successivo a quello di riferimento",
+      "acquisitionMethod": "Consultazione dei dati ufficiali sul parco veicolare e normalizzazione sulla popolazione residente.",
+      "licenseName": "Condizioni indicate da ACI e Istat",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "regione-toscana-tourism-annual": {
+      "publisher": "Regione Toscana",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, da dati mensili consolidati",
+      "expectedRelease": "Primo semestre dell'anno successivo",
+      "acquisitionMethod": "Download dei file comunali ufficiali e calcolo degli indicatori derivati dichiarati.",
+      "licenseName": "Licenza indicata nel catalogo regionale",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "regione-toscana-indicators-annual": {
+      "publisher": "Regione Toscana",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, quando disponibile",
+      "expectedRelease": "Aggiornamento annuale del set comunale",
+      "acquisitionMethod": "Download del set ufficiale di indicatori comunali; nessuna stima dei valori mancanti.",
+      "licenseName": "Licenza indicata nel catalogo regionale",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "mef-irpef-annual": {
+      "publisher": "Ministero dell'Economia e delle Finanze",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Secondo il calendario delle dichiarazioni fiscali",
+      "acquisitionMethod": "Download o consultazione dell'analisi statistica delle dichiarazioni per comune.",
+      "licenseName": "Condizioni indicate dal MEF",
+      "licenseUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+    },
+    "mim-school-year": {
+      "publisher": "Ministero dell'Istruzione e del Merito",
+      "frequency": "school_year",
+      "frequencyLabel": "Per anno scolastico",
+      "expectedRelease": "Dopo il consolidamento dell'anno scolastico",
+      "acquisitionMethod": "Download degli open data MIM e aggregazione delle sedi o degli studenti per comune.",
+      "licenseName": "Licenza indicata nel catalogo MIM",
+      "licenseUrl": "https://dati.istruzione.it/opendata/"
+    },
+    "ars-toscana-mixed": {
+      "publisher": "ARS Toscana / ISPRO",
+      "frequency": "annual_or_irregular",
+      "frequencyLabel": "Annuale o pluriennale, secondo l'indicatore",
+      "expectedRelease": "Secondo gli aggiornamenti della banca dati La salute dei comuni",
+      "acquisitionMethod": "Trascrizione controllata dei valori comunali e degli aggregati pubblicati direttamente da ARS Toscana.",
+      "licenseName": "Condizioni d'uso ARS Toscana",
+      "licenseUrl": "https://www.ars.toscana.it/"
+    },
+    "health-ministry-annual": {
+      "publisher": "Ministero della Salute",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, secondo aggiornamento del registro",
+      "expectedRelease": "Secondo il calendario della banca dati ministeriale",
+      "acquisitionMethod": "Download o consultazione della banca dati ministeriale e conteggio delle strutture per comune.",
+      "licenseName": "Condizioni indicate nel catalogo del Ministero",
+      "licenseUrl": "https://www.dati.salute.gov.it/"
+    },
+    "ispra-environment-annual": {
+      "publisher": "ISPRA",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Secondo il calendario del rapporto o catasto di riferimento",
+      "acquisitionMethod": "Download o consultazione del dataset comunale ISPRA; formule derivate dichiarate.",
+      "licenseName": "Condizioni indicate da ISPRA",
+      "licenseUrl": "https://www.isprambiente.gov.it/it/istituto/urp/accessibilita-e-catalogo-di-dati-metadati-e-banche-dati"
+    },
+    "ispra-hazards-irregular": {
+      "publisher": "ISPRA / Istat",
+      "frequency": "irregular",
+      "frequencyLabel": "Irregolare",
+      "expectedRelease": "Quando viene pubblicata una nuova base territoriale omogenea",
+      "acquisitionMethod": "Consultazione dei dati ufficiali IdroGEO e della popolazione esposta, mantenendo l'anno originario.",
+      "licenseName": "Condizioni indicate dalle fonti",
+      "licenseUrl": "https://idrogeo.isprambiente.it/"
+    },
+    "agcom-quarterly": {
+      "publisher": "AGCOM",
+      "frequency": "quarterly",
+      "frequencyLabel": "Periodica, generalmente trimestrale",
+      "expectedRelease": "Dopo il consolidamento della reportistica comunale",
+      "acquisitionMethod": "Download della reportistica comunale ufficiale e verifica delle percentuali sui conteggi primari.",
+      "licenseName": "Condizioni d'uso AGCOM",
+      "licenseUrl": "https://www.agcom.it/"
+    },
+    "openbdap-annual": {
+      "publisher": "MEF / Ragioneria Generale dello Stato",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, dopo il rendiconto",
+      "expectedRelease": "Dopo l'acquisizione dei rendiconti comunali",
+      "acquisitionMethod": "Download o interrogazione OpenBDAP; formule pro capite ricostruibili dagli snapshot.",
+      "licenseName": "Condizioni indicate da OpenBDAP",
+      "licenseUrl": "https://openbdap.rgs.mef.gov.it/"
+    },
+    "openbdap-continuous": {
+      "publisher": "MEF / Ragioneria Generale dello Stato",
+      "frequency": "continuous",
+      "frequencyLabel": "Aggiornamento continuo della fonte",
+      "expectedRelease": "Secondo gli aggiornamenti del monitoraggio opere pubbliche",
+      "acquisitionMethod": "Download o interrogazione OpenBDAP-MOP; fotografia datata dello stato dei progetti.",
+      "licenseName": "Condizioni indicate da OpenBDAP",
+      "licenseUrl": "https://openbdap.rgs.mef.gov.it/"
+    },
+    "siope-monthly": {
+      "publisher": "MEF / Ragioneria Generale dello Stato",
+      "frequency": "monthly",
+      "frequencyLabel": "Mensile, con consolidamento annuale",
+      "expectedRelease": "Aggiornamento progressivo nel corso dell'anno",
+      "acquisitionMethod": "Download dei flussi SIOPE e aggregazione delle voci di cassa secondo formule dichiarate.",
+      "licenseName": "Condizioni indicate da SIOPE",
+      "licenseUrl": "https://www.siope.it/"
+    },
+    "runts-continuous": {
+      "publisher": "Ministero del Lavoro e delle Politiche Sociali",
+      "frequency": "continuous",
+      "frequencyLabel": "Registro aggiornato continuativamente",
+      "expectedRelease": "Nessuna scadenza annuale fissa",
+      "acquisitionMethod": "Ricerca nel registro pubblico RUNTS e fotografia datata degli enti con sede nel comune.",
+      "licenseName": "Consultazione pubblica; verificare le condizioni di riuso",
+      "licenseUrl": "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti"
+    },
+    "italia-domani-periodic": {
+      "publisher": "Italia Domani / ReGiS",
+      "frequency": "periodic",
+      "frequencyLabel": "Periodica",
+      "expectedRelease": "Secondo gli aggiornamenti del catalogo open data PNRR",
+      "acquisitionMethod": "Download del catalogo ufficiale e fotografia datata dei progetti attribuiti al comune.",
+      "licenseName": "Licenza indicata nel catalogo Italia Domani",
+      "licenseUrl": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html"
+    },
+    "pun-continuous": {
+      "publisher": "GSE / MASE",
+      "frequency": "continuous",
+      "frequencyLabel": "Aggiornamento continuo della piattaforma",
+      "expectedRelease": "Nessuna scadenza annuale fissa",
+      "acquisitionMethod": "Consultazione della Piattaforma Unica Nazionale e fotografia datata dei punti localizzati nel comune.",
+      "licenseName": "Condizioni indicate dalla Piattaforma Unica Nazionale",
+      "licenseUrl": "https://www.piattaformaunicanazionale.it/"
+    }
+  },
+  "sourceProfileByUrl": {
+    "https://demo.istat.it/": "istat-demography-annual",
+    "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/": "istat-census-annual",
+    "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/": "istat-census-annual",
+    "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/": "istat-commuting-irregular",
+    "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/": "istat-business-annual",
+    "https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/183_1163_DF_DICA_ASIAULP_TERRIFDATA_7": "istat-business-annual",
+    "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/": "istat-business-annual",
+    "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/": "istat-tourism-annual",
+    "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/": "istat-road-annual",
+    "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/": "aci-istat-annual",
+    "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0": "regione-toscana-tourism-annual",
+    "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": "regione-toscana-indicators-annual",
+    "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": "mef-irpef-annual",
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole": "mim-school-year",
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti": "mim-school-year",
+    "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti": "ars-toscana-mixed",
+    "https://www.dati.salute.gov.it/": "health-ministry-annual",
+    "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie": "health-ministry-annual",
+    "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": "ispra-environment-annual",
+    "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune": "ispra-environment-annual",
+    "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali": "ispra-hazards-irregular",
+    "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html": "agcom-quarterly",
+    "https://geo.agcom.it/reportistica/ai/index.html": "agcom-quarterly",
+    "https://openbdap.rgs.mef.gov.it/it/FET/Analizza": "openbdap-annual",
+    "https://www.siope.it/": "siope-monthly",
+    "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": "runts-continuous",
+    "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": "italia-domani-periodic",
+    "https://www.piattaformaunicanazionale.it/idr": "pun-continuous"
+  },
+  "metricOverrides": {
+    "lifeExpectancy": {
+      "frequency": "irregular",
+      "frequencyLabel": "Pluriennale o irregolare",
+      "expectedRelease": "Secondo gli aggiornamenti del Registro di mortalità ARS/ISPRO"
+    },
+    "mortalityAll": {
+      "frequency": "irregular",
+      "frequencyLabel": "Pluriennale o irregolare",
+      "expectedRelease": "Secondo gli aggiornamenti del Registro di mortalità ARS/ISPRO"
+    },
+    "outsideMunicipality": { "profile": "istat-commuting-irregular" },
+    "selfContainment": { "profile": "istat-commuting-irregular" },
+    "commuterBalanceRate": { "profile": "istat-commuting-irregular" },
+    "publicWorks": { "profile": "openbdap-continuous" }
   },
   "requestTimeoutSeconds": 20,
   "maxDownloadBytes": 4194304,
@@ -47,6 +277,5 @@
     ".ods",
     ".zip",
     ".pdf"
-  ],
-  "metricOverrides": {}
+  ]
 }

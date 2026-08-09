@@ -71,7 +71,7 @@
       ${deepDiveMarkup(data, town, themeKey)}
       ${townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
-      <div class="data-actions town-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+      <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
 
     const tablist = container.querySelector('[role="tablist"]');
     installTablist(tablist, onMetricSelect);

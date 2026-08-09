@@ -43,6 +43,9 @@ jobs:
       - name: Run launch foundation checks
         run: python scripts/test_launch_foundations.py
 
+      - name: Run indicator page and SEO checks
+        run: python scripts/test_indicator_pages.py
+
       - name: Run brand identity checks
         run: python scripts/test_brand_identity.py
 
@@ -61,7 +64,9 @@ jobs:
         run: python scripts/test_chart_surfaces.py
 
       - name: Run release compatibility checks
-        run: python scripts/test_release_v170_compat.py
+        run: |
+          python scripts/test_release_v170_compat.py
+          python scripts/test_history_v180.py
 
       - name: Run source-link checks
         run: python scripts/test_source_links_v160.py
@@ -123,6 +128,14 @@ jobs:
             --report-md /tmp/monthly-data-check/report.md \
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
+
+      - name: Upload draft preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-v18-preview
+          path: dist
+          retention-days: 14
 
       - name: Upload static site for deployment
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

@@ -16,6 +16,8 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 - copertura completa dei sette Comuni e codici Istat corretti;
 - presenza di anno, unità, fonte, metodo e formula;
 - coerenza fra annualità e valori delle serie storiche;
+- presenza, per ogni indicatore, di produttore, frequenza, finestra di rilascio,
+  modalità di acquisizione e licenza;
 - raggiungibilità delle fonti ufficiali;
 - modifica dei file ufficiali direttamente scaricabili;
 - cambiamenti di URL, reindirizzamenti ed eventuali segnali HTTP.
@@ -47,6 +49,17 @@ Se il workflow si interrompe prima della notifica, resta disponibile la notifica
 - `attention_required`: il dataset non supera i controlli strutturali; workflow fallito e pubblicazione impedita.
 
 Le fonti non raggiungibili sono segnalate nel rapporto ma, nella fase iniziale, non cancellano dati e non sono automaticamente considerate un errore strutturale: alcuni portali istituzionali bloccano i controlli automatici.
+
+## Politica delle fonti
+
+Il file `data/source-registry.json` associa ciascun URL primario a un profilo
+esplicito. Il profilo dichiara produttore, cadenza attesa, finestra di rilascio,
+metodo di acquisizione e condizioni di riuso. Le eccezioni riferite a un singolo
+indicatore prevalgono sul profilo generale della fonte.
+
+La frequenza indica quando è ragionevole controllare un aggiornamento; non è una
+promessa di disponibilità del dato e non autorizza a sostituire automaticamente
+un valore già pubblicato.
 
 ## Prima esecuzione
 
