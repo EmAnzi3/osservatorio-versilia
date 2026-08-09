@@ -1,0 +1,41 @@
+{
+  "version": "social-v1.0",
+  "principle": "La struttura non cambia tra temi e settimane; cambiano soltanto dati, testi e colore di accento.",
+  "immutable": {
+    "background": "#F4EEE2",
+    "surface": "#FFFAF1",
+    "ink": "#102F45",
+    "muted": "#526B7A",
+    "line": "#C9D5D5",
+    "logo": {"x": 72, "y": 54, "width": 70, "height": 60},
+    "brand_text": {"x": 164, "y": 83},
+    "page_x": 72,
+    "page_width": 936,
+    "alignment": "left",
+    "templates": ["data", "context"]
+  },
+  "formats": {
+    "feed": {
+      "width": 1080,
+      "height": 1350,
+      "rule_y": 150,
+      "theme_y": 205,
+      "title_y": 250,
+      "description_y": 405,
+      "content": {"x": 72, "y": 500, "width": 936, "height": 440},
+      "question": {"x": 72, "y": 980, "width": 936, "height": 170},
+      "footer_y": 1215
+    },
+    "story": {
+      "width": 1080,
+      "height": 1920,
+      "rule_y": 170,
+      "theme_y": 240,
+      "title_y": 290,
+      "description_y": 465,
+      "content": {"x": 72, "y": 570, "width": 936, "height": 700},
+      "question": {"x": 72, "y": 1440, "width": 936, "height": 210},
+      "footer_y": 1780
+    }
+  }
+}

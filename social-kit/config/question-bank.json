@@ -1,0 +1,54 @@
+{
+  "forbidden": [
+    "Cosa ne pensi?",
+    "Che ne pensi?",
+    "Dì la tua",
+    "Quale aspetto vorresti approfondire?"
+  ],
+  "fallback": {
+    "data": "Questo confronto coincide con ciò che osservi nel tuo Comune?",
+    "context": "Quale informazione aggiungeresti prima di interpretare questo dato?"
+  },
+  "themes": {
+    "demografia": {
+      "data": "Nel tuo Comune, quale cambiamento demografico noti di più?",
+      "context": "Quale servizio locale risente maggiormente del cambiamento demografico?"
+    },
+    "economia": {
+      "data": "Quale differenza tra Comuni ti sorprende di più, e perché?",
+      "context": "Quale dato economico affiancheresti prima di interpretare il confronto?"
+    },
+    "lavoro": {
+      "data": "Questo dato coincide con la situazione lavorativa che osservi intorno a te?",
+      "context": "Quale informazione manca per leggere meglio partecipazione e occupazione?"
+    },
+    "istruzione": {
+      "data": "Quale differenza tra Comuni merita di essere verificata più a fondo?",
+      "context": "Quale dato sulla scuola aiuterebbe a completare questa lettura?"
+    },
+    "salute": {
+      "data": "Questo dato coincide con la tua esperienza dei servizi sanitari?",
+      "context": "Quale informazione serve per evitare una lettura troppo semplice?"
+    },
+    "mobilita": {
+      "data": "Dove incontri più spesso problemi nella mobilità quotidiana?",
+      "context": "Quale informazione manca per spiegare le differenze tra territori?"
+    },
+    "abitare": {
+      "data": "Questo dato descrive il modo in cui si abita oggi nel tuo Comune?",
+      "context": "Quale informazione sulle famiglie aggiungeresti al confronto?"
+    },
+    "ambiente": {
+      "data": "Il dato pubblicato coincide con ciò che osservi nel territorio?",
+      "context": "Quale misura ambientale dovrebbe essere resa più accessibile?"
+    },
+    "bilanci": {
+      "data": "Quale voce di bilancio confronteresti per capire meglio questa differenza?",
+      "context": "Quale informazione manca per collegare risorse, servizi e risultati?"
+    },
+    "comunita": {
+      "data": "Quale investimento pubblico ha avuto l’effetto più visibile nel tuo Comune?",
+      "context": "Quale dato aiuterebbe a seguire meglio l’avanzamento dei progetti?"
+    }
+  }
+}
