@@ -178,6 +178,33 @@
     margin-bottom: 5mm !important;
   }
 
+  /* Keep the on-screen reading order while preserving the established
+     two-page municipal PDF layout. */
+  .town-topic {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .town-topic > .town-topic-heading {
+    order: 0;
+  }
+
+  .town-topic > .town-metric-layout {
+    order: 1;
+  }
+
+  .town-topic > .method-disclosure {
+    order: 2;
+  }
+
+  .town-topic > .history-panel {
+    order: 3;
+  }
+
+  .town-topic > .town-benchmark {
+    order: 4;
+  }
+
   .town-topic-heading > a {
     display: none !important;
   }
