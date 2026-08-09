@@ -100,6 +100,8 @@ def static_checks() -> None:
 
 
 def browser_checks() -> None:
+    data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    unemployment_slug = slugify(data["metrics"]["unemploymentRate"]["meta"]["label"])
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args: dict[str, object] = {"headless": True}
     if chromium_path:
@@ -126,7 +128,9 @@ def browser_checks() -> None:
         page.goto(base, wait_until="networkidle")
         page.locator(".global-search-trigger").click()
         page.locator(".search-field input").fill("disoccupazione")
-        result = page.locator('[data-search-result][href*="/indicatori/tasso-di-disoccupazione/"]')
+        result = page.locator(
+            f'[data-search-result][href*="/indicatori/{unemployment_slug}/"]'
+        )
         assert result.count() == 1
 
         page.goto(base + "confronta/demografia/?indicatore=population", wait_until="networkidle")
