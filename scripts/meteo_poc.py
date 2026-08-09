@@ -32,21 +32,26 @@ def fnum(value):
 
 
 def fetch_rows() -> list[dict]:
-    req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "OsservatorioVersilia-MeteoPOC/1.2"})
+    req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "OsservatorioVersilia-MeteoPOC/1.3"})
     with urllib.request.urlopen(req, timeout=120) as response:
         text = gzip.decompress(response.read()).decode("utf-8-sig")
     rows = list(csv.DictReader(io.StringIO(text)))
     if not rows:
         raise RuntimeError("Meteostat monthly dump is empty")
-    date_key = "date" if "date" in rows[0] else "time" if "time" in rows[0] else None
-    if date_key is None:
-        raise RuntimeError(f"Unexpected Meteostat schema; columns: {sorted(rows[0])}")
-    missing = {"temp", "prcp"} - set(rows[0])
+    cols = set(rows[0])
+    if {"year", "month"} <= cols:
+        for row in rows:
+            row["date"] = f"{int(row['year']):04d}-{int(row['month']):02d}-01"
+    elif "date" in cols:
+        pass
+    elif "time" in cols:
+        for row in rows:
+            row["date"] = row["time"]
+    else:
+        raise RuntimeError(f"Unexpected Meteostat schema; columns: {sorted(cols)}")
+    missing = {"temp", "prcp"} - cols
     if missing:
         raise RuntimeError(f"Unexpected Meteostat schema; missing: {sorted(missing)}")
-    if date_key != "date":
-        for row in rows:
-            row["date"] = row[date_key]
     return rows
 
 
