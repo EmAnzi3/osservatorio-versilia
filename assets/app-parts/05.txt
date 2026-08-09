@@ -1,5 +1,5 @@
 incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censiti.</p></div>
-        <details class="detail-disclosure"><summary><span>Mostra il dettaglio amministrativo</span><small>Cassa, opere monitorate e progetti PNRR</small></summary><div class="government-grid"><article><span>Pagamenti</span><strong>${currency0.format(g.payments)}</strong><small>Anno ${html(g.year)}</small></article><article><span>Incassi</span><strong>${currency0.format(g.receipts)}</strong><small>Saldo ${currency0.format(g.cashBalance)}</small></article><article><span>Opere monitorate</span><strong>${number0.format(g.publicWorks)}</strong><small>Valore ${currency0.format(g.publicWorksValue)}</small></article><article><span>Progetti PNRR conclusi</span><strong>${number0.format(g.pnrrConcluded)} su ${number0.format(g.pnrrProjects)}</strong><div class="progress-track"><span style="width:${completed}%"></span></div><p>${currency0.format(g.pnrrFunding)} di risorse assegnate.</p></article></div></details></section>`;
+        <details class="detail-disclosure"><summary><span>Mostra il dettaglio amministrativo</span><small>Cassa e opere monitorate</small></summary><div class="government-grid"><article><span>Pagamenti</span><strong>${currency0.format(g.payments)}</strong><small>Anno ${html(g.year)}</small></article><article><span>Incassi</span><strong>${currency0.format(g.receipts)}</strong><small>Saldo ${currency0.format(g.cashBalance)}</small></article><article><span>Opere monitorate</span><strong>${number0.format(g.publicWorks)}</strong><small>Valore ${currency0.format(g.publicWorksValue)}</small></article></div></details></section>`;
     }
     return '';
   }
@@ -55,4 +55,4 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
       event.preventDefault(); const fd = new FormData(form);
       const category = String(fd.get('category') || ''), town = String(fd.get('town') || '');
       const subject = `[Osservatorio Versilia] ${category} · ${town}`;
-      const body = [`Tipo: ${category}`,`Comune/territorio: ${town}`,`Indicatore o tema: ${fd.get('indicator') || 'non specificato'}`,`Fonte proposta: ${fd.get('source') || 'non sp
+      const body = [`Tipo: ${category}`,`Comune/territorio: ${town}`,`Indicatore o tema: ${fd.get('indicator') || 'non specificato'}`,`Fonte proposta: ${fd.get('source') || 'non specificata'}`,'',String(fd.get('message') || ''),'',`Nome: ${fd.get('name') || 'non indicato'}`,`Email: ${fd.get('email') || 'non indicata'}`].join('\n');
