@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260807-ov"
+APP_BUNDLE_ASSET_VERSION = "20260809-4"
 PWA_ASSET_VERSION = "20260807-pwa7"
 PWA_JS_REVISION = "install-ui-off"
 MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
@@ -75,6 +76,14 @@ def cache_bust_favicon(document: str) -> str:
     return re.sub(
         r'href="([^"?]*favicon\.svg)(?:\?[^\"]*)?"',
         rf'href="\1?v={BRAND_ASSET_VERSION}"',
+        document,
+    )
+
+
+def cache_bust_app_bundle(document: str) -> str:
+    return re.sub(
+        r'src="([^"?]*assets/app-bundle\.js)(?:\?[^\"]*)?"',
+        rf'src="\1?v={APP_BUNDLE_ASSET_VERSION}"',
         document,
     )
 
@@ -172,6 +181,7 @@ def apply_brand_and_pwa() -> None:
         text = inject_mobile_accordion_styles(text, relative_root)
         text = inject_chart_surface_styles(text, relative_root)
         text = cache_bust_favicon(text)
+        text = cache_bust_app_bundle(text)
         text = inject_pwa(text, relative_root)
         path.write_text(text, encoding="utf-8")
 
