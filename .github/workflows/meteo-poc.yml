@@ -1,0 +1,39 @@
+name: Meteo climate POC
+
+on:
+  pull_request:
+    paths:
+      - "scripts/meteo_poc.py"
+      - ".github/workflows/meteo-poc.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  meteo-poc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile POC
+        run: python -m py_compile scripts/meteo_poc.py
+
+      - name: Build climate proof of concept
+        run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
+
+      - name: Upload POC outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: meteo-clima-poc
+          path: reports/runtime/meteo-poc/
+          retention-days: 30
