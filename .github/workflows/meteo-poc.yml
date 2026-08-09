@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/meteo_poc.py"
       - "scripts/lamma_inventory.py"
+      - "scripts/lamma_sample.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -25,16 +26,23 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install raster reader
+        run: python -m pip install --disable-pip-version-check rasterio
+
       - name: Compile POC
         run: |
           python -m py_compile scripts/meteo_poc.py
           python -m py_compile scripts/lamma_inventory.py
+          python -m py_compile scripts/lamma_sample.py
 
       - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
 
       - name: Discover LaMMA climate resources
         run: python scripts/lamma_inventory.py --output reports/runtime/meteo-poc/lamma-inventory.json
+
+      - name: Sample LaMMA climatology rasters
+        run: python scripts/lamma_sample.py --output reports/runtime/meteo-poc/lamma-samples.json
 
       - name: Upload POC outputs
         if: always()
