@@ -3,14 +3,14 @@
 ## Stato della v1.8.0
 
 - 106 indicatori complessivi;
-- 42 indicatori con almeno due annualità comunali;
-- 64 indicatori senza una serie comunale omogenea già verificata;
+- 43 indicatori con almeno due annualità comunali;
+- 63 indicatori senza una serie comunale omogenea già verificata;
 - nessuna interpolazione o stima dei valori mancanti.
 
 ## Primo lotto v1.8.0
 
 I dati per sezione del Censimento permanente Istat permettono un confronto
-omogeneo tra 2021 e 2023 per sei indicatori:
+omogeneo tra 2021 e 2023 per sette indicatori:
 
 - tasso di occupazione femminile 15–64 anni;
 - tasso di occupazione maschile 15–64 anni;
@@ -18,13 +18,18 @@ omogeneo tra 2021 e 2023 per sei indicatori:
 - abitazioni ogni 1.000 residenti;
 - abitazioni non occupate ogni 1.000 residenti;
 - abitazioni non occupate sul totale delle abitazioni.
+- famiglie composte da una sola persona sul totale delle famiglie residenti.
 
 Per ogni Comune il valore 2023 è stato ricalcolato dalle variabili elementari e
 confrontato con quello già pubblicato. La serie è stata accettata soltanto dopo
-la coincidenza dei risultati nei sette Comuni.
+la coincidenza dei risultati, entro la precisione pubblicata, nei sette Comuni.
 
 “Famiglie coabitanti” resta privo di serie: la variabile PF9 usata nel 2023 non
 compare nel tracciato 2021. Il dato 2021 non viene sostituito con proxy.
+
+“Componenti medi per famiglia” resta privo di serie: il tracciato raggruppa
+insieme le famiglie con sei o più componenti e non consente di ricostruire con
+esattezza il valore pubblicato. Non viene introdotta un'approssimazione.
 
 ## Criterio per i prossimi lotti
 

@@ -8121,7 +8121,16 @@
           "slug": "massarosa",
           "value": 29.2,
           "formatted": "29,2%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              28.970099667774086,
+              29.2
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 29.2
         },
@@ -8131,7 +8140,16 @@
           "slug": "viareggio",
           "value": 41.3,
           "formatted": "41,3%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              40.62208075286303,
+              41.3
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 41.3
         },
@@ -8141,7 +8159,16 @@
           "slug": "camaiore",
           "value": 36.6,
           "formatted": "36,6%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              36.40019755873845,
+              36.6
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 36.6
         },
@@ -8151,7 +8178,16 @@
           "slug": "pietrasanta",
           "value": 38.6,
           "formatted": "38,6%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              37.56790241113123,
+              38.6
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 38.6
         },
@@ -8161,7 +8197,16 @@
           "slug": "seravezza",
           "value": 34.9,
           "formatted": "34,9%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              34.54810495626822,
+              34.9
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 34.9
         },
@@ -8171,7 +8216,16 @@
           "slug": "forte-dei-marmi",
           "value": 45.9,
           "formatted": "45,9%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              45.140515222482435,
+              45.9
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 45.9
         },
@@ -8181,7 +8235,16 @@
           "slug": "stazzema",
           "value": 42.2,
           "formatted": "42,2%",
-          "series": null,
+          "series": {
+            "years": [
+              2021,
+              2023
+            ],
+            "values": [
+              41.495601173020525,
+              42.2
+            ]
+          },
           "normalized": null,
           "benchmarkValue": 42.2
         }
