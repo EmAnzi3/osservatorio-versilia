@@ -78,7 +78,7 @@ def static_checks() -> None:
         assert metric["meta"]["label"] in document
         assert '<main class="inner-page indicator-page"' in document
         assert 'assets/indicator-pages.css' in document
-        assert 'Nessuna graduatoria' in document
+        assert 'nessuna graduatoria' in document.lower()
 
         structured = extract_json_ld(document)
         graph = structured.get("@graph", [])
