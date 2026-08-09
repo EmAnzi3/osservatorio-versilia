@@ -117,4 +117,47 @@
   .topic-controls .metric-group-buttons > * {
     flex: 0 0 auto;
   }
+
+  /* Nelle schede comunali resta fermo l'intero riquadro: quando una sezione
+     contiene molti indicatori scorre soltanto la riga dei pulsanti. */
+  .town-topic > .metric-switch.metric-catalog,
+  .town-topic > .metric-switch.metric-catalog .metric-group,
+  .town-topic > .metric-switch.metric-catalog .metric-group-heading.ux-section-toggle {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .town-topic > .metric-switch.metric-catalog {
+    display: grid;
+    overflow-x: hidden;
+    scroll-snap-type: none;
+  }
+
+  .town-topic > .metric-switch.metric-catalog .metric-group {
+    overflow-x: hidden;
+  }
+
+  .town-topic > .metric-switch.metric-catalog .metric-group-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .town-topic > .metric-switch.metric-catalog .metric-group-buttons::-webkit-scrollbar {
+    display: none;
+  }
+
+  .town-topic > .metric-switch.metric-catalog .metric-group-buttons > * {
+    flex: 0 0 auto;
+  }
 }

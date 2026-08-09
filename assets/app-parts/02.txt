@@ -69,6 +69,7 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
         <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
       <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
       <section id="compare-benchmark" class="page-width"></section>
+      <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
       ${themeKey === 'mobilita' ? crimeMarkup(data) : ''}
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
     </main>`;
@@ -96,18 +97,20 @@ etricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).jo
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
+    const tools = document.getElementById('compare-tools');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const aggregate = normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate;
     const unit = normalized && metric.meta.normalized ? metric.meta.normalized.unit : metric.meta.unit;
     def.innerHTML = `${hasNormalized ? `<div class="scale-switch" role="group" aria-label="Scala"><button type="button" data-scale="raw" class="${normalized ? '' : 'active'}">Valore assoluto</button><button type="button" data-scale="normalized" class="${normalized ? 'active' : ''}">Rapportato</button></div>` : ''}
       <div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p>
         <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(aggregate.label)}</dt><dd>${html(formatValue(aggregate.value, unit))}</dd></div></dl>
-        <small class="aggregate-note">${html(aggregate.note)}</small>${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></div>`;
+        <small class="aggregate-note">${html(aggregate.note)}</small></div>`;
     bars.innerHTML = `<div class="topic-bars"><div class="comparison-bars">${barRows(data, metricKey, { normalized })}</div></div>`;
     def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data, themeKey, metricKey, button.dataset.scale === 'normalized')));
-    def.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey, normalized));
-    def.querySelector('[data-print]')?.addEventListener('click', () => window.print());
     benchmark.innerHTML = benchmarkMarkup(metric, aggregate, unit, null);
+    tools.innerHTML = `${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+    tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey, normalized));
+    tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
   }
 
   function benchmarkMarkup(metric, aggregate, unit, localRow) {

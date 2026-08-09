@@ -145,46 +145,51 @@ def verify_mobile_heading_layout(
     description = heading.locator(description_selector)
     require(tools.count() == 1, f"{label}: strumenti fisarmonica mancanti")
     require(title.count() == 1, f"{label}: titolo sezione mancante")
+    require(description.count() == 1 and description.is_visible(),
+            f"{label}: descrizione sezione mancante o invisibile")
 
     tools_box = tools.bounding_box()
     title_box = title.bounding_box()
     require(not rectangles_overlap(title_box, tools_box),
             f"{label}: titolo e strumenti si sovrappongono: titolo={title_box}, tools={tools_box}")
 
-    if description.count() == 1 and description.is_visible():
-        description_box = description.bounding_box()
-        require(not rectangles_overlap(description_box, tools_box),
-                f"{label}: descrizione e strumenti si sovrappongono: descrizione={description_box}, tools={tools_box}")
-        if title_box and tools_box and description_box:
-            first_row_bottom = max(
-                title_box["y"] + title_box["height"],
-                tools_box["y"] + tools_box["height"],
-            )
-            require(description_box["y"] >= first_row_bottom - 1,
-                    f"{label}: descrizione non disposta sotto la prima riga")
+    description_box = description.bounding_box()
+    require(not rectangles_overlap(description_box, tools_box),
+            f"{label}: descrizione e strumenti si sovrappongono: descrizione={description_box}, tools={tools_box}")
+    if title_box and tools_box and description_box:
+        first_row_bottom = max(
+            title_box["y"] + title_box["height"],
+            tools_box["y"] + tools_box["height"],
+        )
+        require(description_box["y"] >= first_row_bottom - 1,
+                f"{label}: descrizione non disposta sotto la prima riga")
 
     require_visible_chevron(heading, label)
 
 
-def verify_indicator_scroll_containment(page: Page) -> None:
-    headings = page.locator(".topic-controls .metric-group-heading.ux-section-toggle")
+def verify_indicator_scroll_containment(
+    page: Page,
+    root_selector: str,
+    label: str,
+) -> None:
+    headings = page.locator(f"{root_selector} .metric-group-heading.ux-section-toggle")
     system_heading = headings.filter(has_text="Sistema produttivo").first
-    require(system_heading.count() == 1, "Economia mobile: intestazione Sistema produttivo non trovata")
+    require(system_heading.count() == 1, f"{label}: intestazione Sistema produttivo non trovata")
 
     if system_heading.get_attribute("aria-expanded") != "true":
         system_heading.tap()
         page.wait_for_timeout(120)
     require(system_heading.get_attribute("aria-expanded") == "true",
-            "Economia mobile: Sistema produttivo non si apre")
+            f"{label}: Sistema produttivo non si apre")
 
     group = system_heading.locator("xpath=..")
     buttons = group.locator(":scope > .metric-group-buttons")
     require(buttons.count() == 1 and buttons.is_visible(),
-            "Economia mobile: riga indicatori di Sistema produttivo assente")
+            f"{label}: riga indicatori di Sistema produttivo assente")
 
     before = page.evaluate(
-        """() => {
-          const heading = [...document.querySelectorAll('.topic-controls .metric-group-heading.ux-section-toggle')]
+        """rootSelector => {
+          const heading = [...document.querySelectorAll(`${rootSelector} .metric-group-heading.ux-section-toggle`)]
             .find(el => el.textContent.includes('Sistema produttivo'));
           const group = heading?.parentElement;
           const buttons = group?.querySelector(':scope > .metric-group-buttons');
@@ -203,25 +208,26 @@ def verify_indicator_scroll_containment(page: Page) -> None:
             buttonsScrollWidth: buttons?.scrollWidth ?? 0,
             buttonsScrollLeft: buttons?.scrollLeft ?? -1
           };
-        }"""
+        }""",
+        root_selector,
     )
     require(before["documentScrollWidth"] <= before["viewport"] + 1,
-            f"Economia mobile: il documento scorre orizzontalmente: {before}")
+            f"{label}: il documento scorre orizzontalmente: {before}")
     require(before["bodyScrollWidth"] <= before["viewport"] + 1,
-            f"Economia mobile: il body si allarga oltre il viewport: {before}")
+            f"{label}: il body si allarga oltre il viewport: {before}")
     require(before["headingLeft"] >= -1 and before["headingRight"] <= before["viewport"] + 1,
-            f"Economia mobile: intestazione fuori viewport: {before}")
+            f"{label}: intestazione fuori viewport: {before}")
     require(before["toolsLeft"] >= -1 and before["toolsRight"] <= before["viewport"] + 1,
-            f"Economia mobile: conteggio/freccia fuori viewport: {before}")
+            f"{label}: conteggio/freccia fuori viewport: {before}")
     require(before["buttonsScrollWidth"] > before["buttonsClientWidth"] + 20,
-            f"Economia mobile: la riga lunga non ha un proprio overflow orizzontale: {before}")
+            f"{label}: la riga lunga non ha un proprio overflow orizzontale: {before}")
 
     # Scorre soltanto la riga dei pill: la testata deve restare immobile.
     buttons.evaluate("el => { el.scrollLeft = el.scrollWidth; }")
     page.wait_for_timeout(100)
     after = page.evaluate(
-        """() => {
-          const heading = [...document.querySelectorAll('.topic-controls .metric-group-heading.ux-section-toggle')]
+        """rootSelector => {
+          const heading = [...document.querySelectorAll(`${rootSelector} .metric-group-heading.ux-section-toggle`)]
             .find(el => el.textContent.includes('Sistema produttivo'));
           const group = heading?.parentElement;
           const buttons = group?.querySelector(':scope > .metric-group-buttons');
@@ -237,18 +243,19 @@ def verify_indicator_scroll_containment(page: Page) -> None:
             toolsRight: tb?.right ?? -1,
             buttonsScrollLeft: buttons?.scrollLeft ?? 0
           };
-        }"""
+        }""",
+        root_selector,
     )
     require(after["buttonsScrollLeft"] > 20,
-            f"Economia mobile: la riga indicatori non scorre autonomamente: {after}")
+            f"{label}: la riga indicatori non scorre autonomamente: {after}")
     require(after["documentScrollWidth"] <= after["viewport"] + 1,
-            f"Economia mobile: lo scroll dei pill allarga il documento: {after}")
+            f"{label}: lo scroll dei pill allarga il documento: {after}")
     require(abs(after["headingLeft"] - before["headingLeft"]) <= 1
             and abs(after["headingRight"] - before["headingRight"]) <= 1,
-            f"Economia mobile: la testata si sposta insieme ai pill: prima={before}, dopo={after}")
+            f"{label}: la testata si sposta insieme ai pill: prima={before}, dopo={after}")
     require(abs(after["toolsLeft"] - before["toolsLeft"]) <= 1
             and abs(after["toolsRight"] - before["toolsRight"]) <= 1,
-            f"Economia mobile: conteggio/freccia si spostano insieme ai pill: prima={before}, dopo={after}")
+            f"{label}: conteggio/freccia si spostano insieme ai pill: prima={before}, dopo={after}")
 
 
 def verify_mobile_accordion_layout(page: Page, base: str) -> None:
@@ -265,7 +272,7 @@ def verify_mobile_accordion_layout(page: Page, base: str) -> None:
             f"Economia mobile, sezione {index + 1}",
         )
 
-    verify_indicator_scroll_containment(page)
+    verify_indicator_scroll_containment(page, ".topic-controls", "Economia mobile")
 
     first_open = expanded_index(headings)
     target_index = closed_index(headings, first_open)
@@ -290,6 +297,11 @@ def verify_mobile_accordion_layout(page: Page, base: str) -> None:
             ":scope > span:not(.ux-section-tools)",
             f"Scheda Massarosa mobile, sezione {index + 1}",
         )
+    verify_indicator_scroll_containment(
+        page,
+        ".town-topic > .metric-switch.metric-catalog",
+        "Scheda Massarosa mobile",
+    )
 
 
 def verify_desktop_theme_scroll(page: Page, base: str) -> None:

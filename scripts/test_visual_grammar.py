@@ -72,6 +72,32 @@ def assert_reading_scale(page, expected: str) -> None:
     assert label == expected.lower(), f"Scala inattesa: {label!r}, attesa {expected!r}"
 
 
+def assert_post_benchmark_tools(page, town: bool = False) -> None:
+    selectors = {
+        "benchmark": "#town-topic > .town-benchmark" if town else "#compare-benchmark",
+        "method": "#town-topic > .method-disclosure" if town else "#compare-tools > .method-disclosure",
+        "scale": "#town-topic > .reading-scale" if town else "#compare-tools > .reading-scale",
+        "actions": "#town-topic > .town-data-actions" if town else "#compare-tools > .data-actions",
+    }
+    result = page.evaluate(
+        """selectors => {
+          const nodes = Object.fromEntries(
+            Object.entries(selectors).map(([key, selector]) => [key, document.querySelector(selector)])
+          );
+          const order = ['benchmark', 'method', 'scale', 'actions'];
+          return {
+            present: Object.fromEntries(Object.entries(nodes).map(([key, node]) => [key, Boolean(node)])),
+            ordered: order.slice(0, -1).every((key, index) =>
+              Boolean(nodes[key]?.compareDocumentPosition(nodes[order[index + 1]]) & Node.DOCUMENT_POSITION_FOLLOWING)
+            ),
+          };
+        }""",
+        selectors,
+    )
+    assert all(result["present"].values()), f"Blocchi post-confronto mancanti: {result}"
+    assert result["ordered"], f"Ordine post-confronto errato: {result}"
+
+
 def browser_checks() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args = {"headless": True}
@@ -111,6 +137,7 @@ def browser_checks() -> None:
         assert "scala 0–100%" in axis_text
         assert "%" in axis_text
         assert_reading_scale(page, "Territoriale")
+        assert_post_benchmark_tools(page)
 
         page.goto(base + "confronta/economia/?indicatore=businessValueAdded", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")
@@ -141,6 +168,7 @@ def browser_checks() -> None:
         page.goto(base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded", wait_until="networkidle")
         page.wait_for_selector(".town-metric-layout")
         assert_reading_scale(page, "Funzionale")
+        assert_post_benchmark_tools(page, town=True)
 
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")

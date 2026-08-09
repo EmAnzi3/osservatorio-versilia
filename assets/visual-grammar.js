@@ -343,15 +343,16 @@
       const metricKey = metricKeyFor(definition);
       const metric = data.metrics?.[metricKey];
       if (metric) {
-        const existing = definition.querySelector(':scope > .reading-scale');
+        const tools = document.getElementById('compare-tools') || definition;
+        const existing = tools.querySelector(':scope > .reading-scale');
         if (!existing || existing.dataset.readingMetric !== metricKey) {
           existing?.remove();
-          const actions = definition.querySelector(':scope > .data-actions');
+          const actions = tools.querySelector(':scope > .data-actions');
           const wrapper = document.createElement('div');
           wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
           const block = wrapper.firstElementChild;
-          if (actions) definition.insertBefore(block, actions);
-          else definition.append(block);
+          if (actions) tools.insertBefore(block, actions);
+          else tools.append(block);
         }
       }
     }
@@ -366,8 +367,13 @@
           existing?.remove();
           const wrapper = document.createElement('div');
           wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
-          const benchmark = townLayout.parentElement?.querySelector(':scope > .town-benchmark');
-          if (benchmark) benchmark.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          const parent = townLayout.parentElement;
+          const actions = parent?.querySelector(':scope > .town-data-actions');
+          const method = parent?.querySelector(':scope > .method-disclosure');
+          const benchmark = parent?.querySelector(':scope > .town-benchmark');
+          if (actions) parent.insertBefore(wrapper.firstElementChild, actions);
+          else if (method) method.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          else if (benchmark) benchmark.insertAdjacentElement('afterend', wrapper.firstElementChild);
           else townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
         }
       }

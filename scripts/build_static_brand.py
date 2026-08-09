@@ -13,7 +13,7 @@ DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260807-ov"
 PWA_ASSET_VERSION = "20260807-pwa7"
 PWA_JS_REVISION = "install-ui-off"
-MOBILE_ACCORDION_ASSET_VERSION = "20260808-2"
+MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
 CHART_SURFACE_ASSET_VERSION = "20260808-1"
 OLD_MARK = '<span class="site-brand-mark">O</span>'
 PWA_FILES = ("service-worker.js", "offline.html", "site.webmanifest")
