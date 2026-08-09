@@ -7,7 +7,7 @@
     const trigger = document.querySelector('.global-search-trigger');
     const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];
     const items = [
-      ...Object.entries(data.metrics).map(([key,m]) => ({ id:`metric-${key}`, label:m.meta.label, description:`${data.themes[m.meta.theme].label} · ${m.meta.year} · ${m.meta.description}`, category:'Indicatori comunali', href:route(`confronta/${m.meta.theme}/?indicatore=${key}`), badge:data.themes[m.meta.theme].label, keywords:normalize([m.meta.label,m.meta.shortLabel,m.meta.description,m.meta.source,data.themes[m.meta.theme].label,...(searchSynonyms[key]||[])].join(' ')) })),
+      ...Object.entries(data.metrics).map(([key,m]) => ({ id:`metric-${key}`, label:m.meta.label, description:`${data.themes[m.meta.theme].label} · ${m.meta.year} · ${m.meta.description}`, category:'Indicatori comunali', href:indicatorHref(m), badge:data.themes[m.meta.theme].label, keywords:normalize([m.meta.label,m.meta.shortLabel,m.meta.description,m.meta.source,data.themes[m.meta.theme].label,...(searchSynonyms[key]||[])].join(' ')) })),
       { id:'context-crime', label:'Criminalità e delitti denunciati', description:'Provincia di Lucca, Toscana e Italia · 2024. Il dato non è disponibile in forma omogenea per comune.', category:'Contesti sovracomunali', href:route('confronta/mobilita/#criminalita'), badge:'Dato provinciale', keywords:normalize('criminalità reati delitti furti truffe sicurezza provincia lucca') },
       ...Object.values(data.themes).map(t => ({ id:`theme-${t.key}`, label:t.label, description:`${t.question} ${t.description}`, category:'Temi', href:route(`confronta/${t.key}/`), badge:`${t.metrics.length} indicatori`, keywords:normalize(`${t.label} ${t.question} ${t.description}`) })),
       ...data.towns.map(t => ({ id:`town-${t.code}`, label:t.name, description:`Profilo comunale · codice Istat ${t.code}`, category:'Comuni', href:route(`comuni/${normalize(t.name).replaceAll(' ','-')}/`), badge:'Comune', keywords:normalize(`${t.name} comune territorio codice Istat ${t.code}`) }))
@@ -65,10 +65,27 @@
       const response = await fetch(asset('data/site-data.json'));
       if (!response.ok) throw new Error(`Errore ${response.status}`);
       const data = await response.json();
+      let sourceRegistry = null;
+      let monitorState = null;
+      if (pageType === 'indicator') {
+        const readOptionalJson = async path => {
+          try {
+            const item = await fetch(asset(path));
+            return item.ok ? item.json() : null;
+          } catch (_error) {
+            return null;
+          }
+        };
+        [sourceRegistry, monitorState] = await Promise.all([
+          readOptionalJson('data/source-registry.json'),
+          readOptionalJson('data/source-monitor-state.json')
+        ]);
+      }
       mountShell(data);
       if (pageType === 'home') renderHome(data);
       else if (pageType === 'compare') renderCompare(data);
       else if (pageType === 'town') renderTown(data);
+      else if (pageType === 'indicator') renderIndicator(data, sourceRegistry, monitorState);
       else if (pageType === 'project') renderProject(data);
       else if (pageType === 'feedback') renderFeedback(data);
       else renderNotFound();

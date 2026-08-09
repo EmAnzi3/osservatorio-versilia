@@ -35,6 +35,7 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `index.html`: homepage;
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine dei dieci temi;
+- `indicatori/`: 106 pagine canoniche generate, una per indicatore;
 - `data/site-data.json`: dati e metadati degli indicatori;
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
@@ -76,6 +77,16 @@ La procedura:
 - apre una PR in bozza quando deve essere registrata una nuova baseline o quando una fonte cambia.
 
 Il controllo non modifica automaticamente i dati e non effettua merge. La procedura completa è descritta in `docs/aggiornamento-mensile-dati.md`.
+
+Il registro assegna inoltre a ogni indicatore un profilo fonte esplicito: produttore, frequenza, finestra attesa di pubblicazione, metodo di acquisizione e condizioni di riuso. Il controllo mensile fallisce se un indicatore resta senza profilo.
+
+La copertura e i criteri di ammissione delle serie comunali sono documentati in `docs/copertura-serie-storiche.md`.
+
+## Indicizzazione e Search Console
+
+La build genera una pagina autonoma per ciascuno dei 106 indicatori, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+
+La configurazione operativa di Google Search Console e i controlli successivi al rilascio sono descritti in `docs/search-console.md`.
 
 ## Licenze e attribuzioni
 

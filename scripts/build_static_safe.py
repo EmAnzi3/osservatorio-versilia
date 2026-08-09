@@ -17,7 +17,7 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260808-4"
+UX_ASSET_VERSION = "20260809-1"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -25,6 +25,11 @@ V170_VERSION_ENTRY = (
     "      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. "
     "Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, "
     "dati AGCOM FTTH verificati e controlli automatici rafforzati sulle fonti.'],\n"
+)
+V180_VERSION_ENTRY = (
+    "      ['2026.08.09-v1.8.0','9 agosto 2026','106 indicatori. "
+    "Aggiunte 106 schede canoniche degli indicatori, politica esplicita di aggiornamento "
+    "delle fonti e sei serie comunali Istat omogenee 2021–2023.'],\n"
 )
 
 if "bilanci" not in build.THEME_SLUGS:
@@ -112,11 +117,14 @@ def bundle_application_with_private_fixes() -> None:
     elif PUBLIC_CONTACT not in bundle:
         raise RuntimeError("Recapito pubblico dell'Osservatorio non trovato nel bundle")
 
-    if "2026.08.07-v1.7.0" not in bundle:
+    if "2026.08.09-v1.8.0" not in bundle:
         marker = "    const versions = [\n"
         if marker not in bundle or "2026.08.05-v1.6.0" not in bundle:
             raise RuntimeError("Elenco versioni del progetto non trovato nel bundle")
-        bundle = bundle.replace(marker, marker + V170_VERSION_ENTRY, 1)
+        entries = V180_VERSION_ENTRY
+        if "2026.08.07-v1.7.0" not in bundle:
+            entries += V170_VERSION_ENTRY
+        bundle = bundle.replace(marker, marker + entries, 1)
 
     bundle_path.write_text(bundle, encoding="utf-8")
 
@@ -134,6 +142,7 @@ def prepare_shells_with_fonts() -> None:
             "ux-background-match.css",
             "export-v161.css",
             "visual-grammar.css",
+            "indicator-pages.css",
         )
         for stylesheet in stylesheets:
             token = f"assets/{stylesheet}"
@@ -208,8 +217,8 @@ def normalize_prerendered_urls() -> None:
     project_text = project_path.read_text(encoding="utf-8")
     if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
         raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
-    if "2026.08.07-v1.7.0" not in project_text or "106 indicatori" not in project_text:
-        raise RuntimeError("Versione v1.7.0 non visibile nella pagina Il progetto")
+    if "2026.08.09-v1.8.0" not in project_text or "106 indicatori" not in project_text:
+        raise RuntimeError("Versione v1.8.0 non visibile nella pagina Il progetto")
     if LEGACY_CONTACT in project_text or PUBLIC_CONTACT not in project_text:
         raise RuntimeError("Recapito pubblico non coerente nella pagina Il progetto")
 

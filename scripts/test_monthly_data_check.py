@@ -59,9 +59,28 @@ def run_checker(work: Path, state: dict) -> dict:
         },
     }
     registry = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "expectedMetricCount": 1,
         "expectedTowns": TOWNS,
+        "defaults": {
+            "monitorMode": "availability",
+            "unreachableIsBlocker": False,
+        },
+        "sourceProfiles": {
+            "test-annual": {
+                "publisher": "Fonte di test",
+                "frequency": "annual",
+                "frequencyLabel": "Annuale",
+                "expectedRelease": "Ogni anno",
+                "acquisitionMethod": "Dataset di test",
+                "licenseName": "Licenza di test",
+                "licenseUrl": "https://example.invalid/license",
+            }
+        },
+        "sourceProfileByUrl": {
+            "https://example.invalid/population.csv": "test-annual",
+        },
+        "metricOverrides": {},
         "contentExtensions": [".csv"],
         "requestTimeoutSeconds": 2,
         "maxDownloadBytes": 1024,

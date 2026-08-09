@@ -7,6 +7,7 @@
   const pageType = document.body.dataset.page || 'home';
   const pageTheme = document.body.dataset.theme || '';
   const pageTown = document.body.dataset.town || '';
+  const pageMetric = document.body.dataset.metric || '';
 
   const themeSvgPaths = {
     demografia: '<path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path>',
@@ -118,6 +119,8 @@
   const asset = (path = '') => route(path);
   const normalize = (value) => String(value ?? '').toLocaleLowerCase('it')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const indicatorSlug = (metric) => normalize(metric?.meta?.label).replaceAll(' ', '-');
+  const indicatorHref = (metric) => route(`indicatori/${indicatorSlug(metric)}/`);
 
   const number0 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 });
   const number1 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -205,5 +208,3 @@
         </div>
       </footer>`;
   }
-
- 

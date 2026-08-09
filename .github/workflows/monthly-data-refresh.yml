@@ -16,6 +16,7 @@ on:
       - ".github/workflows/monthly-data-refresh.yml"
       - "scripts/monthly_data_check.py"
       - "scripts/monthly_data_check_coverage.py"
+      - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
       - "scripts/restore_partial_agcom_metrics.py"
       - "data/source-registry.json"
