@@ -9,6 +9,7 @@ on:
       - "scripts/lamma_precip_year.py"
       - "scripts/lamma_municipal_stats.py"
       - "scripts/lamma_annual_history.py"
+      - "scripts/lamma_annual_history_runner.py"
       - "scripts/era5_land_annual_history.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
@@ -41,6 +42,7 @@ jobs:
           python -m py_compile scripts/lamma_precip_year.py
           python -m py_compile scripts/lamma_municipal_stats.py
           python -m py_compile scripts/lamma_annual_history.py
+          python -m py_compile scripts/lamma_annual_history_runner.py
           python -m py_compile scripts/era5_land_annual_history.py
 
       - name: Build station benchmark
@@ -59,7 +61,7 @@ jobs:
         run: python scripts/lamma_municipal_stats.py --output reports/runtime/meteo-poc/lamma-municipal-stats.json
 
       - name: Build complete LaMMA annual history 1995-2015
-        run: python scripts/lamma_annual_history.py --years 1995-2015 --output-dir reports/runtime/meteo-poc/annual-history
+        run: python scripts/lamma_annual_history_runner.py --years 1995-2015 --output-dir reports/runtime/meteo-poc/annual-history
 
       - name: Upload POC outputs
         if: always()
