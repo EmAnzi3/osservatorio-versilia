@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const DATA_URL = '../data/meteo-clima-poc.json';
+  const DATA_URL = '../../data/meteo-clima-poc.json';
   const townSelect = document.getElementById('climate-town');
   const chartRoot = document.getElementById('climate-chart');
   const summaryRoot = document.getElementById('climate-summary');
