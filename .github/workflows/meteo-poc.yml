@@ -9,6 +9,7 @@ on:
       - "scripts/lamma_precip_year.py"
       - "scripts/lamma_municipal_stats.py"
       - "scripts/lamma_annual_history.py"
+      - "scripts/era5_land_annual_history.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -40,6 +41,7 @@ jobs:
           python -m py_compile scripts/lamma_precip_year.py
           python -m py_compile scripts/lamma_municipal_stats.py
           python -m py_compile scripts/lamma_annual_history.py
+          python -m py_compile scripts/era5_land_annual_history.py
 
       - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
