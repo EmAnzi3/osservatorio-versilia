@@ -17,6 +17,7 @@ import calendar
 import json
 import os
 import tempfile
+import time
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -69,7 +70,6 @@ def choose_var(ds: xr.Dataset, candidates: tuple[str, ...]) -> xr.DataArray:
     for candidate in candidates:
         if candidate.casefold() in lower:
             return ds[lower[candidate.casefold()]]
-    # Fall back to standard_name/long_name when CDS naming changes.
     for name, var in ds.data_vars.items():
         attrs = " ".join(str(var.attrs.get(k, "")) for k in ("standard_name", "long_name")).casefold()
         if any(candidate.replace("_", " ").casefold() in attrs for candidate in candidates):
@@ -108,7 +108,6 @@ def grid_cells(latitudes: np.ndarray, longitudes: np.ndarray) -> list[tuple[int,
 
 
 def fractional_weights(municipalities: gpd.GeoDataFrame, name_col: str, latitudes: np.ndarray, longitudes: np.ndarray) -> dict[str, list[tuple[int, int, float]]]:
-    # Intersections are measured in ETRS89 / LAEA Europe, not degrees.
     cells = grid_cells(latitudes, longitudes)
     cell_gdf = gpd.GeoDataFrame(
         {"i": [c[0] for c in cells], "j": [c[1] for c in cells]},
@@ -144,7 +143,13 @@ def weighted_grid_value(grid: np.ndarray, weights: list[tuple[int, int, float]])
     return float(sum(v * w for v, w in zip(vals, ws)) / total)
 
 
-def retrieve_chunk(client: cdsapi.Client, years: list[int], target: Path) -> None:
+def retrieve_chunk(client: cdsapi.Client, years: list[int], target: Path, attempts: int = 3) -> None:
+    """Retrieve one CDS chunk, retrying backend job failures without hiding them.
+
+    CDS occasionally accepts and runs a valid request and then returns a failed
+    job (HTTP 400 on the results endpoint). The exact same request can succeed
+    when resubmitted, so retry here rather than forcing a full 1950-2025 rerun.
+    """
     request = {
         "product_type": ["monthly_averaged_reanalysis"],
         "variable": ["2m_temperature", "total_precipitation"],
@@ -155,11 +160,28 @@ def retrieve_chunk(client: cdsapi.Client, years: list[int], target: Path) -> Non
         "data_format": "netcdf",
         "download_format": "unarchived",
     }
-    client.retrieve(DATASET, request, str(target))
+    last_exc: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        target.unlink(missing_ok=True)
+        try:
+            client.retrieve(DATASET, request, str(target))
+            return
+        except Exception as exc:
+            last_exc = exc
+            if attempt >= attempts:
+                break
+            delay = 10 * attempt
+            print(
+                f"[era5] CDS retrieval failed for {years[0]}-{years[-1]} "
+                f"(attempt {attempt}/{attempts}): {exc!r}; retrying in {delay}s",
+                flush=True,
+            )
+            time.sleep(delay)
+    assert last_exc is not None
+    raise last_exc
 
 
 def open_download(path: Path) -> xr.Dataset:
-    # CDS may return one NetCDF or a ZIP containing multiple NetCDF files.
     if zipfile.is_zipfile(path):
         dest = path.with_suffix("")
         extract_zip(path, dest)
@@ -223,9 +245,7 @@ def main() -> int:
                     p_months = np.asarray(tp.isel(time=idx).values, dtype="float64")
                     month_numbers = times[idx].month
                     days = np.asarray([calendar.monthrange(year, int(m))[1] for m in month_numbers], dtype="float64")
-                    # Kelvin -> Celsius; day-weight monthly means for annual mean.
                     annual_t_grid = ((t_months - 273.15) * days[:, None, None]).sum(axis=0) / days.sum()
-                    # ECMWF moda accumulation convention: m/day * 1000 * days/month.
                     annual_p_grid = (p_months * (1000.0 * days[:, None, None])).sum(axis=0)
                     for name in TARGETS:
                         rows.append({
@@ -252,6 +272,7 @@ def main() -> int:
         "temperature_aggregation": "day-weighted monthly 2m temperature; K to C",
         "precipitation_aggregation": "sum(monthly tp[m/day] * 1000 * days_in_month)",
         "municipal_weighting": "fractional intersection of 0.1-degree cells with ISTAT 2026 municipal polygons",
+        "cds_retrieval": "up to 3 attempts per chunk for transient backend job failures",
     }
     out.with_suffix(".meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[era5] wrote {len(rows)} rows to {out}")
