@@ -8,13 +8,9 @@ The effective coverage end is the earliest of:
 - the latest ERA5-Land hourly date minus one day (precipitation needs next-day 00 UTC).
 
 YTD temperature uses official ERA5-Land post-processed DAILY MEAN 2m temperature
-at 1-hour sampling. Averaging those daily means over complete UTC days is
-mathematically equivalent to averaging all hourly values over the same period,
-while avoiding large CDS NetCDF conversion requests.
-
-YTD precipitation is reconstructed from ERA5-Land total precipitation at
-00:00 UTC, which represents the 24-hour accumulation ending at 00:00 (the
-previous calendar day).
+at 1-hour sampling. YTD precipitation is reconstructed from ERA5-Land total
+precipitation at 00:00 UTC, representing the previous calendar day's 24-hour
+accumulation.
 """
 from __future__ import annotations
 
@@ -24,6 +20,7 @@ import datetime as dt
 import json
 import os
 import tempfile
+import time
 import urllib.request
 from pathlib import Path
 
@@ -68,6 +65,36 @@ def catalogue_latest(dataset: str) -> dt.date:
     return dt.datetime.fromisoformat(value.replace("Z", "+00:00")).date()
 
 
+def retrieve_with_retry(
+    client: cdsapi.Client,
+    dataset: str,
+    request: dict,
+    target: Path,
+    label: str,
+    attempts: int = 3,
+) -> None:
+    """Retry valid CDS jobs rejected by temporary dataset queue limits."""
+    last_exc: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        target.unlink(missing_ok=True)
+        try:
+            client.retrieve(dataset, request, str(target))
+            return
+        except Exception as exc:
+            last_exc = exc
+            if attempt >= attempts:
+                break
+            delay = 10 * attempt
+            print(
+                f"[era5-ytd] CDS retrieval failed for {label} "
+                f"(attempt {attempt}/{attempts}): {exc!r}; retrying in {delay}s",
+                flush=True,
+            )
+            time.sleep(delay)
+    assert last_exc is not None
+    raise last_exc
+
+
 def retrieve_temperature_month(client: cdsapi.Client, year: int, month: int, end_date: dt.date, target: Path) -> None:
     request = {
         "product_type": "reanalysis",
@@ -80,7 +107,7 @@ def retrieve_temperature_month(client: cdsapi.Client, year: int, month: int, end
         "frequency": "1_hourly",
         "area": AREA,
     }
-    client.retrieve(DAILY_DATASET, request, str(target))
+    retrieve_with_retry(client, DAILY_DATASET, request, target, f"temperature {year}-{month:02d}")
 
 
 def retrieve_precip_month(client: cdsapi.Client, year: int, month: int, end_date: dt.date, current_target: Path, next_target: Path) -> None:
@@ -94,9 +121,8 @@ def retrieve_precip_month(client: cdsapi.Client, year: int, month: int, end_date
         "data_format": "netcdf",
         "download_format": "unarchived",
     }
-    client.retrieve(HOURLY_DATASET, request, str(current_target))
+    retrieve_with_retry(client, HOURLY_DATASET, request, current_target, f"precipitation {year}-{month:02d}")
 
-    # The last target day is represented by 00:00 UTC on the following day.
     month_last = min(
         calendar.monthrange(year, month)[1],
         end_date.day if month == end_date.month else calendar.monthrange(year, month)[1],
@@ -113,7 +139,13 @@ def retrieve_precip_month(client: cdsapi.Client, year: int, month: int, end_date
         "data_format": "netcdf",
         "download_format": "unarchived",
     }
-    client.retrieve(HOURLY_DATASET, next_request, str(next_target))
+    retrieve_with_retry(
+        client,
+        HOURLY_DATASET,
+        next_request,
+        next_target,
+        f"precipitation carry-over {next_date.isoformat()} 00UTC",
+    )
 
 
 def normalize_keep_axes(da: xr.DataArray) -> xr.DataArray:
@@ -175,7 +207,6 @@ def main() -> int:
 
     hourly_latest = catalogue_latest(HOURLY_DATASET)
     daily_latest = catalogue_latest(DAILY_DATASET)
-    # A day's precipitation is represented at 00 UTC the following day.
     precip_latest_complete = hourly_latest - dt.timedelta(days=1)
     end_date = min(requested_end, daily_latest, precip_latest_complete)
     if end_date.year != args.year:
@@ -210,7 +241,7 @@ def main() -> int:
             temp_path = tmp / f"t2m-daily-{args.year}-{month:02d}.download"
             print(f"[era5-ytd] daily-mean temperature {args.year}-{month:02d}")
             retrieve_temperature_month(client, args.year, month, end_date, temp_path)
-            t_times, t_values, lat, lon = read_field(temp_path, ("t2m", "2m_temperature", "2 metre temperature"))
+            _, t_values, lat, lon = read_field(temp_path, ("t2m", "2m_temperature", "2 metre temperature"))
             expected_temp_days = len(valid_days(args.year, month, end_date))
             if t_values.shape[0] != expected_temp_days:
                 raise RuntimeError(
@@ -284,6 +315,7 @@ def main() -> int:
                 "coverage_end": end_date.isoformat(),
                 "daily_temperature_latest": daily_latest.isoformat(),
                 "hourly_latest": hourly_latest.isoformat(),
+                "cds_retrieval": "up to 3 attempts per request for transient queue/backend failures",
                 "note": "Partial current-year values; do not compare directly with complete annual totals.",
             },
             ensure_ascii=False,
