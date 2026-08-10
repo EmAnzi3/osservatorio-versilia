@@ -17,6 +17,14 @@
     climateTmaxTrend: { indicator: 'temperature', hash: '#temperature-min-max' }
   };
 
+  function climateDetailHref(metricKey, town = '') {
+    const detail = climateMetricDetail[metricKey] || climateMetricDetail.climateTemperatureTrend50y;
+    const params = new URLSearchParams();
+    if (town) params.set('comune', town);
+    params.set('indicatore', detail.indicator);
+    return `${route(`confronta/meteo-clima/?${params.toString()}`)}${detail.hash}`;
+  }
+
   const baseFormatValue = formatValue;
   formatValue = (value, unit) => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) return 'n.d.';
@@ -24,6 +32,29 @@
     if (unit === 'climateCelsius') return `${number2.format(v)} °C`;
     if (unit === 'climateMm') return `${number0.format(v)} mm`;
     return baseFormatValue(value, unit);
+  };
+
+  const baseBarRows = barRows;
+  barRows = (data, metricKey, options = {}) => {
+    if (!CLIMATE_METRICS.has(metricKey)) return baseBarRows(data, metricKey, options);
+    const normalized = Boolean(options.normalized);
+    const selectedTown = options.selectedTown || '';
+    const rows = metricRows(data, metricKey, normalized);
+    const maxAbs = Math.max(...rows.map(row => Math.abs(Number(row.displayValue) || 0)), 0.0001);
+    return rows.map((row, index) => {
+      const query = new URLSearchParams({ tema: data.metrics[metricKey].meta.theme, indicatore: metricKey });
+      const href = route(`comuni/${row.slug}/?${query}`);
+      const value = Number(row.displayValue) || 0;
+      const extent = Math.min(50, Math.abs(value) / maxAbs * 50);
+      const left = value < 0 ? 50 - extent : 50;
+      const fill = value < 0 ? '#7894a0' : '#4f8162';
+      return `<a href="${href}" class="bar-row ${row.slug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
+        <span class="bar-rank">${index + 1}</span><span class="bar-town">${html(row.town)}</span>
+        <span class="bar-track" style="position:relative"><span aria-hidden="true" style="position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:#6f8088;opacity:.75"></span><span class="bar-fill" style="position:absolute;left:${left.toFixed(2)}%;width:${extent.toFixed(2)}%;background:${fill};min-width:${extent ? '2px' : '0'}"></span>
+          <span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue, row.displayUnit))}</span></span>
+        <strong>${html(formatValue(row.displayValue, row.displayUnit))}</strong>
+      </a>`;
+    }).join('');
   };
 
   function linearClimateTrend(years, values, fromYear, toYear) {
@@ -44,11 +75,7 @@
   function climateRowIdentity(data, townName) {
     const town = data.towns.find(item => item.name === townName);
     if (!town) return null;
-    return {
-      town: town.name,
-      code: town.code,
-      slug: normalize(town.name).replaceAll(' ', '-')
-    };
+    return { town: town.name, code: town.code, slug: normalize(town.name).replaceAll(' ', '-') };
   }
 
   function meanClimateValue(rows, selector = row => row.value) {
@@ -73,11 +100,7 @@
       };
       if (config.percent) {
         const percent = trend.start ? trend.delta / trend.start * 100 : null;
-        row.normalized = Number.isFinite(percent) ? {
-          value: Number(percent.toFixed(2)),
-          unit: 'percent',
-          label: 'Variazione percentuale del trend'
-        } : null;
+        row.normalized = Number.isFinite(percent) ? { value: Number(percent.toFixed(2)), unit: 'percent', label: 'Variazione percentuale del trend' } : null;
       }
       return row;
     }).filter(Boolean);
@@ -105,7 +128,7 @@
       normalizedAggregate: null,
       method: {
         type: 'Ricostruzione territoriale validata',
-        formula: `Retta di tendenza lineare sui valori annuali 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.`,
+        formula: 'Retta di tendenza lineare sui valori annuali 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.',
         caveat: 'Il tratto 1995–2015 usa LaMMA 1 km; prima e dopo viene usato ERA5-Land calibrato sul periodo comune. La serie descrive una media territoriale comunale, non una singola stazione.',
         coverage: '7/7 · 1950–2025 disponibili; trend calcolato 1975–2025'
       }
@@ -180,41 +203,24 @@
 
     const climateMetrics = {
       climateTemperatureTrend50y: buildLongClimateMetric(data, climate, {
-        key: 'climateTemperatureTrend50y',
-        seriesKey: 'temperature',
-        label: 'Variazione della temperatura media in 50 anni',
-        shortLabel: 'Temperatura · trend 50 anni',
+        key: 'climateTemperatureTrend50y', seriesKey: 'temperature',
+        label: 'Variazione della temperatura media in 50 anni', shortLabel: 'Temperatura · trend 50 anni',
         description: 'Quanto è cambiata la temperatura media territoriale secondo la retta di tendenza 1975–2025.',
-        unit: 'climateCelsius',
-        decimals: 3,
-        detail: 'temperature'
+        unit: 'climateCelsius', decimals: 3, detail: 'temperature'
       }),
       climatePrecipitationTrend50y: buildLongClimateMetric(data, climate, {
-        key: 'climatePrecipitationTrend50y',
-        seriesKey: 'precipitation',
-        label: 'Variazione delle precipitazioni in 50 anni',
-        shortLabel: 'Precipitazioni · trend 50 anni',
+        key: 'climatePrecipitationTrend50y', seriesKey: 'precipitation',
+        label: 'Variazione delle precipitazioni in 50 anni', shortLabel: 'Precipitazioni · trend 50 anni',
         description: 'Quanto è cambiato il totale annuo di precipitazione secondo la retta di tendenza 1975–2025.',
-        unit: 'climateMm',
-        decimals: 1,
-        percent: true,
-        detail: 'precipitation'
+        unit: 'climateMm', decimals: 1, percent: true, detail: 'precipitation'
       }),
       climateTminTrend: buildMinMaxClimateMetric(data, minmax, {
-        key: 'climateTminTrend',
-        seriesKey: 'tmin',
-        label: 'Andamento delle temperature minime',
-        shortLabel: 'Temperature minime',
-        description: 'Storico 1995–2015 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza.',
-        detail: 'tmin'
+        key: 'climateTminTrend', seriesKey: 'tmin', label: 'Andamento delle temperature minime', shortLabel: 'Temperature minime',
+        description: 'Storico 1995–2015 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza.', detail: 'tmin'
       }),
       climateTmaxTrend: buildMinMaxClimateMetric(data, minmax, {
-        key: 'climateTmaxTrend',
-        seriesKey: 'tmax',
-        label: 'Andamento delle temperature massime',
-        shortLabel: 'Temperature massime',
-        description: 'Storico 1995–2015 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza.',
-        detail: 'tmax'
+        key: 'climateTmaxTrend', seriesKey: 'tmax', label: 'Andamento delle temperature massime', shortLabel: 'Temperature massime',
+        description: 'Storico 1995–2015 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza.', detail: 'tmax'
       })
     };
 
@@ -276,12 +282,8 @@
     }
 
     if (climate) {
-      const detail = climateMetricDetail[metricKey];
       const town = pageType === 'town' ? document.querySelector('.town-hero h1')?.textContent?.trim() : '';
-      const params = new URLSearchParams();
-      if (town) params.set('comune', town);
-      params.set('indicatore', detail.indicator);
-      const href = `${route(`confronta/meteo-clima/?${params.toString()}`)}${detail.hash}`;
+      const href = climateDetailHref(metricKey, town);
       document.querySelectorAll('.data-actions a').forEach(link => {
         if (link.textContent.includes('Scheda indicatore') || link.textContent.includes('Approfondimento storico')) {
           link.href = href;
@@ -302,7 +304,7 @@
     const trigger = document.querySelector('.global-search-trigger');
     const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];
     const items = [
-      ...Object.entries(data.metrics).map(([key,m]) => ({ id:`metric-${key}`, label:m.meta.label, description:`${data.themes[m.meta.theme].label} · ${m.meta.year} · ${m.meta.description}`, category:'Indicatori comunali', href:indicatorHref(m), badge:data.themes[m.meta.theme].label, keywords:normalize([m.meta.label,m.meta.shortLabel,m.meta.description,m.meta.source,data.themes[m.meta.theme].label,...(searchSynonyms[key]||[])].join(' ')) })),
+      ...Object.entries(data.metrics).map(([key,m]) => ({ id:`metric-${key}`, label:m.meta.label, description:`${data.themes[m.meta.theme].label} · ${m.meta.year} · ${m.meta.description}`, category:'Indicatori comunali', href:CLIMATE_METRICS.has(key) ? climateDetailHref(key) : indicatorHref(m), badge:data.themes[m.meta.theme].label, keywords:normalize([m.meta.label,m.meta.shortLabel,m.meta.description,m.meta.source,data.themes[m.meta.theme].label,...(searchSynonyms[key]||[])].join(' ')) })),
       { id:'context-crime', label:'Criminalità e delitti denunciati', description:'Provincia di Lucca, Toscana e Italia · 2024. Il dato non è disponibile in forma omogenea per comune.', category:'Contesti sovracomunali', href:route('confronta/mobilita/#criminalita'), badge:'Dato provinciale', keywords:normalize('criminalità reati delitti furti truffe sicurezza provincia lucca') },
       ...Object.values(data.themes).map(t => ({ id:`theme-${t.key}`, label:t.label, description:`${t.question} ${t.description}`, category:'Temi', href:route(`confronta/${t.key}/`), badge:`${t.metrics.length} indicatori`, keywords:normalize(`${t.label} ${t.question} ${t.description}`) })),
       ...data.towns.map(t => ({ id:`town-${t.code}`, label:t.name, description:`Profilo comunale · codice Istat ${t.code}`, category:'Comuni', href:route(`comuni/${normalize(t.name).replaceAll(' ','-')}/`), badge:'Comune', keywords:normalize(`${t.name} comune territorio codice Istat ${t.code}`) }))
