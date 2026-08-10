@@ -4,9 +4,12 @@ on:
   pull_request:
     paths:
       - "confronta/meteo-clima/**"
+      - "confronta/ambiente/index.html"
       - "assets/meteo-clima.css"
       - "assets/meteo-clima.js"
+      - "assets/meteo-clima-entry.js"
       - "data/meteo-clima-poc.json"
+      - "data/meteo-clima-minmax-poc.json"
       - ".github/workflows/meteo-clima-page.yml"
   workflow_dispatch:
 
@@ -20,10 +23,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Validate JSON
-        run: python -m json.tool data/meteo-clima-poc.json > /dev/null
+        run: |
+          python -m json.tool data/meteo-clima-poc.json > /dev/null
+          python -m json.tool data/meteo-clima-minmax-poc.json > /dev/null
 
       - name: Validate JavaScript syntax
-        run: node --check assets/meteo-clima.js
+        run: |
+          node --check assets/meteo-clima.js
+          node --check assets/meteo-clima-entry.js
 
       - name: Validate climate data contract
         run: |
@@ -31,8 +38,8 @@ jobs:
           import json
           from pathlib import Path
 
-          data = json.loads(Path('data/meteo-clima-poc.json').read_text(encoding='utf-8'))
           expected = {'Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio'}
+          data = json.loads(Path('data/meteo-clima-poc.json').read_text(encoding='utf-8'))
           towns = data['municipalities']
           assert set(towns) == expected, (set(towns), expected)
           assert data['coverage']['complete'] == {'from': 1950, 'to': 2025}
@@ -44,15 +51,31 @@ jobs:
               assert series['latestComplete']['year'] == 2025, name
               assert all(isinstance(v, (int, float)) for v in series['temperature']), name
               assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
-          segments = data['provenance']
           covered = []
-          for segment in segments:
+          for segment in data['provenance']:
               covered.extend(range(segment['from'], segment['to'] + 1))
           assert covered == expected_years, covered[:3]
+
+          minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
+          assert minmax['coverage'] == {'from': 1995, 'to': 2015}
+          assert set(minmax['municipalities']) == expected
+          expected_minmax_years = list(range(1995, 2016))
+          for name, series in minmax['municipalities'].items():
+              assert series['years'] == expected_minmax_years, name
+              assert len(series['tmin']) == 21 and len(series['tmax']) == 21, name
+              assert all(isinstance(v, (int, float)) for v in series['tmin'] + series['tmax']), name
+
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
           assert '../../assets/meteo-clima.css' in html
           assert '../../assets/meteo-clima.js' in html
+          assert '1975–2025' in html
+          assert 'temperature-min-max' in html
+          environment = Path('confronta/ambiente/index.html').read_text(encoding='utf-8')
+          assert 'climate-environment-entry' in environment
+          assert 'meteo-clima-entry.js' in environment
           js = Path('assets/meteo-clima.js').read_text(encoding='utf-8')
           assert "../../data/meteo-clima-poc.json" in js
-          print('Climate page data contract OK: 7 municipalities x 76 complete years')
+          assert "../../data/meteo-clima-minmax-poc.json" in js
+          assert 'TREND_START = 1975' in js and 'TREND_END = 2025' in js
+          print('Climate draft OK: Ambiente integration, 7x76 long series, 7x21 min/max series, 50-year trend')
           PY
