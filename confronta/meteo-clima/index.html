@@ -12,6 +12,21 @@
   <link rel="stylesheet" href="../../assets/fonts.css">
   <link rel="stylesheet" href="../../assets/fidelity.css">
   <link rel="stylesheet" href="../../assets/meteo-clima.css?v=20260810-1">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Serie climatiche comunali della Versilia 1950–2025",
+    "description": "Serie annuali territoriali comunali di temperatura media e precipitazioni per i sette comuni dell'Osservatorio Versilia.",
+    "url": "https://osservatorioversilia.it/confronta/meteo-clima/",
+    "inLanguage": "it-IT",
+    "isAccessibleForFree": true,
+    "temporalCoverage": "1950/2025",
+    "spatialCoverage": {"@type": "Place", "name": "Versilia, Toscana, Italia"},
+    "creator": {"@type": "Person", "name": "Emanuele Anzilotti"},
+    "variableMeasured": ["Temperatura media annua", "Precipitazione annua"]
+  }
+  </script>
 </head>
 <body class="antialiased climate-body">
   <header class="site-header">
@@ -26,6 +41,12 @@
           <a href="../../#comuni">Comuni</a>
           <a href="../../progetto/">Progetto</a>
         </nav>
+        <a class="global-search-trigger" href="../../" aria-label="Cerca nell'Osservatorio dalla pagina principale">
+          <svg class="search-icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path>
+          </svg>
+          <span>Cerca</span>
+        </a>
         <a class="climate-back-link" href="../../">← Torna all'Osservatorio</a>
       </div>
     </div>
