@@ -1,6 +1,7 @@
 (() => {
   'use strict';
 
+  const SCRIPT_URL = document.currentScript?.src || location.href;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const numberFormatters = new Map();
 
@@ -194,7 +195,7 @@
     }
 
     const climateScript = document.createElement('script');
-    climateScript.src = new URL('./climate-ux-v2.js?v=20260810-2', document.currentScript?.src || location.href).href;
+    climateScript.src = new URL('./climate-ux-v2.js?v=20260810-3', SCRIPT_URL).href;
     climateScript.async = false;
     climateScript.dataset.ovClimateV2 = '1';
     document.head.appendChild(climateScript);
