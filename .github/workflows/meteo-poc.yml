@@ -7,6 +7,7 @@ on:
       - "scripts/lamma_inventory.py"
       - "scripts/lamma_sample.py"
       - "scripts/lamma_precip_year.py"
+      - "scripts/lamma_municipal_stats.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -27,8 +28,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install raster reader
-        run: python -m pip install --disable-pip-version-check rasterio
+      - name: Install GIS readers
+        run: python -m pip install --disable-pip-version-check rasterio geopandas
 
       - name: Compile POC
         run: |
@@ -36,6 +37,7 @@ jobs:
           python -m py_compile scripts/lamma_inventory.py
           python -m py_compile scripts/lamma_sample.py
           python -m py_compile scripts/lamma_precip_year.py
+          python -m py_compile scripts/lamma_municipal_stats.py
 
       - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
@@ -48,6 +50,9 @@ jobs:
 
       - name: Aggregate LaMMA daily precipitation 2015
         run: python scripts/lamma_precip_year.py --output reports/runtime/meteo-poc/lamma-precip-2015.json
+
+      - name: Build municipal climate statistics
+        run: python scripts/lamma_municipal_stats.py --output reports/runtime/meteo-poc/lamma-municipal-stats.json
 
       - name: Upload POC outputs
         if: always()
