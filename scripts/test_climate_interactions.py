@@ -80,11 +80,11 @@ def main() -> None:
         assert '2015' in primary.inner_text()
         assert not page.locator('.versilia-position').is_visible(), 'Climate town page must not show ranking/position box'
         assert town_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
-        assert 'Non è la temperatura più alta raggiunta nell’anno' in town_shell.inner_text()
 
         town_shell.locator('[data-ov-climate-view="history"]').click()
         assert town_shell.locator('.ov-climate-trend').is_visible()
         assert town_shell.locator('.ov-climate-annual').is_visible()
+        assert 'Non è la temperatura più alta raggiunta nell’anno' in town_shell.inner_text()
         assert 'Trend medio per decennio' in town_shell.inner_text()
         # X axis must be deliberately sparse, never one label for every year.
         year_labels = town_shell.locator('.ov-climate-axis').filter(has_text='19').count() + town_shell.locator('.ov-climate-axis').filter(has_text='20').count()
