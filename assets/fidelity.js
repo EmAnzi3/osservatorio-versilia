@@ -200,6 +200,13 @@
     /* Keep the existing marker so the prerender cleanup remains generic for
        the runtime-only climate layer and does not serialize it into HTML. */
     climateScript.dataset.ovClimateV2 = '1';
+    climateScript.addEventListener('load', () => {
+      const benchmarkScript = document.createElement('script');
+      benchmarkScript.src = new URL('./climate-town-benchmark.js?v=20260810-1', SCRIPT_URL).href;
+      benchmarkScript.async = false;
+      benchmarkScript.dataset.ovClimateV2 = '1';
+      document.head.appendChild(benchmarkScript);
+    }, { once: true });
     document.head.appendChild(climateScript);
   }
 
