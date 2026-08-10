@@ -1,0 +1,44 @@
+name: Climate interaction regression
+
+on:
+  pull_request:
+    paths:
+      - "assets/app-parts/**"
+      - "assets/meteo-clima*.js"
+      - "assets/meteo-clima*.css"
+      - "confronta/ambiente/**"
+      - "confronta/meteo-clima/**"
+      - "data/meteo-clima*.json"
+      - "scripts/test_climate_interactions.py"
+      - ".github/workflows/climate-interaction.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Build static preview
+        run: python scripts/build_static_brand.py
+
+      - name: Exercise Ambiente and town selectors
+        run: |
+          python -m http.server 8123 --bind 127.0.0.1 --directory dist >/tmp/ov-climate-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          python scripts/test_climate_interactions.py --base-url http://127.0.0.1:8123
