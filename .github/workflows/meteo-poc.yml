@@ -11,6 +11,7 @@ on:
       - "scripts/lamma_annual_history.py"
       - "scripts/lamma_annual_history_runner.py"
       - "scripts/era5_land_annual_history.py"
+      - "scripts/era5_land_precip_hourly_patch.py"
       - "scripts/climate_stitch_series.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
@@ -35,7 +36,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install climate/GIS dependencies
-        run: python -m pip install --disable-pip-version-check rasterio geopandas cdsapi xarray netcdf4
+        run: python -m pip install --disable-pip-version-check "cdsapi>=0.7.7" rasterio geopandas xarray netcdf4
 
       - name: Compile POC
         run: |
@@ -47,6 +48,7 @@ jobs:
           python -m py_compile scripts/lamma_annual_history.py
           python -m py_compile scripts/lamma_annual_history_runner.py
           python -m py_compile scripts/era5_land_annual_history.py
+          python -m py_compile scripts/era5_land_precip_hourly_patch.py
           python -m py_compile scripts/climate_stitch_series.py
 
       - name: Build station benchmark
@@ -85,12 +87,19 @@ jobs:
             --chunk-years 20 \
             --output reports/runtime/meteo-poc/era5-land-annual-raw.csv
 
+      - name: Replace affected ERA5-Land precipitation 2022-2024 from hourly data
+        if: env.CDS_API_TOKEN != ''
+        run: |
+          python scripts/era5_land_precip_hourly_patch.py \
+            --raw reports/runtime/meteo-poc/era5-land-annual-raw.csv \
+            --output reports/runtime/meteo-poc/era5-land-annual-patched.csv
+
       - name: Stitch LaMMA and calibrated ERA5-Land series
         if: env.CDS_API_TOKEN != ''
         run: |
           python scripts/climate_stitch_series.py \
             --lamma reports/runtime/meteo-poc/annual-history/lamma-annual-history.csv \
-            --era5 reports/runtime/meteo-poc/era5-land-annual-raw.csv \
+            --era5 reports/runtime/meteo-poc/era5-land-annual-patched.csv \
             --output reports/runtime/meteo-poc/municipal-climate-1950-2025.csv
 
       - name: Upload POC outputs
