@@ -180,7 +180,7 @@
      completes its data fetch/render asynchronously. Wait for a real rendered
      page target before bootstrapping the climate layer. This is deliberately a
      bounded startup poll, not a DOM observer: after at most 4 seconds it stops. */
-  function loadClimateV2WhenReady(attempt = 0) {
+  function loadClimateV3WhenReady(attempt = 0) {
     if (document.querySelector('script[data-ov-climate-v2]')) return;
     const page = document.body.dataset.page;
     const ready = page === 'town'
@@ -190,16 +190,18 @@
         : Boolean(document.querySelector('#app main'));
 
     if (!ready && attempt < 40) {
-      window.setTimeout(() => loadClimateV2WhenReady(attempt + 1), 100);
+      window.setTimeout(() => loadClimateV3WhenReady(attempt + 1), 100);
       return;
     }
 
     const climateScript = document.createElement('script');
-    climateScript.src = new URL('./climate-ux-v2.js?v=20260810-3', SCRIPT_URL).href;
+    climateScript.src = new URL('./climate-ux-v3.js?v=20260810-1', SCRIPT_URL).href;
     climateScript.async = false;
+    /* Keep the existing marker so the prerender cleanup remains generic for
+       the runtime-only climate layer and does not serialize it into HTML. */
     climateScript.dataset.ovClimateV2 = '1';
     document.head.appendChild(climateScript);
   }
 
-  loadClimateV2WhenReady();
+  loadClimateV3WhenReady();
 })();
