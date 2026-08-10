@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download LaMMA climatology GeoTIFFs and sample representative Versilia points."""
+"""Download LaMMA temperature climatology GeoTIFFs and sample representative Versilia points."""
 from __future__ import annotations
 
 import argparse
@@ -15,7 +15,6 @@ from rasterio.warp import transform
 
 DATASETS = {
     "temperature_mean_1995_2014": "https://geoportale.lamma.rete.toscana.it/download/spazializzazioni/Tmed_climatologia.zip",
-    "precipitation_1995_2014": "https://geoportale.lamma.rete.toscana.it/spazializzazioni/Prec_climatologia.zip",
 }
 POINTS = {
     "Viareggio": (10.2568, 43.8745),
@@ -25,7 +24,7 @@ POINTS = {
 
 
 def download(url: str, dest: Path) -> None:
-    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia-MeteoPOC/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia-MeteoPOC/1.1"})
     with urllib.request.urlopen(req, timeout=180) as response, dest.open("wb") as f:
         while True:
             chunk = response.read(1024 * 1024)
@@ -53,10 +52,7 @@ def sample_tiff(path: Path) -> dict:
         else:
             coords = coords_wgs84
         values = list(src.sample(coords, indexes=1, masked=False))
-        samples = {
-            name: clean_value(values[i][0], src.nodata)
-            for i, name in enumerate(POINTS)
-        }
+        samples = {name: clean_value(values[i][0], src.nodata) for i, name in enumerate(POINTS)}
         return {
             "file": path.name,
             "crs": src.crs.to_string() if src.crs else None,
@@ -71,7 +67,7 @@ def sample_tiff(path: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="reports/runtime/meteo-poc/lamma-samples.json")
+    parser.add_argument("--output", default="reports/runtime/meteo-poc/lamma-temperature-samples.json")
     args = parser.parse_args()
     results = {}
 
@@ -93,7 +89,8 @@ def main() -> int:
                 info = sample_tiff(tif)
                 sampled.append(info)
                 s = info["samples"]
-                print(f"  {info['file']} | Viareggio={s['Viareggio']} | Massarosa={s['Massarosa']} | Stazzema={s['Stazzema']}")
+                if "annuale" in info["file"] or "mensile" in info["file"]:
+                    print(f"  {info['file']} | Viareggio={s['Viareggio']} | Massarosa={s['Massarosa']} | Stazzema={s['Stazzema']}")
             results[dataset] = {"url": url, "archive_bytes": archive.stat().st_size, "rasters": sampled}
 
     out = Path(args.output)
