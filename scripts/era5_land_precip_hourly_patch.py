@@ -17,6 +17,7 @@ import argparse
 import calendar
 import os
 import tempfile
+import time
 from pathlib import Path
 
 import cdsapi
@@ -42,6 +43,35 @@ DATASET = "reanalysis-era5-land"
 PATCH_YEARS = (2022, 2023, 2024)
 
 
+def retrieve_with_retry(
+    client: cdsapi.Client,
+    request: dict,
+    target: Path,
+    label: str,
+    attempts: int = 3,
+) -> None:
+    """Retry valid CDS requests rejected by temporary queue limits/backend failures."""
+    last_exc: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        target.unlink(missing_ok=True)
+        try:
+            client.retrieve(DATASET, request, str(target))
+            return
+        except Exception as exc:
+            last_exc = exc
+            if attempt >= attempts:
+                break
+            delay = 10 * attempt
+            print(
+                f"[era5-precip-patch] CDS retrieval failed for {label} "
+                f"(attempt {attempt}/{attempts}): {exc!r}; retrying in {delay}s",
+                flush=True,
+            )
+            time.sleep(delay)
+    assert last_exc is not None
+    raise last_exc
+
+
 def retrieve_year(client: cdsapi.Client, year: int, target: Path) -> None:
     request = {
         "variable": ["total_precipitation"],
@@ -53,7 +83,7 @@ def retrieve_year(client: cdsapi.Client, year: int, target: Path) -> None:
         "data_format": "netcdf",
         "download_format": "unarchived",
     }
-    client.retrieve(DATASET, request, str(target))
+    retrieve_with_retry(client, request, target, f"{year} daily 00UTC")
 
 
 def retrieve_next_jan1(client: cdsapi.Client, year: int, target: Path) -> None:
@@ -67,7 +97,7 @@ def retrieve_next_jan1(client: cdsapi.Client, year: int, target: Path) -> None:
         "data_format": "netcdf",
         "download_format": "unarchived",
     }
-    client.retrieve(DATASET, request, str(target))
+    retrieve_with_retry(client, request, target, f"{year + 1}-01-01 00UTC carry-over")
 
 
 def normalize_precip_coords(da: xr.DataArray) -> xr.DataArray:
@@ -94,8 +124,6 @@ def normalize_precip_coords(da: xr.DataArray) -> xr.DataArray:
         if name not in da.coords:
             raise RuntimeError(f"Missing coordinate {name}; coords={list(da.coords)} dims={list(da.dims)}")
 
-    # Drop only unrelated singleton dimensions (for example forecast metadata),
-    # never the time/latitude/longitude axes required by the aggregation.
     extra_singletons = [
         dim for dim in da.dims
         if dim not in required and da.sizes.get(dim, 0) == 1
@@ -144,7 +172,6 @@ def annual_grid(client: cdsapi.Client, year: int, tmp: Path) -> tuple[np.ndarray
     if values.shape[0] != expected:
         raise RuntimeError(f"{year}: expected {expected} daily precipitation fields, got {values.shape[0]}")
 
-    # Hourly ERA5-Land accumulation at 00 UTC is the previous day's total, in metres.
     grid_mm = np.nansum(values * 1000.0, axis=0)
     return grid_mm, lat1, lon1, expected
 
