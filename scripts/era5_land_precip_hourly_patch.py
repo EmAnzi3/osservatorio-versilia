@@ -34,7 +34,6 @@ from era5_land_annual_history import (
     extract_zip,
     find_municipal_layer,
     fractional_weights,
-    normalize_coords,
     open_download,
     weighted_grid_value,
 )
@@ -71,14 +70,55 @@ def retrieve_next_jan1(client: cdsapi.Client, year: int, target: Path) -> None:
     client.retrieve(DATASET, request, str(target))
 
 
+def normalize_precip_coords(da: xr.DataArray) -> xr.DataArray:
+    """Normalize ERA5 coordinates without dropping a singleton time axis.
+
+    The generic annual-history helper squeezes singleton dimensions. That is fine
+    for multi-month downloads, but the Jan-1 carry-over request intentionally has
+    exactly one timestamp; dropping it makes the day impossible to place in time.
+    """
+    renames = {}
+    for name in da.coords:
+        folded = name.casefold()
+        if folded in {"valid_time", "date"}:
+            renames[name] = "time"
+        elif folded == "lat":
+            renames[name] = "latitude"
+        elif folded == "lon":
+            renames[name] = "longitude"
+    if renames:
+        da = da.rename(renames)
+
+    required = {"time", "latitude", "longitude"}
+    for name in required:
+        if name not in da.coords:
+            raise RuntimeError(f"Missing coordinate {name}; coords={list(da.coords)} dims={list(da.dims)}")
+
+    # Drop only unrelated singleton dimensions (for example forecast metadata),
+    # never the time/latitude/longitude axes required by the aggregation.
+    extra_singletons = [
+        dim for dim in da.dims
+        if dim not in required and da.sizes.get(dim, 0) == 1
+    ]
+    if extra_singletons:
+        da = da.squeeze(extra_singletons, drop=True)
+    return da
+
+
 def read_precip(path: Path) -> tuple[pd.DatetimeIndex, np.ndarray, np.ndarray, np.ndarray]:
     ds = open_download(path)
     try:
-        tp = normalize_coords(choose_var(ds, ("tp", "total_precipitation", "total precipitation")))
+        tp = normalize_precip_coords(choose_var(ds, ("tp", "total_precipitation", "total precipitation")))
         times = pd.DatetimeIndex(pd.to_datetime(tp["time"].values))
         lat = np.asarray(tp["latitude"].values, dtype="float64")
         lon = np.asarray(tp["longitude"].values, dtype="float64")
         values = np.asarray(tp.values, dtype="float64")
+        if values.ndim == 2 and len(times) == 1:
+            values = values[None, :, :]
+        if values.ndim != 3 or values.shape[0] != len(times):
+            raise RuntimeError(
+                f"Unexpected precipitation shape {values.shape} for {len(times)} timestamps; dims={list(tp.dims)}"
+            )
         return times, values, lat, lon
     finally:
         ds.close()
