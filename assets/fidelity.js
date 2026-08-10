@@ -174,4 +174,12 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installMobileThemeJump();
   scheduleEnhancement();
+
+  if (!document.querySelector('script[data-ov-climate-v2]')) {
+    const climateScript = document.createElement('script');
+    climateScript.src = new URL('./climate-ux-v2.js?v=20260810-1', document.currentScript?.src || location.href).href;
+    climateScript.async = false;
+    climateScript.dataset.ovClimateV2 = '1';
+    document.head.appendChild(climateScript);
+  }
 })();
