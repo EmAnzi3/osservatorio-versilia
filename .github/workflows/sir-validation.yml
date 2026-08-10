@@ -1,9 +1,7 @@
 name: SIR validation probe
 
 on:
-  push:
-    branches:
-      - agent/meteo-clima-poc
+  pull_request:
     paths:
       - "scripts/sir_probe.py"
       - ".github/workflows/sir-validation.yml"
