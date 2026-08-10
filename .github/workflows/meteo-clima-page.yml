@@ -75,11 +75,14 @@ jobs:
               "metricKey === 'floodExposure'",
               "metricKey === 'landslideExposure'",
               "deep.hidden = !(isFlood || isLandslide)",
+              'const baseBarRows = barRows',
+              "left:${left.toFixed(2)}%",
+              "href:CLIMATE_METRICS.has(key) ? climateDetailHref(key) : indicatorHref(m)",
           ):
               assert token in app, token
 
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
           assert '1975–2025' in html
           assert 'temperature-min-max' in html
-          print('Climate draft OK: native Ambiente accordion + town metrics + conditional risk detail')
+          print('Climate draft OK: native Ambiente accordion + town metrics + conditional risk detail + signed trend bars')
           PY
