@@ -91,9 +91,10 @@ def main() -> None:
         versilia = page.locator('.versilia-position')
         assert versilia.is_visible(), 'Climate town page must retain the Versilia comparison card'
         versilia_text = versilia.inner_text()
-        assert 'Rispetto alla Versilia' in versilia_text
-        assert 'Media semplice dei 7 comuni' in versilia_text
-        assert 'Ordine del valore' not in versilia_text
+        versilia_lower = versilia_text.lower()
+        assert 'rispetto alla versilia' in versilia_lower, versilia_text
+        assert 'media semplice dei 7 comuni' in versilia_lower, versilia_text
+        assert 'ordine del valore' not in versilia_lower, versilia_text
         assert town_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
 
         town_shell.locator('[data-ov-climate-view="history"]').click()
