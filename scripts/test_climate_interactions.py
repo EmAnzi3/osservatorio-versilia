@@ -6,6 +6,18 @@ import argparse
 from playwright.sync_api import sync_playwright
 
 
+def select_metric(page, key: str, scope: str) -> None:
+    button = page.locator(f'button[data-metric="{key}"]').first
+    assert button.count() == 1, f'Missing {scope} metric button: {key}'
+    # Some accordion groups are intentionally collapsed. Calling HTMLElement.click()
+    # exercises the same DOM click handlers without making visibility part of this
+    # regression: the failure we guard against is a render/event-loop freeze.
+    button.evaluate('(el) => el.click()')
+    page.wait_for_timeout(80)
+    assert page.evaluate('1 + 1') == 2, f'Browser event loop stopped after selecting {key}'
+    assert f'indicatore={key}' in page.url, (key, page.url)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base-url', default='http://127.0.0.1:8123')
@@ -33,11 +45,7 @@ def main() -> None:
 
         page.goto(f'{base}/confronta/ambiente/', wait_until='networkidle')
         for key in sequence:
-            button = page.locator(f'button[data-metric="{key}"]').first
-            assert button.count() == 1, f'Missing Ambiente metric button: {key}'
-            button.click(force=True)
-            page.wait_for_timeout(80)
-            assert f'indicatore={key}' in page.url, (key, page.url)
+            select_metric(page, key, 'Ambiente')
             assert page.locator('#compare-definition h2').count() == 1
 
         page.goto(
@@ -45,11 +53,7 @@ def main() -> None:
             wait_until='networkidle',
         )
         for key in sequence:
-            button = page.locator(f'button[data-metric="{key}"]').first
-            assert button.count() == 1, f'Missing town metric button: {key}'
-            button.click(force=True)
-            page.wait_for_timeout(80)
-            assert f'indicatore={key}' in page.url, (key, page.url)
+            select_metric(page, key, 'town')
             assert page.locator('.town-metric-primary').count() == 1
 
             deep = page.locator('.topic-deep-dive')
