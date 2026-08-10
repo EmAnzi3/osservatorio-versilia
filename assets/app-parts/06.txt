@@ -265,10 +265,13 @@
           if (isFlood || isLandslide) {
             const heading = deep.querySelector('.deep-heading h3');
             const intro = deep.querySelector('.deep-heading p');
-            if (heading) heading.textContent = isFlood ? 'Dettaglio del rischio alluvionale' : 'Dettaglio del rischio frane';
-            if (intro) intro.textContent = isFlood
+            if (heading && heading.textContent !== (isFlood ? 'Dettaglio del rischio alluvionale' : 'Dettaglio del rischio frane')) {
+              heading.textContent = isFlood ? 'Dettaglio del rischio alluvionale' : 'Dettaglio del rischio frane';
+            }
+            const introText = isFlood
               ? 'Edifici comunali esposti al rischio alluvionale secondo il dettaglio territoriale disponibile.'
               : 'Edifici comunali esposti al rischio frane secondo il dettaglio territoriale disponibile.';
+            if (intro && intro.textContent !== introText) intro.textContent = introText;
             const details = deep.querySelector('details');
             if (details) details.open = true;
             [...deep.querySelectorAll('.risk-grid article')].forEach((article, index) => {
@@ -286,8 +289,8 @@
       const href = climateDetailHref(metricKey, town);
       document.querySelectorAll('.data-actions a').forEach(link => {
         if (link.textContent.includes('Scheda indicatore') || link.textContent.includes('Approfondimento storico')) {
-          link.href = href;
-          link.textContent = 'Approfondimento storico';
+          if (link.href !== href) link.href = href;
+          if (link.textContent !== 'Approfondimento storico') link.textContent = 'Approfondimento storico';
         }
       });
     }
@@ -296,8 +299,14 @@
   function installEnvironmentClimateCoherence() {
     syncEnvironmentClimateUi();
     if (!app) return;
-    const observer = new MutationObserver(() => syncEnvironmentClimateUi());
-    observer.observe(app, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-theme'] });
+    const scheduleSync = () => queueMicrotask(syncEnvironmentClimateUi);
+    app.addEventListener('click', event => {
+      if (event.target.closest('[data-metric], [data-profile-theme], [data-scale]')) scheduleSync();
+    });
+    app.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter', ' '].includes(event.key)) return;
+      if (event.target.closest('[data-metric], [data-profile-theme], [data-scale]')) scheduleSync();
+    });
   }
 
   function installSearch(data) {
