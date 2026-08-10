@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Meteo e clima · Osservatorio Versilia</title>
+  <meta name="description" content="Prototipo della sezione Meteo e clima dell'Osservatorio Versilia: serie annuali comunali di temperatura e precipitazioni dal 1950.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/original.css">
+  <link rel="stylesheet" href="../assets/fonts.css">
+  <link rel="stylesheet" href="../assets/fidelity.css">
+  <link rel="stylesheet" href="../assets/meteo-clima.css?v=20260810-1">
+</head>
+<body class="antialiased climate-body">
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-brand" href="../" aria-label="Osservatorio Versilia, torna alla home">
+        <span class="site-brand-mark" aria-hidden="true">OV</span>
+        <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Dati pubblici comunali</small></span>
+      </a>
+      <div class="site-header-actions climate-header-actions">
+        <nav aria-label="Navigazione principale">
+          <a href="../#temi">Temi</a>
+          <a href="../#comuni">Comuni</a>
+          <a href="../progetto/">Progetto</a>
+        </nav>
+        <a class="climate-back-link" href="../">← Torna all'Osservatorio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="climate-page">
+    <div class="breadcrumbs page-width"><a href="../">Home</a><span>›</span><strong>Meteo e clima</strong></div>
+
+    <section class="climate-hero page-width">
+      <div class="climate-hero-copy">
+        <span class="overline">Serie storiche territoriali · POC</span>
+        <h1>Meteo e clima</h1>
+        <p>Come sono cambiate, anno dopo anno, temperatura media e precipitazioni nei sette comuni della Versilia.</p>
+      </div>
+      <div class="climate-hero-meta" aria-label="Copertura del dataset">
+        <div><strong>1950–2025</strong><span>76 annualità complete</span></div>
+        <div><strong>7 comuni</strong><span>stesso metodo territoriale</span></div>
+        <div><strong>SIR Toscana</strong><span>validazione indipendente</span></div>
+      </div>
+    </section>
+
+    <section class="climate-workspace page-width" aria-labelledby="climate-chart-title">
+      <div class="climate-controls">
+        <label class="climate-select-label" for="climate-town"><span>Territorio</span>
+          <select id="climate-town" aria-label="Seleziona il comune"></select>
+        </label>
+        <div class="climate-metric-tabs" role="tablist" aria-label="Indicatore climatico">
+          <button type="button" role="tab" data-metric="temperature" class="active" aria-selected="true">Temperatura media</button>
+          <button type="button" role="tab" data-metric="precipitation" aria-selected="false">Precipitazioni</button>
+        </div>
+        <button type="button" class="climate-smooth-toggle active" id="climate-smooth-toggle" aria-pressed="true">Media mobile 10 anni</button>
+      </div>
+
+      <div class="climate-summary-grid" id="climate-summary" aria-live="polite"></div>
+
+      <article class="climate-chart-card">
+        <div class="climate-chart-heading">
+          <div><span class="overline" id="climate-chart-overline">Serie annuale · 1950–2025</span><h2 id="climate-chart-title">Temperatura media annua</h2></div>
+          <div class="climate-chart-unit" id="climate-chart-unit">°C</div>
+        </div>
+        <div class="climate-chart-wrap" id="climate-chart" aria-live="polite"></div>
+        <div class="climate-chart-legend">
+          <span><i class="legend-raw"></i>Valore annuale</span>
+          <span><i class="legend-smooth"></i>Media mobile 10 anni</span>
+          <span><i class="legend-lamma"></i>LaMMA 1 km · interpolato</span>
+          <span><i class="legend-era5"></i>ERA5-Land · rianalisi calibrata</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="climate-comparison page-width" aria-labelledby="climate-compare-title">
+      <div class="section-heading compact">
+        <div><span class="overline">Ultima annualità completa · 2025</span><h2 id="climate-compare-title">I sette comuni a confronto</h2></div>
+        <p>Il confronto mostra lo stesso indicatore selezionato sopra. Clicca un comune per aprirne la serie.</p>
+      </div>
+      <div class="climate-compare-bars" id="climate-compare-bars"></div>
+    </section>
+
+    <section class="climate-partial page-width" id="climate-partial" hidden></section>
+
+    <section class="climate-method page-width" aria-labelledby="climate-method-title">
+      <div class="section-heading">
+        <div><span class="overline">Come leggere la serie</span><h2 id="climate-method-title">Una ricostruzione territoriale, non una stazione meteo.</h2></div>
+        <p>Ogni valore rappresenta l'intero territorio comunale. Provenienza e metodo cambiano nel tempo, ma il raccordo è esplicito e validato.</p>
+      </div>
+      <div class="climate-method-grid">
+        <article><span>01</span><h3>Geografia reale</h3><p id="method-spatial"></p></article>
+        <article><span>02</span><h3>Due fonti, un'unica serie</h3><p id="method-source"></p></article>
+        <article><span>03</span><h3>Controllo indipendente</h3><p id="method-validation"></p></article>
+      </div>
+      <div class="climate-source-timeline" id="climate-source-timeline"></div>
+      <details class="climate-disclosure">
+        <summary>Note metodologiche e fonti</summary>
+        <div class="climate-disclosure-body">
+          <p><strong>Temperatura.</strong> <span id="method-temperature"></span></p>
+          <p><strong>Precipitazioni.</strong> <span id="method-precipitation"></span></p>
+          <p><strong>Fonti ufficiali.</strong> <a href="https://dati.lamma.toscana.it/" target="_blank" rel="noreferrer">Consorzio LaMMA ↗</a> · <a href="https://cds.climate.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus Climate Data Store ↗</a> · <a href="https://www.sir.toscana.it/" target="_blank" rel="noreferrer">SIR Toscana ↗</a>.</p>
+          <p class="climate-caution"><strong>Importante:</strong> la serie non va descritta come “dato osservato nel Comune”. Il tratto LaMMA è interpolato su griglia; ERA5-Land è una rianalisi calibrata. Le stazioni SIR sono usate come controllo indipendente.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="climate-footer">
+    <div class="page-width"><strong>Osservatorio Versilia</strong><span>Prototipo Meteo e clima · non pubblicato in produzione</span><a href="../progetto/">Metodo e progetto →</a></div>
+  </footer>
+
+  <div class="climate-tooltip" id="climate-tooltip" hidden></div>
+  <script src="../assets/meteo-clima.js?v=20260810-1" defer></script>
+</body>
+</html>
