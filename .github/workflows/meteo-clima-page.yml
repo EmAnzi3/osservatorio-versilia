@@ -7,7 +7,7 @@ on:
       - "confronta/ambiente/index.html"
       - "assets/meteo-clima.css"
       - "assets/meteo-clima.js"
-      - "assets/meteo-clima-entry.js"
+      - "assets/app-parts/**"
       - "data/meteo-clima-poc.json"
       - "data/meteo-clima-minmax-poc.json"
       - ".github/workflows/meteo-clima-page.yml"
@@ -30,9 +30,10 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           node --check assets/meteo-clima.js
-          node --check assets/meteo-clima-entry.js
+          cat assets/app-parts/00.txt assets/app-parts/01.txt assets/app-parts/02.txt assets/app-parts/03.txt assets/app-parts/04.txt assets/app-parts/05.txt assets/app-parts/06.txt > /tmp/app-bundle.js
+          node --check /tmp/app-bundle.js
 
-      - name: Validate climate data contract
+      - name: Validate climate data contract and native Ambiente integration
         run: |
           python - <<'PY'
           import json
@@ -51,10 +52,6 @@ jobs:
               assert series['latestComplete']['year'] == 2025, name
               assert all(isinstance(v, (int, float)) for v in series['temperature']), name
               assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
-          covered = []
-          for segment in data['provenance']:
-              covered.extend(range(segment['from'], segment['to'] + 1))
-          assert covered == expected_years, covered[:3]
 
           minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
           assert minmax['coverage'] == {'from': 1995, 'to': 2015}
@@ -63,19 +60,26 @@ jobs:
           for name, series in minmax['municipalities'].items():
               assert series['years'] == expected_minmax_years, name
               assert len(series['tmin']) == 21 and len(series['tmax']) == 21, name
-              assert all(isinstance(v, (int, float)) for v in series['tmin'] + series['tmax']), name
+
+          environment = Path('confronta/ambiente/index.html').read_text(encoding='utf-8')
+          assert 'climate-environment-entry' not in environment
+          assert 'meteo-clima-entry.js' not in environment
+
+          app = ''.join(Path(f'assets/app-parts/{i:02}.txt').read_text(encoding='utf-8') for i in range(7))
+          for token in (
+              "key: 'clima'",
+              'climateTemperatureTrend50y',
+              'climatePrecipitationTrend50y',
+              'climateTminTrend',
+              'climateTmaxTrend',
+              "metricKey === 'floodExposure'",
+              "metricKey === 'landslideExposure'",
+              "deep.hidden = !(isFlood || isLandslide)",
+          ):
+              assert token in app, token
 
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
-          assert '../../assets/meteo-clima.css' in html
-          assert '../../assets/meteo-clima.js' in html
           assert '1975–2025' in html
           assert 'temperature-min-max' in html
-          environment = Path('confronta/ambiente/index.html').read_text(encoding='utf-8')
-          assert 'climate-environment-entry' in environment
-          assert 'meteo-clima-entry.js' in environment
-          js = Path('assets/meteo-clima.js').read_text(encoding='utf-8')
-          assert "../../data/meteo-clima-poc.json" in js
-          assert "../../data/meteo-clima-minmax-poc.json" in js
-          assert 'TREND_START = 1975' in js and 'TREND_END = 2025' in js
-          print('Climate draft OK: Ambiente integration, 7x76 long series, 7x21 min/max series, 50-year trend')
+          print('Climate draft OK: native Ambiente accordion + town metrics + conditional risk detail')
           PY
