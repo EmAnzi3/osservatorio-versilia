@@ -3,7 +3,7 @@ name: Validate Meteo e clima page
 on:
   pull_request:
     paths:
-      - "meteo-clima/**"
+      - "confronta/meteo-clima/**"
       - "assets/meteo-clima.css"
       - "assets/meteo-clima.js"
       - "data/meteo-clima-poc.json"
@@ -49,8 +49,10 @@ jobs:
           for segment in segments:
               covered.extend(range(segment['from'], segment['to'] + 1))
           assert covered == expected_years, covered[:3]
-          html = Path('meteo-clima/index.html').read_text(encoding='utf-8')
-          assert '../assets/meteo-clima.css' in html
-          assert '../assets/meteo-clima.js' in html
+          html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
+          assert '../../assets/meteo-clima.css' in html
+          assert '../../assets/meteo-clima.js' in html
+          js = Path('assets/meteo-clima.js').read_text(encoding='utf-8')
+          assert "../../data/meteo-clima-poc.json" in js
           print('Climate page data contract OK: 7 municipalities x 76 complete years')
           PY
