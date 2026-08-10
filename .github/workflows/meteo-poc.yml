@@ -8,6 +8,7 @@ on:
       - "scripts/lamma_sample.py"
       - "scripts/lamma_precip_year.py"
       - "scripts/lamma_municipal_stats.py"
+      - "scripts/lamma_annual_history.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -17,7 +18,7 @@ permissions:
 jobs:
   meteo-poc:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -38,6 +39,7 @@ jobs:
           python -m py_compile scripts/lamma_sample.py
           python -m py_compile scripts/lamma_precip_year.py
           python -m py_compile scripts/lamma_municipal_stats.py
+          python -m py_compile scripts/lamma_annual_history.py
 
       - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
@@ -53,6 +55,9 @@ jobs:
 
       - name: Build municipal climate statistics
         run: python scripts/lamma_municipal_stats.py --output reports/runtime/meteo-poc/lamma-municipal-stats.json
+
+      - name: Build complete LaMMA annual history 1995-2015
+        run: python scripts/lamma_annual_history.py --years 1995-2015 --output-dir reports/runtime/meteo-poc/annual-history
 
       - name: Upload POC outputs
         if: always()
