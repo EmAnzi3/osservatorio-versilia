@@ -198,13 +198,23 @@ def inject_metadata_with_open_graph(document: str, route: str, data: dict) -> st
 
 
 def normalize_prerendered_urls() -> None:
-    """Remove the temporary localhost origin serialized by the headless build."""
+    """Remove temporary prerender state and keep the climate layer runtime-only."""
     localhost = re.compile(r"https?://127\.0\.0\.1:\d+/")
+    climate_script = re.compile(
+        r'\s*<script[^>]*data-ov-climate-v2[^>]*></script>',
+        flags=re.IGNORECASE,
+    )
+    climate_style = re.compile(
+        r'\s*<style\s+id="ov-climate-v2-style"[^>]*>.*?</style>',
+        flags=re.IGNORECASE | re.DOTALL,
+    )
     for path in build.DIST.rglob("*.html"):
         prefix = os.path.relpath(build.DIST, path.parent).replace(os.sep, "/")
         replacement = "" if prefix == "." else f"{prefix}/"
         text = path.read_text(encoding="utf-8")
         text = localhost.sub(replacement, text)
+        text = climate_script.sub("", text)
+        text = climate_style.sub("", text)
         text = text.replace(
             '<body data-prerendered="true" class=',
             '<body class=',
