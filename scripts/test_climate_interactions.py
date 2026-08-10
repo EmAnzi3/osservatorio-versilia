@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression browser test for Ambiente/climate selector interactions and semantics."""
+"""Regression browser test for Ambiente/climate semantics and shared visual grammar."""
 from __future__ import annotations
 
 import argparse
@@ -9,12 +9,17 @@ from playwright.sync_api import sync_playwright
 def select_metric(page, key: str, scope: str) -> None:
     button = page.locator(f'button[data-metric="{key}"]').first
     assert button.count() == 1, f'Missing {scope} metric button: {key}'
-    # Some accordion groups are intentionally collapsed. HTMLElement.click()
-    # exercises the same click handlers without making visibility part of the test.
     button.evaluate('(el) => el.click()')
-    page.wait_for_timeout(120)
+    page.wait_for_timeout(150)
     assert page.evaluate('1 + 1') == 2, f'Browser event loop stopped after selecting {key}'
     assert f'indicatore={key}' in page.url, (key, page.url)
+
+
+def assert_tooltip_works(point) -> None:
+    point.hover()
+    tooltip = point.locator('.chart-tooltip')
+    assert tooltip.count() == 1, 'Missing chart tooltip'
+    assert tooltip.get_attribute('hidden') is None, 'Tooltip did not open on hover'
 
 
 def main() -> None:
@@ -42,14 +47,13 @@ def main() -> None:
         errors: list[str] = []
         page.on('pageerror', lambda exc: errors.append(str(exc)))
 
-        # Repeated selector changes must remain responsive.
         page.goto(f'{base}/confronta/ambiente/', wait_until='networkidle')
         for key in sequence:
             select_metric(page, key, 'Ambiente')
             assert page.locator('#compare-definition h2').count() == 1
 
-        # Climate indicators must use the same current/history grammar as the site,
-        # while keeping the current value semantically distinct from the trend.
+        # Climate uses the same current/history grammar and the same chart surfaces
+        # as the other indicators, while remaining ranking-free.
         select_metric(page, 'climateTemperatureTrend50y', 'Ambiente')
         shell = page.locator('[data-ov-climate-shell="compare-climateTemperatureTrend50y"]')
         shell.wait_for(state='visible')
@@ -57,18 +61,23 @@ def main() -> None:
         assert '2025' in page.locator('#compare-definition').inner_text()
         assert shell.locator('[data-ov-climate-view="current"]').count() == 1
         assert shell.locator('[data-ov-climate-view="history"]').count() == 1
+        assert shell.locator('[data-ov-climate-pane="current"] > .topic-bars').count() == 1, 'Current climate view must use the shared topic-bars surface'
         assert shell.locator('.ov-climate-current-row').count() == 7
         assert shell.locator('.bar-rank, .ux-bar-rank').count() == 0, 'Climate current view must not contain rankings'
         assert 'Nessuna graduatoria' in shell.inner_text()
 
         shell.locator('[data-ov-climate-view="history"]').click()
-        assert shell.locator('.ov-climate-compare-lines').is_visible()
-        assert shell.locator('.ov-climate-compare-lines .trend').count() == 7
+        assert shell.locator('[data-ov-climate-pane="history"] > .ux-history-card').is_visible(), 'Climate history must use the shared history card surface'
+        chart = shell.locator('.ov-climate-compare-lines')
+        assert chart.is_visible()
+        assert chart.locator('.trend').count() == 7
         shell.locator('[data-climate-select="camaiore"]').click()
-        assert 'trend 1975–2025' in shell.locator('.ov-climate-selection-summary').inner_text()
+        assert 'trend 1975–2025' in shell.locator('.ux-history-summary').inner_text()
+        compare_point = chart.locator('[data-climate-series="camaiore"] .chart-point').first
+        assert_tooltip_works(compare_point)
 
-        # Town climate page: no "order of value" box, clear current value, sparse
-        # years and an explicit trend line in the historical view.
+        # Town climate page: current annual value + Versilia benchmark card, but no
+        # ranking. Historical chart has sparse years, trend and the standard tooltip.
         page.goto(
             f'{base}/comuni/camaiore/?tema=ambiente&indicatore=climateTmaxTrend',
             wait_until='networkidle',
@@ -78,17 +87,24 @@ def main() -> None:
         primary = page.locator('.town-metric-primary')
         assert '19,04 °C' in primary.inner_text(), primary.inner_text()
         assert '2015' in primary.inner_text()
-        assert not page.locator('.versilia-position').is_visible(), 'Climate town page must not show ranking/position box'
+
+        versilia = page.locator('.versilia-position')
+        assert versilia.is_visible(), 'Climate town page must retain the Versilia comparison card'
+        versilia_text = versilia.inner_text()
+        assert 'Rispetto alla Versilia' in versilia_text
+        assert 'Media semplice dei 7 comuni' in versilia_text
+        assert 'Ordine del valore' not in versilia_text
         assert town_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
 
         town_shell.locator('[data-ov-climate-view="history"]').click()
-        assert town_shell.locator('.ov-climate-trend').is_visible()
-        assert town_shell.locator('.ov-climate-annual').is_visible()
+        assert town_shell.locator('.ov-climate-town-trend').is_visible()
+        assert town_shell.locator('.chart-line').is_visible()
         assert 'Non è la temperatura più alta raggiunta nell’anno' in town_shell.inner_text()
         assert 'Trend medio per decennio' in town_shell.inner_text()
-        # X axis must be deliberately sparse, never one label for every year.
-        year_labels = town_shell.locator('.ov-climate-axis').filter(has_text='19').count() + town_shell.locator('.ov-climate-axis').filter(has_text='20').count()
+        year_labels = town_shell.locator('.trend-chart svg > text.chart-label:not(.chart-y-label)').count()
         assert year_labels < 15, f'Too many year labels: {year_labels}'
+        town_point = town_shell.locator('.trend-chart .chart-point').first
+        assert_tooltip_works(town_point)
 
         # Risk detail remains conditional outside climate.
         page.goto(
@@ -107,7 +123,7 @@ def main() -> None:
         assert not errors, f'Browser page errors: {errors}'
         browser.close()
 
-    print('Climate interaction regression OK: coherent current/history semantics, explicit trends, no rankings')
+    print('Climate interaction regression OK: shared surfaces, working tooltips, Versilia benchmark, explicit trends, no rankings')
 
 
 if __name__ == '__main__':
