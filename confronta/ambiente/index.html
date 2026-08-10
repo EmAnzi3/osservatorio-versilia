@@ -21,21 +21,23 @@
   <div id="site-header-mount"></div>
   <div id="app"><div class="app-loading" role="status">Caricamento dei dati…</div></div>
 
-  <section class="climate-environment-entry page-width" id="climate-environment-entry" hidden aria-labelledby="climate-environment-title" data-theme="ambiente">
-    <div class="climate-entry-head">
-      <div><span class="overline">Clima · serie storiche territoriali</span><h2 id="climate-environment-title">Come stanno cambiando temperature e precipitazioni?</h2></div>
-      <p>Serie comunali 1950–2025 con trend di lungo periodo, media mobile decennale e validazione indipendente SIR Toscana.</p>
-    </div>
-    <div class="climate-entry-grid">
-      <a class="climate-entry-card" href="../meteo-clima/?indicatore=temperature"><span>Temperatura</span><strong>Trend 1975–2025</strong><small>Quanto è cambiata la temperatura media in 50 anni, comune per comune.</small><b>Apri la serie →</b></a>
-      <a class="climate-entry-card" href="../meteo-clima/?indicatore=precipitation"><span>Precipitazioni</span><strong>Trend 1975–2025</strong><small>Direzione di fondo e forte variabilità annuale delle precipitazioni.</small><b>Apri la serie →</b></a>
-      <a class="climate-entry-card" href="../meteo-clima/?indicatore=temperature#temperature-min-max"><span>Temperature · dettaglio LaMMA</span><strong>Minime e massime</strong><small>Storico territoriale omogeneo disponibile per il periodo 1995–2015.</small><b>Apri l'approfondimento →</b></a>
-    </div>
-  </section>
+  <template id="climate-environment-template">
+    <section class="climate-environment-entry page-width" id="climate-environment-entry" aria-labelledby="climate-environment-title" data-theme="ambiente">
+      <div class="climate-entry-head">
+        <div><span class="overline">Clima · serie storiche territoriali</span><h2 id="climate-environment-title">Come stanno cambiando temperature e precipitazioni?</h2></div>
+        <p>Serie comunali 1950–2025 con trend di lungo periodo, media mobile decennale e validazione indipendente SIR Toscana.</p>
+      </div>
+      <div class="climate-entry-grid">
+        <a class="climate-entry-card" href="../meteo-clima/?indicatore=temperature"><span>Temperatura</span><strong>Trend 1975–2025</strong><small>Quanto è cambiata la temperatura media in 50 anni, comune per comune.</small><b>Apri la serie →</b></a>
+        <a class="climate-entry-card" href="../meteo-clima/?indicatore=precipitation"><span>Precipitazioni</span><strong>Trend 1975–2025</strong><small>Direzione di fondo e forte variabilità annuale delle precipitazioni.</small><b>Apri la serie →</b></a>
+        <a class="climate-entry-card" href="../meteo-clima/?indicatore=temperature#temperature-min-max"><span>Temperature · dettaglio LaMMA</span><strong>Minime e massime</strong><small>Storico territoriale omogeneo disponibile per il periodo 1995–2015.</small><b>Apri l'approfondimento →</b></a>
+      </div>
+    </section>
+  </template>
 
   <div id="site-footer-mount"></div>
   <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
   <script src="../../assets/app.js" defer></script>
-  <script src="../../assets/meteo-clima-entry.js?v=20260810-1" defer></script>
+  <script src="../../assets/meteo-clima-entry.js?v=20260810-2" defer></script>
 </body>
 </html>
