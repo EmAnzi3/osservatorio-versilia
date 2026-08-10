@@ -1,21 +1,18 @@
 (() => {
   'use strict';
-  const entry = document.getElementById('climate-environment-entry');
+  const template = document.getElementById('climate-environment-template');
   const app = document.getElementById('app');
-  if (!entry || !app) return;
+  if (!template || !app) return;
 
-  const place = () => {
+  const mount = () => {
     const hero = app.querySelector('.topic-hero');
-    if (!hero) return false;
-    hero.insertAdjacentElement('afterend', entry);
-    entry.hidden = false;
+    if (!hero || app.querySelector('#climate-environment-entry')) return false;
+    hero.insertAdjacentElement('afterend', template.content.firstElementChild.cloneNode(true));
     return true;
   };
 
-  if (place()) return;
-  const observer = new MutationObserver(() => {
-    if (place()) observer.disconnect();
-  });
+  mount();
+  const observer = new MutationObserver(() => mount());
   observer.observe(app, { childList: true, subtree: true });
-  window.setTimeout(() => observer.disconnect(), 10000);
+  window.setTimeout(() => observer.disconnect(), 15000);
 })();
