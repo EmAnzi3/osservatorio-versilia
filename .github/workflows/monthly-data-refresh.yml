@@ -19,7 +19,6 @@ on:
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
       - "scripts/restore_partial_agcom_metrics.py"
-      - "scripts/meteo_poc.py"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
       - "data/site-data.json"
@@ -55,11 +54,6 @@ jobs:
         run: |
           python scripts/test_monthly_data_check.py
           python -m py_compile scripts/monthly_data_check_coverage.py
-
-      - name: Build meteo climate POC
-        run: |
-          python -m py_compile scripts/meteo_poc.py
-          python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
 
       - name: Prepare check
         id: prepare
