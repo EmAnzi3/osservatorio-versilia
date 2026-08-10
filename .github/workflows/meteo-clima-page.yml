@@ -1,0 +1,56 @@
+name: Validate Meteo e clima page
+
+on:
+  pull_request:
+    paths:
+      - "meteo-clima/**"
+      - "assets/meteo-clima.css"
+      - "assets/meteo-clima.js"
+      - "data/meteo-clima-poc.json"
+      - ".github/workflows/meteo-clima-page.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON
+        run: python -m json.tool data/meteo-clima-poc.json > /dev/null
+
+      - name: Validate JavaScript syntax
+        run: node --check assets/meteo-clima.js
+
+      - name: Validate climate data contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('data/meteo-clima-poc.json').read_text(encoding='utf-8'))
+          expected = {'Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio'}
+          towns = data['municipalities']
+          assert set(towns) == expected, (set(towns), expected)
+          assert data['coverage']['complete'] == {'from': 1950, 'to': 2025}
+          expected_years = list(range(1950, 2026))
+          for name, series in towns.items():
+              assert series['years'] == expected_years, name
+              assert len(series['temperature']) == 76, name
+              assert len(series['precipitation']) == 76, name
+              assert series['latestComplete']['year'] == 2025, name
+              assert all(isinstance(v, (int, float)) for v in series['temperature']), name
+              assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
+          segments = data['provenance']
+          covered = []
+          for segment in segments:
+              covered.extend(range(segment['from'], segment['to'] + 1))
+          assert covered == expected_years, covered[:3]
+          html = Path('meteo-clima/index.html').read_text(encoding='utf-8')
+          assert '../assets/meteo-clima.css' in html
+          assert '../assets/meteo-clima.js' in html
+          print('Climate page data contract OK: 7 municipalities x 76 complete years')
+          PY
