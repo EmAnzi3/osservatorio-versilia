@@ -45,7 +45,7 @@ jobs:
           python scripts/era5_land_minmax_history.py \
             --start-year 1995 \
             --end-year 2025 \
-            --chunk-years 5 \
+            --chunk-years 1 \
             --output reports/runtime/minmax/era5-land-minmax-annual-raw.csv
       - name: Calibrate and build site JSON
         run: |
