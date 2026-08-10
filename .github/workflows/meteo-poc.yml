@@ -6,6 +6,7 @@ on:
       - "scripts/meteo_poc.py"
       - "scripts/lamma_inventory.py"
       - "scripts/lamma_sample.py"
+      - "scripts/lamma_precip_year.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -34,6 +35,7 @@ jobs:
           python -m py_compile scripts/meteo_poc.py
           python -m py_compile scripts/lamma_inventory.py
           python -m py_compile scripts/lamma_sample.py
+          python -m py_compile scripts/lamma_precip_year.py
 
       - name: Build station benchmark
         run: python scripts/meteo_poc.py --output-dir reports/runtime/meteo-poc
@@ -41,8 +43,11 @@ jobs:
       - name: Discover LaMMA climate resources
         run: python scripts/lamma_inventory.py --output reports/runtime/meteo-poc/lamma-inventory.json
 
-      - name: Sample LaMMA climatology rasters
-        run: python scripts/lamma_sample.py --output reports/runtime/meteo-poc/lamma-samples.json
+      - name: Sample LaMMA temperature climatology
+        run: python scripts/lamma_sample.py --output reports/runtime/meteo-poc/lamma-temperature-samples.json
+
+      - name: Aggregate LaMMA daily precipitation 2015
+        run: python scripts/lamma_precip_year.py --output reports/runtime/meteo-poc/lamma-precip-2015.json
 
       - name: Upload POC outputs
         if: always()
