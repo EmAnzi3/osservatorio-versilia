@@ -37,6 +37,9 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
+      - name: Include Percorsi Versilia
+        run: python scripts/copy_percorsi_dist.py
+
       - name: Run regression tests
         run: python scripts/test_static.py
 
