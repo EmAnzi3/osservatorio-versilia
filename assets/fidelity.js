@@ -1,6 +1,7 @@
 (() => {
   'use strict';
 
+  const SCRIPT_URL = document.currentScript?.src || location.href;
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const numberFormatters = new Map();
 
@@ -174,4 +175,40 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
   installMobileThemeJump();
   scheduleEnhancement();
+
+  /* app.js imports the application module before fidelity.js, but the module
+     completes its data fetch/render asynchronously. Wait for a real rendered
+     page target before bootstrapping the climate layer. This is deliberately a
+     bounded startup poll, not a DOM observer: after at most 4 seconds it stops. */
+  function loadClimateV3WhenReady(attempt = 0) {
+    if (document.querySelector('script[data-ov-climate-v2]')) return;
+    const page = document.body.dataset.page;
+    const ready = page === 'town'
+      ? Boolean(document.querySelector('.town-profile .history-panel'))
+      : page === 'compare'
+        ? Boolean(document.getElementById('compare-bars'))
+        : Boolean(document.querySelector('#app main'));
+
+    if (!ready && attempt < 40) {
+      window.setTimeout(() => loadClimateV3WhenReady(attempt + 1), 100);
+      return;
+    }
+
+    const climateScript = document.createElement('script');
+    climateScript.src = new URL('./climate-ux-v3.js?v=20260810-1', SCRIPT_URL).href;
+    climateScript.async = false;
+    /* Keep the existing marker so the prerender cleanup remains generic for
+       the runtime-only climate layer and does not serialize it into HTML. */
+    climateScript.dataset.ovClimateV2 = '1';
+    climateScript.addEventListener('load', () => {
+      const benchmarkScript = document.createElement('script');
+      benchmarkScript.src = new URL('./climate-town-benchmark.js?v=20260810-1', SCRIPT_URL).href;
+      benchmarkScript.async = false;
+      benchmarkScript.dataset.ovClimateV2 = '1';
+      document.head.appendChild(benchmarkScript);
+    }, { once: true });
+    document.head.appendChild(climateScript);
+  }
+
+  loadClimateV3WhenReady();
 })();

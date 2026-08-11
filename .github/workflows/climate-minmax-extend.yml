@@ -1,0 +1,110 @@
+name: Extend climate Tmin Tmax
+
+on:
+  pull_request:
+    paths:
+      - "scripts/era5_land_minmax_history.py"
+      - "scripts/climate_extend_minmax_site.py"
+      - "scripts/sir_validate_minmax.py"
+      - "scripts/climate_validate_minmax_sir.py"
+      - "data/meteo-clima-minmax-poc.json"
+      - "data/meteo-clima-minmax-lamma-1995-2015.json"
+      - ".github/workflows/climate-minmax-extend.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: climate-minmax-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-calibrate-minmax:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      CDS_API_TOKEN: ${{ secrets.CDS_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check
+          "cdsapi>=0.7.7" geopandas xarray "zarr<3" fsspec aiohttp dask pandas numpy beautifulsoup4
+      - name: Compile Tmin Tmax pipelines
+        run: |
+          python -m py_compile scripts/era5_land_minmax_history.py
+          python -m py_compile scripts/climate_extend_minmax_site.py
+          python -m py_compile scripts/sir_validate_minmax.py
+          python -m py_compile scripts/climate_validate_minmax_sir.py
+      - name: Require CDS credential
+        run: |
+          if [[ -z "$CDS_API_TOKEN" ]]; then
+            echo "CDS_API_TOKEN is not configured" >&2
+            exit 2
+          fi
+      - name: Read ERA5-Land ARCO and build annual Tmin Tmax
+        run: |
+          mkdir -p reports/runtime/minmax
+          python scripts/era5_land_minmax_history.py \
+            --start-year 1975 \
+            --end-year 2025 \
+            --output reports/runtime/minmax/era5-land-minmax-annual-raw.csv
+      - name: Validate raw ERA5-Land series
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          path = "reports/runtime/minmax/era5-land-minmax-annual-raw.csv"
+          frame = pd.read_csv(path)
+          frame["year"] = frame["year"].astype(int)
+          expected_towns = {
+              "Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta",
+              "Seravezza", "Stazzema", "Viareggio"
+          }
+          if set(frame["municipality"]) != expected_towns:
+              raise SystemExit("Unexpected municipality set in ERA5-Land Tmin/Tmax output")
+          if len(frame) != 7 * 51:
+              raise SystemExit(f"Expected 357 municipality-years, got {len(frame)}")
+          for town in expected_towns:
+              years = frame.loc[frame["municipality"] == town, "year"].sort_values().tolist()
+              if years != list(range(1975, 2026)):
+                  raise SystemExit(f"{town}: incomplete coverage {years[:3]}...{years[-3:]}")
+          if frame[["tmin_mean_c", "tmax_mean_c"]].isna().any().any():
+              raise SystemExit("Missing Tmin/Tmax values in raw ERA5-Land output")
+          if not (frame["tmin_mean_c"] < frame["tmax_mean_c"]).all():
+              raise SystemExit("Found Tmin >= Tmax in raw ERA5-Land output")
+          print(f"Validated {len(frame)} raw municipality-years")
+          PY
+      - name: Extract independent SIR Tmin Tmax observations
+        run: |
+          python scripts/sir_validate_minmax.py \
+            --workers 2 \
+            --output-dir reports/runtime/minmax/sir
+      - name: Compare LaMMA and ERA5-Land trends against SIR
+        run: |
+          python scripts/climate_validate_minmax_sir.py \
+            --sir reports/runtime/minmax/sir/sir-minmax-observed.csv \
+            --lamma-json data/meteo-clima-minmax-lamma-1995-2015.json \
+            --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
+            --output reports/runtime/minmax/sir-minmax-comparison.json
+      - name: Build SIR-validated homogeneous series
+        run: |
+          python scripts/climate_extend_minmax_site.py \
+            --lamma-json data/meteo-clima-minmax-lamma-1995-2015.json \
+            --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
+            --sir-comparison reports/runtime/minmax/sir-minmax-comparison.json \
+            --output reports/runtime/minmax/meteo-clima-minmax-poc.json
+      - name: Print calibration diagnostics
+        run: cat reports/runtime/minmax/meteo-clima-minmax-poc.diagnostics.json
+      - name: Upload extended Tmin Tmax outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-minmax-1975-2025
+          path: reports/runtime/minmax/
+          retention-days: 30

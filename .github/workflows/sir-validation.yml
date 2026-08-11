@@ -1,0 +1,32 @@
+name: SIR climate validation
+
+on:
+  pull_request:
+    paths:
+      - "scripts/sir_probe.py"
+      - "scripts/sir_validate_climate.py"
+      - ".github/workflows/sir-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install parser dependency
+        run: python -m pip install --disable-pip-version-check beautifulsoup4
+      - name: Extract annual observed SIR series
+        run: python scripts/sir_validate_climate.py --workers 2
+      - name: Upload SIR validation output
+        uses: actions/upload-artifact@v4
+        with:
+          name: sir-climate-validation
+          path: reports/runtime/sir-validation/
+          retention-days: 30
