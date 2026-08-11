@@ -7,7 +7,7 @@
   <title>Meteo e clima · Ambiente · Osservatorio Versilia</title>
   <meta name="description" content="Bozza della sezione Ambiente dedicata ai trend comunali di temperatura e precipitazioni in Versilia dal 1950.">
   <meta property="og:title" content="Meteo e clima · Ambiente · Osservatorio Versilia">
-  <meta property="og:description" content="Trend territoriali comunali di temperatura e precipitazioni in Versilia dal 1950, con dettaglio LaMMA delle temperature minime e massime 1995–2015.">
+  <meta property="og:description" content="Trend territoriali comunali di temperatura e precipitazioni in Versilia dal 1950, con temperature minime e massime ricostruite fino al 2025.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
   <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
@@ -23,14 +23,14 @@
     "@context": "https://schema.org",
     "@type": "Dataset",
     "name": "Serie climatiche comunali della Versilia 1950–2025",
-    "description": "Serie annuali territoriali comunali di temperatura media e precipitazioni, con approfondimento sulle temperature minime e massime LaMMA 1995–2015.",
+    "description": "Serie annuali territoriali comunali di temperatura media e precipitazioni, con approfondimento sulle temperature minime e massime ricostruite 1995–2025.",
     "url": "https://osservatorioversilia.it/confronta/meteo-clima/",
     "inLanguage": "it-IT",
     "isAccessibleForFree": true,
     "temporalCoverage": "1950/2025",
     "spatialCoverage": {"@type": "Place", "name": "Versilia, Toscana, Italia"},
     "creator": {"@type": "Person", "name": "Emanuele Anzilotti"},
-    "variableMeasured": ["Temperatura media annua", "Precipitazione annua", "Temperatura minima media annua 1995–2015", "Temperatura massima media annua 1995–2015"]
+    "variableMeasured": ["Temperatura media annua", "Precipitazione annua", "Temperatura minima media annua 1995–2025", "Temperatura massima media annua 1995–2025"]
   }
   </script>
 </head>
@@ -114,12 +114,12 @@
 
     <section class="climate-minmax page-width" id="temperature-min-max" hidden aria-labelledby="climate-minmax-title">
       <div class="section-heading compact">
-        <div><span class="overline">Approfondimento LaMMA · 1995–2015</span><h2 id="climate-minmax-title">Temperature minime e massime</h2></div>
-        <p>Questa serie è più corta: mostra la media annua delle minime e delle massime giornaliere territoriali. Non viene estesa oltre il periodo in cui il dato è già omogeneo e verificato.</p>
+        <div><span class="overline">Approfondimento · 1995–2025</span><h2 id="climate-minmax-title">Temperature minime e massime</h2></div>
+        <p>Media annua delle minime e delle massime giornaliere territoriali. LaMMA resta la fonte primaria fino al 2015; dal 2016 la serie prosegue con ERA5-Land, raccordato sul livello 2011–2015 e con evoluzione temporale verificata contro osservazioni SIR indipendenti.</p>
       </div>
       <div class="climate-minmax-summary" id="climate-minmax-summary"></div>
       <article class="climate-chart-card climate-minmax-card">
-        <div class="climate-chart-heading"><div><span class="overline">Serie interpolata · 1995–2015</span><h3>Minime e massime medie annue</h3></div><div class="climate-chart-unit">°C</div></div>
+        <div class="climate-chart-heading"><div><span class="overline">Serie ricostruita · 1995–2025</span><h3>Minime e massime medie annue</h3></div><div class="climate-chart-unit">°C</div></div>
         <div class="climate-chart-wrap climate-minmax-chart" id="climate-minmax-chart"></div>
         <div class="climate-chart-legend"><span><i class="legend-min"></i>Media delle minime giornaliere</span><span><i class="legend-max"></i>Media delle massime giornaliere</span></div>
       </article>
@@ -143,7 +143,7 @@
         <div class="climate-disclosure-body">
           <p><strong>Trend di 50 anni.</strong> Regressione lineare sui valori annuali dal 1975 al 2025; la variazione mostrata è la differenza tra i valori stimati dalla retta ai due estremi. È una sintesi descrittiva, non un test di significatività statistica.</p>
           <p><strong>Temperatura.</strong> <span id="method-temperature"></span></p>
-          <p><strong>Minime e massime.</strong> Dati LaMMA 1995–2015 su raster giornalieri 1 km, aggregati con la stessa pesatura frazionaria comunale. Restano separati dalla serie lunga finché non sarà disponibile e validata un'estensione omogenea ERA5-Land.</p>
+          <p><strong>Minime e massime.</strong> LaMMA 1995–2015 su raster giornalieri 1 km con pesatura frazionaria comunale; ERA5-Land ARCO 2016–2025 con minime e massime giornaliere calcolate dai 24 campioni orari UTC. Il livello ERA5-Land è raccordato sulla media 2011–2015; il suo andamento temporale è mantenuto perché il confronto indipendente con SIR risulta migliore del trend divergente LaMMA nel campione rigorosamente validato.</p>
           <p><strong>Precipitazioni.</strong> <span id="method-precipitation"></span></p>
           <p><strong>Fonti ufficiali.</strong> <a href="https://dati.lamma.toscana.it/" target="_blank" rel="noreferrer">Consorzio LaMMA ↗</a> · <a href="https://cds.climate.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus Climate Data Store ↗</a> · <a href="https://www.sir.toscana.it/" target="_blank" rel="noreferrer">SIR Toscana ↗</a>.</p>
           <p class="climate-caution"><strong>Importante:</strong> la serie non va descritta come “dato osservato nel Comune”. Il tratto LaMMA è interpolato su griglia; ERA5-Land è una rianalisi calibrata. Le stazioni SIR sono usate come controllo indipendente.</p>
@@ -159,6 +159,6 @@
   </footer>
 
   <div class="climate-tooltip" id="climate-tooltip" hidden></div>
-  <script src="../../assets/meteo-clima.js?v=20260810-2" defer></script>
+  <script src="../../assets/meteo-clima.js?v=20260811-1" defer></script>
 </body>
 </html>
