@@ -35,27 +35,49 @@
         color:var(--muted);font-size:9px;font-weight:700
       }
       .ov-climate-current-legend span{display:inline-flex;align-items:center;gap:7px}
-      .ov-climate-current-legend .ov-legend-dot{width:9px;height:9px;border-radius:50%;background:var(--theme-color,#52785c)}
-      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
-      .ov-climate-current-list.uses-versilia-marker{gap:9px}
-      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-row{min-height:45px}
-      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track{
-        position:relative;height:20px;border-radius:0;background:transparent;overflow:visible
+      .ov-climate-current-legend .ov-legend-dot{
+        width:9px;height:9px;border-radius:50%;background:var(--surface,#fffaf1);
+        border:2px solid var(--theme-color,#52785c)
       }
-      .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::before{
-        content:'';position:absolute;left:0;right:0;top:9px;height:2px;border-radius:999px;
-        background:linear-gradient(to right,
-          color-mix(in srgb,var(--theme-color,#52785c) 52%,white) 0 var(--ov-value-position),
-          color-mix(in srgb,var(--ink) 8%,transparent) var(--ov-value-position) 100%)
+      .ov-climate-current-legend .ov-legend-mean{width:2px;height:16px;background:#607b88}
+      .ov-climate-current-list{
+        display:grid;gap:11px
+      }
+      .ov-climate-current-list .ov-climate-current-row{
+        border-radius:8px;grid-template-columns:24px minmax(110px,1.1fr) minmax(150px,3fr) minmax(70px,auto);
+        align-items:center;gap:12px;min-height:54px;padding:0;display:grid;position:relative;
+        color:inherit;text-decoration:none;transition:background .15s
+      }
+      .ov-climate-current-list .ov-climate-current-row:hover,
+      .ov-climate-current-list .ov-climate-current-row.selected{background:var(--blue-soft)}
+      .ov-climate-current-list .ov-climate-current-row .town{
+        grid-column:2;font-size:13px;font-weight:690
+      }
+      .ov-climate-current-list .ov-climate-current-row strong{
+        grid-column:4;font-family:var(--font-geist-mono),monospace;text-align:right;
+        white-space:nowrap;font-size:12px
+      }
+      .ov-climate-current-list .ov-climate-current-track{
+        grid-column:3;position:relative;height:9px;border-radius:999px;background:#e4e9e7;
+        overflow:visible
       }
       .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track::after{
-        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:1px;width:2px;height:18px;
+        content:'';position:absolute;z-index:1;left:var(--ov-mean-position);top:-5px;width:2px;height:19px;
         background:#607b88;transform:translateX(-1px)
       }
       .ov-climate-current-list.uses-versilia-marker .ov-climate-current-track>i{
-        z-index:2;top:10px;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;
-        background:var(--theme-color,#52785c);border:2px solid var(--surface,#fffaf1);
-        box-shadow:0 1px 5px color-mix(in srgb,var(--ink) 22%,transparent)
+        position:absolute;z-index:2;top:50%;left:var(--ov-value-position)!important;
+        width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+        background:var(--surface,#fffaf1);border:3px solid var(--theme-color,#52785c);
+        box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 18%,transparent)
+      }
+      .ov-climate-current-list .bar-hover-label{display:none}
+      @media(max-width:700px){
+        .ov-climate-current-list .ov-climate-current-row{
+          grid-template-columns:18px minmax(82px,1fr) minmax(70px,1.4fr) auto;gap:7px
+        }
+        .ov-climate-current-list .ov-climate-current-row .town{font-size:11px}
+        .ov-climate-current-list .ov-climate-current-row strong{font-size:10px}
       }
     `;
     document.head.appendChild(style);
@@ -91,7 +113,10 @@
           if (!track) return;
           track.style.setProperty('--ov-value-position', `${positions[index].toFixed(4)}%`);
           track.style.setProperty('--ov-mean-position', `${meanPosition.toFixed(4)}%`);
-          track.setAttribute('aria-label', `Valore comunale; media Versilia al ${meanPosition.toFixed(1)}% della scala visualizzata`);
+          track.setAttribute(
+            'aria-label',
+            `Valore comunale; media semplice della Versilia al ${meanPosition.toFixed(1)}% della scala visualizzata`
+          );
         });
       }
       const parent = list.parentElement;
@@ -130,7 +155,10 @@
     const direction = delta > 0 ? 'sopra' : delta < 0 ? 'sotto' : 'in linea con';
     const fingerprint = `${key}|${townSlug}|${cfg.latestYear}|${delta.toFixed(6)}|${average.toFixed(6)}`;
 
-    if (card.dataset.ovClimateVersilia === fingerprint && card.textContent.toLocaleLowerCase('it').includes('rispetto alla versilia')) {
+    if (
+      card.dataset.ovClimateVersilia === fingerprint
+      && card.textContent.toLocaleLowerCase('it').includes('rispetto alla versilia')
+    ) {
       card.hidden = false;
       return;
     }
@@ -163,6 +191,8 @@
   }).catch(error => console.warn('Confronto climatico con la Versilia non disponibile', error));
 
   document.addEventListener('click', event => {
-    if (event.target.closest('[data-metric],[data-profile-theme],[data-ov-climate-view]')) window.setTimeout(schedule, 0);
+    if (event.target.closest('[data-metric],[data-profile-theme],[data-ov-climate-view]')) {
+      window.setTimeout(schedule, 0);
+    }
   }, true);
 })();
