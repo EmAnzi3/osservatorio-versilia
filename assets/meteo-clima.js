@@ -194,11 +194,11 @@
       return;
     }
     minmaxSection.hidden = false;
-    const minTrend = linearTrend(series.years, series.tmin, 1995, 2025);
-    const maxTrend = linearTrend(series.years, series.tmax, 1995, 2025);
+    const minTrend = linearTrend(series.years, series.tmin, 1975, 2025);
+    const maxTrend = linearTrend(series.years, series.tmax, 1975, 2025);
     minmaxSummaryRoot.innerHTML = `
-      <article><span>Minime · trend 1995–2025</span><strong>${signed(minTrend.delta, 2)} °C</strong><small>Media annua delle temperature minime giornaliere territoriali.</small></article>
-      <article><span>Massime · trend 1995–2025</span><strong>${signed(maxTrend.delta, 2)} °C</strong><small>Media annua delle temperature massime giornaliere territoriali.</small></article>`;
+      <article><span>Minime · trend 1975–2025</span><strong>${signed(minTrend.delta, 2)} °C</strong><small>Media annua delle temperature minime giornaliere territoriali.</small></article>
+      <article><span>Massime · trend 1975–2025</span><strong>${signed(maxTrend.delta, 2)} °C</strong><small>Media annua delle temperature massime giornaliere territoriali.</small></article>`;
 
     const years = series.years;
     const all = [...series.tmin, ...series.tmax];
@@ -211,9 +211,9 @@
     const y = value => top + (yMax - value) / (yMax - yMin) * plotH;
     const ticks = Array.from({ length: 4 }, (_, i) => yMin + (yMax - yMin) * i / 3);
     const grids = ticks.map(value => `<line class="climate-grid-line" x1="${left}" x2="${width - right}" y1="${y(value)}" y2="${y(value)}"></line><text class="climate-axis-label" x="${left - 10}" y="${y(value) + 3}" text-anchor="end">${fmt(value, 1)}</text>`).join('');
-    const xTicks = [1995, 2000, 2005, 2010, 2015, 2020, 2025].map(year => `<text class="climate-axis-label" x="${x(year)}" y="${height - 14}" text-anchor="middle">${year}</text>`).join('');
-    const handover = `<line class="climate-trend-boundary" x1="${x(2015)}" x2="${x(2015)}" y1="${top}" y2="${height - bottom}"></line>`;
-    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1995 al 2025">${grids}${handover}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}${series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}</svg>`;
+    const xTicks = [1975, 1985, 1995, 2005, 2015, 2025].map(year => `<text class="climate-axis-label" x="${x(year)}" y="${height - 14}" text-anchor="middle">${year}</text>`).join('');
+    const sourceBoundaries = [1995, 2015].map(year => `<line class="climate-trend-boundary" x1="${x(year)}" x2="${x(year)}" y1="${top}" y2="${height - bottom}"></line>`).join('');
+    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1975 al 2025">${grids}${sourceBoundaries}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}${series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}</svg>`;
   }
 
   function renderMethod() {
