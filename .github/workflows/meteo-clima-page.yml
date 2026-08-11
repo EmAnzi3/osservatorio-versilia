@@ -59,7 +59,14 @@ jobs:
 
           minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
           assert minmax['coverage'] == {'from': 1975, 'to': 2025}
-          assert minmax['version'] == 'poc-4'
+          assert minmax['version'] == 'poc-5'
+          assert minmax['sourcePeriods'] == [{
+              'from': 1975,
+              'to': 2025,
+              'class': 'CALIBRATED_REANALYSIS',
+              'detail': 'Copernicus ERA5-Land ARCO orario; Tmin/Tmax giornaliere calcolate localmente dalla temperatura a 2 m; offset di livello comunale 2011-2015'
+          }]
+          assert minmax['calibrationReference']['role'].startswith('level reference only')
           assert set(minmax['municipalities']) == expected
           expected_minmax_years = list(range(1975, 2026))
           for name, series in minmax['municipalities'].items():
@@ -69,7 +76,9 @@ jobs:
               assert series['latestComplete']['tmin'] == series['tmin'][-1], name
               assert series['latestComplete']['tmax'] == series['tmax'][-1], name
               assert series['calibration']['period'] == [2011, 2015], name
+              assert series['calibration']['reference'] == 'LaMMA 1 km', name
               assert series['calibration']['independent_temporal_validation'] == 'SIR Toscana', name
+              assert series['calibration']['strategy'].startswith('continuous ERA5-Land'), name
 
           environment = Path('confronta/ambiente/index.html').read_text(encoding='utf-8')
           assert 'climate-environment-entry' not in environment
@@ -118,5 +127,5 @@ jobs:
           assert 'Temperatura minima media annua 1975–2025' in html
           assert 'Temperatura massima media annua 1975–2025' in html
           assert 'temperature-min-max' in html
-          print('Climate draft OK: native Ambiente accordion + Tmin/Tmax 1975–2025 + 50-year trends + town metrics + no rankings + conditional risk detail')
+          print('Climate draft OK: native Ambiente accordion + homogeneous Tmin/Tmax 1975–2025 + 50-year trends + town metrics + no rankings + conditional risk detail')
           PY
