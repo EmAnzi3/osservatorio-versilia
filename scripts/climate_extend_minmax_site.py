@@ -108,7 +108,7 @@ def load_sir_gate(path: str) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--lamma-json", default="data/meteo-clima-minmax-poc.json")
+    ap.add_argument("--lamma-json", default="data/meteo-clima-minmax-lamma-1995-2015.json")
     ap.add_argument("--era5", required=True)
     ap.add_argument("--sir-comparison", required=True)
     ap.add_argument("--output", required=True)
