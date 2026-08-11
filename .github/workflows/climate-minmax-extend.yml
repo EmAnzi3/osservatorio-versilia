@@ -8,6 +8,7 @@ on:
       - "scripts/sir_validate_minmax.py"
       - "scripts/climate_validate_minmax_sir.py"
       - "data/meteo-clima-minmax-poc.json"
+      - "data/meteo-clima-minmax-lamma-1995-2015.json"
       - ".github/workflows/climate-minmax-extend.yml"
   workflow_dispatch:
 
@@ -88,13 +89,13 @@ jobs:
         run: |
           python scripts/climate_validate_minmax_sir.py \
             --sir reports/runtime/minmax/sir/sir-minmax-observed.csv \
-            --lamma-json data/meteo-clima-minmax-poc.json \
+            --lamma-json data/meteo-clima-minmax-lamma-1995-2015.json \
             --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
             --output reports/runtime/minmax/sir-minmax-comparison.json
-      - name: Build SIR-validated handover calibration
+      - name: Build SIR-validated homogeneous series
         run: |
           python scripts/climate_extend_minmax_site.py \
-            --lamma-json data/meteo-clima-minmax-poc.json \
+            --lamma-json data/meteo-clima-minmax-lamma-1995-2015.json \
             --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
             --sir-comparison reports/runtime/minmax/sir-minmax-comparison.json \
             --output reports/runtime/minmax/meteo-clima-minmax-poc.json
