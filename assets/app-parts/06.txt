@@ -154,7 +154,7 @@
       const identity = climateRowIdentity(data, townName);
       if (!identity) return null;
       const values = series[config.seriesKey];
-      const trend = linearClimateTrend(series.years, values, 1995, 2025);
+      const trend = linearClimateTrend(series.years, values, 1975, 2025);
       if (!trend) return null;
       return {
         ...identity,
@@ -174,7 +174,7 @@
         shortLabel: config.shortLabel,
         description: config.description,
         unit: 'climateCelsius',
-        year: '1995–2025',
+        year: '1975–2025',
         source: 'LaMMA + Copernicus ERA5-Land',
         polarity: 'neutral',
         climateDetail: config.detail
@@ -184,14 +184,14 @@
       aggregate: {
         value: meanClimateValue(rows),
         label: 'Media semplice dei 7 comuni',
-        note: 'Media delle variazioni stimate dalle rette di tendenza comunali 1995–2025; non è una classifica.'
+        note: 'Media delle variazioni stimate dalle rette di tendenza comunali 1975–2025; non è una classifica.'
       },
       normalizedAggregate: null,
       method: {
         type: 'Ricostruzione territoriale validata',
-        formula: 'Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1995–2025.',
-        caveat: '1995–2015: LaMMA 1 km. 2016–2025: ERA5-Land ARCO orario, con Tmin/Tmax calcolate da 24 campioni UTC e livello raccordato sulla media 2011–2015. Il trend ERA5-Land nel periodo comune è stato verificato contro osservazioni SIR indipendenti e viene preservato oltre il 2015.',
-        coverage: '7/7 · 1995–2025'
+        formula: 'Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.',
+        caveat: '1975–1994 e 2016–2025: ERA5-Land ARCO orario, con Tmin/Tmax calcolate da 24 campioni UTC e livello raccordato sulla media 2011–2015. 1995–2015: LaMMA 1 km. Il trend ERA5-Land nel periodo comune è stato verificato contro osservazioni SIR indipendenti e viene preservato nei due tratti di rianalisi.',
+        coverage: '7/7 · 1975–2025'
       }
     };
   }
@@ -216,11 +216,11 @@
       }),
       climateTminTrend: buildMinMaxClimateMetric(data, minmax, {
         key: 'climateTminTrend', seriesKey: 'tmin', label: 'Andamento delle temperature minime', shortLabel: 'Temperature minime',
-        description: 'Storico 1995–2025 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza.', detail: 'tmin'
+        description: 'Storico 1975–2025 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza di 50 anni.', detail: 'tmin'
       }),
       climateTmaxTrend: buildMinMaxClimateMetric(data, minmax, {
         key: 'climateTmaxTrend', seriesKey: 'tmax', label: 'Andamento delle temperature massime', shortLabel: 'Temperature massime',
-        description: 'Storico 1995–2025 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza.', detail: 'tmax'
+        description: 'Storico 1975–2025 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza di 50 anni.', detail: 'tmax'
       })
     };
 
