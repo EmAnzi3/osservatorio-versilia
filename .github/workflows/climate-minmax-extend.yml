@@ -91,11 +91,12 @@ jobs:
             --lamma-json data/meteo-clima-minmax-poc.json \
             --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
             --output reports/runtime/minmax/sir-minmax-comparison.json
-      - name: Calibrate and build candidate site JSON
+      - name: Build SIR-validated handover calibration
         run: |
           python scripts/climate_extend_minmax_site.py \
             --lamma-json data/meteo-clima-minmax-poc.json \
             --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
+            --sir-comparison reports/runtime/minmax/sir-minmax-comparison.json \
             --output reports/runtime/minmax/meteo-clima-minmax-poc.json
       - name: Print calibration diagnostics
         run: cat reports/runtime/minmax/meteo-clima-minmax-poc.diagnostics.json
