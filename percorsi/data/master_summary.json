@@ -1,0 +1,39 @@
+{
+  "version": "0.8.8",
+  "master_total": 93,
+  "public_total": 41,
+  "plausible_total": 4,
+  "review_total": 48,
+  "public_total_km": 485.8,
+  "public_versilia_km": 342.7,
+  "by_quality": {
+    "A0": 30,
+    "B1": 11
+  },
+  "master_by_quality": {
+    "A0": 30,
+    "C": 38,
+    "B2": 4,
+    "B1": 11,
+    "ARCH": 8,
+    "A_REF": 2
+  },
+  "by_mode": {
+    "trekking": 31,
+    "mtb": 1,
+    "bicycle": 7,
+    "cammino": 2
+  },
+  "by_municipality": {
+    "Stazzema": 25,
+    "Camaiore": 11,
+    "Seravezza": 15,
+    "Pietrasanta": 6,
+    "Massarosa": 5,
+    "Viareggio": 4,
+    "Forte dei Marmi": 2
+  },
+  "public_zero_length_count": 0,
+  "cammini_public_count": 2,
+  "warnings": []
+}
