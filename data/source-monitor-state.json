@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-08-06T21:16:48+00:00",
+  "checkedAt": "2026-08-11T15:18:29+00:00",
   "mode": "live",
   "sources": {
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole": {
@@ -20,6 +20,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
       ]
     },
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti": {
@@ -41,6 +47,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
       ]
     },
     "https://demo.istat.it/": {
@@ -61,6 +73,92 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-demography-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://esploradati.istat.it/databrowser/": {
+      "url": "https://esploradati.istat.it/databrowser/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://esploradati.istat.it/databrowser/",
+      "contentType": "text/html",
+      "contentLength": "5287",
+      "etag": "\"a2c8bf8696d0dc1:0:dtagent10341260622154106uJGk\"",
+      "lastModified": "Mon, 20 Apr 2026 07:23:02 GMT",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "employeesPerLocalUnit",
+        "localEmployees",
+        "localEmployeesChange",
+        "localUnitsChange"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "istat-business-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html": {
+      "url": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+      "contentType": "text/html",
+      "contentLength": "4527",
+      "etag": "\"b7e73fda7513dd1:0\"",
+      "lastModified": "Tue, 14 Jul 2026 09:47:58 GMT",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "ftthCoverage20m",
+        "ftthCoverageDesi"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "agcom-quarterly"
+      ],
+      "frequencies": [
+        "quarterly"
+      ]
+    },
+    "https://geo.agcom.it/reportistica/ai/index.html": {
+      "url": "https://geo.agcom.it/reportistica/ai/index.html",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://geo.agcom.it/reportistica/ai/index.html",
+      "contentType": "text/html",
+      "contentLength": "4653",
+      "etag": "\"ccf157526013dd1:0\"",
+      "lastModified": "Tue, 14 Jul 2026 07:13:51 GMT",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "ftthReachedHouseholds",
+        "ftthUnreachedHouseholds"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "agcom-quarterly"
+      ],
+      "frequencies": [
+        "quarterly"
       ]
     },
     "https://openbdap.rgs.mef.gov.it/it/FET/Analizza": {
@@ -96,6 +194,14 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "openbdap-annual",
+        "openbdap-continuous"
+      ],
+      "frequencies": [
+        "annual",
+        "continuous"
       ]
     },
     "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": {
@@ -115,6 +221,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "runts-continuous"
+      ],
+      "frequencies": [
+        "continuous"
       ]
     },
     "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti": {
@@ -142,6 +254,13 @@
       "roles": [
         "benchmark",
         "primary"
+      ],
+      "profileIds": [
+        "ars-toscana-mixed"
+      ],
+      "frequencies": [
+        "annual_or_irregular",
+        "irregular"
       ]
     },
     "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune": {
@@ -163,6 +282,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "ispra-environment-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.dati.salute.gov.it/": {
@@ -182,6 +307,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "health-ministry-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": {
@@ -203,6 +334,12 @@
       "roles": [
         "benchmark",
         "primary"
+      ],
+      "profileIds": [
+        "ispra-environment-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali": {
@@ -223,6 +360,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "ispra-hazards-irregular"
+      ],
+      "frequencies": [
+        "irregular"
       ]
     },
     "https://www.istat.it/comunicato-stampa/censimento-e-dinamica-della-popolazione-anno-2024/": {
@@ -242,6 +385,12 @@
       ],
       "roles": [
         "benchmark"
+      ],
+      "profileIds": [
+        "istat-census-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/": {
@@ -262,6 +411,12 @@
       "roles": [
         "benchmark",
         "primary"
+      ],
+      "profileIds": [
+        "istat-road-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/": {
@@ -282,6 +437,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "aci-istat-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/": {
@@ -301,6 +462,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-tourism-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/": {
@@ -326,6 +493,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-census-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/": {
@@ -349,6 +522,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-commuting-irregular"
+      ],
+      "frequencies": [
+        "census_or_irregular"
       ]
     },
     "https://www.istat.it/scheda-qualita/registro-statistico-delle-unita-locali-asia-ul/": {
@@ -369,6 +548,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-business-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/": {
@@ -400,6 +585,14 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "istat-census-annual",
+        "istat-commuting-irregular"
+      ],
+      "frequencies": [
+        "annual",
+        "census_or_irregular"
       ]
     },
     "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/": {
@@ -423,6 +616,12 @@
       "roles": [
         "benchmark",
         "primary"
+      ],
+      "profileIds": [
+        "istat-business-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.istat.it/wp-content/uploads/2025/11/02-Istruzione-e-formazione.pdf": {
@@ -442,6 +641,12 @@
       ],
       "roles": [
         "benchmark"
+      ],
+      "profileIds": [
+        "istat-census-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": {
@@ -462,6 +667,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "italia-domani-periodic"
+      ],
+      "frequencies": [
+        "periodic"
       ]
     },
     "https://www.piattaformaunicanazionale.it/idr": {
@@ -481,6 +692,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "pun-continuous"
+      ],
+      "frequencies": [
+        "continuous"
       ]
     },
     "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0": {
@@ -507,6 +724,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-tourism-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": {
@@ -531,6 +754,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-indicators-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie": {
@@ -550,6 +779,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "health-ministry-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     },
     "https://www.siope.it/": {
@@ -571,13 +806,19 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "siope-monthly"
+      ],
+      "frequencies": [
+        "monthly"
       ]
     },
     "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": {
       "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "ok": true,
       "status": 200,
-      "finalUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?t=1786051037&tree=2013",
+      "finalUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?t=1786461547&tree=2013",
       "contentType": "text/html",
       "contentLength": null,
       "etag": "",
@@ -591,6 +832,12 @@
       ],
       "roles": [
         "primary"
+      ],
+      "profileIds": [
+        "mef-irpef-annual"
+      ],
+      "frequencies": [
+        "annual"
       ]
     }
   }
