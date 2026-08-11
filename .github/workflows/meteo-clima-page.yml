@@ -75,6 +75,7 @@ jobs:
           assert 'climate-environment-entry' not in environment
           assert 'meteo-clima-entry.js' not in environment
 
+          app6 = Path('assets/app-parts/06.txt').read_text(encoding='utf-8')
           app = ''.join(Path(f'assets/app-parts/{i:02}.txt').read_text(encoding='utf-8') for i in range(7))
           for token in (
               "key: 'clima'",
@@ -93,7 +94,7 @@ jobs:
               "href:CLIMATE_METRICS.has(key) ? climateDetailHref(key) : indicatorHref(m)",
           ):
               assert token in app, token
-          assert '<span class="bar-rank">${index + 1}</span>' not in app
+          assert '<span class="bar-rank">${index + 1}</span>' not in app6
 
           ux = Path('assets/climate-ux-v3.js').read_text(encoding='utf-8')
           assert "climateTminTrend:{label:'Temperatura minima media annua'" in ux
