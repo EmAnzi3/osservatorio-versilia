@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Percorsi Versilia · Osservatorio Versilia</title>
+<meta name="description" content="Mappa dei sentieri, cammini e percorsi ciclabili della Versilia con filtri e download GPX, KML e GeoJSON.">
+<link rel="icon" href="../favicon.svg" sizes="any">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynHTCQHGwB5lGVE2R0F7J/r39QY0=" crossorigin="">
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+<header class="ovbar"><a class="ovbrand" href="../"><span class="ovmark">O</span><span>Osservatorio Versilia</span></a><div class="ovcrumb">Mobilità e infrastrutture · Percorsi e mobilità lenta</div><a class="ovback" href="../confronta/mobilita/">Torna a Mobilità</a></header>
+<div class="app">
+  <aside class="sidebar">
+    <div class="head">
+      <div class="brand">
+        <div><h1>Percorsi Versilia</h1><div class="kicker">Sentieri, cammini e percorsi in bici — solo tracce verificate o corroborate</div></div>
+        <a class="method" href="metodo.html">Metodo e fonti</a>
+      </div>
+      <div class="summary">
+        <div class="stat"><b id="totalRoutes">—</b><span>percorsi</span></div>
+        <div class="stat"><b id="totalKm">—</b><span>km nei 7 Comuni</span></div>
+        <div class="stat"><b id="totalComuni">7</b><span>comuni</span></div>
+      </div>
+      <div class="topDownloads">
+        <a id="allGpx" href="#">Scarica GPX complessivo</a>
+        <a id="allKml" href="#">KML</a>
+        <a id="allGeo" href="#">GeoJSON</a>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="search"><input id="search" placeholder="Cerca un percorso, un comune…"></div>
+      <div class="chips" id="chips">
+        <button class="chip active" data-mode="all">Tutti</button>
+        <button class="chip" data-mode="trekking">Trekking</button>
+        <button class="chip" data-mode="cammino">Cammini</button>
+        <button class="chip" data-mode="bicycle">Bici</button>
+        <button class="chip" data-mode="mtb">MTB</button>
+      </div>
+      <div class="selectrow">
+        <select id="municipality"><option value="">Tutta la Versilia</option></select>
+        <button class="reset" id="reset">Azzera</button>
+      </div>
+    </div>
+    <div class="resultsHead"><b id="resultsLabel">Percorsi</b><span id="resultsCount">—</span></div>
+    <div class="list" id="routeList"><div class="empty">Caricamento…</div></div>
+  </aside>
+
+  <main class="mapWrap">
+    <div id="map"></div>
+    <section class="detail" id="detail">
+      <button class="detailClose" id="detailClose" aria-label="Chiudi">×</button>
+      <h2 id="detailName"></h2>
+      <div class="detailSub" id="detailSub"></div>
+      <div class="grid">
+        <div class="info"><span>Lunghezza</span><b id="detailKm">—</b></div>
+        <div class="info"><span>Difficoltà</span><b id="detailDifficulty">—</b></div>
+        <div class="info"><span>Comuni</span><b id="detailComuni">—</b></div>
+        <div class="info"><span>Affidabilità</span><b id="detailQuality">—</b></div>
+      </div>
+      <div class="source" id="detailSource"></div>
+      <div class="downloads">
+        <a id="gpxBtn" href="#" download>GPX</a>
+        <a id="kmlBtn" href="#" download>KML</a>
+        <a id="geoBtn" class="secondary" href="#" download>GeoJSON</a>
+      </div>
+    </section>
+    <div class="legend">
+      <div class="leg"><span style="background:#176b4a"></span>Trekking</div>
+      <div class="leg"><span style="background:#6e4ab5"></span>Cammini</div>
+      <div class="leg"><span style="background:#117b93"></span>Bici</div>
+      <div class="leg"><span style="background:#315b9d"></span>MTB</div>
+    </div>
+  </main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
