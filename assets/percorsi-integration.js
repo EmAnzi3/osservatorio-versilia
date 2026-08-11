@@ -4,6 +4,10 @@
   const loader = document.currentScript;
   if (!loader) return;
 
+  const page = document.body.dataset.page || '';
+  const relevant = location.pathname.includes('/percorsi/') || page === 'town' || (page === 'compare' && document.body.dataset.theme === 'mobilita');
+  if (!relevant) return;
+
   const statsUrl = new URL('../percorsi/data/site_stats.json', loader.src);
   const mapBaseUrl = new URL('../percorsi/', loader.src);
   const modeMeta = {
