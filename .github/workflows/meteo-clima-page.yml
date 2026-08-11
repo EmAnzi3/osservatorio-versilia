@@ -58,13 +58,13 @@ jobs:
               assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
 
           minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
-          assert minmax['coverage'] == {'from': 1995, 'to': 2025}
-          assert minmax['version'] == 'poc-3'
+          assert minmax['coverage'] == {'from': 1975, 'to': 2025}
+          assert minmax['version'] == 'poc-4'
           assert set(minmax['municipalities']) == expected
-          expected_minmax_years = list(range(1995, 2026))
+          expected_minmax_years = list(range(1975, 2026))
           for name, series in minmax['municipalities'].items():
               assert series['years'] == expected_minmax_years, name
-              assert len(series['tmin']) == 31 and len(series['tmax']) == 31, name
+              assert len(series['tmin']) == 51 and len(series['tmax']) == 51, name
               assert series['latestComplete']['year'] == 2025, name
               assert series['latestComplete']['tmin'] == series['tmin'][-1], name
               assert series['latestComplete']['tmax'] == series['tmax'][-1], name
@@ -88,9 +88,9 @@ jobs:
               "deep.hidden = !(isFlood || isLandslide)",
               'const baseBarRows = barRows',
               "left:${left.toFixed(2)}%",
-              "linearClimateTrend(series.years, values, 1995, 2025)",
-              "year: '1995–2025'",
-              "coverage: '7/7 · 1995–2025'",
+              "linearClimateTrend(series.years, values, 1975, 2025)",
+              "year: '1975–2025'",
+              "coverage: '7/7 · 1975–2025'",
               "href:CLIMATE_METRICS.has(key) ? climateDetailHref(key) : indicatorHref(m)",
           ):
               assert token in app, token
@@ -98,8 +98,8 @@ jobs:
 
           ux = Path('assets/climate-ux-v3.js').read_text(encoding='utf-8')
           assert "climateTminTrend:{label:'Temperatura minima media annua'" in ux
-          assert "seriesKey:'tmin',unit:'celsius',latestYear:2025,trendFrom:1995,trendTo:2025" in ux
-          assert "seriesKey:'tmax',unit:'celsius',latestYear:2025,trendFrom:1995,trendTo:2025" in ux
+          assert "seriesKey:'tmin',unit:'celsius',latestYear:2025,trendFrom:1975,trendTo:2025" in ux
+          assert "seriesKey:'tmax',unit:'celsius',latestYear:2025,trendFrom:1975,trendTo:2025" in ux
           benchmark = Path('assets/climate-town-benchmark.js').read_text(encoding='utf-8')
           assert "climateTminTrend: { seriesKey: 'tmin', latestYear: 2025" in benchmark
           assert "climateTmaxTrend: { seriesKey: 'tmax', latestYear: 2025" in benchmark
@@ -107,5 +107,5 @@ jobs:
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
           assert '1975–2025' in html
           assert 'temperature-min-max' in html
-          print('Climate draft OK: native Ambiente accordion + Tmin/Tmax 1995–2025 + town metrics + no rankings + conditional risk detail')
+          print('Climate draft OK: native Ambiente accordion + Tmin/Tmax 1975–2025 + 50-year trends + town metrics + no rankings + conditional risk detail')
           PY
