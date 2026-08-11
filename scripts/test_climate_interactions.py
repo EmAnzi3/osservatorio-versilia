@@ -76,21 +76,22 @@ def main() -> None:
         compare_point = chart.locator('[data-climate-series="camaiore"] .chart-point').first
         assert_tooltip_works(compare_point)
 
-        # Tmin/Tmax current values must now use real 2025 data and history must extend
-        # to 2025, still without rankings.
+        # Tmin/Tmax current values use real 2025 data and their history/trend now
+        # covers the same 1975-2025 50-year window as mean temperature and rain.
         select_metric(page, 'climateTminTrend', 'Ambiente')
         tmin_shell = page.locator('[data-ov-climate-shell="compare-climateTminTrend"]')
         tmin_shell.wait_for(state='visible')
         assert '2025' in page.locator('#compare-definition').inner_text()
-        assert '1995–2025' in tmin_shell.inner_text()
+        assert '1975–2025' in tmin_shell.inner_text()
         assert tmin_shell.locator('.ov-climate-current-row').count() == 7
         assert tmin_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
         tmin_shell.locator('[data-ov-climate-view="history"]').click()
+        assert tmin_shell.locator('.chart-point[aria-label*="1975"]').count() >= 7, 'Tmin history must contain 1975 for all towns'
         assert tmin_shell.locator('.chart-point[aria-label*="2025"]').count() >= 7, 'Tmin history must contain 2025 for all towns'
-        assert 'Trend lineare 1995–2025' in tmin_shell.inner_text()
+        assert 'Trend lineare 1975–2025' in tmin_shell.inner_text()
 
         # Town climate page: current annual value + Versilia benchmark card, but no
-        # ranking. Historical chart has sparse years, trend and the standard tooltip.
+        # ranking. Historical chart has sparse years, 50-year trend and tooltip.
         page.goto(
             f'{base}/comuni/camaiore/?tema=ambiente&indicatore=climateTmaxTrend',
             wait_until='networkidle',
@@ -115,8 +116,9 @@ def main() -> None:
         assert town_shell.locator('.ov-climate-town-trend').is_visible()
         assert town_shell.locator('.chart-line').is_visible()
         assert 'Non è la temperatura più alta raggiunta nell’anno' in town_shell.inner_text()
-        assert 'Trend lineare 1995–2025' in town_shell.inner_text()
+        assert 'Trend lineare 1975–2025' in town_shell.inner_text()
         assert 'Trend medio per decennio' in town_shell.inner_text()
+        assert town_shell.locator('.chart-point[aria-label*="1975"]').count() >= 1
         assert town_shell.locator('.chart-point[aria-label*="2025"]').count() >= 1
         year_labels = town_shell.locator('.trend-chart svg > text.chart-label:not(.chart-y-label)').count()
         assert year_labels < 15, f'Too many year labels: {year_labels}'
@@ -140,7 +142,7 @@ def main() -> None:
         assert not errors, f'Browser page errors: {errors}'
         browser.close()
 
-    print('Climate interaction regression OK: shared surfaces, Tmin/Tmax through 2025, working tooltips, Versilia benchmark, explicit trends, no rankings')
+    print('Climate interaction regression OK: shared surfaces, Tmin/Tmax 1975-2025, working tooltips, Versilia benchmark, 50-year trends, no rankings')
 
 
 if __name__ == '__main__':
