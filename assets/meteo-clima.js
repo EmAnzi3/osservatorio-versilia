@@ -212,14 +212,13 @@
     const ticks = Array.from({ length: 4 }, (_, i) => yMin + (yMax - yMin) * i / 3);
     const grids = ticks.map(value => `<line class="climate-grid-line" x1="${left}" x2="${width - right}" y1="${y(value)}" y2="${y(value)}"></line><text class="climate-axis-label" x="${left - 10}" y="${y(value) + 3}" text-anchor="end">${fmt(value, 1)}</text>`).join('');
     const xTicks = [1975, 1985, 1995, 2005, 2015, 2025].map(year => `<text class="climate-axis-label" x="${x(year)}" y="${height - 14}" text-anchor="middle">${year}</text>`).join('');
-    const sourceBoundaries = [1995, 2015].map(year => `<line class="climate-trend-boundary" x1="${x(year)}" x2="${x(year)}" y1="${top}" y2="${height - bottom}"></line>`).join('');
-    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1975 al 2025">${grids}${sourceBoundaries}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}${series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}</svg>`;
+    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1975 al 2025">${grids}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}${series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}</svg>`;
   }
 
   function renderMethod() {
     const method = state.data.method;
     document.getElementById('method-spatial').textContent = method.spatial;
-    document.getElementById('method-source').textContent = 'LaMMA resta la fonte primaria nel 1995–2015; ERA5-Land calibrato completa la serie prima e dopo questo intervallo.';
+    document.getElementById('method-source').textContent = 'Per Tmin/Tmax la serie 1975–2025 è ERA5-Land continua e corretta solo nel livello sulla media LaMMA 2011–2015; SIR valida indipendentemente il comportamento temporale. Per temperatura media e precipitazioni LaMMA resta la fonte primaria nel 1995–2015.';
     document.getElementById('method-validation').textContent = method.validation;
     document.getElementById('method-temperature').textContent = method.temperature;
     document.getElementById('method-precipitation').textContent = method.precipitation;
