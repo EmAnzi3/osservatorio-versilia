@@ -9,6 +9,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+import monthly_data_check_coverage as coverage
+
 ROOT = Path(__file__).resolve().parents[1]
 CHECKER = ROOT / "scripts" / "monthly_data_check.py"
 TOWNS = [
@@ -121,6 +123,40 @@ def run_checker(work: Path, state: dict) -> dict:
 
 
 def main() -> None:
+    mef_old = (
+        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+        "?tree=2013&t=111"
+    )
+    mef_new = (
+        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+        "?tree=2013&t=222"
+    )
+    mef_stable = (
+        "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
+        "?tree=2013"
+    )
+    assert coverage.canonical_url(mef_old) == mef_stable
+    assert coverage.canonical_url(mef_new) == mef_stable
+    assert coverage.canonical_url("https://example.org/data?t=222").endswith("?t=222")
+
+    redirect_changes = coverage.compare_states(
+        {
+            "sources": {
+                "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": {
+                    "ok": True,
+                    "finalUrl": mef_old,
+                }
+            }
+        },
+        {
+            "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": {
+                "ok": True,
+                "finalUrl": mef_new,
+            }
+        },
+    )
+    assert not redirect_changes["redirect"]
+
     with tempfile.TemporaryDirectory() as directory:
         work = Path(directory)
         first = run_checker(
