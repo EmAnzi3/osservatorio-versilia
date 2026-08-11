@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir -p reports/runtime/minmax
           python scripts/era5_land_minmax_history.py \
-            --start-year 1995 \
+            --start-year 1975 \
             --end-year 2025 \
             --output reports/runtime/minmax/era5-land-minmax-annual-raw.csv
       - name: Validate raw ERA5-Land series
@@ -67,11 +67,11 @@ jobs:
           }
           if set(frame["municipality"]) != expected_towns:
               raise SystemExit("Unexpected municipality set in ERA5-Land Tmin/Tmax output")
-          if len(frame) != 7 * 31:
-              raise SystemExit(f"Expected 217 municipality-years, got {len(frame)}")
+          if len(frame) != 7 * 51:
+              raise SystemExit(f"Expected 357 municipality-years, got {len(frame)}")
           for town in expected_towns:
               years = frame.loc[frame["municipality"] == town, "year"].sort_values().tolist()
-              if years != list(range(1995, 2026)):
+              if years != list(range(1975, 2026)):
                   raise SystemExit(f"{town}: incomplete coverage {years[:3]}...{years[-3:]}")
           if frame[["tmin_mean_c", "tmax_mean_c"]].isna().any().any():
               raise SystemExit("Missing Tmin/Tmax values in raw ERA5-Land output")
@@ -104,6 +104,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: climate-minmax-1995-2025
+          name: climate-minmax-1975-2025
           path: reports/runtime/minmax/
           retention-days: 30
