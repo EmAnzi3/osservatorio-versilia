@@ -12,6 +12,7 @@ on:
       - "assets/app-parts/**"
       - "data/meteo-clima-poc.json"
       - "data/meteo-clima-minmax-poc.json"
+      - "data/meteo-clima-minmax-lamma-1995-2015.json"
       - ".github/workflows/meteo-clima-page.yml"
   workflow_dispatch:
 
@@ -28,6 +29,7 @@ jobs:
         run: |
           python -m json.tool data/meteo-clima-poc.json > /dev/null
           python -m json.tool data/meteo-clima-minmax-poc.json > /dev/null
+          python -m json.tool data/meteo-clima-minmax-lamma-1995-2015.json > /dev/null
 
       - name: Validate JavaScript syntax
         run: |
@@ -57,6 +59,14 @@ jobs:
               assert all(isinstance(v, (int, float)) for v in series['temperature']), name
               assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
 
+          lamma = json.loads(Path('data/meteo-clima-minmax-lamma-1995-2015.json').read_text(encoding='utf-8'))
+          assert lamma['version'] == 'lamma-minmax-reference-1'
+          assert lamma['coverage'] == {'from': 1995, 'to': 2015}
+          assert set(lamma['municipalities']) == expected
+          for name, series in lamma['municipalities'].items():
+              assert series['years'] == list(range(1995, 2016)), name
+              assert len(series['tmin']) == 21 and len(series['tmax']) == 21, name
+
           minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
           assert minmax['coverage'] == {'from': 1975, 'to': 2025}
           assert minmax['version'] == 'poc-5'
@@ -67,6 +77,7 @@ jobs:
               'detail': 'Copernicus ERA5-Land ARCO orario; Tmin/Tmax giornaliere calcolate localmente dalla temperatura a 2 m; offset di livello comunale 2011-2015'
           }]
           assert minmax['calibrationReference']['role'].startswith('level reference only')
+          assert minmax['calibrationReference']['anchor'] == [2011, 2015]
           assert set(minmax['municipalities']) == expected
           expected_minmax_years = list(range(1975, 2026))
           for name, series in minmax['municipalities'].items():
@@ -104,6 +115,8 @@ jobs:
           ):
               assert token in app, token
           assert '<span class="bar-rank">${index + 1}</span>' not in app6
+          assert 'Serie omogenea ERA5-Land ARCO 1975–2025' in app6
+          assert 'LaMMA 1995–2015 è usato come riferimento grigliato di livello' in app6
 
           ux = Path('assets/climate-ux-v3.js').read_text(encoding='utf-8')
           assert "climateTminTrend:{label:'Temperatura minima media annua'" in ux
@@ -123,7 +136,7 @@ jobs:
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
           assert '1975–2025' in html
           assert 'Approfondimento · 1975–2025' in html
-          assert 'Serie ricostruita · 1975–2025' in html
+          assert 'Serie omogenea · 1975–2025' in html
           assert 'Temperatura minima media annua 1975–2025' in html
           assert 'Temperatura massima media annua 1975–2025' in html
           assert 'temperature-min-max' in html
