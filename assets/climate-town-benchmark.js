@@ -6,8 +6,8 @@
   const CONFIG = {
     climateTemperatureTrend50y: { seriesKey: 'temperature', latestYear: 2025, unit: 'celsius', dataset: 'climate' },
     climatePrecipitationTrend50y: { seriesKey: 'precipitation', latestYear: 2025, unit: 'mm', dataset: 'climate' },
-    climateTminTrend: { seriesKey: 'tmin', latestYear: 2015, unit: 'celsius', dataset: 'minmax' },
-    climateTmaxTrend: { seriesKey: 'tmax', latestYear: 2015, unit: 'celsius', dataset: 'minmax' }
+    climateTminTrend: { seriesKey: 'tmin', latestYear: 2025, unit: 'celsius', dataset: 'minmax' },
+    climateTmaxTrend: { seriesKey: 'tmax', latestYear: 2025, unit: 'celsius', dataset: 'minmax' }
   };
   const fmt2 = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const fmt0 = new Intl.NumberFormat('it-IT', { maximumFractionDigits: 0 });
