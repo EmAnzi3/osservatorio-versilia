@@ -104,8 +104,19 @@ jobs:
           assert "climateTminTrend: { seriesKey: 'tmin', latestYear: 2025" in benchmark
           assert "climateTmaxTrend: { seriesKey: 'tmax', latestYear: 2025" in benchmark
 
+          detail_js = Path('assets/meteo-clima.js').read_text(encoding='utf-8')
+          assert 'linearTrend(series.years, series.tmin, 1975, 2025)' in detail_js
+          assert 'linearTrend(series.years, series.tmax, 1975, 2025)' in detail_js
+          assert 'Minime · trend 1975–2025' in detail_js
+          assert 'Massime · trend 1975–2025' in detail_js
+          assert 'dal 1975 al 2025' in detail_js
+
           html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
           assert '1975–2025' in html
+          assert 'Approfondimento · 1975–2025' in html
+          assert 'Serie ricostruita · 1975–2025' in html
+          assert 'Temperatura minima media annua 1975–2025' in html
+          assert 'Temperatura massima media annua 1975–2025' in html
           assert 'temperature-min-max' in html
           print('Climate draft OK: native Ambiente accordion + Tmin/Tmax 1975–2025 + 50-year trends + town metrics + no rankings + conditional risk detail')
           PY
