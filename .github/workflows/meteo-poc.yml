@@ -13,9 +13,7 @@ on:
       - "scripts/era5_land_annual_history.py"
       - "scripts/era5_land_precip_hourly_patch.py"
       - "scripts/era5_land_ytd.py"
-      - "scripts/era5_land_minmax_history.py"
       - "scripts/climate_stitch_series.py"
-      - "scripts/climate_stitch_minmax_series.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -87,9 +85,7 @@ jobs:
           python -m py_compile scripts/era5_land_annual_history.py
           python -m py_compile scripts/era5_land_precip_hourly_patch.py
           python -m py_compile scripts/era5_land_ytd.py
-          python -m py_compile scripts/era5_land_minmax_history.py
           python -m py_compile scripts/climate_stitch_series.py
-          python -m py_compile scripts/climate_stitch_minmax_series.py
       - name: Record CDS credential status
         run: |
           mkdir -p reports/runtime/era5
@@ -112,14 +108,6 @@ jobs:
           python scripts/era5_land_precip_hourly_patch.py \
             --raw reports/runtime/era5/era5-land-annual-raw.csv \
             --output reports/runtime/era5/era5-land-annual-patched.csv
-      - name: Build ERA5-Land annual Tmin and Tmax 1995-2025
-        if: env.CDS_API_TOKEN != ''
-        run: |
-          python scripts/era5_land_minmax_history.py \
-            --start-year 1995 \
-            --end-year 2025 \
-            --chunk-years 5 \
-            --output reports/runtime/era5/era5-land-minmax-annual-raw.csv
       - name: Build current-year ERA5-Land YTD
         if: env.CDS_API_TOKEN != ''
         run: |
@@ -171,17 +159,10 @@ jobs:
           else
             echo "Full 1950-2025 series not built because ERA5-Land acquisition is unavailable." > reports/runtime/final/stitch-status.txt
           fi
-          if [[ -f reports/runtime/combined/era5/era5-land-minmax-annual-raw.csv ]]; then
-            python scripts/climate_stitch_minmax_series.py \
-              --lamma reports/runtime/combined/lamma/annual-history/lamma-annual-history.csv \
-              --era5 reports/runtime/combined/era5/era5-land-minmax-annual-raw.csv \
-              --output reports/runtime/final/municipal-climate-minmax-1995-2025.csv
-          else
-            echo "Tmin/Tmax 1995-2025 not built because ERA5-Land daily acquisition is unavailable." > reports/runtime/final/minmax-status.txt
-          fi
           if [[ -f reports/runtime/combined/era5/era5-land-2026-ytd.csv ]]; then
             cp reports/runtime/combined/era5/era5-land-2026-ytd.csv reports/runtime/final/
           fi
+          echo "Tmin/Tmax 1995-2025 are validated by the dedicated Extend climate Tmin Tmax workflow." > reports/runtime/final/minmax-status.txt
       - name: Upload final outputs
         if: always()
         uses: actions/upload-artifact@v4
