@@ -4,14 +4,23 @@ from __future__ import annotations
 
 import base64
 from collections import Counter, defaultdict
+import contextlib
 import gzip
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
 from pathlib import Path
+import socket
 import subprocess
+import threading
+from typing import Iterable
+
+from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "percorsi"
-DIST = ROOT / "dist" / "percorsi"
+DIST_ROOT = ROOT / "dist"
+DIST = DIST_ROOT / "percorsi"
 TOWN_SLUGS = {
     "Camaiore": "camaiore",
     "Forte dei Marmi": "forte-dei-marmi",
@@ -22,6 +31,31 @@ TOWN_SLUGS = {
     "Viareggio": "viareggio",
 }
 MODES = ("trekking", "cammino", "bicycle", "mtb")
+
+
+class QuietHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *_args: object) -> None:
+        return
+
+
+@contextlib.contextmanager
+def server(directory: Path) -> Iterable[str]:
+    old = Path.cwd()
+    os.chdir(directory)
+    try:
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        httpd = ThreadingHTTPServer(("127.0.0.1", port), QuietHandler)
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{port}/"
+        finally:
+            httpd.shutdown()
+            thread.join(timeout=5)
+    finally:
+        os.chdir(old)
 
 
 def require(condition: bool, message: str) -> None:
@@ -140,22 +174,51 @@ def check_dist() -> None:
             "Pagina Percorsi non copiata correttamente nella build")
 
     for asset in ("percorsi-integration.css", "percorsi-integration.js"):
-        path = ROOT / "dist" / "assets" / asset
+        path = DIST_ROOT / "assets" / asset
         require(path.exists() and path.stat().st_size > 0, f"Asset integrazione assente dalla build: {asset}")
 
-    compare = (ROOT / "dist" / "confronta" / "mobilita" / "index.html").read_text(encoding="utf-8")
+    compare = (DIST_ROOT / "confronta" / "mobilita" / "index.html").read_text(encoding="utf-8")
     require("assets/percorsi-integration.css" in compare and "assets/percorsi-integration.js" in compare,
             "Statistiche Percorsi non collegate alla pagina Mobilità")
     for slug in TOWN_SLUGS.values():
-        page = (ROOT / "dist" / "comuni" / slug / "index.html").read_text(encoding="utf-8")
+        page = (DIST_ROOT / "comuni" / slug / "index.html").read_text(encoding="utf-8")
         require("assets/percorsi-integration.css" in page and "assets/percorsi-integration.js" in page,
                 f"Statistiche Percorsi non collegate al profilo comunale {slug}")
+
+
+def check_browser_integration() -> None:
+    with server(DIST_ROOT) as base, sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+
+        page.goto(base + "confronta/mobilita/", wait_until="networkidle")
+        overview = page.locator('[data-percorsi-stats="versilia"]')
+        overview.wait_for(state="visible", timeout=10000)
+        text = overview.inner_text()
+        require("41" in text and "343" in text, "Sintesi Versilia non visibile nella pagina Mobilità")
+        require(overview.locator("tbody tr").count() == 7, "La tabella comunale deve contenere 7 Comuni")
+        camaiore_link = overview.locator('a[href*="comune=Camaiore"]')
+        require(camaiore_link.count() == 1, "Link cartografico filtrato di Camaiore assente")
+
+        page.goto(base + "comuni/camaiore/?tema=mobilita", wait_until="networkidle")
+        town = page.locator('[data-percorsi-stats="town"]')
+        town.wait_for(state="visible", timeout=10000)
+        town_text = town.inner_text()
+        require("11" in town_text and "Camaiore" in town_text,
+                "Statistiche di Camaiore non visibili nella scheda Mobilità")
+        require("Bici" in town_text and "5" in town_text,
+                "Composizione dei percorsi di Camaiore non visibile")
+        require(town.locator('a[href*="comune=Camaiore"]').count() == 1,
+                "Deep link Camaiore verso la cartografia assente")
+
+        browser.close()
 
 
 def main() -> None:
     check_source()
     check_dist()
-    print("Percorsi Versilia verificato: cartografia + statistiche Versilia e 7 Comuni coerenti con 41 percorsi pubblici.")
+    check_browser_integration()
+    print("Percorsi Versilia verificato nel sito: cartografia + statistiche Versilia e 7 Comuni coerenti con 41 percorsi pubblici.")
 
 
 if __name__ == "__main__":
