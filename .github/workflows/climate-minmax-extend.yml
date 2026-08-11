@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/era5_land_minmax_history.py"
       - "scripts/climate_extend_minmax_site.py"
+      - "data/meteo-clima-minmax-poc.json"
       - ".github/workflows/climate-minmax-extend.yml"
   workflow_dispatch:
 
@@ -16,11 +17,26 @@ permissions:
   contents: read
 
 jobs:
-  extend-minmax:
+  acquire-minmax:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     env:
       CDS_API_TOKEN: ${{ secrets.CDS_API_TOKEN }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - start: 1995
+            end: 2000
+          - start: 2001
+            end: 2006
+          - start: 2007
+            end: 2012
+          - start: 2013
+            end: 2018
+          - start: 2019
+            end: 2025
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,31 +46,88 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check "cdsapi>=0.7.7" geopandas xarray netcdf4 pandas numpy
-      - name: Compile pipeline
-        run: |
-          python -m py_compile scripts/era5_land_minmax_history.py
-          python -m py_compile scripts/climate_extend_minmax_site.py
+      - name: Compile acquisition pipeline
+        run: python -m py_compile scripts/era5_land_minmax_history.py
       - name: Require CDS credential
         run: |
           if [[ -z "$CDS_API_TOKEN" ]]; then
             echo "CDS_API_TOKEN is not configured" >&2
             exit 2
           fi
-      - name: Retrieve ERA5-Land daily Tmin Tmax 1995-2025
+      - name: Retrieve native ERA5-Land hourly temperature
         run: |
+          mkdir -p reports/runtime/minmax/raw
           python scripts/era5_land_minmax_history.py \
-            --start-year 1995 \
-            --end-year 2025 \
+            --start-year ${{ matrix.start }} \
+            --end-year ${{ matrix.end }} \
             --chunk-years 1 \
-            --output reports/runtime/minmax/era5-land-minmax-annual-raw.csv
+            --output reports/runtime/minmax/raw/era5-land-minmax-${{ matrix.start }}-${{ matrix.end }}.csv
+      - name: Upload raw block
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-minmax-raw-${{ matrix.start }}-${{ matrix.end }}
+          path: reports/runtime/minmax/raw/
+          retention-days: 30
+
+  calibrate-minmax:
+    needs: acquire-minmax
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install calibration dependencies
+        run: python -m pip install --disable-pip-version-check pandas numpy
+      - name: Compile calibration pipeline
+        run: python -m py_compile scripts/climate_extend_minmax_site.py
+      - name: Download raw blocks
+        uses: actions/download-artifact@v4
+        with:
+          pattern: climate-minmax-raw-*
+          path: reports/runtime/minmax/downloaded
+          merge-multiple: true
+      - name: Combine and validate raw ERA5-Land series
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+
+          root = Path("reports/runtime/minmax/downloaded")
+          files = sorted(root.glob("era5-land-minmax-*.csv"))
+          if len(files) != 5:
+              raise SystemExit(f"Expected 5 raw block CSVs, got {len(files)}: {files}")
+          frame = pd.concat((pd.read_csv(path) for path in files), ignore_index=True)
+          frame["year"] = frame["year"].astype(int)
+          frame = frame.sort_values(["municipality", "year"])
+          expected_towns = {
+              "Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta",
+              "Seravezza", "Stazzema", "Viareggio"
+          }
+          if set(frame["municipality"]) != expected_towns:
+              raise SystemExit("Unexpected municipality set in ERA5-Land Tmin/Tmax output")
+          for town in expected_towns:
+              years = frame.loc[frame["municipality"] == town, "year"].tolist()
+              if years != list(range(1995, 2026)):
+                  raise SystemExit(f"{town}: incomplete ERA5-Land Tmin/Tmax coverage: {years[:3]}...{years[-3:]}")
+          out = Path("reports/runtime/minmax/era5-land-minmax-annual-raw.csv")
+          out.parent.mkdir(parents=True, exist_ok=True)
+          frame.to_csv(out, index=False)
+          print(f"Combined {len(frame)} rows -> {out}")
+          PY
       - name: Calibrate and build site JSON
         run: |
           python scripts/climate_extend_minmax_site.py \
             --lamma-json data/meteo-clima-minmax-poc.json \
             --era5 reports/runtime/minmax/era5-land-minmax-annual-raw.csv \
             --output reports/runtime/minmax/meteo-clima-minmax-poc.json
+      - name: Print calibration diagnostics
+        run: cat reports/runtime/minmax/meteo-clima-minmax-poc.diagnostics.json
       - name: Upload extended Tmin Tmax outputs
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: climate-minmax-1995-2025
