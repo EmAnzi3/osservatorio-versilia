@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Extend the site Tmin/Tmax JSON from LaMMA 1995-2015 to 2025.
 
-LaMMA remains the primary source for 1995-2015. Raw ERA5-Land annual means of
-daily minima/maxima are built from native hourly 2 m temperature, calibrated
-additively per municipality on the full 1995-2015 overlap, and used for
-2016-2025 only.
+LaMMA remains the primary source for 1995-2015. ERA5-Land supplies 2016-2025.
+Independent SIR observations are used as a gate on temporal behaviour: when
+SIR supports ERA5-Land over the divergent LaMMA Tmin/Tmax trends, the ERA5
+trend is preserved and only the level is anchored to the recent LaMMA overlap.
 """
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ import pandas as pd
 
 VARS = {"tmin": "tmin_mean_c", "tmax": "tmax_mean_c"}
 OVERLAP_YEARS = list(range(1995, 2016))
+HANDOVER_YEARS = list(range(2011, 2016))
 FULL_YEARS = list(range(1995, 2026))
 
 
@@ -32,26 +33,17 @@ def linear_slope_per_decade(years: np.ndarray, values: np.ndarray) -> float:
     return slope * 10.0
 
 
-def score(years: np.ndarray, observed: np.ndarray, raw: np.ndarray, offset: float) -> dict:
-    corrected = raw + offset
-    raw_residual = observed - raw
-    corrected_residual = observed - corrected
+def metrics(years: np.ndarray, observed: np.ndarray, estimate: np.ndarray) -> dict:
+    residual = observed - estimate
     return {
         "n": int(len(years)),
-        "offset_c": float(offset),
-        "before": {
-            "mean_bias_era5_minus_lamma_c": float(np.mean(raw - observed)),
-            "rmse_c": float(np.sqrt(np.mean((observed - raw) ** 2))),
-            "mae_c": float(np.mean(np.abs(observed - raw))),
-            "residual_trend_c_per_decade": linear_slope_per_decade(years, raw_residual),
-        },
-        "after": {
-            "mean_bias_era5_minus_lamma_c": float(np.mean(corrected - observed)),
-            "rmse_c": float(np.sqrt(np.mean((observed - corrected) ** 2))),
-            "mae_c": float(np.mean(np.abs(observed - corrected))),
-            "residual_trend_c_per_decade": linear_slope_per_decade(years, corrected_residual),
-        },
-        "correlation": float(np.corrcoef(observed, corrected)[0, 1]),
+        "mean_bias_estimate_minus_lamma_c": float(np.mean(estimate - observed)),
+        "rmse_c": float(np.sqrt(np.mean(residual**2))),
+        "mae_c": float(np.mean(np.abs(residual))),
+        "residual_trend_lamma_minus_estimate_c_per_decade": linear_slope_per_decade(
+            years, residual
+        ),
+        "correlation": float(np.corrcoef(observed, estimate)[0, 1]) if len(years) > 1 else None,
     }
 
 
@@ -65,10 +57,58 @@ def lamma_overlap(series: dict, site_key: str) -> np.ndarray:
     return np.asarray([lookup[year] for year in OVERLAP_YEARS], dtype=float)
 
 
+def load_sir_gate(path: str) -> dict:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    station_years = int(payload.get("strict_station_years", 0))
+    stations = int(payload.get("strict_stations", 0))
+    if station_years < 20 or stations < 2:
+        raise SystemExit(
+            f"Independent SIR gate too small: station_years={station_years}, stations={stations}"
+        )
+
+    summary = {
+        "strict_station_years": station_years,
+        "strict_stations": stations,
+        "period": payload.get("period"),
+        "variables": {},
+        "spatial_caveat": (
+            "Strict overlap evidence is limited to the SIR stations with validated, >=95% "
+            "complete Tmin/Tmax series; it validates temporal behaviour, not municipal level."
+        ),
+    }
+    for variable in VARS:
+        block = payload.get("variables", {}).get(variable, {})
+        preferred_trend = block.get("preferred_by_abs_residual_trend")
+        preferred_rmse = block.get("preferred_by_anomaly_rmse")
+        if preferred_trend != "ERA5-Land" or preferred_rmse != "ERA5-Land":
+            raise SystemExit(
+                f"SIR gate does not support preserving ERA5-Land {variable} temporal evolution: "
+                f"trend={preferred_trend}, rmse={preferred_rmse}"
+            )
+        summary["variables"][variable] = {
+            "preferred_by_abs_residual_trend": preferred_trend,
+            "preferred_by_anomaly_rmse": preferred_rmse,
+            "LaMMA": {
+                "rmse_anomaly_c": block["LaMMA"]["rmse_anomaly_c"],
+                "fixed_effect_residual_trend_c_per_decade": block["LaMMA"][
+                    "fixed_effect_residual_trend_c_per_decade"
+                ],
+            },
+            "ERA5-Land": {
+                "rmse_anomaly_c": block["ERA5-Land"]["rmse_anomaly_c"],
+                "fixed_effect_residual_trend_c_per_decade": block["ERA5-Land"][
+                    "fixed_effect_residual_trend_c_per_decade"
+                ],
+            },
+        }
+    return summary
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lamma-json", default="data/meteo-clima-minmax-poc.json")
     ap.add_argument("--era5", required=True)
+    ap.add_argument("--sir-comparison", required=True)
     ap.add_argument("--output", required=True)
     args = ap.parse_args()
 
@@ -79,16 +119,19 @@ def main() -> int:
     if missing:
         raise SystemExit(f"ERA5 file missing columns: {sorted(missing)}")
     era5["year"] = era5["year"].astype(int)
+    sir_gate = load_sir_gate(args.sir_comparison)
 
     output = {
-        "version": "poc-2",
+        "version": "poc-3",
         "status": "draft",
         "coverage": {"from": 1995, "to": 2025},
-        "source": "Consorzio LaMMA 1 km + Copernicus ERA5-Land hourly reanalysis",
+        "source": "Consorzio LaMMA 1 km + Copernicus ERA5-Land ARCO hourly reanalysis",
         "method": (
-            "1995-2015 LaMMA con pesatura frazionaria; 2016-2025 ERA5-Land orario, "
-            "Tmin/Tmax giornaliere calcolate localmente da 24 campioni UTC, pesatura "
-            "frazionaria e correzione additiva del bias comunale sul periodo 1995-2015."
+            "1995-2015 LaMMA con pesatura frazionaria; 2016-2025 ERA5-Land ARCO orario, "
+            "Tmin/Tmax giornaliere calcolate localmente da 24 campioni UTC e pesatura "
+            "frazionaria. Il trend temporale ERA5-Land viene preservato perché il confronto "
+            "indipendente con SIR lo supporta rispetto alla deriva LaMMA; il solo livello viene "
+            "raccordato con un offset comunale medio sul quinquennio 2011-2015."
         ),
         "definition": base.get("definition", {}),
         "sourcePeriods": [
@@ -103,8 +146,8 @@ def main() -> int:
                 "to": 2025,
                 "class": "CALIBRATED_REANALYSIS",
                 "detail": (
-                    "Copernicus ERA5-Land orario; Tmin/Tmax giornaliere calcolate "
-                    "localmente dalla temperatura a 2 m"
+                    "Copernicus ERA5-Land ARCO orario; Tmin/Tmax giornaliere calcolate "
+                    "localmente dalla temperatura a 2 m; offset di livello 2011-2015"
                 ),
             },
         ],
@@ -112,13 +155,24 @@ def main() -> int:
     }
     diagnostics = {
         "overlap": [1995, 2015],
-        "calibration": "additive per municipality and variable",
-        "bias_sign": "ERA5-Land minus LaMMA",
-        "residual_sign": "LaMMA minus ERA5-Land",
+        "handover_anchor": [2011, 2015],
+        "calibration": (
+            "constant municipal level offset from mean LaMMA-minus-ERA5 residual in 2011-2015; "
+            "ERA5 temporal evolution preserved after independent SIR validation"
+        ),
+        "bias_sign": "estimate minus LaMMA",
+        "residual_sign": "LaMMA minus estimate",
+        "sir_temporal_gate": sir_gate,
         "municipalities": {},
     }
 
     overlap_year_array = np.asarray(OVERLAP_YEARS, dtype=float)
+    handover_mask = np.isin(overlap_year_array.astype(int), HANDOVER_YEARS)
+    handover_year_array = overlap_year_array[handover_mask]
+
+    endpoint_gaps = []
+    handover_rmses = []
+    handover_maes = []
 
     for municipality, series in base["municipalities"].items():
         er = era5[
@@ -133,12 +187,42 @@ def main() -> int:
         for site_key, csv_key in VARS.items():
             lamma_values = lamma_overlap(series, site_key)
             raw_overlap = er[er.year <= 2015][csv_key].to_numpy(dtype=float)
-            offset = float(np.mean(lamma_values - raw_overlap))
-            offsets[site_key] = offset
-            municipality_diag[site_key] = score(
-                overlap_year_array, lamma_values, raw_overlap, offset
+            residual = lamma_values - raw_overlap
+            full_mean_offset = float(np.mean(residual))
+            handover_offset = float(np.mean(residual[handover_mask]))
+            offsets[site_key] = handover_offset
+
+            full_mean_corrected = raw_overlap + full_mean_offset
+            handover_corrected = raw_overlap + handover_offset
+            endpoint_gap = float(handover_corrected[-1] - lamma_values[-1])
+            endpoint_gaps.append(abs(endpoint_gap))
+
+            handover_metrics = metrics(
+                handover_year_array,
+                lamma_values[handover_mask],
+                handover_corrected[handover_mask],
             )
-            post = er[er.year >= 2016][csv_key].to_numpy(dtype=float) + offset
+            handover_rmses.append(handover_metrics["rmse_c"])
+            handover_maes.append(handover_metrics["mae_c"])
+
+            municipality_diag[site_key] = {
+                "full_overlap_raw": metrics(overlap_year_array, lamma_values, raw_overlap),
+                "full_overlap_full_mean_additive": {
+                    "offset_c": full_mean_offset,
+                    **metrics(overlap_year_array, lamma_values, full_mean_corrected),
+                },
+                "selected_handover_anchor": {
+                    "period": [HANDOVER_YEARS[0], HANDOVER_YEARS[-1]],
+                    "offset_c": handover_offset,
+                    "metrics_2011_2015": handover_metrics,
+                    "same_year_gap_2015_corrected_era5_minus_lamma_c": endpoint_gap,
+                    "full_overlap_metrics_if_applied_retroactively": metrics(
+                        overlap_year_array, lamma_values, handover_corrected
+                    ),
+                },
+            }
+
+            post = er[er.year >= 2016][csv_key].to_numpy(dtype=float) + handover_offset
             values = np.concatenate([lamma_values, post])
             result[site_key] = [round(float(value), 3) for value in values]
 
@@ -148,30 +232,24 @@ def main() -> int:
             "tmax": result["tmax"][-1],
         }
         result["calibration"] = {
-            "period": [1995, 2015],
+            "strategy": "recent-overlap level anchor; ERA5 temporal evolution preserved",
+            "period": [HANDOVER_YEARS[0], HANDOVER_YEARS[-1]],
+            "independent_temporal_validation": "SIR Toscana",
             "tmin_offset_c": round(offsets["tmin"], 6),
             "tmax_offset_c": round(offsets["tmax"], 6),
         }
         output["municipalities"][municipality] = result
         diagnostics["municipalities"][municipality] = municipality_diag
 
-    corrected_rmse = []
-    corrected_mae = []
-    residual_trends = []
-    for municipality_diag in diagnostics["municipalities"].values():
-        for variable_diag in municipality_diag.values():
-            corrected_rmse.append(variable_diag["after"]["rmse_c"])
-            corrected_mae.append(variable_diag["after"]["mae_c"])
-            residual_trends.append(abs(variable_diag["after"]["residual_trend_c_per_decade"]))
     diagnostics["summary"] = {
-        "max_corrected_rmse_c": float(max(corrected_rmse)),
-        "mean_corrected_rmse_c": float(np.mean(corrected_rmse)),
-        "max_corrected_mae_c": float(max(corrected_mae)),
-        "max_abs_residual_trend_c_per_decade": float(max(residual_trends)),
+        "mean_handover_rmse_c": float(np.mean(handover_rmses)),
+        "max_handover_rmse_c": float(max(handover_rmses)),
+        "mean_handover_mae_c": float(np.mean(handover_maes)),
+        "max_abs_same_year_gap_2015_c": float(max(endpoint_gaps)),
         "note": (
-            "La correzione additiva azzera il bias medio sul periodo comune. "
-            "RMSE/MAE e trend dei residui restano diagnostici di adeguatezza, "
-            "senza forzare artificialmente pendenza o variabilità della rianalisi."
+            "The large 1995-2015 LaMMA-vs-ERA5 residual trend is not propagated beyond 2015. "
+            "Independent SIR anomaly/trend diagnostics support ERA5-Land temporal evolution; "
+            "LaMMA is therefore used to anchor the handover level over 2011-2015 only."
         ),
     }
 
