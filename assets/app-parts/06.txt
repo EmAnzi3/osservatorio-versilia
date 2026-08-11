@@ -39,9 +39,9 @@
     if (!CLIMATE_METRICS.has(metricKey)) return baseBarRows(data, metricKey, options);
     const normalized = Boolean(options.normalized);
     const selectedTown = options.selectedTown || '';
-    const rows = metricRows(data, metricKey, normalized);
+    const rows = metricRows(data, metricKey, normalized).slice().sort((a, b) => a.town.localeCompare(b.town, 'it'));
     const maxAbs = Math.max(...rows.map(row => Math.abs(Number(row.displayValue) || 0)), 0.0001);
-    return rows.map((row, index) => {
+    return rows.map(row => {
       const query = new URLSearchParams({ tema: data.metrics[metricKey].meta.theme, indicatore: metricKey });
       const href = route(`comuni/${row.slug}/?${query}`);
       const value = Number(row.displayValue) || 0;
@@ -49,7 +49,7 @@
       const left = value < 0 ? 50 - extent : 50;
       const fill = value < 0 ? '#7894a0' : '#4f8162';
       return `<a href="${href}" class="bar-row ${row.slug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
-        <span class="bar-rank">${index + 1}</span><span class="bar-town">${html(row.town)}</span>
+        <span aria-hidden="true"></span><span class="bar-town">${html(row.town)}</span>
         <span class="bar-track" style="position:relative"><span aria-hidden="true" style="position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:#6f8088;opacity:.75"></span><span class="bar-fill" style="position:absolute;left:${left.toFixed(2)}%;width:${extent.toFixed(2)}%;background:${fill};min-width:${extent ? '2px' : '0'}"></span>
           <span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue, row.displayUnit))}</span></span>
         <strong>${html(formatValue(row.displayValue, row.displayUnit))}</strong>
@@ -154,7 +154,7 @@
       const identity = climateRowIdentity(data, townName);
       if (!identity) return null;
       const values = series[config.seriesKey];
-      const trend = linearClimateTrend(series.years, values, 1995, 2015);
+      const trend = linearClimateTrend(series.years, values, 1995, 2025);
       if (!trend) return null;
       return {
         ...identity,
@@ -174,8 +174,8 @@
         shortLabel: config.shortLabel,
         description: config.description,
         unit: 'climateCelsius',
-        year: '1995–2015',
-        source: 'Consorzio LaMMA — raster giornalieri 1 km',
+        year: '1995–2025',
+        source: 'LaMMA + Copernicus ERA5-Land',
         polarity: 'neutral',
         climateDetail: config.detail
       },
@@ -184,14 +184,14 @@
       aggregate: {
         value: meanClimateValue(rows),
         label: 'Media semplice dei 7 comuni',
-        note: 'Media delle variazioni di trend comunali nel periodo omogeneo LaMMA 1995–2015.'
+        note: 'Media delle variazioni stimate dalle rette di tendenza comunali 1995–2025; non è una classifica.'
       },
       normalizedAggregate: null,
       method: {
-        type: 'Interpolazione territoriale LaMMA',
-        formula: 'Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1995–2015.',
-        caveat: 'Il periodo è più breve della serie della temperatura media. Viene mostrato separatamente per non simulare una continuità 1950–2025 che non è ancora stata ricostruita e validata per Tmin/Tmax.',
-        coverage: '7/7 · 1995–2015'
+        type: 'Ricostruzione territoriale validata',
+        formula: 'Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1995–2025.',
+        caveat: '1995–2015: LaMMA 1 km. 2016–2025: ERA5-Land ARCO orario, con Tmin/Tmax calcolate da 24 campioni UTC e livello raccordato sulla media 2011–2015. Il trend ERA5-Land nel periodo comune è stato verificato contro osservazioni SIR indipendenti e viene preservato oltre il 2015.',
+        coverage: '7/7 · 1995–2025'
       }
     };
   }
@@ -216,11 +216,11 @@
       }),
       climateTminTrend: buildMinMaxClimateMetric(data, minmax, {
         key: 'climateTminTrend', seriesKey: 'tmin', label: 'Andamento delle temperature minime', shortLabel: 'Temperature minime',
-        description: 'Storico 1995–2015 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza.', detail: 'tmin'
+        description: 'Storico 1995–2025 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza.', detail: 'tmin'
       }),
       climateTmaxTrend: buildMinMaxClimateMetric(data, minmax, {
         key: 'climateTmaxTrend', seriesKey: 'tmax', label: 'Andamento delle temperature massime', shortLabel: 'Temperature massime',
-        description: 'Storico 1995–2015 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza.', detail: 'tmax'
+        description: 'Storico 1995–2025 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza.', detail: 'tmax'
       })
     };
 
