@@ -37,9 +37,6 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
-      - name: Include Percorsi Versilia
-        run: python scripts/copy_percorsi_dist.py
-
       - name: Run regression tests
         run: python scripts/test_static.py
 
@@ -131,6 +128,15 @@ jobs:
             --report-md /tmp/monthly-data-check/report.md \
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
+
+      - name: Include Percorsi Versilia
+        run: python scripts/copy_percorsi_dist.py
+
+      - name: Validate Percorsi Versilia
+        run: |
+          node --check percorsi/app.js
+          node --check percorsi/data-loader.js
+          python scripts/test_percorsi_draft.py
 
       - name: Upload draft preview
         if: github.event_name == 'pull_request'
