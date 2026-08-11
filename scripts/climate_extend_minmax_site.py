@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Extend the site Tmin/Tmax JSON from LaMMA 1995-2015 to 2025.
+"""Build the site Tmin/Tmax series for 1975-2025.
 
-LaMMA remains the primary source for 1995-2015. ERA5-Land supplies 2016-2025.
-Independent SIR observations are used as a gate on temporal behaviour: when
-SIR supports ERA5-Land over the divergent LaMMA Tmin/Tmax trends, the ERA5
-trend is preserved and only the level is anchored to the recent LaMMA overlap.
+LaMMA remains the primary source for 1995-2015. ERA5-Land supplies 1975-1994
+and 2016-2025. Independent SIR observations are used as a gate on temporal
+behaviour: when SIR supports ERA5-Land over the divergent LaMMA Tmin/Tmax
+trends, the ERA5 trend is preserved and only the level is anchored to the
+recent LaMMA overlap.
 """
 from __future__ import annotations
 
@@ -18,7 +19,7 @@ import pandas as pd
 VARS = {"tmin": "tmin_mean_c", "tmax": "tmax_mean_c"}
 OVERLAP_YEARS = list(range(1995, 2016))
 HANDOVER_YEARS = list(range(2011, 2016))
-FULL_YEARS = list(range(1995, 2026))
+FULL_YEARS = list(range(1975, 2026))
 
 
 def linear_slope_per_decade(years: np.ndarray, values: np.ndarray) -> float:
@@ -122,19 +123,30 @@ def main() -> int:
     sir_gate = load_sir_gate(args.sir_comparison)
 
     output = {
-        "version": "poc-3",
+        "version": "poc-4",
         "status": "draft",
-        "coverage": {"from": 1995, "to": 2025},
+        "coverage": {"from": 1975, "to": 2025},
         "source": "Consorzio LaMMA 1 km + Copernicus ERA5-Land ARCO hourly reanalysis",
         "method": (
-            "1995-2015 LaMMA con pesatura frazionaria; 2016-2025 ERA5-Land ARCO orario, "
-            "Tmin/Tmax giornaliere calcolate localmente da 24 campioni UTC e pesatura "
-            "frazionaria. Il trend temporale ERA5-Land viene preservato perché il confronto "
-            "indipendente con SIR lo supporta rispetto alla deriva LaMMA; il solo livello viene "
-            "raccordato con un offset comunale medio sul quinquennio 2011-2015."
+            "1975-1994 e 2016-2025 ERA5-Land ARCO orario; 1995-2015 LaMMA con "
+            "pesatura frazionaria. Le Tmin/Tmax giornaliere ERA5-Land sono calcolate "
+            "localmente da 24 campioni UTC e aggregate con pesatura frazionaria comunale. "
+            "Il trend temporale ERA5-Land viene preservato perché il confronto indipendente "
+            "con SIR lo supporta rispetto alla deriva LaMMA; il solo livello ERA5-Land viene "
+            "raccordato con un offset comunale medio sul quinquennio 2011-2015, applicato "
+            "in modo costante sia al tratto precedente al 1995 sia a quello successivo al 2015."
         ),
         "definition": base.get("definition", {}),
         "sourcePeriods": [
+            {
+                "from": 1975,
+                "to": 1994,
+                "class": "CALIBRATED_REANALYSIS",
+                "detail": (
+                    "Copernicus ERA5-Land ARCO orario; Tmin/Tmax giornaliere calcolate "
+                    "localmente dalla temperatura a 2 m; offset di livello 2011-2015"
+                ),
+            },
             {
                 "from": 1995,
                 "to": 2015,
@@ -154,11 +166,13 @@ def main() -> int:
         "municipalities": {},
     }
     diagnostics = {
+        "coverage": [1975, 2025],
         "overlap": [1995, 2015],
         "handover_anchor": [2011, 2015],
         "calibration": (
             "constant municipal level offset from mean LaMMA-minus-ERA5 residual in 2011-2015; "
-            "ERA5 temporal evolution preserved after independent SIR validation"
+            "the same offset is applied to ERA5-Land in 1975-1994 and 2016-2025; ERA5 temporal "
+            "evolution is preserved after independent SIR validation"
         ),
         "bias_sign": "estimate minus LaMMA",
         "residual_sign": "LaMMA minus estimate",
@@ -176,17 +190,17 @@ def main() -> int:
 
     for municipality, series in base["municipalities"].items():
         er = era5[
-            (era5.municipality == municipality) & era5.year.between(1995, 2025)
+            (era5.municipality == municipality) & era5.year.between(1975, 2025)
         ].sort_values("year")
         if er.year.tolist() != FULL_YEARS:
-            raise SystemExit(f"{municipality}: ERA5 coverage is not 1995-2025")
+            raise SystemExit(f"{municipality}: ERA5 coverage is not 1975-2025")
 
         offsets = {}
         municipality_diag = {}
         result = {"years": FULL_YEARS.copy()}
         for site_key, csv_key in VARS.items():
             lamma_values = lamma_overlap(series, site_key)
-            raw_overlap = er[er.year <= 2015][csv_key].to_numpy(dtype=float)
+            raw_overlap = er[er.year.between(1995, 2015)][csv_key].to_numpy(dtype=float)
             residual = lamma_values - raw_overlap
             full_mean_offset = float(np.mean(residual))
             handover_offset = float(np.mean(residual[handover_mask]))
@@ -222,8 +236,9 @@ def main() -> int:
                 },
             }
 
+            pre = er[er.year <= 1994][csv_key].to_numpy(dtype=float) + handover_offset
             post = er[er.year >= 2016][csv_key].to_numpy(dtype=float) + handover_offset
-            values = np.concatenate([lamma_values, post])
+            values = np.concatenate([pre, lamma_values, post])
             result[site_key] = [round(float(value), 3) for value in values]
 
         result["latestComplete"] = {
@@ -247,9 +262,10 @@ def main() -> int:
         "mean_handover_mae_c": float(np.mean(handover_maes)),
         "max_abs_same_year_gap_2015_c": float(max(endpoint_gaps)),
         "note": (
-            "The large 1995-2015 LaMMA-vs-ERA5 residual trend is not propagated beyond 2015. "
-            "Independent SIR anomaly/trend diagnostics support ERA5-Land temporal evolution; "
-            "LaMMA is therefore used to anchor the handover level over 2011-2015 only."
+            "The large 1995-2015 LaMMA-vs-ERA5 residual trend is not propagated outside the "
+            "LaMMA interval. Independent SIR anomaly/trend diagnostics support ERA5-Land "
+            "temporal evolution; LaMMA therefore anchors the ERA5 level over 2011-2015 only, "
+            "with one constant municipal offset used for both 1975-1994 and 2016-2025."
         ),
     }
 
@@ -265,7 +281,7 @@ def main() -> int:
     )
     print(
         f"[minmax-site] wrote {len(output['municipalities'])} municipalities, "
-        f"1995-2025 -> {out}"
+        f"1975-2025 -> {out}"
     )
     return 0
 
