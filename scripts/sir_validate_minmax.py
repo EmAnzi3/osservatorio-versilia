@@ -19,7 +19,10 @@ from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-from sir_validate_climate import BASE, END_YEAR, START_YEAR, STATIONS, fetch_text, parse_station_panel
+from sir_validate_climate import BASE, STATIONS, fetch_text, parse_station_panel
+
+VALIDATION_FROM = 1995
+VALIDATION_TO = 2015
 
 
 def parse_temperature_extremes(text: str, year: int) -> dict:
@@ -120,7 +123,9 @@ def main() -> int:
         available = [
             y
             for y in panel["years"]
-            if START_YEAR <= y["year"] <= END_YEAR and y["sensor"] == "termo"
+            if VALIDATION_FROM <= y["year"] <= VALIDATION_TO
+            and y["sensor"] == "termo"
+            and y["validation_status"] == "VALIDATED"
         ]
         for y in available:
             tasks.append(
@@ -131,7 +136,7 @@ def main() -> int:
                 }
             )
         print(
-            f"[sir-minmax] {cfg['station_label']}: {len(available)} years available",
+            f"[sir-minmax] {cfg['station_label']}: {len(available)} validated overlap years",
             flush=True,
         )
 
@@ -173,10 +178,10 @@ def main() -> int:
 
     meta = {
         "source": "Regione Toscana - Servizio Idrologico Regionale (SIR)",
-        "period_requested": [START_YEAR, END_YEAR],
+        "period_requested": [VALIDATION_FROM, VALIDATION_TO],
         "selection_note": (
-            "All available temperature years are extracted; strict comparison uses "
-            "annual pages marked VALIDATED and >=95% complete daily Tmin/Tmax pairs."
+            "Only panel years marked VALIDATED in the LaMMA/ERA5 overlap are requested; "
+            "strict comparison also requires the annual page to be VALIDATED and >=95% complete."
         ),
         "station_metadata": metadata,
         "rows": len(rows),
