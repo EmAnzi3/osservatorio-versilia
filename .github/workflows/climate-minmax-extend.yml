@@ -19,7 +19,7 @@ permissions:
 jobs:
   acquire-minmax:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 120
     env:
       CDS_API_TOKEN: ${{ secrets.CDS_API_TOKEN }}
     strategy:
@@ -54,7 +54,7 @@ jobs:
             echo "CDS_API_TOKEN is not configured" >&2
             exit 2
           fi
-      - name: Retrieve native ERA5-Land hourly temperature
+      - name: Retrieve official ERA5-Land daily Tmin Tmax
         run: |
           mkdir -p reports/runtime/minmax/raw
           python scripts/era5_land_minmax_history.py \
