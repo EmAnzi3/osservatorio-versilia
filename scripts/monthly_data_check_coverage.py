@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import re
 import sys
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +16,52 @@ if str(SCRIPT_DIR) not in sys.path:
 import monthly_data_check as base  # noqa: E402
 
 ORIGINAL_VALIDATE = base.validate_dataset
+ORIGINAL_CANONICAL_URL = base.canonical_url
+ORIGINAL_COMPARE_STATES = base.compare_states
 COVERAGE_RE = re.compile(r"^(\d+)\s*/\s*(\d+)$")
+
+# Il portale del Dipartimento delle Finanze aggiunge a ogni accesso un parametro
+# `t` variabile alla stessa pagina. Non rappresenta un cambio di fonte e non deve
+# quindi generare una segnalazione mensile di redirect.
+VOLATILE_REDIRECT_QUERY_PARAMS = {
+    ("www1.finanze.gov.it", "/finanze/analisi_stat/public/index.php"): {"t"},
+}
+
+
+def canonical_url(value: str) -> str:
+    parsed = urllib.parse.urlsplit(value.strip())
+    ignored = VOLATILE_REDIRECT_QUERY_PARAMS.get(
+        (parsed.netloc.lower(), parsed.path or "/"),
+        set(),
+    )
+    if ignored:
+        query_pairs = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+        filtered_query = urllib.parse.urlencode(
+            [(key, item) for key, item in query_pairs if key.lower() not in ignored]
+        )
+        value = urllib.parse.urlunsplit(
+            (parsed.scheme, parsed.netloc, parsed.path, filtered_query, parsed.fragment)
+        )
+    return ORIGINAL_CANONICAL_URL(value)
+
+
+def compare_states(
+    previous: dict[str, Any], current: dict[str, dict[str, Any]]
+) -> dict[str, list[dict[str, Any]]]:
+    """Normalizza anche la baseline precedente prima di confrontare i redirect."""
+    prepared_previous = copy.deepcopy(previous)
+    previous_sources = prepared_previous.get("sources")
+    if isinstance(previous_sources, dict):
+        for item in previous_sources.values():
+            if isinstance(item, dict) and item.get("finalUrl"):
+                item["finalUrl"] = canonical_url(str(item["finalUrl"]))
+
+    prepared_current = copy.deepcopy(current)
+    for item in prepared_current.values():
+        if isinstance(item, dict) and item.get("finalUrl"):
+            item["finalUrl"] = canonical_url(str(item["finalUrl"]))
+
+    return ORIGINAL_COMPARE_STATES(prepared_previous, prepared_current)
 
 
 def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
@@ -85,6 +131,8 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
 
 
 def main(argv: list[str] | None = None) -> int:
+    base.canonical_url = canonical_url
+    base.compare_states = compare_states
     base.validate_dataset = validate_dataset
     if argv is None:
         return base.main()
