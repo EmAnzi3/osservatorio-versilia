@@ -39,6 +39,14 @@
       .join('');
   }
 
+  function compareQuick(stats) {
+    const v = stats.versilia;
+    return `<aside class="slow-mobility-quick" data-percorsi-quick="versilia" aria-label="Percorsi e mobilità lenta">
+      <div class="slow-mobility-quick-copy"><span>Mobilità lenta</span><strong>${Number(v.routes)} percorsi · ${Math.round(Number(v.km))} km</strong><small>Sentieri, cammini e ciclovie verificati nei 7 Comuni.</small></div>
+      <div class="slow-mobility-quick-actions"><a href="#percorsi-statistiche">Statistiche</a><a href="${mapUrl()}">Mappa →</a></div>
+    </aside>`;
+  }
+
   function compareSection(stats) {
     const rows = Object.values(stats.municipalities)
       .sort((a, b) => a.name.localeCompare(b.name, 'it'))
@@ -49,7 +57,7 @@
         <td><a href="${mapUrl(item.name)}">Vedi sulla mappa →</a></td>
       </tr>`).join('');
     const v = stats.versilia;
-    return `<section class="slow-mobility-overview page-width" data-percorsi-stats="versilia">
+    return `<section id="percorsi-statistiche" class="slow-mobility-overview page-width" data-percorsi-stats="versilia">
       <div class="slow-mobility-heading">
         <div><span class="overline">Mobilità lenta</span><h2>Percorsi, cammini e ciclovie della Versilia</h2><p>Una lettura statistica del patrimonio cartografico già verificato, affiancata alla mappa interattiva e ai download delle tracce.</p></div>
         <a class="slow-mobility-link" href="${mapUrl()}">Esplora la cartografia <span aria-hidden="true">→</span></a>
@@ -95,10 +103,19 @@
   function syncCompare(stats) {
     if (document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'mobilita') return;
     const main = document.querySelector('main[data-theme="mobilita"]');
-    if (!main || main.querySelector('[data-percorsi-stats="versilia"]')) return;
-    const hero = main.querySelector('.topic-hero');
-    if (!hero) return;
-    hero.insertAdjacentHTML('afterend', compareSection(stats));
+    if (!main) return;
+
+    if (!main.querySelector('[data-percorsi-quick="versilia"]')) {
+      const catalog = main.querySelector('.topic-controls .metric-catalog');
+      if (catalog) catalog.insertAdjacentHTML('afterend', compareQuick(stats));
+    }
+
+    if (!main.querySelector('[data-percorsi-stats="versilia"]')) {
+      const tools = main.querySelector('#compare-tools');
+      const dashboard = main.querySelector('.topic-dashboard');
+      if (tools) tools.insertAdjacentHTML('afterend', compareSection(stats));
+      else if (dashboard) dashboard.insertAdjacentHTML('afterend', compareSection(stats));
+    }
   }
 
   function syncTown(stats) {
@@ -115,9 +132,14 @@
     if (existing) return;
     const markup = townSection(stats, document.body.dataset.town || '');
     if (!markup) return;
-    const benchmark = topic.querySelector('.town-benchmark, .benchmark-unavailable');
-    if (benchmark) benchmark.insertAdjacentHTML('beforebegin', markup);
-    else topic.insertAdjacentHTML('beforeend', markup);
+
+    /* Il riepilogo comunale deve essere visibile nel flusso principale,
+       subito dopo il catalogo indicatori e prima del dato selezionato. */
+    const catalog = topic.querySelector(':scope > .metric-switch.metric-catalog');
+    const primary = topic.querySelector(':scope > .town-metric-layout');
+    if (catalog) catalog.insertAdjacentHTML('afterend', markup);
+    else if (primary) primary.insertAdjacentHTML('beforebegin', markup);
+    else topic.insertAdjacentHTML('afterbegin', markup);
   }
 
   function syncMapDeepLink() {
