@@ -46,6 +46,25 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def require_no_horizontal_overflow(page, label: str, tolerance: int = 2) -> None:
+    dims = page.evaluate("""() => ({
+      viewport: window.innerWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      bodyWidth: document.body.scrollWidth
+    })""")
+    actual = max(int(dims["documentWidth"]), int(dims["bodyWidth"]))
+    require(actual <= int(dims["viewport"]) + tolerance,
+            f"Overflow orizzontale mobile in {label}: viewport={dims['viewport']} contenuto={actual}")
+
+
+def require_box_inside_viewport(page, selector: str, label: str, tolerance: int = 2) -> None:
+    box = page.locator(selector).bounding_box()
+    require(box is not None, f"Elemento mobile non misurabile: {label}")
+    width = page.evaluate("window.innerWidth")
+    require(box["x"] >= -tolerance and box["x"] + box["width"] <= width + tolerance,
+            f"Elemento mobile fuori viewport ({label}): {box}, viewport={width}")
+
+
 def main() -> None:
     map_app = (DIST / "percorsi" / "app.js").read_text(encoding="utf-8")
     map_index = (DIST / "percorsi" / "index.html").read_text(encoding="utf-8")
@@ -90,9 +109,67 @@ def main() -> None:
         legend_colors = page.locator('.legend .leg span').evaluate_all("els => els.map(el => el.style.background)")
         require(len(set(legend_colors)) == 4, f"Palette legenda non sufficientemente distinta: {legend_colors}")
 
+        # Verifica mobile esplicita: la nuova architettura deve restare leggibile e usabile
+        # senza overflow della pagina, CTA perse o controlli cartografici fuori viewport.
+        page.set_viewport_size({"width": 390, "height": 844})
+
+        page.goto(base + "confronta/mobilita/?indicatore=slowMobilityRoutes", wait_until="networkidle")
+        require_no_horizontal_overflow(page, "confronto Mobilità lenta")
+        require(page.locator('[data-section="mobilita-lenta"]').count() == 1,
+                "Sezione Mobilità lenta assente su mobile")
+        require(page.locator('[data-metric="slowMobilityRoutes"]').is_visible(),
+                "Percorsi disponibili non selezionabile su mobile")
+        require(page.locator('.comparison-axis').is_visible(),
+                "Grafico confronto Mobilità lenta non visibile su mobile")
+
+        page.goto(base + "comuni/camaiore/?tema=mobilita&indicatore=slowMobilityRoutes", wait_until="networkidle")
+        require_no_horizontal_overflow(page, "scheda comunale Camaiore / Mobilità lenta")
+        require(page.locator('.slow-mobility-map-entry').is_visible(),
+                "Richiamo alla cartografia assente su mobile nella scheda comunale")
+        require_box_inside_viewport(page, '.slow-mobility-map-entry a', "CTA Esplora sulla mappa")
+        page.locator('[data-metric="slowMobilityBici"]').click()
+        page.wait_for_timeout(150)
+        mobile_href = page.locator('.slow-mobility-map-entry a').get_attribute('href') or ''
+        require("comune=Camaiore" in mobile_href and "tipo=bicycle" in mobile_href,
+                f"Cambio indicatore mobile non aggiorna il deep link cartografico: {mobile_href}")
+
+        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        require_no_horizontal_overflow(page, "Sicurezza e territorio")
+        require(page.locator('.crime-context').is_visible(),
+                "Criminalità e delitti denunciati non visibile su mobile")
+        require_box_inside_viewport(page, '.crime-context', "box Criminalità e delitti denunciati")
+
+        page.goto(base + "percorsi/?comune=Camaiore&tipo=trekking", wait_until="networkidle")
+        require_no_horizontal_overflow(page, "cartografia Percorsi")
+        require(page.locator('#municipality').input_value() == "Camaiore",
+                "Filtro Comune non applicato nella cartografia mobile")
+        require(page.locator('.chip.active').get_attribute('data-mode') == "trekking",
+                "Filtro Trekking non applicato nella cartografia mobile")
+        require(page.locator('.map-back').is_visible(),
+                "Ritorno a Mobilità non visibile nella cartografia mobile")
+        require_box_inside_viewport(page, '.map-back', "Torna a Mobilità e infrastrutture")
+        map_box = page.locator('#map').bounding_box()
+        require(map_box is not None and map_box["width"] >= 380 and map_box["height"] >= 450,
+                f"Mappa troppo piccola o collassata su mobile: {map_box}")
+        require(page.locator('.leaflet-control-zoom').is_visible(), "Zoom Leaflet non visibile su mobile")
+        require(page.locator('.leaflet-control-home').is_visible(), "Home Leaflet non visibile su mobile")
+        require(page.locator('.legend .leg').count() == 4 and page.locator('.legend').is_visible(),
+                "Legenda cartografica mobile incompleta")
+        require_box_inside_viewport(page, '.legend', "legenda cartografica")
+
+        # Seconda larghezza reale, più stretta, per intercettare regressioni tipiche Android.
+        page.set_viewport_size({"width": 360, "height": 800})
+        page.goto(base + "percorsi/?comune=Camaiore&tipo=bicycle", wait_until="networkidle")
+        require_no_horizontal_overflow(page, "cartografia Percorsi 360px")
+        require(page.locator('.chip.active').get_attribute('data-mode') == "bicycle",
+                "Filtro Bici non applicato a 360px")
+        narrow_map = page.locator('#map').bounding_box()
+        require(narrow_map is not None and narrow_map["width"] >= 350,
+                f"Cartografia non occupa correttamente la larghezza a 360px: {narrow_map}")
+
         browser.close()
 
-    print("Rifiniture Percorsi verificate: assi interi, CTA contestuale, ordine Sicurezza e palette distinta.")
+    print("Rifiniture Percorsi verificate anche su mobile: 390px e 360px senza overflow, CTA e cartografia operative.")
 
 
 if __name__ == "__main__":
