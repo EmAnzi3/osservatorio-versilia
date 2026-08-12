@@ -2,8 +2,8 @@
 """Prepara in CI l'architettura draft Percorsi senza contaminare il dataset canonico.
 
 Il passaggio viene eseguito solo per la seconda build della PR Percorsi:
-- integra Mobilita lenta nella normale grammatica degli indicatori;
-- sposta sicurezza stradale e criminalita nel tema Sicurezza e territorio;
+- integra Mobilità lenta nella normale grammatica degli indicatori;
+- sposta sicurezza stradale e criminalità nel tema Sicurezza e territorio;
 - aggiunge i cinque indicatori cartografici derivati dal dataset validato;
 - rende disponibile la route /confronta/sicurezza/;
 - rimuove i vecchi box speciali Percorsi dal renderer.
@@ -62,13 +62,13 @@ def add_slow_metric(data: dict, stats: dict, key: str, short: str, label: str, f
     if field == "routes":
         description = (
             "Numero di sentieri, cammini e percorsi ciclabili pubblici A0/B1 che attraversano il territorio comunale. "
-            "Uno stesso percorso puo interessare piu Comuni."
+            "Uno stesso percorso può interessare più Comuni."
         )
         unique_note = f"In Versilia sono pubblicati {unique_total} percorsi unici; i conteggi comunali non sono sommabili."
     else:
         description = (
             f"Numero di {noun} pubblici A0/B1 che attraversano il territorio comunale. "
-            "Uno stesso percorso puo interessare piu Comuni."
+            "Uno stesso percorso può interessare più Comuni."
         )
         unique_note = f"In Versilia sono pubblicati {unique_total} {noun} unici; i conteggi comunali non sono sommabili."
 
@@ -95,7 +95,7 @@ def add_slow_metric(data: dict, stats: dict, key: str, short: str, label: str, f
         "method": {
             "type": "Elaborazione cartografica Osservatorio Versilia",
             "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
-            "caveat": "I conteggi comunali non sono additivi: uno stesso percorso puo attraversare piu Comuni. I chilometri comunali non sono pubblicati finche le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+            "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
             "coverage": "7/7",
         },
     }
@@ -106,7 +106,7 @@ def augment_site_data() -> None:
     stats = json.loads(STATS_PATH.read_text(encoding="utf-8"))
 
     mobility = data["themes"]["mobilita"]
-    mobility["description"] = "Pendolarismo, parco veicolare, ricarica elettrica, connettivita digitale e mobilita lenta."
+    mobility["description"] = "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta."
     mobility["metrics"] = [key for key in mobility["metrics"] if key != "roadInjuries"]
     mobility["sections"] = [section for section in mobility["sections"] if section.get("key") != "sicurezza"]
 
@@ -116,7 +116,7 @@ def augment_site_data() -> None:
     mobility["metrics"].extend(slow_keys)
     mobility["sections"].append({
         "key": "mobilita-lenta",
-        "label": "Mobilita lenta",
+        "label": "Mobilità lenta",
         "description": "Sentieri, cammini e percorsi ciclabili pubblici verificati nel territorio.",
         "metrics": slow_keys,
     })
@@ -125,7 +125,7 @@ def augment_site_data() -> None:
     road = data["metrics"]["roadInjuries"]
     road["meta"]["theme"] = "sicurezza"
     road["method"]["caveat"] = (
-        "Il numero di feriti dipende anche dall'intensita del traffico e dalla funzione stradale del territorio; "
+        "Il numero di feriti dipende anche dall'intensità del traffico e dalla funzione stradale del territorio; "
         "non misura da solo il rischio individuale."
     )
 
@@ -133,8 +133,8 @@ def augment_site_data() -> None:
         "key": "sicurezza",
         "number": "07",
         "label": "Sicurezza e territorio",
-        "question": "Quanto e sicuro il territorio e quali fenomeni emergono?",
-        "description": "Sicurezza stradale e criminalita, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.",
+        "question": "Quanto è sicuro il territorio e quali fenomeni emergono?",
+        "description": "Sicurezza stradale e criminalità, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.",
         "metrics": ["roadInjuries"],
         "sections": [{
             "key": "sicurezza-stradale",
@@ -154,7 +154,6 @@ def augment_site_data() -> None:
         theme["number"] = f"{index:02d}"
     data["themes"] = ordered
 
-    # Mantiene anche il riepilogo cartografico usato dalla pagina mappa.
     data["percorsi"] = stats
     SITE_DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -164,7 +163,6 @@ def patch_app_parts() -> None:
     if len(files) != 7:
         raise RuntimeError(f"Attesi 7 app-parts, trovati {len(files)}")
 
-    # Icona per il nuovo tema.
     p0 = files[0]
     text = p0.read_text(encoding="utf-8")
     if "sicurezza:" not in text:
@@ -175,7 +173,6 @@ def patch_app_parts() -> None:
             raise RuntimeError("Impossibile aggiungere icona Sicurezza")
     p0.write_text(text, encoding="utf-8")
 
-    # Rimuove i vecchi box speciali e sposta la criminalita nel nuovo tema.
     for path in files:
         text = path.read_text(encoding="utf-8")
         text = text.replace("${themeKey === 'mobilita' ? percorsiQuickMarkup(data) : ''}", "")
@@ -185,8 +182,6 @@ def patch_app_parts() -> None:
         text = text.replace("themeKey === 'mobilita' ? crimeMarkup(data) : ''", "themeKey === 'sicurezza' ? crimeMarkup(data) : ''")
         text = text.replace("if (themeKey === 'mobilita') installCrimeInteractions(data);", "if (themeKey === 'sicurezza') installCrimeInteractions(data);")
 
-        # Per gli indicatori di mobilita lenta la cartografia e un'azione dell'indicatore,
-        # non un box autonomo dentro la pagina.
         text = text.replace(
             'benchmark.innerHTML = benchmarkMarkup(metric, aggregate, unit, null);',
             "benchmark.innerHTML = metricKey.startsWith('slowMobility') ? '' : benchmarkMarkup(metric, aggregate, unit, null);",
@@ -222,7 +217,7 @@ def main() -> None:
     augment_site_data()
     patch_app_parts()
     patch_build_routes()
-    print("Architettura draft pronta: Mobilita lenta integrata, Sicurezza e territorio separata, renderer senza box speciali.")
+    print("Architettura draft pronta: Mobilità lenta integrata, Sicurezza e territorio separata, renderer senza box speciali.")
 
 
 if __name__ == "__main__":
