@@ -11,6 +11,7 @@ DIST = ROOT / "dist"
 SOURCE = ROOT / "percorsi"
 TARGET = DIST / "percorsi"
 INTEGRATION_ASSETS = ("percorsi-integration.css", "percorsi-integration.js")
+INTEGRATION_VERSION = "20260812-2"
 TOWN_SLUGS = (
     "camaiore",
     "forte-dei-marmi",
@@ -28,8 +29,8 @@ def inject_integration_assets(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
     prefix = os.path.relpath(DIST, path.parent).replace(os.sep, "/")
     relative_root = "" if prefix == "." else f"{prefix}/"
-    css = f"{relative_root}assets/percorsi-integration.css?v=20260812-1"
-    js = f"{relative_root}assets/percorsi-integration.js?v=20260812-1"
+    css = f"{relative_root}assets/percorsi-integration.css?v={INTEGRATION_VERSION}"
+    js = f"{relative_root}assets/percorsi-integration.js?v={INTEGRATION_VERSION}"
     if "assets/percorsi-integration.css" not in text:
         text = text.replace("</head>", f'  <link rel="stylesheet" href="{css}">\n</head>')
     if "assets/percorsi-integration.js" not in text:
