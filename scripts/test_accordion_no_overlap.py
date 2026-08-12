@@ -60,8 +60,6 @@ def overlaps(a: dict | None, b: dict | None, tolerance: float = 0.5) -> bool:
 def check_headings(page, label: str) -> int:
     headings = page.locator(".metric-group-heading.ux-section-toggle")
     count = headings.count()
-    if count == 0:
-        return 0
     for index in range(count):
         heading = headings.nth(index)
         title = heading.locator(":scope > strong")
@@ -71,31 +69,21 @@ def check_headings(page, label: str) -> int:
             continue
         tools_box = tools.bounding_box()
         if title.count():
-            require(
-                not overlaps(title.bounding_box(), tools_box),
-                f"Titolo sovrapposto a contatore/chevron in {label}: {heading.inner_text()!r}",
-            )
+            require(not overlaps(title.bounding_box(), tools_box),
+                    f"Titolo sovrapposto a contatore/chevron in {label}: {heading.inner_text()!r}")
         if description.count():
-            require(
-                not overlaps(description.bounding_box(), tools_box),
-                f"Descrizione sovrapposta a contatore/chevron in {label}: {heading.inner_text()!r}",
-            )
+            require(not overlaps(description.bounding_box(), tools_box),
+                    f"Descrizione sovrapposta a contatore/chevron in {label}: {heading.inner_text()!r}")
     return count
 
 
 def main() -> None:
-    compare_pages = sorted(
-        path.parent.name for path in (DIST / "confronta").glob("*/index.html")
-    )
-    town_pages = sorted(
-        path.parent.name for path in (DIST / "comuni").glob("*/index.html")
-    )
-    require(compare_pages, "Pagine di confronto non trovate")
-    require(town_pages, "Pagine comunali non trovate")
+    compare_pages = sorted(path.parent.name for path in (DIST / "confronta").glob("*/index.html"))
+    town_pages = sorted(path.parent.name for path in (DIST / "comuni").glob("*/index.html"))
+    require(compare_pages and town_pages, "Pagine di confronto/comunali non trovate")
 
     tested_headings = 0
     tested_pages = 0
-
     with server(DIST) as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1680, "height": 1000})
@@ -108,46 +96,32 @@ def main() -> None:
                 tested_headings += count
 
         for town in town_pages:
-            page.goto(base + f"comuni/{town}/?tema=mobilita", wait_until="networkidle")
-            count = check_headings(page, f"comuni/{town}?tema=mobilita")
-            if count:
-                tested_pages += 1
-                tested_headings += count
+            for theme in ("mobilita", "sicurezza"):
+                page.goto(base + f"comuni/{town}/?tema={theme}", wait_until="networkidle")
+                count = check_headings(page, f"comuni/{town}?tema={theme}")
+                if count:
+                    tested_pages += 1
+                    tested_headings += count
 
         require(tested_pages > 0 and tested_headings > 0,
                 "Il test non ha trovato alcuna pagina con fisarmoniche da verificare")
 
-        # Il nuovo ingresso Percorsi deve essere nel flusso visibile della pagina Mobilità.
-        page.goto(base + "confronta/mobilita/", wait_until="networkidle")
-        quick = page.locator('[data-percorsi-quick="versilia"]')
-        overview = page.locator('[data-percorsi-stats="versilia"]')
-        require(quick.count() == 1 and quick.is_visible(), "Ingresso compatto Percorsi non visibile in Mobilità")
-        require(overview.count() == 1 and overview.is_visible(), "Statistiche Percorsi non visibili in Mobilità")
-        require(quick.locator('a[href="#percorsi-statistiche"]').count() == 1,
-                "Link rapido alle statistiche Percorsi assente")
+        page.goto(base + "confronta/mobilita/?indicatore=slowMobilityRoutes", wait_until="networkidle")
+        slow = page.locator('[data-section="mobilita-lenta"]')
+        require(slow.count() == 1 and slow.is_visible(),
+                "Mobilità lenta deve essere una sezione della fisarmonica standard")
+        require(page.locator('[data-percorsi-quick], [data-percorsi-stats]').count() == 0,
+                "Non devono esistere box Percorsi paralleli alla grammatica degli indicatori")
 
-        page.goto(base + "comuni/camaiore/?tema=mobilita", wait_until="networkidle")
-        order = page.evaluate("""() => {
-          const topic = document.querySelector('#town-topic');
-          if (!topic) return null;
-          const children = [...topic.children];
-          return {
-            catalog: children.indexOf(topic.querySelector(':scope > .metric-switch.metric-catalog')),
-            paths: children.indexOf(topic.querySelector(':scope > [data-percorsi-stats="town"]')),
-            metric: children.indexOf(topic.querySelector(':scope > .town-metric-layout'))
-          };
-        }""")
-        require(order is not None, "Struttura della scheda comunale non trovata")
-        require(order["catalog"] >= 0 and order["paths"] == order["catalog"] + 1,
-                "Percorsi deve comparire subito dopo il catalogo indicatori comunale")
-        require(order["metric"] > order["paths"],
-                "Percorsi deve precedere il dato comunale selezionato")
+        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        require(page.locator(".crime-context").count() == 1,
+                "Criminalità deve vivere nel tema Sicurezza e territorio")
 
         browser.close()
 
     print(
-        f"Fisarmoniche verificate: {tested_headings} intestazioni su {tested_pages} pagine, "
-        "nessuna sovrapposizione testo/strumenti; Percorsi visibile nel flusso Mobilità."
+        f"Fisarmoniche verificate: {tested_headings} intestazioni su {tested_pages} pagine; "
+        "nessuna sovrapposizione e nuova architettura coerente."
     )
 
 
