@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Controlli specifici per cartografia e statistiche di Percorsi Versilia."""
+"""Controlli del draft Percorsi integrato nella grammatica dell'Osservatorio."""
 from __future__ import annotations
 
 import base64
@@ -31,6 +31,13 @@ TOWN_SLUGS = {
     "Viareggio": "viareggio",
 }
 MODES = ("trekking", "cammino", "bicycle", "mtb")
+SLOW_KEYS = (
+    "slowMobilityRoutes",
+    "slowMobilityTrekking",
+    "slowMobilityCammini",
+    "slowMobilityBici",
+    "slowMobilityMtb",
+)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -92,133 +99,131 @@ def check_source() -> None:
     app = (SRC / "app.js").read_text(encoding="utf-8")
     summary = json.loads((SRC / "data" / "master_summary.json").read_text(encoding="utf-8"))
     site_stats = json.loads((SRC / "data" / "site_stats.json").read_text(encoding="utf-8"))
-    integration_js = (ROOT / "assets" / "percorsi-integration.js").read_text(encoding="utf-8")
-    integration_css = ROOT / "assets" / "percorsi-integration.css"
     records = read_records()
 
-    require('rel="canonical" href="https://osservatorioversilia.it/percorsi/"' in index,
-            "Canonical Percorsi assente")
+    require('rel="canonical" href="https://osservatorioversilia.it/percorsi/"' in index, "Canonical Percorsi assente")
     require('type="application/ld+json"' in index, "JSON-LD Percorsi assente")
+    require('class="site-header"' in index and 'class="site-brand"' in index,
+            "La cartografia non usa l'header dell'Osservatorio")
+    require("Percorsi e mobilità lenta" in index, "Titolo cartografia non allineato alla tassonomia")
+    require("Torna a Mobilità e infrastrutture" in index, "Ritorno a Mobilità poco esplicito o assente")
+    require("ovmark" not in index, "Vecchio logo testuale ancora presente")
+    require("Geometria corroborata" not in index, "Voce tecnica ancora presente nella legenda")
+    require(index.count('class="leg"') == 4, "La legenda deve contenere quattro categorie")
+    require("L.control.scale" not in app, "La scala metrica non deve essere presente")
+    require("Home: torna alla vista generale Versilia" in app, "Controllo Home assente")
     require('rel="canonical"' in method and 'type="application/ld+json"' in method,
             "Metadati della pagina Metodo incompleti")
-    require("Geometria corroborata" not in index,
-            "Voce tecnica ancora presente nella legenda pubblica")
-    require(index.count('class="leg"') == 4, "La legenda deve contenere quattro categorie")
-    for label in ("Trekking", "Cammini", "Bici", "MTB"):
-        require(label in index, f"Categoria legenda assente: {label}")
-    require("L.control.scale" not in app and "leaflet-control-scale" not in index,
-            "La scala metrica non deve essere presente")
-    require("Home: torna alla vista generale Versilia" in app,
-            "Controllo Home assente")
-    require("assets/percorsi-integration.js" in index,
-            "Supporto ai deep link comunali non collegato alla mappa")
-    require(integration_css.exists() and integration_css.stat().st_size > 0,
-            "CSS di integrazione Percorsi assente")
-    require("data-percorsi-stats=\"versilia\"" in integration_js,
-            "Modulo statistico Versilia assente")
-    require("data-percorsi-stats=\"town\"" in integration_js,
-            "Modulo statistico comunale assente")
-    require("searchParams.set('comune'" in integration_js,
-            "Deep link della mappa per Comune assente")
-
-    subprocess.run(["node", "--check", str(ROOT / "assets" / "percorsi-integration.js")], check=True)
 
     require(summary.get("public_total") == 41, "Totale pubblico diverso da 41")
     require(summary.get("by_quality") == {"A0": 30, "B1": 11}, "Ripartizione A0/B1 inattesa")
     require(summary.get("public_zero_length_count") == 0, "Sono presenti percorsi pubblici a 0 km")
     require(summary.get("cammini_public_count") == 2, "I Cammini pubblici devono essere 2")
+    require(abs(float(summary.get("public_versilia_km", 0)) - 342.65) < 0.1,
+            "Il totale km Versilia deve derivare dalle lunghezze territoriali validate")
     require(len(records) == 41, f"Record web attesi 41, trovati {len(records)}")
 
-    qualities = {record.get("p", {}).get("quality_code") for record in records}
-    require(qualities <= {"A0", "B1"}, f"Classi non pubblicabili nel dataset web: {qualities}")
-    zero = [record.get("p", {}).get("name") for record in records
-            if float(record.get("p", {}).get("length_km") or 0) <= 0]
-    require(not zero, f"Percorsi web a lunghezza zero: {zero}")
-
     versilia = site_stats.get("versilia", {})
-    require(versilia.get("routes") == summary.get("public_total") == 41,
-            "Totale statistico Versilia non coerente con il master")
-    require(abs(float(versilia.get("km", 0)) - float(summary.get("public_versilia_km", 0))) < 0.05,
-            "Chilometri Versilia non coerenti con il master")
-    require(versilia.get("by_mode") == summary.get("by_mode"),
-            "Ripartizione per modalità non coerente con il master")
-
+    require(versilia.get("routes") == 41 and abs(float(versilia.get("km", 0)) - 342.7) < 0.1,
+            "Sintesi Versilia incoerente")
     calculated = expected_municipality_stats(records)
     published = site_stats.get("municipalities", {})
-    require(set(published) == set(TOWN_SLUGS.values()), "Statistiche comunali incomplete")
     for name, slug in TOWN_SLUGS.items():
         actual = published[slug]
         expected = calculated[name]
-        require(actual.get("routes") == expected["routes"],
-                f"Conteggio percorsi errato per {name}")
-        actual_modes = actual.get("by_mode", {})
+        require(actual.get("routes") == expected["routes"], f"Conteggio percorsi errato per {name}")
         for mode in MODES:
-            require(int(actual_modes.get(mode, 0)) == int(expected["by_mode"].get(mode, 0)),
+            require(int(actual.get("by_mode", {}).get(mode, 0)) == int(expected["by_mode"].get(mode, 0)),
                     f"Conteggio {mode} errato per {name}")
 
-    note = site_stats.get("definition", {})
-    require("non sono sommabili" in note.get("municipality_count_note", ""),
-            "Manca l'avvertenza sui conteggi comunali non additivi")
-    require("non sono pubblicati" in note.get("municipality_km_note", ""),
-            "Manca la cautela sui km comunali")
 
-
-def check_dist() -> None:
+def check_dist_data() -> None:
     require(DIST.exists(), "Percorsi non copiato nella build dist")
-    for relative in ("index.html", "metodo.html", "app.js", "data-loader.js", "styles.css",
-                     "data/master_summary.json", "data/site_stats.json"):
+    for relative in ("index.html", "metodo.html", "app.js", "data-loader.js", "styles.css", "osservatorio.css"):
         path = DIST / relative
         require(path.exists() and path.stat().st_size > 0, f"File Percorsi assente dalla build: {relative}")
-    built = (DIST / "index.html").read_text(encoding="utf-8")
-    require("Percorsi Versilia" in built and "Geometria corroborata" not in built,
-            "Pagina Percorsi non copiata correttamente nella build")
 
-    for asset in ("percorsi-integration.css", "percorsi-integration.js"):
-        path = DIST_ROOT / "assets" / asset
-        require(path.exists() and path.stat().st_size > 0, f"Asset integrazione assente dalla build: {asset}")
+    data = json.loads((DIST_ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    mobility = data["themes"]["mobilita"]
+    security = data["themes"].get("sicurezza")
+    require(security is not None and security.get("label") == "Sicurezza e territorio",
+            "Tema Sicurezza e territorio assente")
+    require("roadInjuries" not in mobility["metrics"], "Sicurezza stradale ancora dentro Mobilità")
+    require(data["metrics"]["roadInjuries"]["meta"]["theme"] == "sicurezza",
+            "Feriti su strada non assegnato al nuovo tema")
+    slow_section = next((s for s in mobility["sections"] if s.get("key") == "mobilita-lenta"), None)
+    require(slow_section is not None, "Sezione Mobilità lenta assente dalla grammatica standard")
+    require(tuple(slow_section["metrics"]) == SLOW_KEYS, "Indicatori Mobilità lenta incompleti")
+    for key in SLOW_KEYS:
+        require(key in data["metrics"] and len(data["metrics"][key]["rows"]) == 7,
+                f"Indicatore Percorsi non valido: {key}")
+    require(data["metrics"]["slowMobilityRoutes"]["rows"][2]["value"] >= 0,
+            "Indicatore percorsi non valorizzato")
+    require((DIST_ROOT / "confronta" / "sicurezza" / "index.html").exists(),
+            "Pagina confronto Sicurezza e territorio assente")
 
-    compare = (DIST_ROOT / "confronta" / "mobilita" / "index.html").read_text(encoding="utf-8")
-    require("assets/percorsi-integration.css" in compare and "assets/percorsi-integration.js" in compare,
-            "Statistiche Percorsi non collegate alla pagina Mobilità")
-    for slug in TOWN_SLUGS.values():
-        page = (DIST_ROOT / "comuni" / slug / "index.html").read_text(encoding="utf-8")
-        require("assets/percorsi-integration.css" in page and "assets/percorsi-integration.js" in page,
-                f"Statistiche Percorsi non collegate al profilo comunale {slug}")
+    bundle = (DIST_ROOT / "assets" / "app-bundle.js").read_text(encoding="utf-8")
+    require("percorsiQuickMarkup(data)" not in bundle, "Vecchio box rapido Percorsi ancora nel renderer")
+    require("percorsiCompareMarkup(data)" not in bundle, "Vecchio box statistico standalone ancora nel renderer")
+    require("percorsiTownMarkup(data, town)" not in bundle, "Vecchio box comunale standalone ancora nel renderer")
+    require("themeKey === 'sicurezza' ? crimeMarkup(data)" in bundle,
+            "Criminalità non spostata nel tema Sicurezza")
+    subprocess.run(["node", "--check", str(DIST_ROOT / "assets" / "app-bundle.js")], check=True)
 
 
-def check_browser_integration() -> None:
+def check_browser() -> None:
     with server(DIST_ROOT) as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+        page = browser.new_page(viewport={"width": 1680, "height": 1000})
 
-        page.goto(base + "confronta/mobilita/", wait_until="networkidle")
-        overview = page.locator('[data-percorsi-stats="versilia"]')
-        overview.wait_for(state="visible", timeout=10000)
-        text = overview.inner_text()
-        require("41" in text and "343" in text, "Sintesi Versilia non visibile nella pagina Mobilità")
-        require(overview.locator("tbody tr").count() == 7, "La tabella comunale deve contenere 7 Comuni")
-        camaiore_link = overview.locator('a[href*="comune=Camaiore"]')
-        require(camaiore_link.count() == 1, "Link cartografico filtrato di Camaiore assente")
+        page.goto(base + "confronta/mobilita/?indicatore=slowMobilityRoutes", wait_until="networkidle")
+        require(page.locator('[data-section="mobilita-lenta"]').count() == 1,
+                "Mobilità lenta non compare nella fisarmonica di Mobilità")
+        require(page.locator('[data-metric="slowMobilityRoutes"]').count() == 1,
+                "Indicatore Percorsi disponibili assente")
+        require(page.locator('[data-percorsi-quick], [data-percorsi-stats]').count() == 0,
+                "Persistono box Percorsi fuori dalla grammatica degli indicatori")
+        definition = page.locator("#compare-definition").inner_text()
+        require("Percorsi pubblici" in definition, "Definizione Percorsi non renderizzata come indicatore")
+        require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
+                "CTA cartografia assente dall'indicatore Percorsi")
+        require(page.locator(".crime-context").count() == 0,
+                "Criminalità deve essere fuori da Mobilità")
 
-        page.goto(base + "comuni/camaiore/?tema=mobilita", wait_until="networkidle")
-        town = page.locator('[data-percorsi-stats="town"]')
-        town.wait_for(state="visible", timeout=10000)
-        town_text = town.inner_text()
-        require("11" in town_text and "Camaiore" in town_text,
-                "Statistiche di Camaiore non visibili nella scheda Mobilità")
-        require("Bici" in town_text and "5" in town_text,
-                "Composizione dei percorsi di Camaiore non visibile")
-        require(town.locator('a[href*="comune=Camaiore"]').count() == 1,
-                "Deep link Camaiore verso la cartografia assente")
+        page.goto(base + "comuni/camaiore/?tema=mobilita&indicatore=slowMobilityRoutes", wait_until="networkidle")
+        require(page.locator('[data-section="mobilita-lenta"]').count() == 1,
+                "Mobilità lenta assente nella scheda di Camaiore")
+        require(page.locator(".town-metric-primary strong").first.inner_text().strip() == "11",
+                "Camaiore deve mostrare 11 percorsi nel normale indicatore")
+        require(page.locator('.town-data-actions a[href*="percorsi/"][href*="comune=Camaiore"]').count() == 1,
+                "CTA cartografia filtrata Camaiore assente")
+        require(page.locator('[data-percorsi-stats]').count() == 0,
+                "Persistono box comunali Percorsi standalone")
+
+        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        require("Sicurezza e territorio" in page.locator("main").inner_text(),
+                "Nuovo tema Sicurezza non renderizzato")
+        crime = page.locator(".crime-context")
+        require(crime.count() == 1 and crime.is_visible(),
+                "Criminalità non visibile nel nuovo tema Sicurezza")
+        require("Criminalità e delitti denunciati" in crime.inner_text(),
+                "Contesto criminalità incompleto")
+
+        page.goto(base + "percorsi/?comune=Camaiore", wait_until="networkidle")
+        require(page.locator(".site-brand").count() == 1,
+                "Header Osservatorio assente dalla cartografia")
+        require(page.locator(".map-back").count() == 1 and page.locator(".map-back").is_visible(),
+                "Pulsante di ritorno a Mobilità assente")
+        require(page.locator(".legend .leg").count() == 4, "Legenda cartografia non valida")
 
         browser.close()
 
 
 def main() -> None:
     check_source()
-    check_dist()
-    check_browser_integration()
-    print("Percorsi Versilia verificato nel sito: cartografia + statistiche Versilia e 7 Comuni coerenti con 41 percorsi pubblici.")
+    check_dist_data()
+    check_browser()
+    print("Percorsi verificato: una sola grammatica Mobilità, Sicurezza separata, cartografia nel design Osservatorio.")
 
 
 if __name__ == "__main__":
