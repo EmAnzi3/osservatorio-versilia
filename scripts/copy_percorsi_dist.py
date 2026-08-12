@@ -24,11 +24,21 @@ def main() -> None:
         shutil.rmtree(TARGET)
     shutil.copytree(SOURCE, TARGET)
 
+    index = TARGET / "index.html"
+    text = index.read_text(encoding="utf-8")
+    if "deeplink.js" not in text:
+        anchor = '<script src="app.js?v=2"></script>'
+        if anchor not in text:
+            raise RuntimeError("Anchor app.js non trovato nella cartografia")
+        text = text.replace(anchor, anchor + '\n<script src="deeplink.js?v=1"></script>', 1)
+        index.write_text(text, encoding="utf-8")
+
     required = (
         TARGET / "index.html",
         TARGET / "metodo.html",
         TARGET / "app.js",
         TARGET / "data-loader.js",
+        TARGET / "deeplink.js",
         TARGET / "styles.css",
         TARGET / "osservatorio.css",
         TARGET / "data" / "master_summary.json",
