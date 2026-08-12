@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Crea il guscio Sicurezza e territorio solo nella seconda build del draft."""
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+TARGET = ROOT / "confronta" / "sicurezza" / "index.html"
+
+HTML = '''<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sicurezza e territorio · Confronto dei comuni della Versilia</title>
+  <meta name="description" content="Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.">
+  <meta property="og:title" content="Sicurezza e territorio · Confronto dei comuni della Versilia">
+  <meta property="og:description" content="Sicurezza stradale e criminalità in Versilia, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="../../favicon.svg" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../../site.webmanifest">
+  <link rel="stylesheet" href="../../assets/original.css">
+  <link rel="stylesheet" href="../../assets/static.css">
+</head>
+<body class="antialiased" data-page="compare" data-theme="sicurezza" data-town="">
+  <div id="site-header-mount"></div>
+  <div id="app"><div class="app-loading" role="status">Caricamento dei dati…</div></div>
+  <div id="site-footer-mount"></div>
+  <noscript><div class="app-error">Il sito richiede JavaScript per mostrare confronti, ricerca e schede comunali.</div></noscript>
+  <script src="../../assets/app.js" defer></script>
+</body>
+</html>
+'''
+
+
+def main() -> None:
+    TARGET.parent.mkdir(parents=True, exist_ok=True)
+    TARGET.write_text(HTML, encoding="utf-8")
+    print(f"Guscio Sicurezza creato per la build draft: {TARGET}")
+
+
+if __name__ == "__main__":
+    main()
