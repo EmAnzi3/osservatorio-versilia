@@ -8,6 +8,7 @@ pagine Mobilita/Comuni.
 """
 from __future__ import annotations
 
+import re
 import shutil
 from pathlib import Path
 
@@ -27,10 +28,11 @@ def main() -> None:
     index = TARGET / "index.html"
     text = index.read_text(encoding="utf-8")
     if "deeplink.js" not in text:
-        anchor = '<script src="app.js?v=2"></script>'
-        if anchor not in text:
+        pattern = r'(<script src="app\.js\?v=\d+"></script>)'
+        match = re.search(pattern, text)
+        if not match:
             raise RuntimeError("Anchor app.js non trovato nella cartografia")
-        text = text.replace(anchor, anchor + '\n<script src="deeplink.js?v=1"></script>', 1)
+        text = re.sub(pattern, r'\1\n<script src="deeplink.js?v=1"></script>', text, count=1)
         index.write_text(text, encoding="utf-8")
 
     required = (
