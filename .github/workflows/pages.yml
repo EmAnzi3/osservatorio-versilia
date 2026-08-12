@@ -137,6 +137,7 @@ jobs:
           node --check percorsi/app.js
           node --check percorsi/data-loader.js
           python scripts/test_percorsi_draft.py
+          python scripts/test_accordion_no_overlap.py
 
       - name: Upload draft preview
         if: github.event_name == 'pull_request'
