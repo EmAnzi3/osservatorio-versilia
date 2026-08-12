@@ -57,10 +57,12 @@ def overlaps(a: dict | None, b: dict | None, tolerance: float = 0.5) -> bool:
     )
 
 
-def check_headings(page, label: str) -> None:
+def check_headings(page, label: str) -> int:
     headings = page.locator(".metric-group-heading.ux-section-toggle")
-    require(headings.count() > 0, f"Nessuna intestazione fisarmonica trovata in {label}")
-    for index in range(headings.count()):
+    count = headings.count()
+    if count == 0:
+        return 0
+    for index in range(count):
         heading = headings.nth(index)
         title = heading.locator(":scope > strong")
         description = heading.locator(":scope > span:not(.ux-section-tools)")
@@ -78,6 +80,7 @@ def check_headings(page, label: str) -> None:
                 not overlaps(description.bounding_box(), tools_box),
                 f"Descrizione sovrapposta a contatore/chevron in {label}: {heading.inner_text()!r}",
             )
+    return count
 
 
 def main() -> None:
@@ -90,17 +93,29 @@ def main() -> None:
     require(compare_pages, "Pagine di confronto non trovate")
     require(town_pages, "Pagine comunali non trovate")
 
+    tested_headings = 0
+    tested_pages = 0
+
     with server(DIST) as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1680, "height": 1000})
 
         for theme in compare_pages:
             page.goto(base + f"confronta/{theme}/", wait_until="networkidle")
-            check_headings(page, f"confronta/{theme}")
+            count = check_headings(page, f"confronta/{theme}")
+            if count:
+                tested_pages += 1
+                tested_headings += count
 
         for town in town_pages:
             page.goto(base + f"comuni/{town}/?tema=mobilita", wait_until="networkidle")
-            check_headings(page, f"comuni/{town}?tema=mobilita")
+            count = check_headings(page, f"comuni/{town}?tema=mobilita")
+            if count:
+                tested_pages += 1
+                tested_headings += count
+
+        require(tested_pages > 0 and tested_headings > 0,
+                "Il test non ha trovato alcuna pagina con fisarmoniche da verificare")
 
         # Il nuovo ingresso Percorsi deve essere nel flusso visibile della pagina Mobilità.
         page.goto(base + "confronta/mobilita/", wait_until="networkidle")
@@ -130,7 +145,10 @@ def main() -> None:
 
         browser.close()
 
-    print("Fisarmoniche verificate: nessuna sovrapposizione testo/strumenti; Percorsi visibile nel flusso Mobilità.")
+    print(
+        f"Fisarmoniche verificate: {tested_headings} intestazioni su {tested_pages} pagine, "
+        "nessuna sovrapposizione testo/strumenti; Percorsi visibile nel flusso Mobilità."
+    )
 
 
 if __name__ == "__main__":
