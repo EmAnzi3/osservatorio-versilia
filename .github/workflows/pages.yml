@@ -132,6 +132,7 @@ jobs:
       - name: Prepare coherent Percorsi architecture
         run: |
           python scripts/prepare_percorsi_architecture.py
+          python scripts/create_sicurezza_shell.py
           python scripts/build_static_brand.py
 
       - name: Include Percorsi Versilia
