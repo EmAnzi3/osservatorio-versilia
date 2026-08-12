@@ -1,0 +1,40 @@
+/* Cornice Osservatorio Versilia per la cartografia Percorsi.
+   La mappa mantiene la propria UX; header, breadcrumb e gerarchia richiamano il sito principale. */
+html,body{height:100%}
+body.percorsi-page{display:flex;flex-direction:column;min-height:100%;overflow:hidden;background:#f6f0e5;color:#0f3654}
+.percorsi-site-header{flex:0 0 auto;position:relative;z-index:1200}
+.percorsi-site-header .site-header{background:#f6f0e5;border-bottom:1px solid rgba(15,54,84,.11)}
+.percorsi-site-header .site-header-inner{max-width:1240px}
+.percorsi-site-header .site-header-actions nav{display:flex}
+.map-context-bar{flex:0 0 auto;background:rgba(255,255,255,.97);border-bottom:1px solid #dce5e0;position:relative;z-index:1100}
+.map-context-inner{height:48px;max-width:100%;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.map-breadcrumbs{display:flex;align-items:center;gap:8px;min-width:0;color:#6a7872;font-size:11px}
+.map-breadcrumbs a{color:#176b4a;text-decoration:none;font-weight:750}
+.map-breadcrumbs strong{color:#173127;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.map-back{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 13px;border-radius:999px;background:#0f3654;color:#fff!important;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 5px 16px rgba(15,54,84,.12)}
+.map-back:hover{background:#184d70}
+body.percorsi-page>.app{flex:1 1 auto;height:auto!important;min-height:0;background:#f5f8f6}
+body.percorsi-page .sidebar{border-right-color:#d8e1dc}
+body.percorsi-page .head{background:#fff}
+body.percorsi-page .brand h1{color:#0f3654;font-size:24px;letter-spacing:-.035em}
+body.percorsi-page .kicker{color:#687873;line-height:1.45}
+body.percorsi-page .method{border-color:#cddbd4;color:#0f3654;background:#fff;font-weight:700}
+body.percorsi-page .stat{background:#edf4f0;border:1px solid #e0e9e4}
+body.percorsi-page .stat b{color:#0f3654}
+body.percorsi-page .chip.active{background:#0f3654;border-color:#0f3654}
+body.percorsi-page .downloads a{background:#0f3654}
+body.percorsi-page .downloads a.secondary{background:#edf3f0;color:#0f3654}
+body.percorsi-page .leaflet-control-home a,
+body.percorsi-page .leaflet-control-zoom a{color:#0f3654}
+@media(max-width:900px){
+  .percorsi-site-header .site-header-actions nav{display:none}
+  .map-context-inner{height:auto;min-height:48px;padding:7px 12px}
+  .map-breadcrumbs{font-size:10px}
+  .map-back{font-size:10px;padding:0 10px}
+}
+@media(max-width:620px){
+  body.percorsi-page{overflow:auto}
+  .map-context-inner{align-items:flex-start;flex-direction:column;gap:6px;padding-top:8px;padding-bottom:8px}
+  .map-back{width:100%;justify-content:center}
+  body.percorsi-page>.app{flex:none;height:auto!important}
+}
