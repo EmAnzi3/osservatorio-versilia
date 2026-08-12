@@ -129,6 +129,11 @@ jobs:
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
 
+      - name: Prepare coherent Percorsi architecture
+        run: |
+          python scripts/prepare_percorsi_architecture.py
+          python scripts/build_static_brand.py
+
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
 
@@ -136,6 +141,7 @@ jobs:
         run: |
           node --check percorsi/app.js
           node --check percorsi/data-loader.js
+          node --check dist/assets/app-bundle.js
           python scripts/test_percorsi_draft.py
           python scripts/test_accordion_no_overlap.py
 
