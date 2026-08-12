@@ -1,0 +1,67 @@
+{
+  "version": "2026-08-12-draft",
+  "definition": {
+    "public_classes": ["A0", "B1"],
+    "municipality_count_note": "I conteggi comunali indicano i percorsi pubblici che attraversano il Comune. Uno stesso percorso può attraversare più Comuni, quindi i valori comunali non sono sommabili tra loro.",
+    "municipality_km_note": "I chilometri per singolo Comune non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi comunali ufficiali."
+  },
+  "versilia": {
+    "routes": 41,
+    "km": 342.7,
+    "municipalities": 7,
+    "by_mode": {
+      "trekking": 31,
+      "cammino": 2,
+      "bicycle": 7,
+      "mtb": 1
+    },
+    "by_quality": {
+      "A0": 30,
+      "B1": 11
+    }
+  },
+  "municipalities": {
+    "camaiore": {
+      "name": "Camaiore",
+      "routes": 11,
+      "by_mode": {"trekking": 3, "cammino": 2, "bicycle": 5, "mtb": 1},
+      "by_quality": {"A0": 7, "B1": 4}
+    },
+    "forte-dei-marmi": {
+      "name": "Forte dei Marmi",
+      "routes": 2,
+      "by_mode": {"trekking": 0, "cammino": 0, "bicycle": 2, "mtb": 0},
+      "by_quality": {"A0": 2, "B1": 0}
+    },
+    "massarosa": {
+      "name": "Massarosa",
+      "routes": 5,
+      "by_mode": {"trekking": 0, "cammino": 1, "bicycle": 3, "mtb": 1},
+      "by_quality": {"A0": 2, "B1": 3}
+    },
+    "pietrasanta": {
+      "name": "Pietrasanta",
+      "routes": 6,
+      "by_mode": {"trekking": 2, "cammino": 1, "bicycle": 3, "mtb": 0},
+      "by_quality": {"A0": 3, "B1": 3}
+    },
+    "seravezza": {
+      "name": "Seravezza",
+      "routes": 15,
+      "by_mode": {"trekking": 12, "cammino": 1, "bicycle": 2, "mtb": 0},
+      "by_quality": {"A0": 11, "B1": 4}
+    },
+    "stazzema": {
+      "name": "Stazzema",
+      "routes": 25,
+      "by_mode": {"trekking": 23, "cammino": 0, "bicycle": 2, "mtb": 0},
+      "by_quality": {"A0": 22, "B1": 3}
+    },
+    "viareggio": {
+      "name": "Viareggio",
+      "routes": 4,
+      "by_mode": {"trekking": 0, "cammino": 0, "bicycle": 3, "mtb": 1},
+      "by_quality": {"A0": 4, "B1": 0}
+    }
+  }
+}

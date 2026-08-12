@@ -1,96 +1,113 @@
-/* Stabilizzazione mobile delle intestazioni a fisarmonica. */
+/* Stabilizzazione delle intestazioni a fisarmonica.
+   Titolo e strumenti occupano la prima riga; la descrizione ha sempre
+   una riga propria. In questo modo testo, conteggio e chevron non possono
+   mai sovrapporsi, a prescindere dalla larghezza disponibile. */
+
+.metric-group-heading.ux-section-toggle,
+.indicator-group-heading.ux-section-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title tools"
+    "description description";
+  column-gap: 12px;
+  row-gap: 5px;
+  align-items: start;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  padding-right: 0;
+}
+
+.metric-group-heading.ux-section-toggle > strong {
+  grid-area: title;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.metric-group-heading.ux-section-toggle > span:not(.ux-section-tools) {
+  grid-area: description;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.indicator-group-heading.ux-section-toggle {
+  min-height: 0;
+  padding-top: 8px;
+}
+
+.indicator-group-heading.ux-section-toggle > div:first-child {
+  grid-area: title;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.indicator-group-heading.ux-section-toggle > p {
+  grid-area: description;
+  min-width: 0;
+  max-width: 100%;
+  margin-right: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.metric-group-heading.ux-section-toggle > .ux-section-tools,
+.indicator-group-heading.ux-section-toggle > .ux-section-tools {
+  grid-area: tools;
+  position: static;
+  top: auto;
+  right: auto;
+  transform: none;
+  display: inline-flex !important;
+  align-items: center;
+  align-self: start;
+  justify-self: end;
+  gap: 8px;
+  max-width: 100%;
+  flex: 0 0 auto;
+  color: var(--muted);
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.ux-section-chevron,
+.metric-group.is-open .ux-section-chevron,
+.indicator-group.is-open .ux-section-chevron {
+  display: inline-grid !important;
+  place-items: center;
+  flex: 0 0 auto;
+  color: var(--ink);
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* I contenitori e le intestazioni non devono mai poter allargare la pagina. */
+.topic-controls,
+.topic-controls .metric-catalog,
+.topic-controls .metric-group,
+.topic-controls .metric-group-heading.ux-section-toggle,
+.town-topic > .metric-switch.metric-catalog,
+.town-topic > .metric-switch.metric-catalog .metric-group,
+.town-topic > .metric-switch.metric-catalog .metric-group-heading.ux-section-toggle {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
 
 @media (max-width: 700px) {
   .metric-group-heading.ux-section-toggle,
   .indicator-group-heading.ux-section-toggle {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "title tools"
-      "description description";
     column-gap: 12px;
     row-gap: 6px;
-    align-items: start;
-    box-sizing: border-box;
-    min-width: 0;
-    padding-right: 0;
-  }
-
-  .metric-group-heading.ux-section-toggle > strong {
-    grid-area: title;
-    min-width: 0;
-  }
-
-  .metric-group-heading.ux-section-toggle > span:not(.ux-section-tools) {
-    grid-area: description;
-    display: block;
-    min-width: 0;
-    max-width: 100%;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .indicator-group-heading.ux-section-toggle {
-    min-height: 0;
-    padding-top: 8px;
-  }
-
-  .indicator-group-heading.ux-section-toggle > div:first-child {
-    grid-area: title;
-    min-width: 0;
-  }
-
-  .indicator-group-heading.ux-section-toggle > p {
-    grid-area: description;
-    min-width: 0;
-    max-width: 100%;
-    margin-right: 0;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .metric-group-heading.ux-section-toggle > .ux-section-tools,
-  .indicator-group-heading.ux-section-toggle > .ux-section-tools {
-    grid-area: tools;
-    position: static;
-    top: auto;
-    right: auto;
-    transform: none;
-    display: inline-flex !important;
-    align-items: center;
-    align-self: center;
-    justify-self: end;
-    gap: 8px;
-    max-width: 100%;
-    flex: 0 0 auto;
-    color: var(--muted);
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  .ux-section-chevron,
-  .metric-group.is-open .ux-section-chevron,
-  .indicator-group.is-open .ux-section-chevron {
-    display: inline-grid !important;
-    place-items: center;
-    flex: 0 0 auto;
-    color: var(--ink);
-    opacity: 1 !important;
-    visibility: visible !important;
   }
 
   /* Una sezione con molti indicatori non deve allargare il documento.
      L'intestazione resta ancorata al viewport; scorre solo la riga dei pill. */
-  .topic-controls,
-  .topic-controls .metric-catalog,
-  .topic-controls .metric-group,
-  .topic-controls .metric-group-heading.ux-section-toggle {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
   .topic-controls .metric-catalog,
   .topic-controls .metric-group {
     overflow-x: hidden;
@@ -120,15 +137,6 @@
 
   /* Nelle schede comunali resta fermo l'intero riquadro: quando una sezione
      contiene molti indicatori scorre soltanto la riga dei pulsanti. */
-  .town-topic > .metric-switch.metric-catalog,
-  .town-topic > .metric-switch.metric-catalog .metric-group,
-  .town-topic > .metric-switch.metric-catalog .metric-group-heading.ux-section-toggle {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-
   .town-topic > .metric-switch.metric-catalog {
     display: grid;
     overflow-x: hidden;
