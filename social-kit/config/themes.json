@@ -15,6 +15,7 @@
     "istruzione": {"label": "Istruzione", "accent": "#315D8B", "soft": "#EDF3F9", "line": "#B9CEE2"},
     "salute": {"label": "Salute", "accent": "#8A3F55", "soft": "#F8EDF1", "line": "#DFBCC7"},
     "mobilita": {"label": "Mobilità e infrastrutture", "accent": "#27636D", "soft": "#EAF4F5", "line": "#AFD0D4"},
+    "sicurezza": {"label": "Sicurezza e territorio", "accent": "#8A4A55", "soft": "#F8EEF0", "line": "#DDBDC4"},
     "abitare": {"label": "Abitare", "accent": "#8B5C35", "soft": "#F7F0E9", "line": "#DEC5AD"},
     "ambiente": {"label": "Ambiente", "accent": "#3F6D43", "soft": "#EDF5ED", "line": "#B9D1BB"},
     "bilanci": {"label": "Bilanci comunali", "accent": "#315F63", "soft": "#EDF4F2", "line": "#B8CBC7"},
