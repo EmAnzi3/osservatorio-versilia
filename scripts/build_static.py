@@ -41,6 +41,7 @@ SITE_DATA = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="ut
 INDICATOR_SLUGS = {
     metric_key: slugify(metric["meta"]["label"])
     for metric_key, metric in SITE_DATA["metrics"].items()
+    if metric.get("dataStorage", {}).get("type") != "external-climate"
 }
 INDICATOR_ROUTES = [f"indicatori/{slug}/" for slug in INDICATOR_SLUGS.values()]
 METRIC_KEY_BY_ROUTE = {

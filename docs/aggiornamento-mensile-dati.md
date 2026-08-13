@@ -12,7 +12,7 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 
 ## Cosa controlla
 
-- presenza dei 111 indicatori attesi nel dataset generale; i 4 indicatori climatici, che portano il totale pubblico a 115, sono verificati dai controlli climatici dedicati;
+- presenza dei 115 indicatori nel catalogo canonico e ripartizione attesa fra 111 valori incorporati e 4 storici climatici separati;
 - copertura completa dei sette Comuni e codici Istat corretti;
 - presenza di anno, unità, fonte, metodo e formula;
 - coerenza fra annualità e valori delle serie storiche;

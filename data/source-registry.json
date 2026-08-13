@@ -1,6 +1,8 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 111,
+  "expectedMetricCount": 115,
+  "expectedInlineMetricCount": 111,
+  "expectedExternalMetricCount": 4,
   "expectedTowns": [
     { "name": "Camaiore", "code": "046005" },
     { "name": "Forte dei Marmi", "code": "046013" },
@@ -227,6 +229,15 @@
       "acquisitionMethod": "Conteggio delle tracce A0/B1 pubblicabili che attraversano ciascun Comune; dataset e criteri conservati nella repository.",
       "licenseName": "Licenza della geometria indicata per ciascun percorso",
       "licenseUrl": "https://osservatorioversilia.it/percorsi/metodo.html"
+    },
+    "lamma-copernicus-climate": {
+      "publisher": "Consorzio LaMMA / Copernicus Climate Change Service",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la disponibilità dell'ultimo anno completo",
+      "acquisitionMethod": "Ricostruzione territoriale comunale da LaMMA 1 km ed ERA5-Land calibrato, con storici separati dal catalogo canonico.",
+      "licenseName": "Condizioni indicate da LaMMA e Copernicus",
+      "licenseUrl": "https://dati.lamma.toscana.it/"
     }
   },
   "sourceProfileByUrl": {
@@ -258,7 +269,8 @@
     "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": "runts-continuous",
     "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": "italia-domani-periodic",
     "https://www.piattaformaunicanazionale.it/idr": "pun-continuous",
-    "https://osservatorioversilia.it/percorsi/metodo.html": "percorsi-curated"
+    "https://osservatorioversilia.it/percorsi/metodo.html": "percorsi-curated",
+    "https://dati.lamma.toscana.it/": "lamma-copernicus-climate"
   },
   "metricOverrides": {
     "lifeExpectancy": {

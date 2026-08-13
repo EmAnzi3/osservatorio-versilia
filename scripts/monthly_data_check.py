@@ -99,6 +99,32 @@ def validate_dataset(
             )
         )
 
+    external_metrics = {
+        key: metric
+        for key, metric in metrics.items()
+        if isinstance(metric, dict)
+        and metric.get("dataStorage", {}).get("type") == "external-climate"
+    }
+    inline_metric_count = len(metrics) - len(external_metrics)
+    expected_inline_count = int(registry.get("expectedInlineMetricCount", 0) or 0)
+    expected_external_count = int(registry.get("expectedExternalMetricCount", 0) or 0)
+    if "expectedInlineMetricCount" in registry and inline_metric_count != expected_inline_count:
+        findings.append(
+            finding(
+                "error",
+                "inline_metric_count",
+                f"Attesi {expected_inline_count} indicatori incorporati, trovati {inline_metric_count}.",
+            )
+        )
+    if "expectedExternalMetricCount" in registry and len(external_metrics) != expected_external_count:
+        findings.append(
+            finding(
+                "error",
+                "external_metric_count",
+                f"Attesi {expected_external_count} indicatori con storici separati, trovati {len(external_metrics)}.",
+            )
+        )
+
     expected_towns = {
         str(item["code"]): str(item["name"])
         for item in registry.get("expectedTowns", [])
@@ -131,6 +157,8 @@ def validate_dataset(
         meta = metric.get("meta")
         rows = metric.get("rows")
         method = metric.get("method")
+        storage = metric.get("dataStorage")
+        is_external = isinstance(storage, dict) and storage.get("type") == "external-climate"
 
         if not isinstance(meta, dict):
             findings.append(finding("error", "meta_missing", "Metadati assenti.", metric_key))
@@ -168,8 +196,39 @@ def validate_dataset(
             findings.append(finding("error", "rows_missing", "Righe comunali assenti.", metric_key))
             rows = []
 
+        if is_external:
+            for field in ("builder", "path", "seriesKey", "trendFrom", "trendTo", "decimals"):
+                if storage.get(field) in (None, ""):
+                    findings.append(
+                        finding(
+                            "error",
+                            "external_storage_field",
+                            f"Riferimento allo storico separato incompleto: {field}.",
+                            metric_key,
+                        )
+                    )
+            path = str(storage.get("path") or "")
+            if not path.startswith("data/") or not path.endswith(".json"):
+                findings.append(
+                    finding(
+                        "error",
+                        "external_storage_path",
+                        "Il file storico separato deve essere un JSON nella cartella data/.",
+                        metric_key,
+                    )
+                )
+            if rows:
+                findings.append(
+                    finding(
+                        "error",
+                        "external_rows_embedded",
+                        "Un indicatore climatico esterno non deve duplicare le righe nel catalogo canonico.",
+                        metric_key,
+                    )
+                )
+
         row_codes = [str(row.get("code")) for row in rows if isinstance(row, dict)]
-        if expected_towns and set(row_codes) != set(expected_towns):
+        if not is_external and expected_towns and set(row_codes) != set(expected_towns):
             findings.append(
                 finding(
                     "error",
@@ -270,6 +329,8 @@ def validate_dataset(
 
     return findings, source_map, {
         "metricCount": len(metrics),
+        "inlineMetricCount": inline_metric_count,
+        "externalMetricCount": len(external_metrics),
         "townCount": len(towns),
         "rowCount": rows_total,
         "metricsWithSeries": metrics_with_series,
@@ -461,6 +522,8 @@ def build_report(
         "| Controllo | Esito |",
         "|---|---:|",
         f"| Indicatori verificati | {summary['metricCount']} |",
+        f"| Indicatori con valori incorporati | {summary['inlineMetricCount']} |",
+        f"| Indicatori climatici con storici separati | {summary['externalMetricCount']} |",
         f"| Comuni verificati | {summary['townCount']} |",
         f"| Righe comunali | {summary['rowCount']} |",
         f"| Indicatori con serie storica | {summary['metricsWithSeries']} |",

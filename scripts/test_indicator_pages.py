@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verifica le pagine canoniche dei 111 indicatori e la loro navigazione."""
+"""Verifica il catalogo da 115 indicatori e le 111 pagine autonome."""
 
 from __future__ import annotations
 
@@ -64,10 +64,27 @@ def extract_json_ld(document: str) -> dict:
 
 def static_checks() -> None:
     data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
-    assert len(data["metrics"]) == 111
+    external = {
+        key: metric
+        for key, metric in data["metrics"].items()
+        if metric.get("dataStorage", {}).get("type") == "external-climate"
+    }
+    inline = {key: metric for key, metric in data["metrics"].items() if key not in external}
+    assert len(data["metrics"]) == 115
+    assert len(inline) == 111
+    assert set(external) == {
+        "climateTemperatureTrend50y",
+        "climatePrecipitationTrend50y",
+        "climateTminTrend",
+        "climateTmaxTrend",
+    }
+    for metric in external.values():
+        storage = metric["dataStorage"]
+        assert metric["rows"] == [], "Lo storico climatico è stato duplicato nel catalogo"
+        assert (ROOT / storage["path"]).is_file(), f"Storico climatico mancante: {storage['path']}"
 
     paths: list[Path] = []
-    for metric_key, metric in data["metrics"].items():
+    for metric_key, metric in inline.items():
         slug = slugify(metric["meta"]["label"])
         path = DIST / "indicatori" / slug / "index.html"
         paths.append(path)
@@ -150,7 +167,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("Pagine indicatore verificate: 111 URL canoniche, sitemap, governance e navigazione.")
+    print("Catalogo verificato: 115 indicatori canonici, 4 storici climatici separati e 111 URL autonome.")
 
 
 if __name__ == "__main__":
