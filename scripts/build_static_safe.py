@@ -18,6 +18,7 @@ _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
 UX_ASSET_VERSION = "20260809-2"
+HISTORY_ASSET_VERSION = "20260813-1"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -155,7 +156,8 @@ def prepare_shells_with_fonts() -> None:
             token = f"assets/{stylesheet}"
             if token in text:
                 continue
-            version = "" if stylesheet == "fonts.css" else f"?v={UX_ASSET_VERSION}"
+            asset_version = HISTORY_ASSET_VERSION if stylesheet == "ux-experiment.css" else UX_ASSET_VERSION
+            version = "" if stylesheet == "fonts.css" else f"?v={asset_version}"
             text = text.replace(
                 "</head>",
                 f'  <link rel="stylesheet" href="{assets}{token}{version}">\n</head>',
@@ -169,7 +171,7 @@ def prepare_shells_with_fonts() -> None:
             "visual-grammar.js",
         )
         missing_scripts = [
-            f'  <script src="{assets}assets/{script}?v={UX_ASSET_VERSION}" defer></script>\n'
+            f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION}" defer></script>\n'
             for script in scripts
             if f"assets/{script}" not in text
         ]

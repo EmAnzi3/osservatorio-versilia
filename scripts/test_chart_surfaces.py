@@ -177,6 +177,16 @@ def verify_history_variants(page: Page, base: str) -> None:
         "Demografia · serie storica a linee",
         visible=False,
     )
+    page.locator('[data-view-mode="history"]').click()
+    point = page.locator("#compare-bars .ux-history-chart .chart-point").last
+    require(point.count() == 1, "Punto interattivo assente nello storico ordinario")
+    require(point.locator("title").count() == 0, "Tooltip nativo del browser ancora presente")
+    point.hover()
+    tooltip = point.locator(".chart-tooltip")
+    require(tooltip.is_visible(), "Tooltip grafico personalizzato non visibile")
+    require("·" in (tooltip.text_content() or ""), "Tooltip privo di comune e anno")
+    fill = tooltip.locator("rect").evaluate("element => getComputedStyle(element).fill")
+    require(fill == "rgb(16, 47, 69)", f"Tooltip non allineato allo stile scuro del clima: {fill}")
 
 
 def verify_economy_specials(page: Page, base: str) -> None:

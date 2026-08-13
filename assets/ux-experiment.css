@@ -242,6 +242,52 @@
   transition: opacity .16s ease, r .16s ease;
 }
 
+.ux-history-chart .chart-hit {
+  fill: transparent;
+  stroke: transparent;
+  cursor: crosshair;
+}
+
+.ux-history-chart .chart-point {
+  outline: none;
+}
+
+.ux-history-chart .chart-guide {
+  stroke: var(--series-color);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: .5;
+}
+
+.ux-history-chart .chart-tooltip rect {
+  fill: var(--ink);
+  filter: drop-shadow(0 6px 9px rgba(16, 47, 69, .24));
+}
+
+.ux-history-chart .chart-tooltip text {
+  fill: #fff;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.ux-history-chart .chart-tooltip-year {
+  opacity: .75;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.ux-history-chart .chart-tooltip-value {
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ux-history-chart .chart-point.active .chart-dot,
+.ux-history-chart .chart-point:focus .chart-dot {
+  fill: var(--series-color);
+  stroke: var(--surface);
+  stroke-width: 3;
+  r: 5.5px;
+}
+
 .ux-series-group:hover .ux-series-line,
 .ux-series-group:hover .ux-series-point,
 .ux-series-group.is-selected .ux-series-line,

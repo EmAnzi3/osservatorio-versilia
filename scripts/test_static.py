@@ -119,6 +119,10 @@ def browser_assertions() -> None:
         mobile_page = mobile.new_page()
         mobile_page.goto(base, wait_until="networkidle")
         mobile_page.wait_for_selector(".global-search-trigger")
+        hero_facts = mobile_page.locator(".hero-facts").inner_text()
+        assert "111 INDICATORI" in hero_facts and "115 INDICATORI" not in hero_facts, (
+            f"Conteggio indicatori canonici errato in home: {hero_facts!r}"
+        )
         mobile_icon = mobile_page.locator(".global-search-trigger .search-icon")
         assert mobile_icon.is_visible(), "Lente della ricerca non visibile su smartphone"
         icon_box = mobile_icon.bounding_box()

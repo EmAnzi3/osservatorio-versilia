@@ -111,6 +111,17 @@ def main() -> None:
         legend_colors = page.locator('.legend .leg span').evaluate_all("els => els.map(el => el.style.background)")
         require(len(set(legend_colors)) == 4, f"Palette legenda non sufficientemente distinta: {legend_colors}")
 
+        page.set_viewport_size({"width": 1365, "height": 768})
+        page.goto(base + "percorsi/", wait_until="networkidle")
+        page.wait_for_selector("#routeList .card")
+        list_size = page.locator("#routeList").evaluate(
+            "element => ({clientHeight: element.clientHeight, scrollHeight: element.scrollHeight})"
+        )
+        require(list_size["clientHeight"] >= 180,
+                f"Lista Percorsi troppo compressa su laptop: {list_size}")
+        require(list_size["scrollHeight"] > list_size["clientHeight"],
+                f"Lista Percorsi non scorrevole su laptop: {list_size}")
+
         # Verifica mobile esplicita: la nuova architettura deve restare leggibile e usabile
         # senza overflow della pagina, CTA perse o controlli cartografici fuori viewport.
         page.set_viewport_size({"width": 390, "height": 844})
