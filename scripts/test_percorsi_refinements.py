@@ -114,6 +114,22 @@ def main() -> None:
         page.set_viewport_size({"width": 1365, "height": 768})
         page.goto(base + "percorsi/", wait_until="networkidle")
         page.wait_for_selector("#routeList .card")
+        visible_routes = page.evaluate("routesLayer.getLayers().length")
+        listed_routes = page.locator("#routeList .card").count()
+        require(visible_routes == listed_routes and visible_routes > 1,
+                f"Mappa e lista Percorsi non allineate prima della selezione: {visible_routes}/{listed_routes}")
+        page.locator("#routeList .card").first.click()
+        require(page.locator("#detail").is_visible(), "Dettaglio del percorso selezionato non visibile")
+        require(page.locator("#routeList .card.active").count() == 1,
+                "La lista non evidenzia un solo percorso selezionato")
+        require(page.evaluate("routesLayer.getLayers().length") == 1,
+                "La mappa non esclude gli altri percorsi dopo la selezione")
+        require(page.locator("#routeList .card").count() == listed_routes,
+                "La selezione ha modificato indebitamente la lista filtrata")
+        page.locator("#detailClose").click()
+        require(not page.locator("#detail").is_visible(), "Dettaglio ancora visibile dopo la chiusura")
+        require(page.evaluate("routesLayer.getLayers().length") == visible_routes,
+                "La chiusura del dettaglio non ripristina i percorsi filtrati")
         list_size = page.locator("#routeList").evaluate(
             "element => ({clientHeight: element.clientHeight, scrollHeight: element.scrollHeight})"
         )

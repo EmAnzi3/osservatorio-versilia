@@ -63,6 +63,8 @@ def run_checker(work: Path, state: dict) -> dict:
     registry = {
         "schemaVersion": 2,
         "expectedMetricCount": 1,
+        "expectedInlineMetricCount": 1,
+        "expectedExternalMetricCount": 0,
         "expectedTowns": TOWNS,
         "defaults": {
             "monitorMode": "availability",
@@ -165,6 +167,8 @@ def main() -> None:
         )
         assert first["status"] == "baseline_required"
         assert first["summary"]["metricCount"] == 1
+        assert first["summary"]["inlineMetricCount"] == 1
+        assert first["summary"]["externalMetricCount"] == 0
         assert first["summary"]["townCount"] == 7
         assert not first["findings"]
 

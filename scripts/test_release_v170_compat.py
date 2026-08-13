@@ -136,6 +136,8 @@ def main() -> None:
     )
 
     for key, metric in source["metrics"].items():
+        if metric.get("dataStorage", {}).get("type") == "external-climate":
+            continue
         rows = metric.get("rows", [])
         require({row.get("town") for row in rows} == TOWNS, f"{key}: righe comunali incomplete")
         require(metric.get("meta", {}).get("year") not in (None, ""), f"{key}: anno mancante")

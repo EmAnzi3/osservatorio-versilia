@@ -8,7 +8,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 11 aree tematiche;
-- 115 indicatori complessivi: 111 nel dataset generale e 4 climatici nella vista dedicata;
+- 115 indicatori nel catalogo canonico: 111 con valori incorporati e 4 climatici con storici separati;
 - confronti territoriali e benchmark disponibili;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;
@@ -36,7 +36,7 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine degli undici temi;
 - `indicatori/`: 111 pagine canoniche generate, una per indicatore;
-- `data/site-data.json`: dati e metadati degli indicatori;
+- `data/site-data.json`: catalogo canonico dei 115 indicatori, con dati incorporati per 111 e riferimenti ai file storici separati per i 4 climatici;
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
@@ -48,7 +48,7 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 
 ## Aggiornamento dei dati
 
-I valori sono centralizzati in `data/site-data.json`. Per aggiornamenti strutturali conviene modificare o rigenerare questo file, mantenendo per ogni indicatore:
+Il catalogo e i metadati dei 115 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
 
 - definizione;
 - anno;
@@ -69,7 +69,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida i 111 indicatori del dataset generale e la coerenza della copertura dichiarata per ciascuno; i 4 indicatori climatici, che portano il totale pubblico a 115, hanno controlli dedicati;
+- valida tutti i 115 indicatori canonici, la ripartizione fra 111 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;

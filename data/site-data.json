@@ -454,7 +454,7 @@
       "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.",
+      "description": "Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.",
       "metrics": [
         "landUse",
         "landUseChange",
@@ -463,7 +463,11 @@
         "organicAgriculturalAreaShare",
         "recycling",
         "wastePerResident",
-        "residualWaste"
+        "residualWaste",
+        "climateTemperatureTrend50y",
+        "climatePrecipitationTrend50y",
+        "climateTminTrend",
+        "climateTmaxTrend"
       ],
       "sections": [
         {
@@ -475,6 +479,17 @@
             "landUseChange",
             "floodExposure",
             "landslideExposure"
+          ]
+        },
+        {
+          "key": "clima",
+          "label": "Clima",
+          "description": "Temperatura e precipitazioni: andamento storico e variazioni di lungo periodo.",
+          "metrics": [
+            "climateTemperatureTrend50y",
+            "climatePrecipitationTrend50y",
+            "climateTminTrend",
+            "climateTmaxTrend"
           ]
         },
         {
@@ -17861,6 +17876,205 @@
         "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
         "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
         "coverage": "7/7"
+      }
+    },
+    "climateTemperatureTrend50y": {
+      "meta": {
+        "key": "climateTemperatureTrend50y",
+        "theme": "ambiente",
+        "label": "Variazione della temperatura media in 50 anni",
+        "shortLabel": "Temperatura · trend 50 anni",
+        "description": "Quanto è cambiata la temperatura media territoriale secondo la retta di tendenza 1975–2025.",
+        "unit": "climateCelsius",
+        "year": "1975–2025",
+        "source": "LaMMA + Copernicus ERA5-Land",
+        "polarity": "neutral",
+        "climateDetail": {
+          "indicator": "temperature",
+          "hash": ""
+        },
+        "searchTerms": [
+          "clima",
+          "temperatura",
+          "riscaldamento",
+          "trend",
+          "50 anni"
+        ]
+      },
+      "sourceUrl": "https://dati.lamma.toscana.it/",
+      "rows": [],
+      "aggregate": {
+        "value": null,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Media delle variazioni stimate dalle rette di tendenza comunali; non è una media areale della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Ricostruzione territoriale validata",
+        "formula": "Retta di tendenza lineare sui valori annuali 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.",
+        "caveat": "Il tratto 1995–2015 usa LaMMA 1 km; prima e dopo viene usato ERA5-Land calibrato sul periodo comune. La serie descrive una media territoriale comunale, non una singola stazione.",
+        "coverage": "7/7 · 1950–2025 disponibili; trend calcolato 1975–2025"
+      },
+      "dataStorage": {
+        "type": "external-climate",
+        "builder": "annual-trend",
+        "path": "data/meteo-clima-poc.json",
+        "seriesKey": "temperature",
+        "trendFrom": 1975,
+        "trendTo": 2025,
+        "decimals": 3,
+        "normalizedPercent": false
+      }
+    },
+    "climatePrecipitationTrend50y": {
+      "meta": {
+        "key": "climatePrecipitationTrend50y",
+        "theme": "ambiente",
+        "label": "Variazione delle precipitazioni in 50 anni",
+        "shortLabel": "Precipitazioni · trend 50 anni",
+        "description": "Quanto è cambiato il totale annuo di precipitazione secondo la retta di tendenza 1975–2025.",
+        "unit": "climateMm",
+        "year": "1975–2025",
+        "source": "LaMMA + Copernicus ERA5-Land",
+        "polarity": "neutral",
+        "climateDetail": {
+          "indicator": "precipitation",
+          "hash": ""
+        },
+        "searchTerms": [
+          "clima",
+          "pioggia",
+          "precipitazioni",
+          "trend",
+          "50 anni"
+        ],
+        "normalized": {
+          "label": "Variazione percentuale delle precipitazioni in 50 anni",
+          "description": "Variazione della retta di tendenza rispetto al livello stimato nel 1975.",
+          "unit": "percent"
+        }
+      },
+      "sourceUrl": "https://dati.lamma.toscana.it/",
+      "rows": [],
+      "aggregate": {
+        "value": null,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Media delle variazioni stimate dalle rette di tendenza comunali; non è una media areale della Versilia."
+      },
+      "normalizedAggregate": {
+        "value": null,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Media delle variazioni percentuali stimate sui sette comuni."
+      },
+      "method": {
+        "type": "Ricostruzione territoriale validata",
+        "formula": "Retta di tendenza lineare sui valori annuali 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.",
+        "caveat": "Il tratto 1995–2015 usa LaMMA 1 km; prima e dopo viene usato ERA5-Land calibrato sul periodo comune. La serie descrive una media territoriale comunale, non una singola stazione.",
+        "coverage": "7/7 · 1950–2025 disponibili; trend calcolato 1975–2025"
+      },
+      "dataStorage": {
+        "type": "external-climate",
+        "builder": "annual-trend",
+        "path": "data/meteo-clima-poc.json",
+        "seriesKey": "precipitation",
+        "trendFrom": 1975,
+        "trendTo": 2025,
+        "decimals": 1,
+        "normalizedPercent": true
+      }
+    },
+    "climateTminTrend": {
+      "meta": {
+        "key": "climateTminTrend",
+        "theme": "ambiente",
+        "label": "Andamento delle temperature minime",
+        "shortLabel": "Temperature minime",
+        "description": "Storico 1975–2025 delle medie annuali delle temperature minime giornaliere territoriali e relativa tendenza di 50 anni.",
+        "unit": "climateCelsius",
+        "year": "1975–2025",
+        "source": "LaMMA + Copernicus ERA5-Land",
+        "polarity": "neutral",
+        "climateDetail": {
+          "indicator": "temperature",
+          "hash": "#temperature-min-max"
+        },
+        "searchTerms": [
+          "clima",
+          "temperature minime",
+          "minime",
+          "tmin"
+        ]
+      },
+      "sourceUrl": "https://dati.lamma.toscana.it/",
+      "rows": [],
+      "aggregate": {
+        "value": null,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Media delle variazioni stimate dalle rette di tendenza comunali 1975–2025; non è una classifica."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Ricostruzione territoriale validata",
+        "formula": "Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.",
+        "caveat": "1975–1994 e 2016–2025: ERA5-Land ARCO orario, con Tmin/Tmax calcolate da 24 campioni UTC e livello raccordato sulla media 2011–2015. 1995–2015: LaMMA 1 km. Il trend ERA5-Land nel periodo comune è stato verificato contro osservazioni SIR indipendenti e viene preservato nei due tratti di rianalisi.",
+        "coverage": "7/7 · 1975–2025"
+      },
+      "dataStorage": {
+        "type": "external-climate",
+        "builder": "minmax-trend",
+        "path": "data/meteo-clima-minmax-poc.json",
+        "seriesKey": "tmin",
+        "trendFrom": 1975,
+        "trendTo": 2025,
+        "decimals": 3,
+        "normalizedPercent": false
+      }
+    },
+    "climateTmaxTrend": {
+      "meta": {
+        "key": "climateTmaxTrend",
+        "theme": "ambiente",
+        "label": "Andamento delle temperature massime",
+        "shortLabel": "Temperature massime",
+        "description": "Storico 1975–2025 delle medie annuali delle temperature massime giornaliere territoriali e relativa tendenza di 50 anni.",
+        "unit": "climateCelsius",
+        "year": "1975–2025",
+        "source": "LaMMA + Copernicus ERA5-Land",
+        "polarity": "neutral",
+        "climateDetail": {
+          "indicator": "temperature",
+          "hash": "#temperature-min-max"
+        },
+        "searchTerms": [
+          "clima",
+          "temperature massime",
+          "massime",
+          "tmax"
+        ]
+      },
+      "sourceUrl": "https://dati.lamma.toscana.it/",
+      "rows": [],
+      "aggregate": {
+        "value": null,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Media delle variazioni stimate dalle rette di tendenza comunali 1975–2025; non è una classifica."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Ricostruzione territoriale validata",
+        "formula": "Retta di tendenza lineare sulle medie annuali delle temperature minime/massime giornaliere 1975–2025; variazione = valore stimato 2025 − valore stimato 1975.",
+        "caveat": "1975–1994 e 2016–2025: ERA5-Land ARCO orario, con Tmin/Tmax calcolate da 24 campioni UTC e livello raccordato sulla media 2011–2015. 1995–2015: LaMMA 1 km. Il trend ERA5-Land nel periodo comune è stato verificato contro osservazioni SIR indipendenti e viene preservato nei due tratti di rianalisi.",
+        "coverage": "7/7 · 1975–2025"
+      },
+      "dataStorage": {
+        "type": "external-climate",
+        "builder": "minmax-trend",
+        "path": "data/meteo-clima-minmax-poc.json",
+        "seriesKey": "tmax",
+        "trendFrom": 1975,
+        "trendTo": 2025,
+        "decimals": 3,
+        "normalizedPercent": false
       }
     }
   },

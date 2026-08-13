@@ -97,21 +97,30 @@ jobs:
 
           app6 = Path('assets/app-parts/06.txt').read_text(encoding='utf-8')
           app = ''.join(Path(f'assets/app-parts/{i:02}.txt').read_text(encoding='utf-8') for i in range(7))
-          for token in (
-              "key: 'clima'",
+          catalog = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          climate_keys = {
               'climateTemperatureTrend50y',
               'climatePrecipitationTrend50y',
               'climateTminTrend',
               'climateTmaxTrend',
+          }
+          assert climate_keys <= set(catalog['metrics'])
+          assert climate_keys <= set(catalog['themes']['ambiente']['metrics'])
+          assert set(next(section for section in catalog['themes']['ambiente']['sections'] if section['key'] == 'clima')['metrics']) == climate_keys
+          for key in climate_keys:
+              metric = catalog['metrics'][key]
+              assert metric['dataStorage']['type'] == 'external-climate'
+              assert metric['rows'] == []
+              assert Path(metric['dataStorage']['path']).is_file()
+          for token in (
               "metricKey === 'floodExposure'",
               "metricKey === 'landslideExposure'",
               "deep.hidden = !(isFlood || isLandslide)",
               'const baseBarRows = barRows',
               "left:${left.toFixed(2)}%",
-              "linearClimateTrend(series.years, values, 1975, 2025)",
-              "year: '1975–2025'",
-              "coverage: '7/7 · 1975–2025'",
-              "href:CLIMATE_METRICS.has(key) ? climateDetailHref(key) : indicatorHref(m)",
+              "linearClimateTrend(series.years, values, config.trendFrom, config.trendTo)",
+              "metric.dataStorage?.type === 'external-climate'",
+              "isClimateMetric(data, key) ? climateDetailHref(data, key) : indicatorHref(m)",
           ):
               assert token in app, token
           assert '<span class="bar-rank">${index + 1}</span>' not in app6
