@@ -119,6 +119,62 @@
     return `${sign}${formatValue(delta, unit)} · ${relative > 0 ? '+' : ''}${formatter(1).format(relative)}%`;
   }
 
+  function historyPointMarkup({ x, y, value, year, town, unit, width, left, right }) {
+    const boxWidth = 210;
+    const boxHeight = 50;
+    const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, x - boxWidth / 2));
+    const boxY = y < 78 ? y + 18 : y - boxHeight - 16;
+    const label = `${town} · ${year}: ${formatValue(value, unit)}`;
+    return `<g class="chart-point" tabindex="0" role="button" aria-label="${escapeHtml(label)}">
+      <circle class="chart-hit" cx="${x}" cy="${y}" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="${x}" cy="${y}" r="4"></circle>
+      <g class="chart-tooltip" hidden>
+        <line class="chart-guide" x1="${x}" y1="${y}" x2="${x}" y2="${boxY < y ? boxY + boxHeight : boxY}"></line>
+        <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+        <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${escapeHtml(`${town} · ${year}`)}</text>
+        <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 34}">${escapeHtml(formatValue(value, unit))}</text>
+      </g>
+    </g>`;
+  }
+
+  function wireHistoryTooltips(chart) {
+    if (!chart || chart.dataset.ovTooltipWired === '1') return;
+    chart.dataset.ovTooltipWired = '1';
+    const points = [...chart.querySelectorAll('.chart-point')];
+    const hideAll = () => points.forEach(point => {
+      point.classList.remove('active');
+      point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');
+    });
+    const show = point => {
+      hideAll();
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+    points.forEach((point, index) => {
+      point.addEventListener('mouseenter', () => show(point));
+      point.addEventListener('mouseleave', hideAll);
+      point.addEventListener('focus', () => show(point));
+      point.addEventListener('blur', hideAll);
+      point.addEventListener('click', () => show(point));
+      point.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+          hideAll();
+          point.blur();
+          return;
+        }
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = points.length - 1;
+        points[next]?.focus();
+      });
+    });
+    chart.addEventListener('mouseleave', hideAll);
+  }
+
   function twoPointChartMarkup(metric, series, selectedSlug = '') {
     const rows = [...series.rows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
     const values = rows.flatMap(row => row.values);
@@ -182,8 +238,18 @@
 
       const paths = series.rows.map(row => {
         const points = row.values.map((value, index) => `${x(index)},${y(value)}`).join(' ');
-        const circles = row.values.map((value, index) => `<circle class="ux-series-point" cx="${x(index)}" cy="${y(value)}" r="4"><title>${escapeHtml(`${row.town} · ${series.years[index]}: ${formatValue(value, metric.meta.unit)}`)}</title></circle>`).join('');
-        return `<g class="ux-series-group ${row.slug === selectedSlug ? 'is-selected' : ''}" data-history-town="${escapeHtml(row.slug)}" style="--series-color:${row.color}"><polyline class="ux-series-line" points="${points}"><title>${escapeHtml(row.town)}</title></polyline>${circles}</g>`;
+        const circles = row.values.map((value, index) => historyPointMarkup({
+          x: x(index),
+          y: y(value),
+          value,
+          year: series.years[index],
+          town: row.town,
+          unit: metric.meta.unit,
+          width,
+          left,
+          right
+        })).join('');
+        return `<g class="ux-series-group ${row.slug === selectedSlug ? 'is-selected' : ''}" data-history-town="${escapeHtml(row.slug)}" style="--series-color:${row.color}"><polyline class="ux-series-line" points="${points}"></polyline>${circles}</g>`;
       }).join('');
 
       chartMarkup = `<div class="ux-history-scroll"><div class="ux-history-chart ${selectedSlug ? 'has-selection' : ''}" data-unit="${escapeHtml(metric.meta.unit)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${metric.meta.label}: confronto storico dei sette comuni`)}">${ticks}${zero}${paths}${yearLabels}</svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p>`;
@@ -212,6 +278,7 @@
   function wireHistorySelection(shell, initialSlug, allowClear) {
     const chart = shell.querySelector('.ux-history-chart, .ux-two-point-chart');
     if (!chart) return;
+    wireHistoryTooltips(chart.matches('.ux-history-chart') ? chart : null);
     const buttons = [...shell.querySelectorAll('[data-history-select]')];
     const groups = [...shell.querySelectorAll('[data-history-town]')];
     const summary = shell.querySelector('.ux-history-summary');

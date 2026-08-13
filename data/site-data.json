@@ -1,6 +1,6 @@
 {
-  "version": "v1.8.0",
-  "updated": "9 agosto 2026",
+  "version": "v1.9.0",
+  "updated": "12 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -298,7 +298,7 @@
       "number": "06",
       "label": "Mobilità e infrastrutture",
       "question": "Come si muove e quanto è connessa la Versilia?",
-      "description": "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e sicurezza stradale.",
+      "description": "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.",
       "metrics": [
         "outsideMunicipality",
         "outboundCommuters",
@@ -315,7 +315,11 @@
         "ftthReachedHouseholds",
         "ftthUnreachedHouseholds",
         "ftthCoverage20m",
-        "roadInjuries"
+        "slowMobilityRoutes",
+        "slowMobilityTrekking",
+        "slowMobilityCammini",
+        "slowMobilityBici",
+        "slowMobilityMtb"
       ],
       "sections": [
         {
@@ -355,23 +359,50 @@
           ]
         },
         {
-          "key": "sicurezza",
-          "label": "Sicurezza stradale",
-          "description": "Incidenti e persone coinvolte.",
+          "key": "mobilita-lenta",
+          "label": "Mobilità lenta",
+          "description": "Sentieri, cammini e percorsi ciclabili pubblici verificati nel territorio.",
           "metrics": [
-            "roadInjuries"
+            "slowMobilityRoutes",
+            "slowMobilityTrekking",
+            "slowMobilityCammini",
+            "slowMobilityBici",
+            "slowMobilityMtb"
           ]
         }
       ],
       "featured": [
         "outsideMunicipality",
         "ftthCoverageDesi",
+        "slowMobilityRoutes"
+      ]
+    },
+    "sicurezza": {
+      "key": "sicurezza",
+      "number": "07",
+      "label": "Sicurezza e territorio",
+      "question": "Quanto è sicuro il territorio e quali fenomeni emergono?",
+      "description": "Sicurezza stradale e criminalità, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.",
+      "metrics": [
+        "roadInjuries"
+      ],
+      "sections": [
+        {
+          "key": "sicurezza-stradale",
+          "label": "Sicurezza stradale",
+          "description": "Incidenti e persone coinvolte, con confronto comunale omogeneo.",
+          "metrics": [
+            "roadInjuries"
+          ]
+        }
+      ],
+      "featured": [
         "roadInjuries"
       ]
     },
     "abitare": {
       "key": "abitare",
-      "number": "07",
+      "number": "08",
       "label": "Abitare",
       "question": "Come viene utilizzato il patrimonio abitativo e come vivono le famiglie?",
       "description": "Patrimonio, abitazioni non occupate, struttura familiare e coabitazione.",
@@ -420,7 +451,7 @@
     },
     "ambiente": {
       "key": "ambiente",
-      "number": "08",
+      "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
       "description": "Suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.",
@@ -473,7 +504,7 @@
     },
     "bilanci": {
       "key": "bilanci",
-      "number": "09",
+      "number": "10",
       "label": "Bilanci comunali",
       "question": "Da dove provengono le risorse e come vengono impiegate?",
       "description": "Rendiconto, capacità di riscossione e pagamento, risultato di amministrazione, cassa e priorità di spesa.",
@@ -555,7 +586,7 @@
     },
     "comunita": {
       "key": "comunita",
-      "number": "10",
+      "number": "11",
       "label": "Investimenti e comunità",
       "question": "Quali progetti e reti sostengono il territorio?",
       "description": "Opere pubbliche, PNRR e presenza del Terzo settore.",
@@ -7018,7 +7049,7 @@
     "roadInjuries": {
       "meta": {
         "key": "roadInjuries",
-        "theme": "mobilita",
+        "theme": "sicurezza",
         "label": "Feriti in incidenti ogni 10.000 residenti",
         "shortLabel": "Feriti su strada",
         "description": "Persone ferite in incidenti stradali con lesioni, rapportate alla popolazione 2024.",
@@ -7222,7 +7253,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "feriti in incidenti / popolazione residente × 10.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "Il numero di feriti dipende anche dall'intensità del traffico e dalla funzione stradale del territorio; non misura da solo il rischio individuale.",
         "coverage": "7/7"
       }
     },
@@ -17341,6 +17372,496 @@
         "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata.",
         "coverage": "6/7"
       }
+    },
+    "slowMobilityRoutes": {
+      "meta": {
+        "key": "slowMobilityRoutes",
+        "theme": "mobilita",
+        "label": "Percorsi pubblici che attraversano il Comune",
+        "shortLabel": "Percorsi disponibili",
+        "description": "Numero di sentieri, cammini e percorsi ciclabili pubblici A0/B1 che attraversano il territorio comunale. Uno stesso percorso può interessare più Comuni.",
+        "unit": "count",
+        "year": 2026,
+        "source": "Osservatorio Versilia — Percorsi Versilia",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 5,
+          "formatted": "5",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 4,
+          "formatted": "4",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 11,
+          "formatted": "11",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6,
+          "formatted": "6",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 6
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 15,
+          "formatted": "15",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 25,
+          "formatted": "25",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 25
+        }
+      ],
+      "aggregate": {
+        "value": 9.714285714285714,
+        "label": "Media semplice dei 7 Comuni",
+        "note": "In Versilia sono pubblicati 41 percorsi unici; i conteggi comunali non sono sommabili."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione cartografica Osservatorio Versilia",
+        "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
+        "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+        "coverage": "7/7"
+      }
+    },
+    "slowMobilityTrekking": {
+      "meta": {
+        "key": "slowMobilityTrekking",
+        "theme": "mobilita",
+        "label": "Percorsi trekking che attraversano il Comune",
+        "shortLabel": "Trekking",
+        "description": "Numero di percorsi trekking pubblici A0/B1 che attraversano il territorio comunale. Uno stesso percorso può interessare più Comuni.",
+        "unit": "count",
+        "year": 2026,
+        "source": "Osservatorio Versilia — Percorsi Versilia",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 3,
+          "formatted": "3",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 12,
+          "formatted": "12",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 12
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 23,
+          "formatted": "23",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 23
+        }
+      ],
+      "aggregate": {
+        "value": 5.714285714285714,
+        "label": "Media semplice dei 7 Comuni",
+        "note": "In Versilia sono pubblicati 31 percorsi trekking unici; i conteggi comunali non sono sommabili."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione cartografica Osservatorio Versilia",
+        "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
+        "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+        "coverage": "7/7"
+      }
+    },
+    "slowMobilityCammini": {
+      "meta": {
+        "key": "slowMobilityCammini",
+        "theme": "mobilita",
+        "label": "Cammini che attraversano il Comune",
+        "shortLabel": "Cammini",
+        "description": "Numero di cammini pubblici A0/B1 che attraversano il territorio comunale. Uno stesso percorso può interessare più Comuni.",
+        "unit": "count",
+        "year": 2026,
+        "source": "Osservatorio Versilia — Percorsi Versilia",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        }
+      ],
+      "aggregate": {
+        "value": 0.7142857142857143,
+        "label": "Media semplice dei 7 Comuni",
+        "note": "In Versilia sono pubblicati 2 cammini unici; i conteggi comunali non sono sommabili."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione cartografica Osservatorio Versilia",
+        "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
+        "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+        "coverage": "7/7"
+      }
+    },
+    "slowMobilityBici": {
+      "meta": {
+        "key": "slowMobilityBici",
+        "theme": "mobilita",
+        "label": "Percorsi ciclabili che attraversano il Comune",
+        "shortLabel": "Bici",
+        "description": "Numero di percorsi bici pubblici A0/B1 che attraversano il territorio comunale. Uno stesso percorso può interessare più Comuni.",
+        "unit": "count",
+        "year": 2026,
+        "source": "Osservatorio Versilia — Percorsi Versilia",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 3,
+          "formatted": "3",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 3,
+          "formatted": "3",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 5,
+          "formatted": "5",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 3,
+          "formatted": "3",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2
+        }
+      ],
+      "aggregate": {
+        "value": 2.857142857142857,
+        "label": "Media semplice dei 7 Comuni",
+        "note": "In Versilia sono pubblicati 7 percorsi bici unici; i conteggi comunali non sono sommabili."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione cartografica Osservatorio Versilia",
+        "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
+        "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+        "coverage": "7/7"
+      }
+    },
+    "slowMobilityMtb": {
+      "meta": {
+        "key": "slowMobilityMtb",
+        "theme": "mobilita",
+        "label": "Percorsi MTB che attraversano il Comune",
+        "shortLabel": "MTB",
+        "description": "Numero di percorsi MTB pubblici A0/B1 che attraversano il territorio comunale. Uno stesso percorso può interessare più Comuni.",
+        "unit": "count",
+        "year": 2026,
+        "source": "Osservatorio Versilia — Percorsi Versilia",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        }
+      ],
+      "aggregate": {
+        "value": 0.42857142857142855,
+        "label": "Media semplice dei 7 Comuni",
+        "note": "In Versilia sono pubblicati 1 percorsi MTB unici; i conteggi comunali non sono sommabili."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione cartografica Osservatorio Versilia",
+        "formula": "Conteggio dei percorsi pubblici A0/B1 che attraversano il territorio comunale.",
+        "caveat": "I conteggi comunali non sono additivi: uno stesso percorso può attraversare più Comuni. I chilometri comunali non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi ufficiali.",
+        "coverage": "7/7"
+      }
     }
   },
   "crests": {
@@ -23597,7 +24118,7 @@
     }
   },
   "crime": {
-    "year": 2023,
+    "year": 2024,
     "years": [
       2019,
       2020,
@@ -23824,5 +24345,131 @@
       "96": "Altri servizi personali"
     },
     "note": "Unità locali e addetti medi annui sono attribuiti al luogo di lavoro. Le divisioni con valore nullo non sono mostrate."
+  },
+  "percorsi": {
+    "version": "2026-08-12",
+    "definition": {
+      "public_classes": [
+        "A0",
+        "B1"
+      ],
+      "municipality_count_note": "I conteggi comunali indicano i percorsi pubblici che attraversano il Comune. Uno stesso percorso può attraversare più Comuni, quindi i valori comunali non sono sommabili tra loro.",
+      "municipality_km_note": "I chilometri per singolo Comune non sono pubblicati finché le geometrie non vengono intersecate con i confini amministrativi comunali ufficiali."
+    },
+    "versilia": {
+      "routes": 41,
+      "km": 342.7,
+      "municipalities": 7,
+      "by_mode": {
+        "trekking": 31,
+        "cammino": 2,
+        "bicycle": 7,
+        "mtb": 1
+      },
+      "by_quality": {
+        "A0": 30,
+        "B1": 11
+      }
+    },
+    "municipalities": {
+      "camaiore": {
+        "name": "Camaiore",
+        "routes": 11,
+        "by_mode": {
+          "trekking": 3,
+          "cammino": 2,
+          "bicycle": 5,
+          "mtb": 1
+        },
+        "by_quality": {
+          "A0": 7,
+          "B1": 4
+        }
+      },
+      "forte-dei-marmi": {
+        "name": "Forte dei Marmi",
+        "routes": 2,
+        "by_mode": {
+          "trekking": 0,
+          "cammino": 0,
+          "bicycle": 2,
+          "mtb": 0
+        },
+        "by_quality": {
+          "A0": 2,
+          "B1": 0
+        }
+      },
+      "massarosa": {
+        "name": "Massarosa",
+        "routes": 5,
+        "by_mode": {
+          "trekking": 0,
+          "cammino": 1,
+          "bicycle": 3,
+          "mtb": 1
+        },
+        "by_quality": {
+          "A0": 2,
+          "B1": 3
+        }
+      },
+      "pietrasanta": {
+        "name": "Pietrasanta",
+        "routes": 6,
+        "by_mode": {
+          "trekking": 2,
+          "cammino": 1,
+          "bicycle": 3,
+          "mtb": 0
+        },
+        "by_quality": {
+          "A0": 3,
+          "B1": 3
+        }
+      },
+      "seravezza": {
+        "name": "Seravezza",
+        "routes": 15,
+        "by_mode": {
+          "trekking": 12,
+          "cammino": 1,
+          "bicycle": 2,
+          "mtb": 0
+        },
+        "by_quality": {
+          "A0": 11,
+          "B1": 4
+        }
+      },
+      "stazzema": {
+        "name": "Stazzema",
+        "routes": 25,
+        "by_mode": {
+          "trekking": 23,
+          "cammino": 0,
+          "bicycle": 2,
+          "mtb": 0
+        },
+        "by_quality": {
+          "A0": 22,
+          "B1": 3
+        }
+      },
+      "viareggio": {
+        "name": "Viareggio",
+        "routes": 4,
+        "by_mode": {
+          "trekking": 0,
+          "cammino": 0,
+          "bicycle": 3,
+          "mtb": 1
+        },
+        "by_quality": {
+          "A0": 4,
+          "B1": 0
+        }
+      }
+    }
   }
 }

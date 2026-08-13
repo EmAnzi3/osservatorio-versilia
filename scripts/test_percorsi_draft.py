@@ -114,6 +114,12 @@ def check_source() -> None:
     require("Home: torna alla vista generale Versilia" in app, "Controllo Home assente")
     require('rel="canonical"' in method and 'type="application/ld+json"' in method,
             "Metadati della pagina Metodo incompleti")
+    require("non è un servizio di navigazione" in method and "non esprimono un giudizio sulla sicurezza attuale" in method,
+            "Avvertenza di sicurezza assente dalla pagina Metodo")
+    require('class="safetyNotice"' in index and "non l’agibilità o la sicurezza attuale" in index,
+            "Avvertenza di sicurezza assente dalla mappa")
+    require("published_2023_status_not_rechecked" in app and "non è stato ricontrollato" in app,
+            "Avvertenza per le tracce non ricontrollate assente")
 
     require(summary.get("public_total") == 41, "Totale pubblico diverso da 41")
     require(summary.get("by_quality") == {"A0": 30, "B1": 11}, "Ripartizione A0/B1 inattesa")
@@ -151,6 +157,8 @@ def check_dist_data() -> None:
     require("roadInjuries" not in mobility["metrics"], "Sicurezza stradale ancora dentro Mobilità")
     require(data["metrics"]["roadInjuries"]["meta"]["theme"] == "sicurezza",
             "Feriti su strada non assegnato al nuovo tema")
+    require(data["crime"]["year"] == data["crime"]["years"][-1] == 2024,
+            "Anno della criminalità non allineato all’ultimo valore della serie")
     slow_section = next((s for s in mobility["sections"] if s.get("key") == "mobilita-lenta"), None)
     require(slow_section is not None, "Sezione Mobilità lenta assente dalla grammatica standard")
     require(tuple(slow_section["metrics"]) == SLOW_KEYS, "Indicatori Mobilità lenta incompleti")

@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="../assets/brand.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynHTCQHGwB5lGVE2R0F7J/r39QY0=" crossorigin="">
 <link rel="stylesheet" href="styles.css?v=4">
-<link rel="stylesheet" href="osservatorio.css?v=1">
+<link rel="stylesheet" href="osservatorio.css?v=3">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Percorsi e mobilità lenta","url":"https://osservatorioversilia.it/percorsi/","applicationCategory":"TravelApplication","operatingSystem":"Web","description":"Mappa pubblica di sentieri, cammini e percorsi ciclabili della Versilia con filtri e download GPX, KML e GeoJSON.","isPartOf":{"@type":"WebSite","name":"Osservatorio Versilia","url":"https://osservatorioversilia.it/"}}</script>
 </head>
 <body class="percorsi-page">
@@ -56,7 +56,7 @@
   <aside class="sidebar">
     <div class="head">
       <div class="brand">
-        <div><h1>Percorsi e mobilità lenta</h1><div class="kicker">Sentieri, cammini e percorsi ciclabili — tracce pubbliche verificate o corroborate</div></div>
+        <div><h1>Percorsi e mobilità lenta</h1><div class="kicker">Sentieri, cammini e percorsi ciclabili — tracce pubblicate con provenienza documentata</div></div>
         <a class="method" href="metodo.html">Metodo e fonti</a>
       </div>
       <div class="summary">
@@ -69,6 +69,10 @@
         <a id="allKml" href="#">KML</a>
         <a id="allGeo" href="#">GeoJSON</a>
       </div>
+      <aside class="safetyNotice" role="note" aria-label="Avvertenza per la consultazione dei percorsi">
+        <strong>Prima di partire</strong>
+        <span>Le classi A0 e B1 descrivono la provenienza della traccia, non l’agibilità o la sicurezza attuale. Verifica sempre condizioni, accessi, meteo e indicazioni delle autorità competenti.</span>
+      </aside>
     </div>
     <div class="filters">
       <div class="search"><input id="search" placeholder="Cerca un percorso, un comune…"></div>
@@ -98,7 +102,7 @@
         <div class="info"><span>Lunghezza</span><b id="detailKm">—</b></div>
         <div class="info"><span>Difficoltà</span><b id="detailDifficulty">—</b></div>
         <div class="info"><span>Comuni</span><b id="detailComuni">—</b></div>
-        <div class="info"><span>Affidabilità</span><b id="detailQuality">—</b></div>
+        <div class="info"><span>Provenienza</span><b id="detailQuality">—</b></div>
       </div>
       <div class="source" id="detailSource"></div>
       <div class="downloads">
@@ -109,15 +113,15 @@
     </section>
     <div class="legend">
       <div class="leg"><span style="background:#176b4a"></span>Trekking</div>
-      <div class="leg"><span style="background:#6e4ab5"></span>Cammini</div>
-      <div class="leg"><span style="background:#117b93"></span>Bici</div>
-      <div class="leg"><span style="background:#315b9d"></span>MTB</div>
+      <div class="leg"><span style="background:#c66a00"></span>Cammini</div>
+      <div class="leg"><span style="background:#0077a8"></span>Bici</div>
+      <div class="leg"><span style="background:#b23a48"></span>MTB</div>
     </div>
   </main>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="data-loader.js?v=2"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

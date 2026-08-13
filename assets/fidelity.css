@@ -656,3 +656,45 @@
 @media print {
   .compare-context-nav, .town-context-nav { display: none !important; }
 }
+
+
+/* Percorsi: accesso cartografico contestuale */
+.slow-mobility-map-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 12px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 54, 84, .22);
+  border-radius: 12px;
+  background: rgba(88, 162, 143, .10);
+}
+.slow-mobility-map-entry > span {
+  color: #36566a;
+  font-size: .82rem;
+  line-height: 1.35;
+}
+.slow-mobility-map-entry > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #0f3654;
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.slow-mobility-map-entry > a:hover,
+.slow-mobility-map-entry > a:focus-visible {
+  background: #174d70;
+}
+@media (max-width: 700px) {
+  .slow-mobility-map-entry {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

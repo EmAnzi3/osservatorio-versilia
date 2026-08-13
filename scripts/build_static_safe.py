@@ -18,6 +18,7 @@ _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
 UX_ASSET_VERSION = "20260809-2"
+HISTORY_ASSET_VERSION = "20260813-1"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -30,6 +31,11 @@ V180_VERSION_ENTRY = (
     "      ['2026.08.09-v1.8.0','9 agosto 2026','106 indicatori. "
     "Aggiunte 106 schede canoniche degli indicatori, politica esplicita di aggiornamento "
     "delle fonti e sette serie comunali Istat omogenee 2021–2023.'],\n"
+)
+V190_VERSION_ENTRY = (
+    "      ['2026.08.12-v1.9.0','12 agosto 2026','115 indicatori complessivi in 11 temi, "
+    "inclusi i 4 indicatori climatici. Integrati Percorsi e mobilità lenta nel dataset principale e separato il tema "
+    "Sicurezza e territorio.'],\n"
 )
 
 if "bilanci" not in build.THEME_SLUGS:
@@ -117,11 +123,13 @@ def bundle_application_with_private_fixes() -> None:
     elif PUBLIC_CONTACT not in bundle:
         raise RuntimeError("Recapito pubblico dell'Osservatorio non trovato nel bundle")
 
-    if "2026.08.09-v1.8.0" not in bundle:
+    if "2026.08.12-v1.9.0" not in bundle:
         marker = "    const versions = [\n"
         if marker not in bundle or "2026.08.05-v1.6.0" not in bundle:
             raise RuntimeError("Elenco versioni del progetto non trovato nel bundle")
-        entries = V180_VERSION_ENTRY
+        entries = V190_VERSION_ENTRY
+        if "2026.08.09-v1.8.0" not in bundle:
+            entries += V180_VERSION_ENTRY
         if "2026.08.07-v1.7.0" not in bundle:
             entries += V170_VERSION_ENTRY
         bundle = bundle.replace(marker, marker + entries, 1)
@@ -148,7 +156,8 @@ def prepare_shells_with_fonts() -> None:
             token = f"assets/{stylesheet}"
             if token in text:
                 continue
-            version = "" if stylesheet == "fonts.css" else f"?v={UX_ASSET_VERSION}"
+            asset_version = HISTORY_ASSET_VERSION if stylesheet == "ux-experiment.css" else UX_ASSET_VERSION
+            version = "" if stylesheet == "fonts.css" else f"?v={asset_version}"
             text = text.replace(
                 "</head>",
                 f'  <link rel="stylesheet" href="{assets}{token}{version}">\n</head>',
@@ -162,7 +171,7 @@ def prepare_shells_with_fonts() -> None:
             "visual-grammar.js",
         )
         missing_scripts = [
-            f'  <script src="{assets}assets/{script}?v={UX_ASSET_VERSION}" defer></script>\n'
+            f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION}" defer></script>\n'
             for script in scripts
             if f"assets/{script}" not in text
         ]
@@ -227,8 +236,8 @@ def normalize_prerendered_urls() -> None:
     project_text = project_path.read_text(encoding="utf-8")
     if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
         raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
-    if "2026.08.09-v1.8.0" not in project_text or "106 indicatori" not in project_text:
-        raise RuntimeError("Versione v1.8.0 non visibile nella pagina Il progetto")
+    if "2026.08.12-v1.9.0" not in project_text or "115 indicatori" not in project_text:
+        raise RuntimeError("Versione v1.9.0 non visibile nella pagina Il progetto")
     if LEGACY_CONTACT in project_text or PUBLIC_CONTACT not in project_text:
         raise RuntimeError("Recapito pubblico non coerente nella pagina Il progetto")
 

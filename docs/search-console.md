@@ -4,12 +4,12 @@ Il sito espone la sitemap canonica all'indirizzo:
 
 `https://osservatorioversilia.it/sitemap.xml`
 
-La build include 126 URL indicizzabili:
+La build include 132 URL indicizzabili:
 
 - homepage;
 - 7 schede comunali;
 - 10 confronti tematici;
-- 106 pagine indicatore;
+- 111 pagine indicatore;
 - pagina del progetto;
 - pagina delle segnalazioni.
 

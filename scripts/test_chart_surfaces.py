@@ -135,7 +135,7 @@ def verify_home(page: Page, base: str) -> None:
 
 def verify_all_theme_pages(page: Page, base: str) -> None:
     themes = DATA.get("themes", {})
-    require(len(themes) == 10, f"Attesi 10 temi, trovati {len(themes)}")
+    require(len(themes) == 11, f"Attesi 11 temi, trovati {len(themes)}")
     for theme_key, theme in themes.items():
         metrics = theme.get("metrics") or []
         require(metrics, f"Tema {theme_key}: nessun indicatore")
@@ -177,6 +177,16 @@ def verify_history_variants(page: Page, base: str) -> None:
         "Demografia · serie storica a linee",
         visible=False,
     )
+    page.locator('[data-view-mode="history"]').click()
+    point = page.locator("#compare-bars .ux-history-chart .chart-point").last
+    require(point.count() == 1, "Punto interattivo assente nello storico ordinario")
+    require(point.locator("title").count() == 0, "Tooltip nativo del browser ancora presente")
+    point.hover()
+    tooltip = point.locator(".chart-tooltip")
+    require(tooltip.is_visible(), "Tooltip grafico personalizzato non visibile")
+    require("·" in (tooltip.text_content() or ""), "Tooltip privo di comune e anno")
+    fill = tooltip.locator("rect").evaluate("element => getComputedStyle(element).fill")
+    require(fill == "rgb(16, 47, 69)", f"Tooltip non allineato allo stile scuro del clima: {fill}")
 
 
 def verify_economy_specials(page: Page, base: str) -> None:
@@ -222,7 +232,7 @@ def main() -> None:
         context.close()
         browser.close()
 
-    print("Superfici grafiche verificate: home, 10 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
+    print("Superfici grafiche verificate: home, 11 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
 
 
 if __name__ == "__main__":

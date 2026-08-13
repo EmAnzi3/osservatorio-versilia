@@ -167,4 +167,4 @@
     panel.dataset.theme = themeKey;
     panel.innerHTML = `<div class="explorer-copy"><span class="overline">Confronto · ${html(theme.label)}</span><h2>${html(metric.meta.label)}</h2><p>${html(metric.meta.description)}</p>
       <div class="featured-metric-label">Indicatori chiave</div>
-      <div class="metric-switch featured-switch" role="tablist" aria-label="Indicatori chiave">${keys.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === m
+      <div class="metric-switch featured-switch" role="tablist" aria-label="Indicatori chiave">${keys.map(key => `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(data.metrics[key].meta.shortLabel)}</button>`).join('')}</div>

@@ -100,6 +100,7 @@
 
   function unitKind(unit) {
     const token = String(unit || '').trim().toLowerCase();
+    if (token === 'number') return 'count';
     if (token === 'percent' || token === '%') return 'percent';
     if (token === 'percentagepoints' || token === 'percentage-points' || token === 'p.p.') return 'percentage-points';
     if (token === 'currency' || token === 'eur' || token === '€' || token === '€/ab.') return 'currency';
@@ -165,15 +166,15 @@
   function formatAxis(value, unit) {
     if (finite(value) === null) return 'n.d.';
     const n = Number(value);
-    const formatted = Math.abs(n) >= 100 ? number0.format(n) : number1.format(n);
     const kind = unitKind(unit);
+    const formatted = kind === 'count' ? number0.format(n) : (Math.abs(n) >= 100 ? number0.format(n) : number1.format(n));
     if (kind === 'percent') return `${formatted}%`;
     if (kind === 'percentage-points') return `${formatted} p.p.`;
     if (kind === 'currency') return `${formatted} €`;
     if (kind === 'millioncurrency') return `${formatted} mln €`;
     if (kind === 'years') return `${formatted} anni`;
     if (kind === 'nights') return `${formatted} notti`;
-    return unit ? `${formatted} ${unit}` : formatted;
+    return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
   }
 
   function scaleFor(values, aggregateValue, unit) {
@@ -190,6 +191,7 @@
     if (min >= 0) {
       min = 0;
       max = max === 0 ? 1 : max * 1.05;
+      if (unitKind(unit) === 'count') max = Math.max(1, Math.ceil(max));
       return { min, max, kind: 'absolute' };
     }
     if (max <= 0) {

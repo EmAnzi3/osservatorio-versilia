@@ -51,6 +51,18 @@
     scrollActiveControl(document.querySelector('.theme-nav'));
   }
 
+  function slowMobilityMapHref(townName, metricKey) {
+    const modes = {
+      slowMobilityTrekking: 'trekking',
+      slowMobilityCammini: 'cammino',
+      slowMobilityBici: 'bicycle',
+      slowMobilityMtb: 'mtb'
+    };
+    const params = new URLSearchParams({ comune: townName });
+    if (modes[metricKey]) params.set('tipo', modes[metricKey]);
+    return route(`percorsi/?${params.toString()}`);
+  }
+
   function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {
     const theme = data.themes[themeKey];
     const metric = data.metrics[metricKey];
@@ -62,6 +74,7 @@
     const historical = Boolean(row.series?.values?.length);
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${metricControls(data, themeKey, metricKey, true)}
+      ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
       <div class="town-metric-layout"><article class="town-metric-primary"><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
@@ -69,9 +82,9 @@
       <section class="history-panel"><div class="panel-title"><div><span class="overline">${historical ? 'Andamento storico' : 'Confronto territoriale'}</span><h3>${historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni'}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`}</section>
       ${deepDiveMarkup(data, town, themeKey)}
-      ${townBenchmarkMarkup(metric, row, town)}
+      ${metricKey.startsWith('slowMobility') ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
-      <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+      <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
 
     const tablist = container.querySelector('[role="tablist"]');
     installTablist(tablist, onMetricSelect);
@@ -82,8 +95,8 @@
     scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');
-    context.innerHTML = themeKey === 'mobilita' ? crimeMarkup(data) : '';
-    if (themeKey === 'mobilita') installCrimeInteractions(data);
+    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : '';
+    if (themeKey === 'sicurezza') installCrimeInteractions(data);
   }
 
   function townBenchmarkMarkup(metric, row, town) {

@@ -111,7 +111,7 @@ def main() -> None:
     require(source == built, "Il dataset pubblicato non coincide con il sorgente")
     require(version_tuple(source.get("version", "0.0.0")) >= (1, 7, 0), "Release precedente alla v1.7")
     require(len(source.get("towns", [])) == 7, "Copertura anagrafica diversa da 7 Comuni")
-    require(len(source.get("themes", {})) == 10, "Il sito deve mantenere 10 temi")
+    require(len(source.get("themes", {})) >= 10, "Il sito deve mantenere almeno i 10 temi della v1.7")
     require(len(source.get("metrics", {})) >= 106, "La v1.7 deve contenere almeno 106 indicatori")
 
     all_keys = set(source["metrics"])
@@ -124,12 +124,12 @@ def main() -> None:
         require(legacy_keys <= current, f"{theme_key}: rimossi indicatori delle release precedenti")
 
     budget_theme = source["themes"]["bilanci"]
-    require(budget_theme["number"] == "09", "Bilanci deve restare il tema 09")
+    require(budget_theme["number"] == "10", "Bilanci deve essere il tema 10 dopo l’introduzione di Sicurezza")
     require(V16_BUDGET_KEYS <= set(budget_theme["metrics"]), "Bilanci ha perso indicatori v1.6")
     require(len(budget_theme.get("sections", [])) >= 4, "Bilanci ha perso sezioni")
 
     community = source["themes"]["comunita"]
-    require(community["number"] == "10", "Investimenti e comunità deve restare il tema 10")
+    require(community["number"] == "11", "Investimenti e comunità deve essere il tema 11 dopo l’introduzione di Sicurezza")
     require(
         community["metrics"] == ["publicWorks", "pnrrFunding", "pnrrConcluded", "thirdSector"],
         "Struttura del tema Investimenti e comunità inattesa",
