@@ -6,7 +6,7 @@ Il Social Kit trasforma i dati pubblicati su Osservatorio Versilia in contenuti 
 
 La formula editoriale è:
 
-> Un dato. La fonte. Il confronto. La tua opinione.
+> Il dato attuale. Lo storico. Il confronto. La conversazione.
 
 ## Regole non negoziabili
 
@@ -22,6 +22,9 @@ La formula editoriale è:
 10. Una correzione aggiorna grafica, didascalia e provenienza, mantenendo traccia della versione dei dati.
 11. Chiavi tecniche, slug e numerazioni interne restano nella provenienza e non compaiono nella grafica.
 12. La domanda ai lettori è un elemento editoriale visibile, non una nota a piè di pagina.
+13. Le quattro tavole usano i colori canonici del tema presenti sul sito; non si introducono palette settimanali.
+14. Un riferimento a caldo, pioggia o altri eventi correnti non viene confuso con una tendenza climatica pluriennale.
+15. Una ricorrenza entra nel calendario soltanto se ufficiale e sostenuta da un indicatore pertinente già verificato.
 
 ## Lessico
 
@@ -44,6 +47,7 @@ Questi termini possono comparire solo in una citazione attribuita e necessaria, 
 
 - Le barre partono da zero.
 - Le serie storiche mostrano tutto l’intervallo disponibile usato nel titolo.
+- Il confronto tra periodi usa intervalli espliciti e completi.
 - Le scale troncate sono vietate nei confronti a barre.
 - Colore e dimensione non devono suggerire un giudizio assente nei dati.
 - Il colore identifica il tema; non identifica “buono” o “cattivo”.
@@ -64,4 +68,7 @@ Questi termini possono comparire solo in una citazione attribuita e necessaria, 
 - [ ] La descrizione non introduce cause non dimostrate.
 - [ ] Il testo alternativo descrive contenuto e valori principali.
 - [ ] Il link punta alla pagina dell’indicatore o del tema.
-- [ ] La grafica è stata controllata nei formati feed e storia.
+- [ ] Tutti i testi restano interamente dentro i rispettivi box.
+- [ ] Le quattro PNG 1080×1350 sono state controllate su smartphone.
+- [ ] Il colore del tema coincide con la palette canonica del sito.
+- [ ] Eventuali ricorrenze hanno una fonte ufficiale e sostituiscono, non aggiungono, un’uscita.

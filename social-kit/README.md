@@ -1,19 +1,21 @@
 # Social Kit — Osservatorio Versilia
 
-Un sistema editoriale replicabile, non una raccolta di grafiche indipendenti.
+Sistema replicabile per produrre due caroselli social alla settimana, sempre in bozza.
 
-## Metodo
+## Struttura
 
-Ogni settimana usa un solo indicatore e produce due post coordinati:
+Ogni carosello contiene quattro immagini PNG 1080×1350:
 
-- **martedì — Il dato:** confronto alfabetico dei sette Comuni;
-- **venerdì — Come leggerlo:** definizione, metodo, limiti ed eventuale benchmark omogeneo.
+1. dato attuale;
+2. andamento storico;
+3. confronto temporale tra i sette Comuni;
+4. domande e invito a commentare e seguire la pagina.
 
-I due post usano la stessa griglia. Logo, fondo, margini, tipografia, blocco domanda e fonti sono bloccati dal file `config/design-system.json`. Il tema modifica soltanto il colore di accento.
+Le stesse immagini vengono usate su Facebook, Instagram, LinkedIn e X. Non vengono generati PDF o storie.
 
-La descrizione completa del flusso è in `METHOD.md`.
+La griglia è definita da `config/design-system.json`; i colori canonici dei temi da `config/themes.json`; le uscite da `config/editorial-calendar.json`; le ricorrenze ammissibili da `config/recurrences.json`.
 
-## Generare il calendario
+## Uso
 
 ```bash
 python3 -m pip install -r social-kit/requirements.txt
@@ -21,41 +23,26 @@ python3 scripts/generate_social_kit.py
 python3 scripts/test_social_kit.py
 ```
 
-La galleria viene creata in `social-kit/dist/index.html`.
+L’anteprima è `social-kit/dist/index.html`. Il pacchetto contiene solo bozze e non esegue alcuna pubblicazione.
 
-## Generare una nuova settimana
+Per il contenuto clima:
 
 ```bash
 python3 scripts/generate_social_kit.py \
-  --theme economia \
-  --metric localUnits \
-  --week-id economia-unita-locali \
-  --normalized
+  --post-id 2026-08-14-clima-temperature-massime
 ```
 
-Per vedere gli indicatori già approvati:
+Per controllare una settimana e le eventuali ricorrenze ufficiali:
 
 ```bash
-python3 scripts/generate_social_kit.py --list-metrics
+python3 scripts/plan_social_week.py --date 2026-11-09
 ```
 
-Le domande predefinite arrivano da `config/question-bank.json`. Si possono sostituire con:
+## Dove intervenire
 
-```bash
---data-question "Domanda del primo post" \
---context-question "Domanda del secondo post"
-```
+- nuova uscita: aggiungere una voce a `config/editorial-calendar.json`;
+- nuova ricorrenza: aggiungerla a `config/recurrences.json` con URL ufficiale e indicatori candidati;
+- nuovo indicatore: approvarlo in `config/social-ready.json` dopo aver verificato fonte, copertura e comparabilità;
+- modifica grafica strutturale: aggiornare il design system e i test, mai una singola tavola.
 
-## Output
-
-Per ogni post:
-
-- SVG e PNG feed 1080×1350;
-- SVG e PNG storia 1080×1920;
-- testi per Facebook, Instagram, LinkedIn e X;
-- testo alternativo;
-- provenienza completa;
-- inserimento nel PDF LinkedIn e nella galleria.
-
-Il workflow GitHub **Genera Social Kit** produce lo stesso pacchetto come artefatto di revisione. Non pubblica post e non modifica il sito.
-
+La procedura completa e i controlli editoriali sono in `METHOD.md` e `EDITORIAL_POLICY.md`.

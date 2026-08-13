@@ -11,9 +11,25 @@
     "population": {"scope": "comunale", "comparable": true},
     "income": {"scope": "comunale", "comparable": true},
     "roadInjuries": {"scope": "comunale", "comparable": true},
+    "diabetes": {"scope": "comunale", "comparable": true, "history": false},
+    "lifeExpectancy": {"scope": "comunale", "comparable": true},
+    "chronicTotal": {"scope": "comunale", "comparable": true},
+    "disability064Per1000": {"scope": "comunale", "comparable": true},
+    "diplomaPlus": {"scope": "comunale", "comparable": true},
+    "tertiary": {"scope": "comunale", "comparable": true},
+    "singleHouseholds": {"scope": "comunale", "comparable": true},
     "localUnits": {"scope": "comunale", "comparable": true},
     "ftthCoverageDesi": {"scope": "comunale", "comparable": true},
     "recycling": {"scope": "comunale", "comparable": true},
     "capitalExpenditureCommittedPerResident": {"scope": "amministrativo", "comparable": true}
+  },
+  "approved_datasets": {
+    "climate-minmax": {
+      "path": "data/meteo-clima-minmax-poc.json",
+      "status": "draft",
+      "scope": "comunale",
+      "metrics": ["tmin", "tmax"],
+      "publishable_only_as_draft": true
+    }
   }
 }

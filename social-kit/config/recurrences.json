@@ -1,0 +1,78 @@
+{
+  "version": "2026-08-13",
+  "policy": "Una ricorrenza sostituisce uno dei due contenuti settimanali solo se esistono un indicatore pertinente, fonte verificabile e copertura adeguata. Non genera un terzo post e non giustifica collegamenti forzati.",
+  "events": [
+    {
+      "id": "education-day",
+      "month_day": "01-24",
+      "label": "Giornata internazionale dell’educazione",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/international-day-education",
+      "theme": "istruzione",
+      "candidate_metrics": ["diplomaPlus", "tertiary"]
+    },
+    {
+      "id": "womens-day",
+      "month_day": "03-08",
+      "label": "Giornata internazionale della donna",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/womens-day",
+      "theme": "demografia",
+      "candidate_metrics": []
+    },
+    {
+      "id": "world-health-day",
+      "month_day": "04-07",
+      "label": "Giornata mondiale della salute",
+      "authority": "Organizzazione mondiale della sanità",
+      "url": "https://www.who.int/campaigns/world-health-day",
+      "theme": "salute",
+      "candidate_metrics": ["lifeExpectancy", "chronicTotal"]
+    },
+    {
+      "id": "earth-day",
+      "month_day": "04-22",
+      "label": "Giornata internazionale della Madre Terra",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/earth-day",
+      "theme": "ambiente",
+      "candidate_metrics": ["recycling"]
+    },
+    {
+      "id": "families-day",
+      "month_day": "05-15",
+      "label": "Giornata internazionale delle famiglie",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/international-day-of-families",
+      "theme": "abitare",
+      "candidate_metrics": ["singleHouseholds"]
+    },
+    {
+      "id": "environment-day",
+      "month_day": "06-05",
+      "label": "Giornata mondiale dell’ambiente",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/environment-day",
+      "theme": "ambiente",
+      "candidate_metrics": ["recycling"]
+    },
+    {
+      "id": "world-diabetes-day",
+      "month_day": "11-14",
+      "label": "Giornata mondiale del diabete",
+      "authority": "Organizzazione mondiale della sanità",
+      "url": "https://www.who.int/campaigns/world-diabetes-day",
+      "theme": "salute",
+      "candidate_metrics": ["diabetes"]
+    },
+    {
+      "id": "disability-day",
+      "month_day": "12-03",
+      "label": "Giornata internazionale delle persone con disabilità",
+      "authority": "Nazioni Unite",
+      "url": "https://www.un.org/en/observances/day-of-persons-with-disabilities",
+      "theme": "salute",
+      "candidate_metrics": ["disability064Per1000"]
+    }
+  ]
+}

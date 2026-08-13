@@ -1,37 +1,101 @@
 {
-  "campaign": "Mese campione",
+  "version": "social-calendar-v2",
+  "timezone": "Europe/Rome",
   "cadence": {
-    "data_post": "martedì",
-    "context_post": "venerdì"
+    "target_posts_per_week": 2,
+    "standard_days": ["martedì", "venerdì"],
+    "recurrence_replaces_standard_slot": true,
+    "maximum_posts_per_week": 2
   },
-  "weeks": [
+  "transition_note": "La settimana 2026-W33 contiene una sola uscita perché il nuovo metodo viene introdotto a settimana iniziata.",
+  "posts": [
     {
-      "id": "settimana-01",
-      "theme": "demografia",
-      "metric": "population",
-      "data_question": "Nel tuo Comune, quale cambiamento demografico noti di più?",
-      "context_question": "Quale servizio locale risente maggiormente del cambiamento demografico?"
-    },
-    {
-      "id": "settimana-02",
-      "theme": "economia",
-      "metric": "income",
-      "data_question": "Quale differenza tra Comuni ti sorprende di più, e perché?",
-      "context_question": "Quale dato affiancheresti al reddito medio prima di interpretarlo?"
-    },
-    {
-      "id": "settimana-03",
-      "theme": "sicurezza",
-      "metric": "roadInjuries",
-      "data_question": "Dove incontri più spesso problemi di sicurezza stradale?",
-      "context_question": "Quale informazione manca per spiegare le differenze tra territori?"
-    },
-    {
-      "id": "settimana-04",
+      "id": "2026-08-14-clima-temperature-massime",
+      "date": "2026-08-14",
+      "status": "draft",
+      "priority": "current-context",
       "theme": "ambiente",
+      "dataset": "climate-minmax",
+      "metric": "tmax",
+      "history_from": 1975,
+      "comparison": {"type": "period_mean", "base": [1975, 1984], "current": [2016, 2025]},
+      "titles": [
+        "Quanto è stato caldo il 2025?",
+        "Cinquant’anni di temperature",
+        "Due decenni a confronto",
+        "Il caldo cambia le giornate"
+      ],
+      "subtitles": [
+        "La temperatura massima media nei sette Comuni",
+        "L’andamento annuale dal 1975 al 2025",
+        "Media 1975–1984 e media 2016–2025",
+        "I numeri descrivono il clima. L’esperienza completa il quadro."
+      ],
+      "questions": [
+        "Nel tuo Comune, dove senti di più gli effetti delle giornate più calde?",
+        "Quali spazi o servizi locali aiutano davvero nelle ore più calde?"
+      ],
+      "context_note": "Il caldo di questi giorni rende il tema attuale, ma il carosello descrive una serie climatica annuale completa e non il singolo episodio meteorologico."
+    },
+    {
+      "id": "2026-08-18-demografia-residenti",
+      "date": "2026-08-18",
+      "status": "draft",
+      "priority": "calendar",
+      "theme": "demografia",
+      "dataset": "site",
+      "metric": "population",
+      "history_from": 2019,
+      "comparison": {"type": "base_year", "year": 2019},
+      "questions": [
+        "Nel tuo Comune, dove noti di più questo cambiamento?",
+        "Quale servizio locale dovrebbe adattarsi per primo?"
+      ]
+    },
+    {
+      "id": "2026-08-21-economia-reddito",
+      "date": "2026-08-21",
+      "status": "draft",
+      "priority": "calendar",
+      "theme": "economia",
+      "dataset": "site",
+      "metric": "income",
+      "history_from": 2023,
+      "comparison": {"type": "base_year", "year": 2023},
+      "questions": [
+        "Quale differenza tra Comuni merita di essere approfondita?",
+        "Quale altro dato affiancheresti al reddito medio?"
+      ]
+    },
+    {
+      "id": "2026-08-25-sicurezza-feriti-strada",
+      "date": "2026-08-25",
+      "status": "draft",
+      "priority": "calendar",
+      "theme": "sicurezza",
+      "dataset": "site",
+      "metric": "roadInjuries",
+      "history_from": 2020,
+      "comparison": {"type": "base_year", "year": 2020},
+      "questions": [
+        "Dove incontri più spesso criticità nella sicurezza stradale?",
+        "Quale informazione aiuterebbe a spiegare le differenze tra territori?"
+      ]
+    },
+    {
+      "id": "2026-08-28-ambiente-raccolta-differenziata",
+      "date": "2026-08-28",
+      "status": "draft",
+      "priority": "calendar",
+      "theme": "ambiente",
+      "dataset": "site",
       "metric": "recycling",
-      "data_question": "La raccolta differenziata dichiarata coincide con la tua esperienza?",
-      "context_question": "Quale dato sul servizio rifiuti dovrebbe essere più accessibile?"
+      "history_from": 2019,
+      "comparison": {"type": "base_year", "year": 2019},
+      "questions": [
+        "Il dato coincide con ciò che osservi nel tuo Comune?",
+        "Quale informazione sul servizio rifiuti dovrebbe essere più accessibile?"
+      ]
     }
   ]
 }

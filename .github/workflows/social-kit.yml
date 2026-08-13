@@ -5,8 +5,10 @@ on:
   pull_request:
     paths:
       - "data/site-data.json"
+      - "data/meteo-clima-minmax-poc.json"
       - "social-kit/**"
       - "scripts/generate_social_kit.py"
+      - "scripts/plan_social_week.py"
       - "scripts/test_social_kit.py"
       - ".github/workflows/social-kit.yml"
 
@@ -37,6 +39,9 @@ jobs:
 
       - name: Run editorial and provenance checks
         run: python scripts/test_social_kit.py
+
+      - name: Verify recurrence planning
+        run: python scripts/plan_social_week.py --date 2026-11-09
 
       - name: Upload review package
         uses: actions/upload-artifact@v4
