@@ -67,6 +67,7 @@ THEME_SLUGS = [
     "lavoro",
     "mobilita",
     "salute",
+    "sicurezza",
 ]
 ROUTES = [
     "",

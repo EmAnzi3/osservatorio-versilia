@@ -12,7 +12,7 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 
 ## Cosa controlla
 
-- presenza dei 106 indicatori attesi;
+- presenza dei 111 indicatori attesi;
 - copertura completa dei sette Comuni e codici Istat corretti;
 - presenza di anno, unità, fonte, metodo e formula;
 - coerenza fra annualità e valori delle serie storiche;

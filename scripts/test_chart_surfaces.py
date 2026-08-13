@@ -135,7 +135,7 @@ def verify_home(page: Page, base: str) -> None:
 
 def verify_all_theme_pages(page: Page, base: str) -> None:
     themes = DATA.get("themes", {})
-    require(len(themes) == 10, f"Attesi 10 temi, trovati {len(themes)}")
+    require(len(themes) == 11, f"Attesi 11 temi, trovati {len(themes)}")
     for theme_key, theme in themes.items():
         metrics = theme.get("metrics") or []
         require(metrics, f"Tema {theme_key}: nessun indicatore")
@@ -222,7 +222,7 @@ def main() -> None:
         context.close()
         browser.close()
 
-    print("Superfici grafiche verificate: home, 10 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
+    print("Superfici grafiche verificate: home, 11 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
 
 
 if __name__ == "__main__":

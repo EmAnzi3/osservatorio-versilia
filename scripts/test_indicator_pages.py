@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verifica le pagine canoniche dei 106 indicatori e la loro navigazione."""
+"""Verifica le pagine canoniche dei 111 indicatori e la loro navigazione."""
 
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ def extract_json_ld(document: str) -> dict:
 
 def static_checks() -> None:
     data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
-    assert len(data["metrics"]) == 106
+    assert len(data["metrics"]) == 111
 
     paths: list[Path] = []
     for metric_key, metric in data["metrics"].items():
@@ -88,15 +88,15 @@ def static_checks() -> None:
         assert dataset.get("isBasedOn") == metric["sourceUrl"]
         assert breadcrumb and len(breadcrumb.get("itemListElement", [])) == 3
 
-    assert len(paths) == len(set(paths)) == 106, "Slug indicatore duplicato"
+    assert len(paths) == len(set(paths)) == 111, "Slug indicatore duplicato"
 
     sitemap = ET.parse(DIST / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/sitemap/0.9"}
     urls = sitemap.findall("s:url", namespace)
     locations = [item.findtext("s:loc", namespaces=namespace) for item in urls]
-    assert len(locations) == len(set(locations)) == 126, f"URL sitemap inattese: {len(locations)}"
+    assert len(locations) == len(set(locations)) == 132, f"URL sitemap inattese: {len(locations)}"
     assert all(item.findtext("s:lastmod", namespaces=namespace) for item in urls)
-    assert sum("/indicatori/" in (url or "") for url in locations) == 106
+    assert sum("/indicatori/" in (url or "") for url in locations) == 111
 
 
 def browser_checks() -> None:
@@ -150,7 +150,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("Pagine indicatore verificate: 106 URL canoniche, sitemap, governance e navigazione.")
+    print("Pagine indicatore verificate: 111 URL canoniche, sitemap, governance e navigazione.")
 
 
 if __name__ == "__main__":

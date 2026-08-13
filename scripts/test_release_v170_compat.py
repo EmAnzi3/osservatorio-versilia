@@ -111,7 +111,7 @@ def main() -> None:
     require(source == built, "Il dataset pubblicato non coincide con il sorgente")
     require(version_tuple(source.get("version", "0.0.0")) >= (1, 7, 0), "Release precedente alla v1.7")
     require(len(source.get("towns", [])) == 7, "Copertura anagrafica diversa da 7 Comuni")
-    require(len(source.get("themes", {})) == 10, "Il sito deve mantenere 10 temi")
+    require(len(source.get("themes", {})) >= 10, "Il sito deve mantenere almeno i 10 temi della v1.7")
     require(len(source.get("metrics", {})) >= 106, "La v1.7 deve contenere almeno 106 indicatori")
 
     all_keys = set(source["metrics"])

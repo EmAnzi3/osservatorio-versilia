@@ -21,6 +21,9 @@ body.percorsi-page .kicker{color:#687873;line-height:1.45}
 body.percorsi-page .method{border-color:#cddbd4;color:#0f3654;background:#fff;font-weight:700}
 body.percorsi-page .stat{background:#edf4f0;border:1px solid #e0e9e4}
 body.percorsi-page .stat b{color:#0f3654}
+body.percorsi-page .safetyNotice{display:grid;gap:4px;margin-top:10px;padding:10px 11px;border-left:3px solid #c66a00;border-radius:8px;background:#fff5e8;color:#5e4930}
+body.percorsi-page .safetyNotice strong{font-size:11px}
+body.percorsi-page .safetyNotice span{font-size:10px;line-height:1.4}
 body.percorsi-page .chip.active{background:#0f3654;border-color:#0f3654}
 body.percorsi-page .downloads a{background:#0f3654}
 body.percorsi-page .downloads a.secondary{background:#edf3f0;color:#0f3654}

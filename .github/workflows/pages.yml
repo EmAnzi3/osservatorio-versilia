@@ -129,13 +129,6 @@ jobs:
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
 
-      - name: Prepare coherent Percorsi architecture
-        run: |
-          python scripts/prepare_percorsi_architecture.py
-          python scripts/create_sicurezza_shell.py
-          python scripts/refine_percorsi_preview.py
-          python scripts/build_static_brand.py
-
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
 

@@ -104,6 +104,8 @@ def main() -> None:
                 f"Ordine benchmark/criminalità/metodo errato: {order}")
 
         page.goto(base + "percorsi/?comune=Camaiore&tipo=trekking", wait_until="networkidle")
+        require(page.locator('.safetyNotice').count() == 1 and page.locator('.safetyNotice').is_visible(),
+                "Avvertenza di sicurezza non visibile nella cartografia")
         active = page.locator('.chip.active').get_attribute('data-mode')
         require(active == "trekking", f"Filtro tipologia non applicato dalla URL: {active}")
         legend_colors = page.locator('.legend .leg span').evaluate_all("els => els.map(el => el.style.background)")
