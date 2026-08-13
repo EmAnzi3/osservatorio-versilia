@@ -34,6 +34,10 @@
       "data": "Dove incontri più spesso problemi nella mobilità quotidiana?",
       "context": "Quale informazione manca per spiegare le differenze tra territori?"
     },
+    "sicurezza": {
+      "data": "Dove incontri più spesso problemi di sicurezza stradale?",
+      "context": "Quale informazione manca per spiegare le differenze tra territori?"
+    },
     "abitare": {
       "data": "Questo dato descrive il modo in cui si abita oggi nel tuo Comune?",
       "context": "Quale informazione sulle famiglie aggiungeresti al confronto?"
