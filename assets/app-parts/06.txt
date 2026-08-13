@@ -380,7 +380,6 @@
       const response = await fetch(asset('data/site-data.json'));
       if (!response.ok) throw new Error(`Errore ${response.status}`);
       const data = await response.json();
-      const canonicalMetricCount = Object.keys(data.metrics).length;
 
       if (['home', 'compare', 'town'].includes(pageType)) {
         const [climate, minmax] = await Promise.all([
@@ -399,7 +398,7 @@
         ]);
       }
       mountShell(data);
-      if (pageType === 'home') renderHome(data, canonicalMetricCount);
+      if (pageType === 'home') renderHome(data);
       else if (pageType === 'compare') renderCompare(data);
       else if (pageType === 'town') renderTown(data);
       else if (pageType === 'indicator') renderIndicator(data, sourceRegistry, monitorState);

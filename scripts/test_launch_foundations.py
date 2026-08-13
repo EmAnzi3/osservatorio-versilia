@@ -36,7 +36,7 @@ def main() -> None:
 
     project = read("progetto/index.html")
     assert "2026.08.12-v1.9.0" in project, "v1.9.0 assente dalla pagina progetto"
-    assert "111 indicatori" in project, "Conteggio v1.9.0 assente dalla pagina progetto"
+    assert "115 indicatori" in project, "Conteggio v1.9.0 assente dalla pagina progetto"
     assert PUBLIC_CONTACT in project, "Recapito pubblico assente dalla pagina progetto"
 
     feedback = read("segnala/index.html")

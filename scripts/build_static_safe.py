@@ -33,8 +33,8 @@ V180_VERSION_ENTRY = (
     "delle fonti e sette serie comunali Istat omogenee 2021–2023.'],\n"
 )
 V190_VERSION_ENTRY = (
-    "      ['2026.08.12-v1.9.0','12 agosto 2026','111 indicatori canonici in 11 temi. "
-    "Integrati Percorsi e mobilità lenta nel dataset principale e separato il tema "
+    "      ['2026.08.12-v1.9.0','12 agosto 2026','115 indicatori complessivi in 11 temi, "
+    "inclusi i 4 indicatori climatici. Integrati Percorsi e mobilità lenta nel dataset principale e separato il tema "
     "Sicurezza e territorio.'],\n"
 )
 
@@ -236,7 +236,7 @@ def normalize_prerendered_urls() -> None:
     project_text = project_path.read_text(encoding="utf-8")
     if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
         raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
-    if "2026.08.12-v1.9.0" not in project_text or "111 indicatori" not in project_text:
+    if "2026.08.12-v1.9.0" not in project_text or "115 indicatori" not in project_text:
         raise RuntimeError("Versione v1.9.0 non visibile nella pagina Il progetto")
     if LEGACY_CONTACT in project_text or PUBLIC_CONTACT not in project_text:
         raise RuntimeError("Recapito pubblico non coerente nella pagina Il progetto")

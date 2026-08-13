@@ -8,7 +8,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 11 aree tematiche;
-- 111 indicatori canonici, oltre a 4 valori climatici nella vista dedicata;
+- 115 indicatori complessivi: 111 nel dataset generale e 4 climatici nella vista dedicata;
 - confronti territoriali e benchmark disponibili;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;
@@ -69,7 +69,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida i 111 indicatori e la coerenza della copertura dichiarata per ciascuno;
+- valida i 111 indicatori del dataset generale e la coerenza della copertura dichiarata per ciascuno; i 4 indicatori climatici, che portano il totale pubblico a 115, hanno controlli dedicati;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;

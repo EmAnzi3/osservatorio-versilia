@@ -111,14 +111,14 @@
     </a>`;
   }
 
-  function renderHome(data, canonicalMetricCount) {
+  function renderHome(data) {
     const themes = Object.values(data.themes);
     app.innerHTML = `<main>
       <section class="home-hero page-width">
         <div class="hero-copy"><span class="overline">Osservatorio civico · Versilia storica</span><h1>La Versilia,<br>comune per comune.</h1>
           <p class="hero-deck">Dati pubblici per capire come cambiano popolazione, lavoro, servizi, ambiente e qualità della vita nei sette comuni del territorio.</p></div>
         <div class="hero-intro"><span class="overline">Cosa puoi fare</span><p>Confronta i comuni su un tema oppure apri la scheda di un territorio per leggere numeri, andamento storico e posizione rispetto alla Versilia, alla Toscana e all’Italia.</p>
-          <div class="hero-facts"><span>7 comuni</span><span>${Object.keys(data.themes).length} temi</span><span>${canonicalMetricCount} indicatori</span><span>Aggiornato ${html(data.updated)}</span></div></div>
+          <div class="hero-facts"><span>7 comuni</span><span>${Object.keys(data.themes).length} temi</span><span>${Object.keys(data.metrics).length} indicatori</span><span>Aggiornato ${html(data.updated)}</span></div></div>
         <figure class="hero-photo"><img alt="Il litorale di Viareggio con le Alpi Apuane sullo sfondo" src="${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}">
           <figcaption>Viareggio e Alpi Apuane · Foto di Carlo Pelagalli, <a href="https://commons.wikimedia.org/wiki/File:Wv_Versilia_banner.jpg" target="_blank" rel="noreferrer">CC BY-SA 3.0 ↗</a></figcaption></figure>
       </section>
