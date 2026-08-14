@@ -155,8 +155,11 @@ def check_dist_data() -> None:
     require(security is not None and security.get("label") == "Sicurezza e territorio",
             "Tema Sicurezza e territorio assente")
     require("roadInjuries" not in mobility["metrics"], "Sicurezza stradale ancora dentro Mobilità")
-    require(data["metrics"]["roadInjuries"]["meta"]["theme"] == "sicurezza",
-            "Feriti su strada non assegnato al nuovo tema")
+    require("roadSafety" in security["metrics"], "Nuovo composito Sicurezza stradale assente dal tema Sicurezza")
+    require(data["metrics"]["roadSafety"]["meta"]["theme"] == "sicurezza",
+            "Sicurezza stradale non assegnata al nuovo tema")
+    require(data["metrics"]["roadSafety"]["meta"].get("compositeType") == "securityMeasures",
+            "Sicurezza stradale non materializzata come indicatore composito")
     require(data["crime"]["year"] == data["crime"]["years"][-1] == 2024,
             "Anno della criminalità non allineato all’ultimo valore della serie")
     slow_section = next((s for s in mobility["sections"] if s.get("key") == "mobilita-lenta"), None)
@@ -173,9 +176,9 @@ def check_dist_data() -> None:
     bundle = (DIST_ROOT / "assets" / "app-bundle.js").read_text(encoding="utf-8")
     require("percorsiQuickMarkup(data)" not in bundle, "Vecchio box rapido Percorsi ancora nel renderer")
     require("percorsiCompareMarkup(data)" not in bundle, "Vecchio box statistico standalone ancora nel renderer")
-    require("percorsiTownMarkup(data, town)" not in bundle, "Vecchio box comunale standalone ancora nel renderer")
-    require("themeKey === 'sicurezza' ? crimeMarkup(data)" in bundle,
-            "Criminalità non spostata nel tema Sicurezza")
+    require("percorsiTownMarkup(data, town)" not in bundle, "Vecchio box comunale Percorsi standalone ancora nel renderer")
+    require("themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data)" in bundle,
+            "Contesti Polizia Locale e criminalità non presenti nel tema Sicurezza")
     subprocess.run(["node", "--check", str(DIST_ROOT / "assets" / "app-bundle.js")], check=True)
 
 
@@ -195,7 +198,7 @@ def check_browser() -> None:
         require("Percorsi pubblici" in definition, "Definizione Percorsi non renderizzata come indicatore")
         require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
                 "CTA cartografia assente dall'indicatore Percorsi")
-        require(page.locator(".crime-context").count() == 0,
+        require(page.locator("#criminalita").count() == 0,
                 "Criminalità deve essere fuori da Mobilità")
 
         page.goto(base + "comuni/camaiore/?tema=mobilita&indicatore=slowMobilityRoutes", wait_until="networkidle")
@@ -208,14 +211,16 @@ def check_browser() -> None:
         require(page.locator('[data-percorsi-stats]').count() == 0,
                 "Persistono box comunali Percorsi standalone")
 
-        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
         require("Sicurezza e territorio" in page.locator("main").inner_text(),
                 "Nuovo tema Sicurezza non renderizzato")
-        crime = page.locator(".crime-context")
+        crime = page.locator("#criminalita")
         require(crime.count() == 1 and crime.is_visible(),
                 "Criminalità non visibile nel nuovo tema Sicurezza")
         require("Criminalità e delitti denunciati" in crime.inner_text(),
                 "Contesto criminalità incompleto")
+        require(page.locator("#polizia-locale").count() == 1,
+                "Contesto Polizia Locale non presente nel nuovo tema Sicurezza")
 
         page.goto(base + "percorsi/?comune=Camaiore", wait_until="networkidle")
         require(page.locator(".site-brand").count() == 1,
