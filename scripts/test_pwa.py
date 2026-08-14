@@ -78,7 +78,7 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260813-8" in service_worker, "Versione cache PWA inattesa")
+    require("ov-pwa-20260814-v111" in service_worker, "Versione cache PWA inattesa")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first assente")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset assente")
