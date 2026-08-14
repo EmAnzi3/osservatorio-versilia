@@ -1,12 +1,2 @@
-Traceback (most recent call last):
-  File "/home/runner/work/osservatorio-versilia/osservatorio-versilia/scripts/apply_security_draft.py", line 158, in <module>
-    if __name__=='__main__': main()
-                             ^^^^^^
-  File "/home/runner/work/osservatorio-versilia/osservatorio-versilia/scripts/apply_security_draft.py", line 155, in main
-    APP03.write_text(patch_app(APP03.read_text(encoding='utf-8')),encoding='utf-8')
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/osservatorio-versilia/osservatorio-versilia/scripts/apply_security_draft.py", line 129, in patch_app
-    if marker not in app: raise RuntimeError('crimeMarkup non trovato')
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: crimeMarkup non trovato
-exit_status=1
+Draft sicurezza applicato: 121 indicatori; Missione 03: ok
+exit_status=0

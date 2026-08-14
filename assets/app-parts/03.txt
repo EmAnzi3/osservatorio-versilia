@@ -8,7 +8,7 @@
         <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
       <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
       <section id="compare-benchmark" class="page-width"></section>
-      ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
+      ${themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data) : ''}
       ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
       <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
@@ -82,6 +82,7 @@
     if (metric.meta.compositeType === 'stock') return { choice:'share', scale:'value' };
     if (metric.meta.compositeType === 'omi') return { choice:'sale', scale:'value' };
     if (metric.meta.compositeType === 'mobility') return { choice:'part-2', scale:'rate' };
+    if (metric.meta.compositeType === 'securityMeasures') return { choice:'part-0', scale:'value' };
     return { choice:'', scale:'value' };
   }
 
@@ -93,6 +94,11 @@
     if (metric.meta.compositeType === 'omi') {
       const rent = choice === 'rent';
       return { value: rent ? row.rentMean : row.saleMean, unit: rent ? 'rentm2' : 'eurm2' };
+    }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const part = row.parts?.[index] || {};
+      return { value:part.value, unit:part.unit || metric.meta.unit, part, index };
     }
     if (metric.meta.compositeType === 'mobility') {
       const index = Math.max(0, Math.min(2, Number(String(choice || 'part-2').replace('part-','')) || 0));
@@ -122,6 +128,11 @@
         note: 'Media semplice dei sette valori comunali di riferimento.'
       };
     }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      return { value:part.value, unit:part.unit || metric.meta.unit, label:`Versilia · ${part.label || metric.meta.label}`, note:metric.aggregate?.note };
+    }
     if (metric.meta.compositeType === 'mobility') {
       const index = Math.max(0, Math.min(2, Number(String(choice || 'part-2').replace('part-','')) || 0));
       const part = metric.aggregate?.parts?.[index] || {};
@@ -141,6 +152,10 @@
     }
     if (metric.meta.compositeType === 'omi') {
       return `<div class="compare-view-controls"><div><span class="compare-view-label">Quotazione</span><div class="scale-switch compact" role="group" aria-label="Lettura quotazioni immobiliari"><button type="button" data-composite-choice="sale" class="${choice === 'sale' ? 'active' : ''}">Vendita</button><button type="button" data-composite-choice="rent" class="${choice === 'rent' ? 'active' : ''}">Affitto</button></div></div></div>`;
+    }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const labels = metric.rows?.[0]?.parts || [];
+      return `<div class="compare-view-controls"><label class="compare-choice-select"><span>${html(metric.meta.selectorLabel || 'Lettura')}</span><select data-composite-component>${labels.map((part,index)=>`<option value="part-${index}" ${choice === `part-${index}` ? 'selected' : ''}>${html(part.selectorLabel || part.label)}</option>`).join('')}</select></label></div>`;
     }
     if (metric.meta.compositeType === 'mobility') {
       const labels = metric.rows?.[0]?.parts || [];
@@ -175,6 +190,10 @@
         return `<article class="omi-compare-card"><div class="omi-compare-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(number0.format((row.zones || []).length))} zone OMI</span></div><div class="omi-compare-values"><div><span>Vendita · media comunale</span><strong>${html(formatValue(row.saleMean,'eurm2'))}</strong></div><div><span>Affitto · media comunale</span><strong>${html(formatValue(row.rentMean,'rentm2'))}</strong></div></div><details class="omi-zone-disclosure"><summary>Espandi le zone OMI <b>+</b></summary>${omiZoneTableMarkup(row,true)}</details></article>`;
       }).join('')}</div>`;
     }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const defaults = compositeCompareDefaults(metric);
+      return `<div class="comparison-bars">${compositeCompareBarRows(data,metricKey,defaults.choice,defaults.scale)}</div>`;
+    }
     if (metric.meta.compositeType === 'mobility') {
       const headParts = metric.rows?.[0]?.parts || [];
       return `<div class="composite-mobility-table" role="table" aria-label="${html(metric.meta.label)}">
@@ -206,6 +225,9 @@
     if (metric.meta.compositeType === 'omi') {
       return `<div class="omi-town-summary"><article><span>Vendita · media comunale</span><strong>${html(formatValue(row.saleMean,'eurm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article><article><span>Affitto · media comunale</span><strong>${html(formatValue(row.rentMean,'rentm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article></div><details class="detail-disclosure omi-town-zone-disclosure"><summary><span>Dettaglio per zona OMI</span><small>${html(metric.meta.year)} · abitazioni civili / stato normale</small></summary><div class="omi-town-zone-body">${omiZoneTableMarkup(row)}</div></details>`;
     }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div>`;
+    }
     if (metric.meta.compositeType === 'mobility') {
       return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===2?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,'per1000'))}</strong><small>${html(number0.format(part.count))} persone · ${html(metric.meta.year)}</small></article>`).join('')}</div>`;
     }
@@ -223,6 +245,7 @@
       { key:'sale', label:'Vendita media comunale', value:row.saleMean, unit:'eurm2', formatted:formatValue(row.saleMean,'eurm2') },
       { key:'rent', label:'Affitto medio comunale', value:row.rentMean, unit:'rentm2', formatted:formatValue(row.rentMean,'rentm2') }
     ];
+    if (metric.meta.compositeType === 'securityMeasures') return (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatValue(part.value,part.unit || metric.meta.unit), index }));
     if (metric.meta.compositeType !== 'distribution') return [];
     const summary = compositeSummary(metric,row);
     return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...(row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }))];
@@ -241,6 +264,12 @@
       const unit = rent ? 'rentm2' : 'eurm2';
       return { label: rent ? 'Versilia · affitto medio comunale' : 'Versilia · vendita media comunale', value, unit, formatted:formatValue(value,unit) };
     }
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      const unit = part.unit || metric.meta.unit;
+      return { label:`Versilia · ${part.label || metric.meta.label}`, value:part.value, unit, formatted:formatValue(part.value,unit) };
+    }
     if (choice === 'summary') return compositeAggregateSummary(metric);
     const index = Number(String(choice).replace('part-',''));
     const part = metric.aggregate?.parts?.[index];
@@ -251,6 +280,7 @@
     const values = metric.rows.map(r => {
       if (metric.meta.compositeType === 'stock') return { code:r.code, value:Number(choice === 'count' ? r.count : r.value) };
       if (metric.meta.compositeType === 'omi') return { code:r.code, value:Number(choice === 'rent' ? r.rentMean : r.saleMean) };
+      if (metric.meta.compositeType === 'securityMeasures') { const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0); return { code:r.code, value:Number(r.parts?.[index]?.value) }; }
       if (choice === 'summary') return { code:r.code, value:Number(r.summaryValue) };
       const index = Number(String(choice).replace('part-',''));
       return { code:r.code, value:Number(r.parts?.[index]?.value) };
@@ -284,7 +314,7 @@
     const tools = document.getElementById('compare-tools');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
-    const selectableComposite = ['stock','mobility','omi'].includes(compositeType);
+    const selectableComposite = ['stock','mobility','omi','securityMeasures'].includes(compositeType);
     const view = requestedView || compositeCompareDefaults(metric);
     const selectedAggregate = selectableComposite ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
     const aggregate = selectedAggregate || (normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate);
@@ -354,7 +384,7 @@
     const isOmi = metric.meta.compositeType === 'omi';
     const lines = isOmi ? [['Comune','Codice Istat','Indicatore','Anno','Zona OMI','Area','Vendita €/m²','Affitto €/m²/mese','Fonte']] : metric.meta.compositeType ? [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Componente', 'Valore', 'Unità', 'Conteggio', 'Fonte']] : [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Valore', 'Unità', 'Fonte']];
     if (isOmi) rows.forEach(row => (row.zones || []).forEach(zone => lines.push([row.town,row.code,label,metric.meta.year,zone.code,zone.label,zone.sale,zone.rent,metric.sourceUrl])));
-    else if (metric.meta.compositeType) rows.forEach(row => (row.parts || []).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, part.value, metric.meta.unit, part.count, metric.sourceUrl])));
+    else if (metric.meta.compositeType) rows.forEach(row => (row.parts || []).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, part.value, part.unit || metric.meta.unit, part.count, metric.sourceUrl])));
     else rows.forEach(row => lines.push([row.town, row.code, label, metric.meta.year, row.displayValue, row.displayUnit, metric.sourceUrl]));
     const csv = '\ufeff' + lines.map(line => line.map(cell => `"${String(cell ?? '').replaceAll('"', '""')}"`).join(';')).join('\r\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -447,13 +477,14 @@
     const distribution = metric.meta.compositeType === 'distribution';
     const omi = metric.meta.compositeType === 'omi';
     const stock = metric.meta.compositeType === 'stock';
-    const selectable = distribution || omi || stock;
+    const securityMeasures = metric.meta.compositeType === 'securityMeasures';
+    const selectable = distribution || omi || stock || securityMeasures;
     const options = selectable ? compositeSelectionOptions(metric,row) : [];
-    const summary = distribution ? compositeSummary(metric,row) : ((omi || stock) ? options[0] : null);
-    const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : null));
+    const summary = distribution ? compositeSummary(metric,row) : ((omi || stock || securityMeasures) ? options[0] : null);
+    const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)));
     const summaryDelta = selectable ? compositeDeltaText(summary.value,aggregateSummary.value,summary.unit) : null;
-    const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
-    const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
+    const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
+    const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
     const selector = selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '';
     const primaryLabel = selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = selectable ? summary.formatted : formatValue(row.value, metric.meta.unit);
@@ -508,7 +539,7 @@
     scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');
-    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');
+    context.innerHTML = themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');
     if (themeKey === 'sicurezza') installCrimeInteractions(data);
   }
 
