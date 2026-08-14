@@ -10,7 +10,7 @@
   "approved_metrics": {
     "population": {"scope": "comunale", "comparable": true},
     "income": {"scope": "comunale", "comparable": true},
-    "roadInjuries": {"scope": "comunale", "comparable": true},
+    "roadSafety": {"scope": "comunale", "comparable": true},
     "localUnits": {"scope": "comunale", "comparable": true},
     "ftthCoverageDesi": {"scope": "comunale", "comparable": true},
     "recycling": {"scope": "comunale", "comparable": true},
