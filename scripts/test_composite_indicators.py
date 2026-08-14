@@ -182,9 +182,9 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
             "choice => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === choice",
             arg=choice,
         )
-        primary_label = normalized_text(page.locator("[data-composite-primary-label]").inner_text())
+        primary_label = normalized_text(page.locator("[data-composite-primary-label]").text_content() or "")
         primary_value = normalized_text(page.locator("[data-composite-primary-value]").inner_text())
-        aggregate_label = normalized_text(page.locator("[data-composite-aggregate-label]").inner_text())
+        aggregate_label = normalized_text(page.locator("[data-composite-aggregate-label]").text_content() or "")
         aggregate_value = normalized_text(page.locator("[data-composite-aggregate-value]").inner_text())
         context = f"{town}/{metric_key}/{choice}"
         assert primary_label == label, f"{context}: etichetta principale {primary_label!r}, attesa {label!r}"
