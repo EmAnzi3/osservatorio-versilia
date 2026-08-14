@@ -1,0 +1,68 @@
+name: Prepara rilascio Sicurezza v1.12.0
+
+on:
+  push:
+    branches: ["agent/sicurezza-territorio-draft"]
+    paths:
+      - ".github/workflows/release-security-draft.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  release-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/sicurezza-territorio-draft
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Aggiorna versione e conteggi
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data_path = Path('data/site-data.json')
+          data = json.loads(data_path.read_text(encoding='utf-8'))
+          assert data['version'] == 'v1.11.0', data['version']
+          assert len(data['metrics']) == 121, len(data['metrics'])
+          data['version'] = 'v1.12.0'
+          data['updated'] = '15 agosto 2026'
+          data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          registry = json.loads(Path('data/source-registry.json').read_text(encoding='utf-8'))
+          assert registry['expectedMetricCount'] == 121
+          assert registry['expectedInlineMetricCount'] == 117
+          assert registry['expectedExternalMetricCount'] == 4
+
+          readme_path = Path('README.md')
+          readme = readme_path.read_text(encoding='utf-8')
+          readme = readme.replace('115 indicatori nel catalogo canonico: 111 con valori incorporati e 4 climatici con storici separati;',
+                                  '121 indicatori nel catalogo canonico: 117 con valori incorporati e 4 climatici con storici separati;')
+          readme = readme.replace('`indicatori/`: 111 pagine canoniche generate, una per indicatore;',
+                                  '`indicatori/`: 117 pagine canoniche generate, una per indicatore;')
+          readme = readme.replace('catalogo canonico dei 115 indicatori, con dati incorporati per 111 e riferimenti ai file storici separati per i 4 climatici;',
+                                  'catalogo canonico dei 121 indicatori, con dati incorporati per 117 e riferimenti ai file storici separati per i 4 climatici;')
+          readme = readme.replace('Il catalogo e i metadati dei 115 indicatori', 'Il catalogo e i metadati dei 121 indicatori')
+          readme = readme.replace('valida tutti i 115 indicatori canonici, la ripartizione fra 111 valori incorporati e 4 storici climatici separati',
+                                  'valida tutti i 121 indicatori canonici, la ripartizione fra 117 valori incorporati e 4 storici climatici separati')
+          readme = readme.replace('La build genera una pagina autonoma per ciascuno dei 111 indicatori',
+                                  'La build genera una pagina autonoma per ciascuno dei 117 indicatori')
+          assert '115 indicatori' not in readme
+          assert '111 indicatori' not in readme
+          readme_path.write_text(readme, encoding='utf-8')
+          PY
+          grep -R --line-number --exclude-dir=.git 'v1.11.0' . || true
+          git diff --check
+      - name: Commit finale e cleanup
+        run: |
+          git config user.name "EmAnzi3"
+          git config user.email "emanueleanzilotti@hotmail.com"
+          git rm .github/workflows/release-security-draft.yml
+          git add data/site-data.json README.md
+          git commit -m "Rilascia dati v1.12.0"
+          git push origin HEAD:agent/sicurezza-territorio-draft
