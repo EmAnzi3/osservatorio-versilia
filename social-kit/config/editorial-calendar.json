@@ -22,7 +22,7 @@
     {
       "id": "settimana-03",
       "theme": "sicurezza",
-      "metric": "roadInjuries",
+      "metric": "roadSafety",
       "data_question": "Dove incontri più spesso problemi di sicurezza stradale?",
       "context_question": "Quale informazione manca per spiegare le differenze tra territori?"
     },
