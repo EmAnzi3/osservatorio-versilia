@@ -256,7 +256,7 @@ def browser_checks(data: dict) -> None:
         component = page.locator("select[data-composite-component]")
         assert component.locator("option").count() == 3
         assert page.locator("button[data-composite-scale]").count() == 2
-        assert page.locator("#compare-bars .ux-bar-row").count() == 7
+        assert page.locator("#compare-bars .selectable-topic-bars .bar-row").count() == 7
         default_axis = page.locator("#compare-bars .comparison-axis").inner_text()
         component.select_option("part-0")
         page.locator('button[data-composite-scale="count"]').click()
