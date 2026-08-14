@@ -1,0 +1,44 @@
+name: Materializza draft sicurezza
+
+on:
+  push:
+    branches: ["agent/sicurezza-territorio-draft"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: agent/sicurezza-territorio-draft
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materializza dati e UI del draft
+        run: python scripts/apply_security_draft.py
+
+      - name: Verifica diff
+        run: |
+          python -m py_compile scripts/apply_security_draft.py
+          git diff --check
+
+      - name: Commit dei file canonici
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json data/source-registry.json assets/app-parts/00.txt assets/app-parts/03.txt
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da materializzare"
+          else
+            git commit -m "Materializza draft Sicurezza e territorio"
+            git push origin HEAD:agent/sicurezza-territorio-draft
+          fi
