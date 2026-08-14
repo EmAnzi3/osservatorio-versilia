@@ -394,8 +394,8 @@
       "key": "sicurezza",
       "number": "07",
       "label": "Sicurezza e territorio",
-      "question": "Quanto è sicuro il territorio e quali risorse vengono dedicate al presidio?",
-      "description": "Sicurezza stradale, risorse comunali e controllo della circolazione, mantenendo criminalità e Polizia Locale alla scala realmente disponibile.",
+      "question": "Quanto è sicuro il territorio e quali risorse vengono dedicate alla sicurezza?",
+      "description": "Sicurezza stradale e risorse comunali dedicate alla sicurezza e al controllo della circolazione, mantenendo la criminalità come contesto sovracomunale.",
       "metrics": [
         "roadSafety",
         "securityMissionExpenditurePerResident",
@@ -22392,20 +22392,18 @@
       "meta": {
         "key": "roadFinesPerResident",
         "theme": "sicurezza",
-        "label": "Proventi da sanzioni al Codice della strada",
-        "shortLabel": "Sanzioni stradali",
-        "description": "Proventi per violazioni al Codice della strada rapportati alla popolazione residente media; il dettaglio distingue la quota riferita ai limiti di velocità.",
+        "label": "Proventi rendicontati da sanzioni al Codice della strada per abitante",
+        "shortLabel": "Proventi da sanzioni",
+        "description": "Proventi complessivi rendicontati per violazioni al Codice della strada, rapportati alla popolazione residente media. Il dato non misura il numero di verbali né, da solo, il livello di sicurezza o l’intensità dei controlli.",
         "unit": "currency",
         "year": "2024",
         "source": "Istat / Ministero dell’Interno — A misura di Comune",
         "polarity": "neutral",
-        "compositeType": "securityMeasures",
-        "selectorLabel": "Lettura",
         "searchTerms": [
           "multe",
           "sanzioni",
           "codice della strada",
-          "autovelox"
+          "proventi"
         ],
         "benchmark": {
           "year": 2024,
@@ -22413,7 +22411,7 @@
           "italy": 29.3268396123682,
           "source": "Istat / Ministero dell’Interno",
           "url": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
-          "note": "Benchmark riferito ai proventi complessivi per abitante."
+          "note": "Benchmark riferito ai proventi complessivi rendicontati per abitante."
         }
       },
       "sourceUrl": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
@@ -22439,51 +22437,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 36.0983071095113,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 36.0983071095113,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 2.7221145287285,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                25.4292758956937,
-                25.8779828979368,
-                26.5889915017718,
-                36.0983071095113
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                21.249089785533,
-                14.7043165151998,
-                10.6863616054014,
-                2.7221145287285
-              ]
-            }
-          }
+          "benchmarkValue": 36.0983071095113
         },
         {
           "town": "Forte dei Marmi",
@@ -22506,51 +22460,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 247.638983782175,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 247.638983782175,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 0.0,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                184.090501412429,
-                306.689509477644,
-                358.056691564148,
-                247.638983782175
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                0.0929136465096099,
-                0.0,
-                0.0,
-                0.0
-              ]
-            }
-          }
+          "benchmarkValue": 247.638983782175
         },
         {
           "town": "Massarosa",
@@ -22573,51 +22483,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 6.76785583524027,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 6.76785583524027,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 15.4516047556882,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                2.32421437382921,
-                4.8491213197388,
-                4.836060612997,
-                6.76785583524027
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                7.11148871792614,
-                3.74673206706297,
-                3.35274297735565,
-                15.4516047556882
-              ]
-            }
-          }
+          "benchmarkValue": 6.76785583524027
         },
         {
           "town": "Pietrasanta",
@@ -22640,51 +22506,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 22.4294826336255,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 22.4294826336255,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 23.7273558195705,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                91.4154026024639,
-                92.9921185243157,
-                90.6575626079919,
-                22.4294826336255
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                46.3119652791699,
-                38.181153118862,
-                30.059635734185,
-                23.7273558195705
-              ]
-            }
-          }
+          "benchmarkValue": 22.4294826336255
         },
         {
           "town": "Seravezza",
@@ -22707,51 +22529,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 39.5120434098519,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 39.5120434098519,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 0.0,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                36.3057542905149,
-                30.7152617168626,
-                18.3876633105115,
-                39.5120434098519
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                0.0133438388609038,
-                0.765320060619452,
-                2.13607820894466,
-                0.0
-              ]
-            }
-          }
+          "benchmarkValue": 39.5120434098519
         },
         {
           "town": "Stazzema",
@@ -22774,51 +22552,7 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.19099427381572,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 2.19099427381572,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 0.0,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                2.87826883206634,
-                1.67040055488122,
-                1.65070934256055,
-                2.19099427381572
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ]
-            }
-          }
+          "benchmarkValue": 2.19099427381572
         },
         {
           "town": "Viareggio",
@@ -22841,77 +22575,19 @@
             ]
           },
           "normalized": null,
-          "benchmarkValue": 49.005837367849,
-          "parts": [
-            {
-              "label": "Proventi complessivi per abitante",
-              "selectorLabel": "Proventi €/abitante",
-              "value": 49.005837367849,
-              "unit": "currency"
-            },
-            {
-              "label": "Quota riferita ai limiti di velocità",
-              "selectorLabel": "Quota da velocità",
-              "value": 0.0,
-              "unit": "percent"
-            }
-          ],
-          "componentSeries": {
-            "Proventi €/abitante": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                29.7584687970171,
-                35.8060072989708,
-                42.0612771589461,
-                49.005837367849
-              ]
-            },
-            "Quota da velocità": {
-              "years": [
-                2021,
-                2022,
-                2023,
-                2024
-              ],
-              "values": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ]
-            }
-          }
+          "benchmarkValue": 49.005837367849
         }
       ],
       "aggregate": {
         "value": 57.66335777315267,
         "label": "Media semplice dei 7 comuni",
-        "note": "Ogni Comune pesa allo stesso modo; il dato non misura direttamente il livello di sicurezza.",
-        "parts": [
-          {
-            "label": "Proventi complessivi per abitante",
-            "selectorLabel": "Proventi €/abitante",
-            "value": 57.66335777315267,
-            "unit": "currency"
-          },
-          {
-            "label": "Quota riferita ai limiti di velocità",
-            "selectorLabel": "Quota da velocità",
-            "value": 5.985867871998172,
-            "unit": "percent"
-          }
-        ]
+        "note": "Ogni Comune pesa allo stesso modo. Il valore descrive proventi rendicontati e non costituisce una graduatoria di sicurezza o di efficacia dei controlli."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Dato ufficiale Istat / DAIT",
-        "formula": "Proventi complessivi CdS / popolazione residente media; quota velocità: proventi per violazioni dei limiti / proventi CdS complessivi × 100.",
-        "caveat": "Il valore dipende anche da turismo, traffico di attraversamento, intensità dei controlli e organizzazione della riscossione. Polarità neutra.",
+        "formula": "Proventi complessivi rendicontati per violazioni al Codice della strada / popolazione residente media.",
+        "caveat": "Il confronto risente di turismo, traffico di attraversamento, intensità e tipologia dei controlli, modalità di accertamento, riscossione e rendicontazione. La quota dei proventi attribuita ai limiti di velocità non viene pubblicata dall’Osservatorio perché il campo DAIT può risultare pari a zero anche in presenza di sanzioni per eccesso di velocità e rischia quindi di essere interpretato in modo improprio.",
         "coverage": "7/7"
       }
     },
@@ -29749,13 +29425,10 @@
   "securityDraft": {
     "status": "draft",
     "mission03Status": "ok",
-    "localPolice": {
-      "sourceUrl": "https://www.regione.toscana.it/-/polizia-locale-in-toscana-i-risultati-del-monitoraggio-2025",
-      "usableForMunicipalComparison": false,
-      "note": "Le tavole allegate contengono aggregati regionali, non righe comunali utilizzabili per i sette Comuni.",
-      "tuscanyStaff": 3692,
-      "respondingStructures": 174,
-      "municipalitiesRepresented": 247
+    "localPoliceResearch": {
+      "status": "not-published",
+      "reason": "Verificate Regione Toscana, RGS-SICO/Conto annuale e le sezioni Personale/PIAO/Amministrazione trasparente dei sette Comuni. Le fonti reperibili non consentono ancora una fotografia 2025 omogenea almeno 6/7 del personale di Polizia Locale; i dati parziali non vengono mescolati né stimati.",
+      "publicationRule": "Pubblicare solo con definizione temporale e perimetro del personale omogenei, copertura 7/7 o 6/7 con n.d. esplicito."
     }
   }
 }

@@ -8,7 +8,7 @@
         <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
       <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
       <section id="compare-benchmark" class="page-width"></section>
-      ${themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data) : ''}
+      ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
       ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
       <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
@@ -539,7 +539,7 @@
     scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');
-    context.innerHTML = themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');
+    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');
     if (themeKey === 'sicurezza') installCrimeInteractions(data);
   }
 

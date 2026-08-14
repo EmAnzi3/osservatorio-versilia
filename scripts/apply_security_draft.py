@@ -170,55 +170,43 @@ def build_road_safety(data: dict, snapshot: dict) -> dict:
 
 
 def build_fines(snapshot: dict) -> dict:
-    rows, accumulator = [], [[], []]
+    rows, values = [], []
     for town, raw in snapshot["towns"].items():
-        parts = [
-            {"label": "Proventi complessivi per abitante", "selectorLabel": "Proventi €/abitante", "value": raw["roadFinesPerResident"]["values"][-1], "unit": "currency"},
-            {"label": "Quota riferita ai limiti di velocità", "selectorLabel": "Quota da velocità", "value": raw["speedFineShare"]["values"][-1], "unit": "percent"},
-        ]
-        accumulator[0].append(parts[0]["value"])
-        accumulator[1].append(parts[1]["value"])
+        value = raw["roadFinesPerResident"]["values"][-1]
+        values.append(float(value))
         rows.append({
             "town": town, "code": raw["code"],
             "slug": town.lower().replace(" ", "-").replace("à", "a"),
-            "value": parts[0]["value"], "formatted": "", "series": raw["roadFinesPerResident"],
-            "normalized": None, "benchmarkValue": parts[0]["value"], "parts": parts,
-            "componentSeries": {
-                "Proventi €/abitante": raw["roadFinesPerResident"],
-                "Quota da velocità": raw["speedFineShare"],
-            },
+            "value": value, "formatted": "", "series": raw["roadFinesPerResident"],
+            "normalized": None, "benchmarkValue": value,
         })
-    aggregate_parts = [
-        {"label": "Proventi complessivi per abitante", "selectorLabel": "Proventi €/abitante", "value": mean(accumulator[0]), "unit": "currency"},
-        {"label": "Quota riferita ai limiti di velocità", "selectorLabel": "Quota da velocità", "value": mean(accumulator[1]), "unit": "percent"},
-    ]
     benchmark = snapshot["benchmarks"]["roadFinesPerResident"]
     return {
         "meta": {
             "key": "roadFinesPerResident", "theme": "sicurezza",
-            "label": "Proventi da sanzioni al Codice della strada", "shortLabel": "Sanzioni stradali",
-            "description": "Proventi per violazioni al Codice della strada rapportati alla popolazione residente media; il dettaglio distingue la quota riferita ai limiti di velocità.",
+            "label": "Proventi rendicontati da sanzioni al Codice della strada per abitante",
+            "shortLabel": "Proventi da sanzioni",
+            "description": "Proventi complessivi rendicontati per violazioni al Codice della strada, rapportati alla popolazione residente media. Il dato non misura il numero di verbali né, da solo, il livello di sicurezza o l’intensità dei controlli.",
             "unit": "currency", "year": "2024",
             "source": "Istat / Ministero dell’Interno — A misura di Comune",
-            "polarity": "neutral", "compositeType": "securityMeasures", "selectorLabel": "Lettura",
-            "searchTerms": ["multe", "sanzioni", "codice della strada", "autovelox"],
+            "polarity": "neutral",
+            "searchTerms": ["multe", "sanzioni", "codice della strada", "proventi"],
             "benchmark": {
                 "year": 2024, "tuscany": benchmark["tuscany"], "italy": benchmark["italy"],
                 "source": "Istat / Ministero dell’Interno", "url": snapshot["sources"]["istat15c"]["url"],
-                "note": "Benchmark riferito ai proventi complessivi per abitante.",
+                "note": "Benchmark riferito ai proventi complessivi rendicontati per abitante.",
             },
         },
         "sourceUrl": snapshot["sources"]["istat15c"]["url"], "rows": rows,
         "aggregate": {
-            "value": aggregate_parts[0]["value"], "label": "Media semplice dei 7 comuni",
-            "note": "Ogni Comune pesa allo stesso modo; il dato non misura direttamente il livello di sicurezza.",
-            "parts": aggregate_parts,
+            "value": mean(values), "label": "Media semplice dei 7 comuni",
+            "note": "Ogni Comune pesa allo stesso modo. Il valore descrive proventi rendicontati e non costituisce una graduatoria di sicurezza o di efficacia dei controlli.",
         },
         "normalizedAggregate": None,
         "method": {
             "type": "Dato ufficiale Istat / DAIT",
-            "formula": "Proventi complessivi CdS / popolazione residente media; quota velocità: proventi per violazioni dei limiti / proventi CdS complessivi × 100.",
-            "caveat": "Il valore dipende anche da turismo, traffico di attraversamento, intensità dei controlli e organizzazione della riscossione. Polarità neutra.",
+            "formula": "Proventi complessivi rendicontati per violazioni al Codice della strada / popolazione residente media.",
+            "caveat": "Il confronto risente di turismo, traffico di attraversamento, intensità e tipologia dei controlli, modalità di accertamento, riscossione e rendicontazione. La quota dei proventi attribuita ai limiti di velocità non viene pubblicata perché il campo DAIT può risultare pari a zero anche in presenza di sanzioni per eccesso di velocità.",
             "coverage": "7/7",
         },
     }
@@ -368,23 +356,18 @@ def patch_app03(app: str) -> str:
         "    context.innerHTML = themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');",
         "Polizia Locale nella scheda comunale",
     )
+    app = app.replace("localPoliceDraftMarkup(data) + crimeMarkup(data)", "crimeMarkup(data)")
     return app
 
 
 def patch_app05(app: str) -> str:
-    if "function localPoliceDraftMarkup(data)" in app:
+    start = app.find("\n  function localPoliceDraftMarkup(data) {")
+    if start < 0:
         return app
-    marker = "  function crimeMarkup(data) {"
-    if marker not in app:
-        raise RuntimeError("crimeMarkup non trovato in app-parts/05.txt")
-    function = '''  function localPoliceDraftMarkup(data) {
-    const p = data.securityDraft?.localPolice;
-    if (!p) return '';
-    return `<section class="crime-context brain-drain-context page-width" id="polizia-locale"><div class="crime-context-copy"><span class="overline">Presidio locale · dato in verifica</span><h2>Polizia Locale</h2><p>Il monitoraggio regionale 2025 quantifica il personale complessivo toscano, ma le tavole pubblicate non espongono righe comunali utilizzabili per un confronto 7/7. L’Osservatorio non attribuisce quindi valori stimati ai singoli Comuni.</p><a class="source-pill" href="${html(p.sourceUrl)}" target="_blank" rel="noreferrer">Fonte Regione Toscana ↗</a></div><div class="crime-context-data"><h3>Monitoraggio regionale · 2025</h3><div class="crime-stats"><article><span>Addetti rilevati</span><strong>${html(number0.format(p.tuscanyStaff))}</strong><small>totale Toscana</small></article><article><span>Strutture rispondenti</span><strong>${html(number0.format(p.respondingStructures))}</strong><small>Polizie Locali</small></article><article><span>Comuni rappresentati</span><strong>${html(number0.format(p.municipalitiesRepresented))}</strong><small>dato aggregato</small></article></div><p class="brain-drain-note">Il riquadro non è conteggiato come indicatore comunale: verrà promosso solo con una fonte ufficiale omogenea per Comune.</p></div></section>`;
-  }
-
-'''
-    return app.replace(marker, function + marker, 1)
+    end = app.find("\n  function crimeMarkup(data) {", start)
+    if end < 0:
+        raise RuntimeError("crimeMarkup non trovato dopo localPoliceDraftMarkup")
+    return app[:start] + "\n" + app[end:]
 
 
 def update_data_and_registry(data: dict, snapshot: dict) -> None:
@@ -408,8 +391,8 @@ def update_data_and_registry(data: dict, snapshot: dict) -> None:
         metrics.append("securityMissionExpenditurePerResident")
     metrics.append("roadFinesPerResident")
     data["themes"]["sicurezza"].update({
-        "question": "Quanto è sicuro il territorio e quali risorse vengono dedicate al presidio?",
-        "description": "Sicurezza stradale, risorse comunali e controllo della circolazione, mantenendo criminalità e Polizia Locale alla scala realmente disponibile.",
+        "question": "Quanto è sicuro il territorio e quali risorse vengono dedicate alla sicurezza?",
+        "description": "Sicurezza stradale e risorse comunali dedicate alla sicurezza e al controllo della circolazione, mantenendo la criminalità come contesto sovracomunale.",
         "metrics": metrics,
         "sections": [
             {"key": "sicurezza-stradale", "label": "Sicurezza stradale", "description": "Frequenza degli incidenti e gravità delle conseguenze, con serie comunali omogenee.", "metrics": ["roadSafety"]},
@@ -417,14 +400,11 @@ def update_data_and_registry(data: dict, snapshot: dict) -> None:
         ],
         "featured": metrics[:3],
     })
-    local = snapshot["sources"]["localPolice2025"]
     data["securityDraft"] = {
         "status": "draft", "mission03Status": mission_status,
-        "localPolice": {
-            "sourceUrl": local["url"], "usableForMunicipalComparison": False,
-            "note": local["note"], "tuscanyStaff": local["tuscany"]["staff"],
-            "respondingStructures": local["tuscany"]["respondingStructures"],
-            "municipalitiesRepresented": local["tuscany"]["municipalitiesRepresented"],
+        "localPoliceResearch": {
+            "status": "not-published",
+            "reason": "Regione Toscana, RGS-SICO/Conto annuale e Amministrazione trasparente dei sette Comuni non consentono ancora una fotografia 2025 omogenea almeno 6/7; nessun valore viene stimato o mescolato tra annualità/perimetri diversi.",
         },
     }
     save(DATA_PATH, data)

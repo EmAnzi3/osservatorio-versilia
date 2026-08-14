@@ -20,7 +20,7 @@ DIST = ROOT / "dist"
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "composite-indicators-v1.9.0.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
-COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential", "roadSafety", "roadFinesPerResident"}
+COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential", "roadSafety"}
 REMOVED_KEYS = {"share014", "share65", "incomeUnder15k"}
 CLIMATE_KEYS = {
     "climateTemperatureTrend50y", "climatePrecipitationTrend50y",
@@ -135,9 +135,11 @@ def static_checks() -> dict:
     assert [part["unit"] for part in road_safety["rows"][0]["parts"]] == ["per1000", "per100", "per100", "per10k"]
     assert all(len(row["parts"]) == 4 for row in road_safety["rows"])
     road_fines = data["metrics"]["roadFinesPerResident"]
-    assert road_fines["meta"]["compositeType"] == "securityMeasures"
-    assert [part["unit"] for part in road_fines["rows"][0]["parts"]] == ["currency", "percent"]
-    assert all(len(row["parts"]) == 2 for row in road_fines["rows"])
+    assert road_fines["meta"]["unit"] == "currency"
+    assert "compositeType" not in road_fines["meta"]
+    assert all("parts" not in row and "componentSeries" not in row for row in road_fines["rows"])
+    assert road_fines["method"]["coverage"] == "7/7"
+    assert registry_map[road_fines["sourceUrl"]]
 
     mobility = data["metrics"]["internalResidentialMobility"]
     assert mobility["meta"]["theme"] == "demografia"
@@ -260,7 +262,7 @@ def browser_checks(data: dict) -> None:
         tooltip_checks(page, base, "economia", "incomeDistribution", 7, 4)
         assert all("Reddito medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
 
-        for metric_key, option_count in (("roadSafety", 4), ("roadFinesPerResident", 2)):
+        for metric_key, option_count in (("roadSafety", 4),):
             page.goto(base + f"confronta/sicurezza/?indicatore={metric_key}", wait_until="networkidle")
             page.wait_for_selector("select[data-composite-component]")
             component = page.locator("select[data-composite-component]")

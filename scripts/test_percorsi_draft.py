@@ -177,8 +177,10 @@ def check_dist_data() -> None:
     require("percorsiQuickMarkup(data)" not in bundle, "Vecchio box rapido Percorsi ancora nel renderer")
     require("percorsiCompareMarkup(data)" not in bundle, "Vecchio box statistico standalone ancora nel renderer")
     require("percorsiTownMarkup(data, town)" not in bundle, "Vecchio box comunale Percorsi standalone ancora nel renderer")
-    require("themeKey === 'sicurezza' ? localPoliceDraftMarkup(data) + crimeMarkup(data)" in bundle,
-            "Contesti Polizia Locale e criminalità non presenti nel tema Sicurezza")
+    require("themeKey === 'sicurezza' ? crimeMarkup(data)" in bundle,
+            "Contesto criminalità non presente nel tema Sicurezza")
+    require("localPoliceDraftMarkup" not in bundle,
+            "Il contesto regionale Polizia Locale non deve essere pubblicato")
     subprocess.run(["node", "--check", str(DIST_ROOT / "assets" / "app-bundle.js")], check=True)
 
 
@@ -219,8 +221,8 @@ def check_browser() -> None:
                 "Criminalità non visibile nel nuovo tema Sicurezza")
         require("Criminalità e delitti denunciati" in crime.inner_text(),
                 "Contesto criminalità incompleto")
-        require(page.locator("#polizia-locale").count() == 1,
-                "Contesto Polizia Locale non presente nel nuovo tema Sicurezza")
+        require(page.locator("#polizia-locale").count() == 0,
+                "Contesto regionale Polizia Locale ancora pubblicato")
 
         page.goto(base + "percorsi/?comune=Camaiore", wait_until="networkidle")
         require(page.locator(".site-brand").count() == 1,

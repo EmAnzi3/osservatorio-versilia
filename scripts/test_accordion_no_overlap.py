@@ -117,11 +117,8 @@ def main() -> None:
         crime = page.locator("#criminalita")
         require(crime.count() == 1 and crime.is_visible(),
                 "Criminalità deve vivere nel tema Sicurezza e territorio")
-        local_police = page.locator("#polizia-locale")
-        require(local_police.count() == 1 and local_police.is_visible(),
-                "Il contesto Polizia Locale deve vivere nel tema Sicurezza e territorio")
-        require(not overlaps(crime.bounding_box(), local_police.bounding_box()),
-                "I blocchi Criminalità e Polizia Locale non devono sovrapporsi")
+        require(page.locator("#polizia-locale").count() == 0,
+                "Il dato regionale Polizia Locale non deve essere esposto come contesto comunale")
 
         browser.close()
 
