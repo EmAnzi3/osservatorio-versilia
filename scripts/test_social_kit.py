@@ -197,16 +197,20 @@ def main() -> int:
         if not soft_seen:
             fail(f"Tonalità soft del tema mai usata nel carosello: {post['id']}")
 
+        platform_texts: dict[str, str] = {}
         for platform in ["master", "facebook", "instagram", "linkedin", "x"]:
             caption = post_dir / "testi" / f"{platform}.txt"
             if not caption.exists():
                 fail(f"Testo {platform} mancante: {post['id']}")
                 continue
             text = caption.read_text(encoding="utf-8").strip()
+            platform_texts[platform] = text
             if banned_tone.search(text):
                 fail(f"Lessico valutativo nel testo {platform}: {post['id']}")
             if platform == "x" and len(text) > 280:
                 fail(f"Testo X oltre 280 caratteri: {post['id']}")
+        if len({platform_texts.get("facebook"), platform_texts.get("instagram"), platform_texts.get("linkedin")}) != 3:
+            fail(f"Facebook, Instagram e LinkedIn non hanno testi realmente adattati: {post['id']}")
 
         if post["dataset"] == "climate-minmax":
             if provenance["current_year"] != 2025 or "2026" in provenance["history"]:
