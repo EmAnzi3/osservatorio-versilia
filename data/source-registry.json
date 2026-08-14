@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 119,
-  "expectedInlineMetricCount": 115,
+  "expectedMetricCount": 121,
+  "expectedInlineMetricCount": 117,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -302,7 +302,9 @@
     "https://www.piattaformaunicanazionale.it/idr": "pun-continuous",
     "https://osservatorioversilia.it/percorsi/metodo.html": "percorsi-curated",
     "https://dati.lamma.toscana.it/": "lamma-copernicus-climate",
-    "https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm": "agenzia-entrate-omi-semestral"
+    "https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm": "agenzia-entrate-omi-semestral",
+    "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx": "istat-road-annual",
+    "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx": "istat-road-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -326,6 +328,19 @@
     },
     "publicWorks": {
       "profile": "openbdap-continuous"
+    },
+    "roadSafety": {
+      "profile": "istat-road-annual"
+    },
+    "roadFinesPerResident": {
+      "profile": "istat-road-annual"
+    },
+    "securityMissionExpenditurePerResident": {
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo il consolidamento del rendiconto",
+      "acquisitionMethod": "Download OpenBDAP del rendiconto e lettura degli impegni della Missione 03.",
+      "publisher": "Ragioneria generale dello Stato — OpenBDAP"
     }
   },
   "requestTimeoutSeconds": 20,

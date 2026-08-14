@@ -394,23 +394,36 @@
       "key": "sicurezza",
       "number": "07",
       "label": "Sicurezza e territorio",
-      "question": "Quanto è sicuro il territorio e quali fenomeni emergono?",
-      "description": "Sicurezza stradale e criminalità, distinguendo i dati comunali da quelli disponibili solo a scala sovracomunale.",
+      "question": "Quanto è sicuro il territorio e quali risorse vengono dedicate al presidio?",
+      "description": "Sicurezza stradale, risorse comunali e controllo della circolazione, mantenendo criminalità e Polizia Locale alla scala realmente disponibile.",
       "metrics": [
-        "roadInjuries"
+        "roadSafety",
+        "securityMissionExpenditurePerResident",
+        "roadFinesPerResident"
       ],
       "sections": [
         {
           "key": "sicurezza-stradale",
           "label": "Sicurezza stradale",
-          "description": "Incidenti e persone coinvolte, con confronto comunale omogeneo.",
+          "description": "Frequenza degli incidenti e gravità delle conseguenze, con serie comunali omogenee.",
           "metrics": [
-            "roadInjuries"
+            "roadSafety"
+          ]
+        },
+        {
+          "key": "risorse-controllo",
+          "label": "Risorse e controllo",
+          "description": "Spesa comunale per ordine pubblico e sicurezza e proventi delle sanzioni al Codice della strada.",
+          "metrics": [
+            "securityMissionExpenditurePerResident",
+            "roadFinesPerResident"
           ]
         }
       ],
       "featured": [
-        "roadInjuries"
+        "roadSafety",
+        "securityMissionExpenditurePerResident",
+        "roadFinesPerResident"
       ]
     },
     "abitare": {
@@ -8394,217 +8407,6 @@
         "type": "Dato ufficiale",
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
-        "coverage": "7/7"
-      }
-    },
-    "roadInjuries": {
-      "meta": {
-        "key": "roadInjuries",
-        "theme": "sicurezza",
-        "label": "Feriti in incidenti ogni 10.000 residenti",
-        "shortLabel": "Feriti su strada",
-        "description": "Persone ferite in incidenti stradali con lesioni, rapportate alla popolazione 2024.",
-        "unit": "per10k",
-        "year": "2024",
-        "source": "Istat — incidenti stradali; popolazione residente",
-        "polarity": "negative",
-        "benchmark": {
-          "year": 2024,
-          "tuscany": 53.2,
-          "italy": 39.7,
-          "source": "Istat — Incidenti stradali in Italia 2024",
-          "url": "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/",
-          "note": "Tutti i valori sono feriti ogni 10.000 residenti nel 2024."
-        }
-      },
-      "sourceUrl": "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/",
-      "rows": [
-        {
-          "town": "Massarosa",
-          "code": "046018",
-          "slug": "massarosa",
-          "value": 50.30871255431054,
-          "formatted": "50,3 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              39.32454314133704,
-              46.922691449136714,
-              46.73967832103744,
-              54.53212354504629,
-              50.30871255431054
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 50.30871255431054
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
-          "value": 77.85367459468357,
-          "formatted": "77,9 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              44.453992596509785,
-              52.57057027640365,
-              54.877549348841015,
-              79.65183117096403,
-              77.85367459468357
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 77.85367459468357
-        },
-        {
-          "town": "Camaiore",
-          "code": "046005",
-          "slug": "camaiore",
-          "value": 75.32011046949535,
-          "formatted": "75,3 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              60.55226199156707,
-              72.1010043764365,
-              84.22111184437951,
-              66.4285266654133,
-              75.32011046949535
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 75.32011046949535
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 75.03949447077409,
-          "formatted": "75,0 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              59.13814845414619,
-              77.41879676484581,
-              83.67293852423481,
-              76.7453015305455,
-              75.03949447077409
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 75.03949447077409
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
-          "value": 40.20908725371934,
-          "formatted": "40,2 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              32.096445905746045,
-              40.6180312201338,
-              40.993489269351336,
-              40.338846308995564,
-              40.20908725371934
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 40.20908725371934
-        },
-        {
-          "town": "Forte dei Marmi",
-          "code": "046013",
-          "slug": "forte-dei-marmi",
-          "value": 188.87413309724067,
-          "formatted": "188,9 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              139.22092532695822,
-              182.901482610503,
-              172.83594987757456,
-              159.90696322139846,
-              188.87413309724067
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 188.87413309724067
-        },
-        {
-          "town": "Stazzema",
-          "code": "046030",
-          "slug": "stazzema",
-          "value": 24.11298656562177,
-          "formatted": "24,1 ogni 10.000",
-          "series": {
-            "years": [
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              13.522650439486139,
-              24.154589371980673,
-              6.920415224913494,
-              6.9516857838025725,
-              24.11298656562177
-            ]
-          },
-          "normalized": null,
-          "benchmarkValue": 24.11298656562177
-        }
-      ],
-      "aggregate": {
-        "value": 74.37547312641938,
-        "label": "Tasso Versilia",
-        "note": "Feriti complessivi ogni 10.000 residenti."
-      },
-      "normalizedAggregate": null,
-      "method": {
-        "type": "Elaborazione Osservatorio",
-        "formula": "feriti in incidenti / popolazione residente × 10.000",
-        "caveat": "Il numero di feriti dipende anche dall'intensità del traffico e dalla funzione stradale del territorio; non misura da solo il rischio individuale.",
         "coverage": "7/7"
       }
     },
@@ -21368,6 +21170,1925 @@
           ]
         }
       ]
+    },
+    "roadSafety": {
+      "meta": {
+        "key": "roadSafety",
+        "theme": "sicurezza",
+        "label": "Sicurezza stradale",
+        "shortLabel": "Sicurezza stradale",
+        "description": "Incidenti stradali con lesioni e gravità delle conseguenze. Il selettore distingue incidentalità, mortalità, lesività e feriti.",
+        "unit": "per1000",
+        "year": "2024",
+        "source": "Istat — A misura di Comune, incidenti stradali",
+        "polarity": "negative",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Lettura",
+        "searchTerms": [
+          "incidenti",
+          "mortalità stradale",
+          "lesività",
+          "feriti"
+        ],
+        "benchmark": {
+          "year": 2024,
+          "tuscany": 4.14689530797407,
+          "italy": 2.9404986625331,
+          "source": "Istat — A misura di Comune",
+          "url": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+          "note": "Benchmark riferito agli incidenti con lesioni ogni 1.000 residenti."
+        }
+      },
+      "sourceUrl": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 4.35071328799432,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              3.47864867878247,
+              3.50223379655614,
+              4.02687600389114,
+              3.23094425483504,
+              3.66905155017428,
+              4.52540924938237,
+              3.07579304962585,
+              3.28962397770366,
+              3.62011685187307,
+              4.21177924783116,
+              4.35071328799432
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 4.35071328799432,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 4.35071328799432,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 0.0,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 115.789473684211,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 50.30871255431054,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                3.47864867878247,
+                3.50223379655614,
+                4.02687600389114,
+                3.23094425483504,
+                3.66905155017428,
+                4.52540924938237,
+                3.07579304962585,
+                3.28962397770366,
+                3.62011685187307,
+                4.21177924783116,
+                4.35071328799432
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                2.56410256410256,
+                1.28205128205128,
+                1.12359550561798,
+                2.8169014084507,
+                1.25,
+                2.04081632653061,
+                2.98507462686567,
+                2.77777777777778,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                128.205128205128,
+                129.48717948718,
+                130.337078651685,
+                129.577464788732,
+                148.75,
+                133.673469387755,
+                126.865671641791,
+                143.055555555556,
+                129.113924050633,
+                129.347826086957,
+                115.789473684211
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                39.32454314133704,
+                46.922691449136714,
+                46.73967832103744,
+                54.53212354504629,
+                50.30871255431054
+              ]
+            }
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 6.62420801990558,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              6.80928422781601,
+              5.51323902792891,
+              5.29027322226473,
+              5.58805696212903,
+              6.81958571840382,
+              6.40718661756692,
+              3.76140535302185,
+              4.72623797998299,
+              4.75663263214008,
+              6.5436310575856,
+              6.62420801990558
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.62420801990558,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 6.62420801990558,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 1.24378109452736,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 117.661691542289,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 77.85367459468357,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                6.80928422781601,
+                5.51323902792891,
+                5.29027322226473,
+                5.58805696212903,
+                6.81958571840382,
+                6.40718661756692,
+                3.76140535302185,
+                4.72623797998299,
+                4.75663263214008,
+                6.5436310575856,
+                6.62420801990558
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.936768149882904,
+                1.46198830409357,
+                0.923076923076923,
+                0.293255131964809,
+                0.966183574879227,
+                0.77319587628866,
+                1.31004366812227,
+                0.346020761245675,
+                0.344827586206897,
+                0.50251256281407,
+                1.24378109452736
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                122.248243559719,
+                128.654970760234,
+                126.461538461538,
+                121.994134897361,
+                124.3961352657,
+                121.134020618557,
+                117.467248908297,
+                111.418685121107,
+                115.51724137931,
+                121.859296482412,
+                117.661691542289
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                44.453992596509785,
+                52.57057027640365,
+                54.877549348841015,
+                79.65183117096403,
+                77.85367459468357
+              ]
+            }
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.43682491836222,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.35656242304851,
+              7.60573831313381,
+              6.94022999237508,
+              7.3927888982865,
+              6.58215888512716,
+              6.83403730245361,
+              4.8338177682295,
+              5.69343524896983,
+              6.49564603436103,
+              5.14283922355671,
+              6.43682491836222
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.43682491836222,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 6.43682491836222,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 1.95121951219512,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 117.073170731707,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 75.32011046949535,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                7.35656242304851,
+                7.60573831313381,
+                6.94022999237508,
+                7.3927888982865,
+                6.58215888512716,
+                6.83403730245361,
+                4.8338177682295,
+                5.69343524896983,
+                6.49564603436103,
+                5.14283922355671,
+                6.43682491836222
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                1.25523012552301,
+                2.03252032520325,
+                2.24215246636771,
+                0.847457627118644,
+                0.956937799043062,
+                2.77777777777778,
+                0.65359477124183,
+                0.552486187845304,
+                1.44927536231884,
+                1.21951219512195,
+                1.95121951219512
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                127.196652719665,
+                127.235772357724,
+                129.596412556054,
+                125.847457627119,
+                123.444976076555,
+                125.925925925926,
+                124.83660130719,
+                126.519337016575,
+                129.468599033816,
+                129.268292682927,
+                117.073170731707
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                60.55226199156707,
+                72.1010043764365,
+                84.22111184437951,
+                66.4285266654133,
+                75.32011046949535
+              ]
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6.10573016186774,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              7.62378288792211,
+              7.11163170114414,
+              7.90146409481757,
+              8.11948462639687,
+              7.38421677642233,
+              7.2498372042544,
+              4.51016956502884,
+              6.06231190594756,
+              6.73927694080306,
+              6.25533124822292,
+              6.10573016186774
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.10573016186774,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 6.10573016186774,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 0.719424460431655,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 123.021582733813,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 75.03949447077409,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                7.62378288792211,
+                7.11163170114414,
+                7.90146409481757,
+                8.11948462639687,
+                7.38421677642233,
+                7.2498372042544,
+                4.51016956502884,
+                6.06231190594756,
+                6.73927694080306,
+                6.25533124822292,
+                6.10573016186774
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                1.6304347826087,
+                1.76470588235294,
+                1.60427807486631,
+                2.63157894736842,
+                1.16959064327485,
+                1.19760479041916,
+                1.92307692307692,
+                2.14285714285714,
+                3.87096774193548,
+                0.699300699300699,
+                0.719424460431655
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                127.173913043478,
+                133.529411764706,
+                131.016042780749,
+                127.894736842105,
+                132.163742690058,
+                125.149700598802,
+                130.769230769231,
+                127.857142857143,
+                124.516129032258,
+                123.076923076923,
+                123.021582733813
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                59.13814845414619,
+                77.41879676484581,
+                83.67293852423481,
+                76.7453015305455,
+                75.03949447077409
+              ]
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 3.70728562217924,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.31279082964476,
+              3.57849855337293,
+              2.98610313540829,
+              4.91778085139081,
+              3.56464799101089,
+              3.2007494437722,
+              2.92143703118831,
+              3.36040324838981,
+              3.54324367853116,
+              3.30245670559807,
+              3.70728562217924
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 3.70728562217924,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 3.70728562217924,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 4.34782608695652,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 108.695652173913,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 40.20908725371934,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                4.31279082964476,
+                3.57849855337293,
+                2.98610313540829,
+                4.91778085139081,
+                3.56464799101089,
+                3.2007494437722,
+                2.92143703118831,
+                3.36040324838981,
+                3.54324367853116,
+                3.30245670559807,
+                3.70728562217924
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0,
+                2.12765957446809,
+                0.0,
+                0.0,
+                0.0,
+                2.4390243902439,
+                0.0,
+                0.0,
+                2.27272727272727,
+                2.4390243902439,
+                4.34782608695652
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                133.333333333333,
+                119.148936170213,
+                107.692307692308,
+                125.0,
+                126.086956521739,
+                117.073170731707,
+                110.810810810811,
+                121.428571428571,
+                115.909090909091,
+                121.951219512195,
+                108.695652173913
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                32.096445905746045,
+                40.6180312201338,
+                40.993489269351336,
+                40.338846308995564,
+                40.20908725371934
+              ]
+            }
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 15.0264077958789,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              15.4516640253566,
+              14.8783593592923,
+              14.0012234078706,
+              13.7494843943352,
+              14.6026006536402,
+              15.1398331814677,
+              9.21273031825796,
+              14.1242937853107,
+              13.6015048473448,
+              12.888107791447,
+              15.0264077958789
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 15.0264077958789,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 15.0264077958789,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 0.0,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 126.732673267327,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 188.87413309724067,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                15.4516640253566,
+                14.8783593592923,
+                14.0012234078706,
+                13.7494843943352,
+                14.6026006536402,
+                15.1398331814677,
+                9.21273031825796,
+                14.1242937853107,
+                13.6015048473448,
+                12.888107791447,
+                15.0264077958789
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0,
+                0.900900900900901,
+                0.0,
+                1.0,
+                0.952380952380952,
+                1.85185185185185,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                128.205128205128,
+                136.936936936937,
+                142.718446601942,
+                134.0,
+                142.857142857143,
+                115.740740740741,
+                150.0,
+                132.0,
+                127.659574468085,
+                125.0,
+                126.732673267327
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                139.22092532695822,
+                182.901482610503,
+                172.83594987757456,
+                159.90696322139846,
+                188.87413309724067
+              ]
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1.72562553925798,
+          "formatted": "",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.617379225189072,
+              1.25156445556946,
+              1.27449418512028,
+              null,
+              1.99733688415446,
+              2.02395007589813,
+              1.02459016393443,
+              1.72771250863856,
+              0.693601525923357,
+              0.692041522491349,
+              1.72562553925798
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.72562553925798,
+          "parts": [
+            {
+              "label": "Incidenti con lesioni",
+              "selectorLabel": "Incidenti",
+              "value": 1.72562553925798,
+              "unit": "per1000"
+            },
+            {
+              "label": "Indice di mortalità",
+              "selectorLabel": "Mortalità",
+              "value": 0.0,
+              "unit": "per100"
+            },
+            {
+              "label": "Indice di lesività",
+              "selectorLabel": "Lesività",
+              "value": 140.0,
+              "unit": "per100"
+            },
+            {
+              "label": "Feriti ogni 10.000 residenti",
+              "selectorLabel": "Feriti",
+              "value": 24.11298656562177,
+              "unit": "per10k"
+            }
+          ],
+          "componentSeries": {
+            "Incidenti": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.617379225189072,
+                1.25156445556946,
+                1.27449418512028,
+                null,
+                1.99733688415446,
+                2.02395007589813,
+                1.02459016393443,
+                1.72771250863856,
+                0.693601525923357,
+                0.692041522491349,
+                1.72562553925798
+              ]
+            },
+            "Mortalità": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0,
+                25.0,
+                0.0,
+                null,
+                0.0,
+                16.6666666666667,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "Lesività": {
+              "years": [
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                150.0,
+                100.0,
+                150.0,
+                null,
+                116.666666666667,
+                133.333333333333,
+                133.333333333333,
+                140.0,
+                100.0,
+                100.0,
+                140.0
+              ]
+            },
+            "Feriti": {
+              "years": [
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                13.522650439486139,
+                24.154589371980673,
+                6.920415224913494,
+                6.9516857838025725,
+                24.11298656562177
+              ]
+            }
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 6.282399335063711,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Ogni Comune pesa allo stesso modo; non è un dato ufficiale di area.",
+        "parts": [
+          {
+            "label": "Incidenti con lesioni",
+            "selectorLabel": "Incidenti",
+            "value": 6.282399335063711,
+            "unit": "per1000"
+          },
+          {
+            "label": "Indice di mortalità",
+            "selectorLabel": "Mortalità",
+            "value": 1.1803215934443791,
+            "unit": "per100"
+          },
+          {
+            "label": "Indice di lesività",
+            "selectorLabel": "Lesività",
+            "value": 121.28203487618,
+            "unit": "per100"
+          },
+          {
+            "label": "Feriti ogni 10.000 residenti",
+            "selectorLabel": "Feriti",
+            "value": 75.95974271512077,
+            "unit": "per10k"
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dati ufficiali ed elaborazione Osservatorio",
+        "formula": "Incidentalità: incidenti con lesioni / popolazione residente media × 1.000; mortalità: morti / incidenti × 100; lesività: feriti / incidenti × 100; feriti: feriti / residenti × 10.000.",
+        "caveat": "L’intensità del traffico e la funzione delle strade incidono sul confronto. Mortalità e lesività sono instabili nei Comuni con pochi incidenti.",
+        "coverage": "7/7"
+      }
+    },
+    "roadFinesPerResident": {
+      "meta": {
+        "key": "roadFinesPerResident",
+        "theme": "sicurezza",
+        "label": "Proventi da sanzioni al Codice della strada",
+        "shortLabel": "Sanzioni stradali",
+        "description": "Proventi per violazioni al Codice della strada rapportati alla popolazione residente media; il dettaglio distingue la quota riferita ai limiti di velocità.",
+        "unit": "currency",
+        "year": "2024",
+        "source": "Istat / Ministero dell’Interno — A misura di Comune",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Lettura",
+        "searchTerms": [
+          "multe",
+          "sanzioni",
+          "codice della strada",
+          "autovelox"
+        ],
+        "benchmark": {
+          "year": 2024,
+          "tuscany": 47.5484586587964,
+          "italy": 29.3268396123682,
+          "source": "Istat / Ministero dell’Interno",
+          "url": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+          "note": "Benchmark riferito ai proventi complessivi per abitante."
+        }
+      },
+      "sourceUrl": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+      "rows": [
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 36.0983071095113,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              25.4292758956937,
+              25.8779828979368,
+              26.5889915017718,
+              36.0983071095113
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 36.0983071095113,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 36.0983071095113,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 2.7221145287285,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                25.4292758956937,
+                25.8779828979368,
+                26.5889915017718,
+                36.0983071095113
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                21.249089785533,
+                14.7043165151998,
+                10.6863616054014,
+                2.7221145287285
+              ]
+            }
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 247.638983782175,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              184.090501412429,
+              306.689509477644,
+              358.056691564148,
+              247.638983782175
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 247.638983782175,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 247.638983782175,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 0.0,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                184.090501412429,
+                306.689509477644,
+                358.056691564148,
+                247.638983782175
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0929136465096099,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 6.76785583524027,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              2.32421437382921,
+              4.8491213197388,
+              4.836060612997,
+              6.76785583524027
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.76785583524027,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 6.76785583524027,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 15.4516047556882,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                2.32421437382921,
+                4.8491213197388,
+                4.836060612997,
+                6.76785583524027
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                7.11148871792614,
+                3.74673206706297,
+                3.35274297735565,
+                15.4516047556882
+              ]
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 22.4294826336255,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              91.4154026024639,
+              92.9921185243157,
+              90.6575626079919,
+              22.4294826336255
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 22.4294826336255,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 22.4294826336255,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 23.7273558195705,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                91.4154026024639,
+                92.9921185243157,
+                90.6575626079919,
+                22.4294826336255
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                46.3119652791699,
+                38.181153118862,
+                30.059635734185,
+                23.7273558195705
+              ]
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 39.5120434098519,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              36.3057542905149,
+              30.7152617168626,
+              18.3876633105115,
+              39.5120434098519
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 39.5120434098519,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 39.5120434098519,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 0.0,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                36.3057542905149,
+                30.7152617168626,
+                18.3876633105115,
+                39.5120434098519
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0133438388609038,
+                0.765320060619452,
+                2.13607820894466,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2.19099427381572,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              2.87826883206634,
+              1.67040055488122,
+              1.65070934256055,
+              2.19099427381572
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 2.19099427381572,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 2.19099427381572,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 0.0,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                2.87826883206634,
+                1.67040055488122,
+                1.65070934256055,
+                2.19099427381572
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 49.005837367849,
+          "formatted": "",
+          "series": {
+            "years": [
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              29.7584687970171,
+              35.8060072989708,
+              42.0612771589461,
+              49.005837367849
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 49.005837367849,
+          "parts": [
+            {
+              "label": "Proventi complessivi per abitante",
+              "selectorLabel": "Proventi €/abitante",
+              "value": 49.005837367849,
+              "unit": "currency"
+            },
+            {
+              "label": "Quota riferita ai limiti di velocità",
+              "selectorLabel": "Quota da velocità",
+              "value": 0.0,
+              "unit": "percent"
+            }
+          ],
+          "componentSeries": {
+            "Proventi €/abitante": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                29.7584687970171,
+                35.8060072989708,
+                42.0612771589461,
+                49.005837367849
+              ]
+            },
+            "Quota da velocità": {
+              "years": [
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 57.66335777315267,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Ogni Comune pesa allo stesso modo; il dato non misura direttamente il livello di sicurezza.",
+        "parts": [
+          {
+            "label": "Proventi complessivi per abitante",
+            "selectorLabel": "Proventi €/abitante",
+            "value": 57.66335777315267,
+            "unit": "currency"
+          },
+          {
+            "label": "Quota riferita ai limiti di velocità",
+            "selectorLabel": "Quota da velocità",
+            "value": 5.985867871998172,
+            "unit": "percent"
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale Istat / DAIT",
+        "formula": "Proventi complessivi CdS / popolazione residente media; quota velocità: proventi per violazioni dei limiti / proventi CdS complessivi × 100.",
+        "caveat": "Il valore dipende anche da turismo, traffico di attraversamento, intensità dei controlli e organizzazione della riscossione. Polarità neutra.",
+        "coverage": "7/7"
+      }
+    },
+    "securityMissionExpenditurePerResident": {
+      "meta": {
+        "key": "securityMissionExpenditurePerResident",
+        "theme": "sicurezza",
+        "label": "Spesa impegnata per ordine pubblico e sicurezza per residente",
+        "shortLabel": "Spesa per sicurezza",
+        "description": "Impegni della Missione 03 «Ordine pubblico e sicurezza» del rendiconto comunale, rapportati ai residenti.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "Ragioneria generale dello Stato — OpenBDAP",
+        "polarity": "neutral",
+        "searchTerms": [
+          "ordine pubblico",
+          "sicurezza",
+          "missione 03",
+          "spesa sicurezza"
+        ]
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 55.38237686875173,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              34.05593505602561,
+              55.38237686875173
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 55.38237686875173
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 90.83778927051371,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              90.94004904946094,
+              90.83778927051371
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 90.83778927051371
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 55.92004586579542,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              56.94876757469245,
+              55.92004586579542
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 55.92004586579542
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 106.02409444664292,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              103.90528523784448,
+              106.02409444664292
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 106.02409444664292
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 57.27289718116469,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              52.44789545637314,
+              57.27289718116469
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 57.27289718116469
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 317.0015811581158,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              352.63477940091485,
+              317.0015811581158
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 317.0015811581158
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 10.952866528354079,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024,
+              2025
+            ],
+            "values": [
+              32.48505339304168,
+              10.952866528354079
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 10.952866528354079
+        }
+      ],
+      "aggregate": {
+        "value": 86.57042412764727,
+        "label": "Valore pro capite Versilia",
+        "note": "Totale degli impegni Missione 03 dei sette Comuni rapportato alla popolazione complessiva."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "Impegni Missione 03 / popolazione residente.",
+        "caveat": "La classificazione comprende spesa corrente e in conto capitale; gestione associata, stagionalità e organizzazione dei servizi incidono sul confronto.",
+        "coverage": "7/7"
+      }
     }
   },
   "crests": {
@@ -28032,5 +29753,17 @@
       }
     ],
     "note": "Indicatore ufficiale BesT a livello provinciale. Non viene attribuito ai singoli Comuni della Versilia: il valore locale di riferimento è quello della Provincia di Lucca."
+  },
+  "securityDraft": {
+    "status": "draft",
+    "mission03Status": "ok",
+    "localPolice": {
+      "sourceUrl": "https://www.regione.toscana.it/-/polizia-locale-in-toscana-i-risultati-del-monitoraggio-2025",
+      "usableForMunicipalComparison": false,
+      "note": "Le tavole allegate contengono aggregati regionali, non righe comunali utilizzabili per i sette Comuni.",
+      "tuscanyStaff": 3692,
+      "respondingStructures": 174,
+      "municipalitiesRepresented": 247
+    }
   }
 }
