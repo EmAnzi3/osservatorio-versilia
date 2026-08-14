@@ -180,7 +180,7 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         page.locator("[data-composite-choice]").select_option(choice)
         page.wait_for_function(
             "choice => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === choice",
-            choice,
+            arg=choice,
         )
         primary_label = normalized_text(page.locator("[data-composite-primary-label]").inner_text())
         primary_value = normalized_text(page.locator("[data-composite-primary-value]").inner_text())
@@ -221,7 +221,7 @@ def tooltip_checks(page: Page, base: str, theme: str, metric_key: str, expected_
         segment.focus()
         page.wait_for_function(
             "element => Number.parseFloat(getComputedStyle(element).opacity) > 0.99",
-            tooltip.element_handle(),
+            arg=tooltip.element_handle(),
         )
 
 
