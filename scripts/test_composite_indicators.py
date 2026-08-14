@@ -172,12 +172,12 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         base + f"comuni/{row['slug']}/?tema={metric['meta']['theme']}&indicatore={metric_key}",
         wait_until="networkidle",
     )
-    page.wait_for_selector("[data-composite-choice]")
+    page.wait_for_selector("select[data-composite-choice]")
     page.wait_for_selector(".history-panel .ux-view-shell")
     choices = selector_choices(metric, row)
-    assert page.locator("[data-composite-choice] option").all_text_contents() == [choice[1] for choice in choices]
+    assert page.locator("select[data-composite-choice] option").all_text_contents() == [choice[1] for choice in choices]
     for choice, label, value, unit in choices:
-        page.locator("[data-composite-choice]").select_option(choice)
+        page.locator("select[data-composite-choice]").select_option(choice)
         page.wait_for_function(
             "choice => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === choice",
             arg=choice,
