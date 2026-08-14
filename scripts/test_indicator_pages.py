@@ -112,7 +112,7 @@ def static_checks() -> None:
     assert len(paths) == len(set(paths)) == len(inline), "Slug indicatore duplicato"
 
     sitemap = ET.parse(DIST / "sitemap.xml")
-    namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    namespace = {"s": "http://www.sitemaps.org/sitemap/0.9"}
     urls = sitemap.findall("s:url", namespace)
     locations = [item.findtext("s:loc", namespaces=namespace) for item in urls]
     assert len(locations) == len(set(locations)), "URL duplicate nella sitemap"
