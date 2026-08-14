@@ -1,16 +1,37 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 115,
-  "expectedInlineMetricCount": 111,
+  "expectedMetricCount": 119,
+  "expectedInlineMetricCount": 115,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
-    { "name": "Camaiore", "code": "046005" },
-    { "name": "Forte dei Marmi", "code": "046013" },
-    { "name": "Massarosa", "code": "046018" },
-    { "name": "Pietrasanta", "code": "046024" },
-    { "name": "Seravezza", "code": "046028" },
-    { "name": "Stazzema", "code": "046030" },
-    { "name": "Viareggio", "code": "046033" }
+    {
+      "name": "Camaiore",
+      "code": "046005"
+    },
+    {
+      "name": "Forte dei Marmi",
+      "code": "046013"
+    },
+    {
+      "name": "Massarosa",
+      "code": "046018"
+    },
+    {
+      "name": "Pietrasanta",
+      "code": "046024"
+    },
+    {
+      "name": "Seravezza",
+      "code": "046028"
+    },
+    {
+      "name": "Stazzema",
+      "code": "046030"
+    },
+    {
+      "name": "Viareggio",
+      "code": "046033"
+    }
   ],
   "defaults": {
     "frequency": "annual_or_irregular",
@@ -238,6 +259,15 @@
       "acquisitionMethod": "Ricostruzione territoriale comunale da LaMMA 1 km ed ERA5-Land calibrato, con storici separati dal catalogo canonico.",
       "licenseName": "Condizioni indicate da LaMMA e Copernicus",
       "licenseUrl": "https://dati.lamma.toscana.it/"
+    },
+    "agenzia-entrate-omi-semestral": {
+      "publisher": "Agenzia delle Entrate — Osservatorio del Mercato Immobiliare",
+      "frequency": "semiannual",
+      "frequencyLabel": "Semestrale",
+      "expectedRelease": "Dopo la chiusura di ciascun semestre",
+      "acquisitionMethod": "Consultazione delle quotazioni OMI per zona e semestre; elaborazione comunale ricostruibile dai valori territoriali pubblicati.",
+      "licenseName": "Condizioni di utilizzo dell’Agenzia delle Entrate",
+      "licenseUrl": "https://www.agenziaentrate.gov.it/portale/note-legali"
     }
   },
   "sourceProfileByUrl": {
@@ -271,7 +301,8 @@
     "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": "italia-domani-periodic",
     "https://www.piattaformaunicanazionale.it/idr": "pun-continuous",
     "https://osservatorioversilia.it/percorsi/metodo.html": "percorsi-curated",
-    "https://dati.lamma.toscana.it/": "lamma-copernicus-climate"
+    "https://dati.lamma.toscana.it/": "lamma-copernicus-climate",
+    "https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm": "agenzia-entrate-omi-semestral"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -284,10 +315,18 @@
       "frequencyLabel": "Pluriennale o irregolare",
       "expectedRelease": "Secondo gli aggiornamenti del Registro di mortalità ARS/ISPRO"
     },
-    "outsideMunicipality": { "profile": "istat-commuting-irregular" },
-    "selfContainment": { "profile": "istat-commuting-irregular" },
-    "commuterBalanceRate": { "profile": "istat-commuting-irregular" },
-    "publicWorks": { "profile": "openbdap-continuous" }
+    "outsideMunicipality": {
+      "profile": "istat-commuting-irregular"
+    },
+    "selfContainment": {
+      "profile": "istat-commuting-irregular"
+    },
+    "commuterBalanceRate": {
+      "profile": "istat-commuting-irregular"
+    },
+    "publicWorks": {
+      "profile": "openbdap-continuous"
+    }
   },
   "requestTimeoutSeconds": 20,
   "maxDownloadBytes": 4194304,

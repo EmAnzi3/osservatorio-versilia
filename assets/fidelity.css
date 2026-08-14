@@ -699,7 +699,7 @@
   }
 }
 
-/* Indicatori compositi: fasce d'età, mobilità residenziale e fasce di reddito */
+/* Draft locale — indicatori compositi: fasce d'età, mobilità residenziale, fasce di reddito */
 .composite-primary-label{display:block;margin-bottom:10px;color:color-mix(in srgb,var(--theme-accent) 78%,var(--ink));font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
 .composite-topic-bars{padding:28px!important}
 .composite-legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--theme-line,#d5dddb)}
@@ -742,9 +742,115 @@
 .composite-town-mobility article.balance{background:var(--theme-soft,#eef4f5);border-color:var(--theme-accent)}
 .composite-town-mobility span{color:var(--muted);font-size:9px;font-weight:750}.composite-town-mobility strong{font-size:22px;letter-spacing:-.035em;margin:12px 0}.composite-town-mobility small{color:var(--muted);font-size:8px;margin-top:auto}
 .composite-history{margin-top:24px;padding-top:22px;border-top:1px solid var(--theme-line,#d5dddb)}.composite-history-title{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}.composite-history-title span{font-size:11px;font-weight:800}.composite-history-title small{color:var(--muted);font-size:8px}
-.composite-mobility-table{display:grid;gap:7px}.composite-mobility-head,.composite-mobility-row{display:grid;grid-template-columns:minmax(120px,1.2fr) repeat(3,minmax(120px,1fr));align-items:center;gap:10px}
+.composite-mobility-table{display:grid;gap:7px}.composite-mobility-head,.composite-mobility-row{display:grid;grid-template-columns:minmax(120px,1.2fr) repeat(3,minmax(105px,1fr));align-items:center;gap:10px}
 .composite-mobility-head{padding:0 12px 7px;color:var(--muted);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 .composite-mobility-row{padding:12px;border:1px solid var(--theme-line,#d5dddb);border-radius:12px;background:color-mix(in srgb,var(--surface) 82%,white)}.composite-mobility-row:hover,.composite-mobility-row:focus-visible{outline:none;border-color:var(--theme-accent);background:var(--theme-soft,#f2f5f5)}
 .composite-mobility-row>strong{font-size:11px}.composite-mobility-row>span{display:flex;flex-direction:column;gap:3px;font-size:10px;font-weight:750}.composite-mobility-row>span.balance{color:var(--theme-accent)}.composite-mobility-row small{color:var(--muted);font-size:7px;font-weight:500}
 .indicator-composite-table{min-width:0}.indicator-composite-table .composite-distribution-row,.indicator-composite-table .composite-mobility-row{background:#fffaf1}
 @media (max-width:700px){.composite-topic-bars{padding:18px 12px!important}.composite-town-mobility{grid-template-columns:1fr}.composite-mobility-head{display:none}.composite-mobility-row{grid-template-columns:1fr 1fr}.composite-mobility-row>strong{grid-column:1/-1;font-size:12px}.composite-mobility-row>span:last-child{grid-column:1/-1}.composite-row-head{align-items:flex-start}.composite-row-head>span{text-align:right;max-width:48%}.composite-stack{height:26px}.composite-segment>b{font-size:7px}.composite-segment.label-narrow>b{font-size:5.8px}.composite-segment.label-tiny>b{font-size:5px;transform:scaleX(.65)}.composite-town-detail{grid-template-columns:1fr}.composite-read-selector{align-items:flex-start;flex-direction:column;width:100%}.composite-read-selector select{width:100%}.composite-stack-town{height:42px}}
+
+/* Draft migrazioni + OMI — componenti integrati */
+.omi-compare-list{display:grid;gap:10px}.omi-compare-card{border:1px solid var(--theme-line,#d5dddb);border-radius:15px;background:color-mix(in srgb,var(--surface) 86%,white);padding:15px 16px}.omi-compare-card:hover{border-color:var(--theme-accent)}
+.omi-compare-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--theme-line,#d5dddb)}.omi-compare-head>a{font-size:13px}.omi-compare-head>span{color:var(--muted);font-size:8px;font-weight:700}
+.omi-compare-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.omi-compare-values>div,.omi-town-summary article{display:flex;flex-direction:column;border-radius:11px;background:var(--theme-soft,#eef4f5);padding:12px 13px;min-width:0}.omi-compare-values span,.omi-town-summary span{color:var(--muted);font-size:8px;font-weight:750}.omi-compare-values strong,.omi-town-summary strong{font-family:var(--font-geist-mono);font-size:16px;margin-top:7px;letter-spacing:-.03em}
+.omi-zone-disclosure{margin-top:10px;border-top:1px solid var(--theme-line,#d5dddb);padding-top:9px}.omi-zone-disclosure summary{display:flex;justify-content:space-between;align-items:center;list-style:none;color:var(--theme-accent);font-size:9px;font-weight:800;cursor:pointer}.omi-zone-disclosure summary::-webkit-details-marker{display:none}.omi-zone-disclosure summary b{font-size:14px}.omi-zone-disclosure[open] summary b{transform:rotate(45deg)}
+.omi-zone-table-wrap{width:100%;overflow-x:auto;margin-top:12px}.omi-zone-table{width:100%;min-width:720px;border-collapse:collapse}.omi-zone-table th,.omi-zone-table td{text-align:left;border-bottom:1px solid var(--theme-line,#d5dddb);padding:9px 8px;font-size:8px;vertical-align:top}.omi-zone-table th{color:var(--muted);font-size:7px;text-transform:uppercase;letter-spacing:.08em}.omi-zone-table td:first-child{width:64px}.omi-zone-table td:nth-child(3),.omi-zone-table td:nth-child(4){font-family:var(--font-geist-mono);font-weight:750;white-space:nowrap}.omi-zone-table-wrap.compact{max-height:330px;overflow:auto}
+.omi-town-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.omi-town-summary article{min-height:105px;border:1px solid var(--theme-line,#d5dddb)}.omi-town-summary small{color:var(--muted);font-size:8px;margin-top:auto;padding-top:10px}.omi-town-zones{margin-top:24px;padding-top:21px;border-top:1px solid var(--theme-line,#d5dddb)}
+.brain-drain-context{scroll-margin-top:95px}.brain-drain-context .crime-context-data>h3{margin:0 0 13px}.brain-drain-detail{margin-top:12px;border-top:1px solid #415c6c;padding-top:11px}.brain-drain-detail summary{display:flex;justify-content:space-between;list-style:none;cursor:pointer;color:#b9cbd0;font-size:9px;font-weight:750}.brain-drain-detail summary::-webkit-details-marker{display:none}.brain-drain-detail[open] summary b{transform:rotate(45deg)}.brain-drain-provinces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;margin-top:11px}.brain-drain-provinces>div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #365264;padding:7px 2px}.brain-drain-provinces span{color:#b9cbd0;font-size:8px}.brain-drain-provinces strong{font-family:var(--font-geist-mono);font-size:9px}.brain-drain-note{color:#90a9b1!important;font-size:8px!important;margin:12px 0 0!important}
+@media(max-width:700px){.omi-compare-values,.omi-town-summary{grid-template-columns:1fr}.omi-zone-table{min-width:640px}.brain-drain-provinces{grid-template-columns:1fr}.composite-mobility-head{display:none}.composite-mobility-row{grid-template-columns:1fr 1fr}.composite-mobility-row>span:nth-of-type(3){grid-column:1/-1}}
+.composite-stock-list{display:grid;gap:8px}.composite-stock-row{display:grid;grid-template-columns:minmax(130px,1.25fr) repeat(2,minmax(125px,1fr));gap:12px;align-items:center;border:1px solid var(--theme-line,#d5dddb);border-radius:12px;padding:12px;background:color-mix(in srgb,var(--surface) 84%,white)}.composite-stock-row:hover{border-color:var(--theme-accent);background:var(--theme-soft,#f2f5f5)}.composite-stock-row>strong{font-size:11px}.composite-stock-row>span{display:flex;flex-direction:column;gap:3px}.composite-stock-row b{font-family:var(--font-geist-mono);font-size:11px}.composite-stock-row small{color:var(--muted);font-size:7px}.composite-town-stock{grid-template-columns:repeat(2,1fr)}
+@media(max-width:700px){.composite-stock-row{grid-template-columns:1fr 1fr}.composite-stock-row>strong{grid-column:1/-1}.composite-town-stock{grid-template-columns:1fr}}
+.composite-fixed-detail{margin-top:25px;padding-top:22px;border-top:1px solid var(--theme-line,#d5dddb)}
+
+/* Draft UX 2026-08-14 — letture selezionabili per stranieri, migrazioni e OMI */
+.compare-view-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 16px;margin:20px 0 2px;padding-top:16px;border-top:1px solid var(--theme-line,#d5dddb)}
+.compare-view-controls>div{display:flex;flex-direction:column;gap:7px}.compare-view-label,.compare-choice-select>span{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.compare-view-controls .scale-switch{margin:0;width:max-content;max-width:100%}.compare-view-controls .scale-switch button{white-space:nowrap}
+.compare-choice-select{display:flex;flex:1 1 100%;flex-direction:column;gap:7px;min-width:0}.compare-choice-select select{width:100%;min-height:38px;border:1px solid var(--theme-line,#cbd5d4);border-radius:10px;background:var(--surface,#fffaf1);color:var(--ink);padding:7px 34px 7px 10px;font-size:10px;font-weight:750;cursor:pointer}
+.mobility-view-controls{align-items:flex-end}.mobility-view-controls .compare-choice-select{flex:1 1 100%}.mobility-view-controls>div{flex:0 0 auto}
+.composite-compare-note{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--theme-line,#d5dddb);color:var(--muted);font-size:8px;line-height:1.5}.composite-compare-note strong{color:var(--ink)}
+.omi-town-zone-disclosure{margin-top:24px}.omi-town-zone-disclosure>.omi-town-zone-body{padding:4px 16px 17px}.omi-town-zone-disclosure .omi-zone-table-wrap{margin-top:0}
+
+/* Mobilità laureati: KPI distinti senza rompere il carattere del pannello sovracomunale */
+.brain-drain-stats article{box-shadow:inset 0 1px 0 #ffffff0f}
+.brain-drain-stats article:nth-child(1){background:#173f56;border-color:#5b7f90}
+.brain-drain-stats article:nth-child(2){background:#274b58;border-color:#66848d}
+.brain-drain-stats article:nth-child(3){background:#344d59;border-color:#72858c}
+.brain-drain-stats article:nth-child(1) span,.brain-drain-stats article:nth-child(2) span,.brain-drain-stats article:nth-child(3) span{color:#d2e1e4}
+.brain-drain-stats article:nth-child(1) small,.brain-drain-stats article:nth-child(2) small,.brain-drain-stats article:nth-child(3) small{color:#afc2c8}
+
+@media(max-width:700px){.compare-view-controls{align-items:stretch}.compare-view-controls>div{width:100%}.compare-view-controls .scale-switch{width:100%}.compare-view-controls .scale-switch button{flex:1}.omi-town-zone-disclosure>.omi-town-zone-body{padding-inline:10px}}
+
+/* UX3: i selettori degli indicatori compositi vivono dentro il grafico */
+.selectable-topic-bars{padding-top:24px!important}
+.compare-chart-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;margin:0 0 16px;padding:0 2px 16px;border-bottom:1px solid var(--theme-line,#d5dddb)}
+.compare-chart-legend-host{min-width:180px;min-height:38px;display:flex;align-items:center}
+.compare-chart-legend-host .comparison-legend{padding:0;margin:0;gap:10px 18px}
+.compare-chart-toolbar .compare-view-controls{display:flex;flex-wrap:nowrap;justify-content:flex-end;align-items:flex-end;gap:12px 14px;margin:0;padding:0;border:0}
+.compare-chart-toolbar .compare-view-controls>div,.compare-chart-toolbar .compare-choice-select{display:flex;flex-direction:column;gap:6px;min-width:0}
+.compare-chart-toolbar .compare-view-controls .scale-switch{margin:0;width:max-content;max-width:100%}
+.compare-chart-toolbar .compare-view-controls .scale-switch button{min-height:34px;padding:6px 11px;font-size:9px;white-space:nowrap}
+.compare-chart-toolbar .compare-choice-select{flex:0 1 235px;width:235px}
+.compare-chart-toolbar .compare-choice-select select{width:100%;min-height:34px;padding-top:6px;padding-bottom:6px;font-size:9px;background-color:#fffaf1}
+.compare-chart-toolbar .compare-view-label,.compare-chart-toolbar .compare-choice-select>span{font-size:7px;letter-spacing:.08em}
+.compare-chart-toolbar .mobility-view-controls{gap:10px;align-items:flex-end}
+.compare-chart-toolbar .mobility-view-controls>div{flex:0 0 auto}
+
+@media(max-width:1000px){
+  .compare-chart-toolbar{align-items:flex-start;flex-direction:column;gap:13px}
+  .compare-chart-toolbar .compare-view-controls{width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .compare-chart-toolbar .compare-choice-select{flex:1 1 220px;width:auto}
+}
+@media(max-width:700px){
+  .selectable-topic-bars{padding-top:18px!important}
+  .compare-chart-toolbar{padding-bottom:13px;margin-bottom:12px}
+  .compare-chart-toolbar .compare-view-controls{align-items:stretch;flex-direction:column}
+  .compare-chart-toolbar .compare-view-controls>div,.compare-chart-toolbar .compare-choice-select{width:100%;flex:1 1 auto}
+  .compare-chart-toolbar .compare-view-controls .scale-switch{width:100%}
+  .compare-chart-toolbar .compare-view-controls .scale-switch button{flex:1}
+}
+/* UX5: controlli grafico — palette distinta dalla superficie crema del grafico */
+.compare-chart-toolbar .compare-view-controls{
+  background:#d8e8ec;
+  border:1px solid #9db8c0;
+  border-radius:14px;
+  padding:10px 12px;
+  box-shadow:0 6px 18px rgba(16,47,69,.08);
+}
+.compare-chart-toolbar .compare-view-label,
+.compare-chart-toolbar .compare-choice-select>span{
+  color:#315966;
+}
+.compare-chart-toolbar .compare-choice-select select{
+  background:#f2f8f9;
+  border-color:#7fa3ad;
+  color:#12384a;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+}
+.compare-chart-toolbar .compare-choice-select select:hover,
+.compare-chart-toolbar .compare-choice-select select:focus{
+  background:#ffffff;
+  border-color:#477b8a;
+}
+.compare-chart-toolbar .compare-view-controls .scale-switch{
+  background:#bfd5dc;
+  border-color:#86a8b1;
+}
+.compare-chart-toolbar .compare-view-controls .scale-switch button{
+  color:#315966;
+  background:transparent;
+}
+.compare-chart-toolbar .compare-view-controls .scale-switch button:hover:not(.active){
+  background:#edf5f6;
+  color:#12384a;
+}
+.compare-chart-toolbar .compare-view-controls .scale-switch button.active{
+  background:#124a64;
+  color:#fff;
+  box-shadow:0 1px 3px rgba(10,45,62,.18);
+}
+@media(max-width:700px){
+  .compare-chart-toolbar .compare-view-controls{padding:10px}
+}
+/* Mobile: i tooltip delle fasce sono ridondanti rispetto al dettaglio sottostante e non devono allargare la pagina. */
+@media(max-width:700px){.composite-stack-town .bar-hover-label{display:none!important}}

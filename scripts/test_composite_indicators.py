@@ -20,7 +20,7 @@ DIST = ROOT / "dist"
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "composite-indicators-v1.9.0.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
-COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution"}
+COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential"}
 REMOVED_KEYS = {"share014", "share65", "incomeUnder15k"}
 CLIMATE_KEYS = {
     "climateTemperatureTrend50y", "climatePrecipitationTrend50y",
@@ -72,7 +72,7 @@ def static_checks() -> dict:
     registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
     assert data == built, "Il build statico non usa il dataset canonico aggiornato"
 
-    assert len(data["metrics"]) == 115
+    assert len(data["metrics"]) == 119
     assert CLIMATE_KEYS <= set(data["metrics"])
     external_metrics = {
         key for key, metric in data["metrics"].items()
@@ -80,7 +80,7 @@ def static_checks() -> dict:
     }
     assert external_metrics == CLIMATE_KEYS
     assert all(not data["metrics"][key]["rows"] for key in CLIMATE_KEYS)
-    assert len(data["metrics"]) - len(external_metrics) == 111
+    assert len(data["metrics"]) - len(external_metrics) == 115
     assert COMPOSITE_KEYS <= set(data["metrics"])
     assert not (REMOVED_KEYS & set(data["metrics"]))
     assert not any(
@@ -88,9 +88,11 @@ def static_checks() -> dict:
         for theme in data["themes"].values()
     )
     assert data["themes"]["demografia"]["metrics"] == [
-        "population", "ageDistribution", "oldAgeIndex",
-        "internalResidentialMobility", "populationChange",
+        "population", "ageDistribution", "oldAgeIndex", "foreignResidents",
+        "internalResidentialMobility", "foreignResidentialMobility",
+        "totalResidentialMobility", "populationChange",
     ]
+    assert data["themes"]["abitare"]["metrics"][0] == "omiResidential"
     assert data["themes"]["economia"]["sections"][0]["metrics"] == [
         "income", "incomeDistribution",
     ]
@@ -250,11 +252,17 @@ def browser_checks(data: dict) -> None:
         assert all("Reddito medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
 
         page.goto(base + "confronta/demografia/?indicatore=internalResidentialMobility", wait_until="networkidle")
-        page.wait_for_selector(".composite-mobility-table")
-        assert page.locator(".composite-mobility-row").count() == 7
-        assert page.locator(".composite-mobility-row > span").count() == 21
-        headings = page.locator(".composite-mobility-head span").all_text_contents()
-        assert headings == ["Comune", "Iscritti da altri Comuni", "Cancellati verso altri Comuni", "Saldo migratorio interno"]
+        page.wait_for_selector(".selectable-topic-bars")
+        component = page.locator("select[data-composite-component]")
+        assert component.locator("option").count() == 3
+        assert page.locator("button[data-composite-scale]").count() == 2
+        assert page.locator("#compare-bars .selectable-topic-bars .bar-row").count() == 7
+        default_axis = page.locator("#compare-bars .comparison-axis").inner_text()
+        component.select_option("part-0")
+        page.locator('button[data-composite-scale="count"]').click()
+        page.wait_for_function("() => document.querySelector('#compare-bars .comparison-bars')?.dataset.compositeScale === 'count'")
+        count_axis = page.locator("#compare-bars .comparison-axis").inner_text()
+        assert default_axis != count_axis
 
         search_terms = {
             "fasce età": "ageDistribution",

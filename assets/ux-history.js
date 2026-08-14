@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260814-4';
+  const HOTFIX_VERSION = '20260814-v111';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
 
@@ -73,13 +73,50 @@
     wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
   }
 
-  const percent1 = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const number1 = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const euro0 = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  function forceItalianGrouping(formatted, value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const text = String(formatted);
+    const match = text.match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  }
+  const formatterWithGrouping = options => {
+    const formatter = new Intl.NumberFormat('it-IT', { ...options, useGrouping: 'always' });
+    return { format: value => forceItalianGrouping(formatter.format(value), value) };
+  };
+  const percent1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const euro0 = formatterWithGrouping({ style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (metric?.meta?.compositeType !== 'distribution') return metric;
+    if (!['distribution','omi','stock'].includes(metric?.meta?.compositeType)) return metric;
     const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })) };
+    if (metric.meta.compositeType === 'stock') {
+      const count = choice === 'count';
+      clone.meta.unit = count ? 'number' : 'percent';
+      clone.meta.label = count ? 'Residenti di cittadinanza straniera' : 'Quota di residenti stranieri';
+      clone.rows = metric.rows.map(row => {
+        const value = Number(count ? row.count : row.value);
+        const formatted = !Number.isFinite(value) ? 'n.d.' : count ? whole0.format(value) : `${percent1.format(value)}%`;
+        return { ...row, value, formatted };
+      });
+      return clone;
+    }
+    if (metric.meta.compositeType === 'omi') {
+      const rent = choice === 'rent';
+      clone.meta.unit = rent ? 'rentm2' : 'eurm2';
+      clone.meta.label = rent ? 'Affitto medio comunale OMI' : 'Vendita media comunale OMI';
+      clone.rows = metric.rows.map(row => {
+        const value = Number(rent ? row.rentMean : row.saleMean);
+        const formatted = !Number.isFinite(value) ? 'n.d.' : rent ? `${number1.format(value)} €/m²/mese` : `${whole0.format(value)} €/m²`;
+        return { ...row, value, formatted };
+      });
+      return clone;
+    }
     if (choice === 'summary') {
       const unit = metric.meta.summaryUnit || metric.meta.unit;
       clone.meta.unit = unit;
@@ -106,10 +143,10 @@
   }
 
   function refreshTownCompositeCurrent(metric, shell, selectedTown, choice) {
-    if (!shell || metric?.meta?.compositeType !== 'distribution') return;
+    if (!shell || !['distribution','omi','stock'].includes(metric?.meta?.compositeType)) return;
     const currentPane = shell.querySelector('[data-view-pane="current"]');
     if (!currentPane) return;
-    const resolvedChoice = choice || 'summary';
+    const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : 'summary');
     if (currentPane.dataset.compositeChoice === resolvedChoice) return;
     const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
     currentPane.innerHTML = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
@@ -135,6 +172,7 @@
       return;
     }
 
+    const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
     const series = toolkit.comparableSeries(selected.metric);
     const historyAvailable = Boolean(series);
     const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
@@ -144,7 +182,7 @@
       ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
       : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
-    panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
+    panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
     wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
   }
 

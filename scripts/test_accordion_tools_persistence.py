@@ -74,7 +74,7 @@ def assert_tools(page: Page, label: str) -> None:
 def main() -> None:
     rendered = (DIST / "confronta" / "economia" / "index.html").read_text(encoding="utf-8")
     require(
-        re.search(r"assets/ux-accordion\.js\?v=\d{8}-\d+", rendered) is not None,
+        re.search(r"assets/ux-accordion\.js\?v=\d{8}-(?:\d+|v\d+)", rendered) is not None,
         "Il build non forza il caricamento versionato di ux-accordion.js",
     )
 
