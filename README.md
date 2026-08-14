@@ -8,7 +8,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 11 aree tematiche;
-- 115 indicatori nel catalogo canonico: 111 con valori incorporati e 4 climatici con storici separati;
+- 121 indicatori nel catalogo canonico: 117 con valori incorporati e 4 climatici con storici separati;
 - confronti territoriali e benchmark disponibili;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;
@@ -35,8 +35,8 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `index.html`: homepage;
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine degli undici temi;
-- `indicatori/`: 111 pagine canoniche generate, una per indicatore;
-- `data/site-data.json`: catalogo canonico dei 115 indicatori, con dati incorporati per 111 e riferimenti ai file storici separati per i 4 climatici;
+- `indicatori/`: 117 pagine canoniche generate, una per indicatore;
+- `data/site-data.json`: catalogo canonico dei 121 indicatori, con dati incorporati per 117 e riferimenti ai file storici separati per i 4 climatici;
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
@@ -48,7 +48,7 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 
 ## Aggiornamento dei dati
 
-Il catalogo e i metadati dei 115 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
+Il catalogo e i metadati dei 121 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
 
 - definizione;
 - anno;
@@ -69,7 +69,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida tutti i 115 indicatori canonici, la ripartizione fra 111 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
+- valida tutti i 121 indicatori canonici, la ripartizione fra 117 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;
@@ -84,7 +84,7 @@ La copertura e i criteri di ammissione delle serie comunali sono documentati in 
 
 ## Indicizzazione e Search Console
 
-La build genera una pagina autonoma per ciascuno dei 111 indicatori, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+La build genera una pagina autonoma per ciascuno dei 117 indicatori, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
 
 La configurazione operativa di Google Search Console e i controlli successivi al rilascio sono descritti in `docs/search-console.md`.
 
