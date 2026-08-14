@@ -1,15 +1,27 @@
 {
-  "version": "2026.08.15-local-police-audit-1",
-  "scope": "Ricognizione delle fonti ufficiali utilizzabili per un confronto comunale omogeneo del personale di Polizia Locale nei sette Comuni dell'Osservatorio Versilia.",
+  "version": "2026.08.15-local-police-audit-2",
+  "scope": "Ricognizione finale delle fonti utilizzabili per un confronto comunale omogeneo del personale di Polizia Locale nei sette Comuni dell'Osservatorio Versilia.",
   "publicationStatus": "not-published",
   "publicationRule": "Pubblicare un indicatore solo con la stessa definizione di personale e la stessa data/annualità per almeno 6 Comuni su 7; l'eventuale Comune mancante resta n.d. e non viene stimato.",
-  "conclusion": "Le fonti disponibili ad agosto 2026 non consentono ancora di ricostruire una fotografia 2025 omogenea almeno 6/7. I conteggi reperibili in comunicati, PIAO, organigrammi, reclutamenti e monitoraggi regionali hanno perimetri o date differenti e non vengono mescolati.",
+  "conclusion": "Ultimo tentativo concluso il 15 agosto 2026: non è disponibile una base comunale omogenea almeno 6/7. Sono emersi conteggi puntuali plausibili per Camaiore e Forte dei Marmi, ma non una fonte primaria uniforme per tutti gli enti; per gli altri Comuni i documenti pubblici hanno perimetri o date differenti. L'indicatore non viene pubblicato.",
   "crossCuttingSources": [
     {
-      "publisher": "Ragioneria generale dello Stato",
-      "name": "SICO - Conto annuale del personale",
-      "url": "https://contoannuale.rgs.mef.gov.it/",
-      "assessment": "Fonte nazionale preferibile per omogeneità, ma il portale pubblico non espone in modo stabile e citabile una tabella ente × profilo Polizia Locale utilizzabile per i sette Comuni."
+      "publisher": "Ragioneria generale dello Stato - OpenBDAP",
+      "name": "Conto annuale 2024 - Occupazione complessiva, dati analitici per Ente",
+      "url": "https://bdap-opendata.rgs.mef.gov.it/content/2024-dipendenti-pubblici-occupazione-complessiva-dati-analitici-ente",
+      "assessment": "Fonte nazionale omogenea e aggiornata, ma le categorie esposte per gli enti locali sono aree contrattuali generiche (Istruttori, Funzionari ed EQ, Operatori ecc.) e non consentono di isolare gli addetti di Polizia Locale dagli altri dipendenti comunali."
+    },
+    {
+      "publisher": "Ministero dell'Interno - DAIT",
+      "name": "CEPEL - Censimento del personale degli enti locali 2024",
+      "url": "https://dait.interno.gov.it/territorio-e-autonomie-locali/documentazione/censimento-2024-la-pubblicazione",
+      "assessment": "Fotografia ufficiale al 31/12/2024, ma i prodotti pubblicati sono riepiloghi nazionale, regionale e provinciale e non espongono una tabella comunale del personale di Polizia Locale utilizzabile 7/7."
+    },
+    {
+      "publisher": "Ministero dell'Interno - DAIT",
+      "name": "CEPEL - Censimento del personale degli enti locali 2025",
+      "url": "https://dait.interno.gov.it/territorio-e-autonomie-locali/circolari/circolare-dait-n59-del-3-luglio-2026",
+      "assessment": "La rilevazione 2025 è stata avviata con la circolare DAIT n.59/2026; al 15/08/2026 la pubblicazione dei risultati comunali non è disponibile. È la fonte da ricontrollare in futuro."
     },
     {
       "publisher": "Regione Toscana",
@@ -20,19 +32,30 @@
   ],
   "municipalSources": {
     "Camaiore": {
-      "status": "insufficient-for-homogeneous-count",
+      "status": "candidate-count-not-primary-uniform",
+      "candidate2025": {
+        "value": 38,
+        "reference": "fine 2025",
+        "note": "Il dato è riportato nel resoconto pubblico della conferenza stampa del Comando 2025 e confermato da più testate locali; non è stato trovato un documento amministrativo primario con lo stesso perimetro degli altri sei enti."
+      },
       "sources": [
-        "https://comune.camaiore.lu.it/servizio/accesso-a-documenti-amministrativi-polizia-locale/"
-      ],
-      "note": "Il sito istituzionale identifica struttura e responsabili del Comando; non è stata validata una consistenza 31/12/2025 con lo stesso perimetro degli altri enti."
+        "https://comune.camaiore.lu.it/amministrazione/unita_organizzativa/polizia-municipale/",
+        "https://www.viareggino.com/news/2026/06/10/comando-di-polizia-locale-di-camaiore-il-report-dell-attivita-2025/62136/1/"
+      ]
     },
     "Forte dei Marmi": {
-      "status": "insufficient-for-homogeneous-count",
+      "status": "candidate-count-not-primary-uniform",
+      "candidate2025": {
+        "permanent": 24,
+        "seasonalFixedTerm": 8,
+        "seasonalPeriod": "aprile-settembre 2025",
+        "composition": "1 dirigente comandante + 2 ufficiali + 1 sottufficiale + 20 agenti a tempo indeterminato",
+        "note": "Il bilancio pubblico dell'attività 2025 riporta una composizione dettagliata, ma il dato reperito è veicolato da resoconti della presentazione dell'Amministrazione e non costituisce una base primaria uniforme con gli altri sei enti."
+      },
       "sources": [
-        "https://servizi.comune.fortedeimarmi.lu.it/openweb/pratiche/registri.php?sezione=docProgramma",
-        "https://servizi.comune.fortedeimarmi.lu.it/openweb/pratiche/registri.php?sezione=concorsi"
-      ],
-      "note": "PIAO, aggiornamenti e reclutamenti sono pubblicati, ma i conteggi disponibili includono in documenti diversi personale permanente e rinforzi stagionali; non vengono combinati con dati di altra data."
+        "https://servizi.comune.fortedeimarmi.lu.it/openweb/pratiche/registri.php?sezione=concorsi",
+        "https://www.lagazzettadiviareggio.net/forte-dei-marmi/polizia-locale-un-2025-di-risultati-concreti-e-controllo-capillare-del-territorio-lamministrazione-comunale-presenta-il-bilancio-dellattivita"
+      ]
     },
     "Massarosa": {
       "status": "insufficient-for-homogeneous-count",
@@ -44,35 +67,42 @@
     "Pietrasanta": {
       "status": "insufficient-for-homogeneous-count",
       "sources": [
-        "https://www.comune.pietrasanta.lu.it/index.php/it/news/1944604"
+        "https://www.comune.pietrasanta.lu.it/index.php/it/news/1944604",
+        "https://www.comune.pietrasanta.lu.it/it/unita_organizzative/servizio-polizia-municipale"
       ],
-      "note": "Il bilancio istituzionale dell'attività 2025 descrive Comando e attività ma non pubblica un totale del personale con perimetro utile al confronto."
+      "note": "Il bilancio istituzionale dell'attività 2025 descrive Comando, vicecomandante, funzionari e attività ma non pubblica il totale del personale con un perimetro utile al confronto."
     },
     "Seravezza": {
       "status": "insufficient-for-homogeneous-count",
       "sources": [
-        "https://www.comune.seravezza.lucca.it/c046028/zf/index.php/trasparenza/index/index/categoria/315",
-        "https://www.comune.seravezza.lucca.it/c046028/zf/index.php/atti-generali"
+        "https://egov.halley.it/c046028/zf/index.php/trasparenza/index/index/categoria/776",
+        "https://www.comune.seravezza.lucca.it/c046028/zf/index.php/trasparenza/index/index/categoria/614"
       ],
-      "note": "Amministrazione trasparente pubblica PIAO, Conto annuale del personale e dotazione organica; non è stato isolato un dato 2025 del solo personale PL con perimetro omogeneo agli altri sei enti."
+      "note": "Amministrazione trasparente pubblica la Relazione al Conto annuale riferita al 2025 e identifica il responsabile del Settore Viabilità e Sicurezza, ma le informazioni pubblicamente indicizzate non isolano un totale 2025 del solo personale di Polizia Locale."
     },
     "Stazzema": {
       "status": "insufficient-for-homogeneous-count",
       "sources": [
-        "https://comune.stazzema.lu.it/amministrazione/personale-amministrativo/"
+        "https://comune.stazzema.lu.it/amministrazione/personale-amministrativo/",
+        "https://comune.stazzema.lu.it/novita/strade-piu-sicure-e-con-meno-rischi-di-interruzioni-e-il-risultato-dei-controlli-e-delle-ordinanze-di-taglio-piante-della-polizia-locale/"
       ],
-      "note": "L'elenco istituzionale corrente mostra un agente assegnato al Settore Polizia Locale, ma un elenco corrente non equivale a una consistenza certificata al 31/12/2025."
+      "note": "L'elenco istituzionale corrente mostra Virginie Bartelletti come agente del Settore Polizia Locale, ma un elenco corrente e i riferimenti al Comando non equivalgono a una consistenza certificata al 31/12/2025."
     },
     "Viareggio": {
       "status": "insufficient-for-homogeneous-count",
       "sources": [
         "https://servizionline.comune.viareggio.lu.it/cmsviareggio/portale/delibere/deliberericerca.aspx?DELI=5KU3PPN4BjM%3D"
       ],
-      "note": "Il PIAO 2025-2027 e l'Allegato 5 sul fabbisogno di personale sono pubblicati; non viene usato un dato di fine 2024 o un programma assunzionale come proxy della consistenza 31/12/2025."
+      "note": "È disponibile una fotografia di 86 unità riferita al bilancio dell'attività 2024 presentato a inizio 2025 e sono pubblicati PIAO/fabbisogni, ma non viene usato il dato 2024 come proxy della consistenza al 31/12/2025."
     }
   },
   "excludedStateForces": {
     "bodies": ["Polizia di Stato", "Arma dei Carabinieri", "Guardia di Finanza"],
     "reason": "Non è stata individuata una fonte ufficiale annuale e omogenea degli organici in servizio per singolo Comune. Presidi, sedi e rinforzi temporanei non sono equivalenti a una consistenza comunale confrontabile."
+  },
+  "futureCheck": {
+    "source": "Ministero dell'Interno - DAIT / CEPEL",
+    "trigger": "pubblicazione del Censimento del personale degli enti locali 2025",
+    "action": "Verificare se i risultati 2025 espongono dettaglio comunale e una classificazione che consenta di isolare il personale di Polizia Locale."
   }
 }
