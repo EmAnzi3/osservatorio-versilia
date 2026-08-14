@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verifica dati, UI e responsive dei tre indicatori compositi."""
+"""Verifica dati, UI e responsive degli indicatori compositi."""
 from __future__ import annotations
 
 import contextlib
@@ -20,7 +20,7 @@ DIST = ROOT / "dist"
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "composite-indicators-v1.9.0.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
-COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential"}
+COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential", "roadSafety", "roadFinesPerResident"}
 REMOVED_KEYS = {"share014", "share65", "incomeUnder15k"}
 CLIMATE_KEYS = {
     "climateTemperatureTrend50y", "climatePrecipitationTrend50y",
@@ -72,7 +72,7 @@ def static_checks() -> dict:
     registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
     assert data == built, "Il build statico non usa il dataset canonico aggiornato"
 
-    assert len(data["metrics"]) == 119
+    assert len(data["metrics"]) == registry["expectedMetricCount"]
     assert CLIMATE_KEYS <= set(data["metrics"])
     external_metrics = {
         key for key, metric in data["metrics"].items()
@@ -80,7 +80,7 @@ def static_checks() -> dict:
     }
     assert external_metrics == CLIMATE_KEYS
     assert all(not data["metrics"][key]["rows"] for key in CLIMATE_KEYS)
-    assert len(data["metrics"]) - len(external_metrics) == 115
+    assert len(data["metrics"]) - len(external_metrics) == registry["expectedInlineMetricCount"]
     assert COMPOSITE_KEYS <= set(data["metrics"])
     assert not (REMOVED_KEYS & set(data["metrics"]))
     assert not any(
@@ -129,6 +129,15 @@ def static_checks() -> dict:
         close(sum(part["value"] for part in parts), 100.0, f"Reddito/{row['town']} somma")
         assert all(part["count"] > 0 for part in parts)
         assert [part["count"] for part in parts] == snapshot["raw"][row["town"]]["incomeBands"]
+
+    road_safety = data["metrics"]["roadSafety"]
+    assert road_safety["meta"]["compositeType"] == "securityMeasures"
+    assert [part["unit"] for part in road_safety["rows"][0]["parts"]] == ["per1000", "per100", "per100", "per10k"]
+    assert all(len(row["parts"]) == 4 for row in road_safety["rows"])
+    road_fines = data["metrics"]["roadFinesPerResident"]
+    assert road_fines["meta"]["compositeType"] == "securityMeasures"
+    assert [part["unit"] for part in road_fines["rows"][0]["parts"]] == ["currency", "percent"]
+    assert all(len(row["parts"]) == 2 for row in road_fines["rows"])
 
     mobility = data["metrics"]["internalResidentialMobility"]
     assert mobility["meta"]["theme"] == "demografia"
@@ -250,6 +259,21 @@ def browser_checks(data: dict) -> None:
         assert all("Età media" in text for text in page.locator(".composite-row-head > span").all_text_contents())
         tooltip_checks(page, base, "economia", "incomeDistribution", 7, 4)
         assert all("Reddito medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
+
+        for metric_key, option_count in (("roadSafety", 4), ("roadFinesPerResident", 2)):
+            page.goto(base + f"confronta/sicurezza/?indicatore={metric_key}", wait_until="networkidle")
+            page.wait_for_selector("select[data-composite-component]")
+            component = page.locator("select[data-composite-component]")
+            assert component.locator("option").count() == option_count
+            assert page.locator("#compare-bars .bar-row").count() == 7
+            first_axis = page.locator("#compare-bars .comparison-axis").inner_text()
+            component.select_option(f"part-{option_count - 1}")
+            page.wait_for_function(
+                "choice => document.querySelector('#compare-bars .comparison-bars')?.dataset.compositeChoice === choice",
+                arg=f"part-{option_count - 1}",
+            )
+            changed_axis = page.locator("#compare-bars .comparison-axis").inner_text()
+            assert first_axis != changed_axis
 
         page.goto(base + "confronta/demografia/?indicatore=internalResidentialMobility", wait_until="networkidle")
         page.wait_for_selector(".selectable-topic-bars")
