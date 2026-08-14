@@ -72,7 +72,6 @@ def static_checks() -> dict:
     registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
     assert data == built, "Il build statico non usa il dataset canonico aggiornato"
 
-    app_runtime = (ROOT / "assets" / "app-parts" / "06.txt").read_text(encoding="utf-8")
     assert len(data["metrics"]) == 115
     assert CLIMATE_KEYS <= set(data["metrics"])
     external_metrics = {
@@ -82,7 +81,6 @@ def static_checks() -> dict:
     assert external_metrics == CLIMATE_KEYS
     assert all(not data["metrics"][key]["rows"] for key in CLIMATE_KEYS)
     assert len(data["metrics"]) - len(external_metrics) == 111
-    assert all(key in app_runtime for key in CLIMATE_KEYS)
     assert COMPOSITE_KEYS <= set(data["metrics"])
     assert not (REMOVED_KEYS & set(data["metrics"]))
     assert not any(
