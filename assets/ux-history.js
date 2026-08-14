@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260806-2';
+  const HOTFIX_VERSION = '20260814-4';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
 
@@ -73,24 +73,72 @@
     wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
   }
 
+  const percent1 = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number1 = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const euro0 = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+  function compositeChoiceMetric(metric, choice) {
+    if (metric?.meta?.compositeType !== 'distribution') return metric;
+    const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })) };
+    if (choice === 'summary') {
+      const unit = metric.meta.summaryUnit || metric.meta.unit;
+      clone.meta.unit = unit;
+      clone.meta.label = metric.meta.summaryLabel || metric.aggregate?.summaryLabel || metric.meta.label;
+      clone.rows = metric.rows.map(row => {
+        const value = Number(row.summaryValue);
+        const formatted = !Number.isFinite(value) ? 'n.d.'
+          : unit === 'currency' ? euro0.format(value)
+            : unit === 'years' ? `${number1.format(value)} anni`
+              : String(value);
+        return { ...row, value, formatted };
+      });
+      return clone;
+    }
+    const index = Number(String(choice || '').replace('part-', ''));
+    if (!Number.isInteger(index) || index < 0) return clone;
+    clone.meta.unit = 'percent';
+    clone.meta.label = metric.aggregate?.parts?.[index]?.label || metric.rows?.[0]?.parts?.[index]?.label || metric.meta.label;
+    clone.rows = metric.rows.map(row => {
+      const value = Number(row.parts?.[index]?.value);
+      return { ...row, value, formatted: Number.isFinite(value) ? `${percent1.format(value)}%` : 'n.d.' };
+    });
+    return clone;
+  }
+
+  function refreshTownCompositeCurrent(metric, shell, selectedTown, choice) {
+    if (!shell || metric?.meta?.compositeType !== 'distribution') return;
+    const currentPane = shell.querySelector('[data-view-pane="current"]');
+    if (!currentPane) return;
+    const resolvedChoice = choice || 'summary';
+    if (currentPane.dataset.compositeChoice === resolvedChoice) return;
+    const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
+    currentPane.innerHTML = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
+    currentPane.dataset.compositeChoice = resolvedChoice;
+  }
+
+  function currentCompositeChoice() {
+    return document.querySelector('[data-composite-choice]')?.value || 'summary';
+  }
+
   function enhanceTown(data) {
     if (document.body.dataset.page !== 'town') return;
     const panel = document.querySelector('.history-panel');
     if (!panel) return;
 
     const selectedTown = document.body.dataset.town || '';
+    const selected = selectedMetric(data);
+    if (!selected) return;
     const existingShell = panel.querySelector('.ux-view-shell');
     if (existingShell) {
       wireShell(existingShell, 'ov-town-view', selectedTown, false);
+      refreshTownCompositeCurrent(selected.metric, existingShell, selectedTown, currentCompositeChoice());
       return;
     }
 
-    const selected = selectedMetric(data);
-    if (!selected) return;
-
     const series = toolkit.comparableSeries(selected.metric);
     const historyAvailable = Boolean(series);
-    const currentMarkup = toolkit.comparisonBarsMarkup(selected.metric, selectedTown);
+    const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
+    const currentMarkup = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
     const historyMarkup = toolkit.historicalChartMarkup(selected.metric, series, selectedTown);
     const note = historyAvailable
       ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
@@ -114,6 +162,18 @@
       dataPromise.then(enhance);
     });
   }
+
+  window.addEventListener('ov:composite-choice', event => {
+    if (document.body.dataset.page !== 'town') return;
+    dataPromise.then(data => {
+      if (!data) return;
+      const metricKey = event.detail?.metricKey;
+      const metric = metricKey && data.metrics[metricKey] ? { ...data.metrics[metricKey], key: metricKey } : null;
+      const shell = document.querySelector('.history-panel .ux-view-shell');
+      if (!metric || !shell) return;
+      refreshTownCompositeCurrent(metric, shell, document.body.dataset.town || '', event.detail?.choice || 'summary');
+    });
+  });
 
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
   schedule();

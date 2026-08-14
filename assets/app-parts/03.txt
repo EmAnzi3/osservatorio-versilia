@@ -72,15 +72,30 @@
     const container = document.getElementById('town-topic');
     container.dataset.theme = themeKey;
     const historical = Boolean(row.series?.values?.length);
+    const composite = Boolean(metric.meta.compositeType);
+    const distribution = metric.meta.compositeType === 'distribution';
+    const summary = distribution ? compositeSummary(metric, row) : null;
+    const aggregateSummary = distribution ? compositeAggregateSummary(metric) : null;
+    const summaryDelta = distribution ? compositeDeltaText(summary.value, aggregateSummary.value, summary.unit) : null;
+    const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Trasferimenti e saldo' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
+    const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? 'Mobilità residenziale interna' : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
+    const options = distribution ? compositeSelectionOptions(metric, row) : [];
+    const selector = distribution ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option, index) => `<option value="${html(option.key)}" ${index === 0 ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label>` : '';
+    const primaryLabel = distribution ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
+    const primaryValue = distribution ? summary.formatted : formatValue(row.value, metric.meta.unit);
+    const positionMarkup = distribution
+      ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
+      : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`;
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
-      <div class="town-metric-layout"><article class="town-metric-primary"><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><p>${html(metric.meta.description)}</p>
+      <div class="town-metric-layout"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>
+        ${selector}
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
-        <aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside></div>
-      <section class="history-panel"><div class="panel-title"><div><span class="overline">${historical ? 'Andamento storico' : 'Confronto territoriale'}</span><h3>${historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni'}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
-        ${historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`}</section>
+        ${positionMarkup}</div>
+      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+        ${composite ? compositeTownMarkup(metric, row) : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
       ${deepDiveMarkup(data, town, themeKey)}
       ${metricKey.startsWith('slowMobility') ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
@@ -91,6 +106,30 @@
     container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    if (distribution) {
+      const select = container.querySelector('[data-composite-choice]');
+      select?.addEventListener('change', () => {
+        const choice = select.value;
+        const selected = options.find(option => option.key === choice) || options[0];
+        const aggregate = compositeSelectionAggregate(metric, choice);
+        const delta = compositeDeltaText(selected.value, aggregate.value, selected.unit);
+        const labelElement = container.querySelector('[data-composite-primary-label]');
+        const valueElement = container.querySelector('[data-composite-primary-value]');
+        const position = container.querySelector('.composite-versilia-position');
+        if (labelElement) labelElement.textContent = selected.label;
+        if (valueElement) valueElement.textContent = selected.formatted;
+        if (position) {
+          position.dataset.compositeSelection = choice;
+          const deltaElement = position.querySelector('[data-composite-delta]');
+          if (deltaElement) deltaElement.innerHTML = `${html(delta.headline)}<small>${html(delta.direction)}</small>`;
+          const aggregateLabel = position.querySelector('[data-composite-aggregate-label]');
+          const aggregateValue = position.querySelector('[data-composite-aggregate-value]');
+          if (aggregateLabel) aggregateLabel.textContent = aggregate.label;
+          if (aggregateValue) aggregateValue.textContent = aggregate.formatted;
+        }
+        window.dispatchEvent(new CustomEvent('ov:composite-choice', { detail: { metricKey, choice, town: row.slug } }));
+      });
+    }
     installChartInteractions(container);
     scrollActiveControl(tablist);
 
@@ -112,7 +151,8 @@
     const metric = data.metrics[key];
     const row = metric.rows.find(r => r.code === town.code);
     const rank = metricRows(data, key).findIndex(item => item.code === town.code) + 1;
-    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(formatValue(row.value, metric.meta.unit))}</strong><small>${html(metric.meta.year)} · ${rank}° valore</small></button>`;
+    const cardValue = metric.meta.compositeType === 'distribution' ? compositeSummary(metric, row).formatted : formatValue(row.value, metric.meta.unit);
+    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(cardValue)}</strong><small>${html(metric.meta.year)} · ${rank}° valore</small></button>`;
   }
 
   function seriesChart(series, unit, label = 'Serie storica') {

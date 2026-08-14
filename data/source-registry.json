@@ -242,6 +242,7 @@
   },
   "sourceProfileByUrl": {
     "https://demo.istat.it/": "istat-demography-annual",
+    "https://demo.istat.it/app/?a=2025&i=POS": "istat-demography-annual",
     "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/": "istat-census-annual",
     "https://www.istat.it/notizia/dati-per-sezioni-di-censimento/": "istat-census-annual",
     "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/": "istat-commuting-irregular",

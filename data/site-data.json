@@ -10,9 +10,9 @@
       "description": "Residenti, età e trasformazioni demografiche.",
       "metrics": [
         "population",
+        "ageDistribution",
         "oldAgeIndex",
-        "share65",
-        "share014",
+        "internalResidentialMobility",
         "populationChange"
       ],
       "sections": [
@@ -22,9 +22,16 @@
           "description": "Quanti siamo e come si distribuisce la popolazione per età.",
           "metrics": [
             "population",
-            "oldAgeIndex",
-            "share65",
-            "share014"
+            "ageDistribution",
+            "oldAgeIndex"
+          ]
+        },
+        {
+          "key": "mobilita-residenziale",
+          "label": "Mobilità residenziale",
+          "description": "Trasferimenti di residenza tra ciascun Comune e gli altri Comuni italiani.",
+          "metrics": [
+            "internalResidentialMobility"
           ]
         },
         {
@@ -50,7 +57,7 @@
       "description": "Redditi, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.",
       "metrics": [
         "income",
-        "incomeUnder15k",
+        "incomeDistribution",
         "businessValueAdded",
         "labourProductivity",
         "industryValueAddedShare",
@@ -77,10 +84,10 @@
         {
           "key": "redditi",
           "label": "Redditi",
-          "description": "Livelli e distribuzione dei redditi dichiarati.",
+          "description": "Livello medio e distribuzione dei redditi dichiarati.",
           "metrics": [
             "income",
-            "incomeUnder15k"
+            "incomeDistribution"
           ]
         },
         {
@@ -1495,6 +1502,469 @@
         "coverage": "7/7"
       }
     },
+    "ageDistribution": {
+      "meta": {
+        "key": "ageDistribution",
+        "theme": "demografia",
+        "label": "Distribuzione per fasce d’età",
+        "shortLabel": "Distribuzione per fasce d’età",
+        "description": "Quota dei residenti nelle fasce 0–14, 15–19, 20–34, 35–49, 50–64, 65–79 e 80 anni e oltre. Le fasce coprono l’intera popolazione senza sovrapposizioni.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "Istat — popolazione residente per età (POSAS)",
+        "polarity": "neutral",
+        "compositeType": "distribution",
+        "searchTerms": [
+          "fasce d'età",
+          "giovani",
+          "anziani",
+          "struttura popolazione"
+        ],
+        "summaryLabel": "Età media",
+        "summaryUnit": "years",
+        "selectorLabel": "Dato in evidenza"
+      },
+      "sourceUrl": "https://demo.istat.it/app/?a=2025&i=POS",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 14.092451618820508,
+          "formatted": "14,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 14.092451618820508,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 10.575071081353755,
+              "count": 2306
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.874805099513895,
+              "count": 1063
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 14.092451618820508,
+              "count": 3073
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 18.205998349078236,
+              "count": 3970
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.92378244519857,
+              "count": 5871
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 17.518114280473267,
+              "count": 3820
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 7.809777125561772,
+              "count": 1703
+            }
+          ],
+          "summaryValue": 48.2650646611024
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 14.21524959582962,
+          "formatted": "14,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 14.21524959582962,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 10.216437361839716,
+              "count": 6193
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.493714738196576,
+              "count": 2724
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 14.21524959582962,
+              "count": 8617
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 17.73895542578112,
+              "count": 10753
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 25.512224091853902,
+              "count": 15465
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 18.71391335906826,
+              "count": 11344
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 9.109505427430795,
+              "count": 5522
+            }
+          ],
+          "summaryValue": 49.2118677620509
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 13.816285498869064,
+          "formatted": "13,8%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.816285498869064,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 9.82973108821312,
+              "count": 3129
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.63998492083438,
+              "count": 1477
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 13.816285498869064,
+              "count": 4398
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 18.20809248554913,
+              "count": 5796
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.43880371952752,
+              "count": 8416
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 18.189243528524752,
+              "count": 5790
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 8.87785875848203,
+              "count": 2826
+            }
+          ],
+          "summaryValue": 49.2519163106308
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 12.95783317943983,
+          "formatted": "13,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 12.95783317943983,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 9.299564701226751,
+              "count": 2115
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.287033372905949,
+              "count": 975
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 12.95783317943983,
+              "count": 2947
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 16.866728224068943,
+              "count": 3836
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.56641604010025,
+              "count": 6042
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 20.551378446115287,
+              "count": 4674
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 9.47104603614299,
+              "count": 2154
+            }
+          ],
+          "summaryValue": 50.6666007123071
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 13.351102495759632,
+          "formatted": "13,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.351102495759632,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 9.676116630320653,
+              "count": 1198
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.030369113964946,
+              "count": 499
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 13.351102495759632,
+              "count": 1653
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 17.753008642274455,
+              "count": 2198
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.1368225506825,
+              "count": 3236
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 19.81261610532267,
+              "count": 2453
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 9.239964461675147,
+              "count": 1144
+            }
+          ],
+          "summaryValue": 50.1707051126726
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 11.97119711971197,
+          "formatted": "12,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11.97119711971197,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 8.370837083708372,
+              "count": 558
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.185418541854186,
+              "count": 279
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 11.97119711971197,
+              "count": 798
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 14.551455145514552,
+              "count": 970
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.642664266426642,
+              "count": 1776
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 22.112211221122113,
+              "count": 1474
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 12.166216621662167,
+              "count": 811
+            }
+          ],
+          "summaryValue": 52.9317431743174
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 13.416320885200554,
+          "formatted": "13,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.416320885200554,
+          "parts": [
+            {
+              "label": "0–14 anni",
+              "selectorLabel": "0–14",
+              "value": 8.29875518672199,
+              "count": 240
+            },
+            {
+              "label": "15–19 anni",
+              "selectorLabel": "15–19",
+              "value": 4.114799446749654,
+              "count": 119
+            },
+            {
+              "label": "20–34 anni",
+              "selectorLabel": "20–34",
+              "value": 13.416320885200554,
+              "count": 388
+            },
+            {
+              "label": "35–49 anni",
+              "selectorLabel": "35–49",
+              "value": 18.6030428769018,
+              "count": 538
+            },
+            {
+              "label": "50–64 anni",
+              "selectorLabel": "50–64",
+              "value": 26.728907330567083,
+              "count": 773
+            },
+            {
+              "label": "65–79 anni",
+              "selectorLabel": "65–79",
+              "value": 19.294605809128633,
+              "count": 558
+            },
+            {
+              "label": "80 anni e oltre",
+              "selectorLabel": "80+",
+              "value": 9.54356846473029,
+              "count": 276
+            }
+          ],
+          "summaryValue": 50.5331950207469
+        }
+      ],
+      "aggregate": {
+        "value": 13.762599252538726,
+        "label": "Versilia · 20–34 anni",
+        "note": "Quota calcolata sul totale dei residenti dei sette comuni; nel dettaglio sono mostrate tutte le fasce.",
+        "parts": [
+          {
+            "label": "0–14 anni",
+            "count": 15739,
+            "value": 9.902603530936592
+          },
+          {
+            "label": "15–19 anni",
+            "count": 7136,
+            "value": 4.489801054499239
+          },
+          {
+            "label": "20–34 anni",
+            "count": 21874,
+            "value": 13.762599252538726
+          },
+          {
+            "label": "35–49 anni",
+            "count": 28061,
+            "value": 17.65531213429136
+          },
+          {
+            "label": "50–64 anni",
+            "count": 41579,
+            "value": 26.1605154211076
+          },
+          {
+            "label": "65–79 anni",
+            "count": 30113,
+            "value": 18.946381607922586
+          },
+          {
+            "label": "80 anni e oltre",
+            "count": 14436,
+            "value": 9.082786998703897
+          }
+        ],
+        "summaryValue": 49.55290113125872,
+        "summaryLabel": "Età media Versilia",
+        "summaryNote": "Età media ponderata sulla popolazione dei sette comuni; la barra mostra la distribuzione completa per fascia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio",
+        "formula": "residenti della fascia / popolazione residente totale × 100; età media: indicatore Istat riferito alla stessa popolazione residente",
+        "caveat": "Le fasce sono costruite dalla popolazione per singola età. L’età media comunale è verificata sulla Tavola 1e di Istat A misura di Comune, riferita al 31 dicembre 2024, la stessa data della popolazione POSAS al 1° gennaio 2025.",
+        "coverage": "7/7"
+      }
+    },
     "oldAgeIndex": {
       "meta": {
         "key": "oldAgeIndex",
@@ -1748,101 +2218,756 @@
         "coverage": "7/7"
       }
     },
-    "share65": {
+    "internalResidentialMobility": {
       "meta": {
-        "key": "share65",
+        "key": "internalResidentialMobility",
         "theme": "demografia",
-        "label": "Residenti di 65 anni e oltre",
-        "shortLabel": "65 anni e oltre",
-        "description": "Quota della popolazione residente con almeno 65 anni.",
-        "unit": "percent",
-        "year": "2026",
-        "source": "Istat — popolazione per età",
-        "polarity": "neutral"
+        "label": "Mobilità residenziale interna",
+        "shortLabel": "Mobilità residenziale interna",
+        "description": "Trasferimenti di residenza tra ciascun Comune e gli altri Comuni italiani: iscritti, cancellati e saldo, rapportati alla popolazione media annua.",
+        "unit": "per1000",
+        "year": "2024",
+        "source": "Istat — bilancio demografico, trasferimenti di residenza",
+        "polarity": "neutral",
+        "compositeType": "mobility",
+        "primaryLabel": "Saldo migratorio interno",
+        "searchTerms": [
+          "trasferimenti di residenza",
+          "iscritti",
+          "cancellati",
+          "saldo migratorio interno"
+        ]
       },
-      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+      "sourceUrl": "https://demo.istat.it/",
       "rows": [
         {
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 26.1,
-          "formatted": "26,1%",
-          "series": null,
+          "value": 2.8852098646699176,
+          "formatted": "2,9 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1.6623952344669952,
+              -0.5049809484460361,
+              -2.3758395394526453,
+              4.261656547141715,
+              5.630965733513399,
+              2.8852098646699176
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 26.1
+          "benchmarkValue": 2.8852098646699176,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 24.409791394747085,
+              "count": 533
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 21.524581530077167,
+              "count": 470
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 2.8852098646699176,
+              "count": 63
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                31.30844358246173,
+                23.366845705366572,
+                22.1135834056746,
+                32.3519303471188,
+                28.429509922860344,
+                24.409791394747085
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                29.646048347994736,
+                23.871826653812608,
+                24.489422945127245,
+                28.090273799977087,
+                22.798544189346945,
+                21.524581530077167
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                1.6623952344669952,
+                -0.5049809484460361,
+                -2.3758395394526453,
+                4.261656547141715,
+                5.630965733513399,
+                2.8852098646699176
+              ]
+            }
+          }
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 28.3,
-          "formatted": "28,3%",
-          "series": null,
+          "value": 3.1802789747307862,
+          "formatted": "3,2 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.6567696550357525,
+              4.5498221955766525,
+              4.840714332439326,
+              2.4603272235207285,
+              3.1731678244070842,
+              3.1802789747307862
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 28.3
+          "benchmarkValue": 3.1802789747307862,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 21.50395887058901,
+              "count": 1305
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 18.323679895858223,
+              "count": 1112
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 3.1802789747307862,
+              "count": 193
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                25.992040556830755,
+                24.12884045235416,
+                24.268986720743115,
+                23.684750071759545,
+                22.623206872456738,
+                21.50395887058901
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                21.335270901795003,
+                19.57901825677751,
+                19.42827238830379,
+                21.224422848238817,
+                19.450039048049653,
+                18.323679895858223
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                4.6567696550357525,
+                4.5498221955766525,
+                4.840714332439326,
+                2.4603272235207285,
+                3.1731678244070842,
+                3.1802789747307862
+              ]
+            }
+          }
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 27.7,
-          "formatted": "27,7%",
-          "series": null,
+          "value": 2.5119316754584275,
+          "formatted": "2,5 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.4113078006106363,
+              6.539871098192847,
+              5.253059041867196,
+              6.370126304228442,
+              3.888488193420933,
+              2.5119316754584275
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 27.7
+          "benchmarkValue": 2.5119316754584275,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 24.93092187892489,
+              "count": 794
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 22.418990203466464,
+              "count": 714
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 2.5119316754584275,
+              "count": 80
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                26.671728916520337,
+                28.1498799443953,
+                27.27186939699915,
+                29.214717188358044,
+                27.501646335727056,
+                24.93092187892489
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                26.2604211159097,
+                21.61000884620245,
+                22.018810355131954,
+                22.8445908841296,
+                23.613158142306123,
+                22.418990203466464
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                0.4113078006106363,
+                6.539871098192847,
+                5.253059041867196,
+                6.370126304228442,
+                3.888488193420933,
+                2.5119316754584275
+              ]
+            }
+          }
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 30.5,
-          "formatted": "30,5%",
-          "series": null,
+          "value": 4.6122422086051245,
+          "formatted": "4,6 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              4.12415888864771,
+              2.9923240383364416,
+              4.02710719466517,
+              1.000021739603035,
+              2.9745631110430644,
+              4.6122422086051245
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 30.5
+          "benchmarkValue": 4.6122422086051245,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 27.54167490281347,
+              "count": 627
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 22.929432694208344,
+              "count": 522
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 4.6122422086051245,
+              "count": 105
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                26.26438029086173,
+                26.19367708920595,
+                25.72152337237751,
+                27.91365029674558,
+                28.433323855558715,
+                27.54167490281347
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                22.14022140221402,
+                23.201353050869507,
+                21.69441617771234,
+                26.913628557142545,
+                25.45876074451565,
+                22.929432694208344
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                4.12415888864771,
+                2.9923240383364416,
+                4.02710719466517,
+                1.000021739603035,
+                2.9745631110430644,
+                4.6122422086051245
+              ]
+            }
+          }
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 29.4,
-          "formatted": "29,4%",
-          "series": null,
+          "value": 1.0477111540941344,
+          "formatted": "1,0 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1.4832741324797993,
+              1.8160284247927336,
+              -3.360403248389808,
+              4.348526332742786,
+              8.618606524365692,
+              1.0477111540941344
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 29.4
+          "benchmarkValue": 1.0477111540941344,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 28.932946486137975,
+              "count": 359
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 27.88523533204384,
+              "count": 346
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 1.0477111540941344,
+              "count": 13
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                27.869940278699403,
+                25.898144492696407,
+                25.60307236868424,
+                32.61394749557094,
+                34.07168747482884,
+                28.932946486137975
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                26.386666146219603,
+                24.082116067903673,
+                28.96347561707405,
+                28.265421162828154,
+                25.45308095046315,
+                27.88523533204384
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                1.4832741324797993,
+                1.8160284247927336,
+                -3.360403248389808,
+                4.348526332742786,
+                8.618606524365692,
+                1.0477111540941344
+              ]
+            }
+          }
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 34.9,
-          "formatted": "34,9%",
-          "series": null,
+          "value": -11.604552555233212,
+          "formatted": "-11,6 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              -2.6634891708137616,
+              1.675041876046901,
+              0.28248587570621453,
+              -7.524236724063094,
+              -13.766842413591093,
+              -11.604552555233212
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 34.9
+          "benchmarkValue": -11.604552555233212,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 26.48218403630142,
+              "count": 178
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 38.08673659153463,
+              "count": 256
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": -11.604552555233212,
+              "count": -78
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                31.26095184691947,
+                28.754885538805137,
+                30.36723163841808,
+                33.280277817971346,
+                32.22026947861746,
+                26.48218403630142
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                33.92444101773323,
+                27.079843662758236,
+                30.084745762711865,
+                40.80451454203444,
+                45.98711189220855,
+                38.08673659153463
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                -2.6634891708137616,
+                1.675041876046901,
+                0.28248587570621453,
+                -7.524236724063094,
+                -13.766842413591093,
+                -11.604552555233212
+              ]
+            }
+          }
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 29.7,
-          "formatted": "29,7%",
-          "series": null,
+          "value": 4.831751509922345,
+          "formatted": "4,8 ogni 1,000",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              1.3493000505987567,
+              -11.612021857923501,
+              3.800967519004839,
+              6.589214496271893,
+              11.418685121107266,
+              4.831751509922345
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 29.7
+          "benchmarkValue": 4.831751509922345,
+          "parts": [
+            {
+              "label": "Iscritti da altri Comuni",
+              "value": 33.47713546160483,
+              "count": 97
+            },
+            {
+              "label": "Cancellati verso altri Comuni",
+              "value": 28.645383951682486,
+              "count": 83
+            },
+            {
+              "label": "Saldo migratorio interno",
+              "value": 4.831751509922345,
+              "count": 14
+            }
+          ],
+          "componentSeries": {
+            "Iscritti da altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                33.39517625231911,
+                23.90710382513661,
+                26.26123013130615,
+                28.784463325819317,
+                37.71626297577855,
+                33.47713546160483
+              ]
+            },
+            "Cancellati verso altri Comuni": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                32.045876201720354,
+                35.51912568306011,
+                22.46026261230131,
+                22.195248829547424,
+                26.29757785467128,
+                28.645383951682486
+              ]
+            },
+            "Saldo migratorio interno": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024
+              ],
+              "values": [
+                1.3493000505987567,
+                -11.612021857923501,
+                3.800967519004839,
+                6.589214496271893,
+                11.418685121107266,
+                4.831751509922345
+              ]
+            }
+          }
         }
       ],
       "aggregate": {
-        "value": 28.574741357557407,
-        "label": "Media ponderata Versilia",
-        "note": "Ponderata sulla popolazione residente."
+        "value": 2.4503259247624283,
+        "label": "Versilia · saldo migratorio interno",
+        "note": "Tasso calcolato sul totale dei trasferimenti dei sette comuni e sulla popolazione media annua complessiva.",
+        "parts": [
+          {
+            "label": "Iscritti da altri Comuni",
+            "value": 24.45927903871829,
+            "count": 3893
+          },
+          {
+            "label": "Cancellati verso altri Comuni",
+            "value": 22.00895311395586,
+            "count": 3503
+          },
+          {
+            "label": "Saldo migratorio interno",
+            "value": 2.4503259247624283,
+            "count": 390
+          }
+        ]
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "residenti 65+ / popolazione residente × 100",
-        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
+        "formula": "(iscritti da altri Comuni − cancellati verso altri Comuni) / popolazione media annua × 1.000; nel dettaglio sono riportati anche i due trasferimenti separati.",
+        "caveat": "Riguarda trasferimenti anagrafici di residenza, non entrate o uscite pendolari per lavoro. Non consente di attribuire cause individuali ai trasferimenti.",
         "coverage": "7/7"
       }
     },
@@ -2007,17 +3132,27 @@
         "coverage": "7/7"
       }
     },
-    "incomeUnder15k": {
+    "incomeDistribution": {
       "meta": {
-        "key": "incomeUnder15k",
+        "key": "incomeDistribution",
         "theme": "economia",
-        "label": "Dichiaranti fino a 15.000 euro",
-        "shortLabel": "Fino a 15.000 €",
-        "description": "Quota dei dichiaranti collocata nelle fasce di reddito complessivo fino a 15.000 euro.",
+        "label": "Distribuzione dei dichiaranti per fascia di reddito",
+        "shortLabel": "Distribuzione per fascia di reddito",
+        "description": "Distribuzione dei dichiaranti in quattro fasce esclusive ricavate dalle classi ufficiali MEF: fino a 15.000 €, 15.001–26.000 €, 26.001–55.000 € e oltre 55.000 €.",
         "unit": "percent",
         "year": "2024",
-        "source": "MEF — dichiarazioni Irpef per fascia",
-        "polarity": "neutral"
+        "source": "Dipartimento delle Finanze — MEF",
+        "polarity": "neutral",
+        "compositeType": "distribution",
+        "searchTerms": [
+          "fasce reddito",
+          "irpef",
+          "dichiaranti",
+          "distribuzione redditi"
+        ],
+        "summaryLabel": "Reddito medio",
+        "summaryUnit": "currency",
+        "selectorLabel": "Dato in evidenza"
       },
       "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "rows": [
@@ -2025,83 +3160,269 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 34.5,
+          "value": 34.4734529935986,
           "formatted": "34,5%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 34.5
+          "benchmarkValue": 34.4734529935986,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 34.4734529935986,
+              "count": 5493
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 31.72461403288565,
+              "count": 5055
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 29.258190033889797,
+              "count": 4662
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 4.5437429396259565,
+              "count": 724
+            }
+          ],
+          "summaryValue": 23193
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 34.6,
+          "value": 34.64680229340536,
           "formatted": "34,6%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 34.6
+          "benchmarkValue": 34.64680229340536,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 34.64680229340536,
+              "count": 15651
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 27.241936555021805,
+              "count": 12306
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 30.332278130741813,
+              "count": 13702
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 7.778983020831028,
+              "count": 3514
+            }
+          ],
+          "summaryValue": 26726
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 37.2,
+          "value": 37.207501720578115,
           "formatted": "37,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 37.2
+          "benchmarkValue": 37.207501720578115,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 37.207501720578115,
+              "count": 8650
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 29.370268410185822,
+              "count": 6828
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 27.59377150722643,
+              "count": 6415
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 5.828458362009635,
+              "count": 1355
+            }
+          ],
+          "summaryValue": 25398
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 37.2,
+          "value": 37.160751565762006,
           "formatted": "37,2%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 37.2
+          "benchmarkValue": 37.160751565762006,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 37.160751565762006,
+              "count": 6230
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 28.112138383537133,
+              "count": 4713
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 28.380554727110052,
+              "count": 4758
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 6.346555323590815,
+              "count": 1064
+            }
+          ],
+          "summaryValue": 26835
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 37,
+          "value": 36.95273360923546,
           "formatted": "37,0%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 37
+          "benchmarkValue": 36.95273360923546,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 36.95273360923546,
+              "count": 3393
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 30.516227401437597,
+              "count": 2802
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 27.662818558048357,
+              "count": 2540
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 4.868220431278589,
+              "count": 447
+            }
+          ],
+          "summaryValue": 22984
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 33.4,
+          "value": 33.40779853777417,
           "formatted": "33,4%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 33.4
+          "benchmarkValue": 33.40779853777417,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 33.40779853777417,
+              "count": 1645
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 22.74573517465475,
+              "count": 1120
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 25.751421608448418,
+              "count": 1268
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 18.095044679122665,
+              "count": 891
+            }
+          ],
+          "summaryValue": 45765
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 40.5,
+          "value": 40.49665711556829,
           "formatted": "40,5%",
           "series": null,
           "normalized": null,
-          "benchmarkValue": 40.5
+          "benchmarkValue": 40.49665711556829,
+          "parts": [
+            {
+              "label": "Fino a 15.000 €",
+              "value": 40.49665711556829,
+              "count": 848
+            },
+            {
+              "label": "15.001–26.000 €",
+              "value": 32.139446036294174,
+              "count": 673
+            },
+            {
+              "label": "26.001–55.000 €",
+              "value": 25.119388729703918,
+              "count": 526
+            },
+            {
+              "label": "Oltre 55.000 €",
+              "value": 2.24450811843362,
+              "count": 47
+            }
+          ],
+          "summaryValue": 20090
         }
       ],
       "aggregate": {
-        "value": 35.724061514463024,
-        "label": "Quota ponderata Versilia",
-        "note": "Ponderata sul numero dei dichiaranti."
+        "value": 35.722809410160245,
+        "label": "Versilia · fino a 15.000 €",
+        "note": "Quota ponderata sul numero di dichiaranti presenti nelle classi di reddito dei sette comuni.",
+        "parts": [
+          {
+            "label": "Fino a 15.000 €",
+            "count": 41910,
+            "value": 35.722809410160245
+          },
+          {
+            "label": "15.001–26.000 €",
+            "count": 33497,
+            "value": 28.55182407091715
+          },
+          {
+            "label": "26.001–55.000 €",
+            "count": 33871,
+            "value": 28.870610296624616
+          },
+          {
+            "label": "Oltre 55.000 €",
+            "count": 8042,
+            "value": 6.854756222297989
+          }
+        ],
+        "summaryValue": 26386.35140640982,
+        "summaryLabel": "Reddito medio Versilia",
+        "summaryNote": "Reddito medio ponderato dei dichiaranti dei sette comuni; la barra mostra la distribuzione completa per fascia."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Elaborazione Osservatorio",
-        "formula": "dichiaranti fino a 15.000 euro / dichiaranti totali × 100",
-        "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
+        "formula": "numero di dichiaranti della fascia / totale dichiaranti presenti nelle classi di reddito × 100",
+        "caveat": "Le quattro fasce sono esclusive e ottenute soltanto sommando le classi statistiche ufficiali MEF indicate nello snapshot, senza interpolazioni. Non coincidono con gli scaglioni fiscali IRPEF vigenti.",
         "coverage": "7/7"
       }
     },
@@ -10861,104 +12182,6 @@
         "type": "Elaborazione Osservatorio",
         "formula": "progetti conclusi / progetti PNRR monitorati × 100",
         "caveat": "Flussi di cassa e stock finanziari non sono intercambiabili; anno e perimetro contabile devono restare visibili.",
-        "coverage": "7/7"
-      }
-    },
-    "share014": {
-      "meta": {
-        "key": "share014",
-        "theme": "demografia",
-        "label": "Residenti tra 0 e 14 anni",
-        "shortLabel": "0–14 anni",
-        "description": "Quota della popolazione residente con età compresa tra 0 e 14 anni.",
-        "unit": "percent",
-        "year": "2026",
-        "source": "Istat — popolazione per età",
-        "polarity": "neutral"
-      },
-      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
-      "rows": [
-        {
-          "town": "Massarosa",
-          "code": "046018",
-          "slug": "massarosa",
-          "value": 10.2,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 10.2
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
-          "value": 10.0,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 10.0
-        },
-        {
-          "town": "Camaiore",
-          "code": "046005",
-          "slug": "camaiore",
-          "value": 9.7,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 9.7
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 9.1,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 9.1
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
-          "value": 9.6,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 9.6
-        },
-        {
-          "town": "Forte dei Marmi",
-          "code": "046013",
-          "slug": "forte-dei-marmi",
-          "value": 8.2,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 8.2
-        },
-        {
-          "town": "Stazzema",
-          "code": "046030",
-          "slug": "stazzema",
-          "value": 8.2,
-          "formatted": null,
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 8.2
-        }
-      ],
-      "aggregate": {
-        "value": 9.701642064092859,
-        "label": "Media ponderata Versilia",
-        "note": "Ponderata sulla popolazione residente."
-      },
-      "normalizedAggregate": null,
-      "method": {
-        "type": "Elaborazione Osservatorio",
-        "formula": "residenti 0–14 / popolazione residente × 100",
-        "caveat": "Verificare a ogni aggiornamento anno, perimetro territoriale e continuità della serie.",
         "coverage": "7/7"
       }
     },

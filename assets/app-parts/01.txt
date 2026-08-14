@@ -6,10 +6,11 @@
 
   function metricRows(data, metricKey, normalized = false) {
     const metric = data.metrics[metricKey];
+    const distribution = metric.meta.compositeType === 'distribution';
     return metric.rows.map(row => ({
       ...row,
-      displayValue: normalized && row.normalized ? row.normalized.value : row.value,
-      displayUnit: normalized && row.normalized ? row.normalized.unit : metric.meta.unit
+      displayValue: normalized && row.normalized ? row.normalized.value : (distribution && row.summaryValue !== undefined ? row.summaryValue : row.value),
+      displayUnit: normalized && row.normalized ? row.normalized.unit : (distribution && metric.meta.summaryUnit ? metric.meta.summaryUnit : metric.meta.unit)
     })).sort((a, b) => (b.displayValue ?? -Infinity) - (a.displayValue ?? -Infinity));
   }
 

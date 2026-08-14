@@ -130,7 +130,7 @@ def browser_checks() -> None:
         assert page.locator('[data-metric="population"]').count() == 1
         assert_reading_scale(page, "Territoriale")
 
-        page.goto(base + "confronta/demografia/?indicatore=share65", wait_until="networkidle")
+        page.goto(base + "confronta/istruzione/?indicatore=diplomaPlus", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert page.locator("#compare-bars .comparison-bars").get_attribute("data-viz") == "percent-dotplot"
         axis_text = page.locator("#compare-bars .comparison-axis").inner_text().lower()
@@ -170,7 +170,7 @@ def browser_checks() -> None:
         assert_reading_scale(page, "Funzionale")
         assert_post_benchmark_tools(page, town=True)
 
-        page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=share65", wait_until="networkidle")
+        page.goto(base + "comuni/massarosa/?tema=istruzione&indicatore=diplomaPlus", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
         assert overline_text == "rispetto alla versilia", f"Etichetta inattesa: {overline_text!r}"
@@ -178,7 +178,7 @@ def browser_checks() -> None:
         assert "su 7" not in position_text
         assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
         assert page.locator(".all-indicators, .indicator-groups").count() == 0
-        assert page.locator('[data-metric="share65"]').count() == 1
+        assert page.locator('[data-metric="diplomaPlus"]').count() == 1
 
         page.goto(base + "progetto/", wait_until="networkidle")
         page.wait_for_selector("#sistema-territoriale")

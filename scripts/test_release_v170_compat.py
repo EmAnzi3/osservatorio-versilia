@@ -68,7 +68,7 @@ LEGACY_THEME_KEYS = {
         "youthOtherStatus",
     },
     "economia": {
-        "income", "incomeUnder15k", "businessValueAdded", "labourProductivity",
+        "income", "incomeDistribution", "businessValueAdded", "labourProductivity",
         "industryValueAddedShare", "industryWorkerShare", "localUnits", "microUnits",
         "foreignBornSoleProprietorShare", "innovationBusinessShare",
         "tourismPresences", "tourismArrivals", "tourismAverageStay", "tourismBeds",
