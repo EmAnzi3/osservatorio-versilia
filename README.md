@@ -2,6 +2,8 @@
 
 Sito pubblico: **https://osservatorioversilia.it**
 
+Versione dati corrente: **v1.12.0** — 15 agosto 2026.
+
 Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub Pages a partire dalle risorse pubbliche del precedente ChatGPT Site.
 
 ## Contenuto
