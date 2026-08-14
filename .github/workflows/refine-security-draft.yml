@@ -23,6 +23,17 @@ jobs:
           python-version: "3.12"
       - name: Applica correzioni metodologiche
         run: python scripts/refine_security_draft.py
+      - name: Stabilizza il patcher idempotente
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/apply_security_draft.py')
+          text = path.read_text(encoding='utf-8')
+          start = text.index('def patch_app05(app: str) -> str:')
+          end = text.index('def update_data_and_registry(data: dict, snapshot: dict) -> None:', start)
+          replacement = '''def patch_app05(app: str) -> str:\n    start = app.find("\\n  function localPoliceDraftMarkup(data) {")\n    if start < 0:\n        return app\n    end = app.find("\\n  function crimeMarkup(data) {", start)\n    if end < 0:\n        raise RuntimeError("crimeMarkup non trovato dopo localPoliceDraftMarkup")\n    return app[:start] + "\\n" + app[end:]\n\n\n'''
+          path.write_text(text[:start] + replacement + text[end:], encoding='utf-8')
+          PY
       - name: Verifica sintassi e diff
         run: |
           python -m py_compile scripts/apply_security_draft.py scripts/test_composite_indicators.py scripts/test_accordion_no_overlap.py scripts/test_percorsi_draft.py scripts/test_percorsi_refinements.py
