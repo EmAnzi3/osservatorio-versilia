@@ -219,7 +219,10 @@ def tooltip_checks(page: Page, base: str, theme: str, metric_key: str, expected_
         tooltip = segment.locator(".bar-hover-label")
         assert tooltip.inner_text().replace(" · ", ": ") in aria
         segment.focus()
-        assert float(tooltip.evaluate("element => getComputedStyle(element).opacity")) == 1.0
+        page.wait_for_function(
+            "element => Number.parseFloat(getComputedStyle(element).opacity) > 0.99",
+            tooltip.element_handle(),
+        )
 
 
 def browser_checks(data: dict) -> None:
