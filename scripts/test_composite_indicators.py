@@ -186,11 +186,19 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         primary_value = normalized_text(page.locator("[data-composite-primary-value]").inner_text())
         aggregate_label = normalized_text(page.locator("[data-composite-aggregate-label]").inner_text())
         aggregate_value = normalized_text(page.locator("[data-composite-aggregate-value]").inner_text())
-        assert primary_label == label
-        assert primary_value == expected_value(value, unit)
-        assert aggregate_label.startswith("Età media" if choice == "summary" and metric_key == "ageDistribution" else "Reddito medio" if choice == "summary" else "Versilia ·")
+        context = f"{town}/{metric_key}/{choice}"
+        assert primary_label == label, f"{context}: etichetta principale {primary_label!r}, attesa {label!r}"
+        assert primary_value == expected_value(value, unit), (
+            f"{context}: valore principale {primary_value!r}, atteso {expected_value(value, unit)!r}"
+        )
+        aggregate_prefix = "Età media" if choice == "summary" and metric_key == "ageDistribution" else "Reddito medio" if choice == "summary" else "Versilia ·"
+        assert aggregate_label.startswith(aggregate_prefix), (
+            f"{context}: etichetta Versilia {aggregate_label!r}, prefisso atteso {aggregate_prefix!r}"
+        )
         aggregate = metric["aggregate"]["summaryValue"] if choice == "summary" else metric["aggregate"]["parts"][int(choice.removeprefix("part-"))]["value"]
-        assert aggregate_value == expected_value(aggregate, unit)
+        assert aggregate_value == expected_value(aggregate, unit), (
+            f"{context}: valore Versilia {aggregate_value!r}, atteso {expected_value(aggregate, unit)!r}"
+        )
 
         expected_order = sorted(
             metric["rows"],
