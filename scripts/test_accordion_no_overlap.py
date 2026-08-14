@@ -113,9 +113,12 @@ def main() -> None:
         require(page.locator('[data-percorsi-quick], [data-percorsi-stats]').count() == 0,
                 "Non devono esistere box Percorsi paralleli alla grammatica degli indicatori")
 
-        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
-        require(page.locator(".crime-context").count() == 1,
+        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
+        crime = page.locator("#criminalita")
+        require(crime.count() == 1 and crime.is_visible(),
                 "Criminalità deve vivere nel tema Sicurezza e territorio")
+        require(page.locator("#polizia-locale").count() == 0,
+                "Il dato regionale Polizia Locale non deve essere esposto come contesto comunale")
 
         browser.close()
 

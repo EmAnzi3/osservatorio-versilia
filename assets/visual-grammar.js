@@ -48,7 +48,8 @@
     abitare: 'territorial',
     ambiente: 'territorial',
     bilanci: 'administrative',
-    comunita: 'administrative'
+    comunita: 'administrative',
+    sicurezza: 'territorial'
   };
 
   const administrativeMetrics = new Set([
@@ -69,6 +70,8 @@
     'mobilityMissionExpenditurePerResident',
     'cultureSportMissionExpenditurePerResident',
     'tourismDevelopmentMissionExpenditurePerResident',
+    'securityMissionExpenditurePerResident',
+    'roadFinesPerResident',
     'publicWorks',
     'pnrrFunding',
     'pnrrConcluded',
@@ -96,6 +99,7 @@
     'ftthUnreachedHouseholds',
     'ftthCoverage20m',
     'roadInjuries',
+    'roadSafety',
     'thirdSector'
   ]);
 
@@ -189,6 +193,8 @@
     if (kind === 'years') return `${formatted} anni`;
     if (kind === 'nights') return `${formatted} notti`;
     if (kind === 'per1000') return `${formatted} ogni 1.000`;
+    if (kind === 'per100') return `${formatted} ogni 100`;
+    if (kind === 'per10k') return `${formatted} ogni 10.000`;
     if (kind === 'eurm2') return `${formatted} €/m²`;
     if (kind === 'rentm2') return `${formatted} €/m²/mese`;
     return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
@@ -300,7 +306,12 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures'].includes(type)) return null;
+    if (type === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = row?.parts?.[index] || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || '' };
+    }
     if (type === 'stock') {
       const count = choice === 'count';
       return { value: count ? row?.count : row?.value, unit: count ? 'number' : 'percent' };
@@ -318,7 +329,12 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures'].includes(type)) return null;
+    if (type === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      return { value: part.value, label:`Versilia · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
+    }
     if (type === 'stock') {
       const count = choice === 'count';
       return { value: count ? metric.aggregate?.count : metric.aggregate?.value, label: count ? 'Versilia · residenti stranieri' : 'Versilia · quota residenti stranieri' };
@@ -352,10 +368,10 @@
     });
     const first = mapped.find(item => item.row);
     const firstRow = first?.row;
-    const unit = first?.unit || unitFor(firstRow, metric, normalized);
+    const unit = first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized);
     // Nei compositi selezionabili la percentuale deve usare una scala aderente ai dati
     // (es. 0–10% per quote intorno all'8%), non il generico 0–100%.
-    const selectablePercent = metric?.meta?.compositeType === 'stock' && container.dataset.compositeChoice && unitKind(unit) === 'percent';
+    const selectablePercent = ['stock','securityMeasures'].includes(metric?.meta?.compositeType) && container.dataset.compositeChoice && unitKind(unit) === 'percent';
     const scaleUnit = selectablePercent ? 'decimal' : unit;
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, scaleUnit);
     const referencePosition = position(aggregate?.value, scale);

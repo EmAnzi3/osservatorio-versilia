@@ -94,11 +94,15 @@ def main() -> None:
         require("comune=Camaiore" in href and "tipo=trekking" in href,
                 f"CTA Trekking non mantiene i filtri: {href}")
 
-        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
         order = page.evaluate("""() => {
           const main = document.querySelector('main');
           const nodes = [...main.children];
-          return [nodes.indexOf(document.querySelector('#compare-benchmark')), nodes.indexOf(document.querySelector('.crime-context')), nodes.indexOf(document.querySelector('#compare-tools'))];
+          return [
+            nodes.indexOf(document.querySelector('#compare-benchmark')),
+            nodes.indexOf(document.querySelector('#criminalita')),
+            nodes.indexOf(document.querySelector('#compare-tools'))
+          ];
         }""")
         require(order[0] >= 0 and order[0] < order[1] < order[2],
                 f"Ordine benchmark/criminalità/metodo errato: {order}")
@@ -162,11 +166,14 @@ def main() -> None:
         require("comune=Camaiore" in mobile_href and "tipo=bicycle" in mobile_href,
                 f"Cambio indicatore mobile non aggiorna il deep link cartografico: {mobile_href}")
 
-        page.goto(base + "confronta/sicurezza/?indicatore=roadInjuries", wait_until="networkidle")
+        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
         require_no_horizontal_overflow(page, "Sicurezza e territorio")
-        require(page.locator('.crime-context').is_visible(),
+        crime = page.locator('#criminalita')
+        require(crime.count() == 1 and crime.is_visible(),
                 "Criminalità e delitti denunciati non visibile su mobile")
-        require_box_inside_viewport(page, '.crime-context', "box Criminalità e delitti denunciati")
+        require(page.locator('#polizia-locale').count() == 0,
+                "Contesto regionale Polizia Locale ancora pubblicato su mobile")
+        require_box_inside_viewport(page, '#criminalita', "box Criminalità e delitti denunciati")
 
         page.goto(base + "percorsi/?comune=Camaiore&tipo=trekking", wait_until="networkidle")
         require_no_horizontal_overflow(page, "cartografia Percorsi")

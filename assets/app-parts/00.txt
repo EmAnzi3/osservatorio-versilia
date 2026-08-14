@@ -113,6 +113,9 @@
     foreignTourismShare: ['turisti stranieri', 'presenze estere', 'turismo internazionale'],
     commuterBalanceRate: ['saldo pendolare', 'lavoratori in entrata', 'lavoratori in uscita'],
     residualWaste: ['rifiuto residuo', 'indifferenziato', 'rifiuti non differenziati'],
+    roadSafety: ['incidenti', 'sicurezza stradale', 'mortalità', 'lesività', 'feriti'],
+    roadFinesPerResident: ['multe', 'sanzioni', 'codice della strada', 'autovelox'],
+    securityMissionExpenditurePerResident: ['ordine pubblico', 'sicurezza', 'missione 03', 'spesa sicurezza'],
     capitalPayments: ['investimenti', 'conto capitale', 'pagamenti capitale']
   };
 

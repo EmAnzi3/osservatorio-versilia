@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verifica il catalogo da 119 indicatori e le 115 pagine autonome."""
+"""Verifica il catalogo indicatori e le relative pagine autonome."""
 
 from __future__ import annotations
 
@@ -64,14 +64,16 @@ def extract_json_ld(document: str) -> dict:
 
 def static_checks() -> None:
     data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    registry = json.loads((ROOT / "data" / "source-registry.json").read_text(encoding="utf-8"))
     external = {
         key: metric
         for key, metric in data["metrics"].items()
         if metric.get("dataStorage", {}).get("type") == "external-climate"
     }
     inline = {key: metric for key, metric in data["metrics"].items() if key not in external}
-    assert len(data["metrics"]) == 119
-    assert len(inline) == 115
+    assert len(data["metrics"]) == registry["expectedMetricCount"]
+    assert len(inline) == registry["expectedInlineMetricCount"]
+    assert len(external) == registry["expectedExternalMetricCount"]
     assert set(external) == {
         "climateTemperatureTrend50y",
         "climatePrecipitationTrend50y",
@@ -84,6 +86,7 @@ def static_checks() -> None:
         assert (ROOT / storage["path"]).is_file(), f"Storico climatico mancante: {storage['path']}"
 
     paths: list[Path] = []
+    expected_indicator_urls: set[str] = set()
     for metric_key, metric in inline.items():
         slug = slugify(metric["meta"]["label"])
         path = DIST / "indicatori" / slug / "index.html"
@@ -91,6 +94,7 @@ def static_checks() -> None:
         assert path.exists(), f"Pagina indicatore mancante: {metric_key}"
         document = path.read_text(encoding="utf-8")
         canonical = f'{PUBLIC_BASE}indicatori/{slug}/'
+        expected_indicator_urls.add(canonical)
         assert f'<link rel="canonical" href="{canonical}">' in document
         assert metric["meta"]["label"] in document
         assert '<main class="inner-page indicator-page"' in document
@@ -105,15 +109,19 @@ def static_checks() -> None:
         assert dataset.get("isBasedOn") == metric["sourceUrl"]
         assert breadcrumb and len(breadcrumb.get("itemListElement", [])) == 3
 
-    assert len(paths) == len(set(paths)) == 115, "Slug indicatore duplicato"
+    assert len(paths) == len(set(paths)) == len(inline), "Slug indicatore duplicato"
 
     sitemap = ET.parse(DIST / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/sitemap/0.9"}
     urls = sitemap.findall("s:url", namespace)
     locations = [item.findtext("s:loc", namespaces=namespace) for item in urls]
-    assert len(locations) == len(set(locations)) == 136, f"URL sitemap inattese: {len(locations)}"
+    assert len(locations) == len(set(locations)), "URL duplicate nella sitemap"
     assert all(item.findtext("s:lastmod", namespaces=namespace) for item in urls)
-    assert sum("/indicatori/" in (url or "") for url in locations) == 115
+    sitemap_indicator_urls = {url for url in locations if url and "/indicatori/" in url}
+    assert sitemap_indicator_urls == expected_indicator_urls, (
+        f"Sitemap indicatori non allineata: attesi {len(expected_indicator_urls)}, "
+        f"trovati {len(sitemap_indicator_urls)}"
+    )
 
 
 def browser_checks() -> None:
@@ -167,7 +175,16 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("Catalogo verificato: 119 indicatori canonici, 4 storici climatici separati e 115 URL autonome.")
+    data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    external_count = sum(
+        metric.get("dataStorage", {}).get("type") == "external-climate"
+        for metric in data["metrics"].values()
+    )
+    inline_count = len(data["metrics"]) - external_count
+    print(
+        f"Catalogo verificato: {len(data['metrics'])} indicatori canonici, "
+        f"{external_count} storici climatici separati e {inline_count} URL autonome."
+    )
 
 
 if __name__ == "__main__":

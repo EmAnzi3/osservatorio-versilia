@@ -93,8 +93,31 @@
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (!['distribution','omi','stock'].includes(metric?.meta?.compositeType)) return metric;
+    if (!['distribution','omi','stock','securityMeasures'].includes(metric?.meta?.compositeType)) return metric;
     const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })) };
+    if (metric.meta.compositeType === 'securityMeasures') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const template = metric.rows?.[0]?.parts?.[index] || metric.aggregate?.parts?.[index] || {};
+      const unit = template.unit || metric.meta.unit;
+      clone.meta.unit = unit;
+      clone.meta.label = template.label || metric.meta.label;
+      clone.rows = metric.rows.map(row => {
+        const part = row.parts?.[index] || {};
+        const value = Number(part.value);
+        let formatted = 'n.d.';
+        if (Number.isFinite(value)) {
+          if (unit === 'currency') formatted = `${number1.format(value)} €`;
+          else if (unit === 'percent') formatted = `${percent1.format(value)}%`;
+          else if (unit === 'per1000') formatted = `${number1.format(value)} ogni 1.000`;
+          else if (unit === 'per100') formatted = `${number1.format(value)} ogni 100`;
+          else if (unit === 'per10k') formatted = `${number1.format(value)} ogni 10.000`;
+          else formatted = number1.format(value);
+        }
+        const series = row.componentSeries?.[part.selectorLabel || template.selectorLabel] || row.componentSeries?.[template.selectorLabel] || row.series;
+        return { ...row, value, formatted, series };
+      });
+      return clone;
+    }
     if (metric.meta.compositeType === 'stock') {
       const count = choice === 'count';
       clone.meta.unit = count ? 'number' : 'percent';
@@ -143,10 +166,10 @@
   }
 
   function refreshTownCompositeCurrent(metric, shell, selectedTown, choice) {
-    if (!shell || !['distribution','omi','stock'].includes(metric?.meta?.compositeType)) return;
+    if (!shell || !['distribution','omi','stock','securityMeasures'].includes(metric?.meta?.compositeType)) return;
     const currentPane = shell.querySelector('[data-view-pane="current"]');
     if (!currentPane) return;
-    const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : 'summary');
+    const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
     if (currentPane.dataset.compositeChoice === resolvedChoice) return;
     const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
     currentPane.innerHTML = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
@@ -154,7 +177,7 @@
   }
 
   function currentCompositeChoice() {
-    return document.querySelector('[data-composite-choice]')?.value || 'summary';
+    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || 'summary';
   }
 
   function enhanceTown(data) {
