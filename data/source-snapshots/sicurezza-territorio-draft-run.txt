@@ -1,2 +1,0 @@
-Draft sicurezza applicato: 121 indicatori; Missione 03: ok
-exit_status=0
