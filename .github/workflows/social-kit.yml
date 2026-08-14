@@ -2,11 +2,22 @@ name: Genera Social Kit
 
 on:
   workflow_dispatch:
+    inputs:
+      date:
+        description: "Data da preparare (YYYY-MM-DD); vuoto = pacchetto completo di revisione"
+        required: false
+        type: string
+  schedule:
+    # Esecuzione mattutina quotidiana. La data effettiva viene risolta in Europe/Rome.
+    - cron: "15 6 * * *"
   pull_request:
     paths:
       - "data/site-data.json"
+      - "data/meteo-clima-minmax-poc.json"
       - "social-kit/**"
       - "scripts/generate_social_kit.py"
+      - "scripts/plan_social_week.py"
+      - "scripts/resolve_social_post.py"
       - "scripts/test_social_kit.py"
       - ".github/workflows/social-kit.yml"
 
@@ -32,15 +43,69 @@ jobs:
       - name: Install rendering dependencies
         run: python -m pip install -r social-kit/requirements.txt
 
-      - name: Generate graphics and copy
+      - name: Resolve scheduled draft
+        id: scheduled
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.date != '')
+        env:
+          REQUESTED_DATE: ${{ inputs.date }}
+        shell: bash
+        run: |
+          if [ -n "${REQUESTED_DATE:-}" ]; then
+            python scripts/resolve_social_post.py --date "$REQUESTED_DATE" --github-output "$GITHUB_OUTPUT"
+          else
+            python scripts/resolve_social_post.py --github-output "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate full review package
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.date == '')
         run: python scripts/generate_social_kit.py
+
+      - name: Generate today's publish-ready draft
+        if: steps.scheduled.outputs.has_post == 'true'
+        run: python scripts/generate_social_kit.py --post-id "${{ steps.scheduled.outputs.post_id }}"
 
       - name: Run editorial and provenance checks
         run: python scripts/test_social_kit.py
 
+      - name: Verify recurrence planning
+        run: python scripts/plan_social_week.py --date 2026-11-09
+
       - name: Upload review package
+        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.date == '')
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-social-kit
           path: social-kit/dist
           retention-days: 30
+
+      - name: Upload scheduled publish package
+        if: steps.scheduled.outputs.has_post == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-${{ steps.scheduled.outputs.date }}-${{ steps.scheduled.outputs.post_id }}
+          path: social-kit/dist
+          retention-days: 30
+
+      - name: Summarize scheduled package
+        if: steps.scheduled.outputs.has_post == 'true'
+        shell: bash
+        run: |
+          {
+            echo "## Materiale social pronto"
+            echo
+            echo "- Data: ${{ steps.scheduled.outputs.date }}"
+            echo "- Uscita: \`${{ steps.scheduled.outputs.post_id }}\`"
+            echo "- Stato: **bozza**"
+            echo "- Contenuto: 4 PNG 1080×1350, copy multipiattaforma, ALT e provenienza"
+            echo "- Nessuna pubblicazione automatica sui social"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summarize empty day
+        if: (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.date != '')) && steps.scheduled.outputs.has_post != 'true'
+        shell: bash
+        run: |
+          {
+            echo "## Nessuna uscita prevista"
+            echo
+            echo "Per il ${{ steps.scheduled.outputs.date }} il calendario editoriale non prevede materiale da preparare."
+          } >> "$GITHUB_STEP_SUMMARY"

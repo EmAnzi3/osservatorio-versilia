@@ -1,24 +1,23 @@
 {
+  "source": "Palette canonica delle tematiche del sito; assets/original.css e token social già associati a Sicurezza e Bilanci.",
   "brand": {
     "paper": "#F4EEE2",
-    "surface": "#FFFAF1",
+    "surface": "#FFF9F2",
     "ink": "#102F45",
     "muted": "#526B7A",
-    "blue": "#145B78",
-    "green": "#58A28F",
     "line": "#C9D5D5"
   },
   "themes": {
-    "demografia": {"label": "Demografia", "accent": "#8A4F3D", "soft": "#F8EEE9", "line": "#DFBFB3"},
-    "economia": {"label": "Economia", "accent": "#7A5B16", "soft": "#FAF4DF", "line": "#DCCB8D"},
-    "lavoro": {"label": "Lavoro", "accent": "#5D4778", "soft": "#F2EEF8", "line": "#CBBDDE"},
-    "istruzione": {"label": "Istruzione", "accent": "#315D8B", "soft": "#EDF3F9", "line": "#B9CEE2"},
-    "salute": {"label": "Salute", "accent": "#8A3F55", "soft": "#F8EDF1", "line": "#DFBCC7"},
-    "mobilita": {"label": "Mobilità e infrastrutture", "accent": "#27636D", "soft": "#EAF4F5", "line": "#AFD0D4"},
+    "demografia": {"label": "Demografia", "accent": "#17627E", "soft": "#DCECF0", "line": "#AFCAD3"},
+    "economia": {"label": "Economia", "accent": "#AD6247", "soft": "#F3E3DA", "line": "#D7B5A7"},
+    "lavoro": {"label": "Lavoro", "accent": "#886B32", "soft": "#F2E7C9", "line": "#CEB983"},
+    "istruzione": {"label": "Istruzione", "accent": "#685F8C", "soft": "#E9E4F1", "line": "#C1B7D4"},
+    "salute": {"label": "Salute", "accent": "#B65358", "soft": "#F4DFE0", "line": "#D9ABAD"},
+    "mobilita": {"label": "Mobilità e infrastrutture", "accent": "#3E7180", "soft": "#DEEAEC", "line": "#ABC6CD"},
     "sicurezza": {"label": "Sicurezza e territorio", "accent": "#8A4A55", "soft": "#F8EEF0", "line": "#DDBDC4"},
-    "abitare": {"label": "Abitare", "accent": "#8B5C35", "soft": "#F7F0E9", "line": "#DEC5AD"},
-    "ambiente": {"label": "Ambiente", "accent": "#3F6D43", "soft": "#EDF5ED", "line": "#B9D1BB"},
+    "abitare": {"label": "Abitare", "accent": "#9A673D", "soft": "#EFE2D6", "line": "#D4B69D"},
+    "ambiente": {"label": "Ambiente", "accent": "#52785C", "soft": "#DFEADE", "line": "#B5C9B6"},
     "bilanci": {"label": "Bilanci comunali", "accent": "#315F63", "soft": "#EDF4F2", "line": "#B8CBC7"},
-    "comunita": {"label": "Investimenti e comunità", "accent": "#5B596F", "soft": "#F0F0F5", "line": "#C7C5D2"}
+    "comunita": {"label": "Investimenti e comunità", "accent": "#426777", "soft": "#DFE9ED", "line": "#AFC4CD"}
   }
 }
