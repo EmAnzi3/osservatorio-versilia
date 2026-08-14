@@ -1,0 +1,78 @@
+{
+  "version": "2026.08.15-local-police-audit-1",
+  "scope": "Ricognizione delle fonti ufficiali utilizzabili per un confronto comunale omogeneo del personale di Polizia Locale nei sette Comuni dell'Osservatorio Versilia.",
+  "publicationStatus": "not-published",
+  "publicationRule": "Pubblicare un indicatore solo con la stessa definizione di personale e la stessa data/annualità per almeno 6 Comuni su 7; l'eventuale Comune mancante resta n.d. e non viene stimato.",
+  "conclusion": "Le fonti disponibili ad agosto 2026 non consentono ancora di ricostruire una fotografia 2025 omogenea almeno 6/7. I conteggi reperibili in comunicati, PIAO, organigrammi, reclutamenti e monitoraggi regionali hanno perimetri o date differenti e non vengono mescolati.",
+  "crossCuttingSources": [
+    {
+      "publisher": "Ragioneria generale dello Stato",
+      "name": "SICO - Conto annuale del personale",
+      "url": "https://contoannuale.rgs.mef.gov.it/",
+      "assessment": "Fonte nazionale preferibile per omogeneità, ma il portale pubblico non espone in modo stabile e citabile una tabella ente × profilo Polizia Locale utilizzabile per i sette Comuni."
+    },
+    {
+      "publisher": "Regione Toscana",
+      "name": "Monitoraggio Polizia Locale 2025",
+      "url": "https://www.regione.toscana.it/-/polizia-locale-in-toscana-i-risultati-del-monitoraggio-2025",
+      "assessment": "Le tavole recuperate sono aggregate e non forniscono righe comunali utilizzabili per un confronto 7/7."
+    }
+  ],
+  "municipalSources": {
+    "Camaiore": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://comune.camaiore.lu.it/servizio/accesso-a-documenti-amministrativi-polizia-locale/"
+      ],
+      "note": "Il sito istituzionale identifica struttura e responsabili del Comando; non è stata validata una consistenza 31/12/2025 con lo stesso perimetro degli altri enti."
+    },
+    "Forte dei Marmi": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://servizi.comune.fortedeimarmi.lu.it/openweb/pratiche/registri.php?sezione=docProgramma",
+        "https://servizi.comune.fortedeimarmi.lu.it/openweb/pratiche/registri.php?sezione=concorsi"
+      ],
+      "note": "PIAO, aggiornamenti e reclutamenti sono pubblicati, ma i conteggi disponibili includono in documenti diversi personale permanente e rinforzi stagionali; non vengono combinati con dati di altra data."
+    },
+    "Massarosa": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://www.comune.massarosa.lu.it/notizie/Avviso-di-mobilit--esterna-volontaria-per-un-posto-di-agente-di-polizia-locale.html"
+      ],
+      "note": "Sono reperibili atti di reclutamento e sezioni di Amministrazione trasparente, ma non è stato validato un totale 31/12/2025 comparabile con gli altri Comuni."
+    },
+    "Pietrasanta": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://www.comune.pietrasanta.lu.it/index.php/it/news/1944604"
+      ],
+      "note": "Il bilancio istituzionale dell'attività 2025 descrive Comando e attività ma non pubblica un totale del personale con perimetro utile al confronto."
+    },
+    "Seravezza": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://www.comune.seravezza.lucca.it/c046028/zf/index.php/trasparenza/index/index/categoria/315",
+        "https://www.comune.seravezza.lucca.it/c046028/zf/index.php/atti-generali"
+      ],
+      "note": "Amministrazione trasparente pubblica PIAO, Conto annuale del personale e dotazione organica; non è stato isolato un dato 2025 del solo personale PL con perimetro omogeneo agli altri sei enti."
+    },
+    "Stazzema": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://comune.stazzema.lu.it/amministrazione/personale-amministrativo/"
+      ],
+      "note": "L'elenco istituzionale corrente mostra un agente assegnato al Settore Polizia Locale, ma un elenco corrente non equivale a una consistenza certificata al 31/12/2025."
+    },
+    "Viareggio": {
+      "status": "insufficient-for-homogeneous-count",
+      "sources": [
+        "https://servizionline.comune.viareggio.lu.it/cmsviareggio/portale/delibere/deliberericerca.aspx?DELI=5KU3PPN4BjM%3D"
+      ],
+      "note": "Il PIAO 2025-2027 e l'Allegato 5 sul fabbisogno di personale sono pubblicati; non viene usato un dato di fine 2024 o un programma assunzionale come proxy della consistenza 31/12/2025."
+    }
+  },
+  "excludedStateForces": {
+    "bodies": ["Polizia di Stato", "Arma dei Carabinieri", "Guardia di Finanza"],
+    "reason": "Non è stata individuata una fonte ufficiale annuale e omogenea degli organici in servizio per singolo Comune. Presidi, sedi e rinforzi temporanei non sono equivalenti a una consistenza comunale confrontabile."
+  }
+}
