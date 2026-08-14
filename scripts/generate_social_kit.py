@@ -636,29 +636,51 @@ def make_page(index: int, title: str, subtitle: str, model: dict[str, Any], post
 def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[str, Any] | None) -> dict[str, str]:
     current = aggregate([row["value"] for row in model["rows"]], model["aggregate_mode"])
     aggregate_label = "complessivi" if model["aggregate_mode"] == "sum" else "in media tra i sette Comuni"
-    lines = [
-        f"{model['short_label']}: {fmt_value(current, model['unit'])} {aggregate_label} nel {model['year']}.",
-    ]
-    if comp:
-        lines.append(f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}.")
-    if post.get("context_note"):
-        lines.append(post["context_note"])
-    else:
-        lines.append(model["description"])
-    lines.extend([
-        post["questions"][0],
-        post["questions"][1],
-        "Scrivilo nei commenti indicando il Comune e segui la pagina per il prossimo dato.",
-        f"Dati, metodo e fonti: {model['link']}",
-        f"Fonte: {model['source']} · {model['year_label']} · dati {model['dataset_version']}",
-    ])
-    master = "\n\n".join(lines)
+    fact = f"{model['short_label']}: {fmt_value(current, model['unit'])} {aggregate_label} nel {model['year']}."
+    comparison_line = (
+        f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}."
+        if comp else ""
+    )
+    method_line = post.get("context_note") or model["description"]
+    question_line = f"{post['questions'][0]} {post['questions'][1]}"
+    participation = "Nei commenti indica il Comune a cui fai riferimento e segui la pagina per il prossimo dato."
+    source_line = f"Fonte: {model['source']} · {model['year_label']} · dati {model['dataset_version']}"
+    link_line = f"Dati, metodo e fonti: {model['link']}"
+    master = "\n\n".join(item for item in [fact, comparison_line, method_line, question_line, participation, link_line, source_line] if item)
     theme_tag = "".join(word.capitalize() for word in model["theme"].split())
+    facebook = "\n\n".join(item for item in [
+        f"☀️ {fact}",
+        comparison_line,
+        method_line,
+        f"💬 {question_line}",
+        participation,
+        link_line,
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag}"
+    instagram = "\n\n".join(item for item in [
+        f"Scorri il carosello →\n\n{fact}",
+        comparison_line,
+        method_line,
+        f"📍 {post['questions'][0]}\n🏘️ {post['questions'][1]}",
+        participation,
+        f"Approfondisci dal link: {model['link']}",
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag} #DatiPubblici"
+    linkedin = "\n\n".join(item for item in [
+        "Un dato attuale e un confronto di lungo periodo per leggere questo indicatore nel territorio dei sette Comuni della Versilia.",
+        fact,
+        comparison_line,
+        method_line,
+        "Il dato descrive il fenomeno, ma non attribuisce da solo cause o responsabilità.",
+        question_line,
+        link_line,
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #DatiPubblici #{theme_tag}"
     result = {
         "master": master,
-        "facebook": master + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag}",
-        "instagram": master + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag} #DatiPubblici",
-        "linkedin": master + f"\n\n#OsservatorioVersilia #DatiPubblici #{theme_tag}",
+        "facebook": facebook,
+        "instagram": instagram,
+        "linkedin": linkedin,
     }
     change = f" Confronto: {fmt_value(comp['display'], comp['display_unit'], True)}." if comp else ""
     x_text = (
