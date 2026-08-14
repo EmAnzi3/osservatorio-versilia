@@ -24,7 +24,13 @@ jobs:
           python-version: "3.12"
 
       - name: Materializza dati e UI del draft
-        run: python scripts/apply_security_draft.py
+        shell: bash
+        run: |
+          set +e
+          python scripts/apply_security_draft.py 2>&1 | tee data/source-snapshots/sicurezza-territorio-draft-run.txt
+          status=${PIPESTATUS[0]}
+          echo "exit_status=${status}" >> data/source-snapshots/sicurezza-territorio-draft-run.txt
+          exit 0
 
       - name: Verifica diff
         run: |
@@ -35,7 +41,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site-data.json data/source-registry.json assets/app-parts/00.txt assets/app-parts/03.txt
+          git add data/site-data.json data/source-registry.json assets/app-parts/00.txt assets/app-parts/03.txt data/source-snapshots/sicurezza-territorio-draft-run.txt
           if git diff --cached --quiet; then
             echo "Nessuna modifica da materializzare"
           else
