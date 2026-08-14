@@ -1,0 +1,38 @@
+name: Fix v1.11 composite mobile overflow
+
+on:
+  push:
+    branches: ["agent/migrazioni-omi-v111"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/migrazioni-omi-v111
+          fetch-depth: 0
+      - name: Restrict dynamic percent axis to foreign-resident stock view
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('assets/visual-grammar.js')
+          text = path.read_text(encoding='utf-8')
+          old = "    const scaleUnit = container.dataset.compositeChoice && unitKind(unit) === 'percent' ? 'decimal' : unit;"
+          new = "    const selectablePercent = metric?.meta?.compositeType === 'stock' && container.dataset.compositeChoice && unitKind(unit) === 'percent';\n    const scaleUnit = selectablePercent ? 'decimal' : unit;"
+          if old not in text:
+              raise SystemExit('Expected dynamic percent-axis line not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/visual-grammar.js
+          git commit -m "fix: preserve legacy composite percent scale on mobile"
+          git push origin HEAD:agent/migrazioni-omi-v111
