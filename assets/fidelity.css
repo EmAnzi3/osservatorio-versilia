@@ -852,3 +852,5 @@
 @media(max-width:700px){
   .compare-chart-toolbar .compare-view-controls{padding:10px}
 }
+/* Mobile: i tooltip delle fasce sono ridondanti rispetto al dettaglio sottostante e non devono allargare la pagina. */
+@media(max-width:700px){.composite-stack-town .bar-hover-label{display:none!important}}
