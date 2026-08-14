@@ -355,7 +355,8 @@
     const unit = first?.unit || unitFor(firstRow, metric, normalized);
     // Nei compositi selezionabili la percentuale deve usare una scala aderente ai dati
     // (es. 0–10% per quote intorno all'8%), non il generico 0–100%.
-    const scaleUnit = container.dataset.compositeChoice && unitKind(unit) === 'percent' ? 'decimal' : unit;
+    const selectablePercent = metric?.meta?.compositeType === 'stock' && container.dataset.compositeChoice && unitKind(unit) === 'percent';
+    const scaleUnit = selectablePercent ? 'decimal' : unit;
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, scaleUnit);
     const referencePosition = position(aggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
