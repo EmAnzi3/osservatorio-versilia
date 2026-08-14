@@ -4,8 +4,22 @@
   const scriptUrl = document.currentScript?.src || new URL('assets/visual-grammar.js', document.baseURI).href;
   const dataUrl = new URL('../data/site-data.json', scriptUrl).href;
   const projectSystemUrl = new URL('../progetto/#sistema-territoriale', scriptUrl).href;
-  const number1 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const number0 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 });
+  function forceItalianGrouping(formatted, value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const text = String(formatted);
+    const match = text.match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  }
+  const groupedFormatter = options => {
+    const formatter = new Intl.NumberFormat('it-IT', { ...options, useGrouping: 'always' });
+    return { format: value => forceItalianGrouping(formatter.format(value), value) };
+  };
+  const number1 = groupedFormatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number0 = groupedFormatter({ maximumFractionDigits: 0 });
   let data = null;
   let scheduled = false;
 
@@ -174,7 +188,20 @@
     if (kind === 'millioncurrency') return `${formatted} mln €`;
     if (kind === 'years') return `${formatted} anni`;
     if (kind === 'nights') return `${formatted} notti`;
+    if (kind === 'per1000') return `${formatted} ogni 1.000`;
+    if (kind === 'eurm2') return `${formatted} €/m²`;
+    if (kind === 'rentm2') return `${formatted} €/m²/mese`;
     return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
+  }
+
+  function niceOuterBound(value) {
+    const n = Math.abs(Number(value));
+    if (!Number.isFinite(n) || n === 0) return 1;
+    const magnitude = 10 ** Math.floor(Math.log10(n));
+    const normalized = n / magnitude;
+    const stops = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+    const stop = stops.find(candidate => normalized <= candidate) || 10;
+    return stop * magnitude;
   }
 
   function scaleFor(values, aggregateValue, unit) {
@@ -190,17 +217,19 @@
     let max = Math.max(...numeric);
     if (min >= 0) {
       min = 0;
-      max = max === 0 ? 1 : max * 1.05;
-      if (unitKind(unit) === 'count') max = Math.max(1, Math.ceil(max));
+      max = max === 0 ? 1 : niceOuterBound(max * 1.06);
       return { min, max, kind: 'absolute' };
     }
     if (max <= 0) {
       max = 0;
-      min = min === 0 ? -1 : min * 1.05;
+      min = min === 0 ? -1 : -niceOuterBound(Math.abs(min) * 1.06);
       return { min, max, kind: 'signed' };
     }
-    const padding = (max - min) * 0.06 || 1;
-    return { min: min - padding, max: max + padding, kind: 'signed' };
+    return {
+      min: -niceOuterBound(Math.abs(min) * 1.06),
+      max: niceOuterBound(max * 1.06),
+      kind: 'signed'
+    };
   }
 
   function position(value, scale) {
@@ -267,6 +296,42 @@
     };
   }
 
+  function compositeSelectionFor(container, metric, row) {
+    const choice = container?.dataset?.compositeChoice || '';
+    const scale = container?.dataset?.compositeScale || 'value';
+    const type = metric?.meta?.compositeType;
+    if (!choice || !['stock','omi','mobility'].includes(type)) return null;
+    if (type === 'stock') {
+      const count = choice === 'count';
+      return { value: count ? row?.count : row?.value, unit: count ? 'number' : 'percent' };
+    }
+    if (type === 'omi') {
+      const rent = choice === 'rent';
+      return { value: rent ? row?.rentMean : row?.saleMean, unit: rent ? 'rentm2' : 'eurm2' };
+    }
+    const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
+    const part = row?.parts?.[index] || {};
+    return { value: scale === 'count' ? part.count : part.value, unit: scale === 'count' ? 'number' : 'per1000' };
+  }
+
+  function compositeAggregateFor(container, metric) {
+    const choice = container?.dataset?.compositeChoice || '';
+    const scale = container?.dataset?.compositeScale || 'value';
+    const type = metric?.meta?.compositeType;
+    if (!choice || !['stock','omi','mobility'].includes(type)) return null;
+    if (type === 'stock') {
+      const count = choice === 'count';
+      return { value: count ? metric.aggregate?.count : metric.aggregate?.value, label: count ? 'Versilia · residenti stranieri' : 'Versilia · quota residenti stranieri' };
+    }
+    if (type === 'omi') {
+      const rent = choice === 'rent';
+      return { value: rent ? metric.aggregate?.rentMean : metric.aggregate?.saleMean, label: rent ? 'Versilia · affitto medio comunale' : 'Versilia · vendita media comunale' };
+    }
+    const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
+    const part = metric.aggregate?.parts?.[index] || {};
+    return { value: scale === 'count' ? part.count : part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
+  }
+
   function enhanceComparison(container) {
     if (!data || !container?.isConnected) return;
     const metricKey = metricKeyFor(container);
@@ -274,33 +339,43 @@
     if (!metric) return;
 
     const normalized = normalizedFor(container);
-    const aggregate = aggregateFor(metric, normalized);
+    const compositeAggregate = compositeAggregateFor(container, metric);
+    const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const rows = [...container.querySelectorAll(':scope > .bar-row')];
     if (!rows.length) return;
 
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
-      return { rowEl, row, value: valueFor(row, metric, normalized) };
+      const selected = compositeSelectionFor(container, metric, row);
+      return { rowEl, row, value: selected ? selected.value : valueFor(row, metric, normalized), unit:selected?.unit || null };
     });
-    const firstRow = mapped.find(item => item.row)?.row;
-    const unit = unitFor(firstRow, metric, normalized);
-    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
+    const first = mapped.find(item => item.row);
+    const firstRow = first?.row;
+    const unit = first?.unit || unitFor(firstRow, metric, normalized);
+    // Nei compositi selezionabili la percentuale deve usare una scala aderente ai dati
+    // (es. 0–10% per quote intorno all'8%), non il generico 0–100%.
+    const scaleUnit = container.dataset.compositeChoice && unitKind(unit) === 'percent' ? 'decimal' : unit;
+    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, scaleUnit);
     const referencePosition = position(aggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
-    const signature = [metricKey, normalized ? 'n' : 'r', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
-    if (container.dataset.visualGrammarSignature === signature && container.querySelector(':scope > .comparison-legend')) return;
+    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
+    const toolbarLegendHost = container.closest('.selectable-topic-bars')?.querySelector('.compare-chart-legend-host');
+    const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
+    if (container.dataset.visualGrammarSignature === signature && existingLegend) return;
     container.dataset.visualGrammarSignature = signature;
     container.dataset.viz = scale.kind === 'percent' ? 'percent-dotplot' : scale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
 
     container.querySelector(':scope > .comparison-legend')?.remove();
+    toolbarLegendHost?.querySelector('.comparison-legend')?.remove();
     container.querySelector(':scope > .comparison-axis')?.remove();
     container.querySelector(':scope > .comparison-note')?.remove();
 
     const legend = document.createElement('div');
     legend.className = 'comparison-legend';
     legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${aggregate?.label || 'Versilia'}</span>`;
-    container.prepend(legend);
+    if (toolbarLegendHost) toolbarLegendHost.append(legend);
+    else container.prepend(legend);
 
     mapped.forEach(({ rowEl, row, value }) => {
       rowEl.querySelector('.bar-rank')?.remove();

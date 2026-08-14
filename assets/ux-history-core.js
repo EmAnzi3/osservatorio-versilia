@@ -50,25 +50,47 @@
     return formatters.get(key);
   }
 
+  function forceItalianGrouping(formatted, value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const text = String(formatted);
+    const match = text.match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  }
+
+  function formatNumber(value, decimals = 1) {
+    return forceItalianGrouping(formatter(decimals).format(value), value);
+  }
+
   function formatValue(value, unit) {
     const number = Number(value);
     if (!Number.isFinite(number)) return 'n.d.';
     switch (unit) {
-      case 'percent': return `${formatter(1).format(number)}%`;
-      case 'percentagePoints': return `${formatter(1).format(number)} p.p.`;
-      case 'currency': return `${formatter(0).format(number)} €`;
-      case 'euro': return `${formatter(0).format(number)} €`;
-      case 'euroPerResident': return `${formatter(0).format(number)} € / residente`;
-      case 'millionEuro': return `${formatter(1).format(number)} mln €`;
-      case 'per1000': return `${formatter(1).format(number)} ogni 1.000`;
-      case 'per10k': return `${formatter(1).format(number)} ogni 10.000`;
-      case 'index': return formatter(1).format(number);
-      case 'minutes': return `${formatter(1).format(number)} min`;
-      case 'years': return `${formatter(1).format(number)} anni`;
-      case 'kg': return `${formatter(0).format(number)} kg`;
-      case 'hectares': return `${formatter(2).format(number)} ha`;
-      case 'number': return formatter(0).format(number);
-      default: return formatter(Number.isInteger(number) ? 0 : 1).format(number);
+      case 'percent': return `${formatNumber(number, 1)}%`;
+      case 'percentagePoints': return `${formatNumber(number, 1)} p.p.`;
+      case 'currency': return `${formatNumber(number, 0)} €`;
+      case 'euro': return `${formatNumber(number, 0)} €`;
+      case 'euroPerResident': return `${formatNumber(number, 0)} € / residente`;
+      case 'millionEuro': return `${formatNumber(number, 1)} mln €`;
+      case 'per1000': return `${formatNumber(number, 1)} ogni 1.000`;
+      case 'per10k': return `${formatNumber(number, 1)} ogni 10.000`;
+      case 'index': return formatNumber(number, 1);
+      case 'minutes': return `${formatNumber(number, 1)} min`;
+      case 'years': return `${formatNumber(number, 1)} anni`;
+      case 'kg': return `${formatNumber(number, 0)} kg`;
+      case 'hectares': return `${formatNumber(number, 2)} ha`;
+      case 'nights': return `${formatNumber(number, 2)} notti`;
+      case 'people': return `${formatNumber(number, 0)} persone`;
+      case 'studentsPerClass': return `${formatNumber(number, 1)} alunni/classe`;
+      case 'per100': return `${formatNumber(number, 2)} ogni 100`;
+      case 'per100k': return `${formatNumber(number, 2)} ogni 100.000`;
+      case 'eurm2': return `${formatNumber(number, 0)} €/m²`;
+      case 'rentm2': return `${formatNumber(number, 1)} €/m²/mese`;
+      case 'number': return formatNumber(number, 0);
+      default: return formatNumber(number, Number.isInteger(number) ? 0 : 1);
     }
   }
 
@@ -112,11 +134,11 @@
     const delta = end - start;
     const sign = delta > 0 ? '+' : '';
     if (unit === 'percent' || unit === 'percentagePoints') {
-      return `${sign}${formatter(1).format(delta)} p.p.`;
+      return `${sign}${formatNumber(delta, 1)} p.p.`;
     }
     if (compact || start <= 0) return `${sign}${formatValue(delta, unit)}`;
     const relative = delta / start * 100;
-    return `${sign}${formatValue(delta, unit)} · ${relative > 0 ? '+' : ''}${formatter(1).format(relative)}%`;
+    return `${sign}${formatValue(delta, unit)} · ${relative > 0 ? '+' : ''}${formatNumber(relative, 1)}%`;
   }
 
   function historyPointMarkup({ x, y, value, year, town, unit, width, left, right }) {

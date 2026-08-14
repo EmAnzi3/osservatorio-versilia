@@ -17,8 +17,8 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260814-1"
-HISTORY_ASSET_VERSION = "20260813-1"
+UX_ASSET_VERSION = "20260814-v111"
+HISTORY_ASSET_VERSION = "20260814-v111"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -107,11 +107,12 @@ def bundle_application_with_private_fixes() -> None:
     elif '<svg class="search-icon"' not in bundle:
         raise RuntimeError("Né l'icona testuale né la lente SVG sono presenti nel bundle")
 
-    for old, new in NUMBER_FORMAT_REPLACEMENTS.items():
-        if old in bundle:
-            bundle = bundle.replace(old, new)
-        elif new not in bundle:
-            raise RuntimeError(f"Formatter numerico non trovato: {old}")
+    if "const italianFormatter = options =>" not in bundle:
+        for old, new in NUMBER_FORMAT_REPLACEMENTS.items():
+            if old in bundle:
+                bundle = bundle.replace(old, new)
+            elif new not in bundle:
+                raise RuntimeError(f"Formatter numerico non trovato: {old}")
 
     if OLD_PROJECT_COPY in bundle:
         bundle = bundle.replace(OLD_PROJECT_COPY, NEW_PROJECT_COPY)
@@ -178,6 +179,7 @@ def prepare_shells_with_fonts() -> None:
         if missing_scripts:
             text = text.replace("</body>", "".join(missing_scripts) + "</body>")
 
+        text = re.sub(r'href="([^"?]*assets/fidelity\.css)(?:\?[^\"]*)?"', rf'href="\1?v={UX_ASSET_VERSION}"', text)
         path.write_text(text, encoding="utf-8")
 
 
@@ -236,8 +238,8 @@ def normalize_prerendered_urls() -> None:
     project_text = project_path.read_text(encoding="utf-8")
     if NEW_PROJECT_COPY not in project_text or OLD_PROJECT_COPY in project_text:
         raise RuntimeError("Testo della pagina Il progetto non aggiornato nella build")
-    if "2026.08.12-v1.9.0" not in project_text or "115 indicatori" not in project_text:
-        raise RuntimeError("Versione v1.9.0 non visibile nella pagina Il progetto")
+    if "2026.08.14-v1.11.0" not in project_text or "119 indicatori" not in project_text:
+        raise RuntimeError("Versione v1.11.0 non visibile nella pagina Il progetto")
     if LEGACY_CONTACT in project_text or PUBLIC_CONTACT not in project_text:
         raise RuntimeError("Recapito pubblico non coerente nella pagina Il progetto")
 

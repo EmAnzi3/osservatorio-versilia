@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verifica il catalogo da 115 indicatori e le 111 pagine autonome."""
+"""Verifica il catalogo da 119 indicatori e le 115 pagine autonome."""
 
 from __future__ import annotations
 
@@ -70,8 +70,8 @@ def static_checks() -> None:
         if metric.get("dataStorage", {}).get("type") == "external-climate"
     }
     inline = {key: metric for key, metric in data["metrics"].items() if key not in external}
-    assert len(data["metrics"]) == 115
-    assert len(inline) == 111
+    assert len(data["metrics"]) == 119
+    assert len(inline) == 115
     assert set(external) == {
         "climateTemperatureTrend50y",
         "climatePrecipitationTrend50y",
@@ -105,15 +105,15 @@ def static_checks() -> None:
         assert dataset.get("isBasedOn") == metric["sourceUrl"]
         assert breadcrumb and len(breadcrumb.get("itemListElement", [])) == 3
 
-    assert len(paths) == len(set(paths)) == 111, "Slug indicatore duplicato"
+    assert len(paths) == len(set(paths)) == 115, "Slug indicatore duplicato"
 
     sitemap = ET.parse(DIST / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/sitemap/0.9"}
     urls = sitemap.findall("s:url", namespace)
     locations = [item.findtext("s:loc", namespaces=namespace) for item in urls]
-    assert len(locations) == len(set(locations)) == 132, f"URL sitemap inattese: {len(locations)}"
+    assert len(locations) == len(set(locations)) == 136, f"URL sitemap inattese: {len(locations)}"
     assert all(item.findtext("s:lastmod", namespaces=namespace) for item in urls)
-    assert sum("/indicatori/" in (url or "") for url in locations) == 111
+    assert sum("/indicatori/" in (url or "") for url in locations) == 115
 
 
 def browser_checks() -> None:
@@ -167,7 +167,7 @@ def browser_checks() -> None:
 def main() -> None:
     static_checks()
     browser_checks()
-    print("Catalogo verificato: 115 indicatori canonici, 4 storici climatici separati e 111 URL autonome.")
+    print("Catalogo verificato: 119 indicatori canonici, 4 storici climatici separati e 115 URL autonome.")
 
 
 if __name__ == "__main__":

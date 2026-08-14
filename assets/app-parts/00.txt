@@ -36,8 +36,6 @@
   const searchSynonyms = {
     population: ['abitanti', 'residenti', 'popolazione'],
     oldAgeIndex: ['anziani', 'invecchiamento', 'vecchiaia'],
-    ageDistribution: ['fasce eta', 'giovani', 'anziani', 'eta media', '0 14', '15 19', '20 34', '35 49', '50 64', '65 79', '80 plus'],
-    internalResidentialMobility: ['trasferimenti di residenza', 'iscritti da altri comuni', 'cancellati verso altri comuni', 'saldo migratorio interno'],
     income: ['redditi', 'stipendi', 'irpef', 'dichiarazioni'],
     incomeDistribution: ['fasce reddito', 'redditi bassi', 'irpef', 'dichiaranti', 'oltre 55000'],
     businessValueAdded: ['pil', 'ricchezza', 'produzione', 'economia locale'],
@@ -104,6 +102,12 @@
     currentPayments: ['spesa corrente', 'pagamenti'], siopePayments: ['cassa', 'uscite'],
     publicWorks: ['opere pubbliche', 'cantieri'], pnrrFunding: ['pnrr', 'finanziamenti'],
     pnrrConcluded: ['pnrr', 'progetti conclusi'],
+    ageDistribution: ['fasce eta', 'giovani', 'anziani', 'eta media', '0 14', '15 19', '20 34', '35 49', '50 64', '65 79', '80 plus', 'fasce di età', 'struttura popolazione'],
+    internalResidentialMobility: ['trasferimenti di residenza', 'iscritti da altri comuni', 'cancellati verso altri comuni', 'saldo migratorio interno', 'iscritti', 'cancellati', 'mobilità residenziale'],
+    foreignResidentialMobility: ['immigrazione', 'emigrazione', 'estero', 'iscritti dall estero', 'cancellati per l estero', 'saldo migratorio estero'],
+    totalResidentialMobility: ['mobilità complessiva', 'trasferimenti di residenza', 'saldo migratorio complessivo', 'iscritti', 'cancellati'],
+    foreignResidents: ['stranieri', 'popolazione straniera', 'cittadinanza', 'residenti stranieri', 'immigrazione'],
+    omiResidential: ['immobiliare', 'omi', 'prezzi case', 'prezzo mq', 'vendita', 'affitto', 'canone', 'locazione'],
     populationChange: ['calo demografico', 'crescita popolazione', 'variazione residenti'],
     tourismSeasonality: ['stagionalita', 'estate', 'mesi turistici', 'pressione turistica'],
     foreignTourismShare: ['turisti stranieri', 'presenze estere', 'turismo internazionale'],
@@ -123,10 +127,23 @@
   const indicatorSlug = (metric) => normalize(metric?.meta?.label).replaceAll(' ', '-');
   const indicatorHref = (metric) => route(`indicatori/${indicatorSlug(metric)}/`);
 
-  const number0 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', maximumFractionDigits: 0 });
-  const number1 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const number2 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const currency0 = new Intl.NumberFormat('it-IT', { useGrouping: 'always', style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const forceItalianGrouping = (formatted, value) => {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric) || Math.abs(numeric) < 1000) return formatted;
+    const match = String(formatted).match(/^([−-]?)(\d+)(.*)$/);
+    if (!match) return formatted;
+    const [, sign, integer, suffix] = match;
+    if (integer.length <= 3) return formatted;
+    return `${sign}${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}${suffix}`;
+  };
+  const italianFormatter = options => {
+    const formatter = new Intl.NumberFormat('it-IT', { ...options, useGrouping: 'always' });
+    return { format: value => forceItalianGrouping(formatter.format(value), value) };
+  };
+  const number0 = italianFormatter({ maximumFractionDigits: 0 });
+  const number1 = italianFormatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number2 = italianFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const currency0 = italianFormatter({ style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 
   function formatValue(value, unit) {
     if (value === null || value === undefined || Number.isNaN(Number(value))) return 'n.d.';
@@ -147,6 +164,8 @@
       case 'per10k': return `${number1.format(v)} ogni 10.000`;
       case 'per1000': return `${number2.format(v)} ogni 1.000`;
       case 'per100k': return `${number2.format(v)} ogni 100.000`;
+      case 'eurm2': return `${number0.format(v)} €/m²`;
+      case 'rentm2': return `${number1.format(v)} €/m²/mese`;
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
       default: return number0.format(v);
@@ -182,7 +201,7 @@
               <a href="${route('segnala/')}">Segnala</a>
             </nav>
             <button class="global-search-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
-              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span><kbd>/</kbd>
+              <span aria-hidden="true">⌕</span><span>Cerca</span><kbd>/</kbd>
             </button>
           </div>
         </div>
@@ -202,7 +221,7 @@
           <a href="${route('progetto/#licenza')}">Licenza</a>
           <a href="${route('progetto/#versioni')}">Versioni dei dati</a>
           <a href="${route('segnala/')}">Segnala un dato</a>
-          <a href="mailto:contatti@osservatorioversilia.it">Contatti</a>
+          <a href="mailto:info@osservatorioversilia.it">Contatti</a>
         </nav>
         <div class="footer-note">
           <span>7 comuni · ${Object.keys(data.themes).length} temi</span><span>v. dati ${html(data.version)}</span><span>aggiornato ${html(data.updated)}</span>

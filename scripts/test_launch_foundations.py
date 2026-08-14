@@ -35,8 +35,8 @@ def main() -> None:
         assert 'name="twitter:card" content="summary_large_image"' in text, f"Twitter card mancante: {path}"
 
     project = read("progetto/index.html")
-    assert "2026.08.14-v1.10.0" in project, "v1.10.0 assente dalla pagina progetto"
-    assert "115 indicatori" in project, "Conteggio v1.10.0 assente dalla pagina progetto"
+    assert "2026.08.14-v1.11.0" in project, "v1.11.0 assente dalla pagina progetto"
+    assert "119 indicatori" in project, "Conteggio v1.11.0 assente dalla pagina progetto"
     assert PUBLIC_CONTACT in project, "Recapito pubblico assente dalla pagina progetto"
 
     feedback = read("segnala/index.html")
@@ -45,9 +45,9 @@ def main() -> None:
     bundle = read("assets/app-bundle.js")
     assert LEGACY_CONTACT not in bundle, "Recapito legacy ancora presente nel bundle"
     assert PUBLIC_CONTACT in bundle, "Recapito pubblico assente dal bundle"
-    assert "2026.08.14-v1.10.0" in bundle, "v1.10.0 assente dal bundle"
+    assert "2026.08.14-v1.11.0" in bundle, "v1.11.0 assente dal bundle"
 
-    print(f"OK: identità pubblica, release v1.10 e social metadata verificati su {social_pages} pagine; fallback offline noindex")
+    print(f"OK: identità pubblica, release v1.11 e social metadata verificati su {social_pages} pagine; fallback offline noindex")
 
 
 if __name__ == "__main__":

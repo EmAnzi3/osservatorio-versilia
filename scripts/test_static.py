@@ -75,7 +75,7 @@ def static_assertions() -> None:
     bundle_path = DIST / "assets" / "app-bundle.js"
     assert bundle_path.stat().st_size > 50_000
     bundle = bundle_path.read_text(encoding="utf-8")
-    assert bundle.count("useGrouping: 'always'") >= 4, "Raggruppamento delle migliaia non forzato"
+    assert ("const italianFormatter = options =>" in bundle and "useGrouping: 'always'" in bundle) or bundle.count("useGrouping: 'always'") >= 4, "Raggruppamento delle migliaia non forzato"
 
     fonts_css = (DIST / "assets" / "fonts.css").read_text(encoding="utf-8")
     assert "./fonts/geist-latin.woff2" in fonts_css
@@ -120,7 +120,7 @@ def browser_assertions() -> None:
         mobile_page.goto(base, wait_until="networkidle")
         mobile_page.wait_for_selector(".global-search-trigger")
         hero_facts = mobile_page.locator(".hero-facts").inner_text()
-        assert "115 INDICATORI" in hero_facts and "111 INDICATORI" not in hero_facts, (
+        assert "119 INDICATORI" in hero_facts and "115 INDICATORI" not in hero_facts, (
             f"Conteggio complessivo degli indicatori errato in home: {hero_facts!r}"
         )
         mobile_icon = mobile_page.locator(".global-search-trigger .search-icon")
