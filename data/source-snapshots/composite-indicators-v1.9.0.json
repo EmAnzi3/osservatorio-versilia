@@ -1,0 +1,135 @@
+{
+  "version": "composite-indicators-v1.9.0",
+  "created": "2026-08-14",
+  "note": "Snapshot canonico dei dati grezzi usati per accorpare struttura per età, mobilità residenziale interna e fasce di reddito. I conteggi comunali coprono tutti e sette i Comuni; nessuna classe è interpolata.",
+  "sources": {
+    "ageDistribution": {
+      "publisher": "Istat",
+      "dataset": "Popolazione residente per età (POSAS)",
+      "url": "https://demo.istat.it/app/?a=2025&i=POS",
+      "referenceDate": "2025-01-01",
+      "averageAgeDataset": "A misura di Comune — Tavola 1e, popolazione ed età media",
+      "averageAgeUrl": "https://www.istat.it/storage/misura-comune/1e-Popolazione-eta-media.xlsx",
+      "averageAgeReferenceDate": "2024-12-31"
+    },
+    "internalResidentialMobility": {
+      "publisher": "Istat",
+      "dataset": "Bilancio demografico — trasferimenti di residenza tra Comuni",
+      "url": "https://demo.istat.it/",
+      "years": [2019, 2020, 2021, 2022, 2023, 2024]
+    },
+    "incomeDistribution": {
+      "publisher": "Dipartimento delle Finanze — MEF",
+      "dataset": "Dichiarazioni Irpef per Comune e classe di reddito complessivo",
+      "url": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+      "taxYear": 2024,
+      "officialClassAggregation": {
+        "Fino a 15.000 €": [
+          "Reddito complessivo minore o uguale a zero euro",
+          "Reddito complessivo da 0 a 10000 euro",
+          "Reddito complessivo da 10000 a 15000 euro"
+        ],
+        "15.001–26.000 €": ["Reddito complessivo da 15000 a 26000 euro"],
+        "26.001–55.000 €": ["Reddito complessivo da 26000 a 55000 euro"],
+        "Oltre 55.000 €": [
+          "Reddito complessivo da 55000 a 75000 euro",
+          "Reddito complessivo da 75000 a 120000 euro",
+          "Reddito complessivo oltre 120000 euro"
+        ]
+      }
+    }
+  },
+  "raw": {
+    "Massarosa": {
+      "averageAge": 48.2650646611024,
+      "ageBands": [2306, 1063, 3073, 3970, 5871, 3820, 1703],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 678, "registeredOut": 642},
+        {"year": 2020, "registeredIn": 509, "registeredOut": 520},
+        {"year": 2021, "registeredIn": 484, "registeredOut": 536},
+        {"year": 2022, "registeredIn": 706, "registeredOut": 613},
+        {"year": 2023, "registeredIn": 621, "registeredOut": 498},
+        {"year": 2024, "registeredIn": 533, "registeredOut": 470}
+      ],
+      "incomeBands": [5493, 5055, 4662, 724]
+    },
+    "Viareggio": {
+      "averageAge": 49.2118677620509,
+      "ageBands": [6193, 2724, 8617, 10753, 15465, 11344, 5522],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 1574, "registeredOut": 1292},
+        {"year": 2020, "registeredIn": 1469, "registeredOut": 1192},
+        {"year": 2021, "registeredIn": 1484, "registeredOut": 1188},
+        {"year": 2022, "registeredIn": 1444, "registeredOut": 1294},
+        {"year": 2023, "registeredIn": 1376, "registeredOut": 1183},
+        {"year": 2024, "registeredIn": 1305, "registeredOut": 1112}
+      ],
+      "incomeBands": [15651, 12306, 13702, 3514]
+    },
+    "Camaiore": {
+      "averageAge": 49.2519163106308,
+      "ageBands": [3129, 1477, 4398, 5796, 8416, 5790, 2826],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 843, "registeredOut": 830},
+        {"year": 2020, "registeredIn": 891, "registeredOut": 684},
+        {"year": 2021, "registeredIn": 867, "registeredOut": 700},
+        {"year": 2022, "registeredIn": 931, "registeredOut": 728},
+        {"year": 2023, "registeredIn": 877, "registeredOut": 753},
+        {"year": 2024, "registeredIn": 794, "registeredOut": 714}
+      ],
+      "incomeBands": [8650, 6828, 6415, 1355]
+    },
+    "Pietrasanta": {
+      "averageAge": 50.6666007123071,
+      "ageBands": [2115, 975, 2947, 3836, 6042, 4674, 2154],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 605, "registeredOut": 510},
+        {"year": 2020, "registeredIn": 604, "registeredOut": 535},
+        {"year": 2021, "registeredIn": 594, "registeredOut": 501},
+        {"year": 2022, "registeredIn": 642, "registeredOut": 619},
+        {"year": 2023, "registeredIn": 650, "registeredOut": 582},
+        {"year": 2024, "registeredIn": 627, "registeredOut": 522}
+      ],
+      "incomeBands": [6230, 4713, 4758, 1064]
+    },
+    "Seravezza": {
+      "averageAge": 50.1707051126726,
+      "ageBands": [1198, 499, 1653, 2198, 3236, 2453, 1144],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 357, "registeredOut": 338},
+        {"year": 2020, "registeredIn": 328, "registeredOut": 305},
+        {"year": 2021, "registeredIn": 320, "registeredOut": 362},
+        {"year": 2022, "registeredIn": 405, "registeredOut": 351},
+        {"year": 2023, "registeredIn": 423, "registeredOut": 316},
+        {"year": 2024, "registeredIn": 359, "registeredOut": 346}
+      ],
+      "incomeBands": [3393, 2802, 2540, 447]
+    },
+    "Forte dei Marmi": {
+      "averageAge": 52.9317431743174,
+      "ageBands": [558, 279, 798, 970, 1776, 1474, 811],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 223, "registeredOut": 242},
+        {"year": 2020, "registeredIn": 206, "registeredOut": 194},
+        {"year": 2021, "registeredIn": 215, "registeredOut": 213},
+        {"year": 2022, "registeredIn": 230, "registeredOut": 282},
+        {"year": 2023, "registeredIn": 220, "registeredOut": 314},
+        {"year": 2024, "registeredIn": 178, "registeredOut": 256}
+      ],
+      "incomeBands": [1645, 1120, 1268, 891]
+    },
+    "Stazzema": {
+      "averageAge": 50.5331950207469,
+      "ageBands": [240, 119, 388, 538, 773, 558, 276],
+      "internalResidentialMobility": [
+        {"year": 2019, "registeredIn": 99, "registeredOut": 95},
+        {"year": 2020, "registeredIn": 70, "registeredOut": 104},
+        {"year": 2021, "registeredIn": 76, "registeredOut": 65},
+        {"year": 2022, "registeredIn": 83, "registeredOut": 64},
+        {"year": 2023, "registeredIn": 109, "registeredOut": 76},
+        {"year": 2024, "registeredIn": 97, "registeredOut": 83}
+      ],
+      "incomeBands": [848, 673, 526, 47]
+    }
+  }
+}

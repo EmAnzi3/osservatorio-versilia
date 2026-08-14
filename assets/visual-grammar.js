@@ -65,7 +65,7 @@
 
   const territorialMetrics = new Set([
     'income',
-    'incomeUnder15k',
+    'incomeDistribution',
     'diplomaPlus',
     'tertiary',
     'lifeExpectancy',
@@ -211,8 +211,9 @@
   }
 
   function deltaFor(metric, row, metricKey = '') {
-    const local = finite(row?.value);
-    const aggregate = finite(metric?.aggregate?.value);
+    const distribution = metric?.meta?.compositeType === 'distribution';
+    const local = finite(distribution && row?.summaryValue !== undefined ? row.summaryValue : row?.value);
+    const aggregate = finite(distribution && metric?.aggregate?.summaryValue !== undefined ? metric.aggregate.summaryValue : metric?.aggregate?.value);
     if (local === null || aggregate === null) {
       return { headline: 'n.d.', direction: 'confronto non disponibile', compact: 'confronto non disponibile' };
     }
@@ -233,7 +234,7 @@
       };
     }
 
-    const kind = unitKind(metric?.meta?.unit);
+    const kind = unitKind(distribution ? metric?.meta?.summaryUnit : metric?.meta?.unit);
     if (kind === 'percent' || kind === 'percentage-points') {
       const diff = local - aggregate;
       if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: 'in linea con Versilia' };
@@ -391,6 +392,7 @@
     const metric = data.metrics?.[metricKey];
     const row = townRow(metric, townName);
     if (!metric || !row) return;
+    if (metric.meta?.compositeType === 'distribution') return;
 
     const delta = deltaFor(metric, row, metricKey);
     const overlineText = delta.overline || 'Rispetto alla Versilia';

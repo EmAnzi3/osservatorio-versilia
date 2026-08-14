@@ -46,6 +46,9 @@ jobs:
       - name: Run indicator page and SEO checks
         run: python scripts/test_indicator_pages.py
 
+      - name: Run composite indicator checks
+        run: python scripts/test_composite_indicators.py
+
       - name: Run brand identity checks
         run: python scripts/test_brand_identity.py
 

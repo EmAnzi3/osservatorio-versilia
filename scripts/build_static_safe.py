@@ -17,7 +17,7 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260809-2"
+UX_ASSET_VERSION = "20260814-1"
 HISTORY_ASSET_VERSION = "20260813-1"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
