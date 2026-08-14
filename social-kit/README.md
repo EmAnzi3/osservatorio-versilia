@@ -15,6 +15,22 @@ Le stesse immagini vengono usate su Facebook, Instagram, LinkedIn e X. Non vengo
 
 La griglia è definita da `config/design-system.json`; i colori canonici dei temi da `config/themes.json`; le uscite da `config/editorial-calendar.json`; le ricorrenze ammissibili da `config/recurrences.json`.
 
+## Preparazione programmata
+
+Il workflow `Genera Social Kit` controlla ogni mattina il calendario editoriale usando il fuso `Europe/Rome`.
+
+Se per la data corrente è prevista un'uscita, genera automaticamente il relativo pacchetto di pubblicazione in **bozza** e lo rende disponibile come artifact GitHub Actions. Il pacchetto comprende:
+
+- 4 PNG 1080×1350;
+- SVG sorgenti;
+- copy distinti per Facebook, Instagram, LinkedIn e X;
+- testi ALT;
+- manifest e provenienza dei dati.
+
+Il sistema **non pubblica, non programma e non invia contenuti ai social network**. La pubblicazione resta sempre manuale.
+
+Nei giorni senza un'uscita prevista il workflow non genera alcun pacchetto social.
+
 ## Uso
 
 ```bash
@@ -30,6 +46,12 @@ Per il contenuto clima:
 ```bash
 python3 scripts/generate_social_kit.py \
   --post-id 2026-08-14-clima-temperature-massime
+```
+
+Per individuare l'uscita prevista in una data:
+
+```bash
+python3 scripts/resolve_social_post.py --date 2026-08-14
 ```
 
 Per controllare una settimana e le eventuali ricorrenze ufficiali:
