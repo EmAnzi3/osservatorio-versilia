@@ -39,6 +39,9 @@ jobs:
       - name: Patch frontend draft surfaces
         run: python scripts/patch_costi_fiscalita_frontend.py
 
+      - name: Apply visual QA review corrections
+        run: python scripts/apply_costi_fiscalita_review.py
+
       - name: Isolate economy context legend
         run: python scripts/fix_income_inflation_legend.py
 
