@@ -79,7 +79,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_*.py' ! -name 'test_percorsi_draft.py' | sort); do
+          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_*.py' ! -name 'test_percorsi_*.py' | sort); do
             echo "::group::$test_file"
             python "$test_file"
             echo "::endgroup::"
@@ -102,7 +102,14 @@ jobs:
         run: python scripts/copy_percorsi_dist.py
 
       - name: Validate Percorsi in final dist
-        run: python scripts/test_percorsi_draft.py
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_percorsi_*.py' | sort); do
+            echo "::group::$test_file"
+            python "$test_file"
+            echo "::endgroup::"
+          done
 
       - name: Upload local-style draft preview
         if: always()
