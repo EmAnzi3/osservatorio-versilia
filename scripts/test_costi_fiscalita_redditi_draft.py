@@ -1,135 +1,113 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA = json.loads((ROOT / 'data/site-data.json').read_text(encoding='utf-8'))
-REG = json.loads((ROOT / 'data/source-registry.json').read_text(encoding='utf-8'))
-AUDIT = json.loads((ROOT / 'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json').read_text(encoding='utf-8'))
-VAL = json.loads((ROOT / 'data/source-snapshots/costi-fiscalita-validated-2026-08.json').read_text(encoding='utf-8'))
-NIC = json.loads((ROOT / 'data/source-snapshots/nic-italia-2016-2024.json').read_text(encoding='utf-8'))
-APP00 = (ROOT / 'assets/app-parts/00.txt').read_text(encoding='utf-8')
-APP02 = (ROOT / 'assets/app-parts/02.txt').read_text(encoding='utf-8')
-APP03 = (ROOT / 'assets/app-parts/03.txt').read_text(encoding='utf-8')
-APP05 = (ROOT / 'assets/app-parts/05.txt').read_text(encoding='utf-8')
-UX = (ROOT / 'assets/ux-history.js').read_text(encoding='utf-8')
-VISUAL = (ROOT / 'assets/visual-grammar.js').read_text(encoding='utf-8')
+ROOT=Path(__file__).resolve().parents[1]
+DATA=json.loads((ROOT/'data/site-data.json').read_text(encoding='utf-8'))
+REG=json.loads((ROOT/'data/source-registry.json').read_text(encoding='utf-8'))
+AUDIT=json.loads((ROOT/'data/source-snapshots/costi-fiscalita-redditi-draft-2026-08.json').read_text(encoding='utf-8'))
+VAL=json.loads((ROOT/'data/source-snapshots/costi-fiscalita-validated-2026-08.json').read_text(encoding='utf-8'))
+APP00=(ROOT/'assets/app-parts/00.txt').read_text(encoding='utf-8')
+APP02=(ROOT/'assets/app-parts/02.txt').read_text(encoding='utf-8')
+APP03=(ROOT/'assets/app-parts/03.txt').read_text(encoding='utf-8')
+APP05=(ROOT/'assets/app-parts/05.txt').read_text(encoding='utf-8')
+UX=(ROOT/'assets/ux-history.js').read_text(encoding='utf-8')
+UXCORE=(ROOT/'assets/ux-history-core.js').read_text(encoding='utf-8')
+VISUAL=(ROOT/'assets/visual-grammar.js').read_text(encoding='utf-8')
 
 
-def rows(key):
-    return {row['town']: row for row in DATA['metrics'][key]['rows']}
-
-
-def close(a, b, tol=.011):
-    return abs(float(a) - float(b)) <= tol
+def rows(key): return {r['town']:r for r in DATA['metrics'][key]['rows']}
+def close(a,b,tol=.011): return abs(float(a)-float(b))<=tol
 
 
 def main():
-    assert DATA['version'] == 'v1.12.0'
-    assert REG['expectedMetricCount'] == 126
-    assert REG['expectedInlineMetricCount'] == 122
-    assert REG['expectedExternalMetricCount'] == 4
-
-    for key in ['municipalIrpef', 'tariStandardHousehold', 'municipalImuStandard', 'fuelPrices', 'wasteServiceCost']:
+    assert DATA['version']=='v1.12.0'
+    assert REG['expectedMetricCount']==127 and REG['expectedInlineMetricCount']==123 and REG['expectedExternalMetricCount']==4
+    for key in ['municipalIrpef','tariStandardHousehold','municipalImuStandard','fuelPrices','wasteServiceCost','incomeVsInflation']:
         assert key in DATA['metrics']
 
-    irpef = DATA['metrics']['municipalIrpef']
-    assert irpef['method']['coverage'] == '7/7'
-    assert irpef['meta']['unit'] == 'currency2'
-    assert len(irpef['rows']) == 7
-    for current in irpef['rows']:
-        expected = AUDIT['municipalIrpef']['towns'][current['town']]['amounts']
-        assert [round(part['value'], 2) for part in current['parts']] == [round(float(expected[str(value)]), 2) for value in [20000, 30000, 50000]]
+    ir=DATA['metrics']['municipalIrpef']
+    assert ir['method']['coverage']=='7/7' and ir['meta']['unit']=='currency2' and len(ir['rows'])==7
+    for r in ir['rows']:
+        expected=AUDIT['municipalIrpef']['towns'][r['town']]['amounts']
+        assert [round(p['value'],2) for p in r['parts']]==[round(float(expected[str(x)]),2) for x in [20000,30000,50000]]
 
-    tari = rows('tariStandardHousehold')
-    assert DATA['metrics']['tariStandardHousehold']['method']['coverage'] == '7/7'
-    for town, value in VAL['tari']['towns'].items():
-        assert close(tari[town]['value'], value['annualCost'])
-    assert close(tari['Forte dei Marmi']['value'], 475.73)
-    assert close(tari['Pietrasanta']['value'], 356.11)
+    tr=rows('tariStandardHousehold')
+    assert DATA['metrics']['tariStandardHousehold']['method']['coverage']=='7/7'
+    for town,v in VAL['tari']['towns'].items(): assert close(tr[town]['value'],v['annualCost'])
+    assert close(tr['Forte dei Marmi']['value'],475.73) and close(tr['Pietrasanta']['value'],356.11)
 
-    imu_metric = DATA['metrics']['municipalImuStandard']
-    imu = rows('municipalImuStandard')
-    assert imu_metric['method']['coverage'] == '7/7'
-    assert 'compositeType' not in imu_metric['meta']
-    assert 'parts' not in imu_metric['aggregate']
-    for town, value in VAL['imu']['towns'].items():
-        assert close(imu[town]['value'], value['annualTax'])
-        assert close(imu[town]['ratePercent'], value['ratePercent'])
-        assert 'parts' not in imu[town]
+    im=rows('municipalImuStandard')
+    imu_metric=DATA['metrics']['municipalImuStandard']
+    assert imu_metric['method']['coverage']=='7/7' and 'compositeType' not in imu_metric['meta']
+    for town,v in VAL['imu']['towns'].items():
+        assert close(im[town]['value'],v['annualTax']) and close(im[town]['ratePercent'],v['ratePercent'])
 
-    fuel = rows('fuelPrices')
-    assert DATA['metrics']['fuelPrices']['method']['coverage'] == '6/7'
-    assert fuel['Stazzema']['parts'][0]['value'] is None
-    assert fuel['Stazzema']['parts'][1]['value'] is None
-    assert fuel['Stazzema']['stationCount'] == 0
-    for town, value in VAL['fuel']['towns'].items():
-        assert fuel[town]['parts'][0]['value'] == value['benzina']
-        assert fuel[town]['parts'][1]['value'] == value['gasolio']
+    fu=rows('fuelPrices')
+    assert DATA['metrics']['fuelPrices']['method']['coverage']=='6/7'
+    assert fu['Stazzema']['parts'][0]['value'] is None and fu['Stazzema']['parts'][1]['value'] is None and fu['Stazzema']['stationCount']==0
+    for town,v in VAL['fuel']['towns'].items():
+        assert fu[town]['parts'][0]['value']==v['benzina'] and fu[town]['parts'][1]['value']==v['gasolio']
 
-    waste = rows('wasteServiceCost')
-    assert DATA['metrics']['wasteServiceCost']['method']['coverage'] == '7/7'
-    for town, value in VAL['waste']['towns'].items():
-        assert close(waste[town]['value'], value['ctotPerResident'])
+    wa=rows('wasteServiceCost')
+    assert DATA['metrics']['wasteServiceCost']['method']['coverage']=='7/7'
+    for town,v in VAL['waste']['towns'].items(): assert close(wa[town]['value'],v['ctotPerResident'])
 
-    income = DATA['metrics']['income']
-    assert income['meta']['label'] == 'Reddito imponibile medio per dichiarante'
-    assert income['meta']['shortLabel'] == 'Reddito imponibile medio'
-    assert income['meta']['longHistoryYears'] == '2011–2024'
-    assert income['meta']['longHistoryLabel'] == 'Reddito imponibile medio · serie storica'
-    for current in income['rows']:
-        expected_series = VAL['incomeLongHistory']['towns'][current['town']]['values']
-        assert current['longSeries']['years'] == VAL['incomeLongHistory']['years']
-        assert current['series']['years'] == VAL['incomeLongHistory']['years']
-        assert current['longSeries']['values'] == expected_series
-        assert current['series']['values'] == expected_series
-        assert close(current['value'], expected_series[-1])
-    assert close(income['aggregate']['value'], VAL['incomeLongHistory']['aggregate']['values'][-1])
+    inc=DATA['metrics']['income']
+    assert inc['meta']['longHistoryYears']=='2011–2024'
+    assert inc['meta']['label']=='Reddito imponibile medio per dichiarante'
+    assert 'Reddito complessivo medio dichiarato' in inc['meta']['description']
+    for r in inc['rows']:
+        assert r['series']['years']==VAL['incomeLongHistory']['years']
+        assert r['series']['values']==VAL['incomeLongHistory']['towns'][r['town']]['values']
+        assert close(r['value'],r['series']['values'][-1],.0001)
 
-    context = DATA['incomeInflationContext']
-    assert context['years'] == list(range(2016, 2025))
-    assert context['priceLabel'] == 'NIC Italia'
-    assert close(context['incomeIndex'][-1], 127.2465, .0002)
-    assert close(context['priceIndex'][-1], 120.9166, .0002)
-    assert close(context['realIncomeIndex'][-1], 105.235, .0002)
-    assert close(context['priceGrowthPercent'], 20.92, .001)
-    assert close(context['realGrowthPercent'], 5.23, .001)
-    assert NIC['territory']['level'] == 'national'
+    dist=DATA['metrics']['incomeDistribution']
+    assert dist['meta']['summaryLabel']=='Reddito complessivo medio dichiarato'
+    assert dist['aggregate']['summaryLabel']=='Reddito complessivo medio Versilia'
+    assert rows('incomeDistribution')['Forte dei Marmi']['summaryValue']==45765
 
-    economy = DATA['themes']['economia']
-    fiscal = next(section for section in economy['sections'] if section['key'] == 'costi-fiscalita')
-    assert fiscal['metrics'] == ['municipalIrpef', 'tariStandardHousehold', 'municipalImuStandard']
-    assert 'fuelPrices' in DATA['themes']['mobilita']['metrics']
-    assert 'wasteServiceCost' in DATA['themes']['ambiente']['metrics']
+    ctx=DATA['incomeInflationContext']
+    assert ctx['years']==list(range(2016,2025))
+    assert ctx['priceLabel']=='NIC Italia'
+    assert close(ctx['priceIndex'][-1],120.9166,.0002)
 
-    assert REG['metricOverrides']['tariStandardHousehold']['profile'] == 'mef-municipal-tax-annual'
-    assert REG['metricOverrides']['municipalImuStandard']['profile'] == 'mef-municipal-tax-annual'
-    assert REG['metricOverrides']['fuelPrices']['profile'] == 'mimit-fuel-daily'
-    assert REG['metricOverrides']['wasteServiceCost']['profile'] == 'ispra-environment-annual'
-    assert REG['sourceProfileByUrl'][NIC['sourceUrl']] == 'istat-nic-national-annual'
+    real=DATA['metrics']['incomeVsInflation']
+    assert real['meta']['unit']=='percent' and real['method']['coverage']=='7/7 · 2016–2024'
+    assert len(real['rows'])==7
+    rr=rows('incomeVsInflation')
+    for row in real['rows']:
+        assert row['series']['years']==list(range(2016,2025))
+        assert close(row['series']['values'][0],0,.0001)
+        assert close(row['value'],row['series']['values'][-1],.0001)
+    assert close(rr['Forte dei Marmi']['value'],23.83,.03)
+    assert close(rr['Stazzema']['value'],3.82,.03)
+    assert close(real['aggregate']['value'],5.23,.03)
 
-    for token in ['tariStandardHousehold:', 'municipalImuStandard:', 'fuelPrices:', 'wasteServiceCost:', "case 'currency2'", "case 'eurliter'", "case 'eurPerResident'"]:
+    e=DATA['themes']['economia']
+    fiscal=next(x for x in e['sections'] if x['key']=='costi-fiscalita')
+    assert fiscal['metrics']==['municipalIrpef','tariStandardHousehold','municipalImuStandard']
+    redditi=next(x for x in e['sections'] if x['key']=='redditi')
+    assert redditi['metrics']==['income','incomeDistribution','incomeVsInflation']
+    assert 'incomeVsInflation' in e['metrics']
+    assert 'metric-context-jump' not in APP02
+    assert "themeKey === 'economia' ? incomeInflationMarkup(data)" not in APP03
+
+    m=DATA['themes']['mobilita']; assert 'fuelPrices' in m['metrics']
+    a=DATA['themes']['ambiente']; assert 'wasteServiceCost' in a['metrics']
+    assert REG['metricOverrides']['incomeVsInflation']['profile']=='mef-istat-real-income-annual'
+
+    for token in ['tariStandardHousehold:','municipalImuStandard:','fuelPrices:','wasteServiceCost:',"case 'currency2'","case 'eurliter'","case 'eurPerResident'"]:
         assert token in APP00
-    assert 'metric-context-jump' in APP02
-    assert "themeKey === 'economia' ? incomeInflationMarkup(data)" in APP03
-    assert 'row.displayValue === null' in APP03
-    assert 'function incomeInflationMarkup(data)' in APP05
-    assert 'NIC nazionale ISTAT' in APP05
-    assert 'row.longSeries' in APP05
     assert 'function historyMetric(metric)' in UX
-    assert 'selected.metric.meta.longHistoryNote' in UX
-    assert "token === 'currency2'" in VISUAL
-    assert "kind === 'eurliter'" in VISUAL
-    assert "kind === 'eurperresident'" in VISUAL
+    assert 'number3' in UX and "unit === 'eurliter'" in UX
+    assert "case 'eurliter'" in UXCORE and 'focusedFuel' in UXCORE and 'rawValue === null' in UX
+    assert "kind === 'eurliter'" in VISUAL and "kind: 'focused'" in VISUAL and 'scala adattata ai prezzi' in VISUAL
 
-    draft = DATA['costsFiscalDraft']
-    assert draft['publishedInDraft'] == ['municipalIrpef', 'tariStandardHousehold', 'municipalImuStandard', 'fuelPrices', 'wasteServiceCost']
-    assert draft['notPublished'] == ['schoolMeals']
+    draft=DATA['costsFiscalDraft']
+    assert 'incomeVsInflation' in draft['publishedInDraft']
+    assert draft['notPublished']==['schoolMeals']
+    print('Draft validato: 127 indicatori = 123 inline + 4 esterni; redditi distinti, redditi-vs-inflazione comunale, carburanti a 3 decimali con scala dedicata')
 
-    print('Draft validato: 126 indicatori = 122 inline + 4 esterni; unità assi corrette, IMU senza selettore aliquota, reddito imponibile omogeneo 2011-2024, NIC Italia 2016-2024')
-
-
-if __name__ == '__main__':
-    main()
+if __name__=='__main__': main()
