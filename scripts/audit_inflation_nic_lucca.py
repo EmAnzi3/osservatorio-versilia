@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Extract NIC annual-average all-items for Provincia di Lucca from official Istat SDMX.
 
-Istat publishes provincial NIC annual averages.  For 2016 onward the dataflow is
-167_742 (base 2015=100).  Lucca province has NUTS code ITI12.  The script tries
-the aggregate and detailed dataflow identifiers exposed by IstatData and accepts
-only the exact all-items/index-number series.
+Istat publishes provincial NIC annual averages. For 2016 onward the dataflow is
+167_742 (base 2015=100). Lucca province has NUTS code ITI12. The current Istat
+REST API expects the agency-qualified flowRef syntax (IT1,<dataflow>).
 """
 from __future__ import annotations
 
@@ -23,13 +22,13 @@ KEY = 'A.ITI12.40.4.00'
 
 def fetch(flow: str, start: int, end: int) -> tuple[str, bytes, str]:
     query = urllib.parse.urlencode({'startPeriod': start, 'endPeriod': end})
-    url = f'{BASE}/{flow}/{KEY}?{query}'
+    url = f'{BASE}/IT1,{flow}/{KEY}?{query}'
     headers = {
         'User-Agent': 'OsservatorioVersilia-data-audit/1.0',
-        'Accept': 'text/csv, application/vnd.sdmx.data+csv;version=2.0.0, application/vnd.sdmx.genericdata+xml;version=2.1',
+        'Accept': 'application/vnd.sdmx.data+csv;version=1.0.0, text/csv',
     }
     request = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(request, timeout=90) as response:
+    with urllib.request.urlopen(request, timeout=120) as response:
         return url, response.read(), response.headers.get('Content-Type', '')
 
 
@@ -63,8 +62,7 @@ def main() -> None:
     for flow in FLOWS:
         try:
             url, payload, ctype = fetch(flow, args.start, args.end)
-            if b'TIME_PERIOD' in payload or b'OBS_VALUE' in payload:
-                observations = parse_csv(payload)
+            observations = parse_csv(payload) if payload else []
             if observations:
                 used_url, content_type = url, ctype
                 break
