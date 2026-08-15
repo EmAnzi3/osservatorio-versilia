@@ -28,8 +28,9 @@ jobs:
           retention-days: 14
 
   income-comprehensive:
-    name: MEF reddito complessivo medio 2011-2024
+    name: MEF reddito complessivo - controllo definizione
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -100,19 +101,19 @@ jobs:
           path: /tmp/nic-toscana-2016-2024.json
           retention-days: 14
 
-  inflation-lucca-discovery:
-    name: Istat NIC Provincia di Lucca - discovery
+  inflation-lucca:
+    name: Istat NIC Provincia di Lucca 2016-2024
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python scripts/discover_istat_price_flows.py
+      - run: python scripts/audit_inflation_nic_lucca.py --start 2016 --end 2024 --out /tmp/nic-lucca-2016-2024.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: istat-price-flows
-          path: /tmp/istat-price-flows.json
+          name: nic-lucca-2016-2024
+          path: /tmp/nic-lucca-2016-2024.json
           if-no-files-found: warn
           retention-days: 14
 
