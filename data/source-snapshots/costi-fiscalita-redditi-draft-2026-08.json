@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-08-15",
+  "status": "draft",
+  "base": {
+    "branch": "main",
+    "commit": "4c6f978043c98f34e1f1b186c4483d8be6e0f910",
+    "dataVersion": "v1.12.0",
+    "metricCount": 121,
+    "inlineMetricCount": 117,
+    "externalMetricCount": 4
+  },
+  "scope": {
+    "towns": [
+      {"name": "Camaiore", "code": "046005"},
+      {"name": "Forte dei Marmi", "code": "046013"},
+      {"name": "Massarosa", "code": "046018"},
+      {"name": "Pietrasanta", "code": "046024"},
+      {"name": "Seravezza", "code": "046028"},
+      {"name": "Stazzema", "code": "046030"},
+      {"name": "Viareggio", "code": "046033"}
+    ]
+  },
+  "audit": {
+    "municipalIrpef": {
+      "decision": "PROMOSSO",
+      "coverage": "7/7",
+      "referenceYear": 2025,
+      "history": "Disponibile sul portale MEF; il draft pubblica per ora l'annualità comune 2025.",
+      "reason": "Il MEF pubblica aliquote, scaglioni ed esenzioni comunali. La spesa può essere calcolata senza stime applicando la disciplina di ciascun Comune agli stessi redditi imponibili standardizzati."
+    },
+    "tari": {
+      "decision": "DA VALUTARE",
+      "coverage": "5/7 chiusi con tariffa ufficiale 2025; Pietrasanta e Forte dei Marmi non ancora materializzati in modo riproducibile",
+      "referenceYear": 2025,
+      "history": "Potenzialmente pluriennale, subordinata alla ricostruzione omogenea delle componenti annuali.",
+      "reason": "Metodo promosso (3 componenti, 100 m²; quota fissa + variabile + TEFA + componenti perequative), ma il requisito 7/7 non è ancora soddisfatto con documenti primari materializzati."
+    },
+    "imu": {
+      "decision": "DA VALUTARE",
+      "coverage": "Metodo definito; matrice ufficiale 2025 non ancora chiusa 7/7",
+      "referenceYear": 2025,
+      "history": "Disponibile nei prospetti MEF/comunali, da ricostruire dopo la validazione 7/7.",
+      "reason": "Standard proposto: seconda abitazione A/2 con base imponibile IMU standardizzata di 100.000 €, identica nei sette Comuni. È un benchmark di pressione fiscale, non una casa 'tipica'. Nessuna rendita catastale viene inventata."
+    },
+    "fuelPrices": {
+      "decision": "ESCLUSO",
+      "coverage": "6/7",
+      "referenceDate": "2026-08-14",
+      "history": "MIMIT: archivi trimestrali disponibili dal 2015.",
+      "reason": "Stazzema non ha impianti attivi nell'anagrafica MIMIT alla data di audit; un indicatore comunale omogeneo 7/7 non è quindi costruibile. Nessun valore viene imputato o sostituito con un'area più ampia."
+    },
+    "schoolMeals": {
+      "decision": "DA VALUTARE",
+      "coverage": "Audit tariffario non ancora chiuso 7/7 per lo stesso anno scolastico",
+      "referenceYear": "2025/26",
+      "history": "Da verificare dopo l'allineamento delle strutture tariffarie.",
+      "reason": "Le strutture ISEE, gli sconti fratelli e le regole residenti/non residenti differiscono molto; nessun confronto viene pubblicato prima di avere uno scenario realmente equivalente."
+    },
+    "wasteServiceCost": {
+      "decision": "DA VALUTARE",
+      "coverage": "Variabile ufficiale validata; righe comunali individuali 7/7 non ancora materializzate",
+      "referenceYear": 2024,
+      "history": "ISPRA Catasto Rifiuti: periodo costi 2011-2024.",
+      "reason": "CTOTab è la misura corretta (euro/abitante/anno), ma ISPRA specifica che i dati di costo si riferiscono al campione di Comuni. Prima della pubblicazione devono risultare sette righe comunali, non aggregazioni."
+    },
+    "inflation": {
+      "decision": "PROMOSSO",
+      "coverage": "Sovracomunale: Lucca città / Toscana / Italia",
+      "referenceYear": "serie annuale NIC",
+      "history": "Serie territoriali ricostruibili dal 1996; con nuova classificazione ECOICOP v2 la comparabilità storica va documentata.",
+      "reason": "Lucca è Comune capoluogo di rilevazione dei prezzi, non una serie della Provincia di Lucca. Per deflazionare una serie riferita ai sette Comuni della Versilia, il NIC Toscana è il deflatore territoriale preferibile. I valori non entrano nel draft finché la serie annuale non è materializzata."
+    },
+    "incomeHistory": {
+      "decision": "PROMOSSO",
+      "coverage": "7/7 sulla definizione corrente",
+      "referenceYear": "obiettivo 2011-2024",
+      "history": "Dataset comunali annuali MEF disponibili; estrazione storica ancora da materializzare.",
+      "reason": "La definizione corrente è esattamente reddito complessivo / numero di dichiaranti con reddito complessivo. Lo storico deve utilizzare ogni anno le stesse due variabili MEF e fermarsi o segnalare eventuali rotture definitorie."
+    },
+    "realIncome": {
+      "decision": "DA VALUTARE",
+      "coverage": "Subordinata alla materializzazione di storico redditi e NIC Toscana",
+      "reason": "La vista a prezzi costanti sarà una modalità dello stesso indicatore reddito, non un nuovo indicatore. Dicitura prevista: Reddito medio dichiarato a prezzi costanti."
+    }
+  },
+  "municipalIrpef": {
+    "source": {
+      "publisher": "Dipartimento delle Finanze - MEF",
+      "label": "Addizionale comunale all'IRPEF - aliquote applicabili",
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/"
+    },
+    "year": 2025,
+    "scenarios": [20000, 30000, 50000],
+    "calculationRule": "Se il reddito imponibile non supera la soglia di esenzione, imposta = 0. Se la supera, l'addizionale è calcolata sull'intero imponibile secondo aliquota unica o scaglioni progressivi pubblicati dal MEF.",
+    "towns": {
+      "Camaiore": {
+        "code": "046005",
+        "scheme": "progressive",
+        "exemption": 15000,
+        "brackets": [
+          {"upTo": 15000, "ratePercent": 0.35},
+          {"upTo": 28000, "ratePercent": 0.60},
+          {"upTo": 50000, "ratePercent": 0.70},
+          {"upTo": null, "ratePercent": 0.80}
+        ],
+        "amounts": {"20000": 82.50, "30000": 144.50, "50000": 284.50}
+      },
+      "Forte dei Marmi": {
+        "code": "046013",
+        "scheme": "progressive",
+        "exemption": 20000,
+        "brackets": [
+          {"upTo": 28000, "ratePercent": 0.50},
+          {"upTo": 50000, "ratePercent": 0.65},
+          {"upTo": null, "ratePercent": 0.80}
+        ],
+        "amounts": {"20000": 0.00, "30000": 153.00, "50000": 283.00}
+      },
+      "Massarosa": {
+        "code": "046018",
+        "scheme": "flat",
+        "exemption": 10000,
+        "ratePercent": 0.80,
+        "amounts": {"20000": 160.00, "30000": 240.00, "50000": 400.00}
+      },
+      "Pietrasanta": {
+        "code": "046024",
+        "scheme": "flat",
+        "exemption": 14500,
+        "ratePercent": 0.75,
+        "amounts": {"20000": 150.00, "30000": 225.00, "50000": 375.00}
+      },
+      "Seravezza": {
+        "code": "046028",
+        "scheme": "flat",
+        "exemption": null,
+        "ratePercent": 0.80,
+        "amounts": {"20000": 160.00, "30000": 240.00, "50000": 400.00}
+      },
+      "Stazzema": {
+        "code": "046030",
+        "scheme": "flat",
+        "exemption": null,
+        "ratePercent": 0.80,
+        "amounts": {"20000": 160.00, "30000": 240.00, "50000": 400.00}
+      },
+      "Viareggio": {
+        "code": "046033",
+        "scheme": "flat",
+        "exemption": 13000,
+        "ratePercent": 0.75,
+        "amounts": {"20000": 150.00, "30000": 225.00, "50000": 375.00}
+      }
+    }
+  }
+}
