@@ -27,7 +27,8 @@
       "coverage": "7/7",
       "referenceYear": 2025,
       "history": "Disponibile sul portale MEF; il draft pubblica per ora l'annualità comune 2025.",
-      "reason": "Il MEF pubblica aliquote, scaglioni ed esenzioni comunali. La spesa può essere calcolata senza stime applicando la disciplina di ciascun Comune agli stessi redditi imponibili standardizzati."
+      "reason": "Il MEF pubblica aliquote, scaglioni ed esenzioni comunali. La spesa può essere calcolata senza stime applicando la disciplina di ciascun Comune agli stessi redditi imponibili standardizzati.",
+      "sourceCaveat": "Per Seravezza l'interfaccia pubblica di consultazione MEF non espone la riga 2025 nello stesso modo degli altri sei Comuni. La continuità 2025 è confermata dalla comunicazione ufficiale del Comune sulla conferma delle aliquote IRPEF per il 2025; il riferimento è la deliberazione consiliare n. 63 del 28/11/2024, depositata nel Portale del federalismo fiscale."
     },
     "tari": {
       "decision": "DA VALUTARE",
@@ -88,7 +89,8 @@
     "source": {
       "publisher": "Dipartimento delle Finanze - MEF",
       "label": "Addizionale comunale all'IRPEF - aliquote applicabili",
-      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/"
+      "url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/",
+      "note": "MEF per Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Stazzema e Viareggio. Per Seravezza: conferma ufficiale comunale delle aliquote 2025, deliberazione consiliare n. 63 del 28/11/2024 depositata nel Portale del federalismo fiscale; l'interfaccia pubblica MEF non restituisce la riga 2025 come per gli altri sei Comuni."
     },
     "year": 2025,
     "scenarios": [20000, 30000, 50000],
@@ -136,6 +138,7 @@
         "scheme": "flat",
         "exemption": null,
         "ratePercent": 0.80,
+        "provenance": "Comune di Seravezza: conferma delle aliquote IRPEF per il 2025; deliberazione consiliare n. 63 del 28/11/2024 depositata nel Portale del federalismo fiscale.",
         "amounts": {"20000": 160.00, "30000": 240.00, "50000": 400.00}
       },
       "Stazzema": {
