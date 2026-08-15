@@ -86,9 +86,11 @@ jobs:
           node --check dist/assets/app-bundle.js
 
       - name: Include Percorsi Versilia
+        if: always()
         run: python scripts/copy_percorsi_dist.py
 
       - name: Upload local-style draft preview
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-costi-fiscalita-draft
