@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-08-15",
+  "status": "validated-draft",
+  "municipalIrpefSourceSnapshot": "costi-fiscalita-redditi-draft-2026-08.json",
+  "tari": {
+    "year": 2025,
+    "coverage": "7/7",
+    "standard": "Utenza domestica residente, 3 componenti, 100 m², senza agevolazioni personali",
+    "tefaPercent": 5.0,
+    "equalizationPerUser": 7.6,
+    "source": "Comuni / Dipartimento delle Finanze - MEF / ARERA",
+    "towns": {
+      "Camaiore": {"fixedPerSqm": 0.969, "variablePerYear": 298.664, "baseCharge": 395.56, "tefa5Percent": 19.78, "equalization2025": 7.6, "annualCost": 422.94},
+      "Forte dei Marmi": {"fixedPerSqm": 1.39, "variablePerYear": 306.84, "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f230808daf3a&nome=376342_DIMUNIC-16lu25d730d.pdf", "baseCharge": 445.84, "tefa5Percent": 22.29, "equalization2025": 7.6, "annualCost": 475.73},
+      "Massarosa": {"fixedPerSqm": 1.297705857, "variablePerYear": 379.6698985, "baseCharge": 509.44, "tefa5Percent": 25.47, "equalization2025": 7.6, "annualCost": 542.51},
+      "Pietrasanta": {"fixedPerSqm": 1.25, "variablePerYear": 206.91, "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f2308082d4af&nome=373612_DIMUNIC-16lu25g628d.pdf", "baseCharge": 331.91, "tefa5Percent": 16.6, "equalization2025": 7.6, "annualCost": 356.11},
+      "Seravezza": {"fixedPerSqm": 1.14427, "variablePerYear": 356.63966, "baseCharge": 471.07, "tefa5Percent": 23.55, "equalization2025": 7.6, "annualCost": 502.22},
+      "Stazzema": {"officialBase100sqm3people": 340.68, "baseCharge": 340.68, "tefa5Percent": 17.03, "equalization2025": 7.6, "annualCost": 365.31},
+      "Viareggio": {"fixedPerSqm": 1.0646, "variablePerYear": 284.2633, "baseCharge": 390.72, "tefa5Percent": 19.54, "equalization2025": 7.6, "annualCost": 417.86}
+    }
+  },
+  "imu": {
+    "year": 2025,
+    "source": "Dipartimento delle Finanze - MEF",
+    "category": "Altri fabbricati",
+    "standard": "Seconda abitazione A/2; base imponibile IMU standardizzata EUR 100.000",
+    "coverage": "7/7",
+    "towns": {
+      "Camaiore": {"ratePercent": 1.14, "annualTax": 1140.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=B455&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Forte dei Marmi": {"ratePercent": 1.06, "annualTax": 1060.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=D730&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Massarosa": {"ratePercent": 1.06, "annualTax": 1060.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=F035&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Pietrasanta": {"ratePercent": 1.06, "annualTax": 1060.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=G628&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Seravezza": {"ratePercent": 1.14, "annualTax": 1140.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=I622&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Stazzema": {"ratePercent": 1.06, "annualTax": 1060.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=I942&cm=O&lista=1&pagina=&pr=&r=2"},
+      "Viareggio": {"ratePercent": 1.14, "annualTax": 1140.0, "sourcePage": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/risultato.htm?DOWNLOAD=Procedi&anno=2025&cc=L833&cm=O&lista=1&pagina=&pr=&r=2"}
+    }
+  },
+  "fuel": {
+    "source": "MIMIT - Prezzi praticati e anagrafica impianti",
+    "sourceUrls": {"anagrafica": "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv", "prezzi": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv"},
+    "referenceDate": "2026-08-14",
+    "statistic": "mediana comunale impianti attivi, self-service",
+    "coverage": "6/7",
+    "towns": {
+      "Camaiore": {"benzina": 1.999, "gasolio": 2.089, "stations": 11},
+      "Forte dei Marmi": {"benzina": 1.979, "gasolio": 2.089, "stations": 4},
+      "Massarosa": {"benzina": 1.987, "gasolio": 2.088, "stations": 7},
+      "Pietrasanta": {"benzina": 1.999, "gasolio": 2.099, "stations": 15},
+      "Seravezza": {"benzina": 1.994, "gasolio": 2.079, "stations": 6},
+      "Stazzema": {"benzina": null, "gasolio": null, "stations": 0},
+      "Viareggio": {"benzina": 1.994, "gasolio": 2.099, "stations": 20}
+    }
+  },
+  "waste": {
+    "year": 2024,
+    "source": "ISPRA - Catasto Nazionale Rifiuti",
+    "definition": "CTOTab - costi totali di gestione del servizio di igiene urbana, euro/abitante/anno",
+    "coverage": "7/7",
+    "towns": {
+      "Camaiore": {"ctotPerResident": 343.24},
+      "Forte dei Marmi": {"ctotPerResident": 998.69},
+      "Massarosa": {"ctotPerResident": 275.56},
+      "Pietrasanta": {"ctotPerResident": 360.36},
+      "Seravezza": {"ctotPerResident": 295.5},
+      "Stazzema": {"ctotPerResident": 317.81},
+      "Viareggio": {"ctotPerResident": 348.2}
+    },
+    "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
+    "note": "Sono pubblicate esclusivamente righe comunali con N. di comuni = 1; le aggregazioni sono escluse."
+  },
+  "incomeLongHistory": {
+    "source": "Dipartimento delle Finanze - MEF",
+    "definition": "Reddito imponibile - Ammontare / Reddito imponibile - Frequenza",
+    "years": [2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    "coverage": "7/7",
+    "towns": {
+      "Camaiore": {"values": [17898.81,17956.18,18021.36,18047.25,18136.71,18519.3,18459.15,19020.99,19242.14,19156.14,20539.4,21506.89,22627.64,23744.66]},
+      "Forte dei Marmi": {"values": [24329.79,25930.51,26077.96,27193.68,27494.91,26879.66,27971.17,29720.44,29678.52,28925.49,32461.83,37844.01,37198.74,40248.59]},
+      "Massarosa": {"values": [17175.61,17270.01,17429.17,17530.42,17692.49,17875.79,17926.06,18327.37,18619.92,18457.81,19374.91,20447.31,21263.87,22350.6]},
+      "Pietrasanta": {"values": [19032.55,18879.96,19228.72,19034.01,19269.29,19603.62,19975.28,20313.78,20498.44,20086.34,21600.99,23117.27,24144.93,25239.48]},
+      "Seravezza": {"values": [17094.29,17122.04,17401.69,17522.3,17719.07,17713.87,17594.68,17883.76,18344.43,18052.3,19039.4,19711.34,20688.89,21933.08]},
+      "Stazzema": {"values": [14324.16,14718.19,15316.18,15485.27,15812.74,15683.85,15835.38,15883.75,16244.93,15488.24,16452.65,17298.67,18373.36,19689.09]},
+      "Viareggio": {"values": [19913.96,19777.67,19890.64,19877.48,20207.81,20445.3,21372.01,21623.91,21724.65,20888.63,22045.32,23727.0,24506.14,25539.17]}
+    },
+    "aggregate": {"method": "Totale ammontare / totale frequenza dei sette comuni", "values": [18913.88,18934.57,19105.31,19152.8,19383.32,19584.39,20029.96,20440.58,20628.85,20136.56,21438.86,22923.37,23759.32,24920.45]},
+    "note": "Serie lunga omogenea distinta dal Reddito complessivo usato come dato principale corrente. Non vengono sommate le fasce di reddito complessivo per ricostruire anni mancanti."
+  },
+  "nicToscana": {
+    "source": "Regione Toscana - Ufficio regionale di statistica su dati Istat",
+    "sourceUrl": "https://www.regione.toscana.it/documents/10180/12588189/Tabella%2Baccessibile%2BIndice%2Bprezzi%2Bal%2Bconsumo%2BIta%2BTos%2BNord-Ovest%2BNord-Est%2BCentro%2BSud%2BIsole%2BGen16-Dic24.html/4b90be0a-136a-7d8c-e4a5-a87904a8f617?t=1740506039965",
+    "indicator": "Indice dei prezzi al consumo per l’intera collettività (NIC), indice generale",
+    "territory": {"label": "Toscana", "level": "region"},
+    "sourceBase": "2015=100",
+    "comparisonBase": "2016=100",
+    "years": [2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    "annualAverageSourceIndex": [100.1083,101.5583,102.7667,103.2333,103.0833,104.9167,113.5167,120.3583,121.675],
+    "comparisonIndex": [100.0,101.4484,102.6555,103.1216,102.9718,104.8031,113.3938,120.2281,121.5433],
+    "annualRatesPercent": {"2017":1.448,"2018":1.19,"2019":0.454,"2020":-0.145,"2021":1.778,"2022":8.197,"2023":6.027,"2024":1.094},
+    "coverage": "2016-2024 complete",
+    "note": "Riferimento regionale Toscana, non Provincia di Lucca e non Comune di Lucca."
+  },
+  "incomeInflationContext": {
+    "years": [2016,2017,2018,2019,2020,2021,2022,2023,2024],
+    "incomeIndex": [100.0,102.2751,104.3718,105.3331,102.8194,109.4691,117.0492,121.3176,127.2465],
+    "priceIndex": [100.0,101.4484,102.6555,103.1216,102.9718,104.8031,113.3938,120.2281,121.5433],
+    "realIncomeIndex": [100.0,100.8149,101.6719,102.1446,99.852,104.4522,103.2236,100.9062,104.6923],
+    "base": "2016=100",
+    "incomeLabel": "Imponibile medio Versilia",
+    "priceLabel": "NIC Toscana",
+    "realLabel": "Imponibile medio a prezzi costanti",
+    "nominalGrowthPercent": 27.25,
+    "priceGrowthPercent": 21.54,
+    "realGrowthPercent": 4.69,
+    "note": "Confronto indicativo tra reddito imponibile medio dichiarato nei sette comuni e indice regionale NIC Toscana. Non misura il reddito disponibile né il potere d’acquisto delle famiglie."
+  }
+}
