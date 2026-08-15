@@ -30,6 +30,9 @@ jobs:
           python -m pip install playwright pypdf
           python -m playwright install --with-deps chromium
 
+      - name: Audit official MEF income history
+        run: python scripts/audit_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-income-history.json
+
       - name: Materialize promoted indicators
         run: python scripts/apply_costi_fiscalita_redditi_draft.py
 
@@ -77,6 +80,15 @@ jobs:
 
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
+
+      - name: Upload MEF income audit snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mef-income-history-audit
+          path: /tmp/mef-income-history.json
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Upload local-style draft preview
         uses: actions/upload-artifact@v4
