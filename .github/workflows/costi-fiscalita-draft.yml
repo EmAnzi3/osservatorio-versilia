@@ -24,14 +24,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Audit official MEF income history
+        run: python scripts/audit_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-income-history.json
+
       - name: Install browser tooling
         run: |
           python -m pip install --upgrade pip
           python -m pip install playwright pypdf
           python -m playwright install --with-deps chromium
-
-      - name: Audit official MEF income history
-        run: python scripts/audit_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-income-history.json
 
       - name: Materialize promoted indicators
         run: python scripts/apply_costi_fiscalita_redditi_draft.py
