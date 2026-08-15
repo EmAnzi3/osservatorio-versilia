@@ -1,29 +1,25 @@
 # Audit dati — costi, fiscalità, inflazione e redditi
 
 Data audit: **15 agosto 2026**  
-Base: `main` @ `4c6f978043c98f34e1f1b186c4483d8be6e0f910` — **v1.12.0**, 121 indicatori (117 inline + 4 climatici esterni).
+Base iniziale: `main` @ `4c6f978043c98f34e1f1b186c4483d8be6e0f910` — **v1.12.0**, 121 indicatori (117 inline + 4 climatici esterni).
 
-## Esito sintetico
+## Esito aggiornato
 
-| Candidato | Copertura | Annualità | Fonte primaria | Storico | Esito |
-|---|---:|---|---|---|---|
-| Addizionale comunale IRPEF effettiva | 7/7 | 2025 | MEF — Dipartimento Finanze; Comune di Seravezza per conferma 2025 | disponibile | **PROMOSSO** |
-| TARI, 3 persone / 100 m² | 5/7 materializzati | 2025 | Comuni / MEF + ARERA | potenziale pluriennale | **DA VALUTARE** |
-| IMU, seconda abitazione standard | metodo definito; matrice 7/7 non chiusa | 2025 | MEF / Comuni | pluriennale | **DA VALUTARE** |
-| Prezzi carburanti | 6/7 | fotografia 14/08/2026 | MIMIT — Osservaprezzi | trimestrale dal 2015 | **ESCLUSO** |
-| Mensa scolastica | audit incompleto 7/7 | 2025/26 | Comuni | da verificare | **DA VALUTARE** |
-| Costo gestione rifiuti CTOTab | variabile valida; righe 7/7 da materializzare | 2024 | ISPRA — Catasto Rifiuti | 2011–2024 | **DA VALUTARE** |
-| Inflazione NIC | sovracomunale | serie annuale | ISTAT | dal 1996 | **PROMOSSO** |
-| Storico reddito medio | 7/7 sulla definizione | obiettivo 2011–2024 | MEF — dichiarazioni IRPEF | annuale | **PROMOSSO** |
-| Reddito a prezzi costanti | dipende dalle due serie precedenti | — | elaborazione Osservatorio su MEF + ISTAT | — | **DA VALUTARE** |
+| Candidato | Copertura | Annualità | Fonte primaria | Esito |
+|---|---:|---|---|---|
+| Addizionale comunale IRPEF effettiva | 7/7 | 2025 | MEF — Dipartimento Finanze; Comune di Seravezza per conferma 2025 | **PROMOSSO** |
+| TARI, 3 persone / 100 m² | 7/7 | 2025 | MEF / Comuni + ARERA | **PROMOSSO** |
+| IMU, seconda abitazione standard | 7/7 | 2025 | MEF — Dipartimento Finanze | **PROMOSSO** |
+| Prezzi carburanti self | 6/7 | 14/08/2026 | MIMIT | **PROMOSSO 6/7; Stazzema n.d.** |
+| Mensa scolastica | non omogenea | 2025/26 | Comuni | **ESCLUSO** |
+| Costo gestione rifiuti CTOTab | 7/7 | 2024 | ISPRA — Catasto Rifiuti | **PROMOSSO** |
+| NIC prezzi al consumo | provinciale disponibile | 2011+ | ISTAT | **PROMOSSO; estrazione Provincia di Lucca da chiudere** |
+| Reddito complessivo medio | definizione corrente 7/7 | anni recenti | MEF | **MANTENUTO** |
+| Reddito imponibile medio, serie lunga | 7/7 | 2011–2024 | MEF | **PROMOSSO COME SERIE LUNGA DISTINTA** |
 
 ## 1. Addizionale comunale IRPEF — PROMOSSO
 
-L'indicatore non confronta l'aliquota massima, ma l'**importo annuo dovuto** applicando aliquote, scaglioni ed esenzioni allo stesso reddito imponibile teorico.
-
-Scenari: **20.000 € / 30.000 € / 50.000 €**. Sono abbastanza distanti da mostrare sia l'effetto delle soglie di esenzione sia quello delle strutture progressive senza trasformare le viste in indicatori separati.
-
-### Importo calcolato, 2025
+L'indicatore confronta l'**importo annuo dovuto** applicando aliquote, scaglioni ed esenzioni allo stesso reddito imponibile teorico. Scenari: **20.000 € / 30.000 € / 50.000 €**.
 
 | Comune | 20.000 € | 30.000 € | 50.000 € |
 |---|---:|---:|---:|
@@ -35,86 +31,143 @@ Scenari: **20.000 € / 30.000 € / 50.000 €**. Sono abbastanza distanti da m
 | Stazzema | 160,00 € | 240,00 € | 400,00 € |
 | Viareggio | 150,00 € | 225,00 € | 375,00 € |
 
-Regola di calcolo: se l'imponibile non supera la soglia di esenzione l'addizionale è zero; superata la soglia, l'imposta si applica all'intero imponibile secondo l'aliquota unica o gli scaglioni del Comune.
+Per **Seravezza** la continuità 2025 è verificata sulla comunicazione ufficiale del Comune e sulla deliberazione consiliare n. 63 del 28/11/2024 depositata nel Portale del federalismo fiscale.
 
-Fonte principale: Dipartimento delle Finanze — banca dati dell'Addizionale comunale all'IRPEF. Per **Seravezza** l'interfaccia pubblica MEF non espone la riga 2025 nello stesso modo degli altri sei Comuni: la continuità per il 2025 è verificata sulla comunicazione ufficiale del Comune che conferma le aliquote IRPEF e sulla deliberazione consiliare n. 63 del 28/11/2024 depositata nel Portale del federalismo fiscale. L'eccezione di provenienza è conservata anche nello snapshot versionato.
+## 2. TARI — PROMOSSO 7/7
 
-## 2. TARI — DA VALUTARE
+Standard: **utenza domestica residente, 3 componenti, 100 m², senza agevolazioni personali**. Il confronto include quota fissa, quota variabile, TEFA 5% e componenti perequative ARERA 2025 (`UR1 + UR2 + UR3 = 7,60 € per utenza/anno`).
 
-Lo standard **3 componenti + 100 m²** è metodologicamente valido e l'annualità comune individuata è il **2025**. La spesa deve includere quota fissa, quota variabile, **TEFA 5%** e componenti perequative ARERA 2025 (`UR1 + UR2 + UR3 = 7,60 € per utenza/anno`), evitando agevolazioni personali.
+| Comune | Spesa annua standardizzata |
+|---|---:|
+| Camaiore | 422,94 € |
+| Forte dei Marmi | 475,73 € |
+| Massarosa | 542,51 € |
+| Pietrasanta | 356,11 € |
+| Seravezza | 502,22 € |
+| Stazzema | 365,31 € |
+| Viareggio | 417,86 € |
 
-Tariffe 2025 già materializzate da fonti ufficiali:
+Le verifiche aggiuntive hanno chiuso i due buchi precedenti:
 
-- Camaiore: QF 0,969 €/m² + QV 298,664 €/anno;
-- Viareggio: QF 1,0646 €/m² + QV 284,2633 €/anno;
-- Massarosa: QF 1,297705857 €/m² + QV 379,6698985 €/anno;
-- Seravezza: QF 1,14427 €/m² + QV 356,63966 €/anno;
-- Stazzema: il prospetto ufficiale riporta 340,68 € per 3 persone / 100 m² prima di TEFA e componenti perequative.
+- **Forte dei Marmi:** prospetto ufficiale 2025, 3 componenti = `1,39 €/m² + 306,84 €/anno`;
+- **Pietrasanta:** prospetto ufficiale 2025, 3 componenti = `1,25 €/m² + 206,91 €/anno`.
 
-Ulteriore verifica del 15 agosto: il Comune di Pietrasanta conferma una delibera tariffaria TARI 2025 e pubblica proprio l'esempio “100 m² con 3 persone”; l'HTML accessibile non espone però i coefficienti o il totale 2025 necessari a una ricostruzione verificabile. A Forte dei Marmi è confermata l'approvazione delle tariffe TARI 2025 in Consiglio comunale, ma non è stato ancora materializzato il prospetto numerico primario.
+Non sono quindi necessari valori `n.d.`.
 
-**Blocco:** per Forte dei Marmi e Pietrasanta non è stata ancora materializzata nel repository una tariffa 2025 primaria e riproducibile. L'indicatore non entra finché non è 7/7.
+## 3. IMU — PROMOSSO 7/7
 
-## 3. IMU — DA VALUTARE
-
-La casa principale ordinaria è esclusa dal confronto. Per evitare di inventare una rendita catastale “tipica”, lo standard proposto è:
+Standard dichiarato:
 
 > **Seconda abitazione A/2 — base imponibile IMU standardizzata 100.000 €**
 
-La base è identica nei sette Comuni e serve esclusivamente come benchmark di pressione fiscale. Il valore dell'indicatore sarebbe `100.000 € × aliquota comunale applicabile alla fattispecie standard`.
+È un benchmark di pressione fiscale: non viene inventata una rendita catastale “tipica”. La fattispecie omogenea nei prospetti MEF 2025 è **Altri fabbricati**.
 
-L'archivio MEF 2025 conferma che i prospetti IMU ufficiali sono disponibili per i Comuni verificati, compresi Forte dei Marmi e Stazzema; questo risolve il dubbio sulla disponibilità della fonte, non ancora quello sulla corretta selezione automatica della specifica fattispecie “seconda abitazione A/2” nei sette prospetti.
+| Comune | Aliquota | Imposta standardizzata |
+|---|---:|---:|
+| Camaiore | 1,14% | 1.140 € |
+| Forte dei Marmi | 1,06% | 1.060 € |
+| Massarosa | 1,06% | 1.060 € |
+| Pietrasanta | 1,06% | 1.060 € |
+| Seravezza | 1,14% | 1.140 € |
+| Stazzema | 1,06% | 1.060 € |
+| Viareggio | 1,14% | 1.140 € |
 
-**Blocco:** prima della pubblicazione va chiusa la matrice ufficiale 2025 7/7 della specifica fattispecie. Nessuna aliquota viene dedotta per analogia o da annualità diverse.
+Copertura: **7/7** da prospetti ufficiali MEF 2025.
 
-## 4. Carburanti — ESCLUSO
+## 4. Carburanti — PROMOSSO 6/7
 
-La fonte MIMIT è adatta e consente uno storico trimestrale dal 2015, ma il perimetro comunale non supera il requisito di copertura. Alla fotografia del **14 agosto 2026**, Stazzema non presenta impianti attivi nell'anagrafica MIMIT; gli altri sei Comuni hanno campioni utilizzabili.
+Fotografia MIMIT del **14 agosto 2026**. Indicatore: **mediana comunale dei prezzi self-service degli impianti attivi**, con selettore Benzina / Gasolio.
 
-Non si pubblica quindi una mediana comunale 6/7, né si attribuisce a Stazzema un prezzo di un Comune vicino.
+| Comune | Benzina self | Gasolio self |
+|---|---:|---:|
+| Camaiore | 1,999 €/l | 2,089 €/l |
+| Forte dei Marmi | 1,979 €/l | 2,089 €/l |
+| Massarosa | 1,987 €/l | 2,088 €/l |
+| Pietrasanta | 1,999 €/l | 2,099 €/l |
+| Seravezza | 1,994 €/l | 2,079 €/l |
+| **Stazzema** | **n.d.** | **n.d.** |
+| Viareggio | 1,994 €/l | 2,099 €/l |
 
-## 5. Mensa scolastica — DA VALUTARE
+Stazzema resta `n.d.` perché l'anagrafica MIMIT non registra impianti attivi. Non viene attribuito il prezzo di un Comune vicino. L'indicatore è collocato in **Mobilità → Mezzi, carburanti e infrastrutture**.
 
-Le tariffe ufficiali già controllate mostrano strutture ISEE, esenzioni, sconti fratelli e condizioni residenti/non residenti molto diverse. L'audit 2025/26 non è ancora completo 7/7.
+## 5. Mensa scolastica — ESCLUSO
 
-Il dato resterà fuori finché non sarà possibile costruire la **stessa famiglia teorica** nei sette Comuni senza forzature.
+Le strutture tariffarie comunali combinano in modo troppo diverso ISEE, esenzioni, sconti fratelli, residenza e modalità di pagamento. Il confronto richiederebbe troppe ipotesi per essere più informativo che fuorviante. Non viene integrato.
 
-## 6. Costo del servizio rifiuti — DA VALUTARE
+## 6. Costo del servizio rifiuti — PROMOSSO 7/7
 
-La variabile ISPRA corretta è **CTOTab — costo totale del servizio di igiene urbana, €/abitante/anno**. Il Catasto Rifiuti espone il periodo **2011–2024**.
+Variabile ISPRA: **CTOTab — costo totale del servizio di igiene urbana, €/abitante/anno**. Sono state accettate esclusivamente righe riferite al singolo Comune (`N. comuni = 1`), quindi nessuna aggregazione sovracomunale.
 
-La fonte specifica tuttavia che le statistiche di costo sono riferite al campione di Comuni. Prima di integrare il dato devono essere materializzate sette righe riferite al singolo Comune, non aggregazioni territoriali. La vista alternativa €/kg potrà essere uno switch dello stesso indicatore, non un indicatore aggiuntivo.
+| Comune | CTOTab 2024 |
+|---|---:|
+| Camaiore | 343,24 €/ab |
+| Forte dei Marmi | 998,69 €/ab |
+| Massarosa | 275,56 €/ab |
+| Pietrasanta | 360,36 €/ab |
+| Seravezza | 295,50 €/ab |
+| Stazzema | 317,81 €/ab |
+| Viareggio | 348,20 €/ab |
 
-## 7. Inflazione — PROMOSSO, serie da materializzare
+L'indicatore è collocato in **Ambiente → Rifiuti e circolarità**. Il valore descrive il costo del servizio, non la TARI pagata da una famiglia.
 
-ISTAT rileva il NIC anche a livello subnazionale. **Lucca è un Comune capoluogo di rilevazione, non una serie della Provincia di Lucca.**
+## 7. Inflazione — Provincia di Lucca
 
-La dicitura corretta sarà quindi:
+La documentazione ISTAT conferma che gli indici NIC sono diffusi anche a **livello provinciale** per divisione di spesa. Il confronto redditi–prezzi userà quindi, se l'estrazione SDMX viene validata, **NIC Provincia di Lucca**, non “Lucca città” e non il dato regionale Toscana.
 
-**Inflazione — Lucca città / Toscana / Italia**
+Il grafico deve rendere evidente la domanda sostanziale:
 
-Per il confronto annuale si userà la **variazione media annua del NIC**. Per deflazionare il reddito medio dei sette Comuni, il riferimento territoriale preferibile è **NIC Toscana**, perché Lucca città non è un proxy provinciale della Versilia.
+> **i redditi nominali crescono davvero più dei prezzi?**
 
-La serie non entra nel draft finché i valori annuali non sono materializzati e verificati dopo il passaggio alla classificazione ECOICOP v2.
+Le tre linee saranno indicizzate a 100 nello stesso anno base:
 
-## 8. Storico redditi — PROMOSSO, estrazione da materializzare
+1. reddito imponibile medio dei sette Comuni della Versilia;
+2. NIC — Provincia di Lucca;
+3. reddito reale indicizzato = indice reddito / indice prezzi × 100.
 
-La definizione corrente del sito è stata verificata nel catalogo canonico:
+Nota obbligatoria: **il perimetro dei prezzi è l'intera Provincia di Lucca, quello dei redditi sono i sette Comuni della Versilia**. Il grafico è quindi un confronto di contesto, non un'identità territoriale perfetta.
 
-**reddito complessivo dichiarato / numero di dichiaranti con reddito complessivo**.
+## 8. Storico redditi — criterio definitivo
 
-Non risultano trasformazioni ulteriori. Lo storico MEF dovrà usare anno per anno le stesse due variabili. Obiettivo: **2011–2024**, fermando o marcando la serie in caso di una rottura definitoria reale.
+L'indicatore principale del sito resta **Reddito complessivo medio dichiarato**. È stato verificato se fosse possibile estenderlo al 2011 sommando le fasce reddituali MEF degli anni in cui manca il totale diretto.
 
-## 9. Reddito reale — DA VALUTARE
+Il test ha escluso questa soluzione: negli anni in cui sono presenti sia il totale diretto sia le classi, le due basi **non coincidono**. Caso di controllo: **Camaiore 2023**, differenza tra totale diretto e somma delle classi pari a **56.506.620 € e 277 dichiaranti**.
 
-Solo dopo aver materializzato e validato entrambe le serie verrà valutato lo switch:
+Di conseguenza non viene costruita una falsa serie continua di “reddito complessivo”.
 
-**Nominale | A prezzi costanti**
+È invece disponibile e omogenea **7/7 dal 2011 al 2024** la serie MEF:
 
-La seconda vista sarà denominata **Reddito medio dichiarato a prezzi costanti**, con NIC Toscana, anno base e formula esplicitati. Non sarà conteggiata come indicatore autonomo e non sarà chiamata “potere d'acquisto delle famiglie”.
+> **Reddito imponibile — Ammontare / Reddito imponibile — Frequenza**
+
+Questa entra come **serie lunga esplicitamente distinta** nella vista del reddito. Il valore corrente continua a essere il reddito complessivo medio; lo storico lungo viene etichettato `Reddito imponibile medio · serie lunga 2011–2024`.
+
+Valore aggregato dei sette Comuni, ottenuto come ammontare complessivo / frequenza complessiva:
+
+| Anno | Reddito imponibile medio |
+|---|---:|
+| 2011 | 18.913,88 € |
+| 2012 | 18.934,57 € |
+| 2013 | 19.105,31 € |
+| 2014 | 19.152,80 € |
+| 2015 | 19.383,32 € |
+| 2016 | 19.584,39 € |
+| 2017 | 20.029,96 € |
+| 2018 | 20.440,58 € |
+| 2019 | 20.628,85 € |
+| 2020 | 20.136,56 € |
+| 2021 | 21.438,86 € |
+| 2022 | 22.923,37 € |
+| 2023 | 23.759,32 € |
+| 2024 | 24.920,45 € |
 
 ## Decisione di implementazione del draft
 
-In questa prima materializzazione entra **un solo nuovo indicatore**: `municipalIrpef`.
+Nel draft entrano:
 
-TARI, IMU, mensa e CTOTab restano esclusi dal codice pubblico finché non superano il 7/7. Carburanti è escluso metodologicamente. Inflazione e storico redditi sono promossi ma attendono la materializzazione completa delle serie ufficiali prima di essere integrati.
+- `municipalIrpef` — 7/7;
+- TARI standardizzata — 7/7;
+- IMU seconda abitazione standard — 7/7;
+- prezzi carburanti — 6/7, Stazzema `n.d.`;
+- costo servizio rifiuti CTOTab — 7/7;
+- serie lunga del reddito imponibile 2011–2024 come vista dello storico, senza sostituire la definizione corrente del reddito complessivo.
+
+La mensa scolastica viene esclusa. Il confronto redditi–inflazione viene finalizzato solo dopo la validazione dell'estrazione ufficiale **NIC Provincia di Lucca**.
