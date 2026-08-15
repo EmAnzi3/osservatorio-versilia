@@ -7,7 +7,7 @@ Base: `main` @ `4c6f978043c98f34e1f1b186c4483d8be6e0f910` — **v1.12.0**, 121 i
 
 | Candidato | Copertura | Annualità | Fonte primaria | Storico | Esito |
 |---|---:|---|---|---|---|
-| Addizionale comunale IRPEF effettiva | 7/7 | 2025 | MEF — Dipartimento Finanze | disponibile sul portale | **PROMOSSO** |
+| Addizionale comunale IRPEF effettiva | 7/7 | 2025 | MEF — Dipartimento Finanze; Comune di Seravezza per conferma 2025 | disponibile | **PROMOSSO** |
 | TARI, 3 persone / 100 m² | 5/7 materializzati | 2025 | Comuni / MEF + ARERA | potenziale pluriennale | **DA VALUTARE** |
 | IMU, seconda abitazione standard | metodo definito; matrice 7/7 non chiusa | 2025 | MEF / Comuni | pluriennale | **DA VALUTARE** |
 | Prezzi carburanti | 6/7 | fotografia 14/08/2026 | MIMIT — Osservaprezzi | trimestrale dal 2015 | **ESCLUSO** |
@@ -19,7 +19,7 @@ Base: `main` @ `4c6f978043c98f34e1f1b186c4483d8be6e0f910` — **v1.12.0**, 121 i
 
 ## 1. Addizionale comunale IRPEF — PROMOSSO
 
-L'indicatore non confronta l'aliquota massima, ma l'**importo annuo dovuto** applicando aliquote, scaglioni ed esenzioni MEF allo stesso reddito imponibile teorico.
+L'indicatore non confronta l'aliquota massima, ma l'**importo annuo dovuto** applicando aliquote, scaglioni ed esenzioni allo stesso reddito imponibile teorico.
 
 Scenari: **20.000 € / 30.000 € / 50.000 €**. Sono abbastanza distanti da mostrare sia l'effetto delle soglie di esenzione sia quello delle strutture progressive senza trasformare le viste in indicatori separati.
 
@@ -37,7 +37,7 @@ Scenari: **20.000 € / 30.000 € / 50.000 €**. Sono abbastanza distanti da m
 
 Regola di calcolo: se l'imponibile non supera la soglia di esenzione l'addizionale è zero; superata la soglia, l'imposta si applica all'intero imponibile secondo l'aliquota unica o gli scaglioni del Comune.
 
-Fonte: Dipartimento delle Finanze — banca dati dell'Addizionale comunale all'IRPEF.
+Fonte principale: Dipartimento delle Finanze — banca dati dell'Addizionale comunale all'IRPEF. Per **Seravezza** l'interfaccia pubblica MEF non espone la riga 2025 nello stesso modo degli altri sei Comuni: la continuità per il 2025 è verificata sulla comunicazione ufficiale del Comune che conferma le aliquote IRPEF e sulla deliberazione consiliare n. 63 del 28/11/2024 depositata nel Portale del federalismo fiscale. L'eccezione di provenienza è conservata anche nello snapshot versionato.
 
 ## 2. TARI — DA VALUTARE
 
@@ -51,6 +51,8 @@ Tariffe 2025 già materializzate da fonti ufficiali:
 - Seravezza: QF 1,14427 €/m² + QV 356,63966 €/anno;
 - Stazzema: il prospetto ufficiale riporta 340,68 € per 3 persone / 100 m² prima di TEFA e componenti perequative.
 
+Ulteriore verifica del 15 agosto: il Comune di Pietrasanta conferma una delibera tariffaria TARI 2025 e pubblica proprio l'esempio “100 m² con 3 persone”; l'HTML accessibile non espone però i coefficienti o il totale 2025 necessari a una ricostruzione verificabile. A Forte dei Marmi è confermata l'approvazione delle tariffe TARI 2025 in Consiglio comunale, ma non è stato ancora materializzato il prospetto numerico primario.
+
 **Blocco:** per Forte dei Marmi e Pietrasanta non è stata ancora materializzata nel repository una tariffa 2025 primaria e riproducibile. L'indicatore non entra finché non è 7/7.
 
 ## 3. IMU — DA VALUTARE
@@ -60,6 +62,8 @@ La casa principale ordinaria è esclusa dal confronto. Per evitare di inventare 
 > **Seconda abitazione A/2 — base imponibile IMU standardizzata 100.000 €**
 
 La base è identica nei sette Comuni e serve esclusivamente come benchmark di pressione fiscale. Il valore dell'indicatore sarebbe `100.000 € × aliquota comunale applicabile alla fattispecie standard`.
+
+L'archivio MEF 2025 conferma che i prospetti IMU ufficiali sono disponibili per i Comuni verificati, compresi Forte dei Marmi e Stazzema; questo risolve il dubbio sulla disponibilità della fonte, non ancora quello sulla corretta selezione automatica della specifica fattispecie “seconda abitazione A/2” nei sette prospetti.
 
 **Blocco:** prima della pubblicazione va chiusa la matrice ufficiale 2025 7/7 della specifica fattispecie. Nessuna aliquota viene dedotta per analogia o da annualità diverse.
 
