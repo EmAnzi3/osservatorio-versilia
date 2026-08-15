@@ -57,6 +57,9 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
+      - name: Include Percorsi Versilia
+        run: python scripts/copy_percorsi_dist.py
+
       - name: Start local draft server
         shell: bash
         run: |
@@ -97,10 +100,6 @@ jobs:
           node --check percorsi/app.js
           node --check percorsi/data-loader.js
           node --check dist/assets/app-bundle.js
-
-      - name: Include Percorsi Versilia
-        if: always()
-        run: python scripts/copy_percorsi_dist.py
 
       - name: Upload local-style draft preview
         if: always()
