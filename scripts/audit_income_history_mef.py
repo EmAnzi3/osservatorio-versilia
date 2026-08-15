@@ -48,7 +48,9 @@ def paired_class_value(amount_raw: str, frequency_raw: str, *, year: int, town: 
 
     In older files an unused class is sometimes represented by two blank cells.
     A pair blank/blank is therefore an observed zero class. If only one side is
-    missing, the row is inconsistent and the audit stops.
+    missing, the row is inconsistent and the audit stops. Amounts may be
+    negative in the official <=0 income class; frequencies may never be
+    negative. Cross-year equivalence checks protect the reconstructed total.
     """
     amount_missing = clean(amount_raw) in MISSING
     freq_missing = clean(frequency_raw) in MISSING
@@ -61,8 +63,8 @@ def paired_class_value(amount_raw: str, frequency_raw: str, *, year: int, town: 
         )
     amount = num(amount_raw)
     frequency = int(round(num(frequency_raw)))
-    if amount < 0 or frequency < 0:
-        raise RuntimeError(f'{year} {town} {label}: valori negativi inattesi')
+    if frequency < 0:
+        raise RuntimeError(f'{year} {town} {label}: frequenza negativa inattesa')
     return amount, frequency
 
 
@@ -169,7 +171,7 @@ def main():
             delta=None if cur is None else round(ext-cur,2)
             checks.append({'town':t,'year':y,'extracted':ext,'current':cur,'delta':delta,
                            'status':'no-current-value' if cur is None else ('match' if abs(delta)<=0.02 else 'mismatch')})
-    snap={'schemaVersion':3,'source':'Dipartimento delle Finanze - MEF',
+    snap={'schemaVersion':4,'source':'Dipartimento delle Finanze - MEF',
           'definition':'Reddito complessivo - Ammontare / Reddito complessivo - Frequenza',
           'taxYears':[x['year'] for x in years],
           'schemaByYear':{str(x['year']):{k:x[k] for k in ('url','archiveMember','delimiter','method','headers','equivalenceChecks')} for x in years},
