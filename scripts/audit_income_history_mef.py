@@ -44,14 +44,7 @@ def num(v: str) -> float:
 
 
 def paired_class_value(amount_raw: str, frequency_raw: str, *, year: int, town: str, label: str) -> tuple[float, int]:
-    """Interpret a MEF income-class pair without silently inventing data.
-
-    In older files an unused class is sometimes represented by two blank cells.
-    A pair blank/blank is therefore an observed zero class. If only one side is
-    missing, the row is inconsistent and the audit stops. Amounts may be
-    negative in the official <=0 income class; frequencies may never be
-    negative. Cross-year equivalence checks protect the reconstructed total.
-    """
+    """Interpret a MEF income-class pair without silently inventing data."""
     amount_missing = clean(amount_raw) in MISSING
     freq_missing = clean(frequency_raw) in MISSING
     if amount_missing and freq_missing:
@@ -63,6 +56,9 @@ def paired_class_value(amount_raw: str, frequency_raw: str, *, year: int, town: 
         )
     amount = num(amount_raw)
     frequency = int(round(num(frequency_raw)))
+    # The <=0 official income class can legitimately carry a negative amount.
+    # A frequency can never be negative. Equality checks against direct totals
+    # (when available) protect the historical reconstruction.
     if frequency < 0:
         raise RuntimeError(f'{year} {town} {label}: frequenza negativa inattesa')
     return amount, frequency
@@ -94,8 +90,13 @@ def income_columns(headers):
     if not (direct_amount and direct_freq) and not (class_amount and class_freq): raise RuntimeError('reddito complessivo non ricostruibile')
     if class_amount or class_freq:
         def stem(h): return re.sub(r' (ammontare|importo|frequenza|numero)$','',norm(h))
-        if {stem(h) for h in class_amount}!={stem(h) for h in class_freq}:
-            raise RuntimeError('classi reddito: frequenze/ammontari non allineati')
+        amount_stems={stem(h) for h in class_amount}; freq_stems={stem(h) for h in class_freq}
+        if amount_stems != freq_stems:
+            raise RuntimeError(
+                'classi reddito: frequenze/ammontari non allineati; '
+                f'solo_ammontare={sorted(amount_stems-freq_stems)}; '
+                f'solo_frequenza={sorted(freq_stems-amount_stems)}'
+            )
     return (direct_amount[0] if direct_amount else None,
             direct_freq[0] if direct_freq else None,
             class_amount, class_freq)
@@ -113,7 +114,11 @@ def read_year(year: int) -> dict:
     except csv.Error: delim=';'
     reader=csv.DictReader(io.StringIO(text),delimiter=delim); headers=reader.fieldnames or []
     th=town_header(headers); ph=province_header(headers)
-    da,df,ca,cf=income_columns(headers)
+    try:
+        da,df,ca,cf=income_columns(headers)
+    except Exception as exc:
+        income_headers=[h for h in headers if 'reddito complessivo' in norm(h)]
+        raise RuntimeError(f'{year}: {exc}; colonne={income_headers}') from exc
     def stem(h): return re.sub(r' (ammontare|importo|frequenza|numero)$','',norm(h))
     class_freq_by_stem={stem(h):h for h in cf}
     wanted={norm(t):t for t in TOWNS}; found={}; equivalence=[]
@@ -125,12 +130,9 @@ def read_year(year: int) -> dict:
         if ca:
             class_amount = 0.0; class_frequency = 0
             for amount_h in ca:
-                class_stem = stem(amount_h)
-                freq_h = class_freq_by_stem[class_stem]
+                class_stem = stem(amount_h); freq_h = class_freq_by_stem[class_stem]
                 amount_part, freq_part = paired_class_value(
-                    row.get(amount_h,''), row.get(freq_h,''),
-                    year=year, town=town, label=class_stem,
-                )
+                    row.get(amount_h,''), row.get(freq_h,''), year=year, town=town, label=class_stem)
                 class_amount += amount_part; class_frequency += freq_part
         if da and df:
             amount=num(row.get(da,'')); frequency=int(round(num(row.get(df,'')))); method='direct-total'
@@ -171,7 +173,7 @@ def main():
             delta=None if cur is None else round(ext-cur,2)
             checks.append({'town':t,'year':y,'extracted':ext,'current':cur,'delta':delta,
                            'status':'no-current-value' if cur is None else ('match' if abs(delta)<=0.02 else 'mismatch')})
-    snap={'schemaVersion':4,'source':'Dipartimento delle Finanze - MEF',
+    snap={'schemaVersion':5,'source':'Dipartimento delle Finanze - MEF',
           'definition':'Reddito complessivo - Ammontare / Reddito complessivo - Frequenza',
           'taxYears':[x['year'] for x in years],
           'schemaByYear':{str(x['year']):{k:x[k] for k in ('url','archiveMember','delimiter','method','headers','equivalenceChecks')} for x in years},
