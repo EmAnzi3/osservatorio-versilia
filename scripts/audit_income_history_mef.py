@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 URL = ('https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/'
        'Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_{year}.zip')
 TOWNS = ['Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio']
+MISSING = {'', '-', 'n.d.', 'nd'}
 
 
 def norm(s: str) -> str:
@@ -30,12 +31,39 @@ def decode(raw: bytes) -> str:
     raise RuntimeError('encoding CSV MEF non riconosciuto')
 
 
+def clean(v: str) -> str:
+    return (v or '').strip().replace('\u00a0','').replace(' ','').lower()
+
+
 def num(v: str) -> float:
-    s=(v or '').strip().replace('\u00a0','').replace(' ','')
-    if not s or s in {'-','n.d.','nd'}: raise ValueError(f'valore mancante {v!r}')
+    s=clean(v)
+    if s in MISSING: raise ValueError(f'valore mancante {v!r}')
     if ',' in s and '.' in s: s=s.replace('.','').replace(',','.')
     elif ',' in s: s=s.replace(',','.')
     return float(s)
+
+
+def paired_class_value(amount_raw: str, frequency_raw: str, *, year: int, town: str, label: str) -> tuple[float, int]:
+    """Interpret a MEF income-class pair without silently inventing data.
+
+    In older files an unused class is sometimes represented by two blank cells.
+    A pair blank/blank is therefore an observed zero class. If only one side is
+    missing, the row is inconsistent and the audit stops.
+    """
+    amount_missing = clean(amount_raw) in MISSING
+    freq_missing = clean(frequency_raw) in MISSING
+    if amount_missing and freq_missing:
+        return 0.0, 0
+    if amount_missing != freq_missing:
+        raise RuntimeError(
+            f'{year} {town} {label}: coppia classe incompleta '
+            f'(ammontare={amount_raw!r}, frequenza={frequency_raw!r})'
+        )
+    amount = num(amount_raw)
+    frequency = int(round(num(frequency_raw)))
+    if amount < 0 or frequency < 0:
+        raise RuntimeError(f'{year} {town} {label}: valori negativi inattesi')
+    return amount, frequency
 
 
 def town_header(headers):
@@ -60,6 +88,7 @@ def income_columns(headers):
     class_amount=[h for h,n in nn.items() if n.startswith('reddito complessivo ') and (' ammontare' in n or ' importo' in n) and h not in direct_amount]
     class_freq=[h for h,n in nn.items() if n.startswith('reddito complessivo ') and (' frequenza' in n or ' numero' in n) and h not in direct_freq]
     if len(direct_amount)>1 or len(direct_freq)>1: raise RuntimeError('totale reddito complessivo ambiguo')
+    if bool(direct_amount) != bool(direct_freq): raise RuntimeError('totale reddito complessivo incompleto')
     if not (direct_amount and direct_freq) and not (class_amount and class_freq): raise RuntimeError('reddito complessivo non ricostruibile')
     if class_amount or class_freq:
         def stem(h): return re.sub(r' (ammontare|importo|frequenza|numero)$','',norm(h))
@@ -83,16 +112,26 @@ def read_year(year: int) -> dict:
     reader=csv.DictReader(io.StringIO(text),delimiter=delim); headers=reader.fieldnames or []
     th=town_header(headers); ph=province_header(headers)
     da,df,ca,cf=income_columns(headers)
-    class_freq_by_stem={re.sub(r' (frequenza|numero)$','',norm(h)):h for h in cf}
+    def stem(h): return re.sub(r' (ammontare|importo|frequenza|numero)$','',norm(h))
+    class_freq_by_stem={stem(h):h for h in cf}
     wanted={norm(t):t for t in TOWNS}; found={}; equivalence=[]
     for row in reader:
         town=wanted.get(norm(row.get(th,'')))
         if not town: continue
         if ph and norm(row.get(ph,'')) not in {'lu','lucca'}: continue
-        class_amount=sum(num(row[h]) for h in ca) if ca else None
-        class_frequency=sum(int(round(num(row[class_freq_by_stem[re.sub(r' (ammontare|importo)$','',norm(h))]]))) for h in ca) if ca else None
+        class_amount = class_frequency = None
+        if ca:
+            class_amount = 0.0; class_frequency = 0
+            for amount_h in ca:
+                class_stem = stem(amount_h)
+                freq_h = class_freq_by_stem[class_stem]
+                amount_part, freq_part = paired_class_value(
+                    row.get(amount_h,''), row.get(freq_h,''),
+                    year=year, town=town, label=class_stem,
+                )
+                class_amount += amount_part; class_frequency += freq_part
         if da and df:
-            amount=num(row[da]); frequency=int(round(num(row[df]))); method='direct-total'
+            amount=num(row.get(da,'')); frequency=int(round(num(row.get(df,'')))); method='direct-total'
             if ca:
                 amount_delta=round(amount-class_amount,6); freq_delta=frequency-class_frequency
                 equivalence.append({'town':town,'amountDelta':amount_delta,'frequencyDelta':freq_delta})
@@ -100,7 +139,7 @@ def read_year(year: int) -> dict:
                     raise RuntimeError(f'{year} {town}: totale MEF != somma classi ({amount_delta}; {freq_delta})')
         else:
             amount=class_amount; frequency=class_frequency; method='sum-income-classes'
-        if not frequency or frequency<=0: raise RuntimeError(f'{year} {town}: frequenza non positiva')
+        if amount is None or not frequency or frequency<=0: raise RuntimeError(f'{year} {town}: totale non valido')
         found[town]={'amount':amount,'frequency':frequency,'average':round(amount/frequency,2)}
     missing=[t for t in TOWNS if t not in found]
     if missing: raise RuntimeError(f'{year}: comuni mancanti {missing}')
@@ -130,7 +169,7 @@ def main():
             delta=None if cur is None else round(ext-cur,2)
             checks.append({'town':t,'year':y,'extracted':ext,'current':cur,'delta':delta,
                            'status':'no-current-value' if cur is None else ('match' if abs(delta)<=0.02 else 'mismatch')})
-    snap={'schemaVersion':2,'source':'Dipartimento delle Finanze - MEF',
+    snap={'schemaVersion':3,'source':'Dipartimento delle Finanze - MEF',
           'definition':'Reddito complessivo - Ammontare / Reddito complessivo - Frequenza',
           'taxYears':[x['year'] for x in years],
           'schemaByYear':{str(x['year']):{k:x[k] for k in ('url','archiveMember','delimiter','method','headers','equivalenceChecks')} for x in years},
