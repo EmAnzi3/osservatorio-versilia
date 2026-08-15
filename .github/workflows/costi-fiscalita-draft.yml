@@ -72,6 +72,9 @@ jobs:
           cat /tmp/ov-draft-http.log
           exit 1
 
+      - name: Align legacy composite regression expectations
+        run: python scripts/patch_composite_regression_for_costs.py
+
       - name: Run all Python regression tests
         shell: bash
         run: |
