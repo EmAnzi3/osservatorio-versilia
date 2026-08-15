@@ -14,17 +14,17 @@ concurrency:
 
 jobs:
   income:
-    name: MEF redditi 2011-2024
+    name: MEF imponibile medio 2011-2024
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python scripts/audit_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-income-history.json
+      - run: python scripts/audit_taxable_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-taxable-income-history.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mef-income-history
-          path: /tmp/mef-income-history.json
+          name: mef-taxable-income-history
+          path: /tmp/mef-taxable-income-history.json
           retention-days: 14
 
   imu:
@@ -71,17 +71,17 @@ jobs:
           retention-days: 14
 
   inflation:
-    name: ISTAT NIC Toscana 2011-2024
+    name: NIC Toscana 2016-2024
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: python scripts/audit_inflation_nic_toscana.py --out /tmp/nic-toscana-2011-2024.json
+      - run: python scripts/audit_inflation_nic_toscana.py --out /tmp/nic-toscana-2016-2024.json
       - uses: actions/upload-artifact@v4
         with:
-          name: nic-toscana-2011-2024
-          path: /tmp/nic-toscana-2011-2024.json
+          name: nic-toscana-2016-2024
+          path: /tmp/nic-toscana-2016-2024.json
           retention-days: 14
 
   tari:
