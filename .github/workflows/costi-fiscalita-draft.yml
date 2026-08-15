@@ -37,10 +37,6 @@ jobs:
         continue-on-error: true
         run: python scripts/audit_imu_2025.py --out /tmp/imu-2025.json
 
-      - name: Audit missing TARI 2025 documents
-        continue-on-error: true
-        run: python scripts/audit_tari_2025_missing.py --out /tmp/tari-2025-missing.json
-
       - name: Audit MIMIT fuel prices
         continue-on-error: true
         run: python scripts/audit_fuel_prices_mimit.py --out /tmp/mimit-fuel.json
@@ -48,6 +44,10 @@ jobs:
       - name: Audit ISPRA waste-service costs
         continue-on-error: true
         run: python scripts/audit_waste_cost_ispra.py --out /tmp/ispra-waste-cost.json
+
+      - name: Audit missing TARI 2025 documents
+        continue-on-error: true
+        run: python scripts/audit_tari_2025_missing.py --out /tmp/tari-2025-missing.json
 
       - name: Install browser tooling
         run: |
