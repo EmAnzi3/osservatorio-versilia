@@ -24,13 +24,33 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install source-audit dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pypdf
+
       - name: Audit official MEF income history
         run: python scripts/audit_income_history_mef.py --start 2011 --end 2024 --out /tmp/mef-income-history.json
 
+      - name: Audit official MEF IMU 2025
+        continue-on-error: true
+        run: python scripts/audit_imu_2025.py --out /tmp/imu-2025.json
+
+      - name: Audit missing TARI 2025 documents
+        continue-on-error: true
+        run: python scripts/audit_tari_2025_missing.py --out /tmp/tari-2025-missing.json
+
+      - name: Audit MIMIT fuel prices
+        continue-on-error: true
+        run: python scripts/audit_fuel_prices_mimit.py --out /tmp/mimit-fuel.json
+
+      - name: Audit ISPRA waste-service costs
+        continue-on-error: true
+        run: python scripts/audit_waste_cost_ispra.py --out /tmp/ispra-waste-cost.json
+
       - name: Install browser tooling
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install playwright pypdf
+          python -m pip install playwright
           python -m playwright install --with-deps chromium
 
       - name: Materialize promoted indicators
@@ -81,12 +101,17 @@ jobs:
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
 
-      - name: Upload MEF income audit snapshot
+      - name: Upload source audit snapshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mef-income-history-audit
-          path: /tmp/mef-income-history.json
+          name: costi-fiscalita-source-audits
+          path: |
+            /tmp/mef-income-history.json
+            /tmp/imu-2025.json
+            /tmp/tari-2025-missing.json
+            /tmp/mimit-fuel.json
+            /tmp/ispra-waste-cost.json
           if-no-files-found: warn
           retention-days: 14
 
