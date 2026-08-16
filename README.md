@@ -2,7 +2,7 @@
 
 Sito pubblico: **https://osservatorioversilia.it**
 
-Versione dati corrente: **v1.12.0** — 15 agosto 2026.
+Versione dati corrente: **v1.13.0** — 16 agosto 2026.
 
 Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub Pages a partire dalle risorse pubbliche del precedente ChatGPT Site.
 
@@ -10,8 +10,9 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 11 aree tematiche;
-- 121 indicatori nel catalogo canonico: 117 con valori incorporati e 4 climatici con storici separati;
-- confronti territoriali e benchmark disponibili;
+- 127 indicatori nel catalogo canonico: 123 con valori incorporati e 4 climatici con storici separati;
+- confronti territoriali e riferimenti Versilia;
+- benchmark Toscana/Italia quando la comparabilità è metodologicamente corretta;
 - serie storiche nazionali, regionali e comunali;
 - sottosezioni tematiche e dettagli analitici espandibili;
 - navigazione contestuale tra temi e tra Comuni;
@@ -37,20 +38,22 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `index.html`: homepage;
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine degli undici temi;
-- `indicatori/`: 117 pagine canoniche generate, una per indicatore;
-- `data/site-data.json`: catalogo canonico dei 121 indicatori, con dati incorporati per 117 e riferimenti ai file storici separati per i 4 climatici;
+- `indicatori/`: 123 pagine canoniche generate in build, una per indicatore con dati incorporati;
+- `data/site-data.json`: catalogo canonico dei 127 indicatori, con dati incorporati per 123 e riferimenti ai file storici separati per i 4 climatici;
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
 - `assets/app.js`: logica di caricamento per lo sviluppo;
 - `assets/app-parts/`: moduli sorgente dell'applicazione;
-- `assets/original.css`: stile recuperato dal sito pubblico;
-- `assets/static.css` e `assets/fidelity.css`: adattamenti statici, responsive e navigazione contestuale;
+- `assets/original.css`: base visuale storica;
+- `assets/visual-grammar.css` e `assets/visual-grammar.js`: grammatica corrente dei confronti, riferimenti Versilia e scala di lettura;
+- `assets/static.css`, `assets/fidelity.css` e `assets/fidelity.js`: adattamenti statici, responsive e integrazioni runtime;
+- `assets/meteo-clima.css` e `assets/meteo-clima.js`: pagina editoriale Meteo e clima in bozza;
 - `progetto/` e `segnala/`: pagine informative.
 
 ## Aggiornamento dei dati
 
-Il catalogo e i metadati dei 121 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
+Il catalogo e i metadati dei 127 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
 
 - definizione;
 - anno;
@@ -71,7 +74,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida tutti i 121 indicatori canonici, la ripartizione fra 117 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
+- valida tutti i 127 indicatori canonici, la ripartizione fra 123 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;
@@ -86,7 +89,9 @@ La copertura e i criteri di ammissione delle serie comunali sono documentati in 
 
 ## Indicizzazione e Search Console
 
-La build genera una pagina autonoma per ciascuno dei 117 indicatori, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+La build genera una pagina autonoma per ciascuno dei 123 indicatori incorporati, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+
+I quattro indicatori climatici esterni sono integrati nell'esperienza Ambiente e rimandano all'approfondimento storico dedicato, senza duplicare i dataset più pesanti dentro `site-data.json`.
 
 La configurazione operativa di Google Search Console e i controlli successivi al rilascio sono descritti in `docs/search-console.md`.
 
