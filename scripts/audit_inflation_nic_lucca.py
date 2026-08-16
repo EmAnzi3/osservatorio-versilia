@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Extract NIC annual-average all-items for Provincia di Lucca from official Istat SDMX.
+"""Probe NIC annual-average all-items for Provincia di Lucca from official Istat SDMX.
 
-Istat publishes provincial NIC annual averages. For 2016 onward the dataflow is
-167_742 (base 2015=100). Lucca province has NUTS code ITI12. The current Istat
-REST API expects the agency-qualified flowRef syntax (IT1,<dataflow>).
+The provincial series is a secondary audit only: the economy draft uses the
+validated Toscana NIC series. If every known official provincial dataflow is
+explicitly unavailable (HTTP 404), record that state in the audit artifact
+instead of turning source unavailability into a CI failure. Partial or malformed
+data still fail hard.
 """
 from __future__ import annotations
 
@@ -49,6 +51,11 @@ def parse_csv(payload: bytes) -> list[dict]:
     return out
 
 
+def write_result(path: Path, result: dict) -> None:
+    path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('--start', type=int, default=2016)
@@ -69,16 +76,41 @@ def main() -> None:
             errors.append(f'{flow}: risposta senza osservazioni CSV ({ctype}, {len(payload)} bytes)')
         except Exception as exc:
             errors.append(f'{flow}: {type(exc).__name__}: {exc}')
+
     expected = list(range(args.start, args.end + 1))
     by_year = {item['year']: item['value'] for item in observations}
     missing = [year for year in expected if year not in by_year]
+
+    all_known_flows_not_found = (
+        not observations
+        and len(errors) == len(FLOWS)
+        and all('HTTP Error 404' in error for error in errors)
+    )
+    if missing and all_known_flows_not_found:
+        result = {
+            'schemaVersion': 1,
+            'status': 'unavailable',
+            'source': 'Istat - IstatData / SDMX',
+            'dataflowsTried': FLOWS,
+            'seriesKey': KEY,
+            'territory': {'label': 'Provincia di Lucca', 'code': 'ITI12', 'level': 'province'},
+            'indicator': 'NIC - indice generale, media annua',
+            'requestedYears': expected,
+            'reason': 'Tutti i dataflow provinciali Istat noti rispondono HTTP 404; nessun dato provinciale viene usato nel draft.',
+            'errorsTried': errors,
+        }
+        write_result(args.out, result)
+        return
+
     if missing:
         raise RuntimeError(f'NIC Lucca incompleto; mancanti {missing}; errori={errors}')
+
     values = [by_year[year] for year in expected]
     base = values[0]
     comparison = [round(value / base * 100, 4) for value in values]
     result = {
         'schemaVersion': 1,
+        'status': 'ok',
         'source': 'Istat - IstatData / SDMX',
         'dataflow': '167_742',
         'seriesKey': KEY,
@@ -93,8 +125,7 @@ def main() -> None:
         'contentType': content_type,
         'errorsTried': errors,
     }
-    args.out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    write_result(args.out, result)
 
 
 if __name__ == '__main__':
