@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import json
 import os
+import re
 import socket
 import struct
 import threading
@@ -78,7 +79,10 @@ def static_checks() -> None:
     require(any("maskable" in icon.get("purpose", "") for icon in icons), "Icona maskable mancante")
 
     service_worker = (DIST / "service-worker.js").read_text(encoding="utf-8")
-    require("ov-pwa-20260814-v111" in service_worker, "Versione cache PWA inattesa")
+    source_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
+    source_version = re.search(r"const VERSION = ['\"]([^'\"]+)['\"]", source_worker)
+    require(source_version is not None, "Versione cache PWA sorgente non riconoscibile")
+    require(source_version.group(1) in service_worker, "La cache PWA pubblicata non coincide con la revisione sorgente")
     require("offline.html" in service_worker, "Fallback offline non configurato")
     require("networkFirst" in service_worker, "Strategia network-first assente")
     require("staleWhileRevalidate" in service_worker, "Strategia cache asset assente")

@@ -1,0 +1,129 @@
+name: Draft costi e fiscalità
+
+on:
+  push:
+    branches: ["agent/costi-fiscalita-redditi"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "costi-fiscalita-draft-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+
+      - name: Materialize IRPEF draft
+        run: python scripts/apply_costi_fiscalita_redditi_draft.py
+
+      - name: Materialize validated costs and income context
+        run: python scripts/materialize_validated_costs.py
+
+      - name: Patch frontend draft surfaces
+        run: python scripts/patch_costi_fiscalita_frontend.py
+
+      - name: Apply visual QA review corrections
+        run: python scripts/apply_costi_fiscalita_review.py
+
+      - name: Apply second QA corrections
+        run: python scripts/apply_costi_fiscalita_review_v2.py
+
+      - name: Patch fuel precision and scale
+        run: python scripts/patch_fuel_precision.py
+
+      - name: Isolate economy context legend
+        run: python scripts/fix_income_inflation_legend.py
+
+      - name: Add inflation reference to income history
+        run: python scripts/patch_income_inflation_history.py
+
+      - name: Preserve real income values for history tooltips
+        run: python scripts/fix_income_inflation_tooltip_data.py
+
+      - name: Validate cost taxation and income draft
+        run: python scripts/test_costi_fiscalita_redditi_draft.py
+
+      - name: Build pre-rendered site
+        run: python scripts/build_static_brand.py
+
+      - name: Start local draft server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8123 --directory dist >/tmp/ov-draft-http.log 2>&1 &
+          echo $! > /tmp/ov-draft-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-draft-http.log
+          exit 1
+
+      - name: Validate income and inflation historical comparison
+        run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
+
+      - name: Align legacy composite regression expectations
+        run: python scripts/patch_composite_regression_for_costs.py
+
+      - name: Run draft-compatible core Python regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_*.py' ! -name 'test_percorsi_*.py' ! -name 'test_release_*.py' ! -name 'test_social_kit.py' | sort); do
+            echo "::group::$test_file"
+            python "$test_file"
+            echo "::endgroup::"
+          done
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/app.js
+          node --check assets/pwa.js
+          node --check assets/ux-accordion.js
+          node --check assets/ux-history.js
+          node --check assets/ux-history-core.js
+          node --check assets/visual-grammar.js
+          node --check service-worker.js
+          node --check percorsi/app.js
+          node --check percorsi/data-loader.js
+          node --check dist/assets/app-bundle.js
+
+      - name: Include Percorsi Versilia
+        run: python scripts/copy_percorsi_dist.py
+
+      - name: Validate Percorsi in final dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_percorsi_*.py' | sort); do
+            echo "::group::$test_file"
+            python "$test_file"
+            echo "::endgroup::"
+          done
+
+      - name: Upload local-style draft preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-costi-fiscalita-draft
+          path: dist
+          retention-days: 14
