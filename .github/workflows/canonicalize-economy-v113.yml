@@ -58,6 +58,7 @@ jobs:
             scripts/test_composite_indicators.py \
             scripts/test_exports_v161.py \
             scripts/test_release_v170_compat.py \
+            scripts/test_history_v180.py \
             scripts/test_ux_experiment.py
           if git diff --cached --quiet; then
             echo "Canonical sources already aligned with v1.13.0"
