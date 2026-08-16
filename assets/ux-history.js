@@ -43,6 +43,51 @@
     toolkit.wireHistorySelection(shell, selectedTown, allowClear);
   }
 
+  function historyMetric(metric) {
+    if (metric?.meta?.key === 'income' && metric.rows?.some(row => row.longSeries?.years?.length)) {
+      return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
+    }
+    if (metric?.meta?.key === 'incomeVsInflation' && metric.inflationSeries?.years?.length) {
+      const reference = metric.inflationSeries;
+      return {
+        ...metric,
+        meta: { ...metric.meta, label: 'Redditi nominali vs inflazione', unit: 'percent' },
+        rows: [
+          ...metric.rows.map(row => ({ ...row, realSeries: row.realSeries || row.series, series: row.nominalSeries || row.series })),
+          {
+            town: reference.label || 'Inflazione · NIC Italia',
+            slug: 'inflazione-nic-italia',
+            value: Number(reference.values?.at(-1)),
+            formatted: '',
+            series: reference,
+            normalized: null,
+            benchmarkValue: Number(reference.values?.at(-1)),
+          },
+        ],
+      };
+    }
+    return metric;
+  }
+
+  function renderHistoryMarkup(metric, series, selectedTown) {
+    const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
+    if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
+    const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
+    return markup
+      .replace(
+        'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.',
+        'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. I tooltip mostrano anche la variazione reale, calcolata come rapporto tra indice del reddito e indice dei prezzi.'
+      )
+      .replace(
+        /<g class="ux-series-group [^"]*" data-history-town="inflazione-nic-italia" style="--series-color:[^"]+">/,
+        '<g class="ux-inflation-reference" style="--series-color:var(--ink)">'
+      )
+      .replace(
+        /<button type="button" data-history-select="inflazione-nic-italia"[^>]*>[^<]*<\/button>/,
+        `<span class="ux-history-reference"><i aria-hidden="true"></i>${referenceLabel}</span>`
+      );
+  }
+
   function enhanceCompare(data) {
     if (document.body.dataset.page !== 'compare') return;
     const target = document.getElementById('compare-bars');
@@ -59,15 +104,20 @@
     if (!selected) return;
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const series = normalized ? null : toolkit.comparableSeries(selected.metric);
+    const historyView = historyMetric(selected.metric);
+    const series = normalized ? null : toolkit.comparableSeries(historyView);
     const historyAvailable = Boolean(series);
     const currentMarkup = target.innerHTML;
-    const historyMarkup = toolkit.historicalChartMarkup(selected.metric, series, selectedTown);
+    const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
     const note = normalized
       ? 'La vista storica è disponibile sulla scala assoluta, perché le serie normalizzate non sono presenti per tutti gli anni.'
-      : historyAvailable
-        ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
-        : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+      : historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
+        ? selected.metric.historyPresentation?.note
+        : historyAvailable && selected.metric?.meta?.key === 'income'
+          ? selected.metric.meta.longHistoryNote
+          : historyAvailable
+            ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
+            : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
     wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
@@ -89,6 +139,7 @@
   };
   const percent1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const number1 = formatterWithGrouping({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number3 = formatterWithGrouping({ minimumFractionDigits: 3, maximumFractionDigits: 3 });
   const euro0 = formatterWithGrouping({ style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
@@ -103,10 +154,14 @@
       clone.meta.label = template.label || metric.meta.label;
       clone.rows = metric.rows.map(row => {
         const part = row.parts?.[index] || {};
-        const value = Number(part.value);
+        const rawValue = part.value;
+        const value = rawValue === null || rawValue === undefined || rawValue === '' ? undefined : Number(rawValue);
         let formatted = 'n.d.';
         if (Number.isFinite(value)) {
           if (unit === 'currency') formatted = `${number1.format(value)} €`;
+          else if (unit === 'currency2') formatted = `${number1.format(value)} €`;
+          else if (unit === 'eurliter') formatted = `${number3.format(value)} €/l`;
+          else if (unit === 'eurPerResident') formatted = `${number1.format(value)} €/ab`;
           else if (unit === 'percent') formatted = `${percent1.format(value)}%`;
           else if (unit === 'per1000') formatted = `${number1.format(value)} ogni 1.000`;
           else if (unit === 'per100') formatted = `${number1.format(value)} ogni 100`;
@@ -196,14 +251,19 @@
     }
 
     const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
-    const series = toolkit.comparableSeries(selected.metric);
+    const historyView = historyMetric(selected.metric);
+    const series = toolkit.comparableSeries(historyView);
     const historyAvailable = Boolean(series);
     const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
     const currentMarkup = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
-    const historyMarkup = toolkit.historicalChartMarkup(selected.metric, series, selectedTown);
-    const note = historyAvailable
-      ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
-      : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+    const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
+    const note = historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
+      ? selected.metric.historyPresentation?.note
+      : historyAvailable && selected.metric?.meta?.key === 'income'
+        ? selected.metric.meta.longHistoryNote
+        : historyAvailable
+          ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
+          : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
     wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);

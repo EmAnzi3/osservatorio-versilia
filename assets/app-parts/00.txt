@@ -38,6 +38,9 @@
     oldAgeIndex: ['anziani', 'invecchiamento', 'vecchiaia'],
     income: ['redditi', 'stipendi', 'irpef', 'dichiarazioni'],
     incomeDistribution: ['fasce reddito', 'redditi bassi', 'irpef', 'dichiaranti', 'oltre 55000'],
+    municipalIrpef: ['addizionale comunale', 'irpef comunale', 'aliquota irpef', 'fiscalità locale', 'tasse comunali'],
+    tariStandardHousehold: ['tari', 'tariffa rifiuti', 'tassa rifiuti', '3 persone', '100 mq'],
+    municipalImuStandard: ['imu', 'seconda casa', 'seconda abitazione', 'aliquota imu'],
     businessValueAdded: ['pil', 'ricchezza', 'produzione', 'economia locale'],
     labourProductivity: ['produttività', 'efficienza', 'valore per lavoratore'],
     industryValueAddedShare: ['industria', 'manifattura', 'produzione industriale'],
@@ -74,6 +77,7 @@
     inboundCommuters: ['pendolari', 'entrata', 'flussi'], selfContainment: ['lavoro nel comune', 'autocontenimento'],
     roadInjuries: ['incidenti', 'feriti', 'sicurezza stradale'], motorization: ['auto', 'motorizzazione'],
     pollutingCars: ['auto inquinanti', 'euro 0', 'euro 3'], evPoints: ['ricarica', 'auto elettriche'],
+    fuelPrices: ['benzina', 'gasolio', 'diesel', 'carburante', 'prezzo carburanti'],
     vacantHomes: ['case vuote', 'abitazioni non occupate'], singleHouseholds: ['persone sole', 'famiglie'],
     householdSize: ['componenti famiglia', 'nucleo familiare'],
     housingStockPer1000: ['patrimonio abitativo', 'abitazioni per residenti', 'case per abitante'],
@@ -82,6 +86,7 @@
     landUse: ['consumo di suolo', 'cementificazione'],
     landUseChange: ['nuovo suolo consumato'], recycling: ['raccolta differenziata', 'rifiuti'],
     wastePerResident: ['rifiuti pro capite', 'kg'], floodExposure: ['alluvione', 'rischio idraulico'],
+    wasteServiceCost: ['costo rifiuti', 'ctotab', 'igiene urbana', 'costo servizio rifiuti'],
     landslideExposure: ['frane', 'rischio geomorfologico'],
     organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],
     currentRevenueAccruedPerResident: ['entrate correnti', 'accertamenti', 'risorse comunali'],
@@ -146,13 +151,16 @@
   const number0 = italianFormatter({ maximumFractionDigits: 0 });
   const number1 = italianFormatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const number2 = italianFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const number3 = italianFormatter({ minimumFractionDigits: 3, maximumFractionDigits: 3 });
   const currency0 = italianFormatter({ style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const currency2 = italianFormatter({ style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   function formatValue(value, unit) {
     if (value === null || value === undefined || Number.isNaN(Number(value))) return 'n.d.';
     const v = Number(value);
     switch (unit) {
       case 'currency': return currency0.format(v);
+      case 'currency2': return currency2.format(v);
       case 'millionCurrency': return `${number1.format(v)} mln €`;
       case 'percent': return `${number1.format(v)}%`;
       case 'percentagePoints': return `${number1.format(v)} p.p.`;
@@ -169,6 +177,8 @@
       case 'per100k': return `${number2.format(v)} ogni 100.000`;
       case 'eurm2': return `${number0.format(v)} €/m²`;
       case 'rentm2': return `${number1.format(v)} €/m²/mese`;
+      case 'eurliter': return `${number3.format(v)} €/l`;
+      case 'eurPerResident': return `${number2.format(v)} €/ab`;
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
       default: return number0.format(v);

@@ -66,12 +66,16 @@
   }
 
   function formatValue(value, unit) {
+    if (value === null || value === undefined || value === '') return 'n.d.';
     const number = Number(value);
     if (!Number.isFinite(number)) return 'n.d.';
     switch (unit) {
       case 'percent': return `${formatNumber(number, 1)}%`;
       case 'percentagePoints': return `${formatNumber(number, 1)} p.p.`;
       case 'currency': return `${formatNumber(number, 0)} €`;
+      case 'currency2': return `${formatNumber(number, 2)} €`;
+      case 'eurliter': return `${formatNumber(number, 3)} €/l`;
+      case 'eurPerResident': return `${formatNumber(number, 2)} €/ab`;
       case 'euro': return `${formatNumber(number, 0)} €`;
       case 'euroPerResident': return `${formatNumber(number, 0)} € / residente`;
       case 'millionEuro': return `${formatNumber(number, 1)} mln €`;
@@ -104,11 +108,17 @@
         const value = Number(values[yearIndex]);
         if (Number.isFinite(value)) map.set(String(year), value);
       });
+      const realMap = new Map();
+      (row.realSeries?.years || []).forEach((year, yearIndex) => {
+        const value = Number(row.realSeries?.values?.[yearIndex]);
+        if (Number.isFinite(value)) realMap.set(String(year), value);
+      });
       return {
         town: row.town,
         slug: row.slug || slug(row.town),
         color: colors[index % colors.length],
-        map
+        map,
+        realMap
       };
     });
     if (rows.some(row => row.map.size < 2)) return null;
@@ -117,7 +127,13 @@
     if (years.length < 2) return null;
     return {
       years,
-      rows: rows.map(row => ({ ...row, values: years.map(year => row.map.get(year)) }))
+      rows: rows.map(row => ({
+        ...row,
+        values: years.map(year => row.map.get(year)),
+        realSeries: row.realMap.size
+          ? { years, values: years.map(year => row.realMap.get(year) ?? null) }
+          : null
+      }))
     };
   }
 
@@ -141,12 +157,14 @@
     return `${sign}${formatValue(delta, unit)} · ${relative > 0 ? '+' : ''}${formatNumber(relative, 1)}%`;
   }
 
-  function historyPointMarkup({ x, y, value, year, town, unit, width, left, right }) {
-    const boxWidth = 210;
-    const boxHeight = 50;
+  function historyPointMarkup({ x, y, value, year, town, unit, width, left, right, primaryText = '', detailLines = [] }) {
+    const boxWidth = detailLines.length ? 310 : 210;
+    const boxHeight = detailLines.length ? 90 : 50;
     const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, x - boxWidth / 2));
-    const boxY = y < 78 ? y + 18 : y - boxHeight - 16;
-    const label = `${town} · ${year}: ${formatValue(value, unit)}`;
+    const boxY = y < boxHeight + 28 ? y + 18 : y - boxHeight - 16;
+    const valueText = primaryText || formatValue(value, unit);
+    const label = [`${town} · ${year}: ${valueText}`, ...detailLines].join('. ');
+    const details = detailLines.map((line, index) => `<text class="chart-tooltip-detail" x="${boxX + 12}" y="${boxY + 53 + index * 17}">${escapeHtml(line)}</text>`).join('');
     return `<g class="chart-point" tabindex="0" role="button" aria-label="${escapeHtml(label)}">
       <circle class="chart-hit" cx="${x}" cy="${y}" r="13"></circle>
       <circle class="chart-dot ux-series-point" cx="${x}" cy="${y}" r="4"></circle>
@@ -154,7 +172,8 @@
         <line class="chart-guide" x1="${x}" y1="${y}" x2="${x}" y2="${boxY < y ? boxY + boxHeight : boxY}"></line>
         <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
         <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${escapeHtml(`${town} · ${year}`)}</text>
-        <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 34}">${escapeHtml(formatValue(value, unit))}</text>
+        <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 34}">${escapeHtml(valueText)}</text>
+        ${details}
       </g>
     </g>`;
   }
@@ -260,17 +279,46 @@
 
       const paths = series.rows.map(row => {
         const points = row.values.map((value, index) => `${x(index)},${y(value)}`).join(' ');
-        const circles = row.values.map((value, index) => historyPointMarkup({
-          x: x(index),
-          y: y(value),
-          value,
-          year: series.years[index],
-          town: row.town,
-          unit: metric.meta.unit,
-          width,
-          left,
-          right
-        })).join('');
+        const inflationMap = metric?.meta?.key === 'incomeVsInflation' && metric.inflationSeries?.years?.length
+          ? new Map(metric.inflationSeries.years.map((year, index) => [String(year), metric.inflationSeries.values[index]]))
+          : null;
+        const realMap = row.realSeries?.years?.length
+          ? new Map(row.realSeries.years.map((year, index) => [String(year), row.realSeries.values[index]]))
+          : null;
+        const signedPercent = raw => {
+          const numeric = Number(raw);
+          if (!Number.isFinite(numeric)) return 'n.d.';
+          return `${numeric > 0 ? '+' : ''}${formatValue(numeric, 'percent')}`;
+        };
+        const circles = row.values.map((value, index) => {
+          const year = series.years[index];
+          const isIncomeInflation = metric?.meta?.key === 'incomeVsInflation';
+          const isInflationReference = isIncomeInflation && row.slug === 'inflazione-nic-italia';
+          const primaryText = isInflationReference
+            ? `Inflazione: ${signedPercent(value)}`
+            : isIncomeInflation
+              ? `Reddito nominale: ${signedPercent(value)}`
+              : '';
+          const detailLines = isIncomeInflation && !isInflationReference
+            ? [
+                `Inflazione: ${signedPercent(inflationMap?.get(String(year)))}`,
+                `Variazione reale: ${signedPercent(realMap?.get(String(year)))}`,
+              ]
+            : [];
+          return historyPointMarkup({
+            x: x(index),
+            y: y(value),
+            value,
+            year,
+            town: row.town,
+            unit: metric.meta.unit,
+            width,
+            left,
+            right,
+            primaryText,
+            detailLines
+          });
+        }).join('');
         return `<g class="ux-series-group ${row.slug === selectedSlug ? 'is-selected' : ''}" data-history-town="${escapeHtml(row.slug)}" style="--series-color:${row.color}"><polyline class="ux-series-line" points="${points}"></polyline>${circles}</g>`;
       }).join('');
 
@@ -281,20 +329,45 @@
   }
 
   function comparisonBarsMarkup(metric, selectedSlug = '') {
-    const rows = [...metric.rows].sort((a, b) => Number(b.value) - Number(a.value));
-    const values = rows.map(row => Number(row.value)).filter(Number.isFinite);
-    const min = Math.min(0, ...values), max = Math.max(0, ...values);
+    const finiteValue = value => value === null || value === undefined || value === '' ? null : (Number.isFinite(Number(value)) ? Number(value) : null);
+    const rows = [...metric.rows].sort((a, b) => {
+      const av = finiteValue(a.value), bv = finiteValue(b.value);
+      if (av === null && bv === null) return String(a.town).localeCompare(String(b.town), 'it');
+      if (av === null) return 1;
+      if (bv === null) return -1;
+      return bv - av;
+    });
+    const values = rows.map(row => finiteValue(row.value)).filter(value => value !== null);
+    const focusedFuel = metric.meta.unit === 'eurliter' && values.length > 0;
+    let min, max;
+    if (focusedFuel) {
+      const rawMin = Math.min(...values), rawMax = Math.max(...values);
+      const spread = rawMax - rawMin;
+      const padding = Math.max(0.005, spread * 0.25);
+      min = Math.floor((rawMin - padding) * 1000) / 1000;
+      max = Math.ceil((rawMax + padding) * 1000) / 1000;
+      if (max <= min) max = min + 0.010;
+    } else {
+      min = Math.min(0, ...values);
+      max = Math.max(0, ...values);
+    }
     const range = max - min || 1;
-    const zero = (0 - min) / range * 100;
+    const zero = focusedFuel ? 0 : (0 - min) / range * 100;
 
-    return `<div class="ux-comparison-bars">${rows.map((row, index) => {
-      const value = Number(row.value);
-      const start = value >= 0 ? zero : (value - min) / range * 100;
-      const width = Math.max(1, Math.abs(value) / range * 100);
+    const markup = rows.map((row, index) => {
+      const value = finiteValue(row.value);
       const rowSlug = row.slug || slug(row.town);
       const href = new URL(`comuni/${rowSlug}/?tema=${encodeURIComponent(metric.meta.theme)}&indicatore=${encodeURIComponent(metric.key || '')}`, ROOT).href;
-      return `<a class="ux-bar-row ${rowSlug === selectedSlug ? 'selected' : ''}" href="${href}"><span class="ux-bar-rank">${index + 1}</span><span class="ux-bar-town">${escapeHtml(row.town)}</span><span class="ux-bar-track"><span class="ux-bar-zero" style="left:${zero}%"></span><span class="ux-bar-fill" style="left:${start}%;width:${width}%"></span></span><strong>${escapeHtml(row.formatted || formatValue(value, metric.meta.unit))}</strong></a>`;
-    }).join('')}</div>`;
+      if (value === null) {
+        return `<a class="ux-bar-row missing ${rowSlug === selectedSlug ? 'selected' : ''}" href="${href}"><span class="ux-bar-rank">—</span><span class="ux-bar-town">${escapeHtml(row.town)}</span><span class="ux-bar-track"></span><strong>n.d.</strong></a>`;
+      }
+      const valuePosition = (value - min) / range * 100;
+      const start = focusedFuel ? 0 : (value >= 0 ? zero : valuePosition);
+      const width = focusedFuel ? Math.max(1, valuePosition) : Math.max(1, Math.abs(value) / range * 100);
+      return `<a class="ux-bar-row ${rowSlug === selectedSlug ? 'selected' : ''}" href="${href}"><span class="ux-bar-rank">${index + 1}</span><span class="ux-bar-town">${escapeHtml(row.town)}</span><span class="ux-bar-track">${focusedFuel ? '' : `<span class="ux-bar-zero" style="left:${zero}%"></span>`}<span class="ux-bar-fill" style="left:${start}%;width:${width}%"></span></span><strong>${escapeHtml(row.formatted || formatValue(value, metric.meta.unit))}</strong></a>`;
+    }).join('');
+    const note = focusedFuel ? `<p class="comparison-note">Scala adattata all’intervallo dei prezzi: non parte da zero, così le differenze di pochi centesimi restano leggibili.</p>` : '';
+    return `<div class="ux-comparison-bars">${markup}</div>${note}`;
   }
 
   function wireHistorySelection(shell, initialSlug, allowClear) {

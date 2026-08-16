@@ -163,10 +163,35 @@ def browser_assertions() -> None:
         )
         page.wait_for_selector(".ux-view-shell")
         page.locator('[data-view-mode="history"]').click()
-        require(page.locator(".ux-two-point-row").count() == 7,
-                "Economia: confronto a due punti incompleto")
-        require("Confronto a due punti 2023–2024" in page.locator(".ux-history-head").inner_text(),
-                "Economia: intervallo a due punti non riconosciuto")
+        require(page.locator(".ux-series-group").count() == 7,
+                "Economia: serie storica lunga incompleta")
+        require("Andamento 2011–2024" in page.locator(".ux-history-head").inner_text(),
+                "Economia: intervallo storico lungo non riconosciuto")
+
+        page.goto(
+            base + "comuni/massarosa/?tema=economia&indicatore=income",
+            wait_until="networkidle",
+        )
+        page.wait_for_selector(".history-panel .ux-view-shell")
+        real_income_button = page.locator('[data-metric="incomeVsInflation"]')
+        require(real_income_button.count() == 1 and real_income_button.is_visible(),
+                "Scheda comunale Economia: pulsante Redditi vs inflazione assente")
+        real_income_button.click()
+        page.wait_for_selector('[data-metric="incomeVsInflation"].active')
+        require("indicatore=incomeVsInflation" in page.url,
+                "Scheda comunale Economia: click Redditi vs inflazione non aggiorna l’indicatore")
+        require("Redditi vs inflazione" in page.locator("#town-topic").inner_text(),
+                "Scheda comunale Economia: contenuto Redditi vs inflazione non renderizzato")
+        real_history_button = page.locator('.history-panel [data-view-mode="history"]')
+        require(not real_history_button.is_disabled(),
+                "Scheda comunale Economia: storico Redditi vs inflazione disabilitato")
+        real_history_button.click()
+        require(page.locator('.history-panel .ux-view-pane[data-view-pane="history"]').is_visible(),
+                "Scheda comunale Economia: storico Redditi vs inflazione non attivabile")
+        require(page.locator(".history-panel .ux-series-group").count() == 7,
+                "Scheda comunale Economia: storico Redditi vs inflazione incompleto")
+        require("Andamento 2016–2024" in page.locator(".history-panel .ux-history-head").inner_text(),
+                "Scheda comunale Economia: intervallo Redditi vs inflazione errato")
 
         page.goto(
             base + "confronta/bilanci/?indicatore=rigidExpenditureShare",

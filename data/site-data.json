@@ -1,6 +1,6 @@
 {
-  "version": "v1.12.0",
-  "updated": "15 agosto 2026",
+  "version": "v1.13.0",
+  "updated": "16 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -60,10 +60,14 @@
       "number": "02",
       "label": "Economia",
       "question": "Come è fatta l’economia del territorio?",
-      "description": "Redditi, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.",
+      "description": "Redditi, costo della vita, fiscalità locale, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.",
       "metrics": [
         "income",
         "incomeDistribution",
+        "incomeVsInflation",
+        "municipalIrpef",
+        "tariStandardHousehold",
+        "municipalImuStandard",
         "businessValueAdded",
         "labourProductivity",
         "industryValueAddedShare",
@@ -90,10 +94,21 @@
         {
           "key": "redditi",
           "label": "Redditi",
-          "description": "Livello medio e distribuzione dei redditi dichiarati.",
+          "description": "Reddito imponibile, distribuzione dei redditi dichiarati e confronto comunale con l’inflazione.",
           "metrics": [
             "income",
-            "incomeDistribution"
+            "incomeDistribution",
+            "incomeVsInflation"
+          ]
+        },
+        {
+          "key": "costi-fiscalita",
+          "label": "Costi e fiscalità locale",
+          "description": "Tributi e costi standardizzati per confrontare regole comunali diverse sullo stesso caso teorico.",
+          "metrics": [
+            "municipalIrpef",
+            "tariStandardHousehold",
+            "municipalImuStandard"
           ]
         },
         {
@@ -323,6 +338,7 @@
         "inboundCommutersRate",
         "motorization",
         "pollutingCars",
+        "fuelPrices",
         "evPoints",
         "ftthCoverageDesi",
         "ftthReachedHouseholds",
@@ -352,11 +368,12 @@
         },
         {
           "key": "veicoli",
-          "label": "Mezzi e infrastrutture",
-          "description": "Motorizzazione, veicoli più inquinanti e ricarica elettrica.",
+          "label": "Mezzi, carburanti e infrastrutture",
+          "description": "Motorizzazione, veicoli più inquinanti, prezzi dei carburanti self-service e ricarica elettrica.",
           "metrics": [
             "motorization",
             "pollutingCars",
+            "fuelPrices",
             "evPoints"
           ]
         },
@@ -498,6 +515,7 @@
         "organicAgriculturalAreaShare",
         "recycling",
         "wastePerResident",
+        "wasteServiceCost",
         "residualWaste",
         "climateTemperatureTrend50y",
         "climatePrecipitationTrend50y",
@@ -538,10 +556,11 @@
         {
           "key": "rifiuti",
           "label": "Rifiuti e circolarità",
-          "description": "Produzione, raccolta differenziata e residuo.",
+          "description": "Produzione, raccolta differenziata e costo complessivo del servizio rifiuti.",
           "metrics": [
             "recycling",
             "wastePerResident",
+            "wasteServiceCost",
             "residualWaste"
           ]
         }
@@ -3003,13 +3022,18 @@
       "meta": {
         "key": "income",
         "theme": "economia",
-        "label": "Reddito medio per dichiarante",
-        "shortLabel": "Reddito medio",
-        "description": "Reddito complessivo dichiarato diviso per i dichiaranti con reddito complessivo.",
+        "label": "Reddito imponibile medio per dichiarante",
+        "shortLabel": "Reddito imponibile medio",
+        "description": "Reddito imponibile dichiarato diviso per la relativa frequenza dei dichiaranti. È una variabile MEF diversa dal «Reddito complessivo medio dichiarato» mostrato nella distribuzione per fasce: i due valori non devono coincidere. Qui si usa l’imponibile perché consente una serie comunale omogenea 2011–2024.",
         "unit": "currency",
         "year": "2024",
-        "source": "MEF — dichiarazioni Irpef",
-        "polarity": "positive"
+        "source": "Dipartimento delle Finanze — MEF",
+        "polarity": "positive",
+        "longHistoryLabel": "Reddito imponibile medio · serie storica",
+        "longHistoryYears": "2011–2024",
+        "longHistorySource": "Dipartimento delle Finanze — MEF",
+        "longHistorySourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+        "longHistoryNote": "Valore corrente e storico usano la stessa definizione MEF: «Reddito imponibile — Ammontare / Frequenza». Il «Reddito complessivo medio dichiarato» della distribuzione per fasce è una misura diversa e non viene mescolata a questa serie."
       },
       "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
       "rows": [
@@ -3017,140 +3041,546 @@
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
-          "value": 23193,
-          "formatted": "23.193 €",
+          "value": 22350.6,
+          "formatted": "22.351 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              22095,
-              23193
+              17175.61,
+              17270.01,
+              17429.17,
+              17530.42,
+              17692.49,
+              17875.79,
+              17926.06,
+              18327.37,
+              18619.92,
+              18457.81,
+              19374.91,
+              20447.31,
+              21263.87,
+              22350.6
             ]
           },
           "normalized": null,
-          "benchmarkValue": 23193
+          "benchmarkValue": 22350.6,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              17175.61,
+              17270.01,
+              17429.17,
+              17530.42,
+              17692.49,
+              17875.79,
+              17926.06,
+              18327.37,
+              18619.92,
+              18457.81,
+              19374.91,
+              20447.31,
+              21263.87,
+              22350.6
+            ]
+          }
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
-          "value": 26726,
-          "formatted": "26.726 €",
+          "value": 25539.17,
+          "formatted": "25.539 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              25622,
-              26726
+              19913.96,
+              19777.67,
+              19890.64,
+              19877.48,
+              20207.81,
+              20445.3,
+              21372.01,
+              21623.91,
+              21724.65,
+              20888.63,
+              22045.32,
+              23727.0,
+              24506.14,
+              25539.17
             ]
           },
           "normalized": null,
-          "benchmarkValue": 26726
+          "benchmarkValue": 25539.17,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              19913.96,
+              19777.67,
+              19890.64,
+              19877.48,
+              20207.81,
+              20445.3,
+              21372.01,
+              21623.91,
+              21724.65,
+              20888.63,
+              22045.32,
+              23727.0,
+              24506.14,
+              25539.17
+            ]
+          }
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
-          "value": 25398,
-          "formatted": "25.398 €",
+          "value": 23744.66,
+          "formatted": "23.745 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              24178,
-              25398
+              17898.81,
+              17956.18,
+              18021.36,
+              18047.25,
+              18136.71,
+              18519.3,
+              18459.15,
+              19020.99,
+              19242.14,
+              19156.14,
+              20539.4,
+              21506.89,
+              22627.64,
+              23744.66
             ]
           },
           "normalized": null,
-          "benchmarkValue": 25398
+          "benchmarkValue": 23744.66,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              17898.81,
+              17956.18,
+              18021.36,
+              18047.25,
+              18136.71,
+              18519.3,
+              18459.15,
+              19020.99,
+              19242.14,
+              19156.14,
+              20539.4,
+              21506.89,
+              22627.64,
+              23744.66
+            ]
+          }
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
-          "value": 26835,
-          "formatted": "26.835 €",
+          "value": 25239.48,
+          "formatted": "25.239 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              25654,
-              26835
+              19032.55,
+              18879.96,
+              19228.72,
+              19034.01,
+              19269.29,
+              19603.62,
+              19975.28,
+              20313.78,
+              20498.44,
+              20086.34,
+              21600.99,
+              23117.27,
+              24144.93,
+              25239.48
             ]
           },
           "normalized": null,
-          "benchmarkValue": 26835
+          "benchmarkValue": 25239.48,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              19032.55,
+              18879.96,
+              19228.72,
+              19034.01,
+              19269.29,
+              19603.62,
+              19975.28,
+              20313.78,
+              20498.44,
+              20086.34,
+              21600.99,
+              23117.27,
+              24144.93,
+              25239.48
+            ]
+          }
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
-          "value": 22984,
-          "formatted": "22.984 €",
+          "value": 21933.08,
+          "formatted": "21.933 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              21761,
-              22984
+              17094.29,
+              17122.04,
+              17401.69,
+              17522.3,
+              17719.07,
+              17713.87,
+              17594.68,
+              17883.76,
+              18344.43,
+              18052.3,
+              19039.4,
+              19711.34,
+              20688.89,
+              21933.08
             ]
           },
           "normalized": null,
-          "benchmarkValue": 22984
+          "benchmarkValue": 21933.08,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              17094.29,
+              17122.04,
+              17401.69,
+              17522.3,
+              17719.07,
+              17713.87,
+              17594.68,
+              17883.76,
+              18344.43,
+              18052.3,
+              19039.4,
+              19711.34,
+              20688.89,
+              21933.08
+            ]
+          }
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 45765,
-          "formatted": "45.765 €",
+          "value": 40248.59,
+          "formatted": "40.249 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              42639,
-              45765
+              24329.79,
+              25930.51,
+              26077.96,
+              27193.68,
+              27494.91,
+              26879.66,
+              27971.17,
+              29720.44,
+              29678.52,
+              28925.49,
+              32461.83,
+              37844.01,
+              37198.74,
+              40248.59
             ]
           },
           "normalized": null,
-          "benchmarkValue": 45765
+          "benchmarkValue": 40248.59,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              24329.79,
+              25930.51,
+              26077.96,
+              27193.68,
+              27494.91,
+              26879.66,
+              27971.17,
+              29720.44,
+              29678.52,
+              28925.49,
+              32461.83,
+              37844.01,
+              37198.74,
+              40248.59
+            ]
+          }
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
-          "value": 20090,
-          "formatted": "20.090 €",
+          "value": 19689.09,
+          "formatted": "19.689 €",
           "series": {
             "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
               2023,
               2024
             ],
             "values": [
-              18745,
-              20090
+              14324.16,
+              14718.19,
+              15316.18,
+              15485.27,
+              15812.74,
+              15683.85,
+              15835.38,
+              15883.75,
+              16244.93,
+              15488.24,
+              16452.65,
+              17298.67,
+              18373.36,
+              19689.09
             ]
           },
           "normalized": null,
-          "benchmarkValue": 20090
+          "benchmarkValue": 19689.09,
+          "longSeries": {
+            "years": [
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              14324.16,
+              14718.19,
+              15316.18,
+              15485.27,
+              15812.74,
+              15683.85,
+              15835.38,
+              15883.75,
+              16244.93,
+              15488.24,
+              16452.65,
+              17298.67,
+              18373.36,
+              19689.09
+            ]
+          }
         }
       ],
       "aggregate": {
-        "value": 26384.50930855573,
+        "value": 24920.45,
         "label": "Media ponderata Versilia",
-        "note": "Ponderata sul numero dei dichiaranti."
+        "note": "Ammontare complessivo / frequenza complessiva dei sette comuni."
       },
       "normalizedAggregate": null,
       "method": {
@@ -3158,6 +3588,42 @@
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Non trasformare dati di stock o struttura in giudizi di performance; mantenere la denominazione della fonte.",
         "coverage": "7/7"
+      },
+      "longAggregate": {
+        "years": [
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "values": [
+          18913.88,
+          18934.57,
+          19105.31,
+          19152.8,
+          19383.32,
+          19584.39,
+          20029.96,
+          20440.58,
+          20628.85,
+          20136.56,
+          21438.86,
+          22923.37,
+          23759.32,
+          24920.45
+        ],
+        "label": "Imponibile medio Versilia",
+        "note": "Ammontare complessivo / frequenza complessiva dei sette comuni."
       }
     },
     "incomeDistribution": {
@@ -3166,7 +3632,7 @@
         "theme": "economia",
         "label": "Distribuzione dei dichiaranti per fascia di reddito",
         "shortLabel": "Distribuzione per fascia di reddito",
-        "description": "Distribuzione dei dichiaranti in quattro fasce esclusive ricavate dalle classi ufficiali MEF: fino a 15.000 €, 15.001–26.000 €, 26.001–55.000 € e oltre 55.000 €.",
+        "description": "Distribuzione dei dichiaranti in quattro fasce esclusive ricavate dalle classi ufficiali MEF. Il dato riepilogativo «Reddito complessivo medio dichiarato» è distinto dal reddito imponibile medio: sono due variabili MEF diverse e quindi possono avere valori differenti.",
         "unit": "percent",
         "year": "2024",
         "source": "Dipartimento delle Finanze — MEF",
@@ -3178,7 +3644,7 @@
           "dichiaranti",
           "distribuzione redditi"
         ],
-        "summaryLabel": "Reddito medio",
+        "summaryLabel": "Reddito complessivo medio dichiarato",
         "summaryUnit": "currency",
         "selectorLabel": "Dato in evidenza"
       },
@@ -3443,8 +3909,8 @@
           }
         ],
         "summaryValue": 26386.35140640982,
-        "summaryLabel": "Reddito medio Versilia",
-        "summaryNote": "Reddito medio ponderato dei dichiaranti dei sette comuni; la barra mostra la distribuzione completa per fascia."
+        "summaryLabel": "Reddito complessivo medio Versilia",
+        "summaryNote": "Media ponderata del reddito complessivo dichiarato. È distinta dalla serie del reddito imponibile medio."
       },
       "normalizedAggregate": null,
       "method": {
@@ -22757,6 +23223,2079 @@
         "caveat": "La classificazione comprende spesa corrente e in conto capitale; gestione associata, stagionalità e organizzazione dei servizi incidono sul confronto.",
         "coverage": "7/7"
       }
+    },
+    "municipalIrpef": {
+      "meta": {
+        "key": "municipalIrpef",
+        "theme": "economia",
+        "label": "Addizionale comunale IRPEF effettiva",
+        "shortLabel": "Addizionale comunale IRPEF",
+        "description": "Importo annuo dell'addizionale comunale IRPEF dovuta applicando aliquote, scaglioni ed esenzioni del Comune allo stesso reddito imponibile teorico. Il selettore cambia lo scenario di reddito.",
+        "unit": "currency2",
+        "year": "2025",
+        "source": "Dipartimento delle Finanze — MEF",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Reddito imponibile",
+        "searchTerms": [
+          "addizionale comunale",
+          "irpef comunale",
+          "aliquota irpef",
+          "fiscalità locale",
+          "tasse comunali"
+        ]
+      },
+      "sourceUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 160.0,
+          "formatted": "160,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              160.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 160.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 160.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 240.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 400.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                160.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                240.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                400.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 150.0,
+          "formatted": "150,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              150.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 150.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 150.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 225.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 375.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                150.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                225.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                375.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 82.5,
+          "formatted": "82,50 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              82.5
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 82.5,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 82.5,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 144.5,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 284.5,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                82.5
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                144.5
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                284.5
+              ]
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 150.0,
+          "formatted": "150,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              150.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 150.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 150.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 225.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 375.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                150.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                225.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                375.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 160.0,
+          "formatted": "160,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              160.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 160.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 160.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 240.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 400.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                160.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                240.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                400.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.0,
+          "formatted": "0,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              0.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 0.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 153.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 283.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                0.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                153.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                283.0
+              ]
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 160.0,
+          "formatted": "160,00 €",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              160.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 160.0,
+          "parts": [
+            {
+              "label": "Reddito imponibile 20.000 €",
+              "selectorLabel": "20.000 €",
+              "value": 160.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 30.000 €",
+              "selectorLabel": "30.000 €",
+              "value": 240.0,
+              "unit": "currency2"
+            },
+            {
+              "label": "Reddito imponibile 50.000 €",
+              "selectorLabel": "50.000 €",
+              "value": 400.0,
+              "unit": "currency2"
+            }
+          ],
+          "componentSeries": {
+            "20.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                160.0
+              ]
+            },
+            "30.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                240.0
+              ]
+            },
+            "50.000 €": {
+              "years": [
+                2025
+              ],
+              "values": [
+                400.0
+              ]
+            }
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 123.21428571428571,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Ogni Comune pesa allo stesso modo. È un benchmark fiscale standardizzato, non una stima del gettito o della famiglia media.",
+        "parts": [
+          {
+            "label": "Reddito imponibile 20.000 €",
+            "selectorLabel": "20.000 €",
+            "value": 123.21428571428571,
+            "unit": "currency2"
+          },
+          {
+            "label": "Reddito imponibile 30.000 €",
+            "selectorLabel": "30.000 €",
+            "value": 209.64285714285714,
+            "unit": "currency2"
+          },
+          {
+            "label": "Reddito imponibile 50.000 €",
+            "selectorLabel": "50.000 €",
+            "value": 359.64285714285717,
+            "unit": "currency2"
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su disciplina ufficiale MEF",
+        "formula": "Per ciascuno scenario: se il reddito imponibile non supera la soglia di esenzione, imposta = 0; altrimenti si applicano all'intero imponibile l'aliquota unica o gli scaglioni progressivi pubblicati dal MEF.",
+        "caveat": "Gli scenari 20.000 €, 30.000 € e 50.000 € servono a confrontare la struttura della fiscalità comunale. Non rappresentano redditi disponibili familiari e non includono l'addizionale regionale o l'IRPEF statale.",
+        "coverage": "7/7"
+      }
+    },
+    "tariStandardHousehold": {
+      "meta": {
+        "key": "tariStandardHousehold",
+        "theme": "economia",
+        "label": "TARI standardizzata · 3 persone, 100 m²",
+        "shortLabel": "TARI · 3 persone / 100 m²",
+        "description": "Spesa annua TARI per una stessa utenza domestica teorica residente di 3 componenti e 100 m², senza agevolazioni personali. Include TEFA e componenti perequative 2025.",
+        "unit": "currency2",
+        "year": "2025",
+        "source": "Comuni / MEF / ARERA",
+        "polarity": "neutral",
+        "searchTerms": [
+          "tari",
+          "tariffa rifiuti",
+          "tassa rifiuti",
+          "100 mq",
+          "3 persone"
+        ]
+      },
+      "sourceUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 542.51,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              542.51
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 542.51,
+          "tariffDetail": {
+            "fixedPerSqm": 1.297705857,
+            "variablePerYear": 379.6698985,
+            "baseCharge": 509.44,
+            "tefa5Percent": 25.47,
+            "equalization2025": 7.6,
+            "annualCost": 542.51
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 417.86,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              417.86
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 417.86,
+          "tariffDetail": {
+            "fixedPerSqm": 1.0646,
+            "variablePerYear": 284.2633,
+            "baseCharge": 390.72,
+            "tefa5Percent": 19.54,
+            "equalization2025": 7.6,
+            "annualCost": 417.86
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 422.94,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              422.94
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 422.94,
+          "tariffDetail": {
+            "fixedPerSqm": 0.969,
+            "variablePerYear": 298.664,
+            "baseCharge": 395.56,
+            "tefa5Percent": 19.78,
+            "equalization2025": 7.6,
+            "annualCost": 422.94
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 356.11,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              356.11
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 356.11,
+          "tariffDetail": {
+            "fixedPerSqm": 1.25,
+            "variablePerYear": 206.91,
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f2308082d4af&nome=373612_DIMUNIC-16lu25g628d.pdf",
+            "baseCharge": 331.91,
+            "tefa5Percent": 16.6,
+            "equalization2025": 7.6,
+            "annualCost": 356.11
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 502.22,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              502.22
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 502.22,
+          "tariffDetail": {
+            "fixedPerSqm": 1.14427,
+            "variablePerYear": 356.63966,
+            "baseCharge": 471.07,
+            "tefa5Percent": 23.55,
+            "equalization2025": 7.6,
+            "annualCost": 502.22
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 475.73,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              475.73
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 475.73,
+          "tariffDetail": {
+            "fixedPerSqm": 1.39,
+            "variablePerYear": 306.84,
+            "sourcePdf": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/download_lib.php?key=0900f230808daf3a&nome=376342_DIMUNIC-16lu25d730d.pdf",
+            "baseCharge": 445.84,
+            "tefa5Percent": 22.29,
+            "equalization2025": 7.6,
+            "annualCost": 475.73
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 365.31,
+          "formatted": "",
+          "series": {
+            "years": [
+              2025
+            ],
+            "values": [
+              365.31
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 365.31,
+          "tariffDetail": {
+            "officialBase100sqm3people": 340.68,
+            "baseCharge": 340.68,
+            "tefa5Percent": 17.03,
+            "equalization2025": 7.6,
+            "annualCost": 365.31
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 440.3828571428572,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Confronto standardizzato della stessa utenza teorica; ogni Comune pesa allo stesso modo."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su tariffe ufficiali 2025",
+        "formula": "100 m² × quota fissa + quota variabile per 3 componenti; TEFA 5%; + 7,60 € di componenti perequative ARERA 2025.",
+        "caveat": "Nessuna riduzione personale. Stazzema usa l’importo ufficiale pubblicato per 3 componenti / 100 m² come base.",
+        "coverage": "7/7"
+      }
+    },
+    "municipalImuStandard": {
+      "meta": {
+        "key": "municipalImuStandard",
+        "theme": "economia",
+        "label": "IMU seconda abitazione standardizzata",
+        "shortLabel": "IMU seconda abitazione",
+        "description": "Imposta annua teorica su una seconda abitazione A/2 con base imponibile IMU identica di 100.000 €, usando l’aliquota 2025 «Altri fabbricati». Aliquote applicate: 1,06%: Massarosa, Pietrasanta, Forte dei Marmi, Stazzema; 1,14%: Viareggio, Camaiore, Seravezza.",
+        "unit": "currency",
+        "year": "2025",
+        "source": "Dipartimento delle Finanze — MEF",
+        "polarity": "neutral",
+        "searchTerms": [
+          "imu",
+          "seconda casa",
+          "seconda abitazione",
+          "aliquota imu"
+        ]
+      },
+      "sourceUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1060.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1060.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1060.0,
+          "ratePercent": 1.06
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1140.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1140.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1140.0,
+          "ratePercent": 1.14
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1140.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1140.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1140.0,
+          "ratePercent": 1.14
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1060.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1060.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1060.0,
+          "ratePercent": 1.06
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1140.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1140.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1140.0,
+          "ratePercent": 1.14
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1060.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1060.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1060.0,
+          "ratePercent": 1.06
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1060.0,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2025"
+            ],
+            "values": [
+              1060.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1060.0,
+          "ratePercent": 1.06
+        }
+      ],
+      "aggregate": {
+        "value": 1094.2857142857142,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Benchmark su base imponibile identica di 100.000 €; non rappresenta una casa tipica."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su prospetti ufficiali MEF",
+        "formula": "100.000 € × aliquota IMU 2025 della categoria «Altri fabbricati».",
+        "caveat": "La base imponibile è standardizzata per isolare l’effetto dell’aliquota comunale. 1,06%: Massarosa, Pietrasanta, Forte dei Marmi, Stazzema; 1,14%: Viareggio, Camaiore, Seravezza.",
+        "coverage": "7/7"
+      }
+    },
+    "fuelPrices": {
+      "meta": {
+        "key": "fuelPrices",
+        "theme": "mobilita",
+        "label": "Prezzi carburanti self-service",
+        "shortLabel": "Prezzi carburanti",
+        "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
+        "unit": "eurliter",
+        "year": "2026-08-14",
+        "source": "MIMIT — Osservaprezzi carburanti",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Carburante",
+        "searchTerms": [
+          "benzina",
+          "gasolio",
+          "diesel",
+          "carburante"
+        ]
+      },
+      "sourceUrl": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1.987,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.987
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.987,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.987,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.088,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 7,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.987
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.088
+              ]
+            }
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1.994,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.994
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.994,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.994,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.099,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 20,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.994
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.099
+              ]
+            }
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1.999,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.999
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.999,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.999,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.089,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 11,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.999
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.089
+              ]
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 1.999,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.999
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.999,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.999,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.099,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 15,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.999
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.099
+              ]
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1.994,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.994
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.994,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.994,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.079,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 6,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.994
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.079
+              ]
+            }
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1.979,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              1.979
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1.979,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": 1.979,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": 2.089,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 4,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                1.979
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                2.089
+              ]
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "",
+          "series": {
+            "years": [
+              "2026-08-14"
+            ],
+            "values": [
+              null
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": null,
+          "parts": [
+            {
+              "label": "Benzina self",
+              "selectorLabel": "Benzina self",
+              "value": null,
+              "unit": "eurliter"
+            },
+            {
+              "label": "Gasolio self",
+              "selectorLabel": "Gasolio self",
+              "value": null,
+              "unit": "eurliter"
+            }
+          ],
+          "stationCount": 0,
+          "componentSeries": {
+            "Benzina self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                null
+              ]
+            },
+            "Gasolio self": {
+              "years": [
+                "2026-08-14"
+              ],
+              "values": [
+                null
+              ]
+            }
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 1.992,
+        "label": "Media delle mediane comunali disponibili",
+        "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
+        "parts": [
+          {
+            "label": "Benzina self",
+            "selectorLabel": "Benzina self",
+            "value": 1.992,
+            "unit": "eurliter"
+          },
+          {
+            "label": "Gasolio self",
+            "selectorLabel": "Gasolio self",
+            "value": 2.0905,
+            "unit": "eurliter"
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su open data MIMIT",
+        "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
+        "caveat": "Fotografia del 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "coverage": "6/7"
+      }
+    },
+    "wasteServiceCost": {
+      "meta": {
+        "key": "wasteServiceCost",
+        "theme": "ambiente",
+        "label": "Costo totale del servizio rifiuti per abitante",
+        "shortLabel": "Costo servizio rifiuti",
+        "description": "Costi totali di gestione del servizio di igiene urbana (CTOTab) rapportati agli abitanti.",
+        "unit": "eurPerResident",
+        "year": "2024",
+        "source": "ISPRA — Catasto nazionale rifiuti",
+        "polarity": "neutral",
+        "searchTerms": [
+          "costo rifiuti",
+          "ctotab",
+          "igiene urbana"
+        ]
+      },
+      "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=costicomuneproc&reg1=Toscana&regid=09&regid2=09",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 275.56,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              275.56
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 275.56
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 348.2,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              348.2
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 348.2
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 343.24,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              343.24
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 343.24
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 360.36,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              360.36
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 360.36
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 295.5,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              295.5
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 295.5
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 998.69,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              998.69
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 998.69
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 317.81,
+          "formatted": "",
+          "series": {
+            "years": [
+              2024
+            ],
+            "values": [
+              317.81
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 317.81
+        }
+      ],
+      "aggregate": {
+        "value": 419.90857142857146,
+        "label": "Media semplice dei 7 comuni",
+        "note": "Ogni Comune pesa allo stesso modo; non è un dato ufficiale aggregato della Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale ISPRA",
+        "formula": "CTOTab: costi totali di gestione del servizio di igiene urbana / abitanti.",
+        "caveat": "Accettate esclusivamente righe comunali ISPRA con «N. di comuni = 1».",
+        "coverage": "7/7"
+      }
+    },
+    "incomeVsInflation": {
+      "meta": {
+        "key": "incomeVsInflation",
+        "theme": "economia",
+        "label": "Redditi vs inflazione",
+        "shortLabel": "Redditi vs inflazione",
+        "description": "Variazione cumulata del reddito imponibile medio per dichiarante rispetto al 2016, depurata dall’andamento del NIC nazionale ISTAT. 0% indica lo stesso livello reale del 2016; un valore positivo indica crescita oltre l’inflazione. Il reddito è comunale, il riferimento dei prezzi è nazionale.",
+        "unit": "percent",
+        "year": "2024",
+        "source": "MEF + ISTAT",
+        "polarity": "neutral",
+        "searchTerms": [
+          "redditi inflazione",
+          "potere acquisto",
+          "reddito reale",
+          "nic",
+          "prezzi"
+        ]
+      },
+      "sourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+      "secondarySourceUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 3.4042,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.9079,
+              0.1092,
+              1.1005,
+              0.4212,
+              3.4453,
+              0.9907,
+              -0.6398,
+              3.4042
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 3.4042,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              0.2812,
+              2.5262,
+              4.1628,
+              3.2559,
+              8.3863,
+              14.3855,
+              18.9535,
+              25.0328
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.9079,
+              0.1092,
+              1.1005,
+              0.4212,
+              3.4453,
+              0.9907,
+              -0.6398,
+              3.4042
+            ]
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 3.3064,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              3.2931,
+              3.2713,
+              3.1336,
+              -0.6365,
+              2.9103,
+              2.4613,
+              0.1191,
+              3.3064
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 3.3064,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              4.5326,
+              5.7647,
+              6.2574,
+              2.1684,
+              7.8259,
+              16.0511,
+              19.862,
+              24.9146
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              3.2931,
+              3.2713,
+              3.1336,
+              -0.6365,
+              2.9103,
+              2.4613,
+              0.1191,
+              3.3064
+            ]
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 6.0365,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -1.5067,
+              0.2877,
+              0.8486,
+              0.5991,
+              5.8521,
+              2.5329,
+              2.0587,
+              6.0365
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.0365,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.3248,
+              2.709,
+              3.9032,
+              3.4388,
+              10.9081,
+              16.1323,
+              22.1841,
+              28.2158
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -1.5067,
+              0.2877,
+              0.8486,
+              0.5991,
+              5.8521,
+              2.5329,
+              2.0587,
+              6.0365
+            ]
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 6.4776,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              0.6876,
+              1.1797,
+              1.4905,
+              -0.3505,
+              5.1655,
+              4.1144,
+              2.8786,
+              6.4776
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 6.4776,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              1.8959,
+              3.6226,
+              4.5646,
+              2.4624,
+              10.1888,
+              17.9235,
+              23.1657,
+              28.7491
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              0.6876,
+              1.1797,
+              1.4905,
+              -0.3505,
+              5.1655,
+              4.1144,
+              2.8786,
+              6.4776
+            ]
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 2.4001,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -1.8507,
+              -1.421,
+              0.5152,
+              -0.8872,
+              2.5831,
+              -1.7544,
+              -2.4428,
+              2.4001
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 2.4001,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.6729,
+              0.9591,
+              3.5597,
+              1.9105,
+              7.483,
+              11.2763,
+              16.7949,
+              23.8187
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -1.8507,
+              -1.421,
+              0.5152,
+              -0.8872,
+              2.5831,
+              -1.7544,
+              -2.4428,
+              2.4001
+            ]
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 23.8343,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              2.8268,
+              7.9619,
+              7.1666,
+              4.6568,
+              15.2618,
+              24.3036,
+              15.5952,
+              23.8343
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 23.8343,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              4.0607,
+              10.5685,
+              10.4126,
+              7.6111,
+              20.7673,
+              40.7905,
+              38.3899,
+              49.7362
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              2.8268,
+              7.9619,
+              7.1666,
+              4.6568,
+              15.2618,
+              24.3036,
+              15.5952,
+              23.8343
+            ]
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 3.8214,
+          "formatted": "",
+          "series": {
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.2311,
+              -1.113,
+              0.5324,
+              -3.9583,
+              0.1196,
+              -2.6198,
+              -2.1476,
+              3.8214
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 3.8214,
+          "nominalSeries": {
+            "label": "Reddito imponibile nominale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              0.9662,
+              1.2746,
+              3.5774,
+              -1.2472,
+              4.9019,
+              10.2961,
+              17.1483,
+              25.5374
+            ]
+          },
+          "realSeries": {
+            "label": "Variazione reale",
+            "years": [
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024
+            ],
+            "values": [
+              0.0,
+              -0.2311,
+              -1.113,
+              0.5324,
+              -3.9583,
+              0.1196,
+              -2.6198,
+              -2.1476,
+              3.8214
+            ]
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 5.23,
+        "label": "Versilia · variazione reale 2016–2024",
+        "note": "Ammontare/frequenza dei sette Comuni, depurato con il NIC nazionale ISTAT; confronto di contesto tra perimetri diversi."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su MEF e ISTAT",
+        "formula": "[(imponibile medio anno / imponibile medio 2016) / (NIC Italia anno / NIC Italia 2016) − 1] × 100.",
+        "caveat": "Il reddito riguarda ciascun Comune; l’inflazione è il NIC nazionale. L’indicatore misura l’evoluzione reale del reddito imponibile medio dichiarato, non il reddito disponibile familiare.",
+        "coverage": "7/7 · 2016–2024",
+        "sources": [
+          "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+          "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/"
+        ]
+      },
+      "inflationSeries": {
+        "label": "Inflazione · NIC Italia",
+        "years": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "values": [
+          0.0,
+          1.2,
+          2.4144,
+          3.0289,
+          2.8228,
+          4.7765,
+          13.2634,
+          19.7194,
+          20.9166
+        ]
+      },
+      "historyPresentation": {
+        "type": "nominal-income-vs-inflation",
+        "baseYear": 2016,
+        "baseLabel": "2016 = 0%",
+        "note": "Nello storico il reddito imponibile nominale di ciascun Comune e il NIC Italia sono riportati alla stessa base 2016 = 0%. Le traiettorie mostrano se i redditi crescono più o meno dei prezzi. La distanza visiva tra le linee non coincide con la variazione reale: quest’ultima è calcolata anno per anno come rapporto tra indice del reddito e indice dei prezzi ed è riportata nei tooltip."
+      }
     }
   },
   "crests": {
@@ -29430,5 +31969,84 @@
       "reason": "Verificate Regione Toscana, RGS-SICO/Conto annuale e le sezioni Personale/PIAO/Amministrazione trasparente dei sette Comuni. Le fonti reperibili non consentono ancora una fotografia 2025 omogenea almeno 6/7 del personale di Polizia Locale; i dati parziali non vengono mescolati né stimati.",
       "publicationRule": "Pubblicare solo con definizione temporale e perimetro del personale omogenei, copertura 7/7 o 6/7 con n.d. esplicito."
     }
+  },
+  "costsFiscalDraft": {
+    "status": "published",
+    "auditDate": "2026-08-15",
+    "publishedInDraft": [
+      "municipalIrpef",
+      "tariStandardHousehold",
+      "municipalImuStandard",
+      "fuelPrices",
+      "wasteServiceCost",
+      "incomeVsInflation"
+    ],
+    "contextViews": [
+      "incomeLongHistory",
+      "incomeInflationContext"
+    ],
+    "notPublished": [
+      "schoolMeals"
+    ],
+    "note": "Release v1.13.0: reddito imponibile medio 2011–2024, redditi vs inflazione con NIC Italia, addizionale comunale IRPEF, TARI standardizzata, IMU standardizzata, prezzi carburanti e costo del servizio rifiuti. Lo storico redditi/inflazione mostra reddito nominale e prezzi su base 2016=0%; i tooltip riportano la variazione reale calcolata come rapporto tra i due indici.",
+    "releaseVersion": "v1.13.0",
+    "releaseDate": "2026-08-16"
+  },
+  "incomeInflationContext": {
+    "years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "incomeIndex": [
+      100.0,
+      102.2751,
+      104.3718,
+      105.3331,
+      102.8194,
+      109.4691,
+      117.0492,
+      121.3176,
+      127.2465
+    ],
+    "priceIndex": [
+      100.0,
+      101.2,
+      102.4144,
+      103.0289,
+      102.8228,
+      104.7765,
+      113.2634,
+      119.7194,
+      120.9166
+    ],
+    "realIncomeIndex": [
+      100.0,
+      101.0624,
+      101.9113,
+      102.2365,
+      99.9967,
+      104.4787,
+      103.3425,
+      101.335,
+      105.235
+    ],
+    "base": "2016=100",
+    "incomeLabel": "Imponibile medio Versilia",
+    "priceLabel": "NIC Italia",
+    "realLabel": "Imponibile medio a prezzi costanti",
+    "nominalGrowthPercent": 27.25,
+    "priceGrowthPercent": 20.92,
+    "realGrowthPercent": 5.23,
+    "note": "Confronto di contesto tra reddito imponibile medio dei sette Comuni della Versilia e indice nazionale NIC ISTAT. Non misura il reddito disponibile delle famiglie.",
+    "incomeSourceUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+    "priceSourceUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
+    "priceSource": "ISTAT — Indice nazionale dei prezzi al consumo per l'intera collettività (NIC)"
   }
 }

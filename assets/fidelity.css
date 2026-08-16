@@ -854,3 +854,9 @@
 }
 /* Mobile: i tooltip delle fasce sono ridondanti rispetto al dettaglio sottostante e non devono allargare la pagina. */
 @media(max-width:700px){.composite-stack-town .bar-hover-label{display:none!important}}
+
+
+/* Economy context legend: visually aligned with chart legends, but deliberately
+   not a .composite-legend because it is not part of a composite indicator. */
+.income-inflation-legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--theme-line,#d5dddb)}
+.income-inflation-legend span{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:9px;font-weight:700}

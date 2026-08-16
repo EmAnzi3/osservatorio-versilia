@@ -676,3 +676,59 @@
     display: block !important;
   }
 }
+
+
+/* Income vs inflation historical reference */
+.ux-inflation-reference .ux-series-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-dasharray: 9 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .88;
+}
+
+.ux-inflation-reference .ux-series-point {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  opacity: .92;
+}
+
+.ux-inflation-reference .chart-guide {
+  stroke: var(--ink);
+}
+
+.ux-inflation-reference .chart-point.active .chart-dot,
+.ux-inflation-reference .chart-point:focus .chart-dot {
+  fill: var(--ink);
+  stroke: var(--surface);
+  stroke-width: 3;
+  r: 5.5px;
+}
+
+.ux-history-reference {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px dashed color-mix(in srgb, var(--ink) 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  color: var(--ink);
+  padding: 6px 9px;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.ux-history-reference i {
+  width: 19px;
+  border-top: 2px dashed var(--ink);
+}
+
+
+.ux-history-chart .chart-tooltip-detail {
+  font-size: 10px;
+  font-weight: 650;
+  opacity: .92;
+}

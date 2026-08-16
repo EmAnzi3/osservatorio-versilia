@@ -120,7 +120,7 @@ def main() -> None:
 
         pdf_cases = (
             ("confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", "bilanci.pdf", "Andamento 2019–2025"),
-            ("confronta/economia/?indicatore=income", "economia.pdf", "Confronto a due punti 2023–2024"),
+            ("confronta/economia/?indicatore=income", "economia.pdf", "2011–2024"),
             ("comuni/massarosa/?tema=demografia&indicatore=population", "massarosa.pdf", "Andamento 2019–2026"),
         )
         for route, filename, expected in pdf_cases:

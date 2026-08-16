@@ -174,7 +174,7 @@
     return rows.map((row,index) => {
       const query = new URLSearchParams({ tema:metric.meta.theme, indicatore:metricKey });
       const href = route(`comuni/${row.slug}/?${query}`);
-      return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue,row.displayUnit))}"><span class="bar-rank">${index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue,row.displayUnit))}</span></span><strong>${html(formatValue(row.displayValue,row.displayUnit))}</strong></a>`;
+      return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue,row.displayUnit))}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue,row.displayUnit))}</span></span><strong>${html(formatValue(row.displayValue,row.displayUnit))}</strong></a>`;
     }).join('');
   }
 

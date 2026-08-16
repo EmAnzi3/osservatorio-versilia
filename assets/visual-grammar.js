@@ -19,6 +19,8 @@
     return { format: value => forceItalianGrouping(formatter.format(value), value) };
   };
   const number1 = groupedFormatter({ minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const number2 = groupedFormatter({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const number3 = groupedFormatter({ minimumFractionDigits: 3, maximumFractionDigits: 3 });
   const number0 = groupedFormatter({ maximumFractionDigits: 0 });
   let data = null;
   let scheduled = false;
@@ -121,7 +123,9 @@
     if (token === 'number') return 'count';
     if (token === 'percent' || token === '%') return 'percent';
     if (token === 'percentagepoints' || token === 'percentage-points' || token === 'p.p.') return 'percentage-points';
-    if (token === 'currency' || token === 'eur' || token === '€' || token === '€/ab.') return 'currency';
+    if (token === 'currency' || token === 'currency2' || token === 'eur' || token === '€') return 'currency';
+    if (token === 'eurliter' || token === '€/l') return 'eurliter';
+    if (token === 'eurperresident' || token === '€/ab' || token === '€/ab.') return 'eurperresident';
     return token;
   }
 
@@ -185,6 +189,8 @@
     if (finite(value) === null) return 'n.d.';
     const n = Number(value);
     const kind = unitKind(unit);
+    if (kind === 'eurliter') return `${number3.format(n)} €/l`;
+    if (kind === 'eurperresident') return `${number2.format(n)} €/ab`;
     const formatted = kind === 'count' ? number0.format(n) : (Math.abs(n) >= 100 ? number0.format(n) : number1.format(n));
     if (kind === 'percent') return `${formatted}%`;
     if (kind === 'percentage-points') return `${formatted} p.p.`;
@@ -216,7 +222,18 @@
     if (reference !== null) numeric.push(reference);
     if (!numeric.length) return { min: 0, max: 1, kind: 'absolute' };
 
-    const allPercent = unitKind(unit) === 'percent' && numeric.every(value => value >= 0 && value <= 100);
+    const kind = unitKind(unit);
+    if (kind === 'eurliter') {
+      const rawMin = Math.min(...numeric);
+      const rawMax = Math.max(...numeric);
+      const spread = rawMax - rawMin;
+      const padding = Math.max(0.005, spread * 0.25);
+      const min = Math.floor((rawMin - padding) * 1000) / 1000;
+      const max = Math.ceil((rawMax + padding) * 1000) / 1000;
+      return { min, max: max > min ? max : min + 0.010, kind: 'focused' };
+    }
+
+    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);
     if (allPercent) return { min: 0, max: 100, kind: 'percent' };
 
     let min = Math.min(...numeric);
@@ -421,7 +438,7 @@
 
     const axis = document.createElement('div');
     axis.className = 'comparison-axis';
-    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : 'scala con origine a zero'}</span><span>${formatAxis(scale.max, unit)}</span>`;
+    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : scale.kind === 'focused' ? 'scala adattata ai prezzi' : 'scala con origine a zero'}</span><span>${formatAxis(scale.max, unit)}</span>`;
     container.append(axis);
 
     const note = document.createElement('p');

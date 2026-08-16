@@ -94,7 +94,7 @@ def static_checks() -> dict:
     ]
     assert data["themes"]["abitare"]["metrics"][0] == "omiResidential"
     assert data["themes"]["economia"]["sections"][0]["metrics"] == [
-        "income", "incomeDistribution",
+        "income", "incomeDistribution", "incomeVsInflation",
     ]
 
     assert set(snapshot["raw"]) == {town["name"] for town in data["towns"]}
@@ -204,7 +204,7 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         assert primary_value == expected_value(value, unit), (
             f"{context}: valore principale {primary_value!r}, atteso {expected_value(value, unit)!r}"
         )
-        aggregate_prefix = "Età media" if choice == "summary" and metric_key == "ageDistribution" else "Reddito medio" if choice == "summary" else "Versilia ·"
+        aggregate_prefix = "Età media" if choice == "summary" and metric_key == "ageDistribution" else "Reddito complessivo medio" if choice == "summary" else "Versilia ·"
         assert aggregate_label.startswith(aggregate_prefix), (
             f"{context}: etichetta Versilia {aggregate_label!r}, prefisso atteso {aggregate_prefix!r}"
         )
@@ -260,7 +260,7 @@ def browser_checks(data: dict) -> None:
         assert page.locator(".composite-row-head > span").count() == 7
         assert all("Età media" in text for text in page.locator(".composite-row-head > span").all_text_contents())
         tooltip_checks(page, base, "economia", "incomeDistribution", 7, 4)
-        assert all("Reddito medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
+        assert all("Reddito complessivo medio" in text for text in page.locator(".composite-row-head > span").all_text_contents())
 
         for metric_key, option_count in (("roadSafety", 4),):
             page.goto(base + f"confronta/sicurezza/?indicatore={metric_key}", wait_until="networkidle")

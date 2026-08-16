@@ -4,6 +4,15 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     return '';
   }
 
+
+  function incomeInflationMarkup(data) {
+    const c=data.incomeInflationContext;if(!c?.years?.length)return '';
+    const w=720,h=300,l=52,r=18,t=22,b=42,all=[...c.incomeIndex,...c.priceIndex,...c.realIncomeIndex].map(Number).filter(Number.isFinite),min=Math.floor(Math.min(...all,98)-2),max=Math.ceil(Math.max(...all,102)+2);
+    const x=i=>l+(w-l-r)*i/Math.max(1,c.years.length-1),y=v=>t+(h-t-b)*(max-Number(v))/Math.max(1,max-min),path=values=>values.map((v,i)=>`${i?'L':'M'} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' '),ticks=[...new Set([min,100,110,120,max].filter(v=>v>=min&&v<=max))].sort((a,b)=>a-b);
+    const grid=ticks.map(v=>`<g><line x1="${l}" x2="${w-r}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity=".12"></line><text x="${l-10}" y="${y(v)+4}" text-anchor="end" class="chart-label chart-y-label">${html(number0.format(v))}</text></g>`).join(''),labels=c.years.map((year,i)=>(i%2===0||i===c.years.length-1)?`<text x="${x(i)}" y="${h-14}" text-anchor="middle" class="chart-label">${html(year)}</text>`:'').join('');
+    return `<section class="crime-context page-width income-inflation-context" id="redditi-prezzi"><div class="crime-context-copy"><span class="overline">Contesto · redditi e costo della vita</span><h2>Redditi vs inflazione</h2><p>Confronto tra reddito imponibile medio dei sette comuni e NIC nazionale ISTAT, entrambi riportati a <strong>${html(c.base)}</strong>.</p><div class="crime-stats"><article><span>Imponibile medio</span><strong>+${html(number1.format(c.nominalGrowthPercent))}%</strong><small>2016–2024</small></article><article><span>Prezzi NIC Italia</span><strong>+${html(number1.format(c.priceGrowthPercent))}%</strong><small>2016–2024</small></article><article><span>A prezzi costanti</span><strong>+${html(number1.format(c.realGrowthPercent))}%</strong><small>imponibile medio</small></article></div><p class="brain-drain-note">${html(c.note)}</p><div><a class="source-pill" href="${html(c.incomeSourceUrl)}" target="_blank" rel="noreferrer">Fonte redditi · MEF ↗</a> <a class="source-pill" href="${html(c.priceSourceUrl)}" target="_blank" rel="noreferrer">Fonte prezzi · ISTAT ↗</a></div></div><div class="crime-context-data"><h3>Redditi e prezzi · ${html(c.base)}</h3><div class="income-inflation-legend"><span>━ ${html(c.incomeLabel)}</span><span>┅ ${html(c.priceLabel)}</span><span>┈ ${html(c.realLabel)}</span></div><div class="trend-chart"><svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Confronto redditi e prezzi dal 2016 al 2024">${grid}${labels}<path d="${path(c.incomeIndex)}" fill="none" stroke="currentColor" stroke-width="3.4"></path><path d="${path(c.priceIndex)}" fill="none" stroke="currentColor" stroke-width="2.8" stroke-dasharray="10 7" opacity=".72"></path><path d="${path(c.realIncomeIndex)}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="2 6" opacity=".9"></path>${c.incomeIndex.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="currentColor"><title>${html(c.years[i])}: ${html(number1.format(v))}</title></circle>`).join('')}</svg></div><p class="brain-drain-note">Il NIC nazionale misura l’andamento medio dei prezzi in Italia. Il reddito è invece calcolato sui sette Comuni della Versilia: il grafico è un confronto di contesto, non un’identità territoriale.</p></div></section>`;
+  }
+
   function brainDrainMarkup(data) {
     const b = data.brainDrain;
     if (!b) return '';
@@ -58,14 +67,16 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
   }
 
   function indicatorHistoryTable(metric) {
-    const historicalRows = metric.rows.filter(row => row.series?.years?.length && row.series?.values?.length);
+    const seriesFor = row => metric.meta.key === 'income' && row.longSeries?.years?.length ? row.longSeries : row.series;
+    const historicalRows = metric.rows.filter(row => seriesFor(row)?.years?.length && seriesFor(row)?.values?.length);
     if (!historicalRows.length) {
       return `<div class="indicator-history-empty"><strong>Serie storica non ancora disponibile</strong><p>La fonte utilizzata non consente, al momento, di pubblicare una sequenza comunale omogenea. Il sito mantiene quindi soltanto l’ultima annualità verificata.</p></div>`;
     }
-    const years = [...new Set(historicalRows.flatMap(row => row.series.years))].sort((a, b) => Number(a) - Number(b));
-    return `<div class="indicator-table-scroll"><table class="indicator-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year => `<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${historicalRows.sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => {
-      const values = new Map(row.series.years.map((year, index) => [String(year), row.series.values[index]]));
-      return `<tr><th scope="row">${html(row.town)}</th>${years.map(year => `<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)), metric.meta.unit)) : '—'}</td>`).join('')}</tr>`;
+    const years = [...new Set(historicalRows.flatMap(row => seriesFor(row).years))].sort((a, b) => Number(a) - Number(b));
+    return `${metric.meta.key === 'income' ? `<p class="brain-drain-note">${html(metric.meta.longHistoryNote)}</p>` : ''}<div class="indicator-table-scroll"><table class="indicator-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year => `<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${historicalRows.sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => {
+      const series = seriesFor(row);
+      const values = new Map(series.years.map((year, index) => [String(year), series.values[index]]));
+      return `<tr><th scope="row">${html(row.town)}</th>${years.map(year => `<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)), metric.meta.key === 'income' ? 'currency' : metric.meta.unit)) : '—'}</td>`).join('')}</tr>`;
     }).join('')}</tbody></table></div>`;
   }
 
@@ -111,6 +122,8 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
       ['Istat','https://www.istat.it/'],['Istat — Frame SBS Territoriale',data.businessSource],['Eurostat','https://ec.europa.eu/eurostat/'],['Regione Toscana','https://www.regione.toscana.it/statistiche'],['Ministero dell’economia e delle finanze','https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php'],['ARS Toscana — La salute dei comuni',data.arsSource],['ISPRO — Registro di mortalità regionale','https://www.ispro.toscana.it/registro-mortalita-regionale-rmr'],['ISPRA','https://www.isprambiente.gov.it/'],['BDAP','https://openbdap.rgs.mef.gov.it/'],['SIOPE','https://www.siope.it/'],['Italia Domani — Open data PNRR','https://www.italiadomani.gov.it/it/catalogo-open-data.html'],['ANAC — Open data','https://dati.anticorruzione.it/opendata'],['Cruscotto Italia — AgID','https://cruscotto-italia.dati.gov.it/']
     ];
     const versions = [
+      ['2026.08.16-v1.13.0','16 agosto 2026','127 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Estesi redditi e costo della vita con serie MEF 2011–2024, redditi vs inflazione, fiscalità locale standardizzata, carburanti e costo del servizio rifiuti.'],
+      ['2026.08.14-v1.12.0','14 agosto 2026','121 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Rafforzato Sicurezza e territorio con sicurezza stradale, Missione 03 e proventi del Codice della strada.'],
       ['2026.08.14-v1.11.0','14 agosto 2026','119 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti residenti stranieri, mobilità residenziale con l’estero e complessiva, quotazioni immobiliari OMI e il contesto sulla mobilità dei laureati.'],
       ['2026.08.14-v1.10.0','14 agosto 2026','115 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Integrate distribuzione per fasce d’età, mobilità residenziale interna e distribuzione dei dichiaranti per fascia di reddito.'],
       ['2026.08.12-v1.9.0','12 agosto 2026','115 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Integrati Percorsi e mobilità lenta nel dataset principale e separato il tema Sicurezza e territorio.'],

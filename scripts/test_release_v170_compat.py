@@ -59,7 +59,11 @@ V17_KEYS = {
     "ftthUnreachedHouseholds",
     "ftthCoverage20m",
 }
-PARTIAL_KEYS = {"ftthReachedHouseholds", "ftthUnreachedHouseholds"}
+PARTIAL_MISSING = {
+    "ftthReachedHouseholds": "Forte dei Marmi",
+    "ftthUnreachedHouseholds": "Forte dei Marmi",
+    "fuelPrices": "Stazzema",
+}
 
 LEGACY_THEME_KEYS = {
     "lavoro": {
@@ -143,12 +147,18 @@ def main() -> None:
         require(metric.get("meta", {}).get("year") not in (None, ""), f"{key}: anno mancante")
         require(metric.get("meta", {}).get("source") not in (None, ""), f"{key}: fonte mancante")
         coverage = str(metric.get("method", {}).get("coverage", ""))
-        if key in PARTIAL_KEYS:
+        if key in PARTIAL_MISSING:
             require(coverage == "6/7", f"{key}: deve dichiarare copertura 6/7")
             missing = [row for row in rows if row.get("value") is None]
             require(len(missing) == 1, f"{key}: copertura 6/7 senza un solo valore mancante")
-            require(missing[0].get("town") == "Forte dei Marmi", f"{key}: Comune n.d. inatteso")
-            require(missing[0].get("formatted") == "n.d.", f"{key}: valore mancante non etichettato n.d.")
+            require(missing[0].get("town") == PARTIAL_MISSING[key], f"{key}: Comune n.d. inatteso")
+            if key == "fuelPrices":
+                require(missing[0].get("stationCount") == 0, "fuelPrices: Stazzema non deve avere impianti attivi")
+                parts = missing[0].get("parts") or []
+                require(len(parts) == 2 and all(part.get("value") is None for part in parts),
+                        "fuelPrices: benzina e gasolio di Stazzema devono restare null/n.d., mai zero")
+            else:
+                require(missing[0].get("formatted") == "n.d.", f"{key}: valore mancante non etichettato n.d.")
         else:
             require("7/7" in coverage, f"{key}: copertura diversa da 7/7")
 

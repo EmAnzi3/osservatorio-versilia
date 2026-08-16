@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 121,
-  "expectedInlineMetricCount": 117,
+  "expectedMetricCount": 127,
+  "expectedInlineMetricCount": 123,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -268,6 +268,51 @@
       "acquisitionMethod": "Consultazione delle quotazioni OMI per zona e semestre; elaborazione comunale ricostruibile dai valori territoriali pubblicati.",
       "licenseName": "Condizioni di utilizzo dell’Agenzia delle Entrate",
       "licenseUrl": "https://www.agenziaentrate.gov.it/portale/note-legali"
+    },
+    "mef-municipal-irpef-annual": {
+      "publisher": "Dipartimento delle Finanze — MEF",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la pubblicazione delle delibere comunali nell'apposita banca dati MEF",
+      "acquisitionMethod": "Consultazione della banca dati ufficiale delle aliquote dell'addizionale comunale IRPEF; calcolo degli importi su scenari standardizzati conservato nello snapshot versionato.",
+      "licenseName": "Condizioni indicate dal MEF",
+      "licenseUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/"
+    },
+    "mef-municipal-tax-annual": {
+      "publisher": "Dipartimento delle Finanze — MEF / Comuni",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la pubblicazione delle aliquote o tariffe annuali",
+      "acquisitionMethod": "Lettura dei prospetti e delle tariffe ufficiali; scenari comparabili senza agevolazioni personali.",
+      "licenseName": "Condizioni indicate dalle fonti",
+      "licenseUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/"
+    },
+    "mimit-fuel-daily": {
+      "publisher": "Ministero delle Imprese e del Made in Italy",
+      "frequency": "daily",
+      "frequencyLabel": "Giornaliera",
+      "expectedRelease": "Aggiornamento quotidiano",
+      "acquisitionMethod": "Incrocio anagrafica impianti attivi e prezzi self-service; mediana comunale.",
+      "licenseName": "Open data MIMIT",
+      "licenseUrl": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv"
+    },
+    "istat-nic-national-annual": {
+      "publisher": "ISTAT",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Con i dati definitivi di dicembre",
+      "acquisitionMethod": "Variazioni medie annue NIC nazionale, indice generale; ricostruzione indicizzata con base 2016=100.",
+      "licenseName": "Fonte ufficiale ISTAT",
+      "licenseUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/"
+    },
+    "mef-istat-real-income-annual": {
+      "publisher": "Dipartimento delle Finanze — MEF / ISTAT",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la disponibilità delle dichiarazioni fiscali e della media annua NIC",
+      "acquisitionMethod": "Reddito imponibile medio comunale MEF deflazionato con NIC nazionale ISTAT, base 2016.",
+      "licenseName": "Condizioni indicate dalle fonti ufficiali",
+      "licenseUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/"
     }
   },
   "sourceProfileByUrl": {
@@ -304,7 +349,12 @@
     "https://dati.lamma.toscana.it/": "lamma-copernicus-climate",
     "https://www1.agenziaentrate.gov.it/servizi/geopoi_omi/index.htm": "agenzia-entrate-omi-semestral",
     "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx": "istat-road-annual",
-    "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx": "istat-road-annual"
+    "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx": "istat-road-annual",
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/": "mef-municipal-irpef-annual",
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/": "mef-municipal-tax-annual",
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/": "mef-municipal-tax-annual",
+    "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv": "mimit-fuel-daily",
+    "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/": "istat-nic-national-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -341,6 +391,24 @@
       "expectedRelease": "Dopo il consolidamento del rendiconto",
       "acquisitionMethod": "Download OpenBDAP del rendiconto e lettura degli impegni della Missione 03.",
       "publisher": "Ragioneria generale dello Stato — OpenBDAP"
+    },
+    "municipalIrpef": {
+      "profile": "mef-municipal-irpef-annual"
+    },
+    "tariStandardHousehold": {
+      "profile": "mef-municipal-tax-annual"
+    },
+    "municipalImuStandard": {
+      "profile": "mef-municipal-tax-annual"
+    },
+    "fuelPrices": {
+      "profile": "mimit-fuel-daily"
+    },
+    "wasteServiceCost": {
+      "profile": "ispra-environment-annual"
+    },
+    "incomeVsInflation": {
+      "profile": "mef-istat-real-income-annual"
     }
   },
   "requestTimeoutSeconds": 20,
