@@ -54,6 +54,9 @@ jobs:
       - name: Add inflation reference to income history
         run: python scripts/patch_income_inflation_history.py
 
+      - name: Preserve real income values for history tooltips
+        run: python scripts/fix_income_inflation_tooltip_data.py
+
       - name: Validate cost taxation and income draft
         run: python scripts/test_costi_fiscalita_redditi_draft.py
 
