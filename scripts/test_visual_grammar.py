@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import contextlib
+import json
 import os
 import socket
 import threading
@@ -155,6 +156,76 @@ def browser_checks() -> None:
         assert "%" in axis_text
         assert_reading_scale(page, "Territoriale")
         assert_post_benchmark_tools(page)
+
+        # Audit automatico delle percentuali basse: sotto il 60% il massimo
+        # deve aderire ai dati, mantenendo sempre lo zero come origine.
+        site_data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+        low_percent_metrics = []
+        for metric_key, metric in site_data["metrics"].items():
+            meta = metric.get("meta", {})
+            if meta.get("unit") != "percent" or meta.get("compositeType"):
+                continue
+            values = [
+                float(row["value"]) for row in metric.get("rows", [])
+                if isinstance(row.get("value"), (int, float))
+            ]
+            aggregate = metric.get("aggregate") or {}
+            if isinstance(aggregate.get("value"), (int, float)):
+                values.append(float(aggregate["value"]))
+            if values and min(values) >= 0 and max(values) < 60:
+                low_percent_metrics.append((metric_key, meta.get("theme"), max(values)))
+
+        assert len(low_percent_metrics) >= 16, f"Audit percentuali troppo ristretto: {len(low_percent_metrics)}"
+        for metric_key, theme, observed_max in low_percent_metrics:
+            page.goto(base + f"confronta/{theme}/?indicatore={metric_key}", wait_until="networkidle")
+            page.wait_for_selector("#compare-bars .comparison-axis")
+            axis = page.locator("#compare-bars .comparison-axis")
+            center = axis.locator("span").nth(1).inner_text().strip().lower()
+            right = axis.locator("span").nth(2).inner_text().strip()
+            assert "scala 0–100%" not in center, f"Scala percentuale ancora dispersiva: {metric_key} ({observed_max})"
+            rendered_max = float(right.replace("%", "").replace(".", "").replace(",", "."))
+            assert rendered_max >= observed_max, f"Scala tronca {metric_key}: {rendered_max} < {observed_max}"
+            assert rendered_max < 100, f"Scala non adattata per {metric_key}: {rendered_max}"
+
+        page.goto(base + "confronta/abitare/?indicatore=cohabitingHouseholds", wait_until="networkidle")
+        page.wait_for_selector("#compare-bars .comparison-axis")
+        cohab_axis = page.locator("#compare-bars .comparison-axis").inner_text().lower()
+        assert "scala 0–4,0%" in cohab_axis, f"Scala Famiglie coabitanti inattesa: {cohab_axis!r}"
+        dot_positions = page.locator("#compare-bars .comparison-dot").evaluate_all(
+            "els => els.map(el => parseFloat(el.style.left))"
+        )
+        assert max(dot_positions) - min(dot_positions) >= 40, f"Famiglie coabitanti ancora compresse: {dot_positions}"
+
+        # Se un Comune è selezionato nello storico, solo i suoi punti devono
+        # intercettare mouse/touch e focus da tastiera. Senza selezione, tutti
+        # tornano interrogabili.
+        page.evaluate("sessionStorage.removeItem('ov-history-town')")
+        page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")
+        page.locator('[data-view-mode="history"]').click()
+        page.wait_for_selector(".ux-history-chart .chart-point")
+        assert page.locator(".chart-point.is-tooltip-disabled").count() == 0
+        page.locator(".ux-history-legend button", has_text="Massarosa").click()
+        disabled = page.locator(".chart-point.is-tooltip-disabled")
+        enabled = page.locator(".chart-point:not(.is-tooltip-disabled)")
+        assert disabled.count() > 0
+        assert enabled.count() > 0
+        owners = enabled.evaluate_all(
+            "els => [...new Set(els.map(el => el.closest('[data-history-town]')?.dataset.historyTown || ''))]"
+        )
+        assert owners == ["massarosa"], f"Tooltip attivi su serie non selezionate: {owners}"
+        assert disabled.evaluate_all("els => els.every(el => el.tabIndex === -1 && getComputedStyle(el).pointerEvents === 'none')")
+        disabled.first.dispatch_event("mouseenter")
+        assert page.locator(".chart-point.active").count() == 0, "Punto non selezionato apre ancora il tooltip"
+        enabled.first.dispatch_event("mouseenter")
+        assert page.locator(".chart-point.active").count() == 1
+        assert "massarosa" in page.locator(".chart-point.active .chart-tooltip").inner_text().lower()
+        enabled.first.focus()
+        enabled.first.press("ArrowRight")
+        focused_owner = page.evaluate("document.activeElement.closest('[data-history-town]')?.dataset.historyTown || ''")
+        assert focused_owner == "massarosa", f"Navigazione tastiera esce dalla serie selezionata: {focused_owner}"
+        page.locator(".ux-history-legend button", has_text="Massarosa").click()
+        assert page.locator(".chart-point.is-tooltip-disabled").count() == 0
+        assert page.locator(".chart-point").evaluate_all("els => els.every(el => el.tabIndex === 0)")
 
         page.goto(base + "confronta/economia/?indicatore=businessValueAdded", wait_until="networkidle")
         page.wait_for_selector("#compare-bars .comparison-dot")

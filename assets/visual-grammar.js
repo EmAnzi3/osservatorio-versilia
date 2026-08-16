@@ -234,7 +234,26 @@
     }
 
     const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);
-    if (allPercent) return { min: 0, max: 100, kind: 'percent' };
+    if (allPercent) {
+      const observedMax = Math.max(...numeric);
+      if (observedMax <= 0) return { min: 0, max: 1, kind: 'percent' };
+      /*
+       * Percentuali non significa automaticamente 0–100. Una scala completa
+       * è utile solo quando i dati la occupano davvero; per quote piccole
+       * schiaccia differenze territoriali leggibili (es. 0,9–2,8%).
+       * Manteniamo lo zero per non deformare le proporzioni. Sopra il 60%
+       * conserviamo la scala naturale completa; sotto, aggiungiamo margine e
+       * arrotondiamo il massimo a un estremo leggibile.
+       */
+      if (observedMax >= 60) return { min: 0, max: 100, kind: 'percent' };
+      const target = observedMax + Math.max(0.5, observedMax * 0.08);
+      const magnitude = 10 ** Math.floor(Math.log10(target));
+      const normalized = target / magnitude;
+      const percentStops = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 10];
+      const stop = percentStops.find(candidate => normalized <= candidate) || 10;
+      const max = Math.min(100, stop * magnitude);
+      return { min: 0, max: Math.max(max, 0.1), kind: 'percent' };
+    }
 
     let min = Math.min(...numeric);
     let max = Math.max(...numeric);
@@ -386,11 +405,7 @@
     const first = mapped.find(item => item.row);
     const firstRow = first?.row;
     const unit = first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized);
-    // Nei compositi selezionabili la percentuale deve usare una scala aderente ai dati
-    // (es. 0–10% per quote intorno all'8%), non il generico 0–100%.
-    const selectablePercent = ['stock','securityMeasures'].includes(metric?.meta?.compositeType) && container.dataset.compositeChoice && unitKind(unit) === 'percent';
-    const scaleUnit = selectablePercent ? 'decimal' : unit;
-    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, scaleUnit);
+    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
     const referencePosition = position(aggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
     const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
@@ -438,7 +453,14 @@
 
     const axis = document.createElement('div');
     axis.className = 'comparison-axis';
-    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : scale.kind === 'focused' ? 'scala adattata ai prezzi' : 'scala con origine a zero'}</span><span>${formatAxis(scale.max, unit)}</span>`;
+    const scaleLabel = scale.kind === 'percent'
+      ? (scale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(scale.max, unit)}`)
+      : scale.kind === 'signed'
+        ? 'lo zero è evidenziato'
+        : scale.kind === 'focused'
+          ? 'scala adattata ai prezzi'
+          : 'scala con origine a zero';
+    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scaleLabel}</span><span>${formatAxis(scale.max, unit)}</span>`;
     container.append(axis);
 
     const note = document.createElement('p');
