@@ -60,6 +60,10 @@ Il comportamento viene uniformato:
 
 Le altre serie rimangono visibili come contesto e possono continuare a essere scelte dalla legenda.
 
+## Compatibilità del workflow v1.13
+
+Il materializzatore della release Economia richiama ancora alcuni patcher storici. `patch_fuel_precision.py` è stato reso idempotente rispetto all’evoluzione successiva di `scaleFor`: se il ramo dedicato ai carburanti e l’etichetta della scala focalizzata sono già presenti, il patcher non richiede più che la funzione conservi la forma testuale della prima implementazione. In questo modo il workflow continua a verificare la release senza impedire evoluzioni legittime della grammatica grafica.
+
 ## Invarianti
 
-L’intervento non modifica dati, formule, fonti, aggregati Versilia, conteggio indicatori o semantica delle metriche. Cambiano esclusivamente dominio grafico e hit-testing dei tooltip.
+L’intervento non modifica dati, formule, fonti, aggregati Versilia, conteggio indicatori o semantica delle metriche. Cambiano esclusivamente dominio grafico e hit-testing dei tooltip, più l’idempotenza del patcher di build già esistente.
