@@ -45,6 +45,7 @@ def static_checks() -> None:
     home = (DIST / "index.html").read_text(encoding="utf-8")
     massarosa = (DIST / "comuni" / "massarosa" / "index.html").read_text(encoding="utf-8")
     project = (DIST / "progetto" / "index.html").read_text(encoding="utf-8")
+    visual_css = (ROOT / "assets" / "visual-grammar.css").read_text(encoding="utf-8")
 
     assert "assets/visual-grammar.css" in home
     assert "assets/visual-grammar.js" in home
@@ -63,6 +64,13 @@ def static_checks() -> None:
     assert "Sette amministrazioni, un territorio interdipendente" in project
     assert "Basi numeriche diverse" in project
     assert "Viareggio e Stazzema" in project
+
+    # Regressioni qualitative: nessun significato cromatico assegnato alla
+    # posizione in elenco e riferimento Versilia promosso nella gerarchia.
+    assert ".bar-row:nth-child(-n+2) .bar-fill" in visual_css
+    assert "background: var(--theme-color, var(--sage));" in visual_css
+    assert ".indicator-definition dl div:last-child dd" in visual_css
+    assert ".versilia-position > div b" in visual_css
 
 
 def assert_reading_scale(page, expected: str) -> None:
@@ -98,6 +106,14 @@ def assert_post_benchmark_tools(page, town: bool = False) -> None:
     assert result["ordered"], f"Ordine post-confronto errato: {result}"
 
 
+def assert_uniform_comparison_color(page, selector: str) -> None:
+    colors = page.locator(selector).evaluate_all(
+        "els => els.map(el => getComputedStyle(el).backgroundColor)"
+    )
+    assert len(colors) == 7, f"Attesi 7 segni comunali, trovati {len(colors)}"
+    assert len(set(colors)) == 1, f"Colori comunali non uniformi: {colors}"
+
+
 def browser_checks() -> None:
     chromium_path = os.environ.get("CHROMIUM_PATH")
     launch_args = {"headless": True}
@@ -115,6 +131,7 @@ def browser_checks() -> None:
         assert page.locator("#home-explorer .comparison-reference").count() == 7
         assert page.locator("#home-explorer .comparison-note").count() == 1
         assert page.locator(".system-reading-link").count() == 1
+        assert_uniform_comparison_color(page, "#home-explorer .comparison-dot")
 
         page.goto(base + "comuni/massarosa/?tema=demografia&indicatore=population", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
@@ -165,6 +182,25 @@ def browser_checks() -> None:
         page.goto(base + "confronta/mobilita/?indicatore=ftthCoverageDesi", wait_until="networkidle")
         assert_reading_scale(page, "Territoriale")
 
+        # Il composito Sicurezza deve usare la stessa grammatica: niente podio
+        # implicito, tutti i Comuni col colore del tema e Versilia ben leggibile.
+        page.goto(base + "confronta/sicurezza/?indicatore=roadSafety", wait_until="networkidle")
+        page.wait_for_selector("#compare-bars .comparison-dot")
+        assert page.locator("#compare-bars .bar-rank").count() == 0
+        assert_uniform_comparison_color(page, "#compare-bars .comparison-dot")
+        reference_opacity = float(
+            page.locator("#compare-bars .comparison-reference").first.evaluate(
+                "el => getComputedStyle(el).opacity"
+            )
+        )
+        assert reference_opacity >= 0.7, f"Riferimento Versilia troppo debole: {reference_opacity}"
+        summary = page.locator(".indicator-definition dl div:last-child")
+        assert "versilia" in summary.inner_text().lower()
+        summary_value_size = float(
+            summary.locator("dd").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
+        )
+        assert summary_value_size >= 16, f"Valore Versilia poco evidente: {summary_value_size}px"
+
         page.goto(base + "comuni/massarosa/?tema=economia&indicatore=businessValueAdded", wait_until="networkidle")
         page.wait_for_selector(".town-metric-layout")
         assert_reading_scale(page, "Funzionale")
@@ -179,6 +215,12 @@ def browser_checks() -> None:
         assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
         assert page.locator(".all-indicators, .indicator-groups").count() == 0
         assert page.locator('[data-metric="diplomaPlus"]').count() == 1
+        town_reference = page.locator(".versilia-position > div")
+        assert "versilia" in town_reference.inner_text().lower()
+        town_reference_size = float(
+            town_reference.locator("b").evaluate("el => parseFloat(getComputedStyle(el).fontSize)")
+        )
+        assert town_reference_size >= 18, f"Riferimento Versilia comunale troppo piccolo: {town_reference_size}px"
 
         page.goto(base + "progetto/", wait_until="networkidle")
         page.wait_for_selector("#sistema-territoriale")
