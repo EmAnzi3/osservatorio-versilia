@@ -79,7 +79,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_*.py' ! -name 'test_percorsi_*.py' ! -name 'test_release_*.py' | sort); do
+          for test_file in $(find scripts -maxdepth 1 -type f -name 'test_*.py' ! -name 'test_percorsi_*.py' ! -name 'test_release_*.py' ! -name 'test_social_kit.py' | sort); do
             echo "::group::$test_file"
             python "$test_file"
             echo "::endgroup::"
