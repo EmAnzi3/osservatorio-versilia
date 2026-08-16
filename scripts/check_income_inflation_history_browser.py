@@ -65,7 +65,7 @@ def validate_history(page, url: str, scope: str) -> None:
     point.focus()
     tooltip = point.locator('.chart-tooltip')
     require(tooltip.count() == 1 and tooltip.is_visible(), f'{url}: tooltip storico non visibile')
-    tooltip_text = tooltip.inner_text()
+    tooltip_text = tooltip.text_content() or ''
     require('Reddito nominale:' in tooltip_text,
             f'{url}: tooltip senza crescita nominale del reddito')
     require('Inflazione:' in tooltip_text,
