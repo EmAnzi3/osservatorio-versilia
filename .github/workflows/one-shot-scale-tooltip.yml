@@ -1,0 +1,86 @@
+name: One-shot scale and tooltip patch
+
+on:
+  push:
+    branches: ["agent/scale-tooltip-grafici-v113"]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: agent/scale-tooltip-grafici-v113
+
+      - name: Apply canonical source changes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'Pattern not found in {path}: {old[:80]!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace(
+              'assets/visual-grammar.js',
+              """    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) return { min: 0, max: 100, kind: 'percent' };\n""",
+              """    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) {\n      const observedMax = Math.max(...numeric);\n      if (observedMax <= 0) return { min: 0, max: 1, kind: 'percent' };\n      /*\n       * Percentuali non significa automaticamente 0–100. Una scala completa\n       * è utile solo quando i dati la occupano davvero; per quote piccole\n       * schiaccia differenze territoriali leggibili (es. 0,9–2,8%).\n       * Manteniamo lo zero per non deformare le proporzioni. Sopra il 60%\n       * conserviamo la scala naturale completa; sotto, aggiungiamo margine e\n       * arrotondiamo il massimo a un estremo leggibile.\n       */\n      if (observedMax >= 60) return { min: 0, max: 100, kind: 'percent' };\n      const target = observedMax + Math.max(0.5, observedMax * 0.08);\n      const magnitude = 10 ** Math.floor(Math.log10(target));\n      const normalized = target / magnitude;\n      const percentStops = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 10];\n      const stop = percentStops.find(candidate => normalized <= candidate) || 10;\n      const max = Math.min(100, stop * magnitude);\n      return { min: 0, max: Math.max(max, 0.1), kind: 'percent' };\n    }\n"""
+          )
+
+          replace(
+              'assets/visual-grammar.js',
+              """    // Nei compositi selezionabili la percentuale deve usare una scala aderente ai dati\n    // (es. 0–10% per quote intorno all'8%), non il generico 0–100%.\n    const selectablePercent = ['stock','securityMeasures'].includes(metric?.meta?.compositeType) && container.dataset.compositeChoice && unitKind(unit) === 'percent';\n    const scaleUnit = selectablePercent ? 'decimal' : unit;\n    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, scaleUnit);\n""",
+              """    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);\n"""
+          )
+
+          replace(
+              'assets/visual-grammar.js',
+              """    const axis = document.createElement('div');\n    axis.className = 'comparison-axis';\n    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : scale.kind === 'focused' ? 'scala adattata ai prezzi' : 'scala con origine a zero'}</span><span>${formatAxis(scale.max, unit)}</span>`;\n    container.append(axis);\n""",
+              """    const axis = document.createElement('div');\n    axis.className = 'comparison-axis';\n    const scaleLabel = scale.kind === 'percent'\n      ? (scale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(scale.max, unit)}`)\n      : scale.kind === 'signed'\n        ? 'lo zero è evidenziato'\n        : scale.kind === 'focused'\n          ? 'scala adattata ai prezzi'\n          : 'scala con origine a zero';\n    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scaleLabel}</span><span>${formatAxis(scale.max, unit)}</span>`;\n    container.append(axis);\n"""
+          )
+
+          replace(
+              'assets/ux-history-core.js',
+              """  function wireHistoryTooltips(chart) {\n    if (!chart || chart.dataset.ovTooltipWired === '1') return;\n    chart.dataset.ovTooltipWired = '1';\n    const points = [...chart.querySelectorAll('.chart-point')];\n    const hideAll = () => points.forEach(point => {\n      point.classList.remove('active');\n      point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');\n    });\n    const show = point => {\n      hideAll();\n      point.classList.add('active');\n      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');\n    };\n    points.forEach((point, index) => {\n      point.addEventListener('mouseenter', () => show(point));\n      point.addEventListener('mouseleave', hideAll);\n      point.addEventListener('focus', () => show(point));\n      point.addEventListener('blur', hideAll);\n      point.addEventListener('click', () => show(point));\n      point.addEventListener('keydown', event => {\n        if (event.key === 'Escape') {\n          hideAll();\n          point.blur();\n          return;\n        }\n        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;\n        event.preventDefault();\n        let next = index;\n        if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;\n        if (event.key === 'ArrowRight') next = (index + 1) % points.length;\n        if (event.key === 'Home') next = 0;\n        if (event.key === 'End') next = points.length - 1;\n        points[next]?.focus();\n      });\n    });\n    chart.addEventListener('mouseleave', hideAll);\n  }\n""",
+              """  function wireHistoryTooltips(chart) {\n    if (!chart || chart.dataset.ovTooltipWired === '1') return;\n    chart.dataset.ovTooltipWired = '1';\n    const points = [...chart.querySelectorAll('.chart-point')];\n    const hideAll = () => points.forEach(point => {\n      point.classList.remove('active');\n      point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');\n    });\n    const show = point => {\n      if (point.classList.contains('is-tooltip-disabled')) return;\n      hideAll();\n      point.classList.add('active');\n      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');\n    };\n    const navigablePoints = () => points.filter(point => !point.classList.contains('is-tooltip-disabled') && point.tabIndex >= 0);\n    points.forEach(point => {\n      point.addEventListener('mouseenter', () => show(point));\n      point.addEventListener('mouseleave', hideAll);\n      point.addEventListener('focus', () => show(point));\n      point.addEventListener('blur', hideAll);\n      point.addEventListener('click', () => show(point));\n      point.addEventListener('keydown', event => {\n        if (event.key === 'Escape') {\n          hideAll();\n          point.blur();\n          return;\n        }\n        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;\n        event.preventDefault();\n        const available = navigablePoints();\n        if (!available.length) return;\n        const current = Math.max(0, available.indexOf(point));\n        let next = current;\n        if (event.key === 'ArrowLeft') next = (current - 1 + available.length) % available.length;\n        if (event.key === 'ArrowRight') next = (current + 1) % available.length;\n        if (event.key === 'Home') next = 0;\n        if (event.key === 'End') next = available.length - 1;\n        available[next]?.focus();\n      });\n    });\n    chart.addEventListener('mouseleave', hideAll);\n  }\n"""
+          )
+
+          replace(
+              'assets/ux-history-core.js',
+              """      chart.classList.toggle('has-selection', Boolean(selected));\n      groups.forEach(group => group.classList.toggle('is-selected', group.dataset.historyTown === selected));\n      buttons.forEach(button => button.setAttribute('aria-pressed', button.dataset.historySelect === selected ? 'true' : 'false'));\n      if (summary) summary.innerHTML = summaryMarkup(buttons.find(button => button.dataset.historySelect === selected), unit);\n      if (selected) storageSet('ov-history-town', selected);\n""",
+              """      chart.classList.toggle('has-selection', Boolean(selected));\n      groups.forEach(group => group.classList.toggle('is-selected', group.dataset.historyTown === selected));\n      chart.querySelectorAll('.chart-point').forEach(point => {\n        const owner = point.closest('[data-history-town]');\n        const enabled = !selected || owner?.dataset.historyTown === selected;\n        point.classList.toggle('is-tooltip-disabled', !enabled);\n        point.style.pointerEvents = enabled ? '' : 'none';\n        point.tabIndex = enabled ? 0 : -1;\n        if (!enabled) {\n          point.classList.remove('active');\n          point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');\n        }\n      });\n      buttons.forEach(button => button.setAttribute('aria-pressed', button.dataset.historySelect === selected ? 'true' : 'false'));\n      if (summary) summary.innerHTML = summaryMarkup(buttons.find(button => button.dataset.historySelect === selected), unit);\n      if (selected) storageSet('ov-history-town', selected);\n"""
+          )
+
+          # Extend the existing browser regression instead of creating a parallel test stack.
+          test = Path('scripts/test_visual_grammar.py')
+          text = test.read_text(encoding='utf-8')
+          if 'import json\n' not in text:
+              text = text.replace('import contextlib\n', 'import contextlib\nimport json\n')
+          anchor = """        page.goto(base + \"confronta/economia/?indicatore=businessValueAdded\", wait_until=\"networkidle\")\n"""
+          block = """        # Audit automatico delle percentuali basse: sotto il 60% il massimo\n        # deve aderire ai dati, mantenendo sempre lo zero come origine.\n        site_data = json.loads((ROOT / \"data\" / \"site-data.json\").read_text(encoding=\"utf-8\"))\n        low_percent_metrics = []\n        for metric_key, metric in site_data[\"metrics\"].items():\n            meta = metric.get(\"meta\", {})\n            if meta.get(\"unit\") != \"percent\" or meta.get(\"compositeType\"):\n                continue\n            values = [\n                float(row[\"value\"]) for row in metric.get(\"rows\", [])\n                if isinstance(row.get(\"value\"), (int, float))\n            ]\n            aggregate = metric.get(\"aggregate\") or {}\n            if isinstance(aggregate.get(\"value\"), (int, float)):\n                values.append(float(aggregate[\"value\"]))\n            if values and min(values) >= 0 and max(values) < 60:\n                low_percent_metrics.append((metric_key, meta.get(\"theme\"), max(values)))\n\n        assert len(low_percent_metrics) >= 16, f\"Audit percentuali troppo ristretto: {len(low_percent_metrics)}\"\n        for metric_key, theme, observed_max in low_percent_metrics:\n            page.goto(base + f\"confronta/{theme}/?indicatore={metric_key}\", wait_until=\"networkidle\")\n            page.wait_for_selector(\"#compare-bars .comparison-axis\")\n            axis = page.locator(\"#compare-bars .comparison-axis\")\n            center = axis.locator(\"span\").nth(1).inner_text().strip().lower()\n            right = axis.locator(\"span\").nth(2).inner_text().strip()\n            assert \"scala 0–100%\" not in center, f\"Scala percentuale ancora dispersiva: {metric_key} ({observed_max})\"\n            rendered_max = float(right.replace(\"%\", \"\").replace(\".\", \"\").replace(\",\", \".\"))\n            assert rendered_max >= observed_max, f\"Scala tronca {metric_key}: {rendered_max} < {observed_max}\"\n            assert rendered_max < 100, f\"Scala non adattata per {metric_key}: {rendered_max}\"\n\n        page.goto(base + \"confronta/abitare/?indicatore=cohabitingHouseholds\", wait_until=\"networkidle\")\n        page.wait_for_selector(\"#compare-bars .comparison-axis\")\n        cohab_axis = page.locator(\"#compare-bars .comparison-axis\").inner_text().lower()\n        assert \"scala 0–4,0%\" in cohab_axis, f\"Scala Famiglie coabitanti inattesa: {cohab_axis!r}\"\n        dot_positions = page.locator(\"#compare-bars .comparison-dot\").evaluate_all(\n            \"els => els.map(el => parseFloat(el.style.left))\"\n        )\n        assert max(dot_positions) - min(dot_positions) >= 40, f\"Famiglie coabitanti ancora compresse: {dot_positions}\"\n\n        # Se un Comune è selezionato nello storico, solo i suoi punti devono\n        # intercettare mouse/touch e focus da tastiera. Senza selezione, tutti\n        # tornano interrogabili.\n        page.evaluate(\"sessionStorage.removeItem('ov-history-town')\")\n        page.goto(base + \"confronta/economia/?indicatore=income\", wait_until=\"networkidle\")\n        page.locator('[data-view-mode=\"history\"]').click()\n        page.wait_for_selector(\".ux-history-chart .chart-point\")\n        assert page.locator(\".chart-point.is-tooltip-disabled\").count() == 0\n        page.locator(\".ux-history-legend button\", has_text=\"Massarosa\").click()\n        disabled = page.locator(\".chart-point.is-tooltip-disabled\")\n        enabled = page.locator(\".chart-point:not(.is-tooltip-disabled)\")\n        assert disabled.count() > 0\n        assert enabled.count() > 0\n        owners = enabled.evaluate_all(\n            \"els => [...new Set(els.map(el => el.closest('[data-history-town]')?.dataset.historyTown || ''))]\"\n        )\n        assert owners == [\"massarosa\"], f\"Tooltip attivi su serie non selezionate: {owners}\"\n        assert disabled.evaluate_all(\"els => els.every(el => el.tabIndex === -1 && getComputedStyle(el).pointerEvents === 'none')\")\n        disabled.first.dispatch_event(\"mouseenter\")\n        assert page.locator(\".chart-point.active\").count() == 0, \"Punto non selezionato apre ancora il tooltip\"\n        enabled.first.dispatch_event(\"mouseenter\")\n        assert page.locator(\".chart-point.active\").count() == 1\n        assert \"massarosa\" in page.locator(\".chart-point.active .chart-tooltip\").inner_text().lower()\n        enabled.first.focus()\n        enabled.first.press(\"ArrowRight\")\n        focused_owner = page.evaluate(\"document.activeElement.closest('[data-history-town]')?.dataset.historyTown || ''\")\n        assert focused_owner == \"massarosa\", f\"Navigazione tastiera esce dalla serie selezionata: {focused_owner}\"\n        page.locator(\".ux-history-legend button\", has_text=\"Massarosa\").click()\n        assert page.locator(\".chart-point.is-tooltip-disabled\").count() == 0\n        assert page.locator(\".chart-point\").evaluate_all(\"els => els.every(el => el.tabIndex === 0)\")\n\n"""
+          if block not in text:
+              if anchor not in text:
+                  raise SystemExit('Test insertion anchor not found')
+              text = text.replace(anchor, block + anchor, 1)
+          test.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit canonical changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/one-shot-scale-tooltip.yml
+          git add assets/visual-grammar.js assets/ux-history-core.js scripts/test_visual_grammar.py
+          git commit -m "Adatta scale percentuali e tooltip selettivi"
+          git push origin HEAD:agent/scale-tooltip-grafici-v113
