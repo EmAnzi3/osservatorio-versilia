@@ -60,6 +60,8 @@ Il comportamento viene uniformato:
 
 Le altre serie rimangono visibili come contesto e possono continuare a essere scelte dalla legenda.
 
+Il regression test verifica mouse e tastiera sul grafico SVG: dopo la selezione di Massarosa un solo gruppo resta interrogabile, i punti delle altre serie hanno `pointer-events:none` e `tabIndex=-1`, e la navigazione con frecce non può uscire dalla serie selezionata.
+
 ## Compatibilità del workflow v1.13
 
 Il materializzatore della release Economia richiama ancora alcuni patcher storici. `patch_fuel_precision.py` è stato reso idempotente rispetto all’evoluzione successiva di `scaleFor`: se il ramo dedicato ai carburanti e l’etichetta della scala focalizzata sono già presenti, il patcher non richiede più che la funzione conservi la forma testuale della prima implementazione. In questo modo il workflow continua a verificare la release senza impedire evoluzioni legittime della grammatica grafica.
