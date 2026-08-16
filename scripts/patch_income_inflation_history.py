@@ -9,6 +9,7 @@ The patch is materialized only by the economy draft workflow.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,7 +17,6 @@ DATA = ROOT / 'data/site-data.json'
 UX = ROOT / 'assets/ux-history.js'
 CSS = ROOT / 'assets/ux-experiment.css'
 KEY = 'incomeVsInflation'
-REFERENCE_SLUG = 'inflazione-nic-italia'
 
 
 def load(path: Path):
@@ -140,22 +140,28 @@ def patch_history_js() -> None:
         'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. La distanza mostra se i redditi crescono più o meno dei prezzi.'
       )
       .replace(
-        /<g class=\"ux-series-group [^\"]*\" data-history-town=\"inflazione-nic-italia\" style=\"--series-color:[^\"]+\">/,
-        '<g class=\"ux-inflation-reference\" style=\"--series-color:var(--ink)\">'
+        /<g class="ux-series-group [^"]*" data-history-town="inflazione-nic-italia" style="--series-color:[^"]+">/,
+        '<g class="ux-inflation-reference" style="--series-color:var(--ink)">'
       )
       .replace(
-        /<button type=\"button\" data-history-select=\"inflazione-nic-italia\"[^>]*>[^<]*<\/button>/,
-        `<span class=\"ux-history-reference\"><i aria-hidden=\"true\"></i>${referenceLabel}</span>`
+        /<button type="button" data-history-select="inflazione-nic-italia"[^>]*>[^<]*<\/button>/,
+        `<span class="ux-history-reference"><i aria-hidden="true"></i>${referenceLabel}</span>`
       );
   }
 """
     text = replace_once(text, old_history_metric, new_history_metric, 'history metric helper')
 
-    old_call = 'toolkit.historicalChartMarkup(historyView, series, selectedTown)'
-    if text.count(old_call) == 2:
-        text = text.replace(old_call, 'historyMarkup(historyView, series, selectedTown)')
-    elif text.count('historyMarkup(historyView, series, selectedTown)') != 2:
+    call_pattern = re.compile(
+        r'toolkit\.historicalChartMarkup\((?:historyView|selected\.metric), series, selectedTown\)'
+    )
+    text, replacements = call_pattern.subn(
+        'historyMarkup(historyView, series, selectedTown)',
+        text,
+    )
+    if replacements == 0 and text.count('historyMarkup(historyView, series, selectedTown)') < 2:
         raise RuntimeError('Historical markup call anchors missing')
+    if text.count('historyMarkup(historyView, series, selectedTown)') < 2:
+        raise RuntimeError('Historical markup not wired on both compare and town surfaces')
 
     compare_old = """      : historyAvailable && selected.metric?.meta?.key === 'income'
         ? selected.metric.meta.longHistoryNote
