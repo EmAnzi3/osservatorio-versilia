@@ -54,7 +54,15 @@ def validate_history(page, url: str, scope: str) -> None:
             f'{url}: riferimento inflazione scompare dopo selezione comunale')
 
     point = massarosa.locator('.chart-point').last
-    point.hover()
+    aria = point.get_attribute('aria-label') or ''
+    require('Reddito nominale:' in aria and 'Inflazione:' in aria and 'Variazione reale:' in aria,
+            f'{url}: aria-label del punto storico incompleta')
+    require('Variazione reale: n.d.' not in aria,
+            f'{url}: serie della variazione reale non raggiunge il renderer')
+
+    # Focus is an actual supported interaction for chart points and avoids false
+    # negatives when two SVG series cross and overlap at the same coordinate.
+    point.focus()
     tooltip = point.locator('.chart-tooltip')
     require(tooltip.count() == 1 and tooltip.is_visible(), f'{url}: tooltip storico non visibile')
     tooltip_text = tooltip.inner_text()
@@ -62,7 +70,7 @@ def validate_history(page, url: str, scope: str) -> None:
             f'{url}: tooltip senza crescita nominale del reddito')
     require('Inflazione:' in tooltip_text,
             f'{url}: tooltip senza inflazione cumulata')
-    require('Variazione reale:' in tooltip_text,
+    require('Variazione reale:' in tooltip_text and 'Variazione reale: n.d.' not in tooltip_text,
             f'{url}: tooltip senza variazione reale corretta')
 
     contained = tooltip.evaluate("""el => {
