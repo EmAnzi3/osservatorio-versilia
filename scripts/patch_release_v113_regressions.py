@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Align long-lived compatibility checks with validated v1.13 exceptions."""
+"""Align long-lived compatibility checks with validated v1.13 changes."""
 from __future__ import annotations
 
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TARGET = ROOT / 'scripts' / 'test_release_v170_compat.py'
+COMPAT = ROOT / 'scripts' / 'test_release_v170_compat.py'
+HISTORY = ROOT / 'scripts' / 'test_history_v180.py'
 
 OLD_CONST = 'PARTIAL_KEYS = {"ftthReachedHouseholds", "ftthUnreachedHouseholds"}'
 NEW_CONST = '''PARTIAL_MISSING = {
@@ -38,9 +39,14 @@ NEW_BLOCK = '''        if key in PARTIAL_MISSING:
         else:
             require("7/7" in coverage, f"{key}: copertura diversa da 7/7")'''
 
+OLD_HISTORY_VERSION = 'require(DATA["version"] == "v1.12.0", "Versione dati v1.12.0 non applicata")'
+NEW_HISTORY_VERSION = 'require(DATA["version"] == "v1.13.0", "Versione dati v1.13.0 non applicata")'
+OLD_HISTORY_DATE = 'require(DATA["updated"] == "15 agosto 2026", "Data di aggiornamento v1.12.0 inattesa")'
+NEW_HISTORY_DATE = 'require(DATA["updated"] == "16 agosto 2026", "Data di aggiornamento v1.13.0 inattesa")'
 
-def main() -> None:
-    text = TARGET.read_text(encoding='utf-8')
+
+def patch_compat() -> None:
+    text = COMPAT.read_text(encoding='utf-8')
     if NEW_CONST not in text:
         if OLD_CONST not in text:
             raise RuntimeError('Partial-coverage constant anchor missing')
@@ -49,8 +55,26 @@ def main() -> None:
         if OLD_BLOCK not in text:
             raise RuntimeError('Partial-coverage validation anchor missing')
         text = text.replace(OLD_BLOCK, NEW_BLOCK, 1)
-    TARGET.write_text(text, encoding='utf-8')
-    print('Release compatibility check aligned: fuelPrices 6/7 with Stazzema null/n.d. components')
+    COMPAT.write_text(text, encoding='utf-8')
+
+
+def patch_history() -> None:
+    text = HISTORY.read_text(encoding='utf-8')
+    if NEW_HISTORY_VERSION not in text:
+        if OLD_HISTORY_VERSION not in text:
+            raise RuntimeError('History version anchor missing')
+        text = text.replace(OLD_HISTORY_VERSION, NEW_HISTORY_VERSION, 1)
+    if NEW_HISTORY_DATE not in text:
+        if OLD_HISTORY_DATE not in text:
+            raise RuntimeError('History update-date anchor missing')
+        text = text.replace(OLD_HISTORY_DATE, NEW_HISTORY_DATE, 1)
+    HISTORY.write_text(text, encoding='utf-8')
+
+
+def main() -> None:
+    patch_compat()
+    patch_history()
+    print('Release compatibility checks aligned with v1.13 metadata and validated fuel 6/7 coverage')
 
 
 if __name__ == '__main__':
