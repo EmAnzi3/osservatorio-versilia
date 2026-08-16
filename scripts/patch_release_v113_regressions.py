@@ -28,7 +28,13 @@ NEW_BLOCK = '''        if key in PARTIAL_MISSING:
             missing = [row for row in rows if row.get("value") is None]
             require(len(missing) == 1, f"{key}: copertura 6/7 senza un solo valore mancante")
             require(missing[0].get("town") == PARTIAL_MISSING[key], f"{key}: Comune n.d. inatteso")
-            require(missing[0].get("formatted") == "n.d.", f"{key}: valore mancante non etichettato n.d.")
+            if key == "fuelPrices":
+                require(missing[0].get("stationCount") == 0, "fuelPrices: Stazzema non deve avere impianti attivi")
+                parts = missing[0].get("parts") or []
+                require(len(parts) == 2 and all(part.get("value") is None for part in parts),
+                        "fuelPrices: benzina e gasolio di Stazzema devono restare null/n.d., mai zero")
+            else:
+                require(missing[0].get("formatted") == "n.d.", f"{key}: valore mancante non etichettato n.d.")
         else:
             require("7/7" in coverage, f"{key}: copertura diversa da 7/7")'''
 
@@ -44,7 +50,7 @@ def main() -> None:
             raise RuntimeError('Partial-coverage validation anchor missing')
         text = text.replace(OLD_BLOCK, NEW_BLOCK, 1)
     TARGET.write_text(text, encoding='utf-8')
-    print('Release compatibility check aligned: fuelPrices 6/7 with Stazzema n.d.')
+    print('Release compatibility check aligned: fuelPrices 6/7 with Stazzema null/n.d. components')
 
 
 if __name__ == '__main__':
