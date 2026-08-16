@@ -64,7 +64,7 @@ def main() -> None:
         validate_history(
             page,
             urljoin(base, 'confronta/economia/?indicatore=incomeVsInflation'),
-            '.topic-bars',
+            '#compare-bars',
         )
         validate_history(
             page,
