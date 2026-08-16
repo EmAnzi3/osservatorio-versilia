@@ -54,6 +54,7 @@ jobs:
             scripts/build_static_safe.py \
             scripts/build_static_brand.py \
             service-worker.js \
+            scripts/test_brand_identity.py \
             scripts/test_composite_indicators.py \
             scripts/test_exports_v161.py \
             scripts/test_ux_experiment.py
