@@ -22,7 +22,7 @@ def close(a,b,tol=.011): return abs(float(a)-float(b))<=tol
 
 
 def main():
-    assert DATA['version']=='v1.12.0'
+    assert DATA['version'] in {'v1.12.0','v1.13.0'}
     assert REG['expectedMetricCount']==127 and REG['expectedInlineMetricCount']==123 and REG['expectedExternalMetricCount']==4
     for key in ['municipalIrpef','tariStandardHousehold','municipalImuStandard','fuelPrices','wasteServiceCost','incomeVsInflation']:
         assert key in DATA['metrics']
@@ -81,9 +81,18 @@ def main():
         assert row['series']['years']==list(range(2016,2025))
         assert close(row['series']['values'][0],0,.0001)
         assert close(row['value'],row['series']['values'][-1],.0001)
+        if 'nominalSeries' in row:
+            assert row['nominalSeries']['years']==list(range(2016,2025))
+            assert row['realSeries']['years']==list(range(2016,2025))
+            assert close(row['nominalSeries']['values'][0],0,.0001)
+            assert close(row['realSeries']['values'][0],0,.0001)
+            assert close(row['realSeries']['values'][-1],row['value'],.0001)
     assert close(rr['Forte dei Marmi']['value'],23.83,.03)
     assert close(rr['Stazzema']['value'],3.82,.03)
     assert close(real['aggregate']['value'],5.23,.03)
+    if 'historyPresentation' in real:
+        assert 'rapporto' in real['historyPresentation']['note']
+        assert 'distanza visiva' in real['historyPresentation']['note']
 
     e=DATA['themes']['economia']
     fiscal=next(x for x in e['sections'] if x['key']=='costi-fiscalita')
@@ -103,11 +112,14 @@ def main():
     assert 'function historyMetric(metric)' in UX
     assert 'number3' in UX and "unit === 'eurliter'" in UX
     assert "case 'eurliter'" in UXCORE and 'focusedFuel' in UXCORE and 'rawValue === null' in UX
+    if 'historyPresentation' in real:
+        assert 'Variazione reale:' in UXCORE and 'Reddito nominale:' in UXCORE and 'chart-tooltip-detail' in UXCORE
     assert "kind === 'eurliter'" in VISUAL and "kind: 'focused'" in VISUAL and 'scala adattata ai prezzi' in VISUAL
 
-    draft=DATA['costsFiscalDraft']
-    assert 'incomeVsInflation' in draft['publishedInDraft']
-    assert draft['notPublished']==['schoolMeals']
-    print('Draft validato: 127 indicatori = 123 inline + 4 esterni; redditi distinti, redditi-vs-inflazione comunale, carburanti a 3 decimali con scala dedicata')
+    state=DATA['costsFiscalDraft']
+    assert state.get('status') in {'draft','published'}
+    assert 'incomeVsInflation' in state['publishedInDraft']
+    assert state['notPublished']==['schoolMeals']
+    print(f"Economia validata ({DATA['version']}): 127 indicatori = 123 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
 
 if __name__=='__main__': main()
