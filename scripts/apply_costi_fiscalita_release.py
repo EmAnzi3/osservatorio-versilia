@@ -20,6 +20,7 @@ APP05 = ROOT / 'assets' / 'app-parts' / '05.txt'
 BUILD_SAFE = ROOT / 'scripts' / 'build_static_safe.py'
 BUILD_BRAND = ROOT / 'scripts' / 'build_static_brand.py'
 SERVICE_WORKER = ROOT / 'service-worker.js'
+BRAND_TEST = ROOT / 'scripts' / 'test_brand_identity.py'
 
 TRANSFORMS = [
     'apply_costi_fiscalita_redditi_draft.py',
@@ -114,6 +115,13 @@ def patch_release_surface() -> None:
     replace_any(
         SERVICE_WORKER,
         [("const VERSION = 'ov-pwa-20260814-v111';", "const VERSION = 'ov-pwa-20260816-v113';")],
+    )
+    replace_any(
+        BRAND_TEST,
+        [
+            ('assets/app-bundle.js?v=20260814-v111', 'assets/app-bundle.js?v=20260816-v113'),
+            ('assets/visual-grammar.js?v=20260814-v111', 'assets/visual-grammar.js?v=20260816-v113'),
+        ],
     )
 
     app = APP05.read_text(encoding='utf-8')
