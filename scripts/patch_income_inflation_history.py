@@ -104,7 +104,7 @@ def patch_history_js() -> None:
     return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
   }
 """
-    new_history_metric = """  function historyMetric(metric) {
+    new_history_metric = r"""  function historyMetric(metric) {
     if (metric?.meta?.key === 'income' && metric.rows?.some(row => row.longSeries?.years?.length)) {
       return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
     }
@@ -130,7 +130,7 @@ def patch_history_js() -> None:
     return metric;
   }
 
-  function historyMarkup(metric, series, selectedTown) {
+  function renderHistoryMarkup(metric, series, selectedTown) {
     const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
     if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
     const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
@@ -155,12 +155,12 @@ def patch_history_js() -> None:
         r'toolkit\.historicalChartMarkup\((?:historyView|selected\.metric), series, selectedTown\)'
     )
     text, replacements = call_pattern.subn(
-        'historyMarkup(historyView, series, selectedTown)',
+        'renderHistoryMarkup(historyView, series, selectedTown)',
         text,
     )
-    if replacements == 0 and text.count('historyMarkup(historyView, series, selectedTown)') < 2:
+    if replacements == 0 and text.count('renderHistoryMarkup(historyView, series, selectedTown)') < 2:
         raise RuntimeError('Historical markup call anchors missing')
-    if text.count('historyMarkup(historyView, series, selectedTown)') < 2:
+    if text.count('renderHistoryMarkup(historyView, series, selectedTown)') < 2:
         raise RuntimeError('Historical markup not wired on both compare and town surfaces')
 
     compare_old = """      : historyAvailable && selected.metric?.meta?.key === 'income'
