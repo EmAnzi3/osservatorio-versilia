@@ -218,7 +218,7 @@ def browser_checks() -> None:
         assert page.locator(".chart-point.active").count() == 0, "Punto non selezionato apre ancora il tooltip"
         enabled.first.dispatch_event("mouseenter")
         assert page.locator(".chart-point.active").count() == 1
-        assert "massarosa" in page.locator(".chart-point.active .chart-tooltip").inner_text().lower()
+        assert "massarosa" in (page.locator(".chart-point.active .chart-tooltip").text_content() or "").lower()
         enabled.first.focus()
         enabled.first.press("ArrowRight")
         focused_owner = page.evaluate("document.activeElement.closest('[data-history-town]')?.dataset.historyTown || ''")
