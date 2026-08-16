@@ -2,9 +2,9 @@
 """Add a comparable inflation reference to the income-vs-inflation history.
 
 The current indicator remains the validated real-income change. Historical
-views instead put nominal taxable-income growth and NIC Italia on the same
-2016=0% scale, so the distance between the two can be read year by year.
-The patch is materialized only by the economy draft workflow.
+views put nominal taxable-income growth and NIC Italia on the same 2016=0%
+scale. Municipal tooltips also show the mathematically correct real change,
+computed as the ratio between the income index and the price index.
 """
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data/site-data.json'
 UX = ROOT / 'assets/ux-history.js'
+CORE = ROOT / 'assets/ux-history-core.js'
 CSS = ROOT / 'assets/ux-experiment.css'
 KEY = 'incomeVsInflation'
 
@@ -59,8 +60,9 @@ def patch_data() -> None:
         'baseLabel': '2016 = 0%',
         'note': (
             'Nello storico il reddito imponibile nominale di ciascun Comune e il NIC Italia sono riportati '
-            'alla stessa base 2016 = 0%. La distanza tra le linee mostra anno per anno se i redditi crescono '
-            'più o meno dei prezzi; il valore sintetico dell’indicatore resta la variazione reale già calcolata.'
+            'alla stessa base 2016 = 0%. Le traiettorie mostrano se i redditi crescono più o meno dei prezzi. '
+            'La distanza visiva tra le linee non coincide con la variazione reale: quest’ultima è calcolata '
+            'anno per anno come rapporto tra indice del reddito e indice dei prezzi ed è riportata nei tooltip.'
         ),
     }
 
@@ -81,15 +83,29 @@ def patch_data() -> None:
         base = source_map[years[0]]
         if base <= 0:
             raise RuntimeError(f"Base reddito non valida per {row['town']}")
+
         nominal_changes = [round(source_map[year] / base * 100.0 - 100.0, 4) for year in years]
+        real_changes = []
+        for year, price_index in zip(years, prices):
+            nominal_index = source_map[year] / base * 100.0
+            real_index = nominal_index / price_index * 100.0
+            real_changes.append(round(real_index - 100.0, 4))
+
         row['nominalSeries'] = {
             'label': 'Reddito imponibile nominale',
             'years': years,
             'values': nominal_changes,
         }
+        row['realSeries'] = {
+            'label': 'Variazione reale',
+            'years': years,
+            'values': real_changes,
+        }
 
     if len(metric['rows']) != 7 or any(row['nominalSeries']['values'][0] != 0 for row in metric['rows']):
         raise RuntimeError('Serie nominali comunali non coerenti con la base 2016')
+    if any(row['realSeries']['values'][0] != 0 for row in metric['rows']):
+        raise RuntimeError('Serie reali comunali non coerenti con la base 2016')
     if metric['inflationSeries']['values'][0] != 0:
         raise RuntimeError('Serie inflazione non coerente con la base 2016')
 
@@ -114,7 +130,7 @@ def patch_history_js() -> None:
         ...metric,
         meta: { ...metric.meta, label: 'Redditi nominali vs inflazione', unit: 'percent' },
         rows: [
-          ...metric.rows.map(row => ({ ...row, series: row.nominalSeries || row.series })),
+          ...metric.rows.map(row => ({ ...row, realSeries: row.realSeries || row.series, series: row.nominalSeries || row.series })),
           {
             town: reference.label || 'Inflazione · NIC Italia',
             slug: 'inflazione-nic-italia',
@@ -137,7 +153,7 @@ def patch_history_js() -> None:
     return markup
       .replace(
         'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.',
-        'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. La distanza mostra se i redditi crescono più o meno dei prezzi.'
+        'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. I tooltip mostrano anche la variazione reale, calcolata come rapporto tra indice del reddito e indice dei prezzi.'
       )
       .replace(
         /<g class="ux-series-group [^"]*" data-history-town="inflazione-nic-italia" style="--series-color:[^"]+">/,
@@ -194,12 +210,112 @@ def patch_history_js() -> None:
     UX.write_text(text, encoding='utf-8')
 
 
+def patch_history_core() -> None:
+    text = CORE.read_text(encoding='utf-8')
+
+    old_point = r"""  function historyPointMarkup({ x, y, value, year, town, unit, width, left, right }) {
+    const boxWidth = 210;
+    const boxHeight = 50;
+    const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, x - boxWidth / 2));
+    const boxY = y < 78 ? y + 18 : y - boxHeight - 16;
+    const label = `${town} · ${year}: ${formatValue(value, unit)}`;
+    return `<g class="chart-point" tabindex="0" role="button" aria-label="${escapeHtml(label)}">
+      <circle class="chart-hit" cx="${x}" cy="${y}" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="${x}" cy="${y}" r="4"></circle>
+      <g class="chart-tooltip" hidden>
+        <line class="chart-guide" x1="${x}" y1="${y}" x2="${x}" y2="${boxY < y ? boxY + boxHeight : boxY}"></line>
+        <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+        <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${escapeHtml(`${town} · ${year}`)}</text>
+        <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 34}">${escapeHtml(formatValue(value, unit))}</text>
+      </g>
+    </g>`;
+  }
+"""
+    new_point = r"""  function historyPointMarkup({ x, y, value, year, town, unit, width, left, right, primaryText = '', detailLines = [] }) {
+    const boxWidth = detailLines.length ? 310 : 210;
+    const boxHeight = detailLines.length ? 90 : 50;
+    const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, x - boxWidth / 2));
+    const boxY = y < boxHeight + 28 ? y + 18 : y - boxHeight - 16;
+    const valueText = primaryText || formatValue(value, unit);
+    const label = [`${town} · ${year}: ${valueText}`, ...detailLines].join('. ');
+    const details = detailLines.map((line, index) => `<text class="chart-tooltip-detail" x="${boxX + 12}" y="${boxY + 53 + index * 17}">${escapeHtml(line)}</text>`).join('');
+    return `<g class="chart-point" tabindex="0" role="button" aria-label="${escapeHtml(label)}">
+      <circle class="chart-hit" cx="${x}" cy="${y}" r="13"></circle>
+      <circle class="chart-dot ux-series-point" cx="${x}" cy="${y}" r="4"></circle>
+      <g class="chart-tooltip" hidden>
+        <line class="chart-guide" x1="${x}" y1="${y}" x2="${x}" y2="${boxY < y ? boxY + boxHeight : boxY}"></line>
+        <rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect>
+        <text class="chart-tooltip-year" x="${boxX + 12}" y="${boxY + 14}">${escapeHtml(`${town} · ${year}`)}</text>
+        <text class="chart-tooltip-value" x="${boxX + 12}" y="${boxY + 34}">${escapeHtml(valueText)}</text>
+        ${details}
+      </g>
+    </g>`;
+  }
+"""
+    text = replace_once(text, old_point, new_point, 'history tooltip details')
+
+    old_circles = r"""        const circles = row.values.map((value, index) => historyPointMarkup({
+          x: x(index),
+          y: y(value),
+          value,
+          year: series.years[index],
+          town: row.town,
+          unit: metric.meta.unit,
+          width,
+          left,
+          right
+        })).join('');
+"""
+    new_circles = r"""        const inflationMap = metric?.meta?.key === 'incomeVsInflation' && metric.inflationSeries?.years?.length
+          ? new Map(metric.inflationSeries.years.map((year, index) => [String(year), metric.inflationSeries.values[index]]))
+          : null;
+        const realMap = row.realSeries?.years?.length
+          ? new Map(row.realSeries.years.map((year, index) => [String(year), row.realSeries.values[index]]))
+          : null;
+        const signedPercent = raw => {
+          const numeric = Number(raw);
+          if (!Number.isFinite(numeric)) return 'n.d.';
+          return `${numeric > 0 ? '+' : ''}${formatValue(numeric, 'percent')}`;
+        };
+        const circles = row.values.map((value, index) => {
+          const year = series.years[index];
+          const isIncomeInflation = metric?.meta?.key === 'incomeVsInflation';
+          const isInflationReference = isIncomeInflation && row.slug === 'inflazione-nic-italia';
+          const primaryText = isInflationReference
+            ? `Inflazione: ${signedPercent(value)}`
+            : isIncomeInflation
+              ? `Reddito nominale: ${signedPercent(value)}`
+              : '';
+          const detailLines = isIncomeInflation && !isInflationReference
+            ? [
+                `Inflazione: ${signedPercent(inflationMap?.get(String(year)))}`,
+                `Variazione reale: ${signedPercent(realMap?.get(String(year)))}`,
+              ]
+            : [];
+          return historyPointMarkup({
+            x: x(index),
+            y: y(value),
+            value,
+            year,
+            town: row.town,
+            unit: metric.meta.unit,
+            width,
+            left,
+            right,
+            primaryText,
+            detailLines
+          });
+        }).join('');
+"""
+    text = replace_once(text, old_circles, new_circles, 'income inflation tooltip values')
+    CORE.write_text(text, encoding='utf-8')
+
+
 def patch_css() -> None:
     text = CSS.read_text(encoding='utf-8')
     marker = '/* Income vs inflation historical reference */'
-    if marker in text:
-        return
-    text += r'''
+    if marker not in text:
+        text += r'''
 
 /* Income vs inflation historical reference */
 .ux-inflation-reference .ux-series-line {
@@ -249,14 +365,24 @@ def patch_css() -> None:
   border-top: 2px dashed var(--ink);
 }
 '''
+    if '.chart-tooltip-detail' not in text:
+        text += r'''
+
+.ux-history-chart .chart-tooltip-detail {
+  font-size: 10px;
+  font-weight: 650;
+  opacity: .92;
+}
+'''
     CSS.write_text(text, encoding='utf-8')
 
 
 def main() -> None:
     patch_data()
     patch_history_js()
+    patch_history_core()
     patch_css()
-    print('Income/inflation history patched: nominal municipal growth + NIC Italia, base 2016 = 0%')
+    print('Income/inflation history patched: nominal income + NIC Italia + real-change tooltips')
 
 
 if __name__ == '__main__':
