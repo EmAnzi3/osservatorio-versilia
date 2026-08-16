@@ -1,4 +1,16 @@
 /* v1.8 visual grammar: comparison first, ranking second */
+
+/*
+ * La grammatica corrente non attribuisce significato alla posizione in elenco.
+ * Neutralizza la vecchia regola del foglio base che colorava automaticamente
+ * le prime due barre: durante il caricamento/fallback ogni barra usa il colore
+ * del tema, mentre la selezione viene comunicata da stato e dimensione.
+ */
+.bar-fill,
+.bar-row:nth-child(-n+2) .bar-fill {
+  background: var(--theme-color, var(--sage));
+}
+
 .comparison-bars {
   gap: 10px;
 }
@@ -26,6 +38,11 @@
   gap: 7px;
 }
 
+.comparison-legend span:last-child {
+  color: var(--ink);
+  font-weight: 800;
+}
+
 .comparison-legend-dot {
   width: 10px;
   height: 10px;
@@ -36,9 +53,9 @@
 
 .comparison-legend-reference {
   width: 2px;
-  height: 14px;
+  height: 16px;
   background: var(--ink);
-  opacity: .65;
+  opacity: .78;
 }
 
 .bar-row.comparison-row {
@@ -120,7 +137,7 @@
 .comparison-reference {
   width: 2px;
   background: var(--ink);
-  opacity: .58;
+  opacity: .74;
 }
 
 .comparison-zero {
@@ -172,6 +189,33 @@
   line-height: 1.45;
 }
 
+/*
+ * Il riferimento Versilia è parte della lettura, non una nota accessoria.
+ * Nelle pagine tema il terzo elemento del dl è sempre la sintesi territoriale;
+ * lo rendiamo leggibile accanto al grafico senza aggiungere un secondo box.
+ */
+.indicator-definition dl div:last-child {
+  align-items: center;
+  margin-top: 5px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--theme-color, var(--blue));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--theme-soft, var(--blue-soft)) 76%, var(--surface));
+}
+
+.indicator-definition dl div:last-child dt {
+  color: var(--ink);
+  font-weight: 790;
+}
+
+.indicator-definition dl div:last-child dd {
+  color: var(--theme-color, var(--blue));
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 17px;
+  font-weight: 820;
+  letter-spacing: -.03em;
+}
+
 .versilia-position > strong {
   display: flex;
   flex-direction: column;
@@ -185,6 +229,36 @@
   font-size: 12px;
   font-weight: 680;
   letter-spacing: 0;
+}
+
+/*
+ * Nelle schede comunali il valore territoriale era presente ma troppo piccolo.
+ * Manteniamo lo scostamento come headline e promuoviamo il valore Versilia a
+ * vero secondo livello numerico, senza duplicarlo altrove nella pagina.
+ */
+.versilia-position > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px 14px;
+  margin-top: auto;
+  padding-top: 15px;
+  font-size: 10px;
+}
+
+.versilia-position > div span {
+  color: var(--muted);
+  font-weight: 720;
+  line-height: 1.35;
+}
+
+.versilia-position > div b {
+  color: var(--ink);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 20px;
+  font-weight: 820;
+  letter-spacing: -.035em;
+  line-height: 1;
 }
 
 .indicator-card-grid button > small {
@@ -422,6 +496,18 @@
     padding-bottom: 4px;
   }
 
+  .indicator-definition dl div:last-child {
+    align-items: flex-start;
+  }
+
+  .indicator-definition dl div:last-child dd {
+    font-size: 15px;
+  }
+
+  .versilia-position > div b {
+    font-size: 18px;
+  }
+
   .reading-scale,
   .system-reading-link,
   .system-reading-intro,
@@ -456,6 +542,12 @@
   .comparison-stem,
   .comparison-zero,
   .comparison-axis-line {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .indicator-definition dl div:last-child,
+  .versilia-position > div {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
