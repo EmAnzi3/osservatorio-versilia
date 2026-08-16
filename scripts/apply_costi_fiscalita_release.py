@@ -30,6 +30,7 @@ TRANSFORMS = [
     'patch_fuel_precision.py',
     'fix_income_inflation_legend.py',
     'patch_income_inflation_history.py',
+    'fix_income_inflation_tooltip_data.py',
 ]
 
 
