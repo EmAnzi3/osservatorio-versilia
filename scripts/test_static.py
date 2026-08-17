@@ -47,6 +47,7 @@ def server(directory: Path) -> Iterable[str]:
 def static_assertions() -> None:
     html_files = sorted(DIST.rglob("*.html"))
     assert len(html_files) >= 20, f"Pagine HTML insufficienti: {len(html_files)}"
+    status_path = DIST / "stato-dati" / "index.html"
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert "app-loading" not in text, f"Skeleton residuo: {path}"
@@ -62,10 +63,20 @@ def static_assertions() -> None:
 
         assert 'rel="canonical"' in text, f"Canonical assente: {path}"
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
+        assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
+
+        if path == status_path:
+            # /stato-dati/ è una superficie statica autonoma: i 127 stati sono
+            # pre-renderizzati e data-status.js aggiunge soltanto filtri/ricerca.
+            assert "assets/data-status.js" in text, "Runtime Stato dei dati assente"
+            assert "assets/data-status.css" in text, "CSS Stato dei dati assente"
+            assert text.count('class="data-status-row"') == 127, "Stato dati non pre-renderizzato 127/127"
+            assert "assets/app-bundle.js" not in text, "La pagina Stato dei dati non deve avviare l'app principale"
+            continue
+
         assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"
         assert "assets/app.js" not in text, f"Vecchio loader presente: {path}"
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"
-        assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
         assert "search-icon" in text, f"Icona vettoriale della ricerca assente: {path}"
 
     massarosa = (DIST / "comuni" / "massarosa" / "index.html").read_text(encoding="utf-8")
