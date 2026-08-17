@@ -2,6 +2,7 @@
 """Aggiunge al build statico la pagina Stato dei dati e il pannello indicatori."""
 from __future__ import annotations
 
+from datetime import date
 import json
 import shutil
 from pathlib import Path
@@ -56,7 +57,9 @@ def patch_sitemap() -> None:
     url = "https://osservatorioversilia.it/stato-dati/"
     if url in text:
         return
-    text = text.replace("</urlset>", f"  <url><loc>{url}</loc></url>\n</urlset>")
+    lastmod = date.today().isoformat()
+    entry = f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod></url>\n"
+    text = text.replace("</urlset>", entry + "</urlset>")
     sitemap.write_text(text, encoding="utf-8")
 
 
