@@ -187,11 +187,13 @@
       point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');
     });
     const show = point => {
+      if (point.classList.contains('is-tooltip-disabled')) return;
       hideAll();
       point.classList.add('active');
       point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
     };
-    points.forEach((point, index) => {
+    const navigablePoints = () => points.filter(point => !point.classList.contains('is-tooltip-disabled') && point.tabIndex >= 0);
+    points.forEach(point => {
       point.addEventListener('mouseenter', () => show(point));
       point.addEventListener('mouseleave', hideAll);
       point.addEventListener('focus', () => show(point));
@@ -205,12 +207,15 @@
         }
         if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
         event.preventDefault();
-        let next = index;
-        if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
-        if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+        const available = navigablePoints();
+        if (!available.length) return;
+        const current = Math.max(0, available.indexOf(point));
+        let next = current;
+        if (event.key === 'ArrowLeft') next = (current - 1 + available.length) % available.length;
+        if (event.key === 'ArrowRight') next = (current + 1) % available.length;
         if (event.key === 'Home') next = 0;
-        if (event.key === 'End') next = points.length - 1;
-        points[next]?.focus();
+        if (event.key === 'End') next = available.length - 1;
+        available[next]?.focus();
       });
     });
     chart.addEventListener('mouseleave', hideAll);
@@ -384,6 +389,17 @@
       const selected = userInitiated && allowClear && requested === current ? '' : requested;
       chart.classList.toggle('has-selection', Boolean(selected));
       groups.forEach(group => group.classList.toggle('is-selected', group.dataset.historyTown === selected));
+      chart.querySelectorAll('.chart-point').forEach(point => {
+        const owner = point.closest('[data-history-town]');
+        const enabled = !selected || owner?.dataset.historyTown === selected;
+        point.classList.toggle('is-tooltip-disabled', !enabled);
+        point.style.pointerEvents = enabled ? '' : 'none';
+        point.tabIndex = enabled ? 0 : -1;
+        if (!enabled) {
+          point.classList.remove('active');
+          point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');
+        }
+      });
       buttons.forEach(button => button.setAttribute('aria-pressed', button.dataset.historySelect === selected ? 'true' : 'false'));
       if (summary) summary.innerHTML = summaryMarkup(buttons.find(button => button.dataset.historySelect === selected), unit);
       if (selected) storageSet('ov-history-town', selected);

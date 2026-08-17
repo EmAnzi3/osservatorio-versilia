@@ -29,12 +29,20 @@ def patch_visual():
     text = replace_once(text, old, new, 'assi carburanti/rifiuti')
     text = text.replace("    if (kind === 'eurliter') return `${formatted} €/l`;\n    if (kind === 'eurperresident') return `${formatted} €/ab`;\n", '')
 
-    old = """    const allPercent = unitKind(unit) === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) return { min: 0, max: 100, kind: 'percent' };\n\n    let min = Math.min(...numeric);\n    let max = Math.max(...numeric);"""
-    new = """    const kind = unitKind(unit);\n    if (kind === 'eurliter') {\n      const rawMin = Math.min(...numeric);\n      const rawMax = Math.max(...numeric);\n      const spread = rawMax - rawMin;\n      const padding = Math.max(0.005, spread * 0.25);\n      const min = Math.floor((rawMin - padding) * 1000) / 1000;\n      const max = Math.ceil((rawMax + padding) * 1000) / 1000;\n      return { min, max: max > min ? max : min + 0.010, kind: 'focused' };\n    }\n\n    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) return { min: 0, max: 100, kind: 'percent' };\n\n    let min = Math.min(...numeric);\n    let max = Math.max(...numeric);"""
-    text = replace_once(text, old, new, 'scala prezzi focalizzata')
-    old = "scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : 'scala con origine a zero'"
-    new = "scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : scale.kind === 'focused' ? 'scala adattata ai prezzi' : 'scala con origine a zero'"
-    text = replace_once(text, old, new, 'etichetta scala prezzi')
+    # La grammatica visuale può evolvere dopo la release v1.13. Se il ramo
+    # carburanti è già presente, non richiedere più la forma storica esatta
+    # della funzione scaleFor: il patcher deve restare idempotente.
+    if "if (kind === 'eurliter') {" not in text:
+        old = """    const allPercent = unitKind(unit) === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) return { min: 0, max: 100, kind: 'percent' };\n\n    let min = Math.min(...numeric);\n    let max = Math.max(...numeric);"""
+        new = """    const kind = unitKind(unit);\n    if (kind === 'eurliter') {\n      const rawMin = Math.min(...numeric);\n      const rawMax = Math.max(...numeric);\n      const spread = rawMax - rawMin;\n      const padding = Math.max(0.005, spread * 0.25);\n      const min = Math.floor((rawMin - padding) * 1000) / 1000;\n      const max = Math.ceil((rawMax + padding) * 1000) / 1000;\n      return { min, max: max > min ? max : min + 0.010, kind: 'focused' };\n    }\n\n    const allPercent = kind === 'percent' && numeric.every(value => value >= 0 && value <= 100);\n    if (allPercent) return { min: 0, max: 100, kind: 'percent' };\n\n    let min = Math.min(...numeric);\n    let max = Math.max(...numeric);"""
+        text = replace_once(text, old, new, 'scala prezzi focalizzata')
+
+    # Anche l'etichetta può essere stata rifattorizzata (per esempio in una
+    # variabile scaleLabel). Se contiene già il caso focused, è completa.
+    if "scale.kind === 'focused'" not in text:
+        old = "scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : 'scala con origine a zero'"
+        new = "scale.kind === 'percent' ? 'scala 0–100%' : scale.kind === 'signed' ? 'lo zero è evidenziato' : scale.kind === 'focused' ? 'scala adattata ai prezzi' : 'scala con origine a zero'"
+        text = replace_once(text, old, new, 'etichetta scala prezzi')
     VISUAL.write_text(text, encoding='utf-8')
 
 
