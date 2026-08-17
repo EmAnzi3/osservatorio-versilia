@@ -41,7 +41,8 @@
     const metricKey = document.body.dataset.metric;
     const item = payload.metrics?.[metricKey];
     const section = document.querySelector('.indicator-method');
-    if (!item || !section || section.querySelector('.data-update-card')) return;
+    if (!item || !section) return false;
+    if (section.querySelector('.data-update-card')) return true;
 
     const next = nextReleaseLabel(item);
     const card = document.createElement('section');
@@ -70,6 +71,20 @@
       if (dt.textContent.trim() === 'Prossimo aggiornamento atteso') dt.textContent = 'Cadenza indicativa della fonte';
       if (dt.textContent.trim() === 'Ultimo controllo della fonte') dt.textContent = 'Ultimo controllo tecnico della fonte';
     });
+    return true;
+  }
+
+  function installIndicatorEnhancement(payload) {
+    if (enhanceIndicator(payload)) return;
+    const root = document.getElementById('app') || document.body;
+    const observer = new MutationObserver(() => {
+      if (enhanceIndicator(payload)) observer.disconnect();
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    window.setTimeout(() => {
+      enhanceIndicator(payload);
+      observer.disconnect();
+    }, 10000);
   }
 
   function summaryCard(label, value, detail) {
@@ -136,7 +151,7 @@
   }
 
   loadPayload().then(payload => {
-    if (document.body.dataset.page === 'indicator') enhanceIndicator(payload);
+    if (document.body.dataset.page === 'indicator') installIndicatorEnhancement(payload);
     if (document.body.dataset.page === 'data-status') renderStatusPage(payload);
   }).catch(error => {
     console.error(error);
