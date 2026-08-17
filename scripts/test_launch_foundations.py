@@ -107,8 +107,9 @@ def main() -> None:
     social_script = read("assets/social-presence.js")
     for url in SOCIAL_PROFILES:
         assert social_script.count(url) == 1, f"Profilo social non canonico o duplicato nell'asset: {url}"
-    for placement in ("footer", "home", "project"):
-        assert f'data-social-placement=\\"{placement}\\"' in social_script or f"data-social-placement=\"{placement}\"" in social_script, f"Blocco social {placement} assente dall'asset dedicato"
+    assert 'data-social-placement="footer"' in social_script, "Blocco footer assente dall'asset social"
+    assert "callout('home')" in social_script, "Callout Home assente dall'asset social"
+    assert "callout('project')" in social_script, "Callout Progetto assente dall'asset social"
     assert 'meta[name="robots"][content*="noindex" i]' in social_script, "Le pagine noindex non sono escluse dall'enhancer social"
 
     social_css = read("assets/social-presence.css")
