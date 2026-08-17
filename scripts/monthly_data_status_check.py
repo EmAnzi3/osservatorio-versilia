@@ -32,6 +32,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    previous_state = load_json(args.state)
     result = coverage.main([
         "--data", str(args.data),
         "--registry", str(args.registry),
@@ -48,6 +49,9 @@ def main() -> int:
     registry = load_json(args.registry)
     report = load_json(args.report_json)
     next_state = load_json(args.next_state)
+    previous_metrics = previous_state.get("metrics")
+    if isinstance(previous_metrics, dict):
+        next_state["metrics"] = previous_metrics
 
     upgraded_state = upgrade_monitor_state(data, registry, next_state, report)
     report["metricStatusSchemaVersion"] = 1
