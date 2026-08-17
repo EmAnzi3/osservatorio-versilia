@@ -22,6 +22,13 @@ HISTORY_ASSET_VERSION = "20260816-v113"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
+SOCIAL_TWITTER_SITE = "@OssVersilia"
+SOCIAL_PROFILES = (
+    ("Facebook", "@osservatorioversilia", "f", "https://www.facebook.com/osservatorioversilia"),
+    ("Instagram", "@osservatorioversilia", "◎", "https://www.instagram.com/osservatorioversilia/"),
+    ("LinkedIn", "Osservatorio Versilia", "in", "https://www.linkedin.com/company/osservatorioversilia"),
+    ("X", "@OssVersilia", "X", "https://x.com/OssVersilia"),
+)
 V170_VERSION_ENTRY = (
     "      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. "
     "Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, "
@@ -72,6 +79,33 @@ NUMBER_FORMAT_REPLACEMENTS = {
     "new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })":
         "new Intl.NumberFormat('it-IT', { useGrouping: 'always', style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })",
 }
+
+
+def social_links_markup() -> str:
+    links = []
+    for network, handle, mark, url in SOCIAL_PROFILES:
+        links.append(
+            f'<a class="social-profile-link" href="{url}" target="_blank" rel="me noreferrer" '
+            f'aria-label="Segui Osservatorio Versilia su {network}">'
+            f'<span class="social-profile-mark" aria-hidden="true">{mark}</span>'
+            f'<span class="social-profile-copy"><strong>{network}</strong><small>{handle}</small></span>'
+            '<b aria-hidden="true">↗</b></a>'
+        )
+    return '<div class="social-links">' + ''.join(links) + '</div>'
+
+
+def social_callout_markup(placement: str) -> str:
+    heading = "Dati e storie della Versilia, anche sui social."
+    copy = (
+        "Grafici, confronti e approfondimenti dell’Osservatorio arrivano anche sui nostri canali social. "
+        "Seguici per ritrovare i dati nel momento in cui diventano notizia o aiutano a leggere il territorio."
+    )
+    return (
+        f'<section class="social-callout page-width" data-social-placement="{placement}" '
+        f'aria-labelledby="social-{placement}-title"><div><span class="overline">Segui l’Osservatorio</span>'
+        f'<h2 id="social-{placement}-title">{heading}</h2></div>'
+        f'<div><p>{copy}</p>{social_links_markup()}</div></section>'
+    )
 
 
 def copy_source_tree_with_local_assets() -> None:
@@ -135,6 +169,28 @@ def bundle_application_with_private_fixes() -> None:
             entries += V170_VERSION_ENTRY
         bundle = bundle.replace(marker, marker + entries, 1)
 
+    if 'data-social-placement="footer"' not in bundle:
+        footer_marker = '        <div class="footer-note">'
+        if footer_marker not in bundle:
+            raise RuntimeError("Punto di inserimento social nel footer non trovato")
+        footer_social = (
+            '<div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">'
+            '<strong>Segui Osservatorio Versilia</strong>' + social_links_markup() + '</div>\n        '
+        )
+        bundle = bundle.replace(footer_marker, footer_social + footer_marker, 1)
+
+    if 'data-social-placement="home"' not in bundle:
+        home_marker = '      <section class="source-portals page-width" aria-label="Principali fonti istituzionali">'
+        if home_marker not in bundle:
+            raise RuntimeError("Punto di inserimento social nella home non trovato")
+        bundle = bundle.replace(home_marker, '      ' + social_callout_markup("home") + '\n' + home_marker, 1)
+
+    if 'data-social-placement="project"' not in bundle:
+        project_marker = '      <section class="contact-panel page-width">'
+        if project_marker not in bundle:
+            raise RuntimeError("Punto di inserimento social nella pagina progetto non trovato")
+        bundle = bundle.replace(project_marker, '      ' + social_callout_markup("project") + '\n' + project_marker, 1)
+
     bundle_path.write_text(bundle, encoding="utf-8")
 
 
@@ -152,6 +208,7 @@ def prepare_shells_with_fonts() -> None:
             "export-v161.css",
             "visual-grammar.css",
             "indicator-pages.css",
+            "social-presence.css",
         )
         for stylesheet in stylesheets:
             token = f"assets/{stylesheet}"
@@ -183,27 +240,56 @@ def prepare_shells_with_fonts() -> None:
         path.write_text(text, encoding="utf-8")
 
 
+def _metadata_text(document: str, property_name: str, fallback_pattern: str) -> str:
+    match = re.search(
+        rf'<meta\s+property="{re.escape(property_name)}"\s+content="([^"]*)"',
+        document,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return match.group(1).strip()
+    fallback = re.search(fallback_pattern, document, flags=re.IGNORECASE | re.DOTALL)
+    if not fallback:
+        raise RuntimeError(f"Metadata testuale non trovato: {property_name}")
+    return fallback.group(1).strip()
+
+
 def inject_metadata_with_open_graph(document: str, route: str, data: dict) -> str:
     """Aggiunge metadati social coerenti con canonical e dominio pubblico."""
     document = _original_inject_metadata(document, route, data)
     canonical = build.canonical_url(route)
+    title = _metadata_text(document, "og:title", r'<title>(.*?)</title>')
+    description = _metadata_text(
+        document,
+        "og:description",
+        r'<meta\s+name="description"\s+content="([^"]*)"',
+    )
     patterns = (
         r'\s*<meta\s+property="og:url"[^>]*>',
         r'\s*<meta\s+property="og:site_name"[^>]*>',
         r'\s*<meta\s+property="og:image"[^>]*>',
         r'\s*<meta\s+property="og:image:alt"[^>]*>',
         r'\s*<meta\s+name="twitter:card"[^>]*>',
+        r'\s*<meta\s+name="twitter:title"[^>]*>',
+        r'\s*<meta\s+name="twitter:description"[^>]*>',
+        r'\s*<meta\s+name="twitter:site"[^>]*>',
         r'\s*<meta\s+name="twitter:image"[^>]*>',
+        r'\s*<meta\s+name="twitter:image:alt"[^>]*>',
     )
     for pattern in patterns:
         document = re.sub(pattern, "", document, flags=re.IGNORECASE)
+    image_alt = "Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia"
     social = (
         f'\n  <meta property="og:url" content="{canonical}">'
         '\n  <meta property="og:site_name" content="Osservatorio Versilia">'
         f'\n  <meta property="og:image" content="{SOCIAL_IMAGE}">'
-        '\n  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">'
+        f'\n  <meta property="og:image:alt" content="{image_alt}">'
         '\n  <meta name="twitter:card" content="summary_large_image">'
-        f'\n  <meta name="twitter:image" content="{SOCIAL_IMAGE}">\n'
+        f'\n  <meta name="twitter:title" content="{title}">'
+        f'\n  <meta name="twitter:description" content="{description}">'
+        f'\n  <meta name="twitter:site" content="{SOCIAL_TWITTER_SITE}">'
+        f'\n  <meta name="twitter:image" content="{SOCIAL_IMAGE}">'
+        f'\n  <meta name="twitter:image:alt" content="{image_alt}">\n'
     )
     return document.replace("</head>", social + "</head>")
 
