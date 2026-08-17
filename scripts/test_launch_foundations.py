@@ -2,6 +2,7 @@
 """Regression checks for public launch metadata, identity and social presence."""
 
 from pathlib import Path
+import os
 
 DIST = Path(__file__).resolve().parents[1] / "dist"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
@@ -36,6 +37,58 @@ def assert_social_profiles(text: str, context: str) -> None:
 
 def is_noindex(text: str) -> bool:
     return 'name="robots" content="noindex' in text.lower()
+
+
+def browser_social_checks() -> None:
+    from playwright.sync_api import sync_playwright
+
+    base = os.environ.get("OV_TEST_BASE", "http://127.0.0.1:8123/").rstrip("/") + "/"
+    cases = (
+        ("", "home", ".home-hero"),
+        ("progetto/", "project", ".editorial-page"),
+        ("confronta/demografia/", None, ".topic-hero"),
+    )
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": 1365, "height": 900})
+
+        for relative, callout_name, ready_selector in cases:
+            page.goto(base + relative, wait_until="domcontentloaded")
+            page.locator(ready_selector).wait_for(timeout=15000)
+            footer = page.locator('[data-social-placement="footer"]')
+            footer.wait_for(timeout=10000)
+            assert footer.count() == 1, f"Footer social duplicato in {relative or 'home'}"
+            assert footer.locator("a.social-profile-link").count() == 4, f"Profili footer incompleti in {relative or 'home'}"
+            for url in SOCIAL_PROFILES:
+                assert footer.locator(f'a[href="{url}"]').count() == 1, f"Link {url} assente dal footer runtime"
+
+            if callout_name:
+                callout = page.locator(f'[data-social-placement="{callout_name}"]')
+                callout.wait_for(timeout=10000)
+                assert callout.count() == 1, f"Callout {callout_name} duplicato"
+                assert callout.locator("a.social-profile-link").count() == 4, f"Profili incompleti nel callout {callout_name}"
+            else:
+                assert page.locator('[data-social-placement="home"], [data-social-placement="project"]').count() == 0, "Callout editoriale presente su pagina interna"
+
+            # Lascia il tempo a eventuali rerender post-fetch: l'enhancer deve
+            # rimanere idempotente e i riferimenti non devono sparire/duplicarsi.
+            page.wait_for_timeout(250)
+            assert page.locator('[data-social-placement="footer"]').count() == 1, f"Footer social instabile in {relative or 'home'}"
+
+        mobile = browser.new_page(viewport={"width": 390, "height": 844})
+        mobile.goto(base, wait_until="domcontentloaded")
+        mobile.locator(".home-hero").wait_for(timeout=15000)
+        mobile_callout = mobile.locator('[data-social-placement="home"]')
+        mobile_callout.wait_for(timeout=10000)
+        fits = mobile_callout.evaluate("el => el.scrollWidth <= el.clientWidth + 1")
+        assert fits, "Il callout social genera overflow orizzontale su mobile"
+        assert mobile_callout.locator("a.social-profile-link").count() == 4, "Profili social mobile incompleti"
+
+        page.goto(base + "confronta/meteo-clima/", wait_until="domcontentloaded")
+        assert page.locator('[data-social-placement]').count() == 0, "La bozza Meteo noindex non deve ricevere riferimenti social"
+
+        browser.close()
 
 
 def main() -> None:
@@ -111,14 +164,18 @@ def main() -> None:
     assert "callout('home')" in social_script, "Callout Home assente dall'asset social"
     assert "callout('project')" in social_script, "Callout Progetto assente dall'asset social"
     assert 'meta[name="robots"][content*="noindex" i]' in social_script, "Le pagine noindex non sono escluse dall'enhancer social"
+    assert "new MutationObserver(enhance)" in social_script, "L'enhancer social non protegge i riferimenti dai rerender runtime"
 
     social_css = read("assets/social-presence.css")
     assert ".social-callout" in social_css and ".footer-social" in social_css, "CSS social incompleto"
     assert "@media (max-width: 700px)" in social_css, "Regole mobile social assenti"
 
+    browser_social_checks()
+
     print(
         f"OK: identità pubblica, release v1.11, presenza social e metadata Open Graph/X "
-        f"verificati su {social_pages} pagine pubblicabili; {noindex_pages} pagine noindex escluse dal contratto social"
+        f"verificati in statico e browser su {social_pages} pagine pubblicabili; "
+        f"{noindex_pages} pagine noindex escluse dal contratto social"
     )
 
 
