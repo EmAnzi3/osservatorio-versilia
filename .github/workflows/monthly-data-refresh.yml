@@ -16,8 +16,11 @@ on:
       - ".github/workflows/monthly-data-refresh.yml"
       - "scripts/monthly_data_check.py"
       - "scripts/monthly_data_check_coverage.py"
+      - "scripts/monthly_data_status_check.py"
+      - "scripts/data_status.py"
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
+      - "scripts/test_data_status.py"
       - "scripts/restore_partial_agcom_metrics.py"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
@@ -53,7 +56,11 @@ jobs:
       - name: Run monitor unit tests
         run: |
           python scripts/test_monthly_data_check.py
-          python -m py_compile scripts/monthly_data_check_coverage.py
+          python scripts/test_data_status.py
+          python -m py_compile \
+            scripts/monthly_data_check_coverage.py \
+            scripts/monthly_data_status_check.py \
+            scripts/data_status.py
 
       - name: Prepare check
         id: prepare
@@ -77,7 +84,7 @@ jobs:
       - name: Validate dataset and check sources
         id: monitor
         run: |
-          python scripts/monthly_data_check_coverage.py \
+          python scripts/monthly_data_status_check.py \
             --mode "${{ steps.prepare.outputs.mode }}" \
             --report-md "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.md" \
             --report-json "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.json" \
@@ -106,8 +113,8 @@ jobs:
           Questa issue raccoglie gli esiti del controllo mensile delle fonti e del dataset di Osservatorio Versilia per il $YEAR.
 
           - nessun valore viene pubblicato automaticamente;
-          - le anomalie bloccano il controllo;
-          - le variazioni sostanziali aprono una PR in bozza;
+          - rilevazione, validazione e pubblicazione restano fasi separate;
+          - ogni controllo live registra anche la data di verifica e lo stato degli indicatori in una PR in bozza;
           - ogni commento mensile menziona il responsabile del progetto.
           EOF
             ISSUE_URL="$(gh issue create --title "$TITLE" --body-file /tmp/data-check-register.md)"
@@ -115,12 +122,11 @@ jobs:
           fi
           gh issue comment "$ISSUE_NUMBER" --body-file "$REPORT_MD"
 
-      - name: Open draft PR for a new baseline or source changes
+      - name: Open draft PR for monthly monitor state
         if: >-
           github.event_name != 'pull_request' &&
           steps.prepare.outputs.mode == 'live' &&
-          (steps.monitor.outputs.status == 'baseline_required' ||
-           steps.monitor.outputs.status == 'changes_detected')
+          steps.monitor.outputs.status != 'attention_required'
         env:
           REPORT_MD: ${{ steps.monitor.outputs.report_md }}
           NEXT_STATE: ${{ steps.monitor.outputs.next_state }}
@@ -146,7 +152,7 @@ jobs:
 
           Il controllo mensile ha restituito: \`$CHECK_STATUS\`.
 
-          Questa PR registra la nuova baseline o i segnali di variazione delle fonti. Prima del merge occorre verificare se siano disponibili nuove annualità o revisioni ufficiali e, solo in quel caso, aggiornare separatamente i valori di \`data/site-data.json\` e gli snapshot di fonte.
+          Questa PR registra la data del controllo, lo stato tecnico delle fonti e lo stato canonico per indicatore. Anche quando non emergono variazioni, il merge serve soltanto ad aggiornare i metadata di verifica. Se viene rilevato un possibile nuovo rilascio, i valori di \`data/site-data.json\` restano invariati finché il dato non viene verificato e approvato separatamente.
 
           ---
 
