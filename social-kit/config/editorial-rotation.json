@@ -1,0 +1,22 @@
+{
+  "version": "2026-08-17",
+  "start_week": "2026-08-31",
+  "themes": [
+    "demografia",
+    "economia",
+    "lavoro",
+    "istruzione",
+    "salute",
+    "mobilita",
+    "sicurezza",
+    "abitare",
+    "ambiente",
+    "bilanci",
+    "comunita"
+  ],
+  "slots": [
+    {"weekday": 1, "label": "martedì", "kind": "data"},
+    {"weekday": 4, "label": "venerdì", "kind": "context"}
+  ],
+  "rule": "Una settimana ordinaria usa un tema della rotazione e il primo indicatore featured disponibile nel dataset corrente. Le ricorrenze anchor sostituiscono gli slot fino al massimo di due uscite; le conditional richiedono una decisione editoriale esplicita."
+}
