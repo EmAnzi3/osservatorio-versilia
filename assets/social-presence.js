@@ -55,15 +55,14 @@
   }
 
   function enhance() {
-    const footerReady = ensureFooter();
-    const pageReady = ensurePageCallout();
-    return footerReady && pageReady;
+    ensureFooter();
+    ensurePageCallout();
   }
 
-  if (enhance()) return;
-
-  const observer = new MutationObserver(() => {
-    if (enhance()) observer.disconnect();
-  });
+  // Il prerender può già contenere i blocchi social, ma l'app principale
+  // rimonta shell e contenuto dopo il fetch dei dati. L'observer resta quindi
+  // attivo e reinserisce in modo idempotente i blocchi se un rerender li rimuove.
+  enhance();
+  const observer = new MutationObserver(enhance);
   observer.observe(document.body, { childList: true, subtree: true });
 })();
