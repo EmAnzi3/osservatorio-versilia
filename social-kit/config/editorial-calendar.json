@@ -4,6 +4,14 @@
     "data_post": "martedì",
     "context_post": "venerdì"
   },
+  "planning": {
+    "horizon_from": "2026-09-01",
+    "horizon_to": "2027-08-31",
+    "observances_file": "editorial-observances-2026-2027.json",
+    "human_calendar": "../EDITORIAL_CALENDAR_2026_2027.md",
+    "weekly_post_budget": 2,
+    "rule": "Le ricorrenze anchor sostituiscono uno slot ordinario; le conditional entrano solo con dati pertinenti e granularità adeguata."
+  },
   "weeks": [
     {
       "id": "settimana-01",
@@ -17,7 +25,7 @@
       "theme": "economia",
       "metric": "income",
       "data_question": "Quale differenza tra Comuni ti sorprende di più, e perché?",
-      "context_question": "Quale dato affiancheresti al reddito medio prima di interpretarlo?"
+      "context_question": "Quale dato affiancheresti al reddito imponibile medio prima di interpretarlo?"
     },
     {
       "id": "settimana-03",
