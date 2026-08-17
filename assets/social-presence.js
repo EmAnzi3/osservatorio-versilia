@@ -3,9 +3,10 @@
 
   if (document.querySelector('meta[name="robots"][content*="noindex" i]')) return;
 
+  const instagramMark = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg>';
   const profiles = [
     { network: 'Facebook', handle: '@osservatorioversilia', mark: 'f', url: 'https://www.facebook.com/osservatorioversilia' },
-    { network: 'Instagram', handle: '@osservatorioversilia', mark: '◎', url: 'https://www.instagram.com/osservatorioversilia/' },
+    { network: 'Instagram', handle: '@osservatorioversilia', mark: instagramMark, url: 'https://www.instagram.com/osservatorioversilia/' },
     { network: 'LinkedIn', handle: 'Osservatorio Versilia', mark: 'in', url: 'https://www.linkedin.com/company/osservatorioversilia' },
     { network: 'X', handle: '@OssVersilia', mark: 'X', url: 'https://x.com/OssVersilia' },
   ];
