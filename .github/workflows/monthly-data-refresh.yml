@@ -20,6 +20,7 @@ on:
       - "scripts/data_status.py"
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
+      - "scripts/test_partial_coverage_monitor.py"
       - "scripts/test_data_status.py"
       - "scripts/restore_partial_agcom_metrics.py"
       - "data/source-registry.json"
@@ -56,6 +57,7 @@ jobs:
       - name: Run monitor unit tests
         run: |
           python scripts/test_monthly_data_check.py
+          python scripts/test_partial_coverage_monitor.py
           python scripts/test_data_status.py
           python -m py_compile \
             scripts/monthly_data_check_coverage.py \
