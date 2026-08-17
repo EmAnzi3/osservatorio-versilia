@@ -64,6 +64,23 @@ def compare_states(
     return ORIGINAL_COMPARE_STATES(prepared_previous, prepared_current)
 
 
+def _prepare_missing_row_for_base_validation(row: dict[str, Any]) -> None:
+    """Mantiene i null reali nei dati, neutralizzandoli solo nella copia di test.
+
+    Il controllore base richiede valori numerici ovunque. Per una copertura
+    esplicitamente parziale (es. 6/7) un Comune può invece avere `value: null` e
+    valori null anche nella serie. Questi null sono informazione, non errori e
+    non devono essere sostituiti nel dataset canonico.
+    """
+    row["value"] = 0
+    series = row.get("series")
+    if not isinstance(series, dict):
+        return
+    values = series.get("values")
+    if isinstance(values, list):
+        series["values"] = [0 if value is None else value for value in values]
+
+
 def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
     prepared = copy.deepcopy(data)
     findings = []
@@ -113,7 +130,10 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                 )
 
             for row in missing_rows:
-                if row.get("formatted") != "n.d.":
+                # Se il dataset specifica esplicitamente una stringa formattata,
+                # deve dichiarare n.d.; l'assenza del campo è ammessa perché il
+                # renderer canonico trasforma già `null` in n.d.
+                if "formatted" in row and row.get("formatted") != "n.d.":
                     findings.append(
                         base.finding(
                             "error",
@@ -122,9 +142,7 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                             metric_key,
                         )
                     )
-                # Lo zero è usato soltanto nella copia temporanea di validazione
-                # richiesta dal controllore base e non viene mai scritto nei dati.
-                row["value"] = 0
+                _prepare_missing_row_for_base_validation(row)
 
     base_findings, source_map, stats = ORIGINAL_VALIDATE(prepared, registry)
     return findings + base_findings, source_map, stats
