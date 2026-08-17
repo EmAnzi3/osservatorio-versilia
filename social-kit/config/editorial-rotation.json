@@ -1,6 +1,6 @@
 {
   "version": "2026-08-17",
-  "start_week": "2026-08-31",
+  "start_week": "2026-08-10",
   "themes": [
     "demografia",
     "economia",
@@ -18,5 +18,5 @@
     {"weekday": 1, "label": "martedì", "kind": "data"},
     {"weekday": 4, "label": "venerdì", "kind": "context"}
   ],
-  "rule": "Una settimana ordinaria usa un tema della rotazione e il primo indicatore featured disponibile nel dataset corrente. Le ricorrenze anchor sostituiscono gli slot fino al massimo di due uscite; le conditional richiedono una decisione editoriale esplicita."
+  "rule": "La rotazione parte dalla settimana di lancio: Demografia (10 agosto 2026), Economia (17 agosto), Lavoro (24 agosto), quindi prosegue sugli 11 temi. Una settimana ordinaria usa il primo indicatore featured disponibile nel dataset corrente. Le ricorrenze anchor sostituiscono gli slot fino al massimo di due uscite; le conditional richiedono una decisione editoriale esplicita."
 }
