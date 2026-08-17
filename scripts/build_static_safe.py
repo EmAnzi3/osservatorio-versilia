@@ -23,12 +23,6 @@ PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
 SOCIAL_TWITTER_SITE = "@OssVersilia"
-SOCIAL_PROFILES = (
-    ("Facebook", "@osservatorioversilia", "f", "https://www.facebook.com/osservatorioversilia"),
-    ("Instagram", "@osservatorioversilia", "◎", "https://www.instagram.com/osservatorioversilia/"),
-    ("LinkedIn", "Osservatorio Versilia", "in", "https://www.linkedin.com/company/osservatorioversilia"),
-    ("X", "@OssVersilia", "X", "https://x.com/OssVersilia"),
-)
 V170_VERSION_ENTRY = (
     "      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. "
     "Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, "
@@ -79,33 +73,6 @@ NUMBER_FORMAT_REPLACEMENTS = {
     "new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })":
         "new Intl.NumberFormat('it-IT', { useGrouping: 'always', style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })",
 }
-
-
-def social_links_markup() -> str:
-    links = []
-    for network, handle, mark, url in SOCIAL_PROFILES:
-        links.append(
-            f'<a class="social-profile-link" href="{url}" target="_blank" rel="me noreferrer" '
-            f'aria-label="Segui Osservatorio Versilia su {network}">'
-            f'<span class="social-profile-mark" aria-hidden="true">{mark}</span>'
-            f'<span class="social-profile-copy"><strong>{network}</strong><small>{handle}</small></span>'
-            '<b aria-hidden="true">↗</b></a>'
-        )
-    return '<div class="social-links">' + ''.join(links) + '</div>'
-
-
-def social_callout_markup(placement: str) -> str:
-    heading = "Dati e storie della Versilia, anche sui social."
-    copy = (
-        "Grafici, confronti e approfondimenti dell’Osservatorio arrivano anche sui nostri canali social. "
-        "Seguici per ritrovare i dati nel momento in cui diventano notizia o aiutano a leggere il territorio."
-    )
-    return (
-        f'<section class="social-callout page-width" data-social-placement="{placement}" '
-        f'aria-labelledby="social-{placement}-title"><div><span class="overline">Segui l’Osservatorio</span>'
-        f'<h2 id="social-{placement}-title">{heading}</h2></div>'
-        f'<div><p>{copy}</p>{social_links_markup()}</div></section>'
-    )
 
 
 def copy_source_tree_with_local_assets() -> None:
@@ -169,28 +136,6 @@ def bundle_application_with_private_fixes() -> None:
             entries += V170_VERSION_ENTRY
         bundle = bundle.replace(marker, marker + entries, 1)
 
-    if 'data-social-placement="footer"' not in bundle:
-        footer_marker = '        <div class="footer-note">'
-        if footer_marker not in bundle:
-            raise RuntimeError("Punto di inserimento social nel footer non trovato")
-        footer_social = (
-            '<div class="footer-social" data-social-placement="footer" aria-label="Segui Osservatorio Versilia">'
-            '<strong>Segui Osservatorio Versilia</strong>' + social_links_markup() + '</div>\n        '
-        )
-        bundle = bundle.replace(footer_marker, footer_social + footer_marker, 1)
-
-    if 'data-social-placement="home"' not in bundle:
-        home_marker = '      <section class="source-portals page-width" aria-label="Principali fonti istituzionali">'
-        if home_marker not in bundle:
-            raise RuntimeError("Punto di inserimento social nella home non trovato")
-        bundle = bundle.replace(home_marker, '      ' + social_callout_markup("home") + '\n' + home_marker, 1)
-
-    if 'data-social-placement="project"' not in bundle:
-        project_marker = '      <section class="contact-panel page-width">'
-        if project_marker not in bundle:
-            raise RuntimeError("Punto di inserimento social nella pagina progetto non trovato")
-        bundle = bundle.replace(project_marker, '      ' + social_callout_markup("project") + '\n' + project_marker, 1)
-
     bundle_path.write_text(bundle, encoding="utf-8")
 
 
@@ -227,6 +172,7 @@ def prepare_shells_with_fonts() -> None:
             "ux-history.js",
             "export-v161.js",
             "visual-grammar.js",
+            "social-presence.js",
         )
         missing_scripts = [
             f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION}" defer></script>\n'
