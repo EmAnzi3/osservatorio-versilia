@@ -130,10 +130,11 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                 )
 
             for row in missing_rows:
-                # Se il dataset specifica esplicitamente una stringa formattata,
-                # deve dichiarare n.d.; l'assenza del campo è ammessa perché il
-                # renderer canonico trasforma già `null` in n.d.
-                if "formatted" in row and row.get("formatted") != "n.d.":
+                # `formatted` può essere assente, null o vuoto: in questi casi il
+                # renderer canonico applica `n.d.` a partire da value=null. Se è
+                # presente una stringa esplicita, deve invece essere `n.d.`.
+                formatted = row.get("formatted")
+                if formatted not in (None, "", "n.d."):
                     findings.append(
                         base.finding(
                             "error",
