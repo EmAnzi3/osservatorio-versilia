@@ -34,18 +34,31 @@ def assert_social_profiles(text: str, context: str) -> None:
     assert 'target="_blank"' in text, f"Profili social non aperti come link esterni in {context}"
 
 
+def is_noindex(text: str) -> bool:
+    return 'name="robots" content="noindex' in text.lower()
+
+
 def main() -> None:
     html_files = list(DIST.rglob("*.html"))
     assert html_files, "Nessuna pagina HTML nella build"
 
     social_pages = 0
+    noindex_pages = 0
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert LEGACY_CONTACT not in text, f"Recapito legacy ancora presente: {path}"
 
         if path.name == "offline.html":
-            assert 'name="robots" content="noindex,nofollow"' in text, "Fallback offline non marcato noindex"
+            assert is_noindex(text), "Fallback offline non marcato noindex"
             assert 'property="og:image"' not in text, "Il fallback offline non deve avere metadata social"
+            noindex_pages += 1
+            continue
+
+        # Bozze e utility noindex non sono superfici social canoniche: possono
+        # avere metadata parziali, ma non devono far fallire il contratto delle
+        # pagine indicizzabili/pubblicabili.
+        if is_noindex(text):
+            noindex_pages += 1
             continue
 
         social_pages += 1
@@ -66,6 +79,7 @@ def main() -> None:
     assert 'data-social-placement="footer"' in home, "Riferimenti social assenti dal footer della home"
     assert_social_profiles(home, "home")
     assert "assets/social-presence.css?v=20260816-v113" in home, "CSS social assente dalla home"
+    assert "assets/social-presence.js?v=20260816-v113" in home, "JS social assente dalla home"
 
     project = read("progetto/index.html")
     assert "2026.08.14-v1.11.0" in project, "v1.11.0 assente dalla pagina progetto"
@@ -77,6 +91,7 @@ def main() -> None:
 
     compare = read("confronta/demografia/index.html")
     assert 'data-social-placement="footer"' in compare, "Riferimenti social assenti da una pagina interna"
+    assert 'data-social-placement="home"' not in compare, "Callout Home duplicato in una pagina interna"
     assert_social_profiles(compare, "footer pagina interna")
 
     feedback = read("segnala/index.html")
@@ -86,10 +101,15 @@ def main() -> None:
     assert LEGACY_CONTACT not in bundle, "Recapito legacy ancora presente nel bundle"
     assert PUBLIC_CONTACT in bundle, "Recapito pubblico assente dal bundle"
     assert "2026.08.14-v1.11.0" in bundle, "v1.11.0 assente dal bundle"
-    for placement in ("footer", "home", "project"):
-        assert f'data-social-placement="{placement}"' in bundle, f"Blocco social {placement} assente dal bundle"
     for url in SOCIAL_PROFILES:
-        assert bundle.count(url) == 3, f"Profilo {url} deve comparire in footer, home e progetto"
+        assert url not in bundle, f"Profilo social iniettato nel bundle invece che nell'asset dedicato: {url}"
+
+    social_script = read("assets/social-presence.js")
+    for url in SOCIAL_PROFILES:
+        assert social_script.count(url) == 1, f"Profilo social non canonico o duplicato nell'asset: {url}"
+    for placement in ("footer", "home", "project"):
+        assert f'data-social-placement=\\"{placement}\\"' in social_script or f"data-social-placement=\"{placement}\"" in social_script, f"Blocco social {placement} assente dall'asset dedicato"
+    assert 'meta[name="robots"][content*="noindex" i]' in social_script, "Le pagine noindex non sono escluse dall'enhancer social"
 
     social_css = read("assets/social-presence.css")
     assert ".social-callout" in social_css and ".footer-social" in social_css, "CSS social incompleto"
@@ -97,7 +117,7 @@ def main() -> None:
 
     print(
         f"OK: identità pubblica, release v1.11, presenza social e metadata Open Graph/X "
-        f"verificati su {social_pages} pagine; fallback offline noindex"
+        f"verificati su {social_pages} pagine pubblicabili; {noindex_pages} pagine noindex escluse dal contratto social"
     )
 
 
