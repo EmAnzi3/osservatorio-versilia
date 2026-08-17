@@ -1,0 +1,110 @@
+name: Piano editoriale social settimanale
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Una data della settimana da pianificare (YYYY-MM-DD); vuoto = settimana corrente"
+        required: false
+        type: string
+      conditional_id:
+        description: "ID di una ricorrenza conditional da promuovere esplicitamente"
+        required: false
+        type: string
+      create_issue:
+        description: "Crea o aggiorna l'issue esecutiva se eseguito su main"
+        required: false
+        default: true
+        type: boolean
+  schedule:
+    # Ogni lunedì prepara la settimana successiva con circa 7 giorni di anticipo.
+    # GitHub Actions usa UTC: 06:15 UTC = 07:15/08:15 in Italia a seconda dell'ora legale.
+    - cron: "15 6 * * 1"
+  pull_request:
+    paths:
+      - "data/site-data.json"
+      - "social-kit/config/editorial-observances-2026-2027.json"
+      - "social-kit/config/editorial-rotation.json"
+      - "social-kit/EDITORIAL_CALENDAR_2026_2027.md"
+      - "scripts/plan_social_week.py"
+      - "scripts/test_social_calendar.py"
+      - ".github/workflows/social-calendar.yml"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: social-calendar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Determine target date
+        id: target
+        shell: bash
+        env:
+          REQUESTED_DATE: ${{ inputs.date }}
+        run: |
+          if [ -n "${REQUESTED_DATE:-}" ]; then
+            TARGET_DATE="$REQUESTED_DATE"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            TARGET_DATE="$(date -u -d '+7 days' +%F)"
+          else
+            TARGET_DATE="$(date -u +%F)"
+          fi
+          echo "date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Build executable weekly plan
+        id: planner
+        shell: bash
+        env:
+          TARGET_DATE: ${{ steps.target.outputs.date }}
+          CONDITIONAL_ID: ${{ inputs.conditional_id }}
+        run: |
+          ARGS=(--date "$TARGET_DATE" --github-output "$GITHUB_OUTPUT")
+          if [ -n "${CONDITIONAL_ID:-}" ]; then
+            ARGS+=(--conditional-id "$CONDITIONAL_ID")
+          fi
+          python scripts/plan_social_week.py "${ARGS[@]}"
+
+      - name: Validate calendar and known collisions
+        run: python scripts/test_social_calendar.py
+
+      - name: Add plan to workflow summary
+        shell: bash
+        run: cat "${{ steps.planner.outputs.markdown_path }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload weekly plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: piano-social-${{ steps.planner.outputs.week_start }}
+          path: social-kit/dist/editorial-plan/
+          retention-days: 45
+
+      - name: Create or update weekly issue
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.create_issue)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ steps.planner.outputs.issue_title }}
+          BODY_PATH: ${{ steps.planner.outputs.markdown_path }}
+        run: |
+          export TITLE
+          ISSUES_JSON="$(gh issue list --state open --limit 100 --json number,title)"
+          NUMBER="$(printf '%s' "$ISSUES_JSON" | python -c 'import json, os, sys; items=json.load(sys.stdin); title=os.environ["TITLE"]; print(next((str(x["number"]) for x in items if x["title"] == title), ""))')"
+          if [ -n "$NUMBER" ]; then
+            gh issue edit "$NUMBER" --title "$TITLE" --body-file "$BODY_PATH"
+          else
+            gh issue create --title "$TITLE" --body-file "$BODY_PATH"
+          fi
