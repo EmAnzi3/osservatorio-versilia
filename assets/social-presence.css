@@ -1,0 +1,182 @@
+/* Presenza social del progetto: usa la grammatica OV, non i colori proprietari delle piattaforme. */
+.social-callout {
+  display: grid;
+  grid-template-columns: minmax(220px, .9fr) minmax(0, 1.5fr);
+  gap: 28px 48px;
+  align-items: start;
+  margin-top: 34px;
+  margin-bottom: 34px;
+  padding: 30px 32px;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-left: 4px solid var(--blue);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--blue-soft) 62%, var(--surface));
+}
+
+.social-callout h2 {
+  margin: 8px 0 0;
+  max-width: 520px;
+  letter-spacing: -.035em;
+  font-size: clamp(25px, 3vw, 36px);
+  line-height: 1.05;
+}
+
+.social-callout p {
+  margin: 0;
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.social-profile-link {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--ink) 13%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+
+.social-profile-link:hover,
+.social-profile-link:focus-visible {
+  border-color: var(--blue);
+  background: var(--surface);
+  outline: 0;
+  transform: translateY(-1px);
+}
+
+.social-profile-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px 10px 10px 4px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.social-profile-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.social-profile-copy strong {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.social-profile-copy small {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-profile-link > b {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.site-footer .footer-social {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+}
+
+.footer-social > strong {
+  flex: 0 0 auto;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+
+.footer-social .social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+}
+
+.footer-social .social-profile-link {
+  display: inline-flex;
+  gap: 7px;
+  min-height: 34px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.footer-social .social-profile-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px 7px 7px 3px;
+  font-size: 9px;
+}
+
+.footer-social .social-profile-copy {
+  display: block;
+}
+
+.footer-social .social-profile-copy strong {
+  font-size: 9px;
+}
+
+.footer-social .social-profile-copy small,
+.footer-social .social-profile-link > b {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .social-callout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 26px;
+    margin-bottom: 26px;
+    padding: 23px 19px;
+    border-radius: 15px;
+  }
+
+  .social-links {
+    grid-template-columns: 1fr;
+  }
+
+  .social-profile-link {
+    min-height: 54px;
+  }
+
+  .site-footer .footer-social {
+    align-items: flex-start;
+  }
+
+  .footer-social > strong {
+    flex-basis: 100%;
+  }
+}

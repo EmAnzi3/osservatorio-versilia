@@ -22,6 +22,7 @@ HISTORY_ASSET_VERSION = "20260816-v113"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
+SOCIAL_TWITTER_SITE = "@OssVersilia"
 V170_VERSION_ENTRY = (
     "      ['2026.08.07-v1.7.0','7 agosto 2026','106 indicatori. "
     "Aggiunti dettaglio ISTAT ASIA su unità locali, addetti e settori ATECO, "
@@ -152,6 +153,7 @@ def prepare_shells_with_fonts() -> None:
             "export-v161.css",
             "visual-grammar.css",
             "indicator-pages.css",
+            "social-presence.css",
         )
         for stylesheet in stylesheets:
             token = f"assets/{stylesheet}"
@@ -170,6 +172,7 @@ def prepare_shells_with_fonts() -> None:
             "ux-history.js",
             "export-v161.js",
             "visual-grammar.js",
+            "social-presence.js",
         )
         missing_scripts = [
             f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION}" defer></script>\n'
@@ -183,27 +186,56 @@ def prepare_shells_with_fonts() -> None:
         path.write_text(text, encoding="utf-8")
 
 
+def _metadata_text(document: str, property_name: str, fallback_pattern: str) -> str:
+    match = re.search(
+        rf'<meta\s+property="{re.escape(property_name)}"\s+content="([^"]*)"',
+        document,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return match.group(1).strip()
+    fallback = re.search(fallback_pattern, document, flags=re.IGNORECASE | re.DOTALL)
+    if not fallback:
+        raise RuntimeError(f"Metadata testuale non trovato: {property_name}")
+    return fallback.group(1).strip()
+
+
 def inject_metadata_with_open_graph(document: str, route: str, data: dict) -> str:
     """Aggiunge metadati social coerenti con canonical e dominio pubblico."""
     document = _original_inject_metadata(document, route, data)
     canonical = build.canonical_url(route)
+    title = _metadata_text(document, "og:title", r'<title>(.*?)</title>')
+    description = _metadata_text(
+        document,
+        "og:description",
+        r'<meta\s+name="description"\s+content="([^"]*)"',
+    )
     patterns = (
         r'\s*<meta\s+property="og:url"[^>]*>',
         r'\s*<meta\s+property="og:site_name"[^>]*>',
         r'\s*<meta\s+property="og:image"[^>]*>',
         r'\s*<meta\s+property="og:image:alt"[^>]*>',
         r'\s*<meta\s+name="twitter:card"[^>]*>',
+        r'\s*<meta\s+name="twitter:title"[^>]*>',
+        r'\s*<meta\s+name="twitter:description"[^>]*>',
+        r'\s*<meta\s+name="twitter:site"[^>]*>',
         r'\s*<meta\s+name="twitter:image"[^>]*>',
+        r'\s*<meta\s+name="twitter:image:alt"[^>]*>',
     )
     for pattern in patterns:
         document = re.sub(pattern, "", document, flags=re.IGNORECASE)
+    image_alt = "Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia"
     social = (
         f'\n  <meta property="og:url" content="{canonical}">'
         '\n  <meta property="og:site_name" content="Osservatorio Versilia">'
         f'\n  <meta property="og:image" content="{SOCIAL_IMAGE}">'
-        '\n  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">'
+        f'\n  <meta property="og:image:alt" content="{image_alt}">'
         '\n  <meta name="twitter:card" content="summary_large_image">'
-        f'\n  <meta name="twitter:image" content="{SOCIAL_IMAGE}">\n'
+        f'\n  <meta name="twitter:title" content="{title}">'
+        f'\n  <meta name="twitter:description" content="{description}">'
+        f'\n  <meta name="twitter:site" content="{SOCIAL_TWITTER_SITE}">'
+        f'\n  <meta name="twitter:image" content="{SOCIAL_IMAGE}">'
+        f'\n  <meta name="twitter:image:alt" content="{image_alt}">\n'
     )
     return document.replace("</head>", social + "</head>")
 
