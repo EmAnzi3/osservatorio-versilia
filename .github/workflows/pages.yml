@@ -43,6 +43,9 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
+      - name: Add data status surfaces
+        run: python scripts/add_data_status_dist.py
+
       - name: Start local release server
         shell: bash
         run: |
@@ -60,6 +63,17 @@ jobs:
 
       - name: Validate income and inflation history in browser
         run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
+
+      - name: Run data status checks
+        run: |
+          python scripts/test_data_status.py
+          node --check assets/data-status.js
+          python -m py_compile \
+            scripts/data_status.py \
+            scripts/monthly_data_status_check.py \
+            scripts/add_data_status_dist.py \
+            scripts/test_data_status_page.py
+          python scripts/test_data_status_page.py
 
       - name: Run regression tests
         run: python scripts/test_static.py
@@ -151,12 +165,20 @@ jobs:
       - name: Run monthly monitor checks
         run: |
           python scripts/test_monthly_data_check.py
+          python scripts/test_data_status.py
           mkdir -p /tmp/monthly-data-check
-          python scripts/monthly_data_check_coverage.py \
+          python scripts/monthly_data_status_check.py \
             --mode offline \
             --report-md /tmp/monthly-data-check/report.md \
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
+          python - <<'PY'
+          import json
+          state = json.load(open('/tmp/monthly-data-check/state.json', encoding='utf-8'))
+          assert state['schemaVersion'] == 2
+          assert len(state['metrics']) == 127
+          print('Monitor state v2: 127/127 indicatori')
+          PY
 
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
