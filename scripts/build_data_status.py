@@ -83,6 +83,21 @@ def build_page(status: dict[str, Any]) -> str:
     theme_options = "".join(
         f'<option value="{html.escape(theme)}">{html.escape(theme)}</option>' for theme in themes
     )
+    json_ld = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Stato dei dati · Osservatorio Versilia",
+            "url": "https://osservatorioversilia.it/stato-dati/",
+            "description": "Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.",
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "Osservatorio Versilia",
+                "url": "https://osservatorioversilia.it/",
+            },
+        },
+        ensure_ascii=False,
+    )
     return f'''<!doctype html>
 <html lang="it">
 <head>
@@ -95,6 +110,7 @@ def build_page(status: dict[str, Any]) -> str:
   <meta property="og:description" content="Quando sono stati controllati i dati, quale periodo è pubblicato e cosa sappiamo sul prossimo aggiornamento.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
+  <script type="application/ld+json">{json_ld}</script>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/original.css">
   <link rel="stylesheet" href="../assets/static.css">
