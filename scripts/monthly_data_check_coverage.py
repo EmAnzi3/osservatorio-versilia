@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import urllib.parse
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +28,28 @@ BROWSER_USER_AGENT = (
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36 "
     "OsservatorioVersiliaDataMonitor/1.0"
 )
+
+# Alcuni portali istituzionali respingono il landing URL ai client automatici
+# pur esponendo endpoint ufficiali stabili e pubblici dello stesso servizio.
+# Il fallback serve solo al controllo di raggiungibilità: la fonte pubblicata
+# nell'indicatore resta invariata e nessun fallback certifica un nuovo periodo.
+OFFICIAL_PROBE_FALLBACKS = {
+    "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": (
+        "https://www.strutturapnrr.gov.it/it/documenti/catalogo-open-data/"
+    ),
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/": (
+        "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/"
+        "fiscalitalocale/nuova_addcomirpef/download/tabella.htm"
+    ),
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/": (
+        "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/"
+        "fiscalitalocale/nuova_at/dati/download.htm?anno={year}"
+    ),
+    "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/": (
+        "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/"
+        "fiscalitalocale/nuova_imu/dati/download.htm?anno={year}"
+    ),
+}
 
 # Il portale del Dipartimento delle Finanze aggiunge a ogni accesso un parametro
 # `t` variabile alla stessa pagina. Non rappresenta un cambio di fonte e non deve
@@ -147,14 +170,47 @@ def _curl_probe(url: str, registry: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
-def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
-    """Usa il probe canonico e ritenta con curl solo in caso di insuccesso."""
+def _attempt_probe(url: str, registry: dict[str, Any]) -> dict[str, Any]:
     result = ORIGINAL_PROBE_SOURCE(url, registry)
     if result.get("ok"):
         return result
     fallback = _curl_probe(url, registry)
     if fallback is not None and fallback.get("ok"):
         return fallback
+    return result
+
+
+def _as_official_fallback(
+    source_url: str,
+    fallback_url: str,
+    result: dict[str, Any],
+) -> dict[str, Any]:
+    """Mantiene l'identità della fonte pur registrando l'endpoint di controllo."""
+    prepared = dict(result)
+    prepared["probeUrl"] = fallback_url
+    prepared["probeFinalUrl"] = str(result.get("finalUrl") or fallback_url)
+    prepared["url"] = source_url
+    # Il cambio del solo endpoint tecnico non deve apparire come redirect della fonte.
+    prepared["finalUrl"] = canonical_url(source_url)
+    method = str(result.get("probeMethod") or "urllib")
+    prepared["probeMethod"] = f"official-fallback:{method}"
+    return prepared
+
+
+def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
+    """Prova la fonte, poi client alternativo e infine un endpoint ufficiale gemello."""
+    result = _attempt_probe(url, registry)
+    if result.get("ok"):
+        return result
+
+    template = OFFICIAL_PROBE_FALLBACKS.get(canonical_url(url))
+    if not template:
+        return result
+    year = datetime.now(timezone.utc).year
+    fallback_url = template.format(year=year)
+    fallback_result = _attempt_probe(fallback_url, registry)
+    if fallback_result.get("ok"):
+        return _as_official_fallback(url, fallback_url, fallback_result)
     return result
 
 
