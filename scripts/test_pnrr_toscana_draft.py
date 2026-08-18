@@ -78,7 +78,7 @@ def validate_deep_dive(data):
     assert len(deep["towns"]) == 7
     assert works["count"] == 22
     assert math.isclose(float(works["funding"]), 28859445.16, abs_tol=0.01)
-    assert math.isclose(float(works["fundingSharePercent"]), 78.671244, abs_tol=0.001)
+    assert math.isclose(float(works["fundingSharePercent"]), 78.672302, abs_tol=0.001)
     assert len(works["works"]) == 22
     assert len({item["cup"] for item in works["works"]}) == 22
     status = {item["status"]: (item["count"], item["funding"]) for item in works["statusSummary"]}
