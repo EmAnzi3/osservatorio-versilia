@@ -2,7 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["main", "agent/**"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -53,6 +53,12 @@ jobs:
         run: |
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
+
+      - name: Build PNRR Toscana deep dive draft
+        if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
+        run: |
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/test_pnrr_toscana_draft.py
 
       - name: Start local release server
         shell: bash
@@ -152,6 +158,7 @@ jobs:
             scripts/pnrr_toscana_forensic.py \
             scripts/pnrr_toscana_snapshot_runner.py \
             scripts/materialize_pnrr_toscana_draft.py \
+            scripts/build_pnrr_toscana_deep_dive.py \
             scripts/test_pnrr_toscana_audit.py \
             scripts/test_pnrr_status_integration.py \
             scripts/test_pnrr_toscana_draft.py \
