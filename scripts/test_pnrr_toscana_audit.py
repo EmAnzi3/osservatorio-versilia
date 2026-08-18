@@ -65,6 +65,10 @@ def test_helpers():
     assert module.town_subject_match("Comune di Forte dei Marmi", "Forte dei Marmi")
     assert not module.town_subject_match("Comune di Camaiore", "Massarosa")
     assert module.concluded_from({"fase_avanzamento_da_regis": "5. conclusione"}, "fase_avanzamento_da_regis")
+    assert module.is_pnrr({"area": "PNRR", "misura_pnrr_estesa": "M1"})
+    assert module.is_pnrr({"area": "PNRR-PNC", "misura_pnrr_estesa": "M1"})
+    assert not module.is_pnrr({"area": "PNC", "misura_pnrr_estesa": "NULL"})
+    assert not module.is_pnrr({"area": "PNC", "misura_pnrr_estesa": ""})
 
 
 def test_exact_match():
@@ -80,6 +84,28 @@ def test_exact_match():
     }
     assert len(result["perTown"]) == 7
     assert all(item["selectedProjects"] == 2 for item in result["perTown"].values())
+
+
+def test_pnc_rows_do_not_enter_pnrr_denominator():
+    records = fixture_records()
+    records.append({
+        "id_progetto": "PNC-ONLY",
+        "cup": "PNC-ONLY",
+        "area": "PNC",
+        "misura_pnrr_estesa": "NULL",
+        "soggetto_attuatore": "Comune di Camaiore",
+        "cf_soggetto_attuatore": "CF-PNC",
+        "importo_finanziato_pnrr": "0,00",
+        "fase_avanzamento_da_regis": "5. conclusione",
+        "fase_avanzamento_da_monitoraggio_progetti": "5. conclusione",
+        "fase_regis": "5. conclusione",
+        "data_fine_effettiva_chiusura_intervento": "2026-01-31",
+        "data_elaborazione": "2026-08-11",
+    })
+    result = module.audit_records(fixture_data(), records)
+    assert result["verdict"] == "match"
+    assert result["selectedProjects"] == 14
+    assert result["perTown"]["046005"]["selectedProjects"] == 2
 
 
 def test_dedupe_project():
@@ -121,6 +147,7 @@ def test_missing_funding_is_not_comparable_only_for_funding():
 if __name__ == "__main__":
     test_helpers()
     test_exact_match()
+    test_pnc_rows_do_not_enter_pnrr_denominator()
     test_dedupe_project()
     test_only_funding_changes()
     test_only_concluded_changes()
