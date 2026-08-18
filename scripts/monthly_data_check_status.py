@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Estende il controllo mensile esistente con uno stato operativo per indicatore.
 
-Non modifica valori pubblicati. Il wrapper usa il monitor esistente, quindi aggiunge
-metadata senza introdurre un secondo sistema di polling.
+Non modifica valori pubblicati. Il wrapper usa il monitor esistente e può aggiungere
+verifiche machine-readable ufficiali quando la pagina primaria non è interrogabile.
 """
 from __future__ import annotations
 
@@ -17,7 +17,10 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import monthly_data_check_coverage as coverage  # noqa: E402
+import pnrr_toscana_audit  # noqa: E402
 from data_status_model import canonical_url, published_period  # noqa: E402
+
+PNRR_METRICS = ("pnrrFunding", "pnrrConcluded")
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -28,13 +31,7 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def changed_urls(report: dict[str, Any]) -> set[str]:
-    """Restituisce solo cambiamenti di una fonte già monitorata.
-
-    Una URL appena aggiunta alla baseline non è di per sé un'anomalia: se il
-    controllo live la raggiunge, lo stato corretto è `source_checked`. Le fonti
-    rimosse non appartengono invece alla sorgente corrente dell'indicatore e non
-    devono contaminare il suo stato. Restano significativi contenuto e redirect.
-    """
+    """Restituisce solo cambiamenti di una fonte già monitorata."""
     changes = report.get("changes") if isinstance(report.get("changes"), dict) else {}
     urls: set[str] = set()
     for key in ("content", "redirect"):
@@ -85,6 +82,8 @@ def build_metric_state(
             item["nextExpectedRelease"] = old["nextExpectedRelease"]
         if old.get("releaseEvidence"):
             item["releaseEvidence"] = old["releaseEvidence"]
+        if old.get("verificationEvidence"):
+            item["verificationEvidence"] = old["verificationEvidence"]
 
         if probe is None:
             item["status"] = "verification_required"
@@ -93,9 +92,6 @@ def build_metric_state(
         elif not probe.get("ok"):
             item["status"] = "source_unavailable"
         elif source_key in changed:
-            # Un cambiamento tecnico di una fonte già monitorata non equivale a
-            # un nuovo dato. Se un periodo più recente era già stato verificato,
-            # lo manteniamo; altrimenti richiediamo una verifica umana.
             if item["observedLatestPeriod"] and item["observedLatestPeriod"] != item["publishedPeriod"]:
                 item["status"] = "release_detected"
             else:
@@ -112,7 +108,67 @@ def build_metric_state(
     return result
 
 
-def append_report_section(report_md: Path, state: dict[str, Any]) -> None:
+def verification_evidence(audit_result: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "provider": "Regione Toscana — Open Data PNRR",
+        "url": str(audit_result.get("resource") or pnrr_toscana_audit.MAIN_CSV_URL),
+        "datasetUrl": str(audit_result.get("dataset") or pnrr_toscana_audit.DATASET_URL),
+        "dataElaborationDates": list(audit_result.get("dataElaborationDates") or []),
+        "verdict": str(audit_result.get("verdict") or ""),
+        "recordsScanned": int(audit_result.get("recordsScanned") or 0),
+        "selectedProjects": int(audit_result.get("selectedProjects") or 0),
+    }
+
+
+def apply_pnrr_verification_result(
+    metrics: dict[str, dict[str, Any]],
+    audit_result: dict[str, Any],
+    checked_at: str,
+) -> None:
+    """Applica l'esito del feed regionale senza modificare alcun valore pubblicato.
+
+    - match 7/7: il periodo pubblicato è verificato anche sulla fonte machine-readable;
+    - fotografia diversa: nuovo rilascio da validare umanamente;
+    - perimetro non confrontabile: resta necessaria la verifica manuale.
+    """
+    evidence = verification_evidence(audit_result)
+    verdict = str(audit_result.get("verdict") or "")
+    for key in PNRR_METRICS:
+        item = metrics.get(key)
+        if not isinstance(item, dict):
+            continue
+        item["checkedAt"] = checked_at or str(item.get("checkedAt") or "")
+        item["verificationEvidence"] = evidence
+        if verdict == "match":
+            item["observedLatestPeriod"] = str(item.get("publishedPeriod") or "")
+            item["status"] = "current"
+            item.pop("releaseEvidence", None)
+        elif verdict == "different_current_snapshot":
+            item["status"] = "release_detected"
+            item["releaseEvidence"] = evidence
+        else:
+            item["status"] = "verification_required"
+
+
+def run_pnrr_verification(
+    data: dict[str, Any],
+    metrics: dict[str, dict[str, Any]],
+    checked_at: str,
+) -> tuple[dict[str, Any] | None, str]:
+    try:
+        result = pnrr_toscana_audit.audit(data)
+    except Exception as exc:  # la fonte primaria resta comunque governata dal monitor esistente
+        return None, f"{type(exc).__name__}: {exc}"
+    apply_pnrr_verification_result(metrics, result, checked_at)
+    return result, ""
+
+
+def append_report_section(
+    report_md: Path,
+    state: dict[str, Any],
+    pnrr_result: dict[str, Any] | None = None,
+    pnrr_error: str = "",
+) -> None:
     metrics = state.get("metrics") if isinstance(state.get("metrics"), dict) else {}
     counts: dict[str, int] = {}
     for item in metrics.values():
@@ -140,6 +196,30 @@ def append_report_section(report_md: Path, state: dict[str, Any]) -> None:
     }
     for key in labels:
         lines.append(f"| {labels[key]} | {counts.get(key, 0)} |")
+
+    if pnrr_result is not None:
+        lines.extend(
+            [
+                "",
+                "### Verifica PNRR Regione Toscana",
+                "",
+                f"- Verdetto: `{pnrr_result.get('verdict', '')}`",
+                f"- Fotografia: `{', '.join(pnrr_result.get('dataElaborationDates') or []) or 'n.d.'}`",
+                f"- Progetti dei sette Comuni come soggetti attuatori: {pnrr_result.get('selectedProjects', 0)}",
+                f"- Finanziamenti coincidenti 7/7: {'sì' if pnrr_result.get('fundingMatch7of7') else 'no'}",
+                "- Una differenza genera solo `release_detected`: nessun valore viene pubblicato automaticamente.",
+            ]
+        )
+    elif pnrr_error:
+        lines.extend(
+            [
+                "",
+                "### Verifica PNRR Regione Toscana",
+                "",
+                f"Controllo machine-readable non completato: `{pnrr_error}`. Resta valido lo stato prudenziale della fonte primaria.",
+            ]
+        )
+
     with report_md.open("a", encoding="utf-8") as handle:
         handle.write("\n".join(lines) + "\n")
 
@@ -151,6 +231,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--report-md", type=Path, required=True)
     parser.add_argument("--report-json", type=Path, required=True)
     parser.add_argument("--next-state", type=Path, required=True)
+    parser.add_argument("--mode", choices=("live", "offline"), default="live")
     known, _ = parser.parse_known_args(argv)
     return known
 
@@ -167,12 +248,31 @@ def main(argv: list[str] | None = None) -> int:
     next_state = load(args.next_state)
     report = load(args.report_json)
     next_state["schemaVersion"] = 2
-    next_state["metrics"] = build_metric_state(data, previous, next_state, report)
+    metrics = build_metric_state(data, previous, next_state, report)
+
+    pnrr_result = None
+    pnrr_error = ""
+    if args.mode == "live":
+        pnrr_result, pnrr_error = run_pnrr_verification(
+            data,
+            metrics,
+            str(next_state.get("checkedAt") or ""),
+        )
+        if pnrr_result is not None:
+            report["pnrrToscanaVerification"] = pnrr_result
+        elif pnrr_error:
+            report["pnrrToscanaVerificationError"] = pnrr_error
+        args.report_json.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    next_state["metrics"] = metrics
     args.next_state.write_text(
         json.dumps(next_state, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    append_report_section(args.report_md, next_state)
+    append_report_section(args.report_md, next_state, pnrr_result, pnrr_error)
     return 0
 
 
