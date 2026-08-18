@@ -1,0 +1,46 @@
+name: Audit PNRR Toscana
+
+on:
+  pull_request:
+    paths:
+      - "scripts/pnrr_toscana_audit.py"
+      - "scripts/test_pnrr_toscana_audit.py"
+      - ".github/workflows/pnrr-toscana-audit.yml"
+      - "data/site-data.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests
+        run: |
+          python scripts/test_pnrr_toscana_audit.py
+          python -m py_compile scripts/pnrr_toscana_audit.py scripts/test_pnrr_toscana_audit.py
+
+      - name: Live read-only audit
+        run: |
+          python scripts/pnrr_toscana_audit.py \
+            --output-json reports/pnrr-toscana-audit.json \
+            --output-md reports/pnrr-toscana-audit.md
+
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnrr-toscana-audit
+          path: |
+            reports/pnrr-toscana-audit.json
+            reports/pnrr-toscana-audit.md
+          retention-days: 14
+          if-no-files-found: error
