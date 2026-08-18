@@ -28,9 +28,16 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def changed_urls(report: dict[str, Any]) -> set[str]:
+    """Restituisce solo cambiamenti di una fonte già monitorata.
+
+    Una URL appena aggiunta alla baseline non è di per sé un'anomalia: se il
+    controllo live la raggiunge, lo stato corretto è `source_checked`. Le fonti
+    rimosse non appartengono invece alla sorgente corrente dell'indicatore e non
+    devono contaminare il suo stato. Restano significativi contenuto e redirect.
+    """
     changes = report.get("changes") if isinstance(report.get("changes"), dict) else {}
     urls: set[str] = set()
-    for key in ("added", "removed", "content", "redirect"):
+    for key in ("content", "redirect"):
         items = changes.get(key) if isinstance(changes.get(key), list) else []
         for item in items:
             if isinstance(item, dict) and item.get("url"):
@@ -84,9 +91,9 @@ def build_metric_state(
         elif not probe.get("ok"):
             item["status"] = "source_unavailable"
         elif source_key in changed:
-            # Un cambiamento tecnico della fonte non equivale a un nuovo dato.
-            # Se un periodo più recente era già stato verificato, lo manteniamo;
-            # altrimenti richiediamo una verifica umana.
+            # Un cambiamento tecnico di una fonte già monitorata non equivale a
+            # un nuovo dato. Se un periodo più recente era già stato verificato,
+            # lo manteniamo; altrimenti richiediamo una verifica umana.
             if item["observedLatestPeriod"] and item["observedLatestPeriod"] != item["publishedPeriod"]:
                 item["status"] = "release_detected"
             else:
