@@ -1,6 +1,6 @@
 {
-  "version": "v1.13.0",
-  "updated": "16 agosto 2026",
+  "version": "v1.7.0",
+  "updated": "7 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -60,7 +60,7 @@
       "number": "02",
       "label": "Economia",
       "question": "Come è fatta l’economia del territorio?",
-      "description": "Redditi, costo della vita, fiscalità locale, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.",
+      "description": "Redditi, unità locali, addetti, struttura produttiva, imprenditorialità e capacità turistica.",
       "metrics": [
         "income",
         "incomeDistribution",
@@ -326,7 +326,7 @@
       "number": "06",
       "label": "Mobilità e infrastrutture",
       "question": "Come si muove e quanto è connessa la Versilia?",
-      "description": "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.",
+      "description": "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e sicurezza stradale.",
       "metrics": [
         "outsideMunicipality",
         "outboundCommuters",
@@ -378,17 +378,6 @@
           ]
         },
         {
-          "key": "connettivita",
-          "label": "Connettività digitale",
-          "description": "Copertura della rete fissa FTTH: percentuali comunali 7/7 e conteggi assoluti con copertura dichiarata, senza stime dei valori mancanti.",
-          "metrics": [
-            "ftthCoverageDesi",
-            "ftthReachedHouseholds",
-            "ftthUnreachedHouseholds",
-            "ftthCoverage20m"
-          ]
-        },
-        {
           "key": "mobilita-lenta",
           "label": "Mobilità lenta",
           "description": "Sentieri, cammini e percorsi ciclabili pubblici verificati nel territorio.",
@@ -399,12 +388,23 @@
             "slowMobilityBici",
             "slowMobilityMtb"
           ]
+        },
+        {
+          "key": "connettivita",
+          "label": "Connettività digitale",
+          "description": "Copertura della rete fissa FTTH: percentuali comunali 7/7 e conteggi assoluti con copertura dichiarata, senza stime dei valori mancanti.",
+          "metrics": [
+            "ftthCoverageDesi",
+            "ftthReachedHouseholds",
+            "ftthUnreachedHouseholds",
+            "ftthCoverage20m"
+          ]
         }
       ],
       "featured": [
         "outsideMunicipality",
         "ftthCoverageDesi",
-        "slowMobilityRoutes"
+        "roadInjuries"
       ]
     },
     "sicurezza": {
@@ -18698,202 +18698,6 @@
         "coverage": "7/7"
       }
     },
-    "ftthReachedHouseholds": {
-      "meta": {
-        "key": "ftthReachedHouseholds",
-        "theme": "mobilita",
-        "label": "Famiglie raggiunte da FTTH",
-        "shortLabel": "Famiglie raggiunte da FTTH",
-        "description": "Numero di famiglie residenti considerate raggiunte dalla rete FTTH secondo la metrica DESI.",
-        "unit": "number",
-        "year": "31 dicembre 2025",
-        "source": "AGCOM — Broadband Map",
-        "polarity": "neutral"
-      },
-      "sourceUrl": "https://geo.agcom.it/reportistica/ai/index.html",
-      "rows": [
-        {
-          "town": "Massarosa",
-          "code": "046018",
-          "slug": "massarosa",
-          "value": 4219.0,
-          "formatted": "4.219",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 4219.0
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
-          "value": 23734.0,
-          "formatted": "23.734",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 23734.0
-        },
-        {
-          "town": "Camaiore",
-          "code": "046005",
-          "slug": "camaiore",
-          "value": 11978.0,
-          "formatted": "11.978",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 11978.0
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 5546.0,
-          "formatted": "5.546",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 5546.0
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
-          "value": 35.0,
-          "formatted": "35",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 35.0
-        },
-        {
-          "town": "Forte dei Marmi",
-          "code": "046013",
-          "slug": "forte-dei-marmi",
-          "value": null,
-          "formatted": "n.d.",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": null
-        },
-        {
-          "town": "Stazzema",
-          "code": "046030",
-          "slug": "stazzema",
-          "value": 1009.0,
-          "formatted": "1.009",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 1009.0
-        }
-      ],
-      "aggregate": {
-        "value": 46521.0,
-        "label": "Totale parziale Versilia (6/7)",
-        "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
-      },
-      "normalizedAggregate": null,
-      "method": {
-        "type": "Dato ufficiale",
-        "formula": "Famiglie FTTH pubblicate da AGCOM nella reportistica comunale Broadband Map.",
-        "caveat": "Il numero deriva dalla modellazione territoriale AGCOM e non coincide con gli accessi o i contratti attivi. Dato non disponibile per Forte dei Marmi; nessuna stima effettuata.",
-        "coverage": "6/7"
-      }
-    },
-    "ftthUnreachedHouseholds": {
-      "meta": {
-        "key": "ftthUnreachedHouseholds",
-        "theme": "mobilita",
-        "label": "Famiglie non raggiunte da FTTH",
-        "shortLabel": "Famiglie non raggiunte",
-        "description": "Differenza tra famiglie residenti e famiglie raggiunte da FTTH secondo la metrica DESI.",
-        "unit": "number",
-        "year": "31 dicembre 2025",
-        "source": "Elaborazione Osservatorio su dati AGCOM Broadband Map",
-        "polarity": "neutral"
-      },
-      "sourceUrl": "https://geo.agcom.it/reportistica/ai/index.html",
-      "rows": [
-        {
-          "town": "Massarosa",
-          "code": "046018",
-          "slug": "massarosa",
-          "value": 4763.0,
-          "formatted": "4.763",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 4763.0
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
-          "value": 1305.0,
-          "formatted": "1.305",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 1305.0
-        },
-        {
-          "town": "Camaiore",
-          "code": "046005",
-          "slug": "camaiore",
-          "value": 1141.0,
-          "formatted": "1.141",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 1141.0
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 3807.0,
-          "formatted": "3.807",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 3807.0
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
-          "value": 5033.0,
-          "formatted": "5.033",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 5033.0
-        },
-        {
-          "town": "Forte dei Marmi",
-          "code": "046013",
-          "slug": "forte-dei-marmi",
-          "value": null,
-          "formatted": "n.d.",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": null
-        },
-        {
-          "town": "Stazzema",
-          "code": "046030",
-          "slug": "stazzema",
-          "value": 139.0,
-          "formatted": "139",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 139.0
-        }
-      ],
-      "aggregate": {
-        "value": 16188.0,
-        "label": "Totale parziale Versilia (6/7)",
-        "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
-      },
-      "normalizedAggregate": null,
-      "method": {
-        "type": "Elaborazione Osservatorio su dati ufficiali",
-        "formula": "famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI",
-        "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata.",
-        "coverage": "6/7"
-      }
-    },
     "slowMobilityRoutes": {
       "meta": {
         "key": "slowMobilityRoutes",
@@ -25295,6 +25099,202 @@
         "baseYear": 2016,
         "baseLabel": "2016 = 0%",
         "note": "Nello storico il reddito imponibile nominale di ciascun Comune e il NIC Italia sono riportati alla stessa base 2016 = 0%. Le traiettorie mostrano se i redditi crescono più o meno dei prezzi. La distanza visiva tra le linee non coincide con la variazione reale: quest’ultima è calcolata anno per anno come rapporto tra indice del reddito e indice dei prezzi ed è riportata nei tooltip."
+      }
+    },
+    "ftthReachedHouseholds": {
+      "meta": {
+        "key": "ftthReachedHouseholds",
+        "theme": "mobilita",
+        "label": "Famiglie raggiunte da FTTH",
+        "shortLabel": "Famiglie raggiunte da FTTH",
+        "description": "Numero di famiglie residenti considerate raggiunte dalla rete FTTH secondo la metrica DESI.",
+        "unit": "number",
+        "year": "31 dicembre 2025",
+        "source": "AGCOM — Broadband Map",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://geo.agcom.it/reportistica/ai/index.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 4219.0,
+          "formatted": "4.219",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4219.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 23734.0,
+          "formatted": "23.734",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 23734.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 11978.0,
+          "formatted": "11.978",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11978.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 5546.0,
+          "formatted": "5.546",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5546.0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 35.0,
+          "formatted": "35",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 35.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1009.0,
+          "formatted": "1.009",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1009.0
+        }
+      ],
+      "aggregate": {
+        "value": 46521.0,
+        "label": "Totale parziale Versilia (6/7)",
+        "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale",
+        "formula": "Famiglie FTTH pubblicate da AGCOM nella reportistica comunale Broadband Map.",
+        "caveat": "Il numero deriva dalla modellazione territoriale AGCOM e non coincide con gli accessi o i contratti attivi. Dato non disponibile per Forte dei Marmi; nessuna stima effettuata.",
+        "coverage": "6/7"
+      }
+    },
+    "ftthUnreachedHouseholds": {
+      "meta": {
+        "key": "ftthUnreachedHouseholds",
+        "theme": "mobilita",
+        "label": "Famiglie non raggiunte da FTTH",
+        "shortLabel": "Famiglie non raggiunte",
+        "description": "Differenza tra famiglie residenti e famiglie raggiunte da FTTH secondo la metrica DESI.",
+        "unit": "number",
+        "year": "31 dicembre 2025",
+        "source": "Elaborazione Osservatorio su dati AGCOM Broadband Map",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://geo.agcom.it/reportistica/ai/index.html",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 4763.0,
+          "formatted": "4.763",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4763.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1305.0,
+          "formatted": "1.305",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1305.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1141.0,
+          "formatted": "1.141",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1141.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 3807.0,
+          "formatted": "3.807",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 3807.0
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 5033.0,
+          "formatted": "5.033",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5033.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 139.0,
+          "formatted": "139",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 139.0
+        }
+      ],
+      "aggregate": {
+        "value": 16188.0,
+        "label": "Totale parziale Versilia (6/7)",
+        "note": "Somma dei valori ufficiali disponibili per 6 Comuni; escluso Forte dei Marmi, per cui il dato AGCOM non è disponibile."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali",
+        "formula": "famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI",
+        "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata.",
+        "coverage": "6/7"
       }
     }
   },
