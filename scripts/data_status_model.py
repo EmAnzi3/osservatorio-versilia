@@ -34,7 +34,7 @@ STATUS_META = {
     "release_detected": {
         "label": "Nuovo rilascio da verificare",
         "tone": "warn",
-        "description": "È stato rilevato un periodo più recente rispetto a quello pubblicato. Serve validazione prima di aggiornare il sito.",
+        "description": "È stata rilevata una fotografia ufficiale più recente o diversa rispetto ai valori pubblicati. Serve validazione prima di aggiornare il sito.",
     },
     "update_expected": {
         "label": "Aggiornamento atteso",
@@ -128,6 +128,15 @@ def derive_status(
         "source_access_limited",
     }:
         return explicit
+    # Un portale primario può limitare i bot, ma un secondo feed ufficiale
+    # machine-readable può certificare lo stesso perimetro. `current` viene
+    # rispettato solo in presenza dell'evidenza strutturata, mai come flag libero.
+    if (
+        explicit == "current"
+        and isinstance(operational.get("verificationEvidence"), dict)
+        and operational.get("observedLatestPeriod") == published
+    ):
+        return "current"
     if probe is None:
         return "verification_required"
     if probe.get("automationLimited"):
@@ -180,6 +189,8 @@ def build_public_status(
                 direct_reachable = False
             else:
                 direct_reachable = bool(probe.get("ok"))
+        verification = operational.get("verificationEvidence")
+        verification = verification if isinstance(verification, dict) else None
         rows.append(
             {
                 "key": metric_key,
@@ -203,6 +214,7 @@ def build_public_status(
                 "sourceAutomationLimited": False if probe is None else bool(probe.get("automationLimited")),
                 "sourceProbeMethod": "" if probe is None else str(probe.get("probeMethod") or ""),
                 "sourceError": "" if probe is None else str(probe.get("error") or ""),
+                "verificationSource": verification,
             }
         )
 
