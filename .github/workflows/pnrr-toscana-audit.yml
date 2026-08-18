@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "scripts/pnrr_toscana_audit.py"
+      - "scripts/pnrr_toscana_live_audit.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - ".github/workflows/pnrr-toscana-audit.yml"
       - "data/site-data.json"
@@ -27,11 +28,11 @@ jobs:
       - name: Unit tests
         run: |
           python scripts/test_pnrr_toscana_audit.py
-          python -m py_compile scripts/pnrr_toscana_audit.py scripts/test_pnrr_toscana_audit.py
+          python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_live_audit.py scripts/test_pnrr_toscana_audit.py
 
       - name: Live read-only audit
         run: |
-          python scripts/pnrr_toscana_audit.py \
+          python scripts/pnrr_toscana_live_audit.py \
             --output-json reports/pnrr-toscana-audit.json \
             --output-md reports/pnrr-toscana-audit.md
 
