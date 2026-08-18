@@ -63,6 +63,9 @@ def check_view(page, base: str, width: int, height: int) -> None:
     overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
     assert not overflow, f"Overflow orizzontale a {width}px"
     page.locator("[data-status-filter]").select_option("source_checked")
+    page.wait_for_function(
+        "() => document.querySelector('[data-status-visible]')?.textContent.includes('indicatori visibili')"
+    )
     visible = page.locator(".data-status-table tbody tr:not([hidden])").count()
     assert visible >= 0
     text = page.locator("[data-status-visible]").inner_text()
