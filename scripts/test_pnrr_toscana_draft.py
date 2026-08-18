@@ -3,7 +3,15 @@ from __future__ import annotations
 
 import json
 import math
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = ROOT / "scripts"
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from data_status_model import build_public_status  # noqa: E402
 
 DATASET_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
 EXPECTED = {
@@ -44,6 +52,7 @@ def count_summary_matches(node, expected):
 def main():
     data = json.loads(Path("data/site-data.json").read_text(encoding="utf-8"))
     registry = json.loads(Path("data/source-registry.json").read_text(encoding="utf-8"))
+    state = json.loads(Path("data/source-monitor-state.json").read_text(encoding="utf-8"))
     metrics = data["metrics"]
     pop = rows(metrics["population"])
     funding = rows(metrics["pnrrFunding"])
@@ -74,7 +83,20 @@ def main():
     assert registry["expectedMetricCount"] == 127
     assert registry["expectedInlineMetricCount"] == 123
     assert registry["expectedExternalMetricCount"] == 4
-    print("OK: bozza PNRR Regione Toscana coerente 7/7")
+
+    # Il preview non deve ereditare il vecchio limite automatico di Italia Domani.
+    public = build_public_status(data, registry, state)
+    public_by_key = {item["key"]: item for item in public["metrics"]}
+    for key in ("pnrrFunding", "pnrrConcluded"):
+        item = public_by_key[key]
+        assert item["status"] == "current"
+        assert item["sourceAutomationLimited"] is False
+        assert item["sourceReachable"] is True
+        assert item["observedLatestPeriod"] == "2026"
+        assert item["verificationSource"]["dataElaborationDate"] == "2026-08-11"
+        assert item["verificationSource"]["match7of7"] is True
+
+    print("OK: bozza PNRR Regione Toscana coerente 7/7 e stato fonte riallineato")
 
 
 if __name__ == "__main__":
