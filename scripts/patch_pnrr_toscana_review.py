@@ -2,8 +2,8 @@
 """Correzioni di revisione per la bozza PNRR Toscana.
 
 Lo script viene eseguito subito dopo ``materialize_pnrr_toscana_draft.py`` e
-prima della build statica. Non introduce nuovi indicatori: riallinea soltanto
-gli aggregati Versilia alla stessa fotografia regionale già validata.
+prima della build statica. Non introduce nuovi indicatori: riallinea righe e
+aggregati Versilia alla stessa fotografia regionale già validata.
 """
 from __future__ import annotations
 
@@ -25,6 +25,14 @@ def rows_by_code(metric: dict[str, Any]) -> dict[str, dict[str, Any]]:
     }
 
 
+def fmt_currency(value: float) -> str:
+    return f"{value:,.0f}".replace(",", ".") + "\u00a0€"
+
+
+def fmt_percent(value: float) -> str:
+    return f"{value:.1f}%".replace(".", ",")
+
+
 def main() -> int:
     data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
     metrics = data.get("metrics")
@@ -33,6 +41,8 @@ def main() -> int:
         raise RuntimeError("Bozza PNRR Toscana non materializzata")
 
     population = rows_by_code(metrics["population"])
+    funding_rows = rows_by_code(metrics["pnrrFunding"])
+    concluded_rows = rows_by_code(metrics["pnrrConcluded"])
     total_population = sum(float(row["value"]) for row in population.values())
     totals = deep["totals"]
     total_projects = int(totals["projects"])
@@ -45,6 +55,20 @@ def main() -> int:
         )
     if total_population <= 0:
         raise RuntimeError("Popolazione Versilia non valida")
+
+    deep_by_code = {str(row["code"]): row for row in deep["towns"]}
+    for code, town in deep_by_code.items():
+        pop = float(population[code]["value"])
+        funding_value = float(town["funding"]) / pop
+        concluded_value = float(town["concluded"]) / float(town["projects"]) * 100.0
+
+        funding_rows[code]["value"] = funding_value
+        funding_rows[code]["formatted"] = fmt_currency(funding_value)
+        funding_rows[code]["benchmarkValue"] = funding_value
+
+        concluded_rows[code]["value"] = concluded_value
+        concluded_rows[code]["formatted"] = fmt_percent(concluded_value)
+        concluded_rows[code]["benchmarkValue"] = concluded_value
 
     funding = metrics["pnrrFunding"].setdefault("aggregate", {})
     funding.update(
@@ -75,10 +99,10 @@ def main() -> int:
         encoding="utf-8",
     )
     print(
-        "Aggregati PNRR riallineati: "
+        "PNRR riallineato: "
         f"Versilia {total_concluded}/{total_projects} = "
         f"{total_concluded / total_projects * 100:.4f}% · "
-        f"€{total_funding / total_population:.4f}/residente"
+        f"€{total_funding / total_population:.4f}/residente · righe 7/7 aggiornate"
     )
     return 0
 
