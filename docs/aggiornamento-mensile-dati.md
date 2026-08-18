@@ -4,6 +4,14 @@
 
 Il controllo viene eseguito una volta al mese e può essere avviato anche manualmente. La procedura è prudenziale: verifica dati e fonti, ma non pubblica valori senza controllo umano.
 
+Il sistema distingue tre livelli che non devono essere confusi:
+
+1. `data/site-data.json` descrive **cosa è pubblicato**: periodo, valori, fonte e metodo;
+2. `data/source-registry.json` descrive **come si comporta la fonte**: produttore, frequenza, cadenza indicativa, acquisizione e licenza;
+3. `data/source-monitor-state.json` registra **cosa è stato realmente controllato**: data del controllo, raggiungibilità e stato operativo per indicatore.
+
+La pagina pubblica `/stato-dati/` è una vista derivata da questi tre livelli e non costituisce un quarto registro manuale.
+
 ## Calendario
 
 Il workflow `Controllo mensile dati` è programmato per il giorno 5 di ogni mese alle 05:17 UTC. L'orario non tondo riduce la probabilità di attese nelle code dei runner GitHub.
@@ -12,58 +20,97 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 
 ## Cosa controlla
 
-- presenza dei 115 indicatori nel catalogo canonico e ripartizione attesa fra 111 valori incorporati e 4 storici climatici separati;
-- copertura completa dei sette Comuni e codici Istat corretti;
-- presenza di anno, unità, fonte, metodo e formula;
+- presenza dei **127 indicatori** nel catalogo canonico e ripartizione attesa fra **123 valori incorporati e 4 climatici esterni**;
+- copertura dichiarata dei sette Comuni e codici Istat corretti;
+- presenza di anno o periodo, unità, fonte, metodo e formula;
 - coerenza fra annualità e valori delle serie storiche;
-- presenza, per ogni indicatore, di produttore, frequenza, finestra di rilascio,
-  modalità di acquisizione e licenza;
+- presenza, per ogni indicatore, di produttore, frequenza, cadenza indicativa, modalità di acquisizione e licenza;
 - raggiungibilità delle fonti ufficiali;
 - modifica dei file ufficiali direttamente scaricabili;
-- cambiamenti di URL, reindirizzamenti ed eventuali segnali HTTP.
+- cambiamenti di URL, reindirizzamenti ed eventuali segnali HTTP;
+- stato operativo per indicatore, senza dedurre automaticamente l'attualità del dato dalla sola raggiungibilità della fonte.
 
 ## Cosa non fa
 
 - non stima dati mancanti;
 - non interpola annualità;
 - non sostituisce valori pubblicati;
+- non considera una pagina modificata come prova automatica di un nuovo rilascio;
+- non considera una fonte raggiungibile come prova automatica che il periodo pubblicato sia l'ultimo disponibile;
 - non effettua merge;
 - non pubblica direttamente su GitHub Pages.
 
-## Notifiche
+Per il clima resta una regola ulteriore: **nessun valore YTD viene pubblicato; entrano nel catalogo soltanto anni completi**.
+
+## Stati dei dati
+
+Gli stati pubblici descrivono l'attualità del singolo indicatore, non l'esito tecnico dell'intera esecuzione.
+
+- `current` — **Ultimo dato disponibile**: il periodo pubblicato coincide con l'ultimo periodo effettivamente verificato sulla fonte;
+- `source_checked` — **Fonte controllata**: la fonte è raggiungibile, ma il monitor non può certificare automaticamente quale sia l'ultimo periodo disponibile;
+- `release_detected` — **Nuovo rilascio da verificare**: è stato verificato o registrato un periodo più recente di quello pubblicato; serve validazione prima di modificare i valori;
+- `update_expected` — **Aggiornamento atteso**: è arrivata una finestra di rilascio documentata, senza conferma di un nuovo dato;
+- `source_unavailable` — **Fonte temporaneamente non verificabile**;
+- `verification_required` — **Verifica necessaria** per un cambiamento tecnico o una situazione ambigua.
+
+Una fonte raggiungibile senza un periodo osservato viene quindi classificata `source_checked`, non `current`.
+
+## Prossimo rilascio
+
+La frequenza della fonte non genera automaticamente una data futura.
+
+Una data o un mese di prossimo rilascio può essere mostrato soltanto quando esiste una base esplicita, ad esempio:
+
+- calendario ufficiale;
+- programma ufficiale di pubblicazione;
+- finestra di rilascio documentata;
+- periodicità storica verificata e registrata come tale.
+
+Se sappiamo soltanto che la fonte è annuale, il sito mostra **Frequenza: annuale** e, quando utile, una **cadenza indicativa**. Non trasforma questa informazione in una falsa data di pubblicazione.
+
+## Notifiche e registrazione
 
 Per ogni esecuzione programmata o manuale il workflow:
 
 1. crea, se necessario, l'issue `Registro controlli dati <anno>`;
 2. aggiunge un commento con il rapporto mensile;
 3. menziona `@EmAnzi3`, generando una notifica GitHub;
-4. conserva il rapporto completo come artifact per 90 giorni.
+4. conserva il rapporto completo come artifact per 90 giorni;
+5. per ogni controllo live riuscito apre o aggiorna una **PR in bozza** contenente i metadata di controllo aggiornati, anche quando non sono emerse variazioni sostanziali.
 
-Se il workflow si interrompe prima della notifica, resta disponibile la notifica di errore standard di GitHub Actions.
+Questo quinto passaggio serve a evitare che il sito dichiari una vecchia data di controllo soltanto perché la fonte non è cambiata. Il merge resta comunque manuale.
 
-## Esiti possibili
+## Esiti del workflow
 
-- `no_changes`: nessuna variazione sostanziale; nessuna PR;
-- `baseline_required`: prima fotografia delle fonti; PR in bozza;
-- `changes_detected`: una fonte è stata aggiunta, rimossa, reindirizzata o un file ufficiale è cambiato; PR in bozza;
+Gli esiti tecnici dell'esecuzione restano distinti dagli stati dei singoli indicatori:
+
+- `no_changes`: nessuna variazione sostanziale della fonte;
+- `baseline_required`: prima fotografia delle fonti;
+- `changes_detected`: una fonte è stata aggiunta, rimossa, reindirizzata o un file ufficiale è cambiato;
 - `attention_required`: il dataset non supera i controlli strutturali; workflow fallito e pubblicazione impedita.
 
-Le fonti non raggiungibili sono segnalate nel rapporto ma, nella fase iniziale, non cancellano dati e non sono automaticamente considerate un errore strutturale: alcuni portali istituzionali bloccano i controlli automatici.
+Le fonti non raggiungibili sono segnalate senza cancellare dati esistenti: alcuni portali istituzionali bloccano i controlli automatici.
 
 ## Politica delle fonti
 
-Il file `data/source-registry.json` associa ciascun URL primario a un profilo
-esplicito. Il profilo dichiara produttore, cadenza attesa, finestra di rilascio,
-metodo di acquisizione e condizioni di riuso. Le eccezioni riferite a un singolo
-indicatore prevalgono sul profilo generale della fonte.
+Il file `data/source-registry.json` associa ciascun URL primario a un profilo esplicito. Il profilo dichiara produttore, cadenza attesa, modalità di acquisizione e condizioni di riuso. Le eccezioni riferite a un singolo indicatore prevalgono sul profilo generale della fonte.
 
-La frequenza indica quando è ragionevole controllare un aggiornamento; non è una
-promessa di disponibilità del dato e non autorizza a sostituire automaticamente
-un valore già pubblicato.
+La frequenza indica quando è ragionevole controllare un aggiornamento; non è una promessa di disponibilità del dato e non autorizza a sostituire automaticamente un valore già pubblicato.
 
-## Prima esecuzione
+## Flusso di pubblicazione
 
-Dopo il merge della funzionalità, la prima esecuzione live apre una PR in bozza per registrare la baseline delle fonti. La baseline diventa effettiva soltanto dopo verifica e merge.
+Il flusso resta sempre:
+
+**fonte → controllo → rilevazione → validazione → pubblicazione**
+
+Quando il controllo rileva una variazione, la PR automatica è soltanto un avviso documentato. L'aggiornamento dei valori deve:
+
+1. acquisire il nuovo dato dalla fonte originale;
+2. verificare quale periodo sia realmente disponibile;
+3. conservare lo snapshot leggibile;
+4. aggiornare anno o periodo, valori, serie, formula e fonte in modo coerente;
+5. superare build e test;
+6. essere verificato manualmente prima del merge.
 
 ## Esecuzione manuale
 
@@ -72,13 +119,3 @@ Aprire:
 `Actions → Controllo mensile dati → Run workflow`
 
 Lasciare attivo `Controlla anche le fonti online` per un controllo reale. Disattivarlo soltanto per verificare struttura e copertura senza traffico verso le fonti.
-
-## Pubblicazione di nuovi dati
-
-Quando il controllo rileva una variazione, la PR automatica è soltanto un avviso documentato. L'aggiornamento dei valori deve:
-
-1. acquisire il nuovo dato dalla fonte originale;
-2. conservare lo snapshot leggibile;
-3. aggiornare anno, valori, serie, formula e fonte in modo coerente;
-4. superare build e test;
-5. essere verificato manualmente prima del merge.
