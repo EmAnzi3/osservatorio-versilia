@@ -62,10 +62,9 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           PROBE_SOURCES: ${{ github.event.inputs.probe_sources }}
-          HEAD_REF: ${{ github.head_ref }}
         run: |
           MODE="live"
-          if [[ "$EVENT_NAME" == "pull_request" && "$HEAD_REF" != "agent/stato-dati" ]]; then
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
             MODE="offline"
           elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$PROBE_SOURCES" == "false" ]]; then
             MODE="offline"
@@ -93,31 +92,6 @@ jobs:
           name: data-check-${{ steps.prepare.outputs.run_stamp }}
           path: reports/runtime/
           retention-days: 90
-
-      - name: Persist audited PR state once
-        if: >-
-          github.event_name == 'pull_request' &&
-          github.head_ref == 'agent/stato-dati' &&
-          steps.prepare.outputs.mode == 'live' &&
-          steps.monitor.outputs.status != 'attention_required'
-        env:
-          NEXT_STATE: ${{ steps.monitor.outputs.next_state }}
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          CURRENT_SCHEMA="$(python -c "import json; print(json.load(open('data/source-monitor-state.json', encoding='utf-8')).get('schemaVersion', 1))")"
-          if [[ "$CURRENT_SCHEMA" != "1" ]]; then
-            echo "Baseline schema 2 già materializzata; nessuna scrittura sul branch."
-            exit 0
-          fi
-          cp "$NEXT_STATE" /tmp/source-monitor-state.next.json
-          git fetch origin "$HEAD_REF"
-          git checkout "$HEAD_REF"
-          cp /tmp/source-monitor-state.next.json data/source-monitor-state.json
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source-monitor-state.json
-          git commit -m "Registra il controllo live pre-pubblicazione"
-          git push origin "HEAD:$HEAD_REF"
 
       - name: Create or update annual register
         if: github.event_name != 'pull_request'
