@@ -1,6 +1,10 @@
 (() => {
   'use strict';
 
+  const script = document.currentScript;
+  const ROOT = new URL('../', script?.src || location.href);
+  const statusHref = new URL('stato-dati/', ROOT).href;
+
   function installFilters() {
     const table = document.querySelector('.data-status-table');
     if (!table) return;
@@ -110,9 +114,51 @@
     if (app) new MutationObserver(schedule).observe(app, { childList: true, subtree: true });
   }
 
+  function makeStatusLink(label, placement) {
+    const link = document.createElement('a');
+    link.href = statusHref;
+    link.textContent = label;
+    link.dataset.dataStatusNav = placement;
+    return link;
+  }
+
+  function ensureNavigationLinks() {
+    const headerNav = document.querySelector('.site-header-actions nav[aria-label="Navigazione principale"]');
+    if (headerNav && !headerNav.querySelector('[data-data-status-nav="header"]')) {
+      const link = makeStatusLink('Stato dati', 'header');
+      const project = [...headerNav.querySelectorAll('a')].find(item => item.textContent.trim() === 'Il progetto');
+      if (project) project.after(link);
+      else headerNav.append(link);
+    }
+
+    const footerNav = document.querySelector('.site-footer .footer-links');
+    if (footerNav && !footerNav.querySelector('[data-data-status-nav="footer"]')) {
+      const link = makeStatusLink('Stato dei dati', 'footer');
+      const project = [...footerNav.querySelectorAll('a')].find(item => item.textContent.trim() === 'Il progetto');
+      if (project) project.after(link);
+      else footerNav.prepend(link);
+    }
+  }
+
+  function installNavigationPersistence() {
+    let scheduled = false;
+    const apply = () => {
+      scheduled = false;
+      ensureNavigationLinks();
+    };
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      queueMicrotask(apply);
+    };
+    apply();
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
+  }
+
   function start() {
     installFilters();
     installIndicatorPersistence();
+    installNavigationPersistence();
   }
 
   if (document.readyState === 'loading') {
