@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import copy
 import re
+import shutil
+import subprocess
 import sys
 import urllib.parse
 from pathlib import Path
@@ -18,7 +20,13 @@ import monthly_data_check as base  # noqa: E402
 ORIGINAL_VALIDATE = base.validate_dataset
 ORIGINAL_CANONICAL_URL = base.canonical_url
 ORIGINAL_COMPARE_STATES = base.compare_states
+ORIGINAL_PROBE_SOURCE = base.probe_source
 COVERAGE_RE = re.compile(r"^(\d+)\s*/\s*(\d+)$")
+BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/151.0 Safari/537.36 "
+    "OsservatorioVersiliaDataMonitor/1.0"
+)
 
 # Il portale del Dipartimento delle Finanze aggiunge a ogni accesso un parametro
 # `t` variabile alla stessa pagina. Non rappresenta un cambio di fonte e non deve
@@ -62,6 +70,92 @@ def compare_states(
             item["finalUrl"] = canonical_url(str(item["finalUrl"]))
 
     return ORIGINAL_COMPARE_STATES(prepared_previous, prepared_current)
+
+
+def _curl_probe(url: str, registry: dict[str, Any]) -> dict[str, Any] | None:
+    """Secondo tentativo con curl per fonti che rifiutano urllib/HEAD.
+
+    Alcuni portali pubblici applicano filtri TLS o anti-bot diversi a seconda del
+    client. Il fallback usa una GET limitata a un byte e non interpreta mai il
+    contenuto come un nuovo rilascio: serve esclusivamente a stabilire se la fonte
+    è raggiungibile.
+    """
+    curl = shutil.which("curl")
+    if not curl:
+        return None
+    timeout = max(1, int(float(registry.get("requestTimeoutSeconds", 20))))
+    marker = "__OV_CURL_META__"
+    command = [
+        curl,
+        "--location",
+        "--silent",
+        "--show-error",
+        "--max-time",
+        str(timeout),
+        "--connect-timeout",
+        str(min(timeout, 10)),
+        "--user-agent",
+        BROWSER_USER_AGENT,
+        "--header",
+        "Accept: */*",
+        "--range",
+        "0-0",
+        "--output",
+        "/dev/null",
+        "--write-out",
+        f"{marker}%{{http_code}}\n%{{url_effective}}\n%{{content_type}}\n%{{size_download}}",
+        url,
+    ]
+    try:
+        completed = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=timeout + 5,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+
+    stdout = completed.stdout or ""
+    if marker not in stdout:
+        return None
+    meta = stdout.split(marker, 1)[1].splitlines()
+    if len(meta) < 3:
+        return None
+    try:
+        status = int(meta[0].strip() or "0")
+    except ValueError:
+        status = 0
+    final_url = meta[1].strip() or url
+    content_type = meta[2].strip().split(";", 1)[0]
+    error = (completed.stderr or "").strip()
+    ok = 200 <= status < 400
+    return {
+        "url": url,
+        "ok": ok,
+        "status": status or None,
+        "finalUrl": canonical_url(final_url),
+        "contentType": content_type,
+        "contentLength": None,
+        "etag": "",
+        "lastModified": "",
+        "contentSha256": "",
+        "hashTruncated": False,
+        "error": "" if ok else (error or f"HTTP {status}"),
+        "probeMethod": "curl-range",
+    }
+
+
+def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
+    """Usa il probe canonico e ritenta con curl solo in caso di insuccesso."""
+    result = ORIGINAL_PROBE_SOURCE(url, registry)
+    if result.get("ok"):
+        return result
+    fallback = _curl_probe(url, registry)
+    if fallback is not None and fallback.get("ok"):
+        return fallback
+    return result
 
 
 def _strip_partial_series_nulls(row: dict[str, Any]) -> None:
@@ -161,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
     base.canonical_url = canonical_url
     base.compare_states = compare_states
     base.validate_dataset = validate_dataset
+    base.probe_source = probe_source
     if argv is None:
         return base.main()
 
