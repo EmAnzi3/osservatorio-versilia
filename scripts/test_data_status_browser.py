@@ -11,8 +11,31 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def assert_public_path(page, base: str, width: int) -> None:
+    page.goto(base, wait_until="networkidle")
+    page.locator('[data-data-status-nav="header"]').wait_for()
+    assert page.locator('[data-data-status-nav="header"]').count() == 1
+    assert page.locator('[data-data-status-nav="footer"]').count() == 1
+    assert page.locator('[data-data-status-nav="header"]').get_attribute("href").rstrip("/").endswith("/stato-dati")
+    if width >= 700:
+        assert page.locator('[data-data-status-nav="header"]').is_visible()
+    else:
+        assert page.locator('[data-data-status-nav="footer"]').is_visible()
+
+    page.wait_for_timeout(300)
+    assert page.locator('[data-data-status-nav="header"]').count() == 1
+    assert page.locator('[data-data-status-nav="footer"]').count() == 1
+
+    page.goto(base + "progetto/", wait_until="networkidle")
+    page.locator('[data-data-status-nav="footer"]').wait_for()
+    assert page.locator('[data-data-status-nav="header"]').count() == 1
+    assert page.locator('[data-data-status-nav="footer"]').count() == 1
+
+
 def check_view(page, base: str, width: int, height: int) -> None:
     page.set_viewport_size({"width": width, "height": height})
+    assert_public_path(page, base, width)
+
     page.goto(base + "stato-dati/", wait_until="networkidle")
     assert page.locator("h1").inner_text() == "Stato dei dati"
     assert page.locator(".data-status-table tbody tr").count() == 127
@@ -43,7 +66,7 @@ def main() -> None:
         check_view(page, args.base, 1440, 1000)
         check_view(page, args.base, 390, 844)
         browser.close()
-    print("Data status browser checks passed: desktop + mobile.")
+    print("Data status browser checks passed: public path + desktop + mobile.")
 
 
 if __name__ == "__main__":
