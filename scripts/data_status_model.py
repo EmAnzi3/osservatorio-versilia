@@ -26,6 +26,11 @@ STATUS_META = {
         "tone": "neutral",
         "description": "La fonte è stata raggiunta, ma il monitor non può stabilire automaticamente se il periodo pubblicato è l'ultimo disponibile.",
     },
+    "source_access_limited": {
+        "label": "Controllo automatico limitato",
+        "tone": "neutral",
+        "description": "Il portale ufficiale limita l'accesso automatizzato. La fonte resta soggetta a verifica manuale e il dato pubblicato non viene modificato.",
+    },
     "release_detected": {
         "label": "Nuovo rilascio da verificare",
         "tone": "warn",
@@ -118,10 +123,15 @@ def derive_status(
     operational: dict[str, Any],
 ) -> str:
     explicit = str(operational.get("status") or "")
-    if explicit in {"release_detected", "update_expected", "verification_required"}:
+    if explicit in {
+        "release_detected", "update_expected", "verification_required",
+        "source_access_limited",
+    }:
         return explicit
     if probe is None:
         return "verification_required"
+    if probe.get("automationLimited"):
+        return "source_access_limited"
     if not probe.get("ok"):
         return "source_unavailable"
     observed = str(operational.get("observedLatestPeriod") or "")
@@ -164,6 +174,12 @@ def build_public_status(
             operational.get("nextExpectedRelease") or policy.get("nextExpectedRelease")
         )
         row_checked_at = str(operational.get("checkedAt") or (checked_at if probe is not None else ""))
+        direct_reachable = None
+        if probe is not None:
+            if probe.get("directReachable") is False:
+                direct_reachable = False
+            else:
+                direct_reachable = bool(probe.get("ok"))
         rows.append(
             {
                 "key": metric_key,
@@ -183,7 +199,9 @@ def build_public_status(
                 "statusLabel": status_meta["label"],
                 "statusTone": status_meta["tone"],
                 "statusDescription": status_meta["description"],
-                "sourceReachable": None if probe is None else bool(probe.get("ok")),
+                "sourceReachable": direct_reachable,
+                "sourceAutomationLimited": False if probe is None else bool(probe.get("automationLimited")),
+                "sourceProbeMethod": "" if probe is None else str(probe.get("probeMethod") or ""),
                 "sourceError": "" if probe is None else str(probe.get("error") or ""),
             }
         )
