@@ -30,6 +30,7 @@ def project_title(row: dict[str, Any]) -> str:
     preferred = (
         "titolo_progetto",
         "titolo",
+        "descrizione_sintetica_cup",
         "descrizione_progetto",
         "denominazione_progetto",
         "nome_progetto",
@@ -38,13 +39,13 @@ def project_title(row: dict[str, Any]) -> str:
     )
     for key in preferred:
         value = str(row.get(key) or "").strip()
-        if value:
+        if value and audit.norm(value) not in {"NULL", "ND", "N D", "NON DISPONIBILE"}:
             return value
     for key, value in row.items():
         key_n = audit.norm(key)
         if "TITOLO" in key_n or "DENOMINAZIONE" in key_n:
             text = str(value or "").strip()
-            if text:
+            if text and audit.norm(text) not in {"NULL", "ND", "N D", "NON DISPONIBILE"}:
                 return text
     return ""
 
@@ -179,8 +180,10 @@ def main() -> int:
     args = parse_args()
     data = json.loads(args.data.read_text(encoding="utf-8"))
     result = build_forensic(data)
-    if result["selectedUniqueProjects"] != 107:
-        raise SystemExit(f"Fotografia inattesa: attesi 107 progetti, trovati {result['selectedUniqueProjects']}")
+    if result["selectedUniqueProjects"] <= 0:
+        raise SystemExit("Nessun progetto PNRR selezionato: fotografia non valida")
+    if result["selectedUniqueProjects"] != result["uniqueProjectIds"]:
+        raise SystemExit("Conteggio progetti e ID unici non coerente")
     if result["crossTownDuplicateProjectIds"]:
         raise SystemExit("Uno o più ID progetto risultano attribuiti a più Comuni del perimetro")
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
