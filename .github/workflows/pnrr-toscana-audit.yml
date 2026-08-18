@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "scripts/pnrr_toscana_audit.py"
+      - "scripts/pnrr_toscana_forensic.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - ".github/workflows/pnrr-toscana-audit.yml"
       - "data/site-data.json"
@@ -27,13 +28,19 @@ jobs:
       - name: Unit tests
         run: |
           python scripts/test_pnrr_toscana_audit.py
-          python -m py_compile scripts/pnrr_toscana_audit.py scripts/test_pnrr_toscana_audit.py
+          python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_forensic.py scripts/test_pnrr_toscana_audit.py
 
       - name: Live read-only audit
         run: |
           python scripts/pnrr_toscana_audit.py \
             --output-json reports/pnrr-toscana-audit.json \
             --output-md reports/pnrr-toscana-audit.md
+
+      - name: Project-level forensic inventory
+        run: |
+          python scripts/pnrr_toscana_forensic.py \
+            --output-json reports/pnrr-toscana-forensic.json \
+            --output-md reports/pnrr-toscana-forensic.md
 
       - name: Upload audit
         uses: actions/upload-artifact@v4
@@ -42,5 +49,7 @@ jobs:
           path: |
             reports/pnrr-toscana-audit.json
             reports/pnrr-toscana-audit.md
+            reports/pnrr-toscana-forensic.json
+            reports/pnrr-toscana-forensic.md
           retention-days: 14
           if-no-files-found: error
