@@ -33,12 +33,32 @@ def assert_public_path(page, base: str, width: int) -> None:
     assert page.locator('[data-data-status-nav="footer"]').count() == 1
 
 
+def assert_native_status_shell(page, width: int) -> None:
+    page.locator(".site-header").wait_for()
+    assert page.locator(".site-brand .ov-mark-svg").count() == 1
+    assert page.locator(".site-brand-copy strong").inner_text().strip() == "Osservatorio Versilia"
+    assert page.locator(".site-footer").count() == 1
+    assert page.locator("main.editorial-page.data-status-main").count() == 1
+    assert page.locator(".data-status-header").count() == 0
+    assert page.locator(".global-search-trigger").count() == 1
+
+    if width >= 700:
+        trigger = page.locator(".global-search-trigger")
+        assert trigger.is_visible()
+        trigger.click()
+        page.locator(".search-overlay").wait_for()
+        assert page.locator(".search-overlay").is_visible()
+        page.keyboard.press("Escape")
+        page.locator(".search-overlay").wait_for(state="hidden")
+
+
 def check_view(page, base: str, width: int, height: int) -> None:
     page.set_viewport_size({"width": width, "height": height})
     assert_public_path(page, base, width)
 
     page.goto(base + "stato-dati/", wait_until="networkidle")
-    assert page.locator("h1").inner_text() == "Stato dei dati"
+    assert page.locator("h1").inner_text() == "Stato dei dati."
+    assert_native_status_shell(page, width)
     assert page.locator(".data-status-table tbody tr").count() == 127
     overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
     assert not overflow, f"Overflow orizzontale a {width}px"
@@ -67,7 +87,7 @@ def main() -> None:
         check_view(page, args.base, 1440, 1000)
         check_view(page, args.base, 390, 844)
         browser.close()
-    print("Data status browser checks passed: public path + desktop + mobile.")
+    print("Data status browser checks passed: native OV shell + public path + desktop + mobile.")
 
 
 if __name__ == "__main__":
