@@ -43,7 +43,7 @@ def italian_date(value: str) -> str:
     return f"{parsed.day} {months[parsed.month - 1]} {parsed.year}"
 
 
-def enrich_status_page() -> None:
+def enrich_status_page(payload: dict) -> None:
     path = DIST / "stato-dati" / "index.html"
     text = path.read_text(encoding="utf-8")
     if "../assets/fonts.css" not in text:
@@ -71,6 +71,40 @@ def enrich_status_page() -> None:
             '  <meta property="og:locale" content="it_IT">\n' + social,
             1,
         )
+
+    counts = payload.get("counts") if isinstance(payload.get("counts"), dict) else {}
+    limited = int(counts.get("source_access_limited", 0) or 0)
+    if "Controllo automatico limitato</h3>" not in text:
+        new_release = (
+            '<li><span>04</span><h3>Nuovi rilasci da verificare</h3>'
+        )
+        replacement = (
+            f'<li><span>04</span><h3>Controllo automatico limitato</h3><strong>{limited}</strong></li>\n'
+            '        <li><span>05</span><h3>Nuovi rilasci da verificare</h3>'
+        )
+        if new_release not in text:
+            raise SystemExit("Card riepilogo nuovi rilasci non trovata in /stato-dati/")
+        text = text.replace(new_release, replacement, 1)
+        text = text.replace(
+            '<li><span>05</span><h3>Fonti con problemi</h3>',
+            '<li><span>06</span><h3>Fonti con problemi</h3>',
+            1,
+        )
+
+    if "Il portale ufficiale limita le richieste automatizzate" not in text:
+        source_checked_card = (
+            '<li><span class="status-badge status-neutral">Fonte controllata</span>'
+            '<p>La fonte è raggiungibile, ma il controllo automatico non può certificare da solo quale sia l\'ultima annualità.</p></li>'
+        )
+        limited_card = (
+            source_checked_card
+            + '<li><span class="status-badge status-neutral">Controllo automatico limitato</span>'
+            '<p>Il portale ufficiale limita le richieste automatizzate; la fonte resta sottoposta a verifica manuale.</p></li>'
+        )
+        if source_checked_card not in text:
+            raise SystemExit("Legenda Fonte controllata non trovata in /stato-dati/")
+        text = text.replace(source_checked_card, limited_card, 1)
+
     path.write_text(text, encoding="utf-8")
 
 
@@ -141,7 +175,7 @@ def main() -> None:
 
     if injected != 123:
         raise SystemExit(f"Attese 123 schede indicatore, payload incorporato in {injected}")
-    enrich_status_page()
+    enrich_status_page(payload)
     ensure_status_sitemap_lastmod()
     global_pages = inject_global_enhancer()
     print(
