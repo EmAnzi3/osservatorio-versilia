@@ -73,10 +73,14 @@ def main() -> int:
     finally:
         audit.iter_csv_records = original_iter
     forensic_result["sourceSnapshotSha256"] = source_hash
-    if forensic_result["selectedUniqueProjects"] != 107:
-        raise SystemExit(
-            f"Fotografia inattesa: attesi 107 progetti, trovati {forensic_result['selectedUniqueProjects']}"
-        )
+
+    selected = int(forensic_result.get("selectedUniqueProjects") or 0)
+    if selected <= 0:
+        raise SystemExit("Nessun progetto PNRR selezionato: fotografia non valida")
+    if selected != int(forensic_result.get("uniqueProjectIds") or 0):
+        raise SystemExit("Conteggio progetti e ID unici non coerente")
+    if selected != int(audit_result.get("selectedProjects") or 0):
+        raise SystemExit("Audit aggregato e inventario forense usano perimetri diversi")
     if forensic_result["crossTownDuplicateProjectIds"]:
         raise SystemExit("Uno o più ID progetto risultano attribuiti a più Comuni del perimetro")
     write_json(args.forensic_json, forensic_result)
