@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 
 import monthly_data_check_coverage as coverage
+import monthly_data_check_status as status_model
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKER = ROOT / "scripts" / "monthly_data_check.py"
@@ -158,6 +159,24 @@ def main() -> None:
         },
     )
     assert not redirect_changes["redirect"]
+
+    # L'ingresso di una URL nella nuova baseline del monitor non è un'anomalia
+    # del dato. Solo contenuto o redirect cambiati di una fonte già monitorata
+    # richiedono una verifica umana.
+    new_source = "https://example.org/new-source"
+    changed_source = "https://example.org/changed-source"
+    status_changes = status_model.changed_urls(
+        {
+            "changes": {
+                "added": [{"url": new_source}],
+                "removed": [{"url": "https://example.org/old-source"}],
+                "content": [{"url": changed_source}],
+                "redirect": [],
+            }
+        }
+    )
+    assert coverage.canonical_url(new_source) not in status_changes
+    assert coverage.canonical_url(changed_source) in status_changes
 
     with tempfile.TemporaryDirectory() as directory:
         work = Path(directory)
