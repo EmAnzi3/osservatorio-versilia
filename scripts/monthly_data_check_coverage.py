@@ -51,6 +51,17 @@ OFFICIAL_PROBE_FALLBACKS = {
     ),
 }
 
+# Italia Domani espone pubblicamente il catalogo ReGiS ma risponde 403 ai probe
+# automatici anche attraverso il landing ufficiale della Struttura di missione.
+# Un 401/403/429 viene quindi registrato come limitazione nota dell'automazione,
+# non come indisponibilità della fonte. Errori di rete/TLS/5xx restano invece guasti.
+AUTOMATION_LIMITED_SOURCES = {
+    "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html": {
+        "evidenceUrl": "https://www.strutturapnrr.gov.it/it/documenti/catalogo-open-data/",
+        "reason": "Il portale ufficiale limita le richieste automatizzate; il catalogo resta soggetto a verifica manuale.",
+    }
+}
+
 # Il portale del Dipartimento delle Finanze aggiunge a ogni accesso un parametro
 # `t` variabile alla stessa pagina. Non rappresenta un cambio di fonte e non deve
 # quindi generare una segnalazione mensile di redirect.
@@ -194,6 +205,23 @@ def _as_official_fallback(
     prepared["finalUrl"] = canonical_url(source_url)
     method = str(result.get("probeMethod") or "urllib")
     prepared["probeMethod"] = f"official-fallback:{method}"
+    prepared["directReachable"] = False
+    return prepared
+
+
+def _as_automation_limited(source_url: str, result: dict[str, Any]) -> dict[str, Any]:
+    policy = AUTOMATION_LIMITED_SOURCES[canonical_url(source_url)]
+    prepared = dict(result)
+    # `ok` indica che il monitor ha classificato con successo lo stato operativo;
+    # `directReachable` conserva separatamente il fatto che il landing respinge il bot.
+    prepared["ok"] = True
+    prepared["directReachable"] = False
+    prepared["automationLimited"] = True
+    prepared["url"] = source_url
+    prepared["finalUrl"] = canonical_url(source_url)
+    prepared["probeUrl"] = str(policy["evidenceUrl"])
+    prepared["probeMethod"] = "automation-limited"
+    prepared["error"] = str(policy["reason"])
     return prepared
 
 
@@ -203,14 +231,19 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
     if result.get("ok"):
         return result
 
-    template = OFFICIAL_PROBE_FALLBACKS.get(canonical_url(url))
-    if not template:
-        return result
-    year = datetime.now(timezone.utc).year
-    fallback_url = template.format(year=year)
-    fallback_result = _attempt_probe(fallback_url, registry)
-    if fallback_result.get("ok"):
-        return _as_official_fallback(url, fallback_url, fallback_result)
+    source_key = canonical_url(url)
+    template = OFFICIAL_PROBE_FALLBACKS.get(source_key)
+    if template:
+        year = datetime.now(timezone.utc).year
+        fallback_url = template.format(year=year)
+        fallback_result = _attempt_probe(fallback_url, registry)
+        if fallback_result.get("ok"):
+            return _as_official_fallback(url, fallback_url, fallback_result)
+
+    limited = AUTOMATION_LIMITED_SOURCES.get(source_key)
+    status = result.get("status")
+    if limited and status in {401, 403, 429}:
+        return _as_automation_limited(url, result)
     return result
 
 
