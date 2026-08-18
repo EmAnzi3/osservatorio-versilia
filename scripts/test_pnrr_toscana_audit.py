@@ -37,95 +37,66 @@ def fixture_data():
     }
 
 
-def strict_feed():
-    projects = {}
-    subjects = []
+def fixture_records():
+    records = []
     for name, code in TOWNS:
-        projects[code] = [
-            {
-                "id_progetto": f"{code}-A",
-                "cod_istat": code,
-                "finanziato_pnrr": "50.000,00",
+        for suffix, phase in (("A", "5. conclusione"), ("B", "4. esecuzione")):
+            records.append({
+                "id_progetto": f"{code}-{suffix}",
+                "cup": f"CUP-{code}-{suffix}",
+                "area": "PNRR",
                 "misura_pnrr_estesa": "M1",
-                "fase_avanzamento": "5. conclusione",
-            },
-            {
-                "id_progetto": f"{code}-B",
-                "cod_istat": code,
-                "finanziato_pnrr": "50000",
-                "misura_pnrr_estesa": "M2",
-                "fase_avanzamento": "4. esecuzione",
-            },
-        ]
-        subjects.extend([
-            {"id_progetto": f"{code}-A", "ruolo": "Soggetto attuatore", "soggetto": f"Comune di {name}"},
-            {"id_progetto": f"{code}-B", "ruolo": "Soggetto Attuatore", "soggetto": f"COMUNE DI {name.upper()}"},
-        ])
-    return projects, subjects
+                "soggetto_attuatore": f"Comune di {name}",
+                "cf_soggetto_attuatore": f"CF-{code}",
+                "importo_finanziato_pnrr": "50.000,00",
+                "fase_avanzamento_da_regis": phase,
+                "fase_avanzamento_da_monitoraggio_progetti": phase,
+                "fase_regis": phase,
+                "data_fine_effettiva_chiusura_intervento": "2026-01-31" if suffix == "A" else "",
+                "data_elaborazione": "2026-08-11",
+            })
+    return records
 
 
 def test_helpers():
     assert module.parse_number("1.234.567,89") == 1234567.89
     assert module.parse_number("€ 50.000,00") == 50000
-    assert module.parse_number("SI") is None
+    assert module.parse_number("NULL") is None
     assert module.town_subject_match("Comune di Forte dei Marmi", "Forte dei Marmi")
     assert not module.town_subject_match("Comune di Camaiore", "Massarosa")
-    assert module.is_concluded({"fase_avanzamento": "5. conclusione"})
+    assert module.concluded_from({"fase_avanzamento_da_regis": "5. conclusione"}, "fase_avanzamento_da_regis")
 
 
-def test_strict_match():
-    projects, subjects = strict_feed()
-    original_all = module.all_records
-    original_load = module.load_town_projects
-    try:
-        module.all_records = lambda resource_id, filters=None: (
-            (subjects, ["id_progetto", "ruolo", "soggetto"])
-            if resource_id == module.SUBJECT_RESOURCE
-            else ([], [])
-        )
-        module.load_town_projects = lambda code: (projects[code], code)
-        result = module.audit(fixture_data())
-    finally:
-        module.all_records = original_all
-        module.load_town_projects = original_load
-
-    assert result["strictSubjectScopeAvailable"] is True
+def test_exact_match():
+    result = module.audit_records(fixture_data(), fixture_records())
     assert result["verdict"] == "match"
     assert result["eligibleForAutomaticVerification"] is True
+    assert result["fundingMatch7of7"] is True
+    assert "fase_avanzamento_da_regis" in result["conclusionDefinitionMatches"]
     assert len(result["perTown"]) == 7
     assert all(item["selectedProjects"] == 2 for item in result["perTown"].values())
-    assert all(item["match"] is True for item in result["perTown"].values())
 
 
-def test_no_role_is_not_comparable():
-    projects, subjects = strict_feed()
-    subjects = [{"id_progetto": row["id_progetto"], "soggetto": row["soggetto"]} for row in subjects]
-    for code, rows in projects.items():
-        town = next(name for name, town_code in TOWNS if town_code == code)
-        for row in rows:
-            row["soggetto_richiedente"] = f"Comune di {town}"
+def test_dedupe_project():
+    records = fixture_records()
+    records.append(dict(records[0]))
+    result = module.audit_records(fixture_data(), records)
+    assert result["verdict"] == "match"
+    assert result["perTown"]["046005"]["selectedProjects"] == 2
 
-    original_all = module.all_records
-    original_load = module.load_town_projects
-    try:
-        module.all_records = lambda resource_id, filters=None: (
-            (subjects, ["id_progetto", "soggetto"])
-            if resource_id == module.SUBJECT_RESOURCE
-            else ([], [])
-        )
-        module.load_town_projects = lambda code: (projects[code], code)
-        result = module.audit(fixture_data())
-    finally:
-        module.all_records = original_all
-        module.load_town_projects = original_load
 
-    assert result["strictSubjectScopeAvailable"] is False
-    assert result["verdict"] == "not_comparable"
+def test_new_snapshot_is_not_auto_published():
+    records = fixture_records()
+    records[0]["importo_finanziato_pnrr"] = "75.000,00"
+    result = module.audit_records(fixture_data(), records)
+    assert result["verdict"] == "different_current_snapshot"
     assert result["eligibleForAutomaticVerification"] is False
+    assert result["fundingMatch7of7"] is False
 
 
 if __name__ == "__main__":
     test_helpers()
-    test_strict_match()
-    test_no_role_is_not_comparable()
+    test_exact_match()
+    test_dedupe_project()
+    test_new_snapshot_is_not_auto_published()
     print("OK: audit PNRR Regione Toscana")
