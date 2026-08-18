@@ -55,6 +55,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Materialize current PNRR Toscana baseline
+        run: |
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+
       - name: Run monitor unit tests
         run: |
           python scripts/test_monthly_data_check.py
