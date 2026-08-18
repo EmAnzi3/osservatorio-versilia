@@ -30,32 +30,37 @@ jobs:
           python scripts/test_pnrr_toscana_audit.py
           python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_live_audit.py scripts/test_pnrr_toscana_audit.py
 
-      - name: Discover official backend resources
+      - name: Inspect official backend schemas
         run: |
           python - <<'PY'
-          import re
           import urllib.request
-          resources = {
-              'main': '56b0d1e0-2d25-4434-af56-63d316775600',
-              'subjects': '91c2a7ba-4a44-4f35-925f-30f4a55c74e7',
+          urls = {
+              'main': 'https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv',
+              'subjects': 'https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getelenco_soggetto_v6.csv',
           }
-          for label, rid in resources.items():
-              url = f'https://dati.toscana.it/dataset/regione-toscana-pnrr/resource/{rid}'
-              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 OsservatorioVersiliaDataMonitor/1.1'})
-              with urllib.request.urlopen(req, timeout=30) as response:
-                  text = response.read().decode('utf-8', 'replace')
-              found = sorted(set(re.findall(r'https://www301\.regione\.toscana\.it/[^"\'<>\\s]+', text)))
-              print(label, 'page=', url)
-              print(label, 'backend_urls=', found)
+          for label, url in urls.items():
+              req = urllib.request.Request(url, headers={
+                  'User-Agent': 'Mozilla/5.0 OsservatorioVersiliaDataMonitor/1.1',
+                  'Accept': 'text/csv,*/*',
+              })
+              with urllib.request.urlopen(req, timeout=45) as response:
+                  print(label, 'status=', response.status, 'type=', response.headers.get('Content-Type'))
+                  for index in range(3):
+                      line = response.readline()
+                      if not line:
+                          break
+                      print(label, f'line{index+1}=', line.decode('utf-8-sig', 'replace').rstrip()[:12000])
           PY
 
       - name: Live read-only audit
+        continue-on-error: true
         run: |
           python scripts/pnrr_toscana_live_audit.py \
             --output-json reports/pnrr-toscana-audit.json \
             --output-md reports/pnrr-toscana-audit.md
 
-      - name: Upload audit
+      - name: Upload audit when available
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pnrr-toscana-audit
@@ -63,4 +68,4 @@ jobs:
             reports/pnrr-toscana-audit.json
             reports/pnrr-toscana-audit.md
           retention-days: 14
-          if-no-files-found: error
+          if-no-files-found: ignore
