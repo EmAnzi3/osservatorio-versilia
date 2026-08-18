@@ -2,7 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["main", "agent/**"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -40,6 +40,13 @@ jobs:
       - name: Validate Economy v1.13 data and semantics
         run: python scripts/test_costi_fiscalita_redditi_draft.py
 
+      - name: Materialize PNRR Toscana release
+        run: |
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
+
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
@@ -47,6 +54,14 @@ jobs:
         run: |
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
+
+      - name: Build PNRR Toscana deep dive
+        run: |
+          node --check assets/pnrr-town-detail.js
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
 
       - name: Start local release server
         shell: bash
@@ -62,6 +77,9 @@ jobs:
           done
           cat /tmp/ov-release-http.log
           exit 1
+
+      - name: Validate PNRR Toscana town experience
+        run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate income and inflation history in browser
         run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
@@ -142,6 +160,18 @@ jobs:
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
             scripts/data_status_model.py \
+            scripts/pnrr_toscana_audit.py \
+            scripts/pnrr_toscana_forensic.py \
+            scripts/pnrr_toscana_snapshot_runner.py \
+            scripts/materialize_pnrr_toscana_draft.py \
+            scripts/patch_pnrr_toscana_review.py \
+            scripts/build_pnrr_toscana_deep_dive.py \
+            scripts/inject_pnrr_town_experience.py \
+            scripts/test_pnrr_toscana_audit.py \
+            scripts/test_pnrr_status_integration.py \
+            scripts/test_pnrr_toscana_draft.py \
+            scripts/test_pnrr_toscana_review.py \
+            scripts/test_pnrr_toscana_town_browser.py \
             scripts/build_data_status.py \
             scripts/inject_data_status_runtime.py
 
@@ -166,6 +196,8 @@ jobs:
       - name: Run monthly monitor checks
         run: |
           python scripts/test_monthly_data_check.py
+          python scripts/test_pnrr_toscana_audit.py
+          python scripts/test_pnrr_status_integration.py
           mkdir -p /tmp/monthly-data-check
           python scripts/monthly_data_check_status.py \
             --mode offline \

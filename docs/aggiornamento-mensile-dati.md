@@ -30,6 +30,8 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 - cambiamenti di URL, reindirizzamenti ed eventuali segnali HTTP;
 - stato operativo per indicatore, senza dedurre automaticamente l'attualità del dato dalla sola raggiungibilità della fonte.
 
+Per `pnrrFunding` e `pnrrConcluded`, nelle esecuzioni live il monitor usa il dataset ufficiale **Regione Toscana — Open Data PNRR** come fonte machine-readable operativa. Il perimetro comprende i progetti con `area = PNRR` o `PNRR-PNC`, esclude i PNC puri, richiede che uno dei sette Comuni sia `soggetto_attuatore`, deduplica su `id_progetto`, legge le risorse da `importo_finanziato_pnrr` e considera concluso un progetto quando `fase_avanzamento_da_regis = 5. conclusione`. Il dataset regionale è costruito integrando ReGiS con atti, documenti e altre banche dati amministrative ufficiali; per il campo di avanzamento usato dall'indicatore la fonte dichiarata è ReGiS. Italia Domani resta un riferimento nazionale di contesto e non è necessario come endpoint operativo del monitor. Nessun cambiamento del feed autorizza la pubblicazione automatica.
+
 ## Cosa non fa
 
 - non stima dati mancanti;
