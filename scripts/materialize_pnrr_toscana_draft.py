@@ -35,6 +35,42 @@ PNRR = {
     "046033": {"town": "Viareggio", "projects": 24, "concluded": 18, "funding": 12090517.68},
 }
 
+# Opere fisiche individuate dal campo natura del dataset regionale e ricontrollate
+# sulla fotografia forense. Lo stato pubblicato è quello di dettaglio ReGiS; non
+# viene mai trasformato automaticamente nella parola "realizzata".
+PHYSICAL_WORKS = [
+    {"town": "Camaiore", "title": "Efficientamento energetico del Teatro dell'Olivo", "status": "Collaudo completato", "funding": 240000.00, "cup": "D34H22000110001"},
+    {"town": "Camaiore", "title": "Nuovo intervento per asili nido / prima infanzia", "status": "Contratto stipulato", "funding": 1440000.00, "cup": "D35E24000010006"},
+    {"town": "Camaiore", "title": "Cucina nido d'infanzia Mafalda", "status": "Collaudo avviato", "funding": 170000.00, "cup": "D38H22000110006"},
+    {"town": "Forte dei Marmi", "title": "Nuova mensa scuola Don Milani", "status": "Collaudo avviato", "funding": 304640.00, "cup": "F21B22000330008"},
+    {"town": "Forte dei Marmi", "title": "Nuovi spazi mensa scuola Guidi", "status": "Collaudo avviato", "funding": 499200.00, "cup": "F25E22000440006"},
+    {"town": "Massarosa", "title": "Asilo nido Girotondo a Piano di Mommio", "status": "Collaudo avviato", "funding": 1374750.00, "cup": "C75E22000250006"},
+    {"town": "Massarosa", "title": "Piscina comunale G. Frati", "status": "Collaudo avviato", "funding": 3762422.13, "cup": "C78E22000040006"},
+    {"town": "Pietrasanta", "title": "Efficientamento Teatro Comunale", "status": "Collaudo avviato", "funding": 250000.00, "cup": "G42H22000020001"},
+    {"town": "Pietrasanta", "title": "Nuovo polo scolastico Marina di Pietrasanta", "status": "Collaudo avviato", "funding": 5705263.79, "cup": "G43H17000050004"},
+    {"town": "Pietrasanta", "title": "Rigenerazione Ex-Camp", "status": "Collaudo avviato", "funding": 2803289.07, "cup": "G44E21000590004"},
+    {"town": "Seravezza", "title": "Nuova palestra scuole Frediani", "status": "Collaudo avviato", "funding": 948022.00, "cup": "B81B22000710006"},
+    {"town": "Seravezza", "title": "Nuovo nido d'infanzia", "status": "Collaudo avviato", "funding": 1250000.00, "cup": "B81B22000730006"},
+    {"town": "Stazzema", "title": "Accessibilità Museo e Parco nazionale della Pace di Sant'Anna", "status": "Stipula in corso", "funding": 495000.00, "cup": "H17B22000430006"},
+    {"town": "Stazzema", "title": "Mitigazione rischio idrogeologico Rio delle Vigne di Pomezzana", "status": "Collaudo completato", "funding": 290000.00, "cup": "H17C20000010001"},
+    {"town": "Stazzema", "title": "Scuola materna Martiri di Mulina", "status": "Collaudo completato", "funding": 1080000.00, "cup": "H18E18000010001"},
+    {"town": "Viareggio", "title": "Recupero Stadio comunale dei Pini", "status": "Collaudo completato", "funding": 2249875.73, "cup": "B43D21001410004"},
+    {"town": "Viareggio", "title": "Riqualificazione Marina di Torre del Lago", "status": "Collaudo avviato", "funding": 1131347.78, "cup": "B43D21001420004"},
+    {"town": "Viareggio", "title": "Riqualificazione Belvedere Torre del Lago", "status": "Collaudo completato", "funding": 570606.86, "cup": "B43D21001430004"},
+    {"town": "Viareggio", "title": "Recupero area pubblica via Mazzini", "status": "Collaudo completato", "funding": 1149992.28, "cup": "B43D21001440004"},
+    {"town": "Viareggio", "title": "Recupero piazza Piave", "status": "Collaudo avviato", "funding": 395035.52, "cup": "B43D21001450004"},
+    {"town": "Viareggio", "title": "Efficientamento Teatro Jenco", "status": "Collaudo completato", "funding": 250000.00, "cup": "B44J22000010005"},
+    {"town": "Viareggio", "title": "Nuova piscina comunale", "status": "Lavori in esecuzione", "funding": 2500000.00, "cup": "B45B22000200001"},
+]
+
+WORK_STATUS_ORDER = [
+    "Collaudo completato",
+    "Collaudo avviato",
+    "Lavori in esecuzione",
+    "Contratto stipulato",
+    "Stipula in corso",
+]
+
 
 def rows_by_code(metric: dict[str, Any]) -> dict[str, dict[str, Any]]:
     rows = metric.get("rows")
@@ -84,6 +120,72 @@ def patch_town_summaries(data: dict[str, Any]) -> dict[str, int]:
     if missing:
         raise RuntimeError(f"Riepilogo PNRR comunale non trovato per: {', '.join(missing)}")
     return counts
+
+
+def build_deep_dive() -> dict[str, Any]:
+    total_projects = sum(item["projects"] for item in PNRR.values())
+    total_concluded = sum(item["concluded"] for item in PNRR.values())
+    total_funding = sum(item["funding"] for item in PNRR.values())
+    works_funding = sum(item["funding"] for item in PHYSICAL_WORKS)
+    status_summary = []
+    for status in WORK_STATUS_ORDER:
+        selected = [item for item in PHYSICAL_WORKS if item["status"] == status]
+        status_summary.append(
+            {
+                "status": status,
+                "count": len(selected),
+                "funding": round(sum(item["funding"] for item in selected), 2),
+            }
+        )
+    return {
+        "title": "Dentro il PNRR",
+        "snapshot": SNAPSHOT_LABEL,
+        "snapshotDate": SNAPSHOT_DATE,
+        "source": SOURCE_LABEL,
+        "sourceUrl": DATASET_URL,
+        "methodNote": (
+            "Perimetro: area PNRR o PNRR-PNC, PNC puro escluso, uno dei sette Comuni come "
+            "soggetto attuatore, deduplicazione su id_progetto. La macrofase ReGiS 5. conclusione "
+            "non equivale automaticamente a opera collaudata."
+        ),
+        "totals": {
+            "projects": total_projects,
+            "concluded": total_concluded,
+            "execution": 26,
+            "contracting": 1,
+            "funding": round(total_funding, 2),
+        },
+        "towns": [
+            {
+                "code": code,
+                "town": item["town"],
+                "projects": item["projects"],
+                "concluded": item["concluded"],
+                "concludedPercent": item["concluded"] / item["projects"] * 100.0,
+                "funding": item["funding"],
+            }
+            for code, item in sorted(PNRR.items(), key=lambda pair: pair[1]["town"])
+        ],
+        "physicalWorks": {
+            "count": len(PHYSICAL_WORKS),
+            "funding": round(works_funding, 2),
+            "fundingSharePercent": works_funding / total_funding * 100.0,
+            "statusSummary": status_summary,
+            "works": PHYSICAL_WORKS,
+        },
+        "editorialPolicy": {
+            "recommended": [
+                "quadro complessivo e ripartizione per Comune",
+                "opere fisiche e stato ReGiS di dettaglio",
+                "CUP e quota PNRR per ogni opera",
+            ],
+            "deferred": [
+                "percentuale di spesa, finché non è validato il denominatore tra quota PNRR, costo totale e cofinanziamenti",
+                "date previste/effettive, finché i campi incompleti e i valori sentinella non sono normalizzati",
+                "gare e CIG, da validare con il dataset contratti correlato",
+            ],
+        },
+    }
 
 
 def patch_site_data(data: dict[str, Any]) -> None:
@@ -158,6 +260,7 @@ def patch_site_data(data: dict[str, Any]) -> None:
     )
 
     patch_town_summaries(data)
+    data["pnrrDeepDive"] = build_deep_dive()
 
 
 def patch_registry(registry: dict[str, Any]) -> None:
@@ -252,6 +355,7 @@ def main() -> int:
         "Bozza PNRR Regione Toscana materializzata: "
         f"{sum(v['projects'] for v in PNRR.values())} progetti, "
         f"{sum(v['concluded'] for v in PNRR.values())} conclusi, "
+        f"{len(PHYSICAL_WORKS)} opere fisiche, "
         f"€{sum(v['funding'] for v in PNRR.values()):,.2f} PNRR"
     )
     return 0
