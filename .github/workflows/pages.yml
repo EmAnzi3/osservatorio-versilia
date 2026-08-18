@@ -43,6 +43,9 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
+      - name: Materialize public data status
+        run: python scripts/build_data_status.py
+
       - name: Start local release server
         shell: bash
         run: |
@@ -60,6 +63,12 @@ jobs:
 
       - name: Validate income and inflation history in browser
         run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate public data status
+        run: |
+          node --check assets/data-status.js
+          python scripts/test_data_status.py
+          python scripts/test_data_status_browser.py --base http://127.0.0.1:8123/
 
       - name: Run regression tests
         run: python scripts/test_static.py
@@ -128,7 +137,10 @@ jobs:
             scripts/audit_agcom_primary.py \
             scripts/apply_agcom_primary_percentages.py \
             scripts/apply_agcom_absolute_policy.py \
-            scripts/monthly_data_check_coverage.py
+            scripts/monthly_data_check_coverage.py \
+            scripts/monthly_data_check_status.py \
+            scripts/data_status_model.py \
+            scripts/build_data_status.py
 
       - name: Verify municipal crests
         run: |
@@ -152,11 +164,17 @@ jobs:
         run: |
           python scripts/test_monthly_data_check.py
           mkdir -p /tmp/monthly-data-check
-          python scripts/monthly_data_check_coverage.py \
+          python scripts/monthly_data_check_status.py \
             --mode offline \
             --report-md /tmp/monthly-data-check/report.md \
             --report-json /tmp/monthly-data-check/report.json \
             --next-state /tmp/monthly-data-check/state.json
+          python - <<'PY'
+          import json
+          state = json.load(open('/tmp/monthly-data-check/state.json', encoding='utf-8'))
+          assert state['schemaVersion'] == 2
+          assert len(state['metrics']) == 127
+          PY
 
       - name: Include Percorsi Versilia
         run: python scripts/copy_percorsi_dist.py
