@@ -87,7 +87,14 @@ def parse_number(value: Any) -> float | None:
 
 
 def is_pnrr(record: dict[str, Any]) -> bool:
-    return norm(record.get("area")) == "PNRR" or bool(str(record.get("misura_pnrr_estesa") or "").strip())
+    """Include PNRR e progetti misti PNRR-PNC, mai PNC puro.
+
+    Il feed usa anche la stringa ``NULL`` nei campi non valorizzati: la sola
+    presenza testuale di ``misura_pnrr_estesa`` non è quindi un criterio valido.
+    Il campo ``area`` è la classificazione ufficiale PNRR/PNC/PNRR-PNC.
+    """
+    area = norm(record.get("area"))
+    return area in {"PNRR", "PNRR PNC"}
 
 
 def concluded_from(record: dict[str, Any], field: str) -> bool:
