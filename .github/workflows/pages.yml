@@ -44,7 +44,9 @@ jobs:
         if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
         run: |
           python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
           python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
@@ -57,8 +59,11 @@ jobs:
       - name: Build PNRR Toscana deep dive draft
         if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
         run: |
+          node --check assets/pnrr-town-detail.js
           python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
           python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
 
       - name: Start local release server
         shell: bash
@@ -74,6 +79,10 @@ jobs:
           done
           cat /tmp/ov-release-http.log
           exit 1
+
+      - name: Validate PNRR Toscana town experience
+        if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
+        run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate income and inflation history in browser
         run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
@@ -158,10 +167,14 @@ jobs:
             scripts/pnrr_toscana_forensic.py \
             scripts/pnrr_toscana_snapshot_runner.py \
             scripts/materialize_pnrr_toscana_draft.py \
+            scripts/patch_pnrr_toscana_review.py \
             scripts/build_pnrr_toscana_deep_dive.py \
+            scripts/inject_pnrr_town_experience.py \
             scripts/test_pnrr_toscana_audit.py \
             scripts/test_pnrr_status_integration.py \
             scripts/test_pnrr_toscana_draft.py \
+            scripts/test_pnrr_toscana_review.py \
+            scripts/test_pnrr_toscana_town_browser.py \
             scripts/build_data_status.py \
             scripts/inject_data_status_runtime.py
 
