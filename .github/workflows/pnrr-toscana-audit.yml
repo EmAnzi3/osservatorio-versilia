@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/pnrr_toscana_audit.py"
       - "scripts/pnrr_toscana_forensic.py"
+      - "scripts/pnrr_toscana_snapshot_runner.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - ".github/workflows/pnrr-toscana-audit.yml"
       - "data/site-data.json"
@@ -28,19 +29,36 @@ jobs:
       - name: Unit tests
         run: |
           python scripts/test_pnrr_toscana_audit.py
-          python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_forensic.py scripts/test_pnrr_toscana_audit.py
+          python -m py_compile \
+            scripts/pnrr_toscana_audit.py \
+            scripts/pnrr_toscana_forensic.py \
+            scripts/pnrr_toscana_snapshot_runner.py \
+            scripts/test_pnrr_toscana_audit.py
 
-      - name: Live read-only audit
+      - name: Download one official source snapshot
         run: |
-          python scripts/pnrr_toscana_audit.py \
-            --output-json reports/pnrr-toscana-audit.json \
-            --output-md reports/pnrr-toscana-audit.md
+          mkdir -p reports/runtime
+          curl \
+            --fail \
+            --location \
+            --retry 4 \
+            --retry-delay 5 \
+            --retry-all-errors \
+            --connect-timeout 20 \
+            --max-time 360 \
+            --user-agent "OsservatorioVersiliaDataMonitor/1.1 (+https://osservatorioversilia.it/)" \
+            "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv" \
+            --output reports/runtime/rt-pnrr-current.csv
+          test -s reports/runtime/rt-pnrr-current.csv
 
-      - name: Project-level forensic inventory
+      - name: Audit and project-level forensic inventory
         run: |
-          python scripts/pnrr_toscana_forensic.py \
-            --output-json reports/pnrr-toscana-forensic.json \
-            --output-md reports/pnrr-toscana-forensic.md
+          python scripts/pnrr_toscana_snapshot_runner.py \
+            --source reports/runtime/rt-pnrr-current.csv \
+            --audit-json reports/pnrr-toscana-audit.json \
+            --audit-md reports/pnrr-toscana-audit.md \
+            --forensic-json reports/pnrr-toscana-forensic.json \
+            --forensic-md reports/pnrr-toscana-forensic.md
 
       - name: Upload audit
         uses: actions/upload-artifact@v4
