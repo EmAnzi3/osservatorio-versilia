@@ -38,6 +38,10 @@ CONCLUSION_FIELDS = (
     "fase_regis",
     "data_fine_effettiva_chiusura_intervento",
 )
+# È il campo sintetico ReGiS che usa esplicitamente la fase "5. conclusione".
+# Gli altri campi restano nel rapporto come diagnostica, ma non determinano
+# automaticamente lo stato dell'indicatore pubblico.
+CANONICAL_CONCLUSION_FIELD = "fase_avanzamento_da_regis"
 
 
 def norm(value: Any) -> str:
@@ -168,11 +172,18 @@ def select_town_projects(
         project_id = str(row.get("id_progetto") or row.get("cup") or "").strip()
         if not project_id:
             continue
+        # Il feed può ripetere lo stesso progetto per localizzazioni diverse.
         by_town[matched_code][project_id] = dict(row)
         date = str(row.get("data_elaborazione") or "").strip()
         if date:
             elaboration_dates.add(date)
     return by_town, elaboration_dates, scanned
+
+
+def _metric_verdict(comparable: bool, matches: bool) -> str:
+    if not comparable:
+        return "not_comparable"
+    return "match" if matches else "different_current_snapshot"
 
 
 def audit_records(data: dict[str, Any], records: Iterable[dict[str, Any]]) -> dict[str, Any]:
@@ -233,12 +244,19 @@ def audit_records(data: dict[str, Any], records: Iterable[dict[str, Any]]) -> di
             "conclusionCandidates": conclusion_candidates,
         }
 
-    matching_conclusion_fields = [field for field, match in conclusion_matches.items() if match]
-    schema_comparable = total_selected > 0 and all(item["selectedProjects"] > 0 for item in per_town.values())
-    if not schema_comparable:
-        verdict = "not_comparable"
-    elif funding_match_all and matching_conclusion_fields:
+    all_towns_have_projects = total_selected > 0 and all(item["selectedProjects"] > 0 for item in per_town.values())
+    funding_comparable = all_towns_have_projects and all(item["missingFundingAmounts"] == 0 for item in per_town.values())
+    concluded_comparable = all_towns_have_projects
+    canonical_conclusion_match = conclusion_matches[CANONICAL_CONCLUSION_FIELD]
+
+    metric_verdicts = {
+        "pnrrFunding": _metric_verdict(funding_comparable, funding_match_all),
+        "pnrrConcluded": _metric_verdict(concluded_comparable, canonical_conclusion_match),
+    }
+    if all(value == "match" for value in metric_verdicts.values()):
         verdict = "match"
+    elif any(value == "not_comparable" for value in metric_verdicts.values()):
+        verdict = "not_comparable"
     else:
         verdict = "different_current_snapshot"
 
@@ -251,16 +269,19 @@ def audit_records(data: dict[str, Any], records: Iterable[dict[str, Any]]) -> di
         "selectedProjects": total_selected,
         "dataElaborationDates": sorted(elaboration_dates),
         "perTown": per_town,
-        "fundingMatch7of7": funding_match_all,
-        "conclusionDefinitionMatches": matching_conclusion_fields,
+        "fundingComparable7of7": funding_comparable,
+        "fundingMatch7of7": funding_match_all if funding_comparable else False,
+        "canonicalConclusionField": CANONICAL_CONCLUSION_FIELD,
+        "concludedComparable7of7": concluded_comparable,
+        "concludedMatch7of7": canonical_conclusion_match if concluded_comparable else False,
+        "metricVerdicts": metric_verdicts,
         "conclusionFieldMatchMatrix": conclusion_matches,
         "conclusionSamples": {field: sorted(values)[:30] for field, values in conclusion_samples.items()},
         "verdict": verdict,
-        "eligibleForAutomaticVerification": verdict == "match",
+        "eligibleForAutomaticVerification": all(value == "match" for value in metric_verdicts.values()),
         "note": (
-            "Il feed viene considerato equivalente solo con confronto 7/7. "
-            "Una fotografia più recente ma numericamente diversa non modifica automaticamente i dati pubblicati: "
-            "diventa un segnale di rilascio da validare."
+            "Ogni indicatore riceve un verdetto separato. Una fotografia ufficiale diversa non modifica "
+            "automaticamente i dati pubblicati: diventa un segnale di rilascio da validare per il solo indicatore coinvolto."
         ),
     }
 
@@ -270,16 +291,17 @@ def audit(data: dict[str, Any]) -> dict[str, Any]:
 
 
 def markdown(result: dict[str, Any]) -> str:
-    fields = result.get("conclusionDefinitionMatches") or []
-    conclusion_field = fields[0] if fields else "fase_avanzamento_da_regis"
+    conclusion_field = str(result.get("canonicalConclusionField") or CANONICAL_CONCLUSION_FIELD)
+    metric_verdicts = result.get("metricVerdicts") if isinstance(result.get("metricVerdicts"), dict) else {}
     lines = [
         "# Audit PNRR · Regione Toscana",
         "",
-        f"**Verdetto:** `{result['verdict']}`  ",
+        f"**Verdetto complessivo:** `{result['verdict']}`  ",
         f"**Fotografia regionale:** {', '.join(result.get('dataElaborationDates', [])) or 'n.d.'}  ",
         f"**Progetti selezionati:** {result.get('selectedProjects', 0)}  ",
-        f"**Finanziamenti coincidenti 7/7:** {'sì' if result.get('fundingMatch7of7') else 'no'}  ",
-        f"**Definizione conclusione coincidente 7/7:** {', '.join(fields) if fields else 'nessuna'}",
+        f"**Risorse PNRR:** `{metric_verdicts.get('pnrrFunding', '')}`  ",
+        f"**Progetti conclusi:** `{metric_verdicts.get('pnrrConcluded', '')}`  ",
+        f"**Campo conclusione:** `{conclusion_field}`",
         "",
         "| Comune | Progetti | €/res osservato | €/res pubblicato | Conclusi osservati | Conclusi pubblicati |",
         "|---|---:|---:|---:|---:|---:|",
@@ -293,9 +315,10 @@ def markdown(result: dict[str, Any]) -> str:
             f"{obs_f if obs_f is not None else 'n.d.'} | {item['publishedFundingPerResident']} | "
             f"{obs_c if obs_c is not None else 'n.d.'}% | {item['publishedConcludedPercent']}% |"
         )
-    lines.extend(["", "## Esito per definizione di conclusione", ""])
+    lines.extend(["", "## Diagnostica delle definizioni di conclusione", ""])
     for field, match in result.get("conclusionFieldMatchMatrix", {}).items():
-        lines.append(f"- `{field}`: {'match 7/7' if match else 'differenze presenti'}")
+        suffix = " — campo usato dal monitor" if field == conclusion_field else ""
+        lines.append(f"- `{field}`: {'match 7/7' if match else 'differenze presenti'}{suffix}")
     lines.extend(["", result["note"], ""])
     return "\n".join(lines)
 
