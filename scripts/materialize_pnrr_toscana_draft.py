@@ -158,7 +158,6 @@ def patch_site_data(data: dict[str, Any]) -> None:
     )
 
     patch_town_summaries(data)
-    data["updated"] = "18 agosto 2026"
 
 
 def patch_registry(registry: dict[str, Any]) -> None:
