@@ -44,7 +44,9 @@ jobs:
         run: python scripts/build_static_brand.py
 
       - name: Materialize public data status
-        run: python scripts/build_data_status.py
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
 
       - name: Start local release server
         shell: bash
@@ -140,7 +142,8 @@ jobs:
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
             scripts/data_status_model.py \
-            scripts/build_data_status.py
+            scripts/build_data_status.py \
+            scripts/inject_data_status_runtime.py
 
       - name: Verify municipal crests
         run: |
