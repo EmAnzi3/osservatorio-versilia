@@ -18,8 +18,11 @@ on:
       - "scripts/monthly_data_check_coverage.py"
       - "scripts/monthly_data_check_status.py"
       - "scripts/data_status_model.py"
+      - "scripts/pnrr_toscana_audit.py"
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
+      - "scripts/test_pnrr_toscana_audit.py"
+      - "scripts/test_pnrr_status_integration.py"
       - "scripts/restore_partial_agcom_metrics.py"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
@@ -55,7 +58,15 @@ jobs:
       - name: Run monitor unit tests
         run: |
           python scripts/test_monthly_data_check.py
-          python -m py_compile scripts/monthly_data_check_coverage.py scripts/monthly_data_check_status.py scripts/data_status_model.py
+          python scripts/test_pnrr_toscana_audit.py
+          python scripts/test_pnrr_status_integration.py
+          python -m py_compile \
+            scripts/monthly_data_check_coverage.py \
+            scripts/monthly_data_check_status.py \
+            scripts/data_status_model.py \
+            scripts/pnrr_toscana_audit.py \
+            scripts/test_pnrr_toscana_audit.py \
+            scripts/test_pnrr_status_integration.py
 
       - name: Prepare check
         id: prepare
@@ -110,6 +121,7 @@ jobs:
           - nessun valore viene pubblicato automaticamente;
           - le anomalie bloccano il controllo;
           - il controllo distingue raggiungibilità della fonte e attualità del dato;
+          - per i due indicatori PNRR usa anche il feed ufficiale machine-readable di Regione Toscana come verifica del perimetro ReGiS;
           - ogni esecuzione live registra metadata aggiornati in una PR in bozza;
           - ogni commento mensile menziona il responsabile del progetto.
           EOF
@@ -150,7 +162,7 @@ jobs:
 
           Questa PR registra la data effettiva del controllo, lo stato operativo delle fonti e degli indicatori e gli eventuali segnali da verificare. Anche quando non emergono variazioni sostanziali, la PR aggiorna i soli metadata di controllo: i valori di \`data/site-data.json\` restano invariati.
 
-          Un cambiamento tecnico della fonte non equivale automaticamente a un nuovo rilascio. L'aggiornamento dei valori richiede acquisizione, validazione e revisione separata prima del merge.
+          Un cambiamento tecnico della fonte non equivale automaticamente a un nuovo rilascio. Per PNRR, una fotografia machine-readable ufficiale Regione Toscana/ReGiS diversa da quella pubblicata genera soltanto \`release_detected\`: l'aggiornamento dei valori richiede acquisizione, validazione e revisione separata prima del merge.
 
           ---
 
