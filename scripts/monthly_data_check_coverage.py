@@ -64,6 +64,25 @@ def compare_states(
     return ORIGINAL_COMPARE_STATES(prepared_previous, prepared_current)
 
 
+def _strip_partial_series_nulls(row: dict[str, Any]) -> None:
+    """Rimuove solo dalla copia di validazione gli anni dichiaratamente non disponibili.
+
+    Una serie di un indicatore con copertura parziale può legittimamente contenere
+    `null` per un Comune/anno non osservato. Il monitor base vieta i null in assoluto,
+    quindi qui li escludiamo dalla copia temporanea senza alterare il dataset reale.
+    """
+    series = row.get("series")
+    if not isinstance(series, dict):
+        return
+    years = series.get("years")
+    values = series.get("values")
+    if not isinstance(years, list) or not isinstance(values, list) or len(years) != len(values):
+        return
+    pairs = [(year, value) for year, value in zip(years, values) if value is not None]
+    series["years"] = [year for year, _ in pairs]
+    series["values"] = [value for _, value in pairs]
+
+
 def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
     prepared = copy.deepcopy(data)
     findings = []
@@ -84,6 +103,7 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
             if not match:
                 continue
             declared_available, declared_total = map(int, match.groups())
+            partial_coverage = declared_available < declared_total
             if expected_total and declared_total != expected_total:
                 findings.append(
                     base.finding(
@@ -112,8 +132,15 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                     )
                 )
 
+            if partial_coverage:
+                for row in rows:
+                    if isinstance(row, dict):
+                        _strip_partial_series_nulls(row)
+
             for row in missing_rows:
-                if row.get("formatted") != "n.d.":
+                # Il frontend formatta i valori null come n.d.; il campo `formatted`
+                # non è obbligatorio per una riga dichiaratamente fuori copertura.
+                if not partial_coverage and row.get("formatted") != "n.d.":
                     findings.append(
                         base.finding(
                             "error",
