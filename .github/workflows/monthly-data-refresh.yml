@@ -62,9 +62,10 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           PROBE_SOURCES: ${{ github.event.inputs.probe_sources }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           MODE="live"
-          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+          if [[ "$EVENT_NAME" == "pull_request" && "$HEAD_REF" != "agent/stato-dati" ]]; then
             MODE="offline"
           elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$PROBE_SOURCES" == "false" ]]; then
             MODE="offline"
