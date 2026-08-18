@@ -112,6 +112,7 @@ def build_forensic(data: dict[str, Any]) -> dict[str, Any]:
     return {
         "dataset": audit.DATASET_URL,
         "resource": audit.MAIN_CSV_URL,
+        "scope": "area PNRR o PNRR-PNC; PNC puro escluso",
         "recordsScanned": scanned,
         "dataElaborationDates": sorted(dates),
         "selectedUniqueProjects": len(inventory),
@@ -134,6 +135,7 @@ def markdown(result: dict[str, Any]) -> str:
         "# Verifica forense PNRR · Regione Toscana",
         "",
         f"- Fotografia: `{', '.join(result['dataElaborationDates']) or 'n.d.'}`",
+        f"- Perimetro: {result.get('scope', 'PNRR')}",
         f"- Record sorgente scansionati: {result['recordsScanned']}",
         f"- Progetti unici selezionati: {result['selectedUniqueProjects']}",
         f"- Progetti conclusi (`{audit.CANONICAL_CONCLUSION_FIELD}`): {concluded}",
