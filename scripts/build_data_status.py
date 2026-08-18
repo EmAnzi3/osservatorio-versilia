@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -39,15 +40,17 @@ def fmt_date(value: str) -> str:
         return value
 
 
-def metric_href(metric: dict[str, Any]) -> str:
-    import re
+def metric_slug(metric: dict[str, Any]) -> str:
     import unicodedata
 
     value = str(metric.get("label") or "")
     value = unicodedata.normalize("NFD", value.lower())
     value = "".join(ch for ch in value if unicodedata.category(ch) != "Mn")
-    slug = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
-    return f"../indicatori/{slug}/"
+    return re.sub(r"[^a-z0-9]+", "-", value).strip("-")
+
+
+def metric_href(metric: dict[str, Any]) -> str:
+    return f"../indicatori/{metric_slug(metric)}/"
 
 
 def next_release_markup(metric: dict[str, Any]) -> str:
@@ -148,20 +151,67 @@ def build_page(status: dict[str, Any]) -> str:
 '''
 
 
-def inject_indicator_assets() -> None:
+def indicator_status_block(metric: dict[str, Any]) -> str:
+    return (
+        f'<div data-data-status-row="period"><dt>Periodo pubblicato</dt><dd>{html.escape(metric["publishedPeriod"] or "—")}</dd></div>'
+        f'<div data-data-status-row="state"><dt>Stato del dato</dt><dd>'
+        f'<span class="status-badge status-{html.escape(metric["statusTone"])}">{html.escape(metric["statusLabel"])}</span>'
+        f'<small class="indicator-status-note">{html.escape(metric["statusDescription"])}</small></dd></div>'
+    )
+
+
+def inject_indicator_status(status: dict[str, Any]) -> None:
+    by_slug = {metric_slug(metric): metric for metric in status["metrics"]}
+    found = 0
     for path in (DIST / "indicatori").glob("*/index.html"):
+        metric = by_slug.get(path.parent.name)
+        if not metric:
+            continue
         text = path.read_text(encoding="utf-8")
         if "assets/data-status.css" not in text:
             text = text.replace(
                 "</head>",
                 '  <link rel="stylesheet" href="../../assets/data-status.css">\n</head>',
             )
-        if "assets/data-status.js" not in text:
+        marker = '<div class="indicator-governance-grid"><dl>'
+        if 'data-data-status-row="state"' not in text:
+            if marker not in text:
+                raise SystemExit(f"Blocco governance non trovato in {path}")
+            text = text.replace(marker, marker + indicator_status_block(metric), 1)
+
+        text = text.replace(
+            "<dt>Ultimo controllo della fonte</dt>",
+            "<dt>Ultimo controllo Osservatorio</dt>",
+        )
+        checked = html.escape(fmt_date(metric.get("lastChecked", "")))
+        text, substitutions = re.subn(
+            r'(<dt>Ultimo controllo Osservatorio</dt><dd>).*?(</dd>)',
+            rf'\g<1>{checked}\g<2>',
+            text,
+            count=1,
+        )
+        if substitutions != 1:
+            raise SystemExit(f"Data ultimo controllo non materializzata in {path}")
+
+        release = metric.get("nextExpectedRelease")
+        if isinstance(release, dict) and release.get("value"):
+            release_value = html.escape(str(release["value"]))
+            text, substitutions = re.subn(
+                r'<dt>Prossimo aggiornamento atteso</dt><dd>.*?</dd>',
+                f'<dt>Prossimo rilascio atteso</dt><dd>{release_value}</dd>',
+                text,
+                count=1,
+            )
+        else:
             text = text.replace(
-                "</body>",
-                '  <script src="../../assets/data-status.js" defer></script>\n</body>',
+                "<dt>Prossimo aggiornamento atteso</dt>",
+                "<dt>Cadenza indicativa</dt>",
             )
         path.write_text(text, encoding="utf-8")
+        found += 1
+
+    if found != 123:
+        raise SystemExit(f"Attese 123 schede indicatore statiche, aggiornate {found}")
 
 
 def add_project_link() -> None:
@@ -202,7 +252,7 @@ def main() -> None:
     page = DIST / "stato-dati" / "index.html"
     page.parent.mkdir(parents=True, exist_ok=True)
     page.write_text(build_page(status), encoding="utf-8")
-    inject_indicator_assets()
+    inject_indicator_status(status)
     add_project_link()
     add_sitemap_entry()
     print(f"Stato dati materializzato: {status['metricCount']} indicatori")
