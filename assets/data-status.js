@@ -5,6 +5,18 @@
   const ROOT = new URL('../', script?.src || location.href);
   const statusHref = new URL('stato-dati/', ROOT).href;
 
+  function loadNativeRuntime() {
+    if (document.body.dataset.page !== 'status') return;
+    if (document.querySelector('script[data-status-native-runtime]')) return;
+    const source = document.body.dataset.statusAppBundle;
+    if (!source) return;
+    const runtime = document.createElement('script');
+    runtime.src = new URL(source, location.href).href;
+    runtime.async = false;
+    runtime.dataset.statusNativeRuntime = 'true';
+    document.head.append(runtime);
+  }
+
   function installFilters() {
     const table = document.querySelector('.data-status-table');
     if (!table) return;
@@ -159,6 +171,7 @@
     installFilters();
     installIndicatorPersistence();
     installNavigationPersistence();
+    loadNativeRuntime();
   }
 
   if (document.readyState === 'loading') {
