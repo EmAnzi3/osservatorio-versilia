@@ -38,9 +38,20 @@ def metric_state() -> dict[str, dict[str, object]]:
     }
 
 
-def audit_result(verdict: str) -> dict[str, object]:
+def audit_result(funding: str, concluded: str) -> dict[str, object]:
+    overall = (
+        "match"
+        if funding == concluded == "match"
+        else "not_comparable"
+        if "not_comparable" in {funding, concluded}
+        else "different_current_snapshot"
+    )
     return {
-        "verdict": verdict,
+        "verdict": overall,
+        "metricVerdicts": {
+            "pnrrFunding": funding,
+            "pnrrConcluded": concluded,
+        },
         "resource": "https://www301.regione.toscana.it/example.csv",
         "dataset": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
         "dataElaborationDates": ["2026-08-11"],
@@ -53,7 +64,7 @@ def test_release_detection_beats_limited_landing() -> None:
     state = metric_state()
     apply_pnrr_verification_result(
         state,
-        audit_result("different_current_snapshot"),
+        audit_result("different_current_snapshot", "different_current_snapshot"),
         "2026-08-18T15:00:00+00:00",
     )
     for item in state.values():
@@ -68,7 +79,7 @@ def test_verified_match_can_override_limited_landing() -> None:
     state = metric_state()
     apply_pnrr_verification_result(
         state,
-        audit_result("match"),
+        audit_result("match", "match"),
         "2026-08-18T15:00:00+00:00",
     )
     for item in state.values():
@@ -79,6 +90,19 @@ def test_verified_match_can_override_limited_landing() -> None:
         assert derive_status("2026", LIMITED_PROBE, item) == "current"
 
 
+def test_indicators_are_independent() -> None:
+    state = metric_state()
+    apply_pnrr_verification_result(
+        state,
+        audit_result("different_current_snapshot", "match"),
+        "2026-08-18T15:00:00+00:00",
+    )
+    assert state["pnrrFunding"]["status"] == "release_detected"
+    assert state["pnrrConcluded"]["status"] == "current"
+    assert derive_status("2026", LIMITED_PROBE, state["pnrrFunding"]) == "release_detected"
+    assert derive_status("2026", LIMITED_PROBE, state["pnrrConcluded"]) == "current"
+
+
 def test_arbitrary_current_flag_does_not_override_limited_landing() -> None:
     operational = {
         "status": "current",
@@ -87,21 +111,23 @@ def test_arbitrary_current_flag_does_not_override_limited_landing() -> None:
     assert derive_status("2026", LIMITED_PROBE, operational) == "source_access_limited"
 
 
-def test_not_comparable_remains_prudent() -> None:
+def test_not_comparable_is_per_metric() -> None:
     state = metric_state()
     apply_pnrr_verification_result(
         state,
-        audit_result("not_comparable"),
+        audit_result("not_comparable", "match"),
         "2026-08-18T15:00:00+00:00",
     )
-    for item in state.values():
-        assert item["status"] == "verification_required"
-        assert derive_status("2026", LIMITED_PROBE, item) == "verification_required"
+    assert state["pnrrFunding"]["status"] == "verification_required"
+    assert state["pnrrConcluded"]["status"] == "current"
+    assert derive_status("2026", LIMITED_PROBE, state["pnrrFunding"]) == "verification_required"
+    assert derive_status("2026", LIMITED_PROBE, state["pnrrConcluded"]) == "current"
 
 
 if __name__ == "__main__":
     test_release_detection_beats_limited_landing()
     test_verified_match_can_override_limited_landing()
+    test_indicators_are_independent()
     test_arbitrary_current_flag_does_not_override_limited_landing()
-    test_not_comparable_remains_prudent()
+    test_not_comparable_is_per_metric()
     print("OK: integrazione stato PNRR Toscana")
