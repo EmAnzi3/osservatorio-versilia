@@ -108,13 +108,16 @@ def build_metric_state(
     return result
 
 
-def verification_evidence(audit_result: dict[str, Any]) -> dict[str, Any]:
+def verification_evidence(audit_result: dict[str, Any], metric_key: str) -> dict[str, Any]:
+    metric_verdicts = audit_result.get("metricVerdicts")
+    metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}
     return {
         "provider": "Regione Toscana — Open Data PNRR",
         "url": str(audit_result.get("resource") or pnrr_toscana_audit.MAIN_CSV_URL),
         "datasetUrl": str(audit_result.get("dataset") or pnrr_toscana_audit.DATASET_URL),
         "dataElaborationDates": list(audit_result.get("dataElaborationDates") or []),
-        "verdict": str(audit_result.get("verdict") or ""),
+        "metric": metric_key,
+        "verdict": str(metric_verdicts.get(metric_key) or audit_result.get("verdict") or ""),
         "recordsScanned": int(audit_result.get("recordsScanned") or 0),
         "selectedProjects": int(audit_result.get("selectedProjects") or 0),
     }
@@ -125,18 +128,21 @@ def apply_pnrr_verification_result(
     audit_result: dict[str, Any],
     checked_at: str,
 ) -> None:
-    """Applica l'esito del feed regionale senza modificare alcun valore pubblicato.
+    """Applica separatamente l'esito dei due indicatori PNRR.
 
-    - match 7/7: il periodo pubblicato è verificato anche sulla fonte machine-readable;
-    - fotografia diversa: nuovo rilascio da validare umanamente;
+    - match 7/7: il periodo pubblicato è certificato dalla fonte machine-readable;
+    - fotografia diversa: solo l'indicatore coinvolto diventa release_detected;
     - perimetro non confrontabile: resta necessaria la verifica manuale.
     """
-    evidence = verification_evidence(audit_result)
-    verdict = str(audit_result.get("verdict") or "")
+    metric_verdicts = audit_result.get("metricVerdicts")
+    metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}
+
     for key in PNRR_METRICS:
         item = metrics.get(key)
         if not isinstance(item, dict):
             continue
+        evidence = verification_evidence(audit_result, key)
+        verdict = str(metric_verdicts.get(key) or audit_result.get("verdict") or "")
         item["checkedAt"] = checked_at or str(item.get("checkedAt") or "")
         item["verificationEvidence"] = evidence
         if verdict == "match":
@@ -198,16 +204,18 @@ def append_report_section(
         lines.append(f"| {labels[key]} | {counts.get(key, 0)} |")
 
     if pnrr_result is not None:
+        metric_verdicts = pnrr_result.get("metricVerdicts")
+        metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}
         lines.extend(
             [
                 "",
                 "### Verifica PNRR Regione Toscana",
                 "",
-                f"- Verdetto: `{pnrr_result.get('verdict', '')}`",
                 f"- Fotografia: `{', '.join(pnrr_result.get('dataElaborationDates') or []) or 'n.d.'}`",
                 f"- Progetti dei sette Comuni come soggetti attuatori: {pnrr_result.get('selectedProjects', 0)}",
-                f"- Finanziamenti coincidenti 7/7: {'sì' if pnrr_result.get('fundingMatch7of7') else 'no'}",
-                "- Una differenza genera solo `release_detected`: nessun valore viene pubblicato automaticamente.",
+                f"- Risorse PNRR per residente: `{metric_verdicts.get('pnrrFunding', '')}`",
+                f"- Progetti PNRR conclusi: `{metric_verdicts.get('pnrrConcluded', '')}`",
+                "- Una differenza genera solo `release_detected` sull'indicatore coinvolto: nessun valore viene pubblicato automaticamente.",
             ]
         )
     elif pnrr_error:
