@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
+SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
 
 
 def slugify(value: str) -> str:
@@ -36,6 +37,37 @@ def italian_date(value: str) -> str:
         "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre",
     ]
     return f"{date.day} {months[date.month - 1]} {date.year}"
+
+
+def enrich_status_page() -> None:
+    path = DIST / "stato-dati" / "index.html"
+    text = path.read_text(encoding="utf-8")
+    if "../assets/fonts.css" not in text:
+        text = text.replace(
+            '<link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">',
+            '<link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">\n'
+            '  <link rel="stylesheet" href="../assets/fonts.css">',
+            1,
+        )
+
+    if 'property="og:url"' not in text:
+        social = f'''  <meta property="og:url" content="https://osservatorioversilia.it/stato-dati/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="{SOCIAL_IMAGE}">
+  <meta property="og:image:alt" content="Versilia, Viareggio e Alpi Apuane">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stato dei dati · Osservatorio Versilia">
+  <meta name="twitter:description" content="Quando sono stati controllati i dati, quale periodo è pubblicato e cosa sappiamo sul prossimo aggiornamento.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="{SOCIAL_IMAGE}">
+  <meta name="twitter:image:alt" content="Versilia, Viareggio e Alpi Apuane">
+'''
+        text = text.replace(
+            '  <meta property="og:locale" content="it_IT">\n',
+            '  <meta property="og:locale" content="it_IT">\n' + social,
+            1,
+        )
+    path.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
@@ -74,6 +106,7 @@ def main() -> None:
 
     if injected != 123:
         raise SystemExit(f"Attese 123 schede indicatore, payload incorporato in {injected}")
+    enrich_status_page()
     print("Payload stato dati incorporato nelle 123 schede indicatore")
 
 
