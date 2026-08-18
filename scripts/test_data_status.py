@@ -68,9 +68,15 @@ def main() -> None:
         assert "data-status-project-link" in project
         indicators = list((dist / "indicatori").glob("*/index.html"))
         assert len(indicators) == 123
-        assert all("assets/data-status.js" in path.read_text(encoding="utf-8") for path in indicators)
+        for path in indicators:
+            text = path.read_text(encoding="utf-8")
+            assert 'data-data-status-row="period"' in text, path
+            assert 'data-data-status-row="state"' in text, path
+            assert "Ultimo controllo Osservatorio" in text, path
+            assert "Prossimo aggiornamento atteso" not in text, path
+            assert "assets/data-status.css" in text, path
 
-    print("Data status tests passed: 127 indicators, cautious states, climate full years only.")
+    print("Data status tests passed: 127 indicators, static metadata, climate full years only.")
 
 
 if __name__ == "__main__":
