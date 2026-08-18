@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import re
 import unicodedata
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,14 +30,14 @@ def italian_date(value: str) -> str:
     from datetime import datetime
 
     try:
-        date = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return value
     months = [
         "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
         "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre",
     ]
-    return f"{date.day} {months[date.month - 1]} {date.year}"
+    return f"{parsed.day} {months[parsed.month - 1]} {parsed.year}"
 
 
 def enrich_status_page() -> None:
@@ -68,6 +69,17 @@ def enrich_status_page() -> None:
             1,
         )
     path.write_text(text, encoding="utf-8")
+
+
+def ensure_status_sitemap_lastmod() -> None:
+    path = DIST / "sitemap.xml"
+    text = path.read_text(encoding="utf-8")
+    url = "https://osservatorioversilia.it/stato-dati/"
+    bare = f"<url><loc>{url}</loc></url>"
+    complete = f"<url><loc>{url}</loc><lastmod>{date.today().isoformat()}</lastmod></url>"
+    if bare in text:
+        text = text.replace(bare, complete, 1)
+        path.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
@@ -107,6 +119,7 @@ def main() -> None:
     if injected != 123:
         raise SystemExit(f"Attese 123 schede indicatore, payload incorporato in {injected}")
     enrich_status_page()
+    ensure_status_sitemap_lastmod()
     print("Payload stato dati incorporato nelle 123 schede indicatore")
 
 
