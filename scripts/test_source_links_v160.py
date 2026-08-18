@@ -14,6 +14,7 @@ ASIA_DATAFLOW_URL = (
     "IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/"
     "183_1163_DF_DICA_ASIAULP_TERRIFDATA_7"
 )
+PNRR_TOSCANA_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
 ASIA_DATAFLOW_KEYS = {
     "localEmployees",
     "employeesPerLocalUnit",
@@ -31,7 +32,8 @@ EXPECTED = {
     "motorization": "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/",
     "evPoints": "https://www.piattaformaunicanazionale.it/idr",
     "floodExposure": "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali",
-    "pnrrFunding": "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html",
+    "pnrrFunding": PNRR_TOSCANA_URL,
+    "pnrrConcluded": PNRR_TOSCANA_URL,
     "cashReceiptsPerResident": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
 }
 
@@ -96,6 +98,9 @@ def main() -> None:
     require(DATA["metrics"]["cashReceiptsPerResident"]["sourceUrl"] ==
             DATA["metrics"]["cashBalancePerResident"]["sourceUrl"],
             "Gli indicatori SIOPE di cassa devono rinviare alla stessa pagina OpenBDAP")
+    require(DATA["metrics"]["pnrrFunding"]["sourceUrl"] ==
+            DATA["metrics"]["pnrrConcluded"]["sourceUrl"] == PNRR_TOSCANA_URL,
+            "I due indicatori PNRR devono rinviare allo stesso dataset Regione Toscana")
 
     print(f"Link fonte validati staticamente: {len(links)} indicatori.")
 
