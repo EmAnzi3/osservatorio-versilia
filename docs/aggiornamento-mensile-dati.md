@@ -48,12 +48,15 @@ Gli stati pubblici descrivono l'attualità del singolo indicatore, non l'esito t
 
 - `current` — **Ultimo dato disponibile**: il periodo pubblicato coincide con l'ultimo periodo effettivamente verificato sulla fonte;
 - `source_checked` — **Fonte controllata**: la fonte è raggiungibile, ma il monitor non può certificare automaticamente quale sia l'ultimo periodo disponibile;
+- `source_access_limited` — **Controllo automatico limitato**: il portale ufficiale respinge o limita le richieste automatizzate; non viene considerato né fonte guasta né dato aggiornato e resta necessaria la verifica manuale;
 - `release_detected` — **Nuovo rilascio da verificare**: è stato verificato o registrato un periodo più recente di quello pubblicato; serve validazione prima di modificare i valori;
 - `update_expected` — **Aggiornamento atteso**: è arrivata una finestra di rilascio documentata, senza conferma di un nuovo dato;
-- `source_unavailable` — **Fonte temporaneamente non verificabile**;
+- `source_unavailable` — **Fonte temporaneamente non verificabile**: il controllo fallisce per indisponibilità reale, errore di rete/TLS non recuperabile o risposta del servizio che non rientra tra le limitazioni note dell'automazione;
 - `verification_required` — **Verifica necessaria** per un cambiamento tecnico o una situazione ambigua.
 
-Una fonte raggiungibile senza un periodo osservato viene quindi classificata `source_checked`, non `current`.
+Una fonte raggiungibile senza un periodo osservato viene quindi classificata `source_checked`, non `current`. Una nuova URL che entra nella baseline del monitor non diventa automaticamente `verification_required`: servono un cambiamento sostanziale di una fonte già monitorata o un'altra ambiguità effettiva.
+
+Per alcuni portali istituzionali il monitor può usare, esclusivamente per verificare la raggiungibilità, un endpoint alternativo ufficiale dello stesso servizio o un client HTTP compatibile. L'URL pubblicato dell'indicatore non viene sostituito e il fallback non costituisce prova di un nuovo rilascio. Se anche gli endpoint ufficiali respingono sistematicamente i client automatici con risposte quali 401, 403 o 429, la fonte viene classificata `source_access_limited` invece di essere dichiarata indisponibile.
 
 ## Prossimo rilascio
 
@@ -89,7 +92,7 @@ Gli esiti tecnici dell'esecuzione restano distinti dagli stati dei singoli indic
 - `changes_detected`: una fonte è stata aggiunta, rimossa, reindirizzata o un file ufficiale è cambiato;
 - `attention_required`: il dataset non supera i controlli strutturali; workflow fallito e pubblicazione impedita.
 
-Le fonti non raggiungibili sono segnalate senza cancellare dati esistenti: alcuni portali istituzionali bloccano i controlli automatici.
+Le fonti realmente non raggiungibili sono segnalate senza cancellare dati esistenti. Le limitazioni note e riproducibili dei portali verso i client automatici vengono invece registrate separatamente come `source_access_limited`.
 
 ## Politica delle fonti
 
