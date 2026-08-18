@@ -5,18 +5,6 @@
   const ROOT = new URL('../', script?.src || location.href);
   const statusHref = new URL('stato-dati/', ROOT).href;
 
-  function loadNativeRuntime() {
-    if (document.body.dataset.page !== 'status') return;
-    if (document.querySelector('script[data-status-native-runtime]')) return;
-    const source = document.body.dataset.statusAppBundle;
-    if (!source) return;
-    const runtime = document.createElement('script');
-    runtime.src = new URL(source, location.href).href;
-    runtime.async = false;
-    runtime.dataset.statusNativeRuntime = 'true';
-    document.head.append(runtime);
-  }
-
   function installFilters() {
     const table = document.querySelector('.data-status-table');
     if (!table) return;
@@ -24,6 +12,7 @@
     const status = document.querySelector('[data-status-filter]');
     const visible = document.querySelector('[data-status-visible]');
     const rows = [...table.querySelectorAll('tbody tr')];
+
     const update = () => {
       let count = 0;
       rows.forEach(row => {
@@ -34,9 +23,29 @@
       });
       if (visible) visible.textContent = `${count} indicatori visibili`;
     };
-    theme?.addEventListener('change', update);
-    status?.addEventListener('change', update);
+
+    if (table.dataset.statusFiltersInstalled !== 'true') {
+      theme?.addEventListener('change', update);
+      status?.addEventListener('change', update);
+      table.dataset.statusFiltersInstalled = 'true';
+    }
     update();
+  }
+
+  function loadNativeRuntime() {
+    if (document.body.dataset.page !== 'status') return;
+    if (document.querySelector('script[data-status-native-runtime]')) return;
+    const source = document.body.dataset.statusAppBundle;
+    if (!source) return;
+    const runtime = document.createElement('script');
+    runtime.src = new URL(source, location.href).href;
+    runtime.async = false;
+    runtime.dataset.statusNativeRuntime = 'true';
+    runtime.addEventListener('load', () => {
+      installFilters();
+      ensureNavigationLinks();
+    }, { once: true });
+    document.head.append(runtime);
   }
 
   function readIndicatorStatus() {
