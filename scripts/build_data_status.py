@@ -63,6 +63,56 @@ def next_release_markup(metric: dict[str, Any]) -> str:
     return f'<small class="status-next">Prossimo rilascio atteso: {value}</small>'
 
 
+def read_native_shell() -> tuple[str, str, str, str]:
+    """Riusa shell e stylesheet già prodotti dalla build canonica del sito."""
+    template_path = DIST / "progetto" / "index.html"
+    if not template_path.exists():
+        raise SystemExit("Template nativo /progetto/ non trovato")
+    text = template_path.read_text(encoding="utf-8")
+
+    header_start = text.find('<div id="site-header-mount">')
+    app_start = text.find('<div id="app">', header_start)
+    footer_start = text.find('<div id="site-footer-mount">', app_start)
+    footer_end = text.find("<noscript>", footer_start)
+    if min(header_start, app_start, footer_start, footer_end) < 0:
+        raise SystemExit("Shell nativa non riconoscibile in /progetto/")
+
+    header = text[header_start:app_start]
+    footer = text[footer_start:footer_end]
+    head = text[:header_start]
+    styles = re.findall(r'<link\b[^>]*rel="stylesheet"[^>]*>', head, flags=re.IGNORECASE)
+    if not styles or not any("assets/fonts.css" in item for item in styles):
+        raise SystemExit("Stylesheet canonici non trovati nel template nativo")
+
+    bundle_match = re.search(
+        r'<script\b[^>]*src="([^"]*assets/app-bundle\.js[^"]*)"[^>]*></script>',
+        text[footer_end:],
+        flags=re.IGNORECASE,
+    )
+    if not bundle_match:
+        raise SystemExit("Runtime applicativo canonico non trovato")
+    return header, footer, "\n  ".join(styles), bundle_match.group(1)
+
+
+def patch_status_runtime() -> None:
+    """Consente al runtime canonico di montare shell/ricerca senza sovrascrivere #app."""
+    path = DIST / "assets" / "app-bundle.js"
+    if not path.exists():
+        raise SystemExit("Bundle applicativo non trovato")
+    text = path.read_text(encoding="utf-8")
+    marker = "      else if (pageType === 'feedback') renderFeedback(data);\n      else renderNotFound();"
+    replacement = (
+        "      else if (pageType === 'feedback') renderFeedback(data);\n"
+        "      else if (pageType === 'status') { /* contenuto prerenderizzato: non sostituire #app */ }\n"
+        "      else renderNotFound();"
+    )
+    if marker not in text:
+        if "pageType === 'status'" in text:
+            return
+        raise SystemExit("Punto di integrazione runtime stato dati non trovato")
+    path.write_text(text.replace(marker, replacement, 1), encoding="utf-8")
+
+
 def build_page(status: dict[str, Any]) -> str:
     counts = status["counts"]
     themes = sorted({row["themeLabel"] for row in status["metrics"] if row["themeLabel"]})
@@ -76,6 +126,7 @@ def build_page(status: dict[str, Any]) -> str:
               <td>{html.escape(fmt_date(row['lastChecked']))}</td>
             </tr>'''
         )
+
     status_options = "".join(
         f'<option value="{html.escape(key)}">{html.escape(meta["label"])}</option>'
         for key, meta in STATUS_META.items()
@@ -86,18 +137,40 @@ def build_page(status: dict[str, Any]) -> str:
     json_ld = json.dumps(
         {
             "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Stato dei dati · Osservatorio Versilia",
-            "url": "https://osservatorioversilia.it/stato-dati/",
-            "description": "Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.",
-            "isPartOf": {
-                "@type": "WebSite",
-                "name": "Osservatorio Versilia",
-                "url": "https://osservatorioversilia.it/",
-            },
+            "@graph": [
+                {
+                    "@type": "WebPage",
+                    "name": "Stato dei dati · Osservatorio Versilia",
+                    "url": "https://osservatorioversilia.it/stato-dati/",
+                    "description": "Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.",
+                    "inLanguage": "it-IT",
+                    "isAccessibleForFree": True,
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Osservatorio Versilia",
+                            "item": "https://osservatorioversilia.it/",
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "Stato dei dati",
+                            "item": "https://osservatorioversilia.it/stato-dati/",
+                        },
+                    ],
+                },
+            ],
         },
         ensure_ascii=False,
+        separators=(",", ":"),
     )
+    header, footer, native_styles, app_bundle = read_native_shell()
+    app_bundle = html.escape(app_bundle, quote=True)
+
     return f'''<!doctype html>
 <html lang="it">
 <head>
@@ -105,46 +178,60 @@ def build_page(status: dict[str, Any]) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stato dei dati · Osservatorio Versilia</title>
   <meta name="description" content="Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.">
-  <link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">
   <meta property="og:title" content="Stato dei dati · Osservatorio Versilia">
   <meta property="og:description" content="Quando sono stati controllati i dati, quale periodo è pubblicato e cosa sappiamo sul prossimo aggiornamento.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
+  <meta property="og:url" content="https://osservatorioversilia.it/stato-dati/">
+  <meta property="og:site_name" content="Osservatorio Versilia">
+  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stato dei dati · Osservatorio Versilia">
+  <meta name="twitter:description" content="Quando sono stati controllati i dati, quale periodo è pubblicato e cosa sappiamo sul prossimo aggiornamento.">
+  <meta name="twitter:site" content="@OssVersilia">
+  <meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+  <link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">
   <script type="application/ld+json">{json_ld}</script>
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/original.css">
-  <link rel="stylesheet" href="../assets/static.css">
-  <link rel="stylesheet" href="../assets/fidelity.css">
-  <link rel="stylesheet" href="../assets/chart-surfaces.css">
+  <link rel="icon" href="../favicon.svg?v=20260807-ov" type="image/svg+xml">
+  <link rel="manifest" href="../site.webmanifest?v=20260813-pwa8">
+  {native_styles}
   <link rel="stylesheet" href="../assets/data-status.css">
+  <meta name="theme-color" content="#0F3654">
 </head>
-<body class="antialiased data-status-page">
-  <header class="data-status-header"><div class="page-width"><a href="../" class="data-status-brand">OV <span>Osservatorio Versilia</span></a><a href="../progetto/">Il progetto</a></div></header>
-  <main>
-    <section class="data-status-hero page-width">
-      <span class="overline">Trasparenza</span>
-      <h1>Stato dei dati</h1>
-      <p>Un dato può essere precedente all'anno corrente ed essere comunque l'ultimo ufficialmente disponibile. Qui separiamo il <strong>periodo pubblicato</strong>, l'<strong>attualità rispetto alla fonte</strong> e la <strong>data dell'ultimo controllo</strong>.</p>
-      <p class="data-status-check">Ultimo controllo generale: <strong>{html.escape(fmt_date(status['lastGeneralCheck']))}</strong></p>
+<body class="antialiased" data-page="status" data-theme="" data-town="" data-prerendered="true" data-status-app-bundle="{app_bundle}">
+{header}<div id="app"><main class="editorial-page data-status-main">
+    <section class="editorial-hero page-width data-status-hero">
+      <span class="overline">Trasparenza dei dati</span>
+      <h1>Stato dei dati.</h1>
+      <p>Un dato può essere precedente all'anno corrente ed essere comunque l'ultimo ufficialmente disponibile. Qui distinguiamo il <strong>periodo pubblicato</strong>, l'<strong>attualità rispetto alla fonte</strong> e la <strong>data dell'ultimo controllo</strong>.</p>
+      <div class="data-status-check"><span>Ultimo controllo generale</span><strong>{html.escape(fmt_date(status['lastGeneralCheck']))}</strong></div>
     </section>
-    <section class="data-status-summary page-width" aria-label="Riepilogo stato dati">
-      <article><span>Indicatori</span><strong>{status['metricCount']}</strong></article>
-      <article><span>Ultimo dato verificato</span><strong>{counts.get('current', 0)}</strong></article>
-      <article><span>Fonti controllate</span><strong>{counts.get('source_checked', 0)}</strong></article>
-      <article><span>Nuovi rilasci da verificare</span><strong>{counts.get('release_detected', 0)}</strong></article>
-      <article><span>Fonti con problemi</span><strong>{counts.get('source_unavailable', 0) + counts.get('verification_required', 0)}</strong></article>
+
+    <section class="method-detail page-width data-status-overview" aria-label="Riepilogo stato dati">
+      <div class="section-heading"><div><span class="section-number">01</span><h2>Quadro generale</h2></div><p>Una fotografia del monitor: controlli eseguiti, verifiche ancora necessarie e nuovi rilasci da esaminare.</p></div>
+      <ol class="principles-grid data-status-summary">
+        <li><span>01</span><h3>Indicatori</h3><strong>{status['metricCount']}</strong></li>
+        <li><span>02</span><h3>Ultimo dato verificato</h3><strong>{counts.get('current', 0)}</strong></li>
+        <li><span>03</span><h3>Fonti controllate</h3><strong>{counts.get('source_checked', 0)}</strong></li>
+        <li><span>04</span><h3>Nuovi rilasci da verificare</h3><strong>{counts.get('release_detected', 0)}</strong></li>
+        <li><span>05</span><h3>Fonti con problemi</h3><strong>{counts.get('source_unavailable', 0) + counts.get('verification_required', 0)}</strong></li>
+      </ol>
     </section>
-    <section class="data-status-explainer page-width">
-      <h2>Come leggere gli stati</h2>
-      <div class="data-status-legend">
-        <p><span class="status-badge status-ok">Ultimo dato disponibile</span> il periodo pubblicato coincide con l'ultimo periodo verificato sulla fonte.</p>
-        <p><span class="status-badge status-neutral">Fonte controllata</span> la fonte è raggiungibile, ma il controllo automatico non può certificare da solo quale sia l'ultima annualità.</p>
-        <p><span class="status-badge status-warn">Nuovo rilascio da verificare</span> esiste un segnale di un periodo più recente; nessun valore viene pubblicato senza validazione.</p>
-        <p><span class="status-badge status-problem">Fonte temporaneamente non verificabile</span> il controllo non ha potuto accedere alla fonte; il dato pubblicato resta invariato.</p>
-      </div>
+
+    <section class="method-detail page-width data-status-explainer">
+      <div class="section-heading"><div><span class="section-number">02</span><h2>Come leggere gli stati</h2></div><p>La raggiungibilità di una fonte non equivale automaticamente a un dato aggiornato.</p></div>
+      <ul class="principles-grid data-status-legend">
+        <li><span class="status-badge status-ok">Ultimo dato disponibile</span><p>Il periodo pubblicato coincide con l'ultimo periodo verificato sulla fonte.</p></li>
+        <li><span class="status-badge status-neutral">Fonte controllata</span><p>La fonte è raggiungibile, ma il controllo automatico non può certificare da solo quale sia l'ultima annualità.</p></li>
+        <li><span class="status-badge status-warn">Nuovo rilascio da verificare</span><p>Esiste un segnale di un periodo più recente; nessun valore viene pubblicato senza validazione.</p></li>
+        <li><span class="status-badge status-problem">Fonte temporaneamente non verificabile</span><p>Il controllo non ha potuto accedere alla fonte; il dato pubblicato resta invariato.</p></li>
+      </ul>
     </section>
-    <section class="data-status-table-section page-width">
-      <div class="section-heading"><div><span class="overline">127 indicatori</span><h2>Dettaglio</h2></div><p>I filtri agiscono solo sulla vista e non modificano i dati.</p></div>
+
+    <section class="method-detail page-width data-status-table-section">
+      <div class="section-heading"><div><span class="section-number">03</span><h2>Dettaglio dei 127 indicatori</h2></div><p>I filtri agiscono solo sulla vista e non modificano i dati.</p></div>
       <div class="data-status-filters">
         <label>Tematica<select data-status-theme><option value="">Tutte</option>{theme_options}</select></label>
         <label>Stato<select data-status-filter><option value="">Tutti</option>{status_options}</select></label>
@@ -157,11 +244,13 @@ def build_page(status: dict[str, Any]) -> str:
         </table>
       </div>
     </section>
-    <section class="data-status-policy page-width">
-      <h2>Nessuna pubblicazione automatica</h2>
+
+    <section class="independence-note page-width data-status-policy">
+      <div><span class="overline">Metodo di pubblicazione</span><h2>Nessuna pubblicazione automatica.</h2></div>
       <p>Il monitor può rilevare cambiamenti o nuovi rilasci, ma resta distinta la sequenza <strong>rilevazione → validazione → pubblicazione</strong>. I nuovi valori entrano nel sito solo dopo verifica.</p>
     </section>
-  </main>
+  </main></div>
+{footer}<noscript><div class="app-error">Il sito richiede JavaScript per ricerca, filtri e navigazione interattiva.</div></noscript>
   <script src="../assets/data-status.js" defer></script>
 </body>
 </html>
@@ -263,6 +352,8 @@ def main() -> None:
     status = build_public_status(data, registry, state)
     if status["metricCount"] != 127:
         raise SystemExit(f"Attesi 127 indicatori, trovati {status['metricCount']}")
+
+    patch_status_runtime()
     status_path = DIST / "data" / "data-status.json"
     status_path.parent.mkdir(parents=True, exist_ok=True)
     status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -272,7 +363,7 @@ def main() -> None:
     inject_indicator_status(status)
     add_project_link()
     add_sitemap_entry()
-    print(f"Stato dati materializzato: {status['metricCount']} indicatori")
+    print(f"Stato dati materializzato nel layout nativo: {status['metricCount']} indicatori")
 
 
 if __name__ == "__main__":
