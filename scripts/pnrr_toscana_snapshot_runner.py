@@ -62,6 +62,7 @@ def main() -> int:
 
     audit_result = audit.audit_records(data, local_records(args.source))
     audit_result["sourceSnapshotSha256"] = source_hash
+    audit_result["scope"] = "area PNRR o PNRR-PNC; PNC puro escluso"
     write_json(args.audit_json, audit_result)
     args.audit_md.parent.mkdir(parents=True, exist_ok=True)
     args.audit_md.write_text(audit.markdown(audit_result), encoding="utf-8")
