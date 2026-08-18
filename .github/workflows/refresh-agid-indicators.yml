@@ -95,7 +95,7 @@ jobs:
 
       - name: Build and validate static preview
         run: |
-          python scripts/build_static_safe.py
+          python scripts/build_static_brand.py
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
           python scripts/test_data_status.py
