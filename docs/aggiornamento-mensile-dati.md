@@ -28,7 +28,8 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 - raggiungibilità delle fonti ufficiali;
 - modifica dei file ufficiali direttamente scaricabili;
 - cambiamenti di URL, reindirizzamenti ed eventuali segnali HTTP;
-- stato operativo per indicatore, senza dedurre automaticamente l'attualità del dato dalla sola raggiungibilità della fonte.
+- stato operativo per indicatore, senza dedurre automaticamente l'attualità del dato dalla sola raggiungibilità della fonte;
+- per `pnrrFunding` e `pnrrConcluded`, nelle esecuzioni live, confronto con il feed machine-readable ufficiale **Regione Toscana — PNRR**, che espone soggetto attuatore, importo finanziato PNRR e fasi ReGiS.
 
 ## Cosa non fa
 
@@ -46,10 +47,10 @@ Per il clima resta una regola ulteriore: **nessun valore YTD viene pubblicato; e
 
 Gli stati pubblici descrivono l'attualità del singolo indicatore, non l'esito tecnico dell'intera esecuzione.
 
-- `current` — **Ultimo dato disponibile**: il periodo pubblicato coincide con l'ultimo periodo effettivamente verificato sulla fonte;
+- `current` — **Ultimo dato disponibile**: il periodo pubblicato coincide con l'ultimo periodo effettivamente verificato sulla fonte o con una fotografia ufficiale machine-readable equivalente e documentata;
 - `source_checked` — **Fonte controllata**: la fonte è raggiungibile, ma il monitor non può certificare automaticamente quale sia l'ultimo periodo disponibile;
-- `source_access_limited` — **Controllo automatico limitato**: il portale ufficiale respinge o limita le richieste automatizzate; non viene considerato né fonte guasta né dato aggiornato e resta necessaria la verifica manuale;
-- `release_detected` — **Nuovo rilascio da verificare**: è stato verificato o registrato un periodo più recente di quello pubblicato; serve validazione prima di modificare i valori;
+- `source_access_limited` — **Controllo automatico limitato**: il portale ufficiale respinge o limita le richieste automatizzate e non esiste una seconda evidenza istituzionale sufficiente per superare il limite;
+- `release_detected` — **Nuovo rilascio da verificare**: è stato verificato un periodo più recente oppure una fotografia ufficiale più recente/diversa nello stesso periodo; serve validazione prima di modificare i valori;
 - `update_expected` — **Aggiornamento atteso**: è arrivata una finestra di rilascio documentata, senza conferma di un nuovo dato;
 - `source_unavailable` — **Fonte temporaneamente non verificabile**: il controllo fallisce per indisponibilità reale, errore di rete/TLS non recuperabile o risposta del servizio che non rientra tra le limitazioni note dell'automazione;
 - `verification_required` — **Verifica necessaria** per un cambiamento tecnico o una situazione ambigua.
@@ -57,6 +58,20 @@ Gli stati pubblici descrivono l'attualità del singolo indicatore, non l'esito t
 Una fonte raggiungibile senza un periodo osservato viene quindi classificata `source_checked`, non `current`. Una nuova URL che entra nella baseline del monitor non diventa automaticamente `verification_required`: servono un cambiamento sostanziale di una fonte già monitorata o un'altra ambiguità effettiva.
 
 Per alcuni portali istituzionali il monitor può usare, esclusivamente per verificare la raggiungibilità, un endpoint alternativo ufficiale dello stesso servizio o un client HTTP compatibile. L'URL pubblicato dell'indicatore non viene sostituito e il fallback non costituisce prova di un nuovo rilascio. Se anche gli endpoint ufficiali respingono sistematicamente i client automatici con risposte quali 401, 403 o 429, la fonte viene classificata `source_access_limited` invece di essere dichiarata indisponibile.
+
+### Verifica secondaria ufficiale PNRR
+
+I due indicatori PNRR mantengono **Italia Domani / ReGiS** come provenienza dichiarata. Poiché il landing nazionale limita in modo stabile i client automatici, il monitor usa anche il CSV ufficiale **Regione Toscana — PNRR** come sorgente machine-readable di verifica per il solo territorio toscano.
+
+Il controllo:
+
+1. seleziona esclusivamente i progetti dell'area PNRR;
+2. filtra i record in cui uno dei sette Comuni è indicato come `soggetto_attuatore`;
+3. deduplica i progetti sulla chiave regionale/ReGiS;
+4. ricostruisce finanziamento PNRR per residente e quota dei progetti in fase `5. conclusione`;
+5. confronta i risultati 7/7 con i valori pubblicati.
+
+Se il confronto coincide, il monitor può certificare `current` registrando `verificationEvidence`. Se la fotografia ufficiale è diversa, assegna `release_detected`. **In nessun caso il feed modifica automaticamente `data/site-data.json`.** Se il feed regionale non è raggiungibile o non è confrontabile, resta valido lo stato prudenziale derivato dalla fonte primaria.
 
 ## Prossimo rilascio
 
@@ -92,13 +107,15 @@ Gli esiti tecnici dell'esecuzione restano distinti dagli stati dei singoli indic
 - `changes_detected`: una fonte è stata aggiunta, rimossa, reindirizzata o un file ufficiale è cambiato;
 - `attention_required`: il dataset non supera i controlli strutturali; workflow fallito e pubblicazione impedita.
 
-Le fonti realmente non raggiungibili sono segnalate senza cancellare dati esistenti. Le limitazioni note e riproducibili dei portali verso i client automatici vengono invece registrate separatamente come `source_access_limited`.
+Le fonti realmente non raggiungibili sono segnalate senza cancellare dati esistenti. Le limitazioni note e riproducibili dei portali verso i client automatici vengono invece registrate separatamente come `source_access_limited`, salvo che una seconda fonte istituzionale machine-readable fornisca un'evidenza strutturata sullo stesso perimetro.
 
 ## Politica delle fonti
 
 Il file `data/source-registry.json` associa ciascun URL primario a un profilo esplicito. Il profilo dichiara produttore, cadenza attesa, modalità di acquisizione e condizioni di riuso. Le eccezioni riferite a un singolo indicatore prevalgono sul profilo generale della fonte.
 
 La frequenza indica quando è ragionevole controllare un aggiornamento; non è una promessa di disponibilità del dato e non autorizza a sostituire automaticamente un valore già pubblicato.
+
+Le eventuali fonti secondarie di verifica non sostituiscono la provenienza dichiarata dell'indicatore: vengono registrate come evidenza operativa nel monitor e devono essere istituzionali, machine-readable e compatibili con il perimetro/metodo del dato pubblicato.
 
 ## Flusso di pubblicazione
 
@@ -108,8 +125,8 @@ Il flusso resta sempre:
 
 Quando il controllo rileva una variazione, la PR automatica è soltanto un avviso documentato. L'aggiornamento dei valori deve:
 
-1. acquisire il nuovo dato dalla fonte originale;
-2. verificare quale periodo sia realmente disponibile;
+1. acquisire il nuovo dato dalla fonte originale o dalla fonte istituzionale equivalente esplicitamente documentata;
+2. verificare quale periodo/fotografia sia realmente disponibile;
 3. conservare lo snapshot leggibile;
 4. aggiornare anno o periodo, valori, serie, formula e fonte in modo coerente;
 5. superare build e test;
