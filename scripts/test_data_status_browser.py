@@ -38,6 +38,10 @@ def assert_native_status_shell(page, width: int) -> None:
     assert page.locator(".site-brand .ov-mark-svg").count() == 1
     assert page.locator(".site-brand-copy strong").inner_text().strip() == "Osservatorio Versilia"
     assert page.locator(".site-footer").count() == 1
+    footer_social = page.locator('.footer-social[data-social-placement="footer"]')
+    footer_social.wait_for()
+    assert footer_social.count() == 1
+    assert footer_social.locator(".social-profile-link").count() == 4
     assert page.locator("main.editorial-page.data-status-main").count() == 1
     assert page.locator(".data-status-header").count() == 0
     assert page.locator(".global-search-trigger").count() == 1
@@ -90,7 +94,7 @@ def main() -> None:
         check_view(page, args.base, 1440, 1000)
         check_view(page, args.base, 390, 844)
         browser.close()
-    print("Data status browser checks passed: native OV shell + public path + desktop + mobile.")
+    print("Data status browser checks passed: native OV shell + social footer + public path + desktop + mobile.")
 
 
 if __name__ == "__main__":
