@@ -30,6 +30,25 @@ jobs:
           python scripts/test_pnrr_toscana_audit.py
           python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_live_audit.py scripts/test_pnrr_toscana_audit.py
 
+      - name: Discover official backend resources
+        run: |
+          python - <<'PY'
+          import re
+          import urllib.request
+          resources = {
+              'main': '56b0d1e0-2d25-4434-af56-63d316775600',
+              'subjects': '91c2a7ba-4a44-4f35-925f-30f4a55c74e7',
+          }
+          for label, rid in resources.items():
+              url = f'https://dati.toscana.it/dataset/regione-toscana-pnrr/resource/{rid}'
+              req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 OsservatorioVersiliaDataMonitor/1.1'})
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  text = response.read().decode('utf-8', 'replace')
+              found = sorted(set(re.findall(r'https://www301\.regione\.toscana\.it/[^"\'<>\\s]+', text)))
+              print(label, 'page=', url)
+              print(label, 'backend_urls=', found)
+          PY
+
       - name: Live read-only audit
         run: |
           python scripts/pnrr_toscana_live_audit.py \
