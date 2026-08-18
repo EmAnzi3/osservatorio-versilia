@@ -47,6 +47,7 @@ def server(directory: Path) -> Iterable[str]:
 def static_assertions() -> None:
     html_files = sorted(DIST.rglob("*.html"))
     assert len(html_files) >= 20, f"Pagine HTML insufficienti: {len(html_files)}"
+    status_page = DIST / "stato-dati" / "index.html"
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert "app-loading" not in text, f"Skeleton residuo: {path}"
@@ -64,6 +65,19 @@ def static_assertions() -> None:
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
         assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"
         assert "assets/app.js" not in text, f"Vecchio loader presente: {path}"
+
+        if path == status_page:
+            assert 'data-page="status"' in text, "Tipo pagina stato dati assente"
+            assert 'data-status-app-bundle=' in text, "Runtime nativo non dichiarato per stato dati"
+            assert "assets/fonts.css" in text, "Font Geist non collegato alla pagina stato dati"
+            assert "assets/data-status.css" in text, "CSS stato dati assente"
+            assert "assets/data-status.js" in text, "JS stato dati assente"
+            assert 'id="site-header-mount"' in text, "Header nativo assente da stato dati"
+            assert 'class="site-footer"' in text, "Footer nativo assente da stato dati"
+            assert "ov-mark-svg" in text, "Logo OV nativo assente da stato dati"
+            assert "search-icon" in text, "Ricerca globale assente da stato dati"
+            continue
+
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"
         assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
         assert "search-icon" in text, f"Icona vettoriale della ricerca assente: {path}"
@@ -77,6 +91,7 @@ def static_assertions() -> None:
     assert bundle_path.stat().st_size > 50_000
     bundle = bundle_path.read_text(encoding="utf-8")
     assert ("const italianFormatter = options =>" in bundle and "useGrouping: 'always'" in bundle) or bundle.count("useGrouping: 'always'") >= 4, "Raggruppamento delle migliaia non forzato"
+    assert "pageType === 'status'" in bundle, "Runtime stato dati non integrato nel bundle prerenderizzato"
 
     fonts_css = (DIST / "assets" / "fonts.css").read_text(encoding="utf-8")
     assert "./fonts/geist-latin.woff2" in fonts_css

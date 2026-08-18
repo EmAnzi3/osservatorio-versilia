@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 
 import monthly_data_check_coverage as coverage
+import monthly_data_check_status as status_model
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKER = ROOT / "scripts" / "monthly_data_check.py"
@@ -158,6 +159,65 @@ def main() -> None:
         },
     )
     assert not redirect_changes["redirect"]
+
+    # L'ingresso di una URL nella nuova baseline del monitor non è un'anomalia
+    # del dato. Solo contenuto o redirect cambiati di una fonte già monitorata
+    # richiedono una verifica umana.
+    new_source = "https://example.org/new-source"
+    changed_source = "https://example.org/changed-source"
+    status_changes = status_model.changed_urls(
+        {
+            "changes": {
+                "added": [{"url": new_source}],
+                "removed": [{"url": "https://example.org/old-source"}],
+                "content": [{"url": changed_source}],
+                "redirect": [],
+            }
+        }
+    )
+    assert coverage.canonical_url(new_source) not in status_changes
+    assert coverage.canonical_url(changed_source) in status_changes
+
+    # Un endpoint ufficiale alternativo può attestare solo la raggiungibilità
+    # tecnica del servizio: identità e URL pubblica della fonte restano originali.
+    original = "https://example.org/source"
+    fallback = "https://example.org/source/download"
+    fallback_state = coverage._as_official_fallback(
+        original,
+        fallback,
+        {
+            "ok": True,
+            "status": 200,
+            "finalUrl": fallback,
+            "contentType": "text/html",
+            "error": "",
+            "probeMethod": "curl-range",
+        },
+    )
+    assert fallback_state["url"] == original
+    assert fallback_state["finalUrl"] == coverage.canonical_url(original)
+    assert fallback_state["probeUrl"] == fallback
+    assert fallback_state["directReachable"] is False
+    assert fallback_state["probeMethod"].startswith("official-fallback:")
+
+    # Un 403 di un portale esplicitamente noto per limitare i bot non viene
+    # mascherato come fonte raggiunta né promosso a indisponibilità del dato.
+    pnrr_url = "https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html"
+    limited_state = coverage._as_automation_limited(
+        pnrr_url,
+        {
+            "ok": False,
+            "status": 403,
+            "finalUrl": pnrr_url,
+            "contentType": "text/html",
+            "error": "HTTP 403",
+        },
+    )
+    assert limited_state["ok"] is True
+    assert limited_state["directReachable"] is False
+    assert limited_state["automationLimited"] is True
+    assert limited_state["probeMethod"] == "automation-limited"
+    assert limited_state["finalUrl"] == coverage.canonical_url(pnrr_url)
 
     with tempfile.TemporaryDirectory() as directory:
         work = Path(directory)
