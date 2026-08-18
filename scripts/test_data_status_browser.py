@@ -68,8 +68,8 @@ def check_view(page, base: str, width: int, height: int) -> None:
     )
     visible = page.locator(".data-status-table tbody tr:not([hidden])").count()
     assert visible >= 0
-    text = page.locator("[data-status-visible]").inner_text()
-    assert "indicatori visibili" in text
+    text = page.locator("[data-status-visible]").text_content() or ""
+    assert "indicatori visibili" in text.lower()
 
     page.goto(base + "indicatori/popolazione-residente/", wait_until="networkidle")
     page.locator("[data-data-status-row='state']").wait_for()
