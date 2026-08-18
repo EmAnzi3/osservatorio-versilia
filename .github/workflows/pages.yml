@@ -142,6 +142,9 @@ jobs:
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
             scripts/data_status_model.py \
+            scripts/pnrr_toscana_audit.py \
+            scripts/test_pnrr_toscana_audit.py \
+            scripts/test_pnrr_status_integration.py \
             scripts/build_data_status.py \
             scripts/inject_data_status_runtime.py
 
@@ -166,6 +169,8 @@ jobs:
       - name: Run monthly monitor checks
         run: |
           python scripts/test_monthly_data_check.py
+          python scripts/test_pnrr_toscana_audit.py
+          python scripts/test_pnrr_status_integration.py
           mkdir -p /tmp/monthly-data-check
           python scripts/monthly_data_check_status.py \
             --mode offline \
