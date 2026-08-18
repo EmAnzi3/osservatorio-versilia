@@ -13,7 +13,8 @@ def parse_args() -> argparse.Namespace:
 
 def assert_public_path(page, base: str, width: int) -> None:
     page.goto(base, wait_until="networkidle")
-    page.locator('[data-data-status-nav="header"]').wait_for()
+    page.locator('[data-data-status-nav="header"]').wait_for(state="attached")
+    page.locator('[data-data-status-nav="footer"]').wait_for(state="attached")
     assert page.locator('[data-data-status-nav="header"]').count() == 1
     assert page.locator('[data-data-status-nav="footer"]').count() == 1
     assert page.locator('[data-data-status-nav="header"]').get_attribute("href").rstrip("/").endswith("/stato-dati")
@@ -27,7 +28,7 @@ def assert_public_path(page, base: str, width: int) -> None:
     assert page.locator('[data-data-status-nav="footer"]').count() == 1
 
     page.goto(base + "progetto/", wait_until="networkidle")
-    page.locator('[data-data-status-nav="footer"]').wait_for()
+    page.locator('[data-data-status-nav="footer"]').wait_for(state="attached")
     assert page.locator('[data-data-status-nav="header"]').count() == 1
     assert page.locator('[data-data-status-nav="footer"]').count() == 1
 
