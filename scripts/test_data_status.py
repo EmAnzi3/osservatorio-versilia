@@ -26,13 +26,14 @@ def main() -> None:
     assert public["metricCount"] == 127
     assert sum(public["counts"].values()) == 127
     assert set(public["counts"]) == {
-        "current", "source_checked", "release_detected", "update_expected",
-        "source_unavailable", "verification_required",
+        "current", "source_checked", "source_access_limited", "release_detected",
+        "update_expected", "source_unavailable", "verification_required",
     }
 
     # Una fonte raggiungibile, senza annualità osservata, NON equivale a dato aggiornato.
     assert derive_status("2024", {"ok": True}, {}) == "source_checked"
     assert derive_status("2024", {"ok": False}, {}) == "source_unavailable"
+    assert derive_status("2024", {"ok": True, "automationLimited": True}, {}) == "source_access_limited"
     assert derive_status("2024", {"ok": True}, {"observedLatestPeriod": "2024"}) == "current"
     assert derive_status("2024", {"ok": True}, {"observedLatestPeriod": "2025"}) == "release_detected"
 
@@ -43,6 +44,9 @@ def main() -> None:
             assert release.get("value")
         if metric["status"] == "current":
             assert metric["observedLatestPeriod"] == metric["publishedPeriod"]
+        if metric["status"] == "source_access_limited":
+            assert metric["sourceAutomationLimited"] is True
+            assert metric["sourceReachable"] is False
 
     climate = [
         metric for metric in public["metrics"]
