@@ -88,6 +88,8 @@ def build_metric_state(
 
         if probe is None:
             item["status"] = "verification_required"
+        elif probe.get("automationLimited"):
+            item["status"] = "source_access_limited"
         elif not probe.get("ok"):
             item["status"] = "source_unavailable"
         elif source_key in changed:
@@ -130,6 +132,7 @@ def append_report_section(report_md: Path, state: dict[str, Any]) -> None:
     labels = {
         "current": "Ultimo dato disponibile verificato",
         "source_checked": "Fonte controllata; periodo non confermabile automaticamente",
+        "source_access_limited": "Controllo automatico limitato dal portale",
         "release_detected": "Nuovo rilascio da verificare",
         "update_expected": "Aggiornamento atteso",
         "source_unavailable": "Fonte temporaneamente non verificabile",
