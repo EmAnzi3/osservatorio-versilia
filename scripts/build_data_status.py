@@ -115,6 +115,7 @@ def build_page(status: dict[str, Any]) -> str:
   <link rel="stylesheet" href="../assets/original.css">
   <link rel="stylesheet" href="../assets/static.css">
   <link rel="stylesheet" href="../assets/fidelity.css">
+  <link rel="stylesheet" href="../assets/chart-surfaces.css">
   <link rel="stylesheet" href="../assets/data-status.css">
 </head>
 <body class="antialiased data-status-page">
