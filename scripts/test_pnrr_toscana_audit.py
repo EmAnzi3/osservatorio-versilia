@@ -72,7 +72,12 @@ def test_exact_match():
     assert result["verdict"] == "match"
     assert result["eligibleForAutomaticVerification"] is True
     assert result["fundingMatch7of7"] is True
-    assert "fase_avanzamento_da_regis" in result["conclusionDefinitionMatches"]
+    assert result["concludedMatch7of7"] is True
+    assert result["canonicalConclusionField"] == "fase_avanzamento_da_regis"
+    assert result["metricVerdicts"] == {
+        "pnrrFunding": "match",
+        "pnrrConcluded": "match",
+    }
     assert len(result["perTown"]) == 7
     assert all(item["selectedProjects"] == 2 for item in result["perTown"].values())
 
@@ -85,18 +90,39 @@ def test_dedupe_project():
     assert result["perTown"]["046005"]["selectedProjects"] == 2
 
 
-def test_new_snapshot_is_not_auto_published():
+def test_only_funding_changes():
     records = fixture_records()
     records[0]["importo_finanziato_pnrr"] = "75.000,00"
     result = module.audit_records(fixture_data(), records)
     assert result["verdict"] == "different_current_snapshot"
     assert result["eligibleForAutomaticVerification"] is False
-    assert result["fundingMatch7of7"] is False
+    assert result["metricVerdicts"]["pnrrFunding"] == "different_current_snapshot"
+    assert result["metricVerdicts"]["pnrrConcluded"] == "match"
+
+
+def test_only_concluded_changes():
+    records = fixture_records()
+    records[0]["fase_avanzamento_da_regis"] = "4. esecuzione"
+    result = module.audit_records(fixture_data(), records)
+    assert result["verdict"] == "different_current_snapshot"
+    assert result["metricVerdicts"]["pnrrFunding"] == "match"
+    assert result["metricVerdicts"]["pnrrConcluded"] == "different_current_snapshot"
+
+
+def test_missing_funding_is_not_comparable_only_for_funding():
+    records = fixture_records()
+    records[0]["importo_finanziato_pnrr"] = "NULL"
+    result = module.audit_records(fixture_data(), records)
+    assert result["verdict"] == "not_comparable"
+    assert result["metricVerdicts"]["pnrrFunding"] == "not_comparable"
+    assert result["metricVerdicts"]["pnrrConcluded"] == "match"
 
 
 if __name__ == "__main__":
     test_helpers()
     test_exact_match()
     test_dedupe_project()
-    test_new_snapshot_is_not_auto_published()
+    test_only_funding_changes()
+    test_only_concluded_changes()
+    test_missing_funding_is_not_comparable_only_for_funding()
     print("OK: audit PNRR Regione Toscana")
