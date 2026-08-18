@@ -40,8 +40,7 @@ jobs:
       - name: Validate Economy v1.13 data and semantics
         run: python scripts/test_costi_fiscalita_redditi_draft.py
 
-      - name: Materialize PNRR Toscana draft preview
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
+      - name: Materialize PNRR Toscana release
         run: |
           python scripts/materialize_pnrr_toscana_draft.py
           python scripts/patch_pnrr_toscana_review.py
@@ -56,8 +55,7 @@ jobs:
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
 
-      - name: Build PNRR Toscana deep dive draft
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
+      - name: Build PNRR Toscana deep dive
         run: |
           node --check assets/pnrr-town-detail.js
           python scripts/build_pnrr_toscana_deep_dive.py
@@ -81,7 +79,6 @@ jobs:
           exit 1
 
       - name: Validate PNRR Toscana town experience
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/pnrr-toscana-monitor'
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate income and inflation history in browser
