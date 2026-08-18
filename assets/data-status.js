@@ -1,10 +1,11 @@
 (() => {
   'use strict';
 
+  const SCRIPT_URL = document.currentScript?.src || '';
+
   function rootPrefix() {
-    const script = document.currentScript;
-    if (!script?.src) return '../';
-    return new URL('../', script.src).href;
+    if (!SCRIPT_URL) return new URL('../', location.href).href;
+    return new URL('../', SCRIPT_URL).href;
   }
 
   function formatDate(value) {
