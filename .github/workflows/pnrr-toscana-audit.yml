@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - "scripts/pnrr_toscana_audit.py"
-      - "scripts/pnrr_toscana_live_audit.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - ".github/workflows/pnrr-toscana-audit.yml"
       - "data/site-data.json"
@@ -28,39 +27,15 @@ jobs:
       - name: Unit tests
         run: |
           python scripts/test_pnrr_toscana_audit.py
-          python -m py_compile scripts/pnrr_toscana_audit.py scripts/pnrr_toscana_live_audit.py scripts/test_pnrr_toscana_audit.py
-
-      - name: Inspect official backend schemas
-        run: |
-          python - <<'PY'
-          import urllib.request
-          urls = {
-              'main': 'https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv',
-              'subjects': 'https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getelenco_soggetto_v6.csv',
-          }
-          for label, url in urls.items():
-              req = urllib.request.Request(url, headers={
-                  'User-Agent': 'Mozilla/5.0 OsservatorioVersiliaDataMonitor/1.1',
-                  'Accept': 'text/csv,*/*',
-              })
-              with urllib.request.urlopen(req, timeout=45) as response:
-                  print(label, 'status=', response.status, 'type=', response.headers.get('Content-Type'))
-                  for index in range(3):
-                      line = response.readline()
-                      if not line:
-                          break
-                      print(label, f'line{index+1}=', line.decode('utf-8-sig', 'replace').rstrip()[:12000])
-          PY
+          python -m py_compile scripts/pnrr_toscana_audit.py scripts/test_pnrr_toscana_audit.py
 
       - name: Live read-only audit
-        continue-on-error: true
         run: |
-          python scripts/pnrr_toscana_live_audit.py \
+          python scripts/pnrr_toscana_audit.py \
             --output-json reports/pnrr-toscana-audit.json \
             --output-md reports/pnrr-toscana-audit.md
 
-      - name: Upload audit when available
-        if: always()
+      - name: Upload audit
         uses: actions/upload-artifact@v4
         with:
           name: pnrr-toscana-audit
@@ -68,4 +43,4 @@ jobs:
             reports/pnrr-toscana-audit.json
             reports/pnrr-toscana-audit.md
           retention-days: 14
-          if-no-files-found: ignore
+          if-no-files-found: error
