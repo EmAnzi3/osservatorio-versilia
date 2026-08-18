@@ -16,6 +16,7 @@ if str(SCRIPT_DIR) not in sys.path:
 from data_status_model import build_public_status  # noqa: E402
 
 DATASET_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
+SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
 EXPECTED = {
     "046005": {"projects": 16, "concluded": 10, "funding": 3270511.41},
     "046013": {"projects": 15, "concluded": 10, "funding": 1337644.46},
@@ -32,6 +33,22 @@ EXPECTED_WORK_STATUS = {
     "Contratto stipulato": (1, 1440000.00),
     "Stipula in corso": (1, 495000.00),
 }
+SOCIAL_META_TOKENS = (
+    'property="og:title"',
+    'property="og:description"',
+    'property="og:type"',
+    'property="og:url"',
+    'property="og:site_name"',
+    'property="og:locale"',
+    'property="og:image"',
+    'property="og:image:alt"',
+    'name="twitter:card"',
+    'name="twitter:title"',
+    'name="twitter:description"',
+    'name="twitter:site"',
+    'name="twitter:image"',
+    'name="twitter:image:alt"',
+)
 
 
 def slugify(value: str) -> str:
@@ -108,6 +125,11 @@ def validate_built_preview(data):
     assert "realizzata" not in text.lower()
     assert "ov-mark-svg" in text
     assert "assets/pnrr-deep-dive.css" in text
+    for token in SOCIAL_META_TOKENS:
+        assert text.count(token) == 1, f"Metadata social PNRR non canonico: {token}"
+    assert SOCIAL_IMAGE in text
+    assert 'name="twitter:card" content="summary_large_image"' in text
+    assert 'name="twitter:site" content="@OssVersilia"' in text
 
     for key in ("pnrrFunding", "pnrrConcluded"):
         slug = slugify(data["metrics"][key]["meta"]["label"])
