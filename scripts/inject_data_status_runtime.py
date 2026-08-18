@@ -4,10 +4,13 @@
 L'applicazione principale può rerenderizzare il contenuto di #app nel browser.
 Per evitare fetch e mantenere i metadata derivati disponibili anche dopo quel
 rerender, ogni scheda riceve un piccolo payload JSON locale e l'enhancer comune.
+L'enhancer viene inoltre caricato sulle pagine pubbliche per mantenere un accesso
+stabile a /stato-dati/ nella navigazione principale e nel footer.
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import unicodedata
 from datetime import date
@@ -82,6 +85,26 @@ def ensure_status_sitemap_lastmod() -> None:
         path.write_text(text, encoding="utf-8")
 
 
+def inject_global_enhancer() -> int:
+    asset = DIST / "assets" / "data-status.js"
+    injected = 0
+    for path in DIST.rglob("*.html"):
+        if path.name == "offline.html":
+            continue
+        text = path.read_text(encoding="utf-8")
+        if "assets/data-status.js" in text:
+            continue
+        relative = Path(os.path.relpath(asset, path.parent)).as_posix()
+        text = text.replace(
+            "</body>",
+            f'  <script src="{relative}" defer></script>\n</body>',
+            1,
+        )
+        path.write_text(text, encoding="utf-8")
+        injected += 1
+    return injected
+
+
 def main() -> None:
     status_path = DIST / "data" / "data-status.json"
     payload = json.loads(status_path.read_text(encoding="utf-8"))
@@ -120,7 +143,11 @@ def main() -> None:
         raise SystemExit(f"Attese 123 schede indicatore, payload incorporato in {injected}")
     enrich_status_page()
     ensure_status_sitemap_lastmod()
-    print("Payload stato dati incorporato nelle 123 schede indicatore")
+    global_pages = inject_global_enhancer()
+    print(
+        "Payload stato dati incorporato nelle 123 schede indicatore; "
+        f"enhancer navigazione aggiunto a {global_pages} pagine ulteriori"
+    )
 
 
 if __name__ == "__main__":
