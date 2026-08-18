@@ -47,6 +47,7 @@ def server(directory: Path) -> Iterable[str]:
 def static_assertions() -> None:
     html_files = sorted(DIST.rglob("*.html"))
     assert len(html_files) >= 20, f"Pagine HTML insufficienti: {len(html_files)}"
+    status_page = DIST / "stato-dati" / "index.html"
     for path in html_files:
         text = path.read_text(encoding="utf-8")
         assert "app-loading" not in text, f"Skeleton residuo: {path}"
@@ -64,6 +65,14 @@ def static_assertions() -> None:
         assert 'type="application/ld+json"' in text, f"JSON-LD assente: {path}"
         assert "app-parts/" not in text, f"Riferimento ai moduli .txt: {path}"
         assert "assets/app.js" not in text, f"Vecchio loader presente: {path}"
+
+        if path == status_page:
+            assert "assets/app-bundle.js" not in text, "La pagina stato dati non deve avviare il router applicativo"
+            assert "assets/fonts.css" in text, "Font Geist non collegato alla pagina stato dati"
+            assert "assets/data-status.css" in text, "CSS stato dati assente"
+            assert "assets/data-status.js" in text, "JS stato dati assente"
+            continue
+
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"
         assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
         assert "search-icon" in text, f"Icona vettoriale della ricerca assente: {path}"
