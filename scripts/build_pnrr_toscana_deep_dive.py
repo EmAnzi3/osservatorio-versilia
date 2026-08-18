@@ -19,6 +19,12 @@ DIST = ROOT / "dist"
 DATA_PATH = DIST / "data" / "site-data.json"
 PAGE_PATH = DIST / "pnrr" / "index.html"
 PNRR_KEYS = ("pnrrFunding", "pnrrConcluded")
+SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
+SOCIAL_IMAGE_ALT = "Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia"
+TWITTER_SITE = "@OssVersilia"
+PAGE_TITLE = "Dentro il PNRR · Osservatorio Versilia"
+PAGE_DESCRIPTION = "Progetti PNRR dei sette Comuni della Versilia, avanzamento ReGiS e dettaglio delle opere fisiche."
+SOCIAL_DESCRIPTION = "101 progetti, avanzamento ReGiS e 22 opere fisiche nella fotografia Regione Toscana dell'11 agosto 2026."
 
 
 def slugify(value: str) -> str:
@@ -142,9 +148,9 @@ def build_page(data: dict[str, Any]) -> str:
         {
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": "Dentro il PNRR · Osservatorio Versilia",
+            "name": PAGE_TITLE,
             "url": "https://osservatorioversilia.it/pnrr/",
-            "description": "Progetti PNRR dei sette Comuni della Versilia, avanzamento ReGiS e dettaglio delle opere fisiche.",
+            "description": PAGE_DESCRIPTION,
             "inLanguage": "it-IT",
             "isAccessibleForFree": True,
         },
@@ -157,16 +163,22 @@ def build_page(data: dict[str, Any]) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dentro il PNRR · Osservatorio Versilia</title>
-  <meta name="description" content="Progetti PNRR dei sette Comuni della Versilia, avanzamento ReGiS e dettaglio delle opere fisiche.">
-  <meta property="og:title" content="Dentro il PNRR · Osservatorio Versilia">
-  <meta property="og:description" content="101 progetti, avanzamento ReGiS e 22 opere fisiche nella fotografia Regione Toscana dell'11 agosto 2026.">
+  <title>{html.escape(PAGE_TITLE)}</title>
+  <meta name="description" content="{html.escape(PAGE_DESCRIPTION, quote=True)}">
+  <meta property="og:title" content="{html.escape(PAGE_TITLE, quote=True)}">
+  <meta property="og:description" content="{html.escape(SOCIAL_DESCRIPTION, quote=True)}">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
   <meta property="og:url" content="https://osservatorioversilia.it/pnrr/">
   <meta property="og:site_name" content="Osservatorio Versilia">
-  <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+  <meta property="og:image" content="{SOCIAL_IMAGE}">
+  <meta property="og:image:alt" content="{html.escape(SOCIAL_IMAGE_ALT, quote=True)}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{html.escape(PAGE_TITLE, quote=True)}">
+  <meta name="twitter:description" content="{html.escape(SOCIAL_DESCRIPTION, quote=True)}">
+  <meta name="twitter:site" content="{TWITTER_SITE}">
+  <meta name="twitter:image" content="{SOCIAL_IMAGE}">
+  <meta name="twitter:image:alt" content="{html.escape(SOCIAL_IMAGE_ALT, quote=True)}">
   <link rel="canonical" href="https://osservatorioversilia.it/pnrr/">
   <script type="application/ld+json">{json_ld}</script>
   <link rel="icon" href="../favicon.svg?v=20260807-ov" type="image/svg+xml">
