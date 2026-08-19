@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "label": "Letture",
+  "description": "Percorsi guidati dentro gli indicatori dell’Osservatorio. Non contengono dati autonomi: interrogano il catalogo canonico e lo stato delle fonti.",
+  "items": [
+    {
+      "slug": "una-versilia-che-cambia",
+      "title": "Una Versilia che cambia",
+      "question": "La Versilia sta cambiando soltanto nel numero dei residenti o anche nella sua struttura demografica?",
+      "answer": "Per capirlo bisogna leggere insieme consistenza, età, famiglie e mobilità residenziale, senza ridurre il territorio a un solo saldo.",
+      "themes": ["demografia", "abitare"],
+      "metrics": ["population", "populationChange", "oldAgeIndex", "householdSize", "internalResidentialMobility"],
+      "caution": "Indicatori con periodi diversi non vengono trattati come se descrivessero lo stesso istante temporale."
+    },
+    {
+      "slug": "redditi-contro-inflazione",
+      "title": "Redditi contro inflazione",
+      "question": "L’aumento dei redditi dichiarati ha davvero aumentato il potere d’acquisto?",
+      "answer": "Il confronto utile distingue crescita nominale e crescita reale: l’inflazione cambia il significato dello stesso importo in euro.",
+      "themes": ["economia"],
+      "metrics": ["income", "incomeVsInflation", "incomeDistribution"],
+      "caution": "Reddito imponibile dichiarato e benessere economico non sono sinonimi; il percorso non stima redditi non dichiarati o patrimonio."
+    },
+    {
+      "slug": "vivere-e-lavorare-in-versilia",
+      "title": "Vivere e lavorare in Versilia",
+      "question": "Quanto è forte il legame tra residenti, lavoro e tessuto produttivo nei sette Comuni?",
+      "answer": "Occupazione, partecipazione al lavoro, unità locali e addetti descrivono parti diverse dello stesso sistema e vanno lette insieme.",
+      "themes": ["lavoro", "economia"],
+      "metrics": ["employmentRate", "unemploymentRate", "activityRate", "localUnits", "localEmployees", "income"],
+      "caution": "Le annualità delle fonti sul lavoro e sulle imprese possono non coincidere; il percorso mantiene visibile il periodo di ogni indicatore."
+    },
+    {
+      "slug": "quanto-investe-il-territorio",
+      "title": "Quanto investe il territorio",
+      "question": "Bilanci comunali, opere pubbliche e PNRR raccontano la stessa cosa?",
+      "answer": "No: descrivono perimetri diversi. Il percorso li affianca senza sommarli in un unico totale artificiale.",
+      "themes": ["bilanci", "comunita"],
+      "metrics": ["capitalExpenditureCommittedPerResident", "publicWorks", "pnrrFunding", "pnrrConcluded"],
+      "caution": "Spesa in conto capitale, opere BDAP-MOP e progetti PNRR restano tre perimetri distinti."
+    },
+    {
+      "slug": "cinquantanni-di-clima",
+      "title": "Cinquant’anni di clima",
+      "question": "Cosa cambia quando il clima viene letto su cinquant’anni invece che attraverso un singolo anno caldo o piovoso?",
+      "answer": "La serie storica separa la variabilità annuale dalla direzione di fondo e permette di confrontare i sette territori senza trasformare il dato in una classifica.",
+      "themes": ["ambiente"],
+      "metrics": ["climateTemperatureTrend50y", "climateTminTrend", "climateTmaxTrend", "climatePrecipitationTrend50y"],
+      "specialHref": "/confronta/meteo-clima/",
+      "caution": "I dati climatici sono ricostruzioni territoriali da prodotti grigliati e rianalisi, non misure di una singola stazione comunale."
+    },
+    {
+      "slug": "mobilita-e-sicurezza",
+      "title": "Mobilità e sicurezza",
+      "question": "Come ci si muove in Versilia e quali dati aiutano a leggere la sicurezza degli spostamenti?",
+      "answer": "Motorizzazione, incidentalità e mobilità lenta misurano fenomeni diversi: il percorso li mette in relazione senza confondere Mobilità con Sicurezza.",
+      "themes": ["mobilita", "sicurezza"],
+      "metrics": ["motorization", "roadSafety", "slowMobilityRoutes", "slowMobilityTrekking", "slowMobilityBici"],
+      "caution": "La presenza di un percorso cartografato non esprime un giudizio sulla sua sicurezza o agibilità attuale."
+    },
+    {
+      "slug": "la-versilia-turistica",
+      "title": "La Versilia turistica",
+      "question": "Il turismo pesa allo stesso modo nei sette Comuni e durante tutto l’anno?",
+      "answer": "Presenze, intensità, stagionalità, permanenza e capacità ricettiva servono a distinguere volume, pressione e struttura dell’offerta.",
+      "themes": ["economia"],
+      "metrics": ["tourismPresences", "tourismIntensity", "tourismSeasonality", "tourismAverageStay", "foreignTourismShare", "tourismBedsPer1000"],
+      "caution": "Presenze turistiche e popolazione residente descrivono universi diversi; il percorso usa solo rapporti già definiti negli indicatori canonici."
+    }
+  ]
+}
