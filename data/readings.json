@@ -6,7 +6,7 @@
       "slug": "una-versilia-che-cambia",
       "title": "Una Versilia che cambia",
       "question": "La Versilia sta perdendo residenti o sta soprattutto cambiando struttura?",
-      "description": "Popolazione, variazione dal 2019, struttura per età e mobilità residenziale lette insieme.",
+      "description": "Popolazione, variazione nel periodo disponibile, struttura per età e mobilità residenziale lette insieme.",
       "answer": "Il saldo dei residenti da solo non basta: per capire il cambiamento bisogna affiancargli età, cittadinanza e mobilità residenziale.",
       "primaryMetric": "populationChange",
       "primaryIntro": "Partiamo dalla variazione della popolazione, poi verifichiamo se e come il quadro cambia guardando struttura e flussi.",
