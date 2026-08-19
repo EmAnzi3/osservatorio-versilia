@@ -29,7 +29,7 @@ def main() -> None:
             page.goto(base + 'letture/redditi-contro-inflazione/', wait_until='networkidle')
             assert page.locator('.reading-question').is_visible()
             assert page.locator('.reading-metric').count() == 3
-            assert 'Risposta breve' in page.locator('main').inner_text()
+            assert page.locator('.reading-answer span').text_content().strip() == 'Risposta breve'
             assert 'Cosa non possiamo concludere' in page.locator('main').inner_text()
             page.goto(base + 'letture/cinquantanni-di-clima/', wait_until='networkidle')
             assert page.locator('.reading-metric').count() == 4
