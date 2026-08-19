@@ -21,25 +21,41 @@ def main() -> None:
             page = browser.new_page(viewport={'width': width, 'height': height})
             errors: list[str] = []
             page.on('pageerror', lambda exc: errors.append(str(exc)))
+
             page.goto(base + 'letture/', wait_until='networkidle')
-            assert page.locator('.reading-card').count() == 7
+            assert page.locator('h1').text_content().strip() == 'Capire la Versilia'
+            assert page.locator('.reading-pilot').count() == 1
+            assert page.locator('.reading-plan-card').count() == 6
+            assert page.locator('.reading-plan-icon svg').count() == 6
             assert page.locator('meta[name="robots"]').get_attribute('content') == 'noindex,nofollow'
             assert page.locator('.site-header .ov-mark-svg').count() == 1
-            assert page.locator('.site-footer').count() == 1
+            nav_text = page.locator('.site-header-actions nav').text_content() or ''
+            assert 'Confronta' in nav_text and 'Capire' in nav_text
+
+            page.goto(base + 'letture/una-versilia-che-cambia/', wait_until='networkidle')
+            assert page.locator('[data-story-chapter]').count() == 3
+            assert page.locator('.story-facts article').count() == 3
+            assert page.locator('.story-source-link').count() == 4
+            assert page.locator('.story-change-row').count() == 7
+            assert page.locator('.story-age-row').count() == 7
+            assert page.locator('.story-mobility-row').count() == 7
+            text = page.locator('main').inner_text()
+            assert 'La storia in una frase' in text
+            assert '%' in text
+            assert 'ogni 1.000' in text
+            assert 'persone 65+ ogni 100 residenti 0–14' in text
+            assert page.locator('.story-hero svg').count() >= 2
+
             page.goto(base + 'letture/redditi-contro-inflazione/', wait_until='networkidle')
-            assert page.locator('.reading-question').is_visible()
-            assert page.locator('.reading-metric').count() == 3
-            assert page.locator('.reading-answer span').text_content().strip() == 'Risposta breve'
-            assert 'Cosa non possiamo concludere' in page.locator('main').inner_text()
-            page.goto(base + 'letture/cinquantanni-di-clima/', wait_until='networkidle')
-            assert page.locator('.reading-metric').count() == 4
-            assert page.locator('.reading-special a[href*="confronta/meteo-clima/"]').count() == 1
+            assert page.locator('.planned-reading').count() == 1
+            assert page.locator('[data-story-chapter]').count() == 0
+
             assert not errors, errors
             overflow = page.evaluate('document.documentElement.scrollWidth > document.documentElement.clientWidth + 1')
             assert not overflow, f'Horizontal overflow at {width}px'
             page.close()
         browser.close()
-    print('Letture browser OK: desktop/mobile, shell canonica, 7 cards, metriche canoniche, no overflow')
+    print('Capire la Versilia browser OK: pilot story, icons, units, navigation, desktop/mobile, no overflow')
 
 
 if __name__ == '__main__':
