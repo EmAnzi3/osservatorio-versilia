@@ -40,7 +40,7 @@ def main() -> None:
             assert page.locator('.story-age-row').count() == 7
             assert page.locator('.story-mobility-row').count() == 7
             text = page.locator('main').inner_text()
-            assert 'La storia in una frase' in text
+            assert page.locator('.story-thesis-label span').text_content().strip() == 'La storia in una frase'
             assert '%' in text
             assert 'ogni 1.000' in text
             assert 'persone 65+ ogni 100 residenti 0–14' in text
