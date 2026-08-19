@@ -41,7 +41,8 @@ def upgrade_page(path: Path) -> None:
         prefix = src.split("assets/rapporti.js", 1)[0]
         toolkit = f'<script src="{prefix}assets/ux-history-core.js?v=20260819-report-v4" defer></script>\n  '
         text = text[:match.start()] + toolkit + text[match.start():]
-    text = text.replace('class="antialiased report-page"', 'class="antialiased report-page" data-report-version="4"', 1)
+    if 'data-report-version="4"' not in text:
+        text = text.replace('class="antialiased report-page"', 'class="antialiased report-page" data-report-version="4"', 1)
     path.write_text(text, encoding="utf-8")
 
 
