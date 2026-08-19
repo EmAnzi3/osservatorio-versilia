@@ -1,17 +1,25 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "label": "Capire la Versilia",
   "description": "Storie e chiavi di lettura costruite mettendo in relazione indicatori diversi. Ogni lettura deve formulare una tesi verificabile, mostrarne le prove, evidenziare le eccezioni e dichiarare i propri limiti.",
   "items": [
     {
       "slug": "una-versilia-che-cambia",
       "status": "pilot",
-      "renderer": "demography-story-v2",
+      "renderer": "demography-story-v3",
       "title": "Una Versilia che cambia",
+      "headline": "La Versilia cambia poco nel totale, ma molto nella sua struttura",
+      "standfirst": "Dietro una popolazione complessivamente quasi stabile si muovono sette traiettorie diverse. Una cosa, però, accomuna tutto il territorio: l’invecchiamento cresce ovunque.",
       "question": "La Versilia sta davvero perdendo popolazione, o il cambiamento più importante è nella sua struttura e nelle differenze tra i sette Comuni?",
       "themes": ["demografia"],
       "metrics": ["population", "populationChange", "oldAgeIndex", "totalResidentialMobility"],
-      "caution": "La lettura confronta fenomeni e periodi diversi senza attribuire cause: trasferimenti di residenza, saldo naturale e variazione complessiva della popolazione non sono la stessa cosa."
+      "caution": "La lettura confronta fenomeni e periodi diversi senza attribuire cause: trasferimenti di residenza, saldo naturale e variazione complessiva della popolazione non sono la stessa cosa.",
+      "report": {
+        "enabled": true,
+        "slug": "lettura-una-versilia-che-cambia",
+        "title": "Rapporto demografico · Una Versilia che cambia",
+        "subtitle": "Popolazione, invecchiamento e mobilità residenziale nei sette Comuni della Versilia"
+      }
     },
     {
       "slug": "redditi-contro-inflazione",
