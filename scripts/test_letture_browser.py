@@ -54,7 +54,6 @@ def main() -> None:
             assert page.locator('a[href*="rapporti/lettura-una-versilia-che-cambia/"]').count() >= 1
             assert page.locator('[data-aging-town]').count() == 1
             assert page.locator('.story-canonical-bars .bar-row').count() == 14
-
             first_point = page.locator('.story-canonical-chart .chart-point').first
             first_point.hover()
             assert first_point.locator('.chart-tooltip').get_attribute('hidden') is None
@@ -81,6 +80,12 @@ def main() -> None:
             assert not errors, errors
             no_overflow(page, width)
 
+            page.goto(base + 'comuni/massarosa/', wait_until='networkidle')
+            assert page.locator('[data-town-report-link]').count() == 1
+            assert '/rapporti/comune-massarosa/' in (page.locator('[data-town-report-link]').get_attribute('href') or '')
+            assert not errors, errors
+            no_overflow(page, width)
+
             page.goto(base + 'letture/redditi-contro-inflazione/', wait_until='networkidle')
             assert page.locator('.planned-reading').count() == 1
             assert page.locator('[data-story-chapter]').count() == 0
@@ -89,7 +94,7 @@ def main() -> None:
             page.close()
         browser.close()
 
-    print('Capire la Versilia browser OK: assi+tooltip canonici, scatter, analisi estesa, rapporto Lettura e rapporto comunale, desktop/mobile')
+    print('Capire la Versilia browser OK: assi+tooltip canonici, scatter, analisi, rapporti e accesso dalla scheda Comune, desktop/mobile')
 
 
 if __name__ == '__main__':
