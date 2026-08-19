@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 CONFIG = ROOT / "data" / "letture.json"
+ASSET_VERSION = "20260819-2"
 
 
 def brand_mark() -> str:
@@ -60,7 +61,7 @@ def shell(title: str, description: str, body_class: str, reading: str = "", dept
   <link rel="stylesheet" href="{prefix}assets/fidelity.css">
   <link rel="stylesheet" href="{prefix}assets/brand.css">
   <link rel="stylesheet" href="{prefix}assets/pwa.css">
-  <link rel="stylesheet" href="{prefix}assets/letture.css?v=20260819-1">
+  <link rel="stylesheet" href="{prefix}assets/letture.css?v={ASSET_VERSION}">
 </head>
 <body class="antialiased {body_class}"{reading_attr}>
   <header class="site-header"><div class="site-header-inner">
@@ -68,8 +69,8 @@ def shell(title: str, description: str, body_class: str, reading: str = "", dept
     <div class="site-header-actions"><nav aria-label="Navigazione principale"><a href="{prefix}#temi">Temi</a><a href="{prefix}#comuni">Comuni</a><a href="{prefix}progetto/">Il progetto</a><a href="{prefix}stato-dati/">Stato dei dati</a></nav></div>
   </div></header>
   <main id="reading-app" class="reading-main"><div class="app-loading" role="status">Caricamento della lettura…</div></main>
-  <footer class="site-footer"><div class="footer-about"><strong>Osservatorio Versilia</strong><p>Un punto di accesso indipendente ai dati pubblici dei sette Comuni della Versilia.</p><p class="footer-disclaimer">Le Letture interpretano indicatori già pubblicati e non costituiscono un dataset autonomo.</p></div><nav class="footer-links"><a href="{prefix}progetto/">Il progetto</a><a href="{prefix}stato-dati/">Stato dei dati</a><a href="{prefix}segnala/">Segnala un dato</a></nav></footer>
-  <script src="{prefix}assets/letture.js?v=20260819-1" defer></script>
+  <footer class="site-footer"><div class="footer-about"><strong>Osservatorio Versilia</strong><p>Un punto di accesso indipendente ai dati pubblici dei sette Comuni della Versilia.</p><p class="footer-disclaimer">Capire la Versilia interpreta indicatori già pubblicati e non costituisce un dataset autonomo.</p></div><nav class="footer-links"><a href="{prefix}progetto/">Il progetto</a><a href="{prefix}stato-dati/">Stato dei dati</a><a href="{prefix}segnala/">Segnala un dato</a></nav></footer>
+  <script src="{prefix}assets/letture.js?v={ASSET_VERSION}" defer></script>
   <script src="{prefix}assets/pwa.js?v=20260813-pwa8&rev=install-ui-off" defer></script>
 </body>
 </html>
@@ -80,13 +81,13 @@ def main() -> None:
     payload = json.loads(CONFIG.read_text(encoding="utf-8"))
     items = payload.get("items", [])
     if not items:
-        raise RuntimeError("Catalogo Letture vuoto")
+        raise RuntimeError("Catalogo Capire la Versilia vuoto")
     root = DIST / "letture"
     root.mkdir(parents=True, exist_ok=True)
     (root / "index.html").write_text(
         shell(
-            "Letture · Osservatorio Versilia",
-            "Percorsi guidati dentro gli indicatori dell’Osservatorio Versilia, con dati, confronti, contesto, limiti e fonti.",
+            "Capire la Versilia · Osservatorio Versilia",
+            payload.get("description") or "Storie e chiavi di lettura costruite a partire dai dati dell’Osservatorio Versilia.",
             "reading-index",
             depth=1,
         ),
@@ -103,10 +104,10 @@ def main() -> None:
         target.mkdir(parents=True, exist_ok=True)
         description = str(item.get("question") or payload.get("description") or title)
         (target / "index.html").write_text(
-            shell(f"{title} · Letture · Osservatorio Versilia", description, "reading-detail", reading=slug, depth=2),
+            shell(f"{title} · Capire la Versilia · Osservatorio Versilia", description, "reading-detail", reading=slug, depth=2),
             encoding="utf-8",
         )
-    print(f"Letture generate: {len(items)} + indice")
+    print(f"Capire la Versilia: {len(items)} pagine generate, 1 pilota editoriale + piano di lavoro")
 
     # La shell editoriale viene sincronizzata solo dopo che la build standard
     # ha già prerenderizzato e brandizzato le pagine canoniche in dist.
