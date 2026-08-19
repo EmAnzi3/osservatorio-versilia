@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Meteo e clima · Ambiente · Osservatorio Versilia</title>
-  <meta name="description" content="Bozza della sezione Ambiente dedicata ai trend comunali di temperatura e precipitazioni in Versilia dal 1950.">
+  <meta name="description" content="Bozza della lettura climatica dell’Osservatorio Versilia: ultimo anno completo, trend 1975–2025, confronto tra i sette Comuni, metodo e stato dei dati.">
   <meta property="og:title" content="Meteo e clima · Ambiente · Osservatorio Versilia">
-  <meta property="og:description" content="Trend territoriali comunali di temperatura e precipitazioni in Versilia dal 1950, con temperature minime e massime ricostruite fino al 2025.">
+  <meta property="og:description" content="Temperatura media, minime, massime e precipitazioni nei sette Comuni della Versilia, con serie storiche territoriali e metodo dichiarato.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="it_IT">
   <meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
@@ -17,148 +17,96 @@
   <link rel="stylesheet" href="../../assets/original.css">
   <link rel="stylesheet" href="../../assets/fonts.css">
   <link rel="stylesheet" href="../../assets/fidelity.css">
-  <link rel="stylesheet" href="../../assets/meteo-clima.css?v=20260810-2">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Dataset",
-    "name": "Serie climatiche comunali della Versilia 1950–2025",
-    "description": "Serie annuali territoriali comunali di temperatura media e precipitazioni, con approfondimento sulle temperature minime e massime ricostruite 1975–2025.",
-    "url": "https://osservatorioversilia.it/confronta/meteo-clima/",
-    "inLanguage": "it-IT",
-    "isAccessibleForFree": true,
-    "temporalCoverage": "1950/2025",
-    "spatialCoverage": {"@type": "Place", "name": "Versilia, Toscana, Italia"},
-    "creator": {"@type": "Person", "name": "Emanuele Anzilotti"},
-    "variableMeasured": ["Temperatura media annua", "Precipitazione annua", "Temperatura minima media annua 1975–2025", "Temperatura massima media annua 1975–2025"]
-  }
-  </script>
+  <link rel="stylesheet" href="../../assets/meteo-clima-editorial.css?v=20260819-1">
 </head>
-<body class="antialiased climate-body" data-theme="ambiente">
+<body class="antialiased climate-editorial" data-theme="ambiente">
   <header class="site-header">
     <div class="site-header-inner">
       <a href="../../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
         <span class="site-brand-mark">O</span>
         <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
       </a>
-      <div class="site-header-actions climate-header-actions">
+      <div class="site-header-actions">
         <nav aria-label="Navigazione principale">
           <a href="../../#temi">Temi</a>
           <a href="../../#comuni">Comuni</a>
           <a href="../../progetto/">Il progetto</a>
-          <a href="../../segnala/">Segnala</a>
+          <a href="../../stato-dati/">Stato dei dati</a>
         </nav>
-        <a class="global-search-trigger" href="../../" aria-label="Torna alla home per usare la ricerca">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span>Cerca</span>
-        </a>
       </div>
     </div>
   </header>
 
-  <main class="climate-page inner-page" data-theme="ambiente">
-    <div class="breadcrumbs page-width"><a href="../../">Home</a><span>›</span><a href="../ambiente/">Ambiente</a><span>›</span><strong>Meteo e clima</strong></div>
-
-    <section class="topic-hero page-width" data-theme="ambiente">
-      <div class="topic-symbol">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-        <small>08</small>
-      </div>
-      <div><span class="overline">Ambiente · serie storiche climatiche · bozza</span><h1>Meteo e clima</h1><p>Il punto non è sapere soltanto quanto ha piovuto o quale temperatura ha avuto un singolo anno: qui leggiamo <strong>come stanno cambiando i valori nel tempo</strong>, con una finestra di trend di 50 anni.</p></div>
+  <main>
+    <section class="climate-hero page-width">
+      <div class="breadcrumbs"><a href="../../">Home</a><span>›</span><a href="../ambiente/">Ambiente</a><span>›</span><strong>Meteo e clima</strong></div>
+      <span class="overline">Ambiente · lettura climatica · bozza non indicizzata</span>
+      <h1>Meteo e clima</h1>
+      <p>Questa pagina non aggiunge nuovi indicatori: mette in relazione i quattro indicatori climatici già presenti nell’Osservatorio per leggere <strong>quanto vale oggi il dato, come è cambiato e cosa succede nei sette Comuni</strong>.</p>
+      <div class="climate-question"><span>Domanda</span><strong>Come sta cambiando il clima della Versilia nel lungo periodo, al di là delle oscillazioni di un singolo anno?</strong></div>
     </section>
 
-    <section class="climate-facts page-width" aria-label="Copertura del dataset">
-      <div><strong>1950–2025</strong><span>76 annualità complete</span></div>
-      <div><strong>1975–2025</strong><span>finestra principale di trend · 50 anni</span></div>
-      <div><strong>7 comuni</strong><span>media territoriale comunale</span></div>
-      <div><strong>SIR Toscana</strong><span>validazione indipendente</span></div>
-    </section>
-
-    <section class="climate-workspace page-width" aria-labelledby="climate-chart-title">
+    <section class="climate-workspace page-width" id="climate-workspace" aria-label="Esplora i dati climatici">
       <div class="climate-controls">
-        <label class="climate-select-label" for="climate-town"><span>Territorio</span>
-          <select id="climate-town" aria-label="Seleziona il comune"></select>
-        </label>
-        <div class="climate-metric-tabs" role="tablist" aria-label="Indicatore climatico">
-          <button type="button" role="tab" data-metric="temperature" class="active" aria-selected="true">Temperatura media</button>
-          <button type="button" role="tab" data-metric="precipitation" aria-selected="false">Precipitazioni</button>
+        <label for="climate-town"><span>Comune</span><select id="climate-town"></select></label>
+        <div class="climate-tabs" aria-label="Indicatore climatico">
+          <button type="button" data-climate-metric="temperature" class="active" aria-pressed="true">Temperatura media</button>
+          <button type="button" data-climate-metric="tmin" aria-pressed="false">Minime medie</button>
+          <button type="button" data-climate-metric="tmax" aria-pressed="false">Massime medie</button>
+          <button type="button" data-climate-metric="precipitation" aria-pressed="false">Precipitazioni</button>
         </div>
-        <button type="button" class="climate-smooth-toggle active" id="climate-smooth-toggle" aria-pressed="true">Media mobile 10 anni</button>
       </div>
 
-      <div class="climate-summary-grid" id="climate-summary" aria-live="polite"></div>
+      <div class="climate-summary" aria-live="polite">
+        <article><strong id="climate-current-value">—</strong><span id="climate-current-label">ultimo anno completo</span></article>
+        <article><strong id="climate-trend-value">—</strong><span id="climate-trend-label">trend di lungo periodo</span></article>
+        <article><strong id="climate-versilia-value">—</strong><span id="climate-versilia-label">riferimento Versilia</span></article>
+      </div>
 
       <article class="climate-chart-card">
-        <div class="climate-chart-heading">
-          <div><span class="overline">Serie annuale · 1950–2025</span><h2 id="climate-chart-title">Temperatura media annua</h2></div>
-          <div class="climate-chart-unit" id="climate-chart-unit">°C</div>
-        </div>
-        <div class="climate-chart-wrap" id="climate-chart" aria-live="polite"></div>
-        <div class="climate-chart-legend">
-          <span><i class="legend-raw"></i>Valore annuale</span>
-          <span><i class="legend-smooth"></i>Media mobile 10 anni</span>
-          <span><i class="legend-trend"></i>Trend lineare 1975–2025</span>
-          <span><i class="legend-lamma"></i>LaMMA 1 km · interpolato</span>
-          <span><i class="legend-era5"></i>ERA5-Land · rianalisi calibrata</span>
-        </div>
-      </article>
-      <p class="climate-trend-note" id="climate-trend-note" aria-live="polite"></p>
-    </section>
-
-    <section class="climate-comparison page-width" aria-labelledby="climate-compare-title">
-      <div class="section-heading compact">
-        <div><span class="overline">Trend di lungo periodo · 1975–2025</span><h2 id="climate-compare-title">Come cambia il valore nei sette comuni</h2></div>
-        <p>Il confronto non ordina l'ultima annualità: confronta la <strong>variazione stimata lungo il trend di 50 anni</strong>. Clicca un comune per aprirne la serie.</p>
-      </div>
-      <div class="climate-compare-bars" id="climate-compare-bars"></div>
-    </section>
-
-    <section class="climate-minmax page-width" id="temperature-min-max" hidden aria-labelledby="climate-minmax-title">
-      <div class="section-heading compact">
-        <div><span class="overline">Approfondimento · 1975–2025</span><h2 id="climate-minmax-title">Temperature minime e massime</h2></div>
-        <p>Media annua delle minime e delle massime giornaliere territoriali. La serie cinquantennale è omogeneamente ERA5-Land; LaMMA 1995–2015 è usato come riferimento grigliato e il quinquennio 2011–2015 serve esclusivamente a raccordare il livello con un offset costante. L’evoluzione temporale ERA5-Land è stata verificata contro osservazioni SIR indipendenti.</p>
-      </div>
-      <div class="climate-minmax-summary" id="climate-minmax-summary"></div>
-      <article class="climate-chart-card climate-minmax-card">
-        <div class="climate-chart-heading"><div><span class="overline">Serie omogenea · 1975–2025</span><h3>Minime e massime medie annue</h3></div><div class="climate-chart-unit">°C</div></div>
-        <div class="climate-chart-wrap climate-minmax-chart" id="climate-minmax-chart"></div>
-        <div class="climate-chart-legend"><span><i class="legend-min"></i>Media delle minime giornaliere</span><span><i class="legend-max"></i>Media delle massime giornaliere</span></div>
+        <span class="overline">Come è cambiato</span>
+        <h2 id="climate-chart-title">Serie storica</h2>
+        <div class="climate-chart" id="climate-chart" aria-live="polite"></div>
+        <p class="climate-caution"><strong>Come leggere il grafico.</strong> La linea continua mostra i valori annuali; la linea tratteggiata sintetizza il trend lineare dal 1975 all’ultimo anno completo. Il trend descrive una direzione di fondo e non sostituisce la variabilità dei singoli anni.</p>
       </article>
     </section>
 
-    <section class="climate-partial page-width" id="climate-partial" hidden></section>
+    <section class="climate-section page-width">
+      <div class="climate-section-heading">
+        <div><span class="overline">I sette Comuni</span><h2>Confronto senza classifiche</h2></div>
+        <p>I Comuni restano in ordine alfabetico. Lo scostamento è riferito alla <strong>media aritmetica semplice dei sette Comuni</strong>: è un benchmark amministrativo, non la media areale dell’intera superficie della Versilia.</p>
+      </div>
+      <div class="climate-town-list" id="climate-town-list"></div>
+    </section>
 
-    <section class="climate-method page-width" aria-labelledby="climate-method-title">
-      <div class="section-heading">
-        <div><span class="overline">Come leggere la serie</span><h2 id="climate-method-title">Una ricostruzione territoriale, non una stazione meteo.</h2></div>
-        <p>Il trend sintetizza una direzione di fondo; il grafico mantiene visibili anche i singoli anni, perché soprattutto sulle precipitazioni la variabilità resta parte essenziale dell'informazione.</p>
+    <section class="climate-section page-width">
+      <div class="climate-section-heading">
+        <div><span class="overline">Metodo e limiti</span><h2>Una ricostruzione territoriale, non una stazione meteo</h2></div>
+        <p>Il valore comunale rappresenta un territorio. Non va descritto come “temperatura osservata nel Comune” o come misura effettuata in un singolo punto.</p>
       </div>
-      <div class="climate-method-grid">
-        <article><span>01</span><h3>Geografia reale</h3><p id="method-spatial"></p></article>
-        <article><span>02</span><h3>Due fonti, un'unica serie</h3><p id="method-source"></p></article>
-        <article><span>03</span><h3>Controllo indipendente</h3><p id="method-validation"></p></article>
-      </div>
-      <div class="climate-source-timeline" id="climate-source-timeline"></div>
-      <details class="climate-disclosure">
-        <summary>Note metodologiche e fonti</summary>
-        <div class="climate-disclosure-body">
-          <p><strong>Trend di 50 anni.</strong> Regressione lineare sui valori annuali dal 1975 al 2025; la variazione mostrata è la differenza tra i valori stimati dalla retta ai due estremi. È una sintesi descrittiva, non un test di significatività statistica.</p>
-          <p><strong>Temperatura.</strong> <span id="method-temperature"></span></p>
-          <p><strong>Minime e massime.</strong> Serie ERA5-Land ARCO continua 1975–2025, con minime e massime giornaliere calcolate dai 24 campioni orari UTC e pesatura frazionaria comunale. LaMMA 1995–2015 non viene inserito nel mezzo della serie: è il riferimento grigliato per il livello e il solo 2011–2015 determina l’offset comunale costante applicato all’intera serie. Nessuna correzione della pendenza viene applicata, perché il confronto indipendente con SIR supporta l’evoluzione temporale ERA5-Land rispetto alla deriva LaMMA Tmin/Tmax.</p>
-          <p><strong>Precipitazioni.</strong> <span id="method-precipitation"></span></p>
-          <p><strong>Fonti ufficiali.</strong> <a href="https://dati.lamma.toscana.it/" target="_blank" rel="noreferrer">Consorzio LaMMA ↗</a> · <a href="https://cds.climate.copernicus.eu/" target="_blank" rel="noreferrer">Copernicus Climate Data Store ↗</a> · <a href="https://www.sir.toscana.it/" target="_blank" rel="noreferrer">SIR Toscana ↗</a>.</p>
-          <p class="climate-caution"><strong>Importante:</strong> la serie non va descritta come “dato osservato nel Comune”. La serie Tmin/Tmax è una rianalisi territoriale ERA5-Land calibrata nel livello; LaMMA è il riferimento grigliato e le stazioni SIR sono usate come controllo indipendente del comportamento temporale.</p>
+      <div class="climate-method-box">
+        <div>
+          <p id="climate-method-copy"></p>
+          <p class="climate-caution"><strong>Audit in corso sulla bozza.</strong> Per temperatura media e precipitazioni la serie pubblicata usa oggi LaMMA nel periodo comune e ERA5-Land calibrato fuori da esso. Prima di rendere canonica questa pagina viene confrontata con una candidata ERA5-Land continua 1975–2025. Nessun valore pubblico viene sostituito automaticamente.</p>
         </div>
-      </details>
+        <div class="climate-status" id="climate-status" aria-label="Stato dei dati climatici"></div>
+      </div>
+    </section>
+
+    <section class="climate-section page-width">
+      <div class="climate-section-heading">
+        <div><span class="overline">Vai ai dati</span><h2>Dal quadro generale alle schede comunali</h2></div>
+        <p>Per confrontare gli indicatori nella grammatica ordinaria dell’Osservatorio usa <a href="../ambiente/?indicatore=climateTemperatureTrend50y">Ambiente</a>; per metodo, periodo pubblicato e ultimo controllo consulta <a href="../../stato-dati/">Stato dei dati</a>.</p>
+      </div>
     </section>
   </main>
 
-  <footer class="site-footer climate-site-footer">
-    <div class="footer-about"><strong>Osservatorio Versilia</strong><p>Un punto di accesso indipendente ai dati pubblici dei sette comuni della Versilia.</p><p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p></div>
-    <nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../../progetto/">Il progetto</a><a href="../../progetto/#metodo">Metodo</a><a href="../../progetto/#licenza">Licenza</a><a href="../../segnala/">Segnala un dato</a></nav>
-    <div class="footer-note"><span>Bozza Meteo e clima · macrotema Ambiente</span><span>1950–2025</span><span>non pubblicata in produzione</span></div>
+  <footer class="site-footer">
+    <div class="footer-about"><strong>Osservatorio Versilia</strong><p>Un punto di accesso indipendente ai dati pubblici dei sette Comuni della Versilia.</p><p class="footer-disclaimer">Non è un sito istituzionale e non rappresenta gli enti citati.</p></div>
+    <nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../../progetto/">Il progetto</a><a href="../../progetto/#metodo">Metodo</a><a href="../../stato-dati/">Stato dei dati</a><a href="../../segnala/">Segnala un dato</a></nav>
+    <div class="footer-note climate-footer-note"><span>Meteo e clima · bozza</span><span>nessun anno parziale pubblicato</span></div>
   </footer>
 
-  <div class="climate-tooltip" id="climate-tooltip" hidden></div>
-  <script src="../../assets/meteo-clima.js?v=20260811-3" defer></script>
+  <script src="../../assets/meteo-clima-editorial.js?v=20260819-1" defer></script>
 </body>
 </html>
