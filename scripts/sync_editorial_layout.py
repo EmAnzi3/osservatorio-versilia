@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Allinea le pagine editoriali al layout canonico già prerenderizzato.
+"""Allinea pagine editoriali e rapporti al layout canonico prerenderizzato.
 
 Le pagine speciali conservano il proprio <main> e i propri asset specifici, ma
 header, footer e asset strutturali vengono ricavati da pagine standard della
-stessa profondità. In questo modo il preview locale usa esattamente la stessa
-shell visuale del sito e non una sua imitazione.
-
-La build base inietta inoltre il runtime dell'applicazione principale in ogni
-HTML presente in dist. Le pagine editoriali non usano il mount #app: dopo la
-sincronizzazione rimuoviamo quindi solo gli enhancer applicativi non pertinenti,
-lasciando intatti shell, CSS, brand, PWA e gli script editoriali dedicati.
+stessa profondità. La build base può iniettare runtime dell'app principale anche
+in queste pagine: li rimuoviamo perché Letture, Rapporti e Meteo usano renderer
+dedicati e non il mount #app.
 """
 from __future__ import annotations
 
@@ -60,12 +56,10 @@ def structural_head_tags(template: str) -> list[str]:
     head = head_match.group(1)
     tags: list[str] = []
     for tag in LINK_RE.findall(head):
-        rel = attr(tag, "rel").lower()
-        if rel in STRUCTURAL_LINK_RELS:
+        if attr(tag, "rel").lower() in STRUCTURAL_LINK_RELS:
             tags.append(tag)
     for tag in META_RE.findall(head):
-        name = attr(tag, "name").lower()
-        if name in STRUCTURAL_META_NAMES:
+        if attr(tag, "name").lower() in STRUCTURAL_META_NAMES:
             tags.append(tag)
     return tags
 
@@ -83,7 +77,6 @@ def strip_generic_runtime(document: str) -> str:
         src = match.group(1).split("?", 1)[0]
         basename = src.rsplit("/", 1)[-1]
         return "" if basename in GENERIC_RUNTIME_SCRIPTS else match.group(0)
-
     return SCRIPT_RE.sub(replace, document)
 
 
@@ -99,12 +92,11 @@ def sync_page(target: Path, template: Path) -> None:
     footer = FOOTER_RE.search(canonical)
     if not header or not footer:
         raise RuntimeError(f"Shell canonica incompleta: {template}")
-
     if not HEADER_RE.search(text) or not FOOTER_RE.search(text):
         raise RuntimeError(f"Shell editoriale incompleta: {target}")
+
     text = HEADER_RE.sub(header.group(0), text, count=1)
     text = FOOTER_RE.sub(footer.group(0), text, count=1)
-
     existing_head = HEAD_RE.search(text)
     if not existing_head:
         raise RuntimeError(f"Head editoriale mancante: {target}")
@@ -116,26 +108,26 @@ def sync_page(target: Path, template: Path) -> None:
         text = text.replace("</head>", "  " + "\n  ".join(missing) + "\n</head>", 1)
 
     text = strip_generic_runtime(text)
-
     if "assets/pwa.js" not in text:
         pwa = PWA_SCRIPT_RE.search(canonical)
         if not pwa:
             raise RuntimeError(f"Bootstrap PWA canonico non trovato: {template}")
         text = text.replace("</body>", f"  {pwa.group(0)}\n</body>", 1)
-
     target.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
     depth1 = DIST / "progetto" / "index.html"
     depth2 = DIST / "confronta" / "demografia" / "index.html"
-
     targets: list[tuple[Path, Path]] = [
         (DIST / "confronta" / "meteo-clima" / "index.html", depth2),
         (DIST / "letture" / "index.html", depth1),
+        (DIST / "rapporti" / "index.html", depth1),
     ]
-    reading_root = DIST / "letture"
-    for path in sorted(reading_root.glob("*/index.html")):
+
+    for path in sorted((DIST / "letture").glob("*/index.html")):
+        targets.append((path, depth2))
+    for path in sorted((DIST / "rapporti").glob("*/index.html")):
         targets.append((path, depth2))
 
     for target, template in targets:
