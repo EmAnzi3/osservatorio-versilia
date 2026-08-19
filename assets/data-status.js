@@ -4,6 +4,8 @@
   const script = document.currentScript;
   const ROOT = new URL('../', script?.src || location.href);
   const statusHref = new URL('stato-dati/', ROOT).href;
+  const compareHref = new URL('#temi', ROOT).href;
+  const readingsHref = new URL('letture/', ROOT).href;
 
   function installFilters() {
     const table = document.querySelector('.data-status-table');
@@ -145,29 +147,56 @@
     if (app) new MutationObserver(schedule).observe(app, { childList: true, subtree: true });
   }
 
-  function makeStatusLink(label, placement) {
+  function makeNavigationLink(label, href, key, placement) {
     const link = document.createElement('a');
-    link.href = statusHref;
+    link.href = href;
     link.textContent = label;
-    link.dataset.dataStatusNav = placement;
+    link.dataset.ovNavigation = `${key}-${placement}`;
+    if (key === 'status') link.dataset.dataStatusNav = placement;
     return link;
   }
 
   function ensureNavigationLinks() {
     const headerNav = document.querySelector('.site-header-actions nav[aria-label="Navigazione principale"]');
-    if (headerNav && !headerNav.querySelector('[data-data-status-nav="header"]')) {
-      const link = makeStatusLink('Stato dati', 'header');
-      const project = [...headerNav.querySelectorAll('a')].find(item => item.textContent.trim() === 'Il progetto');
-      if (project) project.after(link);
-      else headerNav.append(link);
+    if (headerNav) {
+      const links = [...headerNav.querySelectorAll('a')];
+      const comuni = links.find(item => item.textContent.trim() === 'Comuni');
+      const project = links.find(item => item.textContent.trim() === 'Il progetto');
+
+      let compare = headerNav.querySelector('[data-ov-navigation="compare-header"]');
+      if (!compare) {
+        compare = makeNavigationLink('Confronta', compareHref, 'compare', 'header');
+        if (comuni) comuni.after(compare); else headerNav.prepend(compare);
+      }
+
+      let readings = headerNav.querySelector('[data-ov-navigation="readings-header"]');
+      if (!readings) {
+        readings = makeNavigationLink('Capire', readingsHref, 'readings', 'header');
+        compare.after(readings);
+      }
+
+      if (!headerNav.querySelector('[data-data-status-nav="header"]')) {
+        const status = makeNavigationLink('Stato dati', statusHref, 'status', 'header');
+        if (project) project.after(status); else headerNav.append(status);
+      }
     }
 
     const footerNav = document.querySelector('.site-footer .footer-links');
-    if (footerNav && !footerNav.querySelector('[data-data-status-nav="footer"]')) {
-      const link = makeStatusLink('Stato dei dati', 'footer');
+    if (footerNav) {
       const project = [...footerNav.querySelectorAll('a')].find(item => item.textContent.trim() === 'Il progetto');
-      if (project) project.after(link);
-      else footerNav.prepend(link);
+      if (!footerNav.querySelector('[data-ov-navigation="compare-footer"]')) {
+        const compare = makeNavigationLink('Confronta', compareHref, 'compare', 'footer');
+        if (project) project.before(compare); else footerNav.prepend(compare);
+      }
+      if (!footerNav.querySelector('[data-ov-navigation="readings-footer"]')) {
+        const readings = makeNavigationLink('Capire la Versilia', readingsHref, 'readings', 'footer');
+        const compare = footerNav.querySelector('[data-ov-navigation="compare-footer"]');
+        compare.after(readings);
+      }
+      if (!footerNav.querySelector('[data-data-status-nav="footer"]')) {
+        const status = makeNavigationLink('Stato dei dati', statusHref, 'status', 'footer');
+        if (project) project.after(status); else footerNav.append(status);
+      }
     }
   }
 
