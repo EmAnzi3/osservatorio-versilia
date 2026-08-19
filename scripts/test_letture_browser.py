@@ -48,7 +48,7 @@ def main() -> None:
             no_overflow(page, width)
 
             page.goto(base + 'letture/una-versilia-che-cambia/', wait_until='networkidle')
-            page.wait_for_selector('[data-editorial-canonical-ready="reading"]')
+            page.wait_for_selector('[data-editorial-canonical-ready="reading"]', state='attached')
             assert page.locator('.story-hero--editorial h1').text_content().strip() == 'La Versilia cambia poco nel totale, ma molto nella sua struttura'
             assert page.locator('[data-story-chapter]').count() == 3
             assert page.locator('[data-ov-canonical-chart="history"]').count() == 2
