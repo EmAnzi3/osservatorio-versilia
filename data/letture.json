@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 3,
+  "label": "Capire la Versilia",
+  "description": "Storie e chiavi di lettura costruite mettendo in relazione indicatori diversi. Ogni lettura deve formulare una tesi verificabile, mostrarne le prove, evidenziare le eccezioni e dichiarare i propri limiti.",
+  "items": [
+    {
+      "slug": "una-versilia-che-cambia",
+      "status": "pilot",
+      "renderer": "demography-story-v3",
+      "title": "Una Versilia che cambia",
+      "headline": "La Versilia cambia poco nel totale, ma molto nella sua struttura",
+      "standfirst": "Dietro una popolazione complessivamente quasi stabile si muovono sette traiettorie diverse. Una cosa, però, accomuna tutto il territorio: l’invecchiamento cresce ovunque.",
+      "question": "La Versilia sta davvero perdendo popolazione, o il cambiamento più importante è nella sua struttura e nelle differenze tra i sette Comuni?",
+      "themes": ["demografia"],
+      "metrics": ["population", "populationChange", "oldAgeIndex", "totalResidentialMobility"],
+      "caution": "La lettura confronta fenomeni e periodi diversi senza attribuire cause: trasferimenti di residenza, saldo naturale e variazione complessiva della popolazione non sono la stessa cosa.",
+      "report": {
+        "enabled": true,
+        "slug": "lettura-una-versilia-che-cambia",
+        "title": "Rapporto demografico · Una Versilia che cambia",
+        "subtitle": "Popolazione, struttura per età, cittadinanza e mobilità residenziale nei sette Comuni della Versilia",
+        "metrics": ["population", "populationChange", "ageDistribution", "oldAgeIndex", "foreignResidents", "internalResidentialMobility", "foreignResidentialMobility", "totalResidentialMobility"]
+      }
+    },
+    {
+      "slug": "redditi-contro-inflazione",
+      "status": "planned",
+      "title": "Redditi contro inflazione",
+      "question": "L’aumento dei redditi dichiarati ha davvero aumentato il potere d’acquisto?",
+      "themes": ["economia"],
+      "metrics": ["income", "incomeVsInflation", "incomeDistribution"],
+      "caution": "Reddito imponibile dichiarato e benessere economico non sono sinonimi."
+    },
+    {
+      "slug": "vivere-e-lavorare-in-versilia",
+      "status": "planned",
+      "title": "Vivere e lavorare in Versilia",
+      "question": "Quanto è forte il legame tra residenti, lavoro e tessuto produttivo nei sette Comuni?",
+      "themes": ["lavoro", "economia"],
+      "metrics": ["employmentRate", "unemploymentRate", "activityRate", "localUnits", "localEmployees", "income"],
+      "caution": "Le annualità delle fonti sul lavoro e sulle imprese possono non coincidere."
+    },
+    {
+      "slug": "quanto-investe-il-territorio",
+      "status": "planned",
+      "title": "Quanto investe il territorio",
+      "question": "Bilanci comunali, opere pubbliche e PNRR raccontano la stessa cosa?",
+      "themes": ["bilanci", "comunita"],
+      "metrics": ["capitalExpenditureCommittedPerResident", "publicWorks", "pnrrFunding", "pnrrConcluded"],
+      "caution": "Spesa in conto capitale, opere BDAP-MOP e progetti PNRR restano perimetri distinti."
+    },
+    {
+      "slug": "cinquantanni-di-clima",
+      "status": "planned",
+      "title": "Cinquant’anni di clima",
+      "question": "Cosa cambia quando il clima viene letto su cinquant’anni invece che attraverso un singolo anno caldo o piovoso?",
+      "themes": ["ambiente"],
+      "metrics": ["climateTemperatureTrend50y", "climateTminTrend", "climateTmaxTrend", "climatePrecipitationTrend50y"],
+      "specialHref": "/confronta/meteo-clima/",
+      "caution": "I dati climatici sono ricostruzioni territoriali, non misure di una singola stazione comunale."
+    },
+    {
+      "slug": "mobilita-e-sicurezza",
+      "status": "planned",
+      "title": "Mobilità e sicurezza",
+      "question": "Come ci si muove in Versilia e quali dati aiutano a leggere la sicurezza degli spostamenti?",
+      "themes": ["mobilita", "sicurezza"],
+      "metrics": ["motorization", "roadSafety", "slowMobilityRoutes", "slowMobilityTrekking", "slowMobilityBici"],
+      "caution": "La presenza di un percorso cartografato non esprime un giudizio sulla sua sicurezza o agibilità attuale."
+    },
+    {
+      "slug": "la-versilia-turistica",
+      "status": "planned",
+      "title": "La Versilia turistica",
+      "question": "Il turismo pesa allo stesso modo nei sette Comuni e durante tutto l’anno?",
+      "themes": ["economia"],
+      "metrics": ["tourismPresences", "tourismIntensity", "tourismSeasonality", "tourismAverageStay", "foreignTourismShare", "tourismBedsPer1000"],
+      "caution": "Presenze turistiche e popolazione residente descrivono universi diversi."
+    }
+  ]
+}

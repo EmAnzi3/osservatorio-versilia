@@ -1,0 +1,25 @@
+    return `${reportToolbar(new URL('letture/',ROOT).href,'')}<section class="report-index page-width"><span class="report-kicker">Osservatorio Versilia · Rapporti</span><h1>Rapporti statistici</h1><p>Documenti territoriali e tematici generati dai dati canonici dell’Osservatorio. Grafici, scale e interazioni sono gli stessi del sito; il livello aggiunto è l’analisi.</p><div class="report-index-featured"><a href="${new URL(`rapporti/${pilot.report?.slug||'lettura-una-versilia-che-cambia'}/`,ROOT).href}"><span>Lettura · Demografia</span><strong>${esc(pilot.report?.title||pilot.title)}</strong><small>Apri il rapporto territoriale →</small></a></div><div class="report-index-grid">${towns}</div></section>`;
+  }
+
+  function wireReportInteractions(app) {
+    app.querySelectorAll('[data-report-print]').forEach(button=>button.addEventListener('click',()=>window.print()));
+    app.querySelectorAll('.report-history').forEach(shell=>{
+      history.wireHistorySelection(shell,shell.dataset.selectedTown||'',false);
+    });
+  }
+
+  Promise.all(Object.values(URLS).map(url=>fetch(url).then(response=>{if(!response.ok)throw new Error(`${url.pathname}: ${response.status}`);return response.json();})))
+    .then(([config,data,state])=>{
+      const app=document.getElementById('report-app');
+      const reading=document.body.dataset.reportReading||'';
+      const town=document.body.dataset.reportTown||'';
+      if(reading) app.innerHTML=readingReport(config,data,state);
+      else if(town) app.innerHTML=townReport(data,state,town);
+      else app.innerHTML=reportsIndex(config,data);
+      wireReportInteractions(app);
+    })
+    .catch(error=>{
+      console.error(error);
+      document.getElementById('report-app').innerHTML='<div class="app-error"><strong>Rapporto non disponibile.</strong><p>I dati necessari non sono stati caricati.</p></div>';
+    });
+})();

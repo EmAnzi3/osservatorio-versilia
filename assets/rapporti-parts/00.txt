@@ -1,0 +1,129 @@
+(() => {
+  'use strict';
+
+  const ROOT = new URL('../', document.currentScript?.src || location.href);
+  const URLS = {
+    config: new URL('data/letture.json', ROOT),
+    data: new URL('data/site-data.json', ROOT),
+    state: new URL('data/source-monitor-state.json', ROOT)
+  };
+  const history = window.OVUXHistory;
+  if (!history) throw new Error('OVUXHistory non disponibile: i Rapporti devono usare i componenti grafici canonici del sito.');
+
+  const THEME_PATHS = {
+    demografia: '<path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path>',
+    economia: '<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="M7 12h5"></path><path d="M15 9.4a4 4 0 1 0 0 5.2"></path>',
+    lavoro: '<path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect>',
+    istruzione: '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path>',
+    salute: '<path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"></path>',
+    mobilita: '<path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path>',
+    sicurezza: '<path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"></path><path d="m9 12 2 2 4-4"></path>',
+    abitare: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>',
+    ambiente: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>',
+    bilanci: '<path d="M3 22h18"></path><path d="M6 18v-7"></path><path d="M10 18v-7"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M12 2 2 7h20Z"></path>',
+    comunita: '<path d="M10 12h4"></path><path d="M10 8h4"></path><path d="M14 21v-3a2 2 0 0 0-4 0v3"></path><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path>'
+  };
+
+  const esc = history.escapeHtml;
+  const formatter = (digits = 1) => new Intl.NumberFormat('it-IT', { minimumFractionDigits: digits, maximumFractionDigits: digits, useGrouping: 'always' });
+  const n0 = formatter(0), n1 = formatter(1), n2 = formatter(2);
+  const euro0 = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const townName = row => row?.town || row?.municipality || row?.name || row?.comune || '';
+  const rows = metric => Array.isArray(metric?.rows) ? metric.rows.filter(row => townName(row)) : [];
+  const rowFor = (metric, code) => rows(metric).find(row => row.code === code);
+  const number = value => Number.isFinite(Number(value)) ? Number(value) : null;
+  const slug = value => String(value || '').toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const date = value => value ? new Date(value).toLocaleDateString('it-IT') : 'non disponibile';
+  const sign = value => Number(value) > 0 ? '+' : '';
+  const joinIt = list => list.length <= 1 ? (list[0] || '') : list.length === 2 ? `${list[0]} e ${list[1]}` : `${list.slice(0, -1).join(', ')} e ${list.at(-1)}`;
+
+  function themeIcon(theme, size = 26) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${THEME_PATHS[theme] || ''}</svg>`;
+  }
+
+  function formatValue(value, unit) {
+    if (value === null || value === undefined || value === '' || !Number.isFinite(Number(value))) return 'n.d.';
+    const v = Number(value);
+    switch (unit) {
+      case 'percent': return `${n1.format(v)}%`;
+      case 'percentagePoints': return `${n1.format(v)} p.p.`;
+      case 'currency': return euro0.format(v);
+      case 'currency2': return `${n2.format(v)} €`;
+      case 'eurliter': return `${new Intl.NumberFormat('it-IT',{minimumFractionDigits:3,maximumFractionDigits:3}).format(v)} €/l`;
+      case 'eurPerResident': return `${n2.format(v)} €/ab`;
+      case 'euroPerResident': return `${n0.format(v)} € / residente`;
+      case 'millionEuro': return `${n1.format(v)} mln €`;
+      case 'per1000': return `${n1.format(v)} ogni 1.000`;
+      case 'per10k': return `${n1.format(v)} ogni 10.000`;
+      case 'per100': return `${n2.format(v)} ogni 100`;
+      case 'per100k': return `${n2.format(v)} ogni 100.000`;
+      case 'index': return n1.format(v);
+      case 'minutes': return `${n1.format(v)} min`;
+      case 'years': return `${n1.format(v)} anni`;
+      case 'kg': return `${n0.format(v)} kg`;
+      case 'kgPerResident': return `${n1.format(v)} kg/residente`;
+      case 'hectares': return `${n2.format(v)} ha`;
+      case 'nights': return `${n2.format(v)} notti`;
+      case 'people': return `${n0.format(v)} persone`;
+      case 'studentsPerClass': return `${n1.format(v)} alunni/classe`;
+      case 'eurm2': return `${n0.format(v)} €/m²`;
+      case 'rentm2': return `${n1.format(v)} €/m²/mese`;
+      case 'number': case 'count': return n0.format(v);
+      default: return Number.isInteger(v) ? n0.format(v) : n1.format(v);
+    }
+  }
+
+  function stateFor(key, state, metric) {
+    const item = state?.metrics?.[key] || {};
+    return {
+      period: item.publishedPeriod || metric?.meta?.year || '—',
+      checked: item.checkedAt || state?.checkedAt || '',
+      status: item.status || ''
+    };
+  }
+
+  function metricWithKey(metric) {
+    return metric ? { ...metric, key: metric.meta?.key || metric.key } : metric;
+  }
+
+  function currentValue(metric, row) {
+    if (!row) return null;
+    if (metric?.meta?.compositeType === 'distribution' && row.summaryValue !== undefined) return number(row.summaryValue);
+    return number(row.value);
+  }
+
+  function aggregateValue(metric) {
+    if (!metric?.aggregate) return null;
+    if (metric.meta?.compositeType === 'distribution' && metric.aggregate.summaryValue !== undefined) return number(metric.aggregate.summaryValue);
+    return number(metric.aggregate.value);
+  }
+
+  function rowDisplay(metric, row) {
+    if (!row) return 'n.d.';
+    if (metric?.meta?.compositeType === 'distribution' && row.summaryValue !== undefined) return formatValue(row.summaryValue, metric.meta.summaryUnit || metric.meta.unit);
+    if (row.formatted && String(row.formatted).trim()) return String(row.formatted);
+    return formatValue(row.value, metric?.meta?.unit);
+  }
+
+  function aggregateDisplay(metric) {
+    const value = aggregateValue(metric);
+    return value === null ? 'n.d.' : formatValue(value, metric?.meta?.summaryUnit || metric?.meta?.unit);
+  }
+
+  function isTotalAggregate(metric) {
+    const label = String(metric?.aggregate?.label || '').toLowerCase();
+    const note = String(metric?.aggregate?.note || '').toLowerCase();
+    return /totale|somma/.test(label) || /somma dei|somma del|totale dei/.test(note);
+  }
+
+  function comparisonText(metric, row, townLabel = '') {
+    const local = currentValue(metric, row), aggregate = aggregateValue(metric);
+    if (local === null || aggregate === null) return 'Confronto Versilia non disponibile.';
+    const label = townLabel || townName(row) || 'Il Comune';
+    const unit = metric.meta.unit;
+    if (isTotalAggregate(metric) && ['number','people','count'].includes(unit)) {
+      const share = aggregate ? local / aggregate * 100 : null;
+      return share === null ? '' : `${label} rappresenta il ${n1.format(share)}% del totale Versilia per questo indicatore.`;
+    }
+    const diff = local - aggregate;
+    if (unit === 'percent' || unit === 'percentagePoints') {

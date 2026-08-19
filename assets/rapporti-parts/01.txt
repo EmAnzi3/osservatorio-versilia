@@ -1,0 +1,109 @@
+      return `${label} è ${diff >= 0 ? 'sopra' : 'sotto'} il riferimento Versilia di ${n1.format(Math.abs(diff))} punti percentuali.`;
+    }
+    if (['years','minutes','per1000','per100','per10k','per100k','index'].includes(unit)) {
+      return `${label} è ${diff >= 0 ? 'sopra' : 'sotto'} il riferimento Versilia di ${formatValue(Math.abs(diff), unit)}.`;
+    }
+    if (aggregate !== 0) {
+      const relative = diff / Math.abs(aggregate) * 100;
+      return `${label} è ${relative >= 0 ? 'sopra' : 'sotto'} il riferimento Versilia del ${n1.format(Math.abs(relative))}%.`;
+    }
+    return `${label}: ${formatValue(local, unit)}; riferimento Versilia ${formatValue(aggregate, unit)}.`;
+  }
+
+  function seriesDelta(metric, row) {
+    const series = row?.series;
+    if (!series?.values?.length || series.values.length < 2) return null;
+    const start = number(series.values[0]), end = number(series.values.at(-1));
+    if (start === null || end === null) return null;
+    const unit = metric.meta.unit;
+    const absolute = end - start;
+    const relative = start !== 0 ? absolute / Math.abs(start) * 100 : null;
+    return { start, end, startYear: series.years[0], endYear: series.years.at(-1), absolute, relative, unit };
+  }
+
+  function trendText(metric, row, subject = '') {
+    const trend = seriesDelta(metric, row);
+    if (!trend) return '';
+    const prefix = subject ? `${subject}: ` : '';
+    if (trend.unit === 'percent' || trend.unit === 'percentagePoints') {
+      return `${prefix}${formatValue(trend.start, trend.unit)} nel ${trend.startYear} e ${formatValue(trend.end, trend.unit)} nel ${trend.endYear}, una variazione di ${sign(trend.absolute)}${n1.format(trend.absolute)} punti.`;
+    }
+    if (['index','minutes','years','per1000','per100','per10k','per100k'].includes(trend.unit)) {
+      return `${prefix}${formatValue(trend.start, trend.unit)} nel ${trend.startYear} e ${formatValue(trend.end, trend.unit)} nel ${trend.endYear}; differenza ${sign(trend.absolute)}${formatValue(trend.absolute, trend.unit)}.`;
+    }
+    return `${prefix}${formatValue(trend.start, trend.unit)} nel ${trend.startYear} e ${formatValue(trend.end, trend.unit)} nel ${trend.endYear}${trend.relative === null ? '' : `, pari a ${sign(trend.relative)}${n1.format(trend.relative)}%`}.`;
+  }
+
+  function benchmarkText(metric, row, town) {
+    const benchmark = metric?.meta?.benchmark;
+    if (!benchmark || !row) return '';
+    const local = number(row.benchmarkValue ?? row.value);
+    if (local === null) return '';
+    const parts = [];
+    if (benchmark.tuscany !== null && benchmark.tuscany !== undefined) {
+      const diff = local - Number(benchmark.tuscany);
+      parts.push(`${town} ${formatValue(local, metric.meta.unit)}, Toscana ${formatValue(benchmark.tuscany, metric.meta.unit)} (${diff >= 0 ? '+' : '−'}${formatValue(Math.abs(diff), metric.meta.unit)})`);
+    }
+    if (benchmark.italy !== null && benchmark.italy !== undefined) parts.push(`Italia ${formatValue(benchmark.italy, metric.meta.unit)}`);
+    return parts.join('; ') + ` · ${benchmark.year}.`;
+  }
+
+  function reportToolbar(backHref, pdfHref) {
+    return `<div class="report-toolbar"><a href="${backHref}">← Torna al sito</a><div>${pdfHref ? `<a class="report-pdf-download" href="${pdfHref}" download>Scarica PDF</a>` : ''}<button type="button" data-report-print>Stampa</button></div></div>`;
+  }
+
+  function reportFigure(number, title, description, body, source, period, theme = '') {
+    return `<figure class="report-figure" ${theme ? `data-theme="${esc(theme)}"` : ''}>
+      <figcaption><span class="report-figure-number">Figura ${esc(number)}</span><div><h3>${esc(title)}</h3><p>${esc(description || '')}</p></div></figcaption>
+      <div class="report-figure-body">${body}</div>
+      <div class="report-figure-meta"><span>${source ? `Fonte: ${esc(source)}` : ''}</span><span>${period ? `Periodo: ${esc(period)}` : ''}</span></div>
+    </figure>`;
+  }
+
+  function canonicalHistoryFigure(number, title, description, metric, selectedSlug = '', theme = '') {
+    const series = history.comparableSeries(metricWithKey(metric));
+    const body = `<div class="report-history" data-selected-town="${esc(selectedSlug)}">${history.historicalChartMarkup(metricWithKey(metric), series, selectedSlug)}</div>`;
+    return reportFigure(number, title, description, body, metric.meta.source, metric.meta.year, theme || metric.meta.theme);
+  }
+
+  function canonicalComparisonFigure(number, title, description, metric, selectedSlug = '', theme = '') {
+    const body = `<div class="report-current-comparison">${history.comparisonBarsMarkup(metricWithKey(metric), selectedSlug)}</div>`;
+    return reportFigure(number, title, description, body, metric.meta.source, metric.meta.year, theme || metric.meta.theme);
+  }
+
+  function benchmarkBlock(metric, row, town) {
+    const b = metric?.meta?.benchmark;
+    if (!b || !row) return '';
+    const local = row.benchmarkValue ?? row.value;
+    return `<section class="town-benchmark report-benchmark" data-theme="${esc(metric.meta.theme)}"><div><div><span class="overline">Confronto omogeneo · ${esc(b.year)}</span><h3>${esc(town)}, Toscana${b.italy !== null && b.italy !== undefined ? ' e Italia' : ''}</h3></div><p>${esc(b.note || '')}</p></div>
+      <div class="town-benchmark-values"><article><span>${esc(town)}</span><strong>${esc(formatValue(local, metric.meta.unit))}</strong><small>Dato comunale riferito al ${esc(b.year)}.</small></article><article><span>Toscana</span><strong>${esc(formatValue(b.tuscany, metric.meta.unit))}</strong><small>${esc(b.source)}</small></article>${b.italy !== null && b.italy !== undefined ? `<article><span>Italia</span><strong>${esc(formatValue(b.italy, metric.meta.unit))}</strong><small>${esc(b.source)}</small></article>` : ''}</div>
+      <a class="benchmark-source" href="${esc(b.url)}" target="_blank" rel="noreferrer">Apri la fonte del confronto ↗</a></section>`;
+  }
+
+  function compositePartLegend(metric) {
+    const parts = metric.rows?.[0]?.parts || metric.aggregate?.parts || [];
+    return `<div class="composite-legend">${parts.map((part,index)=>`<span><i class="composite-swatch part-${index}"></i>${esc(part.label)}</span>`).join('')}</div>`;
+  }
+
+  function compositeSegmentMarkup(part, index) {
+    const value = Math.max(0, Number(part.value) || 0);
+    const sizeClass = value < 3.5 ? ' label-tiny' : value < 6 ? ' label-narrow' : '';
+    return `<span class="composite-segment part-${index}${sizeClass}" role="listitem" tabindex="0" style="width:${value}%" aria-label="${esc(part.label)}: ${esc(n1.format(value))}%${part.count !== undefined ? ` · ${esc(n0.format(part.count))} residenti` : ''}"><b aria-hidden="true">${esc(n1.format(value))}%</b><span class="bar-hover-label">${esc(part.label)} · ${esc(n1.format(value))}%</span></span>`;
+  }
+
+  function compositeStackMarkup(parts, town = false) {
+    return `<div class="composite-stack ${town ? 'composite-stack-town' : ''}" role="list" aria-label="Distribuzione percentuale">${(parts || []).map((part,index)=>compositeSegmentMarkup(part,index)).join('')}</div>`;
+  }
+
+  function ageDistributionTerritory(metric) {
+    const ordered = [...rows(metric)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    return `${compositePartLegend(metric)}<div class="composite-distribution-list">${ordered.map(row=>`<div class="composite-distribution-row"><div class="composite-row-head"><span class="composite-town-link">${esc(row.town)}</span><span>${esc(metric.meta.summaryLabel || 'Età media')} <b>${esc(formatValue(row.summaryValue, metric.meta.summaryUnit || 'years'))}</b></span></div>${compositeStackMarkup(row.parts)}</div>`).join('')}</div>`;
+  }
+
+  function ageDistributionTown(metric, row) {
+    return `<div class="composite-town-stack-shell">${compositePartLegend(metric)}${compositeStackMarkup(row.parts,true)}<div class="composite-town-detail">${(row.parts||[]).map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${esc(part.label)}</span><b>${esc(n1.format(part.value))}%</b><small>${esc(n0.format(part.count))} residenti</small></div>`).join('')}</div></div>`;
+  }
+
+  function mobilityTable(metric) {
+    const ordered = [...rows(metric)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    const headParts = ordered[0]?.parts || [];

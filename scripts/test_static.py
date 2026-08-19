@@ -44,6 +44,11 @@ def server(directory: Path) -> Iterable[str]:
         os.chdir(old)
 
 
+def is_editorial_page(path: Path) -> bool:
+    relative = path.relative_to(DIST).as_posix()
+    return relative.startswith("letture/") or relative.startswith("rapporti/") or relative == "confronta/meteo-clima/index.html"
+
+
 def static_assertions() -> None:
     html_files = sorted(DIST.rglob("*.html"))
     assert len(html_files) >= 20, f"Pagine HTML insufficienti: {len(html_files)}"
@@ -76,6 +81,22 @@ def static_assertions() -> None:
             assert 'class="site-footer"' in text, "Footer nativo assente da stato dati"
             assert "ov-mark-svg" in text, "Logo OV nativo assente da stato dati"
             assert "search-icon" in text, "Ricerca globale assente da stato dati"
+            continue
+
+        if is_editorial_page(path):
+            assert "assets/app-bundle.js" not in text, f"Runtime applicativo improprio nella pagina editoriale: {path}"
+            assert 'noindex,nofollow' in text, f"Pagina editoriale indicizzabile prematuramente: {path}"
+            relative = path.relative_to(DIST).as_posix()
+            if relative.startswith("letture/"):
+                assert "assets/letture.js" in text, f"Renderer Letture assente: {path}"
+            elif relative.startswith("rapporti/"):
+                assert "assets/rapporti.js" in text, f"Renderer Rapporti assente: {path}"
+                assert "assets/ux-history-core.js" in text, f"Toolkit grafico canonico Rapporti assente: {path}"
+            else:
+                assert "assets/meteo-clima-editorial.js" in text, f"Renderer Meteo editoriale assente: {path}"
+                assert "assets/ux-history-core.js" in text, f"Toolkit grafico canonico Meteo assente: {path}"
+            assert "assets/fonts.css" in text, f"Font Geist non collegato: {path}"
+            assert "search-icon" in text, f"Icona vettoriale della ricerca assente: {path}"
             continue
 
         assert "assets/app-bundle.js" in text, f"Bundle assente: {path}"

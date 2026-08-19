@@ -1,0 +1,126 @@
+name: Editorial local preview
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "confronta/meteo-clima/**"
+      - "assets/meteo-clima-editorial.*"
+      - "assets/letture.*"
+      - "assets/letture-v3.css"
+      - "assets/rapporti.*"
+      - "assets/rapporti-parts/**"
+      - "data/letture.json"
+      - "scripts/build_letture.py"
+      - "scripts/upgrade_rapporti_v4.py"
+      - "scripts/export_reports_pdf.py"
+      - "scripts/sync_editorial_layout.py"
+      - "scripts/test_letture*"
+      - "scripts/test_meteo_clima_editorial_browser.py"
+      - ".github/workflows/editorial-local-preview.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: editorial-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Use system Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright pypdf
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "$chrome"
+          echo "CHROMIUM_PATH=$chrome" >> "$GITHUB_ENV"
+          "$chrome" --version
+
+      - name: Materialize current release inputs
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+
+      - name: Build production-equivalent static preview
+        run: |
+          python scripts/build_static_brand.py
+          node --check assets/letture.js
+          node --check assets/meteo-clima-editorial.js
+          python -m py_compile scripts/build_letture.py scripts/upgrade_rapporti_v4.py scripts/export_reports_pdf.py scripts/sync_editorial_layout.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
+          python scripts/build_letture.py
+          python scripts/upgrade_rapporti_v4.py
+          node --check dist/assets/rapporti.js
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Validate editorial layout contract and export PDFs
+        run: |
+          python scripts/test_letture.py
+          python -m http.server 8123 --directory dist >/tmp/ov-local-preview.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          for attempt in {1..20}; do
+            curl --fail --silent http://127.0.0.1:8123/ >/dev/null && break
+            sleep 0.25
+          done
+          python scripts/test_meteo_clima_editorial_browser.py --base http://127.0.0.1:8123/
+          python scripts/test_letture_browser.py --base http://127.0.0.1:8123/
+          python scripts/export_reports_pdf.py --base http://127.0.0.1:8123/ --output dist/rapporti/pdf
+
+      - name: Add local instructions
+        if: always()
+        shell: bash
+        run: |
+          cat > dist/LEGGIMI-ANTEPRIMA.txt <<'EOF'
+          Osservatorio Versilia — anteprima locale PR #77
+
+          1. Non aprire index.html con doppio clic: fetch() e service worker richiedono HTTP.
+          2. Da questa cartella esegui:
+             Windows: py -m http.server 8000
+             macOS/Linux: python3 -m http.server 8000
+          3. Apri nel browser: http://localhost:8000/
+
+          Pagine da controllare in particolare:
+          - http://localhost:8000/letture/una-versilia-che-cambia/
+          - http://localhost:8000/rapporti/lettura-una-versilia-che-cambia/
+          - http://localhost:8000/rapporti/comune-massarosa/
+          - http://localhost:8000/confronta/meteo-clima/
+
+          PDF puliti generati dalla stessa build:
+          - rapporti/pdf/lettura-una-versilia-che-cambia.pdf
+          - rapporti/pdf/comune-massarosa.pdf
+          - rapporti/pdf/comune-camaiore.pdf
+          - rapporti/pdf/comune-forte-dei-marmi.pdf
+          - rapporti/pdf/comune-pietrasanta.pdf
+          - rapporti/pdf/comune-seravezza.pdf
+          - rapporti/pdf/comune-stazzema.pdf
+          - rapporti/pdf/comune-viareggio.pdf
+
+          I PDF non includono header/footer automatici del browser, data/ora o localhost.
+          Letture e Rapporti sono noindex in questa PR draft e non vengono pubblicati da questa workflow.
+          EOF
+
+      - name: Upload downloadable local preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-pr77-local-preview
+          path: dist
+          retention-days: 14

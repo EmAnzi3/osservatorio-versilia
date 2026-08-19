@@ -1,0 +1,63 @@
+    return `<div class="composite-mobility-table" role="table" aria-label="${esc(metric.meta.label)}"><div class="composite-mobility-head" role="row"><span>Comune</span>${headParts.map(part=>`<span>${esc(part.label)}</span>`).join('')}</div>${ordered.map(row=>`<div class="composite-mobility-row" role="row"><strong>${esc(row.town)}</strong>${(row.parts||[]).map((part,index)=>`<span class="${index===2?'balance':''}">${esc(formatValue(part.value,'per1000'))}<small>${esc(n0.format(part.count))} persone</small></span>`).join('')}</div>`).join('')}</div>`;
+  }
+
+  function sourceTable(keys, data, state) {
+    return `<div class="report-table-wrap"><table class="report-table compact"><thead><tr><th>Indicatore</th><th>Periodo pubblicato</th><th>Fonte</th><th>Ultimo controllo</th></tr></thead><tbody>${keys.map(key=>{const metric=data.metrics[key],st=stateFor(key,state,metric);return `<tr><th>${esc(metric.meta.label)}</th><td>${esc(st.period)}</td><td>${esc(metric.meta.source||'')}</td><td>${esc(date(st.checked))}</td></tr>`;}).join('')}</tbody></table></div>`;
+  }
+
+  function populationStory(data) {
+    const population=data.metrics.population;
+    const change=data.metrics.populationChange;
+    const age=data.metrics.ageDistribution;
+    const aging=data.metrics.oldAgeIndex;
+    const foreign=data.metrics.foreignResidents;
+    const internal=data.metrics.internalResidentialMobility;
+    const abroad=data.metrics.foreignResidentialMobility;
+    const mobility=data.metrics.totalResidentialMobility;
+    const popRows=[...rows(population)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    const changeRows=[...rows(change)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    const ageRows=[...rows(aging)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    const mobilityRows=[...rows(mobility)].sort((a,b)=>townName(a).localeCompare(townName(b),'it'));
+    const years=popRows[0].series.years.map(Number);
+    const totals=years.map((year,index)=>popRows.reduce((sum,row)=>sum+Number(row.series.values[index]),0));
+    const startYear=years[0], endYear=years.at(-1), startTotal=totals[0], endTotal=totals.at(-1), totalPct=(endTotal/startTotal-1)*100;
+    const changeMap=Object.fromEntries(changeRows.map(row=>[row.town,Number(row.value)]));
+    const mobilityMap=Object.fromEntries(mobilityRows.map(row=>[row.town,Number(row.value)]));
+    const table=popRows.map(pop=>{const old=ageRows.find(row=>row.town===pop.town);return{town:pop.town,start:Number(pop.series.values[0]),end:Number(pop.series.values.at(-1)),change:changeMap[pop.town],ageStart:Number(old.series.values[0]),ageEnd:Number(old.series.values.at(-1)),ageDelta:Number(old.series.values.at(-1))-Number(old.series.values[0]),mobility:mobilityMap[pop.town]};});
+    const above2019=table.filter(row=>row.change>0).map(row=>row.town);
+    const below2019=table.filter(row=>row.change<0).map(row=>row.town);
+    const decliningPositive=table.filter(row=>row.change<0&&row.mobility>0).map(row=>row.town);
+    const positiveMobility=table.filter(row=>row.mobility>0).length;
+    const b=aging.meta.benchmark;
+    const age2024=ageRows.map(row=>{const i=row.series.years.indexOf(2024);return{town:row.town,value:Number(row.series.values[i])};});
+    const aboveTuscany=age2024.filter(item=>item.value>Number(b.tuscany)).length;
+    const parts=age.aggregate.parts||[];
+    const partValue=label=>Number(parts.find(part=>part.label===label)?.value||0);
+    const aged65=partValue('65–79 anni')+partValue('80 anni e oltre');
+    const under15=partValue('0–14 anni');
+    return { population,change,age,aging,foreign,internal,abroad,mobility,years,totals,startYear,endYear,startTotal,endTotal,totalPct,table,above2019,below2019,decliningPositive,positiveMobility,aboveTuscany,aged65,under15 };
+  }
+
+  function readingReport(config,data,state) {
+    const item=config.items.find(candidate=>candidate.slug==='una-versilia-che-cambia');
+    const story=populationStory(data);
+    const reportSlug=item.report?.slug||'lettura-una-versilia-che-cambia';
+    const pdfHref=new URL(`rapporti/pdf/${reportSlug}.pdf`,ROOT).href;
+    const sourceKeys=['population','populationChange','ageDistribution','oldAgeIndex','foreignResidents','internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility'];
+    const changeTable=story.table.map(row=>`<tr><th>${esc(row.town)}</th><td>${esc(n0.format(row.start))}</td><td>${esc(n0.format(row.end))}</td><td>${esc(`${sign(row.change)}${n1.format(row.change)}%`)}</td><td>${esc(n1.format(row.ageStart))}</td><td>${esc(n1.format(row.ageEnd))}</td><td>${esc(`${sign(row.ageDelta)}${n1.format(row.ageDelta)}`)}</td><td>${esc(`${sign(row.mobility)}${n1.format(row.mobility)} / 1.000`)}</td></tr>`).join('');
+    const agingBenchmarkRows=[...rows(story.aging)].sort((a,b)=>a.town.localeCompare(b.town,'it')).map(row=>{const i=row.series.years.indexOf(2024);return `<tr><th>${esc(row.town)}</th><td>${esc(n1.format(row.series.values[i]))}</td><td>${esc(n1.format(story.aging.meta.benchmark.tuscany))}</td><td>${esc(n1.format(story.aging.meta.benchmark.italy))}</td></tr>`;}).join('');
+    const foreignRows=[...rows(story.foreign)].sort((a,b)=>a.town.localeCompare(b.town,'it')).map(row=>`<tr><th>${esc(row.town)}</th><td>${esc(n0.format(row.count))}</td><td>${esc(`${n1.format(row.value)}%`)}</td></tr>`).join('');
+    const patternRows=story.table.map(row=>`<tr><th>${esc(row.town)}</th><td>${esc(`${sign(row.change)}${n1.format(row.change)}%`)}</td><td>${esc(`${sign(row.ageDelta)}${n1.format(row.ageDelta)} punti`)}</td><td>${esc(`${sign(row.mobility)}${n1.format(row.mobility)} / 1.000`)}</td><td>${row.change<0&&row.mobility>0?'Popolazione in calo, trasferimenti positivi':row.change>=0&&row.mobility>0?'Popolazione stabile/in crescita, trasferimenti positivi':row.change<0&&row.mobility<=0?'Popolazione in calo, trasferimenti non positivi':'Segnali misti'}</td></tr>`).join('');
+
+    const executive = [
+      `<strong>La popolazione complessiva cambia poco, ma i Comuni no.</strong> Tra ${story.startYear} e ${story.endYear} i residenti dei sette Comuni passano da ${n0.format(story.startTotal)} a ${n0.format(story.endTotal)} (${sign(story.totalPct)}${n1.format(story.totalPct)}%). ${story.above2019.length} Comuni sono sopra il livello del 2019 e ${story.below2019.length} sotto.`,
+      `<strong>L’invecchiamento è il segnale più uniforme.</strong> L’indice di vecchiaia aumenta in tutti e sette i Comuni; nel 2024 ${story.aboveTuscany} su 7 risultano sopra il benchmark toscano omogeneo.`,
+      `<strong>La struttura per età è già fortemente sbilanciata verso le età mature.</strong> Nel 2025 i residenti 65+ sono il ${n1.format(story.aged65)}% della popolazione dei sette Comuni, contro il ${n1.format(story.under15)}% tra 0 e 14 anni; l’età media aggregata è ${n1.format(story.age.aggregate.summaryValue)} anni.`,
+      `<strong>La cittadinanza straniera è una componente visibile ma non dominante.</strong> Nel 2025 i residenti di cittadinanza non italiana sono ${n0.format(story.foreign.aggregate.count)} (${n1.format(story.foreign.aggregate.value)}% del totale di riferimento).`,
+      `<strong>I trasferimenti di residenza non coincidono con la dinamica demografica.</strong> Nel 2024 il saldo complessivo dei trasferimenti è positivo in ${story.positiveMobility} Comuni su 7; ${story.decliningPositive.length} Comuni hanno contemporaneamente saldo positivo e popolazione inferiore al 2019.`
+    ];
+
+    return `${reportToolbar(new URL('letture/una-versilia-che-cambia/',ROOT).href,pdfHref)}
+      <article class="report-document report-reading report-mature" data-theme="demografia">
+        <header class="report-cover report-cover-reading"><div class="report-cover-mark">${themeIcon('demografia',44)}</div><span class="report-kicker">Osservatorio Versilia · Rapporto statistico territoriale · Demografia</span><h1>${esc(item.report?.title||item.title)}</h1><p>${esc(item.report?.subtitle||item.standfirst||'')}</p><div class="report-cover-meta"><span>8 indicatori demografici</span><span>7 Comuni</span><span>Periodo principale ${story.startYear}–${story.endYear}</span><span>Catalogo ${esc(data.version||'')}</span><span>Stato fonti ${esc(date(state?.checkedAt))}</span></div></header>
+
