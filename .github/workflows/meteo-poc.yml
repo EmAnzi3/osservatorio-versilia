@@ -12,8 +12,9 @@ on:
       - "scripts/lamma_annual_history_runner.py"
       - "scripts/era5_land_annual_history.py"
       - "scripts/era5_land_precip_hourly_patch.py"
-      - "scripts/era5_land_ytd.py"
       - "scripts/climate_stitch_series.py"
+      - "scripts/climate_hardening_audit.py"
+      - "data/meteo-clima-poc.json"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
 
@@ -84,8 +85,8 @@ jobs:
         run: |
           python -m py_compile scripts/era5_land_annual_history.py
           python -m py_compile scripts/era5_land_precip_hourly_patch.py
-          python -m py_compile scripts/era5_land_ytd.py
           python -m py_compile scripts/climate_stitch_series.py
+          python -m py_compile scripts/climate_hardening_audit.py
       - name: Record CDS credential status
         run: |
           mkdir -p reports/runtime/era5
@@ -108,13 +109,8 @@ jobs:
           python scripts/era5_land_precip_hourly_patch.py \
             --raw reports/runtime/era5/era5-land-annual-raw.csv \
             --output reports/runtime/era5/era5-land-annual-patched.csv
-      - name: Build current-year ERA5-Land YTD
-        if: env.CDS_API_TOKEN != ''
-        run: |
-          python scripts/era5_land_ytd.py \
-            --year 2026 \
-            --lag-days 7 \
-            --output reports/runtime/era5/era5-land-2026-ytd.csv
+      - name: Confirm complete-year-only policy
+        run: echo "Current-year/YTD climate extraction is intentionally disabled; only complete annual periods may enter the publication workflow."
       - name: Upload ERA5 outputs
         if: always()
         uses: actions/upload-artifact@v4
@@ -147,7 +143,7 @@ jobs:
         with:
           name: meteo-era5-history
           path: reports/runtime/combined/era5
-      - name: Stitch full annual series when ERA5 is available
+      - name: Stitch current series and build hardening audit when ERA5 is available
         run: |
           mkdir -p reports/runtime/final
           cp reports/runtime/combined/era5/era5-status.txt reports/runtime/final/era5-status.txt
@@ -156,13 +152,16 @@ jobs:
               --lamma reports/runtime/combined/lamma/annual-history/lamma-annual-history.csv \
               --era5 reports/runtime/combined/era5/era5-land-annual-patched.csv \
               --output reports/runtime/final/municipal-climate-1950-2025.csv
+            python scripts/climate_hardening_audit.py \
+              --published-json data/meteo-clima-poc.json \
+              --lamma reports/runtime/combined/lamma/annual-history/lamma-annual-history.csv \
+              --era5 reports/runtime/combined/era5/era5-land-annual-patched.csv \
+              --output-json reports/runtime/final/climate-hardening-audit.json \
+              --output-md reports/runtime/final/climate-hardening-audit.md
           else
-            echo "Full 1950-2025 series not built because ERA5-Land acquisition is unavailable." > reports/runtime/final/stitch-status.txt
+            echo "Full 1950-2025 series and hardening audit not built because ERA5-Land acquisition is unavailable." > reports/runtime/final/stitch-status.txt
           fi
-          if [[ -f reports/runtime/combined/era5/era5-land-2026-ytd.csv ]]; then
-            cp reports/runtime/combined/era5/era5-land-2026-ytd.csv reports/runtime/final/
-          fi
-          echo "Tmin/Tmax 1995-2025 are validated by the dedicated Extend climate Tmin Tmax workflow." > reports/runtime/final/minmax-status.txt
+          echo "Tmin/Tmax 1975-2025 remain governed by the dedicated homogeneous ERA5-Land workflow and SIR temporal validation." > reports/runtime/final/minmax-status.txt
       - name: Upload final outputs
         if: always()
         uses: actions/upload-artifact@v4
