@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,10 +26,12 @@ def main() -> None:
     require(len(pilots) == 1 and len(planned) == 6, 'Attesi 1 pilota e 6 temi pianificati')
     pilot = pilots[0]
     require(pilot.get('slug') == 'una-versilia-che-cambia', 'Pilota inatteso')
-    require(pilot.get('renderer') == 'demography-story-v3', 'Renderer pilota v3 inatteso')
+    require(pilot.get('renderer') == 'demography-story-v3', 'Renderer pilota inatteso')
     require(pilot.get('headline') and pilot.get('standfirst'), 'Headline/standfirst editoriali mancanti')
-    require(pilot.get('metrics') == ['population','populationChange','oldAgeIndex','totalResidentialMobility'], 'Metriche pilota inattese')
-    require(pilot.get('report', {}).get('enabled') is True, 'Rapporto pilota non abilitato')
+    require(pilot.get('metrics') == ['population','populationChange','oldAgeIndex','totalResidentialMobility'], 'Metriche della Lettura inattese')
+    report_metrics = pilot.get('report', {}).get('metrics')
+    require(report_metrics == ['population','populationChange','ageDistribution','oldAgeIndex','foreignResidents','internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility'],
+            'Il rapporto demografico non dichiara tutti gli 8 indicatori canonici')
 
     slugs = [item['slug'] for item in items]
     require(len(slugs) == len(set(slugs)), 'Slug duplicati')
@@ -36,6 +39,8 @@ def main() -> None:
         require(item.get('question') and item.get('caution'), f'Testi incompleti: {item.get("slug")}')
         for key in item.get('metrics', []):
             require(key in data['metrics'], f'Indicatore inesistente in {item["slug"]}: {key}')
+        for key in item.get('report', {}).get('metrics', []):
+            require(key in data['metrics'], f'Indicatore rapporto inesistente: {key}')
         forbidden = {'value','values','year','publishedPeriod','source','statusLabel'}
         require(not (forbidden & set(item)), f'Valori/status duplicati nel config: {item["slug"]}')
 
@@ -46,51 +51,44 @@ def main() -> None:
         text = path.read_text(encoding='utf-8')
         require('noindex,nofollow' in text, f'Pagina indicizzabile prematuramente: {slug}')
         require('class="ov-mark-svg"' in text, f'Brand mark assente: {slug}')
-        require('assets/letture.js' in text and 'assets/letture.css' in text and 'assets/letture-v3.css' in text,
-                f'Asset editoriali v3 assenti: {slug}')
-        require('assets/pwa.js' in text and 'assets/pwa.css' in text, f'PWA shell assente: {slug}')
-        require('assets/static.css' in text and 'assets/brand.css' in text, f'CSS strutturali del sito assenti: {slug}')
+        require('assets/letture.js' in text and 'assets/letture.css' in text and 'assets/letture-v3.css' in text, f'Asset editoriali assenti: {slug}')
+        require('assets/pwa.js' in text and 'assets/static.css' in text and 'assets/brand.css' in text, f'Shell canonica incompleta: {slug}')
 
-    report_paths = [
-        DIST / 'rapporti' / 'index.html',
-        DIST / 'rapporti' / 'lettura-una-versilia-che-cambia' / 'index.html',
-    ]
+    report_paths = [DIST / 'rapporti' / 'index.html', DIST / 'rapporti' / 'lettura-una-versilia-che-cambia' / 'index.html']
     for town in data.get('towns', []):
-        slug = str(town['name']).lower().replace(' ', '-')
-        if town['name'] == 'Forte dei Marmi':
-            slug = 'forte-dei-marmi'
-        report_paths.append(DIST / 'rapporti' / f'comune-{slug}' / 'index.html')
+        town_slug = str(town['name']).lower().replace(' ', '-')
+        report_paths.append(DIST / 'rapporti' / f'comune-{town_slug}' / 'index.html')
     require(len(report_paths) == 9, f'Attese 9 pagine rapporto, trovate {len(report_paths)}')
     for path in report_paths:
         require(path.exists(), f'Rapporto non generato: {path.relative_to(DIST)}')
         text = path.read_text(encoding='utf-8')
         require('noindex,nofollow' in text, f'Rapporto indicizzabile prematuramente: {path}')
-        require('class="ov-mark-svg"' in text, f'Shell canonica assente nel rapporto: {path}')
-        require('assets/rapporti.js' in text and 'assets/rapporti.css' in text, f'Asset rapporto assenti: {path}')
-        require('assets/static.css' in text and 'assets/brand.css' in text and 'assets/pwa.js' in text,
-                f'Asset strutturali rapporto assenti: {path}')
+        require('data-report-version="4"' in text, f'Upgrade v4 assente: {path}')
+        require('assets/ux-history-core.js' in text, f'Toolkit grafico canonico non caricato: {path}')
+        require(text.index('assets/ux-history-core.js') < text.index('assets/rapporti.js'), f'Ordine script errato: {path}')
+        require('assets/static.css' in text and 'assets/brand.css' in text and 'assets/pwa.js' in text, f'Asset strutturali rapporto assenti: {path}')
 
-    js = (ROOT / 'assets' / 'letture.js').read_text(encoding='utf-8')
-    require('data/site-data.json' in js and 'data/source-registry.json' in js and 'data/source-monitor-state.json' in js,
-            'Renderer non usa le autorità canoniche')
-    require('demography-story-v3' in js and 'data-story-chapter' in js, 'Grammatica narrativa pilota v3 assente')
-    require('.trend-chart' in js and '.chart-tooltip' in js, 'Grafico storico canonico/tooltips non riusati')
-    require('story-axis-title' in js and 'story-axis-label' in js, 'Assi espliciti assenti dai grafici editoriali')
-    require('story-scatter-chart' in js and 'Residenti e trasferimenti: due dimensioni diverse' in js,
-            'Scatter residenti/trasferimenti assente')
-    require('data-aging-town' in js, 'Selettore serie storica indice di vecchiaia assente')
-    require("unit === 'percent'" in js and "unit === 'per1000'" in js, 'Unità percent/per1000 non gestite')
-    require("sort((a,b)=>townName(a).localeCompare(townName(b),'it'))" in js, 'Comuni non ordinati alfabeticamente')
-    require('bar-rank' not in js and '.sort((a,b)=>b.value' not in js, 'Logica di ranking rilevata nel renderer Letture')
-    require('/percorsi/' not in json.dumps(config, ensure_ascii=False), 'Collisione con /percorsi/')
+    parts = sorted((ROOT / 'assets' / 'rapporti-parts').glob('*.txt'))
+    require(len(parts) == 8, f'Attese 8 parti renderer v4, trovate {len(parts)}')
+    source_bundle = ''.join(path.read_text(encoding='utf-8') for path in parts)
+    dist_bundle = (DIST / 'assets' / 'rapporti.js').read_text(encoding='utf-8')
+    require(source_bundle == dist_bundle, 'Bundle Rapporti in dist non coincide con i sorgenti modulari')
+    require('const history = window.OVUXHistory' in dist_bundle, 'Rapporti non dipendono da OVUXHistory')
+    require('history.historicalChartMarkup' in dist_bundle and 'history.comparisonBarsMarkup' in dist_bundle and 'history.wireHistorySelection' in dist_bundle,
+            'Componenti canonici storico/confronto non riusati')
+    require(not re.search(r'function\s+historicalChartMarkup\s*\(', dist_bundle), 'Renderer storico parallelo vietato nei Rapporti')
+    require(not re.search(r'function\s+comparisonBarsMarkup\s*\(', dist_bundle), 'Renderer confronto parallelo vietato nei Rapporti')
+    require('8 indicatori demografici' in dist_bundle and 'Cinque evidenze che descrivono il cambiamento demografico' in dist_bundle,
+            'Rapporto demografico non ha struttura analitica v4')
+    require('Sei evidenze per leggere' in dist_bundle and 'Indicatori chiave per tema' in dist_bundle,
+            'Rapporto comunale non ha struttura analitica v4')
 
-    report_js = (ROOT / 'assets' / 'rapporti.js').read_text(encoding='utf-8')
-    require('data/site-data.json' in report_js and 'data/source-monitor-state.json' in report_js,
-            'Rapporti non dipendono dai dati/stato canonici')
-    require('window.print()' in report_js and 'report-table' in report_js, 'Export/struttura tabellare rapporti assenti')
-    require('featuredKeys(theme)' in report_js, 'Rapporti comunali non riusano gli indicatori featured canonici')
+    css = (ROOT / 'assets' / 'rapporti.css').read_text(encoding='utf-8')
+    require('.ux-history-card{' not in css and '.ux-comparison-bars{' not in css,
+            'Il CSS Rapporti non deve ridefinire i componenti grafici canonici')
+    require('@page{size:A4' in css.replace(' ', ''), 'Layout A4 di stampa assente')
 
-    print('Capire la Versilia v3 OK: grafici canonici con assi/tooltip, scatter coerente, analisi estesa, 1 rapporto Lettura + 7 rapporti comunali')
+    print('Rapporti v4 OK: 8 indicatori demografici, analisi estesa, 7 rapporti comunali e grafici delegati senza override a OVUXHistory')
 
 
 if __name__ == '__main__':
