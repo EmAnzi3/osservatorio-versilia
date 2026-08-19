@@ -5,6 +5,11 @@ Le pagine speciali conservano il proprio <main> e i propri asset specifici, ma
 header, footer e asset strutturali vengono ricavati da pagine standard della
 stessa profondità. In questo modo il preview locale usa esattamente la stessa
 shell visuale del sito e non una sua imitazione.
+
+La build base inietta inoltre il runtime dell'applicazione principale in ogni
+HTML presente in dist. Le pagine editoriali non usano il mount #app: dopo la
+sincronizzazione rimuoviamo quindi solo gli enhancer applicativi non pertinenti,
+lasciando intatti shell, CSS, brand, PWA e gli script editoriali dedicati.
 """
 from __future__ import annotations
 
@@ -20,6 +25,7 @@ HEAD_RE = re.compile(r"<head\b[^>]*>(.*?)</head>", re.I | re.S)
 LINK_RE = re.compile(r"<link\b[^>]*>", re.I)
 META_RE = re.compile(r"<meta\b[^>]*>", re.I)
 PWA_SCRIPT_RE = re.compile(r'<script\b[^>]*src="[^"]*assets/pwa\.js[^"]*"[^>]*></script>', re.I)
+SCRIPT_RE = re.compile(r'<script\b[^>]*src="([^"]+)"[^>]*></script>', re.I)
 
 STRUCTURAL_META_NAMES = {
     "theme-color",
@@ -29,6 +35,17 @@ STRUCTURAL_META_NAMES = {
     "apple-mobile-web-app-title",
 }
 STRUCTURAL_LINK_RELS = {"icon", "manifest", "apple-touch-icon", "stylesheet"}
+GENERIC_RUNTIME_SCRIPTS = {
+    "app-bundle.js",
+    "fidelity.js",
+    "ateco-detail.js",
+    "ux-accordion.js",
+    "ux-history-core.js",
+    "ux-history.js",
+    "export-v161.js",
+    "visual-grammar.js",
+    "social-presence.js",
+}
 
 
 def attr(tag: str, name: str) -> str:
@@ -61,6 +78,15 @@ def tag_key(tag: str) -> tuple[str, str]:
     return ("meta", attr(tag, "name").lower())
 
 
+def strip_generic_runtime(document: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        src = match.group(1).split("?", 1)[0]
+        basename = src.rsplit("/", 1)[-1]
+        return "" if basename in GENERIC_RUNTIME_SCRIPTS else match.group(0)
+
+    return SCRIPT_RE.sub(replace, document)
+
+
 def sync_page(target: Path, template: Path) -> None:
     if not target.exists():
         raise RuntimeError(f"Pagina editoriale mancante: {target}")
@@ -88,6 +114,8 @@ def sync_page(target: Path, template: Path) -> None:
     missing = [tag for tag in structural_head_tags(canonical) if tag_key(tag) not in existing_keys]
     if missing:
         text = text.replace("</head>", "  " + "\n  ".join(missing) + "\n</head>", 1)
+
+    text = strip_generic_runtime(text)
 
     if "assets/pwa.js" not in text:
         pwa = PWA_SCRIPT_RE.search(canonical)
@@ -119,6 +147,9 @@ def main() -> None:
             raise RuntimeError(f"Marchio canonico assente dopo sync: {target}")
         if "assets/brand.css" not in text or "assets/pwa.css" not in text or "assets/pwa.js" not in text:
             raise RuntimeError(f"Asset strutturali mancanti dopo sync: {target}")
+        present_generic = [name for name in GENERIC_RUNTIME_SCRIPTS if name in text]
+        if present_generic:
+            raise RuntimeError(f"Runtime applicativo non pertinente in {target}: {present_generic}")
 
     print(f"Layout editoriale sincronizzato con la shell canonica: {len(targets)} pagine")
 
