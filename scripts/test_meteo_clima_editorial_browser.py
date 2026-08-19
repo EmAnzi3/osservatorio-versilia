@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from playwright.sync_api import sync_playwright
 
 
@@ -10,8 +11,12 @@ def main() -> None:
     ap.add_argument('--base', default='http://127.0.0.1:8123/')
     args = ap.parse_args()
     base = args.base.rstrip('/') + '/'
+    launch = {'headless': True}
+    chromium_path = os.environ.get('CHROMIUM_PATH')
+    if chromium_path:
+        launch['executable_path'] = chromium_path
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(**launch)
         for width, height in ((1440, 1000), (390, 844)):
             page = browser.new_page(viewport={'width': width, 'height': height})
             errors: list[str] = []
@@ -24,6 +29,8 @@ def main() -> None:
             assert towns == sorted(towns, key=lambda value: value.casefold()), towns
             assert page.locator('#climate-town-list a').count() == 7
             assert 'media aritmetica semplice dei sette Comuni' in page.locator('main').inner_text()
+            assert page.locator('.site-header .ov-mark-svg').count() == 1
+            assert page.locator('.site-footer').count() == 1
             for metric in ('temperature', 'tmin', 'tmax', 'precipitation'):
                 page.locator(f'[data-climate-metric="{metric}"]').click()
                 page.wait_for_timeout(80)
@@ -35,7 +42,7 @@ def main() -> None:
             assert not overflow, f'Horizontal overflow at {width}px'
             page.close()
         browser.close()
-    print('Meteo e clima browser OK: desktop/mobile, 4 indicatori, 7 Comuni alfabetici, no overflow')
+    print('Meteo e clima browser OK: desktop/mobile, shell canonica, 4 indicatori, 7 Comuni alfabetici, no overflow')
 
 
 if __name__ == '__main__':
