@@ -31,18 +31,30 @@ def main() -> None:
             assert 'media aritmetica semplice dei sette Comuni' in page.locator('main').inner_text()
             assert page.locator('.site-header .ov-mark-svg').count() == 1
             assert page.locator('.site-footer').count() == 1
+
             for metric in ('temperature', 'tmin', 'tmax', 'precipitation'):
                 page.locator(f'[data-climate-metric="{metric}"]').click()
                 page.wait_for_timeout(80)
                 assert page.locator('#climate-current-value').inner_text().strip() != '—'
                 assert page.locator('#climate-chart svg').count() == 1
+                assert page.locator('#climate-chart .trend-chart').count() == 1
+                assert page.locator('#climate-chart .climate-axis-title').count() == 2
+                assert page.locator('#climate-chart .chart-point').count() >= 50
+                assert page.locator('#climate-chart .chart-tooltip').count() >= 50
                 assert page.locator('#climate-town-list a').count() == 7
+                first = page.locator('#climate-chart .chart-point').first
+                first.hover()
+                assert first.locator('.chart-tooltip').get_attribute('hidden') is None
+
+            page.locator('#climate-town').select_option(label='Viareggio')
+            page.wait_for_timeout(80)
+            assert 'Viareggio' in (page.locator('#climate-chart svg').get_attribute('aria-label') or '')
             assert not errors, errors
             overflow = page.evaluate('document.documentElement.scrollWidth > document.documentElement.clientWidth + 1')
             assert not overflow, f'Horizontal overflow at {width}px'
             page.close()
         browser.close()
-    print('Meteo e clima browser OK: desktop/mobile, shell canonica, 4 indicatori, 7 Comuni alfabetici, no overflow')
+    print('Meteo e clima browser OK: shell canonica, assi X/Y, tooltip interattivi, 4 indicatori, 7 Comuni, desktop/mobile')
 
 
 if __name__ == '__main__':
