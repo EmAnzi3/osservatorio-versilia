@@ -7,6 +7,8 @@ on:
       - "confronta/meteo-clima/**"
       - "assets/meteo-clima-editorial.*"
       - "assets/letture.*"
+      - "assets/letture-v3.css"
+      - "assets/rapporti.*"
       - "data/letture.json"
       - "scripts/build_letture.py"
       - "scripts/sync_editorial_layout.py"
@@ -50,6 +52,7 @@ jobs:
         run: |
           python scripts/build_static_brand.py
           node --check assets/letture.js
+          node --check assets/rapporti.js
           node --check assets/meteo-clima-editorial.js
           python -m py_compile scripts/build_letture.py scripts/sync_editorial_layout.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
           python scripts/build_letture.py
@@ -86,12 +89,13 @@ jobs:
           3. Apri nel browser: http://localhost:8000/
 
           Pagine da controllare in particolare:
-          - http://localhost:8000/confronta/meteo-clima/
           - http://localhost:8000/letture/
           - http://localhost:8000/letture/una-versilia-che-cambia/
-          - http://localhost:8000/letture/redditi-contro-inflazione/
+          - http://localhost:8000/rapporti/lettura-una-versilia-che-cambia/
+          - http://localhost:8000/rapporti/comune-massarosa/
+          - http://localhost:8000/confronta/meteo-clima/
 
-          Le pagine editoriali sono noindex e non vengono pubblicate da questa workflow.
+          Letture e Rapporti sono noindex in questa PR draft e non vengono pubblicati da questa workflow.
           EOF
 
       - name: Upload downloadable local preview
