@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "status": "draft-noindex",
+  "readings": [
+    {
+      "slug": "una-versilia-che-cambia",
+      "title": "Una Versilia che cambia",
+      "question": "La Versilia sta perdendo residenti o sta soprattutto cambiando struttura?",
+      "description": "Popolazione, variazione dal 2019, struttura per età e mobilità residenziale lette insieme.",
+      "answer": "Il saldo dei residenti da solo non basta: per capire il cambiamento bisogna affiancargli età, cittadinanza e mobilità residenziale.",
+      "primaryMetric": "populationChange",
+      "primaryIntro": "Partiamo dalla variazione della popolazione, poi verifichiamo se e come il quadro cambia guardando struttura e flussi.",
+      "metrics": ["populationChange", "population", "ageDistribution", "oldAgeIndex", "foreignResidents", "totalResidentialMobility"],
+      "supported": "È corretto descrivere insieme consistenza, struttura per età e flussi di residenza, mantenendo distinto ciò che misura una variazione da ciò che fotografa una composizione.",
+      "caveat": "Una variazione demografica non dimostra da sola perché le persone si spostano, né consente di attribuire causalità a lavoro, casa o servizi senza dati specifici."
+    },
+    {
+      "slug": "redditi-contro-inflazione",
+      "title": "Redditi contro inflazione",
+      "question": "I redditi dichiarati hanno tenuto il passo con l’inflazione?",
+      "description": "Reddito imponibile comunale e potere d’acquisto letti con la stessa base temporale disponibile.",
+      "answer": "La domanda va posta in termini reali, non nominali: un reddito che cresce può comunque perdere potere d’acquisto.",
+      "primaryMetric": "incomeVsInflation",
+      "primaryIntro": "L’indicatore principale confronta l’evoluzione del reddito imponibile con l’inflazione; il reddito nominale resta il riferimento necessario per leggere la differenza.",
+      "metrics": ["incomeVsInflation", "income", "incomeDistribution"],
+      "supported": "È possibile confrontare l’evoluzione dei redditi dichiarati con un indice dei prezzi coerente e distinguere crescita nominale e crescita reale.",
+      "caveat": "Il reddito imponibile dichiarato non coincide con il reddito disponibile delle famiglie e non descrive da solo patrimonio, affitti, mutui o costo locale dell’abitazione."
+    },
+    {
+      "slug": "vivere-e-lavorare-in-versilia",
+      "title": "Vivere e lavorare in Versilia",
+      "question": "Quanto lavoro c’è e quanto il territorio riesce a trattenerlo?",
+      "description": "Occupazione, partecipazione, disoccupazione, unità locali, addetti e pendolarismo senza confondere periodi diversi.",
+      "answer": "Mercato del lavoro e struttura produttiva raccontano pezzi diversi: vanno letti insieme e con l’anno di riferimento sempre visibile.",
+      "primaryMetric": "employmentRate",
+      "primaryIntro": "Il tasso di occupazione offre la prima fotografia; attività, disoccupazione, addetti e flussi di pendolarismo spiegano il contesto.",
+      "metrics": ["employmentRate", "unemploymentRate", "activityRate", "localUnits", "localEmployees", "outsideMunicipality", "selfContainment"],
+      "supported": "Si possono confrontare livelli di occupazione e partecipazione e affiancarli alla consistenza delle unità locali e ai flussi casa-lavoro.",
+      "caveat": "Indicatori riferiti ad annualità differenti non devono essere trattati come una fotografia simultanea né usati per costruire causalità automatiche."
+    },
+    {
+      "slug": "quanto-investe-il-territorio",
+      "title": "Quanto investe il territorio",
+      "question": "Quando diciamo ‘investimenti’, di quali soldi e di quali opere stiamo parlando?",
+      "description": "Spesa in conto capitale, opere BDAP-MOP e PNRR mantenuti in perimetri distinti.",
+      "answer": "Non esiste un unico totale degli investimenti: bilanci comunali, opere monitorate e PNRR sono fotografie diverse che non vanno sommate tra loro.",
+      "primaryMetric": "capitalExpenditureCommittedPerResident",
+      "primaryIntro": "Partiamo dalla spesa in conto capitale dei bilanci e teniamo separati il monitoraggio delle opere e il perimetro PNRR.",
+      "metrics": ["capitalExpenditureCommittedPerResident", "publicWorks", "pnrrFunding", "pnrrConcluded"],
+      "supported": "È possibile confrontare la spesa comunale e, separatamente, descrivere il numero e lo stato delle opere monitorate e dei progetti PNRR.",
+      "caveat": "Spesa di bilancio, valore delle opere BDAP-MOP e quota PNRR non sono grandezze additive e non devono essere fuse in un totale sintetico."
+    },
+    {
+      "slug": "cinquantanni-di-clima",
+      "title": "Cinquant’anni di clima",
+      "question": "Come stanno cambiando temperatura e precipitazioni nel lungo periodo?",
+      "description": "Quattro indicatori climatici territoriali, ultimo anno completo e trend di lungo periodo senza trasformare i Comuni in stazioni meteo.",
+      "answer": "La lettura corretta è territoriale e di lungo periodo: i singoli anni restano visibili, ma non sostituiscono il trend.",
+      "primaryMetric": "climateTemperatureTrend50y",
+      "primaryIntro": "La temperatura media apre la lettura; minime, massime e precipitazioni servono a verificare se il segnale è coerente e quanto resta variabile.",
+      "metrics": ["climateTemperatureTrend50y", "climateTminTrend", "climateTmaxTrend", "climatePrecipitationTrend50y"],
+      "supported": "È corretto descrivere la direzione di fondo delle serie territoriali e confrontare i sette Comuni senza trasformare le differenze in una classifica di merito.",
+      "caveat": "I valori sono ricostruzioni territoriali da prodotti grigliati e rianalisi: non sono misure osservate da una singola stazione dentro ciascun Comune."
+    },
+    {
+      "slug": "mobilita-e-sicurezza",
+      "title": "Mobilità e sicurezza",
+      "question": "Più mobilità significa anche più esposizione al rischio stradale?",
+      "description": "Motorizzazione, pendolarismo, sicurezza stradale e mobilità lenta letti come dimensioni collegate ma non equivalenti.",
+      "answer": "Mobilità, dotazione di veicoli e sicurezza stradale possono essere confrontate, ma nessuna delle tre spiega automaticamente le altre.",
+      "primaryMetric": "roadSafety",
+      "primaryIntro": "La sicurezza stradale è il punto di partenza; motorizzazione, pendolarismo e mobilità lenta danno il contesto di come ci si muove.",
+      "metrics": ["roadSafety", "motorization", "outsideMunicipality", "slowMobilityRoutes", "slowMobilityTrekking", "slowMobilityBici"],
+      "supported": "È possibile mettere in relazione descrittiva il profilo della mobilità con frequenza e gravità degli incidenti, mantenendo separati i singoli indicatori.",
+      "caveat": "Una correlazione territoriale non dimostra che un livello di motorizzazione o pendolarismo causi direttamente più o meno incidenti."
+    },
+    {
+      "slug": "la-versilia-turistica",
+      "title": "La Versilia turistica",
+      "question": "Quanto pesa il turismo e quanto è concentrato nella stagione estiva?",
+      "description": "Presenze, arrivi, permanenza media, intensità, stagionalità, quota estera e capacità ricettiva.",
+      "answer": "Il numero di presenze dice quanto turismo c’è; intensità e stagionalità servono a capire quanto pesa sul territorio e quando si concentra.",
+      "primaryMetric": "tourismPresences",
+      "primaryIntro": "Le presenze sono il volume principale; arrivi, permanenza media, intensità e stagionalità permettono di leggerne composizione e pressione territoriale.",
+      "metrics": ["tourismPresences", "tourismArrivals", "tourismAverageStay", "tourismIntensity", "tourismSeasonality", "foreignTourismShare", "tourismBedsPer1000", "tourismStructuresPer1000"],
+      "supported": "È possibile confrontare volume, durata media, intensità e distribuzione stagionale dei flussi turistici comunali sulla stessa annualità disponibile.",
+      "caveat": "Presenze ufficiali e capacità ricettiva non misurano integralmente seconde case, escursionismo giornaliero o pressione non registrata nelle strutture ricettive."
+    }
+  ]
+}
