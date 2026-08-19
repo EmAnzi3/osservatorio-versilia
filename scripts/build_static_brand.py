@@ -203,5 +203,6 @@ def apply_brand_and_pwa() -> None:
 
 if __name__ == "__main__":
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "build_readings.py"), run_name="__main__")
     apply_brand_and_pwa()
-    print("Build statica completata con identità OV e PWA installabile.")
+    print("Build statica completata con identità OV, Letture di collaudo e PWA installabile.")
