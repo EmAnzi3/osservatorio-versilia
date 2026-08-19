@@ -46,9 +46,10 @@ def main() -> None:
                 assert page.locator('#climate-chart .climate-line').count() == 0
                 assert page.locator('#climate-chart .climate-trend').count() == 0
                 assert page.locator('#climate-town-list a').count() == 7
-                first = page.locator('#climate-chart .chart-point').first
-                first.focus()
-                assert first.locator('.chart-tooltip').get_attribute('hidden') is None
+                point = page.locator('#climate-chart .ux-series-group.is-selected .chart-point').first
+                assert point.count() == 1
+                point.focus()
+                assert point.locator('.chart-tooltip').get_attribute('hidden') is None
 
             page.locator('#climate-town').select_option(label='Viareggio')
             page.wait_for_timeout(150)
