@@ -13,16 +13,20 @@ aggiunto soltanto alla fine, dopo la rimozione dei runtime generici.
 """
 from __future__ import annotations
 
+import html
+import json
 import re
 import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
+PUBLIC_ROOT = "https://osservatorioversilia.it/"
 
 HEADER_RE = re.compile(r"<header\b[^>]*>.*?</header>", re.I | re.S)
 FOOTER_RE = re.compile(r"<footer\b[^>]*>.*?</footer>", re.I | re.S)
 HEAD_RE = re.compile(r"<head\b[^>]*>(.*?)</head>", re.I | re.S)
+TITLE_RE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
 LINK_RE = re.compile(r"<link\b[^>]*>", re.I)
 META_RE = re.compile(r"<meta\b[^>]*>", re.I)
 PWA_SCRIPT_RE = re.compile(r'<script\b[^>]*src="[^"]*assets/pwa\.js[^"]*"[^>]*></script>', re.I)
@@ -85,6 +89,40 @@ def strip_generic_runtime(document: str) -> str:
     return SCRIPT_RE.sub(replace, document)
 
 
+def public_url(target: Path) -> str:
+    relative = target.relative_to(DIST).as_posix()
+    if relative == "index.html":
+        return PUBLIC_ROOT
+    if relative.endswith("/index.html"):
+        relative = relative[:-10]
+    elif relative.endswith("index.html"):
+        relative = relative[:-10]
+    return PUBLIC_ROOT + relative.lstrip("/")
+
+
+def ensure_discovery_metadata(document: str, target: Path) -> str:
+    url = public_url(target)
+    if 'rel="canonical"' not in document:
+        document = document.replace("</head>", f'  <link rel="canonical" href="{html.escape(url, quote=True)}">\n</head>', 1)
+    if 'type="application/ld+json"' not in document:
+        title_match = TITLE_RE.search(document)
+        title = html.unescape(re.sub(r"\s+", " ", title_match.group(1)).strip()) if title_match else "Osservatorio Versilia"
+        payload = {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": title,
+            "url": url,
+            "isPartOf": {
+                "@type": "WebSite",
+                "name": "Osservatorio Versilia",
+                "url": PUBLIC_ROOT,
+            },
+        }
+        encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        document = document.replace("</head>", f'  <script type="application/ld+json">{encoded}</script>\n</head>', 1)
+    return document
+
+
 def sync_page(target: Path, template: Path) -> None:
     if not target.exists():
         raise RuntimeError(f"Pagina editoriale mancante: {target}")
@@ -113,6 +151,7 @@ def sync_page(target: Path, template: Path) -> None:
         text = text.replace("</head>", "  " + "\n  ".join(missing) + "\n</head>", 1)
 
     text = strip_generic_runtime(text)
+    text = ensure_discovery_metadata(text, target)
     if "assets/pwa.js" not in text:
         pwa = PWA_SCRIPT_RE.search(canonical)
         if not pwa:
@@ -144,6 +183,8 @@ def main() -> None:
             raise RuntimeError(f"Marchio canonico assente dopo sync: {target}")
         if "assets/brand.css" not in text or "assets/pwa.css" not in text or "assets/pwa.js" not in text:
             raise RuntimeError(f"Asset strutturali mancanti dopo sync: {target}")
+        if 'rel="canonical"' not in text or 'type="application/ld+json"' not in text:
+            raise RuntimeError(f"Metadata strutturali mancanti dopo sync: {target}")
         present_generic = [name for name in GENERIC_RUNTIME_SCRIPTS if name in text]
         if present_generic:
             raise RuntimeError(f"Runtime applicativo non pertinente in {target}: {present_generic}")
