@@ -50,10 +50,11 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
-      - name: Build editorial readings
+      - name: Build editorial readings and reports
         run: |
           node --check assets/letture.js
-          python -m py_compile scripts/build_letture.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
+          node --check assets/rapporti.js
+          python -m py_compile scripts/build_letture.py scripts/sync_editorial_layout.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
           python scripts/build_letture.py
           python scripts/test_letture.py
 
@@ -90,7 +91,7 @@ jobs:
           node --check assets/meteo-clima-editorial.js
           python scripts/test_meteo_clima_editorial_browser.py --base http://127.0.0.1:8123/
 
-      - name: Validate Letture desktop and mobile
+      - name: Validate Letture and reports desktop and mobile
         run: python scripts/test_letture_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
@@ -190,6 +191,7 @@ jobs:
             scripts/build_data_status.py \
             scripts/inject_data_status_runtime.py \
             scripts/build_letture.py \
+            scripts/sync_editorial_layout.py \
             scripts/test_letture.py \
             scripts/test_letture_browser.py \
             scripts/test_meteo_clima_editorial_browser.py \
@@ -258,16 +260,16 @@ jobs:
           path: dist
 
   deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
