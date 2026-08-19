@@ -25,7 +25,6 @@
   const signed = (value, decimals = 1) => `${Number(value) > 0 ? '+' : ''}${fmt(value, decimals)}`;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
   const slug = value => String(value || '').toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
   const state = { town: 'Massarosa', metric: 'temperature', climate: null, minmax: null, status: null };
 
   function sourceFor(metric) {
@@ -94,22 +93,69 @@
     const { years, values } = seriesFor(state.town, state.metric);
     const fromIndex = years.findIndex(y => y >= 1975);
     const ys = years.slice(fromIndex), vs = values.slice(fromIndex);
-    const width=1000,height=380,left=62,right=24,top=25,bottom=46;
-    const min=Math.min(...vs),max=Math.max(...vs),pad=(max-min||1)*.1,yMin=state.metric==='precipitation'?Math.max(0,min-pad):min-pad,yMax=max+pad;
-    const x=(year)=>left+(year-ys[0])/(ys.at(-1)-ys[0])*(width-left-right);
-    const y=(value)=>top+(yMax-value)/(yMax-yMin)*(height-top-bottom);
-    const path=vs.map((v,i)=>`${i?'L':'M'}${x(ys[i]).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    const width=1000,height=410,left=88,right=30,top=28,bottom=72;
+    const min=Math.min(...vs),max=Math.max(...vs),pad=(max-min||1)*.1;
+    const yMin=state.metric==='precipitation'?Math.max(0,min-pad):min-pad,yMax=max+pad;
+    const chartWidth=width-left-right,chartHeight=height-top-bottom;
+    const x=(year)=>left+(year-ys[0])/(ys.at(-1)-ys[0])*chartWidth;
+    const y=(value)=>top+(yMax-value)/(yMax-yMin)*chartHeight;
+    const pts=vs.map((value,index)=>({year:ys[index],value,x:x(ys[index]),y:y(value)}));
+    const line=pts.map(point=>`${point.x},${point.y}`).join(' ');
+    const area=`${left},${height-bottom} ${line} ${width-right},${height-bottom}`;
     const tr=trend(ys,vs,1975,ys.at(-1));
-    const ticks=[0,.25,.5,.75,1].map(f=>yMin+(yMax-yMin)*f);
-    const grids=ticks.map(v=>`<line x1="${left}" x2="${width-right}" y1="${y(v)}" y2="${y(v)}" class="climate-grid"></line><text x="${left-10}" y="${y(v)+4}" text-anchor="end">${esc(formatValue(v,state.metric))}</text>`).join('');
-    const labels=ys.filter((year,i)=>i===0||i===ys.length-1||year%10===0).map(year=>`<text x="${x(year)}" y="${height-14}" text-anchor="middle">${year}</text>`).join('');
-    const points=vs.map((v,i)=>`<circle cx="${x(ys[i])}" cy="${y(v)}" r="3"><title>${esc(state.town)} · ${ys[i]}: ${esc(formatValue(v,state.metric))}</title></circle>`).join('');
-    return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(METRICS[state.metric].label)} a ${esc(state.town)} dal 1975 al ${ys.at(-1)}">${grids}${labels}<path class="climate-line" d="${path}"></path><line class="climate-trend" x1="${x(1975)}" y1="${y(tr.start)}" x2="${x(ys.at(-1))}" y2="${y(tr.end)}"></line>${points}</svg>`;
+    const ticks=[0,.25,.5,.75,1].map(f=>yMax-f*(yMax-yMin));
+    const grids=ticks.map(v=>`<line x1="${left}" x2="${width-right}" y1="${y(v)}" y2="${y(v)}" class="chart-grid climate-grid"></line><text class="climate-axis-label" x="${left-12}" y="${y(v)+4}" text-anchor="end">${esc(formatValue(v,state.metric))}</text>`).join('');
+    const labels=ys.filter((year,i)=>i===0||i===ys.length-1||year%10===0).map(year=>`<text class="chart-label climate-axis-label" x="${x(year)}" y="${height-bottom+28}" text-anchor="middle">${year}</text>`).join('');
+    const points=pts.map(point=>{
+      const boxWidth=238,boxHeight=42;
+      const boxX=Math.max(left-8,Math.min(width-right-boxWidth,point.x-boxWidth/2));
+      const boxY=point.y<78?point.y+18:point.y-58;
+      return `<g class="chart-point climate-chart-point" tabindex="0" role="button" aria-label="${esc(state.town)} · ${point.year}: ${esc(formatValue(point.value,state.metric))}"><circle class="chart-hit" cx="${point.x}" cy="${point.y}" r="17"></circle><circle class="chart-dot" cx="${point.x}" cy="${point.y}" r="5"></circle><g class="chart-tooltip" hidden><line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY<point.y?boxY+boxHeight:boxY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+15}">${esc(state.town)} · ${point.year}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+31}">${esc(formatValue(point.value,state.metric))}</text></g></g>`;
+    }).join('');
+    return `<div class="chart-shell"><div class="trend-chart climate-trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(METRICS[state.metric].label)} a ${esc(state.town)} dal 1975 al ${ys.at(-1)}">${grids}<line class="climate-axis-line" x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}"></line><line class="climate-axis-line" x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}"></line><polygon class="chart-area climate-area" points="${area}"></polygon><polyline class="chart-line climate-line" points="${line}"></polyline><line class="climate-trend" x1="${x(1975)}" y1="${y(tr.start)}" x2="${x(ys.at(-1))}" y2="${y(tr.end)}"></line>${points}${labels}<text class="climate-axis-title" transform="translate(20 ${top+chartHeight/2}) rotate(-90)" text-anchor="middle">${esc(METRICS[state.metric].unit)}</text><text class="climate-axis-title" x="${left+chartWidth/2}" y="${height-12}" text-anchor="middle">Anno</text></svg></div></div><div class="chart-a11y-table"><strong>${esc(METRICS[state.metric].label)} · ${esc(state.town)}</strong>${pts.map(point=>`<span>${point.year}: ${esc(formatValue(point.value,state.metric))}</span>`).join('')}</div>`;
+  }
+
+  function installChartInteractions(root) {
+    root.querySelectorAll('.trend-chart').forEach(chart => {
+      if (chart.dataset.climateInteractions === 'true') return;
+      chart.dataset.climateInteractions = 'true';
+      const points = [...chart.querySelectorAll('.chart-point')];
+      const hideAll = () => points.forEach(point => {
+        point.classList.remove('active');
+        point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
+      });
+      const show = point => {
+        hideAll();
+        point.classList.add('active');
+        point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+      };
+      points.forEach((point,index) => {
+        point.addEventListener('mouseenter',()=>show(point));
+        point.addEventListener('mouseleave',hideAll);
+        point.addEventListener('focus',()=>show(point));
+        point.addEventListener('blur',hideAll);
+        point.addEventListener('click',()=>show(point));
+        point.addEventListener('keydown',event=>{
+          if(event.key==='Escape'){hideAll();point.blur();return;}
+          if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+          event.preventDefault();
+          let next=index;
+          if(event.key==='ArrowLeft')next=(index-1+points.length)%points.length;
+          if(event.key==='ArrowRight')next=(index+1)%points.length;
+          if(event.key==='Home')next=0;
+          if(event.key==='End')next=points.length-1;
+          points[next]?.focus();
+        });
+      });
+      chart.addEventListener('mouseleave',hideAll);
+    });
   }
 
   function renderChart() {
     document.getElementById('climate-chart-title').textContent = `${METRICS[state.metric].label} · ${state.town}`;
-    document.getElementById('climate-chart').innerHTML = chartMarkup();
+    const host=document.getElementById('climate-chart');
+    host.innerHTML = chartMarkup();
+    installChartInteractions(host);
   }
 
   function renderTowns() {
