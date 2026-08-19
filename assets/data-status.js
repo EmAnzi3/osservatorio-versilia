@@ -14,7 +14,6 @@
     const status = document.querySelector('[data-status-filter]');
     const visible = document.querySelector('[data-status-visible]');
     const rows = [...table.querySelectorAll('tbody tr')];
-
     const update = () => {
       let count = 0;
       rows.forEach(row => {
@@ -25,7 +24,6 @@
       });
       if (visible) visible.textContent = `${count} indicatori visibili`;
     };
-
     if (table.dataset.statusFiltersInstalled !== 'true') {
       theme?.addEventListener('change', update);
       status?.addEventListener('change', update);
@@ -95,7 +93,6 @@
     if (!metric) return false;
     const list = document.querySelector('.indicator-governance-grid dl');
     if (!list) return false;
-
     if (!list.querySelector('[data-data-status-row="period"]')) {
       list.prepend(row('Periodo pubblicato', metric.publishedPeriod || '—', 'period'));
     }
@@ -104,19 +101,12 @@
       const state = row('Stato del dato', metric, 'state');
       period?.after(state);
     }
-
     [...list.querySelectorAll('dt')].forEach(dt => {
       const dd = dt.nextElementSibling;
       if (!dd) return;
-      if (dt.textContent.trim() === 'Ultimo controllo della fonte') {
-        dt.textContent = 'Ultimo controllo Osservatorio';
-      }
-      if (dt.textContent.trim() === 'Ultimo controllo Osservatorio' && dd.textContent !== metric.lastCheckedLabel) {
-        dd.textContent = metric.lastCheckedLabel;
-      }
-      if (dt.textContent.trim() === 'Prossimo aggiornamento atteso') {
-        dt.textContent = metric.nextExpectedRelease ? 'Prossimo rilascio atteso' : 'Cadenza indicativa';
-      }
+      if (dt.textContent.trim() === 'Ultimo controllo della fonte') dt.textContent = 'Ultimo controllo Osservatorio';
+      if (dt.textContent.trim() === 'Ultimo controllo Osservatorio' && dd.textContent !== metric.lastCheckedLabel) dd.textContent = metric.lastCheckedLabel;
+      if (dt.textContent.trim() === 'Prossimo aggiornamento atteso') dt.textContent = metric.nextExpectedRelease ? 'Prossimo rilascio atteso' : 'Cadenza indicativa';
       if (dt.textContent.trim() === 'Prossimo rilascio atteso' && metric.nextExpectedRelease) {
         const value = String(metric.nextExpectedRelease.value || '');
         if (value && dd.textContent !== value) dd.textContent = value;
@@ -133,15 +123,8 @@
     const metric = readIndicatorStatus();
     if (!metric) return;
     let scheduled = false;
-    const apply = () => {
-      scheduled = false;
-      applyIndicatorStatus(metric);
-    };
-    const schedule = () => {
-      if (scheduled) return;
-      scheduled = true;
-      queueMicrotask(apply);
-    };
+    const apply = () => { scheduled = false; applyIndicatorStatus(metric); };
+    const schedule = () => { if (scheduled) return; scheduled = true; queueMicrotask(apply); };
     apply();
     const app = document.getElementById('app');
     if (app) new MutationObserver(schedule).observe(app, { childList: true, subtree: true });
@@ -156,25 +139,36 @@
     return link;
   }
 
+  function ensureTownReportLink() {
+    const match = location.pathname.match(/\/comuni\/([^/]+)\/?$/i);
+    if (!match) return;
+    const actions = document.querySelector('.town-data-actions');
+    if (!actions || actions.querySelector('[data-town-report-link]')) return;
+    const link = document.createElement('a');
+    link.href = new URL(`rapporti/comune-${match[1]}/`, ROOT).href;
+    link.textContent = 'Rapporto comunale';
+    link.dataset.townReportLink = 'true';
+    const print = actions.querySelector('[data-print]');
+    if (print) actions.insertBefore(link, print);
+    else actions.append(link);
+  }
+
   function ensureNavigationLinks() {
     const headerNav = document.querySelector('.site-header-actions nav[aria-label="Navigazione principale"]');
     if (headerNav) {
       const links = [...headerNav.querySelectorAll('a')];
       const comuni = links.find(item => item.textContent.trim() === 'Comuni');
       const project = links.find(item => item.textContent.trim() === 'Il progetto');
-
       let compare = headerNav.querySelector('[data-ov-navigation="compare-header"]');
       if (!compare) {
         compare = makeNavigationLink('Confronta', compareHref, 'compare', 'header');
         if (comuni) comuni.after(compare); else headerNav.prepend(compare);
       }
-
       let readings = headerNav.querySelector('[data-ov-navigation="readings-header"]');
       if (!readings) {
         readings = makeNavigationLink('Capire', readingsHref, 'readings', 'header');
         compare.after(readings);
       }
-
       if (!headerNav.querySelector('[data-data-status-nav="header"]')) {
         const status = makeNavigationLink('Stato dati', statusHref, 'status', 'header');
         if (project) project.after(status); else headerNav.append(status);
@@ -198,19 +192,13 @@
         if (project) project.after(status); else footerNav.append(status);
       }
     }
+    ensureTownReportLink();
   }
 
   function installNavigationPersistence() {
     let scheduled = false;
-    const apply = () => {
-      scheduled = false;
-      ensureNavigationLinks();
-    };
-    const schedule = () => {
-      if (scheduled) return;
-      scheduled = true;
-      queueMicrotask(apply);
-    };
+    const apply = () => { scheduled = false; ensureNavigationLinks(); };
+    const schedule = () => { if (scheduled) return; scheduled = true; queueMicrotask(apply); };
     apply();
     new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
   }
@@ -223,9 +211,6 @@
     loadNativeRuntime();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })();
