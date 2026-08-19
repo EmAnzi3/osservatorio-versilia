@@ -35,7 +35,7 @@ def main() -> None:
 
             for metric in ('temperature', 'tmin', 'tmax', 'precipitation'):
                 page.locator(f'[data-climate-metric="{metric}"]').click()
-                page.wait_for_function("metric => document.querySelector('#climate-chart [data-climate-metric-exact]')?.dataset.climateMetricExact === metric", metric)
+                page.wait_for_function("metric => document.querySelector('#climate-chart [data-climate-metric-exact]')?.dataset.climateMetricExact === metric", arg=metric)
                 assert page.locator('#climate-current-value').inner_text().strip() != '—'
                 assert page.locator('#climate-chart .ux-history-card').count() == 1
                 assert page.locator('#climate-chart .ux-history-chart').count() == 1
