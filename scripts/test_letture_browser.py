@@ -11,8 +11,9 @@ def no_overflow(page, width: int) -> None:
     assert not overflow, f'Horizontal overflow at {width}px on {page.url}'
 
 
-def assert_tooltip(page, selector: str) -> None:
-    point = page.locator(selector).first
+def assert_tooltip(page, container_selector: str) -> None:
+    selected = page.locator(f'{container_selector} .ux-series-group.is-selected .chart-point')
+    point = selected.first if selected.count() else page.locator(f'{container_selector} .chart-point').first
     assert point.count() == 1
     point.focus()
     tooltip = point.locator('.chart-tooltip')
@@ -63,7 +64,7 @@ def main() -> None:
             assert page.locator('.story-scatter-chart').count() == 1
             assert page.locator('.story-analysis-grid article').count() == 4
             assert page.locator('a[href*="rapporti/lettura-una-versilia-che-cambia/"]').count() >= 1
-            assert_tooltip(page, '[data-story-chapter="population"] .ux-history-card .chart-point')
+            assert_tooltip(page, '[data-story-chapter="population"] .ux-history-card')
             assert not errors, errors
             no_overflow(page, width)
 
@@ -82,7 +83,7 @@ def main() -> None:
             assert page.locator('.report-method-grid article').count() == 4
             assert page.locator('.report-pdf-download').count() == 1
             assert '/rapporti/pdf/lettura-una-versilia-che-cambia.pdf' in (page.locator('.report-pdf-download').get_attribute('href') or '')
-            assert_tooltip(page, '.report-history .chart-point')
+            assert_tooltip(page, '.report-history')
             assert page.locator('meta[name="robots"]').get_attribute('content') == 'noindex,nofollow'
             assert not errors, errors
             no_overflow(page, width)
@@ -102,7 +103,7 @@ def main() -> None:
             assert page.locator('.report-pdf-download').count() == 1
             assert '/rapporti/pdf/comune-massarosa.pdf' in (page.locator('.report-pdf-download').get_attribute('href') or '')
             assert 'Massarosa' in (page.locator('.report-cover h1').text_content() or '')
-            assert_tooltip(page, '.report-history .chart-point')
+            assert_tooltip(page, '.report-history')
             assert not errors, errors
             no_overflow(page, width)
 
