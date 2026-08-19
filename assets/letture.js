@@ -35,7 +35,9 @@
     aging: '<circle cx="9" cy="7" r="4"></circle><path d="M3 21a6 6 0 0 1 12 0"></path><circle cx="18" cy="16" r="4"></circle><path d="M18 14v2l1.2 1.2"></path>',
     mobility: '<path d="M4 8h14"></path><path d="m14 4 4 4-4 4"></path><path d="M20 16H6"></path><path d="m10 12-4 4 4 4"></path>',
     check: '<path d="M20 6 9 17l-5-5"></path>',
-    limit: '<circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path>'
+    limit: '<circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path>',
+    report: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h6"></path>',
+    print: '<path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect>'
   };
 
   function icon(path, size = 24) {
@@ -46,17 +48,12 @@
 
   function statusFor(key, state, metric) {
     const operational = state?.metrics?.[key] || {};
-    return {
-      period: operational.publishedPeriod || metric?.meta?.year || '',
-      checked: operational.checkedAt || state?.checkedAt || '',
-      status: operational.status || ''
-    };
+    return { period: operational.publishedPeriod || metric?.meta?.year || '', checked: operational.checkedAt || state?.checkedAt || '', status: operational.status || '' };
   }
 
   function unitValue(value, meta, digits = 1, signedValue = false) {
     if (value === undefined || value === null || Number.isNaN(Number(value))) return '—';
-    const unit = meta?.unit || '';
-    const n = Number(value);
+    const unit = meta?.unit || '', n = Number(value);
     if (unit === 'percent') return signedValue ? signed(n, digits, '%') : `${nf(n,digits)}%`;
     if (unit === 'per1000') return `${signedValue ? signed(n,digits) : nf(n,digits)} ogni 1.000`;
     if (unit === 'number') return nf(n, 0);
@@ -65,194 +62,107 @@
   }
 
   function populationStory(data) {
-    const population = data.metrics.population;
-    const change = data.metrics.populationChange;
-    const aging = data.metrics.oldAgeIndex;
-    const mobility = data.metrics.totalResidentialMobility;
+    const population = data.metrics.population, change = data.metrics.populationChange, aging = data.metrics.oldAgeIndex, mobility = data.metrics.totalResidentialMobility;
     if (![population, change, aging, mobility].every(Boolean)) throw new Error('Indicatori demografici del pilota incompleti');
-
-    const popRows = rows(population);
-    const changeRows = rows(change);
-    const agingRows = rows(aging);
-    const mobilityRows = rows(mobility);
+    const popRows = rows(population), changeRows = rows(change), agingRows = rows(aging), mobilityRows = rows(mobility);
     const commonYears = popRows[0].series.years.map(Number);
     const totals = commonYears.map((year, index) => popRows.reduce((sum,row)=>sum+Number(row.series.values[index]),0));
-    const startYear = commonYears[0], endYear = commonYears.at(-1);
-    const startTotal = totals[0], endTotal = totals.at(-1);
-    const totalDelta = endTotal - startTotal;
-    const totalPct = totalDelta / startTotal * 100;
-    const gainRows = changeRows.filter(row=>Number(row.value)>0);
-    const lossRows = changeRows.filter(row=>Number(row.value)<0);
-    const gains = gainRows.reduce((sum,row)=> {
-      const source=popRows.find(candidate=>townName(candidate)===townName(row));
-      return sum + (source.series.values.at(-1)-source.series.values[0]);
-    },0);
-    const losses = lossRows.reduce((sum,row)=> {
-      const source=popRows.find(candidate=>townName(candidate)===townName(row));
-      return sum + (source.series.values.at(-1)-source.series.values[0]);
-    },0);
-
-    const ageChanges = agingRows.map(row=>({
-      town: townName(row),
-      from: Number(row.series.values[0]),
-      to: Number(row.series.values.at(-1)),
-      delta: Number(row.series.values.at(-1))-Number(row.series.values[0]),
-      years: row.series.years
-    }));
-    const allAging = ageChanges.every(item=>item.delta>0);
-    const benchmark = aging.meta?.benchmark || {};
-    const benchmarkYear = Number(benchmark.year || 2024);
-    const aboveTuscany = agingRows.filter(row=> {
-      const idx=(row.series?.years||[]).map(Number).indexOf(benchmarkYear);
-      return idx>=0 && Number(row.series.values[idx])>Number(benchmark.tuscany);
-    }).length;
-
+    const startYear = commonYears[0], endYear = commonYears.at(-1), startTotal = totals[0], endTotal = totals.at(-1);
+    const totalDelta = endTotal - startTotal, totalPct = totalDelta / startTotal * 100;
+    const gainRows = changeRows.filter(row=>Number(row.value)>0), lossRows = changeRows.filter(row=>Number(row.value)<0);
+    const gains = gainRows.reduce((sum,row)=> { const source=popRows.find(candidate=>townName(candidate)===townName(row)); return sum + (Number(source.series.values.at(-1))-Number(source.series.values[0])); },0);
+    const losses = lossRows.reduce((sum,row)=> { const source=popRows.find(candidate=>townName(candidate)===townName(row)); return sum + (Number(source.series.values.at(-1))-Number(source.series.values[0])); },0);
+    const ageChanges = agingRows.map(row=>({ town: townName(row), from: Number(row.series.values[0]), to: Number(row.series.values.at(-1)), delta: Number(row.series.values.at(-1))-Number(row.series.values[0]), years: row.series.years, values: row.series.values.map(Number) }));
+    const allAging = ageChanges.every(item=>item.delta>0), benchmark = aging.meta?.benchmark || {}, benchmarkYear = Number(benchmark.year || 2024);
+    const aboveTuscany = agingRows.filter(row=> { const idx=(row.series?.years||[]).map(Number).indexOf(benchmarkYear); return idx>=0 && Number(row.series.values[idx])>Number(benchmark.tuscany); }).length;
+    const agingMean = commonYears.map((year,index)=>agingRows.reduce((sum,row)=>sum+Number(row.series.values[index]),0)/agingRows.length);
     const mobilityByTown = Object.fromEntries(mobilityRows.map(row=>[townName(row),Number(row.value)]));
     const positiveMobility = mobilityRows.filter(row=>Number(row.value)>0).length;
     const decliningPositive = changeRows.filter(row=>Number(row.value)<0 && Number(mobilityByTown[townName(row)])>0).map(row=>townName(row));
-
-    return {
-      population, change, aging, mobility,
-      popRows, changeRows, agingRows, mobilityRows,
-      years: commonYears, totals, startYear, endYear, startTotal, endTotal, totalDelta, totalPct,
-      gainRows, lossRows, gains, losses,
-      ageChanges, allAging, benchmark, benchmarkYear, aboveTuscany,
-      mobilityByTown, positiveMobility, decliningPositive
-    };
+    const strongestGrowth = [...changeRows].sort((a,b)=>Number(b.value)-Number(a.value))[0], strongestDecline = [...changeRows].sort((a,b)=>Number(a.value)-Number(b.value))[0], largestAging = [...ageChanges].sort((a,b)=>b.delta-a.delta)[0];
+    return { population, change, aging, mobility, popRows, changeRows, agingRows, mobilityRows, years: commonYears, totals, startYear, endYear, startTotal, endTotal, totalDelta, totalPct, gainRows, lossRows, gains, losses, ageChanges, agingMean, allAging, benchmark, benchmarkYear, aboveTuscany, mobilityByTown, positiveMobility, decliningPositive, strongestGrowth, strongestDecline, largestAging };
   }
 
-  function lineChart(story) {
-    const values=story.totals, years=story.years;
-    const width=900,height=300,left=54,right=26,top=30,bottom=42;
-    const min=Math.min(...values),max=Math.max(...values),pad=Math.max((max-min)*.35,150);
-    const yMin=min-pad,yMax=max+pad;
-    const x=index=>left+index/(values.length-1)*(width-left-right);
-    const y=value=>top+(yMax-value)/(yMax-yMin)*(height-top-bottom);
-    const path=values.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-    const points=values.map((v,i)=>`<g class="story-chart-point"><circle cx="${x(i)}" cy="${y(v)}" r="4"><title>${years[i]}: ${nf(v,0)} residenti</title></circle>${(i===0||i===values.length-1)?`<text x="${x(i)}" y="${y(v)-13}" text-anchor="${i===0?'start':'end'}">${nf(v,0)}</text>`:''}</g>`).join('');
-    const labels=years.map((yr,i)=> (i===0||i===values.length-1||yr===2022) ? `<text x="${x(i)}" y="${height-12}" text-anchor="middle">${yr}</text>` : '').join('');
-    return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Residenti complessivi nei sette Comuni dal ${story.startYear} al ${story.endYear}"><line class="story-chart-grid" x1="${left}" x2="${width-right}" y1="${y(story.startTotal)}" y2="${y(story.startTotal)}"></line><path class="story-chart-line" d="${path}"></path>${points}${labels}</svg>`;
+  function chartValue(value, unit, digits = 1) {
+    if (unit === 'number') return nf(value,0);
+    if (unit === 'percent') return `${nf(value,digits)}%`;
+    if (unit === 'per1000') return `${nf(value,digits)} ogni 1.000`;
+    return nf(value,digits);
   }
 
-  function populationRowsMarkup(story) {
+  function canonicalSeriesChart(series, unit, label, yAxisLabel, options = {}) {
+    const values = series.values.map(Number), years = series.years.map(Number);
+    const rawMin = Math.min(...values), rawMax = Math.max(...values), rawRange = rawMax - rawMin || Math.max(Math.abs(rawMax) * .08, 1);
+    const min = options.zeroFloor ? Math.min(0, rawMin - rawRange * .08) : rawMin - rawRange * .08, max = rawMax + rawRange * .08, range = max - min || 1;
+    const width = 820, height = 300, left = 74, right = 28, top = 26, bottom = 54, chartWidth = width-left-right, chartHeight = height-top-bottom;
+    const pts = values.map((value,index)=>({x:left+index*chartWidth/Math.max(1,values.length-1),y:top+(max-value)/range*chartHeight,value,year:years[index]}));
+    const line = pts.map(point=>`${point.x},${point.y}`).join(' '), area = `${left},${height-bottom} ${line} ${width-right},${height-bottom}`;
+    const grid = [0,.25,.5,.75,1].map(fraction=>{ const y=top+fraction*chartHeight, value=max-fraction*range; return `<line class="chart-grid" x1="${left}" y1="${y}" x2="${width-right}" y2="${y}"/><text class="story-axis-label story-axis-y-tick" x="${left-10}" y="${y+4}" text-anchor="end">${esc(chartValue(value,unit,unit==='number'?0:1))}</text>`; }).join('');
+    const points = pts.map(point=>{ const formatted=options.valueFormatter?options.valueFormatter(point.value):chartValue(point.value,unit,unit==='number'?0:1), boxWidth=214,boxHeight=42,boxX=Math.max(left-8,Math.min(width-right-boxWidth,point.x-boxWidth/2)),boxY=point.y<76?point.y+18:point.y-58; return `<g class="chart-point" tabindex="0" role="button" aria-label="${esc(point.year)}: ${esc(formatted)}"><circle class="chart-hit" cx="${point.x}" cy="${point.y}" r="17"></circle><circle class="chart-dot" cx="${point.x}" cy="${point.y}" r="5"></circle><g class="chart-tooltip" hidden><line class="chart-guide" x1="${point.x}" y1="${point.y}" x2="${point.x}" y2="${boxY < point.y ? boxY + boxHeight : boxY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+15}">${esc(point.year)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+31}">${esc(formatted)}</text></g></g>`; }).join('');
+    const xLabels=pts.map(point=>`<text class="chart-label" x="${point.x}" y="${height-24}" text-anchor="middle">${esc(point.year)}</text>`).join('');
+    return `<div class="chart-shell story-canonical-chart"><div class="trend-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(label)}">${grid}<line class="story-axis-line" x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}"></line><line class="story-axis-line" x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}"></line><polygon class="chart-area" points="${area}"/><polyline class="chart-line" points="${line}"/>${points}${xLabels}<text class="story-axis-title" transform="translate(18 ${top+chartHeight/2}) rotate(-90)" text-anchor="middle">${esc(yAxisLabel)}</text><text class="story-axis-title" x="${left+chartWidth/2}" y="${height-5}" text-anchor="middle">Anno</text></svg></div></div><div class="chart-a11y-table"><strong>${esc(label)}</strong>${pts.map(point=>`<span>${esc(point.year)}: ${esc(options.valueFormatter?options.valueFormatter(point.value):chartValue(point.value,unit,unit==='number'?0:1))}</span>`).join('')}</div>`;
+  }
+
+  function installChartInteractions(root) {
+    root.querySelectorAll('.trend-chart').forEach(chart=>{ if(chart.dataset.storyInteractions==='true')return; chart.dataset.storyInteractions='true'; const points=[...chart.querySelectorAll('.chart-point')]; const hideAll=()=>points.forEach(point=>{point.classList.remove('active');point.querySelector('.chart-tooltip')?.setAttribute('hidden','');}); const show=point=>{hideAll();point.classList.add('active');point.querySelector('.chart-tooltip')?.removeAttribute('hidden');}; points.forEach((point,index)=>{point.addEventListener('mouseenter',()=>show(point));point.addEventListener('mouseleave',hideAll);point.addEventListener('focus',()=>show(point));point.addEventListener('blur',hideAll);point.addEventListener('click',()=>show(point));point.addEventListener('keydown',event=>{if(event.key==='Escape'){hideAll();point.blur();return;}if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();let next=index;if(event.key==='ArrowLeft')next=(index-1+points.length)%points.length;if(event.key==='ArrowRight')next=(index+1)%points.length;if(event.key==='Home')next=0;if(event.key==='End')next=points.length-1;points[next]?.focus();});});chart.addEventListener('mouseleave',hideAll); });
+  }
+
+  function agingExplorerMarkup(story) {
+    const options=[`<option value="versilia">Versilia · media semplice dei 7 Comuni</option>`,...story.ageChanges.map(item=>`<option value="${esc(item.town)}">${esc(item.town)}</option>`)].join('');
+    const chart=canonicalSeriesChart({years:story.years,values:story.agingMean},'ratio','Indice di vecchiaia · media semplice dei sette Comuni','Indice di vecchiaia',{valueFormatter:value=>nf(value,1)});
+    return `<div class="story-aging-explorer"><div class="story-chart-toolbar"><label><span>Serie storica</span><select data-aging-town>${options}</select></label><p>Scegli un Comune per vedere lo stesso grafico storico usato nelle schede dell’Osservatorio.</p></div><div data-aging-chart-host>${chart}</div></div>`;
+  }
+
+  function installAgingExplorer(root, story) {
+    const select=root.querySelector('[data-aging-town]'),host=root.querySelector('[data-aging-chart-host]'); if(!select||!host)return;
+    const update=()=>{if(select.value==='versilia')host.innerHTML=canonicalSeriesChart({years:story.years,values:story.agingMean},'ratio','Indice di vecchiaia · media semplice dei sette Comuni','Indice di vecchiaia',{valueFormatter:value=>nf(value,1)});else{const item=story.ageChanges.find(candidate=>candidate.town===select.value);if(item)host.innerHTML=canonicalSeriesChart({years:item.years,values:item.values},'ratio',`Indice di vecchiaia · ${item.town}`,'Indice di vecchiaia',{valueFormatter:value=>nf(value,1)});}installChartInteractions(host);};
+    select.addEventListener('change',update);
+  }
+
+  function mobilityScatter(story) {
+    const data=story.changeRows.map(row=>({town:townName(row),x:Number(row.value),y:Number(story.mobilityByTown[townName(row)])}));
+    const width=900,height=470,left=88,right=42,top=42,bottom=82,xs=data.map(d=>d.x),ys=data.map(d=>d.y),xPad=Math.max((Math.max(...xs)-Math.min(...xs))*.12,1),yPad=Math.max((Math.max(...ys)-Math.min(...ys))*.12,2),xMin=Math.min(0,Math.min(...xs)-xPad),xMax=Math.max(0,Math.max(...xs)+xPad),yMin=Math.min(0,Math.min(...ys)-yPad),yMax=Math.max(0,Math.max(...ys)+yPad),plotW=width-left-right,plotH=height-top-bottom;
+    const x=value=>left+(value-xMin)/(xMax-xMin)*plotW,y=value=>top+(yMax-value)/(yMax-yMin)*plotH,xTicks=Array.from({length:6},(_,i)=>xMin+i*(xMax-xMin)/5),yTicks=Array.from({length:6},(_,i)=>yMin+i*(yMax-yMin)/5);
+    const grid=[...xTicks.map(value=>`<line class="chart-grid" x1="${x(value)}" y1="${top}" x2="${x(value)}" y2="${height-bottom}"/><text class="story-axis-label" x="${x(value)}" y="${height-bottom+24}" text-anchor="middle">${esc(`${nf(value,1)}%`)}</text>`),...yTicks.map(value=>`<line class="chart-grid" x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text class="story-axis-label" x="${left-10}" y="${y(value)+4}" text-anchor="end">${esc(nf(value,1))}</text>`)].join('');
+    const zeroX=x(0),zeroY=y(0),quadrantWidth=Math.max(0,zeroX-left),quadrantHeight=Math.max(0,zeroY-top);
+    const points=data.map((point,index)=>{const px=x(point.x),py=y(point.y),boxWidth=244,boxHeight=58,boxX=Math.max(left-4,Math.min(width-right-boxWidth,px-boxWidth/2)),boxY=py<100?py+20:py-76,labelAnchor=px>width-180?'end':'start',labelX=px+(labelAnchor==='end'?-10:10),labelY=py+(index%2===0?-9:18);return `<g class="chart-point story-scatter-point" tabindex="0" role="button" aria-label="${esc(point.town)}: residenti ${signed(point.x,1,'%')}; saldo trasferimenti ${signed(point.y,1)} ogni 1.000"><circle class="chart-hit" cx="${px}" cy="${py}" r="18"></circle><circle class="chart-dot" cx="${px}" cy="${py}" r="6"></circle><text class="story-scatter-label" x="${labelX}" y="${labelY}" text-anchor="${labelAnchor}">${esc(point.town)}</text><g class="chart-tooltip" hidden><line class="chart-guide" x1="${px}" y1="${py}" x2="${px}" y2="${boxY<py?boxY+boxHeight:boxY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+15}">${esc(point.town)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+32}">Residenti: ${esc(signed(point.x,1,'%'))}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+48}">Trasferimenti: ${esc(signed(point.y,1))} ogni 1.000</text></g></g>`;}).join('');
+    return `<div class="chart-shell story-scatter-shell"><div class="trend-chart story-scatter-chart"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Variazione dei residenti e saldo dei trasferimenti di residenza nei sette Comuni"><rect class="story-scatter-quadrant" x="${left}" y="${top}" width="${quadrantWidth}" height="${quadrantHeight}"></rect>${grid}<line class="story-axis-zero" x1="${zeroX}" y1="${top}" x2="${zeroX}" y2="${height-bottom}"></line><line class="story-axis-zero" x1="${left}" y1="${zeroY}" x2="${width-right}" y2="${zeroY}"></line>${points}<text class="story-quadrant-label" x="${left+12}" y="${top+20}">Residenti in calo · saldo trasferimenti positivo</text><text class="story-axis-title" x="${left+plotW/2}" y="${height-12}" text-anchor="middle">Variazione residenti ${story.startYear}–${story.endYear} (%)</text><text class="story-axis-title" transform="translate(20 ${top+plotH/2}) rotate(-90)" text-anchor="middle">Saldo trasferimenti ${esc(story.mobility.meta.year)} ogni 1.000</text></svg></div></div><div class="chart-a11y-table"><strong>Residenti e trasferimenti</strong>${data.map(point=>`<span>${esc(point.town)}: residenti ${esc(signed(point.x,1,'%'))}; trasferimenti ${esc(signed(point.y,1))} ogni 1.000</span>`).join('')}</div>`;
+  }
+
+  function populationChangeBars(story) {
     const max=Math.max(...story.changeRows.map(row=>Math.abs(Number(row.value))),1);
-    return story.changeRows.map(row=>{
-      const value=Number(row.value), width=Math.max(Math.abs(value)/max*48,1.5);
-      return `<div class="story-change-row"><strong>${esc(townName(row))}</strong><div class="story-change-track" aria-hidden="true"><span class="story-zero"></span><i class="${value>=0?'gain':'loss'}" style="--bar:${width}%"></i></div><b>${esc(unitValue(value,story.change.meta,1,true))}</b></div>`;
-    }).join('');
+    return `<div class="comparison-bars story-canonical-bars story-change-bars">${story.changeRows.map(row=>{const value=Number(row.value),negative=value<0;return `<a class="bar-row ${negative?'story-negative':''}" href="${metricHref('populationChange',story.change)}" aria-label="${esc(townName(row))}: ${esc(signed(value,1,'%'))}"><span class="bar-town">${esc(townName(row))}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5,Math.abs(value)/max*100)}%"></span><span class="bar-hover-label">${esc(townName(row))} · ${esc(signed(value,1,'%'))}</span></span><strong>${esc(signed(value,1,'%'))}</strong></a>`;}).join('')}</div>`;
   }
 
-  function agingRowsMarkup(story) {
-    const all=story.ageChanges.flatMap(item=>[item.from,item.to]);
-    const min=Math.min(...all)-15,max=Math.max(...all)+15,span=max-min;
-    return story.ageChanges.map(item=>{
-      const from=(item.from-min)/span*100,to=(item.to-min)/span*100;
-      return `<div class="story-age-row"><strong>${esc(item.town)}</strong><div class="story-age-track" aria-label="${esc(item.town)}: da ${nf(item.from,1)} a ${nf(item.to,1)}"><i style="--from:${from}%;--to:${to}%"></i><span class="age-from" style="--pos:${from}%"></span><span class="age-to" style="--pos:${to}%"></span></div><div><small>${story.startYear}</small><b>${nf(item.from,1)}</b><span>→</span><small>${story.endYear}</small><b>${nf(item.to,1)}</b></div></div>`;
-    }).join('');
+  function agingLatestBars(story) {
+    const max=Math.max(...story.agingRows.map(row=>Number(row.value)),1);
+    return `<div class="comparison-bars story-canonical-bars">${story.agingRows.map(row=>`<a class="bar-row" href="${metricHref('oldAgeIndex',story.aging)}" aria-label="${esc(townName(row))}: ${esc(nf(row.value,1))}"><span class="bar-town">${esc(townName(row))}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5,Number(row.value)/max*100)}%"></span><span class="bar-hover-label">${esc(townName(row))} · ${esc(nf(row.value,1))}</span></span><strong>${esc(nf(row.value,1))}</strong></a>`).join('')}</div>`;
   }
 
-  function mobilityRowsMarkup(story) {
-    return story.changeRows.map(row=>{
-      const town=townName(row), populationChange=Number(row.value), mobility=story.mobilityByTown[town];
-      const mismatch=populationChange<0 && mobility>0;
-      return `<div class="story-mobility-row ${mismatch?'mismatch':''}"><strong>${esc(town)}</strong><span><small>Residenti ${story.startYear}–${story.endYear}</small><b>${esc(unitValue(populationChange,story.change.meta,1,true))}</b></span><span><small>Trasferimenti ${esc(story.mobility.meta.year)}</small><b>${esc(unitValue(mobility,story.mobility.meta,1,true))}</b></span>${mismatch?'<em>andamenti diversi</em>':''}</div>`;
-    }).join('');
-  }
-
-  function sourceLink(key, metric, state) {
-    const st=statusFor(key,state,metric);
-    return `<a class="story-source-link" href="${metricHref(key,metric)}"><span>${esc(metric.meta.label)}</span><small>${esc(st.period)} · ultimo controllo ${esc(date(st.checked))}</small><b>Apri il dato →</b></a>`;
-  }
+  function sourceLink(key, metric, state) { const st=statusFor(key,state,metric); return `<a class="story-source-link" href="${metricHref(key,metric)}"><span>${esc(metric.meta.label)}</span><small>${esc(st.period)} · ultimo controllo ${esc(date(st.checked))}</small><b>Apri il dato →</b></a>`; }
 
   function demographyDetail(item, payload) {
-    const {data,state}=payload;
-    const story=populationStory(data);
-    const totalDirection=story.totalPct<0?'diminuiscono':'aumentano';
-    const totalAbs=Math.abs(story.totalDelta);
-    const allAgingText=story.allAging ? 'in tutti e sette i Comuni' : 'nella maggior parte dei Comuni';
+    const {data,state}=payload,story=populationStory(data),totalDirection=story.totalPct<0?'diminuiscono':'aumentano',totalAbs=Math.abs(story.totalDelta),allAgingText=story.allAging?'in tutti e sette i Comuni':'nella maggior parte dei Comuni',reportUrl=new URL(`rapporti/${item.report?.slug || 'lettura-una-versilia-che-cambia'}/`,ROOT).href;
     document.querySelector('.reading-main')?.setAttribute('data-theme','demografia');
-
-    return `<section class="story-hero page-width" data-theme="demografia">
-      <div class="breadcrumbs"><a href="${new URL('letture/',ROOT).href}">Capire la Versilia</a><span>›</span><strong>${esc(item.title)}</strong></div>
-      <div class="story-hero-grid"><div><span class="overline">${themeIcon('demografia',18)} Demografia · lettura pilota</span><h1>${esc(item.title)}</h1><p class="story-deck">Tra ${story.startYear} e ${story.endYear} i residenti dei sette Comuni ${totalDirection} di <strong>${nf(totalAbs,0)} persone (${unitValue(story.totalPct,story.change.meta,1,true)})</strong>. Ma il dato complessivo nasconde traiettorie comunali opposte, mentre l’indice di vecchiaia cresce ${allAgingText}.</p></div><div class="story-hero-icon">${themeIcon('demografia',54)}</div></div>
-      <div class="story-question"><span>La domanda</span><strong>${esc(item.question)}</strong></div>
-    </section>
-
-    <section class="story-thesis page-width" data-theme="demografia">
-      <div class="story-thesis-label">${storyIcon('check',22)} <span>La storia in una frase</span></div>
-      <p>La Versilia <strong>non si sta svuotando in modo uniforme</strong>: nel complesso cambia poco nel numero dei residenti, ma le perdite si concentrano in alcuni Comuni e <strong>l’invecchiamento è una tendenza comune a tutto il territorio</strong>.</p>
-    </section>
-
-    <section class="story-facts page-width" data-theme="demografia" aria-label="Tre evidenze chiave">
-      <article><span class="story-fact-icon">${storyIcon('residents',24)}</span><div><strong>${unitValue(story.totalPct,story.change.meta,1,true)}</strong><p>residenti complessivi ${story.startYear}–${story.endYear}</p></div></article>
-      <article><span class="story-fact-icon">${storyIcon('split',24)}</span><div><strong>${story.gainRows.length} / 7</strong><p>Comuni con più residenti rispetto al ${story.startYear}</p></div></article>
-      <article><span class="story-fact-icon">${storyIcon('aging',24)}</span><div><strong>${story.ageChanges.filter(item=>item.delta>0).length} / 7</strong><p>Comuni con indice di vecchiaia in aumento</p></div></article>
-    </section>
-
-    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="population">
-      <header class="story-chapter-head"><span class="story-number">01</span><span class="story-chapter-icon">${storyIcon('split',28)}</span><div><span class="overline">Residenti · ${story.startYear}–${story.endYear}</span><h2>Una quasi stabilità che nasconde sette traiettorie</h2></div></header>
-      <div class="story-copy"><p>Il totale dei sette Comuni passa da <strong>${nf(story.startTotal,0)}</strong> a <strong>${nf(story.endTotal,0)} residenti</strong>. La variazione complessiva è contenuta (${unitValue(story.totalPct,story.change.meta,1,true)}), ma non perché tutti i territori siano fermi.</p><p>I quattro Comuni in calo perdono complessivamente <strong>${nf(Math.abs(story.losses),0)} residenti</strong>; i tre in crescita ne aggiungono <strong>${nf(story.gains,0)}</strong>. È questa compensazione a rendere quasi piatto il totale della Versilia.</p></div>
-      <div class="story-visual story-line-card"><div class="story-visual-head"><div>${storyIcon('residents',22)}<span>Residenti complessivi dei sette Comuni</span></div><small>Somma dei valori comunali Istat · unità: residenti</small></div><div class="story-line-chart">${lineChart(story)}</div></div>
-      <div class="story-visual"><div class="story-visual-head"><div>${storyIcon('split',22)}<span>Come cambia ciascun Comune</span></div><small>Ordine alfabetico · unità: %</small></div><div class="story-change-list">${populationRowsMarkup(story)}</div></div>
-      <p class="story-reading-note"><strong>Cosa aggiunge questo passaggio.</strong> Dire soltanto “la Versilia perde lo 0,9%” nasconde la parte più importante: il dato territoriale è il risultato di andamenti locali molto diversi.</p>
-    </section>
-
-    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="aging">
-      <header class="story-chapter-head"><span class="story-number">02</span><span class="story-chapter-icon">${storyIcon('aging',28)}</span><div><span class="overline">Struttura per età · ${story.startYear}–${story.endYear}</span><h2>L’invecchiamento, invece, è una storia comune</h2></div></header>
-      <div class="story-copy"><p>L’indice di vecchiaia misura quante persone di 65 anni e oltre ci sono ogni 100 residenti tra 0 e 14 anni. Dal ${story.startYear} al ${story.endYear} <strong>aumenta in tutti e sette i Comuni</strong>.</p><p>${story.benchmark?.tuscany ? `Nel ${story.benchmarkYear}, usando lo stesso anno del benchmark Istat, <strong>${story.aboveTuscany} Comuni su 7</strong> erano sopra il valore toscano di <strong>${nf(story.benchmark.tuscany,1)}</strong>.` : ''} Il fenomeno quindi non coincide con i soli Comuni che perdono popolazione.</p></div>
-      <div class="story-visual"><div class="story-visual-head"><div>${storyIcon('aging',22)}<span>Indice di vecchiaia: inizio e fine periodo</span></div><small>Unità: persone 65+ ogni 100 residenti 0–14</small></div><div class="story-age-list">${agingRowsMarkup(story)}</div></div>
-      <p class="story-reading-note"><strong>Cosa aggiunge questo passaggio.</strong> Il numero totale degli abitanti può restare quasi stabile mentre cambia profondamente la composizione della popolazione. È qui che la lettura smette di essere una semplice storia di “spopolamento”.</p>
-    </section>
-
-    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="mobility">
-      <header class="story-chapter-head"><span class="story-number">03</span><span class="story-chapter-icon">${storyIcon('mobility',28)}</span><div><span class="overline">Trasferimenti di residenza · ${esc(story.mobility.meta.year)}</span><h2>Perdere residenti non significa automaticamente “da qui se ne vanno tutti”</h2></div></header>
-      <div class="story-copy"><p>Nel ${esc(story.mobility.meta.year)} il saldo complessivo dei trasferimenti di residenza è positivo in <strong>${story.positiveMobility} Comuni su 7</strong>. È positivo anche in <strong>${story.decliningPositive.length} dei ${story.lossRows.length} Comuni</strong> che, guardando al periodo ${story.startYear}–${story.endYear}, hanno meno residenti.</p><p>I due indicatori descrivono periodi e fenomeni diversi, ma proprio questa differenza è informativa: <strong>i trasferimenti di residenza non bastano, da soli, a spiegare la traiettoria demografica complessiva</strong>.</p></div>
-      <div class="story-visual"><div class="story-visual-head"><div>${storyIcon('mobility',22)}<span>Due segnali da non confondere</span></div><small>Popolazione: % ${story.startYear}–${story.endYear} · trasferimenti: saldo per 1.000 nel ${esc(story.mobility.meta.year)}</small></div><div class="story-mobility-list">${mobilityRowsMarkup(story)}</div></div>
-      <p class="story-reading-note"><strong>Cosa aggiunge questo passaggio.</strong> In ${story.decliningPositive.join(', ')} il saldo dei trasferimenti ${esc(story.mobility.meta.year)} è positivo nonostante la popolazione sia inferiore al ${story.startYear}. Senza nascite, decessi e altre componenti del bilancio demografico non possiamo attribuire una causa.</p>
-    </section>
-
-    <section class="story-conclusion" data-theme="demografia"><div class="page-width">
-      <div class="story-conclusion-head">${themeIcon('demografia',34)}<div><span class="overline">Cosa resta della storia</span><h2>Il tema non è soltanto quanti siamo, ma come cambia la popolazione</h2></div></div>
-      <div class="story-conclusion-grid"><article><span>${storyIcon('check',22)}</span><h3>Cosa possiamo dire</h3><p>La stabilità aggregata nasconde forti differenze comunali; l’invecchiamento cresce ovunque; il saldo dei trasferimenti non coincide automaticamente con la variazione complessiva dei residenti.</p></article><article><span>${storyIcon('limit',22)}</span><h3>Cosa non possiamo dire</h3><p>Questi indicatori non spiegano da soli perché la popolazione cambi. Per attribuire cause servono almeno saldo naturale, nascite, decessi e ulteriori informazioni su casa, lavoro e scelte migratorie.</p></article></div>
-    </div></section>
-
-    <section class="story-sources page-width" data-theme="demografia"><div class="story-section-title"><span class="overline">Controlla la lettura</span><h2>I dati dietro il racconto</h2><p>La storia non conserva copie dei valori: ogni numero sopra è calcolato dai dati canonici dell’Osservatorio al caricamento della pagina.</p></div><div class="story-source-grid">${['population','populationChange','oldAgeIndex','totalResidentialMobility'].map(key=>sourceLink(key,data.metrics[key],state)).join('')}</div><p class="reading-status-note">Stato generale delle fonti registrato il ${esc(date(state?.checkedAt))}. <a href="${new URL('stato-dati/',ROOT).href}">Apri Stato dei dati →</a></p></section>`;
+    return `<section class="story-hero story-hero--editorial" data-theme="demografia"><div class="page-width"><div class="breadcrumbs"><a href="${new URL('letture/',ROOT).href}">Capire la Versilia</a><span>›</span><strong>${esc(item.title)}</strong></div><div class="story-hero-grid"><div class="story-hero-copy"><span class="overline">${themeIcon('demografia',18)} Capire la Versilia · 01 · Demografia</span><p class="story-series-title">${esc(item.title)}</p><h1>${esc(item.headline || item.title)}</h1><p class="story-deck">${esc(item.standfirst || '')}</p><div class="story-hero-actions"><a class="story-primary-action" href="${reportUrl}">${storyIcon('report',18)} Rapporto completo</a><button type="button" data-story-print>${storyIcon('print',18)} Stampa questa lettura</button></div></div><div class="story-hero-poster" aria-hidden="true"><span>${story.startYear}</span><strong>${signed(story.totalPct,1,'%')}</strong><span>${story.endYear}</span><div>${themeIcon('demografia',72)}</div></div></div><div class="story-question"><span>La domanda</span><strong>${esc(item.question)}</strong></div></div></section>
+    <section class="story-facts page-width" data-theme="demografia" aria-label="Tre evidenze chiave"><article><span class="story-fact-icon">${storyIcon('residents',24)}</span><div><strong>${unitValue(story.totalPct,story.change.meta,1,true)}</strong><p>residenti complessivi ${story.startYear}–${story.endYear}</p></div></article><article><span class="story-fact-icon">${storyIcon('split',24)}</span><div><strong>${story.gainRows.length} / 7</strong><p>Comuni con più residenti rispetto al ${story.startYear}</p></div></article><article><span class="story-fact-icon">${storyIcon('aging',24)}</span><div><strong>${story.ageChanges.filter(item=>item.delta>0).length} / 7</strong><p>Comuni con indice di vecchiaia in aumento</p></div></article></section>
+    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="population"><header class="story-chapter-head"><span class="story-number">01</span><span class="story-chapter-icon">${storyIcon('split',28)}</span><div><span class="overline">Residenti · ${story.startYear}–${story.endYear}</span><h2>Una quasi stabilità che nasconde sette traiettorie</h2></div></header><div class="story-copy"><p>Il totale dei sette Comuni passa da <strong>${nf(story.startTotal,0)}</strong> a <strong>${nf(story.endTotal,0)} residenti</strong>: ${totalDirection} di ${nf(totalAbs,0)} persone, pari a ${unitValue(story.totalPct,story.change.meta,1,true)}. Il valore aggregato, preso da solo, descrive quindi una sostanziale tenuta del volume complessivo.</p><p>Questa stabilità è però il risultato di una compensazione. I ${story.lossRows.length} Comuni in calo perdono complessivamente <strong>${nf(Math.abs(story.losses),0)} residenti</strong>; i ${story.gainRows.length} in crescita ne aggiungono <strong>${nf(story.gains,0)}</strong>. La lettura territoriale cambia appena si scende dal totale ai singoli Comuni.</p></div><div class="story-visual"><div class="story-visual-head"><div>${storyIcon('residents',22)}<span>Residenti complessivi dei sette Comuni</span></div><small>Grafico storico canonico · assi e tooltip · unità: residenti</small></div>${canonicalSeriesChart({years:story.years,values:story.totals},'number','Residenti complessivi dei sette Comuni','Residenti',{valueFormatter:value=>`${nf(value,0)} residenti`})}</div><div class="story-visual"><div class="story-visual-head"><div>${storyIcon('split',22)}<span>Variazione della popolazione per Comune</span></div><small>Stesso componente dei confronti · ordine alfabetico · unità: %</small></div>${populationChangeBars(story)}</div><p class="story-reading-note"><strong>La chiave di lettura.</strong> Il ${signed(story.totalPct,1,'%')} complessivo non identifica un’unica traiettoria demografica: ${esc(townName(story.strongestGrowth))} è il Comune con la variazione più positiva (${signed(story.strongestGrowth.value,1,'%')}), mentre ${esc(townName(story.strongestDecline))} registra la contrazione maggiore (${signed(story.strongestDecline.value,1,'%')}).</p></section>
+    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="aging"><header class="story-chapter-head"><span class="story-number">02</span><span class="story-chapter-icon">${storyIcon('aging',28)}</span><div><span class="overline">Struttura per età · ${story.startYear}–${story.endYear}</span><h2>L’invecchiamento è il segnale davvero comune</h2></div></header><div class="story-copy"><p>L’indice di vecchiaia misura quante persone di 65 anni e oltre ci sono ogni 100 residenti tra 0 e 14 anni. Tra ${story.startYear} e ${story.endYear} <strong>aumenta ${allAgingText}</strong>: è un movimento molto più uniforme della variazione della popolazione totale.</p><p>${story.benchmark?.tuscany?`Nel ${story.benchmarkYear}, usando lo stesso anno del benchmark Istat, <strong>${story.aboveTuscany} Comuni su 7</strong> risultavano sopra il valore toscano di <strong>${nf(story.benchmark.tuscany,1)}</strong>. `:''}L’aumento più ampio nel periodo riguarda <strong>${esc(story.largestAging.town)}</strong>, con ${signed(story.largestAging.delta,1)} punti di indice.</p></div><div class="story-visual"><div class="story-visual-head"><div>${storyIcon('aging',22)}<span>Indice di vecchiaia nel tempo</span></div><small>Il grafico storico del sito, riusato senza una grammatica parallela</small></div>${agingExplorerMarkup(story)}</div><div class="story-visual"><div class="story-visual-head"><div>${storyIcon('aging',22)}<span>Confronto tra i sette Comuni · ${story.endYear}</span></div><small>Componente di confronto canonico · indice: 65+ ogni 100 residenti 0–14</small></div>${agingLatestBars(story)}</div><p class="story-reading-note"><strong>La chiave di lettura.</strong> Un territorio può mantenere quasi invariato il numero dei residenti e, nello stesso tempo, cambiare profondamente struttura. È per questo che la demografia della Versilia non può essere ridotta al solo saldo della popolazione.</p></section>
+    <section class="story-chapter page-width" data-theme="demografia" data-story-chapter="mobility"><header class="story-chapter-head"><span class="story-number">03</span><span class="story-chapter-icon">${storyIcon('mobility',28)}</span><div><span class="overline">Trasferimenti di residenza · ${esc(story.mobility.meta.year)}</span><h2>Perdere residenti non significa automaticamente “da qui se ne vanno tutti”</h2></div></header><div class="story-copy"><p>Nel ${esc(story.mobility.meta.year)} il saldo complessivo dei trasferimenti di residenza è positivo in <strong>${story.positiveMobility} Comuni su 7</strong>. È positivo anche in <strong>${story.decliningPositive.length} dei ${story.lossRows.length} Comuni</strong> che, sul periodo ${story.startYear}–${story.endYear}, hanno meno residenti.</p><p>Mettere i due segnali su assi diversi rende immediata la distinzione: un punto a sinistra indica una popolazione inferiore al ${story.startYear}; un punto sopra lo zero indica invece un saldo dei trasferimenti positivo nel ${esc(story.mobility.meta.year)}. I due fenomeni possono coesistere.</p></div><div class="story-visual"><div class="story-visual-head"><div>${storyIcon('mobility',22)}<span>Residenti e trasferimenti: due dimensioni diverse</span></div><small>Asse X: variazione residenti (%) · asse Y: saldo trasferimenti ogni 1.000 · tooltip sui Comuni</small></div>${mobilityScatter(story)}</div><p class="story-reading-note"><strong>La chiave di lettura.</strong> ${story.decliningPositive.length?`In ${story.decliningPositive.join(', ')} il saldo dei trasferimenti ${esc(story.mobility.meta.year)} è positivo nonostante la popolazione sia inferiore al ${story.startYear}. `:''}Questo non dimostra una causa: segnala che per spiegare il bilancio demografico servono anche nascite, decessi e le altre componenti del movimento della popolazione.</p></section>
+    <section class="story-analysis" data-theme="demografia"><div class="page-width"><div class="story-analysis-heading"><span class="overline">Analisi</span><h2>Cosa ci dicono davvero questi dati sulla Versilia</h2><p>La lettura non termina con tre grafici: qui vengono messi in relazione i risultati, distinguendo ciò che emerge con solidità da ciò che richiede dati ulteriori.</p></div><div class="story-analysis-grid"><article><span>01</span><h3>Il dato aggregato è stabile, il territorio no</h3><p>La variazione complessiva di ${signed(story.totalPct,1,'%')} è modesta, ma nasce dalla somma di andamenti comunali molto diversi. Questo rende poco informativa una descrizione della Versilia come un unico blocco demografico. Per le politiche locali conta la distribuzione del cambiamento: bisogni abitativi, servizi e domanda di mobilità possono evolvere in direzioni differenti anche dentro un territorio geograficamente compatto.</p></article><article><span>02</span><h3>L’invecchiamento è più strutturale dello spopolamento</h3><p>Il fatto che l’indice di vecchiaia aumenti in 7 Comuni su 7, mentre la popolazione cresce in alcuni e diminuisce in altri, indica che la trasformazione della struttura per età è il segnale più trasversale. Non significa automaticamente che ogni Comune avrà gli stessi bisogni, ma suggerisce che sanità territoriale, assistenza, accessibilità e ricambio generazionale sono temi comuni alla Versilia nel suo complesso.</p></article><article><span>03</span><h3>Attrattività residenziale e popolazione totale non coincidono</h3><p>Un saldo positivo dei trasferimenti registra più iscrizioni che cancellazioni nel periodo considerato; non equivale a una crescita automatica della popolazione. La coesistenza tra saldo dei trasferimenti positivo e residenti in calo in ${story.decliningPositive.length} Comuni mostra perché i due indicatori vanno letti separatamente. È un segnale utile, ma non una spiegazione causale.</p></article><article><span>04</span><h3>Il passo successivo è il bilancio demografico completo</h3><p>Per capire perché un Comune cresca o perda residenti occorre affiancare saldo naturale, nascite, decessi, mobilità con l’estero e struttura per classi di età. Solo successivamente ha senso verificare relazioni con casa, lavoro e accessibilità. Questa Lettura identifica quindi un quadro robusto e le domande successive, senza riempire i vuoti con ipotesi non dimostrate.</p></article></div><aside class="story-limit-panel"><div>${storyIcon('limit',28)}<span>Limiti dell’analisi</span></div><ul><li>I periodi degli indicatori non sono tutti identici.</li><li>Un saldo di trasferimenti positivo non misura il saldo naturale.</li><li>I dati descrivono associazioni e traiettorie, non cause.</li><li>Le differenze comunali non vanno trasformate automaticamente in giudizi di qualità.</li></ul></aside><div class="story-report-cta"><div>${storyIcon('report',32)}<div><span class="overline">Approfondisci</span><h3>Rapporto demografico completo</h3><p>Tabelle comunali, analisi estesa, note metodologiche, fonti e versione ottimizzata per stampa o salvataggio in PDF.</p></div></div><a href="${reportUrl}">Apri il rapporto →</a></div></div></section>
+    <section class="story-sources page-width" data-theme="demografia"><div class="story-section-title"><span class="overline">Controlla la lettura</span><h2>I dati dietro il racconto</h2><p>La storia non conserva copie dei valori: ogni numero è calcolato dai dati canonici dell’Osservatorio al caricamento della pagina.</p></div><div class="story-source-grid">${['population','populationChange','oldAgeIndex','totalResidentialMobility'].map(key=>sourceLink(key,data.metrics[key],state)).join('')}</div><p class="reading-status-note">Stato generale delle fonti registrato il ${esc(date(state?.checkedAt))}. <a href="${new URL('stato-dati/',ROOT).href}">Apri Stato dei dati →</a></p></section>`;
   }
 
-  function plannedDetail(item, data) {
-    const theme=item.themes?.[0] || 'demografia';
-    document.querySelector('.reading-main')?.setAttribute('data-theme',theme);
-    return `<section class="story-hero page-width" data-theme="${esc(theme)}"><div class="breadcrumbs"><a href="${new URL('letture/',ROOT).href}">Capire la Versilia</a><span>›</span><strong>${esc(item.title)}</strong></div><div class="story-hero-grid"><div><span class="overline">${themeIcon(theme,18)} ${esc(data.themes?.[theme]?.label || theme)} · in sviluppo</span><h1>${esc(item.title)}</h1><p class="story-deck">Questa possibile lettura resta nel piano editoriale, ma <strong>non viene ancora presentata come storia</strong>: prima bisogna verificare quali conclusioni sono davvero sostenute dai dati.</p></div><div class="story-hero-icon">${themeIcon(theme,54)}</div></div><div class="story-question"><span>Domanda da verificare</span><strong>${esc(item.question)}</strong></div></section><section class="planned-reading page-width" data-theme="${esc(theme)}"><span class="story-chapter-icon">${storyIcon('limit',28)}</span><div><h2>Non basta mettere insieme gli indicatori</h2><p>Questa pagina verrà sviluppata solo quando i dati consentiranno di formulare una tesi, mostrarne le prove, evidenziare le eccezioni e dichiarare ciò che non possiamo concludere.</p><a href="${new URL('letture/una-versilia-che-cambia/',ROOT).href}">Guarda il pilota editoriale →</a></div></section>`;
-  }
+  function plannedDetail(item, data) { const theme=item.themes?.[0] || 'demografia'; document.querySelector('.reading-main')?.setAttribute('data-theme',theme); return `<section class="story-hero page-width" data-theme="${esc(theme)}"><div class="breadcrumbs"><a href="${new URL('letture/',ROOT).href}">Capire la Versilia</a><span>›</span><strong>${esc(item.title)}</strong></div><div class="story-hero-grid"><div><span class="overline">${themeIcon(theme,18)} ${esc(data.themes?.[theme]?.label || theme)} · in sviluppo</span><h1>${esc(item.title)}</h1><p class="story-deck">Questa possibile lettura resta nel piano editoriale, ma <strong>non viene ancora presentata come storia</strong>: prima bisogna verificare quali conclusioni sono davvero sostenute dai dati.</p></div><div class="story-hero-icon">${themeIcon(theme,54)}</div></div><div class="story-question"><span>Domanda da verificare</span><strong>${esc(item.question)}</strong></div></section><section class="planned-reading page-width" data-theme="${esc(theme)}"><span class="story-chapter-icon">${storyIcon('limit',28)}</span><div><h2>Non basta mettere insieme gli indicatori</h2><p>Questa pagina verrà sviluppata solo quando i dati consentiranno di formulare una tesi, mostrarne le prove, evidenziare le eccezioni e dichiarare ciò che non possiamo concludere.</p><a href="${new URL('letture/una-versilia-che-cambia/',ROOT).href}">Guarda il pilota editoriale →</a></div></section>`; }
 
   function index(config, data) {
-    const pilot=config.items.find(item=>item.status==='pilot') || config.items[0];
-    const planned=config.items.filter(item=>item.slug!==pilot.slug);
-    const story=populationStory(data);
-    const pilotTheme=pilot.themes?.[0] || 'demografia';
-    const plannedCards=planned.map(item=>{
-      const theme=item.themes?.[0] || 'demografia';
-      return `<article class="reading-plan-card" data-theme="${esc(theme)}"><span class="reading-plan-icon">${themeIcon(theme,25)}</span><div><small>Da costruire sui dati</small><h3>${esc(item.title)}</h3><p>${esc(item.question)}</p></div></article>`;
-    }).join('');
-    return `<section class="reading-index-hero page-width"><span class="overline">Osservatorio Versilia · livello editoriale · bozza</span><h1>Capire la Versilia</h1><p>Storie e chiavi di lettura costruite mettendo in relazione indicatori diversi. Non un’altra lista di dati: ogni pagina deve arrivare a una conclusione verificabile, mostrarne le prove e dichiararne i limiti.</p></section>
-      <section class="reading-pilot page-width" data-theme="${esc(pilotTheme)}"><div class="reading-pilot-copy"><span class="reading-pilot-icon">${themeIcon(pilotTheme,34)}</span><div><span class="overline">Pilota editoriale · Demografia</span><h2>${esc(pilot.title)}</h2><p>${unitValue(story.totalPct,story.change.meta,1,true)} residenti complessivi dal ${story.startYear}; indice di vecchiaia in aumento in ${story.ageChanges.filter(item=>item.delta>0).length} Comuni su 7. <strong>Il punto è capire perché questi due segnali raccontano una storia diversa dal semplice “spopolamento”.</strong></p><a href="${new URL(`letture/${pilot.slug}/`,ROOT).href}">Leggi la storia →</a></div></div><div class="reading-pilot-facts"><div><strong>${unitValue(story.totalPct,story.change.meta,1,true)}</strong><span>residenti ${story.startYear}–${story.endYear}</span></div><div><strong>${story.gainRows.length}/7</strong><span>Comuni in crescita</span></div><div><strong>${story.ageChanges.filter(item=>item.delta>0).length}/7</strong><span>indice di vecchiaia ↑</span></div></div></section>
-      <section class="reading-roadmap page-width"><div class="story-section-title"><span class="overline">Prossime domande</span><h2>Non le chiamiamo ancora Letture</h2><p>Restano ipotesi editoriali. Verranno aperte soltanto se l’analisi dei dati produce una storia che aggiunge qualcosa rispetto a una normale pagina di confronto.</p></div><div class="reading-plan-grid">${plannedCards}</div></section>`;
+    const pilot=config.items.find(item=>item.status==='pilot') || config.items[0],planned=config.items.filter(item=>item.slug!==pilot.slug),story=populationStory(data),pilotTheme=pilot.themes?.[0] || 'demografia';
+    const plannedCards=planned.map(item=>{const theme=item.themes?.[0] || 'demografia';return `<article class="reading-plan-card" data-theme="${esc(theme)}"><span class="reading-plan-icon">${themeIcon(theme,25)}</span><div><small>Da costruire sui dati</small><h3>${esc(item.title)}</h3><p>${esc(item.question)}</p></div></article>`;}).join('');
+    const townReports=data.towns.map(town=>{const pop=story.popRows.find(row=>row.code===town.code);const slug=pop?.slug || town.name.toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');return `<a href="${new URL(`rapporti/comune-${slug}/`,ROOT).href}"><span>${themeIcon('demografia',18)}</span><strong>${esc(town.name)}</strong><small>Rapporto comunale →</small></a>`;}).join('');
+    return `<section class="reading-index-hero page-width"><span class="overline">Osservatorio Versilia · livello editoriale · bozza</span><h1>Capire la Versilia</h1><p>Storie e chiavi di lettura costruite mettendo in relazione indicatori diversi. Non un’altra lista di dati: ogni pagina deve arrivare a una conclusione verificabile, mostrarne le prove e dichiararne i limiti.</p></section><section class="reading-pilot page-width" data-theme="${esc(pilotTheme)}"><div class="reading-pilot-copy"><span class="reading-pilot-icon">${themeIcon(pilotTheme,34)}</span><div><span class="overline">Pilota editoriale · Demografia</span><h2>${esc(pilot.headline || pilot.title)}</h2><p>${unitValue(story.totalPct,story.change.meta,1,true)} residenti complessivi dal ${story.startYear}; indice di vecchiaia in aumento in ${story.ageChanges.filter(item=>item.delta>0).length} Comuni su 7. <strong>La Lettura ora usa i grafici canonici del sito e porta a un rapporto analitico esportabile.</strong></p><div class="reading-pilot-actions"><a href="${new URL(`letture/${pilot.slug}/`,ROOT).href}">Leggi la storia →</a><a href="${new URL(`rapporti/${pilot.report?.slug || 'lettura-una-versilia-che-cambia'}/`,ROOT).href}">Apri il rapporto →</a></div></div></div><div class="reading-pilot-facts"><div><strong>${unitValue(story.totalPct,story.change.meta,1,true)}</strong><span>residenti ${story.startYear}–${story.endYear}</span></div><div><strong>${story.gainRows.length}/7</strong><span>Comuni in crescita</span></div><div><strong>${story.ageChanges.filter(item=>item.delta>0).length}/7</strong><span>indice di vecchiaia ↑</span></div></div></section><section class="reading-report-section page-width"><div class="story-section-title"><span class="overline">Rapporti territoriali · primo prototipo</span><h2>Un rapporto esportabile per ogni Comune</h2><p>Il nuovo formato raccoglie indicatori chiave, confronto con la Versilia, periodi e fonti in una versione pensata anche per stampa e PDF.</p></div><div class="town-report-grid">${townReports}</div></section><section class="reading-roadmap page-width"><div class="story-section-title"><span class="overline">Prossime domande</span><h2>Non le chiamiamo ancora Letture</h2><p>Restano ipotesi editoriali. Verranno aperte soltanto se l’analisi dei dati produce una storia che aggiunge qualcosa rispetto a una normale pagina di confronto.</p></div><div class="reading-plan-grid">${plannedCards}</div></section>`;
   }
 
-  Promise.all(Object.values(URLS).map(url=>fetch(url).then(response=>{if(!response.ok) throw new Error(`${url.pathname}: ${response.status}`); return response.json();})))
-    .then(([config,data,registry,state])=>{
-      if (!registry?.schemaVersion) throw new Error('Source registry non valido');
-      const app=document.getElementById('reading-app');
-      const reading=document.body.dataset.reading || '';
-      if (!reading) { app.innerHTML=index(config,data); return; }
-      const item=config.items.find(candidate=>candidate.slug===reading);
-      if (!item) throw new Error(`Lettura non configurata: ${reading}`);
-      app.innerHTML=item.status==='pilot' && item.renderer==='demography-story-v2'
-        ? demographyDetail(item,{data,state,registry})
-        : plannedDetail(item,data);
-    })
-    .catch(error=>{
-      console.error(error);
-      document.getElementById('reading-app').innerHTML='<div class="app-error"><strong>Lettura non disponibile.</strong><p>I dati canonici necessari non sono stati caricati.</p></div>';
-    });
+  Promise.all(Object.values(URLS).map(url=>fetch(url).then(response=>{if(!response.ok)throw new Error(`${url.pathname}: ${response.status}`);return response.json();})))
+    .then(([config,data,registry,state])=>{if(!registry?.schemaVersion)throw new Error('Source registry non valido');const app=document.getElementById('reading-app'),reading=document.body.dataset.reading || '';if(!reading){app.innerHTML=index(config,data);return;}const item=config.items.find(candidate=>candidate.slug===reading);if(!item)throw new Error(`Lettura non configurata: ${reading}`);if(item.status==='pilot'&&item.renderer==='demography-story-v3'){const story=populationStory(data);app.innerHTML=demographyDetail(item,{data,state,registry});installChartInteractions(app);installAgingExplorer(app,story);app.querySelector('[data-story-print]')?.addEventListener('click',()=>window.print());}else app.innerHTML=plannedDetail(item,data);})
+    .catch(error=>{console.error(error);document.getElementById('reading-app').innerHTML='<div class="app-error"><strong>Lettura non disponibile.</strong><p>I dati canonici necessari non sono stati caricati.</p></div>';});
 })();
