@@ -4,149 +4,93 @@ on:
   pull_request:
     paths:
       - "confronta/meteo-clima/**"
-      - "confronta/ambiente/index.html"
       - "assets/meteo-clima.css"
-      - "assets/meteo-clima.js"
-      - "assets/climate-ux-v3.js"
-      - "assets/climate-town-benchmark.js"
-      - "assets/app-parts/**"
+      - "assets/meteo-clima-canonical.css"
+      - "assets/meteo-clima-canonical.js"
       - "data/meteo-clima-poc.json"
       - "data/meteo-clima-minmax-poc.json"
-      - "data/meteo-clima-minmax-lamma-1995-2015.json"
+      - "data/source-monitor-state.json"
+      - "scripts/test_meteo_clima_canonical.py"
+      - "scripts/test_meteo_clima_canonical_browser.py"
+      - "scripts/build_static_brand.py"
+      - "scripts/build_readings.py"
       - ".github/workflows/meteo-clima-page.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: meteo-clima-page-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate JSON
-        run: |
-          python -m json.tool data/meteo-clima-poc.json > /dev/null
-          python -m json.tool data/meteo-clima-minmax-poc.json > /dev/null
-          python -m json.tool data/meteo-clima-minmax-lamma-1995-2015.json > /dev/null
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-      - name: Validate JavaScript syntax
+      - name: Install browser tooling
         run: |
-          node --check assets/meteo-clima.js
-          node --check assets/climate-ux-v3.js
-          node --check assets/climate-town-benchmark.js
-          cat assets/app-parts/00.txt assets/app-parts/01.txt assets/app-parts/02.txt assets/app-parts/03.txt assets/app-parts/04.txt assets/app-parts/05.txt assets/app-parts/06.txt > /tmp/app-bundle.js
-          node --check /tmp/app-bundle.js
+          python -m pip install --upgrade pip
+          python -m pip install playwright pypdf
+          python -m playwright install --with-deps chromium
 
-      - name: Validate climate data contract and native Ambiente integration
+      - name: Materialize current canonical inputs
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+
+      - name: Validate source contract
+        run: |
+          node --check assets/meteo-clima-canonical.js
+          python -m py_compile scripts/test_meteo_clima_canonical.py scripts/test_meteo_clima_canonical_browser.py
+          python scripts/test_meteo_clima_canonical.py
+
+      - name: Build site and public status
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+
+      - name: Start local server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8123 --directory dist >/tmp/ov-climate-page-http.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/confronta/meteo-clima/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-climate-page-http.log
+          exit 1
+
+      - name: Validate canonical climate page desktop and mobile
+        run: python scripts/test_meteo_clima_canonical_browser.py --base http://127.0.0.1:8123/
+
+      - name: Keep canonical climate indicators unchanged
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-
-          expected = {'Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio'}
-          data = json.loads(Path('data/meteo-clima-poc.json').read_text(encoding='utf-8'))
-          towns = data['municipalities']
-          assert set(towns) == expected, (set(towns), expected)
-          assert data['coverage']['complete'] == {'from': 1950, 'to': 2025}
-          expected_years = list(range(1950, 2026))
-          for name, series in towns.items():
-              assert series['years'] == expected_years, name
-              assert len(series['temperature']) == 76, name
-              assert len(series['precipitation']) == 76, name
-              assert series['latestComplete']['year'] == 2025, name
-              assert all(isinstance(v, (int, float)) for v in series['temperature']), name
-              assert all(isinstance(v, (int, float)) for v in series['precipitation']), name
-
-          lamma = json.loads(Path('data/meteo-clima-minmax-lamma-1995-2015.json').read_text(encoding='utf-8'))
-          assert lamma['version'] == 'lamma-minmax-reference-1'
-          assert lamma['coverage'] == {'from': 1995, 'to': 2015}
-          assert set(lamma['municipalities']) == expected
-          for name, series in lamma['municipalities'].items():
-              assert series['years'] == list(range(1995, 2016)), name
-              assert len(series['tmin']) == 21 and len(series['tmax']) == 21, name
-
-          minmax = json.loads(Path('data/meteo-clima-minmax-poc.json').read_text(encoding='utf-8'))
-          assert minmax['coverage'] == {'from': 1975, 'to': 2025}
-          assert minmax['version'] == 'poc-5'
-          assert minmax['sourcePeriods'] == [{
-              'from': 1975,
-              'to': 2025,
-              'class': 'CALIBRATED_REANALYSIS',
-              'detail': 'Copernicus ERA5-Land ARCO orario; Tmin/Tmax giornaliere calcolate localmente dalla temperatura a 2 m; offset di livello comunale 2011-2015'
-          }]
-          assert minmax['calibrationReference']['role'].startswith('level reference only')
-          assert minmax['calibrationReference']['anchor'] == [2011, 2015]
-          assert set(minmax['municipalities']) == expected
-          expected_minmax_years = list(range(1975, 2026))
-          for name, series in minmax['municipalities'].items():
-              assert series['years'] == expected_minmax_years, name
-              assert len(series['tmin']) == 51 and len(series['tmax']) == 51, name
-              assert series['latestComplete']['year'] == 2025, name
-              assert series['latestComplete']['tmin'] == series['tmin'][-1], name
-              assert series['latestComplete']['tmax'] == series['tmax'][-1], name
-              assert series['calibration']['period'] == [2011, 2015], name
-              assert series['calibration']['reference'] == 'LaMMA 1 km', name
-              assert series['calibration']['independent_temporal_validation'] == 'SIR Toscana', name
-              assert series['calibration']['strategy'].startswith('continuous ERA5-Land'), name
-
-          environment = Path('confronta/ambiente/index.html').read_text(encoding='utf-8')
-          assert 'climate-environment-entry' not in environment
-          assert 'meteo-clima-entry.js' not in environment
-
-          app6 = Path('assets/app-parts/06.txt').read_text(encoding='utf-8')
-          app = ''.join(Path(f'assets/app-parts/{i:02}.txt').read_text(encoding='utf-8') for i in range(7))
-          catalog = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
-          climate_keys = {
-              'climateTemperatureTrend50y',
-              'climatePrecipitationTrend50y',
-              'climateTminTrend',
-              'climateTmaxTrend',
+          data = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          keys = {
+              'climateTemperatureTrend50y', 'climatePrecipitationTrend50y',
+              'climateTminTrend', 'climateTmaxTrend'
           }
-          assert climate_keys <= set(catalog['metrics'])
-          assert climate_keys <= set(catalog['themes']['ambiente']['metrics'])
-          assert set(next(section for section in catalog['themes']['ambiente']['sections'] if section['key'] == 'clima')['metrics']) == climate_keys
-          for key in climate_keys:
-              metric = catalog['metrics'][key]
+          assert keys <= set(data['metrics'])
+          assert len(data['metrics']) == 127
+          for key in keys:
+              metric = data['metrics'][key]
               assert metric['dataStorage']['type'] == 'external-climate'
               assert metric['rows'] == []
-              assert Path(metric['dataStorage']['path']).is_file()
-          for token in (
-              "metricKey === 'floodExposure'",
-              "metricKey === 'landslideExposure'",
-              "deep.hidden = !(isFlood || isLandslide)",
-              'const baseBarRows = barRows',
-              "left:${left.toFixed(2)}%",
-              "linearClimateTrend(series.years, values, config.trendFrom, config.trendTo)",
-              "metric.dataStorage?.type === 'external-climate'",
-              "isClimateMetric(data, key) ? climateDetailHref(data, key) : indicatorHref(m)",
-          ):
-              assert token in app, token
-          assert '<span class="bar-rank">${index + 1}</span>' not in app6
-
-          ux = Path('assets/climate-ux-v3.js').read_text(encoding='utf-8')
-          assert "climateTminTrend:{label:'Temperatura minima media annua'" in ux
-          assert "seriesKey:'tmin',unit:'celsius',latestYear:2025,trendFrom:1975,trendTo:2025" in ux
-          assert "seriesKey:'tmax',unit:'celsius',latestYear:2025,trendFrom:1975,trendTo:2025" in ux
-          assert 'La serie 1975–2025 è omogeneamente ERA5-Land' in ux
-          benchmark = Path('assets/climate-town-benchmark.js').read_text(encoding='utf-8')
-          assert "climateTminTrend: { seriesKey: 'tmin', latestYear: 2025" in benchmark
-          assert "climateTmaxTrend: { seriesKey: 'tmax', latestYear: 2025" in benchmark
-
-          detail_js = Path('assets/meteo-clima.js').read_text(encoding='utf-8')
-          assert 'linearTrend(series.years, series.tmin, 1975, 2025)' in detail_js
-          assert 'linearTrend(series.years, series.tmax, 1975, 2025)' in detail_js
-          assert 'Minime · trend 1975–2025' in detail_js
-          assert 'Massime · trend 1975–2025' in detail_js
-          assert 'dal 1975 al 2025' in detail_js
-
-          html = Path('confronta/meteo-clima/index.html').read_text(encoding='utf-8')
-          assert '1975–2025' in html
-          assert 'Approfondimento · 1975–2025' in html
-          assert 'Serie omogenea · 1975–2025' in html
-          assert 'Temperatura minima media annua 1975–2025' in html
-          assert 'Temperatura massima media annua 1975–2025' in html
-          assert 'temperature-min-max' in html
-          print('Climate draft OK: native Ambiente accordion + homogeneous Tmin/Tmax 1975–2025 + 50-year trends + town metrics + no rankings + conditional risk detail')
+          print('Climate catalog unchanged: 127 total, 4 external climate metrics')
           PY

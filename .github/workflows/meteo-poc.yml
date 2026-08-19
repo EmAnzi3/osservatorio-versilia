@@ -12,7 +12,6 @@ on:
       - "scripts/lamma_annual_history_runner.py"
       - "scripts/era5_land_annual_history.py"
       - "scripts/era5_land_precip_hourly_patch.py"
-      - "scripts/era5_land_ytd.py"
       - "scripts/climate_stitch_series.py"
       - ".github/workflows/meteo-poc.yml"
   workflow_dispatch:
@@ -84,7 +83,6 @@ jobs:
         run: |
           python -m py_compile scripts/era5_land_annual_history.py
           python -m py_compile scripts/era5_land_precip_hourly_patch.py
-          python -m py_compile scripts/era5_land_ytd.py
           python -m py_compile scripts/climate_stitch_series.py
       - name: Record CDS credential status
         run: |
@@ -108,13 +106,6 @@ jobs:
           python scripts/era5_land_precip_hourly_patch.py \
             --raw reports/runtime/era5/era5-land-annual-raw.csv \
             --output reports/runtime/era5/era5-land-annual-patched.csv
-      - name: Build current-year ERA5-Land YTD
-        if: env.CDS_API_TOKEN != ''
-        run: |
-          python scripts/era5_land_ytd.py \
-            --year 2026 \
-            --lag-days 7 \
-            --output reports/runtime/era5/era5-land-2026-ytd.csv
       - name: Upload ERA5 outputs
         if: always()
         uses: actions/upload-artifact@v4
@@ -159,10 +150,8 @@ jobs:
           else
             echo "Full 1950-2025 series not built because ERA5-Land acquisition is unavailable." > reports/runtime/final/stitch-status.txt
           fi
-          if [[ -f reports/runtime/combined/era5/era5-land-2026-ytd.csv ]]; then
-            cp reports/runtime/combined/era5/era5-land-2026-ytd.csv reports/runtime/final/
-          fi
-          echo "Tmin/Tmax 1995-2025 are validated by the dedicated Extend climate Tmin Tmax workflow." > reports/runtime/final/minmax-status.txt
+          echo "No current-year YTD climate artifact is generated: Osservatorio Versilia publishes climate only after the complete calendar year is available." > reports/runtime/final/annual-only-policy.txt
+          echo "Tmin/Tmax 1975-2025 are validated by the dedicated Extend climate Tmin Tmax workflow." > reports/runtime/final/minmax-status.txt
       - name: Upload final outputs
         if: always()
         uses: actions/upload-artifact@v4

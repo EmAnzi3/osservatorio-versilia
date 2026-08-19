@@ -1,0 +1,100 @@
+name: Climate hardening audit
+
+on:
+  pull_request:
+    paths:
+      - "scripts/climate_hardening_audit.py"
+      - "scripts/test_climate_hardening_audit.py"
+      - "scripts/lamma_annual_history.py"
+      - "scripts/lamma_annual_history_runner.py"
+      - "scripts/era5_land_annual_history.py"
+      - "scripts/era5_land_precip_hourly_patch.py"
+      - "scripts/sir_validate_climate.py"
+      - "data/meteo-clima-poc.json"
+      - ".github/workflows/climate-hardening.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: climate-hardening-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      CDS_API_TOKEN: ${{ secrets.CDS_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: >-
+          python -m pip install --disable-pip-version-check
+          "cdsapi>=0.7.7" rasterio geopandas xarray netcdf4 pandas numpy beautifulsoup4
+
+      - name: Validate audit code
+        run: |
+          python -m py_compile scripts/climate_hardening_audit.py
+          python scripts/test_climate_hardening_audit.py
+
+      - name: Require ERA5 credential
+        run: |
+          if [[ -z "$CDS_API_TOKEN" ]]; then
+            echo "CDS_API_TOKEN is required for the climate hardening audit." >&2
+            exit 1
+          fi
+
+      - name: Build LaMMA reference 1995-2015
+        run: |
+          python scripts/lamma_annual_history_runner.py \
+            --years 1995-2015 \
+            --output-dir reports/runtime/climate-hardening/lamma
+
+      - name: Build homogeneous ERA5-Land input 1975-2025
+        run: |
+          python scripts/era5_land_annual_history.py \
+            --start-year 1975 \
+            --end-year 2025 \
+            --chunk-years 20 \
+            --output reports/runtime/climate-hardening/era5-raw.csv
+          python scripts/era5_land_precip_hourly_patch.py \
+            --raw reports/runtime/climate-hardening/era5-raw.csv \
+            --output reports/runtime/climate-hardening/era5-patched.csv
+
+      - name: Extract independent SIR validation series
+        run: python scripts/sir_validate_climate.py --workers 2 --output-dir reports/runtime/climate-hardening/sir
+
+      - name: Compare current and homogeneous candidate
+        run: |
+          python scripts/climate_hardening_audit.py \
+            --lamma reports/runtime/climate-hardening/lamma/lamma-annual-history.csv \
+            --era5 reports/runtime/climate-hardening/era5-patched.csv \
+            --current-json data/meteo-clima-poc.json \
+            --sir reports/runtime/climate-hardening/sir/sir-annual-observed.csv \
+            --candidate-json reports/runtime/climate-hardening/candidate-homogeneous-1975-2025.json \
+            --report-json reports/runtime/climate-hardening/climate-hardening-report.json \
+            --report-md reports/runtime/climate-hardening/climate-hardening-report.md
+
+      - name: Publish audit summary
+        if: always()
+        run: |
+          if [[ -f reports/runtime/climate-hardening/climate-hardening-report.md ]]; then
+            cat reports/runtime/climate-hardening/climate-hardening-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: climate-hardening-audit
+          path: reports/runtime/climate-hardening/
+          retention-days: 30
