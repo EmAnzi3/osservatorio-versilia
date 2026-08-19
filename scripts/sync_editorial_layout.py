@@ -7,9 +7,9 @@ stessa profondità. La build base può iniettare runtime dell'app principale anc
 in queste pagine: li rimuoviamo perché Letture, Rapporti e Meteo usano renderer
 dedicati e non il mount #app.
 
-Dopo la sincronizzazione della shell viene materializzato il renderer Rapporti
-v4. Questo ordine è intenzionale: il toolkit grafico OVUXHistory viene aggiunto
-solo alla fine, evitando che sia scambiato per un runtime generico da rimuovere.
+Dopo la sincronizzazione della shell vengono materializzati il renderer Rapporti
+v4 e l'enhancer grafico editoriale. Entrambi usano OVUXHistory: il toolkit viene
+aggiunto soltanto alla fine, dopo la rimozione dei runtime generici.
 """
 from __future__ import annotations
 
@@ -150,6 +150,7 @@ def main() -> None:
 
     print(f"Layout editoriale sincronizzato con la shell canonica: {len(targets)} pagine")
     runpy.run_path(str(ROOT / "scripts" / "upgrade_rapporti_v4.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "inject_editorial_canonical_charts.py"), run_name="__main__")
 
 
 if __name__ == "__main__":
