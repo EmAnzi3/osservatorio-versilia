@@ -3,13 +3,15 @@
 
 The configuration carries editorial structure only. Values, periods, sources and status
 are loaded client-side from the canonical site data, source registry and monitor state.
-Generated pages are preview-only (`noindex`) but use the production brand/PWA shell.
+Generated pages are preview-only (`noindex`) and are then synchronized to the exact
+production header/footer/layout shell already rendered in dist.
 """
 from __future__ import annotations
 
 import html
 import json
 import re
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -105,6 +107,10 @@ def main() -> None:
             encoding="utf-8",
         )
     print(f"Letture generate: {len(items)} + indice")
+
+    # La shell editoriale viene sincronizzata solo dopo che la build standard
+    # ha già prerenderizzato e brandizzato le pagine canoniche in dist.
+    runpy.run_path(str(ROOT / "scripts" / "sync_editorial_layout.py"), run_name="__main__")
 
 
 if __name__ == "__main__":
