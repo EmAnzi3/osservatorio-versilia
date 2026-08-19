@@ -1,0 +1,96 @@
+name: Validate Meteo e clima page
+
+on:
+  pull_request:
+    paths:
+      - "confronta/meteo-clima/**"
+      - "assets/meteo-clima.css"
+      - "assets/meteo-clima-canonical.css"
+      - "assets/meteo-clima-canonical.js"
+      - "data/meteo-clima-poc.json"
+      - "data/meteo-clima-minmax-poc.json"
+      - "data/source-monitor-state.json"
+      - "scripts/test_meteo_clima_canonical.py"
+      - "scripts/test_meteo_clima_canonical_browser.py"
+      - "scripts/build_static_brand.py"
+      - "scripts/build_readings.py"
+      - ".github/workflows/meteo-clima-page.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: meteo-clima-page-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+
+      - name: Materialize current canonical inputs
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+
+      - name: Validate source contract
+        run: |
+          node --check assets/meteo-clima-canonical.js
+          python -m py_compile scripts/test_meteo_clima_canonical.py scripts/test_meteo_clima_canonical_browser.py
+          python scripts/test_meteo_clima_canonical.py
+
+      - name: Build site and public status
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+
+      - name: Start local server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8123 --directory dist >/tmp/ov-climate-page-http.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/confronta/meteo-clima/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-climate-page-http.log
+          exit 1
+
+      - name: Validate canonical climate page desktop and mobile
+        run: python scripts/test_meteo_clima_canonical_browser.py --base http://127.0.0.1:8123/
+
+      - name: Keep canonical climate indicators unchanged
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          keys = {
+              'climateTemperatureTrend50y', 'climatePrecipitationTrend50y',
+              'climateTminTrend', 'climateTmaxTrend'
+          }
+          assert keys <= set(data['metrics'])
+          assert len(data['metrics']) == 127
+          for key in keys:
+              metric = data['metrics'][key]
+              assert metric['dataStorage']['type'] == 'external-climate'
+              assert metric['rows'] == []
+          print('Climate catalog unchanged: 127 total, 4 external climate metrics')
+          PY
