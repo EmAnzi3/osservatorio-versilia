@@ -73,6 +73,7 @@ jobs:
           python scripts/test_letture_browser.py --base http://127.0.0.1:8123/
 
       - name: Add local instructions
+        if: always()
         shell: bash
         run: |
           cat > dist/LEGGIMI-ANTEPRIMA.txt <<'EOF'
@@ -94,6 +95,7 @@ jobs:
           EOF
 
       - name: Upload downloadable local preview
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-pr77-local-preview
