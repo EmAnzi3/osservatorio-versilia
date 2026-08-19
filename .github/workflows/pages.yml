@@ -50,6 +50,13 @@ jobs:
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
+      - name: Build editorial readings
+        run: |
+          node --check assets/letture.js
+          python -m py_compile scripts/build_letture.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
+          python scripts/build_letture.py
+          python scripts/test_letture.py
+
       - name: Materialize public data status
         run: |
           python scripts/build_data_status.py
@@ -77,6 +84,14 @@ jobs:
           done
           cat /tmp/ov-release-http.log
           exit 1
+
+      - name: Validate Meteo e clima editorial draft
+        run: |
+          node --check assets/meteo-clima-editorial.js
+          python scripts/test_meteo_clima_editorial_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Letture desktop and mobile
+        run: python scripts/test_letture_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -173,7 +188,12 @@ jobs:
             scripts/test_pnrr_toscana_review.py \
             scripts/test_pnrr_toscana_town_browser.py \
             scripts/build_data_status.py \
-            scripts/inject_data_status_runtime.py
+            scripts/inject_data_status_runtime.py \
+            scripts/build_letture.py \
+            scripts/test_letture.py \
+            scripts/test_letture_browser.py \
+            scripts/test_meteo_clima_editorial_browser.py \
+            scripts/climate_hardening_audit.py
 
       - name: Verify municipal crests
         run: |
