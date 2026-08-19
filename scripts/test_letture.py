@@ -33,14 +33,17 @@ def main() -> None:
         require('class="ov-mark-svg"' in text, f'Brand mark assente: {slug}')
         require('assets/letture.js' in text and 'assets/letture.css' in text, f'Asset Letture assenti: {slug}')
         require('assets/pwa.js' in text and 'assets/pwa.css' in text, f'PWA shell assente: {slug}')
+        require('assets/static.css' in text and 'assets/brand.css' in text, f'CSS strutturali del sito assenti: {slug}')
     js = (ROOT / 'assets' / 'letture.js').read_text(encoding='utf-8')
     require('data/site-data.json' in js, 'Letture non leggono site-data')
     require('data/source-registry.json' in js, 'Letture non leggono source-registry')
     require('data/source-monitor-state.json' in js, 'Letture non leggono source-monitor-state')
     require('.sort((a,b)=>townName(a).localeCompare(townName(b)' in js, 'Valori comunali non ordinati alfabeticamente')
-    require('bar-rank' not in js and 'classifica' not in js.lower(), 'Renderer Letture contiene logica di ranking')
+    require('bar-rank' not in js, 'Renderer Letture contiene badge/posizioni di ranking')
+    require('.sort((a,b)=>b.value-a.value)' not in js and '.sort((a,b)=>b.value - a.value)' not in js,
+            'Renderer Letture contiene ordinamento discendente per valore')
     require('/percorsi/' not in json.dumps(config, ensure_ascii=False), 'Letture collidono con /percorsi/')
-    print('Letture OK: 7 percorsi, soli indicatori canonici, noindex, no ranking, nessuna collisione con Percorsi')
+    print('Letture OK: 7 percorsi, soli indicatori canonici, layout canonico, noindex, no ranking, nessuna collisione con Percorsi')
 
 
 if __name__ == '__main__':
