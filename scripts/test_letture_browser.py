@@ -11,8 +11,8 @@ def no_overflow(page, width: int) -> None:
     assert not overflow, f'Horizontal overflow at {width}px on {page.url}'
 
 
-def assert_tooltip(page) -> None:
-    point = page.locator('.report-history .chart-point').first
+def assert_tooltip(page, selector: str) -> None:
+    point = page.locator(selector).first
     assert point.count() == 1
     point.focus()
     tooltip = point.locator('.chart-tooltip')
@@ -47,11 +47,23 @@ def main() -> None:
             no_overflow(page, width)
 
             page.goto(base + 'letture/una-versilia-che-cambia/', wait_until='networkidle')
+            page.wait_for_selector('[data-editorial-canonical-ready="reading"]')
             assert page.locator('.story-hero--editorial h1').text_content().strip() == 'La Versilia cambia poco nel totale, ma molto nella sua struttura'
             assert page.locator('[data-story-chapter]').count() == 3
+            assert page.locator('[data-ov-canonical-chart="history"]').count() == 2
+            assert page.locator('[data-ov-canonical-chart="comparison"]').count() == 2
+            assert page.locator('[data-story-chapter="population"] .ux-history-card').count() == 1
+            assert page.locator('[data-story-chapter="aging"] .ux-history-card').count() == 1
+            assert page.locator('[data-story-chapter="population"] .ux-comparison-bars').count() == 1
+            assert page.locator('[data-story-chapter="aging"] .ux-comparison-bars').count() == 1
+            assert page.locator('.ux-history-axis-label').count() > 0
+            assert page.locator('.story-canonical-chart').count() == 0
+            assert page.locator('.story-change-bars').count() == 0
+            assert page.locator('.story-aging-explorer').count() == 0
             assert page.locator('.story-scatter-chart').count() == 1
             assert page.locator('.story-analysis-grid article').count() == 4
             assert page.locator('a[href*="rapporti/lettura-una-versilia-che-cambia/"]').count() >= 1
+            assert_tooltip(page, '[data-story-chapter="population"] .ux-history-card .chart-point')
             assert not errors, errors
             no_overflow(page, width)
 
@@ -70,7 +82,7 @@ def main() -> None:
             assert page.locator('.report-method-grid article').count() == 4
             assert page.locator('.report-pdf-download').count() == 1
             assert '/rapporti/pdf/lettura-una-versilia-che-cambia.pdf' in (page.locator('.report-pdf-download').get_attribute('href') or '')
-            assert_tooltip(page)
+            assert_tooltip(page, '.report-history .chart-point')
             assert page.locator('meta[name="robots"]').get_attribute('content') == 'noindex,nofollow'
             assert not errors, errors
             no_overflow(page, width)
@@ -90,7 +102,7 @@ def main() -> None:
             assert page.locator('.report-pdf-download').count() == 1
             assert '/rapporti/pdf/comune-massarosa.pdf' in (page.locator('.report-pdf-download').get_attribute('href') or '')
             assert 'Massarosa' in (page.locator('.report-cover h1').text_content() or '')
-            assert_tooltip(page)
+            assert_tooltip(page, '.report-history .chart-point')
             assert not errors, errors
             no_overflow(page, width)
 
@@ -108,7 +120,7 @@ def main() -> None:
             page.close()
         browser.close()
 
-    print('Rapporti v4 browser OK: componenti OVUXHistory identici, analisi estesa, 8 indicatori demografici, rapporti comunali, desktop/mobile')
+    print('Editoriale v4 browser OK: Lettura e Rapporti riusano OVUXHistory reale; scatter solo dove non esiste un componente canonico; desktop/mobile')
 
 
 if __name__ == '__main__':
