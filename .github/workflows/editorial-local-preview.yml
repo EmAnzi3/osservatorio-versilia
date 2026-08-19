@@ -9,8 +9,11 @@ on:
       - "assets/letture.*"
       - "assets/letture-v3.css"
       - "assets/rapporti.*"
+      - "assets/rapporti-parts/**"
       - "data/letture.json"
       - "scripts/build_letture.py"
+      - "scripts/upgrade_rapporti_v4.py"
+      - "scripts/export_reports_pdf.py"
       - "scripts/sync_editorial_layout.py"
       - "scripts/test_letture*"
       - "scripts/test_meteo_clima_editorial_browser.py"
@@ -52,17 +55,18 @@ jobs:
         run: |
           python scripts/build_static_brand.py
           node --check assets/letture.js
-          node --check assets/rapporti.js
           node --check assets/meteo-clima-editorial.js
-          python -m py_compile scripts/build_letture.py scripts/sync_editorial_layout.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
+          python -m py_compile scripts/build_letture.py scripts/upgrade_rapporti_v4.py scripts/export_reports_pdf.py scripts/sync_editorial_layout.py scripts/test_letture.py scripts/test_letture_browser.py scripts/test_meteo_clima_editorial_browser.py
           python scripts/build_letture.py
+          python scripts/upgrade_rapporti_v4.py
+          node --check dist/assets/rapporti.js
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
           python scripts/build_pnrr_toscana_deep_dive.py
           python scripts/inject_pnrr_town_experience.py
           python scripts/copy_percorsi_dist.py
 
-      - name: Validate editorial layout contract
+      - name: Validate editorial layout contract and export PDFs
         run: |
           python scripts/test_letture.py
           python -m http.server 8123 --directory dist >/tmp/ov-local-preview.log 2>&1 &
@@ -74,6 +78,7 @@ jobs:
           done
           python scripts/test_meteo_clima_editorial_browser.py --base http://127.0.0.1:8123/
           python scripts/test_letture_browser.py --base http://127.0.0.1:8123/
+          python scripts/export_reports_pdf.py --base http://127.0.0.1:8123/ --output dist/rapporti/pdf
 
       - name: Add local instructions
         if: always()
@@ -89,12 +94,22 @@ jobs:
           3. Apri nel browser: http://localhost:8000/
 
           Pagine da controllare in particolare:
-          - http://localhost:8000/letture/
           - http://localhost:8000/letture/una-versilia-che-cambia/
           - http://localhost:8000/rapporti/lettura-una-versilia-che-cambia/
           - http://localhost:8000/rapporti/comune-massarosa/
           - http://localhost:8000/confronta/meteo-clima/
 
+          PDF puliti generati dalla stessa build:
+          - rapporti/pdf/lettura-una-versilia-che-cambia.pdf
+          - rapporti/pdf/comune-massarosa.pdf
+          - rapporti/pdf/comune-camaiore.pdf
+          - rapporti/pdf/comune-forte-dei-marmi.pdf
+          - rapporti/pdf/comune-pietrasanta.pdf
+          - rapporti/pdf/comune-seravezza.pdf
+          - rapporti/pdf/comune-stazzema.pdf
+          - rapporti/pdf/comune-viareggio.pdf
+
+          I PDF non includono header/footer automatici del browser, data/ora o localhost.
           Letture e Rapporti sono noindex in questa PR draft e non vengono pubblicati da questa workflow.
           EOF
 
