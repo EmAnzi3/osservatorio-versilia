@@ -18,7 +18,8 @@
         "enabled": true,
         "slug": "lettura-una-versilia-che-cambia",
         "title": "Rapporto demografico · Una Versilia che cambia",
-        "subtitle": "Popolazione, invecchiamento e mobilità residenziale nei sette Comuni della Versilia"
+        "subtitle": "Popolazione, struttura per età, cittadinanza e mobilità residenziale nei sette Comuni della Versilia",
+        "metrics": ["population", "populationChange", "ageDistribution", "oldAgeIndex", "foreignResidents", "internalResidentialMobility", "foreignResidentialMobility", "totalResidentialMobility"]
       }
     },
     {
