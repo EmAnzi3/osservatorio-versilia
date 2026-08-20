@@ -261,7 +261,13 @@ def source_assertions() -> None:
 
     climate_css = (ROOT / "assets" / "meteo-clima.css").read_text(encoding="utf-8")
     map_css = (ROOT / "percorsi" / "osservatorio.css").read_text(encoding="utf-8")
-    assert ".site-header-inner" not in climate_css + map_css, "Una pagina speciale sposta lo header canonico"
+    map_app_css = (ROOT / "percorsi" / "styles.css").read_text(encoding="utf-8")
+    special_css = climate_css + map_css + map_app_css
+    assert ".site-header-inner" not in special_css, "Una pagina speciale sposta lo header canonico"
+    assert not re.search(r":root\s*\{", map_app_css), "Percorsi sovrascrive le variabili globali della shell"
+    assert not re.search(
+        r"html\s*,\s*body\s*\{[^}]*font-family", map_app_css, re.S
+    ), "Percorsi sovrascrive la tipografia globale della shell"
     assert "search_fallback_link" not in (
         ROOT / "scripts" / "copy_percorsi_dist.py"
     ).read_text(encoding="utf-8"), "Fallback ricerca vietato nelle pagine pubbliche"
