@@ -34,8 +34,8 @@ def require(condition: bool, message: str) -> None:
 
 
 def main() -> None:
-    require(DATA["version"] == "v1.13.0", "Versione dati v1.13.0 non applicata")
-    require(DATA["updated"] == "16 agosto 2026", "Data di aggiornamento v1.13.0 inattesa")
+    require(DATA["version"] == "v1.14.0", "Versione dati v1.14.0 non applicata")
+    require(DATA["updated"] == "20 agosto 2026", "Data di aggiornamento v1.14.0 inattesa")
     require(SNAPSHOT["scope"]["coverage"] == "7/7", "Copertura snapshot incompleta")
     require(SNAPSHOT["scope"]["years"] == [2021, 2023], "Annualità snapshot inattese")
     require(SNAPSHOT["comparabilityCheck"]["result"] == "accepted", "Comparabilità non accettata")
