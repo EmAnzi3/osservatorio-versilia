@@ -12,6 +12,7 @@ on:
       - "scripts/probe_demography_lucca_samples.py"
       - "scripts/probe_demography_schema.py"
       - "scripts/materialize_demography_lotto_a.py"
+      - "scripts/materialize_demography_lotto_a_v2.py"
       - "data/site-data.json"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
@@ -65,7 +66,7 @@ jobs:
             audit-artifacts/demography-canonical-schema.json
           retention-days: 14
       - name: Materialize Demography draft in workspace
-        run: python scripts/materialize_demography_lotto_a.py
+        run: python scripts/materialize_demography_lotto_a_v2.py
       - name: Validate materialized Demography draft
         run: python scripts/test_demography_lotto_a_materialized.py
       - name: Validate generated JSON
