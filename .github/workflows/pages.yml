@@ -48,6 +48,17 @@ jobs:
           python -m json.tool data/source-registry.json > /dev/null
           python -m json.tool data/source-monitor-state.json > /dev/null
 
+      - name: Materialize complete Income Lotto A draft
+        run: |
+          python scripts/materialize_income_lotto_a_v2.py
+          python scripts/patch_income_lotto_a_frontend.py
+          python scripts/patch_income_lotto_a_regressions.py
+          python scripts/test_income_lotto_a_v2.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
+
       - name: Materialize PNRR Toscana release
         run: |
           python scripts/materialize_pnrr_toscana_draft.py
@@ -85,6 +96,9 @@ jobs:
           done
           cat /tmp/ov-release-http.log
           exit 1
+
+      - name: Validate Income Lotto A in browser
+        run: python scripts/test_income_lotto_a_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -181,7 +195,14 @@ jobs:
             scripts/test_pnrr_toscana_review.py \
             scripts/test_pnrr_toscana_town_browser.py \
             scripts/build_data_status.py \
-            scripts/inject_data_status_runtime.py
+            scripts/inject_data_status_runtime.py \
+            scripts/materialize_income_lotto_a.py \
+            scripts/materialize_income_lotto_a_v2.py \
+            scripts/patch_income_lotto_a_frontend.py \
+            scripts/patch_income_lotto_a_regressions.py \
+            scripts/test_income_lotto_a_materialized.py \
+            scripts/test_income_lotto_a_v2.py \
+            scripts/test_income_lotto_a_browser.py
 
       - name: Verify municipal crests
         run: |
@@ -243,7 +264,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v113-preview
+          name: osservatorio-versilia-v115-preview
           path: dist
           retention-days: 14
 
