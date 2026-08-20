@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Sonda read-only delle fonti Istat Demo per il Lotto A demografico.
 
-Non modifica alcun dato del sito. Produce un report JSON utile a confermare URL,
-struttura degli archivi e copertura dei sette codici comunali. I CSV vengono
-scansionati in streaming e la lettura si interrompe appena sono stati trovati
-tutti e sette i Comuni della Versilia.
+Non modifica alcun dato del sito. P02 viene ispezionato per la copertura 7/7;
+per gli archivi POS/RCS nazionali si effettua solo discovery/HEAD, così l'audit
+non scarica inutilmente dataset nazionali molto grandi.
 """
 from __future__ import annotations
 
@@ -27,9 +26,7 @@ PAGES = {
     "citizenship_birth_country": "https://demo.istat.it/app/?i=RCS&l=it",
 }
 KNOWN_CANDIDATES = {
-    "balance_2025_all_municipalities": [
-        "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
-    ],
+    "balance_2025_all_municipalities": ["https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip"],
     "population_age_sex_2026": [
         "https://demo.istat.it/data/pos/POS_2026_it_Comuni.zip",
         "https://demo.istat.it/data/pos/Pos_2026_it_Comuni.zip",
@@ -40,15 +37,21 @@ KNOWN_CANDIDATES = {
 }
 
 
-def request(url: str, *, timeout: int = 15) -> tuple[int, str, bytes]:
-    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia-data-audit/1.0"})
+def request(url: str, *, method: str = "GET", timeout: int = 12) -> tuple[int, str, bytes, dict[str, str]]:
+    req = urllib.request.Request(
+        url,
+        method=method,
+        headers={"User-Agent": "OsservatorioVersilia-data-audit/1.0"},
+    )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as response:
-            return response.status, response.headers.get("Content-Type", ""), response.read()
+            body = b"" if method == "HEAD" else response.read()
+            return response.status, response.headers.get("Content-Type", ""), body, dict(response.headers.items())
     except urllib.error.HTTPError as exc:
-        return exc.code, exc.headers.get("Content-Type", ""), exc.read()
+        body = b"" if method == "HEAD" else exc.read()
+        return exc.code, exc.headers.get("Content-Type", ""), body, dict(exc.headers.items())
     except Exception as exc:
-        return 0, type(exc).__name__, str(exc).encode("utf-8", errors="replace")
+        return 0, type(exc).__name__, str(exc).encode("utf-8", errors="replace"), {}
 
 
 def zip_links(page_url: str, body: bytes) -> list[str]:
@@ -79,13 +82,12 @@ def inspect_zip(url: str, body: bytes) -> dict:
     try:
         with zipfile.ZipFile(io.BytesIO(body)) as archive:
             names = archive.namelist()
-            result["members"] = names[:100]
             csv_names = [name for name in names if name.lower().endswith((".csv", ".txt"))]
+            result["members"] = names[:100]
             result["csvMembers"] = csv_names[:50]
             found_codes: set[str] = set()
             samples: list[dict] = []
             scanned_rows = 0
-
             for name in csv_names:
                 delimiter = delimiter_for(archive, name)
                 reader = iter_rows(archive, name, delimiter)
@@ -107,7 +109,6 @@ def inspect_zip(url: str, body: bytes) -> dict:
                         break
                 if len(found_codes) == len(TOWN_CODES):
                     break
-
             result["townCodesFound"] = sorted(found_codes)
             result["coverage"] = len(found_codes)
             result["rowsScannedUntilCoverage"] = scanned_rows
@@ -117,12 +118,24 @@ def inspect_zip(url: str, body: bytes) -> dict:
     return result
 
 
+def head_entry(url: str) -> dict:
+    status, content_type, _body, headers = request(url, method="HEAD")
+    return {
+        "url": url,
+        "method": "HEAD",
+        "status": status,
+        "contentType": content_type,
+        "contentLength": headers.get("Content-Length"),
+        "location": headers.get("Location"),
+    }
+
+
 def main() -> None:
     report: dict = {"townCodes": TOWN_CODES, "pages": {}, "candidateDownloads": {}}
 
     discovered: set[str] = set()
     for key, url in PAGES.items():
-        status, content_type, body = request(url)
+        status, content_type, body, _headers = request(url)
         links = zip_links(url, body) if status == 200 else []
         discovered.update(links)
         report["pages"][key] = {
@@ -133,25 +146,27 @@ def main() -> None:
             "zipLinks": links,
         }
 
-    candidates = {key: list(urls) for key, urls in KNOWN_CANDIDATES.items()}
-    candidates["discovered_from_official_pages"] = sorted(discovered)
+    # Il solo archivio nazionale che scarichiamo in questa sonda è P02: è
+    # relativamente compatto e serve a confermare davvero la copertura 7/7.
+    p2_url = KNOWN_CANDIDATES["balance_2025_all_municipalities"][0]
+    status, content_type, body, _headers = request(p2_url)
+    p2_entry = {"url": p2_url, "method": "GET", "status": status, "contentType": content_type, "bytes": len(body)}
+    if status == 200 and ("zip" in content_type.lower() or body[:4] == b"PK\x03\x04"):
+        p2_entry.update(inspect_zip(p2_url, body))
+    report["candidateDownloads"]["balance_2025_all_municipalities"] = [p2_entry]
 
-    for group, urls in candidates.items():
-        entries = []
-        for url in urls:
-            status, content_type, body = request(url)
-            entry = {"url": url, "status": status, "contentType": content_type, "bytes": len(body)}
-            if status == 200 and ("zip" in content_type.lower() or body[:4] == b"PK\x03\x04"):
-                entry.update(inspect_zip(url, body))
-            entries.append(entry)
-        report["candidateDownloads"][group] = entries
+    # POS: solo discovery/HEAD. La successiva acquisizione userà il file della
+    # provincia di Lucca, non l'archivio nazionale.
+    report["candidateDownloads"]["population_age_sex_2026"] = [
+        head_entry(url) for url in KNOWN_CANDIDATES["population_age_sex_2026"]
+    ]
+    report["candidateDownloads"]["discovered_from_official_pages"] = [head_entry(url) for url in sorted(discovered)[:100]]
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Audit Istat scritto in {OUTPUT}")
 
-    p2_entries = report["candidateDownloads"]["balance_2025_all_municipalities"]
-    p2_ok = [entry for entry in p2_entries if entry.get("status") == 200 and entry.get("coverage") == 7]
+    p2_ok = p2_entry.get("status") == 200 and p2_entry.get("coverage") == 7
     print("P02 2025: copertura 7/7 confermata" if p2_ok else "P02 2025: endpoint/copertura da ispezionare nell'artifact")
 
 
