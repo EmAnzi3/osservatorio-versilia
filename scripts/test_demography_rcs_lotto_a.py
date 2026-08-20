@@ -41,8 +41,8 @@ def main() -> None:
         require(all(item['label'].lower() != 'italia' for item in detail['birthCountryTop']), f'{town}: Italia inclusa nei paesi esteri di nascita')
         require(detail['citizenshipTop'] == sorted(detail['citizenshipTop'], key=lambda item: (-item['count'], item['label'])), f'{town}: top cittadinanze non ordinata')
         require(detail['birthCountryTop'] == sorted(detail['birthCountryTop'], key=lambda item: (-item['count'], item['label'])), f'{town}: top nascita non ordinata')
-        require(all(item['count'] > 0 for item in snap['citizenship']), f'{town}: cittadinanze con zero nello snapshot')
-        require(all(item['count'] > 0 for item in snap['birthCountry']), f'{town}: paesi nascita con zero nello snapshot')
+        require(all(item['total'] > 0 for item in snap['citizenship']), f'{town}: cittadinanze con zero nello snapshot')
+        require(all(item['total'] > 0 for item in snap['birthCountry']), f'{town}: paesi nascita con zero nello snapshot')
 
     decisions = {candidate.get('key'): candidate.get('implementationStatus') for candidate in AUDIT.get('candidates', [])}
     require(decisions.get('citizenshipBirthCountryDetail') == 'public_town_detail_2025', 'Audit RCS non promosso a dettaglio pubblico')
