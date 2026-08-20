@@ -98,4 +98,4 @@ Prima di aggiungere molte altre fonti:
 
 ## Stato
 
-**Prototipo valido come base tecnica, non ancora pronto per pubblicazione o merge come funzionalità pubblica.**
+**Prototipo valido come base tecnica, mantenuto in Draft PR: non è ancora pronto per pubblicazione o merge come funzionalità pubblica.**
