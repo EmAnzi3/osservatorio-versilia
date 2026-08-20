@@ -191,6 +191,10 @@ def build_public_status(
                 direct_reachable = bool(probe.get("ok"))
         verification = operational.get("verificationEvidence")
         verification = verification if isinstance(verification, dict) else None
+        storage = metric.get("dataStorage")
+        is_external_climate = (
+            isinstance(storage, dict) and storage.get("type") == "external-climate"
+        )
         rows.append(
             {
                 "key": metric_key,
@@ -215,6 +219,7 @@ def build_public_status(
                 "sourceProbeMethod": "" if probe is None else str(probe.get("probeMethod") or ""),
                 "sourceError": "" if probe is None else str(probe.get("error") or ""),
                 "verificationSource": verification,
+                "isExternalClimate": is_external_climate,
             }
         )
 

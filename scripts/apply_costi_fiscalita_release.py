@@ -111,7 +111,7 @@ def patch_release_surface() -> None:
     )
     replace_any(
         BUILD_BRAND,
-        [('APP_BUNDLE_ASSET_VERSION = "20260814-v111"', 'APP_BUNDLE_ASSET_VERSION = "20260816-v113"')],
+        [('APP_BUNDLE_ASSET_VERSION = "20260814-v111"', 'APP_BUNDLE_ASSET_VERSION = "20260820-v114"')],
     )
     replace_any(
         SERVICE_WORKER,
@@ -120,7 +120,7 @@ def patch_release_surface() -> None:
     replace_any(
         BRAND_TEST,
         [
-            ('assets/app-bundle.js?v=20260814-v111', 'assets/app-bundle.js?v=20260816-v113'),
+            ('assets/app-bundle.js?v=20260814-v111', 'assets/app-bundle.js?v=20260820-v114'),
             ('assets/visual-grammar.js?v=20260814-v111', 'assets/visual-grammar.js?v=20260816-v113'),
         ],
     )

@@ -103,8 +103,12 @@ def check_source() -> None:
 
     require('rel="canonical" href="https://osservatorioversilia.it/percorsi/"' in index, "Canonical Percorsi assente")
     require('type="application/ld+json"' in index, "JSON-LD Percorsi assente")
-    require('class="site-header"' in index and 'class="site-brand"' in index,
-            "La cartografia non usa l'header dell'Osservatorio")
+    require(
+        'id="site-header-mount"' in index
+        and 'data-page="special"' in index
+        and 'id="app"' in index,
+        "La cartografia non dichiara la shell eseguibile dell'Osservatorio",
+    )
     require("Percorsi e mobilità lenta" in index, "Titolo cartografia non allineato alla tassonomia")
     require("Torna a Mobilità e infrastrutture" in index, "Ritorno a Mobilità poco esplicito o assente")
     require("ovmark" not in index, "Vecchio logo testuale ancora presente")

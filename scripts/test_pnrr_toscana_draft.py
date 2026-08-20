@@ -130,6 +130,11 @@ def validate_built_preview(data):
     assert SOCIAL_IMAGE in text
     assert 'name="twitter:card" content="summary_large_image"' in text
     assert 'name="twitter:site" content="@OssVersilia"' in text
+    assert text.count('data-data-status-nav="header"') == 1
+    assert text.count('data-data-status-nav="footer"') == 1
+
+    sitemap = Path("dist/sitemap.xml").read_text(encoding="utf-8")
+    assert sitemap.count("https://osservatorioversilia.it/pnrr/") == 1
 
     for key in ("pnrrFunding", "pnrrConcluded"):
         slug = slugify(data["metrics"][key]["meta"]["label"])
@@ -141,7 +146,10 @@ def validate_built_preview(data):
         assert "assets/pnrr-deep-dive.css" in indicator_text
 
     bundle = Path("dist/assets/app-bundle.js").read_text(encoding="utf-8")
-    assert "pageType === 'pnrr'" in bundle
+    assert (
+        "pageType === 'pnrr'" in bundle
+        or "['status', 'pnrr', 'special'].includes(pageType)" in bundle
+    )
 
 
 def main():

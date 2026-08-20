@@ -1,12 +1,9 @@
 /* Cornice Osservatorio Versilia per la cartografia Percorsi.
    La mappa mantiene la propria UX; header, breadcrumb e gerarchia richiamano il sito principale. */
 html,body{height:100%}
-body.percorsi-page{display:flex;flex-direction:column;min-height:100%;overflow:hidden;background:#f6f0e5;color:#0f3654}
-.percorsi-site-header{flex:0 0 auto;position:relative;z-index:1200}
-.percorsi-site-header .site-header{background:#f6f0e5;border-bottom:1px solid rgba(15,54,84,.11)}
-.percorsi-site-header .site-header-inner{max-width:1240px}
-.percorsi-site-header .site-header-actions nav{display:flex}
-.map-context-bar{flex:0 0 auto;background:rgba(255,255,255,.97);border-bottom:1px solid #dce5e0;position:relative;z-index:1100}
+body.percorsi-page{display:flex;flex-direction:column;min-height:100%;overflow:hidden;background:#f6f0e5}
+body.percorsi-page>#site-header-mount{flex:0 0 auto;position:relative;z-index:60}
+.map-context-bar{flex:0 0 auto;background:rgba(255,255,255,.97);border-bottom:1px solid #dce5e0;position:relative;z-index:40}
 .map-context-inner{height:48px;max-width:100%;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .map-breadcrumbs{display:flex;align-items:center;gap:8px;min-width:0;color:#6a7872;font-size:11px}
 .map-breadcrumbs a{color:#176b4a;text-decoration:none;font-weight:750}
@@ -53,7 +50,6 @@ body.percorsi-page .leaflet-control-zoom a{color:#0f3654}
   body.percorsi-page .resultsHead{padding:8px 16px 6px}
 }
 @media(max-width:900px){
-  .percorsi-site-header .site-header-actions nav{display:none}
   .map-context-inner{height:auto;min-height:48px;padding:7px 12px}
   .map-breadcrumbs{font-size:10px}
   .map-back{font-size:10px;padding:0 10px}

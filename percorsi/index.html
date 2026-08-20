@@ -10,49 +10,36 @@
 <meta property="og:description" content="Sentieri, cammini e percorsi ciclabili della Versilia su mappa, filtrabili e scaricabili.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://osservatorioversilia.it/percorsi/">
+<meta property="og:site_name" content="Osservatorio Versilia">
 <meta property="og:locale" content="it_IT">
+<meta property="og:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+<meta property="og:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Percorsi e mobilità lenta · Osservatorio Versilia">
+<meta name="twitter:description" content="Sentieri, cammini e percorsi ciclabili della Versilia su mappa, filtrabili e scaricabili.">
+<meta name="twitter:site" content="@OssVersilia">
+<meta name="twitter:image" content="https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg">
+<meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
 <link rel="icon" href="../favicon.svg" sizes="any">
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/original.css">
 <link rel="stylesheet" href="../assets/static.css">
 <link rel="stylesheet" href="../assets/fidelity.css">
-<link rel="stylesheet" href="../assets/brand.css">
+<link rel="stylesheet" href="../assets/brand.css?v=20260820-ov3">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynHTCQHGwB5lGVE2R0F7J/r39QY0=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=4">
-<link rel="stylesheet" href="osservatorio.css?v=3">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="osservatorio.css?v=4">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Percorsi e mobilità lenta","url":"https://osservatorioversilia.it/percorsi/","applicationCategory":"TravelApplication","operatingSystem":"Web","description":"Mappa pubblica di sentieri, cammini e percorsi ciclabili della Versilia con filtri e download GPX, KML e GeoJSON.","isPartOf":{"@type":"WebSite","name":"Osservatorio Versilia","url":"https://osservatorioversilia.it/"}}</script>
 </head>
-<body class="percorsi-page">
-<div id="site-header-mount" class="percorsi-site-header">
-  <a class="skip-link" href="#map">Vai alla mappa</a>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <a href="../" class="site-brand" aria-label="Osservatorio Versilia, torna alla home">
-        <span class="site-brand-mark" aria-hidden="true"><svg class="ov-mark-svg" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 64"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="27" cy="32" r="22" stroke="#0F3654" stroke-width="6"/>
-          <path d="M43 28 53 48 71 15" stroke="#0F3654" stroke-width="6"/>
-          <path d="M57 27 70 9" stroke="#58A28F" stroke-width="3.2"/>
-        </g><g fill="#6F8FA3"><rect x="16" y="34" width="5.5" height="9" rx="1"/><rect x="24" y="28" width="5.5" height="15" rx="1"/><rect x="32" y="20" width="5.5" height="23" rx="1"/></g><path d="M10 43c7-5.5 14-7.2 20-5.3 4.4 1.4 8 4.1 12 4.7v5.1c-4.6-.5-8.7-3-13.1-4.1-5.7-1.5-11.7-.1-18.9 4.1Z" fill="#58A28F"/><path d="M11.5 45.2c6.2-3.2 11.9-4.2 17.1-3 4.3 1 8.1 3.2 12.2 3.8" fill="none" stroke="#F7FAF8" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-        <span class="site-brand-copy"><strong>Osservatorio Versilia</strong><small>Versilia in numeri</small></span>
-      </a>
-      <div class="site-header-actions">
-        <nav aria-label="Navigazione principale">
-          <a href="../#temi">Temi</a>
-          <a href="../#comuni">Comuni</a>
-          <a href="../progetto/">Il progetto</a>
-          <a href="../segnala/">Segnala</a>
-        </nav>
-      </div>
-    </div>
-  </header>
-</div>
+<body class="antialiased percorsi-page" data-page="special" data-theme="" data-town="">
+<div id="site-header-mount"></div>
 <div class="map-context-bar">
   <div class="map-context-inner">
     <div class="map-breadcrumbs"><a href="../confronta/mobilita/?indicatore=slowMobilityRoutes">Mobilità e infrastrutture</a><span>›</span><strong>Percorsi e mobilità lenta</strong></div>
     <a class="map-back" href="../confronta/mobilita/?indicatore=slowMobilityRoutes"><span aria-hidden="true">←</span> Torna a Mobilità e infrastrutture</a>
   </div>
 </div>
-<div class="app">
+<div class="app" id="app">
   <aside class="sidebar">
     <div class="head">
       <div class="brand">

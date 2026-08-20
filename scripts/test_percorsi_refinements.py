@@ -185,8 +185,13 @@ def main() -> None:
                 "Ritorno a Mobilità non visibile nella cartografia mobile")
         require_box_inside_viewport(page, '.map-back', "Torna a Mobilità e infrastrutture")
         map_box = page.locator('#map').bounding_box()
-        require(map_box is not None and map_box["width"] >= 380 and map_box["height"] >= 450,
-                f"Mappa troppo piccola o collassata su mobile: {map_box}")
+        map_wrap_box = page.locator('.mapWrap').bounding_box()
+        require(map_box is not None
+                and map_wrap_box is not None
+                and map_box["width"] >= map_wrap_box["width"] - 2
+                and map_box["height"] >= 450,
+                f"Mappa troppo piccola o collassata su mobile: {map_box}, "
+                f"contenitore={map_wrap_box}")
         require(page.locator('.leaflet-control-zoom').is_visible(), "Zoom Leaflet non visibile su mobile")
         require(page.locator('.leaflet-control-home').is_visible(), "Home Leaflet non visibile su mobile")
         require(page.locator('.legend .leg').count() == 4 and page.locator('.legend').is_visible(),
@@ -200,8 +205,12 @@ def main() -> None:
         require(page.locator('.chip.active').get_attribute('data-mode') == "bicycle",
                 "Filtro Bici non applicato a 360px")
         narrow_map = page.locator('#map').bounding_box()
-        require(narrow_map is not None and narrow_map["width"] >= 350,
-                f"Cartografia non occupa correttamente la larghezza a 360px: {narrow_map}")
+        narrow_map_wrap = page.locator('.mapWrap').bounding_box()
+        require(narrow_map is not None
+                and narrow_map_wrap is not None
+                and narrow_map["width"] >= narrow_map_wrap["width"] - 2,
+                f"Cartografia non occupa correttamente la larghezza a 360px: {narrow_map}, "
+                f"contenitore={narrow_map_wrap}")
 
         browser.close()
 

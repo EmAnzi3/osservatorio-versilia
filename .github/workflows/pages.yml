@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m http.server 8123 --directory dist >/tmp/ov-release-http.log 2>&1 &
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-release-http.log 2>&1 &
           echo $! > /tmp/ov-release-http.pid
           for attempt in {1..20}; do
             if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
@@ -222,6 +222,13 @@ jobs:
           python scripts/test_percorsi_draft.py
           python scripts/test_accordion_no_overlap.py
           python scripts/test_percorsi_refinements.py
+
+      - name: Enforce site-wide consistency contract
+        run: |
+          python -m py_compile scripts/site_chrome.py scripts/preview_dist.py scripts/test_site_chrome.py scripts/test_site_consistency.py scripts/test_site_chrome_browser.py
+          python scripts/test_site_chrome.py
+          python scripts/test_site_consistency.py
+          python scripts/test_site_chrome_browser.py --base http://127.0.0.1:8123/
 
       - name: Upload draft preview
         if: github.event_name == 'pull_request'

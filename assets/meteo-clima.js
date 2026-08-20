@@ -31,6 +31,21 @@
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
   const signed = (value, decimals = 1) => `${value >= 0 ? '+' : ''}${fmt(value, decimals)}`;
 
+  function hideTooltip() {
+    tooltip.hidden = true;
+  }
+
+  function placeTooltip(event, target) {
+    const pointer = event.type.startsWith('pointer');
+    const rect = target.getBoundingClientRect();
+    const anchorX = pointer ? event.clientX : rect.right;
+    const anchorY = pointer ? event.clientY : rect.top + rect.height / 2;
+    const px = Math.min(window.innerWidth - 190, Math.max(8, anchorX + 12));
+    const py = Math.min(window.innerHeight - 105, Math.max(8, anchorY + 12));
+    tooltip.style.left = `${px}px`;
+    tooltip.style.top = `${py}px`;
+  }
+
   function movingAverage(values, windowSize = 10) {
     return values.map((_, index) => {
       if (index < windowSize - 1) return null;
@@ -135,7 +150,7 @@
     }).join('');
     const grids = ticks.map(value => `<line class="climate-grid-line" x1="${left}" x2="${width - right}" y1="${y(value)}" y2="${y(value)}"></line><text class="climate-axis-label" x="${left - 10}" y="${y(value) + 3}" text-anchor="end">${state.metric === 'temperature' ? fmt(value, 1) : fmt(value, 0)}</text>`).join('');
     const labels = xTicks.map(year => `<text class="climate-axis-label" x="${x(year)}" y="${height - 14}" text-anchor="middle">${year}</text>`).join('');
-    const points = values.map((value, index) => `<circle class="climate-series-point" cx="${x(years[index])}" cy="${y(value)}" r="2.4"></circle><circle class="climate-series-hit" data-year="${years[index]}" data-value="${value}" cx="${x(years[index])}" cy="${y(value)}" r="8"></circle>`).join('');
+    const points = values.map((value, index) => `<circle class="climate-series-point" cx="${x(years[index])}" cy="${y(value)}" r="2.4"></circle><circle class="climate-series-hit" tabindex="0" focusable="true" aria-label="${escapeHtml(state.town)}, ${years[index]}: ${state.metric === 'temperature' ? fmt(value, 2) : fmt(value, 0)} ${meta[state.metric].unit}" data-year="${years[index]}" data-value="${value}" cx="${x(years[index])}" cy="${y(value)}" r="8"></circle>`).join('');
     const trendPath = trend ? `<line class="climate-trend-line" x1="${x(TREND_START)}" y1="${y(trend.startValue)}" x2="${x(TREND_END)}" y2="${y(trend.endValue)}"></line>` : '';
     const trendMarker = `<line class="climate-trend-boundary" x1="${x(TREND_START)}" x2="${x(TREND_START)}" y1="${top}" y2="${height - bottom}"></line>`;
 
@@ -150,14 +165,13 @@
         const prov = state.data.provenance.find(p => year >= p.from && year <= p.to);
         tooltip.innerHTML = `<span>${escapeHtml(state.town)} · ${year}</span><strong>${state.metric === 'temperature' ? fmt(value, 2) : fmt(value, 0)} ${meta[state.metric].unit}</strong><small>${escapeHtml(prov?.label || '')}</small>`;
         tooltip.hidden = false;
-        const px = Math.min(window.innerWidth - 170, Math.max(8, event.clientX + 12));
-        const py = Math.min(window.innerHeight - 75, Math.max(8, event.clientY + 12));
-        tooltip.style.left = `${px}px`;
-        tooltip.style.top = `${py}px`;
+        placeTooltip(event, hit);
       };
       hit.addEventListener('pointerenter', show);
       hit.addEventListener('pointermove', show);
-      hit.addEventListener('pointerleave', () => { tooltip.hidden = true; });
+      hit.addEventListener('pointerleave', hideTooltip);
+      hit.addEventListener('focus', show);
+      hit.addEventListener('blur', hideTooltip);
     });
   }
 
@@ -212,7 +226,27 @@
     const ticks = Array.from({ length: 4 }, (_, i) => yMin + (yMax - yMin) * i / 3);
     const grids = ticks.map(value => `<line class="climate-grid-line" x1="${left}" x2="${width - right}" y1="${y(value)}" y2="${y(value)}"></line><text class="climate-axis-label" x="${left - 10}" y="${y(value) + 3}" text-anchor="end">${fmt(value, 1)}</text>`).join('');
     const xTicks = [1975, 1985, 1995, 2005, 2015, 2025].map(year => `<text class="climate-axis-label" x="${x(year)}" y="${height - 14}" text-anchor="middle">${year}</text>`).join('');
-    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1975 al 2025">${grids}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}${series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('')}</svg>`;
+    const minPoints = series.tmin.map((value, index) => `<circle class="climate-min-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('');
+    const maxPoints = series.tmax.map((value, index) => `<circle class="climate-max-point" cx="${x(years[index])}" cy="${y(value)}" r="3"></circle>`).join('');
+    const hitPoints = years.map((year, index) => {
+      const label = `${state.town}, ${year}: Tmin ${fmt(series.tmin[index], 2)} °C, Tmax ${fmt(series.tmax[index], 2)} °C`;
+      return `<circle class="climate-minmax-hit" tabindex="0" focusable="true" aria-label="${escapeHtml(label)}" data-index="${index}" cx="${x(year)}" cy="${y(series.tmin[index])}" r="9"></circle><circle class="climate-minmax-hit" tabindex="0" focusable="true" aria-label="${escapeHtml(label)}" data-index="${index}" cx="${x(year)}" cy="${y(series.tmax[index])}" r="9"></circle>`;
+    }).join('');
+    minmaxChartRoot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Temperature minime e massime medie annue a ${escapeHtml(state.town)} dal 1975 al 2025">${grids}${xTicks}<path class="climate-min-line" d="${minMaxPath(years, series.tmin, x, y)}"></path><path class="climate-max-line" d="${minMaxPath(years, series.tmax, x, y)}"></path>${minPoints}${maxPoints}${hitPoints}</svg>`;
+
+    minmaxChartRoot.querySelectorAll('.climate-minmax-hit').forEach(hit => {
+      const show = event => {
+        const index = Number(hit.dataset.index);
+        tooltip.innerHTML = `<span>${escapeHtml(state.town)} · ${years[index]}</span><strong>Tmin ${fmt(series.tmin[index], 2)} °C</strong><strong>Tmax ${fmt(series.tmax[index], 2)} °C</strong><small>Media annua territoriale · ERA5-Land calibrata</small>`;
+        tooltip.hidden = false;
+        placeTooltip(event, hit);
+      };
+      hit.addEventListener('pointerenter', show);
+      hit.addEventListener('pointermove', show);
+      hit.addEventListener('pointerleave', hideTooltip);
+      hit.addEventListener('focus', show);
+      hit.addEventListener('blur', hideTooltip);
+    });
   }
 
   function renderMethod() {

@@ -254,6 +254,10 @@ def normalize_prerendered_urls() -> None:
     for path in build.DIST.rglob("*.html"):
         prefix = os.path.relpath(build.DIST, path.parent).replace(os.sep, "/")
         replacement = "" if prefix == "." else f"{prefix}/"
+        # Su una route-file come /404.html, un frammento nudo (#temi) resta
+        # ancorato alla 404. Il prefisso ./ lo risolve invece verso la Home.
+        if path == build.DIST / "404.html":
+            replacement = "./"
         text = path.read_text(encoding="utf-8")
         text = localhost.sub(replacement, text)
         text = climate_script.sub("", text)
