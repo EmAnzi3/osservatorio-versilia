@@ -30,7 +30,9 @@ jobs:
           python scripts/test_opportunity_radar.py
 
   live-probe:
-    if: github.event_name == 'workflow_dispatch'
+    # Nel prototipo il probe live gira anche sulla Draft PR: non scrive nel repository
+    # e serve esclusivamente a collaudare i parser contro le fonti reali.
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
