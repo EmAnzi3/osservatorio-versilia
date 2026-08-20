@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import materialize_demography_lotto_a as base
 import materialize_demography_lotto_a_v3  # applica già le compatibilità P02
+import patch_demography_lotto_a_review as review
 
 
 def age_bands(records: list[dict[str, str]]) -> dict:
@@ -53,3 +54,4 @@ base.age_bands = age_bands
 
 if __name__ == '__main__':
     base.main()
+    review.main()
