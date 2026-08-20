@@ -1,0 +1,30 @@
+name: Data audit Lotto A
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/data-audit-lotto-a.json"
+      - "docs/data-audit-lotto-a.md"
+      - "scripts/test_data_audit_lotto_a.py"
+      - "data/site-data.json"
+      - "assets/ux-history-core.js"
+      - "assets/ux-history.js"
+      - ".github/workflows/data-audit-lotto-a.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate audit JSON
+        run: python -m json.tool data/data-audit-lotto-a.json > /dev/null
+      - name: Validate consistency contract
+        run: python scripts/test_data_audit_lotto_a.py
