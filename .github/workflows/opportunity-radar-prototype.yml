@@ -6,7 +6,9 @@ on:
     paths:
       - ".github/workflows/opportunity-radar-prototype.yml"
       - "scripts/opportunity_radar.py"
+      - "scripts/opportunity_radar_quality.py"
       - "scripts/test_opportunity_radar.py"
+      - "scripts/test_opportunity_radar_quality.py"
       - "data/opportunity-sources.json"
       - "docs/opportunita-prototipo.md"
   workflow_dispatch:
@@ -26,8 +28,9 @@ jobs:
           python-version: "3.12"
       - name: Validate prototype
         run: |
-          python -m py_compile scripts/opportunity_radar.py scripts/test_opportunity_radar.py
+          python -m py_compile scripts/opportunity_radar.py scripts/opportunity_radar_quality.py scripts/test_opportunity_radar.py scripts/test_opportunity_radar_quality.py
           python scripts/test_opportunity_radar.py
+          python scripts/test_opportunity_radar_quality.py
 
   live-probe:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
@@ -46,7 +49,7 @@ jobs:
           mkdir -p reports/runtime
           TODAY="$(TZ=Europe/Rome date +%F)"
           set +e
-          python scripts/opportunity_radar.py \
+          python scripts/opportunity_radar_quality.py \
             --date "$TODAY" \
             --output reports/runtime/opportunities.json \
             --report reports/runtime/opportunities.md
