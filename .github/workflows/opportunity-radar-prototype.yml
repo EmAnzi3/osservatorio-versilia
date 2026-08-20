@@ -44,8 +44,10 @@ jobs:
         shell: bash
         run: |
           mkdir -p reports/runtime
+          TODAY="$(TZ=Europe/Rome date +%F)"
           set +e
           python scripts/opportunity_radar.py \
+            --date "$TODAY" \
             --output reports/runtime/opportunities.json \
             --report reports/runtime/opportunities.md
           code=$?
@@ -53,19 +55,6 @@ jobs:
           echo "$code" > reports/runtime/exit-code.txt
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           cat reports/runtime/opportunities.md
-      - name: Inspect live markup around Fondazione bandi
-        if: always()
-        run: |
-          python - <<'PY'
-          import urllib.request
-          url='https://www.fondazionecarilucca.it/bandi-in-corso'
-          req=urllib.request.Request(url,headers={'User-Agent':'OsservatorioVersilia-OpportunityRadar/0.1'})
-          text=urllib.request.urlopen(req,timeout=25).read().decode('utf-8','replace')
-          for needle in ['Bando 2026 Progett-Azioni','Bando 2026 Progettare per il futuro']:
-              i=text.find(needle)
-              print('\n---',needle,'---')
-              print(text[max(0,i-900):i+1800] if i>=0 else 'NON TROVATO')
-          PY
       - name: Upload probe output
         if: always()
         uses: actions/upload-artifact@v4
