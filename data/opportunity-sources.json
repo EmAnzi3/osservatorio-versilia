@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "municipalities": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "sources": [
+    {
+      "id": "regione-toscana",
+      "name": "Regione Toscana — bandi aperti",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/bandi-aperti?delta=60&sortBy=desc&start=1",
+      "publisher": "Regione Toscana",
+      "territory": "Toscana"
+    },
+    {
+      "id": "fondazione-cr-lucca",
+      "name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
+      "type": "html_cards",
+      "url": "https://www.fondazionecarilucca.it/bandi-in-corso",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "territory": "Provincia di Lucca"
+    },
+    {
+      "id": "pa-digitale-2026",
+      "name": "PA digitale 2026 — open data avvisi",
+      "type": "padigitale_json",
+      "url": "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/avvisi.json",
+      "publisher": "Dipartimento per la trasformazione digitale",
+      "territory": "Italia"
+    }
+  ]
+}
