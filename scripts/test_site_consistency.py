@@ -234,10 +234,12 @@ def assert_internal_links(dist: Path, path: Path, document: str, canonical: str)
 
 def source_assertions() -> None:
     core = (ROOT / "assets" / "app-parts" / "00.txt").read_text(encoding="utf-8")
+    shell_runtime = (ROOT / "assets" / "app-parts" / "01.txt").read_text(encoding="utf-8")
     header = re.search(r'<header\b[^>]*class="site-header"[^>]*>.*?</header>', core, re.S)
     footer = re.search(r'<footer\b[^>]*class="site-footer"[^>]*>.*?</footer>', core, re.S)
     assert header and footer, "Shell sorgente non riconoscibile"
     assert_navigation_contract(header.group(0), footer.group(0))
+    assert "if (footerMount) footerMount.innerHTML" in shell_runtime
 
     climate = (ROOT / "confronta" / "meteo-clima" / "index.html").read_text(encoding="utf-8")
     assert '<div id="site-header-mount"></div>' in climate
