@@ -146,7 +146,10 @@ def validate_built_preview(data):
         assert "assets/pnrr-deep-dive.css" in indicator_text
 
     bundle = Path("dist/assets/app-bundle.js").read_text(encoding="utf-8")
-    assert "pageType === 'pnrr'" in bundle
+    assert (
+        "pageType === 'pnrr'" in bundle
+        or "['status', 'pnrr', 'special'].includes(pageType)" in bundle
+    )
 
 
 def main():
