@@ -1,0 +1,95 @@
+name: Data audit Lotto A
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/data-audit-lotto-a.json"
+      - "docs/data-audit-lotto-a.md"
+      - "scripts/test_data_audit_lotto_a.py"
+      - "scripts/test_demography_lotto_a_materialized.py"
+      - "scripts/audit_istat_demography_sources.py"
+      - "scripts/probe_demography_lucca_samples.py"
+      - "scripts/probe_demography_schema.py"
+      - "scripts/probe_rcs_demography_samples.py"
+      - "scripts/materialize_demography_lotto_a.py"
+      - "scripts/materialize_demography_lotto_a_v2.py"
+      - "scripts/materialize_demography_lotto_a_v3.py"
+      - "scripts/materialize_demography_lotto_a_v4.py"
+      - "data/site-data.json"
+      - "data/source-registry.json"
+      - "data/source-monitor-state.json"
+      - "assets/**"
+      - ".github/workflows/data-audit-lotto-a.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate audit JSON
+        run: python -m json.tool data/data-audit-lotto-a.json > /dev/null
+      - name: Validate consistency contract
+        run: python scripts/test_data_audit_lotto_a.py
+      - name: Reject parallel tooltip implementations
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          git diff --unified=0 origin/main...HEAD -- 'assets/*.js' 'assets/**/*.js' > /tmp/lotto-a-js.diff || true
+          added="$(grep '^+' /tmp/lotto-a-js.diff | grep -v '^+++' || true)"
+          forbidden="$(printf '%s\n' "$added" | grep -Ei 'chart-tooltip|historyPointMarkup|wireHistoryTooltips' || true)"
+          if [ -n "$forbidden" ]; then
+            echo 'Il Lotto A non può introdurre un tooltip parallelo al toolkit canonico:'
+            printf '%s\n' "$forbidden"
+            exit 1
+          fi
+      - name: Probe official Istat demography sources
+        run: python scripts/audit_istat_demography_sources.py
+      - name: Probe Lucca demography samples
+        run: python scripts/probe_demography_lucca_samples.py
+      - name: Probe RCS citizenship and birth-country samples
+        run: python scripts/probe_rcs_demography_samples.py
+      - name: Probe canonical demography schema
+        run: python scripts/probe_demography_schema.py
+      - name: Upload source audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-a-istat-demography-source-scan
+          path: |
+            audit-artifacts/istat-demography-source-scan.json
+            audit-artifacts/demography-lucca-samples.json
+            audit-artifacts/demography-rcs-samples.json
+            audit-artifacts/demography-canonical-schema.json
+          retention-days: 14
+      - name: Materialize Demography draft in workspace
+        run: python scripts/materialize_demography_lotto_a_v4.py
+      - name: Validate materialized Demography draft
+        run: python scripts/test_demography_lotto_a_materialized.py
+      - name: Validate generated JSON
+        run: |
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/data-audit-lotto-a.json > /dev/null
+          python -m json.tool data/source-snapshots/istat-demography-lotto-a-2026-08.json > /dev/null
+      - name: Upload materialized Demography draft
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-a-demography-materialized-draft
+          path: |
+            data/site-data.json
+            data/source-registry.json
+            data/source-monitor-state.json
+            data/data-audit-lotto-a.json
+            data/source-snapshots/istat-demography-lotto-a-2026-08.json
+          retention-days: 14

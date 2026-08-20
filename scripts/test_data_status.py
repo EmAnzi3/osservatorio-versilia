@@ -22,9 +22,13 @@ def main() -> None:
     registry = load(ROOT / "data" / "source-registry.json")
     state = load(ROOT / "data" / "source-monitor-state.json")
     public = build_public_status(data, registry, state)
+    expected_count = int(registry["expectedMetricCount"])
+    expected_inline = int(registry["expectedInlineMetricCount"])
+    expected_external = int(registry["expectedExternalMetricCount"])
 
-    assert public["metricCount"] == 127
-    assert sum(public["counts"].values()) == 127
+    assert expected_inline + expected_external == expected_count
+    assert public["metricCount"] == expected_count
+    assert sum(public["counts"].values()) == expected_count
     assert set(public["counts"]) == {
         "current", "source_checked", "source_access_limited", "release_detected",
         "update_expected", "source_unavailable", "verification_required",
@@ -52,7 +56,7 @@ def main() -> None:
         metric for metric in public["metrics"]
         if data["metrics"][metric["key"]].get("dataStorage", {}).get("type") == "external-climate"
     ]
-    assert len(climate) == 4
+    assert len(climate) == expected_external
     assert all(metric["isExternalClimate"] is True for metric in climate)
     assert all(
         metric["isExternalClimate"] is False
@@ -69,16 +73,17 @@ def main() -> None:
         assert status_path.is_file()
         assert page_path.is_file()
         materialized = load(status_path)
-        assert materialized["metricCount"] == 127
+        assert materialized["metricCount"] == expected_count
         page = page_path.read_text(encoding="utf-8")
         assert "Stato dei dati" in page
         assert "rilevazione → validazione → pubblicazione" in page
         assert "Prossimo aggiornamento atteso" not in page
-        assert page.count('href="../confronta/meteo-clima/"') == 4
+        assert page.count('href="../confronta/meteo-clima/"') == expected_external
+        assert f"Dettaglio dei {expected_count} indicatori" in page
         project = (dist / "progetto" / "index.html").read_text(encoding="utf-8")
         assert "data-status-project-link" in project
         indicators = list((dist / "indicatori").glob("*/index.html"))
-        assert len(indicators) == 123
+        assert len(indicators) == expected_inline
         for path in indicators:
             text = path.read_text(encoding="utf-8")
             assert 'data-data-status-row="period"' in text, path
@@ -87,7 +92,10 @@ def main() -> None:
             assert "Prossimo aggiornamento atteso" not in text, path
             assert "assets/data-status.css" in text, path
 
-    print("Data status tests passed: 127 indicators, static metadata, climate full years only.")
+    print(
+        f"Data status tests passed: {expected_count} indicators "
+        f"({expected_inline} inline + {expected_external} external), static metadata, climate full years only."
+    )
 
 
 if __name__ == "__main__":

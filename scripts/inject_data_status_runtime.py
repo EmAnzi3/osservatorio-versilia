@@ -75,9 +75,7 @@ def enrich_status_page(payload: dict) -> None:
     counts = payload.get("counts") if isinstance(payload.get("counts"), dict) else {}
     limited = int(counts.get("source_access_limited", 0) or 0)
     if "Controllo automatico limitato</h3>" not in text:
-        new_release = (
-            '<li><span>04</span><h3>Nuovi rilasci da verificare</h3>'
-        )
+        new_release = '<li><span>04</span><h3>Nuovi rilasci da verificare</h3>'
         replacement = (
             f'<li><span>04</span><h3>Controllo automatico limitato</h3><strong>{limited}</strong></li>\n'
             '        <li><span>05</span><h3>Nuovi rilasci da verificare</h3>'
@@ -143,6 +141,8 @@ def main() -> None:
     status_path = DIST / "data" / "data-status.json"
     payload = json.loads(status_path.read_text(encoding="utf-8"))
     metrics = payload.get("metrics") or []
+    inline_metrics = [item for item in metrics if not item.get("isExternalClimate")]
+    expected_inline = len(inline_metrics)
     by_slug = {slugify(str(item["label"])): item for item in metrics}
     injected = 0
 
@@ -173,13 +173,15 @@ def main() -> None:
         path.write_text(text, encoding="utf-8")
         injected += 1
 
-    if injected != 123:
-        raise SystemExit(f"Attese 123 schede indicatore, payload incorporato in {injected}")
+    if injected != expected_inline:
+        raise SystemExit(
+            f"Attese {expected_inline} schede indicatore inline, payload incorporato in {injected}"
+        )
     enrich_status_page(payload)
     ensure_status_sitemap_lastmod()
     global_pages = inject_global_enhancer()
     print(
-        "Payload stato dati incorporato nelle 123 schede indicatore; "
+        f"Payload stato dati incorporato nelle {expected_inline} schede indicatore; "
         f"enhancer navigazione aggiunto a {global_pages} pagine ulteriori"
     )
 

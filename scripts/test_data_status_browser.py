@@ -63,7 +63,9 @@ def check_view(page, base: str, width: int, height: int) -> None:
     page.goto(base + "stato-dati/", wait_until="networkidle")
     assert page.locator("h1").inner_text() == "Stato dei dati."
     assert_native_status_shell(page, width)
-    assert page.locator(".data-status-table tbody tr").count() == 127
+    expected_count = int(page.locator(".data-status-summary li").first.locator("strong").inner_text())
+    assert page.locator(".data-status-table tbody tr").count() == expected_count
+    assert f"Dettaglio dei {expected_count} indicatori" in page.locator(".data-status-table-section h2").inner_text()
     overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
     assert not overflow, f"Overflow orizzontale a {width}px"
     page.locator("[data-status-filter]").select_option("source_checked")
@@ -94,7 +96,7 @@ def main() -> None:
         check_view(page, args.base, 1440, 1000)
         check_view(page, args.base, 390, 844)
         browser.close()
-    print("Data status browser checks passed: native OV shell + social footer + public path + desktop + mobile.")
+    print("Data status browser checks passed: native OV shell + social footer + dynamic catalog + desktop + mobile.")
 
 
 if __name__ == "__main__":

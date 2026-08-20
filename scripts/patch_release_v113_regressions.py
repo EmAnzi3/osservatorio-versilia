@@ -2,6 +2,7 @@
 """Align long-lived compatibility checks with validated v1.13 changes."""
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +44,10 @@ OLD_HISTORY_VERSION = 'require(DATA["version"] == "v1.12.0", "Versione dati v1.1
 NEW_HISTORY_VERSION = 'require(DATA["version"] == "v1.13.0", "Versione dati v1.13.0 non applicata")'
 OLD_HISTORY_DATE = 'require(DATA["updated"] == "15 agosto 2026", "Data di aggiornamento v1.12.0 inattesa")'
 NEW_HISTORY_DATE = 'require(DATA["updated"] == "16 agosto 2026", "Data di aggiornamento v1.13.0 inattesa")'
+HISTORY_VERSION_RE = re.compile(
+    r'require\(DATA\["version"\] == "v(\d+)\.(\d+)\.(\d+)", '
+    r'"Versione dati v\d+\.\d+\.\d+ non applicata"\)'
+)
 
 
 def patch_compat() -> None:
@@ -60,11 +65,18 @@ def patch_compat() -> None:
 
 def patch_history() -> None:
     text = HISTORY.read_text(encoding='utf-8')
-    if NEW_HISTORY_VERSION not in text:
+    match = HISTORY_VERSION_RE.search(text)
+    if not match:
+        raise RuntimeError('History version anchor missing')
+    version = tuple(int(part) for part in match.groups())
+    if version < (1, 13, 0):
         if OLD_HISTORY_VERSION not in text:
             raise RuntimeError('History version anchor missing')
         text = text.replace(OLD_HISTORY_VERSION, NEW_HISTORY_VERSION, 1)
-    if NEW_HISTORY_DATE not in text:
+        version = (1, 13, 0)
+    if version == (1, 13, 0) and NEW_HISTORY_VERSION not in text:
+        raise RuntimeError('History v1.13 version assertion is inconsistent')
+    if version == (1, 13, 0) and NEW_HISTORY_DATE not in text:
         if OLD_HISTORY_DATE not in text:
             raise RuntimeError('History update-date anchor missing')
         text = text.replace(OLD_HISTORY_DATE, NEW_HISTORY_DATE, 1)
