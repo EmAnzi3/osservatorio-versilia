@@ -7,6 +7,7 @@ on:
       - "data/data-audit-lotto-a.json"
       - "docs/data-audit-lotto-a.md"
       - "scripts/test_data_audit_lotto_a.py"
+      - "scripts/audit_istat_demography_sources.py"
       - "data/site-data.json"
       - "assets/ux-history-core.js"
       - "assets/ux-history.js"
@@ -28,3 +29,11 @@ jobs:
         run: python -m json.tool data/data-audit-lotto-a.json > /dev/null
       - name: Validate consistency contract
         run: python scripts/test_data_audit_lotto_a.py
+      - name: Probe official Istat demography sources
+        run: python scripts/audit_istat_demography_sources.py
+      - name: Upload source audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-a-istat-demography-source-scan
+          path: audit-artifacts/istat-demography-source-scan.json
+          retention-days: 14
