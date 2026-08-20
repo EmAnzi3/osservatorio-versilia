@@ -33,7 +33,7 @@ Il live probe è stato eseguito su GitHub Actions usando `Europe/Rome` come rife
 
 Esito tecnico:
 
-- test automatici: verdi;
+- 8 test automatici complessivi: verdi;
 - live probe: verde;
 - Regione Toscana: 40 opportunità trattenute;
 - Fondazione CR Lucca: 2 opportunità trattenute;
