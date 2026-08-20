@@ -20,7 +20,18 @@ DIST = ROOT / "dist"
 DATA_PATH = ROOT / "data" / "site-data.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "composite-indicators-v1.9.0.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
-COMPOSITE_KEYS = {"ageDistribution", "internalResidentialMobility", "incomeDistribution", "foreignResidents", "foreignResidentialMobility", "totalResidentialMobility", "omiResidential", "roadSafety"}
+COMPOSITE_KEYS = {
+    "ageDistribution",
+    "dependencyIndices",
+    "foreignResidents",
+    "foreignResidentialMobility",
+    "incomeDistribution",
+    "internalResidentialMobility",
+    "naturalDemographicDynamics",
+    "omiResidential",
+    "roadSafety",
+    "totalResidentialMobility",
+}
 REMOVED_KEYS = {"share014", "share65", "incomeUnder15k"}
 CLIMATE_KEYS = {
     "climateTemperatureTrend50y", "climatePrecipitationTrend50y",
@@ -88,9 +99,9 @@ def static_checks() -> dict:
         for theme in data["themes"].values()
     )
     assert data["themes"]["demografia"]["metrics"] == [
-        "population", "ageDistribution", "oldAgeIndex", "foreignResidents",
+        "population", "ageDistribution", "oldAgeIndex", "dependencyIndices", "foreignResidents",
         "internalResidentialMobility", "foreignResidentialMobility",
-        "totalResidentialMobility", "populationChange",
+        "totalResidentialMobility", "naturalDemographicDynamics", "populationChange",
     ]
     assert data["themes"]["abitare"]["metrics"][0] == "omiResidential"
     assert data["themes"]["economia"]["sections"][0]["metrics"] == [
