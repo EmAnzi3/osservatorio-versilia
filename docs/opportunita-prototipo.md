@@ -61,7 +61,7 @@ Tra i risultati del probe:
 - Nidi di qualità 2026-2027 — `eligible`, scadenza 4 settembre 2026;
 - Fondazione CR Lucca, Progett-Azioni — `conditional`, scadenza 11 settembre 2026;
 - Fondazione CR Lucca, Progettare per il futuro – opere pubbliche — `eligible`, scadenza 11 settembre 2026;
-- Avviso Comuni Toscana Diffusa — rilevato come opportunità comunale, ma il vincolo territoriale dimostra che serve una verifica per singolo Comune.
+- Avviso Comuni Toscana Diffusa — correttamente intercettato come bando rivolto a Comuni, ma non ancora validato per ciascuno dei sette Comuni della Versilia: il vincolo territoriale è il primo controesempio concreto alla regola semplificata della v0.1.
 
 ## Limiti emersi
 
