@@ -11,6 +11,7 @@ on:
       - "scripts/audit_istat_demography_sources.py"
       - "scripts/probe_demography_lucca_samples.py"
       - "scripts/probe_demography_schema.py"
+      - "scripts/probe_rcs_demography_samples.py"
       - "scripts/materialize_demography_lotto_a.py"
       - "scripts/materialize_demography_lotto_a_v2.py"
       - "scripts/materialize_demography_lotto_a_v3.py"
@@ -56,6 +57,8 @@ jobs:
         run: python scripts/audit_istat_demography_sources.py
       - name: Probe Lucca demography samples
         run: python scripts/probe_demography_lucca_samples.py
+      - name: Probe RCS citizenship and birth-country samples
+        run: python scripts/probe_rcs_demography_samples.py
       - name: Probe canonical demography schema
         run: python scripts/probe_demography_schema.py
       - name: Upload source audit artifact
@@ -65,6 +68,7 @@ jobs:
           path: |
             audit-artifacts/istat-demography-source-scan.json
             audit-artifacts/demography-lucca-samples.json
+            audit-artifacts/demography-rcs-samples.json
             audit-artifacts/demography-canonical-schema.json
           retention-days: 14
       - name: Materialize Demography draft in workspace
