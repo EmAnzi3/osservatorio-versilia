@@ -1,0 +1,35 @@
+name: Data audit Lotto A - Demografia v2
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/probe_istat_rcs_demography.py"
+      - ".github/workflows/data-audit-lotto-a-demografia-v2.yml"
+      - "scripts/materialize_demography_lotto_a_v5.py"
+      - "scripts/patch_demography_lotto_a_frontend_v2.py"
+      - "scripts/test_demography_lotto_a_v5.py"
+      - "scripts/test_demography_lotto_a_browser_v2.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rcs-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe Istat RCS 2025
+        run: python scripts/probe_istat_rcs_demography.py
+      - name: Validate probe JSON
+        run: python -m json.tool audit-artifacts/istat-rcs-demography-2025.json > /dev/null
+      - name: Upload RCS probe
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-a-istat-rcs-demography-probe
+          path: audit-artifacts/istat-rcs-demography-2025.json
+          retention-days: 14
