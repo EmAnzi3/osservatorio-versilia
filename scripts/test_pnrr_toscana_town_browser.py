@@ -35,6 +35,15 @@ def main() -> int:
         assert "73,3%" in body_text
         assert "Quota Versilia\n50,0%" not in body_text
 
+        page.goto(base + "pnrr/", wait_until="networkidle")
+        assert page.locator('[data-data-status-nav="header"]').count() == 1
+        assert page.locator('[data-data-status-nav="footer"]').count() == 1
+        assert page.locator(".site-header").count() == 1
+        assert page.locator(".site-footer").count() == 1
+        assert not page.evaluate(
+            "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+        )
+
         page.goto(
             base + "comuni/massarosa/?tema=comunita&indicatore=pnrrConcluded",
             wait_until="networkidle",
@@ -69,6 +78,12 @@ def main() -> int:
         fits = mobile_town.evaluate("el => el.scrollWidth <= el.clientWidth + 1")
         assert fits, "Il dettaglio PNRR comunale genera overflow orizzontale su mobile"
         assert mobile_town.locator(".pnrr-town-work").count() == 2
+
+        mobile.goto(base + "pnrr/", wait_until="networkidle")
+        assert mobile.locator('[data-data-status-nav="footer"]').count() == 1
+        assert not mobile.evaluate(
+            "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+        )
 
         browser.close()
 

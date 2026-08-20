@@ -130,6 +130,11 @@ def validate_built_preview(data):
     assert SOCIAL_IMAGE in text
     assert 'name="twitter:card" content="summary_large_image"' in text
     assert 'name="twitter:site" content="@OssVersilia"' in text
+    assert text.count('data-data-status-nav="header"') == 1
+    assert text.count('data-data-status-nav="footer"') == 1
+
+    sitemap = Path("dist/sitemap.xml").read_text(encoding="utf-8")
+    assert sitemap.count("https://osservatorioversilia.it/pnrr/") == 1
 
     for key in ("pnrrFunding", "pnrrConcluded"):
         slug = slugify(data["metrics"][key]["meta"]["label"])
