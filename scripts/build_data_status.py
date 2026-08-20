@@ -179,7 +179,7 @@ def build_page(status: dict[str, Any]) -> str:
   <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
   <link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">
   <script type="application/ld+json">{json_ld}</script>
-  <link rel="icon" href="../favicon.svg?v=20260807-ov" type="image/svg+xml">
+  <link rel="icon" href="../favicon.svg?v=20260820-ov2" type="image/svg+xml">
   <link rel="manifest" href="../site.webmanifest?v=20260813-pwa8">
   {native_styles}
   <link rel="stylesheet" href="../assets/data-status.css">
