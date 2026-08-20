@@ -107,7 +107,11 @@ def verify_viewport(base: str, width: int, height: int) -> None:
         for route in SPECIAL_ROUTES:
             open_page(page, base, route)
             assert_geometry(reference_geometry, geometry(page), route)
-            require(style_fingerprint(page) == reference_style, f"Stili header diversi in {route}")
+            actual_style = style_fingerprint(page)
+            require(
+                actual_style == reference_style,
+                f"Stili header diversi in {route}: {actual_style} != {reference_style}",
+            )
             capture = header_capture(page)
             require(
                 capture == reference_image,
