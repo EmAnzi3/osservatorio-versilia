@@ -21,10 +21,11 @@
     {
       "id": "fondazione-cr-lucca",
       "name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
-      "type": "html_cards",
+      "type": "jsonld_grants",
       "url": "https://www.fondazionecarilucca.it/bandi-in-corso",
       "publisher": "Fondazione Cassa di Risparmio di Lucca",
-      "territory": "Provincia di Lucca"
+      "territory": "Provincia di Lucca",
+      "detailEnrichment": true
     },
     {
       "id": "pa-digitale-2026",
