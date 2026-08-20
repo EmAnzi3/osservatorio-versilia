@@ -9,8 +9,7 @@ on:
       - "scripts/test_data_audit_lotto_a.py"
       - "scripts/audit_istat_demography_sources.py"
       - "data/site-data.json"
-      - "assets/ux-history-core.js"
-      - "assets/ux-history.js"
+      - "assets/**"
       - ".github/workflows/data-audit-lotto-a.yml"
   workflow_dispatch:
 
@@ -22,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -29,6 +30,19 @@ jobs:
         run: python -m json.tool data/data-audit-lotto-a.json > /dev/null
       - name: Validate consistency contract
         run: python scripts/test_data_audit_lotto_a.py
+      - name: Reject parallel tooltip implementations
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          git diff --unified=0 origin/main...HEAD -- 'assets/*.js' 'assets/**/*.js' > /tmp/lotto-a-js.diff || true
+          added="$(grep '^+' /tmp/lotto-a-js.diff | grep -v '^+++' || true)"
+          forbidden="$(printf '%s\n' "$added" | grep -Ei 'chart-tooltip|historyPointMarkup|wireHistoryTooltips' || true)"
+          if [ -n "$forbidden" ]; then
+            echo 'Il Lotto A non può introdurre un tooltip parallelo al toolkit canonico:'
+            printf '%s\n' "$forbidden"
+            exit 1
+          fi
       - name: Probe official Istat demography sources
         run: python scripts/audit_istat_demography_sources.py
       - name: Upload source audit artifact
