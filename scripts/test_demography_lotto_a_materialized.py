@@ -11,6 +11,7 @@ REGISTRY = json.loads((ROOT / 'data/source-registry.json').read_text(encoding='u
 MONITOR = json.loads((ROOT / 'data/source-monitor-state.json').read_text(encoding='utf-8'))
 AUDIT = json.loads((ROOT / 'data/data-audit-lotto-a.json').read_text(encoding='utf-8'))
 SNAPSHOT = json.loads((ROOT / 'data/source-snapshots/istat-demography-lotto-a-2026-08.json').read_text(encoding='utf-8'))
+HISTORY_CORE = (ROOT / 'assets/ux-history-core.js').read_text(encoding='utf-8')
 
 EXPECTED_TOWNS = [
     'Camaiore', 'Forte dei Marmi', 'Massarosa', 'Pietrasanta',
@@ -71,11 +72,22 @@ def main() -> None:
 
     dependency = SITE['metrics']['dependencyIndices']
     assert dependency['meta']['year'] == '2026'
-    assert dependency['meta']['unit'] == 'index'
+    assert dependency['meta']['unit'] == 'per100'
+    assert 'ogni 100 persone' in dependency['meta']['description']
+    assert '15 e 64 anni' in dependency['meta']['description']
+    assert 'non è una percentuale della popolazione totale' in dependency['method']['caveat'].lower()
     assert_series(dependency, list(range(2019, 2027)))
     assert [part['label'] for part in dependency['rows'][0]['parts']] == [
         'Indice di dipendenza strutturale', 'Indice di dipendenza degli anziani'
     ]
+    for row in dependency['rows']:
+        assert row['formatted'].endswith(' ogni 100')
+        assert all(part['unit'] == 'per100' for part in row['parts'])
+    assert all(part['unit'] == 'per100' for part in dependency['aggregate']['parts'])
+
+    # Il renderer storico canonico deve riservare più spazio alle unità testuali lunghe:
+    # la correzione vale quindi sia nel confronto sia nelle pagine dei Comuni.
+    assert "['per100','per1000','per10k','per100k'].includes(metric.meta.unit) ? 132 : 78" in HISTORY_CORE
 
     # 80+ non deve diventare una nuova card: esiste già nel composito ageDistribution.
     assert 'share80Plus' not in SITE['metrics']
@@ -97,6 +109,9 @@ def main() -> None:
     decisions = {candidate['key']: candidate.get('implementationStatus') for candidate in AUDIT['candidates']}
     assert decisions['share80Plus'] == 'covered_by_existing_ageDistribution'
     assert decisions['populationAgeSexDetail'] == 'snapshot_materialized_2026'
+    dependency_audit = next(candidate for candidate in AUDIT['candidates'] if candidate['key'] == 'dependencyIndices')
+    assert dependency_audit['unit'] == 'per100'
+    assert '15–64' in dependency_audit['unitExplanation']
 
     # Snapshot: copertura completa, P02 provvisorio 2025 e POSAS senza riga totale 999.
     assert set(SNAPSHOT['p02']['towns']) == set(EXPECTED_TOWNS)
@@ -143,8 +158,8 @@ def main() -> None:
 
     print(
         'Demografia Lotto A materializzata OK: 129 metriche, 7/7, '
-        'P02 2019–2025 + POSAS 2019–2026, POSAS incrociato con popolazione/indice di vecchiaia, '
-        'nessun duplicato 80+, UI canonica.'
+        'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
+        'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )
 
 
