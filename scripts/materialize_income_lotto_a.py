@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
-"""Materializza la tranche Redditi / fiscalità del Lotto A da fonte MEF.
+"""Materializza il primo stadio Redditi / fiscalità del Lotto A da fonte MEF.
 
-Decisioni:
-- `pensionIncomeShare` entra come nuovo indicatore percentuale;
-- fonti di reddito e fasce complete restano dataset di approfondimento nello
-  snapshot versionato, senza moltiplicare le card del catalogo;
-- `incomeDistribution` resta la card canonica già pubblicata: il dataset
-  completo viene collegato nei metadati ma non sostituisce i quattro gruppi
-  leggibili, perché alcune classi MEF sono oscurate/non valorizzate in singoli
-  Comuni e non devono essere trasformate in zeri;
-- `taxpayersAdultPopulationRate` resta bloccato finché non viene scelto un
-  denominatore metodologicamente giustificato.
+Il primo stadio acquisisce e conserva il dataset comunale 2024 e materializza
+`pensionIncomeShare`. La materializzazione completa è eseguita da
+`materialize_income_lotto_a_v2.py`, che rende consultabili anche reddito per
+fonte, dettaglio a 8 fasce e contribuenti ogni 100 maggiorenni.
 """
 from __future__ import annotations
 
@@ -120,10 +114,7 @@ def build_snapshot(site: dict, headers: list[str], towns: dict[str, dict[str, st
         raw = towns[town]
         pension_amount = parse_integer(raw.get(PENSION_AMOUNT))
         total_amount = parse_integer(raw.get(TOTAL_AMOUNT))
-        if pension_amount is None or total_amount in (None, 0):
-            share = None
-        else:
-            share = pension_amount / total_amount * 100
+        share = None if pension_amount is None or total_amount in (None, 0) else pension_amount / total_amount * 100
 
         sources = []
         for key, label, prefix in SOURCE_DEFINITIONS:
@@ -145,10 +136,7 @@ def build_snapshot(site: dict, headers: list[str], towns: dict[str, dict[str, st
         result[town] = {
             **identity(site, town),
             'taxpayers': parse_integer(raw.get(TAXPAYERS)),
-            'totalIncome': {
-                'frequency': total_frequency,
-                'amountEuro': total_amount,
-            },
+            'totalIncome': {'frequency': total_frequency, 'amountEuro': total_amount},
             'pensionIncome': {
                 'frequency': parse_integer(raw.get(PENSION_FREQ)),
                 'amountEuro': pension_amount,
@@ -228,20 +216,14 @@ def pension_metric(site: dict, snapshot: dict) -> dict:
             'year': '2024',
             'source': 'Dipartimento delle Finanze — MEF',
             'polarity': 'neutral',
-            'searchTerms': [
-                'pensione', 'pensioni', 'redditi da pensione', 'struttura redditi',
-                'fonti reddito', 'reddito pensionistico',
-            ],
+            'searchTerms': ['pensione','pensioni','redditi da pensione','struttura redditi','fonti reddito','reddito pensionistico'],
         },
         'sourceUrl': SOURCE_URL,
         'rows': rows,
         'aggregate': {
             'value': aggregate,
             'label': 'Versilia · peso redditi da pensione',
-            'note': (
-                'Rapporto tra la somma dell’ammontare dei redditi da pensione e la somma del reddito complessivo '
-                'dichiarato nei sette Comuni.'
-            ),
+            'note': 'Rapporto tra la somma dell’ammontare dei redditi da pensione e la somma del reddito complessivo dichiarato nei sette Comuni.',
         },
         'normalizedAggregate': None,
         'method': {
@@ -270,28 +252,20 @@ def update_site(site: dict, metric: dict, snapshot: dict) -> None:
 
     theme = site['themes']['economia']
     if METRIC_KEY not in theme['metrics']:
-        anchor = theme['metrics'].index('incomeDistribution') + 1
-        theme['metrics'].insert(anchor, METRIC_KEY)
+        theme['metrics'].insert(theme['metrics'].index('incomeDistribution') + 1, METRIC_KEY)
     redditi = next(section for section in theme['sections'] if section['key'] == 'redditi')
     if METRIC_KEY not in redditi['metrics']:
-        anchor = redditi['metrics'].index('incomeDistribution') + 1
-        redditi['metrics'].insert(anchor, METRIC_KEY)
-    redditi['description'] = (
-        'Reddito imponibile, distribuzione dei redditi dichiarati, peso delle pensioni e confronto comunale con l’inflazione.'
-    )
+        redditi['metrics'].insert(redditi['metrics'].index('incomeDistribution') + 1, METRIC_KEY)
+    redditi['description'] = 'Reddito imponibile, distribuzione dei redditi dichiarati, peso delle pensioni e confronto comunale con l’inflazione.'
 
     distribution = site['metrics']['incomeDistribution']
     distribution['meta']['detailDataset'] = {
         'key': 'incomeBandsFull2024',
         'snapshot': 'data/source-snapshots/mef-income-lotto-a-2024.json',
-        'description': (
-            'Otto fasce MEF complete disponibili nello snapshot di approfondimento. '
-            'La card mantiene quattro gruppi leggibili e non interpreta come zero le celle MEF non valorizzate.'
-        ),
+        'description': 'Otto fasce MEF complete disponibili nello snapshot di approfondimento; le celle MEF non valorizzate restano n.d.',
     }
     distribution.setdefault('method', {})['detailCaveat'] = (
-        'Il dataset completo conserva separatamente le otto classi MEF e mantiene null le celle vuote; '
-        'la visualizzazione sintetica pubblica continua a usare i quattro gruppi già validati.'
+        'Il dataset completo conserva separatamente le otto classi MEF e mantiene null le celle vuote.'
     )
 
     site['detailDatasets'] = site.get('detailDatasets', {})
@@ -304,11 +278,8 @@ def update_site(site: dict, metric: dict, snapshot: dict) -> None:
         'snapshot': 'data/source-snapshots/mef-income-lotto-a-2024.json',
         'coverage': '7/7',
         'contents': ['incomeSources', 'incomeBands'],
-        'note': (
-            'Dataset di approfondimento per future letture editoriali; non genera una card per ciascuna fonte o fascia.'
-        ),
+        'note': 'Dataset di approfondimento utilizzato dalla materializzazione completa v2.',
     }
-
     site['version'] = 'v1.15.0'
     site['updated'] = '20 agosto 2026'
 
@@ -331,21 +302,16 @@ def update_monitor(monitor: dict) -> None:
 
 
 def update_audit(audit: dict) -> None:
-    audit['status'] = 'implementation_income_draft'
+    audit['status'] = 'implementation_income_stage1'
     audit['catalogMetricCountCurrentDraft'] = 130
     decisions = {
-        'taxpayersAdultPopulationRate': 'verify_denominator_definition',
+        'taxpayersAdultPopulationRate': 'awaiting_v2_materialization',
         'pensionIncomeShare': 'draft_materialized',
         'incomeSourceAndBandsDetail': 'snapshot_materialized_2024',
     }
     for candidate in audit.get('candidates', []):
-        key = candidate.get('key')
-        if key in decisions:
-            candidate['implementationStatus'] = decisions[key]
-    detail = next((candidate for candidate in audit.get('candidates', []) if candidate.get('key') == 'incomeSourceAndBandsDetail'), None)
-    if detail is not None:
-        detail['detailCoverage'] = '7/7 con celle MEF vuote conservate come null'
-        detail['snapshot'] = 'data/source-snapshots/mef-income-lotto-a-2024.json'
+        if candidate.get('key') in decisions:
+            candidate['implementationStatus'] = decisions[candidate['key']]
 
 
 def patch_history_expectation() -> None:
@@ -364,7 +330,6 @@ def main() -> None:
     registry = load(REGISTRY_PATH)
     monitor = load(MONITOR_PATH)
     audit = load(AUDIT_PATH)
-
     if 'dependencyIndices' not in site['metrics']:
         raise RuntimeError('La tranche Redditi deve essere materializzata dopo Demografia Lotto A')
 
@@ -380,10 +345,7 @@ def main() -> None:
     update_audit(audit)
     patch_history_expectation()
 
-    external = [
-        item for item in site['metrics'].values()
-        if item.get('dataStorage', {}).get('type') == 'external-climate'
-    ]
+    external = [item for item in site['metrics'].values() if item.get('dataStorage', {}).get('type') == 'external-climate']
     if len(site['metrics']) != 130 or len(external) != 4:
         raise RuntimeError(f'Conteggio inatteso: {len(site["metrics"])} totali, {len(external)} esterni')
 
@@ -391,7 +353,7 @@ def main() -> None:
     save(REGISTRY_PATH, registry)
     save(MONITOR_PATH, monitor)
     save(AUDIT_PATH, audit)
-    print('Lotto A Redditi materializzato: 130 indicatori = 126 inline + 4 climatici esterni; dataset MEF di dettaglio 2024 conservato.')
+    print('Lotto A Redditi stage 1: 130 indicatori = 126 inline + 4 climatici; snapshot MEF 2024 acquisito.')
 
 
 if __name__ == '__main__':
