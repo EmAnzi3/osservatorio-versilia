@@ -16,7 +16,8 @@
       "type": "html_cards",
       "url": "https://www.regione.toscana.it/it/bandi-aperti?delta=60&sortBy=desc&start=1",
       "publisher": "Regione Toscana",
-      "territory": "Toscana"
+      "territory": "Toscana",
+      "detailEnrichment": true
     },
     {
       "id": "fondazione-cr-lucca",
