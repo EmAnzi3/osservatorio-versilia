@@ -182,7 +182,17 @@ def synchronize_native_page(
     if include_footer:
         if footer_mount not in text:
             raise RuntimeError(f"Mount footer canonico assente: {target_path}")
-        text = text.replace(footer_mount, shell.footer.rstrip(), 1)
+        footer = shell.footer
+        if re.search(
+            r'<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex',
+            text,
+            flags=re.IGNORECASE,
+        ):
+            social_start = footer.find('<div class="footer-social"')
+            footer_note = footer.find('<div class="footer-note"', social_start)
+            if social_start >= 0 and footer_note > social_start:
+                footer = footer[:social_start] + footer[footer_note:]
+        text = text.replace(footer_mount, footer.rstrip(), 1)
     elif footer_mount in text:
         raise RuntimeError(f"Footer non ammesso nella pagina full-screen: {target_path}")
 

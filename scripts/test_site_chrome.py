@@ -22,7 +22,7 @@ TEMPLATE = '''<!doctype html><html lang="it"><head>
 <nav aria-label="Navigazione principale"><a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="header">Stato dati</a><a href="../segnala/">Segnala</a></nav>
 <button class="global-search-trigger" type="button"><span>Cerca</span><kbd>/</kbd></button></div></header></div>
 <div id="app"><main><h1>Progetto</h1></main></div>
-<div id="site-footer-mount"><footer class="site-footer"><nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../progetto/#metodo">Metodo</a><a href="../progetto/#licenza">Licenza</a><a href="../progetto/#versioni">Versioni dei dati</a><a href="../segnala/">Segnala un dato</a><a href="mailto:info@osservatorioversilia.it">Contatti</a></nav></footer></div>
+<div id="site-footer-mount"><footer class="site-footer"><nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../progetto/#metodo">Metodo</a><a href="../progetto/#licenza">Licenza</a><a href="../progetto/#versioni">Versioni dei dati</a><a href="../segnala/">Segnala un dato</a><a href="mailto:info@osservatorioversilia.it">Contatti</a></nav><div class="footer-social" data-social-placement="footer"><strong>Social</strong><div class="social-links"><a href="https://example.test/">Profilo</a></div></div><div class="footer-note"><span>Nota</span></div></footer></div>
 <noscript>no js</noscript><script src="../assets/app-bundle.js"></script></body></html>'''
 
 
@@ -54,6 +54,20 @@ def main() -> None:
         assert '<button class="global-search-trigger"' in synchronized
         assert "../assets/app-bundle.js" in synchronized
         assert synchronized.count('class="site-footer"') == 1
+        assert 'data-social-placement="footer"' in synchronized
+
+        noindex = dist / "bozza" / "index.html"
+        noindex.parent.mkdir(parents=True, exist_ok=True)
+        noindex.write_text(
+            '<!doctype html><html><head><meta name="robots" content="noindex,nofollow"></head>'
+            '<body data-page="special"><div id="site-header-mount"></div>'
+            '<main id="app"><h1>Bozza</h1></main><div id="site-footer-mount"></div></body></html>',
+            encoding="utf-8",
+        )
+        synchronize_native_page(dist, noindex)
+        noindex_text = noindex.read_text(encoding="utf-8")
+        assert 'data-social-placement="footer"' not in noindex_text
+        assert 'class="footer-note"' in noindex_text
 
         fallback = shell.header.replace(
             '<button class="global-search-trigger" type="button"><span>Cerca</span><kbd>/</kbd></button>',
