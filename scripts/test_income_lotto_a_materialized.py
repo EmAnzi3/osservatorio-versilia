@@ -50,10 +50,12 @@ def main() -> None:
         expected = detail['pensionIncome']['amountEuro'] / detail['totalIncome']['amountEuro'] * 100
         require(abs(row['value'] - expected) < 1e-10, f"Formula pensioni errata: {row['town']}")
 
-    # Controllo puntuale su Massarosa, ricostruito dal raw MEF conservato nello snapshot.
+    # Controllo puntuale su Massarosa, ricostruito dai valori MEF 2024.
     massarosa = SNAPSHOT['towns']['Massarosa']
     require(massarosa['pensionIncome']['frequency'] == 5530, 'Frequenza pensione Massarosa inattesa')
-    expected_massarosa = 168007231 / 558984212 * 100
+    require(massarosa['pensionIncome']['amountEuro'] == 111076251, 'Ammontare pensioni Massarosa inatteso')
+    require(massarosa['totalIncome']['amountEuro'] == 369561101, 'Reddito complessivo Massarosa inatteso')
+    expected_massarosa = 111076251 / 369561101 * 100
     require(abs(massarosa['pensionIncome']['shareOfTotalIncomePercent'] - expected_massarosa) < 1e-10,
             'Quota pensioni Massarosa inattesa')
 
