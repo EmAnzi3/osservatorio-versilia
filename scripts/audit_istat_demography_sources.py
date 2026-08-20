@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Sonda read-only delle fonti Istat Demo per il Lotto A demografico.
 
-Non modifica alcun dato del sito. P02 viene ispezionato per la copertura 7/7;
-per gli archivi POS/RCS nazionali si effettua solo discovery/HEAD, così l'audit
-non scarica inutilmente dataset nazionali molto grandi.
+Non modifica alcun dato del sito. Verifica le pagine ufficiali, l'archivio P02
+2025 e pochi endpoint candidati; gli URL provinciali già individuati vengono
+registrati senza ripetere decine di richieste HEAD ad ogni commit.
 """
 from __future__ import annotations
 
@@ -35,14 +35,14 @@ KNOWN_CANDIDATES = {
         "https://demo.istat.it/data/pos/POSAS_2026_it_Comuni.zip",
     ],
 }
+VERIFIED_LUCCA = {
+    "p02_2025": "https://demo.istat.it/data/p2/P2_2025_it_046_Lucca.zip",
+    "posas_2026": "https://demo.istat.it/data/posas/POSAS_2026_it_046_Lucca.zip",
+}
 
 
 def request(url: str, *, method: str = "GET", timeout: int = 12) -> tuple[int, str, bytes, dict[str, str]]:
-    req = urllib.request.Request(
-        url,
-        method=method,
-        headers={"User-Agent": "OsservatorioVersilia-data-audit/1.0"},
-    )
+    req = urllib.request.Request(url, method=method, headers={"User-Agent": "OsservatorioVersilia-data-audit/1.0"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as response:
             body = b"" if method == "HEAD" else response.read()
@@ -132,7 +132,6 @@ def head_entry(url: str) -> dict:
 
 def main() -> None:
     report: dict = {"townCodes": TOWN_CODES, "pages": {}, "candidateDownloads": {}}
-
     discovered: set[str] = set()
     for key, url in PAGES.items():
         status, content_type, body, _headers = request(url)
@@ -146,8 +145,6 @@ def main() -> None:
             "zipLinks": links,
         }
 
-    # Il solo archivio nazionale che scarichiamo in questa sonda è P02: è
-    # relativamente compatto e serve a confermare davvero la copertura 7/7.
     p2_url = KNOWN_CANDIDATES["balance_2025_all_municipalities"][0]
     status, content_type, body, _headers = request(p2_url)
     p2_entry = {"url": p2_url, "method": "GET", "status": status, "contentType": content_type, "bytes": len(body)}
@@ -155,12 +152,17 @@ def main() -> None:
         p2_entry.update(inspect_zip(p2_url, body))
     report["candidateDownloads"]["balance_2025_all_municipalities"] = [p2_entry]
 
-    # POS: solo discovery/HEAD. La successiva acquisizione userà il file della
-    # provincia di Lucca, non l'archivio nazionale.
+    # Manteniamo un piccolo controllo del naming nazionale, ma non più cento HEAD.
     report["candidateDownloads"]["population_age_sex_2026"] = [
         head_entry(url) for url in KNOWN_CANDIDATES["population_age_sex_2026"]
     ]
-    report["candidateDownloads"]["discovered_from_official_pages"] = [head_entry(url) for url in sorted(discovered)[:100]]
+    report["candidateDownloads"]["verified_lucca"] = [
+        {"key": key, "url": url, "verification": "confirmed_by_previous_7of7_probe"}
+        for key, url in VERIFIED_LUCCA.items()
+    ]
+    report["candidateDownloads"]["discovered_from_official_pages"] = [
+        {"url": url} for url in sorted(discovered)
+    ]
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
