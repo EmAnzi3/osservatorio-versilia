@@ -1,0 +1,53 @@
+name: Prototipo Radar Opportunità
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/opportunity-radar-prototype.yml"
+      - "scripts/opportunity_radar.py"
+      - "scripts/test_opportunity_radar.py"
+      - "data/opportunity-sources.json"
+      - "docs/opportunita-prototipo.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate prototype
+        run: |
+          python -m py_compile scripts/opportunity_radar.py scripts/test_opportunity_radar.py
+          python scripts/test_opportunity_radar.py
+
+  live-probe:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect current opportunities
+        run: |
+          mkdir -p reports/runtime
+          python scripts/opportunity_radar.py \
+            --output reports/runtime/opportunities.json \
+            --report reports/runtime/opportunities.md
+      - name: Upload probe output
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-prototype
+          path: reports/runtime/
+          retention-days: 30
