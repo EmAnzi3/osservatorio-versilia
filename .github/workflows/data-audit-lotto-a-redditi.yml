@@ -1,0 +1,35 @@
+name: Data audit Lotto A - Redditi
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "docs/data-audit-lotto-a-redditi.md"
+      - "scripts/probe_mef_income_lotto_a.py"
+      - "scripts/test_mef_income_lotto_a_probe.py"
+      - ".github/workflows/data-audit-lotto-a-redditi.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mef-income-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe official MEF municipal income dataset
+        run: python scripts/probe_mef_income_lotto_a.py
+      - name: Validate MEF income probe
+        run: python scripts/test_mef_income_lotto_a_probe.py
+      - name: Validate artifact JSON
+        run: python -m json.tool audit-artifacts/mef-income-lotto-a.json > /dev/null
+      - name: Upload MEF income audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-a-mef-income-source-probe
+          path: audit-artifacts/mef-income-lotto-a.json
+          retention-days: 14
