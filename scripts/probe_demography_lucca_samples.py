@@ -50,15 +50,11 @@ def inspect_zip(url: str) -> dict:
                 continue
             raw = z.read(name)
             delim = sniff(raw)
-            text = io.StringIO(raw.decode('utf-8-sig', errors='replace'))
-            reader = csv.reader(text, delimiter=delim)
-            try:
-                header = next(reader)
-            except StopIteration:
-                continue
+            rows = list(csv.reader(io.StringIO(raw.decode('utf-8-sig', errors='replace')), delimiter=delim))
+            prefix = rows[:5]
             samples = {}
             scanned = 0
-            for row in reader:
+            for row in rows:
                 scanned += 1
                 joined = '|'.join(row)
                 for code, town in TOWNS.items():
@@ -69,7 +65,7 @@ def inspect_zip(url: str) -> dict:
             result['tables'].append({
                 'member': name,
                 'delimiter': delim,
-                'header': header,
+                'prefixRows': prefix,
                 'samples': samples,
                 'rowsScanned': scanned,
             })
