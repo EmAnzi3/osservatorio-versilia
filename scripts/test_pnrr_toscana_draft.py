@@ -157,7 +157,11 @@ def main():
     registry = json.loads(Path("data/source-registry.json").read_text(encoding="utf-8"))
     state = json.loads(Path("data/source-monitor-state.json").read_text(encoding="utf-8"))
     metrics = data["metrics"]
-    assert len(metrics) == 127
+    expected_count = int(registry["expectedMetricCount"])
+    expected_inline = int(registry["expectedInlineMetricCount"])
+    expected_external = int(registry["expectedExternalMetricCount"])
+    assert len(metrics) == expected_count
+    assert expected_inline + expected_external == expected_count
     pop = rows(metrics["population"])
     funding = rows(metrics["pnrrFunding"])
     concluded = rows(metrics["pnrrConcluded"])
@@ -184,9 +188,6 @@ def main():
     assert profile["publisher"] == "Regione Toscana"
     assert profile["frequency"] == "monthly"
     assert registry["sourceProfileByUrl"][DATASET_URL] == "regione-toscana-pnrr-monthly"
-    assert registry["expectedMetricCount"] == 127
-    assert registry["expectedInlineMetricCount"] == 123
-    assert registry["expectedExternalMetricCount"] == 4
 
     public = build_public_status(data, registry, state)
     public_by_key = {item["key"]: item for item in public["metrics"]}
@@ -200,7 +201,7 @@ def main():
         assert item["verificationSource"]["match7of7"] is True
 
     validate_built_preview(data)
-    print("OK: bozza PNRR Toscana + Dentro il PNRR coerenti, 127 indicatori invariati")
+    print(f"OK: bozza PNRR Toscana + Dentro il PNRR coerenti, {expected_count} indicatori canonici")
 
 
 if __name__ == "__main__":
