@@ -62,7 +62,7 @@ def patch_runtime() -> None:
     if not path.exists():
         raise SystemExit("Bundle applicativo non trovato")
     text = path.read_text(encoding="utf-8")
-    if "pageType === 'pnrr'" in text:
+    if "pageType === 'pnrr'" in text or "['status', 'pnrr', 'special'].includes(pageType)" in text:
         return
     marker = (
         "      else if (pageType === 'status') { /* contenuto prerenderizzato: non sostituire #app */ }\n"

@@ -8,10 +8,12 @@ import runpy
 import shutil
 from pathlib import Path
 
+from site_chrome import synchronize_native_page
+
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-BRAND_ASSET_VERSION = "20260807-ov"
-APP_BUNDLE_ASSET_VERSION = "20260816-v113"
+BRAND_ASSET_VERSION = "20260820-ov2"
+APP_BUNDLE_ASSET_VERSION = "20260820-v114"
 PWA_ASSET_VERSION = "20260813-pwa8"
 PWA_JS_REVISION = "install-ui-off"
 MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
@@ -203,5 +205,6 @@ def apply_brand_and_pwa() -> None:
 
 if __name__ == "__main__":
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
+    synchronize_native_page(DIST, DIST / "confronta" / "meteo-clima" / "index.html")
     apply_brand_and_pwa()
     print("Build statica completata con identità OV e PWA installabile.")

@@ -134,6 +134,11 @@ def assert_shell(path: Path, document: str, canonical: str) -> None:
 
     assert "site-brand" in header, f"Marchio assente: {path}"
     assert "global-search-trigger" in header, f"Accesso alla ricerca assente: {path}"
+    assert re.search(
+        r'<button\b[^>]*class="[^"]*global-search-trigger[^"]*"[^>]*>.*?<kbd\b[^>]*>\s*/\s*</kbd>.*?</button>',
+        header,
+        flags=re.I | re.S,
+    ), f"Ricerca globale non eseguibile o scorciatoia assente: {path}"
 
     header_links = nav_links(
         header,
@@ -235,18 +240,29 @@ def source_assertions() -> None:
     assert_navigation_contract(header.group(0), footer.group(0))
 
     climate = (ROOT / "confronta" / "meteo-clima" / "index.html").read_text(encoding="utf-8")
-    climate_header, climate_footer = shell_fragments(climate)
-    assert climate_header and climate_footer
-    assert_navigation_contract(climate_header, climate_footer)
+    assert '<div id="site-header-mount"></div>' in climate
+    assert '<div id="site-footer-mount"></div>' in climate
+    assert 'data-page="special"' in climate and 'id="app"' in climate
     assert meta_content(climate, "property", "og:url") == BASE_URL + "confronta/meteo-clima/"
 
     map_source = (ROOT / "percorsi" / "index.html").read_text(encoding="utf-8")
-    map_header, _ = shell_fragments(map_source)
-    assert map_header and 'data-data-status-nav="header"' in map_header
+    assert '<div id="site-header-mount"></div>' in map_source
+    assert 'data-page="special"' in map_source and 'id="app"' in map_source
     assert meta_content(map_source, "property", "og:url") == BASE_URL + "percorsi/"
 
     method = (ROOT / "percorsi" / "metodo.html").read_text(encoding="utf-8")
+    assert '<div id="site-header-mount"></div>' in method
+    assert '<div id="site-footer-mount"></div>' in method
+    assert 'data-page="special"' in method and 'id="app"' in method
     assert meta_content(method, "property", "og:url") == BASE_URL + "percorsi/metodo.html"
+    assert "body{" not in method and "\n    a{" not in method, "Metodo modifica stili globali"
+
+    climate_css = (ROOT / "assets" / "meteo-clima.css").read_text(encoding="utf-8")
+    map_css = (ROOT / "percorsi" / "osservatorio.css").read_text(encoding="utf-8")
+    assert ".site-header-inner" not in climate_css + map_css, "Una pagina speciale sposta lo header canonico"
+    assert "search_fallback_link" not in (
+        ROOT / "scripts" / "copy_percorsi_dist.py"
+    ).read_text(encoding="utf-8"), "Fallback ricerca vietato nelle pagine pubbliche"
     not_found = (ROOT / "404.html").read_text(encoding="utf-8")
     assert "noindex" in (meta_content(not_found, "name", "robots") or "")
     print("Contratto sorgente verificato: shell, pagine speciali e metadata coerenti.")

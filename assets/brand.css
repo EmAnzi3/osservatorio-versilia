@@ -1,3 +1,11 @@
+html {
+  scrollbar-gutter: stable;
+}
+
+.site-header {
+  background: var(--paper);
+}
+
 .site-brand {
   gap: 10px;
 }

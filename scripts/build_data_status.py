@@ -83,6 +83,8 @@ def patch_status_runtime() -> None:
     if not path.exists():
         raise SystemExit("Bundle applicativo non trovato")
     text = path.read_text(encoding="utf-8")
+    if "['status', 'pnrr', 'special'].includes(pageType)" in text:
+        return
     marker = "      else if (pageType === 'feedback') renderFeedback(data);\n      else renderNotFound();"
     replacement = (
         "      else if (pageType === 'feedback') renderFeedback(data);\n"

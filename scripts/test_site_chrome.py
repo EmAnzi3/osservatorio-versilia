@@ -5,7 +5,12 @@ import tempfile
 from pathlib import Path
 
 import copy_percorsi_dist
-from site_chrome import ensure_sitemap_entries, extract_native_shell, search_fallback_link
+from site_chrome import (
+    assert_navigation_contract,
+    ensure_sitemap_entries,
+    extract_native_shell,
+    synchronize_native_page,
+)
 
 
 TEMPLATE = '''<!doctype html><html lang="it"><head>
@@ -36,10 +41,30 @@ def main() -> None:
         assert shell.app_bundle == "../../assets/app-bundle.js"
         assert 'href="../../assets/fonts.css"' in shell.styles
 
-        fallback = search_fallback_link(shell.header)
-        assert '<a class="global-search-trigger" href="../../"' in fallback
-        assert "<kbd" not in fallback
-        assert '<button class="global-search-trigger"' not in fallback
+        special = dist / "speciale" / "index.html"
+        special.parent.mkdir(parents=True, exist_ok=True)
+        special.write_text(
+            '<!doctype html><html><head></head><body data-page="special">'
+            '<div id="site-header-mount"></div><main id="app"><h1>Speciale</h1></main>'
+            '<div id="site-footer-mount"></div></body></html>',
+            encoding="utf-8",
+        )
+        synchronize_native_page(dist, special)
+        synchronized = special.read_text(encoding="utf-8")
+        assert '<button class="global-search-trigger"' in synchronized
+        assert "../assets/app-bundle.js" in synchronized
+        assert synchronized.count('class="site-footer"') == 1
+
+        fallback = shell.header.replace(
+            '<button class="global-search-trigger" type="button"><span>Cerca</span><kbd>/</kbd></button>',
+            '<a class="global-search-trigger" href="../../"><span>Cerca</span></a>',
+        )
+        try:
+            assert_navigation_contract(fallback, shell.footer)
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError("Il contratto deve rifiutare la ricerca fallback")
 
         (dist / "sitemap.xml").write_text(
             '<?xml version="1.0"?><urlset><url><loc>https://osservatorioversilia.it/</loc>'
@@ -65,19 +90,25 @@ def main() -> None:
         map_page = (dist / "percorsi" / "index.html").read_text(encoding="utf-8")
         method_page = (dist / "percorsi" / "metodo.html").read_text(encoding="utf-8")
         assert map_page.count('data-data-status-nav="header"') == 1
-        assert 'class="global-search-trigger" href="../"' in map_page
+        assert '<button class="global-search-trigger"' in map_page
+        assert "<kbd>/</kbd>" in map_page
+        assert 'data-page="special"' in map_page
+        assert "../assets/app-bundle.js" in map_page
         assert 'id="map"' in map_page
         assert 'class="site-footer"' not in map_page
         assert method_page.count('data-data-status-nav="header"') == 1
         assert method_page.count('data-data-status-nav="footer"') == 1
-        assert 'class="global-search-trigger" href="../"' in method_page
+        assert '<button class="global-search-trigger"' in method_page
+        assert "<kbd>/</kbd>" in method_page
+        assert 'data-page="special"' in method_page
+        assert "../assets/app-bundle.js" in method_page
         sitemap = (dist / "sitemap.xml").read_text(encoding="utf-8")
         assert sitemap.count("<loc>https://osservatorioversilia.it/percorsi/</loc>") == 1
         assert sitemap.count(
             "<loc>https://osservatorioversilia.it/percorsi/metodo.html</loc>"
         ) == 1
 
-    print("Site chrome tests passed: contract, rebasing, fallback search, Percorsi and sitemap.")
+    print("Site chrome tests passed: contract, rebasing, live search, Percorsi and sitemap.")
 
 
 if __name__ == "__main__":

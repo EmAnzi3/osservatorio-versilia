@@ -73,6 +73,15 @@ def assert_navigation_contract(header: str, footer: str) -> None:
     for token in ("site-header", "site-brand", "global-search-trigger"):
         if token not in header:
             raise RuntimeError(f"Elemento canonico assente dallo header: {token}")
+    search = re.search(
+        r'<button\b[^>]*class="[^"]*global-search-trigger[^"]*"[^>]*>(.*?)</button>',
+        header,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if not search:
+        raise RuntimeError("La ricerca globale deve usare il pulsante canonico, non un fallback")
+    if not re.search(r"<kbd\b[^>]*>\s*/\s*</kbd>", search.group(1), flags=re.DOTALL):
+        raise RuntimeError("Scorciatoia / assente dal pulsante di ricerca canonico")
     if "site-footer" not in footer:
         raise RuntimeError("Footer canonico non riconoscibile")
 
@@ -156,28 +165,50 @@ def extract_native_shell(
     return NativeShell(header, footer, styles_markup, app_bundle)
 
 
-def search_fallback_link(header: str) -> str:
-    """Trasforma il pulsante Cerca in un link alla Home per pagine senza runtime."""
-    brand = re.search(r'<a\b[^>]*class="[^"]*site-brand[^"]*"[^>]*href="([^"]+)"', header)
-    if not brand:
-        brand = re.search(r'<a\b[^>]*href="([^"]+)"[^>]*class="[^"]*site-brand[^"]*"', header)
-    if not brand:
-        raise RuntimeError("Link Home non ricavabile dalla shell canonica")
+def synchronize_native_page(
+    dist: Path,
+    target_path: Path,
+    *,
+    include_footer: bool = True,
+) -> NativeShell:
+    """Materializza shell e runtime canonici nei mount vuoti di una pagina speciale."""
+    shell = extract_native_shell(dist, target_path)
+    text = target_path.read_text(encoding="utf-8")
+    header_mount = '<div id="site-header-mount"></div>'
+    footer_mount = '<div id="site-footer-mount"></div>'
+    if header_mount not in text:
+        raise RuntimeError(f"Mount header canonico assente: {target_path}")
+    text = text.replace(header_mount, shell.header.rstrip(), 1)
+    if include_footer:
+        if footer_mount not in text:
+            raise RuntimeError(f"Mount footer canonico assente: {target_path}")
+        text = text.replace(footer_mount, shell.footer.rstrip(), 1)
+    elif footer_mount in text:
+        raise RuntimeError(f"Footer non ammesso nella pagina full-screen: {target_path}")
 
-    button = re.compile(
-        r'<button\b[^>]*class="global-search-trigger"[^>]*>(.*?)</button>',
-        flags=re.IGNORECASE | re.DOTALL,
-    )
-    match = button.search(header)
-    if not match:
-        raise RuntimeError("Pulsante di ricerca canonico non trovato")
-    content = re.sub(r"\s*<kbd\b[^>]*>.*?</kbd>", "", match.group(1), flags=re.DOTALL)
-    link = (
-        f'<a class="global-search-trigger" href="{html.escape(brand.group(1), quote=True)}" '
-        'aria-label="Apri la ricerca dalla Home">'
-        f"{content}</a>"
-    )
-    return button.sub(link, header, count=1)
+    missing_styles = []
+    for stylesheet in shell.styles.splitlines():
+        item = stylesheet.strip()
+        href = re.search(r'href="([^"]+)"', item)
+        if href and f'href="{href.group(1)}"' not in text:
+            missing_styles.append(f"  {item}")
+    if missing_styles:
+        text = text.replace("</head>", "\n".join(missing_styles) + "\n</head>", 1)
+
+    if "assets/app-bundle.js" not in text:
+        if not shell.app_bundle:
+            raise RuntimeError("Runtime canonico non disponibile")
+        text = text.replace(
+            "</body>",
+            f'  <script src="{shell.app_bundle}" defer></script>\n</body>',
+            1,
+        )
+    if 'data-page="special"' not in text:
+        raise RuntimeError(f"Pagina speciale priva di data-page=\"special\": {target_path}")
+    if 'id="app"' not in text:
+        raise RuntimeError(f"Pagina speciale priva del mount contenuto #app: {target_path}")
+    target_path.write_text(text, encoding="utf-8")
+    return shell
 
 
 def ensure_sitemap_entries(dist: Path, urls: tuple[str, ...]) -> None:
