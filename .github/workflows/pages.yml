@@ -48,6 +48,15 @@ jobs:
           python -m json.tool data/source-registry.json > /dev/null
           python -m json.tool data/source-monitor-state.json > /dev/null
 
+      - name: Materialize Income Lotto A draft
+        run: |
+          python scripts/materialize_income_lotto_a.py
+          python scripts/test_income_lotto_a_materialized.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
+
       - name: Materialize PNRR Toscana release
         run: |
           python scripts/materialize_pnrr_toscana_draft.py
@@ -181,7 +190,9 @@ jobs:
             scripts/test_pnrr_toscana_review.py \
             scripts/test_pnrr_toscana_town_browser.py \
             scripts/build_data_status.py \
-            scripts/inject_data_status_runtime.py
+            scripts/inject_data_status_runtime.py \
+            scripts/materialize_income_lotto_a.py \
+            scripts/test_income_lotto_a_materialized.py
 
       - name: Verify municipal crests
         run: |
@@ -243,7 +254,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v113-preview
+          name: osservatorio-versilia-v115-preview
           path: dist
           retention-days: 14
 
