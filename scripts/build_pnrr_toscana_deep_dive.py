@@ -14,6 +14,8 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+from site_chrome import ensure_sitemap_entries, extract_native_shell
+
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 DATA_PATH = DIST / "data" / "site-data.json"
@@ -48,23 +50,11 @@ def format_percent(value: Any, digits: int = 1) -> str:
 
 
 def read_native_shell() -> tuple[str, str, str]:
-    template_path = DIST / "progetto" / "index.html"
-    if not template_path.exists():
-        raise SystemExit("Template nativo /progetto/ non trovato")
-    text = template_path.read_text(encoding="utf-8")
-    header_start = text.find('<div id="site-header-mount">')
-    app_start = text.find('<div id="app">', header_start)
-    footer_start = text.find('<div id="site-footer-mount">', app_start)
-    footer_end = text.find("<noscript>", footer_start)
-    if min(header_start, app_start, footer_start, footer_end) < 0:
-        raise SystemExit("Shell nativa non riconoscibile in /progetto/")
-    header = text[header_start:app_start]
-    footer = text[footer_start:footer_end]
-    head = text[:header_start]
-    styles = re.findall(r'<link\b[^>]*rel="stylesheet"[^>]*>', head, flags=re.IGNORECASE)
-    if not styles or not any("assets/fonts.css" in item for item in styles):
-        raise SystemExit("Stylesheet canonici non trovati nel template nativo")
-    return header, footer, "\n  ".join(styles)
+    try:
+        shell = extract_native_shell(DIST, PAGE_PATH)
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+    return shell.header, shell.footer, shell.styles
 
 
 def patch_runtime() -> None:
@@ -72,7 +62,7 @@ def patch_runtime() -> None:
     if not path.exists():
         raise SystemExit("Bundle applicativo non trovato")
     text = path.read_text(encoding="utf-8")
-    if "pageType === 'pnrr'" in text:
+    if "pageType === 'pnrr'" in text or "['status', 'pnrr', 'special'].includes(pageType)" in text:
         return
     marker = (
         "      else if (pageType === 'status') { /* contenuto prerenderizzato: non sostituire #app */ }\n"
@@ -181,7 +171,7 @@ def build_page(data: dict[str, Any]) -> str:
   <meta name="twitter:image:alt" content="{html.escape(SOCIAL_IMAGE_ALT, quote=True)}">
   <link rel="canonical" href="https://osservatorioversilia.it/pnrr/">
   <script type="application/ld+json">{json_ld}</script>
-  <link rel="icon" href="../favicon.svg?v=20260807-ov" type="image/svg+xml">
+  <link rel="icon" href="../favicon.svg?v=20260820-ov3" type="image/svg+xml">
   <link rel="manifest" href="../site.webmanifest?v=20260813-pwa8">
   {native_styles}
   <link rel="stylesheet" href="../assets/pnrr-deep-dive.css">
@@ -271,6 +261,7 @@ def main() -> int:
     PAGE_PATH.write_text(build_page(data), encoding="utf-8")
     patch_runtime()
     inject_indicator_teasers(data)
+    ensure_sitemap_entries(DIST, ("https://osservatorioversilia.it/pnrr/",))
     print("Bozza Dentro il PNRR costruita: /pnrr/ + collegamenti dai due indicatori")
     return 0
 

@@ -1,6 +1,9 @@
  function mountShell(data) {
-    document.getElementById('site-header-mount').innerHTML = headerMarkup(data);
-    document.getElementById('site-footer-mount').innerHTML = footerMarkup(data);
+    const headerMount = document.getElementById('site-header-mount');
+    if (!headerMount) throw new Error('Mount header canonico assente');
+    headerMount.innerHTML = headerMarkup(data);
+    const footerMount = document.getElementById('site-footer-mount');
+    if (footerMount) footerMount.innerHTML = footerMarkup(data);
     installSearch(data);
   }
 

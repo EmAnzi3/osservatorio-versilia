@@ -91,7 +91,10 @@ def static_assertions() -> None:
     assert bundle_path.stat().st_size > 50_000
     bundle = bundle_path.read_text(encoding="utf-8")
     assert ("const italianFormatter = options =>" in bundle and "useGrouping: 'always'" in bundle) or bundle.count("useGrouping: 'always'") >= 4, "Raggruppamento delle migliaia non forzato"
-    assert "pageType === 'status'" in bundle, "Runtime stato dati non integrato nel bundle prerenderizzato"
+    assert (
+        "pageType === 'status'" in bundle
+        or "['status', 'pnrr', 'special'].includes(pageType)" in bundle
+    ), "Runtime delle pagine prerenderizzate non integrato nel bundle"
 
     fonts_css = (DIST / "assets" / "fonts.css").read_text(encoding="utf-8")
     assert "./fonts/geist-latin.woff2" in fonts_css

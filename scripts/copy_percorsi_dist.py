@@ -12,10 +12,21 @@ import re
 import shutil
 from pathlib import Path
 
+from site_chrome import ensure_sitemap_entries, synchronize_native_page
+
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 SOURCE = ROOT / "percorsi"
 TARGET = DIST / "percorsi"
+
+
+def integrate_canonical_chrome() -> None:
+    """Riusa la shell OV; la mappa mantiene solo l'eccezione footer full-screen."""
+    index = TARGET / "index.html"
+    method = TARGET / "metodo.html"
+
+    synchronize_native_page(DIST, index, include_footer=False)
+    synchronize_native_page(DIST, method)
 
 
 def main() -> None:
@@ -35,6 +46,15 @@ def main() -> None:
         text = re.sub(pattern, r'\1\n<script src="deeplink.js?v=1"></script>', text, count=1)
         index.write_text(text, encoding="utf-8")
 
+    integrate_canonical_chrome()
+    ensure_sitemap_entries(
+        DIST,
+        (
+            "https://osservatorioversilia.it/percorsi/",
+            "https://osservatorioversilia.it/percorsi/metodo.html",
+        ),
+    )
+
     required = (
         TARGET / "index.html",
         TARGET / "metodo.html",
@@ -50,7 +70,10 @@ def main() -> None:
     if missing:
         raise RuntimeError(f"Build Percorsi incompleta: {', '.join(missing)}")
 
-    print("Cartografia Percorsi copiata nella build; statistiche gestite dal renderer principale dell'Osservatorio.")
+    print(
+        "Cartografia Percorsi copiata nella build e riallineata alla shell OV; "
+        "la mappa full-screen mantiene l'eccezione footer."
+    )
 
 
 if __name__ == "__main__":

@@ -42,12 +42,12 @@ def main() -> None:
     for page in pages:
         text = page.read_text(encoding="utf-8")
         require('class="ov-mark-svg"' in text, f"Logo OV assente in {page}")
-        require("assets/brand.css?v=20260807-ov" in text, f"CSS brand assente in {page}")
-        require("assets/app-bundle.js?v=20260816-v113" in text,
+        require("assets/brand.css?v=20260820-ov3" in text, f"CSS brand assente in {page}")
+        require("assets/app-bundle.js?v=20260820-v114" in text,
                 f"Bundle applicativo non cache-bustato in {page}")
         require("assets/visual-grammar.js?v=20260816-v113" in text,
                 f"Grammatica visiva non cache-bustata in {page}")
-        require("favicon.svg?v=20260807-ov" in text, f"Favicon non cache-bustata in {page}")
+        require("favicon.svg?v=20260820-ov3" in text, f"Favicon non cache-bustata in {page}")
         require(OLD_MARK not in text, f"Vecchia O ancora presente in {page}")
 
     print("Identità OV verificata: logo header, favicon e asset di brand coerenti.")

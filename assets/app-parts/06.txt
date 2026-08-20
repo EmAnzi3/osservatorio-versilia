@@ -318,7 +318,9 @@
       else if (pageType === 'indicator') renderIndicator(data, sourceRegistry, monitorState);
       else if (pageType === 'project') renderProject(data);
       else if (pageType === 'feedback') renderFeedback(data);
-      else renderNotFound();
+      else if (['status', 'pnrr', 'special'].includes(pageType)) {
+        /* Contenuto prerenderizzato: monta shell e ricerca senza sostituire #app. */
+      } else renderNotFound();
       if (['compare', 'town'].includes(pageType)) installEnvironmentClimateCoherence(data);
     } catch (error) {
       console.error(error);

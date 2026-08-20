@@ -53,6 +53,12 @@ def main() -> None:
         if data["metrics"][metric["key"]].get("dataStorage", {}).get("type") == "external-climate"
     ]
     assert len(climate) == 4
+    assert all(metric["isExternalClimate"] is True for metric in climate)
+    assert all(
+        metric["isExternalClimate"] is False
+        for metric in public["metrics"]
+        if metric not in climate
+    )
     assert all(metric["publishedPeriod"] == "2025" for metric in climate)
     assert all("2026" not in metric["publishedPeriod"] for metric in climate)
 
@@ -68,6 +74,7 @@ def main() -> None:
         assert "Stato dei dati" in page
         assert "rilevazione → validazione → pubblicazione" in page
         assert "Prossimo aggiornamento atteso" not in page
+        assert page.count('href="../confronta/meteo-clima/"') == 4
         project = (dist / "progetto" / "index.html").read_text(encoding="utf-8")
         assert "data-status-project-link" in project
         indicators = list((dist / "indicatori").glob("*/index.html"))

@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from data_status_model import STATUS_META, build_public_status
+from site_chrome import ensure_sitemap_entries, extract_native_shell
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -50,6 +51,8 @@ def metric_slug(metric: dict[str, Any]) -> str:
 
 
 def metric_href(metric: dict[str, Any]) -> str:
+    if metric.get("isExternalClimate"):
+        return "../confronta/meteo-clima/"
     return f"../indicatori/{metric_slug(metric)}/"
 
 
@@ -64,34 +67,14 @@ def next_release_markup(metric: dict[str, Any]) -> str:
 
 
 def read_native_shell() -> tuple[str, str, str, str]:
-    """Riusa shell e stylesheet già prodotti dalla build canonica del sito."""
-    template_path = DIST / "progetto" / "index.html"
-    if not template_path.exists():
-        raise SystemExit("Template nativo /progetto/ non trovato")
-    text = template_path.read_text(encoding="utf-8")
-
-    header_start = text.find('<div id="site-header-mount">')
-    app_start = text.find('<div id="app">', header_start)
-    footer_start = text.find('<div id="site-footer-mount">', app_start)
-    footer_end = text.find("<noscript>", footer_start)
-    if min(header_start, app_start, footer_start, footer_end) < 0:
-        raise SystemExit("Shell nativa non riconoscibile in /progetto/")
-
-    header = text[header_start:app_start]
-    footer = text[footer_start:footer_end]
-    head = text[:header_start]
-    styles = re.findall(r'<link\b[^>]*rel="stylesheet"[^>]*>', head, flags=re.IGNORECASE)
-    if not styles or not any("assets/fonts.css" in item for item in styles):
-        raise SystemExit("Stylesheet canonici non trovati nel template nativo")
-
-    bundle_match = re.search(
-        r'<script\b[^>]*src="([^"]*assets/app-bundle\.js[^"]*)"[^>]*></script>',
-        text[footer_end:],
-        flags=re.IGNORECASE,
-    )
-    if not bundle_match:
+    """Riusa la shell canonica e ne verifica il contratto di navigazione."""
+    try:
+        shell = extract_native_shell(DIST, DIST / "stato-dati" / "index.html")
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+    if not shell.app_bundle:
         raise SystemExit("Runtime applicativo canonico non trovato")
-    return header, footer, "\n  ".join(styles), bundle_match.group(1)
+    return shell.header, shell.footer, shell.styles, shell.app_bundle
 
 
 def patch_status_runtime() -> None:
@@ -100,6 +83,8 @@ def patch_status_runtime() -> None:
     if not path.exists():
         raise SystemExit("Bundle applicativo non trovato")
     text = path.read_text(encoding="utf-8")
+    if "['status', 'pnrr', 'special'].includes(pageType)" in text:
+        return
     marker = "      else if (pageType === 'feedback') renderFeedback(data);\n      else renderNotFound();"
     replacement = (
         "      else if (pageType === 'feedback') renderFeedback(data);\n"
@@ -194,7 +179,7 @@ def build_page(status: dict[str, Any]) -> str:
   <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
   <link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">
   <script type="application/ld+json">{json_ld}</script>
-  <link rel="icon" href="../favicon.svg?v=20260807-ov" type="image/svg+xml">
+  <link rel="icon" href="../favicon.svg?v=20260820-ov3" type="image/svg+xml">
   <link rel="manifest" href="../site.webmanifest?v=20260813-pwa8">
   {native_styles}
   <link rel="stylesheet" href="../assets/data-status.css">
@@ -332,19 +317,6 @@ def add_project_link() -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def add_sitemap_entry() -> None:
-    path = DIST / "sitemap.xml"
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    url = "https://osservatorioversilia.it/stato-dati/"
-    if url in text:
-        return
-    entry = f"  <url><loc>{url}</loc></url>\n"
-    text = text.replace("</urlset>", entry + "</urlset>")
-    path.write_text(text, encoding="utf-8")
-
-
 def main() -> None:
     data = load(ROOT / "data" / "site-data.json")
     registry = load(ROOT / "data" / "source-registry.json")
@@ -362,7 +334,7 @@ def main() -> None:
     page.write_text(build_page(status), encoding="utf-8")
     inject_indicator_status(status)
     add_project_link()
-    add_sitemap_entry()
+    ensure_sitemap_entries(DIST, ("https://osservatorioversilia.it/stato-dati/",))
     print(f"Stato dati materializzato nel layout nativo: {status['metricCount']} indicatori")
 
 

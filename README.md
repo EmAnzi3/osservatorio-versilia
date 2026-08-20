@@ -51,6 +51,12 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `assets/meteo-clima.css` e `assets/meteo-clima.js`: pagina editoriale Meteo e clima in bozza;
 - `progetto/` e `segnala/`: pagine informative.
 
+## Coerenza dell'interfaccia
+
+Header, footer e navigazione globale hanno una fonte canonica in `assets/app-parts/00.txt`. Le pagine speciali riusano la stessa shell tramite `scripts/site_chrome.py`; il gate finale `scripts/test_site_consistency.py` controlla tutte le pagine prodotte, i link interni, i metadata e la sitemap dopo la materializzazione di Stato dati, PNRR e Percorsi.
+
+Regole, profili ed eccezioni ammesse sono documentati in `docs/coerenza-interfaccia.md`. Una nuova pagina non classificata o una navigazione incompleta fanno fallire la pull request.
+
 ## Aggiornamento dei dati
 
 Il catalogo e i metadati dei 127 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:

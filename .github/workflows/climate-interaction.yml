@@ -42,7 +42,7 @@ jobs:
 
       - name: Exercise Ambiente and town selectors
         run: |
-          python -m http.server 8123 --bind 127.0.0.1 --directory dist >/tmp/ov-climate-server.log 2>&1 &
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-climate-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
           sleep 1
