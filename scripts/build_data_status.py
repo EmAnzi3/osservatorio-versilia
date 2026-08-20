@@ -100,6 +100,7 @@ def patch_status_runtime() -> None:
 
 def build_page(status: dict[str, Any]) -> str:
     counts = status["counts"]
+    metric_count = int(status["metricCount"])
     themes = sorted({row["themeLabel"] for row in status["metrics"] if row["themeLabel"]})
     rows = []
     for row in status["metrics"]:
@@ -127,7 +128,7 @@ def build_page(status: dict[str, Any]) -> str:
                     "@type": "WebPage",
                     "name": "Stato dei dati · Osservatorio Versilia",
                     "url": "https://osservatorioversilia.it/stato-dati/",
-                    "description": "Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.",
+                    "description": f"Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i {metric_count} indicatori di Osservatorio Versilia.",
                     "inLanguage": "it-IT",
                     "isAccessibleForFree": True,
                 },
@@ -162,7 +163,7 @@ def build_page(status: dict[str, Any]) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stato dei dati · Osservatorio Versilia</title>
-  <meta name="description" content="Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i 127 indicatori di Osservatorio Versilia.">
+  <meta name="description" content="Stato di aggiornamento, ultimo controllo e frequenza delle fonti per i {metric_count} indicatori di Osservatorio Versilia.">
   <meta property="og:title" content="Stato dei dati · Osservatorio Versilia">
   <meta property="og:description" content="Quando sono stati controllati i dati, quale periodo è pubblicato e cosa sappiamo sul prossimo aggiornamento.">
   <meta property="og:type" content="website">
@@ -197,7 +198,7 @@ def build_page(status: dict[str, Any]) -> str:
     <section class="method-detail page-width data-status-overview" aria-label="Riepilogo stato dati">
       <div class="section-heading"><div><span class="section-number">01</span><h2>Quadro generale</h2></div><p>Una fotografia del monitor: controlli eseguiti, verifiche ancora necessarie e nuovi rilasci da esaminare.</p></div>
       <ol class="principles-grid data-status-summary">
-        <li><span>01</span><h3>Indicatori</h3><strong>{status['metricCount']}</strong></li>
+        <li><span>01</span><h3>Indicatori</h3><strong>{metric_count}</strong></li>
         <li><span>02</span><h3>Ultimo dato verificato</h3><strong>{counts.get('current', 0)}</strong></li>
         <li><span>03</span><h3>Fonti controllate</h3><strong>{counts.get('source_checked', 0)}</strong></li>
         <li><span>04</span><h3>Nuovi rilasci da verificare</h3><strong>{counts.get('release_detected', 0)}</strong></li>
@@ -216,7 +217,7 @@ def build_page(status: dict[str, Any]) -> str:
     </section>
 
     <section class="method-detail page-width data-status-table-section">
-      <div class="section-heading"><div><span class="section-number">03</span><h2>Dettaglio dei 127 indicatori</h2></div><p>I filtri agiscono solo sulla vista e non modificano i dati.</p></div>
+      <div class="section-heading"><div><span class="section-number">03</span><h2>Dettaglio dei {metric_count} indicatori</h2></div><p>I filtri agiscono solo sulla vista e non modificano i dati.</p></div>
       <div class="data-status-filters">
         <label>Tematica<select data-status-theme><option value="">Tutte</option>{theme_options}</select></label>
         <label>Stato<select data-status-filter><option value="">Tutti</option>{status_options}</select></label>
@@ -253,6 +254,7 @@ def indicator_status_block(metric: dict[str, Any]) -> str:
 
 def inject_indicator_status(status: dict[str, Any]) -> None:
     by_slug = {metric_slug(metric): metric for metric in status["metrics"]}
+    expected_static = sum(1 for metric in status["metrics"] if not metric.get("isExternalClimate"))
     found = 0
     for path in (DIST / "indicatori").glob("*/index.html"):
         metric = by_slug.get(path.parent.name)
@@ -301,8 +303,8 @@ def inject_indicator_status(status: dict[str, Any]) -> None:
         path.write_text(text, encoding="utf-8")
         found += 1
 
-    if found != 123:
-        raise SystemExit(f"Attese 123 schede indicatore statiche, aggiornate {found}")
+    if found != expected_static:
+        raise SystemExit(f"Attese {expected_static} schede indicatore statiche, aggiornate {found}")
 
 
 def add_project_link() -> None:
@@ -322,8 +324,9 @@ def main() -> None:
     registry = load(ROOT / "data" / "source-registry.json")
     state = load(ROOT / "data" / "source-monitor-state.json")
     status = build_public_status(data, registry, state)
-    if status["metricCount"] != 127:
-        raise SystemExit(f"Attesi 127 indicatori, trovati {status['metricCount']}")
+    expected_count = int(registry["expectedMetricCount"])
+    if status["metricCount"] != expected_count:
+        raise SystemExit(f"Attesi {expected_count} indicatori, trovati {status['metricCount']}")
 
     patch_status_runtime()
     status_path = DIST / "data" / "data-status.json"
