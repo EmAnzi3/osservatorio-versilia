@@ -23,6 +23,11 @@ def row_by_town(metric: dict) -> dict[str, dict]:
     return {row['town']: row for row in metric['rows']}
 
 
+def series_map(metric: dict, town: str) -> dict[int, float]:
+    row = row_by_town(metric)[town]
+    return dict(zip(row['series']['years'], row['series']['values'], strict=True))
+
+
 def assert_series(metric: dict, years: list[int]) -> None:
     rows = row_by_town(metric)
     assert set(rows) == set(EXPECTED_TOWNS), (metric['meta']['key'], sorted(rows))
@@ -50,7 +55,6 @@ def main() -> None:
         assert key in SITE['metrics'], key
         metric = SITE['metrics'][key]
         assert metric['meta']['theme'] == 'demografia'
-        # Il tipo interno è già gestito dal renderer multi-misura canonico.
         assert metric['meta']['compositeType'] == 'securityMeasures'
         assert metric['sourceUrl'] == 'https://demo.istat.it/'
         assert len(metric['rows']) == 7
@@ -60,16 +64,18 @@ def main() -> None:
     assert natural['meta']['year'] == '2025'
     assert natural['meta']['unit'] == 'per1000'
     assert_series(natural, list(range(2019, 2026)))
-    natural_labels = [part['label'] for part in natural['rows'][0]['parts']]
-    assert natural_labels == ['Saldo naturale', 'Natalità', 'Mortalità']
+    assert [part['label'] for part in natural['rows'][0]['parts']] == [
+        'Saldo naturale', 'Natalità', 'Mortalità'
+    ]
     assert 'provvisorio' in natural['method']['caveat'].lower()
 
     dependency = SITE['metrics']['dependencyIndices']
     assert dependency['meta']['year'] == '2026'
     assert dependency['meta']['unit'] == 'index'
     assert_series(dependency, list(range(2019, 2027)))
-    dep_labels = [part['label'] for part in dependency['rows'][0]['parts']]
-    assert dep_labels == ['Indice di dipendenza strutturale', 'Indice di dipendenza degli anziani']
+    assert [part['label'] for part in dependency['rows'][0]['parts']] == [
+        'Indice di dipendenza strutturale', 'Indice di dipendenza degli anziani'
+    ]
 
     # 80+ non deve diventare una nuova card: esiste già nel composito ageDistribution.
     assert 'share80Plus' not in SITE['metrics']
@@ -92,21 +98,42 @@ def main() -> None:
     assert decisions['share80Plus'] == 'covered_by_existing_ageDistribution'
     assert decisions['populationAgeSexDetail'] == 'snapshot_materialized_2026'
 
-    # Snapshot: copertura completa, flag 2025 provvisorio e dettagli età×sesso 2026.
+    # Snapshot: copertura completa, P02 provvisorio 2025 e POSAS senza riga totale 999.
     assert set(SNAPSHOT['p02']['towns']) == set(EXPECTED_TOWNS)
     assert set(SNAPSHOT['posas']['towns']) == set(EXPECTED_TOWNS)
     assert set(SNAPSHOT['posas']['ageSex2026']) == set(EXPECTED_TOWNS)
+    population = SITE['metrics']['population']
+    old_age = SITE['metrics']['oldAgeIndex']
+
     for town in EXPECTED_TOWNS:
         p2 = SNAPSHOT['p02']['towns'][town]
         assert [row['year'] for row in p2] == list(range(2019, 2026))
         assert p2[-1]['informationFlag'].lower() == 'p', (town, p2[-1]['informationFlag'])
         assert p2[-1]['naturalBalance'] == p2[-1]['births'] - p2[-1]['deaths']
+
         posas = SNAPSHOT['posas']['towns'][town]
         assert [row['year'] for row in posas] == list(range(2019, 2027))
-        latest = posas[-1]
-        assert latest['population'] == latest['age0to14'] + latest['age15to64'] + latest['age65plus']
-        assert latest['age80plus'] <= latest['age65plus']
-        assert len(SNAPSHOT['posas']['ageSex2026'][town]) >= 100
+        canonical_population = series_map(population, town)
+        canonical_old_age = series_map(old_age, town)
+        for row in posas:
+            year = row['year']
+            assert row['population'] == row['age0to14'] + row['age15to64'] + row['age65plus']
+            assert row['age80plus'] <= row['age65plus']
+            # Il nuovo parsing per età deve riprodurre esattamente la popolazione già canonica.
+            assert row['population'] == canonical_population[year], (
+                town, year, row['population'], canonical_population[year]
+            )
+            # E deve ricostruire l'indice di vecchiaia già pubblicato entro l'arrotondamento a 1 decimale.
+            reconstructed_old_age = row['age65plus'] / row['age0to14'] * 100
+            assert abs(reconstructed_old_age - canonical_old_age[year]) <= 0.11, (
+                town, year, reconstructed_old_age, canonical_old_age[year]
+            )
+
+        detail = SNAPSHOT['posas']['ageSex2026'][town]
+        assert len(detail) >= 100
+        assert all(0 <= item['age'] <= 120 for item in detail)
+        assert 999 not in {item['age'] for item in detail}
+        assert sum(item['total'] for item in detail) == posas[-1]['population']
 
     # Controllo formula su un caso noto, senza hardcodare il valore pubblicato.
     massarosa = SNAPSHOT['p02']['towns']['Massarosa'][-1]
@@ -116,7 +143,8 @@ def main() -> None:
 
     print(
         'Demografia Lotto A materializzata OK: 129 metriche, 7/7, '
-        'P02 2019–2025 + POSAS 2019–2026, nessun duplicato 80+, UI canonica.'
+        'P02 2019–2025 + POSAS 2019–2026, POSAS incrociato con popolazione/indice di vecchiaia, '
+        'nessun duplicato 80+, UI canonica.'
     )
 
 
