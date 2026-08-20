@@ -12,7 +12,7 @@ from site_chrome import synchronize_native_page
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-BRAND_ASSET_VERSION = "20260820-ov2"
+BRAND_ASSET_VERSION = "20260820-ov3"
 APP_BUNDLE_ASSET_VERSION = "20260820-v114"
 PWA_ASSET_VERSION = "20260813-pwa8"
 PWA_JS_REVISION = "install-ui-off"

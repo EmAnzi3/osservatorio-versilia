@@ -4,6 +4,7 @@ html {
 
 .site-header {
   background: var(--paper);
+  font-family: var(--font-geist-sans);
 }
 
 .site-brand {
