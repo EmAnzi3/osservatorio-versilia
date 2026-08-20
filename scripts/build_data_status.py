@@ -51,6 +51,8 @@ def metric_slug(metric: dict[str, Any]) -> str:
 
 
 def metric_href(metric: dict[str, Any]) -> str:
+    if metric.get("isExternalClimate"):
+        return "../confronta/meteo-clima/"
     return f"../indicatori/{metric_slug(metric)}/"
 
 
