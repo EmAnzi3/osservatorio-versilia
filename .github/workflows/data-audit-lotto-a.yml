@@ -8,6 +8,7 @@ on:
       - "docs/data-audit-lotto-a.md"
       - "scripts/test_data_audit_lotto_a.py"
       - "scripts/audit_istat_demography_sources.py"
+      - "scripts/probe_demography_lucca_samples.py"
       - "data/site-data.json"
       - "assets/**"
       - ".github/workflows/data-audit-lotto-a.yml"
@@ -45,9 +46,13 @@ jobs:
           fi
       - name: Probe official Istat demography sources
         run: python scripts/audit_istat_demography_sources.py
+      - name: Probe Lucca demography samples
+        run: python scripts/probe_demography_lucca_samples.py
       - name: Upload source audit artifact
         uses: actions/upload-artifact@v4
         with:
           name: lotto-a-istat-demography-source-scan
-          path: audit-artifacts/istat-demography-source-scan.json
+          path: |
+            audit-artifacts/istat-demography-source-scan.json
+            audit-artifacts/demography-lucca-samples.json
           retention-days: 14
