@@ -7,6 +7,8 @@ on:
       - "docs/data-audit-lotto-a-redditi.md"
       - "scripts/probe_mef_income_lotto_a.py"
       - "scripts/test_mef_income_lotto_a_probe.py"
+      - "scripts/materialize_income_lotto_a.py"
+      - "scripts/test_income_lotto_a_materialized.py"
       - ".github/workflows/data-audit-lotto-a-redditi.yml"
   workflow_dispatch:
 
@@ -25,11 +27,26 @@ jobs:
         run: python scripts/probe_mef_income_lotto_a.py
       - name: Validate MEF income probe
         run: python scripts/test_mef_income_lotto_a_probe.py
-      - name: Validate artifact JSON
+      - name: Validate source artifact JSON
         run: python -m json.tool audit-artifacts/mef-income-lotto-a.json > /dev/null
-      - name: Upload MEF income audit artifact
+      - name: Materialize prerequisite Demography tranche
+        run: |
+          python scripts/materialize_demography_lotto_a_v4.py
+          python scripts/test_demography_lotto_a_materialized.py
+      - name: Materialize Income tranche
+        run: |
+          python scripts/materialize_income_lotto_a.py
+          python scripts/test_income_lotto_a_materialized.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
+      - name: Upload MEF income audit artifacts
         uses: actions/upload-artifact@v4
         with:
           name: lotto-a-mef-income-source-probe
-          path: audit-artifacts/mef-income-lotto-a.json
+          path: |
+            audit-artifacts/mef-income-lotto-a.json
+            data/source-snapshots/mef-income-lotto-a-2024.json
+            data/site-data.json
           retention-days: 14
