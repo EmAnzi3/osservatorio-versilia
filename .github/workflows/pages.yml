@@ -51,6 +51,7 @@ jobs:
       - name: Materialize Income Lotto A draft
         run: |
           python scripts/materialize_income_lotto_a.py
+          python scripts/patch_income_lotto_a_regressions.py
           python scripts/test_income_lotto_a_materialized.py
           python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-registry.json > /dev/null
@@ -192,6 +193,7 @@ jobs:
             scripts/build_data_status.py \
             scripts/inject_data_status_runtime.py \
             scripts/materialize_income_lotto_a.py \
+            scripts/patch_income_lotto_a_regressions.py \
             scripts/test_income_lotto_a_materialized.py
 
       - name: Verify municipal crests
