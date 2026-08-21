@@ -26,10 +26,10 @@ def check_view(page, base: str, width: int, height: int) -> None:
     page.set_viewport_size({"width": width, "height": height})
     page.goto(base + "opportunita-preview/", wait_until="networkidle")
     assert_shell(page)
-    assert page.locator("h1").inner_text() == "Opportunita per i Comuni della Versilia."
+    assert page.locator("h1").inner_text() == "Opportunità per i Comuni della Versilia."
     assert page.locator("[data-opportunity-card]").count() == 11
     assert page.locator("[data-opportunity-card]:not([hidden])").count() == 11
-    assert "11 opportunita" in page.locator("[data-op-visible]").inner_text().lower()
+    assert "11 opportunità" in page.locator("[data-op-visible]").inner_text().lower()
     overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
     assert not overflow, f"Overflow orizzontale preview a {width}px"
 
