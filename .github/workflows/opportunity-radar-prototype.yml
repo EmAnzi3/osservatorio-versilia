@@ -37,6 +37,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   test:
@@ -89,15 +90,33 @@ jobs:
           python-version: "3.12"
       - name: Install PDF parser
         run: python -m pip install pypdf
+      - name: Restore previous v0.2.4 state
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/previous
+          branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          artifact_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts?name=opportunity-radar-v024&per_page=20"             --jq ".artifacts[] | select(.expired == false and .workflow_run.head_branch == \"$branch\") | .id"             | head -n 1 || true)"
+          if [[ -n "$artifact_id" ]]; then
+            gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > /tmp/opportunity-v024-previous.zip
+            unzip -p /tmp/opportunity-v024-previous.zip opportunities-v024.json > reports/previous/opportunities-v024.json || true
+          fi
       - name: Collect current opportunities v0.2.4
         id: collect
         shell: bash
         run: |
           mkdir -p reports/runtime
           TODAY="$(TZ=Europe/Rome date +%F)"
+          previous=()
+          if [[ -s reports/previous/opportunities-v024.json ]]; then
+            previous=(--previous reports/previous/opportunities-v024.json)
+          fi
           set +e
           python scripts/opportunity_radar_v024.py \
             --date "$TODAY" \
+            "${previous[@]}" \
             --output reports/runtime/opportunities-v024.json \
             --report reports/runtime/opportunities-v024.md
           code=$?
