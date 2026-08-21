@@ -2,8 +2,8 @@
 """Materializza il dettaglio Istat RCS 2025 per i sette Comuni.
 
 Non crea una nuova card: arricchisce `foreignResidents` con un disclosure nelle
-schede comunali e conserva nello snapshot tutte le cittadinanze straniere e i
-paesi esteri di nascita con valore positivo.
+schede comunali e nel confronto Versilia, conservando nello snapshot tutte le
+cittadinanze straniere e i paesi esteri di nascita con valore positivo.
 """
 from __future__ import annotations
 
@@ -76,7 +76,6 @@ def parse_archive(url: str, kind: str) -> dict[str, list[dict]]:
         women = int(str(row.get('Femmine', '0') or '0').strip() or 0)
         if men + women != total:
             raise RuntimeError(f'RCS {kind} totale incoerente: {code} {label}')
-        # La riga Italia è utile per il controllo ma non per il dettaglio pubblico.
         result[code].append({
             'code': state_code,
             'label': label,
@@ -115,6 +114,28 @@ def compact_top(items: list[dict], total: int, limit: int = 8) -> list[dict]:
     ]
 
 
+def aggregate_items(snapshot_towns: dict[str, dict], key: str) -> tuple[list[dict], int]:
+    grouped: dict[str, dict] = {}
+    for town_data in snapshot_towns.values():
+        for item in town_data[key]:
+            group_key = item.get('code') or item['label']
+            target = grouped.setdefault(group_key, {
+                'code': item.get('code'),
+                'label': item['label'],
+                'zone': item.get('zone', ''),
+                'continent': item.get('continent', ''),
+                'men': 0,
+                'women': 0,
+                'total': 0,
+            })
+            target['men'] += int(item['men'])
+            target['women'] += int(item['women'])
+            target['total'] += int(item['total'])
+    values = [item for item in grouped.values() if item['total'] > 0]
+    values.sort(key=lambda item: (-item['total'], item['label']))
+    return values, sum(item['total'] for item in values)
+
+
 def main() -> None:
     site = load(SITE_PATH)
     audit = load(AUDIT_PATH)
@@ -150,14 +171,30 @@ def main() -> None:
             'birthCountry': birth_country,
         }
 
+    aggregate_citizenship, aggregate_citizenship_total = aggregate_items(snapshot_towns, 'citizenship')
+    aggregate_birth_country, aggregate_birth_country_total = aggregate_items(snapshot_towns, 'birthCountry')
+    aggregate = metric.setdefault('aggregate', {})
+    if int(aggregate.get('count', aggregate_citizenship_total)) != aggregate_citizenship_total:
+        raise RuntimeError('Versilia: residenti stranieri aggregati non coincidono con la somma delle cittadinanze RCS')
+    aggregate['foreignOrigins'] = {
+        'year': 2025,
+        'scope': 'Versilia',
+        'citizenshipTotal': aggregate_citizenship_total,
+        'foreignBornTotal': aggregate_birth_country_total,
+        'citizenshipTop': compact_top(aggregate_citizenship, aggregate_citizenship_total),
+        'birthCountryTop': compact_top(aggregate_birth_country, aggregate_birth_country_total),
+        'note': 'Somma dei valori comunali dei sette comuni e riordino del ranking sul totale Versilia.',
+    }
+
     metric['meta']['description'] = (
         'Quota e numero dei residenti con cittadinanza non italiana al 1° gennaio 2025. '
-        'Nelle schede comunali è disponibile anche il dettaglio delle principali cittadinanze straniere e dei principali paesi esteri di nascita.'
+        'Nel confronto è disponibile il ranking aggregato Versilia; nelle schede comunali il dettaglio delle principali cittadinanze straniere e dei principali paesi esteri di nascita.'
     )
     metric['meta']['detailLabel'] = 'Principali cittadinanze e paesi di nascita'
     metric.setdefault('method', {})['originDetail'] = (
         'Istat RCS 2025 pubblica separatamente cittadinanza e paese di nascita; il loro incrocio non è disponibile. '
-        'Le quote nel dettaglio sono calcolate rispettivamente sui residenti di cittadinanza straniera e sui residenti nati all’estero.'
+        'Le quote nel dettaglio sono calcolate rispettivamente sui residenti di cittadinanza straniera e sui residenti nati all’estero. '
+        'Il dato Versilia è calcolato sommando i valori dei sette comuni per ciascuna cittadinanza o paese di nascita e riordinando il ranking sul totale.'
     )
 
     snapshot = {
@@ -169,6 +206,14 @@ def main() -> None:
         'coverage': '7/7',
         'sources': SOURCES,
         'towns': snapshot_towns,
+        'aggregate': {
+            'Versilia': {
+                'citizenshipTotal': aggregate_citizenship_total,
+                'foreignBornTotal': aggregate_birth_country_total,
+                'citizenship': aggregate_citizenship,
+                'birthCountry': aggregate_birth_country,
+            }
+        },
         'note': 'Cittadinanza e paese di nascita sono distribuzioni distinte; Istat non rilascia il loro incrocio nel dataset RCS.',
     }
     SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -176,13 +221,13 @@ def main() -> None:
 
     for candidate in audit.get('candidates', []):
         if candidate.get('key') == 'citizenshipBirthCountryDetail':
-            candidate['implementationStatus'] = 'public_town_detail_2025'
+            candidate['implementationStatus'] = 'public_town_and_versilia_detail_2025'
             candidate['snapshot'] = 'data/source-snapshots/istat-rcs-demography-2025.json'
-    audit.setdefault('demographyV2', {})['foreignCitizenshipBirthCountry'] = 'public_town_detail_2025'
+    audit.setdefault('demographyV2', {})['foreignCitizenshipBirthCountry'] = 'public_compare_and_town_detail_2025'
 
     save(SITE_PATH, site)
     save(AUDIT_PATH, audit)
-    print('Istat RCS 2025 materializzato: cittadinanze e paesi di nascita 7/7, dettaglio pubblico collegato a foreignResidents.')
+    print('Istat RCS 2025 materializzato: cittadinanze e paesi di nascita 7/7, dettaglio pubblico comunale e aggregato Versilia collegati a foreignResidents.')
 
 
 if __name__ == '__main__':
