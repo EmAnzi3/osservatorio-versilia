@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "0.3",
+  "baseRulesFile": "opportunity-rules-v025.json",
+  "sourceAliases": {
+    "regione-toscana-fesr": "regione-toscana",
+    "regione-toscana-fse": "regione-toscana"
+  },
+  "rules": []
+}
