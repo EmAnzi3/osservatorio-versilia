@@ -121,6 +121,15 @@ def resolve_municipalities(
     _annotate_rule(resolved, rule)
     RULE_STATS["matched"] = RULE_STATS.get("matched", 0) + 1
 
+    # Se una regola documentale forza lo stato, anche la motivazione per Comune
+    # deve provenire dalla stessa evidenza e non dal precedente fallback review.
+    municipality_reason = rule.get("municipality_reason")
+    if rule.get("force_eligibility") and municipality_reason:
+        for entry in resolved["municipality_eligibility"].values():
+            if entry["status"] in {"eligible", "conditional"}:
+                entry["reason"] = municipality_reason
+        resolved["eligibility_reason"] = municipality_reason
+
     if rule.get("municipality_role") == "none":
         reason = rule.get("suppress_reason") or "Il Comune non ha un ruolo operativo previsto dal bando."
         resolved["municipality_eligibility"] = _matrix_not_eligible(profiles, reason)
