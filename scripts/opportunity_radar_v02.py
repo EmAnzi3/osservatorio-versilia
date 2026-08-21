@@ -12,6 +12,7 @@ import json
 import re
 import sys
 import urllib.error
+import urllib.request
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -63,6 +64,28 @@ def clean(value: Any) -> str:
 
 def norm(value: Any) -> str:
     return base.norm(value)
+
+
+def fetch_resilient(url: str, timeout: int = 30, attempts: int = 2) -> str:
+    """Fetch con retry limitato per timeout/transienti, senza mascherare errori persistenti."""
+    last_error: Exception | None = None
+    for _ in range(max(1, attempts)):
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": base.UA,
+                "Accept": "text/html,application/json;q=0.9,*/*;q=0.8",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                charset = response.headers.get_content_charset() or "utf-8"
+                return response.read().decode(charset, errors="replace")
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last_error = exc
+    if last_error:
+        raise last_error
+    raise RuntimeError("Fetch fallito senza dettaglio.")
 
 
 def municipality_profiles(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -267,14 +290,18 @@ def run(
     def detail_loader(url: str) -> str:
         if url in detail_payloads:
             return detail_payloads[url]
-        return "" if payloads else base.fetch(url)
+        return "" if payloads else fetch_resilient(url, timeout=25, attempts=1)
 
     for raw_source in config["sources"]:
         source = {**raw_source, "_towns": towns}
         try:
             payload = payloads.get(source["id"])
             if payload is None:
-                payload = base.fetch(source["url"])
+                payload = fetch_resilient(
+                    source["url"],
+                    timeout=int(source.get("fetchTimeoutSeconds") or 30),
+                    attempts=int(source.get("fetchAttempts") or 2),
+                )
 
             if source["type"] == "html_cards":
                 candidates = quality.collect_html(source, today, payload, detail_loader)
