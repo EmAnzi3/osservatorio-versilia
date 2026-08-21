@@ -14,7 +14,7 @@ import sys
 import urllib.error
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import opportunity_radar_quality as quality
@@ -95,7 +95,7 @@ def _has_unresolved_scope(context: str) -> bool:
 
 
 def resolve_municipalities(
-    item: dict[str, Any], profiles: dict[str, dict[str, Any]]
+    item: dict[str, Any], profiles: dict[str, dict[str, Any]], today: date
 ) -> dict[str, Any]:
     """Calcola lo stato per singolo Comune senza trasformare condizioni in certezze."""
     towns = list(profiles)
@@ -168,7 +168,7 @@ def resolve_municipalities(
         town for town, entry in matrix.items() if entry["status"] in {"eligible", "conditional"}
     ]
     resolved["priority"] = base.priority(
-        aggregate, resolved.get("deadline_at"), resolved.get("themes") or [], date.today()
+        aggregate, resolved.get("deadline_at"), resolved.get("themes") or [], today
     )
     return resolved
 
@@ -291,7 +291,7 @@ def run(
             source_discarded = 0
 
             for candidate in candidates:
-                resolved = resolve_municipalities(candidate, profiles)
+                resolved = resolve_municipalities(candidate, profiles, today)
                 if resolved["eligibility"] == "not_relevant":
                     source_discarded += 1
                     continue
