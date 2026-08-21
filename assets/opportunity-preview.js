@@ -3,15 +3,13 @@
   if (!root) return;
 
   const townSelect = root.querySelector('[data-op-town]');
-  const statusSelect = root.querySelector('[data-op-status]');
+  const sourceSelect = root.querySelector('[data-op-source]');
+  const accessSelect = root.querySelector('[data-op-access]');
   const searchInput = root.querySelector('[data-op-search]');
   const resetButton = root.querySelector('[data-op-reset]');
   const visibleLabel = root.querySelector('[data-op-visible]');
-  const contextLabel = root.querySelector('[data-op-context]');
   const emptyState = root.querySelector('[data-op-empty]');
   const cards = Array.from(root.querySelectorAll('[data-opportunity-card]'));
-  const townLabels = new Map(Array.from(townSelect?.options || []).map((option) => [option.value, option.textContent.trim()]));
-  const statusLabels = new Map(Array.from(statusSelect?.options || []).map((option) => [option.value, option.textContent.trim()]));
 
   const normalize = (value) => String(value || '')
     .normalize('NFD')
@@ -27,16 +25,18 @@
 
   const apply = () => {
     const town = townSelect?.value || '';
-    const status = statusSelect?.value || '';
+    const source = sourceSelect?.value || '';
+    const access = accessSelect?.value || '';
     const query = normalize(searchInput?.value || '');
     let visible = 0;
 
     cards.forEach((card) => {
       const towns = (card.dataset.towns || '').split('|').filter(Boolean);
-      const statusMatch = !status || card.dataset.status === status;
       const townMatch = !town || towns.includes(town);
+      const sourceMatch = !source || card.dataset.source === source;
+      const accessMatch = !access || card.dataset.access === access;
       const searchMatch = !query || normalize(card.dataset.search).includes(query);
-      const show = statusMatch && townMatch && searchMatch;
+      const show = townMatch && sourceMatch && accessMatch && searchMatch;
       card.hidden = !show;
       if (show) visible += 1;
     });
@@ -44,23 +44,18 @@
     if (visibleLabel) {
       visibleLabel.textContent = `${visible} ${visible === 1 ? 'opportunità visibile' : 'opportunità visibili'}`;
     }
-    if (contextLabel) {
-      const parts = [];
-      if (town) parts.push(townLabels.get(town) || town);
-      if (status) parts.push(statusLabels.get(status) || status);
-      if (query) parts.push(`ricerca “${searchInput.value.trim()}”`);
-      contextLabel.textContent = parts.length ? parts.join(' · ') : 'Tutta la Versilia · tutti gli stati';
-    }
     if (emptyState) emptyState.hidden = visible !== 0;
     updateSelectedTown(town);
   };
 
   townSelect?.addEventListener('change', apply);
-  statusSelect?.addEventListener('change', apply);
+  sourceSelect?.addEventListener('change', apply);
+  accessSelect?.addEventListener('change', apply);
   searchInput?.addEventListener('input', apply);
   resetButton?.addEventListener('click', () => {
     if (townSelect) townSelect.value = '';
-    if (statusSelect) statusSelect.value = '';
+    if (sourceSelect) sourceSelect.value = '';
+    if (accessSelect) accessSelect.value = '';
     if (searchInput) searchInput.value = '';
     apply();
     townSelect?.focus();
