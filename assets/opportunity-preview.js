@@ -10,6 +10,8 @@
   const contextLabel = root.querySelector('[data-op-context]');
   const emptyState = root.querySelector('[data-op-empty]');
   const cards = Array.from(root.querySelectorAll('[data-opportunity-card]'));
+  const townLabels = new Map(Array.from(townSelect?.options || []).map((option) => [option.value, option.textContent.trim()]));
+  const statusLabels = new Map(Array.from(statusSelect?.options || []).map((option) => [option.value, option.textContent.trim()]));
 
   const normalize = (value) => String(value || '')
     .normalize('NFD')
@@ -43,11 +45,9 @@
       visibleLabel.textContent = `${visible} ${visible === 1 ? 'opportunità visibile' : 'opportunità visibili'}`;
     }
     if (contextLabel) {
-      const selectedTown = townSelect?.selectedOptions?.[0]?.textContent || '';
-      const selectedStatus = statusSelect?.selectedOptions?.[0]?.textContent || '';
       const parts = [];
-      if (town) parts.push(selectedTown);
-      if (status) parts.push(selectedStatus);
+      if (town) parts.push(townLabels.get(town) || town);
+      if (status) parts.push(statusLabels.get(status) || status);
       if (query) parts.push(`ricerca “${searchInput.value.trim()}”`);
       contextLabel.textContent = parts.length ? parts.join(' · ') : 'Tutta la Versilia · tutti gli stati';
     }
