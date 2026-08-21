@@ -41,15 +41,14 @@ def main() -> None:
         require(page.locator('.age85-inline-detail').count() >= 1, 'Dettaglio 85+ assente nel confronto')
         require(page.get_by_text('85 anni e oltre', exact=True).count() >= 1, 'Quota 85+ non leggibile nel confronto')
 
-        # Scheda comunale: 85+ nel selettore e piramide con asse/scala.
+        # Scheda comunale: 85+ come dettaglio della distribuzione e piramide con asse/scala.
         page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
         require(page.locator('details.age-senior-detail').count() == 0, 'Box separato 80+/85+ presente nella scheda comunale')
-        require(page.locator('.age85-inline-detail').count() == 1, 'Dettaglio 85+ assente a Massarosa')
-        require(page.locator('select[data-composite-choice] option[value="age85Plus"]').count() == 1,
-                '85+ non disponibile nel selettore della distribuzione')
-        page.locator('select[data-composite-choice]').select_option('age85Plus')
-        require(page.locator('[data-composite-primary-label]').inner_text().strip() == '85 anni e oltre',
-                'Selettore 85+ non aggiorna il dato primario')
+        age85 = page.locator('.age85-inline-detail').first
+        require(age85.count() == 1, 'Dettaglio 85+ assente a Massarosa')
+        require('85 anni e oltre' in age85.inner_text(), '85+ non leggibile nella distribuzione comunale')
+        require(page.locator('select[data-composite-choice] option[value="age85Plus"]').count() == 0,
+                '85+ non deve introdurre un controllo separato nel selettore')
         pyramid = page.locator('details.age-pyramid-detail').first
         require(pyramid.count() == 1, 'Piramide per età e sesso assente')
         pyramid.locator('summary').click()
