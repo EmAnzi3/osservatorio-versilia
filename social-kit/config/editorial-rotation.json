@@ -1,6 +1,7 @@
 {
-  "version": "2026-08-17",
-  "start_week": "2026-08-10",
+  "version": "2026-08-21",
+  "start_week": "2026-08-24",
+  "start_theme_index": 2,
   "themes": [
     "demografia",
     "economia",
@@ -15,8 +16,8 @@
     "comunita"
   ],
   "slots": [
-    {"weekday": 1, "label": "martedì", "kind": "data"},
-    {"weekday": 4, "label": "venerdì", "kind": "context"}
+    {"weekday": 1, "label": "martedì", "kind": "ordinary"},
+    {"weekday": 4, "label": "venerdì", "kind": "ordinary"}
   ],
-  "rule": "La rotazione parte dalla settimana di lancio: Demografia (10 agosto 2026), Economia (17 agosto), Lavoro (24 agosto), quindi prosegue sugli 11 temi. Una settimana ordinaria usa il primo indicatore featured disponibile nel dataset corrente. Le ricorrenze anchor sostituiscono gli slot fino al massimo di due uscite; le conditional richiedono una decisione editoriale esplicita."
+  "rule": "La rotazione avanza per singola uscita ordinaria, non per settimana. Dalla settimana del 24 agosto 2026: martedì Lavoro, venerdì Istruzione, poi Salute, Mobilità e così via sugli 11 temi. I due slot ordinari della stessa settimana devono usare temi diversi. Le ricorrenze pertinenti sono contenuti aggiuntivi e non consumano i due slot ordinari."
 }
