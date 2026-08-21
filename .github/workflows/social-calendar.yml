@@ -28,6 +28,7 @@ on:
       - "social-kit/config/editorial-rotation.json"
       - "social-kit/EDITORIAL_CALENDAR_2026_2027.md"
       - "social-kit/EDITORIAL_POLICY.md"
+      - "social-kit/METHOD.md"
       - "social-kit/README.md"
       - "scripts/plan_social_week.py"
       - "scripts/test_social_calendar.py"
