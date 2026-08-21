@@ -145,16 +145,53 @@ jobs:
         run: |
           mkdir -p preview-package
           cp -a dist preview-package/dist
+          cat > preview-package/APRI_ANTEPRIMA.bat <<'BAT'
+          @echo off
+          setlocal
+          cd /d "%~dp0"
+          where py >nul 2>nul
+          if %errorlevel%==0 (
+            start "Radar Opportunita - server" cmd /k py -m http.server 8000 --directory "%~dp0dist"
+          ) else (
+            where python >nul 2>nul
+            if %errorlevel%==0 (
+              start "Radar Opportunita - server" cmd /k python -m http.server 8000 --directory "%~dp0dist"
+            ) else (
+              echo Python non trovato. Installa Python oppure avvia manualmente un server nella cartella dist.
+              pause
+              exit /b 1
+            )
+          )
+          timeout /t 2 /nobreak >nul
+          start "" "http://127.0.0.1:8000/opportunita-preview/"
+          exit /b 0
+          BAT
           cat > preview-package/LEGGIMI.txt <<'EOF'
           ANTEPRIMA RADAR OPPORTUNITA v0.2.3 — NON PUBBLICATA
 
-          1. Aprire un terminale nella cartella preview-package.
-          2. Eseguire: python -m http.server 8000 --directory dist
-          3. Aprire nel browser: http://127.0.0.1:8000/opportunita-preview/
-          4. Interrompere il server con Ctrl+C.
+          WINDOWS — metodo consigliato
+          1. Estrarre TUTTO lo ZIP in una cartella.
+          2. Fare doppio clic su APRI_ANTEPRIMA.bat.
+          3. Si apre una finestra del server e poi il browser su:
+             http://127.0.0.1:8000/opportunita-preview/
+          4. Per chiudere la preview, chiudere la finestra "Radar Opportunita - server".
+
+          Metodo manuale dalla cartella principale estratta, quella che contiene dist:
+            py -m http.server 8000 --directory dist
+          oppure:
+            python -m http.server 8000 --directory dist
+
+          IMPORTANTE: se il terminale e gia dentro la cartella dist, NON aggiungere "--directory dist".
+          In quel caso usare semplicemente:
+            py -m http.server 8000
+
+          La pagina verificata nel pacchetto e:
+            dist/opportunita-preview/index.html
 
           La route e noindex e non fa parte della sitemap pubblica.
           EOF
+          test -f preview-package/dist/opportunita-preview/index.html
+          grep -q "Opportunità per i Comuni della Versilia" preview-package/dist/opportunita-preview/index.html
       - name: Upload browser preview
         uses: actions/upload-artifact@v4
         with:
