@@ -124,8 +124,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install playwright
           python -m playwright install --with-deps chromium
-      - name: Build canonical static site
-        run: python scripts/build_static.py
+      - name: Build canonical branded static site
+        run: python scripts/build_static_brand.py
       - name: Materialize non-public opportunities preview
         run: python scripts/build_opportunity_preview.py --data reports/runtime/opportunities-v022.json --dist dist
       - name: Browser checks desktop and mobile
