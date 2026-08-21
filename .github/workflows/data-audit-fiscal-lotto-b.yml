@@ -8,9 +8,8 @@ on:
       - "scripts/materialize_fiscal_lotto_b.py"
       - "scripts/test_fiscal_lotto_b.py"
       - "scripts/test_fiscal_lotto_b_browser.py"
-      - "data/**"
+      - "data/source-snapshots/fiscal-lotto-b-2025.json"
       - ".github/workflows/data-audit-fiscal-lotto-b.yml"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -24,14 +23,31 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install probe dependencies
-        run: python -m pip install requests pypdf
+
+      - name: Install tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests pypdf playwright
+          python -m playwright install --with-deps chromium
+
       - name: Probe OpenBDAP and DAIT
         run: python scripts/probe_fiscal_lotto_b_sources.py
-      - name: Validate probe JSON
+
+      - name: Validate live probe
         run: python -m json.tool reports/fiscal-lotto-b-probe.json > /dev/null
-      - name: Materialize prerequisite Income Lotto A
-        run: python scripts/materialize_income_lotto_a_v2.py
+
+      - name: Materialize release prerequisites
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/materialize_demography_lotto_a_v4.py
+          python scripts/materialize_demography_lotto_a_v5.py
+          python scripts/materialize_demography_rcs_lotto_a.py
+          python scripts/materialize_income_lotto_a_v2.py
+          python scripts/patch_income_lotto_a_frontend.py
+          python scripts/patch_demography_lotto_a_frontend_v2.py
+          python scripts/patch_income_lotto_a_regressions.py
+          python scripts/test_income_lotto_a_v2.py
+
       - name: Materialize Fiscalità Lotto B
         run: |
           python scripts/materialize_fiscal_lotto_b.py
@@ -40,9 +56,66 @@ jobs:
           python -m json.tool data/source-registry.json > /dev/null
           python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/fiscal-lotto-b-2025.json > /dev/null
-      - name: Upload probe
+
+      - name: Materialize release companions
+        run: |
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          node --check assets/pnrr-town-detail.js
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Start preview server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-fiscal-http.log 2>&1 &
+          echo $! > /tmp/ov-fiscal-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-fiscal-http.log
+          exit 1
+
+      - name: Validate Fiscalità Lotto B in browser
+        run: python scripts/test_fiscal_lotto_b_browser.py --base http://127.0.0.1:8123/
+
+      - name: Run regression and composite checks
+        run: |
+          python scripts/test_static.py
+          python scripts/test_indicator_pages.py
+          python scripts/test_composite_indicators.py
+          python scripts/test_visual_grammar.py
+          python scripts/test_chart_surfaces.py
+          python scripts/test_mobile_interactions.py
+          python scripts/test_exports_v161.py
+
+      - name: Validate Percorsi and global consistency
+        run: |
+          node --check percorsi/app.js
+          python scripts/test_percorsi_draft.py
+          python scripts/test_percorsi_refinements.py
+          python scripts/test_site_chrome.py
+          python scripts/test_site_consistency.py
+          python scripts/test_site_chrome_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload source probe
         uses: actions/upload-artifact@v4
         with:
           name: fiscal-lotto-b-probe
           path: reports/fiscal-lotto-b-probe.json
           retention-days: 7
+
+      - name: Upload Fiscalità Lotto B preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: fiscal-lotto-b-preview
+          path: dist
+          retention-days: 14
