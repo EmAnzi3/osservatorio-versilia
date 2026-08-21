@@ -17,15 +17,18 @@ on:
         default: true
         type: boolean
   schedule:
-    # Ogni lunedì prepara la settimana successiva con circa 7 giorni di anticipo.
+    # Ogni venerdì prepara la settimana successiva, prima del kit del weekend.
     # GitHub Actions usa UTC: 06:15 UTC = 07:15/08:15 in Italia a seconda dell'ora legale.
-    - cron: "15 6 * * 1"
+    - cron: "15 6 * * 5"
   pull_request:
     paths:
       - "data/site-data.json"
+      - "social-kit/config/editorial-cadence.json"
       - "social-kit/config/editorial-observances-2026-2027.json"
       - "social-kit/config/editorial-rotation.json"
       - "social-kit/EDITORIAL_CALENDAR_2026_2027.md"
+      - "social-kit/EDITORIAL_POLICY.md"
+      - "social-kit/README.md"
       - "scripts/plan_social_week.py"
       - "scripts/test_social_calendar.py"
       - ".github/workflows/social-calendar.yml"
@@ -59,7 +62,7 @@ jobs:
           if [ -n "${REQUESTED_DATE:-}" ]; then
             TARGET_DATE="$REQUESTED_DATE"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
-            TARGET_DATE="$(date -u -d '+7 days' +%F)"
+            TARGET_DATE="$(date -u -d '+3 days' +%F)"
           else
             TARGET_DATE="$(date -u +%F)"
           fi
