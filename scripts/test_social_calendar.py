@@ -89,8 +89,8 @@ def main() -> int:
     if len(launch_ordinary) != 2:
         fail("La settimana 24–30 agosto deve avere due uscite ordinarie")
     launch_themes = [item["theme"] for item in launch_ordinary]
-    if launch_themes != ["lavoro", "istruzione"]:
-        fail(f"Avvio nuova rotazione errato: {launch_themes}")
+    if launch_themes != ["istruzione", "salute"]:
+        fail(f"Avvio nuova rotazione errato dopo il post Lavoro del 21 agosto: {launch_themes}")
     if len(set(launch_themes)) != 2:
         fail("Martedì e venerdì devono usare temi diversi")
 
