@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.3",
+  "backtestWindowDays": 90,
+  "sources": {
+    "regione-toscana": {"label":"Regione Toscana","monitoringStatus":"active","role":"primary","priority":100,"listingDiscovery":true,"detailEnrichment":true,"pdfFallback":true,"archiveContinuity":true,"historicalReplay":true,"favicon":"https://www.regione.toscana.it/favicon.ico","note":"Fonte regionale generalista; resta il canale di sicurezza anche quando un bando compare nei portali di programma."},
+    "regione-toscana-fesr": {"label":"PR Toscana FESR 2021-2027","monitoringStatus":"active","role":"primary","priority":120,"listingDiscovery":true,"detailEnrichment":true,"pdfFallback":true,"archiveContinuity":true,"historicalReplay":true,"favicon":"https://www.regione.toscana.it/favicon.ico","note":"Canale dedicato ai bandi FESR. Le regole riusano la famiglia documentale Regione Toscana."},
+    "regione-toscana-fse": {"label":"PR Toscana FSE+ 2021-2027","monitoringStatus":"active","role":"primary","priority":120,"listingDiscovery":true,"detailEnrichment":true,"pdfFallback":true,"archiveContinuity":true,"historicalReplay":true,"favicon":"https://www.regione.toscana.it/favicon.ico","note":"Canale dedicato ai bandi FSE+. Le regole riusano la famiglia documentale Regione Toscana."},
+    "fondazione-cr-lucca": {"label":"Fondazione Cassa di Risparmio di Lucca","monitoringStatus":"active","role":"primary","priority":110,"listingDiscovery":true,"detailEnrichment":true,"pdfFallback":false,"archiveContinuity":true,"historicalReplay":true,"favicon":"https://www.fondazionecarilucca.it/favicon.ico","note":"Fonte primaria provinciale; raccolta JSON-LD con verifica della scheda ufficiale."},
+    "pa-digitale-2026": {"label":"PA Digitale 2026","monitoringStatus":"degraded","role":"supplementary","priority":60,"listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":true,"historicalReplay":false,"replacementNeeded":true,"favicon":"https://www.padigitale2026.gov.it/favicon.ico","note":"Il dataset selezionato è stale e resta solo fonte accessoria."},
+    "anci-toscana": {"label":"ANCI Toscana","monitoringStatus":"active","role":"discovery","priority":80,"listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":false,"favicon":"https://ancitoscana.it/favicon.ico","note":"Canale di discovery. Un contenuto ANCI non entra nell'output finché non è ricondotto alla fonte ufficiale del bando."},
+    "anci-nazionale": {"label":"ANCI","monitoringStatus":"active","role":"discovery","priority":75,"listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":false,"favicon":"https://www.anci.it/favicon.ico","note":"Canale di discovery nazionale; non è usato da solo per dichiarare l'ammissibilità."},
+    "gse": {"label":"GSE","monitoringStatus":"active","role":"discovery","priority":90,"listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":false,"favicon":"https://www.gse.it/favicon.ico","note":"Monitoraggio di news e pagine ufficiali GSE. Gli incentivi sono esposti solo dopo verifica dello stato effettivo della misura."},
+    "ministero-interno": {"label":"Ministero dell'Interno · Finanza locale","monitoringStatus":"active","role":"discovery","priority":90,"listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":false,"favicon":"https://www.interno.gov.it/favicon.ico","note":"Canale di discovery per contributi e avvisi nazionali rivolti agli enti locali."}
+  },
+  "plannedSources": [
+    {"id":"mase-mit-mic","label":"MASE / MIT / MiC — sezioni bandi dedicate","phase":"v0.3.x"},
+    {"id":"interreg","label":"Interreg","phase":"v0.4"},
+    {"id":"eu-direct","label":"Programmi UE diretti","phase":"v0.4"}
+  ]
+}
