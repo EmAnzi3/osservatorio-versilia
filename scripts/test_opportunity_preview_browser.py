@@ -59,8 +59,8 @@ def check_view(page, base: str, width: int, height: int) -> None:
 
     reset(page)
     page.locator("[data-op-access]").select_option("specific_requirement")
-    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 5")
-    assert visible_count(page) == 5
+    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 6")
+    assert visible_count(page) == 6
 
     reset(page)
     page.locator("[data-op-town]").select_option("forte-dei-marmi")
