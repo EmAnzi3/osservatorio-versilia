@@ -43,6 +43,28 @@ def assert_foreign_detail_not_clipped(detail, label: str) -> None:
     require(values['overflowingCells'] == 0, f'{label}: celle RCS con testo tagliato {values}')
 
 
+def assert_pyramid(pyramid, scope: str) -> None:
+    require(pyramid.count() == 1, f'{scope}: piramide per età e sesso assente')
+    pyramid.locator('summary').click()
+    require(pyramid.locator('.trend-chart.age-pyramid-trend').count() == 1,
+            f'{scope}: piramide fuori dalla superficie chart canonica')
+    require(pyramid.locator('.age-pyramid-point.chart-point').count() == 42,
+            f'{scope}: piramide non ha 21 classi x 2 sessi')
+    require(pyramid.locator('.chart-tooltip').count() == 42,
+            f'{scope}: tooltip canonici assenti nella piramide')
+    require(pyramid.locator('title').count() == 0,
+            f'{scope}: piramide usa tooltip SVG <title> non conformi')
+    point = pyramid.locator('.age-pyramid-point').nth(8)
+    tooltip = point.locator('.chart-tooltip')
+    require(tooltip.get_attribute('hidden') is not None,
+            f'{scope}: tooltip piramide visibile prima dell’interazione')
+    point.hover()
+    require(tooltip.get_attribute('hidden') is None,
+            f'{scope}: tooltip piramide non si apre con l’interazione canonica')
+    for text in ('Uomini', 'Donne', 'Scala: residenti per classe d’età', 'residenti', '100+'):
+        require(pyramid.get_by_text(text, exact=True).count() >= 1, f'{scope}: elemento piramide assente: {text}')
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base', default='http://127.0.0.1:8123/')
@@ -68,6 +90,12 @@ def main() -> None:
         require(color_6 and color_7 and color_6 != color_7 and color_7 not in ('rgba(0, 0, 0, 0)', 'transparent'),
                 f'Ottava fascia senza livello cromatico distinto: {color_6=} {color_7=}')
 
+        # La stessa vista deve includere la piramide aggregata dell'intera Versilia.
+        versilia_pyramid = page.locator('details.age-pyramid-detail').first
+        assert_pyramid(versilia_pyramid, 'Versilia desktop')
+        require('Versilia' in (versilia_pyramid.locator('svg').get_attribute('aria-label') or ''),
+                'Piramide confronto non identificata come Versilia')
+
         # Scheda comunale: otto valori nella stessa griglia, nessun box aggiuntivo.
         page.goto(urljoin(args.base, 'comuni/forte-dei-marmi/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
         require(page.locator('.age85-inline-detail').count() == 0, 'Box 85+ autonomo presente nella scheda comunale')
@@ -77,21 +105,9 @@ def main() -> None:
         require('80–84 anni' in cell_text and '85 anni e oltre' in cell_text,
                 '80–84 / 85+ non sono nella stessa griglia degli altri valori')
 
-        # Piramide: stesso sistema tooltip dei grafici storici (.chart-point/.chart-tooltip), niente <title> browser-native.
+        # Piramide comunale: stesso sistema tooltip dei grafici storici, niente <title> browser-native.
         pyramid = page.locator('details.age-pyramid-detail').first
-        require(pyramid.count() == 1, 'Piramide per età e sesso assente')
-        pyramid.locator('summary').click()
-        require(pyramid.locator('.trend-chart.age-pyramid-trend').count() == 1, 'Piramide fuori dalla superficie chart canonica')
-        require(pyramid.locator('.age-pyramid-point.chart-point').count() == 42, 'Piramide non ha 21 classi x 2 sessi')
-        require(pyramid.locator('.chart-tooltip').count() == 42, 'Tooltip canonici assenti nella piramide')
-        require(pyramid.locator('title').count() == 0, 'Piramide usa ancora tooltip SVG <title> non conformi')
-        point = pyramid.locator('.age-pyramid-point').nth(8)
-        tooltip = point.locator('.chart-tooltip')
-        require(tooltip.get_attribute('hidden') is not None, 'Tooltip piramide visibile prima dell’interazione')
-        point.hover()
-        require(tooltip.get_attribute('hidden') is None, 'Tooltip piramide non si apre con l’interazione canonica')
-        for text in ('Uomini', 'Donne', 'Scala: residenti per classe d’età', 'residenti', '100+'):
-            require(pyramid.get_by_text(text, exact=True).count() >= 1, f'Elemento piramide assente: {text}')
+        assert_pyramid(pyramid, 'Comune desktop')
 
         # Le componenti della variazione sono già indicatori autonomi: nessun pataccone duplicato.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=populationChange'), wait_until='networkidle')
@@ -124,11 +140,15 @@ def main() -> None:
                 'Dettaglio RCS troppo povero o non renderizzato')
         assert_foreign_detail_not_clipped(origins, 'foreignResidents comune desktop')
 
-        # Mobile: i nuovi dettagli non devono introdurre overflow o clipping.
+        # Mobile: piramidi e nuovi dettagli non devono introdurre overflow o clipping.
         page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
+        mobile_versilia_pyramid = page.locator('details.age-pyramid-detail').first
+        assert_pyramid(mobile_versilia_pyramid, 'Versilia mobile')
+        assert_no_horizontal_overflow(page, 'ageDistribution compare mobile')
         page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
         page.locator('details.age-pyramid-detail summary').click()
-        assert_no_horizontal_overflow(page, 'ageDistribution mobile')
+        assert_no_horizontal_overflow(page, 'ageDistribution town mobile')
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=foreignResidents'), wait_until='networkidle')
         compare_origins = page.locator('details.compare-foreign-origins').first
         compare_origins.locator('summary').click()
@@ -141,7 +161,7 @@ def main() -> None:
         assert_no_horizontal_overflow(page, 'foreignResidents town mobile')
 
         browser.close()
-    print('Browser Demografia v2 OK: 85+ inline con scala cromatica completa, tooltip piramide canonici, RCS senza clipping e nessun duplicato variazione.')
+    print('Browser Demografia v2 OK: 85+ inline, piramidi comuni + Versilia con tooltip canonici, RCS senza clipping e nessun duplicato variazione.')
 
 
 if __name__ == '__main__':
