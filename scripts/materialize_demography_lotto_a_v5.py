@@ -6,11 +6,11 @@ snapshot POSAS/P02 e i compositi demografici.
 
 Questa fase:
 - riallinea `ageDistribution` al POSAS 2026;
-- aggiunge quota 80+ e 85+ come dettaglio leggibile;
+- rende 85+ una vera fascia della distribuzione, scindendo 80+ in 80–84 e 85+;
 - prepara una piramide per età e sesso in classi quinquennali, derivata dal
   dettaglio per singola età già acquisito;
-- collega a `populationChange` una lettura unificata delle componenti naturale,
-  migrazione interna e migrazione con l'estero sul 2024, ultimo anno comune.
+- NON duplica dentro `populationChange` saldi naturale/migratori già pubblicati
+  come indicatori autonomi della stessa tematica.
 """
 from __future__ import annotations
 
@@ -29,7 +29,8 @@ AGE_BANDS = [
     ('35–49 anni', '35–49', 35, 49),
     ('50–64 anni', '50–64', 50, 64),
     ('65–79 anni', '65–79', 65, 79),
-    ('80 anni e oltre', '80+', 80, 120),
+    ('80–84 anni', '80–84', 80, 84),
+    ('85 anni e oltre', '85+', 85, 120),
 ]
 
 
@@ -79,15 +80,14 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
     metric = site['metrics']['ageDistribution']
     total_counts = [0] * len(AGE_BANDS)
     total_population = 0
-    weighted_age = 0
-    total_80 = 0
-    total_85 = 0
+    weighted_age = 0.0
 
     for row in metric['rows']:
         detail = age_rows(snapshot, row['town'])
         total = sum(int(item['total']) for item in detail)
         if total <= 0:
             raise RuntimeError(f"{row['town']}: popolazione POSAS 2026 non valida")
+
         parts = []
         for idx, (label, selector, lower, upper) in enumerate(AGE_BANDS):
             count = sum(int(item['total']) for item in detail if lower <= int(item['age']) <= upper)
@@ -98,13 +98,10 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
                 'value': count / total * 100,
                 'count': count,
             })
-        count80 = sum(int(item['total']) for item in detail if int(item['age']) >= 80)
-        count85 = sum(int(item['total']) for item in detail if int(item['age']) >= 85)
+
         age_mean = sum(int(item['age']) * int(item['total']) for item in detail) / total
         total_population += total
         weighted_age += age_mean * total
-        total_80 += count80
-        total_85 += count85
 
         row['parts'] = parts
         # Manteniamo il 20–34 come valore canonico di riga per compatibilità con
@@ -113,12 +110,8 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
         row['formatted'] = percent(row['value'])
         row['benchmarkValue'] = row['value']
         row['summaryValue'] = age_mean
-        row['seniorAgeDetail'] = {
-            'year': 2026,
-            'population': total,
-            'age80Plus': {'count': count80, 'value': count80 / total * 100},
-            'age85Plus': {'count': count85, 'value': count85 / total * 100},
-        }
+        row.pop('seniorAgeDetail', None)
+        row.pop('age85PlusDetail', None)
         row['ageSexPyramid'] = {
             'year': 2026,
             'sourceGranularity': 'singola età e sesso',
@@ -127,19 +120,20 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
 
     metric['meta']['year'] = '2026'
     metric['meta']['description'] = (
-        'Quota dei residenti nelle fasce 0–14, 15–19, 20–34, 35–49, 50–64, 65–79 e 80 anni e oltre. '
-        'L’approfondimento mostra anche la quota 85+ e, nelle schede comunali, la piramide per età e sesso.'
+        'Quota dei residenti nelle fasce 0–14, 15–19, 20–34, 35–49, 50–64, 65–79, 80–84 e 85 anni e oltre. '
+        'Nelle schede comunali è disponibile anche la piramide per età e sesso.'
     )
-    metric['meta']['detailLabel'] = 'Grandi anziani · 80+ e 85+'
+    metric['meta'].pop('detailLabel', None)
     metric['meta']['pyramidLabel'] = 'Piramide per età e sesso'
     metric.setdefault('method', {})['detail'] = (
-        'Distribuzione, 80+, 85+ e piramide derivano dal POSAS Istat al 1° gennaio 2026. '
+        'Distribuzione e piramide derivano dal POSAS Istat al 1° gennaio 2026. '
+        'Per rendere il dato 85+ una componente confrontabile senza sovrapposizioni, la precedente fascia 80+ è scissa in 80–84 e 85 anni e oltre. '
         'La piramide visualizza classi quinquennali per leggibilità, mantenendo nello snapshot il dato per singola età e sesso.'
     )
     metric['aggregate'] = {
         'value': total_counts[2] / total_population * 100,
         'label': 'Versilia · 20–34 anni',
-        'note': 'Quota calcolata sul totale dei residenti dei sette comuni; nel dettaglio sono mostrate tutte le fasce.',
+        'note': 'Quota calcolata sul totale dei residenti dei sette comuni; la barra mostra tutte le fasce senza sovrapposizioni.',
         'parts': [
             {'label': label, 'count': total_counts[idx], 'value': total_counts[idx] / total_population * 100}
             for idx, (label, _selector, _lower, _upper) in enumerate(AGE_BANDS)
@@ -147,100 +141,30 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
         'summaryValue': weighted_age / total_population,
         'summaryLabel': 'Età media Versilia',
         'summaryNote': 'Età media ponderata sulla popolazione dei sette comuni; la barra mostra la distribuzione completa per fascia.',
-        'seniorAgeDetail': {
-            'year': 2026,
-            'population': total_population,
-            'age80Plus': {'count': total_80, 'value': total_80 / total_population * 100},
-            'age85Plus': {'count': total_85, 'value': total_85 / total_population * 100},
-        },
     }
 
 
-def component_series(metric: dict, town: str, label: str | None = None) -> dict[int, float]:
-    row = next(item for item in metric['rows'] if item['town'] == town)
-    series = row['componentSeries'][label] if label else row['series']
-    return {int(year): float(value) for year, value in zip(series['years'], series['values'], strict=True)}
-
-
-def component_count(metric: dict, town: str, label: str) -> int | None:
-    row = next(item for item in metric['rows'] if item['town'] == town)
-    part = next((item for item in row.get('parts', []) if item.get('label') == label), None)
-    return None if part is None else part.get('count')
-
-
-def update_population_change_components(site: dict, snapshot: dict) -> None:
-    natural = site['metrics']['naturalDemographicDynamics']
-    internal = site['metrics']['internalResidentialMobility']
-    foreign = site['metrics']['foreignResidentialMobility']
+def remove_duplicate_population_change_detail(site: dict) -> None:
     target = site['metrics']['populationChange']
-    common_years = list(range(2019, 2025))
-
     for row in target['rows']:
-        town = row['town']
-        natural_map = component_series(natural, town, 'Saldo naturale')
-        internal_map = component_series(internal, town)
-        foreign_map = component_series(foreign, town)
-        if not all(year in natural_map and year in internal_map and year in foreign_map for year in common_years):
-            raise RuntimeError(f'{town}: serie componenti non omogenea 2019–2024')
-        p2_2024 = next(item for item in snapshot['p02']['towns'][town] if int(item['year']) == 2024)
-        parts = [
-            {
-                'key': 'natural',
-                'label': 'Saldo naturale',
-                'value': natural_map[2024],
-                'unit': 'per1000',
-                'count': int(p2_2024['naturalBalance']),
-            },
-            {
-                'key': 'internal',
-                'label': 'Saldo migratorio interno',
-                'value': internal_map[2024],
-                'unit': 'per1000',
-                'count': component_count(internal, town, 'Saldo migratorio interno'),
-            },
-            {
-                'key': 'foreign',
-                'label': 'Saldo migratorio con l’estero',
-                'value': foreign_map[2024],
-                'unit': 'per1000',
-                'count': component_count(foreign, town, 'Saldo migratorio con l’estero'),
-            },
-        ]
-        row['changeComponents'] = {
-            'year': 2024,
-            'parts': parts,
-            'series': {
-                'years': common_years,
-                'natural': [natural_map[year] for year in common_years],
-                'internal': [internal_map[year] for year in common_years],
-                'foreign': [foreign_map[year] for year in common_years],
-            },
-            'note': (
-                'Le tre componenti sono mostrate sul 2024, ultimo anno comune alle serie migratorie pubblicate. '
-                'Non vengono forzate a sommare esattamente alla variazione dei residenti, che può includere rettifiche anagrafiche e riallineamenti statistici.'
-            ),
-        }
-
-    target['meta']['detailLabel'] = 'Componenti della variazione demografica'
-    target.setdefault('method', {})['componentDetail'] = (
-        'Saldo naturale, saldo migratorio interno e saldo migratorio con l’estero sono confrontati sul 2024, '
-        'ultimo anno comune disponibile nelle serie correnti.'
-    )
+        row.pop('changeComponents', None)
+    target['meta'].pop('detailLabel', None)
+    target.setdefault('method', {}).pop('componentDetail', None)
 
 
 def update_audit(audit: dict) -> None:
     decisions = {
-        'share80Plus': 'public_detail_80_85_2026',
+        'share80Plus': 'public_distribution_split_80_84_85_plus_2026',
         'populationAgeSexDetail': 'public_pyramid_2026',
     }
     for candidate in audit.get('candidates', []):
         if candidate.get('key') in decisions:
             candidate['implementationStatus'] = decisions[candidate['key']]
     audit['demographyV2'] = {
-        'ageDistribution2026': 'materialized',
-        'share80PlusAnd85Plus': 'public_detail',
-        'populationAgeSexPyramid': 'public_town_detail',
-        'populationChangeComponents': 'public_town_detail_2024',
+        'ageDistribution2026': 'materialized_8_non_overlapping_bands',
+        'share80PlusAnd85Plus': 'public_distribution_80_84_85_plus',
+        'populationAgeSexPyramid': 'public_town_detail_native_tooltip',
+        'populationChangeComponents': 'not_added_duplicate_existing_metrics',
         'foreignCitizenshipBirthCountry': 'pending_rcs_probe',
     }
 
@@ -254,12 +178,12 @@ def main() -> None:
         raise RuntimeError('Demografia v2 deve essere eseguita dopo materialize_demography_lotto_a_v4.py')
 
     update_age_distribution(site, snapshot)
-    update_population_change_components(site, snapshot)
+    remove_duplicate_population_change_detail(site)
     update_audit(audit)
 
     save(SITE_PATH, site)
     save(AUDIT_PATH, audit)
-    print('Demografia v2: ageDistribution 2026, 80+/85+, piramide e componenti variazione materializzate senza nuove card.')
+    print('Demografia v2: 85+ integrato nella distribuzione (80–84 / 85+), piramide pronta; componenti variazione duplicate rimosse.')
 
 
 if __name__ == '__main__':
