@@ -18,9 +18,11 @@ Non vengono più esposti:
 La distinzione utile resta quella della **modalità di partecipazione**:
 
 - `Candidatura diretta` quando il Comune ha un canale operativo diretto documentato;
-- un requisito concreto quando serve una condizione specifica, ad esempio `Richiede partenariato`, `Partecipazione tramite Sistema Museale`, `Richiede superficie ammissibile`.
+- un requisito concreto quando serve una condizione specifica, ad esempio `Richiede partenariato`, `Partecipazione tramite Sistema Museale`, `Richiede superficie ammissibile` o una condizione territoriale valida soltanto per alcuni Comuni.
 
-Un dubbio sull'ammissibilità non viene quindi trasformato in una pillola pubblica: resta nella review interna.
+La modalità tiene conto anche della matrice Comune-per-Comune: un bando complessivamente ammissibile, ma condizionato per almeno un Comune (come Toscana Diffusa per Camaiore), espone il requisito specifico.
+
+Un dubbio sull'ammissibilità non viene trasformato in una pillola pubblica: resta nella review interna.
 
 ## PDF-first sui casi ambigui
 
@@ -91,7 +93,9 @@ Se l'orario non è documentato viene mostrata soltanto la data.
 
 ## Archivio
 
-`scripts/opportunity_radar_v024.py` accetta `--previous` per confrontare lo stato corrente con un output precedente. Un'opportunità che non è più attiva e la cui scadenza è trascorsa viene spostata in `archive`.
+`scripts/opportunity_radar_v024.py` confronta lo stato corrente con un output precedente. Un'opportunità che non è più attiva e la cui scadenza è trascorsa viene spostata in `archive`.
+
+Nel workflow della PR il passaggio `Restore previous v0.2.4 state` recupera automaticamente l'ultimo artifact `opportunity-radar-v024` non scaduto dello stesso branch e lo passa al nuovo probe con `--previous`. In questo modo l'archivio non dipende dal fatto che la fonte continui a elencare i bandi ormai chiusi.
 
 L'archivio conserva soltanto i dati utili alla consultazione storica:
 
@@ -103,15 +107,13 @@ L'archivio conserva soltanto i dati utili alla consultazione storica:
 
 La UI rende questi record in forma compatta, senza le card dettagliate dei bandi aperti.
 
-La persistenza dello stato precedente dovrà essere resa durevole quando il radar passerà dal prototipo a un job di produzione.
-
 ## Preview locale
 
 L'artifact `opportunity-radar-v024-browser-preview` contiene:
 
 - `dist/` completo;
 - `APRI_ANTEPRIMA.py`, che sceglie automaticamente una porta libera e apre il browser;
-- `APRI_ANTEPRIMA.bat`, semplice wrapper Windows;
+- `APRI_ANTEPRIMA.bat`, wrapper Windows che richiama il launcher Python dalla propria directory;
 - `LEGGIMI.txt`.
 
 ## Stato
