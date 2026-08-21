@@ -10,17 +10,23 @@ on:
       - "scripts/opportunity_radar_v02.py"
       - "scripts/opportunity_radar_v021.py"
       - "scripts/opportunity_radar_v022.py"
+      - "scripts/build_opportunity_preview.py"
+      - "scripts/test_opportunity_preview.py"
+      - "scripts/test_opportunity_preview_browser.py"
       - "scripts/test_opportunity_radar.py"
       - "scripts/test_opportunity_radar_quality.py"
       - "scripts/test_opportunity_radar_v02.py"
       - "scripts/test_opportunity_radar_v021.py"
       - "scripts/test_opportunity_radar_v022.py"
+      - "assets/opportunity-preview.css"
+      - "assets/opportunity-preview.js"
       - "data/opportunity-sources.json"
       - "data/opportunity-rules-v021.json"
       - "data/opportunity-rules-v022.json"
       - "docs/opportunita-prototipo.md"
       - "docs/opportunita-prototipo-v021.md"
       - "docs/opportunita-prototipo-v022.md"
+      - "docs/opportunita-prototipo-v023.md"
   workflow_dispatch:
 
 permissions:
@@ -44,6 +50,9 @@ jobs:
             scripts/opportunity_radar_v02.py \
             scripts/opportunity_radar_v021.py \
             scripts/opportunity_radar_v022.py \
+            scripts/build_opportunity_preview.py \
+            scripts/test_opportunity_preview.py \
+            scripts/test_opportunity_preview_browser.py \
             scripts/test_opportunity_radar.py \
             scripts/test_opportunity_radar_quality.py \
             scripts/test_opportunity_radar_v02.py \
@@ -54,6 +63,7 @@ jobs:
           python scripts/test_opportunity_radar_v02.py
           python scripts/test_opportunity_radar_v021.py
           python scripts/test_opportunity_radar_v022.py
+          python scripts/test_opportunity_preview.py
 
   live-probe:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
@@ -93,3 +103,62 @@ jobs:
         run: |
           echo "Almeno una fonte live non ha superato il probe v0.2.2; consultare l'artifact diagnostico."
           exit 1
+
+  browser-preview:
+    needs: live-probe
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download validated radar output
+        uses: actions/download-artifact@v4
+        with:
+          name: opportunity-radar-v022
+          path: reports/runtime
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser build tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Build canonical static site
+        run: python scripts/build_static.py
+      - name: Materialize non-public opportunities preview
+        run: python scripts/build_opportunity_preview.py --data reports/runtime/opportunities-v022.json --dist dist
+      - name: Browser checks desktop and mobile
+        shell: bash
+        run: |
+          python scripts/preview_dist.py --directory dist --bind 127.0.0.1 --port 8123 > /tmp/opportunity-preview-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8123/opportunita-preview/ >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          python scripts/test_opportunity_preview_browser.py --base http://127.0.0.1:8123/
+      - name: Package browser preview
+        run: |
+          mkdir -p preview-package
+          cp -a dist preview-package/dist
+          cat > preview-package/LEGGIMI.txt <<'EOF'
+          ANTEPRIMA RADAR OPPORTUNITA v0.2.3 — NON PUBBLICATA
+
+          1. Aprire un terminale nella cartella preview-package.
+          2. Eseguire: python -m http.server 8000 --directory dist
+          3. Aprire nel browser: http://127.0.0.1:8000/opportunita-preview/
+          4. Interrompere il server con Ctrl+C.
+
+          La route e noindex e non fa parte della sitemap pubblica.
+          EOF
+      - name: Upload browser preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-v023-browser-preview
+          path: preview-package/
+          if-no-files-found: error
+          retention-days: 30
