@@ -35,15 +35,19 @@ def check_view(page, base: str, width: int, height: int) -> None:
 
     page.locator("[data-op-town]").select_option("forte-dei-marmi")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 9")
+    assert page.locator("[data-op-town]").input_value() == "forte-dei-marmi"
     assert page.locator("[data-opportunity-card]:not([hidden])").count() == 9
-    assert "Forte dei Marmi" in page.locator("[data-op-context]").inner_text()
+    assert "9 opportunità" in page.locator("[data-op-visible]").inner_text().lower()
 
     page.locator("[data-op-status]").select_option("conditional")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 4")
+    assert page.locator("[data-op-status]").input_value() == "conditional"
     assert page.locator("[data-opportunity-card]:not([hidden])").count() == 4
 
     page.locator("[data-op-reset]").click()
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 11")
+    assert page.locator("[data-op-town]").input_value() == ""
+    assert page.locator("[data-op-status]").input_value() == ""
     page.locator("[data-op-search]").fill("parcheggi")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 1")
     assert "parcheggi" in page.locator("[data-opportunity-card]:not([hidden]) h3").inner_text().lower()
