@@ -44,6 +44,9 @@ class OpportunityRadarV021Test(unittest.TestCase):
         self.assertEqual(resolved["municipality_role"], "direct_applicant")
         self.assertTrue(resolved["actionable_for_municipality"])
         self.assertTrue(all(v["status"] == "eligible" for v in resolved["municipality_eligibility"].values()))
+        self.assertTrue(
+            all("Comuni toscani" in v["reason"] for v in resolved["municipality_eligibility"].values())
+        )
 
     def test_biotrituratori_is_suppressed_by_role_and_geography(self) -> None:
         resolved = radar.resolve_municipalities(
@@ -98,6 +101,9 @@ class OpportunityRadarV021Test(unittest.TestCase):
         self.assertEqual(resolved["municipality_role"], "implementing_body")
         self.assertIn("famiglie", resolved["final_beneficiaries"])
         self.assertEqual(resolved["eligibility"], "eligible")
+        self.assertTrue(
+            all("soggetto proponente" in v["reason"] for v in resolved["municipality_eligibility"].values())
+        )
 
     def test_housing_manifestation_is_promoted_as_conditional(self) -> None:
         resolved = radar.resolve_municipalities(
@@ -108,6 +114,9 @@ class OpportunityRadarV021Test(unittest.TestCase):
         self.assertEqual(resolved["eligibility"], "conditional")
         self.assertEqual(resolved["municipality_role"], "direct_applicant")
         self.assertIn("beni confiscati", resolved["project_requirements"])
+        self.assertTrue(
+            all("casistiche immobiliari" in v["reason"] for v in resolved["municipality_eligibility"].values())
+        )
 
     def test_progett_azioni_keeps_partnership_role(self) -> None:
         candidate = item("Bando 2026 Progett-Azioni", eligibility="conditional", beneficiary="Partnership di soggetti pubblici e privati")
@@ -116,6 +125,9 @@ class OpportunityRadarV021Test(unittest.TestCase):
         self.assertEqual(resolved["eligibility"], "conditional")
         self.assertEqual(resolved["municipality_role"], "partner")
         self.assertTrue(resolved["partnership_required"])
+        self.assertTrue(
+            all("partnership" in v["reason"] for v in resolved["municipality_eligibility"].values())
+        )
 
     def test_unruled_generic_eligible_case_returns_to_internal_review(self) -> None:
         resolved = radar.resolve_municipalities(
