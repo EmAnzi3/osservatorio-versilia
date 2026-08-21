@@ -17,42 +17,65 @@ def assert_shell(page) -> None:
     assert page.locator(".site-brand-copy strong").inner_text().strip() == "Osservatorio Versilia"
     assert page.locator(".global-search-trigger").count() == 1
     assert page.locator(".site-footer").count() == 1
-    # Preview noindex: site_chrome rimuove deliberatamente i link social dal footer.
     assert page.locator('.footer-social[data-social-placement="footer"]').count() == 0
     assert page.locator('meta[name="robots"]').get_attribute("content") == "noindex,nofollow,noarchive"
+
+
+def visible_count(page) -> int:
+    return page.locator("[data-opportunity-card]:not([hidden])").count()
+
+
+def reset(page) -> None:
+    page.locator("[data-op-reset]").click()
+    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 11")
 
 
 def check_view(page, base: str, width: int, height: int) -> None:
     page.set_viewport_size({"width": width, "height": height})
     page.goto(base + "opportunita-preview/", wait_until="networkidle")
     assert_shell(page)
+
     assert page.locator("h1").inner_text() == "Opportunità per i Comuni della Versilia."
     assert page.locator("[data-opportunity-card]").count() == 11
-    assert page.locator("[data-opportunity-card]:not([hidden])").count() == 11
+    assert visible_count(page) == 11
     assert "11 opportunità" in page.locator("[data-op-visible]").inner_text().lower()
+    body = page.locator("body").inner_text()
+    assert "Quality gate" not in body
+    assert "Perché compare" not in body
+    assert "Da verificare" not in body
+    assert "ore 16:00" in body
+
     overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
     assert not overflow, f"Overflow orizzontale preview a {width}px"
 
+    accents = page.locator("[data-opportunity-card]").evaluate_all(
+        "(cards) => [...new Set(cards.map(card => getComputedStyle(card).getPropertyValue('--card-accent').trim()))]"
+    )
+    assert len(accents) >= 5, f"Palette troppo uniforme: {accents}"
+
+    page.locator("[data-op-source]").select_option("fondazione-cr-lucca")
+    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 2")
+    assert visible_count(page) == 2
+
+    reset(page)
+    page.locator("[data-op-access]").select_option("specific_requirement")
+    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 5")
+    assert visible_count(page) == 5
+
+    reset(page)
     page.locator("[data-op-town]").select_option("forte-dei-marmi")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 9")
-    assert page.locator("[data-op-town]").input_value() == "forte-dei-marmi"
-    assert page.locator("[data-opportunity-card]:not([hidden])").count() == 9
-    assert "9 opportunità" in page.locator("[data-op-visible]").inner_text().lower()
+    assert visible_count(page) == 9
 
-    page.locator("[data-op-status]").select_option("conditional")
+    page.locator("[data-op-access]").select_option("specific_requirement")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 4")
-    assert page.locator("[data-op-status]").input_value() == "conditional"
-    assert page.locator("[data-opportunity-card]:not([hidden])").count() == 4
+    assert visible_count(page) == 4
 
-    page.locator("[data-op-reset]").click()
-    page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 11")
-    assert page.locator("[data-op-town]").input_value() == ""
-    assert page.locator("[data-op-status]").input_value() == ""
+    reset(page)
     page.locator("[data-op-search]").fill("parcheggi")
     page.wait_for_function("() => document.querySelectorAll('[data-opportunity-card]:not([hidden])').length === 1")
     assert "parcheggi" in page.locator("[data-opportunity-card]:not([hidden]) h3").inner_text().lower()
 
-    # La ricerca globale della shell canonica deve restare utilizzabile in desktop.
     if width >= 700:
         trigger = page.locator(".global-search-trigger")
         trigger.click()
@@ -70,7 +93,7 @@ def main() -> None:
         check_view(page, args.base, 1440, 1000)
         check_view(page, args.base, 390, 844)
         browser.close()
-    print("Opportunity preview browser checks passed: canonical shell + filters + desktop + mobile + no overflow.")
+    print("Opportunity preview v0.2.4 browser checks passed: shell, source/access filters, palette, mobile and no overflow.")
 
 
 if __name__ == "__main__":
