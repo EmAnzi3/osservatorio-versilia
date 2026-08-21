@@ -7,6 +7,8 @@
 - La piramide mantiene il tooltip canonico anche quando `ux-history.js`
   ricostruisce il contenuto della history-panel: l'interazione è delegata al
   contenitore stabile della scheda comunale, non ai nodi poi sostituiti.
+- L'ottava fascia eredita la grammatica cromatica del tema Demografia, senza
+  introdurre una tinta estranea alla scala già usata dalla distribuzione.
 """
 from __future__ import annotations
 
@@ -15,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / 'scripts' / 'test_composite_indicators.py'
 APP = ROOT / 'assets' / 'app-parts' / '03.txt'
+ORIGINAL_CSS = ROOT / 'assets' / 'original.css'
 
 OLD_BASE = '''    assert data["themes"]["economia"]["sections"][0]["metrics"] == [
         "income", "incomeDistribution", "incomeVsInflation",
@@ -121,6 +124,14 @@ PYRAMID_CALL_NEW = '''    installChartInteractions(container);
     installAgePyramidDelegation(container);
     scrollActiveControl(tablist);'''
 
+AGE_COLOR_MARKER = '/* ageDistribution eight-band scale */'
+AGE_COLOR_CSS = r'''
+
+/* ageDistribution eight-band scale */
+[data-theme=demografia] .composite-segment.part-6,[data-theme=demografia] .composite-swatch.part-6{background:color-mix(in srgb,var(--theme-color) 18%,var(--surface))}
+[data-theme=demografia] .composite-segment.part-7,[data-theme=demografia] .composite-swatch.part-7{background:color-mix(in srgb,var(--theme-color) 10%,var(--surface))}
+'''
+
 
 def patch_regression_expectations() -> None:
     text = TARGET.read_text(encoding='utf-8')
@@ -164,10 +175,17 @@ def patch_pyramid_delegated_interactions() -> None:
     APP.write_text(text, encoding='utf-8')
 
 
+def patch_age_distribution_colors() -> None:
+    text = ORIGINAL_CSS.read_text(encoding='utf-8')
+    if AGE_COLOR_MARKER not in text:
+        ORIGINAL_CSS.write_text(text + AGE_COLOR_CSS, encoding='utf-8')
+
+
 def main() -> None:
     patch_regression_expectations()
     patch_pyramid_delegated_interactions()
-    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; tooltip piramide delegato e persistente.')
+    patch_age_distribution_colors()
+    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; tooltip persistente e scala cromatica completa.')
 
 
 if __name__ == '__main__':
