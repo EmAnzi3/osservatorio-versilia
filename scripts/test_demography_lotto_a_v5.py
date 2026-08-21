@@ -64,13 +64,18 @@ def main() -> None:
     require('componentDetail' not in change.get('method', {}), 'populationChange conserva metodo duplicato')
     require(all('changeComponents' not in row for row in change['rows']), 'Componenti variazione duplicate ancora materializzate')
 
+    # I tre fenomeni restano consultabili nelle loro sedi canoniche della stessa tematica.
+    require('naturalDemographicDynamics' in SITE['metrics'], 'Indicatore saldo naturale mancante')
+    require('internalMobility' in SITE['metrics'], 'Indicatore mobilità interna mancante')
+    require('foreignMobility' in SITE['metrics'], 'Indicatore mobilità con estero mancante')
+
     decisions = {candidate.get('key'): candidate.get('implementationStatus') for candidate in AUDIT.get('candidates', [])}
     require(decisions.get('share80Plus') == 'public_distribution_split_80_84_85_plus_2026', 'Audit 80–84/85+ non aggiornato')
     require(decisions.get('populationAgeSexDetail') == 'public_pyramid_2026', 'Audit piramide non aggiornato')
     require(AUDIT.get('demographyV2', {}).get('populationChangeComponents') == 'not_added_duplicate_existing_metrics',
             'Audit componenti variazione deve segnare il dato come duplicato non aggiunto')
 
-    print('Demografia Lotto A v2 dati OK: 85+ è nella distribuzione, piramide pronta, nessun duplicato delle componenti di variazione.')
+    print('Demografia Lotto A v2 dati OK: 85+ è nella distribuzione, piramide pronta, componenti variazione lasciate nei loro indicatori canonici.')
 
 
 if __name__ == '__main__':
