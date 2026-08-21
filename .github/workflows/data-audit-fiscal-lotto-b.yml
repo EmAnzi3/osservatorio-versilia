@@ -1,0 +1,36 @@
+name: Data audit Lotto B - Fiscalità locale
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/probe_fiscal_lotto_b_sources.py"
+      - "scripts/materialize_fiscal_lotto_b.py"
+      - "scripts/test_fiscal_lotto_b.py"
+      - "data/**"
+      - ".github/workflows/data-audit-fiscal-lotto-b.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fiscal-lotto-b:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install probe dependencies
+        run: python -m pip install requests pypdf
+      - name: Probe OpenBDAP and DAIT
+        run: python scripts/probe_fiscal_lotto_b_sources.py
+      - name: Validate probe JSON
+        run: python -m json.tool reports/fiscal-lotto-b-probe.json > /dev/null
+      - name: Upload probe
+        uses: actions/upload-artifact@v4
+        with:
+          name: fiscal-lotto-b-probe
+          path: reports/fiscal-lotto-b-probe.json
+          retention-days: 7
