@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 3,
+  "sources": {
+    "regione-toscana": {"label":"Regione Toscana","mark":"RT","class":"regione","favicon":"https://www.regione.toscana.it/favicon.ico"},
+    "regione-toscana-fesr": {"label":"PR Toscana FESR 2021-2027","mark":"FESR","class":"fesr","favicon":"https://www.regione.toscana.it/favicon.ico"},
+    "regione-toscana-fse": {"label":"PR Toscana FSE+ 2021-2027","mark":"FSE+","class":"fse","favicon":"https://www.regione.toscana.it/favicon.ico"},
+    "fondazione-cr-lucca": {"label":"Fondazione Cassa di Risparmio di Lucca","mark":"FCRL","class":"fondazione","favicon":"https://www.fondazionecarilucca.it/favicon.ico"},
+    "pa-digitale-2026": {"label":"PA Digitale 2026","mark":"PA","class":"digitale","favicon":"https://www.padigitale2026.gov.it/favicon.ico"},
+    "anci-toscana": {"label":"ANCI Toscana","mark":"AT","class":"anci","favicon":"https://ancitoscana.it/favicon.ico"},
+    "anci-nazionale": {"label":"ANCI","mark":"ANCI","class":"anci","favicon":"https://www.anci.it/favicon.ico"},
+    "gse": {"label":"GSE","mark":"GSE","class":"gse","favicon":"https://www.gse.it/favicon.ico"},
+    "ministero-interno": {"label":"Ministero dell'Interno","mark":"MI","class":"ministero","favicon":"https://www.interno.gov.it/favicon.ico"}
+  },
+  "rules": {
+    "rt-amianto-2026": {"category":"ambiente","description":"Contributi agli Enti locali per rimuovere e smaltire materiali contenenti amianto dagli edifici pubblici."},
+    "rt-nidi-qualita-2026": {"category":"istruzione","description":"Contributi ai Comuni per sostenere i servizi educativi della prima infanzia e migliorare qualità e accessibilità dei nidi."},
+    "fcrl-progett-azioni-2026": {"category":"sociale","description":"Sostegno alla progettazione sociale degli enti pubblici insieme alla società civile e agli enti del Terzo settore.","conditionLabel":"Richiede partenariato"},
+    "fcrl-opere-pubbliche-2026": {"category":"opere","description":"Finanzia la progettazione di manutenzioni straordinarie, restauri, risanamenti e nuove opere pubbliche."},
+    "rt-toscanaincontemporanea-2026": {"category":"cultura","description":"Sostegno a progetti per la produzione, la conoscenza e la diffusione della creatività contemporanea.","conditionLabel":"Richiede progetto culturale ammissibile"},
+    "rt-sistemi-museali-2026": {"category":"cultura","description":"Sostegno ai Sistemi Museali della Toscana per attività coordinate di valorizzazione, gestione e sviluppo dei musei aderenti.","conditionLabel":"Partecipazione tramite Sistema Museale"},
+    "rt-buoni-scuola-2026": {"category":"istruzione","description":"Sostegno alle famiglie per la frequenza delle scuole dell’infanzia paritarie; i Comuni aderiscono all’avviso e ne gestiscono l’attuazione."},
+    "rt-risorse-genetiche-forestali-2026": {"category":"ambiente","description":"Contributi CSR/FEASR per conservazione, uso e sviluppo sostenibile delle risorse genetiche forestali su superfici ammissibili.","conditionLabel":"Richiede superficie ammissibile"},
+    "rt-toscana-diffusa-servizi-2026": {"category":"territorio","description":"Contributi ai Comuni della Toscana Diffusa per potenziare strutture di servizio, infrastrutture e servizi pubblici.","conditionLabel":"Ammissibilità territoriale per Comune"},
+    "rt-parcheggi-2026": {"category":"mobilita","description":"Contributi ai Comuni toscani per realizzare nuovi parcheggi pubblici e le opere strettamente connesse."},
+    "rt-emergenza-abitativa-2026": {"category":"abitare","description":"Manifestazione di interesse per reperire, recuperare o acquisire immobili destinati a emergenza abitativa, ERP o residenza sociale.","conditionLabel":"Richiede patrimonio o progetto ammissibile"},
+    "rt-sistema-integrato-0-6-2026": {"category":"istruzione","description":"Contributi ai Comuni per percorsi formativi e coordinamento della qualità del sistema educativo integrato 0-6 anni.","conditionLabel":"Partecipazione tramite Conferenza zonale"}
+  }
+}
