@@ -9,6 +9,8 @@
   sia nelle schede comunali sia nel confronto Versilia.
 - La piramide aggregata Versilia riusa esattamente lo stesso renderer delle
   piramidi comunali, sommando i sette territori nel materializzatore.
+- Le patch runtime della piramide vengono applicate solo quando il renderer
+  Demografia è presente, così il workflow Redditi resta indipendente.
 - L'ottava fascia eredita la grammatica cromatica del tema Demografia, senza
   introdurre una tinta estranea alla scala già usata dalla distribuzione.
 """
@@ -200,6 +202,10 @@ def patch_regression_expectations() -> None:
 
 def patch_pyramid_delegated_interactions() -> None:
     text = APP.read_text(encoding='utf-8')
+    # Il workflow Redditi esegue questo script senza applicare prima il frontend
+    # Demografia: in quel contesto non deve cercare né introdurre la piramide.
+    if 'function agePyramidMarkup(' not in text:
+        return
     if PYRAMID_DELEGATE_MARKER not in text:
         if PYRAMID_HELPER_ANCHOR not in text:
             raise RuntimeError('Pyramid delegated helper anchor not found')
@@ -229,7 +235,7 @@ def main() -> None:
     patch_regression_expectations()
     patch_pyramid_delegated_interactions()
     patch_age_distribution_colors()
-    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; piramide comuni/Versilia con tooltip persistente; scala cromatica completa.')
+    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; piramide comuni/Versilia con tooltip persistente quando disponibile; scala cromatica completa.')
 
 
 if __name__ == '__main__':
