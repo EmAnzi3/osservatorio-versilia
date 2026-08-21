@@ -7,6 +7,8 @@
   test dedicato `test_demography_lotto_a_v5.py`.
 - Demografia v2: 85+ resta un dettaglio leggibile dentro la distribuzione per età,
   senza aggiungere un controllo autonomo al selettore della card.
+- Demografia v2: il dettaglio RCS aggregato Versilia viene aggiunto alla vera
+  superficie di confronto usata dai compositi `stock`, senza creare nuove card.
 
 Il patch è idempotente e modifica soltanto aspettative/compatibilità mirate.
 """
@@ -52,6 +54,11 @@ AGE85_SELECTOR_BLOCK = '''    const summary = compositeSummary(metric,row);
 AGE85_SELECTOR_CLEAN = '''    const summary = compositeSummary(metric,row);
     return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...(row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }))];'''
 
+STOCK_COMPARE_BLOCK = '''      bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}</div>`;'''
+
+STOCK_COMPARE_WITH_RCS = '''      const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
+      bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;'''
+
 
 def patch_regression_expectations() -> None:
     text = TARGET.read_text(encoding='utf-8')
@@ -81,10 +88,20 @@ def patch_age85_selector_cleanup() -> None:
     APP.write_text(text, encoding='utf-8')
 
 
+def patch_foreign_origins_compare_surface() -> None:
+    text = APP.read_text(encoding='utf-8')
+    if STOCK_COMPARE_WITH_RCS in text:
+        return
+    if STOCK_COMPARE_BLOCK not in text:
+        raise RuntimeError('Selectable stock compare anchor not found in app-parts/03.txt')
+    APP.write_text(text.replace(STOCK_COMPARE_BLOCK, STOCK_COMPARE_WITH_RCS, 1), encoding='utf-8')
+
+
 def main() -> None:
     patch_regression_expectations()
     patch_age85_selector_cleanup()
-    print('Composite regression aligned: Redditi completi + ageDistribution POSAS 2026; 85+ resta un dettaglio della distribuzione.')
+    patch_foreign_origins_compare_surface()
+    print('Composite regression aligned: Redditi + ageDistribution POSAS 2026; 85+ inline; RCS Versilia nella superficie confronto stock.')
 
 
 if __name__ == '__main__':
