@@ -55,7 +55,9 @@
       "publisher": "Regione Toscana",
       "territory": "Toscana",
       "detailEnrichment": true,
-      "freshnessMaxDays": 45
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
     },
     {
       "id": "fondazione-cr-lucca",
@@ -65,7 +67,9 @@
       "publisher": "Fondazione Cassa di Risparmio di Lucca",
       "territory": "Provincia di Lucca",
       "detailEnrichment": true,
-      "freshnessMaxDays": 120
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 30,
+      "fetchAttempts": 2
     },
     {
       "id": "pa-digitale-2026",
@@ -74,7 +78,9 @@
       "url": "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/avvisi.json",
       "publisher": "Dipartimento per la trasformazione digitale",
       "territory": "Italia",
-      "freshnessMaxDays": 45
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 25,
+      "fetchAttempts": 2
     }
   ]
 }
