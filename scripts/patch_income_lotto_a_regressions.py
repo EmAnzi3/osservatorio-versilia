@@ -51,8 +51,10 @@ NEW_AGE = '''        population = population_rows[row["town"]]
         assert "seniorAgeDetail" not in row and "age85PlusDetail" not in row
         assert row.get("ageSexPyramid", {}).get("displayBands")'''
 
-OLD_BROWSER = '''        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 7)'''
-NEW_BROWSER = '''        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 8)'''
+OLD_BROWSER_DESKTOP = '''        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 7)'''
+NEW_BROWSER_DESKTOP = '''        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 8)'''
+OLD_BROWSER_MOBILE = '''        tooltip_checks(mobile_page, base, "demografia", "ageDistribution", 7, 7)'''
+NEW_BROWSER_MOBILE = '''        tooltip_checks(mobile_page, base, "demografia", "ageDistribution", 7, 8)'''
 
 PYRAMID_DELEGATE_MARKER = 'data-age-pyramid-delegated'
 PYRAMID_HELPER_ANCHOR = '''  function omiZoneTableMarkup(row, compact = false) {'''
@@ -154,10 +156,15 @@ def patch_regression_expectations() -> None:
             raise RuntimeError('Age distribution 2025 regression anchor not found')
         text = text.replace(OLD_AGE, NEW_AGE, 1)
 
-    if NEW_BROWSER not in text:
-        if OLD_BROWSER not in text:
-            raise RuntimeError('Age distribution browser part-count anchor not found')
-        text = text.replace(OLD_BROWSER, NEW_BROWSER, 1)
+    if NEW_BROWSER_DESKTOP not in text:
+        if OLD_BROWSER_DESKTOP not in text:
+            raise RuntimeError('Age distribution desktop part-count anchor not found')
+        text = text.replace(OLD_BROWSER_DESKTOP, NEW_BROWSER_DESKTOP, 1)
+
+    if NEW_BROWSER_MOBILE not in text:
+        if OLD_BROWSER_MOBILE not in text:
+            raise RuntimeError('Age distribution mobile part-count anchor not found')
+        text = text.replace(OLD_BROWSER_MOBILE, NEW_BROWSER_MOBILE, 1)
 
     TARGET.write_text(text, encoding='utf-8')
 
@@ -185,7 +192,7 @@ def main() -> None:
     patch_regression_expectations()
     patch_pyramid_delegated_interactions()
     patch_age_distribution_colors()
-    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; tooltip persistente e scala cromatica completa.')
+    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce desktop/mobile; tooltip persistente e scala cromatica completa.')
 
 
 if __name__ == '__main__':
