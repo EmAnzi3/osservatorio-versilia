@@ -5,8 +5,10 @@
 - Demografia v2: `ageDistribution` usa POSAS 2026 e otto fasce esaustive,
   con 80–84 e 85+ come componenti normali della distribuzione.
 - La piramide mantiene il tooltip canonico anche quando `ux-history.js`
-  ricostruisce il contenuto della history-panel: l'interazione è delegata al
-  contenitore stabile della scheda comunale, non ai nodi poi sostituiti.
+  ricostruisce il contenuto: l'interazione è delegata ai contenitori stabili
+  sia nelle schede comunali sia nel confronto Versilia.
+- La piramide aggregata Versilia riusa esattamente lo stesso renderer delle
+  piramidi comunali, sommando i sette territori nel materializzatore.
 - L'ottava fascia eredita la grammatica cromatica del tema Demografia, senza
   introdurre una tinta estranea alla scala già usata dalla distribuzione.
 """
@@ -126,6 +128,33 @@ PYRAMID_CALL_NEW = '''    installChartInteractions(container);
     installAgePyramidDelegation(container);
     scrollActiveControl(tablist);'''
 
+PYRAMID_COMPARE_OLD = '''    return `${compositePartLegend(metric)}<div class="composite-distribution-list">${rows.map(row => {
+      const query = new URLSearchParams({ tema: metric.meta.theme, indicatore: metricKey });
+      const parts = row.parts || [];
+      const summary = compositeSummary(metric, row);
+      return `<div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(summary.label)} <b>${html(summary.formatted)}</b></span></div>
+        ${compositeStackMarkup(parts,{ ariaLabel:`${metric.meta.label} · ${row.town}`, minLabel:6 })}
+      </div>`;
+    }).join('')}</div>`;'''
+
+PYRAMID_COMPARE_NEW = '''    const versiliaPyramid = metric.meta.key === 'ageDistribution' && metric.aggregate?.ageSexPyramid
+      ? agePyramidMarkup(metric,{...metric.aggregate,town:'Versilia'})
+      : '';
+    return `${compositePartLegend(metric)}<div class="composite-distribution-list">${rows.map(row => {
+      const query = new URLSearchParams({ tema: metric.meta.theme, indicatore: metricKey });
+      const parts = row.parts || [];
+      const summary = compositeSummary(metric, row);
+      return `<div class="composite-distribution-row">
+        <div class="composite-row-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(summary.label)} <b>${html(summary.formatted)}</b></span></div>
+        ${compositeStackMarkup(parts,{ ariaLabel:`${metric.meta.label} · ${row.town}`, minLabel:6 })}
+      </div>`;
+    }).join('')}</div>${versiliaPyramid}`;'''
+
+PYRAMID_COMPARE_DELEGATE_OLD = '''    def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data,themeKey,metricKey,button.dataset.scale === 'normalized',view)));'''
+PYRAMID_COMPARE_DELEGATE_NEW = '''    installAgePyramidDelegation(bars);
+    def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data,themeKey,metricKey,button.dataset.scale === 'normalized',view)));'''
+
 AGE_COLOR_MARKER = '/* ageDistribution eight-band scale */'
 AGE_COLOR_CSS = r'''
 
@@ -177,8 +206,16 @@ def patch_pyramid_delegated_interactions() -> None:
         text = text.replace(PYRAMID_HELPER_ANCHOR, PYRAMID_HELPER + PYRAMID_HELPER_ANCHOR, 1)
     if PYRAMID_CALL_NEW not in text:
         if PYRAMID_CALL_OLD not in text:
-            raise RuntimeError('Pyramid delegated call anchor not found')
+            raise RuntimeError('Pyramid delegated town call anchor not found')
         text = text.replace(PYRAMID_CALL_OLD, PYRAMID_CALL_NEW, 1)
+    if PYRAMID_COMPARE_NEW not in text:
+        if PYRAMID_COMPARE_OLD not in text:
+            raise RuntimeError('Versilia pyramid compare anchor not found')
+        text = text.replace(PYRAMID_COMPARE_OLD, PYRAMID_COMPARE_NEW, 1)
+    if PYRAMID_COMPARE_DELEGATE_NEW not in text:
+        if PYRAMID_COMPARE_DELEGATE_OLD not in text:
+            raise RuntimeError('Versilia pyramid delegated interaction anchor not found')
+        text = text.replace(PYRAMID_COMPARE_DELEGATE_OLD, PYRAMID_COMPARE_DELEGATE_NEW, 1)
     APP.write_text(text, encoding='utf-8')
 
 
@@ -192,7 +229,7 @@ def main() -> None:
     patch_regression_expectations()
     patch_pyramid_delegated_interactions()
     patch_age_distribution_colors()
-    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce desktop/mobile; tooltip persistente e scala cromatica completa.')
+    print('Composite regression aligned: Redditi + ageDistribution 2026 a 8 fasce; piramide comuni/Versilia con tooltip persistente; scala cromatica completa.')
 
 
 if __name__ == '__main__':
