@@ -8,7 +8,7 @@ Questa fase:
 - riallinea `ageDistribution` al POSAS 2026;
 - rende 85+ una vera fascia della distribuzione, scindendo 80+ in 80–84 e 85+;
 - prepara una piramide per età e sesso in classi quinquennali, derivata dal
-  dettaglio per singola età già acquisito;
+  dettaglio per singola età già acquisito, sia per i comuni sia per la Versilia;
 - NON duplica dentro `populationChange` saldi naturale/migratori già pubblicati
   come indicatori autonomi della stessa tematica.
 """
@@ -81,9 +81,11 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
     total_counts = [0] * len(AGE_BANDS)
     total_population = 0
     weighted_age = 0.0
+    versilia_detail: list[dict] = []
 
     for row in metric['rows']:
         detail = age_rows(snapshot, row['town'])
+        versilia_detail.extend(detail)
         total = sum(int(item['total']) for item in detail)
         if total <= 0:
             raise RuntimeError(f"{row['town']}: popolazione POSAS 2026 non valida")
@@ -121,14 +123,15 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
     metric['meta']['year'] = '2026'
     metric['meta']['description'] = (
         'Quota dei residenti nelle fasce 0–14, 15–19, 20–34, 35–49, 50–64, 65–79, 80–84 e 85 anni e oltre. '
-        'Nelle schede comunali è disponibile anche la piramide per età e sesso.'
+        'La piramide per età e sesso è disponibile sia nelle schede comunali sia per l’intera Versilia.'
     )
     metric['meta'].pop('detailLabel', None)
     metric['meta']['pyramidLabel'] = 'Piramide per età e sesso'
     metric.setdefault('method', {})['detail'] = (
         'Distribuzione e piramide derivano dal POSAS Istat al 1° gennaio 2026. '
         'Per rendere il dato 85+ una componente confrontabile senza sovrapposizioni, la precedente fascia 80+ è scissa in 80–84 e 85 anni e oltre. '
-        'La piramide visualizza classi quinquennali per leggibilità, mantenendo nello snapshot il dato per singola età e sesso.'
+        'La piramide visualizza classi quinquennali per leggibilità, mantenendo nello snapshot il dato per singola età e sesso. '
+        'La piramide Versilia è ottenuta sommando uomini e donne dei sette comuni per ciascuna classe d’età.'
     )
     metric['aggregate'] = {
         'value': total_counts[2] / total_population * 100,
@@ -141,6 +144,11 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
         'summaryValue': weighted_age / total_population,
         'summaryLabel': 'Età media Versilia',
         'summaryNote': 'Età media ponderata sulla popolazione dei sette comuni; la barra mostra la distribuzione completa per fascia.',
+        'ageSexPyramid': {
+            'year': 2026,
+            'sourceGranularity': 'somma dei sette comuni per singola età e sesso',
+            'displayBands': build_pyramid(versilia_detail),
+        },
     }
 
 
@@ -155,7 +163,7 @@ def remove_duplicate_population_change_detail(site: dict) -> None:
 def update_audit(audit: dict) -> None:
     decisions = {
         'share80Plus': 'public_distribution_split_80_84_85_plus_2026',
-        'populationAgeSexDetail': 'public_pyramid_2026',
+        'populationAgeSexDetail': 'public_pyramid_2026_towns_and_versilia',
     }
     for candidate in audit.get('candidates', []):
         if candidate.get('key') in decisions:
@@ -163,7 +171,7 @@ def update_audit(audit: dict) -> None:
     audit['demographyV2'] = {
         'ageDistribution2026': 'materialized_8_non_overlapping_bands',
         'share80PlusAnd85Plus': 'public_distribution_80_84_85_plus',
-        'populationAgeSexPyramid': 'public_town_detail_native_tooltip',
+        'populationAgeSexPyramid': 'public_town_and_versilia_native_tooltip',
         'populationChangeComponents': 'not_added_duplicate_existing_metrics',
         'foreignCitizenshipBirthCountry': 'pending_rcs_probe',
     }
@@ -183,7 +191,7 @@ def main() -> None:
 
     save(SITE_PATH, site)
     save(AUDIT_PATH, audit)
-    print('Demografia v2: 85+ integrato nella distribuzione (80–84 / 85+), piramide pronta; componenti variazione duplicate rimosse.')
+    print('Demografia v2: 85+ integrato nella distribuzione; piramide comuni + Versilia pronta; componenti variazione duplicate rimosse.')
 
 
 if __name__ == '__main__':
