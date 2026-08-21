@@ -108,7 +108,12 @@ def enrich_item(item: dict[str, Any], registry: dict[str, Any]) -> dict[str, Any
     }
     out["deadline_time"] = extract_deadline_time(out)
 
-    if out.get("eligibility") == "conditional":
+    matrix = out.get("municipality_eligibility") or {}
+    has_town_condition = any(
+        isinstance(entry, dict) and entry.get("status") == "conditional"
+        for entry in matrix.values()
+    )
+    if out.get("eligibility") == "conditional" or has_town_condition:
         out["access_mode"] = "specific_requirement"
         if not out["presentation"]["condition_label"]:
             role = out.get("municipality_role")
