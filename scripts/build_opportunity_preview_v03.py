@@ -12,6 +12,9 @@ DEFAULT_DATA=ROOT/'reports'/'runtime'/'opportunities-v03.json'
 DEFAULT_DIST=ROOT/'dist'
 TARGET_ROUTE='opportunita-preview'
 
+BASE_CARD=old.card_markup
+BASE_ARCHIVE=old.archive_markup
+
 ICONS={
  'briefcase':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 12h18M10 12v2h4v-2"/></svg>',
  'radar':'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/><path d="M12 12 18.5 5.5"/></svg>',
@@ -30,13 +33,13 @@ def source_icon(meta,compact=False):
  cls='op-source-icon is-compact' if compact else 'op-source-icon';fav=meta.get('source_favicon') or '';img=f'<img class="op-source-favicon" src="{esc(fav)}" alt="" loading="lazy" referrerpolicy="no-referrer">' if fav else ''
  return f'<span class="{cls}"><span class="op-source-fallback">{esc(meta.get("source_mark") or "F")}</span>{img}</span>'
 def augment_card(item):
- text=old.card_markup(item);m=source_meta(item)
+ text=BASE_CARD(item);m=source_meta(item)
  text=re.sub(r'<span class="op-source-mark[^>]*>.*?</span>',source_icon(m),text,count=1,flags=re.S)
  for label,key in [('Scadenza','calendar'),('Ruolo del Comune','building'),('Chi presenta domanda','user'),('Ambito','pin')]:
   text=text.replace(f'<dt>{label}</dt>',f'<dt><span class="op-meta-icon">{ICONS[key]}</span>{label}</dt>')
  return text
 def augment_archive(item):
- text=old.archive_markup(item);m={'source_label':item.get('source_label'),'source_mark':item.get('source_mark') or 'F','source_favicon':item.get('source_favicon') or ''}
+ text=BASE_ARCHIVE(item);m={'source_label':item.get('source_label'),'source_mark':item.get('source_mark') or 'F','source_favicon':item.get('source_favicon') or ''}
  return re.sub(r'<span class="op-source-mark[^>]*>.*?</span>',source_icon(m,True),text,count=1,flags=re.S)
 def status_label(row):
  if row.get('monitoringStatus')=='degraded' or row.get('runtimeStatus')=='degraded':return 'Degradata','degraded'
