@@ -10,6 +10,8 @@ on:
       - "scripts/opportunity_radar_v02.py"
       - "scripts/opportunity_radar_v021.py"
       - "scripts/opportunity_radar_v022.py"
+      - "scripts/opportunity_radar_v024.py"
+      - "scripts/opportunity_pdf_evidence.py"
       - "scripts/build_opportunity_preview.py"
       - "scripts/test_opportunity_preview.py"
       - "scripts/test_opportunity_preview_browser.py"
@@ -18,15 +20,19 @@ on:
       - "scripts/test_opportunity_radar_v02.py"
       - "scripts/test_opportunity_radar_v021.py"
       - "scripts/test_opportunity_radar_v022.py"
+      - "scripts/test_opportunity_radar_v024.py"
+      - "scripts/test_opportunity_pdf_evidence.py"
       - "assets/opportunity-preview.css"
       - "assets/opportunity-preview.js"
       - "data/opportunity-sources.json"
       - "data/opportunity-rules-v021.json"
       - "data/opportunity-rules-v022.json"
+      - "data/opportunity-presentation-v024.json"
       - "docs/opportunita-prototipo.md"
       - "docs/opportunita-prototipo-v021.md"
       - "docs/opportunita-prototipo-v022.md"
       - "docs/opportunita-prototipo-v023.md"
+      - "docs/opportunita-prototipo-v024.md"
   workflow_dispatch:
 
 permissions:
@@ -50,6 +56,8 @@ jobs:
             scripts/opportunity_radar_v02.py \
             scripts/opportunity_radar_v021.py \
             scripts/opportunity_radar_v022.py \
+            scripts/opportunity_radar_v024.py \
+            scripts/opportunity_pdf_evidence.py \
             scripts/build_opportunity_preview.py \
             scripts/test_opportunity_preview.py \
             scripts/test_opportunity_preview_browser.py \
@@ -57,12 +65,16 @@ jobs:
             scripts/test_opportunity_radar_quality.py \
             scripts/test_opportunity_radar_v02.py \
             scripts/test_opportunity_radar_v021.py \
-            scripts/test_opportunity_radar_v022.py
+            scripts/test_opportunity_radar_v022.py \
+            scripts/test_opportunity_radar_v024.py \
+            scripts/test_opportunity_pdf_evidence.py
           python scripts/test_opportunity_radar.py
           python scripts/test_opportunity_radar_quality.py
           python scripts/test_opportunity_radar_v02.py
           python scripts/test_opportunity_radar_v021.py
           python scripts/test_opportunity_radar_v022.py
+          python scripts/test_opportunity_radar_v024.py
+          python scripts/test_opportunity_pdf_evidence.py
           python scripts/test_opportunity_preview.py
 
   live-probe:
@@ -75,33 +87,35 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Collect current opportunities v0.2.2
+      - name: Install PDF parser
+        run: python -m pip install pypdf
+      - name: Collect current opportunities v0.2.4
         id: collect
         shell: bash
         run: |
           mkdir -p reports/runtime
           TODAY="$(TZ=Europe/Rome date +%F)"
           set +e
-          python scripts/opportunity_radar_v022.py \
+          python scripts/opportunity_radar_v024.py \
             --date "$TODAY" \
-            --output reports/runtime/opportunities-v022.json \
-            --report reports/runtime/opportunities-v022.md
+            --output reports/runtime/opportunities-v024.json \
+            --report reports/runtime/opportunities-v024.md
           code=$?
           set -e
           echo "$code" > reports/runtime/exit-code.txt
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          cat reports/runtime/opportunities-v022.md
+          cat reports/runtime/opportunities-v024.md
       - name: Upload probe output
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: opportunity-radar-v022
+          name: opportunity-radar-v024
           path: reports/runtime/
           retention-days: 30
       - name: Fail when a source is unreachable
         if: steps.collect.outputs.exit_code != '0'
         run: |
-          echo "Almeno una fonte live non ha superato il probe v0.2.2; consultare l'artifact diagnostico."
+          echo "Almeno una fonte live non ha superato il probe v0.2.4; consultare l'artifact diagnostico."
           exit 1
 
   browser-preview:
@@ -113,7 +127,7 @@ jobs:
       - name: Download validated radar output
         uses: actions/download-artifact@v4
         with:
-          name: opportunity-radar-v022
+          name: opportunity-radar-v024
           path: reports/runtime
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -127,7 +141,7 @@ jobs:
       - name: Build canonical branded static site
         run: python scripts/build_static_brand.py
       - name: Materialize non-public opportunities preview
-        run: python scripts/build_opportunity_preview.py --data reports/runtime/opportunities-v022.json --dist dist
+        run: python scripts/build_opportunity_preview.py --data reports/runtime/opportunities-v024.json --dist dist
       - name: Browser checks desktop and mobile
         shell: bash
         run: |
@@ -145,57 +159,64 @@ jobs:
         run: |
           mkdir -p preview-package
           cp -a dist preview-package/dist
+          cat > preview-package/APRI_ANTEPRIMA.py <<'PY'
+          from functools import partial
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from pathlib import Path
+          import webbrowser
+
+          root = Path(__file__).resolve().parent / "dist"
+          if not (root / "opportunita-preview" / "index.html").exists():
+              raise SystemExit("Anteprima non trovata: riestrarre integralmente lo ZIP.")
+          handler = partial(SimpleHTTPRequestHandler, directory=str(root))
+          server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+          url = f"http://127.0.0.1:{server.server_port}/opportunita-preview/"
+          print(f"Radar Opportunita v0.2.4: {url}")
+          print("Chiudere questa finestra o premere Ctrl+C per fermare il server.")
+          webbrowser.open(url)
+          try:
+              server.serve_forever()
+          except KeyboardInterrupt:
+              pass
+          PY
           cat > preview-package/APRI_ANTEPRIMA.bat <<'BAT'
           @echo off
-          setlocal
           cd /d "%~dp0"
           where py >nul 2>nul
           if %errorlevel%==0 (
-            start "Radar Opportunita - server" cmd /k py -m http.server 8000 --directory "%~dp0dist"
-          ) else (
-            where python >nul 2>nul
-            if %errorlevel%==0 (
-              start "Radar Opportunita - server" cmd /k python -m http.server 8000 --directory "%~dp0dist"
-            ) else (
-              echo Python non trovato. Installa Python oppure avvia manualmente un server nella cartella dist.
-              pause
-              exit /b 1
-            )
+            py "%~dp0APRI_ANTEPRIMA.py"
+            exit /b %errorlevel%
           )
-          timeout /t 2 /nobreak >nul
-          start "" "http://127.0.0.1:8000/opportunita-preview/"
-          exit /b 0
+          where python >nul 2>nul
+          if %errorlevel%==0 (
+            python "%~dp0APRI_ANTEPRIMA.py"
+            exit /b %errorlevel%
+          )
+          echo Python non trovato.
+          pause
+          exit /b 1
           BAT
           cat > preview-package/LEGGIMI.txt <<'EOF'
-          ANTEPRIMA RADAR OPPORTUNITA v0.2.3 — NON PUBBLICATA
+          ANTEPRIMA RADAR OPPORTUNITA v0.2.4 — NON PUBBLICATA
 
-          WINDOWS — metodo consigliato
-          1. Estrarre TUTTO lo ZIP in una cartella.
-          2. Fare doppio clic su APRI_ANTEPRIMA.bat.
-          3. Si apre una finestra del server e poi il browser su:
-             http://127.0.0.1:8000/opportunita-preview/
-          4. Per chiudere la preview, chiudere la finestra "Radar Opportunita - server".
+          WINDOWS
+          1. Estrarre TUTTO lo ZIP.
+          2. Doppio clic su APRI_ANTEPRIMA.bat.
+          3. Il launcher sceglie una porta libera e apre direttamente il browser.
+          4. Chiudere la finestra del server per terminare.
 
-          Metodo manuale dalla cartella principale estratta, quella che contiene dist:
-            py -m http.server 8000 --directory dist
-          oppure:
-            python -m http.server 8000 --directory dist
+          Metodo alternativo:
+            py APRI_ANTEPRIMA.py
 
-          IMPORTANTE: se il terminale e gia dentro la cartella dist, NON aggiungere "--directory dist".
-          In quel caso usare semplicemente:
-            py -m http.server 8000
-
-          La pagina verificata nel pacchetto e:
+          La pagina inclusa nel pacchetto è:
             dist/opportunita-preview/index.html
-
-          La route e noindex e non fa parte della sitemap pubblica.
           EOF
           test -f preview-package/dist/opportunita-preview/index.html
-          grep -q "Opportunità per i Comuni della Versilia" preview-package/dist/opportunita-preview/index.html
+          grep -q "Anteprima v0.2.4" preview-package/dist/opportunita-preview/index.html
       - name: Upload browser preview
         uses: actions/upload-artifact@v4
         with:
-          name: opportunity-radar-v023-browser-preview
+          name: opportunity-radar-v024-browser-preview
           path: preview-package/
           if-no-files-found: error
           retention-days: 30
