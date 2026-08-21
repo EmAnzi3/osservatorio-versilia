@@ -11,7 +11,7 @@ La preview è intenzionalmente separata dal sito pubblico:
 - nessuna voce nella sitemap;
 - nessun link aggiunto alla navigazione pubblica;
 - nessun merge o deploy richiesto per il collaudo;
-- la shell viene estratta dalla build canonica tramite `scripts/site_chrome.py`, senza duplicare header/footer.
+- la shell viene estratta dalla build brand canonica tramite `scripts/site_chrome.py`, senza duplicare header/footer.
 
 ## Contenuto della preview
 
@@ -60,6 +60,8 @@ La preview non è una nuova sezione pubblica. Il builder verifica esplicitamente
 4. header/footer derivino dalla shell canonica;
 5. il runtime applicativo canonico resti disponibile per ricerca e navigazione.
 
+La build usata per materializzare la shell è `scripts/build_static_brand.py`, la stessa base brand utilizzata dal workflow Pages del sito. La precedente `build_static.py` non è sufficiente per le pagine speciali che devono rispettare il contratto `site_chrome`.
+
 ## Test
 
 La v0.2.3 aggiunge una suite statica per il rendering e un collaudo Playwright reale.
@@ -107,7 +109,7 @@ Con le dipendenze Playwright già installate:
 
 ```bash
 python scripts/opportunity_radar_v022.py --date 2026-08-21 --output reports/runtime/opportunities-v022.json
-python scripts/build_static.py
+python scripts/build_static_brand.py
 python scripts/build_opportunity_preview.py --data reports/runtime/opportunities-v022.json --dist dist
 python scripts/preview_dist.py --directory dist --port 8000
 ```
