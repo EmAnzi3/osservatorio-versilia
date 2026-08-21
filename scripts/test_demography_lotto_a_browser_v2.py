@@ -63,6 +63,10 @@ def main() -> None:
         require('85 anni e oltre' in legend, 'Fascia 85+ assente dalla distribuzione')
         require(page.locator('.composite-distribution-row').count() == 7, 'Confronto distribuzione non 7/7')
         require(page.locator('.composite-segment').count() == 56, 'Distribuzione non composta da 8 fasce per 7 comuni')
+        color_6 = page.locator('.composite-segment.part-6').first.evaluate('(el) => getComputedStyle(el).backgroundColor')
+        color_7 = page.locator('.composite-segment.part-7').first.evaluate('(el) => getComputedStyle(el).backgroundColor')
+        require(color_6 and color_7 and color_6 != color_7 and color_7 not in ('rgba(0, 0, 0, 0)', 'transparent'),
+                f'Ottava fascia senza livello cromatico distinto: {color_6=} {color_7=}')
 
         # Scheda comunale: otto valori nella stessa griglia, nessun box aggiuntivo.
         page.goto(urljoin(args.base, 'comuni/forte-dei-marmi/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
@@ -137,7 +141,7 @@ def main() -> None:
         assert_no_horizontal_overflow(page, 'foreignResidents town mobile')
 
         browser.close()
-    print('Browser Demografia v2 OK: 85+ inline, tooltip piramide canonici, RCS senza clipping e nessun duplicato variazione.')
+    print('Browser Demografia v2 OK: 85+ inline con scala cromatica completa, tooltip piramide canonici, RCS senza clipping e nessun duplicato variazione.')
 
 
 if __name__ == '__main__':
