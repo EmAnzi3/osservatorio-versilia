@@ -20,4 +20,18 @@ class OpportunityRadarQualityTest(unittest.TestCase):
   items=quality.collect_grants(source,date(2026,8,21),listing,lambda u:detail)
   self.assertEqual(items[0]['eligibility'],'conditional')
 
+ def test_ambiguous_html_uses_attached_pdf_before_review(self):
+  source={'id':'rt','name':'RT','publisher':'RT','url':'https://x/list','_towns':TOWNS,'detailEnrichment':True}
+  listing='<h3><a href="/innovazione">Bando innovazione territoriale</a></h3><p>Scadenza presentazione domande 30.09.2026.</p>'
+  detail='<main><p>Consulta la documentazione.</p><a href="/docs/avviso.pdf">Avviso pubblico</a></main>'
+  items=quality.collect_html(
+      source,date(2026,8,21),listing,
+      loader=lambda _:detail,
+      pdf_text_loader=lambda _: 'Soggetti beneficiari: Comuni toscani e Unioni di Comuni. Requisiti di partecipazione.'
+  )
+  self.assertEqual(len(items),1)
+  self.assertEqual(items[0]['eligibility'],'eligible')
+  self.assertTrue(items[0]['eligibility_document_used'])
+  self.assertEqual(items[0]['eligibility_document_type'],'pdf')
+
 if __name__=='__main__':unittest.main()
