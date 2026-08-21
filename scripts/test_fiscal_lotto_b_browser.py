@@ -29,11 +29,18 @@ def main() -> None:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(viewport={'width': 1440, 'height': 900})
+        page_errors: list[str] = []
+        page.on('pageerror', lambda error: page_errors.append(str(error)))
 
         page.goto(base + 'confronta/economia/?indicatore=fiscalRecoveryActivity', wait_until='networkidle')
         page.locator('[data-metric="fiscalRecoveryActivity"]').wait_for(state='visible')
         selector = page.locator('select[data-composite-component]')
-        require(selector.count() == 1 and selector.is_visible(), 'Selettore Lotto B assente nel confronto')
+        bars_html = page.locator('#compare-bars').inner_html()
+        require(
+            selector.count() == 1 and selector.is_visible(),
+            'Selettore Lotto B assente nel confronto. '
+            f'page_errors={page_errors!r}; compare-bars={bars_html[:2400]!r}',
+        )
         labels = selector.locator('option').all_text_contents()
         require(labels == ['Recupero €/residente', 'Recupero totale', 'Contributo accertamento'], f'Opzioni inattese: {labels}')
         require('Non è un tasso di evasione fiscale' in page.locator('#compare-definition').inner_text(), 'Disclaimer metodologico non visibile')
