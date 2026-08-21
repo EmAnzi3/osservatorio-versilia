@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Allinea regressioni Redditi/Demografia e la compatibilità del selettore 85+.
+"""Allinea le regressioni esistenti alle tranche Redditi e Demografia Lotto A.
 
 - Redditi: la sezione v1.15 include fonti, peso pensioni e contribuenti/maggiorenni.
 - Demografia v2: `ageDistribution` usa il POSAS 2026 invece dello snapshot
   statico pre-Lotto A 2025; la validazione puntuale della fonte 2026 resta nel
   test dedicato `test_demography_lotto_a_v5.py`.
-- Demografia v2: rende robusta l'interazione del selettore `85+` nella scheda
-  comunale e allinea la vista corrente gestita da `ux-history.js`.
+- Demografia v2: 85+ resta un dettaglio leggibile dentro la distribuzione per età,
+  senza aggiungere un controllo autonomo al selettore della card.
 
 Il patch è idempotente e modifica soltanto aspettative/compatibilità mirate.
 """
@@ -17,7 +17,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / 'scripts' / 'test_composite_indicators.py'
 APP = ROOT / 'assets' / 'app-parts' / '03.txt'
-UX_HISTORY = ROOT / 'assets' / 'ux-history.js'
 
 OLD_BASE = '''    assert data["themes"]["economia"]["sections"][0]["metrics"] == [
         "income", "incomeDistribution", "incomeVsInflation",
@@ -45,8 +44,13 @@ NEW_AGE = '''        population = population_rows[row["town"]]
         assert row.get("seniorAgeDetail", {}).get("age85Plus", {}).get("count", 0) > 0
         assert row.get("ageSexPyramid", {}).get("displayBands")'''
 
-AGE85_INTERACTION_MARKER = 'data-age85-choice-fallback'
-AGE85_UX_MARKER = "choice === 'age85Plus'"
+AGE85_SELECTOR_BLOCK = '''    const summary = compositeSummary(metric,row);
+    const partOptions = (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }));
+    const age85 = age85DetailData(row);
+    return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...partOptions, ...(metric.meta.key === 'ageDistribution' && age85 ? [{ key:'age85Plus', label:'85 anni e oltre', value:age85.value, unit:'percent', formatted:`${number1.format(age85.value)}%` }] : [])];'''
+
+AGE85_SELECTOR_CLEAN = '''    const summary = compositeSummary(metric,row);
+    return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...(row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }))];'''
 
 
 def patch_regression_expectations() -> None:
@@ -68,76 +72,19 @@ def patch_regression_expectations() -> None:
     TARGET.write_text(text, encoding='utf-8')
 
 
-def patch_age85_app_interaction() -> None:
+def patch_age85_selector_cleanup() -> None:
     text = APP.read_text(encoding='utf-8')
-    if AGE85_INTERACTION_MARKER in text:
-        return
-
-    anchor = '''    installChartInteractions(container);
-    scrollActiveControl(tablist);'''
-    replacement = r'''    if (metric.meta.key === 'ageDistribution' && selectable) {
-      container.dataset.age85ChoiceFallback = '1';
-      container.addEventListener('change', event => {
-        const choiceSelect = event.target.closest('select[data-composite-choice]');
-        if (!choiceSelect || !container.contains(choiceSelect) || choiceSelect.value !== 'age85Plus') return;
-        const selected = options.find(option => option.key === 'age85Plus');
-        if (!selected) return;
-        const agg = compositeSelectionAggregate(metric,'age85Plus');
-        const delta = compositeDeltaText(selected.value,agg.value,selected.unit);
-        const labelEl = container.querySelector('[data-composite-primary-label]');
-        const valueEl = container.querySelector('[data-composite-primary-value]');
-        const position = container.querySelector('.composite-versilia-position');
-        if (labelEl) labelEl.textContent = selected.label;
-        if (valueEl) valueEl.textContent = selected.formatted;
-        if (position) {
-          position.dataset.compositeSelection = 'age85Plus';
-          const deltaEl = position.querySelector('[data-composite-delta]');
-          if (deltaEl) deltaEl.innerHTML = `${html(delta.headline)}<small>${html(delta.direction)}</small>`;
-          const aggLabel = position.querySelector('[data-composite-aggregate-label]');
-          const aggValue = position.querySelector('[data-composite-aggregate-value]');
-          if (aggLabel) aggLabel.textContent = agg.label;
-          if (aggValue) aggValue.textContent = agg.formatted;
-        }
-        window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice:'age85Plus',town:town.slug}}));
-      });
-    }
-    /* data-age85-choice-fallback */
-    installChartInteractions(container);
-    scrollActiveControl(tablist);'''
-    if anchor not in text:
-        raise RuntimeError('Age85 interaction anchor not found in app-parts/03.txt')
-    APP.write_text(text.replace(anchor, replacement, 1), encoding='utf-8')
-
-
-def patch_age85_history_adapter() -> None:
-    text = UX_HISTORY.read_text(encoding='utf-8')
-    if AGE85_UX_MARKER in text:
-        return
-
-    anchor = '''    if (choice === 'summary') {
-      const unit = metric.meta.summaryUnit || metric.meta.unit;'''
-    replacement = r'''    if (metric.meta.key === 'ageDistribution' && choice === 'age85Plus') {
-      clone.meta.unit = 'percent';
-      clone.meta.label = '85 anni e oltre';
-      clone.rows = metric.rows.map(row => {
-        const detail = row.age85PlusDetail || row.seniorAgeDetail?.age85Plus;
-        const value = Number(detail?.value);
-        return { ...row, value, formatted: Number.isFinite(value) ? `${percent1.format(value)}%` : 'n.d.' };
-      });
-      return clone;
-    }
-    if (choice === 'summary') {
-      const unit = metric.meta.summaryUnit || metric.meta.unit;'''
-    if anchor not in text:
-        raise RuntimeError('Age85 history adapter anchor not found in ux-history.js')
-    UX_HISTORY.write_text(text.replace(anchor, replacement, 1), encoding='utf-8')
+    if AGE85_SELECTOR_BLOCK in text:
+        text = text.replace(AGE85_SELECTOR_BLOCK, AGE85_SELECTOR_CLEAN, 1)
+    elif AGE85_SELECTOR_CLEAN not in text:
+        raise RuntimeError('Age85 selector cleanup anchor not found in app-parts/03.txt')
+    APP.write_text(text, encoding='utf-8')
 
 
 def main() -> None:
     patch_regression_expectations()
-    patch_age85_app_interaction()
-    patch_age85_history_adapter()
-    print('Composite regression aligned: Redditi completi + ageDistribution POSAS 2026; selettore 85+ reso robusto.')
+    patch_age85_selector_cleanup()
+    print('Composite regression aligned: Redditi completi + ageDistribution POSAS 2026; 85+ resta un dettaglio della distribuzione.')
 
 
 if __name__ == '__main__':
