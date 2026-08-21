@@ -1,7 +1,7 @@
 {
   "version": "2026-08-21",
-  "start_week": "2026-08-24",
-  "start_theme_index": 2,
+  "start_week": "2026-08-17",
+  "start_theme_index": 1,
   "themes": [
     "demografia",
     "economia",
@@ -19,5 +19,5 @@
     {"weekday": 1, "label": "martedì", "kind": "ordinary"},
     {"weekday": 4, "label": "venerdì", "kind": "ordinary"}
   ],
-  "rule": "La rotazione avanza per singola uscita ordinaria, non per settimana. Dalla settimana del 24 agosto 2026: martedì Lavoro, venerdì Istruzione, poi Salute, Mobilità e così via sugli 11 temi. I due slot ordinari della stessa settimana devono usare temi diversi. Le ricorrenze pertinenti sono contenuti aggiuntivi e non consumano i due slot ordinari."
+  "rule": "La rotazione avanza per singola uscita ordinaria, non per settimana. La settimana del 17 agosto 2026 costituisce il raccordo iniziale: Economia è stata pubblicata eccezionalmente lunedì 17 e Lavoro venerdì 21; dalla settimana del 24 agosto il ritmo ordinario torna martedì/venerdì con Istruzione, Salute, poi Mobilità, Sicurezza e così via sugli 11 temi. I due slot ordinari della stessa settimana devono usare temi diversi. Le ricorrenze pertinenti sono contenuti aggiuntivi e non consumano i due slot ordinari."
 }
