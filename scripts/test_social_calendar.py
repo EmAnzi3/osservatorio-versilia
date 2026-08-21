@@ -32,13 +32,26 @@ def run_plan(day: str, conditional_id: str | None = None) -> dict:
         return load(Path(tmp) / "week.json")
 
 
+def ordinary_items(plan: dict) -> list[dict]:
+    return [item for item in plan["scheduled"] if item["type"] == "ordinary"]
+
+
+def observance_items(plan: dict) -> list[dict]:
+    return [item for item in plan["scheduled"] if item["type"] == "observance"]
+
+
 def main() -> int:
     observances = load(KIT / "config" / "editorial-observances-2026-2027.json")
+    cadence = load(KIT / "config" / "editorial-cadence.json")
     rotation = load(KIT / "config" / "editorial-rotation.json")
     site = load(ROOT / "data" / "site-data.json")
 
-    if observances["cadence"]["weekly_post_budget"] != 2:
-        fail("Il budget editoriale deve restare di due post a settimana")
+    if cadence["ordinary_posts_per_week"] != 2:
+        fail("La cadenza ordinaria deve restare di due post a settimana")
+    if not cadence.get("special_posts_are_additive"):
+        fail("Le ricorrenze pertinenti devono essere aggiuntive rispetto ai due slot ordinari")
+    if len(rotation["slots"]) != cadence["ordinary_posts_per_week"]:
+        fail("Gli slot della rotazione devono coincidere con la cadenza ordinaria")
 
     horizon_start = date.fromisoformat(observances["horizon"]["from"])
     horizon_end = date.fromisoformat(observances["horizon"]["to"])
@@ -71,32 +84,56 @@ def main() -> int:
         if not any(metric in site["metrics"] for metric in theme.get("featured", [])):
             fail(f"Tema senza indicatore featured utilizzabile: {theme_key}")
 
+    launch = run_plan("2026-08-24")
+    launch_ordinary = ordinary_items(launch)
+    if len(launch_ordinary) != 2:
+        fail("La settimana 24–30 agosto deve avere due uscite ordinarie")
+    launch_themes = [item["theme"] for item in launch_ordinary]
+    if launch_themes != ["istruzione", "salute"]:
+        fail(f"Avvio nuova rotazione errato dopo il post Lavoro del 21 agosto: {launch_themes}")
+    if len(set(launch_themes)) != 2:
+        fail("Martedì e venerdì devono usare temi diversi")
+
     november = run_plan("2026-11-09")
-    if len(november["scheduled"]) != 2:
-        fail("La settimana 9–15 novembre deve avere esattamente due uscite")
-    november_ids = {item.get("id") for item in november["scheduled"] if item["type"] == "observance"}
+    november_ordinary = ordinary_items(november)
+    november_special = observance_items(november)
+    if len(november_ordinary) != 2:
+        fail("La settimana 9–15 novembre deve mantenere due uscite ordinarie")
+    if len(november_special) != 2:
+        fail("La settimana 9–15 novembre deve aggiungere entrambe le ricorrenze anchor")
+    november_ids = {item.get("id") for item in november_special}
     if november_ids != {"diabetes-2026", "road-victims-2026"}:
-        fail(f"Collisione anchor novembre risolta male: {november_ids}")
-    if any(item["type"] == "ordinary" for item in november["scheduled"]):
-        fail("La doppia ricorrenza anchor di novembre deve sostituire entrambi gli slot ordinari")
+        fail(f"Ricorrenze anchor novembre risolte male: {november_ids}")
+    if len(november["scheduled"]) != 4:
+        fail("Due ricorrenze anchor devono portare il totale settimanale a quattro contenuti")
+    if len({item["theme"] for item in november_ordinary}) != 2:
+        fail("Anche con ricorrenze, i due post ordinari devono restare su temi diversi")
+    friday_ordinary = next(item for item in november_ordinary if item["date"] == "2026-11-13")
+    if not friday_ordinary.get("same_day_observance"):
+        fail("La collisione tra slot ordinario e Giornata mondiale del diabete deve essere segnalata")
 
     september = run_plan("2026-09-07")
-    if len(september["scheduled"]) != 2 or len(september["conditional_candidates"]) != 2:
+    if len(ordinary_items(september)) != 2 or len(september["conditional_candidates"]) != 2:
         fail("Le ricorrenze conditional del 7–8 settembre non devono entrare automaticamente nel piano")
 
     promoted = run_plan("2026-09-07", "literacy-2026")
-    if len(promoted["scheduled"]) != 2:
-        fail("Promuovere una conditional non deve superare il budget settimanale")
-    promoted_ids = {item.get("id") for item in promoted["scheduled"] if item["type"] == "observance"}
+    if len(ordinary_items(promoted)) != 2 or len(observance_items(promoted)) != 1:
+        fail("Promuovere una conditional deve aggiungerla ai due post ordinari")
+    promoted_ids = {item.get("id") for item in observance_items(promoted)}
     if promoted_ids != {"literacy-2026"}:
         fail("La conditional richiesta non è stata promossa correttamente")
+    if len(promoted["scheduled"]) != 3:
+        fail("Una conditional promossa deve portare il totale settimanale a tre contenuti")
 
     for sample in ["2026-09-07", "2026-11-09", "2027-03-22", "2027-07-05"]:
         plan = run_plan(sample)
-        if len(plan["scheduled"]) > 2:
-            fail(f"Budget superato nella settimana di {sample}")
+        ordinary = ordinary_items(plan)
+        if len(ordinary) != 2:
+            fail(f"Numero di post ordinari errato nella settimana di {sample}")
+        if len({item["theme"] for item in ordinary}) != 2:
+            fail(f"Temi ordinari duplicati nella settimana di {sample}")
 
-    print(f"Calendario social: {len(ids)} ricorrenze, rotazione {len(rotation['themes'])} temi, scenari esecutivi verificati")
+    print(f"Calendario social: {len(ids)} ricorrenze, rotazione {len(rotation['themes'])} temi per singola uscita, scenari esecutivi verificati")
     return 0
 
 

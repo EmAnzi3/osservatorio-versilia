@@ -4,29 +4,31 @@ Un sistema editoriale replicabile, non una raccolta di grafiche indipendenti.
 
 ## Metodo
 
-Ogni settimana usa un solo indicatore e produce due post coordinati:
+La cadenza ordinaria prevede due uscite a settimana:
 
-- **martedì — Il dato:** confronto alfabetico dei sette Comuni;
-- **venerdì — Come leggerlo:** definizione, metodo, limiti ed eventuale benchmark omogeneo.
+- **martedì:** un tema e un indicatore;
+- **venerdì:** un tema diverso e un altro indicatore.
 
-I due post usano la stessa griglia. Logo, fondo, margini, tipografia, blocco domanda e fonti sono bloccati dal file `config/design-system.json`. Il tema modifica soltanto il colore di accento.
+La rotazione avanza per singola uscita, non per settimana. I due post ordinari sono autonomi: non è più prevista una settimana monotematica con “dato” e “come leggerlo” sullo stesso indicatore.
+
+Ogni contenuto usa un carosello di quattro immagini PNG 1080×1350, riutilizzabile senza varianti su Facebook, Instagram, LinkedIn e X. Logo, fondo, margini, tipografia, gerarchie e fonti restano coerenti; il colore di accento segue il tema canonico del sito.
 
 La descrizione completa del flusso è in `METHOD.md`.
 
 ## Calendario e ricorrenze
 
-Il ritmo ordinario resta di **due post a settimana**, ma il piano tiene conto delle giornate nazionali e internazionali realmente pertinenti ai dati dell’Osservatorio.
+Il ritmo ordinario resta di **due post a settimana**, normalmente martedì e venerdì, su **temi diversi**. Le giornate nazionali e internazionali realmente pertinenti ai dati dell’Osservatorio sono contenuti **aggiuntivi**.
 
-- `config/editorial-calendar.json` contiene la cadenza ordinaria e collega il piano annuale;
+- `config/editorial-cadence.json` definisce la cadenza ordinaria e il comportamento delle ricorrenze;
 - `config/editorial-observances-2026-2027.json` contiene date, priorità, tema, dati suggeriti, limiti e fonte ufficiale delle ricorrenze dal 1 settembre 2026 al 31 agosto 2027;
 - `config/editorial-rotation.json` definisce la rotazione ordinaria dei temi e gli slot martedì/venerdì;
 - `EDITORIAL_CALENDAR_2026_2027.md` è la versione leggibile del calendario.
 
-Le ricorrenze `anchor` sostituiscono uno dei due slot ordinari; le `conditional` diventano un post solo se esiste un dato realmente pertinente. Non si forza un contenuto per il solo fatto che esista una “giornata mondiale”. Le regole complete sono in `EDITORIAL_POLICY.md`.
+Le ricorrenze `anchor` entrano nel piano salvo indisponibilità o inadeguatezza del dato; le `conditional` diventano un post solo se esiste un dato realmente pertinente. Non si forza un contenuto per il solo fatto che esista una “giornata mondiale”. Se una ricorrenza cade nello stesso giorno di uno slot ordinario, il planner segnala la collisione per valutare uno spostamento dell’ordinario senza eliminarlo.
 
 ## Piano esecutivo settimanale
 
-Il planner combina rotazione ordinaria e ricorrenze e produce un piano con **massimo due uscite**:
+Il planner combina rotazione ordinaria e ricorrenze e produce sempre i due slot ordinari, più le ricorrenze approvate:
 
 ```bash
 python3 scripts/plan_social_week.py --date 2026-11-09
@@ -44,64 +46,38 @@ Gli output vengono scritti in `social-kit/dist/editorial-plan/week.md` e `week.j
 
 Il workflow GitHub **Piano editoriale social settimanale** rende il calendario operativo:
 
-- ogni lunedì pianifica automaticamente la settimana successiva, con circa sette giorni di anticipo;
-- applica automaticamente le ricorrenze `anchor`;
+- ogni **venerdì** pianifica automaticamente la settimana successiva, prima della preparazione del kit nel weekend;
+- mantiene due uscite ordinarie su temi diversi;
+- applica automaticamente le ricorrenze `anchor` come contenuti aggiuntivi;
 - segnala le `conditional` senza inserirle automaticamente;
-- completa gli slot rimasti con la rotazione ordinaria;
+- segnala le collisioni di data tra ricorrenze e slot ordinari;
 - crea o aggiorna un'issue GitHub `Piano social · settimana YYYY-MM-DD` con piano e checklist;
 - carica anche il piano come artifact del workflow;
 - non pubblica mai automaticamente sui social.
 
 Il workflow può essere eseguito anche manualmente indicando una data e, se necessario, l'ID di una ricorrenza `conditional` da promuovere.
 
-Per validare struttura, fonti, budget e collisioni note:
+Per validare struttura, fonti, rotazione e scenari noti:
 
 ```bash
 python3 scripts/test_social_calendar.py
 ```
 
-## Generare il calendario grafico
+## Struttura del carosello
 
-```bash
-python3 -m pip install -r social-kit/requirements.txt
-python3 scripts/generate_social_kit.py
-python3 scripts/test_social_kit.py
-```
+Per ogni uscita il pacchetto editoriale prevede quattro immagini 1080×1350:
 
-La galleria viene creata in `social-kit/dist/index.html`.
+1. valore attuale o quadro iniziale;
+2. andamento storico;
+3. variazione territoriale o confronto temporale metodologicamente corretto;
+4. domanda aperta, invito a commentare indicando il Comune e invito a seguire Osservatorio Versilia.
 
-## Generare una nuova settimana grafica
+A corredo vengono preparati:
 
-```bash
-python3 scripts/generate_social_kit.py \
-  --theme economia \
-  --metric localUnits \
-  --week-id economia-unita-locali \
-  --normalized
-```
+- copy distinti per Facebook, Instagram, LinkedIn e X;
+- testo alternativo completo;
+- provenienza dei dati;
+- URL della pagina pertinente;
+- hashtag sobri.
 
-Per vedere gli indicatori già approvati:
-
-```bash
-python3 scripts/generate_social_kit.py --list-metrics
-```
-
-Le domande predefinite arrivano da `config/question-bank.json`. Si possono sostituire con:
-
-```bash
---data-question "Domanda del primo post" \
---context-question "Domanda del secondo post"
-```
-
-## Output
-
-Per ogni post:
-
-- SVG e PNG feed 1080×1350;
-- SVG e PNG storia 1080×1920;
-- testi per Facebook, Instagram, LinkedIn e X;
-- testo alternativo;
-- provenienza completa;
-- inserimento nel PDF LinkedIn e nella galleria.
-
-Il workflow GitHub **Genera Social Kit** produce lo stesso pacchetto come artefatto di revisione. Non pubblica post e non modifica il sito.
+Non sono previsti PDF, storie o formati grafici aggiuntivi nel pacchetto editoriale standard.

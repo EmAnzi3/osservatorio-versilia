@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Costruisce il piano social esecutivo di una settimana.
 
-Il planner mantiene un massimo di due uscite, applica automaticamente le
-ricorrenze ``anchor``, lascia le ``conditional`` come decisione editoriale e
-riempie gli slot rimasti con la rotazione ordinaria dei temi.
+Il planner mantiene due uscite ordinarie, con temi diversi, e aggiunge le
+ricorrenze ``anchor`` realmente previste. Le ``conditional`` restano una
+decisione editoriale esplicita. Le ricorrenze non consumano gli slot ordinari.
 """
 
 from __future__ import annotations
@@ -40,11 +40,14 @@ def fmt_date(value: date) -> str:
     return f"{value.day} {months[value.month - 1]} {value.year}"
 
 
-def theme_rotation(start: date, rotation: dict[str, Any], site: dict[str, Any]) -> dict[str, Any]:
+def ordinary_for_slot(start: date, slot_index: int, rotation: dict[str, Any], site: dict[str, Any]) -> dict[str, Any]:
     rotation_start = monday_of(parse_date(rotation["start_week"]))
     week_index = (start - rotation_start).days // 7
     themes = rotation["themes"]
-    theme_key = themes[week_index % len(themes)]
+    start_theme_index = int(rotation.get("start_theme_index", 0))
+    slots_per_week = len(rotation["slots"])
+    theme_index = (start_theme_index + week_index * slots_per_week + slot_index) % len(themes)
+    theme_key = themes[theme_index]
     theme = site["themes"].get(theme_key)
     if not theme:
         raise ValueError(f"Tema della rotazione inesistente: {theme_key}")
@@ -71,14 +74,17 @@ def matching_metrics(event: dict[str, Any], site: dict[str, Any]) -> list[str]:
 
 def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, Any]:
     observances = load(KIT / "config" / "editorial-observances-2026-2027.json")
+    cadence = load(KIT / "config" / "editorial-cadence.json")
     rotation = load(KIT / "config" / "editorial-rotation.json")
     site = load(ROOT / "data" / "site-data.json")
     ready = load(KIT / "config" / "social-ready.json").get("approved_metrics", {})
 
     start = monday_of(requested)
     end = start + timedelta(days=6)
-    ordinary = theme_rotation(start, rotation, site)
-    budget = int(observances["cadence"]["weekly_post_budget"])
+    ordinary_budget = int(cadence["ordinary_posts_per_week"])
+    slots = rotation["slots"]
+    if len(slots) != ordinary_budget:
+        raise ValueError("Il numero di slot ordinari deve coincidere con ordinary_posts_per_week")
 
     events = []
     for raw in observances["observances"]:
@@ -102,14 +108,12 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
         promoted.append(selected)
 
     special = sorted(anchors + promoted, key=lambda item: item["suggested_publish_date"])
-    if len(special) > budget:
-        raise ValueError(f"La settimana contiene {len(special)} ricorrenze obbligatorie/promosse ma il budget è {budget}")
-
     scheduled: list[dict[str, Any]] = []
-    occupied_dates: set[str] = set()
+    special_dates: set[str] = set()
+
     for event in special:
         pdate = event["suggested_publish_date"]
-        occupied_dates.add(pdate)
+        special_dates.add(pdate)
         scheduled.append({
             "date": pdate,
             "type": "observance",
@@ -125,33 +129,38 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
             "source_url": event["source_url"],
         })
 
-    remaining = budget - len(scheduled)
-    for slot in rotation["slots"]:
-        if remaining <= 0:
-            break
+    ordinary_rotation: list[dict[str, Any]] = []
+    for slot_index, slot in enumerate(slots):
+        ordinary = ordinary_for_slot(start, slot_index, rotation, site)
+        ordinary_rotation.append(ordinary)
         slot_date = start + timedelta(days=int(slot["weekday"]))
         iso = slot_date.isoformat()
-        if iso in occupied_dates:
-            continue
         scheduled.append({
             "date": iso,
             "type": "ordinary",
             "slot": slot["kind"],
+            "slot_label": slot["label"],
             "title": f"{ordinary['theme_label']} · {ordinary['metric_label']}",
             "theme": ordinary["theme"],
             "metric": ordinary["metric"],
             "metric_label": ordinary["metric_label"],
             "generator_ready": ordinary["metric"] in ready,
+            "same_day_observance": iso in special_dates,
         })
-        remaining -= 1
 
-    scheduled.sort(key=lambda item: item["date"])
+    ordinary_themes = [item["theme"] for item in scheduled if item["type"] == "ordinary"]
+    if len(set(ordinary_themes)) != len(ordinary_themes):
+        raise ValueError("I due slot ordinari della settimana devono usare temi diversi")
+
+    scheduled.sort(key=lambda item: (item["date"], 0 if item["type"] == "observance" else 1))
 
     return {
-        "version": "social-week-v1",
+        "version": "social-week-v2",
         "generated_for": requested.isoformat(),
         "week": {"from": start.isoformat(), "to": end.isoformat()},
-        "budget": budget,
+        "ordinary_budget": ordinary_budget,
+        "ordinary_count": len(ordinary_themes),
+        "special_count": len(special),
         "scheduled": scheduled,
         "conditional_candidates": [
             {
@@ -164,17 +173,18 @@ def make_plan(requested: date, conditional_id: str | None = None) -> dict[str, A
                 "preferred_indicators": item.get("preferred_indicators", []),
                 "matching_metrics": item["matching_metrics"],
                 "source_url": item["source_url"],
-                "decision": "promuovere esplicitamente oppure mantenere il piano ordinario",
+                "decision": "promuovere esplicitamente solo se il collegamento ai dati è realmente pertinente",
             }
             for item in conditionals
             if item["id"] not in {promoted_item["id"] for promoted_item in promoted}
         ],
-        "ordinary_rotation": ordinary,
+        "ordinary_rotation": ordinary_rotation,
         "rules": {
-            "anchor": observances["cadence"]["anchor_rule"],
-            "conditional": observances["cadence"]["conditional_rule"],
-            "collision": observances["cadence"]["collision_rule"],
-            "verification": observances["cadence"]["verification_rule"],
+            "anchor": cadence["anchor_rule"],
+            "conditional": cadence["conditional_rule"],
+            "same_day": cadence["same_day_rule"],
+            "special_collision": cadence["special_collision_rule"],
+            "verification": cadence["verification_rule"],
         },
     }
 
@@ -186,7 +196,7 @@ def markdown(plan: dict[str, Any]) -> str:
         f"# Piano social · settimana {plan['week']['from']}",
         "",
         f"Periodo: **{fmt_date(start)} – {fmt_date(end)}**  ",
-        f"Budget: **{len(plan['scheduled'])}/{plan['budget']} uscite pianificate**.",
+        f"Uscite ordinarie: **{plan['ordinary_count']}/{plan['ordinary_budget']}**. Ricorrenze aggiuntive: **{plan['special_count']}**. Totale pianificato: **{len(plan['scheduled'])}**.",
         "",
         "## Uscite pianificate",
         "",
@@ -197,13 +207,14 @@ def markdown(plan: dict[str, Any]) -> str:
         if item["type"] == "ordinary":
             readiness = "generatore automatico disponibile" if item["generator_ready"] else "carosello da preparare/revisionare manualmente"
             out.extend([
-                f"### {when} · ordinario",
+                f"### {when} · ordinario — {item['slot_label']}",
                 f"- Tema: **{item['theme']}**",
                 f"- Indicatore: `{item['metric']}` — {item['metric_label']}",
-                f"- Slot: `{item['slot']}`",
                 f"- Produzione: {readiness}",
-                "",
             ])
+            if item["same_day_observance"]:
+                out.append("- **Collisione calendario:** nello stesso giorno è prevista anche una ricorrenza. Valutare lo spostamento dell'ordinario a un giorno libero vicino, senza eliminarlo.")
+            out.append("")
         else:
             out.extend([
                 f"### {when} · ricorrenza {item['priority']}",
@@ -232,13 +243,14 @@ def markdown(plan: dict[str, Any]) -> str:
         "",
         "## Checklist esecutiva",
         "",
+        "- [ ] Verificare che i due post ordinari abbiano temi diversi.",
         "- [ ] Ricontrollare data, denominazione e fonte ufficiale delle eventuali ricorrenze.",
         "- [ ] Verificare che i numeri coincidano con il dataset corrente.",
-        "- [ ] Preparare/rigenerare il carosello con il colore canonico del tema.",
+        "- [ ] Preparare/rigenerare ogni carosello con il colore canonico del relativo tema.",
         "- [ ] Controllare che nessun testo esca dai box.",
         "- [ ] Preparare copy Facebook, Instagram, LinkedIn e X, ALT e link alla pagina più specifica.",
         "- [ ] Verificare che il testo non introduca causalità o granularità non supportate.",
-        "- [ ] Pubblicare al massimo le due uscite previste.",
+        "- [ ] Pubblicare i due contenuti ordinari e, in aggiunta, le ricorrenze effettivamente approvate.",
         "",
         "Il workflow prepara il piano e apre/aggiorna l'issue settimanale: **non pubblica automaticamente sui social**.",
         "",

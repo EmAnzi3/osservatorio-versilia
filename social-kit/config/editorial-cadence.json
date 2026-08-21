@@ -1,0 +1,15 @@
+{
+  "version": "2026-08-21",
+  "timezone": "Europe/Rome",
+  "ordinary_posts_per_week": 2,
+  "ordinary_slots": [
+    "martedì",
+    "venerdì"
+  ],
+  "special_posts_are_additive": true,
+  "anchor_rule": "Una ricorrenza prioritaria realmente pertinente si aggiunge ai due post ordinari della settimana e viene pubblicata nella data editoriale prevista.",
+  "conditional_rule": "Una ricorrenza condizionale si aggiunge al piano solo se esiste un dato dell'Osservatorio realmente pertinente, sufficientemente granulare e metodologicamente compatibile.",
+  "same_day_rule": "Se una ricorrenza cade nello stesso giorno di uno slot ordinario, il piano mantiene entrambi i contenuti ma segnala la collisione per valutare lo spostamento dell'ordinario a un giorno libero vicino, senza eliminarlo.",
+  "special_collision_rule": "Se più ricorrenze competono nello stesso giorno, non si forza un contenuto debole: si mantengono solo quelle con collegamento diretto ai dati disponibili.",
+  "verification_rule": "Data, denominazione, tema annuale e fonte ufficiale vanno ricontrollati prima della produzione del contenuto."
+}
