@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Materializza la preview browser del Radar Opportunita v0.2.3.
+"""Materializza la preview browser del Radar Opportunità v0.2.3.
 
 Da eseguire dopo ``scripts/build_static.py`` e dopo il probe v0.2.2.
-La route generata e intenzionalmente noindex e non viene aggiunta alla sitemap.
+La route generata è intenzionalmente noindex e non viene aggiunta alla sitemap.
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ TOWNS = (
 )
 
 STATUS_LABELS = {
-    "eligible": "Opportunita diretta",
+    "eligible": "Opportunità diretta",
     "conditional": "Da verificare",
 }
 ROLE_LABELS = {
@@ -94,7 +94,7 @@ def render_town_chips(item: dict[str, Any]) -> str:
     for town in TOWNS:
         entry = matrix.get(town) or {}
         status = str(entry.get("status") or "not_eligible")
-        reason = str(entry.get("reason") or "Nessuna ammissibilita documentata per il prototipo.")
+        reason = str(entry.get("reason") or "Nessuna ammissibilità documentata per il prototipo.")
         chips.append(
             f'<li class="op-town-chip" data-town-chip="{esc(slug(town))}" '
             f'data-town-status="{esc(status)}" title="{esc(reason)}">{esc(town)}</li>'
@@ -135,8 +135,8 @@ def card_markup(item: dict[str, Any]) -> str:
         )
     )
     evidence_markup = (
-        f'<span class="op-evidence"><strong>Perche compare:</strong> {esc(evidence)}</span>'
-        if evidence else '<span class="op-evidence"><strong>Perche compare:</strong> regola documentale validata nel prototipo.</span>'
+        f'<span class="op-evidence"><strong>Perché compare:</strong> {esc(evidence)}</span>'
+        if evidence else '<span class="op-evidence"><strong>Perché compare:</strong> regola documentale validata nel prototipo.</span>'
     )
     return f'''<article class="op-card" data-opportunity-card data-status="{esc(status)}" data-towns="{esc('|'.join(towns))}" data-search="{esc(search_blob)}">
       <div class="op-card-top">
@@ -180,8 +180,8 @@ def render_page(payload: dict[str, Any]) -> str:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anteprima Radar Opportunita · Osservatorio Versilia</title>
-  <meta name="description" content="Anteprima non pubblica del Radar Opportunita Versilia v0.2.3.">
+  <title>Anteprima Radar Opportunità · Osservatorio Versilia</title>
+  <meta name="description" content="Anteprima non pubblica del Radar Opportunità Versilia v0.2.3.">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="../site.webmanifest">
@@ -192,17 +192,17 @@ def render_page(payload: dict[str, Any]) -> str:
   <div id="site-header-mount"></div>
   <div id="app"><main class="editorial-page op-preview-main" data-opportunity-preview>
     <section class="editorial-hero page-width op-preview-hero">
-      <span class="overline">Radar opportunita · Anteprima v0.2.3</span>
-      <h1>Opportunita per i Comuni della Versilia.</h1>
-      <p>Questa vista mostra soltanto le opportunita che hanno superato il controllo su <strong>richiedente</strong>, <strong>ruolo del Comune</strong>, <strong>geografia</strong>, <strong>pertinenza territoriale</strong> e <strong>completezza minima</strong>.</p>
+      <span class="overline">Radar opportunità · Anteprima v0.2.3</span>
+      <h1>Opportunità per i Comuni della Versilia.</h1>
+      <p>Questa vista mostra soltanto le opportunità che hanno superato il controllo su <strong>richiedente</strong>, <strong>ruolo del Comune</strong>, <strong>geografia</strong>, <strong>pertinenza territoriale</strong> e <strong>completezza minima</strong>.</p>
       <div class="op-preview-banner"><strong>Anteprima tecnica, non pubblicata.</strong> Questa route non entra nella sitemap e non deve essere considerata una sezione attiva del sito.</div>
       <div class="op-preview-meta"><div><span>Dati verificati al</span><strong>{esc(reference)}</strong></div><div><span>Versione motore</span><strong>Radar v0.2.2 · UI v0.2.3</strong></div></div>
     </section>
 
-    <section class="method-detail page-width" aria-label="Riepilogo opportunita">
+    <section class="method-detail page-width" aria-label="Riepilogo opportunità">
       <div class="section-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Il conteggio riguarda il campione corrente del prototipo, non l'universo di tutti i bandi disponibili.</p></div>
       <ol class="principles-grid op-preview-summary">
-        <li><span>01</span><h3>Opportunita</h3><strong>{len(opportunities)}</strong></li>
+        <li><span>01</span><h3>Opportunità</h3><strong>{len(opportunities)}</strong></li>
         <li><span>02</span><h3>Dirette</h3><strong>{eligible}</strong></li>
         <li><span>03</span><h3>Condizionate</h3><strong>{conditional}</strong></li>
         <li><span>04</span><h3>Review residua</h3><strong>{int((payload.get('counts') or {}).get('reviewInternal', 0))}</strong></li>
@@ -210,23 +210,23 @@ def render_page(payload: dict[str, Any]) -> str:
     </section>
 
     <section class="method-detail page-width">
-      <div class="section-heading"><div><span class="section-number">02</span><h2>Filtra le opportunita</h2></div><p>Selezionando un Comune restano visibili solo i bandi per cui quel Comune ha un canale operativo documentato.</p></div>
+      <div class="section-heading"><div><span class="section-number">02</span><h2>Filtra le opportunità</h2></div><p>Selezionando un Comune restano visibili solo i bandi per cui quel Comune ha un canale operativo documentato.</p></div>
       <div class="op-preview-controls">
         <label>Comune<select data-op-town><option value="">Tutta la Versilia</option>{town_options}</select></label>
-        <label>Stato<select data-op-status><option value="">Tutti gli stati</option><option value="eligible">Opportunita dirette</option><option value="conditional">Da verificare</option></select></label>
+        <label>Stato<select data-op-status><option value="">Tutti gli stati</option><option value="eligible">Opportunità dirette</option><option value="conditional">Da verificare</option></select></label>
         <label class="op-search-field">Cerca<input type="search" data-op-search placeholder="Titolo, fonte, ambito…" autocomplete="off"></label>
         <button class="op-preview-reset" type="button" data-op-reset>Reimposta</button>
       </div>
-      <div class="op-preview-resultbar" aria-live="polite"><strong data-op-visible>{len(opportunities)} opportunita visibili</strong><span data-op-context>Tutta la Versilia · tutti gli stati</span></div>
+      <div class="op-preview-resultbar" aria-live="polite"><strong data-op-visible>{len(opportunities)} opportunità visibili</strong><span data-op-context>Tutta la Versilia · tutti gli stati</span></div>
     </section>
 
-    <section class="method-detail page-width" aria-label="Elenco opportunita">
+    <section class="method-detail page-width" aria-label="Elenco opportunità">
       <div class="section-heading"><div><span class="section-number">03</span><h2>Scadenze e condizioni</h2></div><p>Le schede sono ordinate per scadenza. Passando sui Comuni si legge la motivazione puntuale della classificazione.</p></div>
       <div class="op-preview-list">{cards}</div>
-      <div class="op-preview-empty" data-op-empty hidden>Nessuna opportunita corrisponde ai filtri selezionati.</div>
+      <div class="op-preview-empty" data-op-empty hidden>Nessuna opportunità corrisponde ai filtri selezionati.</div>
       <div class="op-preview-legend">
-        <article><h3><span class="op-status op-status-eligible">Opportunita diretta</span></h3><p>Il Comune ha un ruolo operativo documentato e i requisiti generali risultano compatibili, fermo restando il controllo del progetto concreto.</p></article>
-        <article><h3><span class="op-status op-status-conditional">Da verificare</span></h3><p>Il Comune puo lavorare l'opportunita, ma deve soddisfare una condizione specifica: partenariato, bene ammissibile, appartenenza a un sistema o altro requisito sostanziale.</p></article>
+        <article><h3><span class="op-status op-status-eligible">Opportunità diretta</span></h3><p>Il Comune ha un ruolo operativo documentato e i requisiti generali risultano compatibili, fermo restando il controllo del progetto concreto.</p></article>
+        <article><h3><span class="op-status op-status-conditional">Da verificare</span></h3><p>Il Comune può lavorare l'opportunità, ma deve soddisfare una condizione specifica: partenariato, bene ammissibile, appartenenza a un sistema o altro requisito sostanziale.</p></article>
       </div>
     </section>
   </main></div>
@@ -269,7 +269,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     target = build(args.data, args.dist)
-    print(f"Preview opportunita v0.2.3 materializzata: {target}")
+    print(f"Preview opportunità v0.2.3 materializzata: {target}")
 
 
 if __name__ == "__main__":
