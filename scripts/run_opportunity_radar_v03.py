@@ -4,7 +4,7 @@
 - espone il fetch resiliente al namespace atteso dal collector v0.3;
 - amplia il parser listing a h5/h6 per portali istituzionali diversi da Regione Toscana;
 - aggiunge la sezione 'A chi si rivolge' alla lettura dei destinatari;
-- propaga alla matrice di copertura le icone affidabili del registro di presentazione;
+- usa asset SVG locali per le icone fonte che non espongono favicon affidabili;
 - risolve dettagli ufficiali verificati che i listing non espongono correttamente;
 - collassa duplicati semantici dello stesso bando tramite rule_id;
 - riconcilia la continuità sull'output finale, dopo i recuperi documentali verificati.
@@ -25,6 +25,12 @@ if "a chi si rivolge" not in quality.AUDIENCE_KEYS:
     quality.AUDIENCE_KEYS = tuple(quality.AUDIENCE_KEYS) + ("a chi si rivolge",)
 
 _ORIGINAL_COLLECT_HTML = quality.collect_html
+_ICON_REGISTRY = radar.ROOT / "data" / "opportunity-source-icons-v03.json"
+
+
+def _local_icons():
+    payload = json.loads(_ICON_REGISTRY.read_text(encoding="utf-8"))
+    return {str(k): str(v) for k, v in (payload.get("icons") or {}).items()}
 
 
 def _expanded_collect_html(source, today, payload, loader=None, pdf_text_loader=None):
@@ -52,6 +58,24 @@ def _expanded_collect_html(source, today, payload, loader=None, pdf_text_loader=
 
 quality.collect_html = _expanded_collect_html
 
+_ORIGINAL_ATTACH_SOURCE_VISUALS = radar.attach_source_visuals
+
+
+def _attach_source_visuals_with_local_icons(result, presentation_path):
+    _ORIGINAL_ATTACH_SOURCE_VISUALS(result, presentation_path)
+    icons = _local_icons()
+    for item in result.get("opportunities") or []:
+        sid = str(item.get("source_id") or "")
+        if sid in icons:
+            item.setdefault("presentation", {})["source_favicon"] = icons[sid]
+    for item in result.get("archive") or []:
+        sid = str(item.get("source_id") or "")
+        if sid in icons:
+            item["source_favicon"] = icons[sid]
+
+
+radar.attach_source_visuals = _attach_source_visuals_with_local_icons
+
 _ORIGINAL_BUILD_COVERAGE = radar.build_coverage
 
 
@@ -59,10 +83,13 @@ def _build_coverage_with_visuals(result, registry, discovery_states):
     coverage = _ORIGINAL_BUILD_COVERAGE(result, registry, discovery_states)
     presentation = json.loads(radar.DEFAULT_PRESENTATION.read_text(encoding="utf-8"))
     visuals = presentation.get("sources") or {}
+    icons = _local_icons()
     for row in coverage.get("rows") or []:
-        meta = visuals.get(str(row.get("source_id") or "")) or {}
-        if meta.get("favicon"):
-            row["favicon"] = meta["favicon"]
+        sid = str(row.get("source_id") or "")
+        meta = visuals.get(sid) or {}
+        favicon = icons.get(sid) or meta.get("favicon")
+        if favicon:
+            row["favicon"] = favicon
     return coverage
 
 
