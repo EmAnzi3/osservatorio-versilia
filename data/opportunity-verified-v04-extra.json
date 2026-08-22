@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "0.4.1",
+  "evidenceFallbackMaxDays": 7,
+  "entries": [
+    {
+      "coverage_id": "pcm-famiglia-crescere-piccoli-comuni-2026",
+      "source_id": "pcm-famiglia",
+      "source_label": "PCM · Politiche per la famiglia",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche della famiglia",
+      "title": "Crescere nei piccoli comuni 2026",
+      "url": "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/avviso-crescere-nei-piccoli-comuni-2026-stanziati-50-milioni-di-euro-per-le-famiglie/",
+      "required_terms": ["Crescere nei piccoli comuni", "50 milioni", "29 settembre 2026", "5.000"],
+      "evidence_verified_at": "2026-08-22",
+      "allow_recent_evidence_fallback": true,
+      "lifecycle_stage": "application_open",
+      "deadline_at": "2026-09-29",
+      "eligibility": "eligible",
+      "applicant_type": "Comune con popolazione residente fino a 5.000 abitanti, singolo o associato secondo l'avviso",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Famiglie, minori e comunità dei piccoli Comuni",
+      "geographic_scope": "Italia · Comuni fino a 5.000 abitanti",
+      "project_requirements": "L'avviso dispone 50 milioni di euro per interventi rivolti alle famiglie nei piccoli Comuni. La candidatura deve rispettare finalità, spese e modalità previste dall'avviso; è ammessa la partecipazione singola o associata secondo le condizioni ufficiali.",
+      "category": "welfare",
+      "description": "Avviso nazionale per iniziative a favore delle famiglie nei Comuni fino a 5.000 abitanti.",
+      "condition_label": "Soglia demografica",
+      "municipality_status_overrides": {
+        "Camaiore": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."},
+        "Forte dei Marmi": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."},
+        "Massarosa": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."},
+        "Pietrasanta": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."},
+        "Seravezza": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."},
+        "Stazzema": {"status":"eligible","reason":"Il Comune rientra nella soglia fino a 5.000 abitanti prevista dall'avviso; restano da rispettare i requisiti progettuali e procedurali."},
+        "Viareggio": {"status":"not_eligible","reason":"Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."}
+      },
+      "presentation": {"source_mark":"PCM","source_class":"pcm","category":"welfare"}
+    },
+    {
+      "coverage_id": "pcm-pari-tratta-bando-8-2026",
+      "source_id": "pcm-pari-opportunita",
+      "source_label": "PCM · Pari opportunità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
+      "title": "Bando n. 8/2026 — progetti territoriali contro tratta e grave sfruttamento",
+      "url": "https://www.pariopportunita.gov.it/it/news-e-media/news/2026/pubblicato-il-bando-n-82026-per-il-finanziamento-dei-progetti-territoriali-del-programma-unico-di-emersione-assistenza-e-integrazione-sociale-delle-vittime-di-tratta-e-grave-sfruttamento/",
+      "required_terms": ["Bando n. 8/2026", "enti locali", "30 settembre 2026"],
+      "evidence_verified_at": "2026-08-22",
+      "allow_recent_evidence_fallback": true,
+      "lifecycle_stage": "application_open",
+      "deadline_at": "2026-09-30",
+      "eligibility": "conditional",
+      "applicant_type": "Regioni, Province autonome, enti locali e soggetti privati iscritti nei registri previsti dal bando",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Persone vittime di tratta o grave sfruttamento e reti territoriali di assistenza e integrazione",
+      "geographic_scope": "Italia",
+      "project_requirements": "Il Comune rientra tra gli enti locali ammessi, ma la candidatura richiede un progetto territoriale conforme al Programma unico e a tutte le condizioni organizzative, tecniche e finanziarie del bando.",
+      "category": "welfare",
+      "description": "Finanziamento di progetti territoriali per emersione, assistenza e integrazione sociale delle vittime di tratta e grave sfruttamento.",
+      "condition_label": "Progetto territoriale",
+      "municipality_status_overrides": {
+        "Camaiore": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Forte dei Marmi": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Massarosa": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Pietrasanta": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Seravezza": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Stazzema": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."},
+        "Viareggio": {"status":"conditional","reason":"Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."}
+      },
+      "presentation": {"source_mark":"PCM","source_class":"pcm","category":"welfare"}
+    }
+  ]
+}
