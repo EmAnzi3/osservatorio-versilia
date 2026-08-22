@@ -68,16 +68,18 @@ def main() -> None:
         parts = row["parts"]
         assert len(parts) == 3
         staff = snapshot["towns"][row["town"]]["staffAt31Dec"]
+        assert row["staffAt31Dec"] == staff
         assert sum(part["count"] for part in parts) == staff
         close(sum(part["value"] for part in parts), 100.0, f"età/{row['town']}/somma")
         close(row["value"], parts[0]["value"], f"età/{row['town']}/55+")
         for index, part in enumerate(parts):
             aggregate_counts[index] += part["count"]
     total = sum(aggregate_counts)
+    assert age["aggregate"]["staffAt31Dec"] == total
     for index, part in enumerate(age["aggregate"]["parts"]):
         close(part["value"], aggregate_counts[index] / total * 100, f"età/Versilia/{index}")
 
-    print("Amministrazione Lotto A verificata: 136 indicatori, 7/7 Comuni, aggregati pesati e semantica neutrale.")
+    print("Amministrazione Lotto A verificata: 136 indicatori, 7/7 Comuni, aggregati pesati, conteggi età assoluti e semantica neutrale.")
 
 
 if __name__ == "__main__":
