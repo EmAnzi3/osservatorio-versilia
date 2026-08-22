@@ -22,6 +22,36 @@ class RadarV04Test(unittest.TestCase):
             self.assertIn(required, coverage.get("sources") or {})
         self.assertGreaterEqual(len(discovery_ids), 20)
 
+    def test_parallel_discovery_preserves_candidate_semantics(self):
+        config = {
+            "discoverySources": [
+                {
+                    "id": "alpha",
+                    "label": "Alpha",
+                    "urls": ["https://example.test/a", "https://example.test/b"],
+                    "includeTerms": ["bando"],
+                    "municipalTerms": ["comune"],
+                },
+                {
+                    "id": "beta",
+                    "label": "Beta",
+                    "urls": ["https://example.test/c"],
+                    "includeTerms": ["avviso"],
+                    "municipalTerms": ["enti locali"],
+                },
+            ]
+        }
+        payloads = {
+            "https://example.test/a": '<article><a href="/uno">Bando Comune Uno</a><p>Contributo al Comune</p></article>',
+            "https://example.test/b": '<article><a href="/due">Bando Comune Due</a><p>Finanziamento al Comune</p></article>',
+            "https://example.test/c": '<article><a href="/tre">Avviso Enti locali</a><p>Opportunità per enti locali</p></article>',
+        }
+        queue, states = v04.probe_discovery_sources(config, payloads=payloads)
+        self.assertEqual([x["sourceId"] for x in states], ["alpha", "beta"])
+        self.assertTrue(all(x["status"] == "ok" for x in states))
+        self.assertGreaterEqual(len(queue), 3)
+        self.assertEqual(queue, sorted(queue, key=lambda item: (str(item.get("source_label") or ""), str(item.get("title") or ""))))
+
     def test_contract_separates_classifier_recall_from_web_coverage(self):
         contract = v04._load(v04.CONTRACT_V04)
         self.assertTrue(contract["classifierRecallIsNotWebCoverage"])
