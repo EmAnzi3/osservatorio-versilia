@@ -3,6 +3,8 @@ name: Probe servizi digitali IPA
 on:
   push:
     branches: ["agent/amministrazione-probe-ratio7"]
+  pull_request:
+    branches: ["main"]
 
 permissions:
   contents: read
