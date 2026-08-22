@@ -1,156 +1,103 @@
-# Radar Opportunità Versilia — v0.4 coverage-first
+# Radar Opportunità Versilia — v0.4.2 independent coverage audit
 
-La v0.4 cambia la domanda di collaudo: non basta più verificare che il motore classifichi bene ciò che ha già trovato. Il radar deve anche dimostrare di monitorare le principali **famiglie di opportunità** accessibili ai Comuni e deve rendere espliciti i buchi di copertura.
+La v0.4.2 aggiunge un controllo non autoreferenziale alla v0.4 coverage-first. Il fatto che tutte le famiglie definite dal radar risultino presidiate non è sufficiente a dimostrare l'assenza di buchi: l'universo delle fonti deve essere messo alla prova anche dall'esterno.
 
-La route resta esclusivamente di anteprima, `noindex,nofollow,noarchive`, fuori dalla sitemap e dalla navigazione pubblica. La Draft PR #82 non implica merge o pubblicazione.
+La route resta esclusivamente di anteprima, `noindex,nofollow,noarchive`, fuori sitemap e navigazione pubblica. La Draft PR #82 non implica merge o pubblicazione.
 
-## Perché la v0.3 non bastava
+## Quattro misure diverse
 
-Il backtest v0.3 misura precision e recall sui candidati osservati. Il suo stesso dataset specifica che non misura la completezza dell'intero web. Un recall elevato può quindi convivere con opportunità mai intercettate perché la relativa famiglia di fonti non viene monitorata.
+1. **Backtest classificatore** — precision/recall sui candidati già osservati; non misura la completezza del web.
+2. **Coverage contract** — verifica che le principali famiglie istituzionali siano presidiate e che le sentinelle note siano gestite correttamente.
+3. **Independent audit** — usa sweep e fonti di controllo che non alimentano direttamente il collector per cercare falsi negativi.
+4. **Capture rate prospettico** — quota delle opportunità pertinenti emerse dal campione indipendente che il radar aveva già intercettato; diventa KPI solo dopo un campione minimo di 20 casi.
 
-La v0.4 conserva il classificatore v0.3 e aggiunge un audit distinto di **coverage**.
+## Famiglie presidiate
 
-## Contratto di copertura
+Il contratto passa da 12 a 18 famiglie. Alle precedenti si aggiungono:
 
-Sono considerate opportunità pertinenti:
+- disabilità e inclusione;
+- turismo ed enti territoriali;
+- politiche giovanili e Servizio civile;
+- lavoro e servizi sociali;
+- istruzione, edilizia e servizi scolastici;
+- capacità amministrativa dei Comuni.
 
-- bandi e contributi;
-- incentivi;
-- avvisi competitivi;
-- manifestazioni di interesse;
-- premi e programmi finanziari;
-- misure a sportello.
+Le nuove fonti di produzione/discovery includono PCM Disabilità, Ministero del Turismo, PCM Politiche giovanili e SCU, Ministero del Lavoro, MIM, Funzione Pubblica e un canale CERV dedicato. Il canale CERV tematico affianca Funding & Tenders perché il portale generale può non essere enumerabile in modo affidabile dal collector HTML.
 
-Sono escluse le normali gare in cui il Comune è stazione appaltante o acquirente: una gara per comprare beni o servizi non è un finanziamento o un'opportunità finanziaria per il Comune. Una procedura competitiva alla quale il Comune può invece candidarsi, partecipare o ricevere risorse resta nel perimetro.
+## Holdout indipendenti
 
-Il contratto è versionato in `data/opportunity-coverage-contract-v04.json`.
+Tre fonti sono deliberatamente escluse dalla raccolta di produzione e servono soltanto al controllo:
 
-## Tre stati operativi
+- Invitalia — incentivi e strumenti;
+- CERV Italia — National Contact Point;
+- Europe Direct Lucca-Viareggio.
 
-La v0.4 distingue:
+Un holdout può confermare un'opportunità o far emergere un falso negativo, ma non può pubblicare automaticamente una scheda.
 
-1. **Aperta** — finestra di candidatura attualmente attiva;
-2. **A sportello** — misura accessibile senza una singola scadenza di bando;
-3. **In arrivo** — procedura già annunciata da una fonte ufficiale ma non ancora aperta.
+## Falsi negativi baseline del 22 agosto 2026
 
-Questo evita due errori opposti: perdere incentivi permanenti perché non hanno una deadline, oppure mostrare come aperto un bando soltanto annunciato.
+Lo sweep indipendente ha trovato tre opportunità correnti che la v0.4.1 non conteneva:
 
-## Espansione discovery
+- **Vita & Opportunità 2026** — PCM Disabilità — scadenza 29 agosto 2026 ore 17:00;
+- **CERV 2026 — Town Twinning** — Commissione europea — scadenza 23 settembre 2026 ore 17:00;
+- **Potenziamento del servizio sociale professionale 2026** — Ministero del Lavoro — adesioni fino all'11 settembre 2026.
 
-Ai quattro canali discovery v0.3 si aggiungono venti canali complessivi di discovery, includendo:
+Questi tre casi sono versionati come `missed at baseline`. La v0.4.2 deve chiuderli 3/3 per passare il gate, ma questo **non** viene presentato come capture rate 100%: il campione è stato costruito appositamente cercando buchi e quindi non è rappresentativo.
 
-- Conferenza Stato-Città;
-- MiC — Direzione generale Creatività Contemporanea;
-- Ministero della Cultura — rete generale avvisi;
-- PCM — Dipartimento per le politiche del mare;
-- PCM — Dipartimento per lo Sport;
-- PCM — Dipartimento per le politiche della famiglia;
-- PCM — Dipartimento per le pari opportunità;
-- PCM — Dipartimento Casa Italia;
-- PCM — Politiche di coesione;
-- MIT — finanziamenti per enti locali;
-- MASE — bandi e avvisi;
-- Commissione europea / CINEA — LIFE;
-- Commissione europea — Funding & Tenders;
-- New European Bauhaus;
-- Interreg Italia-Francia Marittimo;
-- PA digitale 2026 — pagina corrente dedicata ai Comuni.
+### Controlli territoriali
 
-I canali restano **discovery**: non possono promuovere automaticamente una scheda nella preview. Per l'output serve comunque una fonte primaria ufficiale, la verifica del ruolo comunale e la matrice Comune-per-Comune.
+- Vita & Opportunità distingue Stazzema, classificato `D - Intermedio` nella Mappa nazionale Aree interne AI 2020, dagli altri Comuni. Stazzema può rientrare nella candidatura diretta degli Enti locali; gli altri restano condizionali come partner secondo la rettifica ufficiale dell'Avviso.
+- Town Twinning mantiene tutti i sette Comuni condizionali perché richiede un partenariato transnazionale conforme alla call.
+- L'avviso assistenti sociali mantiene tutti i sette Comuni condizionali perché l'adesione richiede delega all'ATS, impegno assunzionale e disponibilità delle risorse previste.
 
-## Famiglie minime coperte
+## Casi non pubblicati
 
-L'audit richiede almeno una fonte configurata per ciascuna di dodici famiglie:
+La v0.4.2 introduce anche `audit_review`. Un caso in questa classe resta fuori dalla preview finché non viene verificato il requisito che determina l'ammissibilità.
 
-- Regione Toscana e programmi regionali;
-- canali nazionali trasversali per enti locali;
-- cultura;
-- infrastrutture e mobilità;
-- energia, clima e ambiente;
-- sport e infrastrutture sociali;
-- mare e Comuni costieri;
-- famiglia, welfare e pari opportunità;
-- resilienza, prevenzione e patrimonio pubblico;
-- transizione digitale PA;
-- programmi UE diretti;
-- cooperazione territoriale.
+Primo caso: **Servizio civile universale — programmi e progetti 2026**. La finestra è aperta, ma l'accesso dipende dall'iscrizione/accreditamento utile dell'ente proponente all'Albo SCU. Il semplice fatto che un Comune ospiti sedi o progetti non basta per pubblicarlo come opportunità direttamente utilizzabile.
 
-La presenza della fonte non equivale a dichiararla sana: l'audit conserva separatamente lo stato runtime degli endpoint. Un sito che blocca il collector deve risultare degradato/errore, non essere sostituito da una falsa copertura.
+Le sentinelle storiche presidiano inoltre i cicli FUNT Turismo, MIM/edilizia scolastica e Funzione Pubblica senza ripubblicare finestre già chiuse.
 
-## Sentinelle di copertura
+## Capture rate e detection lag
 
-La v0.4 introduce casi sentinella separati dal backtest del classificatore.
+Il file `data/opportunity-independent-audit-v042.json` definisce:
 
-### Correnti al 22 agosto 2026
+- target capture rate prospettico: **95%**;
+- campione minimo prima di esporre il KPI: **20 casi**;
+- target detection lag mediano: **3 giorni**.
 
-- **Cultura nei piccoli comuni — Edizione 1** — MiC DG Creatività Contemporanea — `Aperta`;
-- **Capitale italiana del mare 2027** — PCM Politiche del mare — `Aperta`;
-- **Conto Termico 3.0 — incentivi per edifici comunali** — GSE — `A sportello`;
-- **Fondo investimenti stradali piccoli Comuni — bando 2026** — MIT — `In arrivo`;
-- **Co-create New European Bauhaus 2026** — UE — `Aperta`;
-- **Crescere nei piccoli comuni 2026** — PCM Politiche per la famiglia — `Aperta`;
-- **Bando n. 8/2026 — progetti territoriali contro tratta e grave sfruttamento** — PCM Pari opportunità — `Aperta`.
+Fino al raggiungimento del campione minimo la UI deve mostrare `capture rate prospettico: in raccolta`, non una percentuale artificiale.
 
-Le sentinelle correnti sono materializzate solo dopo verifica della fonte primaria. Per resistere a un guasto transitorio del sito ufficiale è consentito un fallback sull'evidenza versionata per un massimo di sette giorni; oltre tale finestra la sentinella va in `coverageHold` e l'audit fallisce.
+## UI v0.4.2
 
-### Storiche
+La preview non espone più il buffet completo delle fonti né i chip duplicati sopra i filtri. Il Quadro operativo mostra invece una sintesi della rete, delle famiglie presidiate e dell'audit indipendente.
 
-- **Sport e Periferie 2026** — il relativo canale PCM Sport deve essere monitorato anche se la finestra si è chiusa il 25 giugno 2026;
-- **Interreg Italia-Francia Marittimo — V Avviso** — sentinella per la cooperazione territoriale, chiusa il 23 luglio 2026;
-- **Avviso Aree interne in zone sismiche 1 e 2** — sentinella Casa Italia per resilienza e prevenzione, chiusa il 4 giugno 2026.
+Restano i filtri Comune, Fonte, Stato, Modalità e ricerca libera. Le opportunità sono contenute in un viewport con scroll verticale interno: l'aumento del numero di schede non deve allungare indefinitamente la pagina e allontanare il footer.
 
-Questi casi non devono riapparire come opportunità aperte; servono a dimostrare che la famiglia non è più fuori dal radar.
-
-## Matrice territoriale
-
-Le nuove sentinelle non vengono applicate automaticamente a tutti e sette i Comuni.
-
-Esempi:
-
-- Cultura nei piccoli Comuni applica la soglia demografica del bando Comune-per-Comune;
-- Capitale italiana del mare viene limitata ai Comuni costieri della Versilia;
-- Conto Termico 3.0 distingue il regime rafforzato legato alla soglia dei 15.000 abitanti dai requisiti ordinari della misura;
-- il futuro Fondo MIT piccoli Comuni espone Stazzema come caso condizionale, in attesa del testo definitivo 2026;
-- Co-create NEB resta condizionale perché richiede un partenariato conforme alla call;
-- Crescere nei piccoli comuni applica la soglia di 5.000 abitanti e rende Stazzema il caso direttamente ammissibile nel perimetro Versilia;
-- il Bando n. 8/2026 mantiene tutti i sette Comuni `conditional` perché l'essere ente locale non sostituisce i requisiti progettuali e organizzativi.
-
-## UI v0.4
-
-Il Quadro operativo mostra separatamente:
-
-- Aperte;
-- A sportello;
-- In arrivo;
-- fonti monitorate;
-- famiglie coperte;
-- archivio.
-
-È aggiunto il filtro **Stato**. Restano i filtri Comune, fonte, modalità e ricerca libera.
+Le favicon esterne che falliscono vengono eliminate e lasciano visibile il fallback testuale della fonte.
 
 ## Gate CI
 
 Il workflow `.github/workflows/opportunity-radar-v04.yml` esegue:
 
-- test del motore v0.3 per evitare regressioni;
-- test specifici del contratto di copertura v0.4;
-- test delle matrici territoriali delle sentinelle;
-- backtest del classificatore, mantenuto separato dalla coverage;
-- live probe delle fonti operative e discovery;
-- verifica delle sentinelle correnti;
-- verifica delle sentinelle storiche di famiglia;
-- esclusione esplicita del procurement che non costituisce opportunità per il Comune;
-- build della preview;
-- Chromium desktop/mobile;
-- filtro degli stati e controllo overflow;
-- packaging dell'anteprima locale.
+- regressioni v0.3 e v0.4;
+- validazione dei registri v0.4.2;
+- verifica delle 18 famiglie;
+- verifica delle sentinelle correnti/storiche e degli `audit_review`;
+- live probe del collector;
+- probe delle fonti holdout senza alimentare la produzione;
+- chiusura dei falsi negativi baseline;
+- backtest del classificatore separato dalla coverage;
+- build della preview e browser check desktop/mobile;
+- verifica dello scroll interno delle opportunità e dell'assenza dei buffet fonti.
 
-Codici bloccanti v0.4:
+Codici bloccanti:
 
 - `2` — continuity hold;
 - `3` — backtest classificatore fallito;
-- `5` — contratto di copertura o sentinelle non soddisfatti.
+- `5` — coverage contract/sentinelle fallite;
+- `6` — audit indipendente non soddisfatto o nessun holdout raggiungibile nel live run.
 
 ## Stato
 
-La v0.4 resta sperimentale nella Draft PR #82. Nessun merge, nessuna route pubblica e nessuna modifica alla sitemap pubblica sono autorizzati da questa iterazione.
+La v0.4.2 resta sperimentale nella Draft PR #82. Nessun merge, nessuna route pubblica e nessuna modifica alla sitemap pubblica sono autorizzati da questa iterazione.
