@@ -85,6 +85,15 @@ jobs:
       - name: Apply Fiscalità Lotto B frontend semantics
         run: python scripts/patch_fiscal_lotto_b_frontend.py
 
+      - name: Materialize Amministrazione Lotto A
+        run: |
+          python scripts/materialize_amministrazione_lotto_a.py
+          python scripts/test_amministrazione_lotto_a.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/source-snapshots/rgs-amministrazione-2024.json > /dev/null
+
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
 
@@ -124,6 +133,9 @@ jobs:
 
       - name: Validate Fiscalità Lotto B in browser
         run: python scripts/test_fiscal_lotto_b_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Amministrazione Lotto A in browser
+        run: python scripts/test_amministrazione_lotto_a_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -238,6 +250,9 @@ jobs:
             scripts/patch_fiscal_lotto_b_frontend.py \
             scripts/test_fiscal_lotto_b.py \
             scripts/test_fiscal_lotto_b_browser.py \
+            scripts/materialize_amministrazione_lotto_a.py \
+            scripts/test_amministrazione_lotto_a.py \
+            scripts/test_amministrazione_lotto_a_browser.py \
             scripts/test_percorsi_mobile_list_contract.py
 
       - name: Verify municipal crests
@@ -301,7 +316,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v116-preview
+          name: osservatorio-versilia-v117-amministrazione-preview
           path: dist
           retention-days: 14
 
