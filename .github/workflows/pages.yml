@@ -87,12 +87,13 @@ jobs:
 
       - name: Materialize Amministrazione Lotto A
         run: |
-          python scripts/materialize_amministrazione_lotto_a.py
+          python scripts/materialize_amministrazione_lotto_a_v2.py
           python scripts/test_amministrazione_lotto_a.py
           python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-registry.json > /dev/null
           python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/rgs-amministrazione-2024.json > /dev/null
+          python -m json.tool data/source-snapshots/rgs-formazione-2024.json > /dev/null
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
@@ -251,6 +252,7 @@ jobs:
             scripts/test_fiscal_lotto_b.py \
             scripts/test_fiscal_lotto_b_browser.py \
             scripts/materialize_amministrazione_lotto_a.py \
+            scripts/materialize_amministrazione_lotto_a_v2.py \
             scripts/test_amministrazione_lotto_a.py \
             scripts/test_amministrazione_lotto_a_browser.py \
             scripts/test_percorsi_mobile_list_contract.py
