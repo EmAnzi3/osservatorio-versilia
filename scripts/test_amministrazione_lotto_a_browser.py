@@ -71,6 +71,24 @@ def check_age_compare(page, base: str) -> None:
     no_overflow(page, "confronto/eta-personale")
 
 
+def check_training_compare(page, base: str) -> None:
+    key = "municipalStaffTraining"
+    page.goto(f"{base}confronta/bilanci/?indicatore={key}", wait_until="networkidle")
+    metric = page.locator(f'[data-metric="{key}"]')
+    require(metric.count() == 1 and metric.is_visible(), "Formazione: indicatore non selezionabile nel confronto")
+    page.wait_for_selector("select[data-composite-component]")
+    selector = page.locator("select[data-composite-component]")
+    require(selector.locator("option").count() == 4, "Formazione: selettore confronto non ha 4 letture")
+    require(page.locator("#compare-bars .bar-row").count() == 7, "Formazione: confronto non 7/7")
+    selector.select_option("part-1")
+    page.wait_for_function(
+        "() => document.querySelector('#compare-bars .comparison-bars')?.dataset.compositeChoice === 'part-1'"
+    )
+    require("Giornate complessive" in page.locator("body").inner_text(), "Formazione: lettura giornate complessive assente")
+    require(page.locator("#compare-bars .bar-row").count() == 7, "Formazione: confronto giornate non 7/7")
+    no_overflow(page, "confronto/formazione")
+
+
 def check_town(page, base: str, key: str, expected_short_label: str) -> None:
     page.goto(f"{base}comuni/massarosa/?tema=bilanci&indicatore={key}", wait_until="networkidle")
     metric = page.locator(f'[data-metric="{key}"]')
@@ -103,6 +121,26 @@ def check_age_town(page, base: str) -> None:
     no_overflow(page, "massarosa/eta-personale")
 
 
+def check_training_town(page, base: str) -> None:
+    key = "municipalStaffTraining"
+    page.goto(f"{base}comuni/massarosa/?tema=bilanci&indicatore={key}", wait_until="networkidle")
+    metric = page.locator(f'[data-metric="{key}"]')
+    require(metric.count() == 1 and metric.is_visible(), "Formazione: indicatore non selezionabile a Massarosa")
+    require("active" in (metric.get_attribute("class") or "").split(), "Formazione: indicatore non attivo a Massarosa")
+    detail_text = page.locator(".composite-fixed-detail").inner_text()
+    require("Media totale RGS" in detail_text, "Formazione: media totale RGS non visibile")
+    require("Giornate complessive" in detail_text and "267" in detail_text, "Formazione: 267 giornate Massarosa non visibili")
+    require("Media uomini RGS" in detail_text and "Media donne RGS" in detail_text, "Formazione: medie per genere non visibili")
+    selector = page.locator("select[data-composite-choice]")
+    require(selector.locator("option").count() == 4, "Formazione: selettore comunale non ha 4 letture")
+    selector.select_option("part-1")
+    page.wait_for_function(
+        "() => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === 'part-1'"
+    )
+    require(page.locator('[data-view-pane="current"] .ux-bar-row').count() == 7, "Formazione: ranking comunale non 7/7")
+    no_overflow(page, "massarosa/formazione")
+
+
 def run(base: str) -> None:
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
@@ -112,12 +150,14 @@ def run(base: str) -> None:
             check_compare(page, base, "municipalEmployeesPer1000", "Dipendenti comunali per 1.000 residenti")
             check_compare(page, base, "municipalStaffTurnover", "Turnover netto del personale comunale")
             check_age_compare(page, base)
+            check_training_compare(page, base)
             check_town(page, base, "municipalEmployeesPer1000", "Dipendenti / 1.000 residenti")
             check_town(page, base, "municipalStaffTurnover", "Turnover del personale")
             check_age_town(page, base)
+            check_training_town(page, base)
             context.close()
         browser.close()
-    print("Amministrazione Lotto A browser: confronto e scheda comunale OK su desktop e mobile, conteggi età visibili e nessun overflow.")
+    print("Amministrazione Lotto A browser: 4 indicatori OK su desktop e mobile, conteggi età visibili e nessun overflow.")
 
 
 if __name__ == "__main__":
