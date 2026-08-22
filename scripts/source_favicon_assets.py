@@ -2,10 +2,10 @@
 """Scarica i favicon direttamente dalle pagine ufficiali usate dal Radar.
 
 La preview non dipende da placeholder grafici: per ogni fonte pubblicata prova la
-pagina dell'opportunità e poi la landing configurata, legge i <link rel=icon> e
-materializza localmente l'asset scelto. Se il fetch HTTP standard non basta,
-usa Chromium/Playwright sulla stessa pagina ufficiale e scarica l'icona nello
-stesso contesto browser. Non vengono inventate icone sostitutive.
+pagina dell'opportunità e poi la landing configurata. Risolve le icone dichiarate
+nel documento HTML, quelle del Web App Manifest e gli endpoint favicon standard
+dello stesso origin. Se il fetch HTTP standard non basta usa Chromium/Playwright
+sulla medesima pagina ufficiale. Non vengono inventate icone sostitutive.
 """
 from __future__ import annotations
 
@@ -38,14 +38,23 @@ class IconParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.icons: list[dict[str, str]] = []
+        self.manifests: list[str] = []
+        self.meta_icons: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag.lower() != "link":
-            return
         row = {str(k).lower(): str(v or "") for k, v in attrs}
-        rel = row.get("rel", "").lower()
-        if "icon" in rel and row.get("href"):
-            self.icons.append(row)
+        if tag.lower() == "link":
+            rel = row.get("rel", "").lower()
+            href = row.get("href", "")
+            if "icon" in rel and href:
+                self.icons.append(row)
+            if "manifest" in rel and href:
+                self.manifests.append(href)
+        elif tag.lower() == "meta":
+            name = (row.get("name") or row.get("property") or "").lower()
+            content = row.get("content", "")
+            if content and name in {"msapplication-tileimage", "og:image"}:
+                self.meta_icons.append(content)
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -81,7 +90,7 @@ def _fetch(
 ) -> tuple[bytes, str, str]:
     headers = {
         "User-Agent": UA,
-        "Accept": "text/html,application/xhtml+xml,image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/manifest+json,application/json,image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
         "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
         "Cache-Control": "no-cache",
     }
@@ -108,6 +117,39 @@ def _rank_icon(row: dict[str, str]) -> tuple[int, int, int]:
     return scalable, size, apple
 
 
+def _origin_icon_candidates(final_url: str) -> list[str]:
+    parsed = urlparse(final_url)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    return [
+        origin + "/favicon.ico",
+        origin + "/favicon.svg",
+        origin + "/favicon.png",
+        origin + "/favicon-32x32.png",
+        origin + "/favicon-96x96.png",
+        origin + "/apple-touch-icon.png",
+    ]
+
+
+def _manifest_icons_http(manifest_url: str, page_url: str) -> list[str]:
+    try:
+        raw, _, final_manifest = _fetch(manifest_url, referer=page_url)
+        manifest = json.loads(raw.decode("utf-8", errors="ignore"))
+    except Exception:
+        return []
+    icons = manifest.get("icons") if isinstance(manifest, dict) else []
+    rows: list[dict[str, str]] = []
+    for icon in icons or []:
+        if not isinstance(icon, dict) or not icon.get("src"):
+            continue
+        rows.append({
+            "href": urljoin(final_manifest, str(icon.get("src") or "")),
+            "type": str(icon.get("type") or ""),
+            "sizes": str(icon.get("sizes") or ""),
+            "rel": "manifest-icon",
+        })
+    return [row["href"] for row in sorted(rows, key=_rank_icon, reverse=True)]
+
+
 def _page_icon_urls(page_url: str) -> list[tuple[str, str]]:
     parsed = urlparse(page_url)
     if parsed.path.lower().endswith((".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip")):
@@ -125,10 +167,12 @@ def _page_icon_urls(page_url: str) -> list[tuple[str, str]]:
         return []
     rows = sorted(parser.icons, key=_rank_icon, reverse=True)
     urls = [(urljoin(final_url, row.get("href", "")), final_url) for row in rows if row.get("href")]
-    origin = f"{urlparse(final_url).scheme}://{urlparse(final_url).netloc}/favicon.ico"
-    if not any(url == origin for url, _ in urls):
-        urls.append((origin, final_url))
-    return urls
+    for manifest in parser.manifests:
+        manifest_url = urljoin(final_url, manifest)
+        urls.extend((icon_url, final_url) for icon_url in _manifest_icons_http(manifest_url, final_url))
+    urls.extend((urljoin(final_url, value), final_url) for value in parser.meta_icons if value)
+    urls.extend((candidate, final_url) for candidate in _origin_icon_candidates(final_url))
+    return list(dict.fromkeys(urls))
 
 
 def _extension(url: str, content_type: str) -> str:
@@ -200,10 +244,35 @@ def _store_remote_icon(
         "page": page_url,
         "icon": final_icon_url,
         "local": resolved,
-        "method": "official-page-html",
+        "method": "official-page-html-or-manifest",
         "contentType": content_type,
         "bytes": str(len(raw)),
     }
+
+
+def _browser_manifest_icons(context: Any, manifest_url: str, page_url: str) -> list[str]:
+    try:
+        response = context.request.get(
+            manifest_url,
+            headers={"Referer": page_url, "Accept": "application/manifest+json,application/json,*/*;q=0.8"},
+            timeout=15_000,
+            fail_on_status_code=False,
+        )
+        if not response.ok:
+            return []
+        manifest = response.json()
+    except Exception:
+        return []
+    rows: list[dict[str, str]] = []
+    for icon in (manifest.get("icons") if isinstance(manifest, dict) else []) or []:
+        if isinstance(icon, dict) and icon.get("src"):
+            rows.append({
+                "href": urljoin(manifest_url, str(icon.get("src") or "")),
+                "type": str(icon.get("type") or ""),
+                "sizes": str(icon.get("sizes") or ""),
+                "rel": "manifest-icon",
+            })
+    return [row["href"] for row in sorted(rows, key=_rank_icon, reverse=True)]
 
 
 def _browser_resolve(
@@ -211,7 +280,7 @@ def _browser_resolve(
     pages: list[str],
     asset_dir: Path,
 ) -> tuple[str, dict[str, str]] | None:
-    """Fallback reale: apre la pagina ufficiale in Chromium e usa i suoi link icon."""
+    """Fallback reale: apre la pagina ufficiale in Chromium e usa i suoi asset icon."""
     try:
         from playwright.sync_api import sync_playwright
     except Exception:
@@ -221,7 +290,7 @@ def _browser_resolve(
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            context = browser.new_context(user_agent=UA, locale="it-IT")
+            context = browser.new_context(user_agent=UA, locale="it-IT", ignore_https_errors=True)
             page = context.new_page()
             try:
                 for requested_page in pages:
@@ -236,9 +305,24 @@ def _browser_resolve(
                         )
                         icons = sorted(icons, key=_rank_icon, reverse=True)
                         icon_urls = [str(row.get("href") or "") for row in icons]
-                        origin = f"{urlparse(final_page).scheme}://{urlparse(final_page).netloc}/favicon.ico"
-                        if origin not in icon_urls:
-                            icon_urls.append(origin)
+                        manifests = page.eval_on_selector_all(
+                            'link[rel~="manifest" i]',
+                            "els => els.map(el => el.href || el.getAttribute('href') || '').filter(Boolean)",
+                        )
+                        for manifest_url in manifests:
+                            icon_urls.extend(_browser_manifest_icons(context, str(manifest_url), final_page))
+                        meta_icons = page.eval_on_selector_all(
+                            'meta[name="msapplication-TileImage" i], meta[property="og:image" i]',
+                            "els => els.map(el => el.content || '').filter(Boolean)",
+                        )
+                        icon_urls.extend(urljoin(final_page, str(value)) for value in meta_icons)
+                        resources = page.evaluate(
+                            "performance.getEntriesByType('resource').map(e => e.name).filter(u => /favicon|apple-touch-icon|mask-icon|site-icon/i.test(u))"
+                        )
+                        icon_urls.extend(str(value) for value in resources or [])
+                        icon_urls.extend(_origin_icon_candidates(final_page))
+                        icon_urls = list(dict.fromkeys(url for url in icon_urls if url))
+
                         for icon_url in icon_urls:
                             try:
                                 if icon_url.startswith("data:image/"):
@@ -249,10 +333,10 @@ def _browser_resolve(
                                     content_type = "image/data"
                                     final_icon = icon_url
                                 else:
-                                    icon_response = page.request.get(
+                                    icon_response = context.request.get(
                                         icon_url,
                                         headers={"Referer": final_page, "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"},
-                                        timeout=20_000,
+                                        timeout=15_000,
                                         fail_on_status_code=False,
                                     )
                                     if not icon_response.ok:
@@ -269,7 +353,7 @@ def _browser_resolve(
                                     "page": final_page,
                                     "icon": final_icon,
                                     "local": resolved,
-                                    "method": "official-page-playwright",
+                                    "method": "official-page-playwright-html-manifest-origin",
                                     "contentType": content_type,
                                     "bytes": str(len(raw)),
                                 }
@@ -321,8 +405,9 @@ def materialize(payload: dict[str, Any], dist: Path) -> tuple[dict[str, Any], di
         if not resolved:
             unresolved[source_id] = pages
 
-    # Alcuni siti istituzionali accettano il browser ma non urllib o richiedono
-    # cookie/redirect JS. Il fallback resta sulla pagina ufficiale originale.
+    # Alcuni siti istituzionali accettano il browser ma non urllib, espongono
+    # l'icona solo nel manifest oppure usano endpoint convenzionali sullo stesso
+    # origin. Il fallback resta quindi sempre dentro il sito ufficiale originale.
     for source_id, pages in unresolved.items():
         stored = _browser_resolve(source_id, pages, asset_dir)
         if stored:
