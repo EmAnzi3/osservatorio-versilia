@@ -55,7 +55,9 @@ def main() -> None:
         page.wait_for_timeout(100)
         compare_text = page.locator('#compare-bars').inner_text()
         require('Pietrasanta' in compare_text and '165' in compare_text, 'Contributo DAIT Pietrasanta non leggibile')
-        require('Viareggio' in compare_text and '82' in compare_text, 'Contributo DAIT Viareggio non leggibile')
+        # La grammatica canonica `currency` del sito visualizza gli euro senza decimali:
+        # il dato ufficiale DAIT 82,50 € di Viareggio viene quindi reso come 83 €.
+        require('Viareggio' in compare_text and '83' in compare_text, 'Contributo DAIT Viareggio non leggibile')
 
         page.goto(base + 'comuni/massarosa/?tema=economia&indicatore=fiscalRecoveryActivity', wait_until='networkidle')
         require(page.locator('[data-metric="fiscalRecoveryActivity"]').count() == 1, 'Indicatore non selezionabile nella scheda comunale')
