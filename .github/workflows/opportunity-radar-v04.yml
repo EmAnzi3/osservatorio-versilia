@@ -22,6 +22,7 @@ on:
       - "data/opportunity-discovery-v04-extra.json"
       - "data/opportunity-discovery-v042.json"
       - "data/opportunity-discovery-v043.json"
+      - "data/opportunity-discovery-v043-eucf.json"
       - "data/opportunity-coverage-contract-v04.json"
       - "data/opportunity-coverage-evidence-v043.json"
       - "data/opportunity-verified-v04.json"
@@ -65,6 +66,7 @@ jobs:
           python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/source_favicon_assets.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
           python -m json.tool data/opportunity-discovery-v042.json > /dev/null
           python -m json.tool data/opportunity-discovery-v043.json > /dev/null
+          python -m json.tool data/opportunity-discovery-v043-eucf.json > /dev/null
           python -m json.tool data/opportunity-coverage-evidence-v043.json > /dev/null
           python -m json.tool data/opportunity-verified-v042.json > /dev/null
           python -m json.tool data/opportunity-verified-v043.json > /dev/null
