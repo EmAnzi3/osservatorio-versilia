@@ -26,5 +26,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test RGS CSV form submission
-        run: python scripts/audit_rgs_post_probe.py
+      - name: Audit live RGS administration datasets
+        run: python scripts/audit_rgs_amministrazione_live.py
