@@ -1,95 +1,183 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import csv
+import io
+import json
+import math
 import time
+import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
+from pathlib import Path
 
 BASE = "https://esploradati.istat.it/SDMXWS/rest"
+ROOT = Path(__file__).resolve().parents[1]
+SITE = ROOT / "data" / "site-data.json"
 FLOWS = {
-    "lavoro": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
-    "istruzione": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
+    "labour": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
+    "education": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
 }
-RELEVANT = {"FREQ","REF_AREA","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING"}
+TOWNS = {
+    "Camaiore":"046005", "Forte dei Marmi":"046013", "Massarosa":"046018",
+    "Pietrasanta":"046024", "Seravezza":"046028", "Stazzema":"046030", "Viareggio":"046033",
+}
+GENDERS = {"T":"total", "M":"men", "F":"women"}
+LABOUR_AGES = {"Y15-24":"15-24", "Y25-49":"25-49", "Y50-64":"50-64", "Y_GE65":"65plus", "Y_GE15":"15plus"}
+EDU_AGES = {"Y9-24":"9-24", "Y25-49":"25-49", "Y50-64":"50-64", "Y_GE65":"65plus", "Y_GE9":"9plus"}
 
 
-def fetch(url: str, timeout: int = 150) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent":"OsservatorioVersilia/1.0","Accept":"application/xml"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read()
+def fetch_csv(flow: str) -> list[dict]:
+    refs = "+".join(TOWNS.values())
+    key = ".".join(["A", refs] + [""] * 8)
+    params = urllib.parse.urlencode({"startPeriod":"2024", "endPeriod":"2024", "format":"csvfile"})
+    url = f"{BASE}/data/IT1,{flow},1.0/{key}/all?{params}"
+    req = urllib.request.Request(url, headers={"User-Agent":"OsservatorioVersilia/1.0", "Accept":"application/vnd.sdmx.data+csv;version=1.0.0"})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        raw = r.read()
+    print("FETCH", flow, len(raw), url)
+    return list(csv.DictReader(io.StringIO(raw.decode("utf-8-sig", errors="replace"))))
 
 
-def lname(tag: str) -> str:
-    return tag.rsplit('}',1)[-1]
+def f(value) -> float:
+    return float(value)
 
 
-def names(root: ET.Element) -> dict[tuple[str,str],str]:
-    out = {}
-    for cl in root.iter():
-        if lname(cl.tag) != "Codelist":
+def add_cells(a: dict, b: dict, fields: list[str]) -> dict:
+    return {field: f(a[field]) + f(b[field]) for field in fields}
+
+
+def build_labour(rows: list[dict]) -> dict:
+    by = {}
+    for row in rows:
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("CITIZENSHIP") != "TOTAL" or row.get("EDU_ATTAIN") != "ALL":
             continue
-        clid = cl.attrib.get("id","")
-        for code in cl:
-            if lname(code.tag) != "Code":
-                continue
-            cid = code.attrib.get("id","")
-            label = ""
-            for node in code:
-                if lname(node.tag) == "Name" and (node.text or "").strip():
-                    label = (node.text or "").strip()
-                    if node.attrib.get("{http://www.w3.org/XML/1998/namespace}lang") in {"it","IT",None}:
-                        break
-            out[(clid,cid)] = label
+        age = LABOUR_AGES.get(row.get("AGE_NOCLASS"))
+        gender = GENDERS.get(row.get("GENDER"))
+        stat = row.get("CUR_ACT_STAT")
+        town = row.get("REF_AREA")
+        if age and gender and stat in {"1","12","22","99"} and town in TOWNS.values():
+            by.setdefault(town, {}).setdefault(age, {}).setdefault(gender, {})[stat] = f(row["OBS_VALUE"])
+    out = {}
+    for name, code in TOWNS.items():
+        town = by[code]
+        for age in ["15-24","25-49","50-64","65plus","15plus"]:
+            for gender in ["total","men","women"]:
+                vals = town[age][gender]
+                missing = {"1","12","22","99"} - set(vals)
+                if missing:
+                    raise RuntimeError(f"labour {name} {age} {gender}: missing {missing}")
+        town["25-64"] = {}
+        for gender in ["total","men","women"]:
+            town["25-64"][gender] = add_cells(town["25-49"][gender], town["50-64"][gender], ["1","12","22","99"])
+        clean = {}
+        for age, age_data in town.items():
+            clean[age] = {}
+            for gender, vals in age_data.items():
+                pop, employed, unemployed, active = vals["99"], vals["1"], vals["12"], vals["22"]
+                if abs((employed + unemployed) - active) > 1e-6:
+                    raise RuntimeError(f"labour {name} {age} {gender}: active mismatch")
+                clean[age][gender] = {
+                    "population": pop,
+                    "employed": employed,
+                    "unemployed": unemployed,
+                    "active": active,
+                    "employmentRate": employed / pop * 100 if pop else None,
+                    "unemploymentRate": unemployed / active * 100 if active else None,
+                    "activityRate": active / pop * 100 if pop else None,
+                }
+        out[name] = clean
     return out
 
 
-def inspect(label: str, flow: str) -> None:
-    url = f"{BASE}/dataflow/IT1/{flow}/1.0?references=all"
-    raw = fetch(url)
-    root = ET.fromstring(raw)
-    print(f"\n######## {label.upper()} {flow} bytes={len(raw)} ########")
-    clabels = names(root)
-    dim_to_cl = {}
-    for el in root.iter():
-        if lname(el.tag) != "Dimension":
+def build_education(rows: list[dict]) -> dict:
+    by = {}
+    wanted = {"ALL","USE_IF","BL","ML_RDD"}
+    for row in rows:
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("CITIZENSHIP") != "TOTAL" or row.get("CUR_ACT_STAT") != "99":
             continue
-        dimid = el.attrib.get("id")
-        if dimid not in RELEVANT:
-            continue
-        for sub in el.iter():
-            if lname(sub.tag) == "Ref" and sub.attrib.get("class") == "Codelist":
-                dim_to_cl[dimid] = sub.attrib.get("id")
-                break
-    print("DIM_TO_CL", dim_to_cl)
-    # Stampa i valori effettivamente ammessi dal content constraint del dataflow.
-    constraint_values: dict[str,set[str]] = {}
-    for kv in root.iter():
-        if lname(kv.tag) != "KeyValue":
-            continue
-        dimid = kv.attrib.get("id")
-        if dimid not in RELEVANT:
-            continue
-        vals = constraint_values.setdefault(dimid,set())
-        for child in kv:
-            if lname(child.tag) == "Value" and child.text:
-                vals.add(child.text.strip())
-    for dimid in ["FREQ","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING"]:
-        vals = sorted(constraint_values.get(dimid,set()))
-        clid = dim_to_cl.get(dimid,"")
-        rendered = [(v, clabels.get((clid,v),"")) for v in vals]
-        print("CONSTRAINT", dimid, rendered)
-    towns = constraint_values.get("REF_AREA",set())
-    for code in ["046005","046013","046018","046024","046028","046030","046033"]:
-        print("TOWN", code, "YES" if code in towns else "NO")
+        age = EDU_AGES.get(row.get("AGE_NOCLASS"))
+        gender = GENDERS.get(row.get("GENDER"))
+        edu = row.get("EDU_ATTAIN")
+        town = row.get("REF_AREA")
+        if age and gender and edu in wanted and town in TOWNS.values():
+            by.setdefault(town, {}).setdefault(age, {}).setdefault(gender, {})[edu] = f(row["OBS_VALUE"])
+    out = {}
+    for name, code in TOWNS.items():
+        town = by[code]
+        for age in ["9-24","25-49","50-64","65plus","9plus"]:
+            for gender in ["total","men","women"]:
+                vals = town[age][gender]
+                missing = wanted - set(vals)
+                if missing:
+                    raise RuntimeError(f"education {name} {age} {gender}: missing {missing}")
+        town["25-64"] = {}
+        for gender in ["total","men","women"]:
+            town["25-64"][gender] = add_cells(town["25-49"][gender], town["50-64"][gender], list(wanted))
+        clean = {}
+        for age, age_data in town.items():
+            clean[age] = {}
+            for gender, vals in age_data.items():
+                pop = vals["ALL"]
+                diploma = vals["USE_IF"] + vals["BL"] + vals["ML_RDD"]
+                tertiary = vals["BL"] + vals["ML_RDD"]
+                clean[age][gender] = {
+                    "population": pop,
+                    "upperSecondaryPlus": diploma,
+                    "tertiary": tertiary,
+                    "diplomaPlus": diploma / pop * 100 if pop else None,
+                    "tertiaryRate": tertiary / pop * 100 if pop else None,
+                }
+        out[name] = clean
+    return out
+
+
+def reconcile(snapshot: dict) -> None:
+    site = json.loads(SITE.read_text(encoding="utf-8"))
+    metrics = {
+        "employmentRate": ("labour", "employmentRate"),
+        "unemploymentRate": ("labour", "unemploymentRate"),
+        "activityRate": ("labour", "activityRate"),
+        "diplomaPlus": ("education", "diplomaPlus"),
+        "tertiary": ("education", "tertiaryRate"),
+    }
+    for metric_key, (section, field) in metrics.items():
+        current = site["metrics"][metric_key]
+        for row in current["rows"]:
+            value = snapshot["towns"][row["town"]][section]["25-64"]["total"][field]
+            if not math.isclose(value, float(row["value"]), abs_tol=0.11):
+                raise RuntimeError(f"parity {metric_key}/{row['town']}: raw {value} current {row['value']}")
+    print("PARITY_OK: i 5 valori 25-64 totali riconciliano con il sito entro l'arrotondamento pubblicato.")
 
 
 def main() -> None:
-    for label, flow in FLOWS.items():
-        try:
-            inspect(label,flow)
-        except Exception as exc:
-            print("ERROR", label, type(exc).__name__, repr(exc))
-        time.sleep(13)
+    labour_rows = fetch_csv(FLOWS["labour"])
+    time.sleep(13)
+    education_rows = fetch_csv(FLOWS["education"])
+    snapshot = {
+        "version":"istat-lavoro-istruzione-eta-genere-2024-v1",
+        "referenceYear":2024,
+        "source": {
+            "publisher":"Istat — Censimento permanente della popolazione",
+            "labourDataflow":FLOWS["labour"],
+            "educationDataflow":FLOWS["education"],
+            "api":"https://esploradati.istat.it/SDMXWS/rest",
+        },
+        "dimensions": {
+            "gender":{"total":"T","men":"M","women":"F"},
+            "labourAges":["25-64","15-24","25-49","50-64","65plus","15plus"],
+            "educationAges":["25-64","9-24","25-49","50-64","65plus","9plus"],
+            "note":"25-64 è ricostruita esattamente sommando le classi ufficiali 25-49 e 50-64; le altre classi sono pubblicate direttamente dal dataflow.",
+        },
+        "towns": {},
+    }
+    labour = build_labour(labour_rows)
+    education = build_education(education_rows)
+    for town in TOWNS:
+        snapshot["towns"][town] = {"code":TOWNS[town], "labour":labour[town], "education":education[town]}
+    reconcile(snapshot)
+    print("SNAPSHOT_JSON_BEGIN")
+    print(json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",",":")))
+    print("SNAPSHOT_JSON_END")
 
 
 if __name__ == "__main__":
