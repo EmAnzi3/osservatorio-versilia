@@ -237,7 +237,8 @@ jobs:
             scripts/materialize_fiscal_lotto_b.py \
             scripts/patch_fiscal_lotto_b_frontend.py \
             scripts/test_fiscal_lotto_b.py \
-            scripts/test_fiscal_lotto_b_browser.py
+            scripts/test_fiscal_lotto_b_browser.py \
+            scripts/test_percorsi_mobile_list_contract.py
 
       - name: Verify municipal crests
         run: |
@@ -287,6 +288,7 @@ jobs:
           python scripts/test_percorsi_draft.py
           python scripts/test_accordion_no_overlap.py
           python scripts/test_percorsi_refinements.py
+          python scripts/test_percorsi_mobile_list_contract.py --base http://127.0.0.1:8123/
 
       - name: Enforce site-wide consistency contract
         run: |
