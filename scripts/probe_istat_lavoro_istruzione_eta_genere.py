@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import csv
-import io
 import time
-import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -13,78 +10,85 @@ FLOWS = {
     "lavoro": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
     "istruzione": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
 }
-CODELISTS = ["CL_SEXISTAT1", "CL_ETA1", "CL_TITOLO_STUDIO", "CL_FORZE_LAV", "CL_TIPO_DATO_CENS_POP", "CL_CITTADINANZA"]
+RELEVANT = {"FREQ","REF_AREA","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING"}
 
 
-def request(url: str, accept: str, timeout: int = 120) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia/1.0", "Accept": accept})
+def fetch(url: str, timeout: int = 150) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent":"OsservatorioVersilia/1.0","Accept":"application/xml"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
 
 def lname(tag: str) -> str:
-    return tag.rsplit('}', 1)[-1]
+    return tag.rsplit('}',1)[-1]
 
 
-def codelist(code: str) -> None:
-    url = f"{BASE}/codelist/IT1/{code}/1.0?references=none"
-    raw = request(url, "application/xml")
-    root = ET.fromstring(raw)
-    print(f"\nCODELIST {code} bytes={len(raw)}")
-    shown = 0
-    for el in root.iter():
-        if lname(el.tag) != "Code":
+def names(root: ET.Element) -> dict[tuple[str,str],str]:
+    out = {}
+    for cl in root.iter():
+        if lname(cl.tag) != "Codelist":
             continue
-        cid = el.attrib.get("id")
-        name = ""
-        for sub in el:
-            if lname(sub.tag) == "Name":
-                name = (sub.text or "").strip()
+        clid = cl.attrib.get("id","")
+        for code in cl:
+            if lname(code.tag) != "Code":
+                continue
+            cid = code.attrib.get("id","")
+            label = ""
+            for node in code:
+                if lname(node.tag) == "Name" and (node.text or "").strip():
+                    label = (node.text or "").strip()
+                    if node.attrib.get("{http://www.w3.org/XML/1998/namespace}lang") in {"it","IT",None}:
+                        break
+            out[(clid,cid)] = label
+    return out
+
+
+def inspect(label: str, flow: str) -> None:
+    url = f"{BASE}/dataflow/IT1/{flow}/1.0?references=all"
+    raw = fetch(url)
+    root = ET.fromstring(raw)
+    print(f"\n######## {label.upper()} {flow} bytes={len(raw)} ########")
+    clabels = names(root)
+    dim_to_cl = {}
+    for el in root.iter():
+        if lname(el.tag) != "Dimension":
+            continue
+        dimid = el.attrib.get("id")
+        if dimid not in RELEVANT:
+            continue
+        for sub in el.iter():
+            if lname(sub.tag) == "Ref" and sub.attrib.get("class") == "Codelist":
+                dim_to_cl[dimid] = sub.attrib.get("id")
                 break
-        if code == "CL_ETA1":
-            # Tutte le età/classi sono utili, ma limitiamo la diagnostica a un output gestibile.
-            if cid and (cid.isdigit() or any(x in name.lower() for x in ["totale", "anni", "oltre"])):
-                print("CODE", cid, "=", name)
-                shown += 1
-        else:
-            print("CODE", cid, "=", name)
-            shown += 1
-        if shown >= (130 if code == "CL_ETA1" else 100):
-            break
-
-
-def sample(flow_name: str, flow: str) -> None:
-    key = ".".join(["A", "046018"] + [""] * 8)
-    params = urllib.parse.urlencode({"startPeriod": "2024", "endPeriod": "2024", "format": "csvfile"})
-    url = f"{BASE}/data/IT1,{flow},1.0/{key}/all?{params}"
-    raw = request(url, "application/vnd.sdmx.data+csv;version=1.0.0", timeout=180)
-    text = raw.decode("utf-8-sig", errors="replace")
-    print(f"\nSAMPLE {flow_name} bytes={len(raw)} url={url}")
-    lines = text.splitlines()
-    for line in lines[:18]:
-        print("ROW", line[:2400])
-    reader = csv.DictReader(io.StringIO(text))
-    rows = list(reader)
-    print("HEADER", reader.fieldnames)
-    print("ROWS", len(rows))
-    for col in ["FREQ","REF_AREA","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING","TIME_PERIOD"]:
-        vals = sorted({str(r.get(col, "")) for r in rows})
-        print("VALUES", col, len(vals), vals[:160])
+    print("DIM_TO_CL", dim_to_cl)
+    # Stampa i valori effettivamente ammessi dal content constraint del dataflow.
+    constraint_values: dict[str,set[str]] = {}
+    for kv in root.iter():
+        if lname(kv.tag) != "KeyValue":
+            continue
+        dimid = kv.attrib.get("id")
+        if dimid not in RELEVANT:
+            continue
+        vals = constraint_values.setdefault(dimid,set())
+        for child in kv:
+            if lname(child.tag) == "Value" and child.text:
+                vals.add(child.text.strip())
+    for dimid in ["FREQ","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING"]:
+        vals = sorted(constraint_values.get(dimid,set()))
+        clid = dim_to_cl.get(dimid,"")
+        rendered = [(v, clabels.get((clid,v),"")) for v in vals]
+        print("CONSTRAINT", dimid, rendered)
+    towns = constraint_values.get("REF_AREA",set())
+    for code in ["046005","046013","046018","046024","046028","046030","046033"]:
+        print("TOWN", code, "YES" if code in towns else "NO")
 
 
 def main() -> None:
-    # Le codelist sono condivise dai due dataflow: una sola lettura ciascuna.
-    for code in CODELISTS:
+    for label, flow in FLOWS.items():
         try:
-            codelist(code)
+            inspect(label,flow)
         except Exception as exc:
-            print("CODELIST_ERROR", code, type(exc).__name__, repr(exc))
-        time.sleep(13)
-    for name, flow in FLOWS.items():
-        try:
-            sample(name, flow)
-        except Exception as exc:
-            print("SAMPLE_ERROR", name, type(exc).__name__, repr(exc))
+            print("ERROR", label, type(exc).__name__, repr(exc))
         time.sleep(13)
 
 
