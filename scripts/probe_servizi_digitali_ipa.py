@@ -3,18 +3,15 @@ from __future__ import annotations
 
 import csv
 import io
-import json
 import re
 import unicodedata
-from collections import Counter
-from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-IPA_API = "https://indicepa.gov.it/ipa-dati/api/3/action/datastore_search"
-IPA_RESOURCE = "7ecd6b8e-ede7-41c6-a16d-fe263ac6baf1"
-PAD26 = "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/candidature_finanziate_141.csv"
-REGIONE_2022 = "https://www.regione.toscana.it/documents/10180/12228409/Indicatori%2B2022.csv/65f6cdca-8c07-b5a5-87b5-4870c2226692?t=1727340985500"
-REGIONE_2024 = "https://www.regione.toscana.it/documents/d/guest/indicatori-2024-1"
+SOURCES = {
+    "2018": "https://www.regione.toscana.it/documents/10180/479267/Indicatori%2B2018.csv/76a8ecdb-bfac-7280-28af-5ddfd9d16a3d?t=1711025218063",
+    "2022": "https://www.regione.toscana.it/documents/10180/12228409/Indicatori%2B2022.csv/65f6cdca-8c07-b5a5-87b5-4870c2226692?t=1727340985500",
+    "2024": "https://www.regione.toscana.it/documents/d/guest/indicatori-2024-1",
+}
 TOWNS = {
     "Camaiore": "046005",
     "Forte dei Marmi": "046013",
@@ -29,19 +26,12 @@ TOWNS = {
 def norm(value: str) -> str:
     value = unicodedata.normalize("NFKD", value or "")
     value = "".join(c for c in value if not unicodedata.combining(c))
-    value = re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
-    return value
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
 
 
-def get_json(url: str, timeout: int = 60) -> dict:
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0 OsservatorioVersilia/1.0", "Accept": "application/json"})
-    with urlopen(req, timeout=timeout) as resp:
-        return json.load(resp)
-
-
-def get_text(url: str, timeout: int = 60) -> str:
+def get_text(url: str) -> str:
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 OsservatorioVersilia/1.0", "Accept": "text/csv,*/*"})
-    with urlopen(req, timeout=timeout) as resp:
+    with urlopen(req, timeout=90) as resp:
         raw = resp.read()
     for enc in ("utf-8-sig", "utf-8", "latin-1"):
         try:
@@ -51,143 +41,59 @@ def get_text(url: str, timeout: int = 60) -> str:
     return raw.decode("latin-1", errors="replace")
 
 
-def ipa_rows(town: str) -> list[dict]:
-    q = f"Comune di {town}"
-    url = IPA_API + "?" + urlencode({"resource_id": IPA_RESOURCE, "limit": 500, "q": q})
-    payload = get_json(url)
-    records = payload["result"]["records"]
-    exact_targets = {norm(f"Comune di {town}"), norm(f"Comune {town}")}
-    exact = [r for r in records if norm(r.get("Denominazione_ente", "")) in exact_targets]
-    if exact:
-        return exact
-    return [
-        r for r in records
-        if norm(town) in norm(r.get("Denominazione_ente", ""))
-        and "comun" in norm(r.get("Nome_Categoria", ""))
-    ]
-
-
-def analyse_ipa() -> dict:
-    out = {}
-    for town in TOWNS:
-        rows = ipa_rows(town)
-        dates = sorted({r.get("Data_aggiornamento") for r in rows if r.get("Data_aggiornamento")})
-        types = Counter(r.get("Tipologia_servizio") or "" for r in rows)
-        urls = [r.get("Url_servizio") or "" for r in rows]
-        duplicate_urls = {u: c for u, c in Counter(urls).items() if u and c > 1}
-        out[town] = {
-            "count": len(rows),
-            "ipaCodes": sorted({r.get("Codice_IPA") for r in rows if r.get("Codice_IPA")}),
-            "entityNames": sorted({r.get("Denominazione_ente") for r in rows if r.get("Denominazione_ente")}),
-            "dates": dates,
-            "latestDate": max(dates) if dates else None,
-            "oldestDate": min(dates) if dates else None,
-            "uniqueTypes": len(types),
-            "typeCounts": dict(types.most_common()),
-            "duplicateUrls": duplicate_urls,
-            "rows": [
-                {
-                    "id": r.get("Id_servizio"),
-                    "type": r.get("Tipologia_servizio"),
-                    "description": r.get("Descrizione_servizio"),
-                    "url": r.get("Url_servizio"),
-                    "updated": r.get("Data_aggiornamento"),
-                }
-                for r in rows
-            ],
-        }
-    return out
-
-
-def analyse_pad26() -> dict:
-    text = get_text(PAD26, timeout=90)
-    rows = list(csv.DictReader(io.StringIO(text)))
-    out = {}
-    for town, code in TOWNS.items():
-        matches = [
-            r for r in rows
-            if r.get("cod_comune") == code
-            and norm(r.get("tipologia_ente", "")) == "comuni"
-            and norm(r.get("misura", "")).startswith("1 4 1")
-        ]
-        out[town] = [
-            {
-                "codiceIpa": r.get("codice_ipa"),
-                "ente": r.get("ente"),
-                "avviso": r.get("avviso"),
-                "importo": r.get("importo_finanziamento"),
-                "stato": r.get("stato_candidatura"),
-                "dataStato": r.get("data_stato_candidatura"),
-                "cup": r.get("codice_cup"),
-            }
-            for r in matches
-        ]
-    return out
-
-
-def parse_regione(url: str) -> dict:
-    text = get_text(url, timeout=90)
+def parse(url: str) -> dict[str, dict]:
+    text = get_text(url)
     sample = text[:5000]
     try:
-        dialect = csv.Sniffer().sniff(sample, delimiters=";,\t|")
-        delimiter = dialect.delimiter
+        delim = csv.Sniffer().sniff(sample, delimiters=";,\t|").delimiter
     except csv.Error:
-        delimiter = ";"
-    rows = list(csv.DictReader(io.StringIO(text), delimiter=delimiter))
-    headers = list(rows[0].keys()) if rows else []
+        delim = ";"
+    rows = list(csv.DictReader(io.StringIO(text), delimiter=delim))
 
     def code_of(row: dict) -> str:
         for k, v in row.items():
             nk = norm(k)
-            vv = str(v or "").strip()
-            digits = re.sub(r"\D", "", vv)
-            if ("cod" in nk or "istat" in nk) and len(digits) == 6:
-                return digits
+            digits = re.sub(r"\D", "", str(v or ""))
+            if ("cod" in nk or "istat" in nk) and 5 <= len(digits) <= 6:
+                return digits.zfill(6)
         return ""
 
     def town_of(row: dict) -> str:
         for k, v in row.items():
-            nk = norm(k)
-            if nk in {"comune", "denominazione comune", "denominazione"}:
+            if norm(k) in {"comune", "denominazione comune", "denominazione"}:
                 return str(v or "").strip()
         return ""
 
-    out = {"delimiter": delimiter, "headers": headers, "towns": {}}
+    out = {}
     for town, code in TOWNS.items():
-        matches = [r for r in rows if code_of(r) == code]
-        if not matches:
-            matches = [r for r in rows if norm(town_of(r)) == norm(town)]
-        out["towns"][town] = matches
+        hits = [r for r in rows if code_of(r) == code]
+        if not hits:
+            hits = [r for r in rows if norm(town_of(r)) == norm(town)]
+        if len(hits) != 1:
+            raise RuntimeError(f"{town}: attesa una riga, trovate {len(hits)}")
+        row = hits[0]
+        value = row.get("ind18") or row.get("IND18") or row.get("Ind18")
+        if value in (None, "", "nd", "ND"):
+            raise RuntimeError(f"{town}: ind18 non disponibile")
+        out[town] = {"ind18": value, "row": row}
     return out
 
 
 def main() -> None:
-    result = {
-        "ipaSource": IPA_API,
-        "ipaResource": IPA_RESOURCE,
-        "pad26Source": PAD26,
-        "regione2022Source": REGIONE_2022,
-        "regione2024Source": REGIONE_2024,
-        "ipa": analyse_ipa(),
-        "pad26": analyse_pad26(),
-        "regione2022": parse_regione(REGIONE_2022),
-        "regione2024": parse_regione(REGIONE_2024),
-    }
-    print("SERVIZI_DIGITALI_AUDIT_JSON_BEGIN")
-    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
-    print("SERVIZI_DIGITALI_AUDIT_JSON_END")
-
-    print("\nSUMMARY")
+    data = {year: parse(url) for year, url in SOURCES.items()}
+    print("IND18_HISTORY_BEGIN")
     for town in TOWNS:
-        ipa = result["ipa"][town]
-        p = result["pad26"][town]
-        r22 = result["regione2022"]["towns"][town]
-        r24 = result["regione2024"]["towns"][town]
-        print(f"{town}: IPA={ipa['count']} servizi, tipi={ipa['uniqueTypes']}, date={ipa['oldestDate']}..{ipa['latestDate']}; PAD26 1.4.1 Comune={len(p)}; RT2022={len(r22)} righe; RT2024={len(r24)} righe")
-        for label, rows in (("RT2022", r22), ("RT2024", r24)):
-            if rows:
-                row = rows[0]
-                print(label, town, "ind18=", row.get("ind18") or row.get("IND18") or row.get("Ind18"), "ROW=", json.dumps(row, ensure_ascii=False, sort_keys=True))
+        vals = {year: data[year][town]["ind18"] for year in SOURCES}
+        print(town, vals)
+    print("IND18_HISTORY_END")
+
+    # Il file 2024 deve riportare il definitivo 2022, non un falso dato 2024.
+    def number(v: str) -> float:
+        return float(str(v).replace(".", "").replace(",", "."))
+    for town in TOWNS:
+        if abs(number(data["2022"][town]["ind18"]) - number(data["2024"][town]["ind18"])) > 0.11:
+            raise RuntimeError(f"{town}: il valore 2024 non replica il definitivo 2022")
+    print("Confermata serie reale 2018 -> 2022 e carry-forward 2022 nel file 2024, copertura 7/7.")
 
 
 if __name__ == "__main__":
