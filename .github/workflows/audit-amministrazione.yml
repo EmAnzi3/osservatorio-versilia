@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: "audit-amministrazione-${{ github.ref }}"
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -23,4 +27,4 @@ jobs:
           python-version: "3.12"
 
       - name: Audit RGS Conto Annuale 2024
-        run: python scripts/audit_rgs_amministrazione.py
+        run: python scripts/audit_rgs_amministrazione_v2.py
