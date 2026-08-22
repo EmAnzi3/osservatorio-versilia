@@ -73,7 +73,6 @@ def inject_verified_v04(
     original_path = core.VERIFIED_V04
     core.VERIFIED_V04 = VERIFIED_V042
     try:
-        # Usa l'iniettore v0.4 originale una sola volta sul registro v0.4.2.
         resolved.update(prev._ORIGINAL_INJECT(
             result, today, detail_payloads=detail_payloads, live=live
         ))
@@ -272,11 +271,13 @@ def render_markdown(result: dict[str, Any]) -> str:
     gap = audit.get("knownGapClosure") or {}
     prospective = audit.get("prospective") or {}
     holdouts = audit.get("holdouts") or {}
+    rate = prospective.get("captureRate")
+    rate_label = "non ancora misurabile" if rate is None else f"{float(rate):.1%}"
     return text + "\n\n## Audit indipendente v0.4.2\n\n" + (
         f"Esito: **{str(audit.get('status', 'unknown')).upper()}** · buchi noti chiusi: "
         f"**{gap.get('closed', 0)}/{gap.get('total', 0)}** · holdout sani: "
         f"**{holdouts.get('healthy', 0)}/{holdouts.get('configured', 0)}**.\n\n"
-        f"Capture rate prospettico: **{'non ancora misurabile' if prospective.get('captureRate') is None else f'{prospective.get('captureRate'):.1%}'}** "
+        f"Capture rate prospettico: **{rate_label}** "
         f"(campione {prospective.get('sampleSize', 0)}/{prospective.get('minimumSample', 0)}).\n"
         "Il campione baseline è stato costruito cercando falsi negativi e non viene usato per dichiarare una copertura percentuale del web.\n"
     )
@@ -291,7 +292,6 @@ def _exit_code(result: dict[str, Any]) -> int:
     return 0
 
 
-# Il motore v0.4 risolve questi simboli globalmente al momento del run/main.
 core.compose_runtime_payloads = compose_runtime_payloads
 core._source_visual = _source_visual
 core.inject_verified_v04 = inject_verified_v04
@@ -300,7 +300,6 @@ core.run_v04 = run_v04
 core.render_markdown = render_markdown
 core._exit_code = _exit_code
 
-# API per test/tooling.
 _load = core._load
 build_seed_item = core.build_seed_item
 verify_entry = core.verify_entry
