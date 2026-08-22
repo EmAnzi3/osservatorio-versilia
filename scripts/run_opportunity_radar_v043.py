@@ -2,7 +2,7 @@
 """Radar Opportunità Versilia v0.4.3 — residual coverage.
 
 Estende la v0.4.2 senza allargare indiscriminatamente l'output pubblico:
-- aggiunge programmi UE dedicati (URBACT, EUI, Erasmus+, CEF, Horizon, DIGITAL, Interreg Europe);
+- aggiunge programmi UE dedicati (URBACT, EUI, EUCF, Erasmus+, CEF, Horizon, DIGITAL, Interreg Europe);
 - presidia montagna, protezione civile, MASAF e CSR/ARTEA/LEADER;
 - distingue una fonte configurata da una famiglia supportata da evidenza ufficiale recente;
 - promuove una call soltanto dopo verifica del ruolo comunale specifico.
@@ -18,6 +18,7 @@ import run_opportunity_radar_v042 as prev
 core = prev.core
 ROOT = Path(__file__).resolve().parents[1]
 DISCOVERY_V043 = ROOT / "data" / "opportunity-discovery-v043.json"
+DISCOVERY_EUCF_V043 = ROOT / "data" / "opportunity-discovery-v043-eucf.json"
 EVIDENCE_V043 = ROOT / "data" / "opportunity-coverage-evidence-v043.json"
 SENTINELS_V043 = ROOT / "data" / "opportunity-coverage-sentinels-v043.json"
 VERIFIED_V043 = ROOT / "data" / "opportunity-verified-v043.json"
@@ -31,18 +32,22 @@ _PREV_RENDER = core.render_markdown
 _PREV_EXIT = core._exit_code
 
 
+def _discovery_layers() -> list[dict[str, Any]]:
+    return [core._load(DISCOVERY_V043), core._load(DISCOVERY_EUCF_V043)]
+
+
 def compose_runtime_payloads() -> tuple[dict[str, Any], dict[str, Any]]:
     config, coverage = _PREV_COMPOSE()
-    extra = core._load(DISCOVERY_V043)
     existing = {str(x.get("id") or "") for x in config.get("discoverySources") or []}
-    for source in extra.get("discoverySources") or []:
-        source_id = str(source.get("id") or "")
-        if source_id and source_id not in existing:
-            config.setdefault("discoverySources", []).append(source)
-            existing.add(source_id)
     registry = coverage.setdefault("sources", {})
-    for source_id, meta in (extra.get("coverageRegistry") or {}).items():
-        registry[str(source_id)] = meta
+    for extra in _discovery_layers():
+        for source in extra.get("discoverySources") or []:
+            source_id = str(source.get("id") or "")
+            if source_id and source_id not in existing:
+                config.setdefault("discoverySources", []).append(source)
+                existing.add(source_id)
+        for source_id, meta in (extra.get("coverageRegistry") or {}).items():
+            registry[str(source_id)] = meta
     coverage["schemaVersion"] = "0.4.3"
     config["schemaVersion"] = 4
     return config, coverage
@@ -50,7 +55,12 @@ def compose_runtime_payloads() -> tuple[dict[str, Any], dict[str, Any]]:
 
 def _source_visual(source_id: str) -> dict[str, Any]:
     current = _PREV_SOURCE_VISUAL(source_id)
-    meta = (core._load(DISCOVERY_V043).get("coverageRegistry") or {}).get(source_id) or {}
+    meta: dict[str, Any] = {}
+    for extra in _discovery_layers():
+        candidate = (extra.get("coverageRegistry") or {}).get(source_id) or {}
+        if candidate:
+            meta = candidate
+            break
     if not meta:
         return current
     return {
@@ -70,8 +80,6 @@ def inject_verified_v04(
     original_path = core.VERIFIED_V04
     core.VERIFIED_V04 = VERIFIED_V043
     try:
-        # Riusa l'iniettore originario v0.4.0 per aggiungere solo il registro v0.4.3,
-        # senza richiamare ricorsivamente gli strati v0.4.1/v0.4.2.
         resolved.update(prev.prev._ORIGINAL_INJECT(
             result, today, detail_payloads=detail_payloads, live=live
         ))
