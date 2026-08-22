@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "0.4.3",
+  "discoverySources": [
+    {
+      "id": "eu-urbact",
+      "label": "UE · URBACT",
+      "publisher": "URBACT IV",
+      "territory": "Europa",
+      "family": "eu-urban",
+      "urls": ["https://urbact.eu/get-involved"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "network", "cities", "urban", "apply", "funding"],
+      "municipalTerms": ["city", "cities", "municipal", "local authority", "public authority"]
+    },
+    {
+      "id": "eu-eui",
+      "label": "UE · European Urban Initiative",
+      "publisher": "European Urban Initiative",
+      "territory": "Unione europea",
+      "family": "eu-urban",
+      "urls": ["https://www.urban-initiative.eu/calls-proposals", "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "urban authorities", "innovative actions", "city-to-city", "apply", "funding"],
+      "municipalTerms": ["urban authority", "city", "town", "municipal", "local administrative unit"]
+    },
+    {
+      "id": "eu-erasmus",
+      "label": "UE · Erasmus+",
+      "publisher": "Commissione europea · Erasmus+",
+      "territory": "Europa",
+      "family": "eu-education-youth",
+      "urls": ["https://erasmus-plus.ec.europa.eu/document/call-for-proposals-2026-for-the-erasmus-programme"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call for proposals", "partnership", "youth", "sport", "education", "deadline"],
+      "municipalTerms": ["public body", "public organisation", "local", "municipal", "authority"]
+    },
+    {
+      "id": "eu-cef",
+      "label": "UE · Connecting Europe Facility",
+      "publisher": "Commissione europea · CINEA",
+      "territory": "Unione europea",
+      "family": "eu-infrastructure-connectivity",
+      "urls": ["https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call for proposals", "CEF", "transport", "infrastructure", "deadline", "funding"],
+      "municipalTerms": ["public bodies", "public body", "local authority", "municipal", "cities"]
+    },
+    {
+      "id": "eu-horizon",
+      "label": "UE · Horizon Europe",
+      "publisher": "Commissione europea · Research and Innovation",
+      "territory": "Unione europea",
+      "family": "eu-research-innovation",
+      "urls": ["https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "funding", "work programme", "mission", "cities", "climate", "innovation"],
+      "municipalTerms": ["cities", "local authorities", "public authorities", "municipal", "regions"]
+    },
+    {
+      "id": "eu-digital",
+      "label": "UE · Digital Europe",
+      "publisher": "Commissione europea · Digital Europe Programme",
+      "territory": "Unione europea",
+      "family": "eu-digital",
+      "urls": ["https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital", "https://digital-strategy.ec.europa.eu/en/activities/digital-programme"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call for proposals", "Digital Europe", "funding", "public administrations", "digital", "deadline"],
+      "municipalTerms": ["public administrations", "public authorities", "local", "municipal", "cities"]
+    },
+    {
+      "id": "interreg-europe",
+      "label": "UE · Interreg Europe",
+      "publisher": "Interreg Europe 2021-2027",
+      "territory": "Europa",
+      "family": "territorial-cooperation",
+      "urls": ["https://www.interregeurope.eu/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "projects", "interregional", "cooperation", "funding", "apply"],
+      "municipalTerms": ["public authorities", "local authorities", "municipal", "cities", "regions"]
+    },
+    {
+      "id": "dara-montagna",
+      "label": "Affari regionali · Montagna",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per gli affari regionali e le autonomie",
+      "territory": "Italia",
+      "family": "mountain-territories",
+      "urls": ["https://www.affariregionali.it/it/aree-tematiche/montagna/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["fondo", "montagna", "comuni montani", "contribut", "finanzi", "avviso"],
+      "municipalTerms": ["comuni", "comuni montani", "enti locali", "territori montani"]
+    },
+    {
+      "id": "protezione-civile",
+      "label": "Protezione Civile · risorse territoriali",
+      "publisher": "Dipartimento della Protezione Civile",
+      "territory": "Italia",
+      "family": "resilience-civil-protection",
+      "urls": ["https://www.protezionecivile.gov.it/it/normativa/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["contribut", "risorse", "fondo", "prevenzione", "rischio", "regioni"],
+      "municipalTerms": ["comuni", "enti locali", "territorial", "regioni"]
+    },
+    {
+      "id": "masaf-bandi",
+      "label": "MASAF · bandi e avvisi",
+      "publisher": "Ministero dell'Agricoltura, della Sovranità alimentare e delle Foreste",
+      "territory": "Italia",
+      "family": "rural-territorial-development",
+      "urls": ["https://www.masaf.gov.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/11795"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "contribut", "fondo", "territorio", "foreste", "sviluppo rurale"],
+      "municipalTerms": ["comuni", "enti locali", "enti pubblici", "territorial"]
+    },
+    {
+      "id": "toscana-csr-artea-leader",
+      "label": "Toscana · CSR FEASR / ARTEA / LEADER",
+      "publisher": "Regione Toscana · ARTEA · GAL",
+      "territory": "Toscana",
+      "family": "rural-territorial-development",
+      "urls": ["https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti", "https://www.regione.toscana.it/it/-/complemento-per-lo-sviluppo-rurale-2023-2027-bandi-in-programma", "https://www.artea.toscana.it/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["CSR", "FEASR", "LEADER", "bando", "enti pubblici", "territori", "GAL"],
+      "municipalTerms": ["enti pubblici territoriali", "comuni", "enti pubblici", "territori", "GAL"]
+    }
+  ],
+  "coverageRegistry": {
+    "eu-urbact": {"label":"UE · URBACT","monitoringStatus":"active","role":"discovery","priority":105,"family":"eu-urban","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Reti europee di città; una call entra in output solo dopo verifica del ruolo concreto del Comune e del partenariato."},
+    "eu-eui": {"label":"UE · European Urban Initiative","monitoringStatus":"active","role":"discovery","priority":110,"family":"eu-urban","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Innovative Actions e strumenti di capacity building per autorità urbane; i requisiti DEGURBA sono verificati prima della pubblicazione."},
+    "eu-erasmus": {"label":"UE · Erasmus+","monitoringStatus":"active","role":"discovery","priority":85,"family":"eu-education-youth","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Programma ampio: il collector filtra solo azioni con ruolo documentato di enti pubblici/locali."},
+    "eu-cef": {"label":"UE · Connecting Europe Facility","monitoringStatus":"active","role":"discovery","priority":90,"family":"eu-infrastructure-connectivity","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Call infrastrutturali europee; l'ammissibilità del singolo Comune dipende da rete, topic e progetto e va verificata."},
+    "eu-horizon": {"label":"UE · Horizon Europe","monitoringStatus":"active","role":"discovery","priority":80,"family":"eu-research-innovation","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Solo topic con ruolo operativo verificabile per città/autorità locali; niente riversamento indiscriminato delle call di ricerca."},
+    "eu-digital": {"label":"UE · Digital Europe","monitoringStatus":"active","role":"discovery","priority":95,"family":"eu-digital","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Call per trasformazione digitale e PA; ogni topic viene verificato prima di entrare nel radar."},
+    "interreg-europe": {"label":"UE · Interreg Europe","monitoringStatus":"active","role":"discovery","priority":90,"family":"territorial-cooperation","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Affianca Interreg Italia-Francia Marittimo per non limitare la cooperazione territoriale al solo programma transfrontaliero costiero."},
+    "dara-montagna": {"label":"Affari regionali · Montagna","monitoringStatus":"active","role":"discovery","priority":105,"family":"mountain-territories","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Fondi e misure per territori e Comuni montani; particolarmente rilevante per la componente montana della Versilia."},
+    "protezione-civile": {"label":"Protezione Civile · risorse territoriali","monitoringStatus":"active","role":"discovery","priority":90,"family":"resilience-civil-protection","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Fonte upstream: molte risorse passano dalle Regioni; non viene pubblicata una scheda comunale finché non esiste un accesso operativo documentato."},
+    "masaf-bandi": {"label":"MASAF · bandi e avvisi","monitoringStatus":"active","role":"discovery","priority":65,"family":"rural-territorial-development","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Fonte a priorità contenuta per l'alto rumore di misure rivolte alle imprese; si promuovono solo opportunità per enti pubblici/territori."},
+    "toscana-csr-artea-leader": {"label":"Toscana · CSR FEASR / ARTEA / LEADER","monitoringStatus":"active","role":"discovery","priority":105,"family":"rural-territorial-development","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Presidio dedicato al CSR FEASR, ai bandi ARTEA e agli interventi LEADER/GAL con possibili beneficiari pubblici territoriali."}
+  }
+}
