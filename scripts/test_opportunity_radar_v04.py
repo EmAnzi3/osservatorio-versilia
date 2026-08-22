@@ -127,6 +127,33 @@ class RadarV04Test(unittest.TestCase):
         self.assertIn("interreg-marittimo", historical)
         self.assertIn("pcm-casa-italia", historical)
 
+    def test_final_continuity_drops_v04_items_recovered_after_base_run(self):
+        result = {
+            "opportunities": [
+                {
+                    "rule_id": "coverage:mic-cultura-piccoli-comuni-2026",
+                    "source_id": "mic-dgcc",
+                    "title": "Cultura nei piccoli comuni — Edizione 1",
+                    "url": "https://example.test/cultura",
+                }
+            ],
+            "continuityHold": [
+                {
+                    "identity_key": "rule:coverage:mic-cultura-piccoli-comuni-2026",
+                    "title": "Cultura nei piccoli comuni — Edizione 1",
+                },
+                {
+                    "identity_key": "rule:still-missing",
+                    "title": "Caso realmente assente",
+                },
+            ],
+            "counts": {"continuityHold": 2},
+        }
+        v04._reconcile_v04_continuity(result)
+        self.assertEqual(len(result["continuityHold"]), 1)
+        self.assertEqual(result["continuityHold"][0]["identity_key"], "rule:still-missing")
+        self.assertEqual(result["counts"]["continuityHold"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
