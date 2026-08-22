@@ -18,6 +18,28 @@
   const emptyState = root.querySelector('[data-op-empty]');
   const cards = Array.from(root.querySelectorAll('[data-opportunity-card]'));
 
+  cards.forEach((card) => {
+    const statuses = new Set(Array.from(card.querySelectorAll('[data-town-status]')).map((chip) => chip.dataset.townStatus));
+    if (statuses.has('eligible') && statuses.has('conditional')) {
+      card.dataset.access = 'specific_requirement';
+      const badge = card.querySelector('.op-access');
+      if (badge) {
+        badge.classList.remove('op-access-direct');
+        badge.classList.add('op-access-specific');
+        badge.textContent = 'Accesso differenziato';
+      }
+      if (!card.querySelector('.op-condition')) {
+        const townBlock = card.querySelector('.op-town-block');
+        if (townBlock) {
+          const note = document.createElement('div');
+          note.className = 'op-condition';
+          note.innerHTML = '<strong>Requisiti diversi per Comune</strong><span>L’ammissibilità o il ruolo cambiano sul territorio: consulta i dettagli dei singoli Comuni.</span>';
+          townBlock.before(note);
+        }
+      }
+    }
+  });
+
   const normalize = (value) => String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
