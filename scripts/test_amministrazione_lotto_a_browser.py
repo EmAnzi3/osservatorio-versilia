@@ -11,7 +11,7 @@ def require(condition: bool, message: str) -> None:
 
 
 def no_overflow(page, label: str) -> None:
-    report = page.evaluate("""() => {
+    report = page.evaluate(r"""() => {
       const viewport = window.innerWidth;
       const doc = document.documentElement.scrollWidth;
       const body = document.body.scrollWidth;
