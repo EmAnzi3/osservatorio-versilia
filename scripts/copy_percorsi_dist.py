@@ -59,6 +59,7 @@ def main() -> None:
         TARGET / "index.html",
         TARGET / "metodo.html",
         TARGET / "app.js",
+        TARGET / "mobile-scroll-guard.js",
         TARGET / "data-loader.js",
         TARGET / "deeplink.js",
         TARGET / "styles.css",
@@ -72,7 +73,7 @@ def main() -> None:
 
     print(
         "Cartografia Percorsi copiata nella build e riallineata alla shell OV; "
-        "la mappa full-screen mantiene l'eccezione footer."
+        "la mappa full-screen mantiene l'eccezione footer e la guardia anti scroll-trap mobile."
     )
 
 
