@@ -68,5 +68,15 @@ class RadarV03Test(unittest.TestCase):
         for row in coverage['rows']:
             self.assertTrue((row.get('favicon') or '').startswith('data:image/png;base64,'),row['source_id'])
 
+    def test_final_continuity_drops_recovered_verified_item(self):
+        result={
+            'opportunities':[{'rule_id':'mic-jazz-2027','title':'Bando per la promozione della musica Jazz 2027'}],
+            'continuityHold':[{'identity_key':'rule:mic-jazz-2027','title':'Bando per la promozione della musica Jazz 2027'}],
+            'counts':{'continuityHold':1},
+        }
+        run_opportunity_radar_v03._reconcile_final_continuity(result)
+        self.assertEqual(result['continuityHold'],[])
+        self.assertEqual(result['counts']['continuityHold'],0)
+
 
 if __name__=='__main__': unittest.main()
