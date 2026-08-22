@@ -10,12 +10,12 @@
   "holdoutSources": [
     {
       "id": "audit-invitalia",
-      "label": "Invitalia · incentivi e strumenti",
-      "url": "https://www.invitalia.it/incentivi-e-strumenti",
+      "label": "Invitalia · risultati incentivi",
+      "url": "https://www.invitalia.it/wizard-risultati-incentivi",
       "method": "independent_crosscheck",
       "includeTerms": ["incentivo", "contribut", "finanzi", "avviso", "sovvenzione"],
       "municipalTerms": ["comun", "enti locali", "pubbliche amministrazioni", "territorio"],
-      "note": "Fonte di controllo distinta dalla fonte primaria del Dipartimento; non alimenta il collector di produzione."
+      "note": "Fonte di controllo distinta dalla fonte primaria del Dipartimento; non alimenta il collector di produzione. Usa la pagina risultati attivi invece della landing /incentivi-e-strumenti che può rispondere 404 al fetch automatico."
     },
     {
       "id": "audit-cerv-italia",
