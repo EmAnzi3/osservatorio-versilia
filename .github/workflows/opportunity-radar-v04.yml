@@ -1,0 +1,190 @@
+name: Radar Opportunità v0.4.3 residual coverage
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/opportunity-radar-v04.yml"
+      - "scripts/run_opportunity_radar_v04.py"
+      - "scripts/run_opportunity_radar_v041.py"
+      - "scripts/run_opportunity_radar_v042.py"
+      - "scripts/run_opportunity_radar_v043.py"
+      - "scripts/build_opportunity_preview_v04.py"
+      - "scripts/build_opportunity_preview_v043.py"
+      - "scripts/test_opportunity_radar_v04.py"
+      - "scripts/test_opportunity_radar_v043.py"
+      - "scripts/test_opportunity_preview_v04.py"
+      - "scripts/test_opportunity_preview_browser_v04.py"
+      - "assets/opportunity-preview-v04.css"
+      - "assets/opportunity-preview-v04.js"
+      - "data/opportunity-discovery-v04.json"
+      - "data/opportunity-discovery-v04-extra.json"
+      - "data/opportunity-discovery-v042.json"
+      - "data/opportunity-discovery-v043.json"
+      - "data/opportunity-coverage-contract-v04.json"
+      - "data/opportunity-coverage-evidence-v043.json"
+      - "data/opportunity-verified-v04.json"
+      - "data/opportunity-verified-v04-extra.json"
+      - "data/opportunity-verified-v042.json"
+      - "data/opportunity-coverage-sentinels-v04.json"
+      - "data/opportunity-coverage-sentinels-v04-extra.json"
+      - "data/opportunity-coverage-sentinels-v042.json"
+      - "data/opportunity-coverage-sentinels-v043.json"
+      - "data/opportunity-independent-audit-v042.json"
+      - "docs/opportunita-prototipo-v04.md"
+      - "scripts/opportunity_radar_v03.py"
+      - "scripts/opportunity_radar_v03_post.py"
+      - "scripts/run_opportunity_radar_v03.py"
+      - "data/opportunity-sources-v03.json"
+      - "data/opportunity-rules-v03.json"
+      - "data/opportunity-source-coverage-v03.json"
+      - "data/opportunity-backtest-v03.json"
+      - "data/opportunity-verified-details-v03.json"
+  workflow_dispatch:
+
+concurrency:
+  group: opportunity-radar-v043-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate residual coverage v0.4.3
+        run: |
+          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
+          python -m json.tool data/opportunity-discovery-v042.json > /dev/null
+          python -m json.tool data/opportunity-discovery-v043.json > /dev/null
+          python -m json.tool data/opportunity-coverage-evidence-v043.json > /dev/null
+          python -m json.tool data/opportunity-verified-v042.json > /dev/null
+          python -m json.tool data/opportunity-coverage-sentinels-v042.json > /dev/null
+          python -m json.tool data/opportunity-coverage-sentinels-v043.json > /dev/null
+          python -m json.tool data/opportunity-independent-audit-v042.json > /dev/null
+          python scripts/test_opportunity_radar_v03.py
+          python scripts/test_opportunity_radar_v04.py
+          python scripts/test_opportunity_radar_v043.py
+          python scripts/test_opportunity_preview_v04.py
+          python scripts/run_opportunity_radar_v043.py --backtest-only > /tmp/backtest-v043.json
+          cat /tmp/backtest-v043.json
+
+  live-probe:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pypdf
+      - name: Restore previous radar state
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/previous
+          branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          for artifact_name in opportunity-radar-v04 opportunity-radar-v03 opportunity-radar-v025; do
+            artifact_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts?name=$artifact_name&per_page=40" --jq ".artifacts[] | select(.expired == false and .workflow_run.head_branch == \"$branch\") | .id" | head -n 1 || true)"
+            [[ -z "$artifact_id" ]] && continue
+            gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > /tmp/opportunity-previous.zip
+            for filename in opportunities-v04.json opportunities-v03.json opportunities-v025.json; do
+              if unzip -p /tmp/opportunity-previous.zip "$filename" > reports/previous/opportunities-previous.json 2>/dev/null; then break 2; fi
+            done
+          done
+      - name: Collect v0.4.3
+        id: collect
+        shell: bash
+        run: |
+          mkdir -p reports/runtime
+          TODAY="$(TZ=Europe/Rome date +%F)"
+          previous=()
+          [[ -s reports/previous/opportunities-previous.json ]] && previous=(--previous reports/previous/opportunities-previous.json)
+          set +e
+          python scripts/run_opportunity_radar_v043.py --date "$TODAY" "${previous[@]}" --output reports/runtime/opportunities-v04.json --report reports/runtime/opportunities-v04.md
+          code=$?
+          set -e
+          echo "$code" > reports/runtime/exit-code.txt
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          cat reports/runtime/opportunities-v04.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opportunity-radar-v04
+          path: reports/runtime/
+          retention-days: 90
+      - name: Enforce v0.4.3 gates
+        if: steps.collect.outputs.exit_code != '0'
+        run: |
+          echo "Radar v0.4.3 fallito con codice ${{ steps.collect.outputs.exit_code }}: 2=continuità, 3=backtest classificatore, 5=copertura/sentinelle, 6=audit indipendente/holdout, 7=copertura residua/evidenze." 
+          exit 1
+
+  browser-preview:
+    needs: live-probe
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: opportunity-radar-v04
+          path: reports/runtime
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Chromium
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Build v0.4.3 preview
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/build_opportunity_preview_v043.py --data reports/runtime/opportunities-v04.json --dist dist
+      - name: Browser checks
+        shell: bash
+        run: |
+          python scripts/preview_dist.py --directory dist --bind 127.0.0.1 --port 8123 > /tmp/radar-v04-server.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8123/opportunita-preview/ >/dev/null && break; sleep 1; done
+          python scripts/test_opportunity_preview_browser_v04.py --base http://127.0.0.1:8123/
+      - name: Package preview
+        run: |
+          mkdir -p preview-package
+          cp -a dist preview-package/dist
+          cat > preview-package/APRI_ANTEPRIMA.py <<'PY'
+          from functools import partial
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from pathlib import Path
+          import webbrowser
+          root=Path(__file__).resolve().parent/'dist'
+          if not (root/'opportunita-preview'/'index.html').exists(): raise SystemExit('Anteprima non trovata: riestrarre integralmente lo ZIP.')
+          server=ThreadingHTTPServer(('127.0.0.1',0),partial(SimpleHTTPRequestHandler,directory=str(root)))
+          url=f'http://127.0.0.1:{server.server_port}/opportunita-preview/'
+          print(f'Radar Opportunita v0.4.3: {url}');webbrowser.open(url)
+          try: server.serve_forever()
+          except KeyboardInterrupt: pass
+          PY
+          cat > preview-package/APRI_ANTEPRIMA.bat <<'BAT'
+          @echo off
+          cd /d "%~dp0"
+          where py >nul 2>nul && py "%~dp0APRI_ANTEPRIMA.py" && exit /b 0
+          where python >nul 2>nul && python "%~dp0APRI_ANTEPRIMA.py" && exit /b 0
+          echo Python non trovato.
+          pause
+          BAT
+          echo "ANTEPRIMA RADAR OPPORTUNITA v0.4.3 - NON PUBBLICATA" > preview-package/LEGGIMI.txt
+          test -f preview-package/dist/opportunita-preview/index.html
+          grep -q "Anteprima v0.4.3" preview-package/dist/opportunita-preview/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-v04-browser-preview
+          path: preview-package/
+          retention-days: 90

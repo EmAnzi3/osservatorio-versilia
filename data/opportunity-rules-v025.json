@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "0.2.5",
+  "baseRulesFile": "opportunity-rules-v022.json",
+  "rules": [
+    {
+      "id": "rt-sistema-integrato-0-6-2026",
+      "source_id": "regione-toscana",
+      "title_pattern": ".*Sistema integrato 0-6 anni.*2026-2027.*|.*2026-2027.*Sistema integrato 0-6 anni.*",
+      "force_eligibility": "conditional",
+      "applicant_eligibility_override": "conditional",
+      "applicant_type": "Comune o Unione di Comuni capofila della Conferenza zonale per l'educazione e l'istruzione",
+      "municipality_role": "system_member",
+      "final_beneficiaries": "Comuni della Conferenza zonale e personale del sistema educativo integrato 0-6",
+      "partnership_required": true,
+      "geographic_scope": "Conferenza zonale per l'educazione e l'istruzione della Versilia",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct_indirect",
+      "actionable": true,
+      "decision_class": "zonal_lead_applicant",
+      "project_requirements": "La domanda regionale è presentata dal Comune capofila della Conferenza zonale; gli altri Comuni partecipano attraverso la programmazione zonale.",
+      "municipality_status_overrides": {
+        "Camaiore": {"status": "eligible", "reason": "Camaiore è documentato come Comune capofila della Conferenza zonale per l'educazione e l'istruzione della Versilia e presenta la domanda regionale per la Zona."},
+        "Forte dei Marmi": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."},
+        "Massarosa": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."},
+        "Pietrasanta": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."},
+        "Seravezza": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."},
+        "Stazzema": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."},
+        "Viareggio": {"status": "conditional", "reason": "Il Comune partecipa alla Conferenza zonale della Versilia; la candidatura regionale è presentata dal Comune capofila."}
+      },
+      "evidence_url": "https://www.regione.toscana.it/-/anno-educativo-e-scolastico-2026-2027-contributi-ai-comuni-per-percorsi-formativi-per-la-qualit%C3%A0-del-sistema-integrato-0-6-anni",
+      "territorial_evidence_url": "https://www.comune.viareggio.lu.it/home/vivere/Servizi-Educativi-e-Scolastici/FSE--2021-2027-Fondo-Sociale-Europeo-Plus.html"
+    }
+  ]
+}

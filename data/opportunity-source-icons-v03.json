@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.3.3",
+  "icons": {
+    "fondazione-cr-lucca": "/assets/source-icons/fondazione-cr-lucca.svg",
+    "sviluppo-toscana": "/assets/source-icons/sviluppo-toscana.svg",
+    "ministero-interno-prefetture": "/assets/source-icons/ministero-interno.svg",
+    "anci-toscana": "/assets/source-icons/anci-toscana.svg",
+    "ministero-interno": "/assets/source-icons/ministero-interno.svg"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "0.4.2",
+  "referenceDate": "2026-08-22",
+  "cases": [
+    {"id":"c08","coverage_id":"pcm-disabilita-vita-opportunita-2026","title":"Vita & Opportunità 2026","source_id":"pcm-disabilita","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"c09","coverage_id":"eu-cerv-town-twinning-2026","title":"CERV 2026 — Town Twinning","source_id":"eu-cerv","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"c10","coverage_id":"mlps-assistenti-sociali-2026","title":"Potenziamento del servizio sociale professionale 2026","source_id":"mlps-social-services","expected":"current","lifecycle_stage":"application_open"},
+    {"id":"h04","title":"FUNT 2026 — quota enti territoriali","source_id":"ministero-turismo","expected":"historical_monitored","closed_at":"2026-05-30","reason":"Sentinella per la famiglia turismo/enti territoriali: il ciclo 2026 è chiuso ma il canale deve restare monitorato."},
+    {"id":"h05","title":"Forniture per arredi 2026 — enti locali","source_id":"mim-enti-locali","expected":"historical_monitored","closed_at":"2026-03-03","reason":"Sentinella per edilizia e servizi scolastici: il MIM pubblica ciclicamente avvisi rivolti agli enti locali."},
+    {"id":"h06","title":"Risorse in Comune","source_id":"funzione-pubblica","expected":"historical_monitored","closed_at":"2025-12-10","reason":"Sentinella per capacità amministrativa e innovazione dei Comuni."},
+    {"id":"r01","title":"Servizio civile universale — programmi e progetti 2026","source_id":"pcm-politiche-giovanili-scu","expected":"audit_review","deadline_at":"2026-09-30","reason":"La finestra è aperta, ma l'ammissibilità dipende dall'iscrizione/accreditamento dell'ente proponente all'Albo SCU. Non viene pubblicata finché la posizione dei sette Comuni non è verificata."}
+  ]
+}

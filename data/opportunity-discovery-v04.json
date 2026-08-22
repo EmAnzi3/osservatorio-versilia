@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "0.4",
+  "discoverySources": [
+    {
+      "id": "pcm-stato-citta",
+      "label": "Conferenza Stato-Città",
+      "publisher": "Presidenza del Consiglio dei Ministri · Conferenza Stato-Città",
+      "territory": "Italia",
+      "family": "national-crosscutting",
+      "urls": ["https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "fondo", "incentiv", "candidatur", "call"],
+      "municipalTerms": ["comun", "enti locali", "amministrazioni locali", "città", "municipal"]
+    },
+    {
+      "id": "mic-dgcc",
+      "label": "MiC · Creatività Contemporanea",
+      "publisher": "Ministero della Cultura · Direzione generale Creatività Contemporanea",
+      "territory": "Italia",
+      "family": "culture",
+      "urls": ["https://creativitacontemporanea.cultura.gov.it/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "call", "contribut", "finanzi", "candidatur"],
+      "municipalTerms": ["comun", "enti locali", "amministrazioni", "territori"]
+    },
+    {
+      "id": "pcm-politiche-mare",
+      "label": "PCM · Politiche del mare",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche del mare",
+      "territory": "Italia",
+      "family": "maritime-coastal",
+      "urls": ["https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "fondo", "contribut", "selezione", "capitale italiana del mare"],
+      "municipalTerms": ["comun", "territorial", "costieri", "città"]
+    },
+    {
+      "id": "pcm-sport",
+      "label": "PCM · Dipartimento per lo Sport",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per lo Sport",
+      "territory": "Italia",
+      "family": "sport-social-infrastructure",
+      "urls": ["https://www.sport.governo.it/it/bandi-e-avvisi/sport-e-periferie/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "contribut", "finanzi", "sport e periferie", "rigenerazione urbana"],
+      "municipalTerms": ["comun", "enti locali", "impianti", "territorio"]
+    },
+    {
+      "id": "mit-enti-locali",
+      "label": "MIT · Finanziamenti enti locali",
+      "publisher": "Ministero delle Infrastrutture e dei Trasporti",
+      "territory": "Italia",
+      "family": "infrastructure",
+      "urls": ["https://www.mit.gov.it/documentazione/bonus-e-finanziamenti-cittadini-enti-locali-ed-imprese"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["comuni", "enti locali", "fondo", "finanzi", "contribut", "bando", "avviso"],
+      "municipalTerms": ["comun", "enti locali", "amministrazioni"]
+    },
+    {
+      "id": "mase-bandi",
+      "label": "MASE · Bandi e avvisi",
+      "publisher": "Ministero dell'Ambiente e della Sicurezza Energetica",
+      "territory": "Italia",
+      "family": "energy-climate-environment",
+      "urls": ["https://www.mase.gov.it/portale/bandi-e-avvisi"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "finanzi", "contribut", "energia", "clima", "ambiente"],
+      "municipalTerms": ["comun", "enti locali", "pubbliche amministrazioni", "territori"]
+    },
+    {
+      "id": "cinea-life",
+      "label": "CINEA · LIFE",
+      "publisher": "Commissione europea · CINEA",
+      "territory": "Unione europea",
+      "family": "eu-direct",
+      "urls": ["https://cinea.ec.europa.eu/life-calls-proposals-2026_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "proposal", "funding", "life", "deadline", "grant"],
+      "municipalTerms": ["local", "public authorities", "cities", "municipal", "regional"]
+    },
+    {
+      "id": "eu-neb",
+      "label": "UE · New European Bauhaus",
+      "publisher": "Commissione europea · New European Bauhaus",
+      "territory": "Unione europea",
+      "family": "eu-direct",
+      "urls": ["https://new-european-bauhaus.europa.eu/calls-proposals/co-create-neb_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["call", "proposal", "open", "deadline", "partnership"],
+      "municipalTerms": ["municipal", "cities", "local", "public spaces", "communities"]
+    },
+    {
+      "id": "interreg-marittimo",
+      "label": "Interreg Italia-Francia Marittimo",
+      "publisher": "Programma Interreg Italia-Francia Marittimo 2021-2027",
+      "territory": "Area di cooperazione transfrontaliera",
+      "family": "territorial-cooperation",
+      "urls": ["https://interreg-marittimo.eu/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "candidatur", "progetti", "call", "jems", "interreg"],
+      "municipalTerms": ["enti pubblici", "territori", "comun", "autorità locali", "partenariato"]
+    },
+    {
+      "id": "politiche-coesione",
+      "label": "PCM · Politiche di coesione",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche di coesione e per il Sud",
+      "territory": "Italia",
+      "family": "national-crosscutting",
+      "urls": ["https://www.politichecoesione.governo.it/it/finanziamenti-avvisi-e-bandi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "finanzi", "fondo", "coesione", "contribut"],
+      "municipalTerms": ["comun", "enti locali", "territori", "amministrazioni"]
+    },
+    {
+      "id": "pa-digitale-current",
+      "label": "PA digitale 2026 · Comuni",
+      "publisher": "Dipartimento per la trasformazione digitale",
+      "territory": "Italia",
+      "family": "digital-pa",
+      "urls": ["https://www.padigitale2026.gov.it/enti/comuni"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avvisi di finanziamento", "avviso", "finanziamento", "misura", "candidare"],
+      "municipalTerms": ["comuni", "pubblica amministrazione", "pa"]
+    }
+  ],
+  "coverageRegistry": {
+    "pcm-stato-citta": {"label":"Conferenza Stato-Città","monitoringStatus":"active","role":"discovery","priority":100,"family":"national-crosscutting","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.statocitta.pcm.gov.it/favicon.ico","note":"Canale trasversale di discovery. Una segnalazione entra nell'output solo dopo risoluzione verso la fonte primaria."},
+    "mic-dgcc": {"label":"MiC · Creatività Contemporanea","monitoringStatus":"active","role":"discovery","priority":105,"family":"culture","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://creativitacontemporanea.cultura.gov.it/favicon.ico","note":"Integra la copertura MiC oltre la sola DG Spettacolo."},
+    "pcm-politiche-mare": {"label":"PCM · Politiche del mare","monitoringStatus":"active","role":"discovery","priority":110,"family":"maritime-coastal","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.dipartimentopolitichemare.gov.it/favicon.ico","note":"Bandi e procedure rivolti anche ai Comuni costieri."},
+    "pcm-sport": {"label":"PCM · Dipartimento per lo Sport","monitoringStatus":"active","role":"discovery","priority":100,"family":"sport-social-infrastructure","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.sport.governo.it/favicon.ico","note":"Include Sport e Periferie e altre procedure con possibile ruolo comunale."},
+    "mit-enti-locali": {"label":"MIT · Finanziamenti enti locali","monitoringStatus":"active","role":"discovery","priority":110,"family":"infrastructure","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.mit.gov.it/favicon.ico","note":"Monitora fondi, contributi e avvisi destinati agli enti locali."},
+    "mase-bandi": {"label":"MASE · Bandi e avvisi","monitoringStatus":"active","role":"discovery","priority":105,"family":"energy-climate-environment","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.mase.gov.it/favicon.ico","note":"Il portale può applicare protezioni anti-bot: eventuali errori sono resi visibili nella copertura e non sostituiti da inferenze."},
+    "cinea-life": {"label":"CINEA · LIFE","monitoringStatus":"active","role":"discovery","priority":95,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://cinea.ec.europa.eu/favicon.ico","note":"Programmi UE diretti LIFE; la rilevanza comunale viene verificata sul singolo topic."},
+    "eu-neb": {"label":"UE · New European Bauhaus","monitoringStatus":"active","role":"discovery","priority":95,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://new-european-bauhaus.europa.eu/favicon.ico","note":"Call UE con partenariati territoriali e collaborazione municipale."},
+    "interreg-marittimo": {"label":"Interreg Italia-Francia Marittimo","monitoringStatus":"active","role":"discovery","priority":100,"family":"territorial-cooperation","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://interreg-marittimo.eu/favicon.ico","note":"Programma di cooperazione territoriale rilevante per la Toscana costiera."},
+    "politiche-coesione": {"label":"PCM · Politiche di coesione","monitoringStatus":"active","role":"discovery","priority":95,"family":"national-crosscutting","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.politichecoesione.governo.it/favicon.ico","note":"Finanziamenti, avvisi e bandi del Dipartimento per le politiche di coesione."},
+    "pa-digitale-current": {"label":"PA digitale 2026 · Comuni","monitoringStatus":"active","role":"discovery","priority":100,"family":"digital-pa","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.padigitale2026.gov.it/favicon.ico","note":"Affianca il vecchio dataset stale con la pagina corrente dedicata agli avvisi per i Comuni."}
+  }
+}

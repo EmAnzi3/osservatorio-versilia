@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 2,
+  "municipalities": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "municipalityProfiles": {
+    "Camaiore": {
+      "province": "Lucca",
+      "toscanaDiffusa": "partial"
+    },
+    "Forte dei Marmi": {
+      "province": "Lucca",
+      "toscanaDiffusa": "no"
+    },
+    "Massarosa": {
+      "province": "Lucca",
+      "toscanaDiffusa": "no"
+    },
+    "Pietrasanta": {
+      "province": "Lucca",
+      "toscanaDiffusa": "no"
+    },
+    "Seravezza": {
+      "province": "Lucca",
+      "toscanaDiffusa": "full"
+    },
+    "Stazzema": {
+      "province": "Lucca",
+      "toscanaDiffusa": "full"
+    },
+    "Viareggio": {
+      "province": "Lucca",
+      "toscanaDiffusa": "no"
+    }
+  },
+  "profileSources": {
+    "toscanaDiffusa": {
+      "url": "https://www.regione.toscana.it/-/i-comuni-della-toscana-diffusa",
+      "classificationDate": "2025-03-12",
+      "note": "TD*=Comune incluso limitatamente alle zone montane; per Camaiore la singola localizzazione dell'intervento resta da verificare."
+    }
+  },
+  "sources": [
+    {
+      "id": "regione-toscana",
+      "name": "Regione Toscana — bandi aperti",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/bandi-aperti?delta=60&sortBy=desc&start=1",
+      "publisher": "Regione Toscana",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "fondazione-cr-lucca",
+      "name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
+      "type": "jsonld_grants",
+      "url": "https://www.fondazionecarilucca.it/bandi-in-corso",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "territory": "Provincia di Lucca",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 30,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "pa-digitale-2026",
+      "name": "PA digitale 2026 — open data avvisi",
+      "type": "padigitale_json",
+      "url": "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/avvisi.json",
+      "publisher": "Dipartimento per la trasformazione digitale",
+      "territory": "Italia",
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 25,
+      "fetchAttempts": 2
+    }
+  ]
+}
