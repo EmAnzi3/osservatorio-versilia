@@ -6,6 +6,7 @@ on:
     paths:
       - "scripts/probe_fiscal_lotto_b_sources.py"
       - "scripts/materialize_fiscal_lotto_b.py"
+      - "scripts/patch_fiscal_lotto_b_frontend.py"
       - "scripts/test_fiscal_lotto_b.py"
       - "scripts/test_fiscal_lotto_b_browser.py"
       - "data/source-snapshots/fiscal-lotto-b-2025.json"
@@ -61,6 +62,7 @@ jobs:
         run: |
           python scripts/materialize_pnrr_toscana_draft.py
           python scripts/patch_pnrr_toscana_review.py
+          python scripts/patch_fiscal_lotto_b_frontend.py
           python scripts/build_static_brand.py
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
