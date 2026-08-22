@@ -30,7 +30,7 @@ def esc(v:Any)->str:return html.escape(str(v or ''),quote=True)
 def source_meta(item):
  m=dict(item.get('presentation') or {});label=str(m.get('source_label') or item.get('publisher') or item.get('source_name') or 'Fonte');m['source_label']=label;m['source_favicon']=str(m.get('source_favicon') or '');m['source_mark']=str(m.get('source_mark') or ''.join(x[:1].upper() for x in label.split()[:3]) or 'F');return m
 def source_icon(meta,compact=False):
- cls='op-source-icon is-compact' if compact else 'op-source-icon';fav=meta.get('source_favicon') or '';img=f'<img class="op-source-favicon" src="{esc(fav)}" alt="" loading="lazy" referrerpolicy="no-referrer">' if fav else ''
+ cls='op-source-icon is-compact' if compact else 'op-source-icon';fav=meta.get('source_favicon') or '';img=f'<img class="op-source-favicon" src="{esc(fav)}" alt="" decoding="sync" referrerpolicy="no-referrer">' if fav else ''
  return f'<span class="{cls}"><span class="op-source-fallback">{esc(meta.get("source_mark") or "F")}</span>{img}</span>'
 def augment_card(item):
  text=BASE_CARD(item);m=source_meta(item)
