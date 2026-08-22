@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from playwright.sync_api import sync_playwright
 
+
 def main():
  p=argparse.ArgumentParser();p.add_argument('--base',default='http://127.0.0.1:8123/');a=p.parse_args()
  with sync_playwright() as pw:
@@ -13,6 +14,10 @@ def main():
    assert page.locator('.op-overview-grid .op-stat').count()==4;assert page.locator('.op-overview-grid .op-stat-icon svg').count()==4
    bg=page.locator('.op-overview-shell').evaluate("e=>getComputedStyle(e).backgroundImage");assert 'linear-gradient' in bg
    assert page.locator('.op-monitor-source').count()>=8;assert page.locator('.op-source-favicon').count()>=1;assert page.locator('[data-op-source-quick]').count()>=2
+   embedded=page.locator('img.op-source-favicon[src^="data:image/"]')
+   assert embedded.count()>=3
+   for i in range(embedded.count()):
+    assert embedded.nth(i).evaluate('img=>img.complete && img.naturalWidth>0')
    assert not page.evaluate('document.documentElement.scrollWidth>document.documentElement.clientWidth')
    q=page.locator('[data-op-source-quick]').first;sid=q.get_attribute('data-op-source-quick');q.click();page.wait_for_timeout(80);assert page.locator('[data-op-source]').input_value()==sid;assert q.get_attribute('aria-pressed')=='true'
    page.locator('[data-op-reset]').click();page.locator('[data-op-search]').fill('parcheggi');page.wait_for_timeout(80);assert page.locator('[data-opportunity-card]:not([hidden])').count()>=1
