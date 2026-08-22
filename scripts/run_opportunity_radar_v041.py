@@ -5,9 +5,14 @@ Mantiene intatto il motore v0.4 già collaudato e aggiunge i registri di copertu
 trasversali emersi dal secondo audit: famiglia, pari opportunità, Casa Italia,
 rete MiC generale e Funding & Tenders UE. Le nuove sentinelle passano dagli
 stessi vincoli di verifica primaria, matrice comunale e lifecycle della v0.4.
+
+Il discovery live viene eseguito in parallelo per endpoint: l'ampliamento della
+copertura non deve trasformare i timeout dei portali pubblici in una somma
+sequenziale di minuti. L'ordine dell'output resta deterministico.
 """
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -51,6 +56,89 @@ def _source_visual(source_id: str) -> dict[str, Any]:
             "source_favicon": meta.get("favicon") or current.get("source_favicon") or "",
         }
     return current
+
+
+def probe_discovery_sources(
+    config: dict[str, Any],
+    *,
+    payloads: dict[str, str] | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Versione concorrente e deterministica del probe discovery v0.3."""
+    payloads = payloads or {}
+    sources = list(config.get("discoverySources") or [])
+    results: dict[tuple[int, int], tuple[str | None, str | None]] = {}
+    jobs: list[tuple[int, int, dict[str, Any], str]] = []
+
+    for source_index, source in enumerate(sources):
+        for url_index, url in enumerate(list(source.get("urls") or [])):
+            jobs.append((source_index, url_index, source, str(url)))
+
+    def fetch_one(source: dict[str, Any], url: str) -> tuple[str | None, str | None]:
+        if url in payloads:
+            return payloads[url], None
+        try:
+            payload = base.radar.v025.v022.fetch_resilient(
+                url,
+                timeout=int(source.get("fetchTimeoutSeconds") or 25),
+                attempts=1,
+            )
+            return payload, None
+        except Exception as exc:  # pragma: no cover - dipende dalla rete live
+            return None, str(exc)
+
+    if jobs:
+        workers = min(12, max(1, len(jobs)))
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="radar-discovery") as pool:
+            pending = {
+                pool.submit(fetch_one, source, url): (source_index, url_index)
+                for source_index, url_index, source, url in jobs
+            }
+            for future in as_completed(pending):
+                results[pending[future]] = future.result()
+
+    queue: list[dict[str, Any]] = []
+    states: list[dict[str, Any]] = []
+    for source_index, source in enumerate(sources):
+        urls = [str(x) for x in source.get("urls") or []]
+        endpoint_ok = 0
+        endpoint_errors: list[str] = []
+        source_candidates: list[dict[str, Any]] = []
+        for url_index, url in enumerate(urls):
+            payload, error = results.get((source_index, url_index), (None, "endpoint non eseguito"))
+            if payload is not None:
+                endpoint_ok += 1
+                source_candidates.extend(base.radar.discovery_candidates(source, payload, url))
+            else:
+                endpoint_errors.append(f"{url}: {error}")
+
+        unique: dict[tuple[str, str], dict[str, Any]] = {}
+        for item in source_candidates:
+            key = (
+                base.radar.v025.fold(item.get("title")),
+                base.radar.v025.normalized_url(item.get("url")),
+            )
+            unique[key] = item
+        source_candidates = list(unique.values())[:50]
+        queue.extend(source_candidates)
+
+        if endpoint_ok == len(urls) and urls:
+            runtime = "ok"
+        elif endpoint_ok:
+            runtime = "degraded"
+        else:
+            runtime = "error"
+        states.append({
+            "sourceId": source["id"],
+            "status": runtime,
+            "endpointCount": len(urls),
+            "endpointOk": endpoint_ok,
+            "candidateCount": len(source_candidates),
+            "errors": endpoint_errors,
+            "freshness": {"status": "discovery", "observedDate": None, "ageDays": None},
+        })
+
+    queue.sort(key=lambda item: (str(item.get("source_label") or ""), str(item.get("title") or "")))
+    return queue, states
 
 
 def inject_verified_v04(
@@ -120,6 +208,7 @@ base.compose_runtime_payloads = compose_runtime_payloads
 base._source_visual = _source_visual
 base.inject_verified_v04 = inject_verified_v04
 base.build_coverage_audit = build_coverage_audit
+base.radar.probe_discovery_sources = probe_discovery_sources
 
 # API ri-esposta per test e tooling.
 _load = base._load
