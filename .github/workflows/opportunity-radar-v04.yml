@@ -11,6 +11,7 @@ on:
       - "scripts/run_opportunity_radar_v043.py"
       - "scripts/build_opportunity_preview_v04.py"
       - "scripts/build_opportunity_preview_v043.py"
+      - "scripts/source_favicon_assets.py"
       - "scripts/test_opportunity_radar_v04.py"
       - "scripts/test_opportunity_radar_v043.py"
       - "scripts/test_opportunity_preview_v04.py"
@@ -26,6 +27,7 @@ on:
       - "data/opportunity-verified-v04.json"
       - "data/opportunity-verified-v04-extra.json"
       - "data/opportunity-verified-v042.json"
+      - "data/opportunity-verified-v043.json"
       - "data/opportunity-coverage-sentinels-v04.json"
       - "data/opportunity-coverage-sentinels-v04-extra.json"
       - "data/opportunity-coverage-sentinels-v042.json"
@@ -60,11 +62,12 @@ jobs:
           python-version: "3.12"
       - name: Validate residual coverage v0.4.3
         run: |
-          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
+          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/source_favicon_assets.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
           python -m json.tool data/opportunity-discovery-v042.json > /dev/null
           python -m json.tool data/opportunity-discovery-v043.json > /dev/null
           python -m json.tool data/opportunity-coverage-evidence-v043.json > /dev/null
           python -m json.tool data/opportunity-verified-v042.json > /dev/null
+          python -m json.tool data/opportunity-verified-v043.json > /dev/null
           python -m json.tool data/opportunity-coverage-sentinels-v042.json > /dev/null
           python -m json.tool data/opportunity-coverage-sentinels-v043.json > /dev/null
           python -m json.tool data/opportunity-independent-audit-v042.json > /dev/null
@@ -124,7 +127,7 @@ jobs:
       - name: Enforce v0.4.3 gates
         if: steps.collect.outputs.exit_code != '0'
         run: |
-          echo "Radar v0.4.3 fallito con codice ${{ steps.collect.outputs.exit_code }}: 2=continuità, 3=backtest classificatore, 5=copertura/sentinelle, 6=audit indipendente/holdout, 7=copertura residua/evidenze." 
+          echo "Radar v0.4.3 fallito con codice ${{ steps.collect.outputs.exit_code }}: 2=continuità, 3=backtest classificatore, 5=copertura/sentinelle, 6=audit indipendente/holdout, 7=copertura residua/evidenze."
           exit 1
 
   browser-preview:
@@ -147,6 +150,7 @@ jobs:
         run: |
           python scripts/build_static_brand.py
           python scripts/build_opportunity_preview_v043.py --data reports/runtime/opportunities-v04.json --dist dist
+          test -s dist/assets/source-favicons/provenance.json
       - name: Browser checks
         shell: bash
         run: |
@@ -183,6 +187,7 @@ jobs:
           echo "ANTEPRIMA RADAR OPPORTUNITA v0.4.3 - NON PUBBLICATA" > preview-package/LEGGIMI.txt
           test -f preview-package/dist/opportunita-preview/index.html
           grep -q "Anteprima v0.4.3" preview-package/dist/opportunita-preview/index.html
+          grep -q "Tutte le fonti monitorate" preview-package/dist/opportunita-preview/index.html
       - uses: actions/upload-artifact@v4
         with:
           name: opportunity-radar-v04-browser-preview
