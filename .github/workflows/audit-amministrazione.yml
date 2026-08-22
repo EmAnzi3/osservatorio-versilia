@@ -27,6 +27,10 @@ jobs:
       - name: Compute RGS administration values
         run: python scripts/audit_rgs_amministrazione_values.py
 
+      - name: Probe RGS employees per residents indicator
+        timeout-minutes: 2
+        run: python scripts/probe_rgs_dipendenti_abitanti.py
+
       - name: Inspect official Conto Annuale bulk download
         continue-on-error: true
         timeout-minutes: 2
