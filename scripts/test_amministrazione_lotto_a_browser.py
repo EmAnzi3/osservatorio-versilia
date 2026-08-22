@@ -11,13 +11,35 @@ def require(condition: bool, message: str) -> None:
 
 
 def no_overflow(page, label: str) -> None:
-    dims = page.evaluate("""() => ({
-      viewport: window.innerWidth,
-      doc: document.documentElement.scrollWidth,
-      body: document.body.scrollWidth
-    })""")
-    actual = max(int(dims["doc"]), int(dims["body"]))
-    require(actual <= int(dims["viewport"]) + 2, f"Overflow {label}: {dims}")
+    report = page.evaluate("""() => {
+      const viewport = window.innerWidth;
+      const doc = document.documentElement.scrollWidth;
+      const body = document.body.scrollWidth;
+      const offenders = [...document.querySelectorAll('*')]
+        .map((el) => {
+          const rect = el.getBoundingClientRect();
+          const style = getComputedStyle(el);
+          return {
+            tag: el.tagName.toLowerCase(),
+            id: el.id || '',
+            cls: typeof el.className === 'string' ? el.className : '',
+            text: (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 90),
+            left: Math.round(rect.left * 10) / 10,
+            right: Math.round(rect.right * 10) / 10,
+            width: Math.round(rect.width * 10) / 10,
+            display: style.display,
+            overflowX: style.overflowX,
+          };
+        })
+        .filter((item) => item.display !== 'none' && (item.right > viewport + 2 || item.left < -2))
+        .slice(0, 12);
+      return {viewport, doc, body, offenders};
+    }""")
+    actual = max(int(report["doc"]), int(report["body"]))
+    require(
+        actual <= int(report["viewport"]) + 2,
+        f"Overflow {label}: viewport={report['viewport']} doc={report['doc']} body={report['body']} offenders={report['offenders']}",
+    )
 
 
 def check_compare(page, base: str, key: str, expected_label: str) -> None:
