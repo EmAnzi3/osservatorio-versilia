@@ -71,6 +71,35 @@ def main() -> None:
         require('Non è un tasso di evasione fiscale' in page.locator('.town-metric-primary').inner_text(), 'Disclaimer Lotto B assente nella scheda Massarosa')
         no_horizontal_overflow(page, 'scheda Massarosa Fiscalità Lotto B desktop')
 
+        town_selector.select_option('part-2')
+        page.wait_for_timeout(100)
+        massarosa_position = page.locator('.composite-versilia-position').inner_text()
+        require('0,0%' in massarosa_position, f'Quota DAIT Massarosa inattesa: {massarosa_position!r}')
+        require('nessun contributo attribuito' in massarosa_position.lower(), 'Massarosa deve risultare senza contributo attribuito, non in negativo')
+        require('non compare tra i beneficiari' in massarosa_position.lower(), 'Spiegazione DAIT per Comune non beneficiario assente')
+
+        page.goto(base + 'comuni/pietrasanta/?tema=economia&indicatore=fiscalRecoveryActivity', wait_until='networkidle')
+        pietrasanta_selector = page.locator('select[data-composite-choice]')
+        require(pietrasanta_selector.is_visible(), 'Selettore Lotto B assente nella scheda Pietrasanta')
+
+        pietrasanta_selector.select_option('part-1')
+        page.wait_for_timeout(100)
+        total_position = page.locator('.composite-versilia-position').inner_text()
+        require('Peso sul totale Versilia' in total_position, f'Intestazione recupero totale inattesa: {total_position!r}')
+        require('20,4%' in total_position, f'Quota recupero totale Pietrasanta inattesa: {total_position!r}')
+        require('del recupero tributario complessivo' in total_position, 'Interpretazione percentuale del recupero totale assente')
+        require('−' not in total_position.split('\n')[1], 'Il recupero totale non deve essere presentato come scostamento negativo dal totale Versilia')
+
+        pietrasanta_selector.select_option('part-2')
+        page.wait_for_timeout(100)
+        dait_position = page.locator('.composite-versilia-position').inner_text()
+        require('Contributo attribuito in Versilia' in dait_position, f'Intestazione DAIT inattesa: {dait_position!r}')
+        require('66,7%' in dait_position, f'Quota contributo DAIT Pietrasanta inattesa: {dait_position!r}')
+        require('1° per importo attribuito' in dait_position, 'Pietrasanta deve risultare prima per importo tra i beneficiari, senza giudizio di performance')
+        require('2 Comuni versiliesi beneficiari' in dait_position, 'Perimetro dei beneficiari DAIT non esplicitato')
+        require('sotto la media Versilia' not in dait_position, 'Il contributo DAIT non deve essere trattato come scostamento dalla media')
+        no_horizontal_overflow(page, 'scheda Pietrasanta Fiscalità Lotto B desktop')
+
         page.set_viewport_size({'width': 390, 'height': 844})
         page.goto(base + 'confronta/economia/?indicatore=fiscalRecoveryActivity', wait_until='networkidle')
         require(page.locator('select[data-composite-component]').is_visible(), 'Selettore Lotto B non visibile su mobile')
@@ -82,11 +111,16 @@ def main() -> None:
         page.goto(base + 'comuni/forte-dei-marmi/?tema=economia&indicatore=fiscalRecoveryActivity', wait_until='networkidle')
         mobile_metric = page.locator('[data-metric="fiscalRecoveryActivity"]')
         require(mobile_metric.count() == 1, 'Indicatore non selezionabile a Forte dei Marmi mobile')
-        require(page.locator('select[data-composite-choice]').is_visible(), 'Selettore Lotto B non visibile a Forte dei Marmi mobile')
+        mobile_selector = page.locator('select[data-composite-choice]')
+        require(mobile_selector.is_visible(), 'Selettore Lotto B non visibile a Forte dei Marmi mobile')
+        mobile_selector.select_option('part-2')
+        page.wait_for_timeout(100)
+        mobile_position = page.locator('.composite-versilia-position').inner_text()
+        require('nessun contributo attribuito' in mobile_position.lower(), 'DAIT Forte dei Marmi mobile deve indicare assenza di contributo attribuito')
         no_horizontal_overflow(page, 'scheda Forte dei Marmi Fiscalità Lotto B mobile')
         browser.close()
 
-    print('Fiscalità Lotto B browser: confronto/schede e selector desktop-mobile verificati senza overflow.')
+    print('Fiscalità Lotto B browser: confronto, semantica comunale e selector desktop-mobile verificati senza overflow.')
 
 
 if __name__ == '__main__':
