@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.4",
+  "purpose": "Misurare la copertura del radar separatamente dalla precisione/recall del classificatore sui candidati già osservati.",
+  "classifierRecallIsNotWebCoverage": true,
+  "acceptedOpportunityKinds": [
+    "grant",
+    "contribution",
+    "incentive",
+    "competitive_call",
+    "manifestation_of_interest",
+    "prize",
+    "programme",
+    "rolling_scheme"
+  ],
+  "excludedOpportunityKinds": [
+    "procurement_where_municipality_is_contracting_authority",
+    "supplier_tender",
+    "concession_not_accessible_to_municipality",
+    "notice_without_financial_or_operational_opportunity"
+  ],
+  "lifecycleStages": {
+    "application_open": {"label":"Aperta","description":"La finestra di candidatura è aperta e ha una scadenza o un termine documentato."},
+    "rolling_open": {"label":"A sportello","description":"La misura è accessibile senza una singola scadenza di bando, nei limiti delle regole e delle risorse applicabili."},
+    "announced_upcoming": {"label":"In arrivo","description":"La fonte ufficiale ha annunciato una procedura futura, ma la finestra non è ancora aperta."}
+  },
+  "requiredFamilies": [
+    {"id":"regional-core","label":"Regione Toscana e programmi regionali","sourceIds":["regione-toscana","regione-toscana-fesr","regione-toscana-fse","sviluppo-toscana"]},
+    {"id":"national-crosscutting","label":"Canali nazionali trasversali per enti locali","sourceIds":["ministero-interno","pcm-stato-citta","politiche-coesione"]},
+    {"id":"culture","label":"Cultura","sourceIds":["mic-spettacolo","mic-dgcc"]},
+    {"id":"infrastructure","label":"Infrastrutture e mobilità","sourceIds":["mit-enti-locali"]},
+    {"id":"energy-climate-environment","label":"Energia, clima e ambiente","sourceIds":["gse","mase-bandi","cinea-life"]},
+    {"id":"sport-social-infrastructure","label":"Sport e infrastrutture sociali","sourceIds":["pcm-sport"]},
+    {"id":"maritime-coastal","label":"Mare e Comuni costieri","sourceIds":["pcm-politiche-mare"]},
+    {"id":"digital-pa","label":"Transizione digitale PA","sourceIds":["pa-digitale-2026","pa-digitale-current"]},
+    {"id":"eu-direct","label":"Programmi UE diretti","sourceIds":["cinea-life","eu-neb"]},
+    {"id":"territorial-cooperation","label":"Cooperazione territoriale","sourceIds":["interreg-marittimo"]}
+  ],
+  "publicationRules": {
+    "discoveryCannotPublishAlone": true,
+    "officialPrimaryEvidenceRequired": true,
+    "municipalityRoleRequired": true,
+    "municipalityMatrixRequired": true,
+    "lifecycleStageRequired": true,
+    "rollingMeasuresMayOmitDeadline": true,
+    "upcomingMeasuresMayOmitDeadline": true
+  }
+}
