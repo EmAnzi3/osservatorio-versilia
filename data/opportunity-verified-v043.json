@@ -33,6 +33,39 @@
         "Viareggio": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."}
       },
       "presentation": {"source_mark":"EU","source_class":"eu","category":"europa"}
+    },
+    {
+      "coverage_id": "eu-eucf-call-8-2026",
+      "source_id": "eu-eucf",
+      "source_label": "UE · European City Facility",
+      "publisher": "European City Facility · CINEA / ManagEnergy",
+      "title": "European City Facility — 8ª call",
+      "url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+      "required_terms": ["8th call", "October 2026", "60 000 EUR"],
+      "evidence_verified_at": "2026-08-23",
+      "allow_recent_evidence_fallback": true,
+      "lifecycle_stage": "announced_upcoming",
+      "deadline_at": null,
+      "eligibility": "conditional",
+      "applicant_type": "Città, Comuni, autorità locali, loro raggruppamenti o enti pubblici locali secondo i requisiti della call EUCF",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Amministrazioni locali e comunità che beneficeranno degli investimenti energetici e climatici preparati con l'EUCF",
+      "geographic_scope": "Unione europea · Stati membri UE",
+      "project_requirements": "La 8ª call è annunciata per ottobre 2026 e resterà aperta per due mesi. Sono previsti 185 contributi da 60.000 euro per sviluppare investment concepts su energia e clima. La candidatura richiede una strategia locale energia-clima, come un SECAP o piano equivalente con obiettivi di mitigazione; requisiti e calendario definitivi vanno riconfermati all'apertura della call.",
+      "category": "energia",
+      "description": "Contributo europeo da 60.000 euro per aiutare città e Comuni a preparare progetti di investimento su energia sostenibile e clima.",
+      "condition_label": "SECAP / piano energia-clima",
+      "actionable": false,
+      "municipality_status_overrides": {
+        "Camaiore": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Forte dei Marmi": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Massarosa": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Pietrasanta": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Seravezza": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Stazzema": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."},
+        "Viareggio": {"status":"conditional","reason":"Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."}
+      },
+      "presentation": {"source_mark":"EUCF","source_class":"eu","category":"energia"}
     }
   ]
 }
