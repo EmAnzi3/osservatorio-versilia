@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json
 import unittest
 from datetime import date
 
-import run_opportunity_radar_v04 as v04
+import run_opportunity_radar_v041 as v04
 
 
 class RadarV04Test(unittest.TestCase):
@@ -16,15 +15,18 @@ class RadarV04Test(unittest.TestCase):
             "pcm-stato-citta", "mic-dgcc", "pcm-politiche-mare", "pcm-sport",
             "mit-enti-locali", "mase-bandi", "cinea-life", "eu-neb",
             "interreg-marittimo", "politiche-coesione", "pa-digitale-current",
+            "pcm-famiglia", "pcm-pari-opportunita", "pcm-casa-italia",
+            "mic-generale", "eu-funding-tenders",
         ):
             self.assertIn(required, discovery_ids)
             self.assertIn(required, coverage.get("sources") or {})
-        self.assertGreaterEqual(len(discovery_ids), 15)
+        self.assertGreaterEqual(len(discovery_ids), 20)
 
     def test_contract_separates_classifier_recall_from_web_coverage(self):
         contract = v04._load(v04.CONTRACT_V04)
         self.assertTrue(contract["classifierRecallIsNotWebCoverage"])
         self.assertIn("procurement_where_municipality_is_contracting_authority", contract["excludedOpportunityKinds"])
+        self.assertIn("supplier_tender", contract["excludedOpportunityKinds"])
         self.assertEqual(set(contract["lifecycleStages"]), {"application_open", "rolling_open", "announced_upcoming"})
         backtest = v04._load(v04.radar.DEFAULT_BACKTEST)
         self.assertIn("non la completezza dell'intero web", backtest.get("scope", ""))
@@ -33,6 +35,7 @@ class RadarV04Test(unittest.TestCase):
         _, coverage = v04.compose_runtime_payloads()
         configured = set((coverage.get("sources") or {}).keys())
         contract = v04._load(v04.CONTRACT_V04)
+        self.assertGreaterEqual(len(contract.get("requiredFamilies") or []), 12)
         for family in contract.get("requiredFamilies") or []:
             with self.subTest(family=family.get("id")):
                 self.assertTrue(configured.intersection(family.get("sourceIds") or []))
@@ -73,11 +76,26 @@ class RadarV04Test(unittest.TestCase):
         self.assertEqual(upcoming["lifecycle_stage"], "announced_upcoming")
         self.assertFalse(upcoming["actionable_for_municipality"])
 
-    def test_historical_sentinels_cover_sport_and_interreg(self):
-        sentinels = v04._load(v04.SENTINELS_V04).get("cases") or []
-        historical = {x.get("source_id") for x in sentinels if x.get("expected") == "historical_monitored"}
+    def test_family_small_towns_is_stazzema_only(self):
+        entry = next(x for x in v04._load(v04.VERIFIED_EXTRA)["entries"] if x["coverage_id"] == "pcm-famiglia-crescere-piccoli-comuni-2026")
+        item = v04.build_seed_item(entry, date(2026, 8, 22), "live")
+        matrix = item["municipality_eligibility"]
+        self.assertEqual(matrix["Stazzema"]["status"], "eligible")
+        for town in ("Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Viareggio"):
+            self.assertEqual(matrix[town]["status"], "not_eligible", town)
+
+    def test_equal_opportunities_bando_keeps_all_towns_conditional(self):
+        entry = next(x for x in v04._load(v04.VERIFIED_EXTRA)["entries"] if x["coverage_id"] == "pcm-pari-tratta-bando-8-2026")
+        item = v04.build_seed_item(entry, date(2026, 8, 22), "live")
+        self.assertTrue(all(row["status"] == "conditional" for row in item["municipality_eligibility"].values()))
+
+    def test_historical_sentinels_cover_sport_interreg_and_resilience(self):
+        base_cases = v04._load(v04.SENTINELS_V04).get("cases") or []
+        extra_cases = v04._load(v04.SENTINELS_EXTRA).get("cases") or []
+        historical = {x.get("source_id") for x in base_cases + extra_cases if x.get("expected") == "historical_monitored"}
         self.assertIn("pcm-sport", historical)
         self.assertIn("interreg-marittimo", historical)
+        self.assertIn("pcm-casa-italia", historical)
 
 
 if __name__ == "__main__":
