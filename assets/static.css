@@ -59,6 +59,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .search-field { position: sticky; top: calc(77px + env(safe-area-inset-top)); z-index: 2; background: #fff; }
   .search-results { min-height: 0; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
   .search-footer { display: none; }
+  .topic-hero > * { min-width: 0; }
+  .topic-hero h1 { font-size: clamp(42px, 11.5vw, 54px); }
   .topic-controls .metric-switch { display: flex; flex-wrap: nowrap; align-items: stretch; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
   .topic-controls .metric-switch button { flex: 0 0 auto; text-align: center; border-radius: 999px; scroll-snap-align: center; }
   .town-topic > .metric-switch { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
