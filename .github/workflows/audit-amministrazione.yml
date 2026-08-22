@@ -26,5 +26,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Audit live RGS administration datasets
-        run: python scripts/audit_rgs_amministrazione_live.py
+      - name: Compute RGS administration values
+        run: python scripts/audit_rgs_amministrazione_values.py
+
+      - name: Inspect official Conto Annuale bulk download
+        run: python scripts/probe_contoannuale_download.py
