@@ -13,6 +13,8 @@ from urllib.request import Request, urlopen
 IPA_API = "https://indicepa.gov.it/ipa-dati/api/3/action/datastore_search"
 IPA_RESOURCE = "7ecd6b8e-ede7-41c6-a16d-fe263ac6baf1"
 PAD26 = "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/candidature_finanziate_141.csv"
+REGIONE_2022 = "https://www.regione.toscana.it/documents/10180/12228409/Indicatori%2B2022.csv/65f6cdca-8c07-b5a5-87b5-4870c2226692?t=1727340985500"
+REGIONE_2024 = "https://www.regione.toscana.it/documents/d/guest/indicatori-2024-1"
 TOWNS = {
     "Camaiore": "046005",
     "Forte dei Marmi": "046013",
@@ -40,7 +42,13 @@ def get_json(url: str, timeout: int = 60) -> dict:
 def get_text(url: str, timeout: int = 60) -> str:
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 OsservatorioVersilia/1.0", "Accept": "text/csv,*/*"})
     with urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8-sig")
+        raw = resp.read()
+    for enc in ("utf-8-sig", "utf-8", "latin-1"):
+        try:
+            return raw.decode(enc)
+        except UnicodeDecodeError:
+            pass
+    return raw.decode("latin-1", errors="replace")
 
 
 def ipa_rows(town: str) -> list[dict]:
@@ -52,7 +60,6 @@ def ipa_rows(town: str) -> list[dict]:
     exact = [r for r in records if norm(r.get("Denominazione_ente", "")) in exact_targets]
     if exact:
         return exact
-    # fallback conservativo: nome comune + categoria comunale
     return [
         r for r in records
         if norm(town) in norm(r.get("Denominazione_ente", ""))
@@ -118,13 +125,53 @@ def analyse_pad26() -> dict:
     return out
 
 
+def parse_regione(url: str) -> dict:
+    text = get_text(url, timeout=90)
+    sample = text[:5000]
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=";,\t|")
+        delimiter = dialect.delimiter
+    except csv.Error:
+        delimiter = ";"
+    rows = list(csv.DictReader(io.StringIO(text), delimiter=delimiter))
+    headers = list(rows[0].keys()) if rows else []
+
+    def code_of(row: dict) -> str:
+        for k, v in row.items():
+            nk = norm(k)
+            vv = str(v or "").strip()
+            digits = re.sub(r"\D", "", vv)
+            if ("cod" in nk or "istat" in nk) and len(digits) == 6:
+                return digits
+        return ""
+
+    def town_of(row: dict) -> str:
+        for k, v in row.items():
+            nk = norm(k)
+            if nk in {"comune", "denominazione comune", "denominazione"}:
+                return str(v or "").strip()
+        return ""
+
+    out = {"delimiter": delimiter, "headers": headers, "towns": {}}
+    for town, code in TOWNS.items():
+        matches = [r for r in rows if code_of(r) == code]
+        if not matches:
+            matches = [r for r in rows if norm(town_of(r)) == norm(town)]
+        out["towns"][town] = matches
+    return out
+
+
 def main() -> None:
     result = {
         "ipaSource": IPA_API,
         "ipaResource": IPA_RESOURCE,
         "pad26Source": PAD26,
+        "regione2022Source": REGIONE_2022,
+        "regione2024Source": REGIONE_2024,
         "ipa": analyse_ipa(),
         "pad26": analyse_pad26(),
+        "regione2022": parse_regione(REGIONE_2022),
+        "regione2024": parse_regione(REGIONE_2024),
     }
     print("SERVIZI_DIGITALI_AUDIT_JSON_BEGIN")
     print(json.dumps(result, ensure_ascii=False, sort_keys=True))
@@ -134,7 +181,13 @@ def main() -> None:
     for town in TOWNS:
         ipa = result["ipa"][town]
         p = result["pad26"][town]
-        print(f"{town}: IPA={ipa['count']} servizi, tipi={ipa['uniqueTypes']}, date={ipa['oldestDate']}..{ipa['latestDate']}; PAD26 1.4.1 Comune={len(p)}")
+        r22 = result["regione2022"]["towns"][town]
+        r24 = result["regione2024"]["towns"][town]
+        print(f"{town}: IPA={ipa['count']} servizi, tipi={ipa['uniqueTypes']}, date={ipa['oldestDate']}..{ipa['latestDate']}; PAD26 1.4.1 Comune={len(p)}; RT2022={len(r22)} righe; RT2024={len(r24)} righe")
+        for label, rows in (("RT2022", r22), ("RT2024", r24)):
+            if rows:
+                row = rows[0]
+                print(label, town, "ind18=", row.get("ind18") or row.get("IND18") or row.get("Ind18"), "ROW=", json.dumps(row, ensure_ascii=False, sort_keys=True))
 
 
 if __name__ == "__main__":
