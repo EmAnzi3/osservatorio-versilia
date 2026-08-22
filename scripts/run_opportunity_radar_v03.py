@@ -4,14 +4,18 @@
 - espone il fetch resiliente al namespace atteso dal collector v0.3;
 - amplia il parser listing a h5/h6 per portali istituzionali diversi da Regione Toscana;
 - aggiunge la sezione 'A chi si rivolge' alla lettura dei destinatari;
-- propaga alla matrice di copertura le icone affidabili del registro di presentazione.
+- propaga alla matrice di copertura le icone affidabili del registro di presentazione;
+- risolve dettagli ufficiali verificati che i listing non espongono correttamente;
+- collassa duplicati semantici dello stesso bando tramite rule_id.
 """
 from __future__ import annotations
 
 import json
 import re
+from pathlib import Path
 
 import opportunity_radar_v03 as radar
+import opportunity_radar_v03_post as post
 
 radar.v025.v022.fetch_resilient = radar.v025.v022.v02.fetch_resilient
 
@@ -23,9 +27,7 @@ _ORIGINAL_COLLECT_HTML = quality.collect_html
 
 
 def _expanded_collect_html(source, today, payload, loader=None, pdf_text_loader=None):
-    # Alcuni portali (es. Sviluppo Toscana / portali ministeriali) usano h5/h6
-    # per i titoli delle card. Li normalizziamo soltanto nel listing, lasciando
-    # invariata la lettura della scheda e dei PDF ufficiali.
+    # Alcuni portali istituzionali usano h5/h6 per i titoli delle card.
     expanded = re.sub(r"<(/?)h[56](\b[^>]*)>", r"<\1h4\2>", payload, flags=re.I)
     rows = _ORIGINAL_COLLECT_HTML(
         source,
@@ -64,6 +66,26 @@ def _build_coverage_with_visuals(result, registry, discovery_states):
 
 
 radar.build_coverage = _build_coverage_with_visuals
+
+_ORIGINAL_RUN = radar.run
+_VERIFIED = radar.ROOT / "data" / "opportunity-verified-details-v03.json"
+
+
+def _hardened_run(config_path: Path, today, **kwargs):
+    result = _ORIGINAL_RUN(config_path, today, **kwargs)
+    return post.harden(
+        radar,
+        result,
+        config_path,
+        today,
+        kwargs.get("presentation_path", radar.DEFAULT_PRESENTATION),
+        _VERIFIED,
+        detail_payloads=kwargs.get("detail_payloads"),
+        live=kwargs.get("payloads") is None,
+    )
+
+
+radar.run = _hardened_run
 
 if __name__ == "__main__":
     raise SystemExit(radar.main())
