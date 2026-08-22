@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.4.2",
+  "discoverySources": [
+    {
+      "id": "pcm-disabilita",
+      "label": "PCM · Disabilità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche in favore delle persone con disabilità",
+      "territory": "Italia",
+      "family": "disability-inclusion",
+      "urls": ["https://www.disabilita.governo.it/it/avvisi-e-bandi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "sovvenzione", "finanzi", "contribut", "manifestazione"],
+      "municipalTerms": ["enti locali", "comun", "territorial", "partner"]
+    },
+    {
+      "id": "ministero-turismo",
+      "label": "Ministero del Turismo · Enti territoriali",
+      "publisher": "Ministero del Turismo",
+      "territory": "Italia",
+      "family": "tourism-territorial",
+      "urls": ["https://www.ministeroturismo.gov.it/avvisi-pubblici/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "fondo", "contribut", "turismo", "manifestazione di interesse"],
+      "municipalTerms": ["comun", "enti territoriali", "enti locali", "destinazioni"]
+    },
+    {
+      "id": "pcm-politiche-giovanili-scu",
+      "label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "family": "youth-civic-service",
+      "urls": ["https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "programmi", "progetti", "servizio civile", "finanzi"],
+      "municipalTerms": ["enti", "comun", "albo", "territorial"]
+    },
+    {
+      "id": "mlps-social-services",
+      "label": "Ministero del Lavoro · Servizi sociali",
+      "publisher": "Ministero del Lavoro e delle Politiche Sociali",
+      "territory": "Italia",
+      "family": "labour-social-services",
+      "urls": ["https://www.lavoro.gov.it/notizie"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "manifestazione di interesse", "comuni", "ambiti territoriali", "fondo", "finanzi"],
+      "municipalTerms": ["comun", "ambiti territoriali sociali", "enti locali", "territorio"]
+    },
+    {
+      "id": "mim-enti-locali",
+      "label": "MIM · Edilizia e servizi scolastici",
+      "publisher": "Ministero dell'Istruzione e del Merito",
+      "territory": "Italia",
+      "family": "education-school-infrastructure",
+      "urls": ["https://pnrr.istruzione.it/avvisi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "enti locali", "scuole", "asili", "arredi", "sicurezza", "finanzi"],
+      "municipalTerms": ["enti locali", "comun", "proprietari", "beneficiari"]
+    },
+    {
+      "id": "funzione-pubblica",
+      "label": "Funzione Pubblica · Comuni",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento della funzione pubblica",
+      "territory": "Italia",
+      "family": "local-administration-capacity",
+      "urls": ["https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "comuni", "finanzi", "risorse", "digital", "capacità amministrativa"],
+      "municipalTerms": ["comun", "enti locali", "amministrazioni", "territorial"]
+    },
+    {
+      "id": "eu-cerv",
+      "label": "UE · CERV",
+      "publisher": "Commissione europea · Citizens, Equality, Rights and Values programme",
+      "territory": "Unione europea",
+      "family": "eu-direct",
+      "urls": ["https://commission.europa.eu/funding-and-tenders/find-funding/eu-funding-programmes/citizens-equality-rights-and-values-programme/citizens-equality-rights-and-values-programme-overview_en"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["CERV", "town", "cities", "call", "funding", "deadline"],
+      "municipalTerms": ["municipal", "town", "cities", "local authorities"]
+    }
+  ],
+  "coverageRegistry": {
+    "pcm-disabilita": {"label":"PCM · Disabilità","monitoringStatus":"active","role":"discovery","priority":115,"family":"disability-inclusion","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Avvisi e sovvenzioni su autonomia, inclusione e partecipazione delle persone con disabilità; verifica specifica del ruolo degli enti locali."},
+    "ministero-turismo": {"label":"Ministero del Turismo · Enti territoriali","monitoringStatus":"active","role":"discovery","priority":105,"family":"tourism-territorial","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"FUNT e altri avvisi rivolti a enti territoriali e Comuni; presidio di cicli futuri anche quando non vi sono finestre aperte."},
+    "pcm-politiche-giovanili-scu": {"label":"PCM · Politiche giovanili e Servizio civile","monitoringStatus":"active","role":"discovery","priority":95,"family":"youth-civic-service","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Avvisi per programmi e progetti SCU; pubblicazione solo dopo verifica dell'iscrizione/accreditamento dell'ente proponente."},
+    "mlps-social-services": {"label":"Ministero del Lavoro · Servizi sociali","monitoringStatus":"active","role":"discovery","priority":110,"family":"labour-social-services","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Manifestazioni di interesse, fondi e opportunità operative per Comuni e Ambiti Territoriali Sociali."},
+    "mim-enti-locali": {"label":"MIM · Edilizia e servizi scolastici","monitoringStatus":"active","role":"discovery","priority":105,"family":"education-school-infrastructure","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Avvisi su edilizia scolastica, nidi, arredi e sicurezza in cui gli enti locali possono essere beneficiari o attuatori."},
+    "funzione-pubblica": {"label":"Funzione Pubblica · Comuni","monitoringStatus":"active","role":"discovery","priority":100,"family":"local-administration-capacity","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Misure per capacità amministrativa, personale, organizzazione e innovazione dei Comuni."},
+    "eu-cerv": {"label":"UE · CERV","monitoringStatus":"active","role":"discovery","priority":110,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":true,"archiveContinuity":false,"historicalReplay":true,"favicon":"","note":"Canale tematico CERV separato dal Funding & Tenders generico per evitare falsi negativi sulle call rivolte a città e autorità locali."}
+  }
+}
