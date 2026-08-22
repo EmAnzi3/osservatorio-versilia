@@ -19,13 +19,13 @@ def main() -> int:
             root = page.locator("[data-opportunity-preview]")
             root.wait_for()
             total = int(root.get_attribute("data-total-opportunities") or 0)
-            assert total >= 5
+            assert total >= 7
             assert page.locator(".op-overview-grid .op-stat").count() == 6
             assert page.locator("[data-op-lifecycle]").count() == 1
             assert page.locator('[data-opportunity-card][data-lifecycle="application_open"]').count() >= 1
             assert page.locator('[data-opportunity-card][data-lifecycle="rolling_open"]').count() >= 1
             assert page.locator('[data-opportunity-card][data-lifecycle="announced_upcoming"]').count() >= 1
-            assert page.locator(".op-monitor-source").count() >= 15
+            assert page.locator(".op-monitor-source").count() >= 20
             assert page.locator("[data-op-source-quick]").count() >= 2
             assert not page.evaluate("document.documentElement.scrollWidth>document.documentElement.clientWidth")
 
@@ -45,6 +45,16 @@ def main() -> int:
 
             page.locator("[data-op-reset]").click()
             page.locator("[data-op-search]").fill("capitale italiana del mare")
+            page.wait_for_timeout(80)
+            assert page.locator("[data-opportunity-card]:not([hidden])").count() >= 1
+
+            page.locator("[data-op-reset]").click()
+            page.locator("[data-op-search]").fill("crescere nei piccoli comuni")
+            page.wait_for_timeout(80)
+            assert page.locator("[data-opportunity-card]:not([hidden])").count() >= 1
+
+            page.locator("[data-op-reset]").click()
+            page.locator("[data-op-search]").fill("tratta")
             page.wait_for_timeout(80)
             assert page.locator("[data-opportunity-card]:not([hidden])").count() >= 1
 
