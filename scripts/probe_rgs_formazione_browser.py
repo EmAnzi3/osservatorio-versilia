@@ -2,13 +2,12 @@
 from __future__ import annotations
 
 import json
-import re
 from urllib.parse import urlencode
 from playwright.sync_api import sync_playwright
 
 PAGE_URL = "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc"
-JS_URL = "https://contoannuale.rgs.mef.gov.it/o/sogei-theme/js/formazione.js"
 API = "https://contoannuale.rgs.mef.gov.it/o/sico-rest-APIs/sicoAPI"
+YEARS = tuple(range(2019, 2025))
 TOWNS = {
     "Camaiore": "1348",
     "Forte dei Marmi": "3135",
@@ -20,65 +19,80 @@ TOWNS = {
 }
 
 
-def compact(text: str, limit: int = 10000) -> str:
-    return re.sub(r"\s+", " ", text or "").strip()[:limit]
+def total_row(payload: dict) -> dict:
+    for group in payload.get("ripartizione", []):
+        if "TOTALE" in group and group["TOTALE"]:
+            row = group["TOTALE"][0]
+            return {
+                "totalDays": int(row["totale"]),
+                "menDays": int(row["uomini"]),
+                "womenDays": int(row["donne"]),
+                "meanMen": float(row["media_uomini"]),
+                "meanWomen": float(row["media_donne"]),
+                "meanTotalRgs": float(row["media_totale"]),
+            }
+    raise RuntimeError(f"TOTALE non trovato: {payload}")
 
 
 def main() -> None:
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         context = browser.new_context(
-            viewport={"width": 1440, "height": 1000},
             locale="it-IT",
             user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
         )
         page = context.new_page()
         page.goto(PAGE_URL, wait_until="domcontentloaded", timeout=90000)
-        page.wait_for_timeout(2500)
+        page.wait_for_timeout(1500)
         print("PAGE", page.title(), page.url)
 
-        js_response = context.request.get(JS_URL, timeout=60000)
-        js_text = js_response.text()
-        print("JS_STATUS", js_response.status, "BYTES", len(js_text))
-        print("JS_FILTER_LINES_BEGIN")
-        for line in js_text.splitlines():
-            low = line.lower()
-            if any(token in low for token in ("istituzionefilters", "tipoistituzionefilters", "formazione?", "formazioneandamento", "selectbox")):
-                print(compact(line, 12000))
-        print("JS_FILTER_LINES_END")
-
-        # Il sito usa convenzioni *Filters per i filtri. Proviamo la forma
-        # osservata nel JS e stampiamo la risposta completa per Massarosa.
-        def api_get(path: str, params: dict[str, str]):
-            url = f"{API}/{path}?{urlencode(params)}"
+        def get_training(year: int, codes: str) -> dict:
+            params = {
+                "anno": str(year),
+                "tipoIstituzioneFilters": "C",
+                "istituzioneFilters": codes,
+            }
+            url = f"{API}/formazione?{urlencode(params)}"
             response = context.request.get(url, timeout=60000)
-            print("API", response.status, url)
-            body = response.text()
-            try:
-                return json.loads(body)
-            except json.JSONDecodeError:
-                print("NON_JSON", compact(body, 4000))
-                return None
+            if response.status != 200:
+                raise RuntimeError(f"HTTP {response.status}: {url}")
+            payload = response.json()
+            if str(payload.get("anno")) != str(year):
+                raise RuntimeError(f"Anno inatteso per {url}: {payload.get('anno')}")
+            return total_row(payload)
 
-        base = {"anno": "2024", "tipoIstituzioneFilters": "C"}
-        massarosa = api_get("formazione", {**base, "istituzioneFilters": TOWNS["Massarosa"]})
-        print("MASSAROSA", json.dumps(massarosa, ensure_ascii=False))
-        andamento = api_get("formazioneAndamento", {"tipoIstituzioneFilters": "C", "istituzioneFilters": TOWNS["Massarosa"]})
-        print("MASSAROSA_ANDAMENTO", json.dumps(andamento, ensure_ascii=False))
-
-        print("TOWNS_2024_BEGIN")
+        out = {
+            "source": PAGE_URL,
+            "api": f"{API}/formazione",
+            "years": list(YEARS),
+            "towns": {},
+            "versilia": {},
+        }
         for town, code in TOWNS.items():
-            data = api_get("formazione", {**base, "istituzioneFilters": code})
-            print("TOWN", town, code, json.dumps(data, ensure_ascii=False))
-        print("TOWNS_2024_END")
+            out["towns"][town] = {
+                "institutionCode": code,
+                "series": {str(year): get_training(year, code) for year in YEARS},
+            }
+        combined_codes = ",".join(TOWNS.values())
+        out["versilia"] = {
+            "institutionCodes": list(TOWNS.values()),
+            "series": {str(year): get_training(year, combined_codes) for year in YEARS},
+        }
 
-        # Verifica se il backend accetta più istituzioni in un'unica selezione,
-        # utile per ottenere una media Versilia direttamente dalla fonte.
-        codes = ",".join(TOWNS.values())
-        combined = api_get("formazione", {**base, "istituzioneFilters": codes})
-        print("VERSILIA_COMBINED_COMMA", json.dumps(combined, ensure_ascii=False))
+        # Il backend espone una "Media Totale" che è la media aritmetica delle
+        # medie Uomini e Donne. La verifichiamo esplicitamente, senza attribuirle
+        # un significato diverso da quello pubblicato da RGS.
+        for scope in [*out["towns"].values(), out["versilia"]]:
+            for year, row in scope["series"].items():
+                expected = (row["meanMen"] + row["meanWomen"]) / 2
+                if abs(row["meanTotalRgs"] - expected) > 1e-9:
+                    raise RuntimeError(f"Media Totale RGS non riconciliata {year}: {row}")
+                if row["menDays"] + row["womenDays"] != row["totalDays"]:
+                    raise RuntimeError(f"Giornate per genere non riconciliate {year}: {row}")
 
-        page.screenshot(path="rgs-formazione-probe.png", full_page=True)
+        print("RGS_FORMATION_HISTORY_JSON_BEGIN")
+        print(json.dumps(out, ensure_ascii=False, sort_keys=True))
+        print("RGS_FORMATION_HISTORY_JSON_END")
         browser.close()
 
 
