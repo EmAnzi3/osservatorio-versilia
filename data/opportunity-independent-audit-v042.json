@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "0.4.2",
+  "baselineDate": "2026-08-22",
+  "purpose": "Misurare falsi negativi e tempi di rilevazione con fonti e sweep che non alimentano direttamente il radar.",
+  "baselineIsRepresentative": false,
+  "prospectiveOnlyForKpi": true,
+  "minimumProspectiveSample": 20,
+  "targetCaptureRate": 0.95,
+  "targetMedianDetectionLagDays": 3,
+  "holdoutSources": [
+    {
+      "id": "audit-invitalia",
+      "label": "Invitalia · incentivi e strumenti",
+      "url": "https://www.invitalia.it/incentivi-e-strumenti",
+      "method": "independent_crosscheck",
+      "note": "Fonte di controllo distinta dalla fonte primaria del Dipartimento; non alimenta il collector di produzione."
+    },
+    {
+      "id": "audit-cerv-italia",
+      "label": "CERV Italia · National Contact Point",
+      "url": "https://cervitalia.info/call/",
+      "method": "independent_crosscheck",
+      "note": "Punto di contatto nazionale usato per verificare call UE che il portale Funding & Tenders può non esporre al collector HTML."
+    },
+    {
+      "id": "audit-europe-direct-lucca",
+      "label": "Europe Direct Lucca-Viareggio",
+      "url": "https://www.casaeuropa.eu/",
+      "method": "local_holdout",
+      "note": "Canale territoriale indipendente utile per intercettare opportunità UE rilevanti per enti e amministrazioni locali della provincia di Lucca."
+    }
+  ],
+  "cases": [
+    {
+      "id": "a01",
+      "coverage_id": "pcm-disabilita-vita-opportunita-2026",
+      "title": "Vita & Opportunità 2026",
+      "family": "disability-inclusion",
+      "expected": "current",
+      "baselineRadarStatus": "missed",
+      "published_at": "2026-02-14",
+      "audit_found_at": "2026-08-22",
+      "auditMethod": "institutional_family_sweep",
+      "auditEvidenceUrl": "https://www.invitalia.it/incentivi-e-strumenti/vita-opportunita"
+    },
+    {
+      "id": "a02",
+      "coverage_id": "eu-cerv-town-twinning-2026",
+      "title": "CERV 2026 — Town Twinning",
+      "family": "eu-direct",
+      "expected": "current",
+      "baselineRadarStatus": "missed",
+      "published_at": "2026-04-28",
+      "audit_found_at": "2026-08-22",
+      "auditMethod": "independent_crosscheck",
+      "auditEvidenceUrl": "https://cervitalia.info/call/bando-gemellaggi-di-citta-4/"
+    },
+    {
+      "id": "a03",
+      "coverage_id": "mlps-assistenti-sociali-2026",
+      "title": "Potenziamento del servizio sociale professionale 2026",
+      "family": "labour-social-services",
+      "expected": "current",
+      "baselineRadarStatus": "missed",
+      "published_at": "2026-05-08",
+      "audit_found_at": "2026-08-22",
+      "auditMethod": "institutional_family_sweep",
+      "auditEvidenceUrl": "https://lavoro.gov.it/notizie/pagine/pubblicato-avviso-per-la-manifestazione-di-interesse-per-assunzione-di-assistenti-sociali-nei-comuni-e-negli-ATS"
+    },
+    {
+      "id": "a04",
+      "title": "Servizio civile universale — programmi e progetti 2026",
+      "family": "youth-civic-service",
+      "expected": "audit_review",
+      "baselineRadarStatus": "review",
+      "published_at": "2026-05-20",
+      "audit_found_at": "2026-08-22",
+      "auditMethod": "institutional_family_sweep",
+      "reason": "Non entra nel denominatore finché non è verificata l'iscrizione/accreditamento utile dei sette Comuni o dei relativi enti proponenti."
+    },
+    {
+      "id": "h07",
+      "title": "FUNT 2026 — quota enti territoriali",
+      "family": "tourism-territorial",
+      "expected": "historical_control",
+      "baselineRadarStatus": "not_monitored_family",
+      "closed_at": "2026-05-30"
+    },
+    {
+      "id": "h08",
+      "title": "Forniture per arredi 2026 — enti locali",
+      "family": "education-school-infrastructure",
+      "expected": "historical_control",
+      "baselineRadarStatus": "not_monitored_family",
+      "closed_at": "2026-03-03"
+    },
+    {
+      "id": "h09",
+      "title": "Risorse in Comune",
+      "family": "local-administration-capacity",
+      "expected": "historical_control",
+      "baselineRadarStatus": "not_monitored_family",
+      "closed_at": "2025-12-10"
+    }
+  ]
+}
