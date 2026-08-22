@@ -3,9 +3,9 @@
 
 La preview non dipende da placeholder grafici: per ogni fonte pubblicata prova la
 pagina dell'opportunità e poi la landing configurata, legge i <link rel=icon> e
-materializza localmente l'asset scelto. Se la pagina non espone un link icon,
-prova /favicon.ico sullo stesso origin. Un errore di rete lascia il fallback
-letterale già previsto dalla UI.
+materializza localmente l'asset scelto. Se il fetch HTTP standard non basta,
+usa Chromium/Playwright sulla stessa pagina ufficiale e scarica l'icona nello
+stesso contesto browser. Non vengono inventate icone sostitutive.
 """
 from __future__ import annotations
 
@@ -27,7 +27,11 @@ CONFIG_PATHS = (
     ROOT / "data" / "opportunity-discovery-v042.json",
     ROOT / "data" / "opportunity-discovery-v043.json",
 )
-UA = "Mozilla/5.0 (compatible; OsservatorioVersiliaRadar/0.4.3; +https://osservatorioversilia.it/)"
+UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/151.0.0.0 Safari/537.36"
+)
 
 
 class IconParser(HTMLParser):
@@ -69,9 +73,22 @@ def configured_pages() -> dict[str, list[str]]:
     return out
 
 
-def _fetch(url: str, *, max_bytes: int = 1_500_000) -> tuple[bytes, str, str]:
-    req = Request(url, headers={"User-Agent": UA, "Accept": "text/html,image/*,*/*;q=0.8"})
-    with urlopen(req, timeout=14) as response:
+def _fetch(
+    url: str,
+    *,
+    max_bytes: int = 1_500_000,
+    referer: str | None = None,
+) -> tuple[bytes, str, str]:
+    headers = {
+        "User-Agent": UA,
+        "Accept": "text/html,application/xhtml+xml,image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
+        "Cache-Control": "no-cache",
+    }
+    if referer:
+        headers["Referer"] = referer
+    req = Request(url, headers=headers)
+    with urlopen(req, timeout=18) as response:
         content_type = str(response.headers.get("Content-Type") or "").split(";", 1)[0].lower()
         final_url = response.geturl()
         payload = response.read(max_bytes + 1)
@@ -91,7 +108,7 @@ def _rank_icon(row: dict[str, str]) -> tuple[int, int, int]:
     return scalable, size, apple
 
 
-def _page_icon_urls(page_url: str) -> list[str]:
+def _page_icon_urls(page_url: str) -> list[tuple[str, str]]:
     parsed = urlparse(page_url)
     if parsed.path.lower().endswith((".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip")):
         return []
@@ -107,10 +124,10 @@ def _page_icon_urls(page_url: str) -> list[str]:
     except Exception:
         return []
     rows = sorted(parser.icons, key=_rank_icon, reverse=True)
-    urls = [urljoin(final_url, row.get("href", "")) for row in rows if row.get("href")]
+    urls = [(urljoin(final_url, row.get("href", "")), final_url) for row in rows if row.get("href")]
     origin = f"{urlparse(final_url).scheme}://{urlparse(final_url).netloc}/favicon.ico"
-    if origin not in urls:
-        urls.append(origin)
+    if not any(url == origin for url, _ in urls):
+        urls.append((origin, final_url))
     return urls
 
 
@@ -132,6 +149,20 @@ def _extension(url: str, content_type: str) -> str:
     return guessed if guessed in {".svg", ".png", ".webp", ".jpg", ".ico"} else ".ico"
 
 
+def _looks_like_image(raw: bytes, content_type: str, url: str = "") -> bool:
+    ctype = content_type.lower()
+    if ctype.startswith("image/"):
+        return True
+    prefix = raw[:32].lstrip().lower()
+    if raw.startswith(b"\x89PNG\r\n\x1a\n") or raw.startswith(b"\x00\x00\x01\x00"):
+        return True
+    if raw.startswith(b"\xff\xd8\xff") or raw[:4] in {b"RIFF"}:
+        return True
+    if prefix.startswith(b"<svg") or b"<svg" in raw[:500].lower():
+        return True
+    return Path(urlparse(url).path).suffix.lower() in {".svg", ".png", ".webp", ".jpg", ".jpeg", ".ico"} and bool(raw)
+
+
 def _save_data_uri(uri: str, target_stem: Path) -> Path | None:
     match = re.match(r"data:(image/[^;,]+)(;base64)?,(.*)$", uri, flags=re.I | re.S)
     if not match:
@@ -144,6 +175,116 @@ def _save_data_uri(uri: str, target_stem: Path) -> Path | None:
     return target
 
 
+def _store_remote_icon(
+    source_id: str,
+    icon_url: str,
+    page_url: str,
+    asset_dir: Path,
+) -> tuple[str, dict[str, str]] | None:
+    stem = asset_dir / re.sub(r"[^a-z0-9-]+", "-", source_id.lower()).strip("-")
+    if icon_url.startswith("data:image/"):
+        target = _save_data_uri(icon_url, stem)
+        if target is None:
+            return None
+        final_icon_url = icon_url
+        content_type = "image/data"
+        raw = target.read_bytes()
+    else:
+        raw, content_type, final_icon_url = _fetch(icon_url, referer=page_url)
+        if not raw or not _looks_like_image(raw, content_type, final_icon_url):
+            return None
+        target = stem.with_suffix(_extension(final_icon_url, content_type))
+        target.write_bytes(raw)
+    resolved = "../assets/source-favicons/" + target.name
+    return resolved, {
+        "page": page_url,
+        "icon": final_icon_url,
+        "local": resolved,
+        "method": "official-page-html",
+        "contentType": content_type,
+        "bytes": str(len(raw)),
+    }
+
+
+def _browser_resolve(
+    source_id: str,
+    pages: list[str],
+    asset_dir: Path,
+) -> tuple[str, dict[str, str]] | None:
+    """Fallback reale: apre la pagina ufficiale in Chromium e usa i suoi link icon."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except Exception:
+        return None
+
+    stem = asset_dir / re.sub(r"[^a-z0-9-]+", "-", source_id.lower()).strip("-")
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(user_agent=UA, locale="it-IT")
+            page = context.new_page()
+            try:
+                for requested_page in pages:
+                    try:
+                        response = page.goto(requested_page, wait_until="domcontentloaded", timeout=25_000)
+                        if response is None:
+                            continue
+                        final_page = page.url
+                        icons = page.eval_on_selector_all(
+                            'link[rel*="icon" i]',
+                            "els => els.map(el => ({href: el.href || el.getAttribute('href') || '', rel: el.rel || '', sizes: el.sizes ? el.sizes.value : '', type: el.type || ''})).filter(x => x.href)",
+                        )
+                        icons = sorted(icons, key=_rank_icon, reverse=True)
+                        icon_urls = [str(row.get("href") or "") for row in icons]
+                        origin = f"{urlparse(final_page).scheme}://{urlparse(final_page).netloc}/favicon.ico"
+                        if origin not in icon_urls:
+                            icon_urls.append(origin)
+                        for icon_url in icon_urls:
+                            try:
+                                if icon_url.startswith("data:image/"):
+                                    target = _save_data_uri(icon_url, stem)
+                                    if target is None:
+                                        continue
+                                    raw = target.read_bytes()
+                                    content_type = "image/data"
+                                    final_icon = icon_url
+                                else:
+                                    icon_response = page.request.get(
+                                        icon_url,
+                                        headers={"Referer": final_page, "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"},
+                                        timeout=20_000,
+                                        fail_on_status_code=False,
+                                    )
+                                    if not icon_response.ok:
+                                        continue
+                                    raw = icon_response.body()
+                                    content_type = str(icon_response.headers.get("content-type") or "").split(";", 1)[0].lower()
+                                    final_icon = icon_response.url
+                                    if not raw or not _looks_like_image(raw, content_type, final_icon):
+                                        continue
+                                    target = stem.with_suffix(_extension(final_icon, content_type))
+                                    target.write_bytes(raw)
+                                resolved = "../assets/source-favicons/" + target.name
+                                return resolved, {
+                                    "page": final_page,
+                                    "icon": final_icon,
+                                    "local": resolved,
+                                    "method": "official-page-playwright",
+                                    "contentType": content_type,
+                                    "bytes": str(len(raw)),
+                                }
+                            except Exception:
+                                continue
+                    except Exception:
+                        continue
+            finally:
+                context.close()
+                browser.close()
+    except Exception:
+        return None
+    return None
+
+
 def materialize(payload: dict[str, Any], dist: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     landing = configured_pages()
     asset_dir = dist / "assets" / "source-favicons"
@@ -152,6 +293,7 @@ def materialize(payload: dict[str, Any], dist: Path) -> tuple[dict[str, Any], di
     provenance: dict[str, Any] = {}
 
     opportunities = list(payload.get("opportunities") or [])
+    unresolved: dict[str, list[str]] = {}
     for item in opportunities:
         source_id = str(item.get("source_id") or "")
         if not source_id or source_id in by_source:
@@ -161,35 +303,32 @@ def materialize(payload: dict[str, Any], dist: Path) -> tuple[dict[str, Any], di
         if official.startswith("http"):
             pages.append(official)
         pages.extend(landing.get(source_id, []))
-        seen: set[str] = set()
+        pages = list(dict.fromkeys(page for page in pages if page.startswith("http")))
         resolved = None
-        for page in pages:
-            if page in seen:
-                continue
-            seen.add(page)
-            for icon_url in _page_icon_urls(page):
+        for page_url in pages:
+            for icon_url, final_page in _page_icon_urls(page_url):
                 try:
-                    stem = asset_dir / re.sub(r"[^a-z0-9-]+", "-", source_id.lower()).strip("-")
-                    if icon_url.startswith("data:image/"):
-                        target = _save_data_uri(icon_url, stem)
-                        if target is None:
-                            continue
-                        final_icon_url = icon_url
-                    else:
-                        raw, content_type, final_icon_url = _fetch(icon_url)
-                        if not raw:
-                            continue
-                        target = stem.with_suffix(_extension(final_icon_url, content_type))
-                        target.write_bytes(raw)
-                    resolved = "../assets/source-favicons/" + target.name
-                    provenance[source_id] = {"page": page, "icon": final_icon_url, "local": resolved}
-                    break
+                    stored = _store_remote_icon(source_id, icon_url, final_page, asset_dir)
                 except Exception:
-                    continue
+                    stored = None
+                if stored:
+                    resolved, meta = stored
+                    by_source[source_id] = resolved
+                    provenance[source_id] = meta
+                    break
             if resolved:
                 break
-        if resolved:
+        if not resolved:
+            unresolved[source_id] = pages
+
+    # Alcuni siti istituzionali accettano il browser ma non urllib o richiedono
+    # cookie/redirect JS. Il fallback resta sulla pagina ufficiale originale.
+    for source_id, pages in unresolved.items():
+        stored = _browser_resolve(source_id, pages, asset_dir)
+        if stored:
+            resolved, meta = stored
             by_source[source_id] = resolved
+            provenance[source_id] = meta
 
     for item in opportunities:
         source_id = str(item.get("source_id") or "")
