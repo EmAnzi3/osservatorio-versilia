@@ -3,7 +3,7 @@
 
 La v1 materializza dotazione, turnover ed età; questa estensione aggiunge un
 quarto indicatore mantenendo i valori esattamente come pubblicati dalla fonte
-RGS. In particolare, non reinterpretata la "Media Totale" come giornate per
+RGS. In particolare, non reinterpreta la "Media Totale" come giornate per
 organico: il sito la espone esplicitamente come valore RGS e mostra a fianco
 anche giornate complessive e medie per genere.
 """
@@ -19,6 +19,7 @@ SITE_PATH = ROOT / "data" / "site-data.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 MONITOR_PATH = ROOT / "data" / "source-monitor-state.json"
 TRAINING_SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "rgs-formazione-2024.json"
+APP_PART_PATH = ROOT / "assets" / "app-parts" / "03.txt"
 
 TRAINING_KEY = "municipalStaffTraining"
 RGS_TRAINING_URL = "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc"
@@ -189,8 +190,46 @@ def update_monitor(monitor: dict) -> None:
     state["frequencies"] = sorted(set(state.get("frequencies", [])) | {"annual"})
 
 
+def patch_frontend() -> None:
+    """Aggiunge i conteggi età senza rompere le semantiche Redditi già applicate.
+
+    La pipeline canonica modifica lo stesso blocco `securityMeasures` prima del
+    lotto Amministrazione. Per questo supportiamo sia il sorgente base sia la
+    variante già arricchita con le frequenze delle fonti di reddito.
+    """
+    text = APP_PART_PATH.read_text(encoding="utf-8")
+    marker = "const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';"
+    if marker in text:
+        return
+
+    original = '''    if (metric.meta.compositeType === 'securityMeasures') {
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div>`;
+    }'''
+    after_income = '''    if (metric.meta.compositeType === 'securityMeasures') {
+      const incomeSources = metric.meta.key === 'incomeSourceProfile';
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${incomeSources ? (part.count === null || part.count === undefined ? 'n.d. · dichiaranti con questa fonte' : `${html(number0.format(part.count))} dichiaranti con questa fonte`) : html(metric.meta.year)}</small></article>`).join('')}</div>`;
+    }'''
+    patched = '''    if (metric.meta.compositeType === 'securityMeasures') {
+      const incomeSources = metric.meta.key === 'incomeSourceProfile';
+      const totalCount = parts.reduce((sum, part) => sum + (Number(part.count) || 0), 0);
+      const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${incomeSources ? (part.count === null || part.count === undefined ? 'n.d. · dichiaranti con questa fonte' : `${html(number0.format(part.count))} dichiaranti con questa fonte`) : (showStaffCounts && part.count !== undefined ? `${html(number0.format(part.count))} dipendenti su ${html(number0.format(totalCount))} · ${html(metric.meta.year)}` : html(metric.meta.year))}</small></article>`).join('')}</div>`;
+    }'''
+
+    for old in (after_income, original):
+        if old in text:
+            APP_PART_PATH.write_text(text.replace(old, patched, 1), encoding="utf-8")
+            return
+    raise RuntimeError("Blocco frontend securityMeasures non trovato: patch Amministrazione non applicabile")
+
+
 def main() -> None:
+    # Il patch frontend v1 è pensato per il sorgente base. Nella pipeline
+    # canonica Redditi ha già arricchito lo stesso blocco; lo sostituiamo con
+    # la variante compatibile qui sotto, dopo aver materializzato i dati v1.
+    base.patch_frontend = lambda: None
     base.main()
+    patch_frontend()
 
     site = load(SITE_PATH)
     registry = load(REGISTRY_PATH)
