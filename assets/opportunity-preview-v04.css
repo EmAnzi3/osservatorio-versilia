@@ -2,6 +2,33 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.op-audit-summary {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 17px;
+  padding: 15px 17px;
+  border: 1px solid #ffffff20;
+  border-radius: 16px;
+  background: #071f2e52;
+}
+
+.op-audit-summary strong {
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: 12px;
+}
+
+.op-audit-summary span {
+  color: #c8dbe0;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: right;
+}
+
 .op-card-heading .op-lifecycle {
   margin-bottom: .7rem;
 }
@@ -38,6 +65,22 @@
   min-width: 9.5rem;
 }
 
+/* Il numero di opportunità non deve allungare indefinitamente la pagina. */
+.op-preview-list {
+  max-height: 68vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 10px;
+  scroll-padding-block: 12px;
+}
+
+.op-preview-list:focus-within {
+  outline: 2px solid rgba(15, 54, 84, .16);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
 @media (max-width: 980px) {
   .op-overview-grid-v04 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -47,5 +90,19 @@
 @media (max-width: 620px) {
   .op-overview-grid-v04 {
     grid-template-columns: 1fr;
+  }
+
+  .op-audit-summary {
+    display: grid;
+    gap: 5px;
+  }
+
+  .op-audit-summary span {
+    text-align: left;
+  }
+
+  .op-preview-list {
+    max-height: 72vh;
+    padding-right: 5px;
   }
 }
