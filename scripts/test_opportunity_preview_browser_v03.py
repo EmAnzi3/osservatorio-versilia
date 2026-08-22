@@ -10,15 +10,17 @@ def main():
   b=pw.chromium.launch();page=b.new_page()
   for width,height in ((1440,1000),(390,844)):
    page.set_viewport_size({'width':width,'height':height});page.goto(a.base+'opportunita-preview/',wait_until='domcontentloaded');page.locator('[data-opportunity-preview]').wait_for()
-   total=int(page.locator('[data-opportunity-preview]').get_attribute('data-total-opportunities') or 0);assert total>=11
+   total=int(page.locator('[data-opportunity-preview]').get_attribute('data-total-opportunities') or 0);assert total>=14
    assert page.locator('.op-overview-grid .op-stat').count()==4;assert page.locator('.op-overview-grid .op-stat-icon svg').count()==4
    bg=page.locator('.op-overview-shell').evaluate("e=>getComputedStyle(e).backgroundImage");assert 'linear-gradient' in bg
    assert page.locator('.op-monitor-source').count()>=8;assert page.locator('.op-source-favicon').count()>=1;assert page.locator('[data-op-source-quick]').count()>=2
    embedded=page.locator('img.op-source-favicon[src^="data:image/"]')
    assert embedded.count()>=3
-   for i in range(embedded.count()):
-    assert embedded.nth(i).evaluate('img=>img.complete && img.naturalWidth>0')
+   page.wait_for_function("""() => [...document.querySelectorAll('img.op-source-favicon[src^="data:image/"]')].every(img => img.complete && img.naturalWidth > 0)""",timeout=5000)
    assert not page.evaluate('document.documentElement.scrollWidth>document.documentElement.clientWidth')
+   body=page.locator('body').inner_text()
+   assert 'Bando per la promozione della musica Jazz 2027' in body
+   assert body.count('Patti Attuazione Sicurezza Urbana. Sistemi di Videosorveglianza. DM 2026') + body.count('Videosorveglianza - D.M. 2026') <= 1
    q=page.locator('[data-op-source-quick]').first;sid=q.get_attribute('data-op-source-quick');q.click();page.wait_for_timeout(80);assert page.locator('[data-op-source]').input_value()==sid;assert q.get_attribute('aria-pressed')=='true'
    page.locator('[data-op-reset]').click();page.locator('[data-op-search]').fill('parcheggi');page.wait_for_timeout(80);assert page.locator('[data-opportunity-card]:not([hidden])').count()>=1
    text=page.locator('body').inner_text();assert 'Quality gate' not in text and 'Da verificare' not in text
