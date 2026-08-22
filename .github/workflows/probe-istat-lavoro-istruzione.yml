@@ -3,6 +3,8 @@ name: Probe ISTAT lavoro istruzione eta genere
 on:
   push:
     branches: ["agent/lavoro-istruzione-eta-genere"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
