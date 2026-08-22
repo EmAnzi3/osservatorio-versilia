@@ -1,8 +1,8 @@
 {
-  "schemaVersion": "0.3",
+  "schemaVersion": "0.3.1",
   "referenceDate": "2026-08-22",
   "windowDays": 90,
-  "scope": "Replay documentale su casi delle fonti consolidate e dei nuovi canali FESR/FSE+. Misura la decisione sui candidati osservati, non la completezza dell'intero web.",
+  "scope": "Replay documentale su casi delle fonti consolidate e dei canali ampliati v0.3.1. Misura la decisione sui candidati osservati, non la completezza dell'intero web.",
   "thresholds": {"precision": 0.95, "recall": 0.85},
   "cases": [
     {"id":"p01","source_id":"regione-toscana","title":"Bando Amianto Edifici Pubblici 2026","expected":"operational","official_url":"https://www.regione.toscana.it/"},
@@ -19,6 +19,9 @@
     {"id":"p12","source_id":"regione-toscana","title":"Anno educativo e scolastico 2026-2027, contributi ai Comuni per percorsi formativi per la qualità del \"Sistema integrato 0-6 anni\"","expected":"operational","official_url":"https://www.regione.toscana.it/-/anno-educativo-e-scolastico-2026-2027-contributi-ai-comuni-per-percorsi-formativi-per-la-qualit%C3%A0-del-sistema-integrato-0-6-anni"},
     {"id":"p13","source_id":"regione-toscana","title":"Bando per contributo a musei ed ecomusei di rilevanza regionale 2026","expected":"operational","official_url":"https://www.regione.toscana.it/-/bando-per-contributo-a-musei-ed-ecomusei-di-rilevanza-regionale-2026","note":"Falso negativo noto mantenuto nel controllo."},
     {"id":"p14","source_id":"regione-toscana-fse","title":"Anno educativo e scolastico 2026-2027, contributi ai Comuni per percorsi formativi per la qualità del \"Sistema integrato 0-6 anni\"","expected":"operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"},
+    {"id":"p15","source_id":"sviluppo-toscana","title":"Avviso Mercati Rionali","expected":"operational","official_url":"https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/"},
+    {"id":"p16","source_id":"mic-spettacolo","title":"Bando per la PROMOZIONE DELLA MUSICA JAZZ / 2027 – Avviso pubblico e apertura dei termini di presentazione delle domande","expected":"operational","official_url":"https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande"},
+    {"id":"p17","source_id":"ministero-interno-prefetture","title":"Videosorveglianza - D.M. 2026","expected":"operational","official_url":"https://prefettura.interno.gov.it/it/prefetture/rieti/notizie/videosorveglianza-domande-entro-24-agosto-2026"},
     {"id":"n01","source_id":"regione-toscana","title":"Bando biotrituratori elettrici 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/"},
     {"id":"n02","source_id":"regione-toscana","title":"Bando aiuti per le sentinelle Blue Tongue","expected":"non_operational","official_url":"https://www.regione.toscana.it/-/bando-aiuti-per-le-sentinelle-blue-tongue"},
     {"id":"n03","source_id":"regione-toscana","title":"Finanziamenti per realizzare percorsi formativi in undici settori produttivi strategici","expected":"non_operational","official_url":"https://www.regione.toscana.it/-/finanziamenti-per-realizzare-percorsi-formativi-in-undici-settori-produttivi-strategici"},
@@ -32,6 +35,8 @@
     {"id":"n11","source_id":"regione-toscana","title":"Bando 2026 Pmi: sovvenzioni per abbattere interessi e commissioni di garanzia su finanziamenti fino 50 mila euro","expected":"non_operational","official_url":"https://www.regione.toscana.it/bandi-aperti"},
     {"id":"n12","source_id":"regione-toscana-fesr","title":"Contributi per realizzazione e potenziamento di impianti di trattamento dei rifiuti per il loro recupero","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fesr-2021-2027/bandi-aperti"},
     {"id":"n13","source_id":"regione-toscana-fse","title":"Finanziamenti per la promozione e la diffusione dell’apprendistato duale: il bando 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"},
-    {"id":"n14","source_id":"regione-toscana-fse","title":"Finanziamento di voucher formativi individuali per professioniste e professionisti: il bando 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"}
+    {"id":"n14","source_id":"regione-toscana-fse","title":"Finanziamento di voucher formativi individuali per professioniste e professionisti: il bando 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"},
+    {"id":"n15","source_id":"sviluppo-toscana","title":"Sostegno per la partecipazione a fiere di imprese toscane","expected":"non_operational","official_url":"https://www.sviluppo.toscana.it/bandi/"},
+    {"id":"n16","source_id":"mic-spettacolo","title":"Contributi a organismi professionali dello spettacolo dal vivo","expected":"non_operational","official_url":"https://spettacolo.cultura.gov.it/"}
   ]
 }
