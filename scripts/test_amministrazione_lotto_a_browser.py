@@ -88,6 +88,10 @@ def check_age_town(page, base: str) -> None:
     metric = page.locator(f'[data-metric="{key}"]')
     require(metric.count() == 1 and metric.is_visible(), "Età personale: indicatore non selezionabile a Massarosa")
     require("active" in (metric.get_attribute("class") or "").split(), "Età personale: indicatore non attivo a Massarosa")
+    detail_text = page.locator(".composite-fixed-detail").inner_text()
+    require("39 dipendenti su 87" in detail_text, "Età personale: conteggio assoluto 55+ di Massarosa non visibile")
+    require("38 dipendenti su 87" in detail_text, "Età personale: conteggio assoluto 40–54 di Massarosa non visibile")
+    require("10 dipendenti su 87" in detail_text, "Età personale: conteggio assoluto <40 di Massarosa non visibile")
     page.wait_for_selector("select[data-composite-choice]")
     selector = page.locator("select[data-composite-choice]")
     require(selector.locator("option").count() == 3, "Età personale: selettore comunale non ha 3 fasce")
@@ -113,7 +117,7 @@ def run(base: str) -> None:
             check_age_town(page, base)
             context.close()
         browser.close()
-    print("Amministrazione Lotto A browser: confronto e scheda comunale OK su desktop e mobile, nessun overflow.")
+    print("Amministrazione Lotto A browser: confronto e scheda comunale OK su desktop e mobile, conteggi età visibili e nessun overflow.")
 
 
 if __name__ == "__main__":
