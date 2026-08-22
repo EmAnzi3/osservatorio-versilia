@@ -12,6 +12,12 @@
   border-bottom: 1px solid var(--line);
 }
 
+.indicator-hero > *,
+.indicator-current-layout > *,
+.indicator-governance-grid > * {
+  min-width: 0;
+}
+
 .indicator-hero h1 {
   max-width: 900px;
   margin: 13px 0 18px;
@@ -19,6 +25,8 @@
   font-weight: 760;
   line-height: .98;
   letter-spacing: -.06em;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .indicator-hero > div:first-child > p {
@@ -221,11 +229,14 @@
 
 .indicator-governance-grid dd {
   margin: 0;
+  min-width: 0;
   font-weight: 650;
+  overflow-wrap: anywhere;
 }
 
 .indicator-governance-grid a {
   color: var(--theme-color, var(--blue));
+  overflow-wrap: anywhere;
 }
 
 .indicator-governance-grid h3 {
@@ -314,6 +325,12 @@
   .indicator-governance-grid dl div {
     grid-template-columns: 1fr;
     gap: 5px;
+  }
+
+  /* I tooltip delle fasce sono ridondanti su touch e, se lasciati assoluti,
+     possono ampliare il layout anche quando sono invisibili. */
+  .indicator-composite-table .bar-hover-label {
+    display: none !important;
   }
 
   .indicator-data-actions {
