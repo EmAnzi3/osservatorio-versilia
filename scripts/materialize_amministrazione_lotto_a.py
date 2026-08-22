@@ -332,9 +332,8 @@ def main() -> None:
     update_registry(registry, site)
     update_monitor(monitor)
 
-    site["version"] = "v1.17.0"
-    site["updated"] = "22 agosto 2026"
-
+    # Questo materializzatore aggiunge il lotto al dataset corrente senza
+    # sovrascrivere la versione/data di release stabilita dalla pipeline canonica.
     save(SITE_PATH, site)
     save(REGISTRY_PATH, registry)
     save(MONITOR_PATH, monitor)
