@@ -58,15 +58,20 @@ class RadarV03Test(unittest.TestCase):
     def test_source_visuals_attach_favicon(self):
         result={'opportunities':[{'source_id':'regione-toscana-fesr','presentation':{'source_label':'Regione Toscana'}},{'source_id':'fondazione-cr-lucca','presentation':{'source_label':'Fondazione'}}], 'archive':[]};radar.attach_source_visuals(result,radar.DEFAULT_PRESENTATION)
         self.assertIn('favicon.ico',result['opportunities'][0]['presentation']['source_favicon'])
-        self.assertTrue(result['opportunities'][1]['presentation']['source_favicon'].startswith('data:image/png;base64,'))
+        self.assertEqual(result['opportunities'][1]['presentation']['source_favicon'],'../assets/source-icons/fondazione-cr-lucca.svg')
 
-    def test_runtime_coverage_uses_embedded_icons_for_fragile_sources(self):
+    def test_runtime_coverage_uses_local_icons_for_fragile_sources(self):
         registry={'sources':{'fondazione-cr-lucca':{'label':'Fondazione Cassa di Risparmio di Lucca','monitoringStatus':'active','role':'primary'},'anci-toscana':{'label':'ANCI Toscana','monitoringStatus':'active','role':'discovery'},'ministero-interno':{'label':'Ministero dell Interno','monitoringStatus':'active','role':'discovery'}},'plannedSources':[]}
         result={'sources':[{'sourceId':'fondazione-cr-lucca','status':'ok','freshness':{'status':'current'}}]}
         discovery=[{'sourceId':'anci-toscana','status':'ok','freshness':{'status':'discovery'}},{'sourceId':'ministero-interno','status':'ok','freshness':{'status':'discovery'}}]
         coverage=radar.build_coverage(result,registry,discovery)
+        expected={
+            'fondazione-cr-lucca':'../assets/source-icons/fondazione-cr-lucca.svg',
+            'anci-toscana':'../assets/source-icons/anci-toscana.svg',
+            'ministero-interno':'../assets/source-icons/ministero-interno.svg',
+        }
         for row in coverage['rows']:
-            self.assertTrue((row.get('favicon') or '').startswith('data:image/png;base64,'),row['source_id'])
+            self.assertEqual(row.get('favicon'),expected[row['source_id']],row['source_id'])
 
     def test_final_continuity_drops_recovered_verified_item(self):
         result={
