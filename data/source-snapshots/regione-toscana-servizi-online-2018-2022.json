@@ -1,0 +1,22 @@
+{
+  "indicator": "ind18",
+  "label": "Percentuale di servizi offerti online al massimo livello di disponibilità dai Comuni",
+  "source": "Regione Toscana / Istat — Rilevazione ICT nelle PA locali",
+  "sourcePage": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
+  "metadataUrl": "https://www.regione.toscana.it/documents/d/guest/metadati",
+  "source2018": "https://www.regione.toscana.it/documents/10180/479267/Indicatori%2B2018.csv/76a8ecdb-bfac-7280-28af-5ddfd9d16a3d?t=1711025218063",
+  "source2022": "https://www.regione.toscana.it/documents/10180/12228409/Indicatori%2B2022.csv/65f6cdca-8c07-b5a5-87b5-4870c2226692?t=1727340985500",
+  "source2024": "https://www.regione.toscana.it/documents/d/guest/indicatori-2024-1",
+  "referenceDate": "2022-12-31",
+  "definitionNote": "Il metadato regionale specifica che ind18 deriva dal questionario Istat sulle ICT nella PA locale e considera i livelli 3 e 4. Il file Indicatori 2024 riporta ancora il valore definitivo riferito al 31/12/2022: non viene etichettato come dato 2024.",
+  "comparabilityNote": "Il paniere Istat osservato è passato da 24 servizi nel 2018 a 27 nel 2022; il confronto storico è informativo ma non perfettamente omogeneo.",
+  "towns": {
+    "Camaiore": {"istatCode": "046005", "2018": 50.0, "2022": 75.0},
+    "Forte dei Marmi": {"istatCode": "046013", "2018": 16.67, "2022": 35.294117647},
+    "Massarosa": {"istatCode": "046018", "2018": 0.0, "2022": 33.333333333},
+    "Pietrasanta": {"istatCode": "046024", "2018": 33.33, "2022": 95.0},
+    "Seravezza": {"istatCode": "046028", "2018": 37.5, "2022": 6.6666666667},
+    "Stazzema": {"istatCode": "046030", "2018": 0.0, "2022": 54.545454545},
+    "Viareggio": {"istatCode": "046033", "2018": 16.67, "2022": 56.25}
+  }
+}

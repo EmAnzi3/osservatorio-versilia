@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Completa il Lotto A Amministrazione con la formazione del personale RGS 2024.
+"""Completa il Lotto A Amministrazione.
 
-La v1 materializza dotazione, turnover ed età; questa estensione aggiunge un
-quarto indicatore mantenendo i valori esattamente come pubblicati dalla fonte
-RGS. In particolare, non reinterpreta la "Media Totale" come giornate per
-organico: il sito la espone esplicitamente come valore RGS e mostra a fianco
-anche giornate complessive e medie per genere.
+La v1 materializza dotazione, turnover ed età; questa estensione aggiunge:
+- formazione del personale RGS 2024;
+- servizi comunali online al massimo livello di disponibilità (Regione Toscana/Istat, ind18).
 """
 from __future__ import annotations
 
@@ -19,11 +17,15 @@ SITE_PATH = ROOT / "data" / "site-data.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 MONITOR_PATH = ROOT / "data" / "source-monitor-state.json"
 TRAINING_SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "rgs-formazione-2024.json"
+ONLINE_SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "regione-toscana-servizi-online-2018-2022.json"
 APP_PART_PATH = ROOT / "assets" / "app-parts" / "03.txt"
 
 TRAINING_KEY = "municipalStaffTraining"
+ONLINE_KEY = "municipalOnlineServicesAdvanced"
 RGS_TRAINING_URL = "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc"
+REGIONE_SOURCE_PAGE = "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali"
 PROFILE = base.PROFILE
+REGIONE_PROFILE = "regione-toscana-indicatori-comunali"
 
 
 def load(path: Path) -> dict:
@@ -34,32 +36,16 @@ def save(path: Path, value: dict) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def pct(value: float) -> str:
+    return f"{value:.1f}%".replace(".", ",")
+
+
 def training_parts(raw: dict) -> list[dict]:
     return [
-        {
-            "label": "Media totale RGS",
-            "selectorLabel": "Media totale RGS",
-            "value": float(raw["meanTotalRgs"]),
-            "unit": "decimal",
-        },
-        {
-            "label": "Giornate complessive",
-            "selectorLabel": "Giornate complessive",
-            "value": int(raw["totalDays"]),
-            "unit": "number",
-        },
-        {
-            "label": "Media uomini RGS",
-            "selectorLabel": "Media uomini",
-            "value": float(raw["meanMen"]),
-            "unit": "decimal",
-        },
-        {
-            "label": "Media donne RGS",
-            "selectorLabel": "Media donne",
-            "value": float(raw["meanWomen"]),
-            "unit": "decimal",
-        },
+        {"label": "Media totale RGS", "selectorLabel": "Media totale RGS", "value": float(raw["meanTotalRgs"]), "unit": "decimal"},
+        {"label": "Giornate complessive", "selectorLabel": "Giornate complessive", "value": int(raw["totalDays"]), "unit": "number"},
+        {"label": "Media uomini RGS", "selectorLabel": "Media uomini", "value": float(raw["meanMen"]), "unit": "decimal"},
+        {"label": "Media donne RGS", "selectorLabel": "Media donne", "value": float(raw["meanWomen"]), "unit": "decimal"},
     ]
 
 
@@ -142,21 +128,107 @@ def training_metric(site: dict, snapshot: dict) -> dict:
     }
 
 
+def online_metric(site: dict, snapshot: dict) -> dict:
+    order = [row["town"] for row in site["metrics"]["population"]["rows"]]
+    rows = []
+    current_values = []
+    for town in order:
+        raw = snapshot["towns"][town]
+        value_2018 = float(raw["2018"])
+        value_2022 = float(raw["2022"])
+        current_values.append(value_2022)
+        rows.append({
+            **base.identity(site, town),
+            "value": value_2022,
+            "formatted": pct(value_2022),
+            "series": {"years": [2018, 2022], "values": [value_2018, value_2022]},
+            "normalized": None,
+            "benchmarkValue": value_2022,
+        })
+
+    return {
+        "meta": {
+            "key": ONLINE_KEY,
+            "theme": "bilanci",
+            "label": "Servizi comunali online al massimo livello di disponibilità",
+            "shortLabel": "Servizi online · livello massimo",
+            "description": (
+                "Percentuale dei servizi offerti online dal Comune ai livelli più avanzati della classificazione Istat. "
+                "Il metadato regionale include i livelli 3 e 4: invio telematico della modulistica e, al livello 4, "
+                "completamento dell'intero procedimento online incluso l'eventuale pagamento."
+            ),
+            "unit": "percent",
+            "year": "2022",
+            "source": "Regione Toscana / Istat — ICT nelle PA locali",
+            "polarity": "neutral",
+            "searchTerms": [
+                "servizi online", "servizi digitali comune", "digitalizzazione comune", "servizi telematici",
+                "ict pubblica amministrazione", "procedimenti online", "servizi comunali digitali",
+            ],
+        },
+        "sourceUrl": REGIONE_SOURCE_PAGE,
+        "rows": rows,
+        "aggregate": {
+            "value": sum(current_values) / len(current_values),
+            "label": "Versilia · media comunale servizi online avanzati",
+            "note": (
+                "Media aritmetica dei sette valori comunali 2022. Non è una media ponderata per numero di servizi, "
+                "perché la fonte pubblica non espone i denominatori comunali dell'indicatore."
+            ),
+        },
+        "normalizedAggregate": None,
+        "method": {
+            "type": "Indicatore ufficiale Regione Toscana / Istat, codice ind18",
+            "formula": (
+                "Percentuale di servizi offerti online al massimo livello di disponibilità dai Comuni; "
+                "il metadato regionale specifica livelli 3 e 4 della rilevazione Istat ICT nelle PA locali."
+            ),
+            "caveat": (
+                "Il dato corrente è il definitivo al 31/12/2022. Il file regionale Indicatori 2024 lo ripropone "
+                "invariato e non viene trattato come dato 2024. Il confronto 2018–2022 è informativo ma non perfettamente "
+                "omogeneo: il paniere Istat è passato da 24 servizi osservati nel 2018 a 27 nel 2022. "
+                "Una quota maggiore descrive una più ampia disponibilità online avanzata, ma non misura da sola qualità, "
+                "usabilità o tempi dei servizi."
+            ),
+            "coverage": "7/7",
+            "history": "Due rilevazioni effettive: 2018 e 2022. Nessun carry-forward artificiale negli anni intermedi.",
+        },
+    }
+
+
 def update_theme(site: dict) -> None:
     theme = site["themes"]["bilanci"]
-    theme["metrics"] = [key for key in theme.get("metrics", []) if key != TRAINING_KEY]
-    theme["metrics"].append(TRAINING_KEY)
+    theme["description"] = "Bilanci comunali, capacità di spesa, struttura del personale e digitalizzazione dei servizi."
+    for key in (TRAINING_KEY, ONLINE_KEY):
+        theme["metrics"] = [item for item in theme.get("metrics", []) if item != key]
+        theme["metrics"].append(key)
     section = next(section for section in theme["sections"] if section["key"] == "personale-amministrazione")
-    section["metrics"] = [key for key in section.get("metrics", []) if key != TRAINING_KEY]
-    section["metrics"].append(TRAINING_KEY)
+    for key in (TRAINING_KEY, ONLINE_KEY):
+        section["metrics"] = [item for item in section.get("metrics", []) if item != key]
+        section["metrics"].append(key)
     section["description"] = (
-        "Dotazione di personale, ricambio dell'organico, sostenibilità generazionale e formazione della macchina comunale."
+        "Dotazione di personale, ricambio dell'organico, sostenibilità generazionale, formazione e disponibilità online dei servizi."
     )
 
 
 def update_registry(registry: dict, site: dict) -> None:
     registry.setdefault("metricOverrides", {})[TRAINING_KEY] = {"profile": PROFILE}
     registry.setdefault("sourceProfileByUrl", {})[RGS_TRAINING_URL] = PROFILE
+    registry.setdefault("sourceProfiles", {})[REGIONE_PROFILE] = {
+        "publisher": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+        "frequency": "annual",
+        "frequencyLabel": "Aggiornamento annuale della batteria regionale",
+        "expectedRelease": (
+            "La batteria regionale è aggiornata annualmente; ind18 cambia quando è disponibile una nuova rilevazione Istat ICT nelle PA locali."
+        ),
+        "acquisitionMethod": (
+            "CSV ufficiali Regione Toscana a livello comunale; valori ind18 verificati 7/7 e conservati in snapshot versionato."
+        ),
+        "licenseName": "Open data / condizioni Regione Toscana",
+        "licenseUrl": "https://www.regione.toscana.it/open-data",
+    }
+    registry.setdefault("metricOverrides", {})[ONLINE_KEY] = {"profile": REGIONE_PROFILE}
+    registry.setdefault("sourceProfileByUrl", {})[REGIONE_SOURCE_PAGE] = REGIONE_PROFILE
     external = sum(
         1 for metric in site["metrics"].values()
         if metric.get("dataStorage", {}).get("type") == "external-climate"
@@ -166,13 +238,12 @@ def update_registry(registry: dict, site: dict) -> None:
     registry["expectedInlineMetricCount"] = len(site["metrics"]) - external
 
 
-def update_monitor(monitor: dict) -> None:
-    sources = monitor.setdefault("sources", {})
-    state = sources.setdefault(RGS_TRAINING_URL, {
-        "url": RGS_TRAINING_URL,
+def ensure_monitor_state(sources: dict, url: str, profile: str, key: str) -> None:
+    state = sources.setdefault(url, {
+        "url": url,
         "ok": True,
         "status": 200,
-        "finalUrl": RGS_TRAINING_URL,
+        "finalUrl": url,
         "contentType": "text/html",
         "contentLength": None,
         "etag": "",
@@ -182,21 +253,22 @@ def update_monitor(monitor: dict) -> None:
         "error": "",
         "metrics": [],
         "roles": ["primary"],
-        "profileIds": [PROFILE],
+        "profileIds": [profile],
         "frequencies": ["annual"],
     })
-    state["metrics"] = sorted(set(state.get("metrics", [])) | {TRAINING_KEY})
-    state["profileIds"] = sorted(set(state.get("profileIds", [])) | {PROFILE})
+    state["metrics"] = sorted(set(state.get("metrics", [])) | {key})
+    state["profileIds"] = sorted(set(state.get("profileIds", [])) | {profile})
     state["frequencies"] = sorted(set(state.get("frequencies", [])) | {"annual"})
 
 
-def patch_frontend() -> None:
-    """Aggiunge i conteggi età senza rompere le semantiche Redditi già applicate.
+def update_monitor(monitor: dict) -> None:
+    sources = monitor.setdefault("sources", {})
+    ensure_monitor_state(sources, RGS_TRAINING_URL, PROFILE, TRAINING_KEY)
+    ensure_monitor_state(sources, REGIONE_SOURCE_PAGE, REGIONE_PROFILE, ONLINE_KEY)
 
-    La pipeline canonica modifica lo stesso blocco `securityMeasures` prima del
-    lotto Amministrazione. Per questo supportiamo sia il sorgente base sia la
-    variante già arricchita con le frequenze delle fonti di reddito.
-    """
+
+def patch_frontend() -> None:
+    """Aggiunge i conteggi età senza rompere le semantiche Redditi già applicate."""
     text = APP_PART_PATH.read_text(encoding="utf-8")
     marker = "const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';"
     if marker in text:
@@ -224,9 +296,6 @@ def patch_frontend() -> None:
 
 
 def main() -> None:
-    # Il patch frontend v1 è pensato per il sorgente base. Nella pipeline
-    # canonica Redditi ha già arricchito lo stesso blocco; lo sostituiamo con
-    # la variante compatibile qui sotto, dopo aver materializzato i dati v1.
     base.patch_frontend = lambda: None
     base.main()
     patch_frontend()
@@ -234,21 +303,24 @@ def main() -> None:
     site = load(SITE_PATH)
     registry = load(REGISTRY_PATH)
     monitor = load(MONITOR_PATH)
-    snapshot = load(TRAINING_SNAPSHOT_PATH)
+    training_snapshot = load(TRAINING_SNAPSHOT_PATH)
+    online_snapshot = load(ONLINE_SNAPSHOT_PATH)
 
     site["metrics"].pop(TRAINING_KEY, None)
-    site["metrics"][TRAINING_KEY] = training_metric(site, snapshot)
+    site["metrics"][TRAINING_KEY] = training_metric(site, training_snapshot)
+    site["metrics"].pop(ONLINE_KEY, None)
+    site["metrics"][ONLINE_KEY] = online_metric(site, online_snapshot)
     update_theme(site)
     update_registry(registry, site)
     update_monitor(monitor)
 
-    if len(site["metrics"]) != 137:
-        raise RuntimeError(f"Conteggio inatteso dopo formazione: {len(site['metrics'])}")
+    if len(site["metrics"]) != 138:
+        raise RuntimeError(f"Conteggio inatteso dopo Amministrazione: {len(site['metrics'])}")
 
     save(SITE_PATH, site)
     save(REGISTRY_PATH, registry)
     save(MONITOR_PATH, monitor)
-    print("Amministrazione Lotto A v2: 137 indicatori totali; formazione RGS 2024 materializzata 7/7.")
+    print("Amministrazione Lotto A v2: 138 indicatori totali; formazione RGS 2024 e servizi online Regione Toscana/Istat 2022 materializzati 7/7.")
 
 
 if __name__ == "__main__":
