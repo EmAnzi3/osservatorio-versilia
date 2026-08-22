@@ -3,7 +3,9 @@
   if (!root) return;
 
   root.querySelectorAll('.op-source-favicon').forEach((img) => {
-    img.addEventListener('error', () => img.remove(), { once: true });
+    const hideBroken = () => img.remove();
+    if (img.complete && img.naturalWidth === 0) hideBroken();
+    else img.addEventListener('error', hideBroken, { once: true });
   });
 
   const townSelect = root.querySelector('[data-op-town]');
@@ -15,7 +17,6 @@
   const visibleLabel = root.querySelector('[data-op-visible]');
   const emptyState = root.querySelector('[data-op-empty]');
   const cards = Array.from(root.querySelectorAll('[data-opportunity-card]'));
-  const quick = Array.from(root.querySelectorAll('[data-op-source-quick]'));
 
   const normalize = (value) => String(value || '')
     .normalize('NFD')
@@ -26,14 +27,6 @@
   const updateSelectedTown = (town) => {
     root.querySelectorAll('[data-town-chip]').forEach((chip) => {
       chip.classList.toggle('is-selected', Boolean(town) && chip.dataset.townChip === town);
-    });
-  };
-
-  const syncQuick = () => {
-    quick.forEach((button) => {
-      const active = Boolean(sourceSelect?.value) && button.dataset.opSourceQuick === sourceSelect.value;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
   };
 
@@ -62,17 +55,7 @@
     }
     if (emptyState) emptyState.hidden = visible !== 0;
     updateSelectedTown(town);
-    syncQuick();
   };
-
-  quick.forEach((button) => {
-    button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', () => {
-      if (!sourceSelect) return;
-      sourceSelect.value = sourceSelect.value === button.dataset.opSourceQuick ? '' : button.dataset.opSourceQuick;
-      apply();
-    });
-  });
 
   [townSelect, sourceSelect, lifecycleSelect, accessSelect].forEach((control) => control?.addEventListener('change', apply));
   searchInput?.addEventListener('input', apply);
