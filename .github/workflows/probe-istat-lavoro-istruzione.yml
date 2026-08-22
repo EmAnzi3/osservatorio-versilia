@@ -20,11 +20,13 @@ jobs:
           python-version: "3.12"
       - name: Estrai snapshot ISTAT 2024
         run: python scripts/probe_istat_lavoro_istruzione_eta_genere.py
-      - name: Versiona snapshot verificato
+      - name: Integra la pipeline Pages
+        run: python scripts/patch_pages_workflow_eta_genere.py
+      - name: Versiona snapshot e pipeline verificati
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json
+          git add data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json .github/workflows/pages.yml
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Snapshot ISTAT lavoro e istruzione 2024 [skip ci]"
+          git commit -m "Integra età e genere nella pipeline Pages [skip ci]"
           git push origin HEAD:agent/lavoro-istruzione-eta-genere
