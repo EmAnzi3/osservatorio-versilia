@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/opportunity-radar-v03.yml"
       - "scripts/opportunity_radar_v03.py"
+      - "scripts/run_opportunity_radar_v03.py"
       - "scripts/build_opportunity_preview_v03.py"
       - "scripts/test_opportunity_radar_v03.py"
       - "scripts/test_opportunity_preview_v03.py"
@@ -34,10 +35,10 @@ jobs:
           python-version: "3.12"
       - name: Validate v0.3
         run: |
-          python -m py_compile scripts/opportunity_radar_v03.py scripts/build_opportunity_preview_v03.py scripts/test_opportunity_radar_v03.py scripts/test_opportunity_preview_v03.py scripts/test_opportunity_preview_browser_v03.py
+          python -m py_compile scripts/opportunity_radar_v03.py scripts/run_opportunity_radar_v03.py scripts/build_opportunity_preview_v03.py scripts/test_opportunity_radar_v03.py scripts/test_opportunity_preview_v03.py scripts/test_opportunity_preview_browser_v03.py
           python scripts/test_opportunity_radar_v03.py
           python scripts/test_opportunity_preview_v03.py
-          python scripts/opportunity_radar_v03.py --backtest-only > /tmp/backtest-v03.json
+          python scripts/run_opportunity_radar_v03.py --backtest-only > /tmp/backtest-v03.json
           cat /tmp/backtest-v03.json
 
   live-probe:
@@ -74,7 +75,7 @@ jobs:
           previous=()
           [[ -s reports/previous/opportunities-previous.json ]] && previous=(--previous reports/previous/opportunities-previous.json)
           set +e
-          python scripts/opportunity_radar_v03.py --date "$TODAY" "${previous[@]}" --output reports/runtime/opportunities-v03.json --report reports/runtime/opportunities-v03.md
+          python scripts/run_opportunity_radar_v03.py --date "$TODAY" "${previous[@]}" --output reports/runtime/opportunities-v03.json --report reports/runtime/opportunities-v03.md
           code=$?
           set -e
           echo "$code" > reports/runtime/exit-code.txt
