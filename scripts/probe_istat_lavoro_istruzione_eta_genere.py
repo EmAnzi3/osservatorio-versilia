@@ -61,11 +61,12 @@ def build_labour(rows):
 
 
 def build_education(rows):
-    # Le categorie di livello formano la partizione:
-    # basse = IL + LBNA + NED + PSE + LSE; diploma/superiore = USE_IF + BL + ML_RDD.
-    # Le osservazioni con valore zero possono essere omesse dal CSV SDMX: uno zero viene accettato
-    # soltanto se la partizione ricostruita coincide con ALL.
-    by={}; wanted={"ALL","IL","LBNA","NED","PSE","LSE","USE_IF","BL","ML_RDD"}
+    # NED è l'aggregato "nessun titolo" e comprende IL/LBNA: non va sommato a questi ultimi.
+    # ML_RDD è l'aggregato master/secondo livello + dottorato e comprende ML/RDD.
+    # La partizione esclusiva verificata è quindi:
+    # ALL = NED + PSE + LSE + USE_IF + BL + ML_RDD.
+    # Un'osservazione assente viene trattata come zero solo se questa identità si chiude esattamente.
+    by={}; partition=["NED","PSE","LSE","USE_IF","BL","ML_RDD"]; wanted={"ALL",*partition}
     for row in rows:
         if row.get("INDICATOR")!="RESPOP_AV" or row.get("CITIZENSHIP")!="TOTAL" or row.get("CUR_ACT_STAT")!="99": continue
         age=EDU_AGES.get(row.get("AGE_NOCLASS")); gender=GENDERS.get(row.get("GENDER")); edu=row.get("EDU_ATTAIN"); town=row.get("REF_AREA")
@@ -77,17 +78,19 @@ def build_education(rows):
             for gender in ["total","men","women"]:
                 vals=town[age][gender]
                 if "ALL" not in vals: raise RuntimeError(f"education {name} {age} {gender}: ALL missing")
-                low=sum(vals.get(k,0) for k in ["IL","LBNA","NED","PSE","LSE"])
-                high=vals.get("USE_IF",0)+vals.get("BL",0)+vals.get("ML_RDD",0)
-                if abs((low+high)-vals["ALL"])>1e-6:
-                    raise RuntimeError(f"education {name} {age} {gender}: partition mismatch ALL={vals['ALL']} parts={low+high}; missing codes are not safe zeros")
+                parts=sum(vals.get(k,0.0) for k in partition)
+                if abs(parts-vals["ALL"])>1e-6:
+                    missing=[k for k in partition if k not in vals]
+                    raise RuntimeError(f"education {name} {age} {gender}: partition mismatch ALL={vals['ALL']} parts={parts} missing={missing}")
                 for k in fields: vals.setdefault(k,0.0)
         town["25-64"]={gender:add_cells(town["25-49"][gender],town["50-64"][gender],fields) for gender in ["total","men","women"]}
         clean={}
         for age,age_data in town.items():
             clean[age]={}
             for gender,vals in age_data.items():
-                pop=vals["ALL"]; low=sum(vals[k] for k in ["IL","LBNA","NED","PSE","LSE"]); diploma=pop-low; tertiary=diploma-vals["USE_IF"]
+                pop=vals["ALL"]
+                diploma=vals["USE_IF"]+vals["BL"]+vals["ML_RDD"]
+                tertiary=vals["BL"]+vals["ML_RDD"]
                 clean[age][gender]={"population":pop,"upperSecondaryPlus":diploma,"tertiary":tertiary,"diplomaPlus":diploma/pop*100 if pop else None,"tertiaryRate":tertiary/pop*100 if pop else None}
         out[name]=clean
     return out
