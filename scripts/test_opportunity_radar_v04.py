@@ -7,6 +7,28 @@ from datetime import date
 import run_opportunity_radar_v042 as v04
 
 
+V042_FAMILIES = {
+    "regional-core",
+    "national-crosscutting",
+    "culture",
+    "infrastructure",
+    "energy-climate-environment",
+    "sport-social-infrastructure",
+    "maritime-coastal",
+    "social-welfare-equality",
+    "resilience-civil-protection",
+    "digital-pa",
+    "eu-direct",
+    "territorial-cooperation",
+    "disability-inclusion",
+    "tourism-territorial",
+    "youth-civic-service",
+    "labour-social-services",
+    "education-school-infrastructure",
+    "local-administration-capacity",
+}
+
+
 class RadarV04Test(unittest.TestCase):
     def test_discovery_expansion_covers_new_families(self):
         config, coverage = v04.compose_runtime_payloads()
@@ -59,13 +81,16 @@ class RadarV04Test(unittest.TestCase):
         backtest = v04._load(v04.radar.DEFAULT_BACKTEST)
         self.assertIn("non la completezza dell'intero web", backtest.get("scope", ""))
 
-    def test_every_required_family_has_at_least_one_configured_source(self):
+    def test_every_v042_required_family_has_at_least_one_configured_source(self):
         _, coverage = v04.compose_runtime_payloads()
         configured = set((coverage.get("sources") or {}).keys())
         contract = v04._load(v04.CONTRACT_V04)
-        self.assertGreaterEqual(len(contract.get("requiredFamilies") or []), 18)
-        for family in contract.get("requiredFamilies") or []:
-            with self.subTest(family=family.get("id")):
+        by_id = {str(family.get("id")): family for family in contract.get("requiredFamilies") or []}
+        self.assertTrue(V042_FAMILIES.issubset(by_id))
+        self.assertEqual(len(V042_FAMILIES), 18)
+        for family_id in sorted(V042_FAMILIES):
+            family = by_id[family_id]
+            with self.subTest(family=family_id):
                 self.assertTrue(configured.intersection(family.get("sourceIds") or []))
 
     def test_recent_verified_seed_can_survive_transient_fetch_failure(self):
