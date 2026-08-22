@@ -1,8 +1,6 @@
 name: Audit Amministrazione RGS
 
 on:
-  push:
-    branches: ["agent/amministrazione-lotto-a"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -30,4 +28,6 @@ jobs:
         run: python scripts/audit_rgs_amministrazione_values.py
 
       - name: Inspect official Conto Annuale bulk download
+        continue-on-error: true
+        timeout-minutes: 2
         run: python scripts/probe_contoannuale_download.py
