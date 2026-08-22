@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.4",
+  "schemaVersion": "0.4.1",
   "purpose": "Misurare la copertura del radar separatamente dalla precisione/recall del classificatore sui candidati già osservati.",
   "classifierRecallIsNotWebCoverage": true,
   "acceptedOpportunityKinds": [
@@ -26,13 +26,15 @@
   "requiredFamilies": [
     {"id":"regional-core","label":"Regione Toscana e programmi regionali","sourceIds":["regione-toscana","regione-toscana-fesr","regione-toscana-fse","sviluppo-toscana"]},
     {"id":"national-crosscutting","label":"Canali nazionali trasversali per enti locali","sourceIds":["ministero-interno","pcm-stato-citta","politiche-coesione"]},
-    {"id":"culture","label":"Cultura","sourceIds":["mic-spettacolo","mic-dgcc"]},
+    {"id":"culture","label":"Cultura","sourceIds":["mic-spettacolo","mic-dgcc","mic-generale"]},
     {"id":"infrastructure","label":"Infrastrutture e mobilità","sourceIds":["mit-enti-locali"]},
     {"id":"energy-climate-environment","label":"Energia, clima e ambiente","sourceIds":["gse","mase-bandi","cinea-life"]},
     {"id":"sport-social-infrastructure","label":"Sport e infrastrutture sociali","sourceIds":["pcm-sport"]},
     {"id":"maritime-coastal","label":"Mare e Comuni costieri","sourceIds":["pcm-politiche-mare"]},
+    {"id":"social-welfare-equality","label":"Famiglia, welfare e pari opportunità","sourceIds":["pcm-famiglia","pcm-pari-opportunita"]},
+    {"id":"resilience-civil-protection","label":"Resilienza, prevenzione e patrimonio pubblico","sourceIds":["pcm-casa-italia","politiche-coesione"]},
     {"id":"digital-pa","label":"Transizione digitale PA","sourceIds":["pa-digitale-2026","pa-digitale-current"]},
-    {"id":"eu-direct","label":"Programmi UE diretti","sourceIds":["cinea-life","eu-neb"]},
+    {"id":"eu-direct","label":"Programmi UE diretti","sourceIds":["cinea-life","eu-neb","eu-funding-tenders"]},
     {"id":"territorial-cooperation","label":"Cooperazione territoriale","sourceIds":["interreg-marittimo"]}
   ],
   "publicationRules": {
