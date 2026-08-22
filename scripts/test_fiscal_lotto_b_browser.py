@@ -60,10 +60,15 @@ def main() -> None:
         require('Viareggio' in compare_text and '83' in compare_text, 'Contributo DAIT Viareggio non leggibile')
 
         page.goto(base + 'comuni/massarosa/?tema=economia&indicatore=fiscalRecoveryActivity', wait_until='networkidle')
-        require(page.locator('[data-metric="fiscalRecoveryActivity"]').count() == 1, 'Indicatore non selezionabile nella scheda comunale')
-        body = page.locator('body').inner_text()
-        require('Recupero tributario e accertamento' in body, 'Titolo Lotto B assente nella scheda Massarosa')
-        require('Recupero €/residente' in body and 'Contributo accertamento' in body, 'Letture Lotto B non fruibili nella scheda comunale')
+        town_metric = page.locator('[data-metric="fiscalRecoveryActivity"]')
+        require(town_metric.count() == 1 and town_metric.is_visible(), 'Indicatore non selezionabile nella scheda comunale')
+        require('active' in (town_metric.get_attribute('class') or '').split(), 'Indicatore Lotto B non attivo nella scheda Massarosa')
+        require('Recupero e accertamento' in town_metric.inner_text(), 'Etichetta Lotto B non visibile nella scheda Massarosa')
+        town_selector = page.locator('select[data-composite-choice]')
+        require(town_selector.count() == 1 and town_selector.is_visible(), 'Selettore Lotto B assente nella scheda Massarosa')
+        town_labels = town_selector.locator('option').all_text_contents()
+        require(town_labels == ['Recupero €/residente', 'Recupero totale', 'Contributo accertamento'], f'Letture Lotto B inattese nella scheda Massarosa: {town_labels}')
+        require('Non è un tasso di evasione fiscale' in page.locator('.town-metric-primary').inner_text(), 'Disclaimer Lotto B assente nella scheda Massarosa')
         no_horizontal_overflow(page, 'scheda Massarosa Fiscalità Lotto B desktop')
 
         page.set_viewport_size({'width': 390, 'height': 844})
@@ -75,7 +80,9 @@ def main() -> None:
         require(page.locator('#compare-bars').is_visible(), 'Confronto contributo DAIT non visibile su mobile')
 
         page.goto(base + 'comuni/forte-dei-marmi/?tema=economia&indicatore=fiscalRecoveryActivity', wait_until='networkidle')
-        require(page.locator('[data-metric="fiscalRecoveryActivity"]').count() == 1, 'Indicatore non selezionabile a Forte dei Marmi mobile')
+        mobile_metric = page.locator('[data-metric="fiscalRecoveryActivity"]')
+        require(mobile_metric.count() == 1, 'Indicatore non selezionabile a Forte dei Marmi mobile')
+        require(page.locator('select[data-composite-choice]').is_visible(), 'Selettore Lotto B non visibile a Forte dei Marmi mobile')
         no_horizontal_overflow(page, 'scheda Forte dei Marmi Fiscalità Lotto B mobile')
         browser.close()
 
