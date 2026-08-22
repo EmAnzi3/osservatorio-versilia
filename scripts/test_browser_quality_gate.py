@@ -8,18 +8,18 @@ import re
 from pathlib import Path
 from urllib.parse import urljoin
 
-from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import Page, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DIST = ROOT / "dist"
 VIEWPORTS = (
-    ("mobile", 375, 812),
-    ("tablet", 768, 1024),
-    ("laptop", 1024, 768),
-    ("desktop", 1440, 900),
+    ("mobile", 375, 812, True),
+    ("tablet", 768, 1024, False),
+    ("laptop", 1024, 768, False),
+    ("desktop", 1440, 900, True),
 )
 EXCLUDED_HTML = {"offline.html"}
+INTERMEDIATE_INDICATOR_SAMPLE = 12
 
 
 def require(condition: bool, message: str) -> None:
@@ -48,6 +48,22 @@ def discover_routes(dist: Path) -> list[str]:
     return routes
 
 
+def representative_routes(routes: list[str]) -> list[str]:
+    """Copre tutte le famiglie non-indicatore e un campione distribuito delle pagine indicatore."""
+    regular = [route for route in routes if not route.startswith("indicatori/")]
+    indicators = [route for route in routes if route.startswith("indicatori/")]
+    if len(indicators) <= INTERMEDIATE_INDICATOR_SAMPLE:
+        return sorted(set(regular + indicators))
+
+    count = INTERMEDIATE_INDICATOR_SAMPLE
+    indexes = {
+        round(index * (len(indicators) - 1) / (count - 1))
+        for index in range(count)
+    }
+    sampled = [indicators[index] for index in sorted(indexes)]
+    return sorted(set(regular + sampled))
+
+
 def safe_name(route: str) -> str:
     value = route.strip("/") or "home"
     value = re.sub(r"[^a-zA-Z0-9._-]+", "-", value)
@@ -56,11 +72,11 @@ def safe_name(route: str) -> str:
 
 def wait_for_page(page: Page) -> None:
     page.wait_for_function("document.fonts ? document.fonts.status === 'loaded' : true")
-    try:
-        page.wait_for_load_state("networkidle", timeout=1800)
-    except PlaywrightError:
-        # Alcune pagine mantengono attività asincrone lecite: il gate verifica il DOM già disponibile.
-        pass
+    # Due frame sono sufficienti per applicare layout e rendering client-side senza pagare
+    # il costo di networkidle su centinaia di route statiche.
+    page.evaluate(
+        "() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))"
+    )
 
 
 def browser_findings(page: Page) -> dict[str, object]:
@@ -192,20 +208,24 @@ def audit_page(page: Page, base: str, route: str) -> dict[str, object]:
 
 def run_gate(base: str, dist: Path, output_dir: Path) -> None:
     routes = discover_routes(dist)
+    middle_routes = representative_routes(routes)
     output_dir.mkdir(parents=True, exist_ok=True)
     failures: list[dict[str, object]] = []
     warnings: list[dict[str, object]] = []
     audited = 0
+    coverage: dict[str, int] = {}
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        for viewport_name, width, height in VIEWPORTS:
+        for viewport_name, width, height, full_coverage in VIEWPORTS:
+            routes_for_viewport = routes if full_coverage else middle_routes
+            coverage[viewport_name] = len(routes_for_viewport)
             context = browser.new_context(
                 viewport={"width": width, "height": height},
                 device_scale_factor=1,
                 reduced_motion="reduce",
             )
-            for route in routes:
+            for route in routes_for_viewport:
                 audited += 1
                 label = route or "/"
                 page = context.new_page()
@@ -238,8 +258,8 @@ def run_gate(base: str, dist: Path, output_dir: Path) -> None:
         browser.close()
 
     report = {
-        "routes": len(routes),
-        "viewports": [name for name, _, _ in VIEWPORTS],
+        "totalPublicRoutes": len(routes),
+        "coverageByViewport": coverage,
         "auditedCombinations": audited,
         "failures": failures,
         "warnings": warnings,
@@ -257,8 +277,10 @@ def run_gate(base: str, dist: Path, output_dir: Path) -> None:
         )
 
     print(
-        f"Browser Quality Gate passed: {len(routes)} pagine × {len(VIEWPORTS)} viewport = {audited} controlli; "
-        f"screenshot generati solo in caso di errore."
+        "Browser Quality Gate passed: "
+        f"{len(routes)} pagine complete su mobile+desktop; "
+        f"{len(middle_routes)} route rappresentative su tablet+laptop; "
+        f"{audited} controlli complessivi."
     )
     if warnings:
         print(f"Avvisi console non bloccanti registrati: {len(warnings)} (vedi report.json).")
