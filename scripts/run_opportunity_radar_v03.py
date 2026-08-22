@@ -6,7 +6,8 @@
 - aggiunge la sezione 'A chi si rivolge' alla lettura dei destinatari;
 - propaga alla matrice di copertura le icone affidabili del registro di presentazione;
 - risolve dettagli ufficiali verificati che i listing non espongono correttamente;
-- collassa duplicati semantici dello stesso bando tramite rule_id.
+- collassa duplicati semantici dello stesso bando tramite rule_id;
+- riconcilia la continuità sull'output finale, dopo i recuperi documentali verificati.
 """
 from __future__ import annotations
 
@@ -71,9 +72,26 @@ _ORIGINAL_RUN = radar.run
 _VERIFIED = radar.ROOT / "data" / "opportunity-verified-details-v03.json"
 
 
+def _reconcile_final_continuity(result):
+    """Rimuove solo gli HOLD che risultano presenti nell'output finale.
+
+    Il collector base calcola la continuità prima del recupero documentale v0.3.
+    Se un bando viene recuperato dopo (es. Jazz 2027), non deve risultare nello
+    stesso run sia tra le opportunità correnti sia tra i continuity hold.
+    """
+    active = {radar.v025.identity_key(item) for item in result.get("opportunities") or []}
+    holds = [
+        hold for hold in result.get("continuityHold") or []
+        if str(hold.get("identity_key") or "") not in active
+    ]
+    result["continuityHold"] = holds
+    result.setdefault("counts", {})["continuityHold"] = len(holds)
+    return result
+
+
 def _hardened_run(config_path: Path, today, **kwargs):
     result = _ORIGINAL_RUN(config_path, today, **kwargs)
-    return post.harden(
+    result = post.harden(
         radar,
         result,
         config_path,
@@ -83,6 +101,7 @@ def _hardened_run(config_path: Path, today, **kwargs):
         detail_payloads=kwargs.get("detail_payloads"),
         live=kwargs.get("payloads") is None,
     )
+    return _reconcile_final_continuity(result)
 
 
 radar.run = _hardened_run
