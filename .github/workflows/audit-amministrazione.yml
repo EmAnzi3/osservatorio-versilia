@@ -3,6 +3,8 @@ name: Audit Amministrazione RGS
 on:
   push:
     branches: ["agent/amministrazione-lotto-a"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
