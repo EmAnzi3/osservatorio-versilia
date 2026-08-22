@@ -1,12 +1,12 @@
 {
   "schemaVersion": "0.4.3",
-  "referenceDate": "2026-08-22",
+  "referenceDate": "2026-08-23",
   "cases": [
+    {"id":"c11","coverage_id":"eu-eui-city-to-city-exchanges-2026","title":"European Urban Initiative — City-to-City Exchanges","source_id":"eu-eui","expected":"current","lifecycle_stage":"rolling_open"},
     {"id":"h10","title":"URBACT Action Networks 2026","source_id":"eu-urbact","expected":"historical_monitored","closed_at":"2026-06-17","reason":"Sentinella europea per reti di città: una rete di raccolta UE che non intercetta URBACT ha un buco strutturale."},
     {"id":"h11","title":"EUI Innovative Actions — Call 4","source_id":"eu-eui","expected":"historical_monitored","closed_at":"2026-06-15","reason":"Sentinella per finanziamenti urbani diretti alle autorità urbane."},
     {"id":"h12","title":"DIGITAL-2026-BESTUSE-MCP-09 — Innovative and Connected Public Administrations","source_id":"eu-digital","expected":"historical_monitored","closed_at":"2026-05-19","reason":"Sentinella per Digital Europe e servizi pubblici digitali; non deve dipendere dal solo Funding & Tenders generico."},
     {"id":"h13","title":"CSR/LEADER 2026 — interventi con enti pubblici territoriali","source_id":"toscana-csr-artea-leader","expected":"historical_monitored","closed_at":"2026-07-31","reason":"Sentinella per lo sviluppo rurale territoriale: la rete deve presidiare CSR/FEASR e GAL anche quando la platea non è composta da imprese."},
-    {"id":"r02","title":"EUI City-to-City Exchanges","source_id":"eu-eui","expected":"audit_review","lifecycle_stage":"rolling_open","reason":"La misura è a sportello e non ha soglia demografica, ma richiede classificazione DEGURBA 1 o 2. Non viene pubblicata finché la posizione dei sette Comuni non è verificata."},
     {"id":"r03","title":"2026 CEF Transport Calls for proposals","source_id":"eu-cef","expected":"audit_review","deadline_at":"2026-10-06","reason":"I public bodies sono ammissibili, ma per una scheda comunale servono pertinenza al topic/TEN-T, ruolo progettuale e, dove previsto, accordo nazionale."},
     {"id":"r04","title":"Erasmus+ 2026 — azioni per enti pubblici/locali","source_id":"eu-erasmus","expected":"audit_review","reason":"La call generale ammette organismi pubblici, ma il radar deve isolare la singola azione e il ruolo municipale prima della pubblicazione."},
     {"id":"r05","title":"Horizon Europe 2026-2027 — topic con città/autorità locali","source_id":"eu-horizon","expected":"audit_review","reason":"Il programma è enorme: nessuna call viene esposta senza topic specifico, partenariato e ruolo operativo documentato del Comune."},
