@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.4.1",
-  "purpose": "Misurare la copertura del radar separatamente dalla precisione/recall del classificatore sui candidati già osservati.",
+  "schemaVersion": "0.4.2",
+  "purpose": "Misurare la copertura del radar separatamente dalla precisione/recall del classificatore sui candidati già osservati. Le famiglie minime sono validate anche contro un audit indipendente esterno al collector.",
   "classifierRecallIsNotWebCoverage": true,
   "acceptedOpportunityKinds": [
     "grant",
@@ -10,7 +10,8 @@
     "manifestation_of_interest",
     "prize",
     "programme",
-    "rolling_scheme"
+    "rolling_scheme",
+    "operational_opportunity"
   ],
   "excludedOpportunityKinds": [
     "procurement_where_municipality_is_contracting_authority",
@@ -34,8 +35,14 @@
     {"id":"social-welfare-equality","label":"Famiglia, welfare e pari opportunità","sourceIds":["pcm-famiglia","pcm-pari-opportunita"]},
     {"id":"resilience-civil-protection","label":"Resilienza, prevenzione e patrimonio pubblico","sourceIds":["pcm-casa-italia","politiche-coesione"]},
     {"id":"digital-pa","label":"Transizione digitale PA","sourceIds":["pa-digitale-2026","pa-digitale-current"]},
-    {"id":"eu-direct","label":"Programmi UE diretti","sourceIds":["cinea-life","eu-neb","eu-funding-tenders"]},
-    {"id":"territorial-cooperation","label":"Cooperazione territoriale","sourceIds":["interreg-marittimo"]}
+    {"id":"eu-direct","label":"Programmi UE diretti","sourceIds":["cinea-life","eu-neb","eu-funding-tenders","eu-cerv"]},
+    {"id":"territorial-cooperation","label":"Cooperazione territoriale","sourceIds":["interreg-marittimo"]},
+    {"id":"disability-inclusion","label":"Disabilità e inclusione","sourceIds":["pcm-disabilita"]},
+    {"id":"tourism-territorial","label":"Turismo ed enti territoriali","sourceIds":["ministero-turismo"]},
+    {"id":"youth-civic-service","label":"Politiche giovanili e Servizio civile","sourceIds":["pcm-politiche-giovanili-scu"]},
+    {"id":"labour-social-services","label":"Lavoro e servizi sociali","sourceIds":["mlps-social-services"]},
+    {"id":"education-school-infrastructure","label":"Istruzione, edilizia e servizi scolastici","sourceIds":["mim-enti-locali"]},
+    {"id":"local-administration-capacity","label":"Capacità amministrativa dei Comuni","sourceIds":["funzione-pubblica","pa-digitale-current"]}
   ],
   "publicationRules": {
     "discoveryCannotPublishAlone": true,
@@ -44,6 +51,8 @@
     "municipalityMatrixRequired": true,
     "lifecycleStageRequired": true,
     "rollingMeasuresMayOmitDeadline": true,
-    "upcomingMeasuresMayOmitDeadline": true
+    "upcomingMeasuresMayOmitDeadline": true,
+    "auditReviewCannotPublish": true,
+    "independentAuditDoesNotFeedProduction": true
   }
 }
