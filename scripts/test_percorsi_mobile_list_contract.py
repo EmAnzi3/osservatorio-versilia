@@ -10,6 +10,39 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def page_scroll_state(page) -> dict:
+    return page.evaluate("""() => ({
+      windowY: window.scrollY,
+      bodyTop: document.body.scrollTop,
+      documentTop: document.documentElement.scrollTop,
+      scrollingTop: document.scrollingElement?.scrollTop ?? 0,
+      bodyMax: Math.max(0, document.body.scrollHeight - document.body.clientHeight),
+      documentMax: Math.max(0, document.documentElement.scrollHeight - document.documentElement.clientHeight),
+      scrollingMax: document.scrollingElement
+        ? Math.max(0, document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight)
+        : 0
+    })""")
+
+
+def effective_scroll(state: dict) -> float:
+    return max(
+        float(state.get('windowY') or 0),
+        float(state.get('bodyTop') or 0),
+        float(state.get('documentTop') or 0),
+        float(state.get('scrollingTop') or 0),
+    )
+
+
+def scroll_page_to_bottom(page) -> dict:
+    page.evaluate("""() => {
+      const targets = [document.scrollingElement, document.documentElement, document.body].filter(Boolean);
+      for (const target of targets) target.scrollTop = target.scrollHeight;
+      window.scrollTo(0, Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+    }""")
+    page.wait_for_timeout(120)
+    return page_scroll_state(page)
+
+
 def assert_scroll_recovery(page, label: str) -> None:
     runtime = page.evaluate("""() => ({
       hasMap: Boolean(window.__ovPercorsiMap),
@@ -30,29 +63,43 @@ def assert_scroll_recovery(page, label: str) -> None:
     require(back.is_visible(), f'Controllo ↑ Percorsi non visibile in {label}')
     require(page.locator('.leaflet-control-zoom-in').is_visible(), f'Zoom mappa non disponibile in {label}')
 
-    # Porta la pagina in fondo, dove nello scenario reale la mappa occupa il viewport.
-    page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
-    page.wait_for_timeout(100)
-    before_wheel = page.evaluate('window.scrollY')
+    # Porta in fondo il vero scroll container della pagina (su questa shell mobile
+    # può essere body anziché window/documentElement).
+    before_state = scroll_page_to_bottom(page)
+    before_wheel = effective_scroll(before_state)
+    require(
+        before_wheel > 100,
+        f'Pagina Percorsi non portata realmente in fondo in {label}: {before_state}',
+    )
     map_box = page.locator('.mapWrap').bounding_box()
     require(map_box is not None, f'Mappa non misurabile per scroll recovery in {label}')
 
     # Anche un gesto di scroll iniziato sulla mappa deve poter risalire la pagina.
-    page.mouse.move(map_box['x'] + map_box['width'] / 2, map_box['y'] + map_box['height'] / 2)
+    viewport = page.viewport_size
+    x = max(1, min(map_box['x'] + map_box['width'] / 2, viewport['width'] - 2))
+    y = max(1, min(map_box['y'] + map_box['height'] / 2, viewport['height'] - 2))
+    page.mouse.move(x, y)
     page.mouse.wheel(0, -420)
-    page.wait_for_timeout(180)
-    after_wheel = page.evaluate('window.scrollY')
-    require(after_wheel < before_wheel - 40, f'La mappa intrappola lo scroll verticale in {label}: {before_wheel=} {after_wheel=}')
+    page.wait_for_timeout(220)
+    after_state = page_scroll_state(page)
+    after_wheel = effective_scroll(after_state)
+    require(
+        after_wheel < before_wheel - 40,
+        f'La mappa intrappola lo scroll verticale in {label}: before={before_state} after={after_state}',
+    )
 
     # Via di uscita esplicita: deve funzionare indipendentemente dal browser/touch stack.
-    page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight)")
-    page.wait_for_timeout(100)
-    before_button = page.evaluate('window.scrollY')
+    before_button_state = scroll_page_to_bottom(page)
+    before_button = effective_scroll(before_button_state)
     back.click()
-    page.wait_for_timeout(700)
-    after_button = page.evaluate('window.scrollY')
+    page.wait_for_timeout(750)
+    after_button_state = page_scroll_state(page)
+    after_button = effective_scroll(after_button_state)
     results_top = page.locator('.resultsHead').evaluate('el => el.getBoundingClientRect().top')
-    require(after_button < before_button - 100, f'Il controllo ↑ Percorsi non risale la pagina in {label}: {before_button=} {after_button=}')
+    require(
+        after_button < before_button - 100,
+        f'Il controllo ↑ Percorsi non risale la pagina in {label}: before={before_button_state} after={after_button_state}',
+    )
     require(-2 <= results_top <= 220, f'Il controllo ↑ Percorsi non riporta all’elenco in {label}: results_top={results_top}')
 
 
