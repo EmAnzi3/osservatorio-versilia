@@ -10,6 +10,7 @@ import unicodedata
 from pathlib import Path
 
 import build_opportunity_preview_v04 as base
+import source_brandmark_fallback
 import source_favicon_assets
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,10 +50,11 @@ def _source_options(payload: dict) -> str:
 def build(payload_path: Path, dist: Path) -> Path:
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     payload, provenance = source_favicon_assets.materialize(payload, dist)
+    payload, provenance = source_brandmark_fallback.materialize_missing(payload, dist, provenance)
     public_sources = {str(x.get("source_id") or "") for x in payload.get("opportunities") or [] if x.get("source_id")}
     missing_icons = sorted(public_sources - set(provenance))
     if missing_icons:
-        raise SystemExit("Favicon ufficiale non risolto per: " + ", ".join(missing_icons))
+        raise SystemExit("Icona ufficiale non risolta dalla pagina originale per: " + ", ".join(missing_icons))
 
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=False) as handle:
         json.dump(payload, handle, ensure_ascii=False)
@@ -87,7 +89,7 @@ def build(payload_path: Path, dist: Path) -> Path:
     if "Tutte le fonti monitorate" not in check or "UE · URBACT · monitorata" not in check:
         raise SystemExit("La preview non espone l'intera rete nel filtro Fonte")
     if "../assets/source-favicons/" not in check:
-        raise SystemExit("I favicon ufficiali locali non sono stati materializzati")
+        raise SystemExit("Le icone ufficiali locali non sono state materializzate")
     return target
 
 
