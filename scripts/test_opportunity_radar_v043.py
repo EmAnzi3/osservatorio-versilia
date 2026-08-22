@@ -69,12 +69,26 @@ class RadarV043Test(unittest.TestCase):
                 self.assertTrue(str(row.get("evidence_url") or "").startswith("https://"))
                 self.assertEqual(row.get("evidence_verified_at"), "2026-08-22")
 
+    def test_eui_city_to_city_is_verified_after_degurb_check(self):
+        entry = next(
+            x for x in v043._load(v043.VERIFIED_V043).get("entries") or []
+            if x.get("coverage_id") == "eu-eui-city-to-city-exchanges-2026"
+        )
+        item = v043.build_seed_item(entry, date(2026, 8, 23), "live")
+        self.assertEqual(item["lifecycle_stage"], "rolling_open")
+        self.assertIsNone(item["deadline_at"])
+        for town in ("Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Viareggio"):
+            self.assertEqual(item["municipality_eligibility"][town]["status"], "conditional", town)
+        self.assertEqual(item["municipality_eligibility"]["Stazzema"]["status"], "not_eligible")
+
     def test_current_broad_eu_calls_stay_in_review_until_municipal_fit_is_proven(self):
         cases = v043._load(v043.SENTINELS_V043).get("cases") or []
         review = {str(x.get("source_id")): x for x in cases if x.get("expected") == "audit_review"}
-        for source_id in ("eu-eui", "eu-cef", "eu-erasmus", "eu-horizon", "protezione-civile", "masaf-bandi"):
+        for source_id in ("eu-cef", "eu-erasmus", "eu-horizon", "protezione-civile", "masaf-bandi"):
             self.assertIn(source_id, review)
-        self.assertEqual(review["eu-eui"].get("lifecycle_stage"), "rolling_open")
+        current = {str(x.get("source_id")): x for x in cases if x.get("expected") == "current"}
+        self.assertIn("eu-eui", current)
+        self.assertEqual(current["eu-eui"].get("lifecycle_stage"), "rolling_open")
         self.assertEqual(review["eu-cef"].get("deadline_at"), "2026-10-06")
 
     def test_historical_sentinels_cover_programmes_that_closed_before_v043(self):
