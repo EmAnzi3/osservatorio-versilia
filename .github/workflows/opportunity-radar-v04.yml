@@ -12,6 +12,7 @@ on:
       - "scripts/build_opportunity_preview_v04.py"
       - "scripts/build_opportunity_preview_v043.py"
       - "scripts/source_favicon_assets.py"
+      - "scripts/source_brandmark_fallback.py"
       - "scripts/test_opportunity_radar_v04.py"
       - "scripts/test_opportunity_radar_v043.py"
       - "scripts/test_opportunity_preview_v04.py"
@@ -63,7 +64,7 @@ jobs:
           python-version: "3.12"
       - name: Validate residual coverage v0.4.3
         run: |
-          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/source_favicon_assets.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
+          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/run_opportunity_radar_v042.py scripts/run_opportunity_radar_v043.py scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py scripts/source_favicon_assets.py scripts/source_brandmark_fallback.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_radar_v043.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
           python -m json.tool data/opportunity-discovery-v042.json > /dev/null
           python -m json.tool data/opportunity-discovery-v043.json > /dev/null
           python -m json.tool data/opportunity-discovery-v043-eucf.json > /dev/null
