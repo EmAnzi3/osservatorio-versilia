@@ -1,0 +1,51 @@
+.op-overview-grid-v04 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.op-card-heading .op-lifecycle {
+  margin-bottom: .7rem;
+}
+
+.op-lifecycle {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border-radius: 999px;
+  padding: .32rem .62rem;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+  border: 1px solid rgba(15, 54, 84, .18);
+  background: rgba(15, 54, 84, .08);
+  color: #0f3654;
+}
+
+.op-lifecycle-rolling {
+  border-color: rgba(21, 105, 95, .22);
+  background: rgba(21, 105, 95, .09);
+  color: #155f58;
+}
+
+.op-lifecycle-upcoming {
+  border-color: rgba(143, 92, 27, .22);
+  background: rgba(143, 92, 27, .09);
+  color: #75501f;
+}
+
+.op-preview-controls label:has([data-op-lifecycle]) {
+  min-width: 9.5rem;
+}
+
+@media (max-width: 980px) {
+  .op-overview-grid-v04 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .op-overview-grid-v04 {
+    grid-template-columns: 1fr;
+  }
+}
