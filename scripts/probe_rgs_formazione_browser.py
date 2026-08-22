@@ -36,15 +36,10 @@ def total_row(payload: dict) -> dict:
 
 def main() -> None:
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
-        context = browser.new_context(
-            locale="it-IT",
+        request = pw.request.new_context(
             user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/151 Safari/537.36",
+            extra_http_headers={"Accept": "application/json,text/plain,*/*", "Referer": PAGE_URL},
         )
-        page = context.new_page()
-        page.goto(PAGE_URL, wait_until="domcontentloaded", timeout=90000)
-        page.wait_for_timeout(1500)
-        print("PAGE", page.title(), page.url)
 
         def get_training(year: int, codes: str) -> dict:
             params = {
@@ -53,7 +48,7 @@ def main() -> None:
                 "istituzioneFilters": codes,
             }
             url = f"{API}/formazione?{urlencode(params)}"
-            response = context.request.get(url, timeout=60000)
+            response = request.get(url, timeout=60000)
             if response.status != 200:
                 raise RuntimeError(f"HTTP {response.status}: {url}")
             payload = response.json()
@@ -93,7 +88,7 @@ def main() -> None:
         print("RGS_FORMATION_HISTORY_JSON_BEGIN")
         print(json.dumps(out, ensure_ascii=False, sort_keys=True))
         print("RGS_FORMATION_HISTORY_JSON_END")
-        browser.close()
+        request.dispose()
 
 
 if __name__ == "__main__":
