@@ -20,6 +20,7 @@ SITE_PATH = ROOT / "data" / "site-data.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 MONITOR_PATH = ROOT / "data" / "source-monitor-state.json"
 SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "rgs-amministrazione-2024.json"
+APP_PART_PATH = ROOT / "assets" / "app-parts" / "03.txt"
 
 RGS_INDICATOR_URL = "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc"
 RGS_DATA_URL = "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati"
@@ -205,6 +206,7 @@ def age_metric(site: dict, snapshot: dict) -> dict:
             "series": {"years": [2024], "values": [parts[0]["value"]]},
             "normalized": None,
             "benchmarkValue": parts[0]["value"],
+            "staffAt31Dec": staff,
             "parts": parts,
         })
     total_staff = sum(totals.values())
@@ -223,7 +225,7 @@ def age_metric(site: dict, snapshot: dict) -> dict:
             "theme": "bilanci",
             "label": "Struttura per età del personale comunale",
             "shortLabel": "Età del personale",
-            "description": "Composizione del personale comunale per macrofasce di età. La lettura predefinita mostra la quota di dipendenti con 55 anni o più; il selettore consente di confrontare anche le altre fasce.",
+            "description": "Composizione del personale comunale per macrofasce di età. La lettura predefinita mostra la quota di dipendenti con 55 anni o più; nel dettaglio sono visibili anche i dipendenti in valore assoluto e il totale dell'organico.",
             "unit": "percent",
             "year": "2024",
             "source": "RGS — Conto Annuale / OpenBDAP",
@@ -238,6 +240,7 @@ def age_metric(site: dict, snapshot: dict) -> dict:
             "value": aggregate_parts[0]["value"],
             "label": "Versilia · personale 55+",
             "note": "Le quote Versilia sono calcolate sui conteggi complessivi dei sette Comuni; non sono medie semplici delle percentuali comunali.",
+            "staffAt31Dec": total_staff,
             "parts": aggregate_parts,
         },
         "normalizedAggregate": None,
@@ -316,6 +319,24 @@ def update_monitor(monitor: dict) -> None:
         state["frequencies"] = sorted(set(state.get("frequencies", [])) | {"annual"})
 
 
+def patch_frontend() -> None:
+    text = APP_PART_PATH.read_text(encoding="utf-8")
+    marker = "const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';"
+    if marker in text:
+        return
+    old = '''    if (metric.meta.compositeType === 'securityMeasures') {
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div>`;
+    }'''
+    new = '''    if (metric.meta.compositeType === 'securityMeasures') {
+      const totalCount = parts.reduce((sum, part) => sum + (Number(part.count) || 0), 0);
+      const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${showStaffCounts && part.count !== undefined ? `${html(number0.format(part.count))} dipendenti su ${html(number0.format(totalCount))} · ` : ''}${html(metric.meta.year)}</small></article>`).join('')}</div>`;
+    }'''
+    if old not in text:
+        raise RuntimeError("Blocco frontend securityMeasures non trovato: patch età non applicabile")
+    APP_PART_PATH.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
 def main() -> None:
     site = load(SITE_PATH)
     registry = load(REGISTRY_PATH)
@@ -331,6 +352,7 @@ def main() -> None:
     update_theme(site)
     update_registry(registry, site)
     update_monitor(monitor)
+    patch_frontend()
 
     # Questo materializzatore aggiunge il lotto al dataset corrente senza
     # sovrascrivere la versione/data di release stabilita dalla pipeline canonica.
