@@ -9,7 +9,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
 SNAPSHOT = ROOT / "data" / "source-snapshots" / "rgs-amministrazione-2024.json"
-KEYS = ("municipalEmployeesPer1000", "municipalStaffTurnover", "municipalStaffAgeStructure")
+TRAINING_SNAPSHOT = ROOT / "data" / "source-snapshots" / "rgs-formazione-2024.json"
+KEYS = (
+    "municipalEmployeesPer1000",
+    "municipalStaffTurnover",
+    "municipalStaffAgeStructure",
+    "municipalStaffTraining",
+)
 
 
 def close(a: float, b: float, label: str) -> None:
@@ -20,10 +26,11 @@ def main() -> None:
     site = json.loads(SITE.read_text(encoding="utf-8"))
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
+    training_snapshot = json.loads(TRAINING_SNAPSHOT.read_text(encoding="utf-8"))
 
-    assert len(site["metrics"]) == 136, f"Attesi 136 indicatori, trovati {len(site['metrics'])}"
-    assert registry["expectedMetricCount"] == 136
-    assert registry["expectedInlineMetricCount"] == 132
+    assert len(site["metrics"]) == 137, f"Attesi 137 indicatori, trovati {len(site['metrics'])}"
+    assert registry["expectedMetricCount"] == 137
+    assert registry["expectedInlineMetricCount"] == 133
     assert registry["expectedExternalMetricCount"] == 4
 
     theme = site["themes"]["bilanci"]
@@ -33,6 +40,7 @@ def main() -> None:
     assert section["metrics"] == list(KEYS)
 
     expected_towns = set(snapshot["towns"])
+    assert set(training_snapshot["towns"]) == expected_towns
     for key in KEYS:
         metric = site["metrics"][key]
         assert metric["method"]["coverage"] == "7/7"
@@ -79,7 +87,27 @@ def main() -> None:
     for index, part in enumerate(age["aggregate"]["parts"]):
         close(part["value"], aggregate_counts[index] / total * 100, f"età/Versilia/{index}")
 
-    print("Amministrazione Lotto A verificata: 136 indicatori, 7/7 Comuni, aggregati pesati, conteggi età assoluti e semantica neutrale.")
+    training = site["metrics"]["municipalStaffTraining"]
+    assert training["meta"]["compositeType"] == "securityMeasures"
+    for row in training["rows"]:
+        raw = training_snapshot["towns"][row["town"]]
+        parts = row["parts"]
+        assert len(parts) == 4
+        close(row["value"], raw["meanTotalRgs"], f"formazione/{row['town']}/media totale")
+        close(parts[0]["value"], raw["meanTotalRgs"], f"formazione/{row['town']}/part0")
+        assert parts[1]["value"] == raw["totalDays"]
+        close(parts[2]["value"], raw["meanMen"], f"formazione/{row['town']}/uomini")
+        close(parts[3]["value"], raw["meanWomen"], f"formazione/{row['town']}/donne")
+        assert raw["menDays"] + raw["womenDays"] == raw["totalDays"]
+        close(raw["meanTotalRgs"], (raw["meanMen"] + raw["meanWomen"]) / 2, f"formazione/{row['town']}/formula RGS")
+
+    versilia = training_snapshot["versilia"]
+    close(training["aggregate"]["value"], versilia["meanTotalRgs"], "formazione/Versilia/media totale")
+    assert training["aggregate"]["parts"][1]["value"] == versilia["totalDays"] == 1278
+    close(training["aggregate"]["parts"][2]["value"], versilia["meanMen"], "formazione/Versilia/uomini")
+    close(training["aggregate"]["parts"][3]["value"], versilia["meanWomen"], "formazione/Versilia/donne")
+
+    print("Amministrazione Lotto A verificata: 137 indicatori, 7/7 Comuni, formazione RGS 2024, conteggi età assoluti e semantica neutrale.")
 
 
 if __name__ == "__main__":
