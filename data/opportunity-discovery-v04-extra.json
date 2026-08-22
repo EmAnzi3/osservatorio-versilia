@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "0.4.1",
+  "discoverySources": [
+    {
+      "id": "pcm-famiglia",
+      "label": "PCM · Politiche per la famiglia",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche della famiglia",
+      "territory": "Italia",
+      "family": "social-welfare-equality",
+      "urls": ["https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "finanzi", "fondo", "contribut", "manifestazione di interesse"],
+      "municipalTerms": ["comun", "enti locali", "famiglie", "territorio"]
+    },
+    {
+      "id": "pcm-pari-opportunita",
+      "label": "PCM · Pari opportunità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
+      "territory": "Italia",
+      "family": "social-welfare-equality",
+      "urls": ["https://www.pariopportunita.gov.it/it/news-e-media/news/?c=39da032a-22db-4b74-a6d1-47169edb48f1"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "finanzi", "progetti", "manifestazione di interesse", "co-progettazione"],
+      "municipalTerms": ["comun", "enti locali", "città metropolitane", "territorial"]
+    },
+    {
+      "id": "pcm-casa-italia",
+      "label": "PCM · Casa Italia",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento Casa Italia",
+      "territory": "Italia",
+      "family": "resilience-civil-protection",
+      "urls": ["https://www.casaitalia.governo.it/generali/bandi-e-avvisi/"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "bando", "finanzi", "piccoli comuni", "rischio sismico", "aree interne"],
+      "municipalTerms": ["comun", "enti", "edifici pubblici", "infrastrutture"]
+    },
+    {
+      "id": "mic-generale",
+      "label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "family": "culture",
+      "urls": ["https://cultura.gov.it/comunicati/avvisi"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "candidatur", "fondo"],
+      "municipalTerms": ["comun", "enti locali", "autonomie territoriali", "territorio", "siti"]
+    },
+    {
+      "id": "eu-funding-tenders",
+      "label": "UE · Funding & Tenders",
+      "publisher": "Commissione europea · Funding & Tenders Portal",
+      "territory": "Unione europea",
+      "family": "eu-direct",
+      "urls": ["https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-search"],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["topic", "call", "funding", "grant", "deadline", "programme"],
+      "municipalTerms": ["municipal", "local authorities", "cities", "public authorities", "regional"]
+    }
+  ],
+  "coverageRegistry": {
+    "pcm-famiglia": {"label":"PCM · Politiche per la famiglia","monitoringStatus":"active","role":"discovery","priority":105,"family":"social-welfare-equality","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.famiglia.governo.it/favicon.ico","note":"Finanziamenti e avvisi per politiche della famiglia, infanzia e adolescenza con possibili destinatari comunali."},
+    "pcm-pari-opportunita": {"label":"PCM · Pari opportunità","monitoringStatus":"active","role":"discovery","priority":105,"family":"social-welfare-equality","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.pariopportunita.gov.it/favicon.ico","note":"Bandi e avvisi con possibile partecipazione di enti locali e partenariati territoriali."},
+    "pcm-casa-italia": {"label":"PCM · Casa Italia","monitoringStatus":"active","role":"discovery","priority":105,"family":"resilience-civil-protection","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.casaitalia.governo.it/favicon.ico","note":"Avvisi su piccoli Comuni, aree interne, prevenzione sismica e infrastrutture pubbliche."},
+    "mic-generale": {"label":"Ministero della Cultura · Avvisi","monitoringStatus":"active","role":"discovery","priority":90,"family":"culture","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://cultura.gov.it/favicon.ico","note":"Rete generale MiC usata per non dipendere da una sola Direzione generale; le gare di acquisto restano escluse dal contratto di opportunità."},
+    "eu-funding-tenders": {"label":"UE · Funding & Tenders","monitoringStatus":"active","role":"discovery","priority":90,"family":"eu-direct","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://ec.europa.eu/favicon.ico","note":"Portale trasversale UE. Essendo fortemente dinamico può risultare degradato al collector HTML; resta affiancato da canali tematici ufficiali."}
+  }
+}
