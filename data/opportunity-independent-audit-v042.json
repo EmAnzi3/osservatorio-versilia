@@ -13,6 +13,8 @@
       "label": "Invitalia · incentivi e strumenti",
       "url": "https://www.invitalia.it/incentivi-e-strumenti",
       "method": "independent_crosscheck",
+      "includeTerms": ["incentivo", "contribut", "finanzi", "avviso", "sovvenzione"],
+      "municipalTerms": ["comun", "enti locali", "pubbliche amministrazioni", "territorio"],
       "note": "Fonte di controllo distinta dalla fonte primaria del Dipartimento; non alimenta il collector di produzione."
     },
     {
@@ -20,6 +22,8 @@
       "label": "CERV Italia · National Contact Point",
       "url": "https://cervitalia.info/call/",
       "method": "independent_crosscheck",
+      "includeTerms": ["bando", "call", "CERV", "aperto", "scadenza"],
+      "municipalTerms": ["comun", "città", "autorità locali", "enti locali"],
       "note": "Punto di contatto nazionale usato per verificare call UE che il portale Funding & Tenders può non esporre al collector HTML."
     },
     {
@@ -27,6 +31,8 @@
       "label": "Europe Direct Lucca-Viareggio",
       "url": "https://www.casaeuropa.eu/",
       "method": "local_holdout",
+      "includeTerms": ["bando", "call", "fondi", "finanzi", "programma", "opportunità"],
+      "municipalTerms": ["comun", "enti", "amministrazioni locali", "territorio"],
       "note": "Canale territoriale indipendente utile per intercettare opportunità UE rilevanti per enti e amministrazioni locali della provincia di Lucca."
     }
   ],
