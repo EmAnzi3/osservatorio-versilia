@@ -5,7 +5,7 @@ Estende la v0.4.2 senza allargare indiscriminatamente l'output pubblico:
 - aggiunge programmi UE dedicati (URBACT, EUI, Erasmus+, CEF, Horizon, DIGITAL, Interreg Europe);
 - presidia montagna, protezione civile, MASAF e CSR/ARTEA/LEADER;
 - distingue una fonte configurata da una famiglia supportata da evidenza ufficiale recente;
-- mantiene in audit_review le call che non hanno ancora un ruolo comunale specifico verificato.
+- promuove una call soltanto dopo verifica del ruolo comunale specifico.
 """
 from __future__ import annotations
 
@@ -20,9 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DISCOVERY_V043 = ROOT / "data" / "opportunity-discovery-v043.json"
 EVIDENCE_V043 = ROOT / "data" / "opportunity-coverage-evidence-v043.json"
 SENTINELS_V043 = ROOT / "data" / "opportunity-coverage-sentinels-v043.json"
+VERIFIED_V043 = ROOT / "data" / "opportunity-verified-v043.json"
 
 _PREV_COMPOSE = core.compose_runtime_payloads
 _PREV_SOURCE_VISUAL = core._source_visual
+_PREV_INJECT = core.inject_verified_v04
 _PREV_AUDIT = core.build_coverage_audit
 _PREV_RUN = core.run_v04
 _PREV_RENDER = core.render_markdown
@@ -55,6 +57,27 @@ def _source_visual(source_id: str) -> dict[str, Any]:
         "source_label": meta.get("label") or current.get("source_label") or source_id,
         "source_favicon": meta.get("favicon") or current.get("source_favicon") or "",
     }
+
+
+def inject_verified_v04(
+    result: dict[str, Any],
+    today: date,
+    *,
+    detail_payloads: dict[str, str] | None = None,
+    live: bool = True,
+) -> set[str]:
+    resolved = set(_PREV_INJECT(result, today, detail_payloads=detail_payloads, live=live))
+    original_path = core.VERIFIED_V04
+    core.VERIFIED_V04 = VERIFIED_V043
+    try:
+        # Riusa l'iniettore originario v0.4.0 per aggiungere solo il registro v0.4.3,
+        # senza richiamare ricorsivamente gli strati v0.4.1/v0.4.2.
+        resolved.update(prev.prev._ORIGINAL_INJECT(
+            result, today, detail_payloads=detail_payloads, live=live
+        ))
+    finally:
+        core.VERIFIED_V04 = original_path
+    return resolved
 
 
 def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, Any]:
@@ -137,17 +160,30 @@ def _residual_evidence_audit(result: dict[str, Any], today: date) -> dict[str, A
 def build_coverage_audit(result: dict[str, Any], resolved: set[str], today: date) -> dict[str, Any]:
     audit = _PREV_AUDIT(result, resolved, today)
     sentinels = core._load(SENTINELS_V043).get("cases") or []
+    verified = core._load(VERIFIED_V043).get("entries") or []
+    verified_by_id = {str(x.get("coverage_id") or ""): x for x in verified}
     configured = {
         str(row.get("source_id") or "")
         for row in (result.get("sourceCoverage") or {}).get("rows") or []
     }
+    missing_current = list(audit.get("missingCurrentSentinels") or [])
     historical_unmonitored = list(audit.get("historicalUnmonitored") or [])
     audit_review = list(audit.get("auditReview") or [])
+    current_resolved = int(audit.get("currentSentinelsResolved") or 0)
 
     for case in sentinels:
         expected = str(case.get("expected") or "")
         source_id = str(case.get("source_id") or "")
-        if expected == "historical_monitored":
+        if expected == "current":
+            coverage_id = str(case.get("coverage_id") or "")
+            entry = verified_by_id.get(coverage_id) or {}
+            if core._is_expired_application(entry, today):
+                continue
+            if coverage_id in resolved:
+                current_resolved += 1
+            else:
+                missing_current.append(str(case.get("id") or coverage_id))
+        elif expected == "historical_monitored":
             if source_id not in configured:
                 historical_unmonitored.append(str(case.get("id") or source_id))
         elif expected == "audit_review":
@@ -158,11 +194,13 @@ def build_coverage_audit(result: dict[str, Any], resolved: set[str], today: date
                 "reason": case.get("reason"),
             })
 
+    audit["currentSentinelsResolved"] = current_resolved
+    audit["missingCurrentSentinels"] = sorted(set(missing_current))
     audit["historicalUnmonitored"] = sorted(set(historical_unmonitored))
     audit["auditReview"] = audit_review
     residual = _residual_evidence_audit(result, today)
     audit["residualCoverage"] = residual
-    if audit["historicalUnmonitored"] or residual.get("status") != "pass":
+    if audit["missingCurrentSentinels"] or audit["historicalUnmonitored"] or residual.get("status") != "pass":
         audit["status"] = "fail"
     return audit
 
@@ -211,6 +249,7 @@ def _exit_code(result: dict[str, Any]) -> int:
 
 core.compose_runtime_payloads = compose_runtime_payloads
 core._source_visual = _source_visual
+core.inject_verified_v04 = inject_verified_v04
 core.build_coverage_audit = build_coverage_audit
 core.run_v04 = run_v04
 core.render_markdown = render_markdown
