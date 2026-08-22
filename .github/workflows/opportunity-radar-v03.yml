@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/opportunity-radar-v03.yml"
       - "scripts/opportunity_radar_v03.py"
+      - "scripts/opportunity_radar_v03_post.py"
       - "scripts/run_opportunity_radar_v03.py"
       - "scripts/build_opportunity_preview_v03.py"
       - "scripts/test_opportunity_radar_v03.py"
@@ -13,11 +14,13 @@ on:
       - "scripts/test_opportunity_preview_browser_v03.py"
       - "assets/opportunity-preview-v03.css"
       - "assets/opportunity-preview-v03.js"
+      - "assets/source-icons/**"
       - "data/opportunity-sources-v03.json"
       - "data/opportunity-rules-v03.json"
       - "data/opportunity-presentation-v03.json"
       - "data/opportunity-source-coverage-v03.json"
       - "data/opportunity-backtest-v03.json"
+      - "data/opportunity-verified-details-v03.json"
       - "docs/opportunita-prototipo-v03.md"
   workflow_dispatch:
 
@@ -35,7 +38,7 @@ jobs:
           python-version: "3.12"
       - name: Validate v0.3
         run: |
-          python -m py_compile scripts/opportunity_radar_v03.py scripts/run_opportunity_radar_v03.py scripts/build_opportunity_preview_v03.py scripts/test_opportunity_radar_v03.py scripts/test_opportunity_preview_v03.py scripts/test_opportunity_preview_browser_v03.py
+          python -m py_compile scripts/opportunity_radar_v03.py scripts/opportunity_radar_v03_post.py scripts/run_opportunity_radar_v03.py scripts/build_opportunity_preview_v03.py scripts/test_opportunity_radar_v03.py scripts/test_opportunity_preview_v03.py scripts/test_opportunity_preview_browser_v03.py
           python scripts/test_opportunity_radar_v03.py
           python scripts/test_opportunity_preview_v03.py
           python scripts/run_opportunity_radar_v03.py --backtest-only > /tmp/backtest-v03.json
