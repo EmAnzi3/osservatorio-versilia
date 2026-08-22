@@ -10,18 +10,169 @@
     "Stazzema": {"province": "Lucca", "toscanaDiffusa": "full"},
     "Viareggio": {"province": "Lucca", "toscanaDiffusa": "no"}
   },
-  "profileSources": {"toscanaDiffusa": {"url": "https://www.regione.toscana.it/-/i-comuni-della-toscana-diffusa", "classificationDate": "2025-03-12", "note": "TD*=Comune incluso limitatamente alle zone montane; per Camaiore la singola localizzazione dell'intervento resta da verificare."}},
+  "profileSources": {
+    "toscanaDiffusa": {
+      "url": "https://www.regione.toscana.it/-/i-comuni-della-toscana-diffusa",
+      "classificationDate": "2025-03-12",
+      "note": "TD*=Comune incluso limitatamente alle zone montane; per Camaiore la singola localizzazione dell'intervento resta da verificare."
+    }
+  },
   "sources": [
-    {"id":"regione-toscana","name":"Regione Toscana — bandi aperti","type":"html_cards","url":"https://www.regione.toscana.it/it/bandi-aperti?delta=60&sortBy=desc&start=1","publisher":"Regione Toscana","territory":"Toscana","detailEnrichment":true,"freshnessMaxDays":45,"fetchTimeoutSeconds":45,"fetchAttempts":2},
-    {"id":"regione-toscana-fesr","ruleSourceId":"regione-toscana","name":"Regione Toscana — PR FESR 2021-2027","type":"html_cards","url":"https://www.regione.toscana.it/it/pr-fesr-2021-2027/bandi-aperti","publisher":"Regione Toscana · PR FESR 2021-2027","territory":"Toscana","detailEnrichment":true,"freshnessMaxDays":45,"fetchTimeoutSeconds":45,"fetchAttempts":2},
-    {"id":"regione-toscana-fse","ruleSourceId":"regione-toscana","name":"Regione Toscana — PR FSE+ 2021-2027","type":"html_cards","url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti?delta=60","publisher":"Regione Toscana · PR FSE+ 2021-2027","territory":"Toscana","detailEnrichment":true,"freshnessMaxDays":45,"fetchTimeoutSeconds":45,"fetchAttempts":2},
-    {"id":"fondazione-cr-lucca","name":"Fondazione Cassa di Risparmio di Lucca — bandi in corso","type":"jsonld_grants","url":"https://www.fondazionecarilucca.it/bandi-in-corso","publisher":"Fondazione Cassa di Risparmio di Lucca","territory":"Provincia di Lucca","detailEnrichment":true,"freshnessMaxDays":120,"fetchTimeoutSeconds":30,"fetchAttempts":2},
-    {"id":"pa-digitale-2026","name":"PA digitale 2026 — open data avvisi","type":"padigitale_json","url":"https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/avvisi.json","publisher":"Dipartimento per la trasformazione digitale","territory":"Italia","freshnessMaxDays":45,"fetchTimeoutSeconds":25,"fetchAttempts":2}
+    {
+      "id": "regione-toscana",
+      "name": "Regione Toscana — bandi aperti",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/bandi-aperti?delta=60&sortBy=desc&start=1",
+      "publisher": "Regione Toscana",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "regione-toscana-fesr",
+      "ruleSourceId": "regione-toscana",
+      "name": "Regione Toscana — PR FESR 2021-2027",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/pr-fesr-2021-2027/bandi-aperti",
+      "publisher": "Regione Toscana · PR FESR 2021-2027",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "regione-toscana-fse",
+      "ruleSourceId": "regione-toscana",
+      "name": "Regione Toscana — PR FSE+ 2021-2027",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti?delta=60",
+      "publisher": "Regione Toscana · PR FSE+ 2021-2027",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "fondazione-cr-lucca",
+      "name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
+      "type": "jsonld_grants",
+      "url": "https://www.fondazionecarilucca.it/bandi-in-corso",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "territory": "Provincia di Lucca",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 30,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "sviluppo-toscana",
+      "name": "Sviluppo Toscana — bandi aperti",
+      "type": "html_cards",
+      "url": "https://www.sviluppo.toscana.it/bandi/?_stato=aperto",
+      "publisher": "Sviluppo Toscana",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "listingIncludeTerms": ["comun", "enti locali", "enti pubblici", "pubbliche amministrazioni", "amministrazioni pubbliche", "edifici pubblici"],
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 40,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "mic-spettacolo",
+      "name": "Ministero della Cultura — Direzione generale Spettacolo",
+      "type": "html_cards",
+      "url": "https://spettacolo.cultura.gov.it/documenti/",
+      "publisher": "Ministero della Cultura · Direzione generale Spettacolo",
+      "territory": "Italia",
+      "detailEnrichment": true,
+      "listingIncludeTerms": ["autonomie territoriali", "enti locali", "comuni", "amministrazioni pubbliche"],
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 35,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "ministero-interno-prefetture",
+      "name": "Ministero dell'Interno — Prefetture",
+      "type": "html_cards",
+      "url": "https://prefettura.interno.gov.it/it/search?f%5B0%5D=tag%3A609225&page=0",
+      "publisher": "Ministero dell'Interno · Prefetture",
+      "territory": "Italia",
+      "detailEnrichment": true,
+      "listingIncludeTerms": ["videosorveglianza", "sicurezza urbana", "finanziamento", "contributi"],
+      "freshnessMaxDays": 120,
+      "fetchTimeoutSeconds": 35,
+      "fetchAttempts": 2
+    },
+    {
+      "id": "pa-digitale-2026",
+      "name": "PA digitale 2026 — open data avvisi",
+      "type": "padigitale_json",
+      "url": "https://raw.githubusercontent.com/teamdigitale/padigitale2026-opendata/main/data/avvisi.json",
+      "publisher": "Dipartimento per la trasformazione digitale",
+      "territory": "Italia",
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 25,
+      "fetchAttempts": 2
+    }
   ],
   "discoverySources": [
-    {"id":"anci-toscana","label":"ANCI Toscana","publisher":"ANCI Toscana","territory":"Toscana","favicon":"https://ancitoscana.it/favicon.ico","urls":["https://ancitoscana.it/aree-tematiche/governo-territorio-rigenerazione-urbana/","https://ancitoscana.it/aree-tematiche/innovazione-digitale/","https://ancitoscana.it/montagna/"],"fetchTimeoutSeconds":25,"includeTerms":["bando","bandi","avviso","contribut","finanzi","incentiv","opportunit"],"municipalTerms":["comun","enti locali","amministrazioni pubbliche","edifici pubblici","territorio"]},
-    {"id":"anci-nazionale","label":"ANCI","publisher":"ANCI","territory":"Italia","favicon":"https://www.anci.it/favicon.ico","urls":["https://www.anci.it/"],"fetchTimeoutSeconds":25,"includeTerms":["bando","avviso","contribut","finanzi","incentiv","opportunit"],"municipalTerms":["comun","enti locali","sindaci","amministrazioni"]},
-    {"id":"gse","label":"GSE","publisher":"Gestore dei Servizi Energetici","territory":"Italia","favicon":"https://www.gse.it/favicon.ico","urls":["https://www.gse.it/servizi-per-te/news","https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-incentivo-100-nei-comuni-sotto-15-000-abitanti?id=faq&sys_id=1fac4456fb5a325083f3f12c6eefdc52"],"fetchTimeoutSeconds":25,"includeTerms":["conto termico","comunità energet","cer","incentiv","bando","avviso"],"municipalTerms":["comun","pubbliche amministrazioni","pa","edifici pubblici"]},
-    {"id":"ministero-interno","label":"Ministero dell'Interno · Finanza locale","publisher":"Ministero dell'Interno","territory":"Italia","favicon":"https://www.interno.gov.it/favicon.ico","urls":["https://dait.interno.gov.it/finanza-locale"],"fetchTimeoutSeconds":25,"includeTerms":["contribut","finanzi","avviso","comun","enti locali"],"municipalTerms":["comun","enti locali","province","città metropolitane"]}
+    {
+      "id": "anci-toscana",
+      "label": "ANCI Toscana",
+      "publisher": "ANCI Toscana",
+      "territory": "Toscana",
+      "favicon": "https://ancitoscana.it/favicon.ico",
+      "urls": [
+        "https://ancitoscana.it/categorie/bandi/",
+        "https://ancitoscana.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti.html",
+        "https://ancitoscana.it/aree-tematiche/governo-territorio-rigenerazione-urbana/",
+        "https://ancitoscana.it/aree-tematiche/innovazione-digitale/",
+        "https://ancitoscana.it/montagna/"
+      ],
+      "fetchTimeoutSeconds": 25,
+      "includeTerms": ["bando", "bandi", "avviso", "contribut", "finanzi", "incentiv", "opportunit"],
+      "municipalTerms": ["comun", "enti locali", "amministrazioni pubbliche", "edifici pubblici", "territorio"]
+    },
+    {
+      "id": "anci-nazionale",
+      "label": "ANCI",
+      "publisher": "ANCI",
+      "territory": "Italia",
+      "favicon": "https://www.anci.it/favicon.ico",
+      "urls": ["https://www.anci.it/", "https://sistemacomunidigitali.anci.it/news/"],
+      "fetchTimeoutSeconds": 25,
+      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "incentiv", "opportunit"],
+      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni"]
+    },
+    {
+      "id": "gse",
+      "label": "GSE",
+      "publisher": "Gestore dei Servizi Energetici",
+      "territory": "Italia",
+      "favicon": "https://www.gse.it/favicon.ico",
+      "urls": [
+        "https://www.gse.it/servizi-per-te/news",
+        "https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-incentivo-100-nei-comuni-sotto-15-000-abitanti?id=faq&sys_id=1fac4456fb5a325083f3f12c6eefdc52",
+        "https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-con-quali-incentivi-%C3%A8-cumulabile?id=faq&sys_id=72cffefb2b9b7e90d443fcbaf291bf6f"
+      ],
+      "fetchTimeoutSeconds": 25,
+      "includeTerms": ["conto termico", "comunità energet", "cer", "incentiv", "bando", "avviso"],
+      "municipalTerms": ["comun", "pubbliche amministrazioni", "pa", "edifici pubblici"]
+    },
+    {
+      "id": "ministero-interno",
+      "label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "favicon": "https://www.interno.gov.it/favicon.ico",
+      "urls": ["https://dait.interno.gov.it/finanza-locale", "https://prefettura.interno.gov.it/it/search"],
+      "fetchTimeoutSeconds": 25,
+      "includeTerms": ["contribut", "finanzi", "avviso", "comun", "enti locali"],
+      "municipalTerms": ["comun", "enti locali", "province", "città metropolitane"]
+    }
   ]
 }
