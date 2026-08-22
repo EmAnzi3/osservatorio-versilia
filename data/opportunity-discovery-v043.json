@@ -18,9 +18,9 @@
       "publisher": "European Urban Initiative",
       "territory": "Unione europea",
       "family": "eu-urban",
-      "urls": ["https://www.urban-initiative.eu/calls-proposals", "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call"],
+      "urls": ["https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call"],
       "fetchTimeoutSeconds": 18,
-      "includeTerms": ["call", "urban authorities", "innovative actions", "city-to-city", "apply", "funding"],
+      "includeTerms": ["call", "urban authorities", "city-to-city", "apply", "funding"],
       "municipalTerms": ["urban authority", "city", "town", "municipal", "local administrative unit"]
     },
     {
@@ -95,7 +95,7 @@
       "publisher": "Dipartimento della Protezione Civile",
       "territory": "Italia",
       "family": "resilience-civil-protection",
-      "urls": ["https://www.protezionecivile.gov.it/it/normativa/"],
+      "urls": ["https://www.protezionecivile.gov.it/it/dipartimento/amministrazione-trasparente/provvedimenti-normativi/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["contribut", "risorse", "fondo", "prevenzione", "rischio", "regioni"],
       "municipalTerms": ["comuni", "enti locali", "territorial", "regioni"]
