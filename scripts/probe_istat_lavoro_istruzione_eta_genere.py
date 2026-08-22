@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import re
+import csv
+import io
 import time
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -11,10 +13,11 @@ FLOWS = {
     "lavoro": "DF_DCSS_ISTR_LAV_PEN_2_TV_3",
     "istruzione": "DF_DCSS_ISTR_LAV_PEN_2_TV_1",
 }
+CODELISTS = ["CL_SEXISTAT1", "CL_ETA1", "CL_TITOLO_STUDIO", "CL_FORZE_LAV", "CL_TIPO_DATO_CENS_POP", "CL_CITTADINANZA"]
 
 
-def fetch(url: str, timeout: int = 90) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia/1.0", "Accept": "application/xml"})
+def request(url: str, accept: str, timeout: int = 120) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia/1.0", "Accept": accept})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read()
 
@@ -23,55 +26,67 @@ def lname(tag: str) -> str:
     return tag.rsplit('}', 1)[-1]
 
 
-def first_ref(root: ET.Element, cls: str) -> dict | None:
-    for el in root.iter():
-        if lname(el.tag) == 'Ref' and el.attrib.get('class') == cls:
-            return dict(el.attrib)
-    return None
-
-
-def inspect(flow: str) -> None:
-    print(f"\n######## {flow} ########")
-    flow_url = f"{BASE}/dataflow/IT1/{flow}/1.0?references=none"
-    raw = fetch(flow_url)
-    print("FLOW_BYTES", len(raw))
+def codelist(code: str) -> None:
+    url = f"{BASE}/codelist/IT1/{code}/1.0?references=none"
+    raw = request(url, "application/xml")
     root = ET.fromstring(raw)
-    dsd_ref = first_ref(root, 'DataStructure')
-    print("DSD_REF", dsd_ref)
-    if not dsd_ref:
-        print(raw.decode('utf-8', errors='replace')[:8000])
-        return
-    time.sleep(13)
-    agency = dsd_ref.get('agencyID', 'IT1')
-    dsd_id = dsd_ref['id']
-    version = dsd_ref.get('version', '1.0')
-    dsd_url = f"{BASE}/datastructure/{agency}/{dsd_id}/{version}?references=none"
-    raw = fetch(dsd_url)
-    print("DSD_BYTES", len(raw), "DSD", agency, dsd_id, version)
-    droot = ET.fromstring(raw)
-    dims = []
-    for el in droot.iter():
-        if lname(el.tag) in {'Dimension','TimeDimension','MeasureDimension'}:
-            dim = {'id': el.attrib.get('id'), 'position': el.attrib.get('position')}
-            for sub in el.iter():
-                if lname(sub.tag) == 'Ref' and sub.attrib.get('class') == 'Codelist':
-                    dim['codelist'] = sub.attrib.get('id')
-                    dim['codelistAgency'] = sub.attrib.get('agencyID')
-                    dim['codelistVersion'] = sub.attrib.get('version')
-                    break
-            dims.append(dim)
-    print("DIMENSIONS", dims)
-    text = raw.decode('utf-8', errors='replace')
-    for needle in ['SEX','SESSO','AGE','ETA','CITTAD','OCCUP','ISTRUZ','ITTER107','TIME_PERIOD']:
-        if needle.lower() in text.lower():
-            print('FOUND_IN_DSD', needle)
+    print(f"\nCODELIST {code} bytes={len(raw)}")
+    shown = 0
+    for el in root.iter():
+        if lname(el.tag) != "Code":
+            continue
+        cid = el.attrib.get("id")
+        name = ""
+        for sub in el:
+            if lname(sub.tag) == "Name":
+                name = (sub.text or "").strip()
+                break
+        if code == "CL_ETA1":
+            # Tutte le età/classi sono utili, ma limitiamo la diagnostica a un output gestibile.
+            if cid and (cid.isdigit() or any(x in name.lower() for x in ["totale", "anni", "oltre"])):
+                print("CODE", cid, "=", name)
+                shown += 1
+        else:
+            print("CODE", cid, "=", name)
+            shown += 1
+        if shown >= (130 if code == "CL_ETA1" else 100):
+            break
+
+
+def sample(flow_name: str, flow: str) -> None:
+    key = ".".join(["A", "046018"] + [""] * 8)
+    params = urllib.parse.urlencode({"startPeriod": "2024", "endPeriod": "2024", "format": "csvfile"})
+    url = f"{BASE}/data/IT1,{flow},1.0/{key}/all?{params}"
+    raw = request(url, "application/vnd.sdmx.data+csv;version=1.0.0", timeout=180)
+    text = raw.decode("utf-8-sig", errors="replace")
+    print(f"\nSAMPLE {flow_name} bytes={len(raw)} url={url}")
+    lines = text.splitlines()
+    for line in lines[:18]:
+        print("ROW", line[:2400])
+    reader = csv.DictReader(io.StringIO(text))
+    rows = list(reader)
+    print("HEADER", reader.fieldnames)
+    print("ROWS", len(rows))
+    for col in ["FREQ","REF_AREA","INDICATOR","GENDER","AGE_NOCLASS","CITIZENSHIP","EDU_ATTAIN","CUR_ACT_STAT","LOC_DEST","REAS_COMMUTING","TIME_PERIOD"]:
+        vals = sorted({str(r.get(col, "")) for r in rows})
+        print("VALUES", col, len(vals), vals[:160])
 
 
 def main() -> None:
-    for flow in FLOWS.values():
-        inspect(flow)
+    # Le codelist sono condivise dai due dataflow: una sola lettura ciascuna.
+    for code in CODELISTS:
+        try:
+            codelist(code)
+        except Exception as exc:
+            print("CODELIST_ERROR", code, type(exc).__name__, repr(exc))
+        time.sleep(13)
+    for name, flow in FLOWS.items():
+        try:
+            sample(name, flow)
+        except Exception as exc:
+            print("SAMPLE_ERROR", name, type(exc).__name__, repr(exc))
         time.sleep(13)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
