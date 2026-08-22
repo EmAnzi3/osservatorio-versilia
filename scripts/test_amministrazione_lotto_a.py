@@ -10,11 +10,13 @@ SITE = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
 SNAPSHOT = ROOT / "data" / "source-snapshots" / "rgs-amministrazione-2024.json"
 TRAINING_SNAPSHOT = ROOT / "data" / "source-snapshots" / "rgs-formazione-2024.json"
+ONLINE_SNAPSHOT = ROOT / "data" / "source-snapshots" / "regione-toscana-servizi-online-2018-2022.json"
 KEYS = (
     "municipalEmployeesPer1000",
     "municipalStaffTurnover",
     "municipalStaffAgeStructure",
     "municipalStaffTraining",
+    "municipalOnlineServicesAdvanced",
 )
 
 
@@ -27,10 +29,11 @@ def main() -> None:
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
     training_snapshot = json.loads(TRAINING_SNAPSHOT.read_text(encoding="utf-8"))
+    online_snapshot = json.loads(ONLINE_SNAPSHOT.read_text(encoding="utf-8"))
 
-    assert len(site["metrics"]) == 137, f"Attesi 137 indicatori, trovati {len(site['metrics'])}"
-    assert registry["expectedMetricCount"] == 137
-    assert registry["expectedInlineMetricCount"] == 133
+    assert len(site["metrics"]) == 138, f"Attesi 138 indicatori, trovati {len(site['metrics'])}"
+    assert registry["expectedMetricCount"] == 138
+    assert registry["expectedInlineMetricCount"] == 134
     assert registry["expectedExternalMetricCount"] == 4
 
     theme = site["themes"]["bilanci"]
@@ -41,6 +44,7 @@ def main() -> None:
 
     expected_towns = set(snapshot["towns"])
     assert set(training_snapshot["towns"]) == expected_towns
+    assert set(online_snapshot["towns"]) == expected_towns
     for key in KEYS:
         metric = site["metrics"][key]
         assert metric["method"]["coverage"] == "7/7"
@@ -107,7 +111,25 @@ def main() -> None:
     close(training["aggregate"]["parts"][2]["value"], versilia["meanMen"], "formazione/Versilia/uomini")
     close(training["aggregate"]["parts"][3]["value"], versilia["meanWomen"], "formazione/Versilia/donne")
 
-    print("Amministrazione Lotto A verificata: 137 indicatori, 7/7 Comuni, formazione RGS 2024, conteggi età assoluti e semantica neutrale.")
+    online = site["metrics"]["municipalOnlineServicesAdvanced"]
+    assert online["meta"]["year"] == "2022"
+    assert online["meta"]["unit"] == "percent"
+    assert "livelli 3 e 4" in online["method"]["formula"]
+    assert "24 servizi" in online["method"]["caveat"] and "27" in online["method"]["caveat"]
+    current_values = []
+    for row in online["rows"]:
+        raw = online_snapshot["towns"][row["town"]]
+        close(row["value"], raw["2022"], f"online/{row['town']}/2022")
+        assert row["series"]["years"] == [2018, 2022]
+        assert len(row["series"]["values"]) == 2
+        close(row["series"]["values"][0], raw["2018"], f"online/{row['town']}/2018")
+        close(row["series"]["values"][1], raw["2022"], f"online/{row['town']}/serie2022")
+        current_values.append(float(raw["2022"]))
+    close(online["aggregate"]["value"], sum(current_values) / 7, "online/Versilia")
+    assert "media aritmetica" in online["aggregate"]["note"].lower()
+    assert registry["metricOverrides"]["municipalOnlineServicesAdvanced"]["profile"] == "regione-toscana-indicatori-comunali"
+
+    print("Amministrazione verificata: 138 indicatori, 5 letture amministrative 7/7, servizi online ind18 2022 con storico reale 2018→2022.")
 
 
 if __name__ == "__main__":
