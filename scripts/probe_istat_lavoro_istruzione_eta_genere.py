@@ -13,6 +13,7 @@ from pathlib import Path
 BASE = "https://esploradati.istat.it/SDMXWS/rest"
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
+OUT = ROOT / "data" / "source-snapshots" / "istat-lavoro-istruzione-eta-genere-2024.json"
 FLOWS = {"labour":"DF_DCSS_ISTR_LAV_PEN_2_TV_3","education":"DF_DCSS_ISTR_LAV_PEN_2_TV_1"}
 TOWNS = {"Camaiore":"046005","Forte dei Marmi":"046013","Massarosa":"046018","Pietrasanta":"046024","Seravezza":"046028","Stazzema":"046030","Viareggio":"046033"}
 GENDERS = {"T":"total","M":"men","F":"women"}
@@ -61,12 +62,7 @@ def build_labour(rows):
 
 
 def build_education(rows):
-    # NED è l'aggregato "nessun titolo" e comprende IL/LBNA: non va sommato a questi ultimi.
-    # ML_RDD è l'aggregato master/secondo livello + dottorato e comprende ML/RDD.
-    # La partizione esclusiva verificata è quindi:
-    # ALL = NED + PSE + LSE + USE_IF + BL + ML_RDD.
-    # Un'osservazione assente viene trattata come zero solo se questa identità si chiude esattamente.
-    by={}; partition=["NED","PSE","LSE","USE_IF","BL","ML_RDD"]; wanted={"ALL",*partition}
+    partition=["NED","PSE","LSE","USE_IF","BL","ML_RDD"]; wanted={"ALL",*partition}; by={}
     for row in rows:
         if row.get("INDICATOR")!="RESPOP_AV" or row.get("CITIZENSHIP")!="TOTAL" or row.get("CUR_ACT_STAT")!="99": continue
         age=EDU_AGES.get(row.get("AGE_NOCLASS")); gender=GENDERS.get(row.get("GENDER")); edu=row.get("EDU_ATTAIN"); town=row.get("REF_AREA")
@@ -88,9 +84,7 @@ def build_education(rows):
         for age,age_data in town.items():
             clean[age]={}
             for gender,vals in age_data.items():
-                pop=vals["ALL"]
-                diploma=vals["USE_IF"]+vals["BL"]+vals["ML_RDD"]
-                tertiary=vals["BL"]+vals["ML_RDD"]
+                pop=vals["ALL"]; diploma=vals["USE_IF"]+vals["BL"]+vals["ML_RDD"]; tertiary=vals["BL"]+vals["ML_RDD"]
                 clean[age][gender]={"population":pop,"upperSecondaryPlus":diploma,"tertiary":tertiary,"diplomaPlus":diploma/pop*100 if pop else None,"tertiaryRate":tertiary/pop*100 if pop else None}
         out[name]=clean
     return out
@@ -108,10 +102,11 @@ def reconcile(snapshot):
 
 def main():
     labour_rows=fetch_csv(FLOWS["labour"]); time.sleep(13); education_rows=fetch_csv(FLOWS["education"])
-    snapshot={"version":"istat-lavoro-istruzione-eta-genere-2024-v1","referenceYear":2024,"source":{"publisher":"Istat — Censimento permanente della popolazione","labourDataflow":FLOWS["labour"],"educationDataflow":FLOWS["education"],"api":BASE},"dimensions":{"gender":{"total":"T","men":"M","women":"F"},"labourAges":["25-64","15-24","25-49","50-64","65plus","15plus"],"educationAges":["25-64","9-24","25-49","50-64","65plus","9plus"],"note":"25-64 è ricostruita esattamente sommando le classi ufficiali 25-49 e 50-64; le altre classi sono pubblicate direttamente dal dataflow."},"towns":{}}
+    snapshot={"version":"istat-lavoro-istruzione-eta-genere-2024-v1","referenceYear":2024,"source":{"publisher":"Istat — Censimento permanente della popolazione","labourDataflow":FLOWS["labour"],"educationDataflow":FLOWS["education"],"api":BASE},"dimensions":{"gender":{"total":"T","men":"M","women":"F"},"labourAges":["25-64","15-24","25-49","50-64","65plus","15plus"],"educationAges":["25-64","9-24","25-49","50-64","65plus","9plus"],"note":"25-64 è ricostruita esattamente sommando le classi ufficiali 25-49 e 50-64; le altre classi sono pubblicate direttamente dal dataflow. Nella partizione istruzione NED include IL/LBNA e ML_RDD include ML/RDD; le celle omesse sono trattate come zero solo quando la partizione esclusiva si chiude esattamente."},"towns":{}}
     labour=build_labour(labour_rows); education=build_education(education_rows)
     for town in TOWNS: snapshot["towns"][town]={"code":TOWNS[town],"labour":labour[town],"education":education[town]}
     reconcile(snapshot)
-    print("SNAPSHOT_JSON_BEGIN"); print(json.dumps(snapshot,ensure_ascii=False,sort_keys=True,separators=(",",":"))); print("SNAPSHOT_JSON_END")
+    OUT.write_text(json.dumps(snapshot,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    print(f"SNAPSHOT_WRITTEN {OUT.relative_to(ROOT)} towns={len(snapshot['towns'])}")
 
 if __name__=="__main__": main()
