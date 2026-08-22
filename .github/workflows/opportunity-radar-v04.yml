@@ -36,6 +36,10 @@ on:
       - "data/opportunity-verified-details-v03.json"
   workflow_dispatch:
 
+concurrency:
+  group: opportunity-radar-v042-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   actions: read
@@ -168,7 +172,7 @@ jobs:
           BAT
           echo "ANTEPRIMA RADAR OPPORTUNITA v0.4.2 - NON PUBBLICATA" > preview-package/LEGGIMI.txt
           test -f preview-package/dist/opportunita-preview/index.html
-          grep -q "Anteprima v0.4" preview-package/dist/opportunita-preview/index.html
+          grep -q "Anteprima v0.4.2" preview-package/dist/opportunita-preview/index.html
       - uses: actions/upload-artifact@v4
         with:
           name: opportunity-radar-v04-browser-preview
