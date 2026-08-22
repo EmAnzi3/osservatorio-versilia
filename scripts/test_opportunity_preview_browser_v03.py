@@ -14,9 +14,12 @@ def main():
    assert page.locator('.op-overview-grid .op-stat').count()==4;assert page.locator('.op-overview-grid .op-stat-icon svg').count()==4
    bg=page.locator('.op-overview-shell').evaluate("e=>getComputedStyle(e).backgroundImage");assert 'linear-gradient' in bg
    assert page.locator('.op-monitor-source').count()>=8;assert page.locator('.op-source-favicon').count()>=1;assert page.locator('[data-op-source-quick]').count()>=2
-   embedded=page.locator('img.op-source-favicon[src^="data:image/"]')
-   assert embedded.count()>=3
-   page.wait_for_function("""() => [...document.querySelectorAll('img.op-source-favicon[src^="data:image/"]')].every(img => img.complete && img.naturalWidth > 0)""",timeout=5000)
+   local=page.locator('img.op-source-favicon[src*="/assets/source-icons/"]')
+   assert local.count()>=4
+   srcs=local.evaluate_all("els=>[...new Set(els.map(e=>e.getAttribute('src')))]")
+   for required in ('fondazione-cr-lucca.svg','anci-toscana.svg','ministero-interno.svg','sviluppo-toscana.svg'):
+    assert any(str(src).endswith(required) for src in srcs), (required,srcs)
+   page.wait_for_function("""() => [...document.querySelectorAll('img.op-source-favicon[src*="/assets/source-icons/"]')].every(img => img.complete && img.naturalWidth > 0)""",timeout=5000)
    assert not page.evaluate('document.documentElement.scrollWidth>document.documentElement.clientWidth')
    body=page.locator('body').inner_text()
    assert 'Bando per la promozione della musica Jazz 2027' in body
