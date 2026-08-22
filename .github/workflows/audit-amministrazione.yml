@@ -26,5 +26,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Audit RGS Conto Annuale 2024
-        run: python scripts/audit_rgs_amministrazione_v2.py
+      - name: Probe RGS download
+        run: python scripts/audit_rgs_download_probe.py
