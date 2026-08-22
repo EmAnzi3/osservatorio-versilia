@@ -9,6 +9,10 @@ stessi vincoli di verifica primaria, matrice comunale e lifecycle della v0.4.
 Il discovery live viene eseguito in parallelo per endpoint: l'ampliamento della
 copertura non deve trasformare i timeout dei portali pubblici in una somma
 sequenziale di minuti. L'ordine dell'output resta deterministico.
+
+La continuità viene riconciliata alla fine del run, dopo l'iniezione verificata
+delle sentinelle v0.4: un'opportunità recuperata nel post-processing non può
+restare contemporaneamente in ``continuityHold``.
 """
 from __future__ import annotations
 
@@ -28,6 +32,7 @@ _ORIGINAL_COMPOSE = base.compose_runtime_payloads
 _ORIGINAL_SOURCE_VISUAL = base._source_visual
 _ORIGINAL_INJECT = base.inject_verified_v04
 _ORIGINAL_AUDIT = base.build_coverage_audit
+_ORIGINAL_RUN = base.run_v04
 
 
 def compose_runtime_payloads() -> tuple[dict[str, Any], dict[str, Any]]:
@@ -203,18 +208,51 @@ def build_coverage_audit(result: dict[str, Any], resolved: set[str], today: date
     return audit
 
 
+def _reconcile_v04_continuity(result: dict[str, Any]) -> dict[str, Any]:
+    """Rimuove solo gli hold che corrispondono a opportunità presenti nell'output finale."""
+    active = {
+        base.radar.v025.identity_key(item)
+        for item in result.get("opportunities") or []
+    }
+    holds = [
+        hold for hold in result.get("continuityHold") or []
+        if str(hold.get("identity_key") or "") not in active
+    ]
+    result["continuityHold"] = holds
+    result.setdefault("counts", {})["continuityHold"] = len(holds)
+    return result
+
+
+def run_v04(
+    today: date,
+    *,
+    previous_path: Path | None = None,
+    payloads: dict[str, str] | None = None,
+    detail_payloads: dict[str, str] | None = None,
+    discovery_payloads: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    result = _ORIGINAL_RUN(
+        today,
+        previous_path=previous_path,
+        payloads=payloads,
+        detail_payloads=detail_payloads,
+        discovery_payloads=discovery_payloads,
+    )
+    return _reconcile_v04_continuity(result)
+
+
 # Il main v0.4 risolve questi simboli globalmente al momento dell'esecuzione.
 base.compose_runtime_payloads = compose_runtime_payloads
 base._source_visual = _source_visual
 base.inject_verified_v04 = inject_verified_v04
 base.build_coverage_audit = build_coverage_audit
 base.radar.probe_discovery_sources = probe_discovery_sources
+base.run_v04 = run_v04
 
 # API ri-esposta per test e tooling.
 _load = base._load
 build_seed_item = base.build_seed_item
 verify_entry = base.verify_entry
-run_v04 = base.run_v04
 CONTRACT_V04 = base.CONTRACT_V04
 VERIFIED_V04 = base.VERIFIED_V04
 SENTINELS_V04 = base.SENTINELS_V04
