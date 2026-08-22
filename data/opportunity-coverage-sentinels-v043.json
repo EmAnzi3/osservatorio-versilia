@@ -3,6 +3,7 @@
   "referenceDate": "2026-08-23",
   "cases": [
     {"id":"c11","coverage_id":"eu-eui-city-to-city-exchanges-2026","title":"European Urban Initiative — City-to-City Exchanges","source_id":"eu-eui","expected":"current","lifecycle_stage":"rolling_open"},
+    {"id":"c12","coverage_id":"eu-eucf-call-8-2026","title":"European City Facility — 8ª call","source_id":"eu-eucf","expected":"current","lifecycle_stage":"announced_upcoming"},
     {"id":"h10","title":"URBACT Action Networks 2026","source_id":"eu-urbact","expected":"historical_monitored","closed_at":"2026-06-17","reason":"Sentinella europea per reti di città: una rete di raccolta UE che non intercetta URBACT ha un buco strutturale."},
     {"id":"h11","title":"EUI Innovative Actions — Call 4","source_id":"eu-eui","expected":"historical_monitored","closed_at":"2026-06-15","reason":"Sentinella per finanziamenti urbani diretti alle autorità urbane."},
     {"id":"h12","title":"DIGITAL-2026-BESTUSE-MCP-09 — Innovative and Connected Public Administrations","source_id":"eu-digital","expected":"historical_monitored","closed_at":"2026-05-19","reason":"Sentinella per Digital Europe e servizi pubblici digitali; non deve dipendere dal solo Funding & Tenders generico."},
