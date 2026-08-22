@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "0.4.3",
+  "evidenceFallbackMaxDays": 7,
+  "entries": [
+    {
+      "coverage_id": "eu-eui-city-to-city-exchanges-2026",
+      "source_id": "eu-eui",
+      "source_label": "UE · European Urban Initiative",
+      "publisher": "European Urban Initiative",
+      "title": "European Urban Initiative — City-to-City Exchanges",
+      "url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
+      "required_terms": ["City-to-City Exchanges", "continuously open", "urban authorities"],
+      "evidence_verified_at": "2026-08-23",
+      "allow_recent_evidence_fallback": true,
+      "lifecycle_stage": "rolling_open",
+      "deadline_at": null,
+      "eligibility": "conditional",
+      "applicant_type": "Autorità urbana di uno Stato membro UE classificata DEGURBA 1 o 2; partenariato con una o due città di altri Paesi",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Amministrazioni comunali e comunità locali che beneficiano dello scambio di pratiche urbane",
+      "geographic_scope": "Unione europea",
+      "project_requirements": "Call a sportello permanente per scambi tra due o tre città di Paesi diversi. L'EUI copre viaggio e alloggio e mette a disposizione supporto esperto. L'autorità urbana deve essere classificata DEGURBA 1 o 2; la classificazione Eurostat 2021 recepita dalla Regione Toscana colloca Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza e Viareggio in classe 2.",
+      "category": "europa",
+      "description": "Scambi operativi tra città europee per trasferire soluzioni su clima, energia, mobilità, casa, rigenerazione urbana e altre politiche di sviluppo urbano sostenibile.",
+      "condition_label": "DEGURBA e partenariato europeo",
+      "municipality_status_overrides": {
+        "Camaiore": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."},
+        "Forte dei Marmi": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."},
+        "Massarosa": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."},
+        "Pietrasanta": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."},
+        "Seravezza": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."},
+        "Stazzema": {"status":"not_eligible","reason":"Non risulta nella tabella regionale dei Comuni toscani classificati DEGURBA 1 o 2 usata per la verifica; non viene quindi presentata come ammissibile senza ulteriore evidenza ufficiale."},
+        "Viareggio": {"status":"conditional","reason":"DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."}
+      },
+      "presentation": {"source_mark":"EU","source_class":"eu","category":"europa"}
+    }
+  ]
+}
