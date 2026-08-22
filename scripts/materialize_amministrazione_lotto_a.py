@@ -332,7 +332,7 @@ def main() -> None:
     update_registry(registry, site)
     update_monitor(monitor)
 
-    site["version"] = "v1.17.0-draft-amministrazione"
+    site["version"] = "v1.17.0"
     site["updated"] = "22 agosto 2026"
 
     save(SITE_PATH, site)
