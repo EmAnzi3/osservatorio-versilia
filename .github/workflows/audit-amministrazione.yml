@@ -26,5 +26,5 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Inspect RGS export links
-        run: python scripts/audit_rgs_download_probe_v2.py
+      - name: Test RGS CSV form submission
+        run: python scripts/audit_rgs_post_probe.py
