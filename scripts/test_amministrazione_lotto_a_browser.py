@@ -141,6 +141,19 @@ def check_training_town(page, base: str) -> None:
     no_overflow(page, "massarosa/formazione")
 
 
+def check_online_town(page, base: str) -> None:
+    key = "municipalOnlineServicesAdvanced"
+    page.goto(f"{base}comuni/massarosa/?tema=bilanci&indicatore={key}", wait_until="networkidle")
+    metric = page.locator(f'[data-metric="{key}"]')
+    require(metric.count() == 1 and metric.is_visible(), "Servizi online: indicatore non selezionabile a Massarosa")
+    require("active" in (metric.get_attribute("class") or "").split(), "Servizi online: indicatore non attivo a Massarosa")
+    require("Servizi online · livello massimo" in metric.inner_text(), "Servizi online: etichetta breve non visibile")
+    body = page.locator("body").inner_text()
+    require("33,3%" in body, "Servizi online: valore 2022 di Massarosa non visibile")
+    require("2022" in body, "Servizi online: annualità 2022 non visibile")
+    no_overflow(page, "massarosa/servizi-online")
+
+
 def run(base: str) -> None:
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
@@ -151,13 +164,15 @@ def run(base: str) -> None:
             check_compare(page, base, "municipalStaffTurnover", "Turnover netto del personale comunale")
             check_age_compare(page, base)
             check_training_compare(page, base)
+            check_compare(page, base, "municipalOnlineServicesAdvanced", "Servizi comunali online al massimo livello di disponibilità")
             check_town(page, base, "municipalEmployeesPer1000", "Dipendenti / 1.000 residenti")
             check_town(page, base, "municipalStaffTurnover", "Turnover del personale")
             check_age_town(page, base)
             check_training_town(page, base)
+            check_online_town(page, base)
             context.close()
         browser.close()
-    print("Amministrazione Lotto A browser: 4 indicatori OK su desktop e mobile, conteggi età visibili e nessun overflow.")
+    print("Amministrazione browser: 5 indicatori OK su desktop e mobile, servizi online 2022 visibili e nessun overflow.")
 
 
 if __name__ == "__main__":
