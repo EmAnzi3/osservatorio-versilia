@@ -9,8 +9,8 @@ def main():
  with sync_playwright() as pw:
   b=pw.chromium.launch();page=b.new_page()
   for width,height in ((1440,1000),(390,844)):
-   page.set_viewport_size({'width':width,'height':height});page.goto(a.base+'opportunita-preview/',wait_until='domcontentloaded');page.locator('[data-opportunity-preview]').wait_for()
-   total=int(page.locator('[data-opportunity-preview]').get_attribute('data-total-opportunities') or 0);assert total>=14
+   page.set_viewport_size({'width':width,'height':height});page.goto(a.base+'opportunita-preview/',wait_until='domcontentloaded');root=page.locator('[data-opportunity-preview]');root.wait_for()
+   total=int(root.get_attribute('data-total-opportunities') or 0);cards=page.locator('[data-opportunity-card]');assert total==cards.count() and total>0
    assert page.locator('.op-overview-grid .op-stat').count()==4;assert page.locator('.op-overview-grid .op-stat-icon svg').count()==4
    bg=page.locator('.op-overview-shell').evaluate("e=>getComputedStyle(e).backgroundImage");assert 'linear-gradient' in bg
    assert page.locator('.op-monitor-source').count()>=8;assert page.locator('.op-source-favicon').count()>=1;assert page.locator('[data-op-source-quick]').count()>=2
