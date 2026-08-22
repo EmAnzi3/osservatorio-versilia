@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/opportunity-radar-v04.yml"
       - "scripts/run_opportunity_radar_v04.py"
+      - "scripts/run_opportunity_radar_v041.py"
       - "scripts/build_opportunity_preview_v04.py"
       - "scripts/test_opportunity_radar_v04.py"
       - "scripts/test_opportunity_preview_v04.py"
@@ -13,9 +14,12 @@ on:
       - "assets/opportunity-preview-v04.css"
       - "assets/opportunity-preview-v04.js"
       - "data/opportunity-discovery-v04.json"
+      - "data/opportunity-discovery-v04-extra.json"
       - "data/opportunity-coverage-contract-v04.json"
       - "data/opportunity-verified-v04.json"
+      - "data/opportunity-verified-v04-extra.json"
       - "data/opportunity-coverage-sentinels-v04.json"
+      - "data/opportunity-coverage-sentinels-v04-extra.json"
       - "docs/opportunita-prototipo-v04.md"
       - "scripts/opportunity_radar_v03.py"
       - "scripts/opportunity_radar_v03_post.py"
@@ -41,11 +45,11 @@ jobs:
           python-version: "3.12"
       - name: Validate coverage-first v0.4
         run: |
-          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/build_opportunity_preview_v04.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
+          python -m py_compile scripts/run_opportunity_radar_v04.py scripts/run_opportunity_radar_v041.py scripts/build_opportunity_preview_v04.py scripts/test_opportunity_radar_v04.py scripts/test_opportunity_preview_v04.py scripts/test_opportunity_preview_browser_v04.py
           python scripts/test_opportunity_radar_v03.py
           python scripts/test_opportunity_radar_v04.py
           python scripts/test_opportunity_preview_v04.py
-          python scripts/run_opportunity_radar_v04.py --backtest-only > /tmp/backtest-v04.json
+          python scripts/run_opportunity_radar_v041.py --backtest-only > /tmp/backtest-v04.json
           cat /tmp/backtest-v04.json
 
   live-probe:
@@ -82,7 +86,7 @@ jobs:
           previous=()
           [[ -s reports/previous/opportunities-previous.json ]] && previous=(--previous reports/previous/opportunities-previous.json)
           set +e
-          python scripts/run_opportunity_radar_v04.py --date "$TODAY" "${previous[@]}" --output reports/runtime/opportunities-v04.json --report reports/runtime/opportunities-v04.md
+          python scripts/run_opportunity_radar_v041.py --date "$TODAY" "${previous[@]}" --output reports/runtime/opportunities-v04.json --report reports/runtime/opportunities-v04.md
           code=$?
           set -e
           echo "$code" > reports/runtime/exit-code.txt
