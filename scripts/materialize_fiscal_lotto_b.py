@@ -10,10 +10,80 @@ SITE_PATH = ROOT / 'data' / 'site-data.json'
 REGISTRY_PATH = ROOT / 'data' / 'source-registry.json'
 MONITOR_PATH = ROOT / 'data' / 'source-monitor-state.json'
 SNAPSHOT_PATH = ROOT / 'data' / 'source-snapshots' / 'fiscal-lotto-b-2025.json'
+FRONTEND_PATH = ROOT / 'assets' / 'app-parts' / '03.txt'
 
 METRIC_KEY = 'fiscalRecoveryActivity'
 SIOPE_SOURCE = 'https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall'
 DAIT_SOURCE = 'https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf'
+
+
+FISCAL_POSITION_HELPER = r'''
+  function updateFiscalRecoveryTownPosition(metric,row,choice,position) {
+    if (!position || metric?.meta?.key !== 'fiscalRecoveryActivity') return;
+    const overline=position.querySelector('.overline');
+    const deltaEl=position.querySelector('[data-composite-delta]');
+    const noteEl=position.querySelector('p');
+    const aggLabel=position.querySelector('[data-composite-aggregate-label]');
+    const aggValue=position.querySelector('[data-composite-aggregate-value]');
+    const apply=(heading,headline,direction,note,label,value)=>{
+      if(overline) overline.textContent=heading;
+      if(deltaEl) deltaEl.innerHTML=`${html(headline)}<small>${html(direction)}</small>`;
+      if(noteEl) noteEl.textContent=note;
+      if(aggLabel) aggLabel.textContent=label;
+      if(aggValue) aggValue.textContent=value;
+    };
+
+    if(choice === 'part-1') {
+      const local=Number(row.parts?.[1]?.value);
+      const total=Number(metric.aggregate?.parts?.[1]?.value);
+      const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local/total*100 : 0;
+      apply(
+        'Peso sul totale Versilia',
+        `${number1.format(share)}%`,
+        'del recupero tributario complessivo',
+        'Quota degli incassi da verifica e controllo del Comune sul totale registrato nei sette Comuni della Versilia.',
+        'Versilia · recupero totale',
+        formatValue(total,'currency')
+      );
+      return;
+    }
+
+    if(choice === 'part-2') {
+      const local=Number(row.parts?.[2]?.value) || 0;
+      const total=Number(metric.aggregate?.parts?.[2]?.value) || 0;
+      const beneficiaries=metric.rows
+        .map(item=>({ town:item.town, value:Number(item.parts?.[2]?.value) || 0 }))
+        .filter(item=>item.value > 0)
+        .sort((a,b)=>b.value-a.value);
+      const share=total > 0 ? local/total*100 : 0;
+      const rank=beneficiaries.findIndex(item=>item.town===row.town)+1;
+      const note=local > 0
+        ? `${row.town} è ${rank}° per importo attribuito tra i ${beneficiaries.length} Comuni versiliesi beneficiari. Il dato non misura l’efficacia complessiva dell’attività fiscale comunale.`
+        : `${row.town} non compare tra i beneficiari del prospetto DAIT 2025. L’assenza non implica assenza di controlli o di segnalazioni comunali.`;
+      apply(
+        'Contributo attribuito in Versilia',
+        `${number1.format(share)}%`,
+        local > 0 ? 'del contributo DAIT attribuito in Versilia' : 'nessun contributo attribuito',
+        note,
+        `Versilia · ${beneficiaries.length} Comuni beneficiari`,
+        formatValue(total,'currency')
+      );
+      return;
+    }
+
+    const selected=compositeSelectionOptions(metric,row).find(option=>option.key===choice) || compositeSelectionOptions(metric,row)[0];
+    const agg=compositeSelectionAggregate(metric,choice);
+    const delta=compositeDeltaText(selected.value,agg.value,selected.unit);
+    apply(
+      'Rispetto alla Versilia',
+      delta.headline,
+      delta.direction,
+      'Il confronto con la Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.',
+      agg.label,
+      agg.formatted
+    );
+  }
+'''.strip('\n')
 
 
 def load(path: Path) -> dict:
@@ -234,6 +304,31 @@ def upsert_monitor_source(monitor: dict, url: str, *, profile: str, frequency: s
             values.sort()
 
 
+def patch_frontend() -> None:
+    text = FRONTEND_PATH.read_text(encoding='utf-8')
+    helper_anchor = '  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {'
+    if 'function updateFiscalRecoveryTownPosition(metric,row,choice,position)' not in text:
+        if helper_anchor not in text:
+            raise RuntimeError('Anchor renderCompareMetric non trovato per patch Fiscalità Lotto B')
+        text = text.replace(helper_anchor, FISCAL_POSITION_HELPER + '\n\n' + helper_anchor, 1)
+
+    initial_anchor = "    const tablist = container.querySelector('[role=\"tablist\"]');"
+    initial_block = "    if (selectable) updateFiscalRecoveryTownPosition(metric,row,options[0]?.key || 'summary',container.querySelector('.composite-versilia-position'));\n\n"
+    if initial_block.strip() not in text:
+        if initial_anchor not in text:
+            raise RuntimeError('Anchor tablist non trovato per patch Fiscalità Lotto B')
+        text = text.replace(initial_anchor, initial_block + initial_anchor, 1)
+
+    event_anchor = "        window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));"
+    event_block = "        updateFiscalRecoveryTownPosition(metric,row,choice,position);\n"
+    if event_block.strip() not in text:
+        if event_anchor not in text:
+            raise RuntimeError('Anchor evento composito non trovato per patch Fiscalità Lotto B')
+        text = text.replace(event_anchor, event_block + event_anchor, 1)
+
+    FRONTEND_PATH.write_text(text, encoding='utf-8')
+
+
 def main() -> None:
     site = load(SITE_PATH)
     registry = load(REGISTRY_PATH)
@@ -252,6 +347,7 @@ def main() -> None:
     save(SITE_PATH, site)
     save(REGISTRY_PATH, registry)
     save(MONITOR_PATH, monitor)
+    patch_frontend()
     print('Fiscalità Lotto B materializzata: 133 indicatori complessivi = 129 inline + 4 esterni')
 
 
