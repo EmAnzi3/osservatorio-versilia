@@ -6,6 +6,8 @@
       "page": "https://creativitacontemporanea.cultura.gov.it/cultura-piccolicomuni-edizione1/",
       "icon": "https://creativitacontemporanea.cultura.gov.it/wp-content/uploads/2021/06/cropped-MiC_logo_tondo_BLU-192x192.png",
       "asset": "assets/institutional-favicons/mic-dgcc.png",
+      "sourceArtifactPath": "dist/assets/source-favicons/mic-dgcc.png",
+      "networkRequired": false,
       "contentType": "image/png",
       "bytes": 19912,
       "sha256": "fb5906ca71b08563282e4f48a9ada17a1f481031ada4071e85671499f84775fc",
