@@ -49,8 +49,8 @@ def check_pyramid(page, base, theme, key):
             expected.push((Number(parts.get(`${age.key}|men`)?.value) || 0) * 3);
             expected.push((Number(parts.get(`${age.key}|women`)?.value) || 0) * 3);
           });
-          const actual = [...document.querySelectorAll('#compare-demographic-pyramid .age-pyramid-point rect')]
-            .map(rect => Number(rect.getAttribute('width')));
+          const actual = [...document.querySelectorAll('#compare-demographic-pyramid .age-pyramid-point')]
+            .map(point => Number(point.querySelector('rect:first-of-type')?.getAttribute('width')));
           return {expected, actual};
         }""",
         key,
