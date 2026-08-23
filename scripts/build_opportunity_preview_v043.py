@@ -12,6 +12,7 @@ from pathlib import Path
 import build_opportunity_preview_v04 as base
 import source_brandmark_fallback
 import source_favicon_assets
+import source_mic_favicon_alias
 import source_pcm_favicon_alias
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,9 +52,10 @@ def _source_options(payload: dict) -> str:
 def build(payload_path: Path, dist: Path) -> Path:
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     payload, provenance = source_favicon_assets.materialize(payload, dist)
-    # I sottositi PCM che bloccano i runner riusano il favicon istituzionale
-    # generico della Presidenza già acquisito da un altro portale PCM nello stesso build.
-    # Questo passaggio viene prima del fallback browser per essere deterministico.
+    # Fallback deterministici istituzionali: se sottositi MiC/PCM bloccano il
+    # runner, riusiamo asset ufficiali già acquisiti nello stesso build da un
+    # altro portale dello stesso ente, registrando esplicitamente la provenienza.
+    payload, provenance = source_mic_favicon_alias.materialize(payload, dist, provenance)
     payload, provenance = source_pcm_favicon_alias.materialize(payload, dist, provenance)
     payload, provenance = source_brandmark_fallback.materialize_missing(payload, dist, provenance)
     public_sources = {str(x.get("source_id") or "") for x in payload.get("opportunities") or [] if x.get("source_id")}
