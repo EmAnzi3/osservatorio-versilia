@@ -13,6 +13,14 @@ def nav_labels(page):
     return [" ".join(x.split()) for x in nav]
 
 
+def opportunity_link(page, scope: str):
+    links = page.locator(f'{scope} a').filter(has_text="Opportunità")
+    assert links.count() == 1, (scope, links.count())
+    link = links.first
+    assert link.evaluate("a => new URL(a.href).pathname") == "/opportunita/"
+    return link
+
+
 def run(base: str) -> None:
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
@@ -23,9 +31,9 @@ def run(base: str) -> None:
             # Prima verifichiamo la collocazione futura nel sito completo.
             page.goto(base.rstrip("/") + "/", wait_until="domcontentloaded")
             assert nav_labels(page) == EXPECTED_NAV
-            assert page.locator('[data-opportunity-nav="header"]').count() == 1
-            assert page.locator('[data-opportunity-nav="footer"]').count() == 1
-            home_callout = page.locator("[data-opportunity-home-link]")
+            opportunity_link(page, 'header nav[aria-label="Navigazione principale"]')
+            opportunity_link(page, "footer .footer-links")
+            home_callout = page.locator("section.opportunity-home-callout")
             assert home_callout.count() == 1
             assert "Radar Opportunità" in home_callout.inner_text()
             assert home_callout.locator('a[href="opportunita/"]').count() == 1
@@ -40,8 +48,10 @@ def run(base: str) -> None:
             assert total == cards.count() and total > 0, (total, cards.count())
 
             assert nav_labels(page) == EXPECTED_NAV
-            assert page.locator('[data-opportunity-nav="header"][aria-current="page"]').count() == 1
-            assert page.locator('[data-opportunity-nav="footer"][aria-current="page"]').count() == 1
+            header_link = opportunity_link(page, 'header nav[aria-label="Navigazione principale"]')
+            footer_link = opportunity_link(page, "footer .footer-links")
+            assert header_link.get_attribute("aria-current") == "page"
+            assert footer_link.get_attribute("aria-current") == "page"
             assert page.locator(".global-search-trigger").count() == 1
             assert page.locator(".site-footer").count() == 1
             assert page.locator('meta[name="robots"]').get_attribute("content") == "noindex,nofollow,noarchive"
@@ -74,6 +84,9 @@ def run(base: str) -> None:
             assert images.count() >= 1
             broken = images.evaluate_all("els => els.filter(i => !i.complete || i.naturalWidth < 1).map(i => i.src)")
             assert not broken, broken
+            mic_dgcc = page.locator('img[src*="source-favicons/mic-dgcc.png"]')
+            assert mic_dgcc.count() >= 1, "Favicon pinned mic-dgcc non esposta"
+            assert mic_dgcc.first.evaluate("i => i.complete && i.naturalWidth > 0")
 
             assert not page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
             body = page.locator("body").inner_text()
