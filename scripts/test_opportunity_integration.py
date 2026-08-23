@@ -6,7 +6,7 @@ import argparse
 import re
 from pathlib import Path
 
-EXPECTED_NAV = ("Temi", "Comuni", "Il progetto", "Stato dati", "Segnala")
+EXPECTED_NAV = ("Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala")
 
 
 def labels(fragment: str) -> tuple[str, ...]:
@@ -37,7 +37,9 @@ def run(dist: Path) -> None:
     nav = re.search(r'<nav\b[^>]*aria-label="Navigazione principale"[^>]*>(.*?)</nav>', text, flags=re.I | re.S)
     assert nav, "Header canonico non riconosciuto"
     assert labels(nav.group(1)) == EXPECTED_NAV, labels(nav.group(1))
+    assert 'data-opportunity-nav="header"' in nav.group(1)
     assert "global-search-trigger" in text and "site-footer" in text
+    assert 'data-opportunity-nav="footer"' in text
 
     source = re.search(r'<select\s+data-op-source>(.*?)</select>', text, flags=re.I | re.S)
     assert source, "Filtro Fonte assente"
@@ -52,11 +54,18 @@ def run(dist: Path) -> None:
 
     sitemap = (dist / "sitemap.xml").read_text(encoding="utf-8")
     assert "https://osservatorioversilia.it/opportunita/" not in sitemap, "Route già in sitemap"
+
     home = (dist / "index.html").read_text(encoding="utf-8")
-    assert not re.search(r'href=["\'][^"\']*opportunita/', home, flags=re.I), "Home già collegata al Radar"
+    assert 'data-opportunity-home-link' in home, "Blocco Radar non visibile nella home di collaudo"
+    assert 'href="opportunita/"' in home, "Home di collaudo non collega il Radar"
+    assert home.find('id="comuni"') < home.find("data-opportunity-home-link") < home.find('id="metodo"'), "Blocco Radar non collocato tra Comuni e Metodo"
+    home_nav = re.search(r'<nav\b[^>]*aria-label="Navigazione principale"[^>]*>(.*?)</nav>', home, flags=re.I | re.S)
+    assert home_nav and labels(home_nav.group(1)) == EXPECTED_NAV
+    assert 'data-opportunity-nav="footer"' in home
+
     assert not (dist / "opportunita-preview").exists(), "Vecchia route preview presente nella build"
 
-    print(f"Integrazione Radar statica OK: {total} opportunità, route nascosta e noindex.")
+    print(f"Integrazione Radar statica OK: {total} opportunità; collocazione futura visibile in header, home e footer; sitemap ancora esclusa.")
 
 
 def main() -> int:
