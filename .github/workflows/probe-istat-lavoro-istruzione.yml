@@ -72,11 +72,13 @@ jobs:
             scripts/materialize_lavoro_istruzione_eta_genere.py \
             scripts/patch_lavoro_istruzione_eta_genere_frontend.py \
             scripts/refine_lavoro_istruzione_eta_genere_ui.py \
+            scripts/patch_lavoro_istruzione_mobile_containment.py \
             scripts/test_lavoro_istruzione_eta_genere.py \
             scripts/test_lavoro_istruzione_eta_genere_browser.py
           python scripts/materialize_lavoro_istruzione_eta_genere.py
           python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
           python scripts/refine_lavoro_istruzione_eta_genere_ui.py
+          python scripts/patch_lavoro_istruzione_mobile_containment.py
           node --check assets/visual-grammar.js
           python scripts/test_lavoro_istruzione_eta_genere.py
           python -m json.tool data/site-data.json > /dev/null
@@ -118,14 +120,16 @@ jobs:
                   assert needle in text, f'{path}: manca {needle!r}'
           bundle = Path('dist/assets/app-bundle.js').read_text(encoding='utf-8')
           visual = Path('dist/assets/visual-grammar.js').read_text(encoding='utf-8')
+          css = Path('dist/assets/visual-grammar.css').read_text(encoding='utf-8')
           assert 'demographicBreakdown visual selection' in visual
           assert 'data-lavoro-istruzione-pyramid' in bundle
           assert 'demographicRatePyramidMarkup' in bundle
+          assert 'PR91 mobile containment' in css
           Path('dist/PR91-ETA-GENERE-V2.txt').write_text(
               'PR #91 · draft V2: fasce raggruppate, lollipop coerenti, piramidi età/sesso con tooltip.\n',
               encoding='utf-8',
           )
-          print('DIST finale: gruppi fasce e codice piramide/visual grammar presenti; rendering comunale demandato al test browser.')
+          print('DIST finale: gruppi fasce, piramide, visual grammar e containment mobile presenti.')
           PY
 
       - name: Start local draft server
