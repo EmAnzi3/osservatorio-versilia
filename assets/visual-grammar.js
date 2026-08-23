@@ -130,13 +130,14 @@
   }
 
   function metricKeyFor(root) {
+    const explicit = new URLSearchParams(location.search).get('indicatore');
+    if (explicit) return explicit;
     const home = root.closest?.('#home-explorer');
     const dashboard = root.closest?.('.topic-dashboard');
     const townTopic = root.closest?.('#town-topic');
     const local = home || dashboard || townTopic;
     const active = local?.querySelector('[data-metric].active, [data-metric][aria-selected="true"]');
-    if (active?.dataset.metric) return active.dataset.metric;
-    return new URLSearchParams(location.search).get('indicatore');
+    return active?.dataset.metric || null;
   }
 
   function normalizedFor(root) {
