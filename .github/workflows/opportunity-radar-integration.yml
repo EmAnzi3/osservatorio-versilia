@@ -12,6 +12,7 @@ on:
       - "scripts/build_opportunity*.py"
       - "scripts/source_favicon_assets.py"
       - "scripts/source_brandmark_fallback.py"
+      - "scripts/source_mic_favicon_alias.py"
       - "scripts/source_pcm_favicon_alias.py"
       - "scripts/test_opportunity*.py"
       - "data/opportunity-*.json"
@@ -51,9 +52,9 @@ jobs:
             scripts/build_opportunity_preview.py scripts/build_opportunity_preview_v03.py \
             scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py \
             scripts/build_opportunity_integration.py scripts/source_favicon_assets.py \
-            scripts/source_brandmark_fallback.py scripts/source_pcm_favicon_alias.py \
-            scripts/test_opportunity_continuity.py scripts/test_opportunity_integration.py \
-            scripts/test_opportunity_integration_browser.py
+            scripts/source_brandmark_fallback.py scripts/source_mic_favicon_alias.py \
+            scripts/source_pcm_favicon_alias.py scripts/test_opportunity_continuity.py \
+            scripts/test_opportunity_integration.py scripts/test_opportunity_integration_browser.py
           for f in data/opportunity-*.json; do python -m json.tool "$f" > /dev/null; done
           python scripts/test_opportunity_radar_v03.py
           python scripts/test_opportunity_radar_v04.py
