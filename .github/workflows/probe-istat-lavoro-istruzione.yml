@@ -13,9 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
 
       - name: Estrai e riconcilia snapshot ISTAT 2024
         run: |
@@ -34,3 +41,32 @@ jobs:
           python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
           python scripts/test_lavoro_istruzione_eta_genere.py
           python -m json.tool data/site-data.json > /dev/null
+
+      - name: Build enriched draft preview
+        run: python scripts/build_static_brand.py
+
+      - name: Start local draft server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-lavoro-http.log 2>&1 &
+          echo $! > /tmp/ov-lavoro-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-lavoro-http.log
+          exit 1
+
+      - name: Validate enriched draft in browser
+        run: python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload enriched draft preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-lavoro-istruzione-eta-genere-preview
+          path: dist
+          retention-days: 14
