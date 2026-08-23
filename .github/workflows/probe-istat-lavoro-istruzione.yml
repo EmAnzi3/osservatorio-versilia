@@ -21,8 +21,42 @@ jobs:
       - name: Install browser tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install playwright
+          python -m pip install playwright pypdf
           python -m playwright install --with-deps chromium
+
+      - name: Materialize current site baseline
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/test_costi_fiscalita_redditi_draft.py
+
+          python scripts/materialize_demography_lotto_a_v4.py
+          python scripts/test_demography_lotto_a_materialized.py
+          python scripts/materialize_demography_lotto_a_v5.py
+          python scripts/test_demography_lotto_a_v5.py
+          python scripts/materialize_demography_rcs_lotto_a.py
+          python scripts/test_demography_rcs_lotto_a.py
+
+          python scripts/materialize_income_lotto_a_v2.py
+          python scripts/patch_income_lotto_a_frontend.py
+          python scripts/patch_demography_lotto_a_frontend_v2.py
+          python scripts/patch_income_lotto_a_regressions.py
+          python scripts/test_income_lotto_a_v2.py
+
+          python scripts/materialize_fiscal_lotto_b.py
+          python scripts/test_fiscal_lotto_b.py
+          python scripts/patch_fiscal_lotto_b_frontend.py
+
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
+
+          python scripts/materialize_amministrazione_lotto_a_v2.py
+          python scripts/test_amministrazione_lotto_a.py
+
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
 
       - name: Estrai e riconcilia snapshot ISTAT 2024
         run: |
@@ -32,9 +66,6 @@ jobs:
       - name: Verifica riproducibilita snapshot versionato
         run: git diff --exit-code -- data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json
 
-      - name: Verifica integrazione Pages in working tree
-        run: python scripts/patch_pages_workflow_eta_genere.py
-
       - name: Materializza e valida età e genere
         run: |
           python scripts/materialize_lavoro_istruzione_eta_genere.py
@@ -42,8 +73,50 @@ jobs:
           python scripts/test_lavoro_istruzione_eta_genere.py
           python -m json.tool data/site-data.json > /dev/null
 
-      - name: Build enriched draft preview
+      - name: Build full enriched draft preview
         run: python scripts/build_static_brand.py
+
+      - name: Complete current site runtime assets
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          node --check assets/pnrr-town-detail.js
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Assert visible age and gender controls in final dist
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          checks = {
+              Path('dist/confronta/lavoro/index.html'): [
+                  'data-demographic-age',
+                  'data-demographic-gender',
+                  'Fascia d’età',
+                  'Genere',
+                  'Versilia · Occupazione · 25–64 anni · Totale',
+              ],
+              Path('dist/confronta/istruzione/index.html'): [
+                  'data-demographic-age',
+                  'data-demographic-gender',
+                  'Fascia d’età',
+                  'Genere',
+                  'Versilia · Diploma o più · 25–64 anni · Totale',
+              ],
+          }
+          for path, needles in checks.items():
+              text = path.read_text(encoding='utf-8')
+              for needle in needles:
+                  assert needle in text, f'{path}: manca {needle!r}'
+          Path('dist/PR91-ETA-GENERE-PRESENTE.txt').write_text(
+              'PR #91 · draft con filtri Fascia d’età + Genere materializzati.\n'
+              'Controllare Confronta > Lavoro e Confronta > Istruzione.\n',
+              encoding='utf-8',
+          )
+          print('DIST finale: filtri età/genere presenti e verificati in Lavoro e Istruzione.')
+          PY
 
       - name: Start local draft server
         shell: bash
@@ -63,10 +136,10 @@ jobs:
       - name: Validate enriched draft in browser
         run: python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
 
-      - name: Upload enriched draft preview
+      - name: Upload PR91 collaudo preview
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-lavoro-istruzione-eta-genere-preview
+          name: PR91-COLLAUDO-ETA-GENERE-USARE-QUESTO
           path: dist
           retention-days: 14
