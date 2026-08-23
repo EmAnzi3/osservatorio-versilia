@@ -51,8 +51,8 @@ def _source_options(payload: dict) -> str:
 def build(payload_path: Path, dist: Path) -> Path:
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     payload, provenance = source_favicon_assets.materialize(payload, dist)
-    # I sottositi PCM che bloccano i runner riusano una favicon istituzionale
-    # ufficiale già acquisita nello stesso build da un altro portale PCM.
+    # I sottositi PCM che bloccano i runner riusano il favicon istituzionale
+    # generico della Presidenza già acquisito da un altro portale PCM nello stesso build.
     # Questo passaggio viene prima del fallback browser per essere deterministico.
     payload, provenance = source_pcm_favicon_alias.materialize(payload, dist, provenance)
     payload, provenance = source_brandmark_fallback.materialize_missing(payload, dist, provenance)
