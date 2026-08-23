@@ -73,11 +73,99 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reuse same-day green runtime when engine is unchanged
+        id: reuse
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          echo "reused=false" >> "$GITHUB_OUTPUT"
+          current_branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          TODAY="$(TZ=Europe/Rome date +%F)"
+
+          artifact_json="$(gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts?name=opportunity-radar-integration-runtime&per_page=30")"
+          artifact_id="$(jq -r --arg branch "$current_branch" --arg head "$CURRENT_HEAD" '
+            .artifacts[]
+            | select(.expired == false)
+            | select(.workflow_run.head_branch == $branch)
+            | select(.workflow_run.head_sha != null and .workflow_run.head_sha != $head)
+            | .id
+          ' <<<"$artifact_json" | head -n 1)"
+          previous_sha="$(jq -r --arg branch "$current_branch" --arg head "$CURRENT_HEAD" '
+            .artifacts[]
+            | select(.expired == false)
+            | select(.workflow_run.head_branch == $branch)
+            | select(.workflow_run.head_sha != null and .workflow_run.head_sha != $head)
+            | .workflow_run.head_sha
+          ' <<<"$artifact_json" | head -n 1)"
+
+          if [[ -z "$artifact_id" || "$artifact_id" == "null" || -z "$previous_sha" || "$previous_sha" == "null" ]]; then
+            echo "Nessun runtime precedente riutilizzabile: raccolta live necessaria."
+            exit 0
+          fi
+
+          git cat-file -e "${previous_sha}^{commit}" 2>/dev/null || git fetch --no-tags origin "$previous_sha" --depth=1
+          git cat-file -e "${CURRENT_HEAD}^{commit}" 2>/dev/null || git fetch --no-tags origin "$CURRENT_HEAD" --depth=1
+
+          engine_paths=(
+            ':(glob)scripts/opportunity_radar*.py'
+            ':(glob)scripts/run_opportunity_radar*.py'
+            'scripts/reconcile_opportunity_continuity.py'
+            ':(glob)data/opportunity-*.json'
+          )
+          if ! git diff --quiet "$previous_sha" "$CURRENT_HEAD" -- "${engine_paths[@]}"; then
+            echo "Motore/reconciler/registri cambiati dal runtime precedente: raccolta live obbligatoria."
+            exit 0
+          fi
+
+          tmpdir="$(mktemp -d)"
+          if ! gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > "$tmpdir/runtime.zip"; then
+            echo "Download runtime precedente fallito: raccolta live."
+            exit 0
+          fi
+          if ! unzip -q "$tmpdir/runtime.zip" -d "$tmpdir/runtime"; then
+            echo "Runtime precedente non estraibile: raccolta live."
+            exit 0
+          fi
+
+          runtime="$tmpdir/runtime"
+          if [[ ! -s "$runtime/opportunities-v04.json" || ! -s "$runtime/opportunities-v04.md" || ! -s "$runtime/exit-code.txt" ]]; then
+            echo "Runtime precedente incompleto: raccolta live."
+            exit 0
+          fi
+          if [[ "$(tr -d '[:space:]' < "$runtime/exit-code.txt")" != "0" ]]; then
+            echo "Runtime precedente non verde: raccolta live."
+            exit 0
+          fi
+          if ! grep -Fq "Data di riferimento: **${TODAY}**" "$runtime/opportunities-v04.md"; then
+            echo "Runtime precedente non è di oggi (${TODAY}): raccolta live."
+            exit 0
+          fi
+          if ! jq -e '.opportunities | type == "array" and length > 0' "$runtime/opportunities-v04.json" >/dev/null; then
+            echo "Payload runtime precedente non valido: raccolta live."
+            exit 0
+          fi
+
+          mkdir -p reports/runtime
+          cp -a "$runtime"/. reports/runtime/
+          echo "Runtime verde riusato: artifact $artifact_id · head $previous_sha · motore invariato · data $TODAY."
+          echo "reused=true" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-python@v5
+        if: steps.reuse.outputs.reused != 'true'
         with:
           python-version: "3.12"
+
       - run: python -m pip install pypdf
+        if: steps.reuse.outputs.reused != 'true'
+
       - name: Restore previous state
+        if: steps.reuse.outputs.reused != 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -97,8 +185,10 @@ jobs:
             done
           done
           echo "Nessuno stato precedente disponibile: prima esecuzione senza bootstrap."
+
       - name: Collect v0.4.3
         id: collect
+        if: steps.reuse.outputs.reused != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -113,8 +203,10 @@ jobs:
           echo "$code" > reports/runtime/collector-exit-code.txt
           echo "collector_exit_code=$code" >> "$GITHUB_OUTPUT"
           cat reports/runtime/opportunities-v04.md
+
       - name: Reconcile bounded continuity evidence
         id: reconcile
+        if: steps.reuse.outputs.reused != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -132,14 +224,16 @@ jobs:
           echo "$code" > reports/runtime/exit-code.txt
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           cat reports/runtime/opportunities-v04.md
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: opportunity-radar-integration-runtime
           path: reports/runtime/
           retention-days: 90
+
       - name: Enforce radar gates
-        if: steps.reconcile.outputs.exit_code != '0'
+        if: steps.reuse.outputs.reused != 'true' && steps.reconcile.outputs.exit_code != '0'
         run: |
           echo "Radar v0.4.3 fallito dopo riconciliazione con codice ${{ steps.reconcile.outputs.exit_code }}."
           exit 1
@@ -166,6 +260,7 @@ jobs:
           python scripts/build_opportunity_integration.py --data reports/runtime/opportunities-v04.json --dist dist
           python scripts/test_opportunity_integration.py --dist dist
           test -s dist/assets/source-favicons/provenance.json
+          test -s dist/assets/opportunity-integration-runtime.js
           python - <<'PY'
           import json
           from pathlib import Path
@@ -182,9 +277,16 @@ jobs:
           pid=$!
           trap 'kill "$pid" 2>/dev/null || true' EXIT
           for i in $(seq 1 30); do
-            curl -fsS http://127.0.0.1:8123/opportunita/ >/dev/null && break
+            if curl -fsS http://127.0.0.1:8123/opportunita/ >/dev/null; then
+              ready=1
+              break
+            fi
             sleep 1
           done
+          if [[ "${ready:-0}" != "1" ]]; then
+            cat /tmp/opportunity-integration-server.log || true
+            exit 1
+          fi
           python scripts/test_opportunity_integration_browser.py --base http://127.0.0.1:8123/
       - name: Package local check
         run: |
