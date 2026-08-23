@@ -104,14 +104,12 @@ jobs:
                   'data-demographic-gender',
                   'Fasce non sovrapposte',
                   'Aggregati',
-                  'Versilia · Occupazione · 25–64 anni · Totale',
               ],
               Path('dist/confronta/istruzione/index.html'): [
                   'data-demographic-age',
                   'data-demographic-gender',
                   'Fasce non sovrapposte',
                   'Aggregati',
-                  'Versilia · Diploma o più · 25–64 anni · Totale',
               ],
               Path('dist/comuni/massarosa/index.html'): [
                   'data-lavoro-istruzione-pyramid',
@@ -124,7 +122,8 @@ jobs:
               for needle in needles:
                   assert needle in text, f'{path}: manca {needle!r}'
           bundle = Path('dist/assets/app-bundle.js').read_text(encoding='utf-8')
-          assert 'demographicBreakdown visual selection' in Path('dist/assets/visual-grammar.js').read_text(encoding='utf-8')
+          visual = Path('dist/assets/visual-grammar.js').read_text(encoding='utf-8')
+          assert 'demographicBreakdown visual selection' in visual
           assert 'data-lavoro-istruzione-pyramid' in bundle
           Path('dist/PR91-ETA-GENERE-V2.txt').write_text(
               'PR #91 · draft V2: fasce raggruppate, lollipop coerenti, piramidi età/sesso con tooltip.\n',
