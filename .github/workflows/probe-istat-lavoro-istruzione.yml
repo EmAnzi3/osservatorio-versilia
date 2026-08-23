@@ -6,27 +6,31 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/lavoro-istruzione-eta-genere
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Estrai snapshot ISTAT 2024
-        run: python scripts/probe_istat_lavoro_istruzione_eta_genere.py
-      - name: Integra la pipeline Pages
-        run: python scripts/patch_pages_workflow_eta_genere.py
-      - name: Versiona snapshot e pipeline verificati
+
+      - name: Estrai e riconcilia snapshot ISTAT 2024
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json .github/workflows/pages.yml
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Integra età e genere nella pipeline Pages [skip ci]"
-          git push origin HEAD:agent/lavoro-istruzione-eta-genere
+          python scripts/probe_istat_lavoro_istruzione_eta_genere.py
+          python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
+
+      - name: Verifica riproducibilita snapshot versionato
+        run: git diff --exit-code -- data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json
+
+      - name: Verifica integrazione Pages in working tree
+        run: python scripts/patch_pages_workflow_eta_genere.py
+
+      - name: Materializza e valida età e genere
+        run: |
+          python scripts/materialize_lavoro_istruzione_eta_genere.py
+          python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
+          python scripts/test_lavoro_istruzione_eta_genere.py
+          python -m json.tool data/site-data.json > /dev/null
