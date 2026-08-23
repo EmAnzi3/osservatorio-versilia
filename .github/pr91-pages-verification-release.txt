@@ -1,0 +1,2 @@
+Temporary verification marker for PR91 Pages pipeline after compatibility-gate fix. Do not merge.
+Exact main snapshot under test: 51deae8f2ca2543ad91a409496d0cf541b8eba74
