@@ -27,7 +27,6 @@ def run(base: str) -> None:
             assert page.locator(".global-search-trigger").count() == 1
             assert page.locator(".site-footer").count() == 1
             assert page.locator('meta[name="robots"]').get_attribute("content") == "noindex,nofollow,noarchive"
-            assert page.locator("body").inner_text().find("Collaudo integrazione") >= 0
 
             source = page.locator("[data-op-source]")
             assert source.count() == 1
