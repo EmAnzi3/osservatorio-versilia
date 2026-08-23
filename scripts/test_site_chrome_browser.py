@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-"""Regressione browser: la shell speciale deve essere visivamente e funzionalmente identica."""
+"""Regressione browser: shell canonica, qualità responsive e budget Lighthouse."""
 from __future__ import annotations
 
 import argparse
 import hashlib
+from pathlib import Path
 from urllib.parse import urljoin
 
 from playwright.sync_api import Page, sync_playwright
 
+from test_browser_quality_gate import run_gate
+from test_lighthouse_budget import run_budget
 
+
+ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = "stato-dati/"
 SPECIAL_ROUTES = (
     "pnrr/",
@@ -184,6 +189,9 @@ def main() -> None:
     verify_climate_tooltips(base)
     verify_custom_404(base)
     print("Chrome browser gate passed: raster, geometry, styles, search, background, Tmin/Tmax tooltip and 404.")
+
+    run_gate(base, ROOT / "dist", ROOT / "reports" / "browser-quality")
+    run_budget(base, ROOT / "reports" / "lighthouse")
 
 
 if __name__ == "__main__":
