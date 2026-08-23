@@ -119,7 +119,7 @@ def town(page, base, theme, key):
 def run(base):
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
-        for viewport in ({"width": 1440, "height": 1000}, {"width": 390, "height": 844}):
+        for viewport in ({"width": 1440, "height": 1000}, {"width": 1024, "height": 768}, {"width": 390, "height": 844}):
             ctx = browser.new_context(viewport=viewport)
             page = ctx.new_page()
             for theme, key in KEYS:
@@ -130,7 +130,7 @@ def run(base):
             req("Occupazione femminile" not in body and "Occupazione maschile" not in body, "Indicatori duplicati di genere ancora nella navigazione")
             ctx.close()
         browser.close()
-    print("Lavoro/Istruzione età×genere browser: ordine fasce, lollipop coerenti, piramidi+tooltip e spaziature OK desktop/mobile.")
+    print("Lavoro/Istruzione età×genere browser: ordine fasce, lollipop coerenti, piramidi+tooltip e spaziature OK desktop/laptop/mobile.")
 
 
 if __name__ == "__main__":
