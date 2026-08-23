@@ -111,11 +111,6 @@ jobs:
                   'Fasce non sovrapposte',
                   'Aggregati',
               ],
-              Path('dist/comuni/massarosa/index.html'): [
-                  'data-lavoro-istruzione-pyramid',
-                  'Piramide dei tassi',
-                  'Valori e basi di calcolo',
-              ],
           }
           for path, needles in checks.items():
               text = path.read_text(encoding='utf-8')
@@ -125,11 +120,12 @@ jobs:
           visual = Path('dist/assets/visual-grammar.js').read_text(encoding='utf-8')
           assert 'demographicBreakdown visual selection' in visual
           assert 'data-lavoro-istruzione-pyramid' in bundle
+          assert 'demographicRatePyramidMarkup' in bundle
           Path('dist/PR91-ETA-GENERE-V2.txt').write_text(
               'PR #91 · draft V2: fasce raggruppate, lollipop coerenti, piramidi età/sesso con tooltip.\n',
               encoding='utf-8',
           )
-          print('DIST finale: gruppi fasce, piramide e visual grammar età/genere presenti.')
+          print('DIST finale: gruppi fasce e codice piramide/visual grammar presenti; rendering comunale demandato al test browser.')
           PY
 
       - name: Start local draft server
