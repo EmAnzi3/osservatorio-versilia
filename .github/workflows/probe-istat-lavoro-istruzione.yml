@@ -1,0 +1,168 @@
+name: Probe ISTAT lavoro istruzione eta genere
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright pypdf
+          python -m playwright install --with-deps chromium
+
+      - name: Materialize current site baseline
+        run: |
+          python scripts/apply_costi_fiscalita_release.py
+          python scripts/test_costi_fiscalita_redditi_draft.py
+
+          python scripts/materialize_demography_lotto_a_v4.py
+          python scripts/test_demography_lotto_a_materialized.py
+          python scripts/materialize_demography_lotto_a_v5.py
+          python scripts/test_demography_lotto_a_v5.py
+          python scripts/materialize_demography_rcs_lotto_a.py
+          python scripts/test_demography_rcs_lotto_a.py
+
+          python scripts/materialize_income_lotto_a_v2.py
+          python scripts/patch_income_lotto_a_frontend.py
+          python scripts/patch_demography_lotto_a_frontend_v2.py
+          python scripts/patch_income_lotto_a_regressions.py
+          python scripts/test_income_lotto_a_v2.py
+
+          python scripts/materialize_fiscal_lotto_b.py
+          python scripts/test_fiscal_lotto_b.py
+          python scripts/patch_fiscal_lotto_b_frontend.py
+
+          python scripts/materialize_pnrr_toscana_draft.py
+          python scripts/patch_pnrr_toscana_review.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
+
+          python scripts/materialize_amministrazione_lotto_a_v2.py
+          python scripts/test_amministrazione_lotto_a.py
+
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+
+      - name: Estrai e riconcilia snapshot ISTAT 2024
+        run: |
+          python scripts/probe_istat_lavoro_istruzione_eta_genere.py
+          python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
+
+      - name: Verifica riproducibilita snapshot versionato
+        run: git diff --exit-code -- data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json
+
+      - name: Materializza e valida età e genere
+        run: |
+          python -m py_compile \
+            scripts/materialize_lavoro_istruzione_eta_genere.py \
+            scripts/patch_lavoro_istruzione_eta_genere_frontend.py \
+            scripts/refine_lavoro_istruzione_eta_genere_ui.py \
+            scripts/patch_lavoro_istruzione_mobile_containment.py \
+            scripts/patch_lavoro_istruzione_versilia_pyramid.py \
+            scripts/test_lavoro_istruzione_eta_genere.py \
+            scripts/test_lavoro_istruzione_eta_genere_browser.py \
+            scripts/test_lavoro_istruzione_versilia_pyramid_browser.py
+          python scripts/materialize_lavoro_istruzione_eta_genere.py
+          python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
+          python scripts/refine_lavoro_istruzione_eta_genere_ui.py
+          python scripts/patch_lavoro_istruzione_mobile_containment.py
+          python scripts/patch_lavoro_istruzione_versilia_pyramid.py
+          node --check assets/visual-grammar.js
+          python scripts/test_lavoro_istruzione_eta_genere.py
+          python -m json.tool data/site-data.json > /dev/null
+
+      - name: Build full enriched draft preview
+        run: python scripts/build_static_brand.py
+
+      - name: Complete current site runtime assets
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          node --check assets/pnrr-town-detail.js
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Assert final dist coherence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          checks = {
+              Path('dist/confronta/lavoro/index.html'): [
+                  'data-demographic-age',
+                  'data-demographic-gender',
+                  'Fasce non sovrapposte',
+                  'Aggregati',
+                  'compare-demographic-pyramid',
+              ],
+              Path('dist/confronta/istruzione/index.html'): [
+                  'data-demographic-age',
+                  'data-demographic-gender',
+                  'Fasce non sovrapposte',
+                  'Aggregati',
+                  'compare-demographic-pyramid',
+              ],
+          }
+          for path, needles in checks.items():
+              text = path.read_text(encoding='utf-8')
+              for needle in needles:
+                  assert needle in text, f'{path}: manca {needle!r}'
+          bundle = Path('dist/assets/app-bundle.js').read_text(encoding='utf-8')
+          visual = Path('dist/assets/visual-grammar.js').read_text(encoding='utf-8')
+          css = Path('dist/assets/visual-grammar.css').read_text(encoding='utf-8')
+          assert 'demographicBreakdown visual selection' in visual
+          assert 'data-lavoro-istruzione-pyramid' in bundle
+          assert 'demographicRatePyramidMarkup' in bundle
+          assert 'Totale Versilia' in bundle
+          assert 'PR91 mobile containment' in css
+          assert 'PR91 Versilia aggregate pyramid' in css
+          Path('dist/PR91-ETA-GENERE-FINALE.txt').write_text(
+              'PR #91 · finale: fasce raggruppate, lollipop coerenti, piramidi comunali e totale Versilia con tooltip.\n',
+              encoding='utf-8',
+          )
+          print('DIST finale: età/genere, piramidi comunali + totale Versilia, visual grammar e containment mobile presenti.')
+          PY
+
+      - name: Start local draft server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-lavoro-http.log 2>&1 &
+          echo $! > /tmp/ov-lavoro-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-lavoro-http.log
+          exit 1
+
+      - name: Validate enriched draft in browser
+        run: |
+          python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
+          python scripts/test_lavoro_istruzione_versilia_pyramid_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload PR91 collaudo preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: PR91-COLLAUDO-FINALE-VERSILIA-ETA-GENERE
+          path: dist
+          retention-days: 14
