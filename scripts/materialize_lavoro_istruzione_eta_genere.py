@@ -16,50 +16,50 @@ GENDERS = [
     {"key": "women", "label": "Donne"},
 ]
 LABOUR_AGES = [
-    {"key": "25-64", "label": "25–64 anni"},
-    {"key": "15-24", "label": "15–24 anni"},
-    {"key": "25-49", "label": "25–49 anni"},
-    {"key": "50-64", "label": "50–64 anni"},
-    {"key": "65plus", "label": "65 anni e oltre"},
-    {"key": "15plus", "label": "15 anni e oltre"},
+    {"key": "15-24", "label": "15–24 anni", "group": "Fasce non sovrapposte"},
+    {"key": "25-49", "label": "25–49 anni", "group": "Fasce non sovrapposte"},
+    {"key": "50-64", "label": "50–64 anni", "group": "Fasce non sovrapposte"},
+    {"key": "65plus", "label": "65 anni e oltre", "group": "Fasce non sovrapposte"},
+    {"key": "25-64", "label": "25–64 anni", "group": "Aggregati"},
+    {"key": "15plus", "label": "15 anni e oltre", "group": "Aggregati"},
 ]
 EDUCATION_AGES = [
-    {"key": "25-64", "label": "25–64 anni"},
-    {"key": "9-24", "label": "9–24 anni"},
-    {"key": "25-49", "label": "25–49 anni"},
-    {"key": "50-64", "label": "50–64 anni"},
-    {"key": "65plus", "label": "65 anni e oltre"},
-    {"key": "9plus", "label": "9 anni e oltre"},
+    {"key": "9-24", "label": "9–24 anni", "group": "Fasce non sovrapposte"},
+    {"key": "25-49", "label": "25–49 anni", "group": "Fasce non sovrapposte"},
+    {"key": "50-64", "label": "50–64 anni", "group": "Fasce non sovrapposte"},
+    {"key": "65plus", "label": "65 anni e oltre", "group": "Fasce non sovrapposte"},
+    {"key": "25-64", "label": "25–64 anni", "group": "Aggregati"},
+    {"key": "9plus", "label": "9 anni e oltre", "group": "Aggregati"},
 ]
 
 CONFIG = {
     "employmentRate": {
         "section": "labour", "field": "employmentRate", "numerator": "employed", "denominator": "population",
-        "ages": LABOUR_AGES,
+        "ages": LABOUR_AGES, "pyramidAgeKeys": ["15-24", "25-49", "50-64", "65plus"],
         "description": "Quota di residenti occupati nella fascia di età selezionata. La lettura iniziale resta 25–64 anni; età e genere possono essere combinati.",
         "formula": "occupati della fascia e del genere selezionati / residenti della stessa fascia e genere × 100",
     },
     "unemploymentRate": {
         "section": "labour", "field": "unemploymentRate", "numerator": "unemployed", "denominator": "active",
-        "ages": LABOUR_AGES,
+        "ages": LABOUR_AGES, "pyramidAgeKeys": ["15-24", "25-49", "50-64", "65plus"],
         "description": "Quota di persone in cerca di occupazione sulle forze di lavoro della fascia selezionata. La lettura iniziale resta 25–64 anni; età e genere possono essere combinati.",
         "formula": "persone in cerca della fascia e del genere selezionati / forze di lavoro della stessa fascia e genere × 100",
     },
     "activityRate": {
         "section": "labour", "field": "activityRate", "numerator": "active", "denominator": "population",
-        "ages": LABOUR_AGES,
+        "ages": LABOUR_AGES, "pyramidAgeKeys": ["15-24", "25-49", "50-64", "65plus"],
         "description": "Quota di residenti che partecipano al mercato del lavoro nella fascia selezionata. La lettura iniziale resta 25–64 anni; età e genere possono essere combinati.",
         "formula": "forze di lavoro della fascia e del genere selezionati / residenti della stessa fascia e genere × 100",
     },
     "diplomaPlus": {
         "section": "education", "field": "diplomaPlus", "numerator": "upperSecondaryPlus", "denominator": "population",
-        "ages": EDUCATION_AGES,
+        "ages": EDUCATION_AGES, "pyramidAgeKeys": ["9-24", "25-49", "50-64", "65plus"],
         "description": "Quota di residenti con almeno un diploma secondario superiore nella fascia selezionata. La lettura iniziale resta 25–64 anni; età e genere possono essere combinati.",
         "formula": "residenti con diploma secondario superiore o titolo più elevato / residenti della stessa fascia e genere × 100",
     },
     "tertiary": {
         "section": "education", "field": "tertiaryRate", "numerator": "tertiary", "denominator": "population",
-        "ages": EDUCATION_AGES,
+        "ages": EDUCATION_AGES, "pyramidAgeKeys": ["9-24", "25-49", "50-64", "65plus"],
         "description": "Quota di residenti con titolo terziario nella fascia selezionata. La lettura iniziale resta 25–64 anni; età e genere possono essere combinati.",
         "formula": "residenti con titolo terziario / residenti della stessa fascia e genere × 100",
     },
@@ -97,7 +97,7 @@ def aggregate_parts(metric: dict) -> list[dict]:
         matching = [next(part for part in row["parts"] if part["key"] == key) for row in metric["rows"]]
         numerator = sum(float(part["numerator"]) for part in matching)
         denominator = sum(float(part["denominator"]) for part in matching)
-        result.append({**{k: template[k] for k in ("key","ageKey","ageLabel","genderKey","genderLabel","label","unit")},
+        result.append({**{k: template[k] for k in ("key", "ageKey", "ageLabel", "genderKey", "genderLabel", "label", "unit")},
                        "value": numerator / denominator * 100 if denominator else None,
                        "numerator": numerator, "denominator": denominator})
     return result
@@ -107,6 +107,7 @@ def enrich_metric(site: dict, snapshot: dict, key: str, cfg: dict) -> None:
     metric = site["metrics"][key]
     metric["meta"]["compositeType"] = "demographicBreakdown"
     metric["meta"]["ageOptions"] = cfg["ages"]
+    metric["meta"]["pyramidAgeKeys"] = cfg["pyramidAgeKeys"]
     metric["meta"]["genderOptions"] = GENDERS
     metric["meta"]["defaultAge"] = "25-64"
     metric["meta"]["defaultGender"] = "total"
@@ -135,7 +136,11 @@ def enrich_metric(site: dict, snapshot: dict, key: str, cfg: dict) -> None:
     method["type"] = "Elaborazione Osservatorio su microdati comunali ufficiali Istat — Censimento permanente"
     method["formula"] = cfg["formula"]
     method["coverage"] = "7/7"
-    method["breakdown"] = "Genere: Totale, Uomini, Donne. Fasce di età come pubblicate da Istat; 25–64 ricostruita esattamente sommando 25–49 e 50–64 sui conteggi prima di calcolare il tasso."
+    method["breakdown"] = (
+        "Genere: Totale, Uomini, Donne. Le fasce non sovrapposte sono mostrate in ordine anagrafico; "
+        "25–64 e la fascia complessiva sono indicate separatamente come aggregati. "
+        "25–64 è ricostruita esattamente sommando 25–49 e 50–64 sui conteggi prima di calcolare il tasso."
+    )
     extra = "Il dettaglio 2024 è una fotografia trasversale: lo storico già presente resta riferito alla definizione originaria dell'indicatore e non viene esteso artificialmente alle singole combinazioni età × genere."
     if extra not in method.get("caveat", ""):
         method["caveat"] = (method.get("caveat", "").rstrip() + " " + extra).strip()
