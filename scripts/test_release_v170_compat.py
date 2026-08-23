@@ -90,6 +90,13 @@ LEGACY_THEME_KEYS = {
     },
 }
 
+# PR91 integra le due vecchie card di genere dentro employmentRate.
+# Gli oggetti legacy restano nel dataset per compatibilità dei link/dati, ma
+# non devono più occupare due voci autonome nel catalogo pubblico Lavoro.
+MIGRATED_THEME_KEYS = {
+    "lavoro": {"femaleEmploymentRate", "maleEmploymentRate"},
+}
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -125,7 +132,27 @@ def main() -> None:
 
     for theme_key, legacy_keys in LEGACY_THEME_KEYS.items():
         current = set(source["themes"][theme_key]["metrics"])
-        require(legacy_keys <= current, f"{theme_key}: rimossi indicatori delle release precedenti")
+        migrated = MIGRATED_THEME_KEYS.get(theme_key, set())
+        require((legacy_keys - migrated) <= current, f"{theme_key}: rimossi indicatori delle release precedenti")
+        require(migrated <= all_keys, f"{theme_key}: oggetti legacy migrati non più disponibili nel dataset")
+
+    employment = source["metrics"]["employmentRate"]
+    require(
+        employment.get("meta", {}).get("compositeType") == "demographicBreakdown",
+        "lavoro: employmentRate deve assorbire il dettaglio per genere dopo PR91",
+    )
+    gender_keys = {
+        item.get("key") for item in employment.get("meta", {}).get("genderOptions", [])
+        if isinstance(item, dict)
+    }
+    require(
+        {"total", "men", "women"} <= gender_keys,
+        "lavoro: la migrazione PR91 deve preservare Totale/Uomini/Donne",
+    )
+    require(
+        MIGRATED_THEME_KEYS["lavoro"].isdisjoint(set(source["themes"]["lavoro"]["metrics"])),
+        "lavoro: le card legacy uomo/donna non devono duplicare il filtro Genere",
+    )
 
     budget_theme = source["themes"]["bilanci"]
     require(budget_theme["number"] == "10", "Bilanci deve essere il tema 10 dopo l’introduzione di Sicurezza")
