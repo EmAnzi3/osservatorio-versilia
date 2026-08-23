@@ -25,6 +25,20 @@ def patch_app() -> None:
 
     text = replace_once(
         text,
+        '<span class="overline">Età e sesso</span><h4>Piramide dei tassi</h4>',
+        '<span class="overline">${row.town === \'Versilia\' ? \'Totale Versilia · Età e sesso\' : \'Età e sesso\'}</span><h4>${row.town === \'Versilia\' ? \'Piramide dei tassi · Versilia\' : \'Piramide dei tassi\'}</h4>',
+        "identità piramide",
+    )
+
+    text = replace_once(
+        text,
+        '<p class="aggregate-note demographic-rate-pyramid-note">La piramide usa solo fasce non sovrapposte. Le letture aggregate 25–64 e complessiva restano disponibili nei selettori e nel dettaglio.</p>',
+        '<p class="aggregate-note demographic-rate-pyramid-note">${row.town === \'Versilia\' ? \'Il totale Versilia è calcolato sommando numeratori e denominatori dei sette Comuni, non mediando le percentuali. \' : \'\'}La piramide usa solo fasce non sovrapposte. Le letture aggregate 25–64 e complessiva restano disponibili nei selettori e nel dettaglio.</p>',
+        "nota aggregazione Versilia",
+    )
+
+    text = replace_once(
+        text,
         '      <section id="compare-benchmark" class="page-width"></section>',
         '      <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>\n      <section id="compare-benchmark" class="page-width"></section>',
         "host confronto",
@@ -40,7 +54,7 @@ def patch_app() -> None:
     benchmark_anchor = "    benchmark.innerHTML = (metricKey.startsWith('slowMobility') || metric.meta.compositeType) ? '' : benchmarkMarkup(metric,aggregate,unit,null);"
     pyramid_runtime = r'''    if (demographicPyramid) {
       demographicPyramid.innerHTML = compositeType === 'demographicBreakdown'
-        ? `<div class="section-heading compact compare-demographic-pyramid-heading"><div><span class="overline">Totale Versilia · ${html(metric.meta.year)}</span><h2>Piramide per età e genere</h2><p>${html(metric.meta.label)} nelle quattro fasce non sovrapposte. Il totale Versilia è calcolato sommando numeratori e denominatori dei sette Comuni, non mediando le percentuali.</p></div></div>${demographicRatePyramidMarkup(metric,{town:'Versilia',parts:metric.aggregate?.parts || []})}`
+        ? demographicRatePyramidMarkup(metric,{town:'Versilia',parts:metric.aggregate?.parts || []})
         : '';
     }
 
@@ -65,14 +79,6 @@ def patch_css() -> None:
 
 .compare-demographic-pyramid {
   margin-top: 30px;
-}
-
-.compare-demographic-pyramid-heading {
-  margin-bottom: 12px;
-}
-
-.compare-demographic-pyramid-heading p {
-  max-width: 78ch;
 }
 
 @media (max-width: 700px) {
