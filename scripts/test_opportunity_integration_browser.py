@@ -5,7 +5,12 @@ from __future__ import annotations
 import argparse
 from playwright.sync_api import sync_playwright
 
-EXPECTED_NAV = ["Temi", "Comuni", "Il progetto", "Stato dati", "Segnala"]
+EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
+
+
+def nav_labels(page):
+    nav = page.locator('header nav[aria-label="Navigazione principale"] a').all_inner_texts()
+    return [" ".join(x.split()) for x in nav]
 
 
 def run(base: str) -> None:
@@ -14,16 +19,29 @@ def run(base: str) -> None:
         for width, height in ((1440, 1000), (1024, 768), (390, 844)):
             context = browser.new_context(viewport={"width": width, "height": height})
             page = context.new_page()
-            page.goto(base.rstrip("/") + "/opportunita/", wait_until="domcontentloaded")
 
+            # Prima verifichiamo la collocazione futura nel sito completo.
+            page.goto(base.rstrip("/") + "/", wait_until="domcontentloaded")
+            assert nav_labels(page) == EXPECTED_NAV
+            assert page.locator('[data-opportunity-nav="header"]').count() == 1
+            assert page.locator('[data-opportunity-nav="footer"]').count() == 1
+            home_callout = page.locator("[data-opportunity-home-link]")
+            assert home_callout.count() == 1
+            assert "Radar Opportunità" in home_callout.inner_text()
+            assert home_callout.locator('a[href="opportunita/"]').count() == 1
+            assert not page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
+
+            # Poi collaudiamo la pagina Radar vera e propria.
+            page.goto(base.rstrip("/") + "/opportunita/", wait_until="domcontentloaded")
             root = page.locator("[data-opportunity-preview]")
             root.wait_for()
             total = int(root.get_attribute("data-total-opportunities") or 0)
             cards = page.locator("[data-opportunity-card]")
             assert total == cards.count() and total > 0, (total, cards.count())
 
-            nav = page.locator('header nav[aria-label="Navigazione principale"] a').all_inner_texts()
-            assert [" ".join(x.split()) for x in nav] == EXPECTED_NAV, nav
+            assert nav_labels(page) == EXPECTED_NAV
+            assert page.locator('[data-opportunity-nav="header"][aria-current="page"]').count() == 1
+            assert page.locator('[data-opportunity-nav="footer"][aria-current="page"]').count() == 1
             assert page.locator(".global-search-trigger").count() == 1
             assert page.locator(".site-footer").count() == 1
             assert page.locator('meta[name="robots"]').get_attribute("content") == "noindex,nofollow,noarchive"
@@ -62,7 +80,7 @@ def run(base: str) -> None:
             assert "Quality gate" not in body and "Da verificare" not in body and "coverageHold" not in body
             context.close()
         browser.close()
-    print("Radar /opportunita/: header/footer canonici, filtri, favicon e responsive OK desktop/laptop/mobile.")
+    print("Radar /opportunita/: collocazione futura header/home/footer, filtri, favicon e responsive OK desktop/laptop/mobile.")
 
 
 def main() -> int:
