@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import html
 import json
 import re
@@ -14,6 +15,7 @@ import source_brandmark_fallback
 import source_favicon_assets
 import source_mic_favicon_alias
 import source_pcm_favicon_alias
+import source_pinned_favicon_assets
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "reports" / "runtime" / "opportunities-v04.json"
@@ -49,12 +51,55 @@ def _source_options(payload: dict) -> str:
     return '<option value="">Tutte le fonti monitorate</option>' + "".join(options)
 
 
+def _transfer_dynamic_favicons(target_payload: dict, dynamic_payload: dict, pinned_sources: set[str]) -> None:
+    by_source: dict[str, str] = {}
+    for item in dynamic_payload.get("opportunities") or []:
+        sid = str(item.get("source_id") or "")
+        favicon = str((item.get("presentation") or {}).get("source_favicon") or "")
+        if sid and favicon:
+            by_source[sid] = favicon
+    for item in dynamic_payload.get("archive") or []:
+        sid = str(item.get("source_id") or "")
+        favicon = str(item.get("source_favicon") or "")
+        if sid and favicon:
+            by_source[sid] = favicon
+
+    for item in target_payload.get("opportunities") or []:
+        sid = str(item.get("source_id") or "")
+        if sid not in pinned_sources and sid in by_source:
+            item.setdefault("presentation", {})["source_favicon"] = by_source[sid]
+    for item in target_payload.get("archive") or []:
+        sid = str(item.get("source_id") or "")
+        if sid not in pinned_sources and sid in by_source:
+            item["source_favicon"] = by_source[sid]
+
+
 def build(payload_path: Path, dist: Path) -> Path:
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
-    payload, provenance = source_favicon_assets.materialize(payload, dist)
-    # Fallback deterministici istituzionali: se sottositi MiC/PCM bloccano il
-    # runner, riusiamo asset ufficiali già acquisiti nello stesso build da un
-    # altro portale dello stesso ente, registrando esplicitamente la provenienza.
+
+    # Le sorgenti già acquisite byte-per-byte da un run verde vengono
+    # materializzate per prime. Il resolver dinamico non prova neppure a
+    # raggiungerle: questo rende mic-dgcc indipendente da rete/HTML/Playwright.
+    payload, pinned_provenance = source_pinned_favicon_assets.materialize(payload, dist)
+    pinned_sources = set(pinned_provenance)
+
+    dynamic_payload = copy.deepcopy(payload)
+    if pinned_sources:
+        dynamic_payload["opportunities"] = [
+            item for item in dynamic_payload.get("opportunities") or []
+            if str(item.get("source_id") or "") not in pinned_sources
+        ]
+        dynamic_payload["archive"] = [
+            item for item in dynamic_payload.get("archive") or []
+            if str(item.get("source_id") or "") not in pinned_sources
+        ]
+
+    dynamic_payload, dynamic_provenance = source_favicon_assets.materialize(dynamic_payload, dist)
+    _transfer_dynamic_favicons(payload, dynamic_payload, pinned_sources)
+    provenance = {**dynamic_provenance, **pinned_provenance}
+
+    # Fallback istituzionali per gli altri sottositi fragili. Il DGCC non passa
+    # più da qui perché è già coperto dal pin verificato sopra.
     payload, provenance = source_mic_favicon_alias.materialize(payload, dist, provenance)
     payload, provenance = source_pcm_favicon_alias.materialize(payload, dist, provenance)
     payload, provenance = source_brandmark_fallback.materialize_missing(payload, dist, provenance)
@@ -62,6 +107,12 @@ def build(payload_path: Path, dist: Path) -> Path:
     missing_icons = sorted(public_sources - set(provenance))
     if missing_icons:
         raise SystemExit("Icona ufficiale non risolta per: " + ", ".join(missing_icons))
+
+    asset_dir = dist / "assets" / "source-favicons"
+    asset_dir.mkdir(parents=True, exist_ok=True)
+    (asset_dir / "provenance.json").write_text(
+        json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=False) as handle:
         json.dump(payload, handle, ensure_ascii=False)
