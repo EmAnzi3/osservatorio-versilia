@@ -20,12 +20,15 @@ TARGETS = {
     "pcm-pari-opportunita",
     "pcm-politiche-mare",
 }
+# Prima scelta: disabilita.governo.it espone un favicon istituzionale generico
+# con lo stemma della Repubblica, quindi è adatto a sottositi PCM diversi senza
+# attribuire loro il marchio specifico di un altro Dipartimento.
 DONORS = (
-    "pcm-famiglia",
     "pcm-disabilita",
     "pcm-sport",
     "politiche-coesione",
     "pcm-casa-italia",
+    "pcm-famiglia",
 )
 OFFICIAL_HOST_SUFFIXES = (
     ".governo.it",
@@ -104,7 +107,7 @@ def materialize(
             "method": "official-pcm-shared-favicon",
             "inheritedFrom": donor_id,
             "institutionalOwner": "Presidenza del Consiglio dei Ministri",
-            "reason": "Il sottosito sorgente blocca il download asset dai runner GitHub; viene riusata una favicon ufficiale PCM già acquisita nello stesso build.",
+            "reason": "Il sottosito sorgente blocca il download asset dai runner GitHub; viene riusata una favicon istituzionale PCM già acquisita nello stesso build.",
             "bytes": str(target.stat().st_size),
         }
         for item in opportunities:
