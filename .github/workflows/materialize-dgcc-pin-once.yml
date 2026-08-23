@@ -1,0 +1,54 @@
+name: Materialize DGCC pinned favicon once
+
+on:
+  pull_request:
+    branches: ["main"]
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/materialize-dgcc-pin-once.yml"
+      - "assets/institutional-favicons/mic-dgcc.png"
+      - "data/source-favicon-pins-v1.json"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'integration/opportunity-radar-v1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/opportunity-radar-v1
+          fetch-depth: 0
+      - name: Restore exact green-run asset and commit if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, hashlib, json, subprocess
+          from pathlib import Path
+
+          SOURCE_COMMIT = '9bd84206780c1f0ce71a05fc24d583ec02028b71'
+          EXPECTED_SHA = 'fb5906ca71b08563282e4f48a9ada17a1f481031ada4071e85671499f84775fc'
+          EXPECTED_BYTES = 19912
+          registry = subprocess.check_output(
+              ['git', 'show', f'{SOURCE_COMMIT}:data/source-favicon-pins-v1.json'],
+              text=True,
+          )
+          meta = json.loads(registry)['pins']['mic-dgcc']
+          raw = base64.b64decode(meta['dataBase64'], validate=True)
+          actual = hashlib.sha256(raw).hexdigest()
+          if len(raw) != EXPECTED_BYTES or actual != EXPECTED_SHA:
+              raise SystemExit(f'Asset sorgente inatteso: {len(raw)} byte, sha {actual}')
+          target = Path('assets/institutional-favicons/mic-dgcc.png')
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_bytes(raw)
+          print(f'Materializzato {target}: {len(raw)} byte, sha256 {actual}')
+          PY
+          git diff --exit-code -- assets/institutional-favicons/mic-dgcc.png && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/institutional-favicons/mic-dgcc.png
+          git commit -m "Materialize exact official DGCC favicon asset"
+          git push origin HEAD:integration/opportunity-radar-v1
