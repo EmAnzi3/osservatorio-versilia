@@ -32,8 +32,9 @@ def check_pyramid(page, base, theme, key):
     req(host.locator(".demographic-rate-pyramid-chart").count() == 1, f"{key}: SVG Versilia assente")
     req(host.locator(".age-pyramid-point").count() == 8, f"{key}: attese 4 fasce × 2 sessi")
     text = host.inner_text()
-    req("Totale Versilia" in text and "Piramide dei tassi · Versilia" in text, f"{key}: intestazione Versilia assente: {text!r}")
-    req("non mediando le percentuali" in text, f"{key}: metodo aggregazione non dichiarato")
+    lower_text = text.lower()
+    req("totale versilia" in lower_text and "piramide dei tassi · versilia" in lower_text, f"{key}: intestazione Versilia assente: {text!r}")
+    req("non mediando le percentuali" in lower_text, f"{key}: metodo aggregazione non dichiarato")
 
     geometry = page.evaluate(
         """async (key) => {
