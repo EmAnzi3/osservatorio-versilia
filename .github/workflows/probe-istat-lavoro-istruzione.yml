@@ -73,12 +73,15 @@ jobs:
             scripts/patch_lavoro_istruzione_eta_genere_frontend.py \
             scripts/refine_lavoro_istruzione_eta_genere_ui.py \
             scripts/patch_lavoro_istruzione_mobile_containment.py \
+            scripts/patch_lavoro_istruzione_versilia_pyramid.py \
             scripts/test_lavoro_istruzione_eta_genere.py \
-            scripts/test_lavoro_istruzione_eta_genere_browser.py
+            scripts/test_lavoro_istruzione_eta_genere_browser.py \
+            scripts/test_lavoro_istruzione_versilia_pyramid_browser.py
           python scripts/materialize_lavoro_istruzione_eta_genere.py
           python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
           python scripts/refine_lavoro_istruzione_eta_genere_ui.py
           python scripts/patch_lavoro_istruzione_mobile_containment.py
+          python scripts/patch_lavoro_istruzione_versilia_pyramid.py
           node --check assets/visual-grammar.js
           python scripts/test_lavoro_istruzione_eta_genere.py
           python -m json.tool data/site-data.json > /dev/null
@@ -106,12 +109,14 @@ jobs:
                   'data-demographic-gender',
                   'Fasce non sovrapposte',
                   'Aggregati',
+                  'compare-demographic-pyramid',
               ],
               Path('dist/confronta/istruzione/index.html'): [
                   'data-demographic-age',
                   'data-demographic-gender',
                   'Fasce non sovrapposte',
                   'Aggregati',
+                  'compare-demographic-pyramid',
               ],
           }
           for path, needles in checks.items():
@@ -124,12 +129,14 @@ jobs:
           assert 'demographicBreakdown visual selection' in visual
           assert 'data-lavoro-istruzione-pyramid' in bundle
           assert 'demographicRatePyramidMarkup' in bundle
+          assert 'Totale Versilia' in bundle
           assert 'PR91 mobile containment' in css
-          Path('dist/PR91-ETA-GENERE-V2.txt').write_text(
-              'PR #91 · draft V2: fasce raggruppate, lollipop coerenti, piramidi età/sesso con tooltip.\n',
+          assert 'PR91 Versilia aggregate pyramid' in css
+          Path('dist/PR91-ETA-GENERE-FINALE.txt').write_text(
+              'PR #91 · finale: fasce raggruppate, lollipop coerenti, piramidi comunali e totale Versilia con tooltip.\n',
               encoding='utf-8',
           )
-          print('DIST finale: gruppi fasce, piramide, visual grammar e containment mobile presenti.')
+          print('DIST finale: età/genere, piramidi comunali + totale Versilia, visual grammar e containment mobile presenti.')
           PY
 
       - name: Start local draft server
@@ -148,12 +155,14 @@ jobs:
           exit 1
 
       - name: Validate enriched draft in browser
-        run: python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
+        run: |
+          python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
+          python scripts/test_lavoro_istruzione_versilia_pyramid_browser.py --base http://127.0.0.1:8123/
 
       - name: Upload PR91 collaudo preview
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: PR91-COLLAUDO-V2-PIRAMIDE-ETA-GENERE
+          name: PR91-COLLAUDO-FINALE-VERSILIA-ETA-GENERE
           path: dist
           retention-days: 14
