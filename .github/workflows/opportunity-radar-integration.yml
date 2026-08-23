@@ -11,11 +11,14 @@ on:
       - "scripts/reconcile_opportunity_continuity.py"
       - "scripts/build_opportunity*.py"
       - "scripts/source_favicon_assets.py"
+      - "scripts/source_pinned_favicon_assets.py"
       - "scripts/source_brandmark_fallback.py"
       - "scripts/source_mic_favicon_alias.py"
       - "scripts/source_pcm_favicon_alias.py"
       - "scripts/test_opportunity*.py"
+      - "scripts/test_source_pinned_favicon_assets.py"
       - "data/opportunity-*.json"
+      - "data/source-favicon-pins-v1.json"
       - "assets/opportunity-preview*.css"
       - "assets/opportunity-preview*.js"
       - "assets/source-icons/**"
@@ -52,10 +55,12 @@ jobs:
             scripts/build_opportunity_preview.py scripts/build_opportunity_preview_v03.py \
             scripts/build_opportunity_preview_v04.py scripts/build_opportunity_preview_v043.py \
             scripts/build_opportunity_integration.py scripts/source_favicon_assets.py \
-            scripts/source_brandmark_fallback.py scripts/source_mic_favicon_alias.py \
-            scripts/source_pcm_favicon_alias.py scripts/test_opportunity_continuity.py \
-            scripts/test_opportunity_integration.py scripts/test_opportunity_integration_browser.py
-          for f in data/opportunity-*.json; do python -m json.tool "$f" > /dev/null; done
+            scripts/source_pinned_favicon_assets.py scripts/source_brandmark_fallback.py \
+            scripts/source_mic_favicon_alias.py scripts/source_pcm_favicon_alias.py \
+            scripts/test_opportunity_continuity.py scripts/test_opportunity_integration.py \
+            scripts/test_opportunity_integration_browser.py scripts/test_source_pinned_favicon_assets.py
+          for f in data/opportunity-*.json data/source-favicon-pins-v1.json; do python -m json.tool "$f" > /dev/null; done
+          python scripts/test_source_pinned_favicon_assets.py
           python scripts/test_opportunity_radar_v03.py
           python scripts/test_opportunity_radar_v04.py
           python scripts/test_opportunity_radar_v043.py
@@ -161,6 +166,14 @@ jobs:
           python scripts/build_opportunity_integration.py --data reports/runtime/opportunities-v04.json --dist dist
           python scripts/test_opportunity_integration.py --dist dist
           test -s dist/assets/source-favicons/provenance.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('dist/assets/source-favicons/provenance.json').read_text(encoding='utf-8'))
+          m=p.get('mic-dgcc') or {}
+          assert m.get('method') == 'pinned-official-asset-from-green-run', m
+          assert m.get('sha256') == 'fb5906ca71b08563282e4f48a9ada17a1f481031ada4071e85671499f84775fc', m
+          PY
       - name: Browser checks
         shell: bash
         run: |
