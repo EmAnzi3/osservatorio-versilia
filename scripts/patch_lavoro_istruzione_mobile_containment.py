@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Confina piramide e tabella età×genere nei propri scroller senza overflow pagina."""
+"""Confina piramide, tabella e toolbar età×genere senza overflow pagina."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CSS = ROOT / "assets" / "visual-grammar.css"
+FIDELITY = ROOT / "assets" / "fidelity.css"
 MARKER = "PR91 mobile containment"
 
 
-def main() -> None:
+def patch_visual_containment() -> None:
     text = CSS.read_text(encoding="utf-8")
     if MARKER in text:
         print("Containment mobile PR91 già applicato")
@@ -71,7 +72,33 @@ def main() -> None:
 }
 '''
     CSS.write_text(text.rstrip() + patch + "\n", encoding="utf-8")
-    print("PR91: piramide, tabella e selettori confinati; nessun min-content deve allargare la pagina mobile.")
+    print("PR91: piramide, tabella e selettori confinati senza overflow pagina.")
+
+
+def patch_laptop_toolbar() -> None:
+    text = FIDELITY.read_text(encoding="utf-8")
+    old = '''@media(max-width:1000px){
+  .compare-chart-toolbar{align-items:flex-start;flex-direction:column;gap:13px}
+  .compare-chart-toolbar .compare-view-controls{width:100%;justify-content:flex-start;flex-wrap:wrap}
+  .compare-chart-toolbar .compare-choice-select{flex:1 1 220px;width:auto}
+}'''
+    new = '''@media(max-width:1100px){
+  .compare-chart-toolbar{align-items:flex-start;flex-direction:column;gap:13px;min-width:0;max-width:100%;box-sizing:border-box}
+  .compare-chart-toolbar .compare-view-controls{width:100%;max-width:100%;min-width:0;box-sizing:border-box;justify-content:flex-start;flex-wrap:wrap}
+  .compare-chart-toolbar .compare-choice-select{flex:1 1 220px;width:auto;max-width:100%}
+}'''
+    if new in text:
+        print("Containment laptop toolbar PR91 già applicato")
+        return
+    if old not in text:
+        raise RuntimeError("Breakpoint toolbar confronto non trovato: aggiornare il patch PR91")
+    FIDELITY.write_text(text.replace(old, new, 1), encoding="utf-8")
+    print("PR91: toolbar confronto compatta fino a 1100px; coperto il viewport laptop 1024px.")
+
+
+def main() -> None:
+    patch_visual_containment()
+    patch_laptop_toolbar()
 
 
 if __name__ == "__main__":
