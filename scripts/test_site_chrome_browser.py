@@ -38,15 +38,35 @@ def require(condition: bool, message: str) -> None:
 
 def open_page(page: Page, base: str, route: str) -> None:
     page.goto(urljoin(base, route), wait_until="domcontentloaded")
-    page.wait_for_selector(".site-header .global-search-trigger")
+    page.wait_for_selector(".site-header .global-search-trigger", state="visible")
     page.wait_for_function("document.fonts ? document.fonts.status === 'loaded' : true")
+    # Alcune route rimontano la shell subito dopo DOMContentLoaded. Aspettiamo il
+    # remount e richiediamo nuovamente l'header visibile prima delle misure.
+    page.wait_for_timeout(350)
+    page.wait_for_selector(".site-header .global-search-trigger", state="visible")
+
+
+def stable_box(page: Page, selector: str) -> dict[str, float]:
+    locator = page.locator(selector).first
+    for _ in range(20):
+        try:
+            locator.wait_for(state="visible", timeout=500)
+            box = locator.bounding_box()
+            if box is not None:
+                page.wait_for_timeout(50)
+                confirm = locator.bounding_box()
+                if confirm is not None:
+                    return confirm
+        except Exception:
+            pass
+        page.wait_for_timeout(50)
+    raise AssertionError(f"Elemento senza geometria stabile: {selector}")
 
 
 def geometry(page: Page) -> dict[str, dict[str, float]]:
     result: dict[str, dict[str, float]] = {}
     for selector in GEOMETRY_SELECTORS:
-        box = page.locator(selector).bounding_box()
-        require(box is not None, f"Elemento senza geometria: {selector}")
+        box = stable_box(page, selector)
         result[selector] = {key: round(float(box[key]), 2) for key in ("x", "y", "width", "height")}
     return result
 
