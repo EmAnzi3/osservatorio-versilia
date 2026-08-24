@@ -16,7 +16,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -32,7 +32,8 @@ jobs:
       - name: Install Radar dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pypdf
+          python -m pip install pypdf playwright
+          python -m playwright install --with-deps chromium
 
       - name: Validate v0.4.4 contracts
         run: |
@@ -68,6 +69,23 @@ jobs:
           assert required <= ids, sorted(required - ids)
           print(f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · {(p.get('counts') or {}).get('new', 0)} nuove")
           PY
+
+      - name: Build and validate the public Radar before committing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_opportunity_release_snapshot.py
+          python scripts/build_static_brand.py
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-radar-daily.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              python scripts/test_opportunity_release_browser.py --base http://127.0.0.1:8123/
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-radar-daily.log
+          exit 1
 
       - name: Upload refresh report
         uses: actions/upload-artifact@v4
