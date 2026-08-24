@@ -9,6 +9,7 @@ PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
 TWITTER_SITE = "@OssVersilia"
+SOCIAL_ASSET_VERSION = "20260824-v117"
 SOCIAL_PROFILES = (
     "https://www.facebook.com/osservatorioversilia",
     "https://www.instagram.com/osservatorioversilia/",
@@ -131,8 +132,8 @@ def main() -> None:
     assert 'data-social-placement="home"' in home, "Richiamo social assente dalla home"
     assert 'data-social-placement="footer"' in home, "Riferimenti social assenti dal footer della home"
     assert_social_profiles(home, "home")
-    assert "assets/social-presence.css?v=20260824-v116" in home, "CSS social assente dalla home"
-    assert "assets/social-presence.js?v=20260824-v116" in home, "JS social assente dalla home"
+    assert f"assets/social-presence.css?v={SOCIAL_ASSET_VERSION}" in home, "CSS social assente dalla home"
+    assert f"assets/social-presence.js?v={SOCIAL_ASSET_VERSION}" in home, "JS social assente dalla home"
 
     project = read("progetto/index.html")
     assert "2026.08.14-v1.11.0" in project, "v1.11.0 assente dalla pagina progetto"
