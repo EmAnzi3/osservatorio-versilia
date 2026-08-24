@@ -92,6 +92,9 @@ jobs:
           python scripts/plan_social_week.py \
             --date "${{ steps.target.outputs.date }}" \
             --github-output "$GITHUB_OUTPUT"
+
+      - name: Preserve plan for package generation
+        run: |
           cp "${{ steps.planner.outputs.json_path }}" /tmp/social-week.json
           cp "${{ steps.planner.outputs.markdown_path }}" /tmp/social-week.md
 
