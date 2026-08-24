@@ -83,6 +83,22 @@ def _overview(payload: dict[str, Any]) -> str:
     return f'''<section class="method-detail page-width op-overview" aria-label="Quadro operativo"><div class="op-overview-shell"><div class="op-overview-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Aperte, misure a sportello e procedure annunciate. La copertura è verificata anche con fonti di controllo che non alimentano il radar.</p></div><div class="op-overview-grid op-overview-grid-v04"><article class="op-stat op-stat-open"><span class="op-stat-icon">{icons['briefcase']}</span><div><small>Aperte</small><strong>{opened}</strong><span>Finestra di candidatura attiva</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['calendar']}</span><div><small>A sportello</small><strong>{rolling}</strong><span>Misure senza singola scadenza</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['radar']}</span><div><small>In arrivo</small><strong>{upcoming}</strong><span>Procedure annunciate ufficialmente</span></div></article><article class="op-stat op-stat-sources"><span class="op-stat-icon">{icons['radar']}</span><div><small>Rete di raccolta</small><strong>{monitored}</strong><span>{required_families} famiglie · {holdout_count} fonti di controllo separate</span></div></article><article class="op-stat op-stat-towns"><span class="op-stat-icon">{icons['map']}</span><div><small>Famiglie presidiate</small><strong>{covered_families}/{required_families}</strong><span>Il dato non equivale alla completezza del web</span></div></article><article class="op-stat op-stat-archive"><span class="op-stat-icon">{icons['archive']}</span><div><small>In archivio</small><strong>{len(archive)}</strong><span>Opportunità chiuse con fonte ufficiale</span></div></article></div><div class="op-audit-summary"><strong>Audit indipendente</strong><span>{closed}/{gap_total} buchi baseline chiusi · capture rate prospettico: {rate_text} ({sample}/{minimum}) · fonti di controllo raggiungibili: {holdout_healthy}/{holdout_count}</span></div></div></section>'''
 
 
+def _recent_controls(payload: dict[str, Any]) -> str:
+    opportunities = list(payload.get("opportunities") or [])
+    if not any(item.get("first_seen_at") or item.get("is_new") for item in opportunities):
+        return ""
+    return (
+        '<label>Novità<select data-op-new>'
+        '<option value="">Tutte</option>'
+        '<option value="new">Solo nuove</option>'
+        '</select></label>'
+        '<label>Ordina<select data-op-sort>'
+        '<option value="deadline">Scadenza</option>'
+        '<option value="recent">Più recenti</option>'
+        '</select></label>'
+    )
+
+
 def render_page(payload: dict[str, Any]) -> str:
     previous = base.BASE_CARD
     base.BASE_CARD = lifecycle_card
@@ -111,7 +127,6 @@ def render_page(payload: dict[str, Any]) -> str:
         count=1,
         flags=re.S,
     )
-    # La fonte resta un normale filtro select: niente secondo buffet di chip.
     page = re.sub(
         r'\s*<div class="op-source-shortcuts".*?</div>\s*(?=<div class="op-preview-controls">)',
         "\n      ",
@@ -128,6 +143,9 @@ def render_page(payload: dict[str, Any]) -> str:
         '</select></label>'
     )
     page = page.replace('<label>Modalità<select data-op-access>', lifecycle_filter + '<label>Modalità<select data-op-access>', 1)
+    recent_controls = _recent_controls(payload)
+    if recent_controls:
+        page = page.replace('<label class="op-search-field">Cerca<input type="search"', recent_controls + '<label class="op-search-field">Cerca<input type="search"', 1)
     page = page.replace(
         'Filtra per Comune, fonte o modalità di partecipazione.',
         'Filtra per Comune, stato, modalità, fonte o ricerca libera.',
