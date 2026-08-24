@@ -18,16 +18,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Ispeziona markup download MIM
-        run: python scripts/inspect_mim_download_markup.py
-      - name: Audit MIM edilizia scolastica 2024/25
-        run: python scripts/probe_scuola_mim_fixed.py
-      - name: Pubblica report probe
-        uses: actions/upload-artifact@v4
-        with:
-          name: scuola-mim-probe
-          path: |
-            school_probe_report.json
-            school_probe_report.md
-          if-no-files-found: error
-          retention-days: 7
+      - name: Scopri endpoint SPARQL MIM
+        run: python scripts/discover_mim_sparql.py
