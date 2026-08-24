@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Probe official Welfare / first-infancy sources for the seven Versilia municipalities.
 
-This is intentionally diagnostic: it downloads the official Istat 2022 municipal
-workbook and Regione Toscana 2024/25 first-infancy CSV, then records structure,
-headers and matching municipal rows so the canonical materializer can be built
-without guessing column semantics.
+Diagnostic only. The municipal Welfare gate uses the current Istat "A misura di
+Comune" workbooks (10a/10b); the 2022 release workbook is retained as a
+methodological cross-check because its published tables are mainly aggregate.
+Regione Toscana 2024/25 is checked municipality by municipality.
 """
 from __future__ import annotations
 
@@ -23,7 +23,11 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts" / "welfare-probe"
 OUT.mkdir(parents=True, exist_ok=True)
 
-ISTAT_URL = "https://www.istat.it/wp-content/uploads/2025/09/Tavole_2022_spesa_comuni-1.xlsx"
+ISTAT_MUNICIPAL = {
+    "10a": "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
+    "10b": "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx",
+}
+ISTAT_2022_RELEASE = "https://www.istat.it/wp-content/uploads/2025/09/Tavole_2022_spesa_comuni-1.xlsx"
 TOSCANA_URL = "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv"
 TOWNS = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
 KEYWORDS = [
@@ -42,22 +46,18 @@ def norm(value: object) -> str:
 
 def fetch(url: str, target: Path) -> None:
     req = urllib.request.Request(url, headers={"User-Agent": "OsservatorioVersilia/1.0"})
-    ctx = ssl.create_default_context()
-    with urllib.request.urlopen(req, timeout=180, context=ctx) as response:
+    with urllib.request.urlopen(req, timeout=180, context=ssl.create_default_context()) as response:
         target.write_bytes(response.read())
 
 
 def compact_row(values: list[object]) -> list[object]:
-    last = -1
-    for i, value in enumerate(values):
-        if value not in (None, ""):
-            last = i
+    last = max((i for i, value in enumerate(values) if value not in (None, "")), default=-1)
     return values[: last + 1] if last >= 0 else []
 
 
-def probe_istat(path: Path) -> dict:
+def probe_workbook(path: Path, url: str) -> dict:
     wb = load_workbook(path, read_only=True, data_only=True)
-    result = {"url": ISTAT_URL, "sheets": [], "townCoverage": {town: [] for town in TOWNS}}
+    result = {"url": url, "sheets": [], "townCoverage": {town: [] for town in TOWNS}}
     towns_norm = {norm(t): t for t in TOWNS}
     for ws in wb.worksheets:
         sheet = {"title": ws.title, "maxRow": ws.max_row, "maxColumn": ws.max_column, "keywordRows": [], "townRows": []}
@@ -66,8 +66,8 @@ def probe_istat(path: Path) -> dict:
             if not values:
                 continue
             joined = " | ".join(norm(v) for v in values if v not in (None, ""))
-            if len(sheet["keywordRows"]) < 30 and any(k in joined for k in KEYWORDS):
-                sheet["keywordRows"].append({"row": r_idx, "values": values[:40]})
+            if len(sheet["keywordRows"]) < 40 and any(k in joined for k in KEYWORDS):
+                sheet["keywordRows"].append({"row": r_idx, "values": values[:80]})
             matched = []
             for cell in values:
                 n = norm(cell)
@@ -75,7 +75,7 @@ def probe_istat(path: Path) -> dict:
                     if town_n and (n == town_n or town_n in n):
                         matched.append(town)
             if matched:
-                item = {"row": r_idx, "towns": sorted(set(matched)), "values": values[:60]}
+                item = {"row": r_idx, "towns": sorted(set(matched)), "values": values[:100]}
                 sheet["townRows"].append(item)
                 for town in set(matched):
                     result["townCoverage"][town].append({"sheet": ws.title, "row": r_idx})
@@ -94,8 +94,7 @@ def decode_csv(raw: bytes) -> tuple[str, str]:
 
 def probe_toscana(path: Path) -> dict:
     text, encoding = decode_csv(path.read_bytes())
-    sample = text[:12000]
-    dialect = csv.Sniffer().sniff(sample, delimiters=";,\t|")
+    dialect = csv.Sniffer().sniff(text[:12000], delimiters=";,\t|")
     rows = list(csv.reader(io.StringIO(text), dialect))
     header = rows[0] if rows else []
     matches = []
@@ -108,50 +107,67 @@ def probe_toscana(path: Path) -> dict:
             matches.append({"row": idx, "towns": sorted(set(found)), "values": row})
             for town in set(found):
                 coverage[town] += 1
-    return {
-        "url": TOSCANA_URL,
-        "encoding": encoding,
-        "delimiter": dialect.delimiter,
-        "header": header,
-        "rowCount": max(0, len(rows) - 1),
-        "townRows": matches,
-        "townCoverage": coverage,
-    }
+    return {"url": TOSCANA_URL, "encoding": encoding, "delimiter": dialect.delimiter, "header": header,
+            "rowCount": max(0, len(rows) - 1), "townRows": matches, "townCoverage": coverage}
+
+
+def report_workbook(lines: list[str], title: str, probe: dict) -> None:
+    lines += ["", f"## {title}"]
+    for sheet in probe["sheets"]:
+        if sheet["townRows"] or sheet["keywordRows"]:
+            lines += [f"### {sheet['title']}", f"- dimensione: {sheet['maxRow']} × {sheet['maxColumn']}",
+                      f"- righe Versilia trovate: {len(sheet['townRows'])}"]
+            for item in sheet["keywordRows"][:12]:
+                lines.append(f"- header/keyword riga {item['row']}: `{item['values']}`")
+            for item in sheet["townRows"][:30]:
+                lines.append(f"- riga {item['row']} · {', '.join(item['towns'])}: `{item['values']}`")
+    lines.append("### Copertura")
+    for town, hits in probe["townCoverage"].items():
+        lines.append(f"- {town}: {len(hits)} occorrenze")
 
 
 def main() -> None:
-    istat_path = OUT / "istat-2022-comuni.xlsx"
-    toscana_path = OUT / "toscana-prima-infanzia-2024-25.csv"
-    fetch(ISTAT_URL, istat_path)
-    fetch(TOSCANA_URL, toscana_path)
+    municipal = {}
+    for key, url in ISTAT_MUNICIPAL.items():
+        path = OUT / f"istat-{key}.xlsx"
+        fetch(url, path)
+        municipal[key] = probe_workbook(path, url)
 
-    result = {"istat": probe_istat(istat_path), "toscana": probe_toscana(toscana_path)}
+    release_path = OUT / "istat-2022-release.xlsx"
+    fetch(ISTAT_2022_RELEASE, release_path)
+    release = probe_workbook(release_path, ISTAT_2022_RELEASE)
+
+    toscana_path = OUT / "toscana-prima-infanzia-2024-25.csv"
+    fetch(TOSCANA_URL, toscana_path)
+    toscana = probe_toscana(toscana_path)
+
+    result = {"istatMunicipal": municipal, "istat2022Release": release, "toscana": toscana}
     (OUT / "probe.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
 
-    lines = ["# Welfare / prima infanzia · probe fonti", "", "## Istat 2022 · Tavole spesa Comuni"]
-    for sheet in result["istat"]["sheets"]:
-        lines += [f"### {sheet['title']}", f"- dimensione: {sheet['maxRow']} × {sheet['maxColumn']}", f"- righe Versilia trovate: {len(sheet['townRows'])}"]
-        for item in sheet["townRows"][:20]:
-            lines.append(f"- riga {item['row']} · {', '.join(item['towns'])}: `{item['values']}`")
-    lines += ["", "### Copertura Istat"]
-    for town, hits in result["istat"]["townCoverage"].items():
-        lines.append(f"- {town}: {len(hits)} occorrenze")
+    lines = ["# Welfare / prima infanzia · probe fonti"]
+    report_workbook(lines, "Istat A misura di Comune · 10a tipologia utenza", municipal["10a"])
+    report_workbook(lines, "Istat A misura di Comune · 10b spesa per abitante", municipal["10b"])
+    lines += ["", "## Istat release 2022 · controllo metodologico",
+              "Il file della release 2022 viene ispezionato ma non è usato come gate comunale: le tavole pubblicate sono prevalentemente aggregate."]
+    report_workbook(lines, "Istat release 2022 · tavole", release)
 
-    t = result["toscana"]
+    t = toscana
     lines += ["", "## Regione Toscana · Prima infanzia 2024/25", f"- intestazioni: `{t['header']}`", f"- righe: {t['rowCount']}", "### Righe Versilia"]
     for item in t["townRows"]:
         lines.append(f"- riga {item['row']} · {', '.join(item['towns'])}: `{item['values']}`")
-    lines += ["", "### Copertura Toscana"]
+    lines.append("### Copertura Toscana")
     for town, count in t["townCoverage"].items():
         lines.append(f"- {town}: {count} righe")
-
     (OUT / "probe.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    missing_istat = [town for town, hits in result["istat"]["townCoverage"].items() if not hits]
-    missing_toscana = [town for town, count in result["toscana"]["townCoverage"].items() if count == 0]
-    print(f"Istat sheets: {len(result['istat']['sheets'])}; missing towns: {missing_istat}")
-    print(f"Toscana rows: {t['rowCount']}; missing towns: {missing_toscana}")
-    if missing_istat or missing_toscana:
+    missing = {}
+    for key in ("10a", "10b"):
+        missing[key] = [town for town, hits in municipal[key]["townCoverage"].items() if not hits]
+    missing["toscana"] = [town for town, count in toscana["townCoverage"].items() if count == 0]
+    print(f"Istat 10a missing: {missing['10a']}")
+    print(f"Istat 10b missing: {missing['10b']}")
+    print(f"Toscana missing: {missing['toscana']}")
+    if any(missing.values()):
         raise SystemExit(2)
 
 
