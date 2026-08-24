@@ -50,15 +50,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet; then
-            echo "Nessuna modifica da registrare"
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/site-data.json data/source-registry.json data/source-monitor-state.json \
             README.md assets/app-parts/05.txt scripts/finalize_catalog_release.py \
             scripts/test_catalog_release_v116.py scripts/build_static_safe.py scripts/build_static_brand.py \
-            service-worker.js .github/workflows/pages.yml
+            service-worker.js
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica canonica da registrare"
+            exit 0
+          fi
           git commit -m "Scuola MIM: materializza lotto e release v1.17.0"
           git push origin HEAD:agent/scuola-mim-lotto
