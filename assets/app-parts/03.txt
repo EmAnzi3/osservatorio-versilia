@@ -7,6 +7,7 @@
       <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
         <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
       <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
+      <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
       <section id="compare-benchmark" class="page-width"></section>
       ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
       ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
@@ -264,10 +265,68 @@
     return metric.aggregate;
   }
 
+  function demographicAgeOptionsMarkup(metric, selectedKey) {
+    const options = metric.meta.ageOptions || [];
+    const groups = [];
+    options.forEach(option => {
+      const group = option.group || 'Fasce';
+      if (!groups.includes(group)) groups.push(group);
+    });
+    return groups.map(group => `<optgroup label="${html(group)}">${options.filter(option => (option.group || 'Fasce') === group).map(option => `<option value="${html(option.key)}" ${option.key === selectedKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</optgroup>`).join('');
+  }
+
+  function demographicRateTooltipMarkup({boxX,boxY,guideX,guideY,label,part}) {
+    const boxWidth = 228, boxHeight = 58;
+    const targetY = boxY < guideY ? boxY + boxHeight : boxY;
+    const value = part?.value;
+    const numerator = Number(part?.numerator) || 0;
+    const denominator = Number(part?.denominator) || 0;
+    return `<g class="chart-tooltip" hidden><line class="chart-guide" x1="${guideX}" y1="${guideY}" x2="${guideX}" y2="${targetY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+15}">${html(label)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+34}">${html(formatValue(value,'percent'))}</text><text class="chart-tooltip-meta" x="${boxX+12}" y="${boxY+50}">${html(number0.format(numerator))} / ${html(number0.format(denominator))}</text></g>`;
+  }
+
+  function demographicRatePyramidMarkup(metric, row) {
+    const cells = new Map((row.parts || []).map(part => [part.key, part]));
+    const ageMap = new Map((metric.meta.ageOptions || []).map(age => [age.key, age]));
+    const keys = metric.meta.pyramidAgeKeys || [];
+    const bands = keys.map(key => ageMap.get(key)).filter(Boolean).reverse();
+    if (!bands.length) return '';
+    const maxValue = 100;
+    const center = 430, gap = 48, maxWidth = 300, rowHeight = 42, top = 78, bottom = 58;
+    const height = top + bands.length * rowHeight + bottom;
+    const tickXs = [center-gap-maxWidth, center-gap-maxWidth/2, center, center+gap+maxWidth/2, center+gap+maxWidth];
+    const tickValues = [100, 50, 0, 50, 100];
+    const axis = tickXs.map((x,index)=>`<g class="age-pyramid-axis"><line x1="${x}" y1="${top-18}" x2="${x}" y2="${height-bottom+10}"/><text x="${x}" y="${height-22}" text-anchor="middle">${tickValues[index]}%</text></g>`).join('');
+    const rows = bands.map((age,index) => {
+      const y = top + index * rowHeight;
+      const men = cells.get(`${age.key}|men`) || {};
+      const women = cells.get(`${age.key}|women`) || {};
+      const menValue = Math.max(0, Math.min(100, Number(men.value) || 0));
+      const womenValue = Math.max(0, Math.min(100, Number(women.value) || 0));
+      const menWidth = menValue / maxValue * maxWidth;
+      const womenWidth = womenValue / maxValue * maxWidth;
+      const tooltipY = y < 112 ? y + 22 : y - 64;
+      const menBoxX = Math.max(8, center-gap-menWidth-238);
+      const womenBoxX = Math.min(624, center+gap+womenWidth+10);
+      const menLabel = `${age.label} · Uomini`;
+      const womenLabel = `${age.label} · Donne`;
+      const menAria = `${menLabel}: ${formatValue(men.value,'percent')}; ${number0.format(Number(men.numerator)||0)} su ${number0.format(Number(men.denominator)||0)}`;
+      const womenAria = `${womenLabel}: ${formatValue(women.value,'percent')}; ${number0.format(Number(women.numerator)||0)} su ${number0.format(Number(women.denominator)||0)}`;
+      return `<g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="${html(menAria)}"><rect x="${center-gap-menWidth}" y="${y}" width="${menWidth}" height="22" rx="4" class="age-pyramid-men"></rect>${demographicRateTooltipMarkup({boxX:menBoxX,boxY:tooltipY,guideX:center-gap-menWidth,guideY:y+11,label:menLabel,part:men})}</g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="${html(womenAria)}"><rect x="${center+gap}" y="${y}" width="${womenWidth}" height="22" rx="4" class="age-pyramid-women"></rect>${demographicRateTooltipMarkup({boxX:womenBoxX,boxY:tooltipY,guideX:center+gap+womenWidth,guideY:y+11,label:womenLabel,part:women})}</g><text x="${center}" y="${y+16}" text-anchor="middle">${html(age.label)}</text></g>`;
+    }).join('');
+    return `<div class="demographic-rate-pyramid" data-lavoro-istruzione-pyramid="1"><div class="demographic-rate-pyramid-head"><div><span class="overline">${row.town === 'Versilia' ? 'Totale Versilia · Età e sesso' : 'Età e sesso'}</span><h4>${row.town === 'Versilia' ? 'Piramide dei tassi · Versilia' : 'Piramide dei tassi'}</h4></div><small>2024 · scala 0–100%</small></div><div class="trend-chart age-pyramid-trend"><svg class="age-pyramid-chart demographic-rate-pyramid-chart" viewBox="0 0 860 ${height}" role="img" aria-label="${html(metric.meta.label)} per età e sesso a ${html(row.town)}"><text x="215" y="32" text-anchor="middle" class="age-pyramid-title">Uomini</text><text x="645" y="32" text-anchor="middle" class="age-pyramid-title">Donne</text><text x="430" y="54" text-anchor="middle" class="age-pyramid-unit">Percentuale nella fascia e nel sesso</text>${axis}<line x1="${center-gap}" y1="${top-24}" x2="${center-gap}" y2="${height-bottom+10}" class="age-pyramid-center"/><line x1="${center+gap}" y1="${top-24}" x2="${center+gap}" y2="${height-bottom+10}" class="age-pyramid-center"/>${rows}<text x="430" y="${height-4}" text-anchor="middle" class="age-pyramid-unit">percentuale</text></svg></div><p class="aggregate-note demographic-rate-pyramid-note">${row.town === 'Versilia' ? 'Il totale Versilia è calcolato sommando numeratori e denominatori dei sette Comuni, non mediando le percentuali. ' : ''}La piramide usa solo fasce non sovrapposte. Le letture aggregate 25–64 e complessiva restano disponibili nei selettori e nel dettaglio.</p></div>`;
+  }
+
+  function demographicRateTableMarkup(metric, row) {
+    const ages = metric.meta.ageOptions || [];
+    const genders = metric.meta.genderOptions || [];
+    const cells = new Map((row.parts || []).map(part => [part.key,part]));
+    return `<details class="detail-disclosure demographic-rate-detail"><summary><span>Valori e basi di calcolo</span><small>6 fasce · Totale, Uomini, Donne</small></summary><div class="demographic-rate-table-wrap"><table class="demographic-rate-table"><thead><tr><th>Età</th>${genders.map(g=>`<th>${html(g.label)}</th>`).join('')}</tr></thead><tbody>${ages.map(age=>`<tr class="${age.group === 'Aggregati' ? 'aggregate-age-row' : ''}"><th><span>${html(age.label)}</span><small>${html(age.group || '')}</small></th>${genders.map(g=>{const part=cells.get(`${age.key}|${g.key}`)||{};return `<td><strong>${html(formatValue(part.value,'percent'))}</strong><small>${html(number0.format(Number(part.numerator)||0))} / ${html(number0.format(Number(part.denominator)||0))}</small></td>`;}).join('')}</tr>`).join('')}</tbody></table></div><p class="demographic-rate-table-note">Il rapporto sotto ogni percentuale mostra numeratore e denominatore utilizzati. 25–64 è ricostruita sommando 25–49 e 50–64 sui conteggi prima del calcolo del tasso.</p></details>`;
+  }
+
   function compositeCompareControls(metric, choice, scale = 'value') {
     if (metric.meta.compositeType === 'demographicBreakdown') {
       const [ageKey,genderKey] = String(choice || '').split('|');
-      return `<div class="compare-view-controls demographic-view-controls"><label class="compare-choice-select"><span>Fascia d’età</span><select data-demographic-age>${(metric.meta.ageOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === ageKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label><label class="compare-choice-select"><span>Genere</span><select data-demographic-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === genderKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>`;
+      return `<div class="compare-view-controls demographic-view-controls"><label class="compare-choice-select"><span>Fascia d’età</span><select data-demographic-age>${demographicAgeOptionsMarkup(metric,ageKey)}</select></label><label class="compare-choice-select"><span>Genere</span><select data-demographic-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === genderKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>`;
     }
     if (metric.meta.compositeType === 'stock') {
       return `<div class="compare-view-controls"><div><span class="compare-view-label">Lettura</span><div class="scale-switch compact" role="group" aria-label="Lettura residenti stranieri"><button type="button" data-composite-choice="share" class="${choice === 'share' ? 'active' : ''}">Quota %</button><button type="button" data-composite-choice="count" class="${choice === 'count' ? 'active' : ''}">Valore assoluto</button></div></div></div>`;
@@ -352,12 +411,10 @@
   function compositeTownMarkup(metric, row) {
     const parts = row.parts || [];
     if (metric.meta.compositeType === 'demographicBreakdown') {
-      const ages = metric.meta.ageOptions || [];
-      const genders = metric.meta.genderOptions || [];
-      const cells = new Map(parts.map(part => [part.key,part]));
-      const table = `<div class="demographic-matrix-wrap"><table class="demographic-matrix"><thead><tr><th>Età</th>${genders.map(g=>`<th>${html(g.label)}</th>`).join('')}</tr></thead><tbody>${ages.map(age=>`<tr><th>${html(age.label)}</th>${genders.map(g=>{const part=cells.get(`${age.key}|${g.key}`)||{};return `<td><strong>${html(formatValue(part.value,'percent'))}</strong><small>${html(number0.format(part.numerator || 0))} / ${html(number0.format(part.denominator || 0))}</small></td>`;}).join('')}</tr>`).join('')}</tbody></table><p class="demographic-matrix-note">Il rapporto sotto ogni percentuale mostra numeratore e denominatore usati nel calcolo. 25–64 è ricostruita sui conteggi Istat 25–49 e 50–64 prima del calcolo del tasso.</p></div>`;
+      const pyramid = demographicRatePyramidMarkup(metric,row);
+      const detail = demographicRateTableMarkup(metric,row);
       const history = row.series?.values?.length ? `<details class="detail-disclosure demographic-history"><summary><span>Storico della lettura base</span><small>${html(metric.meta.defaultAge === '25-64' ? '25–64 anni · Totale' : 'lettura base')}</small></summary><div>${seriesChart(row.series,metric.meta.unit,`${metric.meta.label} · lettura base`)}</div></details>` : '';
-      return table + history;
+      return pyramid + detail + history;
     }
     if (metric.meta.compositeType === 'stock') {
       return `<div class="composite-town-mobility composite-town-stock"><article class="balance"><span>Quota dei residenti</span><strong>${html(formatValue(row.value,'percent'))}</strong><small>${html(metric.meta.year)}</small></article><article><span>Residenti di cittadinanza straniera</span><strong>${html(formatValue(row.count,'number'))}</strong><small>persone · ${html(metric.meta.year)}</small></article></div>${foreignOriginsMarkup(metric,row,'town')}`;
@@ -527,6 +584,7 @@
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
     const tools = document.getElementById('compare-tools');
+    const demographicPyramid = document.getElementById('compare-demographic-pyramid');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
     const selectableComposite = ['stock','mobility','omi','securityMeasures','demographicBreakdown'].includes(compositeType);
@@ -583,6 +641,46 @@
     } else {
       bars.onclick = null;
       bars.onchange = null;
+    }
+
+    if (demographicPyramid) {
+      demographicPyramid.innerHTML = compositeType === 'demographicBreakdown'
+        ? demographicRatePyramidMarkup(metric,{town:'Versilia',parts:metric.aggregate?.parts || []})
+        : '';
+
+      if (compositeType === 'demographicBreakdown') {
+        const points = [...demographicPyramid.querySelectorAll('.age-pyramid-point')];
+        const hideAll = except => points.forEach(point => {
+          if (point === except) return;
+          point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
+        });
+        points.forEach(point => {
+          const tooltip = point.querySelector('.chart-tooltip');
+          if (!tooltip) return;
+          const show = () => {
+            hideAll(point);
+            tooltip.removeAttribute('hidden');
+          };
+          const hide = () => tooltip.setAttribute('hidden','');
+          point.addEventListener('pointerenter', show);
+          point.addEventListener('pointerleave', hide);
+          point.addEventListener('focus', show);
+          point.addEventListener('blur', hide);
+          point.addEventListener('click', event => {
+            event.preventDefault();
+            show();
+          });
+          point.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              show();
+            } else if (event.key === 'Escape') {
+              hide();
+              point.blur();
+            }
+          });
+        });
+      }
     }
 
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || metric.meta.compositeType) ? '' : benchmarkMarkup(metric,aggregate,unit,null);
@@ -715,7 +813,7 @@
     const summaryDelta = selectable ? compositeDeltaText(summary.value,aggregateSummary.value,summary.unit) : null;
     const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
     const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
-    const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${(metric.meta.ageOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultAge || '25-64') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
+    const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${demographicAgeOptionsMarkup(metric,metric.meta.defaultAge || '25-64')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
     const primaryLabel = selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = selectable ? summary.formatted : formatValue(row.value, metric.meta.unit);
     const positionMarkup = selectable

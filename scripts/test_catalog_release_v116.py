@@ -70,6 +70,14 @@ def main() -> None:
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
     assert "2026.08.24-v1.16.0" in app and "138 indicatori complessivi" in app
     assert "2026.08.20-v1.15.0" in app and "2026.08.20-v1.14.0" in app
+    chart_app = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
+    for token in (
+        "function demographicAgeOptionsMarkup(",
+        'data-lavoro-istruzione-pyramid="1"',
+        'id="compare-demographic-pyramid"',
+        "function demographicRateTooltipMarkup(",
+    ):
+        assert token in chart_app, f"UI età×genere non canonicalizzata: {token}"
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "**v1.16.0** — 24 agosto 2026" in readme
     assert "138 indicatori" in readme and "134 con valori incorporati" in readme
@@ -82,7 +90,7 @@ def main() -> None:
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "
-        f"{EXPECTED_METRICS} indicatori tutti assegnati a un tema."
+        f"{EXPECTED_METRICS} indicatori tutti assegnati a un tema e UI età×genere canonica."
     )
 
 

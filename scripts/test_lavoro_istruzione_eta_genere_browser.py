@@ -127,7 +127,10 @@ def run(base):
                 town(page, base, theme, key)
             page.goto(f"{base}confronta/lavoro/?indicatore=employmentRate", wait_until="networkidle")
             body = page.locator("body").inner_text()
-            req("Occupazione femminile" not in body and "Occupazione maschile" not in body, "Indicatori duplicati di genere ancora nella navigazione")
+            req(
+                "Occupazione femminile" in body and "Occupazione maschile" in body,
+                "Serie storiche 15–64 per genere assenti dalla navigazione",
+            )
             ctx.close()
         browser.close()
     print("Lavoro/Istruzione età×genere browser: ordine fasce, lollipop coerenti, piramidi+tooltip e spaziature OK desktop/laptop/mobile.")
