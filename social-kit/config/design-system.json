@@ -1,9 +1,15 @@
 {
-  "version": "social-v1.0",
-  "principle": "La struttura non cambia tra temi e settimane; cambiano soltanto dati, testi e colore di accento.",
+  "version": "social-v2.2",
+  "principle": "Un unico carosello, una griglia fissa e quattro passaggi logici. Cambiano dati, testi e colori del tema; non cambiano logo, fondo, margini e gerarchie.",
+  "format": {
+    "name": "feed",
+    "width": 1080,
+    "height": 1350,
+    "platforms": ["facebook", "instagram", "linkedin", "x"]
+  },
   "immutable": {
     "background": "#F4EEE2",
-    "surface": "#FFFAF1",
+    "surface": "#FFF9F2",
     "ink": "#102F45",
     "muted": "#526B7A",
     "line": "#C9D5D5",
@@ -12,30 +18,37 @@
     "page_x": 72,
     "page_width": 936,
     "alignment": "left",
-    "templates": ["data", "context"]
+    "slides": ["current", "history", "change", "questions"],
+    "outputs": ["png", "svg"],
+    "forbidden_outputs": ["pdf", "story"]
   },
-  "formats": {
-    "feed": {
-      "width": 1080,
-      "height": 1350,
-      "rule_y": 150,
-      "theme_y": 205,
-      "title_y": 250,
-      "description_y": 405,
-      "content": {"x": 72, "y": 500, "width": 936, "height": 440},
-      "question": {"x": 72, "y": 980, "width": 936, "height": 170},
-      "footer_y": 1215
-    },
-    "story": {
-      "width": 1080,
-      "height": 1920,
-      "rule_y": 170,
-      "theme_y": 240,
-      "title_y": 290,
-      "description_y": 465,
-      "content": {"x": 72, "y": 570, "width": 936, "height": 700},
-      "question": {"x": 72, "y": 1440, "width": 936, "height": 210},
-      "footer_y": 1780
-    }
+  "layout": {
+    "header_rule_y": 150,
+    "theme_y": 205,
+    "title_y": 272,
+    "subtitle_y": 350,
+    "panel": {"x": 72, "y": 420, "width": 936, "height": 680},
+    "footer_y": 1215,
+    "question_boxes": [
+      {"x": 108, "y": 548, "width": 864, "height": 150},
+      {"x": 108, "y": 724, "width": 864, "height": 150}
+    ],
+    "cta": {"x": 108, "y": 906, "width": 864, "height": 158}
+  },
+  "type": {
+    "family": "Geist",
+    "question_start": 27,
+    "question_min": 20,
+    "question_max_lines": 2,
+    "minimum_body": 16
+  },
+  "rules": {
+    "town_order": "alphabetical",
+    "current_bars_start_at_zero": true,
+    "change_axis_shows_zero": true,
+    "history_scale_declared": true,
+    "direction_is_position_not_colour": true,
+    "same_graphics_for_all_platforms": true,
+    "text_must_never_overflow": true
   }
 }
