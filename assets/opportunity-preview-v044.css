@@ -1,0 +1,32 @@
+.op-card.is-new {
+  border-color: rgba(15, 54, 84, .34);
+  box-shadow: 0 14px 34px rgba(15, 54, 84, .10);
+}
+
+.op-new-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 .7rem .45rem;
+  padding: .32rem .64rem;
+  border: 1px solid rgba(181, 92, 24, .28);
+  border-radius: 999px;
+  background: rgba(181, 92, 24, .12);
+  color: #7a3d12;
+  font-size: .72rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.op-card-heading > .op-lifecycle + .op-new-badge,
+.op-card-heading > .op-new-badge + .op-lifecycle {
+  vertical-align: middle;
+}
+
+@media (max-width: 620px) {
+  .op-new-badge {
+    margin-left: .35rem;
+  }
+}
