@@ -31,9 +31,9 @@ def main() -> None:
     training_snapshot = json.loads(TRAINING_SNAPSHOT.read_text(encoding="utf-8"))
     online_snapshot = json.loads(ONLINE_SNAPSHOT.read_text(encoding="utf-8"))
 
-    assert len(site["metrics"]) == 138, f"Attesi 138 indicatori, trovati {len(site['metrics'])}"
-    assert registry["expectedMetricCount"] == 138
-    assert registry["expectedInlineMetricCount"] == 134
+    assert len(site["metrics"]) == 143, f"Attesi 143 indicatori, trovati {len(site['metrics'])}"
+    assert registry["expectedMetricCount"] == 143
+    assert registry["expectedInlineMetricCount"] == 139
     assert registry["expectedExternalMetricCount"] == 4
 
     theme = site["themes"]["bilanci"]
@@ -129,7 +129,7 @@ def main() -> None:
     assert "media aritmetica" in online["aggregate"]["note"].lower()
     assert registry["metricOverrides"]["municipalOnlineServicesAdvanced"]["profile"] == "regione-toscana-indicatori-comunali"
 
-    print("Amministrazione verificata: 138 indicatori, 5 letture amministrative 7/7, servizi online ind18 2022 con storico reale 2018→2022.")
+    print("Amministrazione verificata: 143 indicatori, 5 letture amministrative 7/7, servizi online ind18 2022 con storico reale 2018→2022.")
 
 
 if __name__ == "__main__":
