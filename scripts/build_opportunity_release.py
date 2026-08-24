@@ -137,13 +137,19 @@ def _clean_public_markup(text: str, reference: str) -> str:
             text = text.replace("</head>", _social_metadata() + "\n</head>", 1)
 
     text = text.replace("Radar opportunità · Anteprima v0.4.3", "Radar opportunità", 1)
-    text = re.sub(
-        r'<p>Bandi e linee di finanziamento con un <strong>ruolo operativo documentato</strong>.*?</p>',
-        '<p>Bandi, avvisi, incentivi e programmi con un <strong>ruolo operativo documentato</strong> per almeno un Comune della Versilia. Ogni scheda rimanda alla fonte ufficiale per requisiti e dettagli.</p>',
+    public_intro = (
+        '<p>Bandi, avvisi, incentivi e programmi con un <strong>ruolo operativo documentato</strong> '
+        'per almeno un Comune della Versilia. Ogni scheda rimanda alla fonte ufficiale per requisiti e dettagli.</p>'
+    )
+    text, hero_replacements = re.subn(
+        r'(<section class="editorial-hero page-width op-preview-hero">.*?<h1>.*?</h1>)\s*<p>.*?</p>',
+        rf'\1\n      {public_intro}',
         text,
         count=1,
         flags=re.DOTALL,
     )
+    if hero_replacements != 1:
+        raise RuntimeError("Testo introduttivo Radar pubblico non individuato")
     text = re.sub(r'\s*<div class="op-preview-banner">.*?</div>', "", text, count=1, flags=re.DOTALL)
     text = text.replace("Radar / UI v0.4.3", PUBLIC_VERSION, 1)
     text = text.replace(
