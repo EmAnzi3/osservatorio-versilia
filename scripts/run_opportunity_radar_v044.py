@@ -223,9 +223,16 @@ def build_coverage_audit(result: dict[str, Any], resolved: set[str], today: date
 
 def _ensure_first_seen(result: dict[str, Any], today: date) -> None:
     for item in result.get("opportunities") or []:
-        first, is_new = _new_state(item.get("first_seen_at") or item.get("verified_at") or today.isoformat(), today)
-        item["first_seen_at"] = first
-        item["is_new"] = bool(item.get("is_new", is_new)) and is_new
+        # Il motore non deve dichiarare "nuova" una scheda storica solo perché
+        # viene ricostruita oggi. Le nuove scoperte generiche sono assegnate
+        # confrontando lo snapshot precedente nella routine giornaliera.
+        raw_first = item.get("first_seen_at")
+        if raw_first:
+            first, is_new = _new_state(raw_first, today)
+            item["first_seen_at"] = first
+            item["is_new"] = is_new
+        else:
+            item["is_new"] = False
     result["newOpportunityWindowDays"] = NEW_WINDOW_DAYS
     result.setdefault("counts", {})["new"] = sum(bool(x.get("is_new")) for x in result.get("opportunities") or [])
 
