@@ -4,6 +4,7 @@ import json
 import math
 from pathlib import Path
 
+# Trigger branch materialization after the workflow definition is present.
 ROOT = Path(__file__).resolve().parents[1]
 KEYS = [
     'schoolBuildingSafetyDocs',
