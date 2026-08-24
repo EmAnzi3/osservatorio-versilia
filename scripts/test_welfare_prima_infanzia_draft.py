@@ -35,16 +35,24 @@ spending = SITE["metrics"][KEYS[0]]
 assert spending["meta"]["year"] == "2022"
 assert spending["meta"]["unit"] == "eurPerResident"
 massarosa_spend = next(r for r in spending["rows"] if r["town"] == "Massarosa")
-assert abs(massarosa_spend["value"] - 97.68949478749) < 1e-9
+assert massarosa_spend["value"] == 97.69
+assert massarosa_spend["formatted"] == "97,69 €/ab"
 assert massarosa_spend["series"]["years"] == list(range(2014, 2023))
 assert len(massarosa_spend["series"]["values"]) == 9
+for row in spending["rows"]:
+    assert row["value"] == round(row["value"], 2), row["town"]
+    assert row["benchmarkValue"] == row["value"], row["town"]
+    assert all(value == round(value, 2) for value in row["series"]["values"]), row["town"]
+assert spending["aggregate"]["value"] == round(spending["aggregate"]["value"], 2)
 
 composition = SITE["metrics"][KEYS[1]]
 assert composition["meta"]["compositeType"] == "distribution"
 for row in composition["rows"]:
     assert len(row["parts"]) == 7
     assert abs(sum(part["value"] for part in row["parts"]) - 100.0) < 0.05, row["town"]
+    assert row["summaryValue"] == round(row["summaryValue"], 2), row["town"]
 assert abs(sum(part["value"] for part in composition["aggregate"]["parts"]) - 100.0) < 1e-8
+assert composition["aggregate"]["summaryValue"] == round(composition["aggregate"]["summaryValue"], 2)
 
 first = SITE["metrics"][KEYS[2]]
 assert first["meta"]["year"] == "2024/25"
@@ -64,4 +72,4 @@ assert set(SNAP["towns"]) == TOWNS
 assert SNAP["status"] == "draft-verified-7of7"
 assert "socialServiceProfessionalUsers" not in SITE["metrics"], "La presa in carico non deve entrare nel lotto base senza verifica dedicata"
 
-print("OK Welfare + prima infanzia draft: 3 indicatori, copertura 7/7, 146 totali.")
+print("OK Welfare + prima infanzia draft: 3 indicatori, copertura 7/7, 146 totali, spesa sociale arrotondata a 2 decimali.")
