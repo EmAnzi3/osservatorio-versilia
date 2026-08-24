@@ -7,12 +7,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
-SNAP = json.loads((ROOT / "data" / "source-snapshots" / "welfare-prima-infanzia-draft-2026-08.json").read_text(encoding="utf-8"))
+SNAP = json.loads((ROOT / "data" / "source-snapshots" / "welfare-prima-infanzia-2026-08.json").read_text(encoding="utf-8"))
 
 KEYS = ["socialSpendingPerResident", "socialSpendingByUserArea", "earlyChildhoodPotentialCapacityRate"]
 TOWNS = {"Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"}
 
-assert SITE["version"] == "1.18.0-draft"
+assert SITE["version"] == "v1.18.0"
 assert len(SITE["metrics"]) == 146, len(SITE["metrics"])
 for key in KEYS:
     assert key in SITE["metrics"], key
@@ -69,7 +69,7 @@ for row in first["rows"]:
 assert abs(first["aggregate"]["value"] - 1031 / 2217 * 100) < 1e-9
 
 assert set(SNAP["towns"]) == TOWNS
-assert SNAP["status"] == "draft-verified-7of7"
+assert SNAP["status"] == "release-verified-7of7"
 assert "socialServiceProfessionalUsers" not in SITE["metrics"], "La presa in carico non deve entrare nel lotto base senza verifica dedicata"
 
 print("OK Welfare + prima infanzia draft: 3 indicatori, copertura 7/7, 146 totali, spesa sociale arrotondata a 2 decimali.")

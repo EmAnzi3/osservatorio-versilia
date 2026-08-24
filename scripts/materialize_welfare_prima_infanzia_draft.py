@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
-SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "welfare-prima-infanzia-draft-2026-08.json"
+SNAPSHOT_PATH = ROOT / "data" / "source-snapshots" / "welfare-prima-infanzia-2026-08.json"
 
 SPENDING_KEY = "socialSpendingPerResident"
 COMPOSITION_KEY = "socialSpendingByUserArea"
