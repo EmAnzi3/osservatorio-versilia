@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "0.4.4",
+  "sourceOverrides": {
+    "pcm-sport": {
+      "urls": [
+        "https://avvisibandi.sport.governo.it/",
+        "https://www.sport.governo.it/it/bandi-e-avvisi/",
+        "https://www.sport.governo.it/it/bandi-e-avvisi/realizzazione-di-eventi-sportivi-di-rilevanza-nazionale-ed-internazionale/",
+        "https://www.sport.governo.it/it/bandi-e-avvisi/realizzazione-di-eventi-sportivi-di-rilevanza-nazionale-ed-internazionale/avviso-2026/"
+      ],
+      "includeTerms": [
+        "avviso", "bando", "contribut", "finanzi", "sport e periferie",
+        "eventi sportivi", "rilevanza nazionale", "rilevanza internazionale",
+        "impianti sportivi", "oratori"
+      ],
+      "municipalTerms": ["comun", "enti locali", "enti pubblici", "territorio", "impianti"]
+    },
+    "cinea-life": {
+      "urls": [
+        "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+        "https://cinea.ec.europa.eu/programmes/life/clean-energy-transition_en",
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/supporting-delivery-actionable-integrated-and-comprehensive-local-heating-and-cooling-plans_en",
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/project-development-assistance-sustainable-energy-investments-1_en",
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/facilitating-cooperation-among-energy-communities_en",
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/scaling-smart-and-clean-energy-solutions-affordability-eu-cities_en",
+        "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/alleviating-household-energy-poverty-europe-1_en"
+      ],
+      "includeTerms": [
+        "LIFE-2026", "call for proposals", "open", "deadline", "local",
+        "cities", "energy communities", "sustainable energy investments",
+        "heating and cooling plans", "energy poverty"
+      ],
+      "municipalTerms": [
+        "local authorities", "public authorities", "cities", "municipal",
+        "regional", "public legal entity", "energy communities"
+      ]
+    }
+  },
+  "coverageRegistry": {
+    "pcm-sport": {
+      "label": "PCM · Dipartimento per lo Sport",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 115,
+      "family": "sport-social-infrastructure",
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "favicon": "",
+      "note": "Presidio esteso all'intero portale bandi del Dipartimento, compresi eventi sportivi nazionali/internazionali e misure infrastrutturali."
+    },
+    "cinea-life": {
+      "label": "CINEA · LIFE",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 115,
+      "family": "energy-climate-environment",
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "favicon": "",
+      "note": "Presidio LIFE/CINEA topic-by-topic: una call entra nell'output soltanto con ruolo comunale documentabile e fonte primaria ufficiale."
+    }
+  }
+}
