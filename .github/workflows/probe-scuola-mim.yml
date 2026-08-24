@@ -20,6 +20,8 @@ jobs:
           python-version: "3.12"
       - name: Audit MIM edilizia scolastica 2024/25
         run: python scripts/probe_scuola_mim_fixed.py
+      - name: Dettaglio edifici Massarosa
+        run: python scripts/check_massarosa_school_detail.py
       - name: Pubblica report probe
         uses: actions/upload-artifact@v4
         with:
@@ -27,5 +29,6 @@ jobs:
           path: |
             school_probe_report.json
             school_probe_report.md
+            massarosa_school_detail.json
           if-no-files-found: error
           retention-days: 7
