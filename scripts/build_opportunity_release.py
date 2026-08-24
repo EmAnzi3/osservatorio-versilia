@@ -6,11 +6,13 @@ import argparse
 import copy
 import json
 import re
+import shutil
 import tempfile
 from pathlib import Path
 
 import build_opportunity_preview_v04 as route_builder
 import build_opportunity_preview_v043 as radar_v043
+import build_opportunity_preview_v044 as ui_v044
 import materialize_opportunity_release_favicons as release_favicons
 from site_chrome import ensure_sitemap_entries
 
@@ -19,14 +21,14 @@ DEFAULT_DATA = ROOT / "data" / "opportunity-release.json"
 DEFAULT_DIST = ROOT / "dist"
 TARGET_ROUTE = "opportunita"
 PUBLIC_URL = "https://osservatorioversilia.it/opportunita/"
-PUBLIC_VERSION = "Radar v0.4.3"
+PUBLIC_VERSION = "Radar v0.4.4"
 PUBLIC_DESCRIPTION = (
     "Bandi, avvisi, incentivi e programmi utili ai Comuni della Versilia, "
     "con scadenze, requisiti e rimando alla fonte ufficiale."
 )
 FORBIDDEN_VISIBLE = (
     "Anteprima tecnica",
-    "Anteprima v0.4.3",
+    "Anteprima v0.4.4",
     "Collaudo",
     "non pubblicata",
     "revisione interna",
@@ -63,24 +65,37 @@ def _social_metadata() -> str:
   <script type="application/ld+json">{{"@context":"https://schema.org","@type":"CollectionPage","name":"Radar Opportunità","url":"{PUBLIC_URL}","description":"{PUBLIC_DESCRIPTION}","isPartOf":{{"@type":"WebSite","name":"Osservatorio Versilia","url":"https://osservatorioversilia.it/"}}}}</script>'''
 
 
-def _build_v043_from_local_assets(payload_path: Path, dist: Path) -> tuple[Path, dict]:
-    """Costruisce la UI v0.4.3 senza alcuna risoluzione favicon via rete."""
+def _build_v044_from_local_assets(payload_path: Path, dist: Path) -> tuple[Path, dict]:
+    """Costruisce la UI v0.4.4 senza alcuna risoluzione favicon via rete."""
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     rendered_payload = copy.deepcopy(payload)
     provenance = release_favicons.materialize(rendered_payload, dist)
     release_favicons.apply_to_payload(rendered_payload, provenance)
 
     route_builder.TARGET_ROUTE = TARGET_ROUTE
+    previous_card = route_builder.lifecycle_card
+    route_builder.lifecycle_card = ui_v044._card_with_new_badge
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=False) as handle:
         json.dump(rendered_payload, handle, ensure_ascii=False)
         temporary = Path(handle.name)
     try:
         target = route_builder.build(temporary, dist)
     finally:
+        route_builder.lifecycle_card = previous_card
         temporary.unlink(missing_ok=True)
 
+    assets = dist / "assets"
+    assets.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / "assets" / "opportunity-preview-v044.css", assets / "opportunity-preview-v044.css")
+
     text = target.read_text(encoding="utf-8")
-    text = text.replace("v0.4.2", "v0.4.3")
+    text = text.replace("v0.4.2", "v0.4.4")
+    if "opportunity-preview-v044.css" not in text:
+        text = text.replace(
+            "</head>",
+            '  <link rel="stylesheet" href="../assets/opportunity-preview-v044.css">\n</head>',
+            1,
+        )
     source_select = '<select data-op-source>' + radar_v043._source_options(rendered_payload) + '</select>'
     text, replacements = re.subn(
         r'<select data-op-source>.*?</select>',
@@ -90,16 +105,18 @@ def _build_v043_from_local_assets(payload_path: Path, dist: Path) -> tuple[Path,
         flags=re.S,
     )
     if replacements != 1:
-        raise RuntimeError("Filtro Fonte non trovato nella release v0.4.3")
+        raise RuntimeError("Filtro Fonte non trovato nella release v0.4.4")
     target.write_text(text, encoding="utf-8")
 
     check = target.read_text(encoding="utf-8")
-    if "Anteprima v0.4.3" not in check:
-        raise RuntimeError("Renderer v0.4.3 non materializzato")
+    if "Anteprima v0.4.4" not in check:
+        raise RuntimeError("Renderer v0.4.4 non materializzato")
     if "Tutte le fonti monitorate" not in check:
         raise RuntimeError("Filtro Fonti completo assente")
-    if "../assets/source-favicons/" not in check:
-        raise RuntimeError("Favicon locali non collegati alla release")
+    expected_new = sum(bool(x.get("is_new")) for x in rendered_payload.get("opportunities") or [])
+    actual_new = check.count('class="op-new-badge"')
+    if actual_new != expected_new:
+        raise RuntimeError(f"Badge Nuova incoerenti: HTML={actual_new} payload={expected_new}")
     return target, rendered_payload
 
 
@@ -136,7 +153,7 @@ def _clean_public_markup(text: str, reference: str) -> str:
         if 'property="og:title"' not in text:
             text = text.replace("</head>", _social_metadata() + "\n</head>", 1)
 
-    text = text.replace("Radar opportunità · Anteprima v0.4.3", "Radar opportunità", 1)
+    text = text.replace("Radar opportunità · Anteprima v0.4.4", "Radar opportunità", 1)
     public_intro = (
         '<p>Bandi, avvisi, incentivi e programmi con un <strong>ruolo operativo documentato</strong> '
         'per almeno un Comune della Versilia. Ogni scheda rimanda alla fonte ufficiale per requisiti e dettagli.</p>'
@@ -151,7 +168,7 @@ def _clean_public_markup(text: str, reference: str) -> str:
     if hero_replacements != 1:
         raise RuntimeError("Testo introduttivo Radar pubblico non individuato")
     text = re.sub(r'\s*<div class="op-preview-banner">.*?</div>', "", text, count=1, flags=re.DOTALL)
-    text = text.replace("Radar / UI v0.4.3", PUBLIC_VERSION, 1)
+    text = text.replace("Radar / UI v0.4.4", PUBLIC_VERSION, 1)
     text = text.replace(
         "Aperte, misure a sportello e procedure annunciate. La copertura è verificata anche con fonti di controllo che non alimentano il radar.",
         "Una sintesi delle opportunità disponibili e delle fonti pubbliche monitorate.",
@@ -196,7 +213,7 @@ def _clean_public_markup(text: str, reference: str) -> str:
 
 
 def build(payload_path: Path, dist: Path) -> Path:
-    target, payload = _build_v043_from_local_assets(payload_path, dist)
+    target, payload = _build_v044_from_local_assets(payload_path, dist)
     reference_iso = str(payload.get("referenceDate") or "")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", reference_iso):
         raise RuntimeError("referenceDate Radar assente o non valida")
@@ -224,10 +241,16 @@ def build(payload_path: Path, dist: Path) -> Path:
     total = len(payload.get("opportunities") or [])
     if final.count("data-opportunity-card") != total:
         raise RuntimeError(f"Card Radar incoerenti: HTML={final.count('data-opportunity-card')} payload={total}")
+    expected_new = sum(bool(x.get("is_new")) for x in payload.get("opportunities") or [])
+    if final.count('class="op-new-badge"') != expected_new:
+        raise RuntimeError("Conteggio badge Nuova incoerente nella release pubblica")
     sitemap = (dist / "sitemap.xml").read_text(encoding="utf-8")
     if sitemap.count(PUBLIC_URL) != 1:
         raise RuntimeError("/opportunita/ deve comparire una sola volta nella sitemap")
-    print(f"Radar pubblico materializzato: {total} opportunità · dati {reference} · {PUBLIC_VERSION}")
+    print(
+        f"Radar pubblico materializzato: {total} opportunità · {expected_new} nuove · "
+        f"dati {reference} · {PUBLIC_VERSION}"
+    )
     return target
 
 
