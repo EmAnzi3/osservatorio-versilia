@@ -1,0 +1,122 @@
+name: Welfare e prima infanzia · release gate
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/probe_welfare_sources.py"
+      - "scripts/materialize_welfare_prima_infanzia_draft.py"
+      - "scripts/promote_welfare_release.py"
+      - "scripts/test_welfare_prima_infanzia_draft.py"
+      - "scripts/test_welfare_release_browser.py"
+      - "data/source-snapshots/welfare-prima-infanzia-2026-08.json"
+      - ".github/workflows/welfare-draft.yml"
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m pip install openpyxl
+          python -m playwright install --with-deps chromium
+
+      - name: Probe official sources 7/7
+        run: python scripts/probe_welfare_sources.py
+
+      - name: Promote canonical release
+        if: github.event_name == 'pull_request'
+        run: python scripts/promote_welfare_release.py
+
+      - name: Validate Welfare release
+        run: |
+          python scripts/test_welfare_prima_infanzia_draft.py
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-snapshots/welfare-prima-infanzia-2026-08.json > /dev/null
+
+      - name: Build release site
+        run: python scripts/build_static_brand.py
+
+      - name: Smoke check generated pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -R -q "Comunità e welfare" dist
+          grep -R -q "Spesa per interventi e servizi sociali per abitante" dist
+          grep -R -q "Composizione della spesa sociale per area di utenza" dist
+          grep -R -q "Tasso di ricettività potenziale dei servizi educativi 0–3 anni" dist
+          if grep -R -q "NaN residenti" dist; then
+            echo "Trovato NaN residenti nel prerender" >&2
+            exit 1
+          fi
+
+      - name: Start local release server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-welfare-http.log 2>&1 &
+          echo $! > /tmp/ov-welfare-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-welfare-http.log
+          exit 1
+
+      - name: Validate municipal Welfare UI in browser
+        run: python scripts/test_welfare_release_browser.py --base http://127.0.0.1:8123/
+
+      - name: Commit canonical release to PR branch
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Release già canonica: nessuna modifica da committare."
+          else
+            git commit -m "Release Welfare e prima infanzia v1.18.0"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
+
+      - name: Upload source probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: welfare-source-probe
+          path: artifacts/welfare-probe/
+          retention-days: 14
+
+      - name: Upload release site
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: welfare-release-site
+          path: dist/
+          retention-days: 14

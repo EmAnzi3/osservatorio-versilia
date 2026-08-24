@@ -1,6 +1,6 @@
 {
-  "version": "v1.17.0",
-  "updated": "24 agosto 2026",
+  "version": "v1.18.0",
+  "updated": "25 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -228,7 +228,7 @@
       "number": "04",
       "label": "Istruzione",
       "question": "Qual è il livello di istruzione e come è organizzata la rete scolastica?",
-      "description": "Titoli di studio della popolazione, popolazione scolastica e caratteristiche degli edifici e dei servizi scolastici.",
+      "description": "Titoli di studio, popolazione scolastica, edifici e offerta educativa dalla prima infanzia alla scuola.",
       "metrics": [
         "diplomaPlus",
         "tertiary",
@@ -240,7 +240,8 @@
         "schoolBuildingAccessibility",
         "schoolBuildingFacilities",
         "schoolBuildingAge",
-        "schoolBuildingTransport"
+        "schoolBuildingTransport",
+        "earlyChildhoodPotentialCapacityRate"
       ],
       "sections": [
         {
@@ -280,6 +281,14 @@
             "schoolBuildingFacilities",
             "schoolBuildingAge",
             "schoolBuildingTransport"
+          ]
+        },
+        {
+          "key": "prima-infanzia",
+          "label": "Prima infanzia",
+          "description": "Offerta potenziale dei servizi educativi per bambini di 3–36 mesi nei sette Comuni.",
+          "metrics": [
+            "earlyChildhoodPotentialCapacityRate"
           ]
         }
       ],
@@ -702,14 +711,16 @@
     "comunita": {
       "key": "comunita",
       "number": "11",
-      "label": "Investimenti e comunità",
+      "label": "Comunità e welfare",
       "question": "Quali progetti e reti sostengono il territorio?",
-      "description": "Opere pubbliche, PNRR e presenza del Terzo settore.",
+      "description": "Investimenti pubblici, Terzo settore, welfare e servizi sociali per leggere risorse e reti della comunità.",
       "metrics": [
         "publicWorks",
         "pnrrFunding",
         "pnrrConcluded",
-        "thirdSector"
+        "thirdSector",
+        "socialSpendingPerResident",
+        "socialSpendingByUserArea"
       ],
       "sections": [
         {
@@ -728,6 +739,15 @@
           "description": "Presenza del Terzo settore.",
           "metrics": [
             "thirdSector"
+          ]
+        },
+        {
+          "key": "welfare-servizi-sociali",
+          "label": "Welfare e servizi sociali",
+          "description": "Quanto spendono i Comuni per il welfare e come la spesa si distribuisce tra le principali aree di utenza.",
+          "metrics": [
+            "socialSpendingPerResident",
+            "socialSpendingByUserArea"
           ]
         }
       ],
@@ -43839,6 +43859,880 @@
         "caveat": "La presenza dichiarata di un collegamento non equivale a qualità o adeguatezza del servizio e non sostituisce un'analisi GTFS di frequenze e fermate.",
         "coverage": "7/7 Comuni · 109 edifici",
         "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
+      }
+    },
+    "socialSpendingPerResident": {
+      "meta": {
+        "key": "socialSpendingPerResident",
+        "theme": "comunita",
+        "label": "Spesa per interventi e servizi sociali per abitante",
+        "shortLabel": "Spesa sociale per abitante",
+        "description": "Spesa corrente dei Comuni e delle associazioni di Comuni per servizi e interventi socio-assistenziali, al netto della compartecipazione degli utenti e del Servizio sanitario nazionale, rapportata alla popolazione residente media.",
+        "unit": "eurPerResident",
+        "year": "2022",
+        "source": "Istat — A misura di Comune",
+        "polarity": "neutral",
+        "searchTerms": [
+          "spesa sociale",
+          "welfare",
+          "servizi sociali",
+          "spesa per abitante",
+          "assistenza sociale"
+        ]
+      },
+      "sourceUrl": "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 97.69,
+          "formatted": "97,69 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              113.57,
+              94.16,
+              117.69,
+              105.12,
+              111.55,
+              109.76,
+              92.34,
+              107.03,
+              97.69
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 97.69
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 180.39,
+          "formatted": "180,39 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              123.66,
+              118.95,
+              118.82,
+              101.52,
+              105.06,
+              134.16,
+              134.88,
+              162.99,
+              180.39
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 180.39
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 135.76,
+          "formatted": "135,76 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              148.42,
+              152.68,
+              167.73,
+              142.79,
+              139.83,
+              131.0,
+              150.58,
+              151.93,
+              135.76
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 135.76
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 132.29,
+          "formatted": "132,29 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              156.8,
+              156.84,
+              160.42,
+              146.06,
+              146.11,
+              138.23,
+              142.04,
+              134.81,
+              132.29
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 132.29
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 132.23,
+          "formatted": "132,23 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              93.19,
+              91.49,
+              102.09,
+              94.28,
+              85.49,
+              109.03,
+              117.45,
+              146.7,
+              132.23
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 132.23
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 278.55,
+          "formatted": "278,55 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              238.56,
+              227.5,
+              243.34,
+              242.47,
+              237.76,
+              213.88,
+              226.0,
+              226.25,
+              278.55
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 278.55
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 84.7,
+          "formatted": "84,70 €/ab",
+          "series": {
+            "years": [
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              104.58,
+              102.61,
+              122.67,
+              107.5,
+              107.96,
+              120.15,
+              113.59,
+              85.46,
+              84.7
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 84.7
+        }
+      ],
+      "aggregate": {
+        "value": 148.8,
+        "label": "Versilia · media comunale",
+        "note": "Media aritmetica dei sette valori comunali 2022. Non è presentata come spesa territoriale consolidata, perché la fonte pubblica espone qui indicatori comunali già rapportati alla rispettiva popolazione residente media."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Indicatore ufficiale Istat a livello comunale",
+        "formula": "Spesa dei comuni / Popolazione residente media (euro)",
+        "caveat": "La serie 2014–2022 usa il perimetro storico comparabile Istat e include i servizi educativi per la prima infanzia. Non viene concatenata con la successiva lettura 'al netto dei servizi educativi per la prima infanzia'. Un valore più alto descrive maggiore spesa per abitante ma non misura da solo qualità, efficacia o bisogno sociale.",
+        "coverage": "7/7 Comuni · serie 2014–2022"
+      }
+    },
+    "socialSpendingByUserArea": {
+      "meta": {
+        "key": "socialSpendingByUserArea",
+        "theme": "comunita",
+        "label": "Composizione della spesa sociale per area di utenza",
+        "shortLabel": "Spesa sociale per area",
+        "description": "Quota della spesa sociale comunale destinata alle sette aree di utenza pubblicate da Istat. Le quote sono selezionabili separatamente e, per ciascun Comune, sommano al 100%.",
+        "unit": "percent",
+        "year": "2022",
+        "source": "Istat — A misura di Comune",
+        "polarity": "neutral",
+        "compositeType": "distribution",
+        "selectorLabel": "Area di utenza",
+        "summaryLabel": "Spesa sociale per abitante",
+        "summaryUnit": "eurPerResident",
+        "searchTerms": [
+          "welfare",
+          "famiglie minori",
+          "disabilità",
+          "anziani",
+          "povertà",
+          "immigrazione",
+          "spesa sociale per area"
+        ]
+      },
+      "sourceUrl": "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 29.0223559206672,
+          "formatted": "29,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 29.0223559206672,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 29.0223559206672,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 50.1473148174642,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 14.5271501607305,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 0.929858820759076,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 2.76626314774778,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 2.60705713263118,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 97.69
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 45.6709656576869,
+          "formatted": "45,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 45.6709656576869,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 45.6709656576869,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 11.5978285883979,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 9.80539474106536,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 5.26104411462913,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 9.75950460842587,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 17.9052622897949,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 180.39
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 44.6439137863446,
+          "formatted": "44,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44.6439137863446,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 44.6439137863446,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 21.9935752113551,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 15.9528731721388,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 9.62606509663533,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 7.78357273352614,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 135.76
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 44.9802566666207,
+          "formatted": "45,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44.9802566666207,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 44.9802566666207,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 19.6792423187686,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.678444960240535,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 21.5928370516009,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 8.12710802071686,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 1.60556323552709,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 3.33654774652544,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 132.29
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 23.214352052316,
+          "formatted": "23,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 23.214352052316,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 23.214352052316,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 33.1380254722376,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 20.5606742414692,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 10.8592875982858,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 12.2276606356915,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 132.23
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 50.5824662743041,
+          "formatted": "50,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 50.5824662743041,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 50.5824662743041,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 24.9366523123594,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0363619363250549,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 17.1547304281878,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 2.36352586112857,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 1.91248201382793,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 3.0137811738672,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 278.55
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 26.3352480930876,
+          "formatted": "26,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 26.3352480930876,
+          "parts": [
+            {
+              "label": "Famiglia e minori",
+              "selectorLabel": "Famiglie e minori",
+              "value": 26.3352480930876,
+              "unit": "percent"
+            },
+            {
+              "label": "Disabili",
+              "selectorLabel": "Disabilità",
+              "value": 53.0295648186437,
+              "unit": "percent"
+            },
+            {
+              "label": "Dipendenze",
+              "selectorLabel": "Dipendenze",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Anziani (65 anni e più)",
+              "selectorLabel": "Anziani",
+              "value": 12.1190781312054,
+              "unit": "percent"
+            },
+            {
+              "label": "Immigrati, Rom, Sinti e Caminanti",
+              "selectorLabel": "Immigrazione",
+              "value": 0.0,
+              "unit": "percent"
+            },
+            {
+              "label": "Povertà, disagio adulti e senza dimora",
+              "selectorLabel": "Povertà e disagio",
+              "value": 5.77989952629144,
+              "unit": "percent"
+            },
+            {
+              "label": "Multiutenza",
+              "selectorLabel": "Multiutenza",
+              "value": 2.73620943077181,
+              "unit": "percent"
+            }
+          ],
+          "summaryValue": 84.7
+        }
+      ],
+      "aggregate": {
+        "value": 37.77850835014673,
+        "label": "Versilia · media comunale per area",
+        "note": "Per il riepilogo Versilia viene mostrata la media aritmetica delle sette quote comunali: è un confronto sintetico tra Comuni, non una ricostruzione della spesa consolidata dell'intero territorio.",
+        "parts": [
+          {
+            "label": "Famiglia e minori",
+            "selectorLabel": "Famiglie e minori",
+            "value": 37.77850835014673,
+            "unit": "percent"
+          },
+          {
+            "label": "Disabili",
+            "selectorLabel": "Disabilità",
+            "value": 30.646029077032356,
+            "unit": "percent"
+          },
+          {
+            "label": "Dipendenze",
+            "selectorLabel": "Dipendenze",
+            "value": 0.10211527093794141,
+            "unit": "percent"
+          },
+          {
+            "label": "Anziani (65 anni e più)",
+            "selectorLabel": "Anziani",
+            "value": 15.958962560913994,
+            "unit": "percent"
+          },
+          {
+            "label": "Immigrati, Rom, Sinti e Caminanti",
+            "selectorLabel": "Immigrazione",
+            "value": 2.3830766881762337,
+            "unit": "percent"
+          },
+          {
+            "label": "Povertà, disagio adulti e senza dimora",
+            "selectorLabel": "Povertà e disagio",
+            "value": 6.044152175248748,
+            "unit": "percent"
+          },
+          {
+            "label": "Multiutenza",
+            "selectorLabel": "Multiutenza",
+            "value": 7.087155877544025,
+            "unit": "percent"
+          }
+        ],
+        "summaryValue": 148.8,
+        "summaryLabel": "Media comunale della spesa per abitante",
+        "summaryNote": "Media aritmetica dei sette valori comunali 2022."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Indicatore ufficiale Istat a livello comunale",
+        "formula": "Spesa dei comuni per tipologia di utenza / Spesa totale dei comuni x 100",
+        "caveat": "Le percentuali descrivono la destinazione della spesa, non il livello di bisogno né la qualità dei servizi. La categoria 'Dipendenze' può risultare pari a zero in alcuni Comuni senza implicare assenza del bisogno o dei servizi sanitari dedicati.",
+        "coverage": "7/7 Comuni · anno 2022"
+      }
+    },
+    "earlyChildhoodPotentialCapacityRate": {
+      "meta": {
+        "key": "earlyChildhoodPotentialCapacityRate",
+        "theme": "istruzione",
+        "label": "Tasso di ricettività potenziale dei servizi educativi 0–3 anni",
+        "shortLabel": "Ricettività potenziale 0–3",
+        "description": "Posti potenzialmente disponibili nei nidi e nei servizi integrativi del Comune ogni 100 bambini residenti di 3–36 mesi.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "Regione Toscana — Servizi educativi per la prima infanzia",
+        "polarity": "positive",
+        "searchTerms": [
+          "asili nido",
+          "nidi",
+          "prima infanzia",
+          "0 3 anni",
+          "posti nido",
+          "ricettività",
+          "servizi educativi"
+        ]
+      },
+      "sourceUrl": "https://dati.toscana.it/dataset/serviziprimainfanzia",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 29.292929292929294,
+          "formatted": "29,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 29.292929292929294,
+          "potentialCapacity": 87,
+          "children3to36Months": 297,
+          "services": 3,
+          "lisbonIndicatorSource": 34.0
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 53.018660812294186,
+          "formatted": "53,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 53.018660812294186,
+          "potentialCapacity": 483,
+          "children3to36Months": 911,
+          "services": 14,
+          "lisbonIndicatorSource": 55.4
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 40.596330275229356,
+          "formatted": "40,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 40.596330275229356,
+          "potentialCapacity": 177,
+          "children3to36Months": 436,
+          "services": 5,
+          "lisbonIndicatorSource": 44.0
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 74.91525423728814,
+          "formatted": "74,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 74.91525423728814,
+          "potentialCapacity": 221,
+          "children3to36Months": 295,
+          "services": 6,
+          "lisbonIndicatorSource": 70.5
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 0.0,
+          "formatted": "0,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "potentialCapacity": 0,
+          "children3to36Months": 168,
+          "services": 0,
+          "lisbonIndicatorSource": 9.5
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 84.0,
+          "formatted": "84,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 84.0,
+          "potentialCapacity": 63,
+          "children3to36Months": 75,
+          "services": 2,
+          "lisbonIndicatorSource": 88.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 0.0,
+          "formatted": "0,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "potentialCapacity": 0,
+          "children3to36Months": 35,
+          "services": 0,
+          "lisbonIndicatorSource": 8.6
+        }
+      ],
+      "aggregate": {
+        "value": 46.504285069914296,
+        "label": "Versilia · ricettività potenziale",
+        "note": "1031 posti potenziali su 2217 bambini di 3–36 mesi nei sette Comuni. Aggregazione ottenuta sommando numeratori e denominatori comunali della stessa fonte."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali Regione Toscana",
+        "formula": "Totale Ricettività potenziale / Totale 3-36 mesi x 100",
+        "caveat": "Misura l'offerta potenziale localizzata nel Comune, non gli iscritti effettivi, la lista d'attesa, la qualità del servizio o la possibilità di frequentare strutture in altri Comuni. Non va confuso con l'Indicatore di Lisbona pubblicato nello stesso dataset: per questo motivo quest'ultimo non è usato nel calcolo.",
+        "coverage": "7/7 Comuni · anno educativo 2024/25"
       }
     }
   },
