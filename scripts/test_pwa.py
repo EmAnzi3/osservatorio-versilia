@@ -13,10 +13,11 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+from build_static_brand import PWA_ASSET_VERSION, PWA_JS_REVISION
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260824-pwa9"
+PWA_VERSION = PWA_ASSET_VERSION
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -107,7 +108,7 @@ def static_checks() -> None:
     ):
         text = page.read_text(encoding="utf-8")
         require(f"assets/pwa.css?v={PWA_VERSION}" in text, f"CSS PWA assente in {page}")
-        require(f"assets/pwa.js?v={PWA_VERSION}&rev=install-ui-off" in text,
+        require(f"assets/pwa.js?v={PWA_VERSION}&rev={PWA_JS_REVISION}" in text,
                 f"JS PWA non forzato alla versione senza UI in {page}")
         require(f"site.webmanifest?v={PWA_VERSION}" in text, f"Manifest non versionato in {page}")
         require("apple-mobile-web-app-capable" in text, f"Meta iOS assente in {page}")
