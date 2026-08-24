@@ -144,6 +144,7 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           cp /tmp/social-week.md /tmp/social-issue.md
+          sed -i 's/^- Produzione: .*/- Produzione: inclusa nel pacchetto Social Kit settimanale./' /tmp/social-issue.md
           cat >> /tmp/social-issue.md <<EOF
 
           ## Materiale della settimana
