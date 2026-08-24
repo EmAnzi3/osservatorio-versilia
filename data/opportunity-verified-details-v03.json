@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.3.2",
+  "entries": [
+    {
+      "rule_id": "mic-jazz-2027",
+      "source_id": "mic-spettacolo",
+      "title": "Bando per la promozione della musica Jazz 2027",
+      "url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande",
+      "required_terms": [
+        "autonomie territoriali",
+        "10 settembre 2026",
+        "16:00",
+        "35 mila euro"
+      ],
+      "deadline_at": "2026-09-10",
+      "deadline_time": "16:00",
+      "summary": "Contributi per progetti innovativi di promozione e valorizzazione della musica jazz, rivolti anche alle autonomie territoriali, con accordi di collaborazione già sottoscritti.",
+      "canonical": true
+    }
+  ]
+}

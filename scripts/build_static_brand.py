@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build di produzione con identità OV e PWA installabile."""
+"""Build di produzione con identità OV, PWA e Radar Opportunità pubblico."""
 from __future__ import annotations
 
 import os
@@ -7,8 +7,6 @@ import re
 import runpy
 import shutil
 from pathlib import Path
-
-from site_chrome import synchronize_native_page
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -204,7 +202,21 @@ def apply_brand_and_pwa() -> None:
 
 
 if __name__ == "__main__":
+    # Materializzazione prima del builder base: la shell e i contratti nascono
+    # direttamente nella configurazione pubblica finale.
+    runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_release_snapshot.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_public_shell.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "materialize_percorsi_touch_release.py"), run_name="__main__")
+
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
+
+    # Import dopo la materializzazione: il contratto di shell è quello pubblico.
+    from site_chrome import synchronize_native_page
+
     synchronize_native_page(DIST, DIST / "confronta" / "meteo-clima" / "index.html")
+
+    from build_opportunity_release import build as build_opportunity_release
+
+    build_opportunity_release(ROOT / "data" / "opportunity-release.json", DIST)
     apply_brand_and_pwa()
-    print("Build statica completata con identità OV e PWA installabile.")
+    print("Build statica completata con identità OV, PWA e Radar Opportunità pubblico.")
