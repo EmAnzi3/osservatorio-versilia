@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Scopri link download MIM
+        run: python scripts/discover_mim_downloads.py
       - name: Audit MIM edilizia scolastica 2024/25
         run: python scripts/probe_scuola_mim.py
       - name: Pubblica report probe
