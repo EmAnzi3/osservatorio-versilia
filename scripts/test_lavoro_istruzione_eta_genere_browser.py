@@ -126,11 +126,17 @@ def run(base):
                 compare(page, base, theme, key)
                 town(page, base, theme, key)
             page.goto(f"{base}confronta/lavoro/?indicatore=employmentRate", wait_until="networkidle")
-            body = page.locator("body").inner_text()
+            historical = page.locator('.metric-catalog .metric-group[data-section="genere"]')
+            req(historical.count() == 1, "Sezione delle serie storiche 15–64 assente")
+            female = historical.locator('[data-metric="femaleEmploymentRate"]')
+            male = historical.locator('[data-metric="maleEmploymentRate"]')
             req(
-                "Occupazione femminile" in body and "Occupazione maschile" in body,
+                female.count() == 1 and male.count() == 1,
                 "Serie storiche 15–64 per genere assenti dalla navigazione",
             )
+            if not female.is_visible():
+                historical.locator(":scope > .metric-group-heading").click()
+            req(female.is_visible() and male.is_visible(), "Serie storiche 15–64 non raggiungibili dalla fisarmonica")
             ctx.close()
         browser.close()
     print("Lavoro/Istruzione età×genere browser: ordine fasce, lollipop coerenti, piramidi+tooltip e spaziature OK desktop/laptop/mobile.")
