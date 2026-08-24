@@ -1,20 +1,59 @@
-name: Genera Social Kit
+name: Genera Social Kit settimanale
 
 on:
   workflow_dispatch:
+    inputs:
+      date:
+        description: "Una data della settimana da generare (YYYY-MM-DD); vuoto = settimana corrente"
+        required: false
+        type: string
+      create_issue:
+        description: "Aggiorna l'issue settimanale quando eseguito su main"
+        required: false
+        default: true
+        type: boolean
+  schedule:
+    # Sabato mattina prepara il pacchetto della settimana successiva.
+    # 06:30 UTC = 08:30 CEST / 07:30 CET.
+    - cron: "30 6 * * 6"
+  push:
+    branches: ["main"]
+    paths:
+      - "data/site-data.json"
+      - "social-kit/config/design-system.json"
+      - "social-kit/config/themes.json"
+      - "social-kit/config/question-bank.json"
+      - "social-kit/config/editorial-cadence.json"
+      - "social-kit/config/editorial-observances-2026-2027.json"
+      - "social-kit/config/editorial-rotation.json"
+      - "scripts/plan_social_week.py"
+      - "scripts/generate_social_kit.py"
+      - "scripts/generate_weekly_social_kit.py"
+      - "scripts/test_social_calendar.py"
+      - "scripts/test_weekly_social_kit.py"
+      - ".github/workflows/social-kit.yml"
   pull_request:
     paths:
       - "data/site-data.json"
-      - "social-kit/**"
+      - "social-kit/config/design-system.json"
+      - "social-kit/config/themes.json"
+      - "social-kit/config/question-bank.json"
+      - "social-kit/config/editorial-cadence.json"
+      - "social-kit/config/editorial-observances-2026-2027.json"
+      - "social-kit/config/editorial-rotation.json"
+      - "scripts/plan_social_week.py"
       - "scripts/generate_social_kit.py"
-      - "scripts/test_social_kit.py"
+      - "scripts/generate_weekly_social_kit.py"
+      - "scripts/test_social_calendar.py"
+      - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
-  group: social-kit-${{ github.ref }}
+  group: social-kit-weekly-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -32,15 +71,93 @@ jobs:
       - name: Install rendering dependencies
         run: python -m pip install -r social-kit/requirements.txt
 
-      - name: Generate graphics and copy
-        run: python scripts/generate_social_kit.py
+      - name: Determine target date
+        id: target
+        shell: bash
+        env:
+          REQUESTED_DATE: ${{ inputs.date }}
+        run: |
+          if [ -n "${REQUESTED_DATE:-}" ]; then
+            TARGET_DATE="$REQUESTED_DATE"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            TARGET_DATE="$(date -u -d '+2 days' +%F)"
+          else
+            TARGET_DATE="$(date -u +%F)"
+          fi
+          echo "date=$TARGET_DATE" >> "$GITHUB_OUTPUT"
 
-      - name: Run editorial and provenance checks
-        run: python scripts/test_social_kit.py
+      - name: Build executable weekly plan
+        id: planner
+        run: |
+          python scripts/plan_social_week.py \
+            --date "${{ steps.target.outputs.date }}" \
+            --github-output "$GITHUB_OUTPUT"
+          cp "${{ steps.planner.outputs.json_path }}" /tmp/social-week.json
+          cp "${{ steps.planner.outputs.markdown_path }}" /tmp/social-week.md
 
-      - name: Upload review package
+      - name: Validate calendar and known collisions
+        run: python scripts/test_social_calendar.py
+
+      - name: Generate four-slide weekly package
+        run: python scripts/generate_weekly_social_kit.py --plan /tmp/social-week.json
+
+      - name: Run weekly Social Kit quality gate
+        run: python scripts/test_weekly_social_kit.py
+
+      - name: Package summary
+        id: package
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          data = json.load(open('social-kit/dist/manifest.json', encoding='utf-8'))
+          print(f"status={data['status']}")
+          print(f"posts={data['posts']}")
+          print(f"slides={data['slides']}")
+          print(f"manual={len(data.get('manual_required', []))}")
+          PY
+
+      - name: Add package to workflow summary
+        run: cat social-kit/dist/README.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload weekly Social Kit
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-social-kit
+          name: social-kit-${{ steps.planner.outputs.week_start }}
           path: social-kit/dist
-          retention-days: 30
+          retention-days: 45
+
+      - name: Create or update weekly issue with material link
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.create_issue)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ steps.planner.outputs.issue_title }}
+          WEEK_START: ${{ steps.planner.outputs.week_start }}
+          PACKAGE_STATUS: ${{ steps.package.outputs.status }}
+          POSTS: ${{ steps.package.outputs.posts }}
+          SLIDES: ${{ steps.package.outputs.slides }}
+          MANUAL: ${{ steps.package.outputs.manual }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          cp /tmp/social-week.md /tmp/social-issue.md
+          cat >> /tmp/social-issue.md <<EOF
+
+          ## Materiale della settimana
+
+          **Pacchetto:** \`social-kit-${WEEK_START}\`  
+          **Stato:** ${PACKAGE_STATUS} · ${POSTS} caroselli · ${SLIDES} PNG · ${MANUAL} interventi manuali.
+
+          [Apri l'esecuzione e scarica il pacchetto dalla sezione **Artifacts**](${RUN_URL})
+
+          Dentro lo ZIP, per ciascuna uscita trovi le quattro immagini 1080×1350, i copy per Facebook/Instagram/LinkedIn/X, ALT e provenienza. Il pacchetto resta disponibile per 45 giorni.
+          EOF
+
+          export TITLE
+          ISSUES_JSON="$(gh issue list --state open --limit 100 --json number,title)"
+          NUMBER="$(printf '%s' "$ISSUES_JSON" | python -c 'import json, os, sys; items=json.load(sys.stdin); title=os.environ["TITLE"]; print(next((str(x["number"]) for x in items if x["title"] == title), ""))')"
+          if [ -n "$NUMBER" ]; then
+            gh issue edit "$NUMBER" --title "$TITLE" --body-file /tmp/social-issue.md
+          else
+            gh issue create --title "$TITLE" --body-file /tmp/social-issue.md
+          fi
