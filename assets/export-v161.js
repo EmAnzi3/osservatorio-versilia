@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260806-3';
+  const VERSION = '20260824-v116';
   let dataPromise = null;
 
   function loadData() {

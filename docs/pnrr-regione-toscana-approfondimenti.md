@@ -61,7 +61,7 @@ Questa è una lettura migliore di un semplice “realizzate / non realizzate”:
 
 ### 1. Un approfondimento “Dentro il PNRR”, non nuovi indicatori
 
-Per mantenere il catalogo a **127 indicatori**, i dati di dettaglio possono diventare un modulo collegato a `pnrrFunding` e `pnrrConcluded`:
+Per non aumentare il catalogo corrente di **138 indicatori**, i dati di dettaglio possono diventare un modulo collegato a `pnrrFunding` e `pnrrConcluded`:
 
 - numero assoluto dei progetti oltre alla percentuale;
 - ripartizione nelle macrofasi ReGiS;

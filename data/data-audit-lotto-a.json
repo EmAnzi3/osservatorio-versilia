@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baseMainSha": "07dcb687aad0f024f582a4730f9330a64dcdaada",
   "catalogMetricCountAtAuditStart": 127,
-  "status": "audit",
+  "status": "implementation_income_complete_draft",
   "uiContract": {
     "historyToolkit": "OVUXHistory",
     "historyMarkup": "historicalChartMarkup",
@@ -25,7 +25,11 @@
       "label": "Dinamica naturale della popolazione",
       "theme": "demografia",
       "kind": "composite_indicator",
-      "components": ["birthRate", "deathRate", "naturalBalanceRate"],
+      "components": [
+        "birthRate",
+        "deathRate",
+        "naturalBalanceRate"
+      ],
       "source": "Istat Demo - Bilancio demografico P02",
       "sourceUrl": "https://demo.istat.it/app/?i=P02&l=it",
       "sourceGranularity": "municipality",
@@ -35,7 +39,8 @@
       "historicalHomogeneousFrom": 2019,
       "auditStatus": "go_source",
       "unit": "per1000",
-      "ui": "canonical_composite_plus_OVUXHistory"
+      "ui": "canonical_composite_plus_OVUXHistory",
+      "implementationStatus": "draft_materialized"
     },
     {
       "key": "share80Plus",
@@ -51,14 +56,18 @@
       "historicalHomogeneousFrom": 2019,
       "auditStatus": "go_source",
       "unit": "percent",
-      "ui": "OVUXHistory"
+      "ui": "OVUXHistory",
+      "implementationStatus": "public_distribution_split_80_84_85_plus_2026"
     },
     {
       "key": "dependencyIndices",
       "label": "Indici di dipendenza",
       "theme": "demografia",
       "kind": "composite_indicator",
-      "components": ["structuralDependencyIndex", "oldAgeDependencyIndex"],
+      "components": [
+        "structuralDependencyIndex",
+        "oldAgeDependencyIndex"
+      ],
       "source": "Istat Demo - Popolazione residente per età e sesso",
       "sourceUrl": "https://demo.istat.it/app/?i=POS&l=it",
       "sourceGranularity": "municipality_age_sex",
@@ -67,8 +76,10 @@
       "latestStatus": "estimate_aligned_with_2025_provisional_balance",
       "historicalHomogeneousFrom": 2019,
       "auditStatus": "go_source",
-      "unit": "index",
-      "ui": "canonical_composite_plus_OVUXHistory"
+      "unit": "per100",
+      "ui": "canonical_composite_plus_OVUXHistory",
+      "implementationStatus": "draft_materialized",
+      "unitExplanation": "persone nelle fasce considerate ogni 100 persone di 15–64 anni; non percentuale della popolazione totale"
     },
     {
       "key": "taxpayersAdultPopulationRate",
@@ -79,7 +90,10 @@
       "coverageExpected": 7,
       "latestReference": 2024,
       "auditStatus": "verify",
-      "blocker": "denominator_definition"
+      "blocker": "denominator_definition",
+      "implementationStatus": "draft_materialized",
+      "denominatorDefinition": "residenti di 18 anni e più al 1° gennaio 2026 (Istat POSAS)",
+      "formula": "Numero contribuenti MEF / popolazione residente 18+ × 100"
     },
     {
       "key": "pensionIncomeShare",
@@ -92,7 +106,8 @@
       "latestReference": 2024,
       "auditStatus": "go_source",
       "unit": "percent",
-      "ui": "OVUXHistory_if_historical_series_available"
+      "ui": "OVUXHistory_if_historical_series_available",
+      "implementationStatus": "draft_materialized"
     },
     {
       "key": "municipalEmployeesPer1000",
@@ -231,7 +246,10 @@
       "latestReference": 2020,
       "coverageExpected": 7,
       "auditStatus": "go_source",
-      "unitCandidates": ["hectares", "percent"]
+      "unitCandidates": [
+        "hectares",
+        "percent"
+      ]
     },
     {
       "key": "bathingWaterQuality",
@@ -241,7 +259,11 @@
       "kind": "indicator",
       "source": "ARPAT",
       "coverageApplicable": 4,
-      "notApplicableTowns": ["Massarosa", "Seravezza", "Stazzema"],
+      "notApplicableTowns": [
+        "Massarosa",
+        "Seravezza",
+        "Stazzema"
+      ],
       "latestClassificationReference": 2024,
       "auditStatus": "go_source",
       "unit": "percent"
@@ -254,7 +276,11 @@
       "kind": "indicator",
       "source": "ARPAT",
       "coverageApplicable": 4,
-      "notApplicableTowns": ["Massarosa", "Seravezza", "Stazzema"],
+      "notApplicableTowns": [
+        "Massarosa",
+        "Seravezza",
+        "Stazzema"
+      ],
       "latestReference": 2025,
       "auditStatus": "go_source"
     },
@@ -277,7 +303,8 @@
       "coverageExpected": 7,
       "latestReference": 2026,
       "historicalHomogeneousFrom": 2019,
-      "auditStatus": "go_source"
+      "auditStatus": "go_source",
+      "implementationStatus": "public_pyramid_2026_towns_and_versilia"
     },
     {
       "key": "citizenshipBirthCountryDetail",
@@ -288,7 +315,9 @@
       "coverageExpected": 7,
       "latestReference": 2025,
       "historicalHomogeneousFrom": 2002,
-      "auditStatus": "go_source"
+      "auditStatus": "go_source",
+      "implementationStatus": "public_town_and_versilia_detail_2025",
+      "snapshot": "data/source-snapshots/istat-rcs-demography-2025.json"
     },
     {
       "key": "incomeSourceAndBandsDetail",
@@ -298,7 +327,21 @@
       "source": "MEF - Statistiche dichiarazioni",
       "coverageExpected": 7,
       "latestReference": 2024,
-      "auditStatus": "go_source"
+      "auditStatus": "go_source",
+      "implementationStatus": "visible_composite_and_8_band_detail",
+      "visibleOutputs": [
+        "incomeSourceProfile",
+        "incomeDistribution.detailParts"
+      ],
+      "snapshot": "data/source-snapshots/mef-income-lotto-a-2024.json"
     }
-  ]
+  ],
+  "catalogMetricCountCurrentDraft": 132,
+  "demographyV2": {
+    "ageDistribution2026": "materialized_8_non_overlapping_bands",
+    "share80PlusAnd85Plus": "public_distribution_80_84_85_plus",
+    "populationAgeSexPyramid": "public_town_and_versilia_native_tooltip",
+    "populationChangeComponents": "not_added_duplicate_existing_metrics",
+    "foreignCitizenshipBirthCountry": "public_compare_and_town_detail_2025"
+  }
 }

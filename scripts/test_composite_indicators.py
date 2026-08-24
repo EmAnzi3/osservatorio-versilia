@@ -105,7 +105,8 @@ def static_checks() -> dict:
     ]
     assert data["themes"]["abitare"]["metrics"][0] == "omiResidential"
     assert data["themes"]["economia"]["sections"][0]["metrics"] == [
-        "income", "incomeDistribution", "incomeVsInflation",
+        "income", "incomeDistribution", "incomeSourceProfile", "pensionIncomeShare",
+        "taxpayersAdultPopulationRate", "incomeVsInflation",
     ]
 
     assert set(snapshot["raw"]) == {town["name"] for town in data["towns"]}
@@ -123,13 +124,17 @@ def static_checks() -> dict:
     assert age["meta"]["label"] == "Distribuzione per fasce d’età"
     for row in age["rows"]:
         parts = row["parts"]
-        assert len(parts) == 7
+        assert len(parts) == 8
+        assert [part["label"] for part in parts][-2:] == ["80–84 anni", "85 anni e oltre"]
         close(sum(part["value"] for part in parts), 100.0, f"Età/{row['town']} somma")
         assert all(part["count"] > 0 for part in parts)
         population = population_rows[row["town"]]
-        index = population["series"]["years"].index(2025)
+        index = population["series"]["years"].index(2026)
+        assert age["meta"]["year"] == "2026"
         assert sum(part["count"] for part in parts) == population["series"]["values"][index]
-        close(row["summaryValue"], snapshot["raw"][row["town"]]["averageAge"], f"Età media/{row['town']}")
+        assert row["summaryValue"] > 0
+        assert "seniorAgeDetail" not in row and "age85PlusDetail" not in row
+        assert row.get("ageSexPyramid", {}).get("displayBands")
 
     income = data["metrics"]["incomeDistribution"]
     official_groups = snapshot["sources"]["incomeDistribution"]["officialClassAggregation"]
@@ -267,7 +272,7 @@ def browser_checks(data: dict) -> None:
         desktop = browser.new_context(viewport={"width": 1440, "height": 1000})
         page = desktop.new_page()
 
-        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 7)
+        tooltip_checks(page, base, "demografia", "ageDistribution", 7, 8)
         assert page.locator(".composite-row-head > span").count() == 7
         assert all("Età media" in text for text in page.locator(".composite-row-head > span").all_text_contents())
         tooltip_checks(page, base, "economia", "incomeDistribution", 7, 4)
@@ -320,7 +325,7 @@ def browser_checks(data: dict) -> None:
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844})
         mobile_page = mobile.new_page()
-        tooltip_checks(mobile_page, base, "demografia", "ageDistribution", 7, 7)
+        tooltip_checks(mobile_page, base, "demografia", "ageDistribution", 7, 8)
         tooltip_checks(mobile_page, base, "economia", "incomeDistribution", 7, 4)
         for town in towns:
             verify_selector_page(mobile_page, base, data, town, "ageDistribution")

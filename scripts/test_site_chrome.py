@@ -19,10 +19,10 @@ TEMPLATE = '''<!doctype html><html lang="it"><head>
 </head><body>
 <div id="site-header-mount"><a class="skip-link" href="#app">Vai al contenuto</a>
 <header class="site-header"><a href="../" class="site-brand">OV</a><div class="site-header-actions">
-<nav aria-label="Navigazione principale"><a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="header">Stato dati</a><a href="../segnala/">Segnala</a></nav>
+<nav aria-label="Navigazione principale"><a href="../#temi">Temi</a><a href="../#comuni">Comuni</a><a href="../opportunita/">Opportunità</a><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="header">Stato dati</a><a href="../segnala/">Segnala</a></nav>
 <button class="global-search-trigger" type="button"><span>Cerca</span><kbd>/</kbd></button></div></header></div>
 <div id="app"><main><h1>Progetto</h1></main></div>
-<div id="site-footer-mount"><footer class="site-footer"><nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../progetto/#metodo">Metodo</a><a href="../progetto/#licenza">Licenza</a><a href="../progetto/#versioni">Versioni dei dati</a><a href="../segnala/">Segnala un dato</a><a href="mailto:info@osservatorioversilia.it">Contatti</a></nav><div class="footer-social" data-social-placement="footer"><strong>Social</strong><div class="social-links"><a href="https://example.test/">Profilo</a></div></div><div class="footer-note"><span>Nota</span></div></footer></div>
+<div id="site-footer-mount"><footer class="site-footer"><nav class="footer-links" aria-label="Informazioni sul progetto"><a href="../progetto/">Il progetto</a><a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../opportunita/">Opportunità</a><a href="../progetto/#metodo">Metodo</a><a href="../progetto/#licenza">Licenza</a><a href="../progetto/#versioni">Versioni dei dati</a><a href="../segnala/">Segnala un dato</a><a href="mailto:info@osservatorioversilia.it">Contatti</a></nav><div class="footer-social" data-social-placement="footer"><strong>Social</strong><div class="social-links"><a href="https://example.test/">Profilo</a></div></div><div class="footer-note"><span>Nota</span></div></footer></div>
 <noscript>no js</noscript><script src="../assets/app-bundle.js"></script></body></html>'''
 
 

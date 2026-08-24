@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 127,
-  "expectedInlineMetricCount": 123,
+  "expectedMetricCount": 138,
+  "expectedInlineMetricCount": 134,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -313,6 +313,42 @@
       "acquisitionMethod": "Reddito imponibile medio comunale MEF deflazionato con NIC nazionale ISTAT, base 2016.",
       "licenseName": "Condizioni indicate dalle fonti ufficiali",
       "licenseUrl": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/"
+    },
+    "dait-fiscal-assessment-annual": {
+      "publisher": "Ministero dell’Interno — DAIT / Dipartimento delle Finanze — MEF",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo il consolidamento delle riscossioni dell’anno precedente",
+      "acquisitionMethod": "Prospetto ufficiale DAIT dei Comuni beneficiari del contributo per la partecipazione all’accertamento fiscale e contributivo.",
+      "licenseName": "Condizioni indicate dalla fonte ufficiale",
+      "licenseUrl": "https://dait.interno.gov.it/"
+    },
+    "regione-toscana-pnrr-monthly": {
+      "publisher": "Regione Toscana",
+      "frequency": "monthly",
+      "frequencyLabel": "Mensile",
+      "expectedRelease": "Aggiornamento di norma mensile",
+      "acquisitionMethod": "CSV ufficiale Regione Toscana; selezione area PNRR o PNRR-PNC, esclusione PNC puro, Comune come soggetto attuatore, deduplicazione su id_progetto e verifica delle fasi ReGiS.",
+      "licenseName": "Creative Commons Attribuzione",
+      "licenseUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr"
+    },
+    "rgs-conto-annuale-annual": {
+      "publisher": "Ragioneria Generale dello Stato — Conto Annuale",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la chiusura e pubblicazione del Conto Annuale",
+      "acquisitionMethod": "Download dei dataset analitici per ente da OpenBDAP/Conto Annuale e materializzazione da snapshot verificato 7/7.",
+      "licenseName": "Condizioni indicate dalla Ragioneria Generale dello Stato",
+      "licenseUrl": "https://www.rgs.mef.gov.it/"
+    },
+    "regione-toscana-indicatori-comunali": {
+      "publisher": "Regione Toscana — Ufficio regionale di Statistica / Istat",
+      "frequency": "annual",
+      "frequencyLabel": "Aggiornamento annuale della batteria regionale",
+      "expectedRelease": "La batteria regionale è aggiornata annualmente; ind18 cambia quando è disponibile una nuova rilevazione Istat ICT nelle PA locali.",
+      "acquisitionMethod": "CSV ufficiali Regione Toscana a livello comunale; valori ind18 verificati 7/7 e conservati in snapshot versionato.",
+      "licenseName": "Open data / condizioni Regione Toscana",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
     }
   },
   "sourceProfileByUrl": {
@@ -328,7 +364,7 @@
     "https://www.istat.it/comunicato-stampa/incidenti-stradali-in-italia-2024/": "istat-road-annual",
     "https://www.istat.it/comunicato-stampa/indicatori-del-parco-veicolare-anno-2024/": "aci-istat-annual",
     "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0": "regione-toscana-tourism-annual",
-    "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": "regione-toscana-indicators-annual",
+    "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": "regione-toscana-indicatori-comunali",
     "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php": "mef-irpef-annual",
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole": "mim-school-year",
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti": "mim-school-year",
@@ -354,7 +390,13 @@
     "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/": "mef-municipal-tax-annual",
     "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/": "mef-municipal-tax-annual",
     "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv": "mimit-fuel-daily",
-    "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/": "istat-nic-national-annual"
+    "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/": "istat-nic-national-annual",
+    "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall": "siope-monthly",
+    "https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf": "dait-fiscal-assessment-annual",
+    "https://dati.toscana.it/dataset/regione-toscana-pnrr": "regione-toscana-pnrr-monthly",
+    "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc": "rgs-conto-annuale-annual",
+    "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati": "rgs-conto-annuale-annual",
+    "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc": "rgs-conto-annuale-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -409,6 +451,33 @@
     },
     "incomeVsInflation": {
       "profile": "mef-istat-real-income-annual"
+    },
+    "pensionIncomeShare": {
+      "profile": "mef-irpef-annual"
+    },
+    "incomeSourceProfile": {
+      "profile": "mef-irpef-annual"
+    },
+    "taxpayersAdultPopulationRate": {
+      "profile": "mef-irpef-annual"
+    },
+    "fiscalRecoveryActivity": {
+      "profile": "siope-monthly"
+    },
+    "municipalEmployeesPer1000": {
+      "profile": "rgs-conto-annuale-annual"
+    },
+    "municipalStaffTurnover": {
+      "profile": "rgs-conto-annuale-annual"
+    },
+    "municipalStaffAgeStructure": {
+      "profile": "rgs-conto-annuale-annual"
+    },
+    "municipalStaffTraining": {
+      "profile": "rgs-conto-annuale-annual"
+    },
+    "municipalOnlineServicesAdvanced": {
+      "profile": "regione-toscana-indicatori-comunali"
     }
   },
   "requestTimeoutSeconds": 20,

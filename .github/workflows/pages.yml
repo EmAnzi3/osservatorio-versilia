@@ -31,84 +31,40 @@ jobs:
       - name: Install browser tooling
         run: |
           python -m pip install --upgrade pip
-          python -m pip install playwright pypdf
+          python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Materialize Economy v1.13 release
-        run: python scripts/apply_costi_fiscalita_release.py
-
-      - name: Validate Economy v1.13 data and semantics
-        run: python scripts/test_costi_fiscalita_redditi_draft.py
-
-      - name: Materialize Demography Lotto A draft
+      - name: Validate canonical catalog and snapshots
         run: |
-          python scripts/materialize_demography_lotto_a_v4.py
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_costi_fiscalita_redditi_draft.py
           python scripts/test_demography_lotto_a_materialized.py
-          python scripts/materialize_demography_lotto_a_v5.py
           python scripts/test_demography_lotto_a_v5.py
-          python scripts/materialize_demography_rcs_lotto_a.py
           python scripts/test_demography_rcs_lotto_a.py
+          python scripts/test_income_lotto_a_v2.py
+          python scripts/test_fiscal_lotto_b.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
+          python scripts/test_amministrazione_lotto_a.py
+          python scripts/test_lavoro_istruzione_eta_genere.py
+          node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-registry.json > /dev/null
           python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/istat-demography-lotto-a-2026-08.json > /dev/null
           python -m json.tool data/source-snapshots/istat-rcs-demography-2025.json > /dev/null
-
-      - name: Materialize complete Income Lotto A draft
-        run: |
-          python scripts/materialize_income_lotto_a_v2.py
-          python scripts/patch_income_lotto_a_frontend.py
-          python scripts/patch_demography_lotto_a_frontend_v2.py
-          python scripts/patch_income_lotto_a_regressions.py
-          python scripts/test_income_lotto_a_v2.py
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
-
-      - name: Materialize Fiscalità Lotto B
-        run: |
-          python scripts/materialize_fiscal_lotto_b.py
-          python scripts/test_fiscal_lotto_b.py
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/fiscal-lotto-b-2025.json > /dev/null
-
-      - name: Materialize PNRR Toscana release
-        run: |
-          python scripts/materialize_pnrr_toscana_draft.py
-          python scripts/patch_pnrr_toscana_review.py
-          python scripts/test_pnrr_toscana_draft.py
-          python scripts/test_pnrr_toscana_review.py
-
-      - name: Apply Fiscalità Lotto B frontend semantics
-        run: python scripts/patch_fiscal_lotto_b_frontend.py
-
-      - name: Materialize Amministrazione Lotto A
-        run: |
-          python scripts/materialize_amministrazione_lotto_a_v2.py
-          python scripts/test_amministrazione_lotto_a.py
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/rgs-amministrazione-2024.json > /dev/null
           python -m json.tool data/source-snapshots/rgs-formazione-2024.json > /dev/null
-
-      - name: Materialize Lavoro e Istruzione per età e genere
-        run: |
-          python scripts/materialize_lavoro_istruzione_eta_genere.py
-          python scripts/patch_lavoro_istruzione_eta_genere_frontend.py
-          python scripts/refine_lavoro_istruzione_eta_genere_ui.py
-          python scripts/patch_lavoro_istruzione_mobile_containment.py
-          python scripts/patch_lavoro_istruzione_versilia_pyramid.py
-          node --check assets/visual-grammar.js
-          python scripts/test_lavoro_istruzione_eta_genere.py
-          python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
+
+      - name: Ensure build does not rewrite canonical sources
+        run: git diff --exit-code -- . ':(exclude)dist'
 
       - name: Materialize public data status
         run: |
@@ -280,7 +236,9 @@ jobs:
             scripts/test_lavoro_istruzione_eta_genere.py \
             scripts/test_lavoro_istruzione_eta_genere_browser.py \
             scripts/test_lavoro_istruzione_versilia_pyramid_browser.py \
-            scripts/test_percorsi_mobile_list_contract.py
+            scripts/test_percorsi_mobile_list_contract.py \
+            scripts/finalize_catalog_release.py \
+            scripts/test_catalog_release_v116.py
 
       - name: Verify municipal crests
         run: |
@@ -343,7 +301,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v117-amministrazione-preview
+          name: osservatorio-versilia-v116-catalogo-preview
           path: dist
           retention-days: 14
 

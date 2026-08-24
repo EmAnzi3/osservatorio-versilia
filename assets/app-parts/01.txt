@@ -131,6 +131,9 @@
       <section id="home-explorer" class="explorer-panel page-width" aria-live="polite"></section>
       <section class="towns-section page-width" id="comuni"><div class="section-heading"><div><span class="overline">Esplora per territorio</span><h2>Un profilo per ogni comune</h2></div><p>Indicatori, andamento storico e posizione nel contesto.</p></div>
         <div class="town-card-grid">${data.towns.map(t => townCard(data, t)).join('')}</div></section>
+      <section class="project-callout page-width opportunity-home-callout" aria-labelledby="opportunita-home-title">
+        <div><span class="overline">Opportunità per il territorio</span><h2 id="opportunita-home-title">Radar Opportunità</h2></div>
+        <div><p>Bandi, avvisi, incentivi e programmi utili ai Comuni della Versilia, raccolti da fonti pubbliche e accompagnati dal rimando alla fonte ufficiale.</p><a class="text-link" href="${route('opportunita/')}">Esplora le opportunità <b>→</b></a></div></section>
       <section class="method-section page-width" id="metodo"><div class="method-title"><span class="overline">Come leggere i dati</span><h2>Confronti trasparenti,<br>senza classifiche facili.</h2></div>
         <div class="method-list">
           <article><span>01</span><div><h3>Stesso perimetro</h3><p>Toscana e Italia compaiono solo quando anno, unità e definizione sono compatibili con il dato comunale.</p></div></article>

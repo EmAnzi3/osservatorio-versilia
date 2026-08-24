@@ -12,15 +12,17 @@
     const container = percorsiMap.getContainer();
 
     if (mobile) {
-      percorsiMap.dragging?.disable();
-      percorsiMap.touchZoom?.disable();
+      percorsiMap.dragging?.enable();
+      percorsiMap.touchZoom?.enable();
       percorsiMap.scrollWheelZoom?.disable();
-      container.dataset.mobileScrollSafe = 'true';
+      container.dataset.mobileMapInteractive = 'true';
+      delete container.dataset.mobileScrollSafe;
     } else {
       percorsiMap.dragging?.enable();
       percorsiMap.touchZoom?.enable();
       percorsiMap.scrollWheelZoom?.enable();
       delete container.dataset.mobileScrollSafe;
+      delete container.dataset.mobileMapInteractive;
     }
   }
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from playwright.sync_api import sync_playwright
+from test_percorsi_touch_gestures import verify_touch_gestures
 
 
 def require(condition: bool, message: str) -> None:
@@ -53,10 +54,10 @@ def assert_scroll_recovery(page, label: str) -> None:
       listOverscrollY: getComputedStyle(document.querySelector('#routeList')).overscrollBehaviorY
     })""")
     require(runtime['hasMap'], f'Mappa Leaflet non inizializzata in {label}: {runtime}')
-    require(runtime['dragging'] is False, f'Leaflet dragging deve essere disattivato su mobile in {label}: {runtime}')
-    require(runtime['touchZoom'] is False, f'Leaflet touchZoom deve essere disattivato su mobile in {label}: {runtime}')
+    require(runtime['dragging'] is True, f'Leaflet dragging deve essere attivo su mobile in {label}: {runtime}')
+    require(runtime['touchZoom'] is True, f'Leaflet touchZoom deve essere attivo su mobile in {label}: {runtime}')
     require(runtime['scrollWheelZoom'] is False, f'Leaflet scrollWheelZoom deve essere disattivato su mobile in {label}: {runtime}')
-    require('pan-y' in runtime['touchAction'], f'La mappa deve consentire lo scroll verticale della pagina in {label}: {runtime}')
+    require(runtime['touchAction'] == 'none', f'La mappa deve catturare pan e pinch touch in {label}: {runtime}')
     require(runtime['listOverscrollY'] != 'contain', f'La lista non deve intrappolare lo scroll a fine corsa in {label}: {runtime}')
 
     back = page.locator('#mapReturnToList')
@@ -175,10 +176,11 @@ def main() -> None:
         page.set_viewport_size({'width': 360, 'height': 800})
         page.goto(base + 'percorsi/', wait_until='networkidle')
         assert_mobile_list_contract(page, '360x800')
+        verify_touch_gestures(page, '360x800')
 
         browser.close()
 
-    print('Contratto Percorsi mobile: lista utilizzabile, scroll di pagina recuperabile dalla mappa e controllo ↑ Percorsi sempre disponibile.')
+    print('Contratto Percorsi mobile: lista utilizzabile, pan/pinch Leaflet attivi e controllo ↑ Percorsi sempre disponibile.')
 
 
 if __name__ == '__main__':

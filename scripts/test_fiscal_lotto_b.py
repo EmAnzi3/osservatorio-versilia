@@ -45,9 +45,9 @@ def main() -> None:
     registry = json.loads(REGISTRY.read_text(encoding='utf-8'))
     snapshot = json.loads(SNAPSHOT.read_text(encoding='utf-8'))
 
-    require(len(site['metrics']) == 133, f"Conteggio metriche inatteso: {len(site['metrics'])}")
-    require(registry['expectedMetricCount'] == 133, 'Registry non riallineato a 133')
-    require(registry['expectedInlineMetricCount'] == 129, 'Inline count non riallineato a 129')
+    require(len(site['metrics']) == 138, f"Conteggio metriche inatteso: {len(site['metrics'])}")
+    require(registry['expectedMetricCount'] == 138, 'Registry non riallineato a 138')
+    require(registry['expectedInlineMetricCount'] == 134, 'Inline count non riallineato a 134')
     require(registry['expectedExternalMetricCount'] == 4, 'External count deve restare 4')
 
     metric = site['metrics'].get(KEY)

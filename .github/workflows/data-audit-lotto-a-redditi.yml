@@ -7,12 +7,10 @@ on:
       - "docs/data-audit-lotto-a-redditi.md"
       - "scripts/probe_mef_income_lotto_a.py"
       - "scripts/test_mef_income_lotto_a_probe.py"
-      - "scripts/materialize_income_lotto_a.py"
-      - "scripts/materialize_income_lotto_a_v2.py"
-      - "scripts/patch_income_lotto_a_frontend.py"
-      - "scripts/patch_income_lotto_a_regressions.py"
-      - "scripts/test_income_lotto_a_materialized.py"
-      - "scripts/test_income_lotto_a_v2.py"
+      - "scripts/materialize_income_lotto_a*.py"
+      - "scripts/patch_income_lotto_a*.py"
+      - "scripts/test_income_lotto_a*.py"
+      - "data/source-snapshots/mef-income-lotto-a-2024.json"
       - ".github/workflows/data-audit-lotto-a-redditi.yml"
   workflow_dispatch:
 
@@ -24,36 +22,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Probe official MEF municipal income dataset
-        run: python scripts/probe_mef_income_lotto_a.py
-      - name: Validate MEF income probe
-        run: python scripts/test_mef_income_lotto_a_probe.py
-      - name: Validate source artifact JSON
-        run: python -m json.tool audit-artifacts/mef-income-lotto-a.json > /dev/null
-      - name: Materialize prerequisite Demography tranche
         run: |
-          python scripts/materialize_demography_lotto_a_v4.py
-          python scripts/test_demography_lotto_a_materialized.py
-      - name: Materialize complete Income tranche
+          python scripts/probe_mef_income_lotto_a.py
+          python scripts/test_mef_income_lotto_a_probe.py
+          python -m json.tool audit-artifacts/mef-income-lotto-a.json > /dev/null
+
+      - name: Validate canonical Income tranche
         run: |
-          python scripts/materialize_income_lotto_a_v2.py
-          python scripts/patch_income_lotto_a_frontend.py
-          python scripts/patch_income_lotto_a_regressions.py
+          python scripts/finalize_catalog_release.py --check
           python scripts/test_income_lotto_a_v2.py
           python -m py_compile scripts/materialize_income_lotto_a_v2.py scripts/patch_income_lotto_a_frontend.py scripts/test_income_lotto_a_v2.py
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
           python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
-      - name: Upload MEF income audit artifacts
+
+      - name: Upload MEF income audit artifact
         uses: actions/upload-artifact@v4
         with:
           name: lotto-a-mef-income-source-probe
-          path: |
-            audit-artifacts/mef-income-lotto-a.json
-            data/source-snapshots/mef-income-lotto-a-2024.json
-            data/site-data.json
+          path: audit-artifacts/mef-income-lotto-a.json
           retention-days: 14

@@ -256,7 +256,7 @@
     if (isTwoPoint) {
       chartMarkup = twoPointChartMarkup(metric, series, selectedSlug);
     } else {
-      const width = 920, height = 390, left = 78, right = 30, top = 26, bottom = 52;
+      const width = 920, height = 390, left = ['per100','per1000','per10k','per100k'].includes(metric.meta.unit) ? 132 : 78, right = 30, top = 26, bottom = 52;
       const chartWidth = width - left - right, chartHeight = height - top - bottom;
       const allValues = series.rows.flatMap(row => row.values);
       const rawMin = Math.min(...allValues), rawMax = Math.max(...allValues);

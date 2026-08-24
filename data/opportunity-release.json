@@ -1,0 +1,2448 @@
+{
+  "schemaVersion": "4.0",
+  "releaseVersion": "0.4.4",
+  "referenceDate": "2026-08-24",
+  "generatedAt": "2026-08-23T22:23:17+00:00",
+  "opportunities": [
+    {
+      "id": "opp-250d85e85ebb66",
+      "source_id": "ministero-interno-prefetture",
+      "source_name": "Ministero dell'Interno — Prefetture",
+      "publisher": "Ministero dell'Interno · Prefetture",
+      "title": "Patti Attuazione Sicurezza Urbana. Sistemi di Videosorveglianza. DM 2026",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/vibo-valentia/patti-attuazione-sicurezza-urbana-sistemi-videosorveglianza-dm-2026",
+      "summary": "Pagina",
+      "deadline_at": "2026-08-24",
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda se soddisfa i requisiti del decreto, compresi quelli relativi al Patto per la sicurezza urbana e ai precedenti finanziamenti per videosorveglianza."
+        }
+      },
+      "applicant_type": "Comune, Unione, Associazione o Consorzio di Comuni",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali e sistemi territoriali di sicurezza urbana",
+      "project_requirements": "La domanda riguarda realizzazione o potenziamento di sistemi di videosorveglianza urbana; occorre rispettare il decreto 22 aprile 2026, il quadro dei Patti per la sicurezza urbana e verificare l'assenza di finanziamenti nelle procedure 2022, 2023 e 2024 quando prevista.",
+      "geographic_scope": "Italia; istanza tramite la Prefettura competente per territorio",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Ministero dell'Interno · Prefetture",
+        "source_mark": "MI",
+        "source_class": "ministero",
+        "category": "sicurezza",
+        "description": "Finanziamenti statali per realizzare o potenziare sistemi comunali di videosorveglianza urbana.",
+        "condition_label": "Richiede requisiti del Patto per la sicurezza",
+        "source_favicon": "/assets/source-icons/ministero-interno.svg"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-03c05d6386f625",
+      "source_id": "pcm-disabilita",
+      "source_name": "PCM · Disabilità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche in favore delle persone con disabilità",
+      "title": "Vita & Opportunità 2026",
+      "url": "https://www.disabilita.governo.it/it/avvisi-e-bandi/avviso-vita-opportunita/",
+      "summary": "Sovvenzione per autonomia, inclusione, talenti e partecipazione delle persone con disabilità.",
+      "deadline_at": "2026-08-29",
+      "deadline_time": "17:00",
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Non classificato area interna AI 2020 per la candidatura diretta; può partecipare come partner secondo la rettifica ufficiale, nel rispetto delle condizioni progettuali."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Non classificato area interna AI 2020 per la candidatura diretta; può partecipare come partner secondo la rettifica ufficiale, nel rispetto delle condizioni progettuali."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Non classificato area interna AI 2020 per la candidatura diretta; può partecipare come partner secondo la rettifica ufficiale, nel rispetto delle condizioni progettuali."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Non classificato area interna AI 2020 per la candidatura diretta; può partecipare come partner secondo la rettifica ufficiale, nel rispetto delle condizioni progettuali."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Classificato C - Cintura nella Mappa AI 2020: non rientra nella candidatura diretta riservata alle aree interne, ma può partecipare come partner secondo la rettifica."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Classificato D - Intermedio nella Mappa nazionale Aree interne AI 2020: può presentare direttamente, ferme le altre condizioni dell'Avviso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Non classificato area interna AI 2020 per la candidatura diretta; può partecipare come partner secondo la rettifica ufficiale, nel rispetto delle condizioni progettuali."
+        }
+      },
+      "applicant_type": "ETS; Enti locali come proponenti nelle aree interne/isole minori e come partner secondo la rettifica ufficiale",
+      "municipality_role": "direct_or_partner",
+      "final_beneficiaries": "Persone con disabilità e comunità territoriali",
+      "project_requirements": "Stazzema è classificato D - Intermedio nella Mappa nazionale Aree interne AI 2020 e può quindi rientrare nella candidatura diretta, ferme le altre condizioni dell'Avviso. Per gli altri Comuni la rettifica del 17 febbraio 2026 include gli Enti locali tra gli eventuali partner di progetto.",
+      "geographic_scope": "Italia; candidatura diretta degli Enti locali limitata ad aree interne e isole minori",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "PCM",
+        "source_class": "pcm",
+        "category": "inclusione",
+        "source_label": "PCM · Disabilità",
+        "source_favicon": "",
+        "description": "Sovvenzione per autonomia, inclusione, talenti e partecipazione delle persone con disabilità.",
+        "condition_label": "Ruolo territoriale"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-0faeae8737eac3",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Bando Amianto Edifici Pubblici 2026",
+      "url": "https://www.regione.toscana.it/it/-/bando-amianto-2026",
+      "summary": "Contributi dalla Regione Toscana destinati agli Enti Locali per la rimozione e lo smaltimento di materiali contenenti amianto presente negli edifici pubblici. Pubblicato il 22.06.2026 Pubblicato su BURT il 01.07.2026 Stato: Aperto Scadenza presentazione domande 31.08.2026 16:00",
+      "deadline_at": "2026-08-31",
+      "deadline_time": "16:00",
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        }
+      },
+      "applicant_type": "ente locale",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "ente locale e comunita servita dagli edifici pubblici",
+      "project_requirements": null,
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "ambiente",
+        "description": "Contributi agli Enti locali per rimuovere e smaltire materiali contenenti amianto dagli edifici pubblici.",
+        "condition_label": null,
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-5d9fc1cd9a537e",
+      "source_id": "mic-dgcc",
+      "source_name": "MiC · Creatività Contemporanea",
+      "publisher": "Ministero della Cultura · Direzione generale Creatività Contemporanea",
+      "title": "Cultura nei piccoli comuni — Edizione 1",
+      "url": "https://creativitacontemporanea.cultura.gov.it/cultura-piccolicomuni-edizione1/",
+      "summary": "Contributi per progetti culturali nei Comuni con meno di 25.000 abitanti.",
+      "deadline_at": "2026-08-31",
+      "deadline_time": "12:00",
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "not_eligible",
+          "reason": "Il Comune non rientra nella soglia demografica inferiore a 25.000 abitanti prevista dall'avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia demografica prevista dall'avviso; restano da rispettare i requisiti progettuali."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia demografica prevista dall'avviso; restano da rispettare i requisiti progettuali."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia demografica prevista dall'avviso; restano da rispettare i requisiti progettuali."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia demografica prevista dall'avviso; restano da rispettare i requisiti progettuali."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia demografica prevista dall'avviso; restano da rispettare i requisiti progettuali."
+        },
+        "Viareggio": {
+          "status": "not_eligible",
+          "reason": "Il Comune non rientra nella soglia demografica inferiore a 25.000 abitanti prevista dall'avviso."
+        }
+      },
+      "applicant_type": "Comune italiano con popolazione inferiore a 25.000 abitanti secondo il criterio previsto dall'avviso",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali, attività culturali e patrimonio culturale dei piccoli Comuni",
+      "project_requirements": "Progetto culturale conforme all'avviso. Contributo massimo 130.000 euro e copertura fino all'80% dei costi ammissibili.",
+      "geographic_scope": "Italia",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "MiC",
+        "source_class": "mic",
+        "category": "cultura",
+        "source_label": "MiC · Creatività Contemporanea",
+        "source_favicon": "https://creativitacontemporanea.cultura.gov.it/favicon.ico",
+        "description": "Contributi per progetti culturali nei Comuni con meno di 25.000 abitanti.",
+        "condition_label": "Soglia demografica"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-489fb79e190286",
+      "source_id": "regione-toscana-fse",
+      "source_name": "Regione Toscana — PR FSE+ 2021-2027",
+      "publisher": "Regione Toscana · PR FSE+ 2021-2027",
+      "title": "Contributi ai Comuni per i servizi educativi della prima infanzia, bando \"Nidi di qualità\" 2026-2027",
+      "url": "https://www.regione.toscana.it/it/-/contributi-ai-comuni-per-i-servizi-educativi-della-prima-infanzia-bando-nidi-di-qualit%C3%A0-2026-2027",
+      "summary": "Pr Fse 2021-2027, priorità 2 \"Istruzione e formazione\", azione 2.f.12. Richieste di adesione via pec entro il 4 settembre 2026. Pubblicato il 09.07.2026 Stato: Aperto Scadenza presentazione domande 04.09.2026",
+      "deadline_at": "2026-09-04",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
+        }
+      },
+      "applicant_type": "comune",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "bambini e bambine e famiglie utenti dei servizi educativi",
+      "project_requirements": null,
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "PR Toscana FSE+ 2021-2027",
+        "source_mark": "FSE+",
+        "source_class": "fse",
+        "category": "istruzione",
+        "description": "Contributi ai Comuni per sostenere i servizi educativi della prima infanzia e migliorare qualità e accessibilità dei nidi.",
+        "condition_label": null,
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-363f0714d4aca5",
+      "source_id": "fondazione-cr-lucca",
+      "source_name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "title": "Bando 2026 Progett-Azioni",
+      "url": "https://www.fondazionecarilucca.it/bandi/bando-2026-progett-azioni",
+      "summary": "Bando per il sostegno all’attività di progettazione sociale degli enti pubblici in stretto partenariato con la società civile e gli ETS territoriali, volto a rafforzare la capacità progettuale del territorio e promuovere una cultura della progettazione partecipata, fondata sull’ascolto e sulla collaborazione tra soggetti pubblici e privati del Terzo settore",
+      "deadline_at": "2026-09-11",
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "La partecipazione richiede una partnership tra soggetti pubblici e privati; il Comune puo partecipare solo nel quadro previsto dal bando."
+        }
+      },
+      "applicant_type": "partnership pubblico-privata",
+      "municipality_role": "partner",
+      "final_beneficiaries": "comunita e destinatari dei progetti sociali",
+      "project_requirements": "La partecipazione e riservata a partnership di soggetti pubblici e privati con i requisiti del bando.",
+      "geographic_scope": "Provincia di Lucca",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Fondazione Cassa di Risparmio di Lucca",
+        "source_mark": "FCRL",
+        "source_class": "fondazione",
+        "category": "sociale",
+        "description": "Sostegno alla progettazione sociale degli enti pubblici insieme alla società civile e agli enti del Terzo settore.",
+        "condition_label": "Richiede partenariato",
+        "source_favicon": "/assets/source-icons/fondazione-cr-lucca.svg"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-9cba2129173b22",
+      "source_id": "fondazione-cr-lucca",
+      "source_name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
+      "publisher": "Fondazione Cassa di Risparmio di Lucca",
+      "title": "Bando 2026 Progettare per il futuro – opere pubbliche",
+      "url": "https://www.fondazionecarilucca.it/bandi/bando-2026-progettazione-opere-pubbliche",
+      "summary": "L’obiettivo del bando è volto a sostenere l’attività di progettazione di interventi su opere pubbliche (interventi di manutenzione straordinaria, restauro e risanamento conservativo, realizzazione di nuove opere).",
+      "deadline_at": "2026-09-11",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Il bando include esplicitamente le amministrazioni pubbliche locali della Provincia di Lucca tra i destinatari."
+        }
+      },
+      "applicant_type": "amministrazione pubblica locale",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "ente proprietario dell'opera e comunita locale",
+      "project_requirements": "Progettazione di interventi su opere pubbliche di proprieta del soggetto richiedente.",
+      "geographic_scope": "Provincia di Lucca",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Fondazione Cassa di Risparmio di Lucca",
+        "source_mark": "FCRL",
+        "source_class": "fondazione",
+        "category": "opere",
+        "description": "Finanzia la progettazione di manutenzioni straordinarie, restauri, risanamenti e nuove opere pubbliche.",
+        "condition_label": null,
+        "source_favicon": "/assets/source-icons/fondazione-cr-lucca.svg"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-39e6e31411a72f",
+      "source_id": "mlps-social-services",
+      "source_name": "Ministero del Lavoro · Servizi sociali",
+      "publisher": "Ministero del Lavoro e delle Politiche Sociali",
+      "title": "Potenziamento del servizio sociale professionale 2026",
+      "url": "https://lavoro.gov.it/notizie/pagine/pubblicato-avviso-per-la-manifestazione-di-interesse-per-assunzione-di-assistenti-sociali-nei-comuni-e-negli-ATS",
+      "summary": "Manifestazione di interesse per aderire alla procedura nazionale di selezione di assistenti sociali destinati a Comuni e ATS.",
+      "deadline_at": "2026-09-11",
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Comune ammesso in forma singola con delega all'ATS di riferimento; deve assumere l'impegno assunzionale e disporre delle risorse necessarie."
+        }
+      },
+      "applicant_type": "Ambiti Territoriali Sociali e Comuni in forma singola con delega all'ATS di riferimento",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Servizi sociali comunali e cittadini presi in carico",
+      "project_requirements": "Il Comune comunica, tramite l'ente capofila dell'ATS, il numero di assistenti sociali che si impegna ad assumere a tempo pieno e indeterminato. Gli oneri delle assunzioni restano in capo agli enti territoriali, utilizzando risorse disponibili e fondi ammessi.",
+      "geographic_scope": "Italia",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "MLPS",
+        "source_class": "other",
+        "category": "welfare",
+        "source_label": "Ministero del Lavoro · Servizi sociali",
+        "source_favicon": "",
+        "description": "Manifestazione di interesse per aderire alla procedura nazionale di selezione di assistenti sociali destinati a Comuni e ATS.",
+        "condition_label": "Impegno assunzionale e delega ATS"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-9182fb42a5d83b",
+      "source_id": "sviluppo-toscana",
+      "source_name": "Sviluppo Toscana — bandi aperti",
+      "publisher": "Sviluppo Toscana",
+      "title": "Avviso Mercati Rionali",
+      "url": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+      "summary": "Aggiungi ai preferiti Avviso Mercati Rionali Avviso pubblico per manifestazione di interesse alla presentazione di progetti di investimento per la concessione di contributi a comuni su cui insistono mercati rionali Decreto n. 13287 del 10/10/2026 Stato: Stato: Aperto",
+      "deadline_at": "2026-09-15",
+      "deadline_time": "12:00",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può candidarsi se dispone di un mercato rionale ammissibile e ne documenta funzione economica, sociale, aggregativa e culturale e radicamento storico."
+        }
+      },
+      "applicant_type": "Comune della Regione Toscana con mercato rionale ammissibile",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Mercati rionali, operatori del commercio su area pubblica e comunità locale",
+      "project_requirements": "Il mercato deve rientrare nella definizione dell'avviso; il Comune deve avere la disponibilità dell'area, perimetrare l'intervento e allegare la relazione tecnico-descrittiva richiesta. Il contributo copre fino all'80% dell'investimento ammissibile.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Sviluppo Toscana",
+        "source_mark": "ST",
+        "source_class": "sviluppo",
+        "category": "commercio",
+        "description": "Contributi fino all'80% per riqualificare, ammodernare e rendere più sostenibili i mercati rionali dei Comuni toscani.",
+        "condition_label": "Richiede mercato rionale ammissibile",
+        "source_favicon": "/assets/source-icons/sviluppo-toscana.svg"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-ccf6a31541141e",
+      "coverage_id": "life-2026-cet-pda",
+      "rule_id": "coverage:life-2026-cet-pda",
+      "source_id": "cinea-life",
+      "source_name": "CINEA · LIFE",
+      "publisher": "Commissione europea · CINEA",
+      "title": "LIFE 2026 · Assistenza allo sviluppo di investimenti energetici sostenibili",
+      "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/project-development-assistance-sustainable-energy-investments-1_en",
+      "summary": "Assistenza tecnica LIFE per preparare e mobilitare investimenti in efficienza energetica ed energie rinnovabili.",
+      "status": "open",
+      "lifecycle_stage": "application_open",
+      "lifecycle_label": "Aperta",
+      "opens_at": null,
+      "deadline_at": "2026-09-16",
+      "deadline_time": "17:00",
+      "published_at": "2026-04-21",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Project Development Assistance per trasformare programmi e piani energetici in pipeline di investimenti sostenibili. Per un Comune il ruolo deve essere collegato a investimenti concreti e alla struttura progettuale richiesta dal topic.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; accesso concreto legato a una pipeline di investimenti e ai requisiti del topic PDA."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Ente pubblico o altro soggetto giuridico ammissibile al programma LIFE, secondo composizione e requisiti del topic",
+      "municipality_role": "direct_or_partner",
+      "final_beneficiaries": "Enti territoriali e comunità che beneficiano degli investimenti energetici preparati dal progetto",
+      "partnership_required": false,
+      "project_requirements": "Project Development Assistance per trasformare programmi e piani energetici in pipeline di investimenti sostenibili. Per un Comune il ruolo deve essere collegato a investimenti concreti e alla struttura progettuale richiesta dal topic.",
+      "geographic_scope": "Unione europea e altri Paesi ammissibili LIFE",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "coverage_verified_application_open",
+      "access_mode": "specific_requirement",
+      "themes": [
+        "energia"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "coverage:life-2026-cet-pda",
+        "text": "Project Development Assistance per trasformare programmi e piani energetici in pipeline di investimenti sostenibili. Per un Comune il ruolo deve essere collegato a investimenti concreti e alla struttura progettuale richiesta dal topic.",
+        "source_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/project-development-assistance-sustainable-energy-investments-1_en"
+      },
+      "presentation": {
+        "source_mark": "LIFE",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "CINEA · LIFE",
+        "source_favicon": "https://cinea.ec.europa.eu/favicon.ico",
+        "description": "Assistenza tecnica LIFE per preparare e mobilitare investimenti in efficienza energetica ed energie rinnovabili.",
+        "condition_label": "Pipeline di investimenti e progetto LIFE"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-24",
+      "verification_status": "release_verified",
+      "first_seen_at": "2026-08-24",
+      "is_new": true
+    },
+    {
+      "id": "opp-a8cb1409e5d51f",
+      "coverage_id": "life-2026-cet-enercom",
+      "rule_id": "coverage:life-2026-cet-enercom",
+      "source_id": "cinea-life",
+      "source_name": "CINEA · LIFE",
+      "publisher": "Commissione europea · CINEA",
+      "title": "LIFE 2026 · Cooperazione tra comunità energetiche",
+      "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/facilitating-cooperation-among-energy-communities_en",
+      "summary": "Call LIFE per rafforzare cooperazione, capacità e replicabilità delle comunità energetiche europee.",
+      "status": "open",
+      "lifecycle_stage": "application_open",
+      "lifecycle_label": "Aperta",
+      "opens_at": null,
+      "deadline_at": "2026-09-16",
+      "deadline_time": "17:00",
+      "published_at": "2026-04-21",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Il topic sostiene la cooperazione tra comunità energetiche. Gli enti locali possono avere un ruolo operativo nella governance e nello sviluppo territoriale delle comunità; la candidatura dipende dalla configurazione del progetto e del partenariato.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Possibile ruolo operativo come ente locale in progetti sulle comunità energetiche; servono progetto e partenariato conformi al topic."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Ente pubblico, comunità energetica o altro soggetto giuridico ammissibile al programma LIFE, secondo i requisiti del topic",
+      "municipality_role": "direct_or_partner",
+      "final_beneficiaries": "Comunità energetiche, cittadini, enti locali e territori coinvolti nella transizione energetica",
+      "partnership_required": false,
+      "project_requirements": "Il topic sostiene la cooperazione tra comunità energetiche. Gli enti locali possono avere un ruolo operativo nella governance e nello sviluppo territoriale delle comunità; la candidatura dipende dalla configurazione del progetto e del partenariato.",
+      "geographic_scope": "Unione europea e altri Paesi ammissibili LIFE",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "coverage_verified_application_open",
+      "access_mode": "specific_requirement",
+      "themes": [
+        "energia"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "coverage:life-2026-cet-enercom",
+        "text": "Il topic sostiene la cooperazione tra comunità energetiche. Gli enti locali possono avere un ruolo operativo nella governance e nello sviluppo territoriale delle comunità; la candidatura dipende dalla configurazione del progetto e del partenariato.",
+        "source_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/facilitating-cooperation-among-energy-communities_en"
+      },
+      "presentation": {
+        "source_mark": "LIFE",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "CINEA · LIFE",
+        "source_favicon": "https://cinea.ec.europa.eu/favicon.ico",
+        "description": "Call LIFE per rafforzare cooperazione, capacità e replicabilità delle comunità energetiche europee.",
+        "condition_label": "Comunità energetiche e partenariato LIFE"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-24",
+      "verification_status": "release_verified",
+      "first_seen_at": "2026-08-24",
+      "is_new": true
+    },
+    {
+      "id": "opp-7bb04f077b19a2",
+      "coverage_id": "life-2026-cet-heatcoolplan",
+      "rule_id": "coverage:life-2026-cet-heatcoolplan",
+      "source_id": "cinea-life",
+      "source_name": "CINEA · LIFE",
+      "publisher": "Commissione europea · CINEA",
+      "title": "LIFE 2026 · Piani locali di riscaldamento e raffrescamento",
+      "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/supporting-delivery-actionable-integrated-and-comprehensive-local-heating-and-cooling-plans_en",
+      "summary": "Call LIFE per sostenere piani locali integrati di riscaldamento e raffrescamento e rafforzare la capacità delle autorità territoriali.",
+      "status": "open",
+      "lifecycle_stage": "application_open",
+      "lifecycle_label": "Aperta",
+      "opens_at": null,
+      "deadline_at": "2026-09-16",
+      "deadline_time": "17:00",
+      "published_at": "2026-04-21",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Topic LIFE Clean Energy Transition dedicato alla realizzazione di piani locali integrati e operativi di riscaldamento e raffrescamento. Il Comune è un attore territoriale naturale, ma la candidatura concreta dipende dalla struttura progettuale e dai requisiti completi del topic.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Ente pubblico ammissibile al LIFE; ruolo operativo coerente con il topic sui piani locali, subordinato a progetto e partenariato."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Ente pubblico o altro soggetto giuridico ammissibile al programma LIFE, secondo composizione e requisiti del topic",
+      "municipality_role": "direct_or_partner",
+      "final_beneficiaries": "Amministrazioni locali, utenti dei sistemi energetici locali e comunità interessate dalla pianificazione calore/freddo",
+      "partnership_required": false,
+      "project_requirements": "Topic LIFE Clean Energy Transition dedicato alla realizzazione di piani locali integrati e operativi di riscaldamento e raffrescamento. Il Comune è un attore territoriale naturale, ma la candidatura concreta dipende dalla struttura progettuale e dai requisiti completi del topic.",
+      "geographic_scope": "Unione europea e altri Paesi ammissibili LIFE",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "coverage_verified_application_open",
+      "access_mode": "specific_requirement",
+      "themes": [
+        "energia"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "coverage:life-2026-cet-heatcoolplan",
+        "text": "Topic LIFE Clean Energy Transition dedicato alla realizzazione di piani locali integrati e operativi di riscaldamento e raffrescamento. Il Comune è un attore territoriale naturale, ma la candidatura concreta dipende dalla struttura progettuale e dai requisiti completi del topic.",
+        "source_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/supporting-delivery-actionable-integrated-and-comprehensive-local-heating-and-cooling-plans_en"
+      },
+      "presentation": {
+        "source_mark": "LIFE",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "CINEA · LIFE",
+        "source_favicon": "https://cinea.ec.europa.eu/favicon.ico",
+        "description": "Call LIFE per sostenere piani locali integrati di riscaldamento e raffrescamento e rafforzare la capacità delle autorità territoriali.",
+        "condition_label": "Progetto/partenariato LIFE"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-24",
+      "verification_status": "release_verified",
+      "first_seen_at": "2026-08-24",
+      "is_new": true
+    },
+    {
+      "id": "opp-11f48c408db799",
+      "coverage_id": "life-2026-cet-empower",
+      "rule_id": "coverage:life-2026-cet-empower",
+      "source_id": "cinea-life",
+      "source_name": "CINEA · LIFE",
+      "publisher": "Commissione europea · CINEA",
+      "title": "LIFE 2026 · Soluzioni smart e clean energy per città accessibili",
+      "url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/scaling-smart-and-clean-energy-solutions-affordability-eu-cities_en",
+      "summary": "Call LIFE dedicata alla diffusione di soluzioni smart e clean energy nelle città con attenzione all'accessibilità economica.",
+      "status": "open",
+      "lifecycle_stage": "application_open",
+      "lifecycle_label": "Aperta",
+      "opens_at": null,
+      "deadline_at": "2026-09-16",
+      "deadline_time": "17:00",
+      "published_at": "2026-04-21",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Il topic mira a scalare soluzioni energetiche intelligenti e pulite per l'accessibilità economica nelle città UE. Il Comune può contribuire come città dimostratrice, beneficiario o partner, se il progetto rispetta il topic e la composizione richiesta.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Comune potenzialmente coinvolgibile come città/ente pubblico in un progetto conforme al topic EMPOWER."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Ente pubblico o altro soggetto giuridico ammissibile al programma LIFE, secondo composizione e requisiti del topic",
+      "municipality_role": "direct_or_partner",
+      "final_beneficiaries": "Cittadini e comunità urbane beneficiarie di soluzioni energetiche pulite, intelligenti e accessibili",
+      "partnership_required": false,
+      "project_requirements": "Il topic mira a scalare soluzioni energetiche intelligenti e pulite per l'accessibilità economica nelle città UE. Il Comune può contribuire come città dimostratrice, beneficiario o partner, se il progetto rispetta il topic e la composizione richiesta.",
+      "geographic_scope": "Unione europea e altri Paesi ammissibili LIFE",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "coverage_verified_application_open",
+      "access_mode": "specific_requirement",
+      "themes": [
+        "energia"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "coverage:life-2026-cet-empower",
+        "text": "Il topic mira a scalare soluzioni energetiche intelligenti e pulite per l'accessibilità economica nelle città UE. Il Comune può contribuire come città dimostratrice, beneficiario o partner, se il progetto rispetta il topic e la composizione richiesta.",
+        "source_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/scaling-smart-and-clean-energy-solutions-affordability-eu-cities_en"
+      },
+      "presentation": {
+        "source_mark": "LIFE",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "CINEA · LIFE",
+        "source_favicon": "https://cinea.ec.europa.eu/favicon.ico",
+        "description": "Call LIFE dedicata alla diffusione di soluzioni smart e clean energy nelle città con attenzione all'accessibilità economica.",
+        "condition_label": "Città/progetto dimostrativo LIFE"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-24",
+      "verification_status": "release_verified",
+      "first_seen_at": "2026-08-24",
+      "is_new": true
+    },
+    {
+      "id": "opp-91868513a3f796",
+      "source_id": "eu-cerv",
+      "source_name": "UE · CERV",
+      "publisher": "Commissione europea",
+      "title": "CERV 2026 — Town Twinning",
+      "url": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/cerv/wp-call/2026/call-fiche_cerv-2026-citizens-town-tt_en.pdf",
+      "summary": "Call CERV per gemellaggi e cooperazione tra città, con budget complessivo di 6 milioni di euro.",
+      "deadline_at": "2026-09-23",
+      "deadline_time": "17:00",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Comune ammissibile come applicant, a condizione di costruire il partenariato transnazionale richiesto dalla call."
+        }
+      },
+      "applicant_type": "Città/Comuni, altre autorità locali o organizzazioni non profit che rappresentano autorità locali",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali e cittadini dei Comuni partecipanti",
+      "project_requirements": "Il progetto deve essere transnazionale e coinvolgere Comuni di almeno due Paesi eleggibili, di cui almeno uno Stato membro UE; restano da rispettare tutti i requisiti della call.",
+      "geographic_scope": "Unione europea e Paesi eleggibili CERV",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "EU",
+        "source_class": "eu",
+        "category": "europa",
+        "source_label": "UE · CERV",
+        "source_favicon": "",
+        "description": "Call CERV per gemellaggi e cooperazione tra città, con budget complessivo di 6 milioni di euro.",
+        "condition_label": "Partenariato transnazionale"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-06c5a1adf8c483",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Toscanaincontemporanea 2026",
+      "url": "https://www.regione.toscana.it/it/-/toscanaincontemporanea-2026",
+      "summary": "Bando per progetti che promuovono la produzione, la conoscenza e la diffusione della creatività contemporanea Pubblicato il 12.08.2026 Pubblicato su BURT il 12.08.2026 Stato: Aperto Scadenza presentazione domande 23.09.2026 12:00",
+      "deadline_at": "2026-09-23",
+      "deadline_time": "12:00",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra i soggetti pubblici, ma deve operare in ambito culturale e presentare un progetto coerente con le finalità dell'avviso."
+        }
+      },
+      "applicant_type": "soggetto pubblico o privato senza scopo di lucro operante in ambito culturale",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "comunità e pubblico dei progetti di creatività contemporanea",
+      "project_requirements": "Il soggetto deve operare in ambito culturale e il progetto deve rientrare nelle tipologie e finalità dell'avviso dedicate alla creatività contemporanea.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "cultura",
+        "description": "Sostegno a progetti per la produzione, la conoscenza e la diffusione della creatività contemporanea.",
+        "condition_label": "Richiede progetto culturale ammissibile",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-57c09781187870",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Bando Sistemi museali 2026",
+      "url": "https://www.regione.toscana.it/it/-/bando-sistemi-museali-2026",
+      "summary": "Pubblicato il 12.08.2026 Pubblicato su BURT il 12.08.2026 Stato: Aperto Scadenza presentazione domande 25.09.2026 23:59",
+      "deadline_at": "2026-09-25",
+      "deadline_time": "23:59",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Civico Museo Archeologico di Camaiore aderisce al Sistema Museale Territoriale della Provincia di Lucca; il Comune può lavorare l'opportunità tramite il Sistema, che è il soggetto richiedente."
+        },
+        "Forte dei Marmi": {
+          "status": "not_eligible",
+          "reason": "Nel corrente elenco pubblico del Sistema Museale Territoriale della Provincia di Lucca non risulta un museo aderente localizzato a Forte dei Marmi; nessun canale operativo è documentato nel prototipo."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Museo e area archeologica Massaciuccoli Romana aderisce al Sistema Museale Territoriale della Provincia di Lucca; la domanda è comunque presentata dal Sistema."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Più musei di Pietrasanta aderiscono al Sistema Museale Territoriale della Provincia di Lucca; la domanda è comunque presentata dal Sistema."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Museo del Lavoro e delle Tradizioni Popolari della Versilia Storica aderisce al Sistema Museale Territoriale della Provincia di Lucca; la domanda è comunque presentata dal Sistema."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Museo Storico di Sant'Anna di Stazzema aderisce al Sistema Museale Territoriale della Provincia di Lucca; la domanda è comunque presentata dal Sistema."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Musei di Viareggio e Torre del Lago aderiscono al Sistema Museale Territoriale della Provincia di Lucca; la domanda è comunque presentata dal Sistema."
+        }
+      },
+      "applicant_type": "sistema museale della Toscana",
+      "municipality_role": "system_member",
+      "final_beneficiaries": "sistemi museali, musei aderenti e comunità servite",
+      "project_requirements": "La domanda è presentata dal Sistema Museale, non dal singolo Comune; ciascun Sistema può presentare una sola istanza. Il Comune è intercettato tramite un museo aderente al Sistema territoriale.",
+      "geographic_scope": "Toscana; per la Versilia tramite il Sistema Museale Territoriale della Provincia di Lucca",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "cultura",
+        "description": "Sostegno ai Sistemi Museali della Toscana per attività coordinate di valorizzazione, gestione e sviluppo dei musei aderenti.",
+        "condition_label": "Partecipazione tramite Sistema Museale",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-f167a60a4b3c05",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Contributi per la frequenza delle scuole paritarie dell'infanzia 3-6 anni: bando \"Buoni scuola anno 2026\"",
+      "url": "https://www.regione.toscana.it/it/-/contributi-per-la-frequenza-delle-scuole-paritarie-dell-infanzia-3-6-anni-bando-buoni-scuola-anno-2026",
+      "summary": "Domande dei Comuni entro il 25 settembre 2026 per proroga e modifica del testo del bando (decreto del 6 luglio 2026). Sostegno alle famiglie per favorire la frequenza delle scuole dell'infanzia paritarie private e comunali nell'anno scolastico 2026-2027. Pubblicato il 13.07.2026 Stato: Aperto",
+      "deadline_at": "2026-09-25",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Il formulario regionale individua il Comune, l'Unione di Comuni o il Comune responsabile della gestione associata come soggetto proponente/attuatore."
+        }
+      },
+      "applicant_type": "comune o unione di comuni",
+      "municipality_role": "implementing_body",
+      "final_beneficiaries": "famiglie con bambini e bambine che frequentano scuole dell'infanzia paritarie",
+      "project_requirements": "Il Comune aderisce all'avviso e gestisce la candidatura/attuazione; il beneficio finale e destinato alle famiglie.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "istruzione",
+        "description": "Sostegno alle famiglie per la frequenza delle scuole dell’infanzia paritarie; i Comuni aderiscono all’avviso e ne gestiscono l’attuazione.",
+        "condition_label": null,
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-c8cd0c4a986bef",
+      "source_id": "pcm-famiglia",
+      "source_name": "PCM · Politiche per la famiglia",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche della famiglia",
+      "title": "Crescere nei piccoli comuni 2026",
+      "url": "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/avviso-crescere-nei-piccoli-comuni-2026-stanziati-50-milioni-di-euro-per-le-famiglie/",
+      "summary": "Avviso nazionale per iniziative a favore delle famiglie nei Comuni fino a 5.000 abitanti.",
+      "deadline_at": "2026-09-29",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        },
+        "Massarosa": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        },
+        "Pietrasanta": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        },
+        "Seravezza": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il Comune rientra nella soglia fino a 5.000 abitanti prevista dall'avviso; restano da rispettare i requisiti progettuali e procedurali."
+        },
+        "Viareggio": {
+          "status": "not_eligible",
+          "reason": "Il Comune supera la soglia di 5.000 abitanti prevista dall'avviso."
+        }
+      },
+      "applicant_type": "Comune con popolazione residente fino a 5.000 abitanti, singolo o associato secondo l'avviso",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Famiglie, minori e comunità dei piccoli Comuni",
+      "project_requirements": "L'avviso dispone 50 milioni di euro per interventi rivolti alle famiglie nei piccoli Comuni. La candidatura deve rispettare finalità, spese e modalità previste dall'avviso; è ammessa la partecipazione singola o associata secondo le condizioni ufficiali.",
+      "geographic_scope": "Italia · Comuni fino a 5.000 abitanti",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "PCM",
+        "source_class": "pcm",
+        "category": "welfare",
+        "source_label": "PCM · Politiche per la famiglia",
+        "source_favicon": "https://www.famiglia.governo.it/favicon.ico",
+        "description": "Avviso nazionale per iniziative a favore delle famiglie nei Comuni fino a 5.000 abitanti.",
+        "condition_label": "Soglia demografica"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-776ce8e73eb86d",
+      "source_id": "pcm-pari-opportunita",
+      "source_name": "PCM · Pari opportunità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
+      "title": "Bando n. 8/2026 — progetti territoriali contro tratta e grave sfruttamento",
+      "url": "https://www.pariopportunita.gov.it/it/news-e-media/news/2026/pubblicato-il-bando-n-82026-per-il-finanziamento-dei-progetti-territoriali-del-programma-unico-di-emersione-assistenza-e-integrazione-sociale-delle-vittime-di-tratta-e-grave-sfruttamento/",
+      "summary": "Finanziamento di progetti territoriali per emersione, assistenza e integrazione sociale delle vittime di tratta e grave sfruttamento.",
+      "deadline_at": "2026-09-30",
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Ente locale potenzialmente ammesso; serve un progetto territoriale conforme e la verifica di tutti i requisiti del bando."
+        }
+      },
+      "applicant_type": "Regioni, Province autonome, enti locali e soggetti privati iscritti nei registri previsti dal bando",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Persone vittime di tratta o grave sfruttamento e reti territoriali di assistenza e integrazione",
+      "project_requirements": "Il Comune rientra tra gli enti locali ammessi, ma la candidatura richiede un progetto territoriale conforme al Programma unico e a tutte le condizioni organizzative, tecniche e finanziarie del bando.",
+      "geographic_scope": "Italia",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "PCM",
+        "source_class": "pcm",
+        "category": "welfare",
+        "source_label": "PCM · Pari opportunità",
+        "source_favicon": "https://www.pariopportunita.gov.it/favicon.ico",
+        "description": "Finanziamento di progetti territoriali per emersione, assistenza e integrazione sociale delle vittime di tratta e grave sfruttamento.",
+        "condition_label": "Progetto territoriale"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-fecd19aca73b00",
+      "source_id": "pcm-politiche-mare",
+      "source_name": "PCM · Politiche del mare",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche del mare",
+      "title": "Capitale italiana del mare 2027",
+      "url": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/",
+      "summary": "Procedura nazionale riservata ai Comuni costieri per il titolo Capitale italiana del mare 2027.",
+      "deadline_at": "2026-09-30",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il territorio comunale comprende il litorale di Lido di Camaiore e rientra nel perimetro dei Comuni costieri."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Comune costiero ammissibile alla procedura, fatto salvo il rispetto dei requisiti di candidatura."
+        },
+        "Massarosa": {
+          "status": "not_eligible",
+          "reason": "Il Comune non è costiero sul mare e non rientra nel perimetro della procedura."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il territorio comunale comprende Marina di Pietrasanta e rientra nel perimetro dei Comuni costieri."
+        },
+        "Seravezza": {
+          "status": "not_eligible",
+          "reason": "Il Comune non è costiero sul mare e non rientra nel perimetro della procedura."
+        },
+        "Stazzema": {
+          "status": "not_eligible",
+          "reason": "Il Comune non è costiero sul mare e non rientra nel perimetro della procedura."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Comune costiero ammissibile alla procedura, fatto salvo il rispetto dei requisiti di candidatura."
+        }
+      },
+      "applicant_type": "Comune costiero italiano",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità costiere, cultura del mare e sistema territoriale locale",
+      "project_requirements": "Candidatura comunale per il titolo Capitale italiana del mare 2027 secondo la procedura ufficiale. Il contributo previsto per il Comune vincitore è pari a 1 milione di euro.",
+      "geographic_scope": "Italia · Comuni costieri",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "PCM",
+        "source_class": "pcm",
+        "category": "territorio",
+        "source_label": "PCM · Politiche del mare",
+        "source_favicon": "https://www.dipartimentopolitichemare.gov.it/favicon.ico",
+        "description": "Procedura nazionale riservata ai Comuni costieri per il titolo Capitale italiana del mare 2027.",
+        "condition_label": "Comune costiero"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-f3d69b476a6b2b",
+      "source_id": "eu-neb",
+      "source_name": "UE · New European Bauhaus",
+      "publisher": "Commissione europea · New European Bauhaus",
+      "title": "Co-create New European Bauhaus 2026",
+      "url": "https://new-european-bauhaus.europa.eu/calls-proposals/co-create-neb_en",
+      "summary": "Call europea per partenariati territoriali che coinvolgono comunità, municipalità e altri soggetti nella trasformazione di quartieri e spazi pubblici.",
+      "deadline_at": "2026-09-30",
+      "deadline_time": "17:00",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può partecipare nell'ambito di un partenariato conforme; vanno verificati composizione e requisiti completi della call."
+        }
+      },
+      "applicant_type": "Partenariato locale conforme alla call",
+      "municipality_role": "partner",
+      "final_beneficiaries": "Quartieri, comunità locali e utenti degli spazi pubblici interessati",
+      "project_requirements": "La call sostiene partenariati per trasformazioni place-based di quartieri e spazi pubblici attraverso partecipazione della comunità e collaborazione municipale. La composizione del partenariato e i requisiti completi vanno verificati nella documentazione della call.",
+      "geographic_scope": "Unione europea",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_mark": "EU",
+        "source_class": "eu",
+        "category": "territorio",
+        "source_label": "UE · New European Bauhaus",
+        "source_favicon": "https://new-european-bauhaus.europa.eu/favicon.ico",
+        "description": "Call europea per partenariati territoriali che coinvolgono comunità, municipalità e altri soggetti nella trasformazione di quartieri e spazi pubblici.",
+        "condition_label": "Partenariato richiesto"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-c741647bf45ece",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Risorse genetiche forestali, contributi per conservazione, uso e sviluppo sostenibile: il bando 2026",
+      "url": "https://www.regione.toscana.it/it/-/risorse-genetiche-forestali-contributi-per-conservazione-uso-e-sviluppo-sostenibile-il-bando-2026",
+      "summary": "Csr Feasr 2023-2027, intervento SRA31. Pubblicato il 14.07.2026 Pubblicato su BURT il 15.07.2026 Stato: Aperto Scadenza presentazione domande 30.09.2026 13:00",
+      "deadline_at": "2026-09-30",
+      "deadline_time": "13:00",
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può presentare domanda solo se è proprietario, possessore o altro soggetto titolare di una superficie forestale/agricola ammissibile o se rientra nelle ulteriori categorie previste dal bando."
+        }
+      },
+      "applicant_type": "proprietario, possessore o titolare pubblico/privato di superficie forestale o agricola ammissibile",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "titolari delle superfici e patrimonio genetico forestale",
+      "project_requirements": "Il Comune deve dimostrare la titolarità/possesso della superficie ammissibile e rispettare i requisiti tecnici SRA31.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "ambiente",
+        "description": "Contributi CSR/FEASR per conservazione, uso e sviluppo sostenibile delle risorse genetiche forestali su superfici ammissibili.",
+        "condition_label": "Richiede superficie ammissibile",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-30959f6df90bd3",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Avviso pubblico Comuni Toscana Diffusa: contributi per strutture di servizio pubbliche",
+      "url": "https://www.regione.toscana.it/it/-/avviso-pubblico-comuni-ricadenti-territori-toscana-diffusa-contributi-interventi-strutture-servizio-pubbliche",
+      "summary": "Sostegno ai Comuni della Toscana diffusa per il potenziamento dei servizi e delle infrastrutture pubbliche Pubblicato il 28.04.2026 Pubblicato su BURT il 29.04.2026 Stato: Aperto Scadenza presentazione domande 30.10.2026 12:00",
+      "deadline_at": "2026-10-30",
+      "deadline_time": "12:00",
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comune classificato TD*: l'intervento è ammissibile solo se ricade nella porzione montana del territorio comunale."
+        },
+        "Forte dei Marmi": {
+          "status": "not_eligible",
+          "reason": "Comune non incluso nei territori della Toscana Diffusa."
+        },
+        "Massarosa": {
+          "status": "not_eligible",
+          "reason": "Comune non incluso nei territori della Toscana Diffusa."
+        },
+        "Pietrasanta": {
+          "status": "not_eligible",
+          "reason": "Comune non incluso nei territori della Toscana Diffusa."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Comune incluso integralmente nell'elenco dei territori della Toscana Diffusa."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Comune incluso integralmente nell'elenco dei territori della Toscana Diffusa."
+        },
+        "Viareggio": {
+          "status": "not_eligible",
+          "reason": "Comune non incluso nei territori della Toscana Diffusa."
+        }
+      },
+      "applicant_type": "comune",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "comunita locali dei territori ammessi",
+      "project_requirements": "Per i Comuni TD* l'intervento deve ricadere nella porzione montana del territorio comunale.",
+      "geographic_scope": "Toscana Diffusa",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "territorio",
+        "description": "Contributi ai Comuni della Toscana Diffusa per potenziare strutture di servizio, infrastrutture e servizi pubblici.",
+        "condition_label": "Ammissibilità territoriale per Comune",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-0daa6f6b9e6dba",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Bando parcheggi 2026",
+      "url": "https://www.regione.toscana.it/it/-/bando-parcheggi-2026",
+      "summary": "Legge regionale 11/2021 - Decreto di Giunta Regionale 968/2026 Pubblicato il 12.08.2026 Pubblicato su BURT il 19.08.2026 Stato: Aperto Scadenza presentazione domande 30.11.2026",
+      "deadline_at": "2026-11-30",
+      "deadline_time": null,
+      "eligibility": "eligible",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Forte dei Marmi": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Massarosa": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Pietrasanta": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Seravezza": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Stazzema": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        },
+        "Viareggio": {
+          "status": "eligible",
+          "reason": "Il bando indica esplicitamente i Comuni toscani come soggetti beneficiari."
+        }
+      },
+      "applicant_type": "comune",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "comunita locale e utenti dei parcheggi pubblici",
+      "project_requirements": "Realizzazione di nuovi parcheggi pubblici e opere strettamente connesse; una domanda per Comune e progetto/CUP.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "mobilita",
+        "description": "Contributi ai Comuni toscani per realizzare nuovi parcheggi pubblici e le opere strettamente connesse.",
+        "condition_label": null,
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "direct",
+      "is_new": false
+    },
+    {
+      "id": "opp-a1f6648ce28cb6",
+      "source_id": "regione-toscana",
+      "source_name": "Regione Toscana — bandi aperti",
+      "publisher": "Regione Toscana",
+      "title": "Manifestazione di interesse per il reperimento di patrimonio immobiliare da destinare ad emergenza abitativa e/o residenza sociale",
+      "url": "https://www.regione.toscana.it/it/-/manifestazione-di-interesse-per-il-reperimento-di-patrimonio-immobiliare-da-destinare-ad-emergenza-abitativa-e/o-residenza-sociale-1",
+      "summary": "Approvati gli Avvisi pubblici finalizzati alla ricognizione del patrimonio immobiliare disponibile per potenziare l’offerta pubblica di alloggi ERP e/o ERS e/o per fronteggiare l’emergenza abitativa Pubblicato il 14.04.2026 Pubblicato su BURT il 25.03.2026 Categoria: Enti Stato: Aperto Scadenza presentazione domande 30.11.2026",
+      "deadline_at": "2026-11-30",
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune puo presentare manifestazione di interesse, ma deve rientrare in una delle casistiche immobiliari previste dall'avviso."
+        }
+      },
+      "applicant_type": "comune",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "nuclei e persone con fabbisogno abitativo",
+      "project_requirements": "Per i Comuni: beni confiscati trasferiti all'ente da ristrutturare a fini abitativi oppure reperimento sul mercato di alloggi/fabbricati da destinare a emergenza abitativa o ERS.",
+      "geographic_scope": "Toscana",
+      "lifecycle_stage": "application_open",
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "regione",
+        "category": "abitare",
+        "description": "Manifestazione di interesse per reperire, recuperare o acquisire immobili destinati a emergenza abitativa, ERP o residenza sociale.",
+        "condition_label": "Richiede patrimonio o progetto ammissibile",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-fac2dd92fe4cae",
+      "coverage_id": "pcm-sport-eventi-2026",
+      "rule_id": "coverage:pcm-sport-eventi-2026",
+      "source_id": "pcm-sport",
+      "source_name": "PCM · Dipartimento per lo Sport",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per lo Sport",
+      "title": "Eventi sportivi di rilevanza nazionale e internazionale 2026",
+      "url": "https://avvisibandi.sport.governo.it/bandi/69f9e0e94ea041522d70640b",
+      "summary": "Contributi nazionali per eventi sportivi 2026 con ricadute territoriali, sociali, ambientali ed economiche; dotazione complessiva di 7,5 milioni di euro.",
+      "status": "open",
+      "lifecycle_stage": "application_open",
+      "lifecycle_label": "Aperta",
+      "opens_at": null,
+      "deadline_at": "2026-12-01",
+      "deadline_time": "23:59",
+      "published_at": "2026-05-21",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Il Comune può presentare direttamente domanda se dispone del titolo di esclusività nell'organizzazione e/o realizzazione dell'evento. L'evento deve rispettare i requisiti dell'Avviso; la domanda va trasmessa tramite piattaforma almeno 20 giorni prima dell'inizio dell'evento e comunque entro il 1° dicembre 2026.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune è tra i destinatari ammissibili se ha titolo di esclusività nell'organizzazione o realizzazione di un evento conforme all'Avviso."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Comune o altro ente/società pubblico o privato con titolo di esclusività nell'organizzazione e/o realizzazione dell'evento",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali, pratica sportiva, promozione territoriale e partecipanti agli eventi",
+      "partnership_required": false,
+      "project_requirements": "Il Comune può presentare direttamente domanda se dispone del titolo di esclusività nell'organizzazione e/o realizzazione dell'evento. L'evento deve rispettare i requisiti dell'Avviso; la domanda va trasmessa tramite piattaforma almeno 20 giorni prima dell'inizio dell'evento e comunque entro il 1° dicembre 2026.",
+      "geographic_scope": "Italia · eventi di rilevanza nazionale o internazionale",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "coverage_verified_application_open",
+      "access_mode": "specific_requirement",
+      "themes": [
+        "sport"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "coverage:pcm-sport-eventi-2026",
+        "text": "Il Comune può presentare direttamente domanda se dispone del titolo di esclusività nell'organizzazione e/o realizzazione dell'evento. L'evento deve rispettare i requisiti dell'Avviso; la domanda va trasmessa tramite piattaforma almeno 20 giorni prima dell'inizio dell'evento e comunque entro il 1° dicembre 2026.",
+        "source_url": "https://avvisibandi.sport.governo.it/bandi/69f9e0e94ea041522d70640b"
+      },
+      "presentation": {
+        "source_mark": "SPORT",
+        "source_class": "pcm",
+        "category": "sport",
+        "source_label": "PCM · Dipartimento per lo Sport",
+        "source_favicon": "https://www.sport.governo.it/favicon.ico",
+        "description": "Contributi nazionali per eventi sportivi 2026 con ricadute territoriali, sociali, ambientali ed economiche; dotazione complessiva di 7,5 milioni di euro.",
+        "condition_label": "Titolo di esclusività e requisiti evento"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-24",
+      "verification_status": "release_verified",
+      "first_seen_at": "2026-08-24",
+      "is_new": true
+    },
+    {
+      "id": "opp-bfe23eadcf4368",
+      "source_id": "gse",
+      "source_name": "GSE",
+      "publisher": "Gestore dei Servizi Energetici",
+      "title": "Conto Termico 3.0 — incentivi per edifici comunali",
+      "url": "https://assistenza.clienti.gse.it/csm/it/conto-termico-3-0-incentivo-100-nei-comuni-sotto-15-000-abitanti?id=faq&sys_id=1fac4456fb5a325083f3f12c6eefdc52",
+      "summary": "Incentivo a sportello per interventi di efficienza energetica e produzione termica da fonti rinnovabili, con regime rafforzato per alcuni edifici dei piccoli Comuni.",
+      "deadline_at": null,
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune può accedere alla misura come PA secondo gli interventi ammessi; il regime al 100% legato alla soglia di 15.000 abitanti non si applica per la sola soglia demografica."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune rientra nella soglia fino a 15.000 abitanti; il 100% richiede anche proprietà e utilizzo dell'edificio e gli altri requisiti della misura."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune può accedere alla misura come PA secondo gli interventi ammessi; il regime al 100% legato alla soglia di 15.000 abitanti non si applica per la sola soglia demografica."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune può accedere alla misura come PA secondo gli interventi ammessi; il regime al 100% legato alla soglia di 15.000 abitanti non si applica per la sola soglia demografica."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune rientra nella soglia fino a 15.000 abitanti; il 100% richiede anche proprietà e utilizzo dell'edificio e gli altri requisiti della misura."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune rientra nella soglia fino a 15.000 abitanti; il 100% richiede anche proprietà e utilizzo dell'edificio e gli altri requisiti della misura."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune può accedere alla misura come PA secondo gli interventi ammessi; il regime al 100% legato alla soglia di 15.000 abitanti non si applica per la sola soglia demografica."
+        }
+      },
+      "applicant_type": "Pubblica amministrazione o altro soggetto ammesso dal Conto Termico 3.0",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Patrimonio pubblico, servizi comunali e comunità locale",
+      "project_requirements": "Misura a sportello. Per gli edifici di proprietà di Comuni fino a 15.000 abitanti e utilizzati secondo le condizioni previste, l'incentivo può coprire il 100% delle spese ammissibili entro i massimali; negli altri casi si applicano le regole ordinarie del Conto Termico 3.0.",
+      "geographic_scope": "Italia",
+      "lifecycle_stage": "rolling_open",
+      "presentation": {
+        "source_mark": "GSE",
+        "source_class": "gse",
+        "category": "energia",
+        "source_label": "GSE",
+        "source_favicon": "",
+        "description": "Incentivo a sportello per interventi di efficienza energetica e produzione termica da fonti rinnovabili, con regime rafforzato per alcuni edifici dei piccoli Comuni.",
+        "condition_label": "Misura a sportello"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-741adb03de9d21",
+      "source_id": "eu-eui",
+      "source_name": "UE · European Urban Initiative",
+      "publisher": "European Urban Initiative",
+      "title": "European Urban Initiative — City-to-City Exchanges",
+      "url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
+      "summary": "Scambi operativi tra città europee per trasferire soluzioni su clima, energia, mobilità, casa, rigenerazione urbana e altre politiche di sviluppo urbano sostenibile.",
+      "deadline_at": null,
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        },
+        "Stazzema": {
+          "status": "not_eligible",
+          "reason": "Non risulta nella tabella regionale dei Comuni toscani classificati DEGURBA 1 o 2 usata per la verifica; non viene quindi presentata come ammissibile senza ulteriore evidenza ufficiale."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "DEGURBA Eurostat 2021 classe 2: può candidarsi come autorità urbana, costruendo lo scambio con una o due città di altri Paesi UE."
+        }
+      },
+      "applicant_type": "Autorità urbana di uno Stato membro UE classificata DEGURBA 1 o 2; partenariato con una o due città di altri Paesi",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Amministrazioni comunali e comunità locali che beneficiano dello scambio di pratiche urbane",
+      "project_requirements": "Call a sportello permanente per scambi tra due o tre città di Paesi diversi. L'EUI copre viaggio e alloggio e mette a disposizione supporto esperto. L'autorità urbana deve essere classificata DEGURBA 1 o 2; la classificazione Eurostat 2021 recepita dalla Regione Toscana colloca Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza e Viareggio in classe 2.",
+      "geographic_scope": "Unione europea",
+      "lifecycle_stage": "rolling_open",
+      "presentation": {
+        "source_mark": "EU",
+        "source_class": "eu",
+        "category": "europa",
+        "source_label": "UE · European Urban Initiative",
+        "source_favicon": "",
+        "description": "Scambi operativi tra città europee per trasferire soluzioni su clima, energia, mobilità, casa, rigenerazione urbana e altre politiche di sviluppo urbano sostenibile.",
+        "condition_label": "DEGURBA e partenariato europeo"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-1f49bff006acbe",
+      "source_id": "eu-eucf",
+      "source_name": "UE · European City Facility",
+      "publisher": "European City Facility · CINEA / ManagEnergy",
+      "title": "European City Facility — 8ª call",
+      "url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
+      "summary": "Contributo europeo da 60.000 euro per aiutare città e Comuni a preparare progetti di investimento su energia sostenibile e clima.",
+      "deadline_at": null,
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Comune in uno Stato membro UE: potenziale candidato, subordinatamente alla disponibilità di un SECAP o piano energia-clima equivalente e ai requisiti definitivi della 8ª call."
+        }
+      },
+      "applicant_type": "Città, Comuni, autorità locali, loro raggruppamenti o enti pubblici locali secondo i requisiti della call EUCF",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Amministrazioni locali e comunità che beneficeranno degli investimenti energetici e climatici preparati con l'EUCF",
+      "project_requirements": "La 8ª call è annunciata per ottobre 2026 e resterà aperta per due mesi. Sono previsti 185 contributi da 60.000 euro per sviluppare investment concepts su energia e clima. La candidatura richiede una strategia locale energia-clima, come un SECAP o piano equivalente con obiettivi di mitigazione; requisiti e calendario definitivi vanno riconfermati all'apertura della call.",
+      "geographic_scope": "Unione europea · Stati membri UE",
+      "lifecycle_stage": "announced_upcoming",
+      "presentation": {
+        "source_mark": "EUCF",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "UE · European City Facility",
+        "source_favicon": "",
+        "description": "Contributo europeo da 60.000 euro per aiutare città e Comuni a preparare progetti di investimento su energia sostenibile e clima.",
+        "condition_label": "SECAP / piano energia-clima"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    },
+    {
+      "id": "opp-f2d1b813488872",
+      "source_id": "mit-enti-locali",
+      "source_name": "MIT",
+      "publisher": "Ministero delle Infrastrutture e dei Trasporti",
+      "title": "Fondo investimenti stradali piccoli Comuni — bando 2026",
+      "url": "https://www.mit.gov.it/comunicazione/news/fondo-piccoli-comuni-il-mit-finanzia-altri-292-interventi-per-40-milioni",
+      "summary": "Procedura annunciata dal MIT per investimenti stradali nei piccoli Comuni; non è ancora una finestra di candidatura aperta.",
+      "deadline_at": null,
+      "deadline_time": null,
+      "eligibility": "conditional",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        },
+        "Forte dei Marmi": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        },
+        "Massarosa": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        },
+        "Pietrasanta": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        },
+        "Seravezza": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Rientra nella fascia dei piccoli Comuni richiamata dal fondo, ma l'ammissibilità definitiva dipende dal testo del bando 2026 e dagli eventuali precedenti finanziamenti."
+        },
+        "Viareggio": {
+          "status": "not_eligible",
+          "reason": "Non rientra nella soglia fino a 5.000 abitanti prevista dal fondo nelle edizioni richiamate; i requisiti 2026 saranno ricontrollati alla pubblicazione."
+        }
+      },
+      "applicant_type": "Piccolo Comune secondo i requisiti che saranno confermati dal bando 2026",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Viabilità comunale e comunità locali",
+      "project_requirements": "Il MIT ha annunciato la pubblicazione del bando 2026 con dotazione di 10 milioni di euro. I requisiti definitivi, compresa la soglia demografica e l'eventuale esclusione dei Comuni già finanziati, devono essere verificati alla pubblicazione dell'avviso.",
+      "geographic_scope": "Italia",
+      "lifecycle_stage": "announced_upcoming",
+      "presentation": {
+        "source_mark": "MIT",
+        "source_class": "mit",
+        "category": "infrastrutture",
+        "source_label": "MIT",
+        "source_favicon": "https://www.mit.gov.it/favicon.ico",
+        "description": "Procedura annunciata dal MIT per investimenti stradali nei piccoli Comuni; non è ancora una finestra di candidatura aperta.",
+        "condition_label": "In attesa del bando"
+      },
+      "access_mode": "specific_requirement",
+      "is_new": false
+    }
+  ],
+  "archive": [],
+  "sourceCoverage": {
+    "summary": {
+      "configured": 47,
+      "active": 46,
+      "healthyActive": 39,
+      "degraded": 2,
+      "planned": 1,
+      "discovery": 39
+    },
+    "rows": [
+      {
+        "source_id": "regione-toscana",
+        "label": "Regione Toscana",
+        "publicCount": 8,
+        "verifiedOutputCount": 8,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      {
+        "source_id": "regione-toscana-fesr",
+        "label": "PR Toscana FESR 2021-2027",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      {
+        "source_id": "regione-toscana-fse",
+        "label": "PR Toscana FSE+ 2021-2027",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      {
+        "source_id": "fondazione-cr-lucca",
+        "label": "Fondazione Cassa di Risparmio di Lucca",
+        "publicCount": 2,
+        "verifiedOutputCount": 2,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "/assets/source-icons/fondazione-cr-lucca.svg"
+      },
+      {
+        "source_id": "sviluppo-toscana",
+        "label": "Sviluppo Toscana",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "/assets/source-icons/sviluppo-toscana.svg"
+      },
+      {
+        "source_id": "mic-spettacolo",
+        "label": "Ministero della Cultura · DG Spettacolo",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "https://cultura.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "ministero-interno-prefetture",
+        "label": "Ministero dell'Interno · Prefetture",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "primary",
+        "favicon": "/assets/source-icons/ministero-interno.svg"
+      },
+      {
+        "source_id": "pa-digitale-2026",
+        "label": "PA Digitale 2026",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "degraded",
+        "runtimeStatus": "ok",
+        "role": "supplementary",
+        "favicon": "https://www.padigitale2026.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "anci-toscana",
+        "label": "ANCI Toscana",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "/assets/source-icons/anci-toscana.svg"
+      },
+      {
+        "source_id": "anci-nazionale",
+        "label": "ANCI",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": "https://www.anci.it/favicon.ico"
+      },
+      {
+        "source_id": "gse",
+        "label": "GSE",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "degraded",
+        "role": "discovery",
+        "favicon": "https://www.gse.it/favicon.ico"
+      },
+      {
+        "source_id": "ministero-interno",
+        "label": "Ministero dell'Interno · Finanza locale",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "/assets/source-icons/ministero-interno.svg"
+      },
+      {
+        "source_id": "pcm-stato-citta",
+        "label": "Conferenza Stato-Città",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": "https://www.statocitta.pcm.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "mic-dgcc",
+        "label": "MiC · Creatività Contemporanea",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": "https://creativitacontemporanea.cultura.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "pcm-politiche-mare",
+        "label": "PCM · Politiche del mare",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.dipartimentopolitichemare.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "pcm-sport",
+        "label": "PCM · Dipartimento per lo Sport",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.sport.governo.it/favicon.ico"
+      },
+      {
+        "source_id": "mit-enti-locali",
+        "label": "MIT · Finanziamenti enti locali",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.mit.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "mase-bandi",
+        "label": "MASE · Bandi e avvisi",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.mase.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "cinea-life",
+        "label": "CINEA · LIFE",
+        "publicCount": 4,
+        "verifiedOutputCount": 4,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://cinea.ec.europa.eu/favicon.ico"
+      },
+      {
+        "source_id": "eu-neb",
+        "label": "UE · New European Bauhaus",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://new-european-bauhaus.europa.eu/favicon.ico"
+      },
+      {
+        "source_id": "interreg-marittimo",
+        "label": "Interreg Italia-Francia Marittimo",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://interreg-marittimo.eu/favicon.ico"
+      },
+      {
+        "source_id": "politiche-coesione",
+        "label": "PCM · Politiche di coesione",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.politichecoesione.governo.it/favicon.ico"
+      },
+      {
+        "source_id": "pa-digitale-current",
+        "label": "PA digitale 2026 · Comuni",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.padigitale2026.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "pcm-famiglia",
+        "label": "PCM · Politiche per la famiglia",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.famiglia.governo.it/favicon.ico"
+      },
+      {
+        "source_id": "pcm-pari-opportunita",
+        "label": "PCM · Pari opportunità",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.pariopportunita.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "pcm-casa-italia",
+        "label": "PCM · Casa Italia",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://www.casaitalia.governo.it/favicon.ico"
+      },
+      {
+        "source_id": "mic-generale",
+        "label": "Ministero della Cultura · Avvisi",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": "https://cultura.gov.it/favicon.ico"
+      },
+      {
+        "source_id": "eu-funding-tenders",
+        "label": "UE · Funding & Tenders",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": "https://ec.europa.eu/favicon.ico"
+      },
+      {
+        "source_id": "pcm-disabilita",
+        "label": "PCM · Disabilità",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "ministero-turismo",
+        "label": "Ministero del Turismo · Enti territoriali",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "pcm-politiche-giovanili-scu",
+        "label": "PCM · Politiche giovanili e Servizio civile",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "mlps-social-services",
+        "label": "Ministero del Lavoro · Servizi sociali",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "mim-enti-locali",
+        "label": "MIM · Edilizia e servizi scolastici",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "error",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "funzione-pubblica",
+        "label": "Funzione Pubblica · Comuni",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-cerv",
+        "label": "UE · CERV",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-urbact",
+        "label": "UE · URBACT",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-eui",
+        "label": "UE · European Urban Initiative",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-erasmus",
+        "label": "UE · Erasmus+",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-cef",
+        "label": "UE · Connecting Europe Facility",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-horizon",
+        "label": "UE · Horizon Europe",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-digital",
+        "label": "UE · Digital Europe",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "interreg-europe",
+        "label": "UE · Interreg Europe",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "dara-montagna",
+        "label": "Affari regionali · Montagna",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "protezione-civile",
+        "label": "Protezione Civile · risorse territoriali",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "masaf-bandi",
+        "label": "MASAF · bandi e avvisi",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "toscana-csr-artea-leader",
+        "label": "Toscana · CSR FEASR / ARTEA / LEADER",
+        "publicCount": 0,
+        "verifiedOutputCount": 0,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      },
+      {
+        "source_id": "eu-eucf",
+        "label": "UE · European City Facility",
+        "publicCount": 1,
+        "verifiedOutputCount": 1,
+        "monitoringStatus": "active",
+        "runtimeStatus": "ok",
+        "role": "discovery",
+        "favicon": ""
+      }
+    ]
+  },
+  "lifecycleSummary": {
+    "application_open": 26,
+    "rolling_open": 2,
+    "announced_upcoming": 2
+  },
+  "counts": {
+    "public": 30,
+    "applicationOpen": 26,
+    "rollingOpen": 2,
+    "announcedUpcoming": 2,
+    "coverageHold": 0,
+    "new": 5
+  },
+  "newOpportunityWindowDays": 7,
+  "engineVersion": "0.4.4",
+  "coverageVersion": "0.4.4",
+  "uiVersion": "0.4.4"
+}

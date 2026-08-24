@@ -182,7 +182,10 @@ def build_public_status(
         next_release = safe_next_release(
             operational.get("nextExpectedRelease") or policy.get("nextExpectedRelease")
         )
-        row_checked_at = str(operational.get("checkedAt") or (checked_at if probe is not None else ""))
+        # La data generale descrive l'esecuzione del monitor, non prova che il
+        # singolo indicatore sia stato controllato. Per evitare date retroattive
+        # sui nuovi indicatori usiamo soltanto lo stato operativo per metrica.
+        row_checked_at = str(operational.get("checkedAt") or "")
         direct_reachable = None
         if probe is not None:
             if probe.get("directReachable") is False:

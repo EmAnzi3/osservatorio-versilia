@@ -125,21 +125,27 @@ def patch_app() -> None:
 
 def patch_cache_version() -> None:
     text = BUILD.read_text(encoding='utf-8')
+    current = 'APP_BUNDLE_ASSET_VERSION = "20260824-v116"'
+    current_test = 'assets/app-bundle.js?v=20260824-v116'
+    if current in text and current_test in BRAND_TEST.read_text(encoding='utf-8'):
+        return
     text = replace_any(text, [
-        ('APP_BUNDLE_ASSET_VERSION = "20260820-v117"', 'APP_BUNDLE_ASSET_VERSION = "20260820-v118"'),
-        ('APP_BUNDLE_ASSET_VERSION = "20260820-v116"', 'APP_BUNDLE_ASSET_VERSION = "20260820-v118"'),
-        ('APP_BUNDLE_ASSET_VERSION = "20260820-v115"', 'APP_BUNDLE_ASSET_VERSION = "20260820-v118"'),
-        ('APP_BUNDLE_ASSET_VERSION = "20260820-v114"', 'APP_BUNDLE_ASSET_VERSION = "20260820-v118"'),
-    ], 'cache bundle v118')
+        ('APP_BUNDLE_ASSET_VERSION = "20260820-v118"', current),
+        ('APP_BUNDLE_ASSET_VERSION = "20260820-v117"', current),
+        ('APP_BUNDLE_ASSET_VERSION = "20260820-v116"', current),
+        ('APP_BUNDLE_ASSET_VERSION = "20260820-v115"', current),
+        ('APP_BUNDLE_ASSET_VERSION = "20260820-v114"', current),
+    ], 'cache bundle v1.16')
     BUILD.write_text(text, encoding='utf-8')
 
     text = BRAND_TEST.read_text(encoding='utf-8')
     text = replace_any(text, [
-        ('assets/app-bundle.js?v=20260820-v117', 'assets/app-bundle.js?v=20260820-v118'),
-        ('assets/app-bundle.js?v=20260820-v116', 'assets/app-bundle.js?v=20260820-v118'),
-        ('assets/app-bundle.js?v=20260820-v115', 'assets/app-bundle.js?v=20260820-v118'),
-        ('assets/app-bundle.js?v=20260820-v114', 'assets/app-bundle.js?v=20260820-v118'),
-    ], 'test cache bundle v118')
+        ('assets/app-bundle.js?v=20260820-v118', current_test),
+        ('assets/app-bundle.js?v=20260820-v117', current_test),
+        ('assets/app-bundle.js?v=20260820-v116', current_test),
+        ('assets/app-bundle.js?v=20260820-v115', current_test),
+        ('assets/app-bundle.js?v=20260820-v114', current_test),
+    ], 'test cache bundle v1.16')
     BRAND_TEST.write_text(text, encoding='utf-8')
 
 

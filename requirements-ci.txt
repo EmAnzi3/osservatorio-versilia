@@ -1,0 +1,5 @@
+# Dipendenze dirette della build e dei controlli GitHub Pages.
+playwright==1.62.0
+pypdf==6.16.2
+requests==2.34.2
+beautifulsoup4==4.15.0

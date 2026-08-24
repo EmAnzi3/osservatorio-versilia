@@ -41,6 +41,23 @@ def main() -> None:
     assert derive_status("2024", {"ok": True}, {"observedLatestPeriod": "2024"}) == "current"
     assert derive_status("2024", {"ok": True}, {"observedLatestPeriod": "2025"}) == "release_detected"
 
+    # La data globale dell'esecuzione non deve essere attribuita a una metrica
+    # che ha una sonda di fonte ma non un controllo operativo registrato.
+    sample_key = next(iter(data["metrics"]))
+    sample_metric = data["metrics"][sample_key]
+    sample_status = build_public_status(
+        {"version": "test", "metrics": {sample_key: sample_metric}, "themes": data["themes"]},
+        registry,
+        {
+            "schemaVersion": 2,
+            "checkedAt": "2026-08-18T12:10:09+00:00",
+            "sources": {sample_metric["sourceUrl"]: {"ok": True}},
+            "metrics": {},
+        },
+    )["metrics"][0]
+    assert sample_status["status"] == "source_checked"
+    assert sample_status["lastChecked"] == "", "La data generale non è una prova per-metrica"
+
     for metric in public["metrics"]:
         release = metric.get("nextExpectedRelease")
         if release:

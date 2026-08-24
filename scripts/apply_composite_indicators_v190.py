@@ -41,7 +41,7 @@ def percent_text(value: float) -> str:
 
 
 def rate_text(value: float) -> str:
-    return f"{value:.1f} ogni 1.000".replace(".", ",")
+    return f"{value:.1f}".replace(".", ",") + " ogni 1.000"
 
 
 def town_meta(data: dict, town: str) -> dict:

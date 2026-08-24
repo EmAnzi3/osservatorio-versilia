@@ -27,6 +27,7 @@ SPECIAL_PUBLIC_PAGES = {
     Path("confronta/meteo-clima/index.html"),
     Path("pnrr/index.html"),
     Path("stato-dati/index.html"),
+    Path("opportunita/index.html"),
     Path("percorsi/index.html"),
     Path("percorsi/metodo.html"),
 }
@@ -147,6 +148,7 @@ def assert_shell(path: Path, document: str, canonical: str) -> None:
     expected_header = (
         ("Temi", BASE_URL + "#temi"),
         ("Comuni", BASE_URL + "#comuni"),
+        ("Opportunità", BASE_URL + "opportunita/"),
         ("Il progetto", BASE_URL + "progetto/"),
         ("Stato dati", BASE_URL + "stato-dati/"),
         ("Segnala", BASE_URL + "segnala/"),
@@ -162,6 +164,7 @@ def assert_shell(path: Path, document: str, canonical: str) -> None:
         expected_footer = (
             ("Il progetto", BASE_URL + "progetto/"),
             ("Stato dei dati", BASE_URL + "stato-dati/"),
+            ("Opportunità", BASE_URL + "opportunita/"),
             ("Metodo", BASE_URL + "progetto/#metodo"),
             ("Licenza", BASE_URL + "progetto/#licenza"),
             ("Versioni dei dati", BASE_URL + "progetto/#versioni"),

@@ -180,8 +180,8 @@ def build_page(status: dict[str, Any]) -> str:
   <meta name="twitter:image:alt" content="Viareggio e le Alpi Apuane, immagine di Osservatorio Versilia">
   <link rel="canonical" href="https://osservatorioversilia.it/stato-dati/">
   <script type="application/ld+json">{json_ld}</script>
-  <link rel="icon" href="../favicon.svg?v=20260820-ov3" type="image/svg+xml">
-  <link rel="manifest" href="../site.webmanifest?v=20260813-pwa8">
+  <link rel="icon" href="../favicon.svg?v=20260824-ov4" type="image/svg+xml">
+  <link rel="manifest" href="../site.webmanifest?v=20260824-pwa9">
   {native_styles}
   <link rel="stylesheet" href="../assets/data-status.css">
   <meta name="theme-color" content="#0F3654">
