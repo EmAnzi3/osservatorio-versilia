@@ -57,8 +57,10 @@ def main():
     assert transport['TPL interurbano']['count'] == 37
 
     registry = load('data/source-registry.json')
-    assert registry['expectedMetricCount'] == 143
-    assert registry['expectedInlineMetricCount'] == 139
+    # Il gate Scuola verifica il contratto globale corrente senza congelarlo
+    # alla release in cui il lotto MIM è stato introdotto.
+    assert registry['expectedMetricCount'] == 146
+    assert registry['expectedInlineMetricCount'] == 142
     for key in KEYS:
         assert registry['metricOverrides'][key]['profile'] == 'mim-school-year'
 
