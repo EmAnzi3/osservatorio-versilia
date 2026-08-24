@@ -1,0 +1,47 @@
+name: Welfare e prima infanzia · source probe
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/probe_welfare_sources.py"
+      - ".github/workflows/welfare-draft.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install probe dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install openpyxl
+
+      - name: Probe official sources
+        run: python scripts/probe_welfare_sources.py
+
+      - name: Show probe report
+        if: always()
+        run: |
+          if [ -f artifacts/welfare-probe/probe.md ]; then
+            cat artifacts/welfare-probe/probe.md
+          fi
+
+      - name: Upload source probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: welfare-source-probe
+          path: artifacts/welfare-probe/
+          retention-days: 14
