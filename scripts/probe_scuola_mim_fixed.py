@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Compatibilità temporanea: corregge il path delle distribuzioni CSV MIM."""
+"""Compatibilità MIM: usa il catalogo legacy che espone i file CSV reali."""
 from __future__ import annotations
 
 import probe_scuola_mim as probe
 
 
 def candidate_urls(code: str):
-    base = "https://dati.istruzione.it/opendata/opendata/catalog/"
+    base = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/"
     for school_year, date in probe.DISTRIBUTIONS:
         yield f"{base}{code}{school_year}{date}.csv"
 
