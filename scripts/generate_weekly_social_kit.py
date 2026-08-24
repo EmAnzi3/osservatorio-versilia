@@ -27,21 +27,42 @@ DIST = KIT / "dist"
 DEFAULT_PLAN = DIST / "editorial-plan" / "week.json"
 
 
+# Il renderer storico non conosceva alcune unità ora presenti nel catalogo.
+# Le estensioni restano qui, senza modificare i dati canonici.
+_base_fmt_value = renderer.fmt_value
+_base_compact_value = renderer.compact_value
+
+
+def _fmt_value(value: float, unit: str, signed: bool = False) -> str:
+    if unit == "years":
+        prefix = "+" if signed and value > 0 else ""
+        return f"{prefix}{renderer.fmt_it(value, 1)} anni"
+    return _base_fmt_value(value, unit, signed)
+
+
+def _compact_value(value: float, unit: str) -> str:
+    if unit == "years":
+        return f"{renderer.fmt_it(value, 1)} anni"
+    return _base_compact_value(value, unit)
+
+
+renderer.fmt_value = _fmt_value
+renderer.compact_value = _compact_value
+
+
 def load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def write(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding="utf-8")
-
-
 def safe_id(value: str) -> str:
-    return "".join(ch.lower() if ch.isalnum() else "-" for ch in value).strip("-").replace("--", "-")
+    cleaned = "".join(ch.lower() if ch.isalnum() else "-" for ch in value).strip("-")
+    while "--" in cleaned:
+        cleaned = cleaned.replace("--", "-")
+    return cleaned
 
 
-def questions_for(theme: str, bank: dict[str, Any]) -> list[str]:
-    configured = bank.get("themes", {}).get(theme, {})
+def questions_for(theme: str, metric_key: str, bank: dict[str, Any]) -> list[str]:
+    configured = bank.get("metrics", {}).get(metric_key) or bank.get("themes", {}).get(theme, {})
     fallback = bank["fallback"]
     return [
         configured.get("data") or fallback["data"],
@@ -77,6 +98,25 @@ def temporal_spec(metric: dict[str, Any]) -> dict[str, Any]:
         "history_from": base,
         "comparison": {"type": "base_year", "year": base},
     }
+
+
+def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[str], list[str]]:
+    meta = metric["meta"]
+    short = meta.get("shortLabel") or meta["label"]
+    year = int(meta["year"])
+    if temporal:
+        base = temporal["comparison"]["year"]
+        comparison_subtitle = (
+            f"Differenza in punti rispetto al {base}"
+            if meta.get("unit") == "percent"
+            else f"Differenza percentuale rispetto al {base}"
+        )
+        titles = [short, f"Dal {base} al {year}", "La variazione per Comune", "Cosa vedi nel tuo Comune?"]
+        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
+    else:
+        titles = [short, "Che cosa misura il dato", "Come leggere il confronto", "Cosa vedi nel tuo Comune?"]
+        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
+    return titles, subtitles
 
 
 def metric_for_item(item: dict[str, Any], site: dict[str, Any]) -> tuple[str | None, str | None]:
@@ -122,6 +162,8 @@ def post_from_item(
             "reason": f"Tema della metrica {metric_key} ({metric_theme}) non coerente con il piano ({item.get('theme')}).",
         }
 
+    temporal = temporal_spec(metric)
+    titles, subtitles = titles_for(metric, temporal)
     kind = "ricorrenza" if item["type"] == "observance" else "ordinario"
     post_id = f"{item['date']}-{kind}-{item['theme']}-{metric_key}"
     post: dict[str, Any] = {
@@ -132,9 +174,11 @@ def post_from_item(
         "theme": item["theme"],
         "dataset": "site",
         "metric": metric_key,
-        "questions": questions_for(item["theme"], questions),
+        "questions": questions_for(item["theme"], metric_key, questions),
+        "titles": titles,
+        "subtitles": subtitles,
     }
-    post.update(temporal_spec(metric))
+    post.update(temporal)
     if item["type"] == "observance":
         limitation = (item.get("limitations") or "").strip()
         angle = (item.get("angle") or "").strip()
@@ -186,8 +230,7 @@ def main() -> int:
     parser.add_argument("--plan", default=str(DEFAULT_PLAN), help="week.json prodotto da plan_social_week.py")
     args = parser.parse_args()
 
-    plan_path = Path(args.plan)
-    plan = load(plan_path)
+    plan = load(Path(args.plan))
     site = load(ROOT / "data" / "site-data.json")
     questions = load(KIT / "config" / "question-bank.json")
     design = load(KIT / "config" / "design-system.json")
@@ -215,6 +258,7 @@ def main() -> int:
     renderer.write(DIST / "index.html", renderer.gallery(manifests))
     renderer.write(DIST / "week.json", json.dumps(plan, ensure_ascii=False, indent=2) + "\n")
 
+    counts = Counter(date.fromisoformat(post["date"]).isocalendar()[:2] for post in posts)
     root_manifest = {
         "status": "partial" if manual else "ready-for-review",
         "method": "weekly-four-slide-carousels",
@@ -226,12 +270,7 @@ def main() -> int:
         "slides": len(manifests) * 4,
         "manual_required": manual,
         "items": manifests,
-        "weekly_counts": dict(Counter(date.fromisoformat(post["date"]).isocalendar()[:2] for post in posts)),
-    }
-    # Le tuple ISO week non sono chiavi JSON portabili: esponiamo anche una forma leggibile.
-    root_manifest["weekly_counts"] = {
-        f"{year}-W{week:02d}": count
-        for (year, week), count in Counter(date.fromisoformat(post["date"]).isocalendar()[:2] for post in posts).items()
+        "weekly_counts": {f"{year}-W{week:02d}": count for (year, week), count in counts.items()},
     }
     renderer.write(DIST / "manifest.json", json.dumps(root_manifest, ensure_ascii=False, indent=2) + "\n")
     renderer.write(DIST / "README.md", package_readme(plan, manifests, manual))
