@@ -12,11 +12,15 @@
   const sourceSelect = root.querySelector('[data-op-source]');
   const lifecycleSelect = root.querySelector('[data-op-lifecycle]');
   const accessSelect = root.querySelector('[data-op-access]');
+  const newSelect = root.querySelector('[data-op-new]');
+  const sortSelect = root.querySelector('[data-op-sort]');
   const searchInput = root.querySelector('[data-op-search]');
   const resetButton = root.querySelector('[data-op-reset]');
   const visibleLabel = root.querySelector('[data-op-visible]');
   const emptyState = root.querySelector('[data-op-empty]');
+  const list = root.querySelector('.op-preview-list');
   const cards = Array.from(root.querySelectorAll('[data-opportunity-card]'));
+  const originalOrder = new Map(cards.map((card, index) => [card, index]));
 
   cards.forEach((card) => {
     const statuses = new Set(Array.from(card.querySelectorAll('[data-town-status]')).map((chip) => chip.dataset.townStatus));
@@ -52,22 +56,40 @@
     });
   };
 
+  const orderCards = (mode) => {
+    if (!list) return;
+    const ordered = [...cards].sort((a, b) => {
+      if (mode === 'recent') {
+        const aSeen = String(a.dataset.firstSeen || '');
+        const bSeen = String(b.dataset.firstSeen || '');
+        const bySeen = bSeen.localeCompare(aSeen);
+        if (bySeen) return bySeen;
+      }
+      return (originalOrder.get(a) || 0) - (originalOrder.get(b) || 0);
+    });
+    ordered.forEach((card) => list.appendChild(card));
+  };
+
   const apply = () => {
     const town = townSelect?.value || '';
     const source = sourceSelect?.value || '';
     const lifecycle = lifecycleSelect?.value || '';
     const access = accessSelect?.value || '';
+    const novelty = newSelect?.value || '';
+    const sortMode = sortSelect?.value || 'deadline';
     const query = normalize(searchInput?.value || '');
     let visible = 0;
 
+    orderCards(sortMode);
     cards.forEach((card) => {
       const towns = (card.dataset.towns || '').split('|').filter(Boolean);
       const townMatch = !town || towns.includes(town);
       const sourceMatch = !source || card.dataset.source === source;
       const lifecycleMatch = !lifecycle || card.dataset.lifecycle === lifecycle;
       const accessMatch = !access || card.dataset.access === access;
+      const noveltyMatch = novelty !== 'new' || card.dataset.new === 'true';
       const searchMatch = !query || normalize(card.dataset.search).includes(query);
-      const show = townMatch && sourceMatch && lifecycleMatch && accessMatch && searchMatch;
+      const show = townMatch && sourceMatch && lifecycleMatch && accessMatch && noveltyMatch && searchMatch;
       card.hidden = !show;
       if (show) visible += 1;
     });
@@ -79,13 +101,15 @@
     updateSelectedTown(town);
   };
 
-  [townSelect, sourceSelect, lifecycleSelect, accessSelect].forEach((control) => control?.addEventListener('change', apply));
+  [townSelect, sourceSelect, lifecycleSelect, accessSelect, newSelect, sortSelect].forEach((control) => control?.addEventListener('change', apply));
   searchInput?.addEventListener('input', apply);
   resetButton?.addEventListener('click', () => {
     if (townSelect) townSelect.value = '';
     if (sourceSelect) sourceSelect.value = '';
     if (lifecycleSelect) lifecycleSelect.value = '';
     if (accessSelect) accessSelect.value = '';
+    if (newSelect) newSelect.value = '';
+    if (sortSelect) sortSelect.value = 'deadline';
     if (searchInput) searchInput.value = '';
     apply();
     townSelect?.focus();

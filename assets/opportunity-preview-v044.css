@@ -3,11 +3,24 @@
   box-shadow: 0 14px 34px rgba(15, 54, 84, .10);
 }
 
+.op-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .7rem;
+}
+
+.op-card-badges .op-lifecycle,
+.op-card-badges .op-new-badge {
+  margin: 0;
+  align-self: center;
+}
+
 .op-new-badge {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  margin: 0 0 .7rem .45rem;
   padding: .32rem .64rem;
   border: 1px solid rgba(181, 92, 24, .28);
   border-radius: 999px;
@@ -20,13 +33,26 @@
   text-transform: uppercase;
 }
 
-.op-card-heading > .op-lifecycle + .op-new-badge,
-.op-card-heading > .op-new-badge + .op-lifecycle {
-  vertical-align: middle;
+.op-preview-controls {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-@media (max-width: 620px) {
-  .op-new-badge {
-    margin-left: .35rem;
+@media (max-width: 1050px) {
+  .op-preview-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .op-preview-controls .op-search-field {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .op-preview-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .op-card-badges {
+    gap: .4rem;
   }
 }
