@@ -1,0 +1,64 @@
+name: Materializza favicon Radar ufficiali una tantum
+
+on:
+  push:
+    branches: ["integration/opportunity-radar-v1"]
+    paths:
+      - ".github/workflows/materialize-opportunity-favicons-once.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/opportunity-radar-v1
+          fetch-depth: 0
+      - name: Extract official favicon set from verified green artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          artifact_id=9488890210
+          tmp="$(mktemp -d)"
+          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > "$tmp/green.zip"
+          unzip -q "$tmp/green.zip" -d "$tmp/green"
+          src="$tmp/green/dist/assets/source-favicons"
+          test -s "$src/provenance.json"
+          mkdir -p assets/opportunity-source-favicons
+          cp -a "$src"/. assets/opportunity-source-favicons/
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path('assets/opportunity-source-favicons')
+          provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
+          required={
+            'eu-cerv','eu-eucf','eu-eui','eu-neb','fondazione-cr-lucca','gse',
+            'mic-dgcc','ministero-interno-prefetture','mit-enti-locali','mlps-social-services',
+            'pcm-disabilita','pcm-famiglia','pcm-pari-opportunita','pcm-politiche-mare',
+            'regione-toscana','regione-toscana-fse','sviluppo-toscana'
+          }
+          missing=required-set(provenance)
+          assert not missing, missing
+          mic=root/'mic-dgcc.png'
+          assert mic.stat().st_size == 19912, mic.stat().st_size
+          assert hashlib.sha256(mic.read_bytes()).hexdigest() == 'fb5906ca71b08563282e4f48a9ada17a1f481031ada4071e85671499f84775fc'
+          print(f'Asset ufficiali materializzati: {len(provenance)} fonti; mic-dgcc verificato byte-per-byte.')
+          PY
+      - name: Commit pinned favicon set
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add assets/opportunity-source-favicons
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare."
+            exit 0
+          fi
+          git commit -m "Pin verified official Radar favicon set"
+          git push origin HEAD:integration/opportunity-radar-v1
