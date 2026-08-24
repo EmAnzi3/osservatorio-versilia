@@ -7,6 +7,7 @@ on:
       - "data/opportunity-*.json"
       - "scripts/*opportunity*.py"
       - "assets/opportunity-*.css"
+      - "assets/opportunity-*.js"
       - ".github/workflows/opportunity-radar-*.yml"
   workflow_dispatch:
 
@@ -62,7 +63,15 @@ jobs:
           PY
 
       - name: Build public site
-        run: python scripts/build_static_brand.py
+        run: |
+          python scripts/build_static_brand.py
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
+          needle = 'opportunity-preview-v04.js?v=20260824-filter2'
+          assert needle in html, 'JS Radar non versionato: rischio cache client obsoleta'
+          print('Cache busting Radar verificato:', needle)
+          PY
 
       - name: Start local server
         shell: bash

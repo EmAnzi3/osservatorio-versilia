@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "reports" / "runtime" / "opportunities-v04.json"
 DEFAULT_DIST = ROOT / "dist"
 TARGET_ROUTE = "opportunita-preview"
+OPPORTUNITY_UI_ASSET_VERSION = "20260824-filter2"
 
 _ORIGINAL_BASE_CARD = base.BASE_CARD
 LIFECYCLE = {
@@ -119,7 +120,11 @@ def render_page(payload: dict[str, Any]) -> str:
         "",
         page,
     )
-    page = page.replace("</body>", '  <script src="../assets/opportunity-preview-v04.js" defer></script>\n</body>', 1)
+    page = page.replace(
+        "</body>",
+        f'  <script src="../assets/opportunity-preview-v04.js?v={OPPORTUNITY_UI_ASSET_VERSION}" defer></script>\n</body>',
+        1,
+    )
     page = re.sub(
         r'<section class="method-detail page-width op-overview" aria-label="Quadro operativo">.*?</section>',
         _overview(payload),
