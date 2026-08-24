@@ -56,7 +56,10 @@ def spending_metric(site: dict, snapshot: dict) -> dict:
     for town in town_order(site):
         raw = snapshot["towns"][town]["socialSpendingPerResident"]
         years = list(raw["years"])
-        values = [float(v) for v in raw["values"]]
+        # Il dato Istat sorgente resta nello snapshot con la precisione originale;
+        # nel catalogo pubblico esponiamo euro/abitante a due decimali, così anche
+        # grafici, ranking, tooltip e schede comunali non mostrano code decimali.
+        values = [round(float(v), 2) for v in raw["values"]]
         value = values[-1]
         latest_values.append(value)
         rows.append({
@@ -67,7 +70,7 @@ def spending_metric(site: dict, snapshot: dict) -> dict:
             "normalized": None,
             "benchmarkValue": value,
         })
-    mean = sum(latest_values) / len(latest_values)
+    mean = round(sum(latest_values) / len(latest_values), 2)
     source = snapshot["sources"][SPENDING_KEY]
     return {
         "meta": {
@@ -129,7 +132,7 @@ def composition_metric(site: dict, snapshot: dict, spending: dict) -> dict:
         for index, (label, values) in enumerate(zip(areas, component_values, strict=True))
     ]
     source = snapshot["sources"][COMPOSITION_KEY]
-    mean_spending = sum(spending_by_town.values()) / len(spending_by_town)
+    mean_spending = round(sum(spending_by_town.values()) / len(spending_by_town), 2)
     return {
         "meta": {
             "key": COMPOSITION_KEY,
