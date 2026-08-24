@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Renderer v0.4.4: evidenzia le opportunità rilevate negli ultimi 7 giorni."""
+"""Renderer v0.4.4: evidenzia e rende filtrabili le opportunità recenti."""
 from __future__ import annotations
 
 import argparse
+import html
 import re
 import shutil
 from pathlib import Path
@@ -21,19 +22,52 @@ _source_options = base._source_options
 
 def _card_with_new_badge(item: dict) -> str:
     text = _ORIGINAL_LIFECYCLE_CARD(item)
+    first_seen = html.escape(str(item.get("first_seen_at") or ""), quote=True)
+    deadline = html.escape(str(item.get("deadline_at") or ""), quote=True)
+    new_attr = ' data-new="true"' if bool(item.get("is_new")) else ' data-new="false"'
+    text = text.replace(
+        " data-opportunity-card",
+        f' data-opportunity-card{new_attr} data-first-seen="{first_seen}" data-deadline="{deadline}"',
+        1,
+    )
     if not bool(item.get("is_new")):
         return text
+
     text = text.replace(
         '<article class="op-card"',
-        '<article class="op-card is-new" data-new="true"',
+        '<article class="op-card is-new"',
         1,
     )
-    text = text.replace(
-        '<div class="op-card-heading">',
-        '<div class="op-card-heading"><span class="op-new-badge" aria-label="Nuova opportunità">Nuova</span>',
-        1,
+    lifecycle = re.search(r'<span class="op-lifecycle[^\"]*">.*?</span>', text)
+    if not lifecycle:
+        raise RuntimeError("Badge lifecycle non trovato nella scheda nuova")
+    badges = (
+        '<div class="op-card-badges">'
+        '<span class="op-new-badge" aria-label="Nuova opportunità">Nuova</span>'
+        f'{lifecycle.group(0)}'
+        '</div>'
     )
+    text = text[:lifecycle.start()] + badges + text[lifecycle.end():]
     return text
+
+
+def _enhance_controls(text: str) -> str:
+    if "data-op-new" in text and "data-op-sort" in text:
+        return text
+    controls = (
+        '<label>Novità<select data-op-new>'
+        '<option value="">Tutte</option>'
+        '<option value="new">Solo nuove</option>'
+        '</select></label>'
+        '<label>Ordina<select data-op-sort>'
+        '<option value="deadline">Scadenza</option>'
+        '<option value="recent">Più recenti</option>'
+        '</select></label>'
+    )
+    marker = '<label class="op-search-field">Cerca<input type="search"'
+    if marker not in text:
+        raise RuntimeError("Campo Cerca non trovato per i controlli v0.4.4")
+    return text.replace(marker, controls + marker, 1)
 
 
 def build(payload_path: Path, dist: Path) -> Path:
@@ -53,6 +87,7 @@ def build(payload_path: Path, dist: Path) -> Path:
 
     text = target.read_text(encoding="utf-8")
     text = text.replace("v0.4.3", "v0.4.4")
+    text = _enhance_controls(text)
     if "opportunity-preview-v044.css" not in text:
         text = text.replace(
             "</head>",
@@ -68,6 +103,8 @@ def build(payload_path: Path, dist: Path) -> Path:
     actual_new = len(re.findall(r'class="op-new-badge"', check))
     if actual_new != expected_new:
         raise SystemExit(f"Badge Nuova incoerenti: HTML={actual_new} payload={expected_new}")
+    if check.count("data-op-new") != 1 or check.count("data-op-sort") != 1:
+        raise SystemExit("Controlli Novità/Ordina non materializzati correttamente")
     return target
 
 
