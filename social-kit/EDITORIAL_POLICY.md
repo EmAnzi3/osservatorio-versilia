@@ -56,28 +56,30 @@ Questi termini possono comparire solo in una citazione attribuita e necessaria, 
 3. **Fonte:** ente, dataset, anno e collegamento alla scheda dell’indicatore.
 4. **Domanda:** invito aperto a commentare, senza suggerire una risposta.
 
-## Cadenza ordinaria
+## Cadenza editoriale
 
-1. Il ritmo ordinario è di **due post a settimana**, normalmente martedì e venerdì.
-2. I due post ordinari della stessa settimana devono appartenere a **temi diversi**.
-3. La rotazione avanza per **singola uscita**, non per settimana: ogni slot prende il tema successivo della sequenza canonica.
-4. Un post ordinario non è obbligato a essere il seguito metodologico del precedente: ogni uscita deve essere autonoma, completa e comprensibile.
-5. Il planner mantiene sempre i due slot ordinari salvo decisione editoriale esplicita e documentata.
+1. Il budget editoriale ordinario è di **massimo due post a settimana**, normalmente organizzati sugli slot del martedì e del venerdì.
+2. In una settimana senza ricorrenze o blackout, i due slot sono entrambi ordinari e appartengono a **temi diversi**.
+3. La rotazione assegna un tema a ogni slot ordinario di calendario.
+4. Una ricorrenza `anchor` realmente pertinente **occupa uno dei due posti settimanali** e sostituisce lo slot ordinario più vicino alla propria data di pubblicazione.
+5. Una ricorrenza `conditional` entra nel piano soltanto dopo promozione editoriale esplicita; se promossa, sostituisce uno slot con la stessa regola delle `anchor`.
+6. Lo slot ordinario sostituito non viene recuperato automaticamente: il tema previsto per quello slot cede il posto alla ricorrenza. Questo evita di comprimere tre o quattro contenuti nella stessa settimana e calibra la rotazione sulle occasioni editoriali reali.
+7. Le date registrate come `blackout` non producono un post ordinario e non vengono recuperate automaticamente.
+8. Il planner non può superare il budget di due contenuti. Se le ricorrenze selezionate sono più di due nella stessa settimana, si ferma e richiede una decisione editoriale esplicita.
 
 ## Ricorrenze nazionali e internazionali
 
 Il calendario delle ricorrenze non serve a produrre post celebrativi generici: serve a intercettare momenti in cui un dato dell’Osservatorio può essere particolarmente utile.
 
-1. Le ricorrenze pertinenti sono **aggiuntive** rispetto ai due post ordinari della settimana: non consumano automaticamente lo slot del martedì o del venerdì.
-2. Una ricorrenza classificata `anchor` entra nel piano salvo indisponibilità o inadeguatezza del dato e può uscire nel giorno esatto quando questo rende il contenuto più pertinente.
-3. Una ricorrenza `conditional` diventa un post soltanto se esiste un indicatore realmente pertinente, con definizione e granularità adeguate. Se il collegamento è debole, il post non si pubblica.
-4. La ricorrenza non cambia il significato dell’indicatore: un gap occupazionale non diventa un pay gap, una fascia di reddito non diventa una misura di povertà, un dato comunale non diventa un dato di frazione, lago o area naturale.
-5. Se il collegamento è indiretto ma utile, il limite deve essere dichiarato esplicitamente nella grafica o nella didascalia.
-6. Se una ricorrenza cade di martedì o venerdì, il planner segnala la collisione: si valuta lo spostamento del contenuto ordinario a un giorno libero vicino, senza eliminarlo automaticamente.
-7. Se più ricorrenze competono nello stesso giorno, non si forza un contenuto debole: si mantengono solo quelle con collegamento diretto ai dati disponibili.
-8. Prima della produzione si ricontrollano data, denominazione, eventuale tema annuale e fonte ufficiale della ricorrenza.
-9. Il contenuto mantiene sempre la struttura editoriale dell’Osservatorio: dato, fonte, confronto, limite di lettura e domanda aperta.
-10. La cadenza è definita in `config/editorial-cadence.json`; le ricorrenze in `config/editorial-observances-2026-2027.json`; la rotazione ordinaria in `config/editorial-rotation.json`.
+1. Una ricorrenza classificata `anchor` entra nel piano salvo indisponibilità o inadeguatezza del dato e può uscire nel giorno esatto quando questo rende il contenuto più pertinente.
+2. Una ricorrenza `conditional` diventa un post soltanto se esiste un indicatore realmente pertinente, con definizione e granularità adeguate, e dopo una decisione editoriale esplicita.
+3. La ricorrenza non cambia il significato dell’indicatore: un gap occupazionale non diventa un pay gap, una fascia di reddito non diventa una misura di povertà, un dato comunale non diventa un dato di frazione, lago o area naturale.
+4. Se il collegamento è indiretto ma utile, il limite deve essere dichiarato esplicitamente nella grafica o nella didascalia.
+5. Se più ricorrenze competono nella stessa settimana, il totale resta due contenuti. Non si forza un terzo post e non si forza un contenuto debole.
+6. Prima della produzione si ricontrollano data, denominazione, eventuale tema annuale e fonte ufficiale della ricorrenza.
+7. Il contenuto mantiene sempre la struttura editoriale dell’Osservatorio: dato, fonte, confronto, limite di lettura e domanda aperta.
+8. La cadenza è definita in `config/editorial-cadence.json`; le ricorrenze in `config/editorial-observances-2026-2027.json`; la rotazione ordinaria in `config/editorial-rotation.json`.
+9. Il calendario operativo mantiene volutamente settimane con una sola uscita quando uno slot cade in un blackout editoriale, come Natale o Capodanno.
 
 ## Controllo prima della pubblicazione
 
@@ -90,3 +92,4 @@ Il calendario delle ricorrenze non serve a produrre post celebrativi generici: s
 - [ ] Il carosello 1080×1350 è leggibile su smartphone e nessun testo esce dai box.
 - [ ] I colori del contenuto corrispondono al tema canonico del sito.
 - [ ] Se il post nasce da una ricorrenza, data e fonte ufficiale sono state ricontrollate e il collegamento con l’indicatore è esplicito.
+- [ ] Il totale della settimana non supera due uscite.

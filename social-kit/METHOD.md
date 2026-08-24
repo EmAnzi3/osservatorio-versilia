@@ -2,16 +2,18 @@
 
 ## La settimana tipo
 
-La settimana ordinaria prevede **due contenuti autonomi su due temi diversi**.
+Il budget editoriale è di **massimo due contenuti a settimana**.
 
 | Giorno | Funzione | Regola |
 |---|---|---|
-| Martedì | Primo contenuto ordinario | Tema e indicatore assegnati dalla rotazione per singola uscita. |
-| Venerdì | Secondo contenuto ordinario | Tema successivo della rotazione, diverso da quello del martedì. |
+| Martedì | Primo slot editoriale | Tema ordinario assegnato dalla rotazione, salvo ricorrenza che sostituisca lo slot. |
+| Venerdì | Secondo slot editoriale | Tema ordinario successivo, salvo ricorrenza o blackout. |
 
-Non esiste più una settimana monotematica. Ogni uscita deve essere completa e comprensibile da sola; la varietà dei temi serve a distribuire nel tempo gli 11 ambiti dell’Osservatorio.
+In una settimana senza ricorrenze o blackout i due contenuti sono autonomi e appartengono a temi diversi. Non esiste una settimana monotematica: ogni uscita deve essere completa e comprensibile da sola.
 
-Le ricorrenze nazionali, internazionali o territoriali realmente pertinenti sono **aggiuntive** rispetto ai due contenuti ordinari. Se cadono nello stesso giorno di martedì o venerdì, il piano segnala la collisione per valutare lo spostamento dell’ordinario a un giorno libero vicino, senza eliminarlo automaticamente.
+Le ricorrenze nazionali, internazionali o territoriali realmente pertinenti **non sono additive**. Una `anchor` occupa uno dei due posti e sostituisce lo slot ordinario più vicino alla propria data editoriale. Una `conditional` fa lo stesso soltanto dopo promozione esplicita. Lo slot sostituito non viene recuperato automaticamente.
+
+Le date di blackout editoriale non producono un post ordinario e non vengono recuperate automaticamente. Il planner non può superare due contenuti nella stessa settimana.
 
 ## Struttura di ogni contenuto
 
@@ -73,6 +75,8 @@ python3 scripts/plan_social_week.py --date YYYY-MM-DD
 
 La cadenza è definita in `config/editorial-cadence.json`; la rotazione dei temi in `config/editorial-rotation.json`; le ricorrenze in `config/editorial-observances-2026-2027.json`.
 
+Il planner assegna ogni ricorrenza selezionata allo slot ordinario più vicino, mostra quale tema è stato sostituito, espone gli eventuali blackout e rifiuta piani che superano il budget settimanale.
+
 ## Revisione umana
 
 Il sistema impedisce molti errori strutturali, non sostituisce la responsabilità editoriale. Prima della pubblicazione si controllano:
@@ -83,4 +87,5 @@ Il sistema impedisce molti errori strutturali, non sostituisce la responsabilit�
 - coerenza tra grafica, didascalia e pagina del sito;
 - correttezza dei colori rispetto al tema canonico;
 - opportunità della pubblicazione nel contesto del momento;
-- pertinenza reale delle eventuali ricorrenze speciali.
+- pertinenza reale delle eventuali ricorrenze speciali;
+- rispetto del budget massimo di due uscite.
