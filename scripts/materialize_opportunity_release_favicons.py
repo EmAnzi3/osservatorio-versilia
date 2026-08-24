@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Materializza i favicon ufficiali già verificati per la release pubblica Radar.
 
-La build di produzione non deve dipendere da rete, HTML remoto o browser per
-risolvere asset grafici. Questo modulo copia byte-per-byte il set acquisito dal
-run verde #72 e verifica che copra tutte le fonti presenti nello snapshot.
+La build di produzione non dipende dalla rete per gli asset grafici. Le fonti
+con un'icona già acquisita usano il file locale; una fonte appena entrata nel
+Radar può invece usare temporaneamente il marchio tipografico della scheda,
+senza bloccare la pubblicazione dei dati e senza inventare un'icona.
 """
 from __future__ import annotations
 
@@ -43,8 +44,6 @@ def materialize(payload: dict[str, Any], dist: Path) -> dict[str, dict[str, Any]
 
     public_sources = _public_source_ids(payload)
     missing = sorted(public_sources - set(provenance))
-    if missing:
-        raise RuntimeError("Set favicon Radar incompleto per: " + ", ".join(missing))
 
     target = dist / "assets" / "source-favicons"
     target.mkdir(parents=True, exist_ok=True)
@@ -76,8 +75,10 @@ def materialize(payload: dict[str, Any], dist: Path) -> dict[str, dict[str, Any]
         json.dumps(provenance, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    fallback = f" · fallback tipografico: {', '.join(missing)}" if missing else ""
     print(
-        f"Favicon Radar locali: {len(copied)} asset · {len(public_sources)} fonti pubbliche coperte · mic-dgcc verificato."
+        f"Favicon Radar locali: {len(copied)} asset · {len(public_sources) - len(missing)}/{len(public_sources)} "
+        f"fonti pubbliche con icona acquisita · mic-dgcc verificato{fallback}."
     )
     return provenance
 
@@ -85,10 +86,15 @@ def materialize(payload: dict[str, Any], dist: Path) -> dict[str, dict[str, Any]
 def apply_to_payload(payload: dict[str, Any], provenance: dict[str, dict[str, Any]]) -> dict[str, Any]:
     for item in payload.get("opportunities") or []:
         sid = str(item.get("source_id") or "")
-        if sid:
-            item.setdefault("presentation", {})["source_favicon"] = str(provenance[sid]["local"])
+        if not sid:
+            continue
+        presentation = item.setdefault("presentation", {})
+        meta = provenance.get(sid) or {}
+        presentation["source_favicon"] = str(meta.get("local") or "")
     for item in payload.get("archive") or []:
         sid = str(item.get("source_id") or "")
-        if sid:
-            item["source_favicon"] = str(provenance[sid]["local"])
+        if not sid:
+            continue
+        meta = provenance.get(sid) or {}
+        item["source_favicon"] = str(meta.get("local") or "")
     return payload
