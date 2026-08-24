@@ -67,6 +67,27 @@ def verify_release(base: str) -> None:
             assert new_cards.count() == new_expected, (new_cards.count(), new_expected)
             if new_expected:
                 assert all(text.strip().lower() == 'nuova' for text in badges.all_inner_texts())
+                pairs = page.locator('.op-card-badges').evaluate_all(
+                    "els=>els.map(e=>{const a=e.querySelector('.op-new-badge').getBoundingClientRect(),b=e.querySelector('.op-lifecycle').getBoundingClientRect();return Math.abs((a.top+a.height/2)-(b.top+b.height/2));})"
+                )
+                assert pairs and max(pairs) <= 1.5, pairs
+
+            novelty = page.locator('[data-op-new]')
+            sorter = page.locator('[data-op-sort]')
+            assert novelty.count() == 1 and sorter.count() == 1
+            novelty.select_option('new')
+            page.wait_for_timeout(120)
+            visible_new = page.locator('[data-opportunity-card]:not([hidden])')
+            assert visible_new.count() == new_expected, (visible_new.count(), new_expected)
+            assert all(x == 'true' for x in visible_new.evaluate_all('els=>els.map(e=>e.dataset.new)'))
+
+            sorter.select_option('recent')
+            page.wait_for_timeout(120)
+            seen = visible_new.evaluate_all('els=>els.map(e=>e.dataset.firstSeen)')
+            assert seen == sorted(seen, reverse=True), seen
+            page.locator('[data-op-reset]').click()
+            assert novelty.input_value() == '' and sorter.input_value() == 'deadline'
+            assert page.locator('[data-opportunity-card]:not([hidden])').count() == total_expected
 
             source = page.locator('[data-op-source]')
             assert source.count() == 1 and source.locator('option').count() >= 40
@@ -98,7 +119,7 @@ def verify_release(base: str) -> None:
     assert sitemap.count('https://osservatorioversilia.it/opportunita/') == 1
     print(
         f'Radar pubblico browser OK: {total_expected} opportunità · {new_expected} nuove · '
-        f'{date_expected} · header/home/footer · 1440/1024/390.'
+        f'{date_expected} · filtro/ordina · header/home/footer · 1440/1024/390.'
     )
 
 
