@@ -46,7 +46,7 @@ Gli output vengono scritti in `social-kit/dist/editorial-plan/week.md` e `week.j
 
 Il workflow GitHub **Piano editoriale social settimanale** rende il calendario operativo:
 
-- ogni **venerdì** pianifica automaticamente la settimana successiva, prima della preparazione del kit nel weekend;
+- ogni **venerdì alle 06:15 UTC** pianifica automaticamente la settimana successiva;
 - mantiene un budget massimo di due uscite;
 - applica automaticamente le ricorrenze `anchor` sostituendo lo slot ordinario più vicino;
 - segnala le `conditional` senza inserirle automaticamente;
@@ -55,9 +55,37 @@ Il workflow GitHub **Piano editoriale social settimanale** rende il calendario o
 - carica anche il piano come artifact del workflow;
 - non pubblica mai automaticamente sui social.
 
-Il workflow può essere eseguito anche manualmente indicando una data e, se necessario, l'ID di una ricorrenza `conditional` da promuovere.
+## Consegna del materiale
 
-Per validare struttura, fonti, rotazione, budget e scenari noti:
+Il workflow **Genera Social Kit settimanale** completa il piano:
+
+- ogni **sabato alle 06:30 UTC** genera il pacchetto della settimana successiva;
+- quando cambiano dati o componenti del Social Kit su `main`, rigenera anche il pacchetto della settimana corrente;
+- legge direttamente `week.json`: date, temi e indicatori non sono duplicati in un secondo calendario;
+- crea l'artifact `social-kit-YYYY-MM-DD`, conservato per **45 giorni**;
+- aggiorna la stessa issue `Piano social · settimana YYYY-MM-DD` con stato del pacchetto e collegamento al run GitHub Actions;
+- se una ricorrenza non ha una metrica esatta nel dataset, la segnala come intervento manuale invece di forzare un indicatore simile.
+
+L'issue settimanale è quindi il **punto unico di accesso**: aprire la sezione **Materiale della settimana**, seguire il link al run e scaricare l'artifact `social-kit-YYYY-MM-DD` dalla sezione **Artifacts**.
+
+Dentro lo ZIP, per ogni uscita, sono presenti:
+
+- `cards/`: quattro PNG 1080×1350 e i corrispondenti SVG;
+- `testi/`: copy `facebook.txt`, `instagram.txt`, `linkedin.txt`, `x.txt` e versione master;
+- `alt/`: testo alternativo di ciascuna tavola;
+- `provenienza.json`: versione dati, valori, fonte, metodo e URL;
+- `manifest.json`: struttura del singolo carosello.
+
+A livello di pacchetto sono inoltre presenti `README.md`, `week.json`, `manifest.json` e una galleria `index.html` per la revisione.
+
+Per generare manualmente il pacchetto da un piano già costruito:
+
+```bash
+python3 scripts/generate_weekly_social_kit.py --plan social-kit/dist/editorial-plan/week.json
+python3 scripts/test_weekly_social_kit.py
+```
+
+Per validare struttura, fonti, rotazione, budget e scenari noti del planner:
 
 ```bash
 python3 scripts/test_social_calendar.py
@@ -68,8 +96,8 @@ python3 scripts/test_social_calendar.py
 Per ogni uscita il pacchetto editoriale prevede quattro immagini 1080×1350:
 
 1. valore attuale o quadro iniziale;
-2. andamento storico;
-3. variazione territoriale o confronto temporale metodologicamente corretto;
+2. andamento storico, quando disponibile, oppure definizione del dato;
+3. variazione territoriale/temporale, quando disponibile, oppure limiti di lettura;
 4. domanda aperta, invito a commentare indicando il Comune e invito a seguire Osservatorio Versilia.
 
 A corredo vengono preparati:

@@ -9,6 +9,12 @@
     "data": "Questo confronto coincide con ciò che osservi nel tuo Comune?",
     "context": "Quale informazione aggiungeresti prima di interpretare questo dato?"
   },
+  "metrics": {
+    "lifeExpectancy": {
+      "data": "Quale differenza tra Comuni vorresti approfondire con altri dati?",
+      "context": "Quale informazione affiancheresti alla speranza di vita per leggere meglio il territorio?"
+    }
+  },
   "themes": {
     "demografia": {
       "data": "Nel tuo Comune, quale cambiamento demografico noti di più?",

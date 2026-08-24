@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera due post coordinati per ogni settimana editoriale."""
+"""Genera caroselli social standardizzati in quattro tavole 1080×1350."""
 
 from __future__ import annotations
 
@@ -7,12 +7,15 @@ import argparse
 import base64
 import html
 import json
+import os
 import shutil
 import subprocess
 import textwrap
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from statistics import mean
+from typing import Any, Callable
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,8 +24,13 @@ DIST = KIT / "dist"
 SITE_URL = "https://osservatorioversilia.it"
 
 
-def load_json(path: Path) -> dict[str, Any]:
+def load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def write(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
 
 
 def esc(value: Any) -> str:
@@ -34,61 +42,36 @@ def fmt_it(value: float, decimals: int = 0) -> str:
     return raw.replace(",", "X").replace(".", ",").replace("X", ".")
 
 
-def format_value(value: float, unit: str, compact: bool = False) -> str:
+def fmt_value(value: float, unit: str, signed: bool = False) -> str:
+    prefix = "+" if signed and value > 0 else ""
+    if unit == "percent":
+        return f"{prefix}{fmt_it(value, 1)}%"
+    if unit == "currency":
+        return f"{prefix}{fmt_it(value, 0)} €"
+    if unit == "celsius":
+        return f"{prefix}{fmt_it(value, 1)} °C"
+    if unit == "percentage_points":
+        return f"{prefix}{fmt_it(value, 1)} punti"
+    if unit == "per1000":
+        return f"{prefix}{fmt_it(value, 1)} ogni 1.000"
+    if unit == "per10k":
+        return f"{prefix}{fmt_it(value, 1)} ogni 10.000"
+    if unit == "minutes":
+        return f"{prefix}{fmt_it(value, 1)} min"
+    decimals = 0 if float(value).is_integer() or unit in {"number", "people"} else 1
+    return prefix + fmt_it(value, decimals)
+
+
+def compact_value(value: float, unit: str) -> str:
     if unit == "percent":
         return f"{fmt_it(value, 1)}%"
     if unit == "currency":
         return f"{fmt_it(value, 0)} €"
-    if unit in {"per1000", "per10k"}:
-        return fmt_it(value, 1) if compact else f"{fmt_it(value, 1)} ogni {'1.000' if unit == 'per1000' else '10.000'}"
-    if unit == "minutes":
-        return f"{fmt_it(value, 1)} min"
-    if unit in {"number", "people"}:
-        return fmt_it(value, 0 if float(value).is_integer() else 1)
-    return fmt_it(value, 1)
-
-
-def unit_label(unit: str) -> str:
-    return {
-        "percent": "percentuale",
-        "currency": "euro",
-        "per1000": "ogni 1.000 residenti",
-        "per10k": "ogni 10.000 residenti",
-        "number": "valore assoluto",
-        "people": "persone",
-        "minutes": "minuti",
-    }.get(unit, unit)
-
-
-def lines(text: str, width: int, max_lines: int | None = None) -> list[str]:
-    wrapped = textwrap.wrap(
-        text,
-        width=width,
-        break_long_words=False,
-        break_on_hyphens=False,
-        replace_whitespace=True,
-    ) or [""]
-    if max_lines and len(wrapped) > max_lines:
-        wrapped = wrapped[:max_lines]
-        wrapped[-1] = wrapped[-1].rstrip(" .") + "…"
-    return wrapped
-
-
-def svg_text(
-    text: str,
-    x: int,
-    y: int,
-    css_class: str,
-    width: int,
-    line_height: int,
-    max_lines: int,
-    role: str | None = None,
-) -> str:
-    role_attr = f' data-role="{role}"' if role else ""
-    tspans = []
-    for index, line in enumerate(lines(text, width, max_lines)):
-        tspans.append(f'<tspan x="{x}" dy="{0 if index == 0 else line_height}">{esc(line)}</tspan>')
-    return f'<text{role_attr} x="{x}" y="{y}" class="{css_class}">' + "".join(tspans) + "</text>"
+    if unit == "celsius":
+        return f"{fmt_it(value, 1)} °C"
+    if unit in {"per1000", "per10k", "minutes"}:
+        return fmt_it(value, 1)
+    return fmt_it(value, 0 if float(value).is_integer() else 1)
 
 
 def logo_uri() -> str:
@@ -96,514 +79,760 @@ def logo_uri() -> str:
     return "data:image/svg+xml;base64," + base64.b64encode(raw).decode("ascii")
 
 
-def estimated_width(text: str, size: int) -> float:
-    return len(text) * size * 0.58
+def fit_lines(text: str, max_width: float, max_height: float, start_size: int, min_size: int, max_lines: int) -> tuple[list[str], int, int]:
+    """Adatta il testo al rettangolo; se non entra, fallisce invece di debordare."""
+    for size in range(start_size, min_size - 1, -1):
+        line_height = int(round(size * 1.24))
+        capacity = max(8, int(max_width / (size * 0.56)))
+        wrapped = textwrap.wrap(
+            text,
+            width=capacity,
+            break_long_words=False,
+            break_on_hyphens=False,
+            replace_whitespace=True,
+        ) or [""]
+        if len(wrapped) <= max_lines and len(wrapped) * line_height <= max_height:
+            return wrapped, size, line_height
+    raise ValueError(f"Testo non contenibile nel box: {text}")
 
 
-def normalized_rows(metric: dict[str, Any], use_normalized: bool) -> tuple[list[dict[str, Any]], str, str]:
-    rows = []
+def fitted_text(
+    text: str,
+    x: float,
+    y: float,
+    max_width: float,
+    max_height: float,
+    css_class: str,
+    start_size: int,
+    min_size: int,
+    max_lines: int,
+    role: str,
+    fill: str | None = None,
+) -> str:
+    wrapped, size, line_height = fit_lines(text, max_width, max_height, start_size, min_size, max_lines)
+    fill_attr = f' fill="{fill}"' if fill else ""
+    tspans = "".join(
+        f'<tspan x="{x}" dy="{0 if index == 0 else line_height}">{esc(line)}</tspan>'
+        for index, line in enumerate(wrapped)
+    )
+    return (
+        f'<text data-role="{role}" data-box-x="{x}" data-box-y="{y - size}" '
+        f'data-box-width="{max_width}" data-box-height="{max_height}" x="{x}" y="{y}" '
+        f'class="{css_class}" style="font-size:{size}px"{fill_attr}>{tspans}</text>'
+    )
+
+
+def render_png(svg_path: Path, png_path: Path, width: int, height: int) -> None:
+    try:
+        import cairosvg
+    except ImportError:  # pragma: no cover - fallback utile negli ambienti di revisione
+        node = shutil.which("node")
+        if node:
+            probe = subprocess.run(
+                [node, "-e", "require.resolve('sharp')"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            if probe.returncode == 0:
+                script = (
+                    "const sharp=require('sharp');const [src,dst,w,h]=process.argv.slice(1);"
+                    "sharp(src,{density:144}).resize(Number(w),Number(h)).png().toFile(dst)"
+                    ".catch(e=>{console.error(e);process.exit(1)})"
+                )
+                subprocess.run(
+                    [node, "-e", script, str(svg_path), str(png_path), str(width), str(height)],
+                    check=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                return
+        chromium = os.environ.get("CHROMIUM_BIN") or shutil.which("chromium") or shutil.which("google-chrome")
+        if not chromium:
+            raise RuntimeError("Installa social-kit/requirements.txt oppure imposta CHROMIUM_BIN")
+        subprocess.run(
+            [
+                chromium,
+                "--headless",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--hide-scrollbars",
+                "--force-device-scale-factor=1",
+                f"--window-size={width},{height}",
+                f"--screenshot={png_path}",
+                svg_path.resolve().as_uri(),
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    else:
+        cairosvg.svg2png(
+            bytestring=svg_path.read_bytes(),
+            write_to=str(png_path),
+            output_width=width,
+            output_height=height,
+        )
+
+
+def aggregate_mode(unit: str) -> str:
+    return "sum" if unit in {"number", "people"} else "mean"
+
+
+def aggregate(values: list[float], mode: str) -> float:
+    return sum(values) if mode == "sum" else mean(values)
+
+
+def site_model(post: dict[str, Any]) -> dict[str, Any]:
+    data = load(ROOT / "data" / "site-data.json")
+    metric = data["metrics"].get(post["metric"])
+    if not metric:
+        raise ValueError(f"Indicatore inesistente: {post['metric']}")
+    rows = sorted(metric["rows"], key=lambda row: row["town"].casefold())
     unit = metric["meta"]["unit"]
-    label = metric["meta"]["label"]
-    for source_row in sorted(metric["rows"], key=lambda item: item["town"]):
-        row = dict(source_row)
-        if use_normalized:
-            normalized = row.get("normalized")
-            if not normalized:
-                raise ValueError(f"{metric['meta']['key']} non dispone di misura normalizzata per tutti i Comuni")
-            row["displayValue"] = normalized["value"]
-            unit = normalized["unit"]
-            label = normalized["label"]
-        else:
-            row["displayValue"] = row["value"]
-        rows.append(row)
-    return rows, unit, label
+    series_available = all(row.get("series") for row in rows)
+    years: list[int] = []
+    if series_available:
+        years = [int(year) for year in rows[0]["series"]["years"]]
+        for row in rows:
+            row_years = [int(year) for year in row["series"]["years"]]
+            if row_years != years or len(row["series"]["values"]) != len(years):
+                raise ValueError(f"Serie non omogenea: {row['town']}")
+    normalized_rows = [
+        {
+            "town": row["town"],
+            "value": float(row["value"]),
+            "series": [float(value) for value in row["series"]["values"]] if series_available else None,
+        }
+        for row in rows
+    ]
+    return {
+        "dataset": "site",
+        "dataset_path": "data/site-data.json",
+        "dataset_version": data["version"],
+        "dataset_updated": data.get("updated"),
+        "dataset_status": "published",
+        "metric": post["metric"],
+        "theme": metric["meta"]["theme"],
+        "label": metric["meta"]["label"],
+        "short_label": metric["meta"].get("shortLabel") or metric["meta"]["label"],
+        "description": metric["meta"]["description"],
+        "unit": unit,
+        "year": int(metric["meta"]["year"]),
+        "year_label": str(metric["meta"]["year"]),
+        "source": metric["meta"]["source"],
+        "source_url": metric.get("sourceUrl") or metric.get("meta", {}).get("sourceUrl"),
+        "method": metric.get("method", {}),
+        "benchmark": metric["meta"].get("benchmark"),
+        "rows": normalized_rows,
+        "years": years,
+        "aggregate_mode": aggregate_mode(unit),
+        "link": f"{SITE_URL}/confronta/{metric['meta']['theme']}/?indicatore={post['metric']}",
+    }
 
 
-def aggregate_for(metric: dict[str, Any], use_normalized: bool) -> dict[str, Any] | None:
-    if use_normalized:
-        return metric.get("normalizedAggregate")
-    return metric.get("aggregate")
+def climate_model(post: dict[str, Any]) -> dict[str, Any]:
+    data = load(ROOT / "data" / "meteo-clima-minmax-poc.json")
+    key = post["metric"]
+    if key not in {"tmin", "tmax"}:
+        raise ValueError(f"Variabile climatica non supportata: {key}")
+    rows = []
+    years: list[int] | None = None
+    for town, item in sorted(data["municipalities"].items(), key=lambda pair: pair[0].casefold()):
+        row_years = [int(year) for year in item["years"]]
+        values = [float(value) for value in item[key]]
+        if years is None:
+            years = row_years
+        elif years != row_years:
+            raise ValueError("Le serie climatiche comunali non hanno lo stesso periodo")
+        latest = item["latestComplete"]
+        if int(latest["year"]) != row_years[-1] or float(latest[key]) != values[-1]:
+            raise ValueError(f"Ultimo valore climatico non coerente: {town}")
+        rows.append({"town": town, "value": float(latest[key]), "series": values})
+    label = "Temperatura massima media annua" if key == "tmax" else "Temperatura minima media annua"
+    return {
+        "dataset": "climate-minmax",
+        "dataset_path": "data/meteo-clima-minmax-poc.json",
+        "dataset_version": data["version"],
+        "dataset_updated": None,
+        "dataset_status": data["status"],
+        "metric": key,
+        "theme": "ambiente",
+        "label": label,
+        "short_label": label.replace(" annua", ""),
+        "description": data["definition"][key],
+        "unit": "celsius",
+        "year": int(years[-1]),
+        "year_label": f"{years[0]}–{years[-1]}",
+        "source": "Copernicus ERA5-Land · riferimento LaMMA/SIR",
+        "source_url": "https://cds.climate.copernicus.eu/",
+        "method": data["method"],
+        "benchmark": None,
+        "rows": rows,
+        "years": years,
+        "aggregate_mode": "mean",
+        "link": f"{SITE_URL}/confronta/meteo-clima/",
+    }
 
 
-def question_for(question_bank: dict[str, Any], theme: str, slot: str) -> str:
-    return question_bank.get("themes", {}).get(theme, {}).get(slot) or question_bank["fallback"][slot]
+def build_model(post: dict[str, Any]) -> dict[str, Any]:
+    model = climate_model(post) if post["dataset"] == "climate-minmax" else site_model(post)
+    if model["theme"] != post["theme"]:
+        raise ValueError(f"Tema {post['theme']} non coerente con {post['metric']}")
+    if len(model["rows"]) != 7:
+        raise ValueError(f"{post['id']} non ha copertura 7/7")
+    if not model["source_url"]:
+        raise ValueError(f"Fonte senza URL: {post['id']}")
+    return model
 
 
-def build_weeks(args: argparse.Namespace, calendar: dict[str, Any], questions: dict[str, Any]) -> list[dict[str, Any]]:
-    if args.theme or args.metric:
-        if not args.theme or not args.metric:
-            raise ValueError("--theme e --metric devono essere usati insieme")
-        return [{
-            "id": args.week_id or "settimana-prova",
-            "theme": args.theme,
-            "metric": args.metric,
-            "use_normalized": args.normalized,
-            "data_question": args.data_question or question_for(questions, args.theme, "data"),
-            "context_question": args.context_question or question_for(questions, args.theme, "context"),
-        }]
-    return calendar["weeks"]
+def history_slice(model: dict[str, Any], post: dict[str, Any]) -> tuple[list[int], list[float]]:
+    if not model["years"]:
+        return [], []
+    start = int(post.get("history_from", model["years"][0]))
+    if start not in model["years"]:
+        raise ValueError(f"Anno iniziale {start} assente: {post['id']}")
+    index = model["years"].index(start)
+    years = model["years"][index:]
+    values = [
+        aggregate([row["series"][position] for row in model["rows"]], model["aggregate_mode"])
+        for position in range(index, len(model["years"]))
+    ]
+    return years, values
 
 
-def expand_cards(weeks: list[dict[str, Any]], data: dict[str, Any]) -> list[dict[str, Any]]:
-    cards: list[dict[str, Any]] = []
-    for week in weeks:
-        metric = data["metrics"].get(week["metric"])
-        if not metric:
-            raise ValueError(f"Indicatore inesistente: {week['metric']}")
-        if metric["meta"]["theme"] != week["theme"]:
-            raise ValueError(f"Il tema {week['theme']} non corrisponde all’indicatore {week['metric']}")
-        short = metric["meta"].get("shortLabel") or metric["meta"]["label"]
-        cards.extend([
-            {
-                "id": f"{week['id']}-a-dato",
-                "week": week["id"],
-                "slot": "data",
-                "theme": week["theme"],
-                "metric": week["metric"],
-                "use_normalized": bool(week.get("use_normalized")),
-                "title": f"{short}\nI sette Comuni a confronto",
-                "question": week["data_question"],
-            },
-            {
-                "id": f"{week['id']}-b-contesto",
-                "week": week["id"],
-                "slot": "context",
-                "theme": week["theme"],
-                "metric": week["metric"],
-                "use_normalized": bool(week.get("use_normalized")),
-                "title": f"{short}\nCome leggere il dato",
-                "question": week["context_question"],
-            },
-        ])
-    return cards
+def comparison(model: dict[str, Any], post: dict[str, Any]) -> dict[str, Any] | None:
+    if not model["years"]:
+        return None
+    spec = post["comparison"]
+    rows = []
+    if spec["type"] == "base_year":
+        base_year = int(spec["year"])
+        if base_year not in model["years"]:
+            raise ValueError(f"Anno base assente: {base_year}")
+        index = model["years"].index(base_year)
+        for row in model["rows"]:
+            base = float(row["series"][index])
+            current = float(row["value"])
+            delta = current - base
+            display = delta if model["unit"] == "percent" else (delta / base * 100 if base else 0.0)
+            rows.append({"town": row["town"], "base": base, "current": current, "delta": delta, "display": display})
+        base_values = [row["base"] for row in rows]
+        current_values = [row["current"] for row in rows]
+        base_total = aggregate(base_values, model["aggregate_mode"])
+        current_total = aggregate(current_values, model["aggregate_mode"])
+        delta = current_total - base_total
+        display_unit = "percentage_points" if model["unit"] == "percent" else "percent"
+        display = delta if display_unit == "percentage_points" else (delta / base_total * 100 if base_total else 0.0)
+        return {
+            "type": "base_year",
+            "label": f"dal {base_year} al {model['year']}",
+            "section": f"VARIAZIONE DAL {base_year}",
+            "rows": rows,
+            "base": base_total,
+            "current": current_total,
+            "delta": delta,
+            "display": display,
+            "display_unit": display_unit,
+        }
+    if spec["type"] == "period_mean":
+        base_from, base_to = [int(value) for value in spec["base"]]
+        current_from, current_to = [int(value) for value in spec["current"]]
+        for row in model["rows"]:
+            base_values = [value for year, value in zip(model["years"], row["series"]) if base_from <= year <= base_to]
+            current_values = [value for year, value in zip(model["years"], row["series"]) if current_from <= year <= current_to]
+            if len(base_values) != base_to - base_from + 1 or len(current_values) != current_to - current_from + 1:
+                raise ValueError(f"Periodi incompleti: {row['town']}")
+            base = mean(base_values)
+            current = mean(current_values)
+            rows.append({"town": row["town"], "base": base, "current": current, "delta": current - base, "display": current - base})
+        base_total = mean([row["base"] for row in rows])
+        current_total = mean([row["current"] for row in rows])
+        return {
+            "type": "period_mean",
+            "label": f"media {base_from}–{base_to} e media {current_from}–{current_to}",
+            "section": f"DIFFERENZA TRA {base_from}–{base_to} E {current_from}–{current_to}",
+            "rows": rows,
+            "base": base_total,
+            "current": current_total,
+            "delta": current_total - base_total,
+            "display": current_total - base_total,
+            "display_unit": model["unit"],
+        }
+    raise ValueError(f"Confronto non supportato: {spec['type']}")
 
 
-def svg_start(width: int, height: int, brand: dict[str, str]) -> list[str]:
+def svg_start(design: dict[str, Any]) -> list[str]:
+    width = design["format"]["width"]
+    height = design["format"]["height"]
+    immutable = design["immutable"]
     return [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img">',
         "<style>",
         "@font-face{font-family:Geist;src:url('../../../assets/fonts/geist-latin.woff2') format('woff2');font-weight:100 900}",
-        "@font-face{font-family:Geist Mono;src:url('../../../assets/fonts/geist-mono-latin.woff2') format('woff2');font-weight:100 900}",
-        f"text{{font-family:Geist,Arial,sans-serif;fill:{brand['ink']}}}",
+        f"text{{font-family:Geist,Arial,sans-serif;fill:{immutable['ink']}}}",
         ".brand{font-size:29px;font-weight:800}.brand-sub{font-size:16px;font-weight:600;fill:#526B7A}",
-        ".theme{font-size:18px;font-weight:800;letter-spacing:3px}.title{font-size:56px;font-weight:720;letter-spacing:-1.8px}",
-        ".description{font-size:25px;font-weight:450;fill:#526B7A}.section{font-size:16px;font-weight:800;letter-spacing:2.4px}",
-        ".label{font-size:20px;font-weight:700}.body{font-size:22px;font-weight:470;fill:#365469}.small{font-size:16px;font-weight:540;fill:#526B7A}",
-        ".number{font-size:31px;font-weight:760}.number-large{font-size:64px;font-weight:770;letter-spacing:-2px}",
-        ".question-label{font-size:17px;font-weight:800;letter-spacing:2.8px;fill:#FFFFFF}.question{font-size:28px;font-weight:720;fill:#FFFFFF}",
-        ".footer{font-size:16px;font-weight:570;fill:#526B7A}.mono{font-family:Geist Mono,monospace}",
+        ".theme{font-size:18px;font-weight:800;letter-spacing:3px}.counter{font-size:15px;font-weight:760}",
+        ".title{font-weight:740;letter-spacing:-1.8px}.subtitle{font-weight:460;fill:#526B7A}",
+        ".section{font-size:16px;font-weight:800;letter-spacing:2.4px}.label{font-size:20px;font-weight:700}",
+        ".small{font-size:16px;font-weight:540;fill:#526B7A}.axis{font-size:14px;font-weight:560;fill:#526B7A}",
+        ".number{font-size:30px;font-weight:760}.hero-label{font-size:17px;font-weight:760;letter-spacing:1.5px}",
+        ".body{font-size:22px;font-weight:470;fill:#365469}.question{font-weight:720}",
+        ".footer{font-size:16px;font-weight:570;fill:#526B7A}.white{fill:#FFFFFF}",
         "</style>",
-        f'<rect data-role="fixed-background" width="{width}" height="{height}" fill="{brand["paper"]}"/>',
-        f'<circle data-role="fixed-motif" cx="1000" cy="95" r="245" fill="#E7ECE8" opacity=".82"/>',
+        f'<rect data-role="fixed-background" width="{width}" height="{height}" fill="{immutable["background"]}"/>',
+        '<circle data-role="fixed-motif" cx="1000" cy="95" r="245" fill="#E7ECE8" opacity=".82"/>',
         f'<circle data-role="fixed-motif" cx="45" cy="{height - 30}" r="220" fill="#EBE7DC" opacity=".78"/>',
     ]
 
 
-def render_frame(
-    parts: list[str],
-    card: dict[str, Any],
-    metric: dict[str, Any],
-    theme: dict[str, str],
-    design: dict[str, Any],
-    size_name: str,
-    description: str,
-) -> dict[str, Any]:
+def frame(parts: list[str], index: int, title: str, subtitle: str, model: dict[str, Any], design: dict[str, Any], theme: dict[str, str]) -> None:
     immutable = design["immutable"]
-    frame = design["formats"][size_name]
+    layout = design["layout"]
     logo = immutable["logo"]
     brand_text = immutable["brand_text"]
     parts.extend([
         f'<image data-role="brand-logo" href="{logo_uri()}" x="{logo["x"]}" y="{logo["y"]}" width="{logo["width"]}" height="{logo["height"]}"/>',
-        f'<text data-role="brand-name" x="{brand_text["x"]}" y="{brand_text["y"]}" class="brand">Osservatorio Versilia</text>',
-        f'<text data-role="brand-subtitle" x="{brand_text["x"]}" y="{brand_text["y"] + 26}" class="brand-sub">Dati pubblici, lettura accessibile</text>',
-        f'<line data-role="header-rule" x1="72" x2="1008" y1="{frame["rule_y"]}" y2="{frame["rule_y"]}" stroke="{immutable["line"]}" stroke-width="2"/>',
-        f'<line data-role="header-accent" x1="72" x2="292" y1="{frame["rule_y"]}" y2="{frame["rule_y"]}" stroke="{theme["accent"]}" stroke-width="5" stroke-linecap="round"/>',
-        f'<text data-role="theme-label" x="72" y="{frame["theme_y"]}" class="theme" fill="{theme["accent"]}">{esc(theme["label"].upper())}</text>',
+        f'<text x="{brand_text["x"]}" y="{brand_text["y"]}" class="brand">Osservatorio Versilia</text>',
+        f'<text x="{brand_text["x"]}" y="{brand_text["y"] + 26}" class="brand-sub">Dati pubblici, lettura accessibile</text>',
+        f'<line data-role="header-rule" x1="72" x2="1008" y1="{layout["header_rule_y"]}" y2="{layout["header_rule_y"]}" stroke="{immutable["line"]}" stroke-width="2"/>',
+        f'<line x1="72" x2="292" y1="{layout["header_rule_y"]}" y2="{layout["header_rule_y"]}" stroke="{theme["accent"]}" stroke-width="5" stroke-linecap="round"/>',
+        f'<rect x="928" y="176" width="80" height="38" rx="19" fill="{theme["accent"]}" opacity=".12"/>',
+        f'<text x="968" y="201" class="counter" fill="{theme["accent"]}" text-anchor="middle">{index} DI 4</text>',
+        f'<text x="72" y="{layout["theme_y"]}" class="theme" fill="{theme["accent"]}">{esc(theme["label"].upper())}</text>',
+        fitted_text(title, 72, layout["title_y"], 820, 108, "title", 56, 42, 2, "post-title"),
+        fitted_text(subtitle, 72, layout["subtitle_y"], 900, 62, "subtitle", 24, 20, 2, "post-subtitle"),
+        f'<line x1="72" x2="1008" y1="{layout["footer_y"]}" y2="{layout["footer_y"]}" stroke="{theme["line"]}" stroke-width="2"/>',
+        fitted_text(f"Fonte: {model['source']}", 72, layout["footer_y"] + 38, 820, 25, "footer", 16, 14, 1, "source"),
+        f'<text x="72" y="{layout["footer_y"] + 72}" class="footer">{esc(model["year_label"])} · dati {esc(model["dataset_version"])}</text>',
+        f'<text x="72" y="{layout["footer_y"] + 102}" class="footer">osservatorioversilia.it</text>',
     ])
-    title_width = 31 if size_name == "feed" else 34
-    explicit_lines = card["title"].split("\n")
-    title_lines = explicit_lines if len(explicit_lines) == 2 else lines(card["title"], title_width, 2)
-    for index, line in enumerate(title_lines):
-        parts.append(f'<text data-role="post-title" x="72" y="{frame["title_y"] + index * 62}" class="title">{esc(line)}</text>')
-    parts.append(svg_text(description, 72, frame["description_y"], "description", 65, 33, 2, "post-description"))
-    return frame
 
 
-def render_data_panel(
-    parts: list[str],
-    card: dict[str, Any],
-    metric: dict[str, Any],
-    theme: dict[str, str],
-    frame: dict[str, Any],
-) -> dict[str, Any]:
-    box = frame["content"]
-    rows, unit, label = normalized_rows(metric, card["use_normalized"])
-    aggregate = aggregate_for(metric, card["use_normalized"])
-    x, y, w, h = box["x"], box["y"], box["width"], box["height"]
+def panel(parts: list[str], design: dict[str, Any], theme: dict[str, str], fill: str | None = None) -> dict[str, float]:
+    box = design["layout"]["panel"]
+    parts.append(
+        f'<rect data-role="content-panel" x="{box["x"]}" y="{box["y"]}" width="{box["width"]}" height="{box["height"]}" '
+        f'rx="30" fill="{fill or design["immutable"]["surface"]}" stroke="{theme["line"]}" stroke-width="2"/>'
+    )
+    return {key: float(value) for key, value in box.items()}
+
+
+def current_slide(parts: list[str], box: dict[str, float], model: dict[str, Any], theme: dict[str, str]) -> None:
+    x, y, w = box["x"], box["y"], box["width"]
+    rows = model["rows"]
+    current = aggregate([row["value"] for row in rows], model["aggregate_mode"])
+    aggregate_label = "TOTALE VERSILIA" if model["aggregate_mode"] == "sum" else "MEDIA DEI SETTE COMUNI"
+    hero_y = y + 28
     parts.extend([
-        f'<rect data-role="content-panel" x="{x}" y="{y}" width="{w}" height="{h}" rx="30" fill="#FFFAF1" stroke="#C9D5D5" stroke-width="2"/>',
-        f'<text data-role="panel-heading" x="{x + 36}" y="{y + 43}" class="section" fill="{theme["accent"]}">SETTE COMUNI · ORDINE ALFABETICO</text>',
+        f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="128" rx="24" fill="{theme["accent"]}"/>',
+        f'<text x="{x + 68}" y="{hero_y + 37}" class="hero-label white">{aggregate_label}</text>',
+        fitted_text(fmt_value(current, model["unit"]), x + 66, hero_y + 101, 370, 58, "white", 56, 38, 1, "aggregate-current", "#FFFFFF"),
+        fitted_text(model["short_label"].lower(), x + 450, hero_y + 91, 390, 44, "white", 19, 16, 2, "aggregate-description", "#FFFFFF"),
+        f'<text x="{x + w - 64}" y="{hero_y + 39}" class="white" style="font-size:18px;font-weight:650" text-anchor="end">{model["year"]}</text>',
+        f'<text x="{x + 36}" y="{y + 195}" class="section" fill="{theme["accent"]}">COMUNE PER COMUNE · ORDINE ALFABETICO</text>',
     ])
-    row_start = y + (82 if h < 600 else 105)
-    step = 44 if h < 600 else 76
-    label_x = x + 36
-    bar_x = x + 300
-    value_x = x + w - 36
-    bar_w = 430
-    maximum = max(row["displayValue"] for row in rows) or 1
-    values: dict[str, float] = {}
+    maximum = max(row["value"] for row in rows) or 1.0
+    label_x, bar_x, value_x, bar_w = x + 36, x + 300, x + w - 36, 430
+    row_start, step = y + 222, 58
     for index, row in enumerate(rows):
         cy = row_start + index * step
-        value = float(row["displayValue"])
-        value_text = format_value(value, unit, compact=True)
-        font_size = min(31, max(23, int(165 / max(1, len(value_text)) / 0.58)))
-        value_left = value_x - estimated_width(value_text, font_size)
+        width = max(3, bar_w * row["value"] / maximum)
         parts.extend([
-            f'<text data-role="town-label" x="{label_x}" y="{cy + 20}" class="label">{esc(row["town"])}</text>',
-            f'<rect data-role="bar-track" x="{bar_x}" y="{cy}" width="{bar_w}" height="26" rx="13" fill="#FFFFFF" stroke="{theme["line"]}"/>',
-            f'<rect data-role="bar-fill" x="{bar_x}" y="{cy}" width="{max(2, bar_w * value / maximum):.1f}" height="26" rx="13" fill="{theme["accent"]}"/>',
-            f'<text data-role="numeric-value" data-left="{value_left:.1f}" x="{value_x}" y="{cy + 22}" font-size="{font_size}" font-weight="760" text-anchor="end">{esc(value_text)}</text>',
+            f'<text x="{label_x}" y="{cy + 22}" class="label">{esc(row["town"])}</text>',
+            f'<rect data-role="bar-track" x="{bar_x}" y="{cy}" width="{bar_w}" height="24" rx="12" fill="#FFFFFF" stroke="{theme["line"]}"/>',
+            f'<rect x="{bar_x}" y="{cy}" width="{width:.1f}" height="24" rx="12" fill="{theme["accent"]}"/>',
+            f'<text data-role="numeric-value" x="{value_x}" y="{cy + 21}" class="number" text-anchor="end">{esc(compact_value(row["value"], model["unit"]))}</text>',
         ])
-        values[row["town"]] = value
-    if aggregate:
-        divider_y = y + h - 66
-        parts.extend([
-            f'<line x1="{x + 36}" x2="{x + w - 36}" y1="{divider_y}" y2="{divider_y}" stroke="{theme["line"]}"/>',
-            f'<text x="{x + 36}" y="{divider_y + 38}" class="small">{esc(aggregate["label"])}</text>',
-            f'<text data-role="numeric-value" x="{value_x}" y="{divider_y + 40}" class="number" text-anchor="end">{esc(format_value(aggregate["value"], unit, compact=True))}</text>',
-        ])
-    return {"values": values, "unit": unit, "label": label, "aggregate": aggregate}
 
 
-def benchmark_is_compatible(metric: dict[str, Any]) -> bool:
-    benchmark = metric["meta"].get("benchmark")
-    return bool(benchmark and str(benchmark.get("year")) == str(metric["meta"].get("year")))
-
-
-def render_context_panel(
-    parts: list[str],
-    card: dict[str, Any],
-    metric: dict[str, Any],
-    theme: dict[str, str],
-    frame: dict[str, Any],
-) -> dict[str, Any]:
-    box = frame["content"]
+def history_slide(parts: list[str], box: dict[str, float], model: dict[str, Any], years: list[int], values: list[float], comp: dict[str, Any], theme: dict[str, str]) -> None:
     x, y, w, h = box["x"], box["y"], box["width"], box["height"]
-    meta = metric["meta"]
-    method = metric["method"]
-    unit = meta["unit"]
-    parts.append(f'<rect data-role="content-panel" x="{x}" y="{y}" width="{w}" height="{h}" rx="30" fill="#FFFAF1" stroke="#C9D5D5" stroke-width="2"/>')
-    result: dict[str, Any] = {"unit": unit}
-    if benchmark_is_compatible(metric):
-        benchmark = meta["benchmark"]
-        items = [("Versilia", metric["aggregate"]["value"]), ("Toscana", benchmark["tuscany"])]
-        if benchmark.get("italy") is not None:
-            items.append(("Italia", benchmark["italy"]))
-        parts.append(f'<text x="{x + 36}" y="{y + 45}" class="section" fill="{theme["accent"]}">CONFRONTO OMOGENEO · {esc(benchmark["year"])}</text>')
-        row_start = y + (90 if h < 600 else 120)
-        step = 72 if h < 600 else 105
-        maximum = max(value for _, value in items) or 1
-        bar_x, bar_w, value_x = x + 290, 440, x + w - 36
-        for index, (label, value) in enumerate(items):
-            cy = row_start + index * step
-            parts.extend([
-                f'<text x="{x + 36}" y="{cy + 23}" class="label">{label}</text>',
-                f'<rect data-role="bar-track" x="{bar_x}" y="{cy}" width="{bar_w}" height="28" rx="14" fill="#FFFFFF" stroke="{theme["line"]}"/>',
-                f'<rect data-role="bar-fill" x="{bar_x}" y="{cy}" width="{bar_w * value / maximum:.1f}" height="28" rx="14" fill="{theme["accent"]}"/>',
-                f'<text data-role="numeric-value" x="{value_x}" y="{cy + 25}" class="number" text-anchor="end">{esc(format_value(value, unit, compact=True))}</text>',
-            ])
-        note_y = y + (h - 112 if h < 600 else h - 170)
-        parts.append(f'<text x="{x + 36}" y="{note_y}" class="section" fill="{theme["accent"]}">COME LEGGERLO</text>')
-        parts.append(svg_text(benchmark["note"], x + 36, note_y + 44, "body", 72, 31, 2 if h < 600 else 4, "method-note"))
-        result.update({"values": dict(items), "source": benchmark["source"], "source_url": benchmark["url"]})
+    hero_y = y + 28
+    direction = "in più" if comp["delta"] > 0 else "in meno" if comp["delta"] < 0 else "senza variazione"
+    if comp["display_unit"] == "celsius":
+        summary = f"{fmt_value(abs(comp['display']), 'celsius')} {direction}"
+    elif comp["display_unit"] == "percentage_points":
+        summary = f"{fmt_value(abs(comp['display']), 'percentage_points')} {direction}"
     else:
-        aggregate = aggregate_for(metric, card["use_normalized"])
-        cursor = y + 45
-        parts.append(f'<text x="{x + 36}" y="{cursor}" class="section" fill="{theme["accent"]}">CHE COSA MISURA</text>')
-        parts.append(svg_text(meta["description"], x + 36, cursor + 43, "body", 72, 31, 2 if h < 600 else 4, "definition"))
-        cursor += 120 if h < 600 else 170
-        if aggregate:
-            parts.append(f'<text x="{x + 36}" y="{cursor}" class="small">{esc(aggregate["label"])}</text>')
-            parts.append(f'<text data-role="numeric-value" x="{x + 36}" y="{cursor + 67}" class="number-large">{esc(format_value(aggregate["value"], unit, compact=True))}</text>')
-            cursor += 112 if h < 600 else 145
-        parts.append(f'<line x1="{x + 36}" x2="{x + w - 36}" y1="{cursor}" y2="{cursor}" stroke="{theme["line"]}"/>')
-        parts.append(f'<text x="{x + 36}" y="{cursor + 43}" class="section" fill="{theme["accent"]}">COME SI CALCOLA</text>')
-        parts.append(svg_text(method["formula"], x + 36, cursor + 84, "body", 72, 30, 2 if h < 600 else 4, "formula"))
-        cursor += 145 if h < 600 else 195
-        parts.append(f'<text x="{x + 36}" y="{cursor}" class="section" fill="{theme["accent"]}">LIMITE DI LETTURA</text>')
-        parts.append(svg_text(method["caveat"], x + 36, cursor + 42, "body", 72, 30, 2 if h < 600 else 4, "caveat"))
-        result.update({"values": {"aggregate": aggregate["value"] if aggregate else None}, "source": meta["source"], "source_url": metric["sourceUrl"]})
+        unit_noun = f" {model['short_label'].lower()}" if model["unit"] in {"number", "people"} else ""
+        summary = f"{fmt_value(abs(comp['delta']), model['unit'])}{unit_noun} {direction}"
+    secondary = fmt_value(comp["display"], comp["display_unit"], True) if comp["display_unit"] == "percent" else ""
+    parts.extend([
+        f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="126" rx="24" fill="{theme["accent"]}"/>',
+        fitted_text(comp["label"].upper(), x + 68, hero_y + 37, 510, 24, "white", 17, 14, 1, "comparison-period", "#FFFFFF"),
+        fitted_text(summary, x + 66, hero_y + 94, 610, 48, "white", 42, 28, 1, "comparison-summary", "#FFFFFF"),
+        f'<text x="{x + w - 64}" y="{hero_y + 94}" class="white" style="font-size:30px;font-weight:760" text-anchor="end">{esc(secondary)}</text>',
+        f'<text x="{x + 36}" y="{y + 195}" class="section" fill="{theme["accent"]}">{esc(model["label"].upper())}</text>',
+    ])
+    chart_x, chart_y, chart_w, chart_h = x + 72, y + 225, w - 144, 315
+    raw_min, raw_max = min(values), max(values)
+    spread = max(0.01, raw_max - raw_min)
+    minimum, maximum = raw_min - spread * 0.14, raw_max + spread * 0.14
+
+    def px(index: int) -> float:
+        return chart_x + chart_w * index / max(1, len(years) - 1)
+
+    def py(value: float) -> float:
+        return chart_y + chart_h * (maximum - value) / (maximum - minimum)
+
+    for grid_index in range(4):
+        gy = chart_y + chart_h * grid_index / 3
+        parts.append(f'<line x1="{chart_x}" x2="{chart_x + chart_w}" y1="{gy:.1f}" y2="{gy:.1f}" stroke="#D8DFDC"/>')
+    points = " ".join(f"{px(index):.1f},{py(value):.1f}" for index, value in enumerate(values))
+    fill_points = f"{chart_x},{chart_y + chart_h} {points} {chart_x + chart_w},{chart_y + chart_h}"
+    parts.extend([
+        f'<polygon points="{fill_points}" fill="{theme["soft"]}" opacity=".92"/>',
+        f'<polyline points="{points}" fill="none" stroke="{theme["accent"]}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+    ])
+    selected = {0, len(years) - 1}
+    if len(years) <= 12:
+        selected.update(range(len(years)))
+    else:
+        selected.update(index for index, year in enumerate(years) if year % 10 == 0)
+    for index in sorted(selected):
+        parts.extend([
+            f'<circle cx="{px(index):.1f}" cy="{py(values[index]):.1f}" r="7" fill="{theme["accent"]}" stroke="#FFF9F2" stroke-width="3"/>',
+            f'<text x="{px(index):.1f}" y="{chart_y + chart_h + 34}" class="axis" text-anchor="middle">{years[index]}</text>',
+        ])
+    parts.extend([
+        f'<rect x="{chart_x - 9}" y="{py(values[0]) - 42:.1f}" width="112" height="28" rx="14" fill="#FFFFFF" stroke="{theme["line"]}"/>',
+        f'<text x="{chart_x + 47}" y="{py(values[0]) - 22:.1f}" class="axis" text-anchor="middle">{esc(compact_value(values[0], model["unit"]))}</text>',
+        f'<rect x="{chart_x + chart_w - 103}" y="{py(values[-1]) - 42:.1f}" width="112" height="28" rx="14" fill="#FFFFFF" stroke="{theme["line"]}"/>',
+        f'<text x="{chart_x + chart_w - 47}" y="{py(values[-1]) - 22:.1f}" class="axis" text-anchor="middle">{esc(compact_value(values[-1], model["unit"]))}</text>',
+        f'<text x="{x + 36}" y="{y + h - 24}" class="small">Scala adattata alla serie: il grafico non parte da zero.</text>',
+    ])
+
+
+def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any], comp: dict[str, Any], theme: dict[str, str]) -> None:
+    x, y, w, h = box["x"], box["y"], box["width"], box["height"]
+    hero_y = y + 28
+    parts.extend([
+        f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="104" rx="22" fill="{theme["soft"]}" stroke="{theme["line"]}" stroke-width="2"/>',
+        f'<text x="{x + 64}" y="{hero_y + 32}" class="hero-label" fill="{theme["accent"]}">VERSILIA NEL COMPLESSO</text>',
+        fitted_text(comp["label"], x + 62, hero_y + 76, 560, 35, "label", 22, 18, 1, "aggregate-change-label"),
+        f'<text x="{x + w - 62}" y="{hero_y + 78}" style="font-size:33px;font-weight:790" text-anchor="end">{esc(fmt_value(comp["display"], comp["display_unit"], True))}</text>',
+        f'<text x="{x + 36}" y="{y + 174}" class="section" fill="{theme["accent"]}">{esc(comp["section"])}</text>',
+    ])
+    rows = comp["rows"]
+    maximum = max(abs(row["display"]) for row in rows) or 1.0
+    label_x, zero_x, value_x, half_w = x + 36, x + 570, x + w - 36, 250
+    row_start, step = y + 205, 58
+    axis_top = row_start - 18
+    axis_bottom = row_start + (len(rows) - 1) * step + 34
+    parts.extend([
+        f'<line x1="{zero_x}" x2="{zero_x}" y1="{axis_top}" y2="{axis_bottom}" stroke="#82949D" stroke-width="2"/>',
+        f'<text x="{zero_x}" y="{axis_top - 12}" class="axis" text-anchor="middle">0</text>',
+    ])
+    for index, row in enumerate(rows):
+        cy = row_start + index * step
+        width = max(3, half_w * abs(row["display"]) / maximum)
+        bar_x = zero_x if row["display"] >= 0 else zero_x - width
+        parts.extend([
+            f'<text x="{label_x}" y="{cy + 20}" class="label">{esc(row["town"])}</text>',
+            f'<line x1="{zero_x - half_w}" x2="{zero_x + half_w}" y1="{cy + 13}" y2="{cy + 13}" stroke="#D8DFDC" stroke-width="2"/>',
+            f'<rect x="{bar_x:.1f}" y="{cy}" width="{width:.1f}" height="26" rx="13" fill="{theme["accent"]}"/>',
+            f'<text data-role="numeric-value" x="{value_x}" y="{cy + 22}" class="number" text-anchor="end">{esc(fmt_value(row["display"], comp["display_unit"], True))}</text>',
+        ])
+    parts.append(f'<text x="{x + 36}" y="{y + h - 28}" class="small">La posizione rispetto allo zero indica la direzione, non un giudizio.</text>')
+
+
+def context_slides(parts: list[str], box: dict[str, float], model: dict[str, Any], theme: dict[str, str], kind: str) -> None:
+    x, y, w = box["x"], box["y"], box["width"]
+    heading = "CHE COSA MISURA" if kind == "history" else "COME LEGGERLO"
+    body = model["description"]
+    if kind == "change":
+        benchmark = model.get("benchmark")
+        body = (
+            "Il confronto tra Comuni descrive una differenza numerica; da solo non stabilisce cause, qualità dei servizi o responsabilità."
+        )
+        if benchmark:
+            body += f" Il benchmark documentato dalla fonte è riferito al {benchmark.get('year', model['year'])}."
+    parts.extend([
+        f'<rect x="{x + 32}" y="{y + 32}" width="{w - 64}" height="112" rx="24" fill="{theme["accent"]}"/>',
+        f'<text x="{x + 68}" y="{y + 72}" class="hero-label white">{heading}</text>',
+        fitted_text(model["short_label"], x + 66, y + 120, 790, 36, "white", 31, 24, 1, "context-heading", "#FFFFFF"),
+        f'<rect x="{x + 36}" y="{y + 190}" width="{w - 72}" height="310" rx="26" fill="{theme["soft"]}" stroke="{theme["line"]}" stroke-width="2"/>',
+        fitted_text(body, x + 72, y + 248, w - 144, 205, "body", 25, 18, 6, "context-body"),
+        fitted_text("Il contenuto resta una descrizione del dato pubblicato: nessuna differenza viene trasformata in una classifica.", x + 72, y + 550, w - 144, 70, "body", 21, 17, 3, "context-caveat"),
+    ])
+
+
+def questions_slide(parts: list[str], design: dict[str, Any], post: dict[str, Any], theme: dict[str, str]) -> None:
+    layout = design["layout"]
+    panel_box = layout["panel"]
+    x, y, w = panel_box["x"], panel_box["y"], panel_box["width"]
+    parts.append(fitted_text(
+        "I dati descrivono il territorio. La tua esperienza può aggiungere ciò che i grafici non mostrano.",
+        x + 42, y + 56, w - 84, 64, "body", 22, 18, 2, "question-intro"
+    ))
+    labels = ["NEL TUO COMUNE", "GUARDANDO AI SERVIZI"]
+    for index, (question, box) in enumerate(zip(post["questions"], layout["question_boxes"]), start=1):
+        parts.extend([
+            f'<rect data-role="question-box" x="{box["x"]}" y="{box["y"]}" width="{box["width"]}" height="{box["height"]}" rx="25" fill="#FFFFFF" stroke="{theme["line"]}" stroke-width="2"/>',
+            f'<circle cx="{box["x"] + 36}" cy="{box["y"] + 39}" r="14" fill="{theme["accent"]}" opacity=".13"/>',
+            f'<text x="{box["x"] + 36}" y="{box["y"] + 45}" style="font-size:20px;font-weight:800" fill="{theme["accent"]}" text-anchor="middle">{index}</text>',
+            f'<text x="{box["x"] + 72}" y="{box["y"] + 42}" class="section" fill="{theme["accent"]}">{labels[index - 1]}</text>',
+            fitted_text(
+                question,
+                box["x"] + 32,
+                box["y"] + 93,
+                box["width"] - 64,
+                box["height"] - 82,
+                "question",
+                design["type"]["question_start"],
+                design["type"]["question_min"],
+                design["type"]["question_max_lines"],
+                f"question-{index}",
+            ),
+        ])
+    cta = layout["cta"]
+    parts.extend([
+        f'<rect data-role="cta" x="{cta["x"]}" y="{cta["y"]}" width="{cta["width"]}" height="{cta["height"]}" rx="26" fill="{theme["accent"]}"/>',
+        f'<text x="{cta["x"] + 34}" y="{cta["y"] + 39}" class="hero-label white">PARTECIPA ALLA CONVERSAZIONE</text>',
+        f'<text x="{cta["x"] + 34}" y="{cta["y"] + 88}" class="white" style="font-size:34px;font-weight:780">Scrivilo nei commenti.</text>',
+        fitted_text("Indica il Comune e segui la pagina per il prossimo dato.", cta["x"] + 34, cta["y"] + 125, cta["width"] - 68, 28, "white", 19, 16, 1, "follow-cta", "#FFFFFF"),
+    ])
+
+
+def default_titles(model: dict[str, Any], post: dict[str, Any]) -> tuple[list[str], list[str]]:
+    start = post.get("history_from", model["years"][0] if model["years"] else model["year"])
+    comparison_spec = post.get("comparison", {})
+    if comparison_spec.get("type") == "base_year":
+        comparison_subtitle = (
+            f"Differenza in punti rispetto al {comparison_spec['year']}"
+            if model["unit"] == "percent"
+            else f"Differenza percentuale rispetto al {comparison_spec['year']}"
+        )
+    elif comparison_spec.get("type") == "period_mean":
+        base_from, base_to = comparison_spec["base"]
+        current_from, current_to = comparison_spec["current"]
+        comparison_subtitle = f"Media {base_from}–{base_to} e media {current_from}–{current_to}"
+    else:
+        comparison_subtitle = "Confronto temporale"
+    titles = [
+        f"{model['short_label']} oggi",
+        f"Dal {start} a oggi" if model["years"] else "Che cosa misura il dato",
+        "La variazione per Comune" if model["years"] else "Come leggere il confronto",
+        "Cosa vedi nel tuo Comune?",
+    ]
+    subtitles = [
+        f"I sette Comuni a confronto · {model['year']}",
+        model["label"],
+        comparison_subtitle,
+        "I numeri aprono la conversazione. Il territorio la completa.",
+    ]
+    return post.get("titles", titles), post.get("subtitles", subtitles)
+
+
+def make_page(index: int, title: str, subtitle: str, model: dict[str, Any], post: dict[str, Any], design: dict[str, Any], theme: dict[str, str], draw: Callable[[list[str], dict[str, float]], None]) -> str:
+    parts = svg_start(design)
+    frame(parts, index, title, subtitle, model, design, theme)
+    box = panel(parts, design, theme, theme["soft"] if index == 4 else None)
+    draw(parts, box)
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
+def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[str, Any] | None) -> dict[str, str]:
+    current = aggregate([row["value"] for row in model["rows"]], model["aggregate_mode"])
+    aggregate_label = "complessivi" if model["aggregate_mode"] == "sum" else "in media tra i sette Comuni"
+    fact = f"{model['short_label']}: {fmt_value(current, model['unit'])} {aggregate_label} nel {model['year']}."
+    comparison_line = (
+        f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}."
+        if comp else ""
+    )
+    method_line = post.get("context_note") or model["description"]
+    question_line = f"{post['questions'][0]} {post['questions'][1]}"
+    participation = "Nei commenti indica il Comune a cui fai riferimento e segui la pagina per il prossimo dato."
+    source_line = f"Fonte: {model['source']} · {model['year_label']} · dati {model['dataset_version']}"
+    link_line = f"Dati, metodo e fonti: {model['link']}"
+    master = "\n\n".join(item for item in [fact, comparison_line, method_line, question_line, participation, link_line, source_line] if item)
+    theme_tag = "".join(word.capitalize() for word in model["theme"].split())
+    facebook = "\n\n".join(item for item in [
+        f"☀️ {fact}",
+        comparison_line,
+        method_line,
+        f"💬 {question_line}",
+        participation,
+        link_line,
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag}"
+    instagram = "\n\n".join(item for item in [
+        f"Scorri il carosello →\n\n{fact}",
+        comparison_line,
+        method_line,
+        f"📍 {post['questions'][0]}\n🏘️ {post['questions'][1]}",
+        participation,
+        f"Approfondisci dal link: {model['link']}",
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag} #DatiPubblici"
+    linkedin = "\n\n".join(item for item in [
+        "Un dato attuale e un confronto di lungo periodo per leggere questo indicatore nel territorio dei sette Comuni della Versilia.",
+        fact,
+        comparison_line,
+        method_line,
+        "Il dato descrive il fenomeno, ma non attribuisce da solo cause o responsabilità.",
+        question_line,
+        link_line,
+        source_line,
+    ] if item) + f"\n\n#OsservatorioVersilia #DatiPubblici #{theme_tag}"
+    result = {
+        "master": master,
+        "facebook": facebook,
+        "instagram": instagram,
+        "linkedin": linkedin,
+    }
+    change = f" Confronto: {fmt_value(comp['display'], comp['display_unit'], True)}." if comp else ""
+    x_text = (
+        f"{model['short_label']}: {fmt_value(current, model['unit'])} {aggregate_label} nel {model['year']}.{change} "
+        f"{post['questions'][0]} {model['link']} #Versilia"
+    )
+    if len(x_text) > 280:
+        x_text = f"{model['short_label']}: {fmt_value(current, model['unit'])} nel {model['year']}.{change} {model['link']} #Versilia"
+    if len(x_text) > 280:
+        raise ValueError(f"Testo X oltre 280 caratteri: {post['id']}")
+    result["x"] = x_text
     return result
 
 
-def render_question(parts: list[str], question: str, theme: dict[str, str], frame: dict[str, Any]) -> None:
-    box = frame["question"]
-    x, y, w, h = box["x"], box["y"], box["width"], box["height"]
-    parts.extend([
-        f'<rect data-role="question-panel" x="{x}" y="{y}" width="{w}" height="{h}" rx="30" fill="{theme["accent"]}"/>',
-        f'<text data-role="question-label" x="{x + 36}" y="{y + 45}" class="question-label">LA DOMANDA</text>',
-        svg_text(question, x + 36, y + 94, "question", 49 if h < 200 else 54, 34, 2, "question-text"),
-    ])
-
-
-def render_footer(parts: list[str], source: str, year: str, version: str, theme: dict[str, str], frame: dict[str, Any]) -> None:
-    y = frame["footer_y"]
-    parts.extend([
-        f'<line data-role="footer-rule" x1="72" x2="1008" y1="{y}" y2="{y}" stroke="{theme["line"]}" stroke-width="2"/>',
-        f'<text data-role="source" x="72" y="{y + 38}" class="footer">Fonte: {esc(source)}</text>',
-        f'<text data-role="data-version" x="72" y="{y + 72}" class="footer mono">{esc(year)} · dati {esc(version)}</text>',
-        f'<text data-role="site-domain" x="72" y="{y + 102}" class="footer">osservatorioversilia.it</text>',
-    ])
-
-
-def render_card(
-    card: dict[str, Any],
-    size_name: str,
-    data: dict[str, Any],
-    themes: dict[str, Any],
-    design: dict[str, Any],
-) -> tuple[str, dict[str, Any]]:
-    metric = data["metrics"][card["metric"]]
-    theme = themes["themes"][card["theme"]]
-    brand = themes["brand"]
-    frame = design["formats"][size_name]
-    parts = svg_start(frame["width"], frame["height"], brand)
-    _, display_unit, display_label = normalized_rows(metric, card["use_normalized"])
-    if card["slot"] == "data":
-        description = f"{display_label} · {unit_label(display_unit)} · {metric['meta']['year']}"
-    else:
-        description = f"Definizione, metodo e limiti · {metric['meta']['year']}"
-    render_frame(parts, card, metric, theme, design, size_name, description)
-    if card["slot"] == "data":
-        result = render_data_panel(parts, card, metric, theme, frame)
-        source = metric["meta"]["source"]
-        source_url = metric["sourceUrl"]
-    else:
-        result = render_context_panel(parts, card, metric, theme, frame)
-        source = result["source"]
-        source_url = result["source_url"]
-    render_question(parts, card["question"], theme, frame)
-    render_footer(parts, source, str(metric["meta"]["year"]), data["version"], theme, frame)
-    parts.append("</svg>")
-    result.update({
-        "id": card["id"],
-        "week": card["week"],
-        "slot": card["slot"],
-        "theme": card["theme"],
-        "metric": card["metric"],
-        "title": card["title"],
-        "question": card["question"],
-        "size": size_name,
-        "source": source,
-        "source_url": source_url,
-        "year": str(metric["meta"]["year"]),
-        "display_label": display_label,
-    })
-    return "\n".join(parts), result
-
-
-def indicator_url(metric: str, theme: str) -> str:
-    return f"{SITE_URL}/confronta/{theme}/?indicatore={metric}"
-
-
-def make_copy(card: dict[str, Any], result: dict[str, Any], data: dict[str, Any]) -> dict[str, str]:
-    metric = data["metrics"][card["metric"]]
-    link = indicator_url(card["metric"], card["theme"])
-    if card["slot"] == "data":
-        values = list(result["values"].values())
-        unit = result["unit"]
-        factual = f"Nei sette Comuni il valore va da {format_value(min(values), unit)} a {format_value(max(values), unit)}."
-        interpretation = "Il grafico mostra uno scostamento numerico e non attribuisce automaticamente un giudizio di qualità."
-    else:
-        factual = metric["meta"]["description"]
-        interpretation = f"Metodo: {metric['method']['formula']}"
-    master = "\n\n".join([
-        f"{metric['meta']['label']} · {metric['meta']['year']}",
-        factual,
-        interpretation,
-        f"Fonte: {result['source']}",
-        f"Dati e metodo: {link}",
-        card["question"],
-    ])
-    tags = "#OsservatorioVersilia #DatiPubblici #Versilia"
-    x_text = f"{metric['meta']['shortLabel']}: {factual} {card['question']} {link}"
-    if len(x_text) > 275:
-        x_text = x_text[:272].rstrip() + "…"
-    return {
-        "master": master,
-        "facebook": master,
-        "instagram": master + "\n\n" + tags,
-        "linkedin": master + "\n\nLa provenienza completa è disponibile nella scheda collegata.",
-        "x": x_text,
+def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str, Any], destination: Path) -> dict[str, Any]:
+    model = build_model(post)
+    if model["dataset_status"] == "draft" and post.get("status") != "draft":
+        raise ValueError(f"Dataset draft usato in un contenuto non draft: {post['id']}")
+    theme = themes["themes"][post["theme"]]
+    years, history = history_slice(model, post)
+    comp = comparison(model, post) if model["years"] else None
+    titles, subtitles = default_titles(model, post)
+    if len(titles) != 4 or len(subtitles) != 4 or len(post["questions"]) != 2:
+        raise ValueError(f"Struttura editoriale incompleta: {post['id']}")
+    cards_dir = destination / "cards"
+    cards: list[dict[str, str]] = []
+    specs: list[tuple[str, Callable[[list[str], dict[str, float]], None], str]] = [
+        (
+            "01-dato-attuale",
+            lambda parts, box: current_slide(parts, box, model, theme),
+            f"{model['label']} nel {model['year']}. " + "; ".join(f"{row['town']} {fmt_value(row['value'], model['unit'])}" for row in model["rows"]),
+        ),
+        (
+            "02-andamento-storico" if model["years"] else "02-cosa-misura",
+            (lambda parts, box: history_slide(parts, box, model, years, history, comp, theme)) if model["years"] else (lambda parts, box: context_slides(parts, box, model, theme, "history")),
+            (f"Andamento {model['label'].lower()} nei sette Comuni della Versilia, {years[0]}–{years[-1]}: " + "; ".join(f"{year} {fmt_value(value, model['unit'])}" for year, value in zip(years, history))) if model["years"] else model["description"],
+        ),
+        (
+            "03-variazione" if model["years"] else "03-come-leggerlo",
+            (lambda parts, box: change_slide(parts, box, model, comp, theme)) if model["years"] else (lambda parts, box: context_slides(parts, box, model, theme, "change")),
+            (f"{comp['label']}: " + "; ".join(f"{row['town']} {fmt_value(row['display'], comp['display_unit'], True)}" for row in comp["rows"])) if comp else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
+        ),
+        (
+            "04-partecipa",
+            lambda parts, box: questions_slide(parts, design, post, theme),
+            "Due domande aperte: " + " ".join(post["questions"]) + " Invito a commentare indicando il Comune e a seguire la pagina.",
+        ),
+    ]
+    for index, (filename, draw, alt) in enumerate(specs, start=1):
+        svg = make_page(index, titles[index - 1], subtitles[index - 1], model, post, design, theme, draw)
+        svg_path = cards_dir / f"{filename}.svg"
+        png_path = cards_dir / f"{filename}.png"
+        write(svg_path, svg)
+        render_png(svg_path, png_path, design["format"]["width"], design["format"]["height"])
+        write(destination / "alt" / f"{filename}.txt", alt + "\n")
+        cards.append({"slide": index, "filename": filename, "title": titles[index - 1], "alt": alt})
+    for platform, copy in copy_for_platforms(post, model, comp).items():
+        write(destination / "testi" / f"{platform}.txt", copy + "\n")
+    provenance = {
+        "status": "draft",
+        "post_id": post["id"],
+        "date": post["date"],
+        "priority": post["priority"],
+        "design_system": design["version"],
+        "theme": post["theme"],
+        "palette": {"accent": theme["accent"], "soft": theme["soft"]},
+        "dataset": {
+            "path": model["dataset_path"],
+            "version": model["dataset_version"],
+            "status": model["dataset_status"],
+            "updated": model["dataset_updated"],
+        },
+        "metric": model["metric"],
+        "source": model["source"],
+        "source_url": model["source_url"],
+        "method": model["method"],
+        "current_year": model["year"],
+        "current_values": {row["town"]: row["value"] for row in model["rows"]},
+        "history": {str(year): value for year, value in zip(years, history)},
+        "comparison": comp,
+        "questions": post["questions"],
+        "context_note": post.get("context_note"),
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
+    write(destination / "provenienza.json", json.dumps(provenance, ensure_ascii=False, indent=2) + "\n")
+    manifest = {
+        "status": "draft",
+        "method": "four-slide-carousel",
+        "design_system": design["version"],
+        "post_id": post["id"],
+        "date": post["date"],
+        "format": "1080x1350",
+        "platforms": design["format"]["platforms"],
+        "outputs": ["png", "svg"],
+        "cards": cards,
+    }
+    write(destination / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    return manifest
 
 
-def alt_text(card: dict[str, Any], result: dict[str, Any], data: dict[str, Any]) -> str:
-    metric = data["metrics"][card["metric"]]
-    if card["slot"] == "data":
-        unit = result["unit"]
-        values = "; ".join(f"{town} {format_value(value, unit)}" for town, value in result["values"].items())
-        return f"Infografica di Osservatorio Versilia. {metric['meta']['label']}, {metric['meta']['year']}. Sette Comuni in ordine alfabetico: {values}. Domanda: {card['question']}"
-    return f"Infografica di Osservatorio Versilia. Come leggere {metric['meta']['label'].lower()}. {metric['meta']['description']} Metodo: {metric['method']['formula']} Domanda: {card['question']}"
-
-
-def render_png(svg_path: Path, png_path: Path, width: int, height: int) -> bool:
-    try:
-        import cairosvg
-        cairosvg.svg2png(url=str(svg_path), write_to=str(png_path), output_width=width, output_height=height)
-        return True
-    except ImportError:
-        pass
-    except Exception as exc:
-        print(f"Avviso CairoSVG per {svg_path.name}: {exc}")
-    converter = shutil.which("magick") or shutil.which("convert")
-    if not converter:
-        return False
-    command = [converter]
-    if Path(converter).name == "magick":
-        command.append("convert")
-    command.extend([str(svg_path), str(png_path)])
-    completed = subprocess.run(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    return completed.returncode == 0
-
-
-def build_pdf(pngs: list[Path], output: Path) -> bool:
-    if not pngs:
-        return False
-    try:
-        from PIL import Image
-    except ImportError:
-        return False
-    images = [Image.open(path).convert("RGB") for path in pngs]
-    images[0].save(output, save_all=True, append_images=images[1:], resolution=144.0)
-    for image in images:
-        image.close()
-    return True
-
-
-def gallery(cards: list[dict[str, Any]], feed_results: dict[str, dict[str, Any]], has_png: bool, has_pdf: bool, design_version: str) -> str:
-    grouped: dict[str, list[dict[str, Any]]] = {}
-    for card in cards:
-        grouped.setdefault(card["week"], []).append(card)
+def gallery(manifests: list[dict[str, Any]]) -> str:
     sections = []
-    ext = "png" if has_png else "svg"
-    for week, week_cards in grouped.items():
-        figures = []
-        for card in week_cards:
-            result = feed_results[card["id"]]
-            figures.append(f"""
-            <article>
-              <img src="feed/{esc(card['id'])}.{ext}" alt="{esc(alt_text(card, result, GLOBAL_DATA))}">
-              <h3>{'Martedì · Il dato' if card['slot'] == 'data' else 'Venerdì · Come leggerlo'}</h3>
-              <p>{esc(card['question'])}</p>
-              <nav><a href="feed/{esc(card['id'])}.png">PNG feed</a><a href="story/{esc(card['id'])}.png">PNG storia</a><a href="captions/{esc(card['id'])}-instagram.txt">Testo</a><a href="provenance/{esc(card['id'])}.json">Provenienza</a></nav>
-            </article>""")
-        sections.append(f'<section><header><span>{esc(week)}</span><h2>{esc(feed_results[week_cards[0]["id"]]["display_label"])}</h2></header><div class="pair">{"".join(figures)}</div></section>')
-    pdf = '<a class="download" href="linkedin-carousel.pdf">PDF LinkedIn</a>' if has_pdf else ""
-    return f"""<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Social Kit · Osservatorio Versilia</title><style>
-    @font-face{{font-family:Geist;src:url('../../assets/fonts/geist-latin.woff2')}}*{{box-sizing:border-box}}body{{margin:0;background:#f4eee2;color:#102f45;font-family:Geist,Arial,sans-serif}}body>header{{padding:54px max(24px,6vw);background:#fffaf1;border-bottom:1px solid #c9d5d5}}h1{{font-size:clamp(44px,7vw,88px);line-height:.94;margin:15px 0}}body>header p{{font-size:20px;line-height:1.5;max-width:780px;color:#526b7a}}.download{{display:inline-block;padding:12px 18px;border:1px solid #145b78;border-radius:12px;color:#145b78;text-decoration:none;font-weight:700}}main{{padding:50px max(24px,6vw) 100px}}section{{margin-bottom:80px}}section>header span{{font-family:monospace;color:#526b7a}}h2{{font-size:42px;margin:10px 0 28px}}.pair{{display:grid;grid-template-columns:repeat(2,minmax(0,430px));gap:36px}}article img{{width:100%;border-radius:16px;box-shadow:0 20px 44px rgba(16,47,69,.15)}}h3{{font-size:24px;margin:20px 0 8px}}article p{{font-size:18px;line-height:1.45;color:#365469}}nav{{display:flex;flex-wrap:wrap;gap:8px}}nav a{{padding:9px 11px;border:1px solid #c9d5d5;border-radius:9px;color:#145b78;text-decoration:none;background:#fffaf1}}@media(max-width:760px){{.pair{{grid-template-columns:1fr}}}}
-    </style></head><body><header><span>BOZZA LOCALE · {esc(design_version)}</span><h1>Due post.<br>Un solo sistema.</h1><p>Ogni settimana usa lo stesso indicatore in due momenti coordinati. Griglia, logo, fondo, gerarchie e fonti rimangono bloccati.</p>{pdf}</header><main>{''.join(sections)}</main></body></html>"""
-
-
-GLOBAL_DATA: dict[str, Any] = {}
+    for manifest in manifests:
+        figures = "".join(
+            f'<figure><img src="{esc(manifest["post_id"])}/cards/{esc(card["filename"])}.png" alt=""><figcaption>{esc(card["title"])}</figcaption></figure>'
+            for card in manifest["cards"]
+        )
+        sections.append(f'<section><h2>{esc(manifest["post_id"])}</h2><div class="grid">{figures}</div></section>')
+    return (
+        '<!doctype html><html lang="it"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>Social Kit · bozze</title><style>body{margin:0;background:#102F45;color:#fff;font-family:Arial,sans-serif}'
+        'main{max-width:1280px;margin:auto;padding:36px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}'
+        'figure{margin:0;background:#fff;padding:10px;border-radius:16px}img{display:block;width:100%;height:auto}figcaption{color:#102F45;padding:10px;font-weight:700}'
+        '@media(max-width:760px){.grid{grid-template-columns:1fr}}</style><main><h1>Osservatorio Versilia · Social Kit</h1>'
+        + "".join(sections) + "</main></html>"
+    )
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Genera il Social Kit settimanale")
-    parser.add_argument("--theme")
-    parser.add_argument("--metric")
-    parser.add_argument("--week-id")
-    parser.add_argument("--normalized", action="store_true")
-    parser.add_argument("--data-question")
-    parser.add_argument("--context-question")
-    parser.add_argument("--list-metrics", action="store_true")
-    parser.add_argument("--no-png", action="store_true")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--post-id", help="Genera una sola voce del calendario")
+    parser.add_argument("--list-posts", action="store_true", help="Elenca le voci configurate")
     args = parser.parse_args()
-
-    data = load_json(ROOT / "data" / "site-data.json")
-    global GLOBAL_DATA
-    GLOBAL_DATA = data
-    themes = load_json(KIT / "config" / "themes.json")
-    design = load_json(KIT / "config" / "design-system.json")
-    calendar = load_json(KIT / "config" / "editorial-calendar.json")
-    question_bank = load_json(KIT / "config" / "question-bank.json")
-    ready = load_json(KIT / "config" / "social-ready.json")
-
-    if args.list_metrics:
-        for key, metric in sorted(data["metrics"].items(), key=lambda item: (item[1]["meta"]["theme"], item[1]["meta"]["label"])):
-            if key in ready["approved_metrics"]:
-                print(f"{metric['meta']['theme']:<12} {key:<42} {metric['meta']['label']}")
+    design = load(KIT / "config" / "design-system.json")
+    themes = load(KIT / "config" / "themes.json")
+    calendar = load(KIT / "config" / "editorial-calendar.json")
+    if args.list_posts:
+        for post in calendar["posts"]:
+            print(f"{post['date']}\t{post['id']}\t{post['theme']}\t{post['metric']}\t{post['status']}")
         return 0
-
-    weeks = build_weeks(args, calendar, question_bank)
-    for week in weeks:
-        if week["metric"] not in ready["approved_metrics"]:
-            raise ValueError(f"Indicatore non approvato per il Social Kit: {week['metric']}")
-    cards = expand_cards(weeks, data)
-
+    posts = calendar["posts"]
+    if args.post_id:
+        posts = [post for post in posts if post["id"] == args.post_id]
+        if not posts:
+            raise ValueError(f"Voce non trovata: {args.post_id}")
     if DIST.exists():
         shutil.rmtree(DIST)
-    for folder in ["feed", "story", "captions", "alt", "provenance"]:
-        (DIST / folder).mkdir(parents=True, exist_ok=True)
-
-    generated: list[dict[str, Any]] = []
-    feed_results: dict[str, dict[str, Any]] = {}
-    feed_pngs: list[Path] = []
-    png_ok = not args.no_png
-    timestamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-
-    for card in cards:
-        primary: dict[str, Any] | None = None
-        for size_name, size in design["formats"].items():
-            svg, result = render_card(card, size_name, data, themes, design)
-            svg_path = DIST / size_name / f"{card['id']}.svg"
-            png_path = DIST / size_name / f"{card['id']}.png"
-            svg_path.write_text(svg, encoding="utf-8")
-            if not args.no_png:
-                ok = render_png(svg_path, png_path, size["width"], size["height"])
-                png_ok = png_ok and ok
-                if ok and size_name == "feed":
-                    feed_pngs.append(png_path)
-            generated.append(result)
-            if size_name == "feed":
-                primary = result
-                feed_results[card["id"]] = result
-        assert primary is not None
-        for platform, copy in make_copy(card, primary, data).items():
-            (DIST / "captions" / f"{card['id']}-{platform}.txt").write_text(copy + "\n", encoding="utf-8")
-        (DIST / "alt" / f"{card['id']}.txt").write_text(alt_text(card, primary, data) + "\n", encoding="utf-8")
-        provenance = {
-            "design_system": design["version"],
-            "week": card["week"],
-            "slot": card["slot"],
-            "dataset": {"path": "data/site-data.json", "version": data["version"], "updated": data["updated"]},
-            "metric": card["metric"],
-            "theme": card["theme"],
-            "year": primary["year"],
-            "source": primary["source"],
-            "source_url": primary["source_url"],
-            "values": primary["values"],
-            "question": card["question"],
-            "generated_at": timestamp,
-        }
-        (DIST / "provenance" / f"{card['id']}.json").write_text(json.dumps(provenance, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-    has_png = png_ok and len(feed_pngs) == len(cards)
-    has_pdf = build_pdf(feed_pngs, DIST / "linkedin-carousel.pdf") if has_png else False
-    manifest = {
-        "method": "two-post-week",
+    DIST.mkdir(parents=True)
+    manifests = [generate_post(post, design, themes, DIST / post["id"]) for post in posts]
+    write(DIST / "index.html", gallery(manifests))
+    weeks = Counter(datetime.fromisoformat(post["date"]).isocalendar()[:2] for post in posts)
+    root_manifest = {
+        "status": "draft",
+        "method": "two-carousels-per-week",
         "design_system": design["version"],
-        "dataset_version": data["version"],
-        "generated_at": timestamp,
-        "weeks": weeks,
-        "cards": generated,
-        "png": has_png,
-        "linkedin_pdf": has_pdf,
+        "posts": len(posts),
+        "slides": len(posts) * 4,
+        "weekly_counts": {f"{year}-W{week:02d}": count for (year, week), count in sorted(weeks.items())},
+        "items": manifests,
     }
-    (DIST / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (DIST / "index.html").write_text(gallery(cards, feed_results, has_png, has_pdf, design["version"]), encoding="utf-8")
-    print(f"Generate {len(weeks)} settimane · {len(cards)} post · master {design['version']}")
-    print(f"PNG: {'sì' if has_png else 'no'} · PDF LinkedIn: {'sì' if has_pdf else 'no'}")
+    write(DIST / "manifest.json", json.dumps(root_manifest, ensure_ascii=False, indent=2) + "\n")
+    print(f"Social Kit: {len(posts)} caroselli · {len(posts) * 4} tavole 1080×1350 · solo bozze")
     return 0
 
 
