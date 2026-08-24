@@ -9,6 +9,14 @@ on:
       - "scripts/test_scuola_mim.py"
       - "data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json"
       - ".github/workflows/materialize-school-branch.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/materialize_scuola_mim.py"
+      - "scripts/apply_scuola_release.py"
+      - "scripts/test_scuola_mim.py"
+      - "data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json"
+      - ".github/workflows/materialize-school-branch.yml"
   workflow_dispatch:
 
 permissions:
