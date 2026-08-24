@@ -1,15 +1,21 @@
 {
-  "version": "2026-08-21",
+  "version": "2026-08-24",
   "timezone": "Europe/Rome",
+  "weekly_post_budget": 2,
   "ordinary_posts_per_week": 2,
   "ordinary_slots": [
     "martedì",
     "venerdì"
   ],
-  "special_posts_are_additive": true,
-  "anchor_rule": "Una ricorrenza prioritaria realmente pertinente si aggiunge ai due post ordinari della settimana e viene pubblicata nella data editoriale prevista.",
-  "conditional_rule": "Una ricorrenza condizionale si aggiunge al piano solo se esiste un dato dell'Osservatorio realmente pertinente, sufficientemente granulare e metodologicamente compatibile.",
-  "same_day_rule": "Se una ricorrenza cade nello stesso giorno di uno slot ordinario, il piano mantiene entrambi i contenuti ma segnala la collisione per valutare lo spostamento dell'ordinario a un giorno libero vicino, senza eliminarlo.",
-  "special_collision_rule": "Se più ricorrenze competono nello stesso giorno, non si forza un contenuto debole: si mantengono solo quelle con collegamento diretto ai dati disponibili.",
-  "verification_rule": "Data, denominazione, tema annuale e fonte ufficiale vanno ricontrollati prima della produzione del contenuto."
+  "special_posts_are_additive": false,
+  "anchor_rule": "Una ricorrenza anchor realmente pertinente occupa uno dei due posti editoriali della settimana e sostituisce lo slot ordinario più vicino alla data di pubblicazione.",
+  "conditional_rule": "Una ricorrenza conditional entra nel piano solo dopo promozione editoriale esplicita e, se promossa, occupa uno dei due posti settimanali come una anchor.",
+  "slot_replacement_rule": "Lo slot ordinario sostituito non viene recuperato automaticamente: la ricorrenza calibra la rotazione e il tema ordinario di quello slot cede il posto.",
+  "special_collision_rule": "Il totale pianificato non supera il budget settimanale. Se le ricorrenze selezionate eccedono il budget, il planner si ferma e richiede una decisione editoriale.",
+  "blackout_dates": [
+    "2026-12-25",
+    "2027-01-01"
+  ],
+  "blackout_rule": "Nelle date di blackout non si pianifica un post ordinario e lo slot non viene recuperato automaticamente.",
+  "verification_rule": "Data, denominazione, eventuale tema annuale e fonte ufficiale vanno ricontrollati prima della produzione del contenuto."
 }
