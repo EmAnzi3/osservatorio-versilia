@@ -148,15 +148,33 @@ def enrich_metric(site: dict, snapshot: dict, key: str, cfg: dict) -> None:
 
 def update_theme(site: dict) -> None:
     theme = site["themes"]["lavoro"]
-    obsolete = {"femaleEmploymentRate", "maleEmploymentRate"}
-    theme["metrics"] = [key for key in theme.get("metrics", []) if key not in obsolete]
-    for section in theme.get("sections", []):
-        section["metrics"] = [key for key in section.get("metrics", []) if key not in obsolete]
-        if section.get("key") == "mercato":
-            section["description"] = "Occupazione, disoccupazione e partecipazione al mercato del lavoro, leggibili per fascia d'età e genere."
-        if section.get("key") == "genere":
-            section["description"] = "Il dettaglio per uomini e donne è integrato negli indicatori principali; qui resta il divario occupazionale tra i generi."
-    theme["description"] = "Occupazione, disoccupazione e partecipazione con letture per età e genere, più divario occupazionale e condizione dei giovani."
+    theme["metrics"] = [
+        "employmentRate",
+        "unemploymentRate",
+        "activityRate",
+        "femaleEmploymentRate",
+        "maleEmploymentRate",
+        "employmentGenderGap",
+        "youthOtherStatus",
+    ]
+    sections = {section.get("key"): section for section in theme.get("sections", [])}
+    sections["mercato"].update({
+        "label": "Partecipazione e occupazione",
+        "description": "Occupazione, disoccupazione e partecipazione al mercato del lavoro nel 2024, leggibili per fascia d'età e genere.",
+        "metrics": ["employmentRate", "unemploymentRate", "activityRate"],
+    })
+    sections["genere"].update({
+        "label": "Serie storiche 15–64",
+        "description": "Tassi di occupazione di donne e uomini e relativo divario, con serie comunale omogenea 2021–2023. Il dettaglio 2024 per altre fasce è disponibile negli indicatori principali.",
+        "metrics": ["femaleEmploymentRate", "maleEmploymentRate", "employmentGenderGap"],
+    })
+    sections["giovani"].update({
+        "label": "Condizione dei giovani",
+        "description": "Una misura comunale della condizione professionale dei giovani tra 15 e 24 anni.",
+        "metrics": ["youthOtherStatus"],
+    })
+    theme["sections"] = [sections["mercato"], sections["genere"], sections["giovani"]]
+    theme["description"] = "Occupazione e partecipazione nel 2024 con letture per età e genere, serie storiche 2021–2023 sul perimetro 15–64 e condizione dei giovani."
 
     edu = site["themes"]["istruzione"]
     for section in edu.get("sections", []):

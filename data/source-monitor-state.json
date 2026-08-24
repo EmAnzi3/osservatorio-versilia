@@ -96,11 +96,14 @@
       "hashTruncated": false,
       "error": "",
       "metrics": [
+        "dependencyIndices",
         "foreignResidentialMobility",
         "foreignResidents",
         "internalResidentialMobility",
+        "naturalDemographicDynamics",
         "population",
         "populationChange",
+        "taxpayersAdultPopulationRate",
         "totalResidentialMobility"
       ],
       "roles": [
@@ -915,6 +918,7 @@
         "emsResponseTimeP75",
         "foreignBornSoleProprietorShare",
         "innovationBusinessShare",
+        "municipalOnlineServicesAdvanced",
         "organicAgriculturalAreaShare",
         "youthOtherStatus"
       ],
@@ -922,6 +926,7 @@
         "primary"
       ],
       "profileIds": [
+        "regione-toscana-indicatori-comunali",
         "regione-toscana-indicators-annual"
       ],
       "frequencies": [
@@ -1020,7 +1025,10 @@
       "metrics": [
         "income",
         "incomeDistribution",
-        "incomeVsInflation"
+        "incomeSourceProfile",
+        "incomeVsInflation",
+        "pensionIncomeShare",
+        "taxpayersAdultPopulationRate"
       ],
       "roles": [
         "primary"
@@ -1115,6 +1123,162 @@
       ],
       "profileIds": [
         "mef-municipal-tax-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall": {
+      "url": "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall",
+      "contentType": "",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "fiscalRecoveryActivity"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "siope-monthly"
+      ],
+      "frequencies": [
+        "monthly"
+      ]
+    },
+    "https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf": {
+      "url": "https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dait.interno.gov.it/documenti/com-fl-03-12-2025-all.pdf",
+      "contentType": "",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "fiscalRecoveryActivity"
+      ],
+      "roles": [
+        "additional"
+      ],
+      "profileIds": [
+        "dait-fiscal-assessment-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://dati.toscana.it/dataset/regione-toscana-pnrr": {
+      "url": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "directReachable": true,
+      "automationLimited": false,
+      "probeUrl": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
+      "probeMethod": "validated-pnrr-toscana-snapshot",
+      "metrics": [
+        "pnrrConcluded",
+        "pnrrFunding"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-pnrr-monthly"
+      ],
+      "frequencies": [
+        "monthly"
+      ]
+    },
+    "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc": {
+      "url": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "municipalEmployeesPer1000"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "rgs-conto-annuale-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati": {
+      "url": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "municipalStaffAgeStructure",
+        "municipalStaffTurnover"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "rgs-conto-annuale-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc": {
+      "url": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "municipalStaffTraining"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "rgs-conto-annuale-annual"
       ],
       "frequencies": [
         "annual"
@@ -1508,15 +1672,37 @@
     },
     "pnrrFunding": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-18T12:10:09+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_access_limited"
+      "checkedAt": "2026-08-18T16:58:50+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current",
+      "verificationEvidence": {
+        "type": "pnrr_toscana_snapshot",
+        "dataset": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+        "resource": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
+        "dataElaborationDate": "2026-08-11",
+        "sourceSnapshotSha256": "f7d4e46f4973efe92eef00a9fb9b41e95e5824600046c4b9fa57b16e932091db",
+        "selectedProjects": 101,
+        "concludedProjects": 74,
+        "fundingTotal": 36683107.64,
+        "match7of7": true
+      }
     },
     "pnrrConcluded": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-18T12:10:09+00:00",
-      "observedLatestPeriod": "",
-      "status": "source_access_limited"
+      "checkedAt": "2026-08-18T16:58:50+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current",
+      "verificationEvidence": {
+        "type": "pnrr_toscana_snapshot",
+        "dataset": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+        "resource": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
+        "dataElaborationDate": "2026-08-11",
+        "sourceSnapshotSha256": "f7d4e46f4973efe92eef00a9fb9b41e95e5824600046c4b9fa57b16e932091db",
+        "selectedProjects": 101,
+        "concludedProjects": 74,
+        "fundingTotal": 36683107.64,
+        "match7of7": true
+      }
     },
     "populationChange": {
       "publishedPeriod": "2019–2026",

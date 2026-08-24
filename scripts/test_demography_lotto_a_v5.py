@@ -23,8 +23,8 @@ def require(condition: bool, message: str) -> None:
 
 
 def main() -> None:
-    # Questa fase non crea nuove card: il catalogo resta quello Demografia v1.14.
-    require(len(SITE['metrics']) == 129, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
+    # Questa fase non crea nuove card: il catalogo corrente resta invariato.
+    require(len(SITE['metrics']) == 138, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
 
     age = SITE['metrics']['ageDistribution']
     require(age['meta']['year'] == '2026', 'ageDistribution non riallineata al 2026')

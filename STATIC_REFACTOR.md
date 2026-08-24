@@ -20,7 +20,7 @@ Il workflow `.github/workflows/pages.yml`, attivato dai push su `main`, esegue n
 1. installazione degli strumenti di build;
 2. generazione del sito pre-renderizzato in `dist/`;
 3. test di regressione desktop, mobile e senza JavaScript;
-4. controlli specifici sulla versione dei dati, sui 69 indicatori, sui 9 temi e sui 7 Comuni;
+4. controlli specifici sulla versione dei dati, sui 138 indicatori, sugli 11 temi e sui 7 Comuni;
 5. pubblicazione su GitHub Pages soltanto se tutti i controlli sono superati.
 
 Il workflow `.github/workflows/static-prerender-check.yml` esegue gli stessi controlli sulle pull request, ma non contiene alcun job di pubblicazione.

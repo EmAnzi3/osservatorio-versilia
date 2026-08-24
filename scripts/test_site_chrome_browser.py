@@ -11,12 +11,14 @@ from playwright.sync_api import Page, sync_playwright
 
 from test_browser_quality_gate import run_gate
 from test_lighthouse_budget import run_budget
+from test_opportunity_release_browser import verify_release as verify_opportunity_release
 
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = "stato-dati/"
 SPECIAL_ROUTES = (
     "pnrr/",
+    "opportunita/",
     "percorsi/",
     "percorsi/metodo.html",
     "confronta/meteo-clima/",
@@ -208,6 +210,7 @@ def main() -> None:
     verify_method_background(base)
     verify_climate_tooltips(base)
     verify_custom_404(base)
+    verify_opportunity_release(base)
     print("Chrome browser gate passed: raster, geometry, styles, search, background, Tmin/Tmax tooltip and 404.")
 
     run_gate(base, ROOT / "dist", ROOT / "reports" / "browser-quality")

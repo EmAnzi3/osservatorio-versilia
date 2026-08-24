@@ -22,8 +22,8 @@ def close(a,b,tol=.011): return abs(float(a)-float(b))<=tol
 
 
 def main():
-    assert DATA['version'] in {'v1.12.0','v1.13.0'}
-    assert REG['expectedMetricCount']==127 and REG['expectedInlineMetricCount']==123 and REG['expectedExternalMetricCount']==4
+    assert DATA['version']=='v1.16.0'
+    assert REG['expectedMetricCount']==138 and REG['expectedInlineMetricCount']==134 and REG['expectedExternalMetricCount']==4
     for key in ['municipalIrpef','tariStandardHousehold','municipalImuStandard','fuelPrices','wasteServiceCost','incomeVsInflation']:
         assert key in DATA['metrics']
 
@@ -96,9 +96,12 @@ def main():
 
     e=DATA['themes']['economia']
     fiscal=next(x for x in e['sections'] if x['key']=='costi-fiscalita')
-    assert fiscal['metrics']==['municipalIrpef','tariStandardHousehold','municipalImuStandard']
+    assert fiscal['metrics']==['municipalIrpef','tariStandardHousehold','municipalImuStandard','fiscalRecoveryActivity']
     redditi=next(x for x in e['sections'] if x['key']=='redditi')
-    assert redditi['metrics']==['income','incomeDistribution','incomeVsInflation']
+    assert redditi['metrics']==[
+        'income','incomeDistribution','incomeSourceProfile','pensionIncomeShare',
+        'taxpayersAdultPopulationRate','incomeVsInflation'
+    ]
     assert 'incomeVsInflation' in e['metrics']
     assert 'metric-context-jump' not in APP02
     assert "themeKey === 'economia' ? incomeInflationMarkup(data)" not in APP03
@@ -120,6 +123,6 @@ def main():
     assert state.get('status') in {'draft','published'}
     assert 'incomeVsInflation' in state['publishedInDraft']
     assert state['notPublished']==['schoolMeals']
-    print(f"Economia validata ({DATA['version']}): 127 indicatori = 123 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
+    print(f"Economia validata ({DATA['version']}): 138 indicatori = 134 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
 
 if __name__=='__main__': main()

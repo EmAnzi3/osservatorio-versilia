@@ -16,7 +16,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
-PWA_VERSION = "20260813-pwa8"
+PWA_VERSION = "20260824-pwa9"
 
 
 class QuietHandler(SimpleHTTPRequestHandler):

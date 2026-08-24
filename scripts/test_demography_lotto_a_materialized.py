@@ -41,15 +41,15 @@ def assert_series(metric: dict, years: list[int]) -> None:
 
 
 def main() -> None:
-    assert SITE['version'] == 'v1.14.0'
-    assert len(SITE['metrics']) == 129
+    assert SITE['version'] == 'v1.16.0'
+    assert len(SITE['metrics']) == 138
     external = [
         key for key, metric in SITE['metrics'].items()
         if metric.get('dataStorage', {}).get('type') == 'external-climate'
     ]
     assert len(external) == 4, external
-    assert REGISTRY['expectedMetricCount'] == 129
-    assert REGISTRY['expectedInlineMetricCount'] == 125
+    assert REGISTRY['expectedMetricCount'] == 138
+    assert REGISTRY['expectedInlineMetricCount'] == 134
     assert REGISTRY['expectedExternalMetricCount'] == 4
 
     for key in NEW_KEYS:
@@ -89,11 +89,11 @@ def main() -> None:
     # la correzione vale quindi sia nel confronto sia nelle pagine dei Comuni.
     assert "['per100','per1000','per10k','per100k'].includes(metric.meta.unit) ? 132 : 78" in HISTORY_CORE
 
-    # 80+ non deve diventare una nuova card: esiste già nel composito ageDistribution.
+    # 80+ non deve diventare una nuova card: il composito espone 80–84 e 85+.
     assert 'share80Plus' not in SITE['metrics']
     age = SITE['metrics']['ageDistribution']
     age_labels = [part.get('selectorLabel') or part['label'] for part in age['rows'][0]['parts']]
-    assert '80+' in age_labels
+    assert '80–84' in age_labels and '85+' in age_labels
 
     demography = SITE['themes']['demografia']
     assert demography['metrics'].index('dependencyIndices') == demography['metrics'].index('oldAgeIndex') + 1
@@ -104,11 +104,10 @@ def main() -> None:
     for key in NEW_KEYS:
         assert key in demo_source['metrics']
 
-    assert AUDIT['status'] == 'implementation_demography_draft'
-    assert AUDIT['catalogMetricCountCurrentDraft'] == 129
+    assert AUDIT['catalogMetricCountAtAuditStart'] == 127
     decisions = {candidate['key']: candidate.get('implementationStatus') for candidate in AUDIT['candidates']}
-    assert decisions['share80Plus'] == 'covered_by_existing_ageDistribution'
-    assert decisions['populationAgeSexDetail'] == 'snapshot_materialized_2026'
+    assert decisions['share80Plus'] == 'public_distribution_split_80_84_85_plus_2026'
+    assert decisions['populationAgeSexDetail'] == 'public_pyramid_2026_towns_and_versilia'
     dependency_audit = next(candidate for candidate in AUDIT['candidates'] if candidate['key'] == 'dependencyIndices')
     assert dependency_audit['unit'] == 'per100'
     assert '15–64' in dependency_audit['unitExplanation']
@@ -157,7 +156,7 @@ def main() -> None:
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        'Demografia Lotto A materializzata OK: 129 metriche, 7/7, '
+        'Demografia Lotto A materializzata OK: catalogo v1.16 con 138 metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )

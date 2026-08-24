@@ -61,7 +61,7 @@ def pct(value: float) -> str:
 
 
 def per1000(value: float) -> str:
-    return f"{value:.1f} ogni 1.000".replace(".", ",")
+    return f"{value:.1f}".replace(".", ",") + " ogni 1.000"
 
 
 def employees_metric(site: dict, snapshot: dict) -> dict:

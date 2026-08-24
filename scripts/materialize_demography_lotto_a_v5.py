@@ -127,7 +127,18 @@ def update_age_distribution(site: dict, snapshot: dict) -> None:
     )
     metric['meta'].pop('detailLabel', None)
     metric['meta']['pyramidLabel'] = 'Piramide per età e sesso'
-    metric.setdefault('method', {})['detail'] = (
+    method = metric.setdefault('method', {})
+    method['type'] = 'Elaborazione Osservatorio su dati Istat POSAS'
+    method['formula'] = (
+        'residenti della fascia / popolazione residente totale × 100; '
+        'età media = somma(età × residenti alla singola età) / residenti totali'
+    )
+    method['caveat'] = (
+        'Distribuzione, piramide ed età media sono calcolate sulla stessa popolazione POSAS '
+        'al 1° gennaio 2026. L’età media è un’elaborazione Osservatorio sui conteggi per singola età.'
+    )
+    method['coverage'] = '7/7'
+    method['detail'] = (
         'Distribuzione e piramide derivano dal POSAS Istat al 1° gennaio 2026. '
         'Per rendere il dato 85+ una componente confrontabile senza sovrapposizioni, la precedente fascia 80+ è scissa in 80–84 e 85 anni e oltre. '
         'La piramide visualizza classi quinquennali per leggibilità, mantenendo nello snapshot il dato per singola età e sesso. '
@@ -168,12 +179,14 @@ def update_audit(audit: dict) -> None:
     for candidate in audit.get('candidates', []):
         if candidate.get('key') in decisions:
             candidate['implementationStatus'] = decisions[candidate['key']]
+    previous_v2 = audit.get('demographyV2') if isinstance(audit.get('demographyV2'), dict) else {}
+    foreign_detail = previous_v2.get('foreignCitizenshipBirthCountry', 'pending_rcs_probe')
     audit['demographyV2'] = {
         'ageDistribution2026': 'materialized_8_non_overlapping_bands',
         'share80PlusAnd85Plus': 'public_distribution_80_84_85_plus',
         'populationAgeSexPyramid': 'public_town_and_versilia_native_tooltip',
         'populationChangeComponents': 'not_added_duplicate_existing_metrics',
-        'foreignCitizenshipBirthCountry': 'pending_rcs_probe',
+        'foreignCitizenshipBirthCountry': foreign_detail,
     }
 
 

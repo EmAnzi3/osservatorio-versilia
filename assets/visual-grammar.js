@@ -343,7 +343,12 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown'].includes(type)) return null;
+    // demographicBreakdown visual selection: usa la cella selezionata, non il valore base 25–64 Totale.
+    if (type === 'demographicBreakdown') {
+      const part = (row?.parts || []).find(item => item.key === choice) || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || 'percent' };
+    }
     if (type === 'securityMeasures') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
       const part = row?.parts?.[index] || {};
@@ -366,7 +371,11 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown'].includes(type)) return null;
+    if (type === 'demographicBreakdown') {
+      const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || {};
+      return { value: part.value, label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`, unit: part.unit || metric?.meta?.unit || 'percent' };
+    }
     if (type === 'securityMeasures') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};

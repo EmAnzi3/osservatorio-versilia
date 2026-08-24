@@ -26,10 +26,10 @@ def adults(town: str) -> int:
 
 
 def main() -> None:
-    require(SITE['version'] == 'v1.15.0', 'Versione dati inattesa')
-    require(len(SITE['metrics']) == 132, f"Metriche inattese: {len(SITE['metrics'])}")
-    require(REGISTRY['expectedMetricCount'] == 132, 'Registry totale inatteso')
-    require(REGISTRY['expectedInlineMetricCount'] == 128, 'Registry inline inatteso')
+    require(SITE['version'] == 'v1.16.0', 'Versione dati inattesa')
+    require(len(SITE['metrics']) == 138, f"Metriche inattese: {len(SITE['metrics'])}")
+    require(REGISTRY['expectedMetricCount'] == 138, 'Registry totale inatteso')
+    require(REGISTRY['expectedInlineMetricCount'] == 134, 'Registry inline inatteso')
     require(REGISTRY['expectedExternalMetricCount'] == 4, 'Registry external inatteso')
 
     # 1. Reddito per fonte: un solo composito, non una card per ogni fonte.

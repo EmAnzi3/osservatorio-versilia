@@ -29,9 +29,12 @@ def main():
         f"site={len(site['metrics'])}, registry={expected_count}"
     )
     labour_theme = site["themes"]["lavoro"]
-    assert "femaleEmploymentRate" not in labour_theme["metrics"] and "maleEmploymentRate" not in labour_theme["metrics"]
-    assert "employmentGenderGap" in labour_theme["metrics"]
-    assert "femaleEmploymentRate" in site["metrics"] and "maleEmploymentRate" in site["metrics"], "Metriche storiche legacy devono restare nel dataset"
+    historical_gender = {"femaleEmploymentRate", "maleEmploymentRate", "employmentGenderGap"}
+    assert historical_gender <= set(labour_theme["metrics"])
+    gender_section = next(section for section in labour_theme["sections"] if section["key"] == "genere")
+    assert gender_section["label"] == "Serie storiche 15–64"
+    assert gender_section["metrics"] == ["femaleEmploymentRate", "maleEmploymentRate", "employmentGenderGap"]
+    assert "2021–2023" in gender_section["description"] and "2024" in gender_section["description"]
 
     for key in KEYS:
         metric = site["metrics"][key]
@@ -75,7 +78,7 @@ def main():
     close(edu_w["value"], 20.90281286845208, "Massarosa terziario donne")
     print(
         "Lavoro/Istruzione età×genere verificati: 5 indicatori, ordine fasce logico, "
-        f"piramide su 4 fasce non sovrapposte, 7/7, totale indicatori invariato a {expected_count}."
+        f"piramide su 4 fasce non sovrapposte, serie 15–64 preservate, 7/7, totale indicatori invariato a {expected_count}."
     )
 
 

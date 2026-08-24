@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260814-v111';
+  const HOTFIX_VERSION = '20260824-v116';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
 

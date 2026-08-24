@@ -73,12 +73,122 @@
     return `<div class="composite-stack ${options.town ? 'composite-stack-town' : ''}" role="list" aria-label="${html(options.ariaLabel || 'Distribuzione percentuale')}">${parts.map((part,index)=>compositeSegmentMarkup(part,index,options)).join('')}</div>`;
   }
 
+  function agePyramidTooltipMarkup({boxX,boxY,guideX,guideY,label,value}) {
+    const boxWidth = 208, boxHeight = 40;
+    const targetY = boxY < guideY ? boxY + boxHeight : boxY;
+    return `<g class="chart-tooltip" hidden><line class="chart-guide" x1="${guideX}" y1="${guideY}" x2="${guideX}" y2="${targetY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+15}">${html(label)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+31}">${html(number0.format(value))} residenti</text></g>`;
+  }
+
+  function agePyramidMarkup(metric, row) {
+    const pyramid = row?.ageSexPyramid;
+    if (metric.meta.key !== 'ageDistribution' || !pyramid?.displayBands?.length) return '';
+    const bands = [...pyramid.displayBands].reverse();
+    const max = Math.max(...bands.flatMap(item => [Number(item.men)||0, Number(item.women)||0]), 1);
+    const niceMax = Math.ceil(max / 250) * 250 || max;
+    const center = 430, gap = 42, maxWidth = 300, rowHeight = 25, top = 74, bottom = 54;
+    const height = top + bands.length * rowHeight + bottom;
+    const axisTicks = [niceMax, Math.round(niceMax/2), 0, Math.round(niceMax/2), niceMax];
+    const tickXs = [center-gap-maxWidth, center-gap-maxWidth/2, center, center+gap+maxWidth/2, center+gap+maxWidth];
+    const axis = tickXs.map((x,index)=>`<g class="age-pyramid-axis"><line x1="${x}" y1="${top-16}" x2="${x}" y2="${height-bottom+10}"/><text x="${x}" y="${height-22}" text-anchor="middle">${html(number0.format(axisTicks[index]))}</text></g>`).join('');
+    const rows = bands.map((item,index)=>{
+      const y = top + index * rowHeight;
+      const men = Number(item.men)||0;
+      const women = Number(item.women)||0;
+      const menWidth = men / niceMax * maxWidth;
+      const womenWidth = women / niceMax * maxWidth;
+      const tooltipY = y < 112 ? y + 22 : y - 46;
+      const menBoxX = Math.max(8, center-gap-menWidth-218);
+      const womenBoxX = Math.min(644, center+gap+womenWidth+10);
+      const menLabel = `${item.label} · Uomini`;
+      const womenLabel = `${item.label} · Donne`;
+      return `<g class="age-pyramid-row"><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="${html(menLabel)}: ${html(number0.format(men))} residenti"><rect x="${center-gap-menWidth}" y="${y}" width="${menWidth}" height="17" rx="3" class="age-pyramid-men"></rect>${agePyramidTooltipMarkup({boxX:menBoxX,boxY:tooltipY,guideX:center-gap-menWidth,guideY:y+8.5,label:menLabel,value:men})}</g><g class="chart-point age-pyramid-point" tabindex="0" role="button" aria-label="${html(womenLabel)}: ${html(number0.format(women))} residenti"><rect x="${center+gap}" y="${y}" width="${womenWidth}" height="17" rx="3" class="age-pyramid-women"></rect>${agePyramidTooltipMarkup({boxX:womenBoxX,boxY:tooltipY,guideX:center+gap+womenWidth,guideY:y+8.5,label:womenLabel,value:women})}</g><text x="${center}" y="${y+13}" text-anchor="middle">${html(item.label)}</text></g>`;
+    }).join('');
+    return `<details class="detail-disclosure age-pyramid-detail"><summary><span>${html(metric.meta.pyramidLabel || 'Piramide per età e sesso')}</span><small>${html(String(pyramid.year))} · asse X in residenti</small></summary><div class="age-pyramid-body"><div class="trend-chart age-pyramid-trend"><svg class="age-pyramid-chart" viewBox="0 0 860 ${height}" role="img" aria-label="Piramide per età e sesso di ${html(row.town)}"><text x="215" y="32" text-anchor="middle" class="age-pyramid-title">Uomini</text><text x="645" y="32" text-anchor="middle" class="age-pyramid-title">Donne</text><text x="430" y="54" text-anchor="middle" class="age-pyramid-unit">Scala: residenti per classe d’età</text>${axis}<line x1="${center-gap}" y1="${top-22}" x2="${center-gap}" y2="${height-bottom+10}" class="age-pyramid-center"/><line x1="${center+gap}" y1="${top-22}" x2="${center+gap}" y2="${height-bottom+10}" class="age-pyramid-center"/>${rows}<text x="430" y="${height-4}" text-anchor="middle" class="age-pyramid-unit">residenti</text></svg></div><p class="aggregate-note age-pyramid-note">Classi quinquennali costruite dal dettaglio POSAS per singola età e sesso.</p></div></details>`;
+  }
+
+  function foreignOriginsListMarkup(title, items, note) {
+    return `<section class="income-band-town-detail foreign-origin-section"><h4>${html(title)}</h4><div class="composite-town-detail">${(items||[]).map(item=>`<div><span>${html(item.label)}</span><b>${html(number0.format(item.count))}</b><small>${item.share === null || item.share === undefined ? '' : `${html(number1.format(item.share))}%`} ${html(note)}</small></div>`).join('')}</div></section>`;
+  }
+
+  function foreignOriginsMarkup(metric, source, scope = 'town') {
+    const detail = source?.foreignOrigins || source;
+    if (metric.meta.key !== 'foreignResidents' || !detail) return '';
+    const title = scope === 'compare' ? 'Versilia · cittadinanze e paesi esteri di nascita' : 'Principali cittadinanze e paesi di nascita';
+    const caption = scope === 'compare' ? `${html(String(detail.year))} · somma dei 7 comuni` : `${html(String(detail.year))} · Istat RCS`;
+    return `<details class="detail-disclosure foreign-origins-detail ${scope === 'compare' ? 'compare-foreign-origins' : ''}"><summary><span>${html(title)}</span><small>${caption}</small></summary><div class="foreign-origin-body">${foreignOriginsListMarkup('Cittadinanze straniere più numerose',detail.citizenshipTop,'dei residenti stranieri')}${foreignOriginsListMarkup('Paesi esteri di nascita più frequenti',detail.birthCountryTop,'dei residenti nati all’estero')}</div><p class="aggregate-note foreign-origins-note">Cittadinanza e paese di nascita sono due distribuzioni separate: Istat RCS non pubblica il loro incrocio. Nel confronto Versilia i valori sono somme comunali riordinate sul totale.</p></details>`;
+  }
+
+  function foreignOriginsCompareMarkup(metric) {
+    return foreignOriginsMarkup(metric, metric.aggregate?.foreignOrigins, 'compare');
+  }
+
+  function installAgePyramidDelegation(root) {
+    if (!root || root.dataset.agePyramidDelegated === '1') return;
+    root.dataset.agePyramidDelegated = '1';
+    const chartFor = target => target?.closest?.('.age-pyramid-trend');
+    const pointFor = target => target?.closest?.('.age-pyramid-point');
+    const hide = chart => {
+      if (!chart) return;
+      chart.querySelectorAll('.age-pyramid-point').forEach(point => {
+        point.classList.remove('active');
+        point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
+      });
+    };
+    const show = point => {
+      const chart = point?.closest('.age-pyramid-trend');
+      if (!point || !chart) return;
+      hide(chart);
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+    root.addEventListener('pointerover', event => {
+      const point = pointFor(event.target);
+      if (point && root.contains(point)) show(point);
+    });
+    root.addEventListener('pointerout', event => {
+      const chart = chartFor(event.target);
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      hide(chart);
+    });
+    root.addEventListener('focusin', event => {
+      const point = pointFor(event.target);
+      if (point && root.contains(point)) show(point);
+    });
+    root.addEventListener('focusout', event => {
+      const chart = chartFor(event.target);
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      hide(chart);
+    });
+    root.addEventListener('click', event => {
+      const point = pointFor(event.target);
+      if (point && root.contains(point)) show(point);
+    });
+    root.addEventListener('keydown', event => {
+      const point = pointFor(event.target);
+      if (!point || !root.contains(point)) return;
+      const chart = point.closest('.age-pyramid-trend');
+      const points = [...chart.querySelectorAll('.age-pyramid-point')];
+      const index = points.indexOf(point);
+      if (event.key === 'Escape') { hide(chart); point.blur(); return; }
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      let next = index;
+      if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+      if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = points.length - 1;
+      points[next]?.focus();
+    });
+  }
+  /* data-age-pyramid-delegated */
+
   function omiZoneTableMarkup(row, compact = false) {
     const zones = row?.zones || [];
     return `<div class="omi-zone-table-wrap ${compact ? 'compact' : ''}"><table class="omi-zone-table"><thead><tr><th>Zona OMI</th><th>Area</th><th>Vendita</th><th>Affitto</th></tr></thead><tbody>${zones.map(zone => `<tr><td><b>${html(zone.code)}</b></td><td>${html(zone.label)}</td><td>${html(formatValue(zone.sale,'eurm2'))}</td><td>${html(formatValue(zone.rent,'rentm2'))}</td></tr>`).join('')}</tbody></table></div>`;
   }
 
   function compositeCompareDefaults(metric) {
+    if (metric.meta.compositeType === 'demographicBreakdown') return { choice:`${metric.meta.defaultAge || '25-64'}|${metric.meta.defaultGender || 'total'}`, scale:'value' };
     if (metric.meta.compositeType === 'stock') return { choice:'share', scale:'value' };
     if (metric.meta.compositeType === 'omi') return { choice:'sale', scale:'value' };
     if (metric.meta.compositeType === 'mobility') return { choice:'part-2', scale:'rate' };
@@ -87,6 +197,10 @@
   }
 
   function compositeCompareSelection(metric, row, choice, scale = 'value') {
+    if (metric.meta.compositeType === 'demographicBreakdown') {
+      const part = (row.parts || []).find(item => item.key === choice) || row.parts?.[0] || {};
+      return { value:part.value, unit:part.unit || metric.meta.unit, part };
+    }
     if (metric.meta.compositeType === 'stock') {
       const count = choice === 'count';
       return { value: count ? row.count : row.value, unit: count ? 'number' : 'percent' };
@@ -109,6 +223,10 @@
   }
 
   function compositeCompareAggregate(metric, choice, scale = 'value') {
+    if (metric.meta.compositeType === 'demographicBreakdown') {
+      const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || metric.aggregate?.parts?.[0] || {};
+      return { value:part.value, unit:part.unit || metric.meta.unit, label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`, note:metric.aggregate?.note };
+    }
     if (metric.meta.compositeType === 'stock') {
       const count = choice === 'count';
       const value = count ? metric.aggregate?.count : metric.aggregate?.value;
@@ -147,6 +265,10 @@
   }
 
   function compositeCompareControls(metric, choice, scale = 'value') {
+    if (metric.meta.compositeType === 'demographicBreakdown') {
+      const [ageKey,genderKey] = String(choice || '').split('|');
+      return `<div class="compare-view-controls demographic-view-controls"><label class="compare-choice-select"><span>Fascia d’età</span><select data-demographic-age>${(metric.meta.ageOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === ageKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label><label class="compare-choice-select"><span>Genere</span><select data-demographic-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === genderKey ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>`;
+    }
     if (metric.meta.compositeType === 'stock') {
       return `<div class="compare-view-controls"><div><span class="compare-view-label">Lettura</span><div class="scale-switch compact" role="group" aria-label="Lettura residenti stranieri"><button type="button" data-composite-choice="share" class="${choice === 'share' ? 'active' : ''}">Quota %</button><button type="button" data-composite-choice="count" class="${choice === 'count' ? 'active' : ''}">Valore assoluto</button></div></div></div>`;
     }
@@ -190,6 +312,10 @@
         return `<article class="omi-compare-card"><div class="omi-compare-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(number0.format((row.zones || []).length))} zone OMI</span></div><div class="omi-compare-values"><div><span>Vendita · media comunale</span><strong>${html(formatValue(row.saleMean,'eurm2'))}</strong></div><div><span>Affitto · media comunale</span><strong>${html(formatValue(row.rentMean,'rentm2'))}</strong></div></div><details class="omi-zone-disclosure"><summary>Espandi le zone OMI <b>+</b></summary>${omiZoneTableMarkup(row,true)}</details></article>`;
       }).join('')}</div>`;
     }
+    if (metric.meta.compositeType === 'demographicBreakdown') {
+      const defaults = compositeCompareDefaults(metric);
+      return `<div class="comparison-bars">${compositeCompareBarRows(data,metricKey,defaults.choice,defaults.scale)}</div>`;
+    }
     if (metric.meta.compositeType === 'securityMeasures') {
       const defaults = compositeCompareDefaults(metric);
       return `<div class="comparison-bars">${compositeCompareBarRows(data,metricKey,defaults.choice,defaults.scale)}</div>`;
@@ -206,6 +332,12 @@
           </a>`;
         }).join('')}</div>`;
     }
+    const versiliaPyramid = metric.meta.key === 'ageDistribution' && metric.aggregate?.ageSexPyramid
+      ? agePyramidMarkup(metric,{...metric.aggregate,town:'Versilia'})
+      : '';
+    const incomeBandDetail = metric.meta.key === 'incomeDistribution' && rows.some(row => row.detailParts?.length)
+      ? `<details class="detail-disclosure income-bands-detail"><summary><span>${html(metric.meta.detailLabel || 'Dettaglio · 8 fasce MEF')}</span><small>${html(metric.meta.year)} · classi originali MEF</small></summary><div>${rows.map(row => `<section class="income-band-town-detail"><h4>${html(row.town)}</h4><div class="composite-town-detail">${(row.detailParts || []).map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span><b>${part.value === null || part.value === undefined ? 'n.d.' : html(number1.format(part.value)) + '%'}</b><small>${part.count === null || part.count === undefined ? 'n.d.' : html(number0.format(part.count)) + ' dichiaranti'}</small></div>`).join('')}</div></section>`).join('')}</div></details>`
+      : '';
     return `${compositePartLegend(metric)}<div class="composite-distribution-list">${rows.map(row => {
       const query = new URLSearchParams({ tema: metric.meta.theme, indicatore: metricKey });
       const parts = row.parts || [];
@@ -214,29 +346,44 @@
         <div class="composite-row-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(summary.label)} <b>${html(summary.formatted)}</b></span></div>
         ${compositeStackMarkup(parts,{ ariaLabel:`${metric.meta.label} · ${row.town}`, minLabel:6 })}
       </div>`;
-    }).join('')}</div>`;
+    }).join('')}</div>${incomeBandDetail}${versiliaPyramid}`;
   }
 
   function compositeTownMarkup(metric, row) {
     const parts = row.parts || [];
+    if (metric.meta.compositeType === 'demographicBreakdown') {
+      const ages = metric.meta.ageOptions || [];
+      const genders = metric.meta.genderOptions || [];
+      const cells = new Map(parts.map(part => [part.key,part]));
+      const table = `<div class="demographic-matrix-wrap"><table class="demographic-matrix"><thead><tr><th>Età</th>${genders.map(g=>`<th>${html(g.label)}</th>`).join('')}</tr></thead><tbody>${ages.map(age=>`<tr><th>${html(age.label)}</th>${genders.map(g=>{const part=cells.get(`${age.key}|${g.key}`)||{};return `<td><strong>${html(formatValue(part.value,'percent'))}</strong><small>${html(number0.format(part.numerator || 0))} / ${html(number0.format(part.denominator || 0))}</small></td>`;}).join('')}</tr>`).join('')}</tbody></table><p class="demographic-matrix-note">Il rapporto sotto ogni percentuale mostra numeratore e denominatore usati nel calcolo. 25–64 è ricostruita sui conteggi Istat 25–49 e 50–64 prima del calcolo del tasso.</p></div>`;
+      const history = row.series?.values?.length ? `<details class="detail-disclosure demographic-history"><summary><span>Storico della lettura base</span><small>${html(metric.meta.defaultAge === '25-64' ? '25–64 anni · Totale' : 'lettura base')}</small></summary><div>${seriesChart(row.series,metric.meta.unit,`${metric.meta.label} · lettura base`)}</div></details>` : '';
+      return table + history;
+    }
     if (metric.meta.compositeType === 'stock') {
-      return `<div class="composite-town-mobility composite-town-stock"><article class="balance"><span>Quota dei residenti</span><strong>${html(formatValue(row.value,'percent'))}</strong><small>${html(metric.meta.year)}</small></article><article><span>Residenti di cittadinanza straniera</span><strong>${html(formatValue(row.count,'number'))}</strong><small>persone · ${html(metric.meta.year)}</small></article></div>`;
+      return `<div class="composite-town-mobility composite-town-stock"><article class="balance"><span>Quota dei residenti</span><strong>${html(formatValue(row.value,'percent'))}</strong><small>${html(metric.meta.year)}</small></article><article><span>Residenti di cittadinanza straniera</span><strong>${html(formatValue(row.count,'number'))}</strong><small>persone · ${html(metric.meta.year)}</small></article></div>${foreignOriginsMarkup(metric,row,'town')}`;
     }
     if (metric.meta.compositeType === 'omi') {
       return `<div class="omi-town-summary"><article><span>Vendita · media comunale</span><strong>${html(formatValue(row.saleMean,'eurm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article><article><span>Affitto · media comunale</span><strong>${html(formatValue(row.rentMean,'rentm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article></div><details class="detail-disclosure omi-town-zone-disclosure"><summary><span>Dettaglio per zona OMI</span><small>${html(metric.meta.year)} · abitazioni civili / stato normale</small></summary><div class="omi-town-zone-body">${omiZoneTableMarkup(row)}</div></details>`;
     }
     if (metric.meta.compositeType === 'securityMeasures') {
-      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div>`;
+      const incomeSources = metric.meta.key === 'incomeSourceProfile';
+      const totalCount = parts.reduce((sum, part) => sum + (Number(part.count) || 0), 0);
+      const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${incomeSources ? (part.count === null || part.count === undefined ? 'n.d. · dichiaranti con questa fonte' : `${html(number0.format(part.count))} dichiaranti con questa fonte`) : (showStaffCounts && part.count !== undefined ? `${html(number0.format(part.count))} dipendenti su ${html(number0.format(totalCount))} · ${html(metric.meta.year)}` : html(metric.meta.year))}</small></article>`).join('')}</div>`;
     }
     if (metric.meta.compositeType === 'mobility') {
       return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===2?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,'per1000'))}</strong><small>${html(number0.format(part.count))} persone · ${html(metric.meta.year)}</small></article>`).join('')}</div>`;
     }
     const countLabel = metric.meta.key === 'incomeDistribution' ? 'dichiaranti' : 'residenti';
+    const detailParts = metric.meta.key === 'incomeDistribution' ? (row.detailParts || []) : [];
+    const detailDisclosure = detailParts.length ? `<details class="detail-disclosure income-bands-detail"><summary><span>${html(metric.meta.detailLabel || 'Dettaglio · 8 fasce MEF')}</span><small>${html(metric.meta.year)} · classi originali MEF</small></summary><div class="composite-town-detail">${detailParts.map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span><b>${part.value === null || part.value === undefined ? 'n.d.' : html(number1.format(part.value)) + '%'}</b><small>${part.count === null || part.count === undefined ? 'n.d.' : html(number0.format(part.count)) + ' dichiaranti'}</small></div>`).join('')}</div></details>` : '';
+    const agePyramidDisclosure = agePyramidMarkup(metric,row);
     return `<div class="composite-town-stack-shell">${compositePartLegend(metric)}${compositeStackMarkup(parts,{ town:true, ariaLabel:`${metric.meta.label} · ${row.town}`, minLabel:5, countLabel })}
-      <div class="composite-town-detail">${parts.map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span><b>${html(number1.format(part.value))}%</b><small>${html(number0.format(part.count))} ${html(countLabel)}</small></div>`).join('')}</div></div>`;
+      <div class="composite-town-detail">${parts.map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span><b>${html(number1.format(part.value))}%</b><small>${html(number0.format(part.count))} ${html(countLabel)}</small></div>`).join('')}</div>${agePyramidDisclosure}</div>${detailDisclosure}`;
   }
 
   function compositeSelectionOptions(metric, row) {
+    if (metric.meta.compositeType === 'demographicBreakdown') return (row.parts || []).map(part=>({ key:part.key, label:part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatValue(part.value,part.unit || metric.meta.unit), part }));
     if (metric.meta.compositeType === 'stock') return [
       { key:'share', label:'Quota di residenti stranieri', value:row.value, unit:'percent', formatted:formatValue(row.value,'percent') },
       { key:'count', label:'Residenti di cittadinanza straniera', value:row.count, unit:'number', formatted:formatValue(row.count,'number') }
@@ -252,6 +399,7 @@
   }
 
   function compositeSelectionAggregate(metric, choice) {
+    if (metric.meta.compositeType === 'demographicBreakdown') { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice)||metric.aggregate?.parts?.[0]||{}; const unit=part.unit||metric.meta.unit; return {label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`,value:part.value,unit,formatted:formatValue(part.value,unit)}; }
     if (metric.meta.compositeType === 'stock') {
       const count = choice === 'count';
       const value = count ? metric.aggregate?.count : metric.aggregate?.value;
@@ -278,6 +426,7 @@
 
   function compositeSelectionRank(metric, row, choice) {
     const values = metric.rows.map(r => {
+      if (metric.meta.compositeType === 'demographicBreakdown') { const part=(r.parts || []).find(item=>item.key===choice); return {code:r.code,value:Number(part?.value)}; }
       if (metric.meta.compositeType === 'stock') return { code:r.code, value:Number(choice === 'count' ? r.count : r.value) };
       if (metric.meta.compositeType === 'omi') return { code:r.code, value:Number(choice === 'rent' ? r.rentMean : r.saleMean) };
       if (metric.meta.compositeType === 'securityMeasures') { const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0); return { code:r.code, value:Number(r.parts?.[index]?.value) }; }
@@ -306,6 +455,72 @@
     return { headline:formatValue(diff,unit), direction:diff>0?'sopra la Versilia':diff<0?'sotto la Versilia':'in linea con la Versilia' };
   }
 
+  function updateFiscalRecoveryTownPosition(metric,row,choice,position) {
+    if (!position || metric?.meta?.key !== 'fiscalRecoveryActivity') return;
+    const overline=position.querySelector('.overline');
+    const deltaEl=position.querySelector('[data-composite-delta]');
+    const noteEl=position.querySelector('p');
+    const aggLabel=position.querySelector('[data-composite-aggregate-label]');
+    const aggValue=position.querySelector('[data-composite-aggregate-value]');
+    const apply=(heading,headline,direction,note,label,value)=>{
+      if(overline) overline.textContent=heading;
+      if(deltaEl) deltaEl.innerHTML=`${html(headline)}<small>${html(direction)}</small>`;
+      if(noteEl) noteEl.textContent=note;
+      if(aggLabel) aggLabel.textContent=label;
+      if(aggValue) aggValue.textContent=value;
+    };
+
+    if(choice === 'part-1') {
+      const local=Number(row.parts?.[1]?.value);
+      const total=Number(metric.aggregate?.parts?.[1]?.value);
+      const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local/total*100 : 0;
+      apply(
+        'Peso sul totale Versilia',
+        `${number1.format(share)}%`,
+        'del recupero tributario complessivo',
+        'Quota degli incassi da verifica e controllo del Comune sul totale registrato nei sette Comuni della Versilia.',
+        'Versilia · recupero totale',
+        formatValue(total,'currency')
+      );
+      return;
+    }
+
+    if(choice === 'part-2') {
+      const local=Number(row.parts?.[2]?.value) || 0;
+      const total=Number(metric.aggregate?.parts?.[2]?.value) || 0;
+      const beneficiaries=metric.rows
+        .map(item=>({ town:item.town, value:Number(item.parts?.[2]?.value) || 0 }))
+        .filter(item=>item.value > 0)
+        .sort((a,b)=>b.value-a.value);
+      const share=total > 0 ? local/total*100 : 0;
+      const rank=beneficiaries.findIndex(item=>item.town===row.town)+1;
+      const note=local > 0
+        ? `${row.town} è ${rank}° per importo attribuito tra i ${beneficiaries.length} Comuni versiliesi beneficiari. Il dato non misura l’efficacia complessiva dell’attività fiscale comunale.`
+        : `${row.town} non compare tra i beneficiari del prospetto DAIT 2025. L’assenza non implica assenza di controlli o di segnalazioni comunali.`;
+      apply(
+        'Contributo attribuito in Versilia',
+        `${number1.format(share)}%`,
+        local > 0 ? 'del contributo DAIT attribuito in Versilia' : 'nessun contributo attribuito',
+        note,
+        `Versilia · ${beneficiaries.length} Comuni beneficiari`,
+        formatValue(total,'currency')
+      );
+      return;
+    }
+
+    const selected=compositeSelectionOptions(metric,row).find(option=>option.key===choice) || compositeSelectionOptions(metric,row)[0];
+    const agg=compositeSelectionAggregate(metric,choice);
+    const delta=compositeDeltaText(selected.value,agg.value,selected.unit);
+    apply(
+      'Rispetto alla Versilia',
+      delta.headline,
+      delta.direction,
+      'Il confronto con la Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.',
+      agg.label,
+      agg.formatted
+    );
+  }
+
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
     const def = document.getElementById('compare-definition');
@@ -314,7 +529,7 @@
     const tools = document.getElementById('compare-tools');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
-    const selectableComposite = ['stock','mobility','omi','securityMeasures'].includes(compositeType);
+    const selectableComposite = ['stock','mobility','omi','securityMeasures','demographicBreakdown'].includes(compositeType);
     const view = requestedView || compositeCompareDefaults(metric);
     const selectedAggregate = selectableComposite ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
     const aggregate = selectedAggregate || (normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate);
@@ -328,11 +543,13 @@
 
     if (selectableComposite) {
       const note = compositeType === 'omi' ? `<p class="composite-compare-note"><strong>Dettaglio OMI:</strong> il dettaglio delle singole sotto-aree è disponibile nelle schede dei comuni. Clicca una riga per aprire il territorio.</p>` : (compositeType === 'mobility' ? `<p class="composite-compare-note">Scegli la voce e l’unità direttamente dal grafico. “Ogni 1.000” rende più omogeneo il confronto tra comuni di dimensioni diverse.</p>` : '');
-      bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}</div>`;
+      const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
+      bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;
     } else {
       bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars"><div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
     }
 
+    installAgePyramidDelegation(bars);
     def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data,themeKey,metricKey,button.dataset.scale === 'normalized',view)));
     if (selectableComposite) {
       // Delegate from #compare-bars: ux-history rebuilds the markup inside this node,
@@ -349,6 +566,15 @@
         }
       };
       bars.onchange = event => {
+        const ageSelect = event.target.closest('select[data-demographic-age]');
+        const genderSelect = event.target.closest('select[data-demographic-gender]');
+        if ((ageSelect || genderSelect) && bars.contains(event.target)) {
+          const [oldAge,oldGender] = String(view.choice || '').split('|');
+          const age = ageSelect ? ageSelect.value : oldAge;
+          const gender = genderSelect ? genderSelect.value : oldGender;
+          renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:`${age}|${gender}`});
+          return;
+        }
         const componentSelect = event.target.closest('select[data-composite-component]');
         if (componentSelect && bars.contains(componentSelect)) {
           renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:componentSelect.value});
@@ -382,9 +608,11 @@
     const rows = metricRows(data, metricKey, normalized);
     const label = normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label;
     const isOmi = metric.meta.compositeType === 'omi';
-    const lines = isOmi ? [['Comune','Codice Istat','Indicatore','Anno','Zona OMI','Area','Vendita €/m²','Affitto €/m²/mese','Fonte']] : metric.meta.compositeType ? [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Componente', 'Valore', 'Unità', 'Conteggio', 'Fonte']] : [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Valore', 'Unità', 'Fonte']];
+    const isDemographic = metric.meta.compositeType === 'demographicBreakdown';
+    const lines = isOmi ? [['Comune','Codice Istat','Indicatore','Anno','Zona OMI','Area','Vendita €/m²','Affitto €/m²/mese','Fonte']] : isDemographic ? [['Comune','Codice Istat','Indicatore','Anno','Fascia età','Genere','Valore %','Numeratore','Denominatore','Fonte']] : metric.meta.compositeType ? [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Componente', 'Valore', 'Unità', 'Conteggio', 'Fonte']] : [['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Valore', 'Unità', 'Fonte']];
     if (isOmi) rows.forEach(row => (row.zones || []).forEach(zone => lines.push([row.town,row.code,label,metric.meta.year,zone.code,zone.label,zone.sale,zone.rent,metric.sourceUrl])));
-    else if (metric.meta.compositeType) rows.forEach(row => (row.parts || []).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, part.value, part.unit || metric.meta.unit, part.count, metric.sourceUrl])));
+    else if (isDemographic) rows.forEach(row => (row.parts || []).forEach(part => lines.push([row.town,row.code,label,metric.meta.year,part.ageLabel,part.genderLabel,part.value,part.numerator,part.denominator,metric.sourceUrl])));
+    else if (metric.meta.compositeType) rows.forEach(row => ((metric.meta.key === 'incomeDistribution' && row.detailParts?.length) ? row.detailParts : (row.parts || [])).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, part.value, part.unit || metric.meta.unit, part.count, metric.sourceUrl])));
     else rows.forEach(row => lines.push([row.town, row.code, label, metric.meta.year, row.displayValue, row.displayUnit, metric.sourceUrl]));
     const csv = '\ufeff' + lines.map(line => line.map(cell => `"${String(cell ?? '').replaceAll('"', '""')}"`).join(';')).join('\r\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -478,14 +706,16 @@
     const omi = metric.meta.compositeType === 'omi';
     const stock = metric.meta.compositeType === 'stock';
     const securityMeasures = metric.meta.compositeType === 'securityMeasures';
-    const selectable = distribution || omi || stock || securityMeasures;
+    const demographicBreakdown = metric.meta.compositeType === 'demographicBreakdown';
+    const selectable = distribution || omi || stock || securityMeasures || demographicBreakdown;
     const options = selectable ? compositeSelectionOptions(metric,row) : [];
-    const summary = distribution ? compositeSummary(metric,row) : ((omi || stock || securityMeasures) ? options[0] : null);
-    const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)));
+    const defaultDemographicChoice = demographicBreakdown ? `${metric.meta.defaultAge || '25-64'}|${metric.meta.defaultGender || 'total'}` : null;
+    const summary = distribution ? compositeSummary(metric,row) : (demographicBreakdown ? (options.find(option=>option.key===defaultDemographicChoice) || options[0]) : ((omi || stock || securityMeasures) ? options[0] : null));
+    const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (demographicBreakdown ? compositeSelectionAggregate(metric,defaultDemographicChoice) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null))));
     const summaryDelta = selectable ? compositeDeltaText(summary.value,aggregateSummary.value,summary.unit) : null;
     const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
     const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
-    const selector = selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '';
+    const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${(metric.meta.ageOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultAge || '25-64') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
     const primaryLabel = selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = selectable ? summary.formatted : formatValue(row.value, metric.meta.unit);
     const positionMarkup = selectable
@@ -502,9 +732,11 @@
       <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
       ${deepDiveMarkup(data, town, themeKey)}
-      ${metricKey.startsWith('slowMobility') ? '' : townBenchmarkMarkup(metric, row, town)}
+      ${(metricKey.startsWith('slowMobility') || demographicBreakdown) ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+
+    if (selectable) updateFiscalRecoveryTownPosition(metric,row,options[0]?.key || 'summary',container.querySelector('.composite-versilia-position'));
 
     const tablist = container.querySelector('[role="tablist"]');
     installTablist(tablist, onMetricSelect);
@@ -513,8 +745,9 @@
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());
     if (selectable) {
       const select=container.querySelector('[data-composite-choice]');
-      select?.addEventListener('change',()=>{
-        const choice=select.value;
+      const demoAge=container.querySelector('[data-demographic-town-age]');
+      const demoGender=container.querySelector('[data-demographic-town-gender]');
+      const applyChoice=(choice)=>{
         const selected=options.find(option=>option.key===choice) || options[0];
         const agg=compositeSelectionAggregate(metric,choice);
         const delta=compositeDeltaText(selected.value,agg.value,selected.unit);
@@ -532,10 +765,16 @@
           if(aggLabel) aggLabel.textContent=agg.label;
           if(aggValue) aggValue.textContent=agg.formatted;
         }
+        updateFiscalRecoveryTownPosition(metric,row,choice,position);
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
-      });
+      };
+      select?.addEventListener('change',()=>applyChoice(select.value));
+      const applyDemographic=()=>applyChoice(`${demoAge?.value || metric.meta.defaultAge || '25-64'}|${demoGender?.value || metric.meta.defaultGender || 'total'}`);
+      demoAge?.addEventListener('change',applyDemographic);
+      demoGender?.addEventListener('change',applyDemographic);
     }
     installChartInteractions(container);
+    installAgePyramidDelegation(container);
     scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');

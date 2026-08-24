@@ -36,7 +36,7 @@
     if (document.body.dataset.page !== 'status') return;
     if (document.querySelector('script[data-status-social-presence]')) return;
     const social = document.createElement('script');
-    social.src = new URL('assets/social-presence.js?v=20260816-v113', ROOT).href;
+    social.src = new URL('assets/social-presence.js?v=20260824-v116', ROOT).href;
     social.async = false;
     social.dataset.statusSocialPresence = 'true';
     document.head.append(social);

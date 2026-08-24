@@ -1,0 +1,861 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-20",
+  "source": {
+    "publisher": "Dipartimento delle Finanze — MEF",
+    "dataset": "Redditi e principali variabili IRPEF su base comunale",
+    "reference": "2025 a.i. 2024",
+    "published": "2026-04-23",
+    "pageUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+    "downloadUrl": "https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800"
+  },
+  "parsing": {
+    "encoding": "utf-8-sig",
+    "delimiter": ";",
+    "rowCount": 7897,
+    "nameHeader": "Denominazione Comune",
+    "archiveMember": "Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.csv",
+    "headerCount": 53
+  },
+  "coverage": "7/7",
+  "towns": {
+    "Camaiore": {
+      "town": "Camaiore",
+      "code": "046005",
+      "slug": "camaiore",
+      "taxpayers": 24408,
+      "totalIncome": {
+        "frequency": 23579,
+        "amountEuro": 598867041
+      },
+      "pensionIncome": {
+        "frequency": 8328,
+        "amountEuro": 167316194,
+        "shareOfTotalIncomePercent": 27.9387881691756
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 10411,
+          "amountEuro": 23027261
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 12578,
+          "amountEuro": 289610500
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 8328,
+          "amountEuro": 167316194
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 375,
+          "amountEuro": 23526140
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 92,
+          "amountEuro": 5125272
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 890,
+          "amountEuro": 23822193
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 1777,
+          "amountEuro": 35375782
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": null,
+          "amountEuro": null
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 5719,
+          "amountEuro": 27647512
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 2931,
+          "amountEuro": 36714343
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 6828,
+          "amountEuro": 140304854
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 6415,
+          "amountEuro": 223984307
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 751,
+          "amountEuro": 47785157
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 604,
+          "amountEuro": 55847908
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": null,
+          "amountEuro": null
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 23248,
+        "reportedTotalIncomeFrequency": 23579,
+        "differenceVsReportedTotal": 331,
+        "missingBandFrequencyCells": 2,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 27833,
+      "taxpayersPer100AdultResidents": 87.69446340674739
+    },
+    "Forte dei Marmi": {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "slug": "forte-dei-marmi",
+      "taxpayers": 5157,
+      "totalIncome": {
+        "frequency": 4924,
+        "amountEuro": 225345208
+      },
+      "pensionIncome": {
+        "frequency": 1964,
+        "amountEuro": 45824668,
+        "shareOfTotalIncomePercent": 20.335319489021483
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 2446,
+          "amountEuro": 20838890
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 2105,
+          "amountEuro": 87847722
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 1964,
+          "amountEuro": 45824668
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 154,
+          "amountEuro": 18134848
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 26,
+          "amountEuro": 2874338
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 204,
+          "amountEuro": 6361110
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 508,
+          "amountEuro": 14422243
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": 0,
+          "amountEuro": 0
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 1110,
+          "amountEuro": 5143958
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 535,
+          "amountEuro": 6709933
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 1120,
+          "amountEuro": 22898972
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 1268,
+          "amountEuro": 46431845
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 266,
+          "amountEuro": 17191060
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 306,
+          "amountEuro": 28918675
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": 319,
+          "amountEuro": 98050765
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 4924,
+        "reportedTotalIncomeFrequency": 4924,
+        "differenceVsReportedTotal": 0,
+        "missingBandFrequencyCells": 0,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 5839,
+      "taxpayersPer100AdultResidents": 88.31991779414284
+    },
+    "Massarosa": {
+      "town": "Massarosa",
+      "code": "046018",
+      "slug": "massarosa",
+      "taxpayers": 16404,
+      "totalIncome": {
+        "frequency": 15934,
+        "amountEuro": 369561101
+      },
+      "pensionIncome": {
+        "frequency": 5530,
+        "amountEuro": 111076251,
+        "shareOfTotalIncomePercent": 30.056261521961424
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 7044,
+          "amountEuro": 7415157
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 9125,
+          "amountEuro": 202735109
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 5530,
+          "amountEuro": 111076251
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 130,
+          "amountEuro": 8990333
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 27,
+          "amountEuro": 1530559
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 502,
+          "amountEuro": 12718876
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 831,
+          "amountEuro": 14909135
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": 0,
+          "amountEuro": 0
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 3584,
+          "amountEuro": 17363203
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 1909,
+          "amountEuro": 23958123
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 5055,
+          "amountEuro": 104591528
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 4662,
+          "amountEuro": 157857710
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 367,
+          "amountEuro": 23314134
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 244,
+          "amountEuro": 22051136
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": 113,
+          "amountEuro": 20425267
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 15934,
+        "reportedTotalIncomeFrequency": 15934,
+        "differenceVsReportedTotal": 0,
+        "missingBandFrequencyCells": 0,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 18938,
+      "taxpayersPer100AdultResidents": 86.61949519484634
+    },
+    "Pietrasanta": {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "slug": "pietrasanta",
+      "taxpayers": 17673,
+      "totalIncome": {
+        "frequency": 17066,
+        "amountEuro": 457960925
+      },
+      "pensionIncome": {
+        "frequency": 6352,
+        "amountEuro": 137002792,
+        "shareOfTotalIncomePercent": 29.91582567879563
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 7452,
+          "amountEuro": 20386797
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 8641,
+          "amountEuro": 206292313
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 6352,
+          "amountEuro": 137002792
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 324,
+          "amountEuro": 21048594
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 61,
+          "amountEuro": 4172407
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 637,
+          "amountEuro": 16879061
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 1244,
+          "amountEuro": 28089097
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": null,
+          "amountEuro": null
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 4156,
+          "amountEuro": 19728359
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 2074,
+          "amountEuro": 26045936
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 4713,
+          "amountEuro": 97227134
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 4758,
+          "amountEuro": 167096251
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 583,
+          "amountEuro": 37145246
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 481,
+          "amountEuro": 44583534
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": null,
+          "amountEuro": null
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 16765,
+        "reportedTotalIncomeFrequency": 17066,
+        "differenceVsReportedTotal": 301,
+        "missingBandFrequencyCells": 2,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 20041,
+      "taxpayersPer100AdultResidents": 88.1842223441944
+    },
+    "Seravezza": {
+      "town": "Seravezza",
+      "code": "046028",
+      "slug": "seravezza",
+      "taxpayers": 9530,
+      "totalIncome": {
+        "frequency": 9182,
+        "amountEuro": 211041286
+      },
+      "pensionIncome": {
+        "frequency": 3456,
+        "amountEuro": 67877930,
+        "shareOfTotalIncomePercent": 32.163341726414615
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 3795,
+          "amountEuro": 7002788
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 4887,
+          "amountEuro": 103445668
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 3456,
+          "amountEuro": 67877930
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 121,
+          "amountEuro": 5953679
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 24,
+          "amountEuro": 1149216
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 276,
+          "amountEuro": 7516261
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 554,
+          "amountEuro": 10013752
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": 0,
+          "amountEuro": 0
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 2225,
+          "amountEuro": 11011227
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 1168,
+          "amountEuro": 14655695
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 2802,
+          "amountEuro": 57904576
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 2540,
+          "amountEuro": 86515671
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 228,
+          "amountEuro": 14562865
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 147,
+          "amountEuro": 13568202
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": 72,
+          "amountEuro": 12823050
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 9182,
+        "reportedTotalIncomeFrequency": 9182,
+        "differenceVsReportedTotal": 0,
+        "missingBandFrequencyCells": 0,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 10801,
+      "taxpayersPer100AdultResidents": 88.23257105823535
+    },
+    "Stazzema": {
+      "town": "Stazzema",
+      "code": "046030",
+      "slug": "stazzema",
+      "taxpayers": 2150,
+      "totalIncome": {
+        "frequency": 2098,
+        "amountEuro": 42149013
+      },
+      "pensionIncome": {
+        "frequency": 808,
+        "amountEuro": 14259777,
+        "shareOfTotalIncomePercent": 33.83181712938331
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 916,
+          "amountEuro": 495211
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 1140,
+          "amountEuro": 23693613
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 808,
+          "amountEuro": 14259777
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 9,
+          "amountEuro": 559217
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": null,
+          "amountEuro": null
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 50,
+          "amountEuro": 837672
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 83,
+          "amountEuro": 1310584
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": null,
+          "amountEuro": null
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 535,
+          "amountEuro": 2613097
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 313,
+          "amountEuro": 3894249
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 673,
+          "amountEuro": 13949423
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 526,
+          "amountEuro": 17294904
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 19,
+          "amountEuro": 1186339
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 28,
+          "amountEuro": 2537336
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": null,
+          "amountEuro": null
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 2094,
+        "reportedTotalIncomeFrequency": 2098,
+        "differenceVsReportedTotal": 4,
+        "missingBandFrequencyCells": 2,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 2483,
+      "taxpayersPer100AdultResidents": 86.58880386629077
+    },
+    "Viareggio": {
+      "town": "Viareggio",
+      "code": "046033",
+      "slug": "viareggio",
+      "taxpayers": 46507,
+      "totalIncome": {
+        "frequency": 45173,
+        "amountEuro": 1207277614
+      },
+      "pensionIncome": {
+        "frequency": 15761,
+        "amountEuro": 368024027,
+        "shareOfTotalIncomePercent": 30.48379450859262
+      },
+      "incomeSources": [
+        {
+          "key": "buildings",
+          "label": "Reddito da fabbricati",
+          "frequency": 20502,
+          "amountEuro": 43254414
+        },
+        {
+          "key": "employment",
+          "label": "Lavoro dipendente e assimilati",
+          "frequency": 25522,
+          "amountEuro": 601347696
+        },
+        {
+          "key": "pension",
+          "label": "Pensione",
+          "frequency": 15761,
+          "amountEuro": 368024027
+        },
+        {
+          "key": "selfEmployment",
+          "label": "Lavoro autonomo",
+          "frequency": 730,
+          "amountEuro": 49737334
+        },
+        {
+          "key": "entrepreneurOrdinary",
+          "label": "Impresa · contabilità ordinaria",
+          "frequency": 114,
+          "amountEuro": 11813533
+        },
+        {
+          "key": "entrepreneurSimplified",
+          "label": "Impresa · contabilità semplificata",
+          "frequency": 1315,
+          "amountEuro": 38793176
+        },
+        {
+          "key": "participation",
+          "label": "Partecipazione",
+          "frequency": 2533,
+          "amountEuro": 48082990
+        }
+      ],
+      "incomeBands": [
+        {
+          "key": "le0",
+          "label": "Fino a 0 €",
+          "frequency": 4,
+          "amountEuro": -10206
+        },
+        {
+          "key": "0to10k",
+          "label": "0–10.000 €",
+          "frequency": 10273,
+          "amountEuro": 48469702
+        },
+        {
+          "key": "10to15k",
+          "label": "10.000–15.000 €",
+          "frequency": 5374,
+          "amountEuro": 67552243
+        },
+        {
+          "key": "15to26k",
+          "label": "15.000–26.000 €",
+          "frequency": 12306,
+          "amountEuro": 253943720
+        },
+        {
+          "key": "26to55k",
+          "label": "26.000–55.000 €",
+          "frequency": 13702,
+          "amountEuro": 482233310
+        },
+        {
+          "key": "55to75k",
+          "label": "55.000–75.000 €",
+          "frequency": 1574,
+          "amountEuro": 100114224
+        },
+        {
+          "key": "75to120k",
+          "label": "75.000–120.000 €",
+          "frequency": 1265,
+          "amountEuro": 116386204
+        },
+        {
+          "key": "over120k",
+          "label": "Oltre 120.000 €",
+          "frequency": 675,
+          "amountEuro": 138588417
+        }
+      ],
+      "bandCoverage": {
+        "availableFrequencyTotal": 45173,
+        "reportedTotalIncomeFrequency": 45173,
+        "differenceVsReportedTotal": 0,
+        "missingBandFrequencyCells": 0,
+        "note": "Le celle vuote del CSV MEF restano null e non vengono trasformate in zero. La differenza rispetto alla frequenza totale è conservata senza attribuirle una causa non dichiarata dalla fonte."
+      },
+      "adultPopulation2026": 53038,
+      "taxpayersPer100AdultResidents": 87.68618726196313
+    }
+  },
+  "method": {
+    "pensionIncomeShare": "ammontare reddito da pensione / ammontare reddito complessivo × 100",
+    "incomeSources": "valori e frequenze MEF conservati senza riclassificazioni arbitrarie",
+    "incomeBands": "otto classi MEF conservate separatamente; celle vuote mantenute null",
+    "taxpayersPer100AdultResidents": "numero contribuenti MEF / residenti di 18 anni e più al 1° gennaio 2026 × 100"
+  },
+  "demographySource": {
+    "publisher": "Istat",
+    "snapshot": "data/source-snapshots/istat-demography-lotto-a-2026-08.json",
+    "reference": "popolazione per singola età al 1° gennaio 2026",
+    "url": "https://demo.istat.it/"
+  }
+}

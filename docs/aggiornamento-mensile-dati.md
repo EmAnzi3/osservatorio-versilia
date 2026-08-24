@@ -20,7 +20,7 @@ Durante la revisione di una pull request il controllo viene eseguito in modalit�
 
 ## Cosa controlla
 
-- presenza dei **127 indicatori** nel catalogo canonico e ripartizione attesa fra **123 valori incorporati e 4 climatici esterni**;
+- presenza dei **138 indicatori** nel catalogo canonico e ripartizione attesa fra **134 valori incorporati e 4 climatici esterni**;
 - copertura dichiarata dei sette Comuni e codici Istat corretti;
 - presenza di anno o periodo, unità, fonte, metodo e formula;
 - coerenza fra annualità e valori delle serie storiche;

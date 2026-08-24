@@ -7,15 +7,11 @@ on:
       - "data/data-audit-lotto-a.json"
       - "docs/data-audit-lotto-a.md"
       - "scripts/test_data_audit_lotto_a.py"
-      - "scripts/test_demography_lotto_a_materialized.py"
+      - "scripts/test_demography_lotto_a*.py"
       - "scripts/audit_istat_demography_sources.py"
-      - "scripts/probe_demography_lucca_samples.py"
-      - "scripts/probe_demography_schema.py"
+      - "scripts/probe_demography_*.py"
       - "scripts/probe_rcs_demography_samples.py"
-      - "scripts/materialize_demography_lotto_a.py"
-      - "scripts/materialize_demography_lotto_a_v2.py"
-      - "scripts/materialize_demography_lotto_a_v3.py"
-      - "scripts/materialize_demography_lotto_a_v4.py"
+      - "scripts/materialize_demography_lotto_a*.py"
       - "data/site-data.json"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
@@ -33,13 +29,20 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate audit JSON
-        run: python -m json.tool data/data-audit-lotto-a.json > /dev/null
-      - name: Validate consistency contract
-        run: python scripts/test_data_audit_lotto_a.py
+
+      - name: Validate canonical audit contract
+        run: |
+          python -m json.tool data/data-audit-lotto-a.json > /dev/null
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_data_audit_lotto_a.py
+          python scripts/test_demography_lotto_a_materialized.py
+          python scripts/test_demography_lotto_a_v5.py
+          python scripts/test_demography_rcs_lotto_a.py
+
       - name: Reject parallel tooltip implementations
         shell: bash
         run: |
@@ -53,14 +56,14 @@ jobs:
             printf '%s\n' "$forbidden"
             exit 1
           fi
+
       - name: Probe official Istat demography sources
-        run: python scripts/audit_istat_demography_sources.py
-      - name: Probe Lucca demography samples
-        run: python scripts/probe_demography_lucca_samples.py
-      - name: Probe RCS citizenship and birth-country samples
-        run: python scripts/probe_rcs_demography_samples.py
-      - name: Probe canonical demography schema
-        run: python scripts/probe_demography_schema.py
+        run: |
+          python scripts/audit_istat_demography_sources.py
+          python scripts/probe_demography_lucca_samples.py
+          python scripts/probe_rcs_demography_samples.py
+          python scripts/probe_demography_schema.py
+
       - name: Upload source audit artifact
         uses: actions/upload-artifact@v4
         with:
@@ -70,26 +73,4 @@ jobs:
             audit-artifacts/demography-lucca-samples.json
             audit-artifacts/demography-rcs-samples.json
             audit-artifacts/demography-canonical-schema.json
-          retention-days: 14
-      - name: Materialize Demography draft in workspace
-        run: python scripts/materialize_demography_lotto_a_v4.py
-      - name: Validate materialized Demography draft
-        run: python scripts/test_demography_lotto_a_materialized.py
-      - name: Validate generated JSON
-        run: |
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
-          python -m json.tool data/data-audit-lotto-a.json > /dev/null
-          python -m json.tool data/source-snapshots/istat-demography-lotto-a-2026-08.json > /dev/null
-      - name: Upload materialized Demography draft
-        uses: actions/upload-artifact@v4
-        with:
-          name: lotto-a-demography-materialized-draft
-          path: |
-            data/site-data.json
-            data/source-registry.json
-            data/source-monitor-state.json
-            data/data-audit-lotto-a.json
-            data/source-snapshots/istat-demography-lotto-a-2026-08.json
           retention-days: 14
