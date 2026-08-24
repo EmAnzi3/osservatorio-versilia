@@ -9,12 +9,12 @@ import probe_scuola_mim as probe
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "massarosa_school_detail.json"
+BASE = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/"
 
 
 def candidate_urls(code: str):
-    base = "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/"
     for school_year, date in probe.DISTRIBUTIONS:
-        yield f"{base}{code}{school_year}{date}.csv"
+        yield f"{BASE}{code}{school_year}{date}.csv"
 
 
 probe.candidate_urls = candidate_urls
@@ -39,7 +39,12 @@ SELECTED_FIELDS = {
         "PERCORSIINTERNI",
         "PERCORSIESTERNI",
     ],
-    "eta": ["PERIODORIFERIMENTOCOSTRUZIONE"],
+    "eta": ["ANNOCOSTRUZIONE", "PERIODOCOSTRUZIONE"],
+}
+
+HISTORICAL_DISTRIBUTIONS = {
+    "2023/24": ("202324", "20250714"),
+    "2022/23": ("202223", "20230731"),
 }
 
 
@@ -59,6 +64,13 @@ def values_by_building(rows, building_field, wanted_buildings, fields):
             for field in fields
         }
     return result
+
+
+def fetch_exact(code: str, school_year: str, date: str):
+    url = f"{BASE}{code}{school_year}{date}.csv"
+    raw = probe.get_bytes(url)
+    headers, rows = probe.parse_csv(raw)
+    return url, headers, rows
 
 
 def main():
@@ -100,11 +112,13 @@ def main():
             buildings[building]["addresses"].add(address)
 
     wanted = sorted(buildings)
+    wanted_set = set(wanted)
     details = {
         building: {
             "buildingCode": building,
             "schoolCodes": sorted(buildings[building]["schoolCodes"]),
             "addresses": sorted(buildings[building]["addresses"]),
+            "historical": {},
         }
         for building in wanted
     }
@@ -114,19 +128,37 @@ def main():
         rows = parsed[dataset]["rows"]
         bfield = probe.find_header(headers, ("CodiceEdificio", "Codice Edificio"))
         actual_fields = [field for field in fields if field in headers]
-        values = values_by_building(rows, bfield, set(wanted), actual_fields)
+        values = values_by_building(rows, bfield, wanted_set, actual_fields)
         for building in wanted:
             details[building][dataset] = values[building]
+
+    historical_sources = {}
+    for label, (school_year, date) in HISTORICAL_DISTRIBUTIONS.items():
+        historical_sources[label] = {}
+        for dataset in ("sicurezza", "accessibilita", "eta"):
+            code = probe.DATASETS[dataset]
+            try:
+                url, headers, rows = fetch_exact(code, school_year, date)
+            except Exception as exc:
+                historical_sources[label][dataset] = {"error": str(exc)}
+                continue
+            historical_sources[label][dataset] = {"url": url, "rows": len(rows)}
+            bfield = probe.find_header(headers, ("CodiceEdificio", "Codice Edificio"))
+            fields = [field for field in SELECTED_FIELDS[dataset] if field in headers]
+            values = values_by_building(rows, bfield, wanted_set, fields)
+            for building in wanted:
+                details[building]["historical"].setdefault(label, {})[dataset] = values[building]
 
     output = {
         "source": "MIM Anagrafe Edilizia Scolastica 2024/25",
         "downloaded": downloaded,
+        "historicalSources": historical_sources,
         "town": "Massarosa",
         "buildingCount": len(wanted),
         "buildings": [details[b] for b in wanted],
     }
     OUT.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Massarosa: {len(wanted)} edifici; dettaglio scritto in {OUT.name}")
+    print(f"Massarosa: {len(wanted)} edifici; dettaglio corrente/storico scritto in {OUT.name}")
 
 
 if __name__ == "__main__":
