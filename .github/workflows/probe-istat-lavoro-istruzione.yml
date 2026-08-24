@@ -8,6 +8,8 @@ on:
       - "scripts/materialize_lavoro_istruzione_eta_genere.py"
       - "scripts/test_lavoro_istruzione_eta_genere*.py"
       - "data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json"
+      - "scripts/probe_scuola_mim.py"
+      - ".github/workflows/probe-scuola-mim.yml"
       - "assets/visual-grammar.js"
       - "assets/visual-grammar.css"
       - ".github/workflows/probe-istat-lavoro-istruzione.yml"
@@ -81,3 +83,24 @@ jobs:
           name: lavoro-istruzione-eta-genere-preview
           path: dist
           retention-days: 14
+
+  probe-scuola-mim:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Audit MIM edilizia scolastica 2024/25
+        run: python scripts/probe_scuola_mim.py
+      - name: Pubblica report probe scuola
+        uses: actions/upload-artifact@v4
+        with:
+          name: scuola-mim-probe
+          path: |
+            school_probe_report.json
+            school_probe_report.md
+          if-no-files-found: error
+          retention-days: 7
