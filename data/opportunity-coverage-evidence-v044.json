@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "0.4.4",
+  "referenceDate": "2026-08-24",
+  "maxEvidenceAgeDays": 45,
+  "entries": [
+    {
+      "source_id": "pcm-sport",
+      "family": "sport-social-infrastructure",
+      "title": "Eventi sportivi di rilevanza nazionale e internazionale 2026",
+      "evidence_url": "https://avvisibandi.sport.governo.it/bandi/69f9e0e94ea041522d70640b",
+      "evidence_verified_at": "2026-08-24",
+      "evidence_class": "official_current",
+      "note": "Avviso 2026 aperto fino al 1 dicembre 2026; i Comuni sono tra i destinatari e possono candidarsi con il titolo di esclusività richiesto."
+    },
+    {
+      "source_id": "cinea-life",
+      "family": "energy-climate-environment",
+      "title": "LIFE Clean Energy Transition 2026 · topic con ruolo territoriale",
+      "evidence_url": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "evidence_verified_at": "2026-08-24",
+      "evidence_class": "official_current_topic_portfolio",
+      "note": "Il presidio non pubblica l'intero portafoglio LIFE: vengono promossi soltanto topic con ruolo comunale documentabile e verifica sulla pagina ufficiale del singolo topic."
+    }
+  ]
+}

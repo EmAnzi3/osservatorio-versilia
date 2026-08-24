@@ -1,0 +1,118 @@
+name: Radar Opportunità · refresh giornaliero
+
+on:
+  schedule:
+    - cron: "15 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: opportunity-radar-daily
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Radar dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pypdf playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Validate v0.4.4 contracts
+        run: |
+          python scripts/test_opportunity_radar_v044.py
+          python scripts/run_opportunity_radar_v044.py --backtest-only
+
+      - name: Materialize verified baseline
+        run: python scripts/materialize_opportunity_release_snapshot.py
+
+      - name: Scan live sources and build daily snapshot
+        run: python scripts/opportunity_daily_refresh.py
+
+      - name: Validate daily snapshot
+        run: |
+          python -m json.tool data/opportunity-daily-public.json > /dev/null
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+          assert p.get('releaseVersion') == '0.4.4'
+          assert not p.get('continuityHold')
+          assert not p.get('coverageHold')
+          assert (p.get('backtest') or {}).get('passed') is True
+          assert (p.get('coverageAudit') or {}).get('status') == 'pass'
+          ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
+          required = {
+              'pcm-sport-eventi-2026',
+              'life-2026-cet-heatcoolplan',
+              'life-2026-cet-pda',
+              'life-2026-cet-enercom',
+              'life-2026-cet-empower',
+          }
+          assert required <= ids, sorted(required - ids)
+          print(f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · {(p.get('counts') or {}).get('new', 0)} nuove")
+          PY
+
+      - name: Build and validate the public Radar before committing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_opportunity_release_snapshot.py
+          python scripts/build_static_brand.py
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-radar-daily.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              python scripts/test_opportunity_release_browser.py --base http://127.0.0.1:8123/
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-radar-daily.log
+          exit 1
+
+      - name: Upload refresh report
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-daily-report
+          path: reports/runtime/opportunity-daily-summary.md
+          retention-days: 14
+
+      - name: Commit verified daily snapshot
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/opportunity-daily-public.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nessuna variazione dello snapshot."
+            exit 0
+          fi
+          git commit -m "Aggiorna Radar Opportunità $(date -u +%F)"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Publish updated Radar through Pages
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
