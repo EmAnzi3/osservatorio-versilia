@@ -1283,6 +1283,131 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolBuildingSafetyDocs"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
+      ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolBuildingAccessibility"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
+      ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolBuildingFacilities"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
+      ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolBuildingAge"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
+      ]
+    },
+    "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021": {
+      "url": "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "schoolBuildingTransport"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mim-school-year"
+      ],
+      "frequencies": [
+        "school_year"
+      ]
     }
   },
   "metrics": {
