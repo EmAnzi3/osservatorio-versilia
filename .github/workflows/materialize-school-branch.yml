@@ -1,0 +1,56 @@
+name: Materializza lotto Scuola MIM
+
+on:
+  push:
+    branches: ["agent/scuola-mim-lotto"]
+    paths:
+      - "scripts/materialize_scuola_mim.py"
+      - "scripts/apply_scuola_release.py"
+      - "scripts/test_scuola_mim.py"
+      - "data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json"
+      - ".github/workflows/materialize-school-branch.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/scuola-mim-lotto
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Materializza indicatori Scuola
+        run: python scripts/materialize_scuola_mim.py
+      - name: Allinea release canonica
+        run: |
+          python scripts/apply_scuola_release.py
+          python scripts/finalize_catalog_release.py
+      - name: Verifica lotto e contratto release
+        run: |
+          python scripts/test_scuola_mim.py
+          python scripts/test_catalog_release_v116.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+      - name: Commit dei file canonici generati
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "Nessuna modifica da registrare"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json data/source-registry.json data/source-monitor-state.json \
+            README.md assets/app-parts/05.txt scripts/finalize_catalog_release.py \
+            scripts/test_catalog_release_v116.py scripts/build_static_safe.py scripts/build_static_brand.py \
+            service-worker.js .github/workflows/pages.yml
+          git commit -m "Scuola MIM: materializza lotto e release v1.17.0"
+          git push origin HEAD:agent/scuola-mim-lotto
