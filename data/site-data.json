@@ -1,5 +1,5 @@
 {
-  "version": "v1.16.0",
+  "version": "v1.17.0",
   "updated": "24 agosto 2026",
   "themes": {
     "demografia": {
@@ -228,14 +228,19 @@
       "number": "04",
       "label": "Istruzione",
       "question": "Qual è il livello di istruzione e come è organizzata la rete scolastica?",
-      "description": "Titoli di studio con letture per età e genere, popolazione scolastica, classi e tempo pieno.",
+      "description": "Titoli di studio della popolazione, popolazione scolastica e caratteristiche degli edifici e dei servizi scolastici.",
       "metrics": [
         "diplomaPlus",
         "tertiary",
         "schoolSites",
         "schoolStudents",
         "studentsPerClass",
-        "primaryFullTimeShare"
+        "primaryFullTimeShare",
+        "schoolBuildingSafetyDocs",
+        "schoolBuildingAccessibility",
+        "schoolBuildingFacilities",
+        "schoolBuildingAge",
+        "schoolBuildingTransport"
       ],
       "sections": [
         {
@@ -263,6 +268,18 @@
           "metrics": [
             "studentsPerClass",
             "primaryFullTimeShare"
+          ]
+        },
+        {
+          "key": "edilizia-scolastica",
+          "label": "Edifici e servizi scolastici",
+          "description": "Sicurezza documentale, accessibilità, spazi, epoca di costruzione e collegamenti dei 109 edifici scolastici censiti dal MIM nei sette Comuni.",
+          "metrics": [
+            "schoolBuildingSafetyDocs",
+            "schoolBuildingAccessibility",
+            "schoolBuildingFacilities",
+            "schoolBuildingAge",
+            "schoolBuildingTransport"
           ]
         }
       ],
@@ -41510,6 +41527,2318 @@
         "caveat": "Il dato corrente è il definitivo al 31/12/2022. Il file regionale Indicatori 2024 lo ripropone invariato e non viene trattato come dato 2024. Il confronto 2018–2022 è informativo ma non perfettamente omogeneo: il paniere Istat è passato da 24 servizi osservati nel 2018 a 27 nel 2022. Una quota maggiore descrive una più ampia disponibilità online avanzata, ma non misura da sola qualità, usabilità o tempi dei servizi.",
         "coverage": "7/7",
         "history": "Due rilevazioni effettive: 2018 e 2022. Nessun carry-forward artificiale negli anni intermedi."
+      }
+    },
+    "schoolBuildingSafetyDocs": {
+      "meta": {
+        "key": "schoolBuildingSafetyDocs",
+        "theme": "istruzione",
+        "label": "Certificazioni di sicurezza degli edifici scolastici",
+        "shortLabel": "Sicurezza edifici scolastici",
+        "description": "Quota di edifici con agibilità piena e presenza dei principali documenti antincendio. CPI, SCIA e rinnovo sono mostrati separatamente: non vengono fusi in un unico sì/no.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "MIM — Anagrafe dell'Edilizia Scolastica",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Documento / requisito",
+        "searchTerms": [
+          "scuola sicurezza",
+          "agibilità scuola",
+          "cpi scuola",
+          "scia antincendio scuola",
+          "edilizia scolastica"
+        ]
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 40.0,
+          "formatted": "40,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 40.0,
+          "buildings": 15,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 40.0,
+              "unit": "percent",
+              "count": 6,
+              "defined": 15,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 16.666666666666664,
+              "unit": "percent",
+              "count": 1,
+              "defined": 6,
+              "unknown": 9
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": null,
+              "unit": "percent",
+              "count": 0,
+              "defined": 0,
+              "unknown": 15
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": null,
+              "unit": "percent",
+              "count": 0,
+              "defined": 0,
+              "unknown": 15
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 28.947368421052634,
+          "formatted": "28,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 28.947368421052634,
+          "buildings": 38,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 28.947368421052634,
+              "unit": "percent",
+              "count": 11,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 55.26315789473685,
+              "unit": "percent",
+              "count": 21,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 2.631578947368421,
+              "unit": "percent",
+              "count": 1,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 38,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 5.88235294117647,
+          "formatted": "5,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5.88235294117647,
+          "buildings": 17,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 5.88235294117647,
+              "unit": "percent",
+              "count": 1,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 41.17647058823529,
+              "unit": "percent",
+              "count": 7,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 47.05882352941176,
+              "unit": "percent",
+              "count": 8,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 17.647058823529413,
+              "unit": "percent",
+              "count": 3,
+              "defined": 17,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 0.0,
+          "formatted": "0,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "buildings": 19,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 5.555555555555555,
+              "unit": "percent",
+              "count": 1,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 5.555555555555555,
+              "unit": "percent",
+              "count": 1,
+              "defined": 18,
+              "unknown": 1
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 10.0,
+          "formatted": "10,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 10.0,
+          "buildings": 10,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 10.0,
+              "unit": "percent",
+              "count": 1,
+              "defined": 10,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 10,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 2,
+              "unknown": 8
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 2,
+              "unknown": 8
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 85.71428571428571,
+          "formatted": "85,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 85.71428571428571,
+          "buildings": 7,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 85.71428571428571,
+              "unit": "percent",
+              "count": 6,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 71.42857142857143,
+              "unit": "percent",
+              "count": 5,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 85.71428571428571,
+              "unit": "percent",
+              "count": 6,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 85.71428571428571,
+              "unit": "percent",
+              "count": 6,
+              "defined": 7,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 33.33333333333333,
+          "formatted": "33,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 33.33333333333333,
+          "buildings": 3,
+          "parts": [
+            {
+              "label": "Agibilità piena",
+              "selectorLabel": "Agibilità",
+              "value": 33.33333333333333,
+              "unit": "percent",
+              "count": 1,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Certificato prevenzione incendi (CPI)",
+              "selectorLabel": "CPI",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "SCIA antincendio",
+              "selectorLabel": "SCIA",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Rinnovo periodico conformità antincendio",
+              "selectorLabel": "Rinnovo",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 23.853211009174313,
+        "label": "Versilia · agibilità piena",
+        "note": "109 edifici univoci. Ogni documento usa il proprio denominatore di risposte definite; NON DEFINITO non è trattato come NO.",
+        "buildings": 109,
+        "parts": [
+          {
+            "label": "Agibilità piena",
+            "selectorLabel": "Agibilità",
+            "value": 23.853211009174313,
+            "unit": "percent",
+            "count": 26,
+            "defined": 109,
+            "unknown": 0
+          },
+          {
+            "label": "Certificato prevenzione incendi (CPI)",
+            "selectorLabel": "CPI",
+            "value": 34.0,
+            "unit": "percent",
+            "count": 34,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "SCIA antincendio",
+            "selectorLabel": "SCIA",
+            "value": 18.823529411764707,
+            "unit": "percent",
+            "count": 16,
+            "defined": 85,
+            "unknown": 24
+          },
+          {
+            "label": "Rinnovo periodico conformità antincendio",
+            "selectorLabel": "Rinnovo",
+            "value": 11.76470588235294,
+            "unit": "percent",
+            "count": 10,
+            "defined": 85,
+            "unknown": 24
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su open data MIM per edificio",
+        "formula": "quota documento = edifici con risposta SI / edifici con risposta definita del relativo campo × 100",
+        "caveat": "Per l'agibilità, IN PARTE non è considerato agibilità piena. Per antincendio CPI, SCIA e rinnovo periodico restano indicatori distinti: non si costruisce un OR tra campi, così da evitare deduplicazioni non dimostrabili. NON DEFINITO resta fuori dal denominatore e viene conservato come informazione mancante.",
+        "coverage": "7/7 Comuni · 109 edifici",
+        "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
+      }
+    },
+    "schoolBuildingAccessibility": {
+      "meta": {
+        "key": "schoolBuildingAccessibility",
+        "theme": "istruzione",
+        "label": "Accessibilità degli edifici scolastici",
+        "shortLabel": "Accessibilità scuole",
+        "description": "Presenza dichiarata di accorgimenti per il superamento delle barriere architettoniche negli edifici scolastici.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "MIM — Anagrafe dell'Edilizia Scolastica",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Stato accessibilità",
+        "searchTerms": [
+          "barriere architettoniche scuola",
+          "accessibilità scuola",
+          "edifici scolastici accessibili",
+          "disabilità scuola"
+        ]
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 15,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 12,
+              "defined": 12,
+              "unknown": 3
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 12,
+              "unknown": 3
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 20.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 15,
+              "unknown": 3
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 92.10526315789474,
+          "formatted": "92,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 92.10526315789474,
+          "buildings": 38,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 92.10526315789474,
+              "unit": "percent",
+              "count": 35,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 7.894736842105263,
+              "unit": "percent",
+              "count": 3,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 38,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 17,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 17,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 19,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 19,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 19,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 10,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 9,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 10.0,
+              "unit": "percent",
+              "count": 1,
+              "defined": 10,
+              "unknown": 1
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 7,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 7,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 66.66666666666666,
+          "formatted": "66,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 66.66666666666666,
+          "buildings": 3,
+          "parts": [
+            {
+              "label": "Con accorgimenti per il superamento delle barriere",
+              "selectorLabel": "Con accorgimenti",
+              "value": 66.66666666666666,
+              "unit": "percent",
+              "count": 2,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Senza accorgimenti dichiarati",
+              "selectorLabel": "Senza",
+              "value": 33.33333333333333,
+              "unit": "percent",
+              "count": 1,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Dato non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 96.19047619047619,
+        "label": "Versilia · edifici con accorgimenti",
+        "note": "La quota principale usa solo risposte SI/NO; i NON DEFINITO sono esposti separatamente e non diventano NO.",
+        "buildings": 109,
+        "parts": [
+          {
+            "label": "Con accorgimenti per il superamento delle barriere",
+            "selectorLabel": "Con accorgimenti",
+            "value": 96.19047619047619,
+            "unit": "percent",
+            "count": 101,
+            "defined": 105,
+            "unknown": 4
+          },
+          {
+            "label": "Senza accorgimenti dichiarati",
+            "selectorLabel": "Senza",
+            "value": 3.8095238095238098,
+            "unit": "percent",
+            "count": 4,
+            "defined": 105,
+            "unknown": 4
+          },
+          {
+            "label": "Dato non definito",
+            "selectorLabel": "Non definito",
+            "value": 3.669724770642202,
+            "unit": "percent",
+            "count": 4,
+            "defined": 109,
+            "unknown": 4
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su open data MIM per edificio",
+        "formula": "edifici con accorgimenti = SI / (SI + NO) × 100",
+        "caveat": "L'indicatore riporta il campo MIM sugli accorgimenti per il superamento delle barriere; non certifica autonomamente la conformità completa a tutte le prescrizioni di accessibilità. I valori NON DEFINITO sono esclusi dal denominatore e mostrati a parte.",
+        "coverage": "7/7 Comuni · 109 edifici",
+        "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
+      }
+    },
+    "schoolBuildingFacilities": {
+      "meta": {
+        "key": "schoolBuildingFacilities",
+        "theme": "istruzione",
+        "label": "Mensa e palestra negli edifici scolastici",
+        "shortLabel": "Mensa e palestra",
+        "description": "Quota di edifici scolastici nei quali il MIM registra la presenza di mensa o palestra, selezionabili separatamente.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "MIM — Anagrafe dell'Edilizia Scolastica",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Spazio funzionale",
+        "searchTerms": [
+          "mensa scuola",
+          "palestra scuola",
+          "spazi scolastici",
+          "edilizia scolastica"
+        ]
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 15,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 15,
+              "defined": 15,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 46.666666666666664,
+              "unit": "percent",
+              "count": 7,
+              "defined": 15,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 55.26315789473685,
+          "formatted": "55,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 55.26315789473685,
+          "buildings": 38,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 55.26315789473685,
+              "unit": "percent",
+              "count": 21,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 57.89473684210527,
+              "unit": "percent",
+              "count": 22,
+              "defined": 38,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 88.23529411764706,
+          "formatted": "88,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 88.23529411764706,
+          "buildings": 17,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 88.23529411764706,
+              "unit": "percent",
+              "count": 15,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 35.294117647058826,
+              "unit": "percent",
+              "count": 6,
+              "defined": 17,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 73.68421052631578,
+          "formatted": "73,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 73.68421052631578,
+          "buildings": 19,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 73.68421052631578,
+              "unit": "percent",
+              "count": 14,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 52.63157894736842,
+              "unit": "percent",
+              "count": 10,
+              "defined": 19,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 80.0,
+          "formatted": "80,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 80.0,
+          "buildings": 10,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 80.0,
+              "unit": "percent",
+              "count": 8,
+              "defined": 10,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 50.0,
+              "unit": "percent",
+              "count": 5,
+              "defined": 10,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 71.42857142857143,
+          "formatted": "71,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.42857142857143,
+          "buildings": 7,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 71.42857142857143,
+              "unit": "percent",
+              "count": 5,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 71.42857142857143,
+              "unit": "percent",
+              "count": 5,
+              "defined": 7,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 3,
+          "parts": [
+            {
+              "label": "Edifici con mensa",
+              "selectorLabel": "Mensa",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici con palestra",
+              "selectorLabel": "Palestra",
+              "value": 33.33333333333333,
+              "unit": "percent",
+              "count": 1,
+              "defined": 3,
+              "unknown": 0
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 74.31192660550458,
+        "label": "Versilia · edifici con mensa",
+        "note": "Le quote sono calcolate sui conteggi degli edifici, non sul numero di plessi o studenti.",
+        "buildings": 109,
+        "parts": [
+          {
+            "label": "Edifici con mensa",
+            "selectorLabel": "Mensa",
+            "value": 74.31192660550458,
+            "unit": "percent",
+            "count": 81,
+            "defined": 109,
+            "unknown": 0
+          },
+          {
+            "label": "Edifici con palestra",
+            "selectorLabel": "Palestra",
+            "value": 51.37614678899083,
+            "unit": "percent",
+            "count": 56,
+            "defined": 109,
+            "unknown": 0
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su open data MIM per edificio",
+        "formula": "quota spazio = edifici con risposta SI / edifici con risposta definita × 100",
+        "caveat": "La presenza dello spazio non misura dimensione, qualità, capienza, stato manutentivo o disponibilità effettiva per tutte le classi.",
+        "coverage": "7/7 Comuni · 109 edifici",
+        "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
+      }
+    },
+    "schoolBuildingAge": {
+      "meta": {
+        "key": "schoolBuildingAge",
+        "theme": "istruzione",
+        "label": "Epoca di costruzione degli edifici scolastici",
+        "shortLabel": "Età del patrimonio scolastico",
+        "description": "Distribuzione degli edifici scolastici per periodo di costruzione. La lettura iniziale mostra la quota costruita entro il 1970; il selettore espone le classi MIM e i periodi non definiti.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "MIM — Anagrafe dell'Edilizia Scolastica",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Periodo di costruzione",
+        "searchTerms": [
+          "età scuole",
+          "anno costruzione scuola",
+          "patrimonio scolastico",
+          "edifici scolastici vecchi"
+        ]
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 75.0,
+          "formatted": "75,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 75.0,
+          "buildings": 15,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 75.0,
+              "unit": "percent",
+              "count": 6,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 75.0,
+              "unit": "percent",
+              "count": 6,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 12.5,
+              "unit": "percent",
+              "count": 1,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 12.5,
+              "unit": "percent",
+              "count": 1,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 8,
+              "unknown": 7
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 46.666666666666664,
+              "unit": "percent",
+              "count": 7,
+              "defined": 15,
+              "unknown": 7
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 39.473684210526315,
+          "formatted": "39,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 39.473684210526315,
+          "buildings": 38,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 39.473684210526315,
+              "unit": "percent",
+              "count": 15,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 7.894736842105263,
+              "unit": "percent",
+              "count": 3,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 2.631578947368421,
+              "unit": "percent",
+              "count": 1,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 28.947368421052634,
+              "unit": "percent",
+              "count": 11,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 18.421052631578945,
+              "unit": "percent",
+              "count": 7,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 31.57894736842105,
+              "unit": "percent",
+              "count": 12,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 7.894736842105263,
+              "unit": "percent",
+              "count": 3,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 2.631578947368421,
+              "unit": "percent",
+              "count": 1,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 38,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 70.58823529411765,
+          "formatted": "70,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 70.58823529411765,
+          "buildings": 17,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 70.58823529411765,
+              "unit": "percent",
+              "count": 12,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 70.58823529411765,
+              "unit": "percent",
+              "count": 12,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 5.88235294117647,
+              "unit": "percent",
+              "count": 1,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 11.76470588235294,
+              "unit": "percent",
+              "count": 2,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 5.88235294117647,
+              "unit": "percent",
+              "count": 1,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 5.88235294117647,
+              "unit": "percent",
+              "count": 1,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 17,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 72.22222222222221,
+          "formatted": "72,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 72.22222222222221,
+          "buildings": 19,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 72.22222222222221,
+              "unit": "percent",
+              "count": 13,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 5.555555555555555,
+              "unit": "percent",
+              "count": 1,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 11.11111111111111,
+              "unit": "percent",
+              "count": 2,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 55.55555555555556,
+              "unit": "percent",
+              "count": 10,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 27.77777777777778,
+              "unit": "percent",
+              "count": 5,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 18,
+              "unknown": 1
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 5.263157894736842,
+              "unit": "percent",
+              "count": 1,
+              "defined": 19,
+              "unknown": 1
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 88.88888888888889,
+          "formatted": "88,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 88.88888888888889,
+          "buildings": 10,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 88.88888888888889,
+              "unit": "percent",
+              "count": 8,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 11.11111111111111,
+              "unit": "percent",
+              "count": 1,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 22.22222222222222,
+              "unit": "percent",
+              "count": 2,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 11.11111111111111,
+              "unit": "percent",
+              "count": 1,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 44.44444444444444,
+              "unit": "percent",
+              "count": 4,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 11.11111111111111,
+              "unit": "percent",
+              "count": 1,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 9,
+              "unknown": 1
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 10.0,
+              "unit": "percent",
+              "count": 1,
+              "defined": 10,
+              "unknown": 1
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 42.857142857142854,
+          "formatted": "42,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 42.857142857142854,
+          "buildings": 7,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 42.857142857142854,
+              "unit": "percent",
+              "count": 3,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 14.285714285714285,
+              "unit": "percent",
+              "count": 1,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 28.57142857142857,
+              "unit": "percent",
+              "count": 2,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 14.285714285714285,
+              "unit": "percent",
+              "count": 1,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 28.57142857142857,
+              "unit": "percent",
+              "count": 2,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 14.285714285714285,
+              "unit": "percent",
+              "count": 1,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 3,
+          "parts": [
+            {
+              "label": "Edifici costruiti entro il 1970",
+              "selectorLabel": "Entro 1970",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Prima del 1800",
+              "selectorLabel": "Prima del 1800",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1800–1899",
+              "selectorLabel": "1800–1899",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1900–1933",
+              "selectorLabel": "1900–1933",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1934–1949",
+              "selectorLabel": "1934–1949",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1950–1970",
+              "selectorLabel": "1950–1970",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1971–1975",
+              "selectorLabel": "1971–1975",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1976–1992",
+              "selectorLabel": "1976–1992",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "1997–2008",
+              "selectorLabel": "1997–2008",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "2009–2017",
+              "selectorLabel": "2009–2017",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Periodo non definito",
+              "selectorLabel": "Non definito",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 3,
+              "unknown": 0
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 60.0,
+        "label": "Versilia · edifici costruiti entro il 1970",
+        "note": "La distribuzione usa il periodo MIM dichiarato per edificio. I periodi non definiti restano visibili e non sono stimati.",
+        "buildings": 109,
+        "parts": [
+          {
+            "label": "Edifici costruiti entro il 1970",
+            "selectorLabel": "Entro 1970",
+            "value": 60.0,
+            "unit": "percent",
+            "count": 60,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "Prima del 1800",
+            "selectorLabel": "Prima del 1800",
+            "value": 1.0,
+            "unit": "percent",
+            "count": 1,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1800–1899",
+            "selectorLabel": "1800–1899",
+            "value": 1.0,
+            "unit": "percent",
+            "count": 1,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1900–1933",
+            "selectorLabel": "1900–1933",
+            "value": 5.0,
+            "unit": "percent",
+            "count": 5,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1934–1949",
+            "selectorLabel": "1934–1949",
+            "value": 5.0,
+            "unit": "percent",
+            "count": 5,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1950–1970",
+            "selectorLabel": "1950–1970",
+            "value": 48.0,
+            "unit": "percent",
+            "count": 48,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1971–1975",
+            "selectorLabel": "1971–1975",
+            "value": 9.0,
+            "unit": "percent",
+            "count": 9,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1976–1992",
+            "selectorLabel": "1976–1992",
+            "value": 23.0,
+            "unit": "percent",
+            "count": 23,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "1997–2008",
+            "selectorLabel": "1997–2008",
+            "value": 6.0,
+            "unit": "percent",
+            "count": 6,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "2009–2017",
+            "selectorLabel": "2009–2017",
+            "value": 2.0,
+            "unit": "percent",
+            "count": 2,
+            "defined": 100,
+            "unknown": 9
+          },
+          {
+            "label": "Periodo non definito",
+            "selectorLabel": "Non definito",
+            "value": 8.256880733944955,
+            "unit": "percent",
+            "count": 9,
+            "defined": 109,
+            "unknown": 9
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Distribuzione per epoca su open data MIM per edificio",
+        "formula": "quota periodo = edifici nel periodo / edifici con periodo di costruzione definito × 100",
+        "caveat": "L'epoca di costruzione non equivale allo stato manutentivo, alla sicurezza o all'anno dell'ultimo adeguamento. I periodi NON DEFINITO sono esclusi dalle quote per epoca e riportati separatamente.",
+        "coverage": "7/7 Comuni · 109 edifici",
+        "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
+      }
+    },
+    "schoolBuildingTransport": {
+      "meta": {
+        "key": "schoolBuildingTransport",
+        "theme": "istruzione",
+        "label": "Raggiungibilità degli edifici scolastici",
+        "shortLabel": "Raggiungibilità scuole",
+        "description": "Quota di edifici per i quali il MIM registra collegamenti tramite scuolabus, trasporto pubblico urbano o trasporto pubblico interurbano.",
+        "unit": "percent",
+        "year": "2024/25",
+        "source": "MIM — Anagrafe dell'Edilizia Scolastica",
+        "polarity": "neutral",
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Modalità di collegamento",
+        "searchTerms": [
+          "scuolabus",
+          "trasporto pubblico scuola",
+          "tpl scuola",
+          "raggiungibilità scuola"
+        ]
+      },
+      "sourceUrl": "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 93.33333333333333,
+          "formatted": "93,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 93.33333333333333,
+          "buildings": 15,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 93.33333333333333,
+              "unit": "percent",
+              "count": 14,
+              "defined": 15,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 13.333333333333334,
+              "unit": "percent",
+              "count": 2,
+              "defined": 15,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 46.666666666666664,
+              "unit": "percent",
+              "count": 7,
+              "defined": 15,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 44.73684210526316,
+          "formatted": "44,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44.73684210526316,
+          "buildings": 38,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 44.73684210526316,
+              "unit": "percent",
+              "count": 17,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 73.68421052631578,
+              "unit": "percent",
+              "count": 28,
+              "defined": 38,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 15.789473684210526,
+              "unit": "percent",
+              "count": 6,
+              "defined": 38,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 94.11764705882352,
+          "formatted": "94,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 94.11764705882352,
+          "buildings": 17,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 94.11764705882352,
+              "unit": "percent",
+              "count": 16,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 76.47058823529412,
+              "unit": "percent",
+              "count": 13,
+              "defined": 17,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 41.17647058823529,
+              "unit": "percent",
+              "count": 7,
+              "defined": 17,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 84.21052631578947,
+          "formatted": "84,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 84.21052631578947,
+          "buildings": 19,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 84.21052631578947,
+              "unit": "percent",
+              "count": 16,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 78.94736842105263,
+              "unit": "percent",
+              "count": 15,
+              "defined": 19,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 52.63157894736842,
+              "unit": "percent",
+              "count": 10,
+              "defined": 19,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 80.0,
+          "formatted": "80,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 80.0,
+          "buildings": 10,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 80.0,
+              "unit": "percent",
+              "count": 8,
+              "defined": 10,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 80.0,
+              "unit": "percent",
+              "count": 8,
+              "defined": 10,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 60.0,
+              "unit": "percent",
+              "count": 6,
+              "defined": 10,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 85.71428571428571,
+          "formatted": "85,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 85.71428571428571,
+          "buildings": 7,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 85.71428571428571,
+              "unit": "percent",
+              "count": 6,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 57.14285714285714,
+              "unit": "percent",
+              "count": 4,
+              "defined": 7,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 0.0,
+              "unit": "percent",
+              "count": 0,
+              "defined": 7,
+              "unknown": 0
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "buildings": 3,
+          "parts": [
+            {
+              "label": "Edifici raggiungibili con scuolabus",
+              "selectorLabel": "Scuolabus",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL urbano",
+              "selectorLabel": "TPL urbano",
+              "value": 100.0,
+              "unit": "percent",
+              "count": 3,
+              "defined": 3,
+              "unknown": 0
+            },
+            {
+              "label": "Edifici raggiungibili con TPL interurbano",
+              "selectorLabel": "TPL interurbano",
+              "value": 33.33333333333333,
+              "unit": "percent",
+              "count": 1,
+              "defined": 3,
+              "unknown": 0
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 73.39449541284404,
+        "label": "Versilia · edifici raggiungibili con scuolabus",
+        "note": "La fonte indica la presenza del collegamento per edificio; non misura frequenza, distanza dalla fermata, tempi di viaggio o accessibilità pedonale.",
+        "buildings": 109,
+        "parts": [
+          {
+            "label": "Edifici raggiungibili con scuolabus",
+            "selectorLabel": "Scuolabus",
+            "value": 73.39449541284404,
+            "unit": "percent",
+            "count": 80,
+            "defined": 109,
+            "unknown": 0
+          },
+          {
+            "label": "Edifici raggiungibili con TPL urbano",
+            "selectorLabel": "TPL urbano",
+            "value": 66.97247706422019,
+            "unit": "percent",
+            "count": 73,
+            "defined": 109,
+            "unknown": 0
+          },
+          {
+            "label": "Edifici raggiungibili con TPL interurbano",
+            "selectorLabel": "TPL interurbano",
+            "value": 33.94495412844037,
+            "unit": "percent",
+            "count": 37,
+            "defined": 109,
+            "unknown": 0
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su open data MIM per edificio",
+        "formula": "quota modalità = edifici con risposta SI / edifici con risposta definita × 100",
+        "caveat": "La presenza dichiarata di un collegamento non equivale a qualità o adeguatezza del servizio e non sostituisce un'analisi GTFS di frequenze e fermate.",
+        "coverage": "7/7 Comuni · 109 edifici",
+        "reference": "Anno scolastico 2024/25; dati MIM al 06/08/2025."
       }
     }
   },

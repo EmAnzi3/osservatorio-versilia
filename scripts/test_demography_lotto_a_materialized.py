@@ -41,15 +41,15 @@ def assert_series(metric: dict, years: list[int]) -> None:
 
 
 def main() -> None:
-    assert SITE['version'] == 'v1.16.0'
-    assert len(SITE['metrics']) == 138
+    assert SITE['version'] == 'v1.17.0'
+    assert len(SITE['metrics']) == 143
     external = [
         key for key, metric in SITE['metrics'].items()
         if metric.get('dataStorage', {}).get('type') == 'external-climate'
     ]
     assert len(external) == 4, external
-    assert REGISTRY['expectedMetricCount'] == 138
-    assert REGISTRY['expectedInlineMetricCount'] == 134
+    assert REGISTRY['expectedMetricCount'] == 143
+    assert REGISTRY['expectedInlineMetricCount'] == 139
     assert REGISTRY['expectedExternalMetricCount'] == 4
 
     for key in NEW_KEYS:
@@ -156,7 +156,7 @@ def main() -> None:
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        'Demografia Lotto A materializzata OK: catalogo v1.16 con 138 metriche, 7/7, '
+        'Demografia Lotto A materializzata OK: catalogo v1.17 con 143 metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )

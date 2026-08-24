@@ -22,8 +22,8 @@ def close(a,b,tol=.011): return abs(float(a)-float(b))<=tol
 
 
 def main():
-    assert DATA['version']=='v1.16.0'
-    assert REG['expectedMetricCount']==138 and REG['expectedInlineMetricCount']==134 and REG['expectedExternalMetricCount']==4
+    assert DATA['version']=='v1.17.0'
+    assert REG['expectedMetricCount']==143 and REG['expectedInlineMetricCount']==139 and REG['expectedExternalMetricCount']==4
     for key in ['municipalIrpef','tariStandardHousehold','municipalImuStandard','fuelPrices','wasteServiceCost','incomeVsInflation']:
         assert key in DATA['metrics']
 
@@ -123,6 +123,6 @@ def main():
     assert state.get('status') in {'draft','published'}
     assert 'incomeVsInflation' in state['publishedInDraft']
     assert state['notPublished']==['schoolMeals']
-    print(f"Economia validata ({DATA['version']}): 138 indicatori = 134 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
+    print(f"Economia validata ({DATA['version']}): 143 indicatori = 139 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
 
 if __name__=='__main__': main()

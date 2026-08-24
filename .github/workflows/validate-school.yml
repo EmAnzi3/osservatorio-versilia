@@ -1,0 +1,46 @@
+name: Validate lotto Scuola MIM
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "data/site-data.json"
+      - "data/source-registry.json"
+      - "data/source-monitor-state.json"
+      - "data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json"
+      - "scripts/materialize_scuola_mim.py"
+      - "scripts/test_scuola_mim.py"
+      - ".github/workflows/validate-school.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/site-data.json"
+      - "data/source-registry.json"
+      - "data/source-monitor-state.json"
+      - "data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json"
+      - "scripts/materialize_scuola_mim.py"
+      - "scripts/test_scuola_mim.py"
+      - ".github/workflows/validate-school.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate school dataset and catalog contract
+        run: |
+          python scripts/test_scuola_mim.py
+          python scripts/finalize_catalog_release.py --check
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-monitor-state.json > /dev/null
+          python -m json.tool data/source-snapshots/mim-edilizia-scolastica-versilia-2024-25.json > /dev/null
+      - name: Compile materializer
+        run: python -m py_compile scripts/materialize_scuola_mim.py scripts/test_scuola_mim.py

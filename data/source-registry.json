@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 138,
-  "expectedInlineMetricCount": 134,
+  "expectedMetricCount": 143,
+  "expectedInlineMetricCount": 139,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -396,7 +396,12 @@
     "https://dati.toscana.it/dataset/regione-toscana-pnrr": "regione-toscana-pnrr-monthly",
     "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc": "rgs-conto-annuale-annual",
     "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati": "rgs-conto-annuale-annual",
-    "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc": "rgs-conto-annuale-annual"
+    "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc": "rgs-conto-annuale-annual",
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0171EDICONSICUREZZASTA2021": "mim-school-year",
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021": "mim-school-year",
+    "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021": "mim-school-year",
+    "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021": "mim-school-year",
+    "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021": "mim-school-year"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -478,6 +483,21 @@
     },
     "municipalOnlineServicesAdvanced": {
       "profile": "regione-toscana-indicatori-comunali"
+    },
+    "schoolBuildingSafetyDocs": {
+      "profile": "mim-school-year"
+    },
+    "schoolBuildingAccessibility": {
+      "profile": "mim-school-year"
+    },
+    "schoolBuildingFacilities": {
+      "profile": "mim-school-year"
+    },
+    "schoolBuildingAge": {
+      "profile": "mim-school-year"
+    },
+    "schoolBuildingTransport": {
+      "profile": "mim-school-year"
     }
   },
   "requestTimeoutSeconds": 20,
