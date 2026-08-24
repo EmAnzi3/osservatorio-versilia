@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import re
+import tempfile
 from pathlib import Path
 
 import build_opportunity_preview_v04 as route_builder
 import build_opportunity_preview_v043 as radar_v043
+import materialize_opportunity_release_favicons as release_favicons
 from site_chrome import ensure_sitemap_entries
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,6 +61,46 @@ def _social_metadata() -> str:
   <meta name="twitter:image" content="{image}">
   <meta name="twitter:image:alt" content="Versilia e Alpi Apuane">
   <script type="application/ld+json">{{"@context":"https://schema.org","@type":"CollectionPage","name":"Radar Opportunità","url":"{PUBLIC_URL}","description":"{PUBLIC_DESCRIPTION}","isPartOf":{{"@type":"WebSite","name":"Osservatorio Versilia","url":"https://osservatorioversilia.it/"}}}}</script>'''
+
+
+def _build_v043_from_local_assets(payload_path: Path, dist: Path) -> tuple[Path, dict]:
+    """Costruisce la UI v0.4.3 senza alcuna risoluzione favicon via rete."""
+    payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    rendered_payload = copy.deepcopy(payload)
+    provenance = release_favicons.materialize(rendered_payload, dist)
+    release_favicons.apply_to_payload(rendered_payload, provenance)
+
+    route_builder.TARGET_ROUTE = TARGET_ROUTE
+    with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8", delete=False) as handle:
+        json.dump(rendered_payload, handle, ensure_ascii=False)
+        temporary = Path(handle.name)
+    try:
+        target = route_builder.build(temporary, dist)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+    text = target.read_text(encoding="utf-8")
+    text = text.replace("v0.4.2", "v0.4.3")
+    source_select = '<select data-op-source>' + radar_v043._source_options(rendered_payload) + '</select>'
+    text, replacements = re.subn(
+        r'<select data-op-source>.*?</select>',
+        source_select,
+        text,
+        count=1,
+        flags=re.S,
+    )
+    if replacements != 1:
+        raise RuntimeError("Filtro Fonte non trovato nella release v0.4.3")
+    target.write_text(text, encoding="utf-8")
+
+    check = target.read_text(encoding="utf-8")
+    if "Anteprima v0.4.3" not in check:
+        raise RuntimeError("Renderer v0.4.3 non materializzato")
+    if "Tutte le fonti monitorate" not in check:
+        raise RuntimeError("Filtro Fonti completo assente")
+    if "../assets/source-favicons/" not in check:
+        raise RuntimeError("Favicon locali non collegati alla release")
+    return target, rendered_payload
 
 
 def _clean_public_markup(text: str, reference: str) -> str:
@@ -147,9 +190,7 @@ def _clean_public_markup(text: str, reference: str) -> str:
 
 
 def build(payload_path: Path, dist: Path) -> Path:
-    route_builder.TARGET_ROUTE = TARGET_ROUTE
-    target = radar_v043.build(payload_path, dist)
-    payload = json.loads(payload_path.read_text(encoding="utf-8"))
+    target, payload = _build_v043_from_local_assets(payload_path, dist)
     reference_iso = str(payload.get("referenceDate") or "")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", reference_iso):
         raise RuntimeError("referenceDate Radar assente o non valida")
