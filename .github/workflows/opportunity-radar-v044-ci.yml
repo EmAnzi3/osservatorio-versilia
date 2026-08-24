@@ -1,0 +1,89 @@
+name: Radar Opportunità · v0.4.4 quality gate
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/opportunity-*.json"
+      - "scripts/*opportunity*.py"
+      - "assets/opportunity-*.css"
+      - ".github/workflows/opportunity-radar-*.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: opportunity-radar-v044-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pypdf playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Validate v0.4.4 contracts
+        run: |
+          python -m py_compile \
+            scripts/run_opportunity_radar_v044.py \
+            scripts/opportunity_daily_refresh.py \
+            scripts/build_opportunity_preview_v044.py \
+            scripts/materialize_opportunity_release_snapshot.py \
+            scripts/build_opportunity_release.py \
+            scripts/test_opportunity_radar_v044.py \
+            scripts/test_opportunity_release_browser.py
+          python scripts/test_opportunity_radar_v044.py
+          python scripts/run_opportunity_radar_v044.py --backtest-only
+
+      - name: Materialize v0.4.4 release
+        run: |
+          python scripts/materialize_opportunity_release_snapshot.py
+          python - <<'PY'
+          import json
+          p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
+          assert p['releaseVersion'] == '0.4.4'
+          assert len(p['opportunities']) == 30, len(p['opportunities'])
+          assert (p.get('counts') or {}).get('new') == 5
+          print('Release v0.4.4: 30 opportunità · 5 nuove')
+          PY
+
+      - name: Build public site
+        run: python scripts/build_static_brand.py
+
+      - name: Start local server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-radar-v044.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-radar-v044.log
+          exit 1
+
+      - name: Validate public Radar in browser
+        run: python scripts/test_opportunity_release_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: radar-opportunita-v044-preview
+          path: dist
+          retention-days: 7
