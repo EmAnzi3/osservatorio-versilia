@@ -40,6 +40,7 @@ jobs:
         run: |
           python scripts/test_opportunity_regione_toscana_guard.py
           python scripts/test_opportunity_issue_notification.py
+          python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -62,12 +63,13 @@ jobs:
           expected_date = datetime.now(timezone.utc).date().isoformat()
           assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'
-          assert p.get('dailyHardeningVersion') == '0.4.4-h1'
+          assert p.get('dailyHardeningVersion') == '0.4.4-h2'
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           assert (p.get('backtest') or {}).get('passed') is True
           assert (p.get('coverageAudit') or {}).get('status') == 'pass'
           assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
+          assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
           ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
           required = {
               'pcm-sport-eventi-2026',
@@ -79,7 +81,8 @@ jobs:
           assert required <= ids, sorted(required - ids)
           print(
               f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
-              f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date}"
+              f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date} · "
+              f"continuità riconciliata {(p.get('continuityReconciliation') or {}).get('reconciled', 0)}"
           )
           PY
 
