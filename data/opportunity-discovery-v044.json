@@ -1,5 +1,20 @@
 {
   "schemaVersion": "0.4.4",
+  "primarySources": [
+    {
+      "id": "regione-toscana-tutti",
+      "ruleSourceId": "regione-toscana",
+      "name": "Regione Toscana — tutti i bandi",
+      "type": "html_cards",
+      "url": "https://www.regione.toscana.it/it/bandi-tutti?delta=60&sortBy=desc&start=1",
+      "publisher": "Regione Toscana",
+      "territory": "Toscana",
+      "detailEnrichment": true,
+      "freshnessMaxDays": 45,
+      "fetchTimeoutSeconds": 45,
+      "fetchAttempts": 2
+    }
+  ],
   "sourceOverrides": {
     "pcm-sport": {
       "urls": [
@@ -37,6 +52,19 @@
     }
   },
   "coverageRegistry": {
+    "regione-toscana-tutti": {
+      "label": "Regione Toscana · tutti i bandi",
+      "monitoringStatus": "active",
+      "role": "primary",
+      "priority": 101,
+      "listingDiscovery": true,
+      "detailEnrichment": true,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "favicon": "https://www.regione.toscana.it/favicon.ico",
+      "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId."
+    },
     "pcm-sport": {
       "label": "PCM · Dipartimento per lo Sport",
       "monitoringStatus": "active",
