@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: opportunity-radar-daily
@@ -35,8 +36,10 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Validate v0.4.4 contracts
+      - name: Validate v0.4.4 contracts and blind-test hardening
         run: |
+          python scripts/test_opportunity_regione_toscana_guard.py
+          python scripts/test_opportunity_issue_notification.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -46,18 +49,25 @@ jobs:
       - name: Scan live sources and build daily snapshot
         run: python scripts/opportunity_daily_refresh.py
 
-      - name: Validate daily snapshot
+      - name: Validate daily snapshot and freshness
         run: |
           python -m json.tool data/opportunity-daily-public.json > /dev/null
           python - <<'PY'
           import json
+          from datetime import datetime, timezone
           from pathlib import Path
-          p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+
+          path = Path('data/opportunity-daily-public.json')
+          p = json.loads(path.read_text(encoding='utf-8'))
+          expected_date = datetime.now(timezone.utc).date().isoformat()
+          assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'
+          assert p.get('dailyHardeningVersion') == '0.4.4-h1'
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           assert (p.get('backtest') or {}).get('passed') is True
           assert (p.get('coverageAudit') or {}).get('status') == 'pass'
+          assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
           ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
           required = {
               'pcm-sport-eventi-2026',
@@ -67,15 +77,29 @@ jobs:
               'life-2026-cet-empower',
           }
           assert required <= ids, sorted(required - ids)
-          print(f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · {(p.get('counts') or {}).get('new', 0)} nuove")
+          print(
+              f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
+              f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date}"
+          )
           PY
 
       - name: Build and validate the public Radar before committing
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/materialize_opportunity_release_snapshot.py
           python scripts/build_static_brand.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+          html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
+          year, month, day = payload['referenceDate'].split('-')
+          displayed = f'{day}/{month}/{year}'
+          assert displayed in html, f'La build pubblica non usa lo snapshot giornaliero {displayed}'
+          assert html.count('data-opportunity-card') == len(payload.get('opportunities') or [])
+          print('Build Radar collegata allo snapshot giornaliero:', displayed)
+          PY
           python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-radar-daily.log 2>&1 &
           for attempt in {1..20}; do
             if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
@@ -116,3 +140,55 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref main
+
+      - name: Notify owner about new opportunities
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git show HEAD^:data/opportunity-daily-public.json > /tmp/opportunity-daily-previous.json 2>/dev/null; then
+            echo "Confronto con lo snapshot giornaliero precedente."
+          else
+            cp data/opportunity-release.json /tmp/opportunity-daily-previous.json
+            echo "Primo refresh: confronto con la baseline congelata."
+          fi
+
+          python scripts/opportunity_issue_notification.py \
+            --previous /tmp/opportunity-daily-previous.json \
+            --current data/opportunity-daily-public.json \
+            --json-out /tmp/radar-new-opportunities.json \
+            --body-out /tmp/radar-new-opportunities.md
+
+          count=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['count'])
+          PY
+          )
+          if [ "$count" -eq 0 ]; then
+            echo "Nessuna nuova identità: nessuna Issue da creare."
+            exit 0
+          fi
+
+          fingerprint=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['fingerprint'])
+          PY
+          )
+          marker="radar-new:${fingerprint}"
+          if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
+            echo "Notifica ${fingerprint} già presente: nessun duplicato creato."
+            exit 0
+          fi
+
+          title=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['issueTitle'])
+          PY
+          )
+          gh issue create \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$title" \
+            --body-file /tmp/radar-new-opportunities.md \
+            --assignee "$GITHUB_REPOSITORY_OWNER"

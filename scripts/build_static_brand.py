@@ -2,6 +2,7 @@
 """Build di produzione con identità OV, PWA e Radar Opportunità pubblico."""
 from __future__ import annotations
 
+import json
 import os
 import re
 import runpy
@@ -201,6 +202,32 @@ def apply_brand_and_pwa() -> None:
             raise RuntimeError(f"Asset PWA non incluso nella build: {relative}")
 
 
+def select_opportunity_public_payload() -> Path:
+    """Preferisce lo snapshot giornaliero verificato; la release resta il fallback."""
+    release = ROOT / "data" / "opportunity-release.json"
+    daily = ROOT / "data" / "opportunity-daily-public.json"
+    if not daily.exists():
+        return release
+
+    release_payload = json.loads(release.read_text(encoding="utf-8"))
+    daily_payload = json.loads(daily.read_text(encoding="utf-8"))
+    release_date = str(release_payload.get("referenceDate") or "")
+    daily_date = str(daily_payload.get("referenceDate") or "")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", daily_date):
+        raise RuntimeError("Snapshot Radar giornaliero con referenceDate non valida")
+    if release_date and daily_date < release_date:
+        return release
+    if daily_payload.get("continuityHold") or daily_payload.get("coverageHold"):
+        raise RuntimeError("Snapshot Radar giornaliero contiene hold bloccanti")
+    if not (daily_payload.get("backtest") or {}).get("passed", False):
+        raise RuntimeError("Snapshot Radar giornaliero con backtest non valido")
+    if (daily_payload.get("coverageAudit") or {}).get("status") != "pass":
+        raise RuntimeError("Snapshot Radar giornaliero con coverage audit non valido")
+    if (daily_payload.get("regionalCompleteness") or {}).get("status") == "fail":
+        raise RuntimeError("Snapshot Radar giornaliero con completezza Regione Toscana non valida")
+    return daily
+
+
 if __name__ == "__main__":
     # Materializzazione prima del builder base: la shell e i contratti nascono
     # direttamente nella configurazione pubblica finale.
@@ -217,6 +244,7 @@ if __name__ == "__main__":
 
     from build_opportunity_release import build as build_opportunity_release
 
-    build_opportunity_release(ROOT / "data" / "opportunity-release.json", DIST)
+    opportunity_payload = select_opportunity_public_payload()
+    build_opportunity_release(opportunity_payload, DIST)
     apply_brand_and_pwa()
-    print("Build statica completata con identità OV, PWA e Radar Opportunità pubblico.")
+    print(f"Build statica completata con identità OV, PWA e Radar da {opportunity_payload.name}.")
