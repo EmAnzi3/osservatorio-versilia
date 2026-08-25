@@ -8,6 +8,8 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
+from build_static_brand import select_opportunity_public_payload
+
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
 FORBIDDEN = [
@@ -23,7 +25,8 @@ def labels(page):
 
 
 def verify_release(base: str) -> None:
-    payload = json.loads((ROOT / "data/opportunity-release.json").read_text(encoding="utf-8"))
+    payload_path = select_opportunity_public_payload()
+    payload = json.loads(payload_path.read_text(encoding="utf-8"))
     total_expected = len(payload.get("opportunities") or [])
     new_expected = sum(bool(item.get("is_new")) for item in payload.get("opportunities") or [])
     y, m, d = payload["referenceDate"].split("-")
