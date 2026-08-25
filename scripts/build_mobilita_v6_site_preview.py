@@ -23,6 +23,8 @@ def main() -> None:
     identity = {row["town"]: {"code": row["code"], "slug": row["slug"]} for row in template_rows}
 
     rows = []
+    exact_weighted_numerator = 0.0
+    total_population = 0
     for town, tpl in combined.items():
         ident = identity[town]
         value = tpl["tripsPer1000"] if tpl["status"] == "ok" else None
@@ -38,6 +40,12 @@ def main() -> None:
             "tplOffer": tpl,
         })
 
+        if tpl["status"] == "ok" and tpl.get("residentPopulation"):
+            pop = int(tpl["residentPopulation"])
+            exact_rate = float(tpl["trips"]) / pop * 1000.0
+            exact_weighted_numerator += exact_rate * pop
+            total_population += pop
+
         detail = data.setdefault("details", {}).setdefault(ident["code"], {})
         mobility = detail.setdefault("mobility", {})
         mobility["tplOffer"] = {
@@ -49,8 +57,7 @@ def main() -> None:
     # Mantiene l'ordine comunale già usato dal catalogo Mobilità.
     town_order = [row["town"] for row in template_rows]
     rows.sort(key=lambda row: town_order.index(row["town"]))
-    valid = [row["value"] for row in rows if row["value"] is not None]
-    aggregate = sum(valid) / len(valid) if valid else None
+    aggregate = exact_weighted_numerator / total_population if total_population else None
 
     data["metrics"][METRIC_KEY] = {
         "meta": {
@@ -69,8 +76,8 @@ def main() -> None:
         "rows": rows,
         "aggregate": {
             "value": aggregate,
-            "label": "Media semplice dei 7 Comuni",
-            "note": "Ogni Comune pesa allo stesso modo. Non equivale al numero di corse uniche della Versilia: una stessa corsa può servire più Comuni.",
+            "label": "Media ponderata dei 7 Comuni",
+            "note": "Ponderata sulla popolazione residente. Non equivale al numero di corse uniche della Versilia: una stessa corsa può servire più Comuni.",
         },
         "normalizedAggregate": None,
         "method": {
@@ -124,6 +131,12 @@ def main() -> None:
         "canonicalMetricCountIfPromoted": 147,
         "serviceDate": audit["serviceDate"],
         "coverage": "7/7",
+        "reference": {
+            "type": "populationWeightedMunicipalRate",
+            "value": aggregate,
+            "label": "Media ponderata dei 7 Comuni",
+            "note": "Non è una conta di corse uniche della Versilia perché una stessa corsa può servire più Comuni."
+        },
         "populationInsistence": audit["istatPopulationInsistence"],
         "notes": [
             "Preview costruita sul renderer reale del sito, non su un HTML autonomo.",
@@ -141,6 +154,7 @@ def preview_js() -> str:
   const script = document.currentScript;
   const inputUrl = new URL('../review/mobilita-v6-preview-input.json', script.src);
   const metricKey = 'scheduledTplTripsPer1000';
+  const townOrder = ['Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio'];
   const slugToTown = {
     'massarosa': 'Massarosa', 'viareggio': 'Viareggio', 'camaiore': 'Camaiore',
     'pietrasanta': 'Pietrasanta', 'seravezza': 'Seravezza',
@@ -179,10 +193,34 @@ def preview_js() -> str:
     </details>`;
   }
 
+  function compareMarkup(audit) {
+    const rows = townOrder.map(town => {
+      const row = audit.gtfs.combined[town];
+      const value = key => row?.status === 'ok' ? fmt0(row[key]) : 'n.d.';
+      return `<tr><td><b>${town}</b></td><td>${value('trips')}</td><td>${value('busTrips')}</td><td>${value('railTrips')}</td><td>${value('activeAccessPoints')}</td></tr>`;
+    }).join('');
+    return `<section class="topic-deep-dive tpl-compare-detail page-width">
+      <div class="deep-heading"><div><span class="overline">Approfondimento</span><h3>Offerta TPL nel giorno di riferimento</h3></div><p>Il confronto principale è normalizzato sui residenti; qui restano leggibili anche i volumi assoluti e la composizione bus/ferrovia.</p></div>
+      <details class="detail-disclosure"><summary><span>Mostra corse e punti di fermata</span><small>7/7 Comuni · bus + ferrovia</small></summary>
+        <div class="omi-zone-table-wrap"><table class="omi-zone-table"><thead><tr><th>Comune</th><th>Corse</th><th>Bus</th><th>Ferrovia</th><th>Punti GTFS</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <p class="aggregate-note">Le corse sono conteggiate una volta per Comune anche se effettuano più fermate. I “punti GTFS” sono stop_id attivi e possono distinguere direzioni o piattaforme: non equivalgono necessariamente a fermate fisiche uniche. Lo 0 compare solo quando il feed e l’attribuzione territoriale sono validi e il conteggio è realmente nullo; in caso contrario si usa n.d.</p>
+      </details>
+    </section>`;
+  }
+
   fetch(inputUrl, { cache: 'no-store' }).then(r => r.json()).then(audit => {
     const apply = () => {
       const params = new URLSearchParams(location.search);
-      if (params.get('indicatore') !== metricKey || document.body.dataset.page !== 'town') return;
+      if (params.get('indicatore') !== metricKey) return;
+
+      if (document.body.dataset.page === 'compare') {
+        if (document.querySelector('.tpl-compare-detail')) return;
+        const anchor = document.querySelector('#compare-benchmark');
+        if (anchor) anchor.insertAdjacentHTML('beforebegin', compareMarkup(audit));
+        return;
+      }
+
+      if (document.body.dataset.page !== 'town') return;
       const town = slugToTown[document.body.dataset.town];
       const row = audit.gtfs.combined[town];
       if (!row || document.querySelector('.tpl-offer-detail')) return;
