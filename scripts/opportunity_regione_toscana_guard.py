@@ -128,6 +128,7 @@ def scan_recent_municipal_candidates(
     listing_payload: str | None = None,
     detail_payloads: dict[str, str] | None = None,
     fetcher: Callable[[str], str] | None = None,
+    known_result: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
     fetcher = fetcher or _default_fetch
     detail_payloads = detail_payloads or {}
@@ -166,6 +167,18 @@ def scan_recent_municipal_candidates(
             continue
         seen.add(norm_url)
 
+        stub = {
+            "title": title,
+            "url": url,
+            "summary": body[:600],
+            "published_at": published.isoformat(),
+            "age_days": age_days,
+            "deadline_at": deadline.isoformat() if deadline else None,
+        }
+        # Le schede gia' pubblicate non richiedono un secondo fetch di dettaglio.
+        if known_result is not None and _account_state(known_result, stub) == "public":
+            continue
+
         try:
             detail = detail_payloads[url] if url in detail_payloads else fetcher(url)
             visible = base.visible(detail)
@@ -174,17 +187,7 @@ def scan_recent_municipal_candidates(
             continue
         if not _has_explicit_municipal_audience(visible):
             continue
-
-        candidates.append(
-            {
-                "title": title,
-                "url": url,
-                "summary": body[:600],
-                "published_at": published.isoformat(),
-                "age_days": age_days,
-                "deadline_at": deadline.isoformat() if deadline else None,
-            }
-        )
+        candidates.append(stub)
 
     candidates.sort(key=lambda item: (item.get("published_at") or "", item.get("title") or ""), reverse=True)
     return candidates, errors
@@ -207,6 +210,7 @@ def apply(
             listing_payload=listing_payload,
             detail_payloads=detail_payloads,
             fetcher=fetcher,
+            known_result=result,
         )
 
     queue = result.setdefault("discoveryQueue", [])
