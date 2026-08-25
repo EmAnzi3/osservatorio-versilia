@@ -1,8 +1,8 @@
 {
-  "schemaVersion": "0.3.1",
-  "referenceDate": "2026-08-22",
+  "schemaVersion": "0.3.2",
+  "referenceDate": "2026-08-25",
   "windowDays": 90,
-  "scope": "Replay documentale su casi delle fonti consolidate e dei canali ampliati v0.3.1. Misura la decisione sui candidati osservati, non la completezza dell'intero web.",
+  "scope": "Replay documentale su casi delle fonti consolidate e dei canali ampliati v0.3.2, incluso il blind test del 25 agosto 2026 su una newsletter esterna. Misura la decisione sui candidati osservati, non la completezza dell'intero web.",
   "thresholds": {"precision": 0.95, "recall": 0.85},
   "cases": [
     {"id":"p01","source_id":"regione-toscana","title":"Bando Amianto Edifici Pubblici 2026","expected":"operational","official_url":"https://www.regione.toscana.it/"},
@@ -22,6 +22,7 @@
     {"id":"p15","source_id":"sviluppo-toscana","title":"Avviso Mercati Rionali","expected":"operational","official_url":"https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/"},
     {"id":"p16","source_id":"mic-spettacolo","title":"Bando per la PROMOZIONE DELLA MUSICA JAZZ / 2027 – Avviso pubblico e apertura dei termini di presentazione delle domande","expected":"operational","official_url":"https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande"},
     {"id":"p17","source_id":"ministero-interno-prefetture","title":"Videosorveglianza - D.M. 2026","expected":"operational","official_url":"https://prefettura.interno.gov.it/it/prefetture/rieti/notizie/videosorveglianza-domande-entro-24-agosto-2026"},
+    {"id":"p18","source_id":"regione-toscana","title":"Celebrazioni storiche 2026: sostegno a progetti dedicati a San Francesco, Collodi e Alluvione Firenze","expected":"operational","official_url":"https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze","note":"Blind test newsletter esterna 25 agosto 2026: gli Enti locali della Toscana possono presentare direttamente un progetto conforme a una delle tre ricorrenze."},
     {"id":"n01","source_id":"regione-toscana","title":"Bando biotrituratori elettrici 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/"},
     {"id":"n02","source_id":"regione-toscana","title":"Bando aiuti per le sentinelle Blue Tongue","expected":"non_operational","official_url":"https://www.regione.toscana.it/-/bando-aiuti-per-le-sentinelle-blue-tongue"},
     {"id":"n03","source_id":"regione-toscana","title":"Finanziamenti per realizzare percorsi formativi in undici settori produttivi strategici","expected":"non_operational","official_url":"https://www.regione.toscana.it/-/finanziamenti-per-realizzare-percorsi-formativi-in-undici-settori-produttivi-strategici"},
