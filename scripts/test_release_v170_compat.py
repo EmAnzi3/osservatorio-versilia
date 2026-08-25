@@ -158,9 +158,15 @@ def main() -> None:
 
     community = source["themes"]["comunita"]
     require(community["number"] == "11", "Investimenti e comunità deve essere il tema 11 dopo l’introduzione di Sicurezza")
+    legacy_community = ["publicWorks", "pnrrFunding", "pnrrConcluded", "thirdSector"]
+    current_community = community["metrics"]
     require(
-        community["metrics"] == ["publicWorks", "pnrrFunding", "pnrrConcluded", "thirdSector"],
-        "Struttura del tema Investimenti e comunità inattesa",
+        legacy_community == current_community[:len(legacy_community)],
+        "Comunità: il nucleo di indicatori della v1.7 deve restare presente e nello stesso ordine",
+    )
+    require(
+        set(legacy_community) <= set(current_community),
+        "Comunità: sono stati rimossi indicatori della v1.7",
     )
 
     for key, metric in source["metrics"].items():
