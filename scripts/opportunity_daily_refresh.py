@@ -14,6 +14,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from opportunity_continuity import reconcile_final_continuity as _reconcile_final_continuity
 import opportunity_regione_toscana_guard as regione_guard
 import run_opportunity_radar_v044 as radar
 
@@ -116,7 +117,7 @@ def _prepare_public(result: dict[str, Any], today: date) -> dict[str, Any]:
     result["engineVersion"] = "0.4.4"
     result["coverageVersion"] = "0.4.4"
     result["uiVersion"] = "0.4.4"
-    result["dailyHardeningVersion"] = "0.4.4-h1"
+    result["dailyHardeningVersion"] = "0.4.4-h2"
     return result
 
 
@@ -124,6 +125,7 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
     counts = result.get("counts") or {}
     queue = result.get("discoveryQueue") or []
     regional = result.get("regionalCompleteness") or {}
+    continuity = result.get("continuityReconciliation") or {}
     new_titles = [str(item.get("title") or "") for item in new_items]
     lines = [
         "# Radar Opportunità · refresh giornaliero",
@@ -132,6 +134,11 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
         "",
         f"Opportunità correnti: **{counts.get('public', len(result.get('opportunities') or []))}** · evidenziate come nuove: **{counts.get('new', 0)}**.",
         f"Nuove identità rilevate in questo run: **{len(new_items)}** · candidati discovery non pubblicati automaticamente: **{len(queue)}**.",
+        (
+            "Riconciliazione continuità: "
+            f"**{continuity.get('reconciled', 0)}** hold risolti a fine pipeline · "
+            f"**{continuity.get('remaining', len(result.get('continuityHold') or []))}** ancora irrisolti."
+        ),
         (
             "Safety net Regione Toscana: "
             f"**{str(regional.get('status', 'unknown')).upper()}** · "
@@ -183,6 +190,7 @@ def main() -> int:
     today = date.fromisoformat(args.date)
     previous_path, previous = _previous_snapshot(args.daily, args.baseline)
     result = radar.run_v04(today, previous_path=previous_path)
+    result = _reconcile_final_continuity(result)
     result = regione_guard.apply(result, today)
     _assert_publishable(result)
     new_items = _annotate_first_seen(result, previous, today)
@@ -199,6 +207,7 @@ def main() -> int:
     print(
         f"Radar giornaliero OK: {len(result.get('opportunities') or [])} correnti · "
         f"{len(new_items)} nuove identità · {(result.get('counts') or {}).get('new', 0)} con badge Nuova · "
+        f"continuità riconciliata {(result.get('continuityReconciliation') or {}).get('reconciled', 0)} · "
         f"Regione Toscana {str((result.get('regionalCompleteness') or {}).get('status', 'unknown')).upper()}."
     )
     for item in new_items:
