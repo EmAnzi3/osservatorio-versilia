@@ -13,7 +13,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 def settle(page, selector: str) -> None:
     page.wait_for_selector(selector, timeout=30000)
-    page.wait_for_timeout(1200)
+    page.wait_for_timeout(900)
     page.evaluate("document.fonts && document.fonts.ready")
 
 
@@ -45,15 +45,22 @@ def capture_compare(browser, mobile: bool = False) -> dict:
     return result
 
 
-def capture_town(browser, slug: str, expected_name: str, mobile: bool, filename: str, expected_rail: int) -> dict:
-    viewport = {"width": 390, "height": 844} if mobile else {"width": 1440, "height": 1050}
+def capture_town(browser, slug: str, expected_name: str, mobile: bool, prefix: str, expected_rail: int, capture_top: bool = False) -> dict:
+    viewport = {"width": 390, "height": 900} if mobile else {"width": 1440, "height": 1000}
     context = browser.new_context(viewport=viewport, device_scale_factor=1)
     page = context.new_page()
     page.goto(f"{BASE}comuni/{slug}/?tema=mobilita&indicatore={METRIC}", wait_until="networkidle")
     settle(page, ".tpl-offer-detail")
+
+    if capture_top:
+        page.evaluate("window.scrollTo(0, 0)")
+        page.wait_for_timeout(250)
+        page.screenshot(path=str(OUT / f"{prefix}-pagina.png"), full_page=False)
+
     page.locator(".tpl-offer-detail summary").click()
-    page.wait_for_timeout(400)
-    detail = page.locator(".tpl-offer-detail").inner_text()
+    page.wait_for_timeout(250)
+    detail_locator = page.locator(".tpl-offer-detail")
+    detail = detail_locator.inner_text()
     body = page.locator("body").inner_text()
     checks = {
         "town": expected_name in body,
@@ -64,7 +71,13 @@ def capture_town(browser, slug: str, expected_name: str, mobile: bool, filename:
     }
     if not all(checks.values()):
         raise RuntimeError(f"Scheda {expected_name} non coerente: {checks}\n{detail}")
-    page.screenshot(path=str(OUT / filename), full_page=True)
+
+    # Screenshot del componente reale, senza artefatti di stitching causati dall'header sticky.
+    deep = page.locator(".topic-deep-dive")
+    deep.scroll_into_view_if_needed()
+    page.wait_for_timeout(250)
+    deep.screenshot(path=str(OUT / f"{prefix}-dettaglio.png"))
+
     result = {"url": page.url, "title": page.title(), "checks": checks, "detail": detail}
     context.close()
     return result
@@ -76,8 +89,8 @@ def main() -> None:
         browser = p.chromium.launch()
         report["compareDesktop"] = capture_compare(browser, mobile=False)
         report["compareMobile"] = capture_compare(browser, mobile=True)
-        report["forteDesktop"] = capture_town(browser, "forte-dei-marmi", "Forte dei Marmi", False, "03-forte-dei-marmi-dettaglio.png", 0)
-        report["massarosaMobile"] = capture_town(browser, "massarosa", "Massarosa", True, "04-massarosa-dettaglio-mobile.png", 20)
+        report["forteDesktop"] = capture_town(browser, "forte-dei-marmi", "Forte dei Marmi", False, "03-forte-dei-marmi", 0, capture_top=True)
+        report["massarosaMobile"] = capture_town(browser, "massarosa", "Massarosa", True, "05-massarosa-mobile", 20, capture_top=False)
         browser.close()
     (OUT / "browser-checks.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({k: v["checks"] for k, v in report.items()}, ensure_ascii=False, indent=2))
