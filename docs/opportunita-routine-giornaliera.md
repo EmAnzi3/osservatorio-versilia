@@ -43,6 +43,23 @@ Ogni opportunità pubblicabile riceve una data `first_seen_at` al primo ingresso
 
 Le opportunità già presenti prima dell'introduzione del `first_seen_at` non vengono retroattivamente etichettate come nuove.
 
+## Notifica personale dei nuovi bandi
+
+Dopo che il nuovo snapshot è stato validato, committato su `main` e la pubblicazione Pages è stata avviata, il workflow confronta lo snapshot corrente con quello precedente.
+
+Se esistono **nuove identità pubblicabili**, viene creata automaticamente una GitHub Issue con titolo `Nuove opportunità Radar · GG/MM/AAAA` e assegnata al proprietario del repository. La Issue riporta, per ciascuna nuova opportunità:
+
+- titolo;
+- scadenza;
+- Comuni della Versilia ammissibili o condizionali;
+- modalità di accesso;
+- collegamento alla fonte ufficiale;
+- collegamento al Radar pubblico.
+
+Se non ci sono nuove identità non viene creata alcuna Issue. Ogni notifica contiene un fingerprint deterministico: un rerun dello stesso aggiornamento riconosce la Issue già esistente e non genera duplicati.
+
+L'assegnazione al proprietario rende la notifica visibile nelle **GitHub Notifications**; l'invio anche via email dipende dalle impostazioni personali delle notifiche GitHub dell'account.
+
 ## Persistenza e deploy
 
 Il workflow salva lo snapshot verificato in `data/opportunity-daily-public.json`. Il file deve avere `referenceDate` uguale alla data UTC del run; in caso contrario il workflow fallisce esplicitamente.
@@ -58,4 +75,4 @@ La v0.4.4 estende in particolare:
 - **PCM · Dipartimento per lo Sport**, includendo il portale bandi generale e gli eventi sportivi nazionali/internazionali;
 - **CINEA · LIFE**, con discovery sulle call 2026 e verifica topic-by-topic. HEATCOOLPLAN, PDA, ENERCOM ed EMPOWER sono qualificati per la pubblicazione condizionata; ENERPOV resta in discovery finché il ruolo comunale non è qualificato con sufficiente evidenza.
 
-L'hardening `0.4.4-h1` aggiunge il blind test esterno, la safety net Regione Toscana, la sentinella di freschezza dello snapshot e il collegamento esplicito fra snapshot giornaliero e build pubblica.
+L'hardening `0.4.4-h1` aggiunge il blind test esterno, la safety net Regione Toscana, la sentinella di freschezza dello snapshot, il collegamento esplicito fra snapshot giornaliero e build pubblica e la notifica GitHub Issue per le nuove identità pubblicabili.
