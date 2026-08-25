@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: opportunity-radar-daily
@@ -38,6 +39,7 @@ jobs:
       - name: Validate v0.4.4 contracts and blind-test hardening
         run: |
           python scripts/test_opportunity_regione_toscana_guard.py
+          python scripts/test_opportunity_issue_notification.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -138,3 +140,55 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref main
+
+      - name: Notify owner about new opportunities
+        if: steps.commit.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git show HEAD^:data/opportunity-daily-public.json > /tmp/opportunity-daily-previous.json 2>/dev/null; then
+            echo "Confronto con lo snapshot giornaliero precedente."
+          else
+            cp data/opportunity-release.json /tmp/opportunity-daily-previous.json
+            echo "Primo refresh: confronto con la baseline congelata."
+          fi
+
+          python scripts/opportunity_issue_notification.py \
+            --previous /tmp/opportunity-daily-previous.json \
+            --current data/opportunity-daily-public.json \
+            --json-out /tmp/radar-new-opportunities.json \
+            --body-out /tmp/radar-new-opportunities.md
+
+          count=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['count'])
+          PY
+          )
+          if [ "$count" -eq 0 ]; then
+            echo "Nessuna nuova identità: nessuna Issue da creare."
+            exit 0
+          fi
+
+          fingerprint=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['fingerprint'])
+          PY
+          )
+          marker="radar-new:${fingerprint}"
+          if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
+            echo "Notifica ${fingerprint} già presente: nessun duplicato creato."
+            exit 0
+          fi
+
+          title=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['issueTitle'])
+          PY
+          )
+          gh issue create \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$title" \
+            --body-file /tmp/radar-new-opportunities.md \
+            --assignee "$GITHUB_REPOSITORY_OWNER"
