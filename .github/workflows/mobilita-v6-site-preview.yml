@@ -58,9 +58,10 @@ jobs:
 
           01-confronto-desktop.png: confronto Mobilità completo, desktop.
           02-confronto-mobile.png: stesso confronto completo, viewport mobile.
-          03-forte-dei-marmi-pagina.png: parte iniziale della scheda comunale nella UI reale.
-          03-forte-dei-marmi-dettaglio.png: componente di approfondimento TPL aperto; ferrovia = 0 effettivo.
-          05-massarosa-mobile-dettaglio.png: lo stesso componente nella resa mobile.
+          03-confronto-dettaglio.png: dettaglio comparato con corse assolute, bus/ferrovia e punti GTFS.
+          04-forte-dei-marmi-pagina.png: parte iniziale della scheda comunale nella UI reale.
+          04-forte-dei-marmi-dettaglio.png: componente TPL aperto; ferrovia = 0 effettivo.
+          06-massarosa-mobile-dettaglio.png: lo stesso componente nella resa mobile.
 
           Il candidato Istat sulla popolazione insistente NON è materializzato: resta sospeso perché gli allegati pubblici 2021-2023 non espongono i sette Comuni.
           EOF
