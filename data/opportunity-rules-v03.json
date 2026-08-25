@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.1",
+  "schemaVersion": "0.3.2",
   "baseRulesFile": "opportunity-rules-v025.json",
   "sourceAliases": {
     "regione-toscana-fesr": "regione-toscana",
@@ -71,6 +71,28 @@
       "deadline_override": "2026-08-24",
       "deadline_evidence": "Scadenza presentazione domande 24 agosto 2026.",
       "evidence_url": "https://prefettura.interno.gov.it/it/prefetture/rieti/notizie/videosorveglianza-domande-entro-24-agosto-2026"
+    },
+    {
+      "id": "rt-celebrazioni-storiche-2026",
+      "source_id": "regione-toscana",
+      "title_pattern": ".*(Celebrazioni storiche 2026|Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze).*",
+      "force_eligibility": "conditional",
+      "applicant_eligibility_override": "conditional",
+      "beneficiary_evidence": "Possono presentare domanda di contributo gli Enti locali della Toscana e gli Enti del Terzo settore iscritti al RUNTS con sede legale e operativa in Toscana.",
+      "municipality_reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso.",
+      "applicant_type": "Ente locale della Toscana oppure Ente del Terzo settore RUNTS con sede legale e operativa in Toscana",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali e pubblico delle iniziative culturali, educative, artistiche, divulgative o commemorative",
+      "partnership_required": false,
+      "geographic_scope": "Toscana; iniziative realizzate integralmente nel territorio regionale",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable": true,
+      "decision_class": "conditional_project_theme",
+      "project_requirements": "Il progetto deve essere dedicato a una sola tra le tre ricorrenze previste dall'avviso (San Francesco d'Assisi, Carlo Collodi o alluvione di Firenze del 1966), essere realizzato integralmente in Toscana nel 2026 e rispettare le condizioni di cofinanziamento e ammissibilità previste.",
+      "deadline_override": "2026-09-18",
+      "deadline_evidence": "Scadenza presentazione domande 18 settembre 2026 ore 13:00.",
+      "evidence_url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze"
     }
   ]
 }
