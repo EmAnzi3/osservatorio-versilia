@@ -23,6 +23,7 @@ def capture_compare(browser, mobile: bool = False) -> dict:
     page = context.new_page()
     page.goto(f"{BASE}confronta/mobilita/?indicatore={METRIC}", wait_until="networkidle")
     settle(page, ".topic-dashboard")
+    settle(page, ".tpl-compare-detail")
     body = page.locator("body").inner_text()
     checks = {
         "theme": "Mobilità e infrastrutture" in body,
@@ -30,16 +31,35 @@ def capture_compare(browser, mobile: bool = False) -> dict:
         "metric": "Offerta TPL programmata" in body,
         "source": "Regione Toscana" in body,
         "coverage": "7/7" in body,
+        "weightedReference": "Media ponderata dei 7 Comuni" in body,
     }
     if not all(checks.values()):
         raise RuntimeError(f"Confronto non coerente: {checks}")
     name = "02-confronto-mobile.png" if mobile else "01-confronto-desktop.png"
     page.screenshot(path=str(OUT / name), full_page=True)
+
+    compare_detail = None
+    if not mobile:
+        section = page.locator(".tpl-compare-detail")
+        section.locator("summary").click()
+        page.wait_for_timeout(250)
+        text = section.inner_text()
+        detail_checks = {
+            "sevenTowns": all(town in text for town in ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]),
+            "forteRailZero": "Forte dei Marmi" in text and "110" in text and "0" in text,
+            "zeroRule": "Lo 0 compare solo" in text,
+        }
+        if not all(detail_checks.values()):
+            raise RuntimeError(f"Dettaglio confronto non coerente: {detail_checks}\n{text}")
+        section.screenshot(path=str(OUT / "03-confronto-dettaglio.png"))
+        compare_detail = {"checks": detail_checks, "text": text}
+
     result = {
         "url": page.url,
         "title": page.title(),
         "checks": checks,
         "definition": page.locator("#compare-definition").inner_text() if page.locator("#compare-definition").count() else "",
+        "detail": compare_detail,
     }
     context.close()
     return result
@@ -89,8 +109,8 @@ def main() -> None:
         browser = p.chromium.launch()
         report["compareDesktop"] = capture_compare(browser, mobile=False)
         report["compareMobile"] = capture_compare(browser, mobile=True)
-        report["forteDesktop"] = capture_town(browser, "forte-dei-marmi", "Forte dei Marmi", False, "03-forte-dei-marmi", 0, capture_top=True)
-        report["massarosaMobile"] = capture_town(browser, "massarosa", "Massarosa", True, "05-massarosa-mobile", 20, capture_top=False)
+        report["forteDesktop"] = capture_town(browser, "forte-dei-marmi", "Forte dei Marmi", False, "04-forte-dei-marmi", 0, capture_top=True)
+        report["massarosaMobile"] = capture_town(browser, "massarosa", "Massarosa", True, "06-massarosa-mobile", 20, capture_top=False)
         browser.close()
     (OUT / "browser-checks.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({k: v["checks"] for k, v in report.items()}, ensure_ascii=False, indent=2))
