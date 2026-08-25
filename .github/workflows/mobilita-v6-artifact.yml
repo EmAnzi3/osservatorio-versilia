@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/audit_mobilita_v6.py'
+      - 'scripts/dump_mobilita_current.py'
       - '.github/workflows/mobilita-v6-artifact.yml'
   workflow_dispatch:
 
@@ -33,6 +34,7 @@ jobs:
       - name: Generate mobility audit artifact
         run: |
           python scripts/audit_mobilita_v6.py --output artifacts/mobilita-v6-review
+          python scripts/dump_mobilita_current.py
 
       - name: Show audit summary
         if: always()
