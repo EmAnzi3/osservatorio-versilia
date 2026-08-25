@@ -67,6 +67,8 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     assert len(collected) == 1, [(x.get("title"), x.get("url"), x.get("eligibility")) for x in collected]
     assert collected[0].get("url") == CELEBRAZIONI_URL
     assert collected[0].get("eligibility") == "eligible"
+    assert collected[0].get("source_id") == "regione-toscana"
+    assert collected[0].get("source_endpoint_id") == "regione-toscana-tutti"
 
     result = radar.run_v04(
         date(2026, 8, 25),
@@ -80,21 +82,27 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     ]
     diagnostics = {
         "source": next((x for x in result.get("sources") or [] if x.get("sourceId") == "regione-toscana-tutti"), None),
-        "review": [x for x in result.get("reviewQueue") or [] if x.get("source_id") == "regione-toscana-tutti"],
+        "review": [
+            x for x in result.get("reviewQueue") or []
+            if x.get("source_id") == "regione-toscana" or x.get("source_endpoint_id") == "regione-toscana-tutti"
+        ],
         "qualityHold": [
             {
                 "title": x.get("title"),
+                "source_id": x.get("source_id"),
+                "source_endpoint_id": x.get("source_endpoint_id"),
                 "rule_id": x.get("rule_id"),
                 "eligibility": x.get("eligibility"),
                 "quality_gate": x.get("quality_gate"),
             }
             for x in result.get("qualityHold") or []
-            if x.get("source_id") == "regione-toscana-tutti"
+            if x.get("source_id") == "regione-toscana" or x.get("source_endpoint_id") == "regione-toscana-tutti"
         ],
     }
     assert len(matches) == 1, "Il fixture bandi-tutti non raggiunge l'output: " + repr(diagnostics)
     item = matches[0]
-    assert item.get("source_id") == "regione-toscana-tutti"
+    assert item.get("source_id") == "regione-toscana"
+    assert item.get("source_endpoint_id") == "regione-toscana-tutti"
     assert item.get("url") == CELEBRAZIONI_URL
     assert item.get("eligibility") == "conditional"
     assert item.get("applicant_eligibility") == "conditional"
