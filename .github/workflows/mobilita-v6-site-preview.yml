@@ -56,10 +56,11 @@ jobs:
           Le PNG sono catture del renderer reale dell'Osservatorio Versilia dopo l'iniezione del solo candidato TPL.
           Non sono mockup e non sono una pagina HTML autonoma.
 
-          01-confronto-desktop.png: confronto Mobilità, desktop.
-          02-confronto-mobile.png: stesso confronto, viewport mobile.
-          03-forte-dei-marmi-dettaglio.png: scheda comunale con dettaglio TPL aperto; ferrovia = 0 effettivo.
-          04-massarosa-dettaglio-mobile.png: dettaglio comunale su mobile.
+          01-confronto-desktop.png: confronto Mobilità completo, desktop.
+          02-confronto-mobile.png: stesso confronto completo, viewport mobile.
+          03-forte-dei-marmi-pagina.png: parte iniziale della scheda comunale nella UI reale.
+          03-forte-dei-marmi-dettaglio.png: componente di approfondimento TPL aperto; ferrovia = 0 effettivo.
+          05-massarosa-mobile-dettaglio.png: lo stesso componente nella resa mobile.
 
           Il candidato Istat sulla popolazione insistente NON è materializzato: resta sospeso perché gli allegati pubblici 2021-2023 non espongono i sette Comuni.
           EOF
