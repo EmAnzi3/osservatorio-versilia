@@ -29,7 +29,7 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         source_id = str(item.get("id") or "")
         payloads[source_id] = "[]" if item.get("type") == "padigitale_json" else "<html><body></body></html>"
 
-    payloads["regione-toscana-tutti"] = """
+    listing = """
     <html><body>
       <h2><a href="/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze">
         Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze
@@ -37,22 +37,36 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
       <p>Pubblicato il 19.08.2026 Stato: Aperto Scadenza presentazione domande 18.09.2026 13:00</p>
     </body></html>
     """
-    detail_payloads = {
-        CELEBRAZIONI_URL: """
-        <html><body>
-          <h1>Celebrazioni storiche 2026</h1>
-          <h2>Destinatari / beneficiari</h2>
-          <p>Enti locali della Toscana e soggetti iscritti al Registro unico nazionale del Terzo settore.</p>
-          <h2>Come partecipare</h2>
-          <p>Il progetto deve essere realizzato in Toscana nel 2026 e dedicato a una delle ricorrenze previste.</p>
-        </body></html>
-        """
-    }
+    detail = """
+    <html><body>
+      <h1>Celebrazioni storiche 2026</h1>
+      <h2>Destinatari / beneficiari</h2>
+      <p>Enti locali della Toscana e soggetti iscritti al Registro unico nazionale del Terzo settore.</p>
+      <h2>Come partecipare</h2>
+      <p>Il progetto deve essere realizzato in Toscana nel 2026 e dedicato a una delle ricorrenze previste.</p>
+    </body></html>
+    """
+    payloads["regione-toscana-tutti"] = listing
+    detail_payloads = {CELEBRAZIONI_URL: detail}
     discovery_payloads = {
         str(url): "<html><body></body></html>"
         for item in config.get("discoverySources") or []
         for url in item.get("urls") or []
     }
+
+    # Prima isola il collector HTML: il caso deve emergere dalla listing e dal dettaglio
+    # ufficiale senza dipendere dalle regole documentali successive.
+    source_runtime = {**source, "_towns": list(config.get("municipalities") or [])}
+    quality = radar.radar.v025.v022.v02.quality
+    collected = quality.collect_html(
+        source_runtime,
+        date(2026, 8, 25),
+        listing,
+        loader=lambda url: detail_payloads.get(url, ""),
+    )
+    assert len(collected) == 1, [(x.get("title"), x.get("url"), x.get("eligibility")) for x in collected]
+    assert collected[0].get("url") == CELEBRAZIONI_URL
+    assert collected[0].get("eligibility") == "eligible"
 
     result = radar.run_v04(
         date(2026, 8, 25),
@@ -64,10 +78,21 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         item for item in result.get("opportunities") or []
         if item.get("rule_id") == "rt-celebrazioni-storiche-2026"
     ]
-    assert len(matches) == 1, (
-        "Il fixture bandi-tutti deve arrivare all'output operativo con la regola Celebrazioni: "
-        + repr([(x.get("title"), x.get("source_id"), x.get("rule_id")) for x in result.get("opportunities") or []])
-    )
+    diagnostics = {
+        "source": next((x for x in result.get("sources") or [] if x.get("sourceId") == "regione-toscana-tutti"), None),
+        "review": [x for x in result.get("reviewQueue") or [] if x.get("source_id") == "regione-toscana-tutti"],
+        "qualityHold": [
+            {
+                "title": x.get("title"),
+                "rule_id": x.get("rule_id"),
+                "eligibility": x.get("eligibility"),
+                "quality_gate": x.get("quality_gate"),
+            }
+            for x in result.get("qualityHold") or []
+            if x.get("source_id") == "regione-toscana-tutti"
+        ],
+    }
+    assert len(matches) == 1, "Il fixture bandi-tutti non raggiunge l'output: " + repr(diagnostics)
     item = matches[0]
     assert item.get("source_id") == "regione-toscana-tutti"
     assert item.get("url") == CELEBRAZIONI_URL
