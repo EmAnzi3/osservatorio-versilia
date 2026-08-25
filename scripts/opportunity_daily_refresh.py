@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Esegue il refresh giornaliero del Radar e prepara lo snapshot pubblicabile.
 
-La scansione e' live, ma non salta i gate: continuita', backtest, copertura,
+La scansione è live, ma non salta i gate: continuità, backtest, copertura,
 verifiche dirette e completezza regionale devono essere verdi. Le fonti di puro
 discovery non possono pubblicare da sole; eventuali candidati restano nella
 coda interna del report.
@@ -92,7 +92,7 @@ def _annotate_first_seen(
                 item["first_seen_at"] = old_first
                 _, item["is_new"] = radar._new_state(old_first, today)
             else:
-                # Le opportunita' della baseline precedente all'introduzione del
+                # Le opportunità della baseline precedente all'introduzione del
                 # first-seen non devono diventare artificialmente "nuove".
                 item.pop("first_seen_at", None)
                 item["is_new"] = False
@@ -126,12 +126,12 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
     regional = result.get("regionalCompleteness") or {}
     new_titles = [str(item.get("title") or "") for item in new_items]
     lines = [
-        "# Radar Opportunita' · refresh giornaliero",
+        "# Radar Opportunità · refresh giornaliero",
         "",
         f"Data: **{result.get('referenceDate')}**",
         "",
-        f"Opportunita' correnti: **{counts.get('public', len(result.get('opportunities') or []))}** · evidenziate come nuove: **{counts.get('new', 0)}**.",
-        f"Nuove identita' rilevate in questo run: **{len(new_items)}** · candidati discovery non pubblicati automaticamente: **{len(queue)}**.",
+        f"Opportunità correnti: **{counts.get('public', len(result.get('opportunities') or []))}** · evidenziate come nuove: **{counts.get('new', 0)}**.",
+        f"Nuove identità rilevate in questo run: **{len(new_items)}** · candidati discovery non pubblicati automaticamente: **{len(queue)}**.",
         (
             "Safety net Regione Toscana: "
             f"**{str(regional.get('status', 'unknown')).upper()}** · "
@@ -140,13 +140,13 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
             f"{len(regional.get('overdue') or [])} oltre la finestra di revisione."
         ),
         "",
-        "## Nuove opportunita' pubblicabili",
+        "## Nuove opportunità pubblicabili",
         "",
     ]
     if new_titles:
         lines.extend(f"- {title}" for title in new_titles)
     else:
-        lines.append("Nessuna nuova identita' pubblicabile oggi.")
+        lines.append("Nessuna nuova identità pubblicabile oggi.")
 
     unresolved = regional.get("unresolved") or []
     lines.extend(["", "## Regione Toscana · candidati da qualificare", ""])
@@ -163,7 +163,7 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
         "",
         "## Gate",
         "",
-        f"- continuita': **{'PASS' if not result.get('continuityHold') else 'FAIL'}**",
+        f"- continuità: **{'PASS' if not result.get('continuityHold') else 'FAIL'}**",
         f"- backtest: **{'PASS' if (result.get('backtest') or {}).get('passed') else 'FAIL'}**",
         f"- copertura: **{str((result.get('coverageAudit') or {}).get('status', 'unknown')).upper()}**",
         f"- completezza Regione Toscana: **{str(regional.get('status', 'unknown')).upper()}**",
@@ -198,7 +198,7 @@ def main() -> int:
 
     print(
         f"Radar giornaliero OK: {len(result.get('opportunities') or [])} correnti · "
-        f"{len(new_items)} nuove identita' · {(result.get('counts') or {}).get('new', 0)} con badge Nuova · "
+        f"{len(new_items)} nuove identità · {(result.get('counts') or {}).get('new', 0)} con badge Nuova · "
         f"Regione Toscana {str((result.get('regionalCompleteness') or {}).get('status', 'unknown')).upper()}."
     )
     for item in new_items:
