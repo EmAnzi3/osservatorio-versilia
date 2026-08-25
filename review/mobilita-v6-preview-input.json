@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "serviceDate": "2026-08-26",
+  "generatedAt": "2026-08-25T08:43:07+00:00",
+  "rules": {
+    "zero": "Solo con fonte/data/geometria valide e conteggio realmente nullo.",
+    "nd": "Fonte, data o attribuzione non disponibile/non validabile.",
+    "coverageStandard": "7/7; 6/7 ammesso solo con un unico dato ufficiale mancante, senza stima."
+  },
+  "residents": {
+    "Camaiore": 31763,
+    "Forte dei Marmi": 6550,
+    "Massarosa": 21782,
+    "Pietrasanta": 22678,
+    "Seravezza": 12284,
+    "Stazzema": 2783,
+    "Viareggio": 60680
+  },
+  "gtfs": {
+    "combined": {
+      "Camaiore": {"status":"ok","trips":330,"tripsPer1000":10.39,"busTrips":298,"railTrips":32,"activeAccessPoints":150,"routes":19,"first":"05:50","last":"29:51","serviceSpanHours":24.02,"residentPopulation":31763,"zeroIsCertified":false},
+      "Forte dei Marmi": {"status":"ok","trips":110,"tripsPer1000":16.79,"busTrips":110,"railTrips":0,"activeAccessPoints":31,"routes":6,"first":"06:28","last":"29:24","serviceSpanHours":22.93,"residentPopulation":6550,"zeroIsCertified":false},
+      "Massarosa": {"status":"ok","trips":106,"tripsPer1000":4.87,"busTrips":86,"railTrips":20,"activeAccessPoints":130,"routes":6,"first":"05:52","last":"21:34","serviceSpanHours":15.7,"residentPopulation":21782,"zeroIsCertified":false},
+      "Pietrasanta": {"status":"ok","trips":236,"tripsPer1000":10.41,"busTrips":182,"railTrips":54,"activeAccessPoints":107,"routes":12,"first":"05:23","last":"29:41","serviceSpanHours":24.3,"residentPopulation":22678,"zeroIsCertified":false},
+      "Seravezza": {"status":"ok","trips":119,"tripsPer1000":9.69,"busTrips":65,"railTrips":54,"activeAccessPoints":102,"routes":9,"first":"05:19","last":"23:12","serviceSpanHours":17.88,"residentPopulation":12284,"zeroIsCertified":false},
+      "Stazzema": {"status":"ok","trips":26,"tripsPer1000":9.34,"busTrips":26,"railTrips":0,"activeAccessPoints":80,"routes":1,"first":"06:10","last":"20:07","serviceSpanHours":13.95,"residentPopulation":2783,"zeroIsCertified":false},
+      "Viareggio": {"status":"ok","trips":659,"tripsPer1000":10.86,"busTrips":549,"railTrips":110,"activeAccessPoints":253,"routes":21,"first":"05:30","last":"30:04","serviceSpanHours":24.57,"residentPopulation":60680,"zeroIsCertified":false}
+    },
+    "feeds": [
+      {"mode":"bus","label":"Autolinee Toscane","coverage":{"start":"2026-08-25","end":"2026-09-14","dateCovered":true,"activeServiceIds":468},"stopsScanned":28979,"activeTrips":21859},
+      {"mode":"rail","label":"Trenitalia","coverage":{"start":"2026-01-15","end":"2026-12-12","dateCovered":true,"activeServiceIds":121},"stopsScanned":313,"activeTrips":774}
+    ]
+  },
+  "sources": {
+    "Istat confini 2026": {"url":"https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip","sha256":"b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6","bytes":10450609,"contentType":"application/zip","lastModified":"Fri, 06 Mar 2026 09:47:09 GMT"},
+    "GTFS Autolinee Toscane": {"url":"https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs","sha256":"799ece1cdfc517044fcd4cf6ff9366effceeab9fa15c8ee5cf9fd7f20b5ed3de","bytes":136536110,"contentType":"application/zip","lastModified":""},
+    "GTFS Trenitalia": {"url":"https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs","sha256":"a262c5bdfccd98a5c7e7ae08eea8eecb3189222f34c1015f5d4608faf3efc152","bytes":6127610,"contentType":"application/octet-stream","lastModified":"Thu, 15 Jan 2026 20:00:20 GMT"}
+  },
+  "istatPopulationInsistence": {
+    "publicAttachmentCoverage2023": 0,
+    "status": "suspended",
+    "reason": "Gli allegati statistici Istat 2021-2023 non espongono i 7 Comuni; il dettaglio comunale è descritto nella base microdati, il cui accesso richiede procedure dedicate."
+  }
+}
