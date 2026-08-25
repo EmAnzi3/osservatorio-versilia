@@ -98,6 +98,8 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
         return False
     if candidate_date < baseline_date:
         return False
+    if candidate.get("releaseVersion") != "0.4.4":
+        return False
     if candidate.get("continuityHold") or candidate.get("coverageHold"):
         return False
     backtest = candidate.get("backtest") or {}
@@ -105,6 +107,9 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
         return False
     audit = candidate.get("coverageAudit") or {}
     if audit and audit.get("status") != "pass":
+        return False
+    regional = candidate.get("regionalCompleteness") or {}
+    if regional and regional.get("status") not in {"pass", "degraded"}:
         return False
     opportunities = candidate.get("opportunities")
     if not isinstance(opportunities, list) or not opportunities:

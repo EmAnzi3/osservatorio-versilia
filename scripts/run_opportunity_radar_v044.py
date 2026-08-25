@@ -4,6 +4,7 @@
 Estende la v0.4.3 mantenendo il principio coverage-first:
 - amplia il discovery del Dipartimento per lo Sport oltre Sport e Periferie;
 - rende LIFE/CINEA un presidio topic-by-topic;
+- completa Regione Toscana con il secondo endpoint primario bandi-tutti;
 - promuove solo opportunità con ruolo comunale documentato;
 - versiona la prima rilevazione per poter evidenziare le novità nel pubblico.
 """
@@ -31,9 +32,33 @@ _PREV_RENDER = core.render_markdown
 _PREV_EXIT = core._exit_code
 
 
+def _primary_source_aliases() -> dict[str, str]:
+    extra = core._load(DISCOVERY_V044)
+    return {
+        str(source.get("id") or ""): str(source.get("ruleSourceId") or "")
+        for source in extra.get("primarySources") or []
+        if source.get("id") and source.get("ruleSourceId")
+    }
+
+
 def compose_runtime_payloads() -> tuple[dict[str, Any], dict[str, Any]]:
     config, coverage = _PREV_COMPOSE()
     extra = core._load(DISCOVERY_V044)
+
+    primary_ids = {
+        str(source.get("id") or "")
+        for source in config.get("sources") or []
+        if source.get("id")
+    }
+    for source in extra.get("primarySources") or []:
+        source_id = str(source.get("id") or "")
+        if not source_id:
+            raise RuntimeError("Fonte primaria v0.4.4 senza id.")
+        if source_id in primary_ids:
+            raise RuntimeError(f"Fonte primaria v0.4.4 duplicata: {source_id}")
+        config.setdefault("sources", []).append(dict(source))
+        primary_ids.add(source_id)
+
     by_id = {
         str(source.get("id") or ""): source
         for source in config.get("discoverySources") or []
@@ -237,6 +262,31 @@ def _ensure_first_seen(result: dict[str, Any], today: date) -> None:
     result.setdefault("counts", {})["new"] = sum(bool(x.get("is_new")) for x in result.get("opportunities") or [])
 
 
+def _apply_primary_source_visual_aliases(result: dict[str, Any], aliases: dict[str, str]) -> None:
+    if not aliases:
+        return
+    presentation = core._load(core.radar.DEFAULT_PRESENTATION).get("sources") or {}
+    for item in result.get("opportunities") or []:
+        source_id = str(item.get("source_id") or "")
+        meta = presentation.get(aliases.get(source_id, "")) or {}
+        if not meta:
+            continue
+        target = item.setdefault("presentation", {})
+        target["source_favicon"] = target.get("source_favicon") or meta.get("favicon")
+        target["source_label"] = target.get("source_label") or meta.get("label")
+        target["source_mark"] = target.get("source_mark") or meta.get("mark")
+        target["source_class"] = target.get("source_class") or meta.get("class")
+    for item in result.get("archive") or []:
+        source_id = str(item.get("source_id") or "")
+        meta = presentation.get(aliases.get(source_id, "")) or {}
+        if not meta:
+            continue
+        item["source_favicon"] = item.get("source_favicon") or meta.get("favicon")
+        item["source_label"] = item.get("source_label") or meta.get("label")
+        item["source_mark"] = item.get("source_mark") or meta.get("mark")
+        item["source_class"] = item.get("source_class") or meta.get("class")
+
+
 def run_v04(
     today: date,
     *,
@@ -245,13 +295,26 @@ def run_v04(
     detail_payloads: dict[str, str] | None = None,
     discovery_payloads: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    result = _PREV_RUN(
-        today,
-        previous_path=previous_path,
-        payloads=payloads,
-        detail_payloads=detail_payloads,
-        discovery_payloads=discovery_payloads,
-    )
+    aliases = _primary_source_aliases()
+    original_load_rules = core.radar.load_rules
+
+    def load_rules_with_primary_aliases(path=core.radar.DEFAULT_RULES):
+        rules, policy, source_aliases = original_load_rules(path)
+        return rules, policy, {**source_aliases, **aliases}
+
+    core.radar.load_rules = load_rules_with_primary_aliases
+    try:
+        result = _PREV_RUN(
+            today,
+            previous_path=previous_path,
+            payloads=payloads,
+            detail_payloads=detail_payloads,
+            discovery_payloads=discovery_payloads,
+        )
+    finally:
+        core.radar.load_rules = original_load_rules
+
+    _apply_primary_source_visual_aliases(result, aliases)
     _ensure_first_seen(result, today)
     result["engineVersion"] = "0.4.4"
     result["coverageVersion"] = "0.4.4"

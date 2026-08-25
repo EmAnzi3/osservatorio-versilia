@@ -229,9 +229,8 @@ def select_opportunity_public_payload() -> Path:
 
 
 if __name__ == "__main__":
-    # Materializzazione prima del builder base: la shell e i contratti nascono
-    # direttamente nella configurazione pubblica finale.
-    runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_release_snapshot.py"), run_name="__main__")
+    # La build non materializza né riscrive data/opportunity-release.json: il baseline
+    # resta canonico e immutabile; il daily verificato viene selezionato solo per dist.
     runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_public_shell.py"), run_name="__main__")
     runpy.run_path(str(ROOT / "scripts" / "materialize_percorsi_touch_release.py"), run_name="__main__")
 

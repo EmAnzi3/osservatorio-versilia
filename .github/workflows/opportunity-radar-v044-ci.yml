@@ -56,16 +56,47 @@ jobs:
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
-      - name: Materialize v0.4.4 release
+      - name: Validate frozen v0.4.4 baseline
         run: |
-          python scripts/materialize_opportunity_release_snapshot.py
           python - <<'PY'
           import json
           p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
           assert p['releaseVersion'] == '0.4.4'
           assert len(p['opportunities']) == 30, len(p['opportunities'])
           assert (p.get('counts') or {}).get('new') == 5
-          print('Release v0.4.4: 30 opportunità · 5 nuove')
+          print('Baseline v0.4.4 verificato: 30 opportunità · 5 nuove')
+          PY
+
+      - name: Materialize current public snapshot
+        run: |
+          python scripts/materialize_opportunity_release_snapshot.py
+          python - <<'PY'
+          import json
+          from datetime import date
+
+          p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
+          assert p['releaseVersion'] == '0.4.4'
+          reference = date.fromisoformat(str(p.get('referenceDate') or ''))
+          assert reference >= date(2026, 8, 24), reference
+          opportunities = p.get('opportunities')
+          assert isinstance(opportunities, list) and opportunities
+          counts = p.get('counts') or {}
+          assert counts.get('new') == sum(bool(x.get('is_new')) for x in opportunities)
+          assert not p.get('continuityHold')
+          assert not p.get('coverageHold')
+          backtest = p.get('backtest') or {}
+          if backtest:
+              assert backtest.get('passed') is True, backtest
+          audit = p.get('coverageAudit') or {}
+          if audit:
+              assert audit.get('status') == 'pass', audit
+          regional = p.get('regionalCompleteness') or {}
+          if regional:
+              assert regional.get('status') in {'pass', 'degraded'}, regional
+          print(
+              f"Snapshot pubblico verificato: {len(opportunities)} opportunità · "
+              f"{counts.get('new', 0)} nuove · riferimento {p.get('referenceDate')}"
+          )
           PY
 
       - name: Build public site
