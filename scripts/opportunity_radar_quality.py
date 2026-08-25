@@ -137,13 +137,6 @@ def collect_html(
         item = base.opportunity(
             source, title, url, body, today, classify, opens, deadline, published, total, maximum
         )
-        # Un endpoint aggiuntivo può appartenere alla stessa fonte logica già
-        # conosciuta dal resolver. Manteniamo la provenienza tecnica separata,
-        # ma classifichiamo la scheda con l'identità canonica della fonte.
-        canonical_source_id = str(source.get("ruleSourceId") or "").strip()
-        if canonical_source_id:
-            item["source_endpoint_id"] = source["id"]
-            item["source_id"] = canonical_source_id
         item["eligibility"] = status
         item["municipalities"] = towns
         item["eligibility_reason"] = reason
