@@ -76,7 +76,7 @@
     {
       "id": "rt-celebrazioni-2026",
       "source_id": "regione-toscana",
-      "title_pattern": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze",
+      "title_pattern": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione",
       "force_eligibility": "conditional",
       "applicant_eligibility_override": "conditional",
       "beneficiary_evidence": "Possono presentare domanda di contributo gli Enti locali della Toscana e gli Enti del Terzo settore iscritti al RUNTS con sede legale e operativa in Toscana.",
