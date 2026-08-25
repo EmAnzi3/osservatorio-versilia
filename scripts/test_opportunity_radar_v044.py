@@ -11,6 +11,7 @@ CELEBRAZIONI_URL = (
     "https://www.regione.toscana.it/it/-/"
     "celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze"
 )
+CELEBRAZIONI_TITLE = "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze"
 
 
 def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
@@ -29,10 +30,10 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         source_id = str(item.get("id") or "")
         payloads[source_id] = "[]" if item.get("type") == "padigitale_json" else "<html><body></body></html>"
 
-    listing = """
+    listing = f"""
     <html><body>
       <h2><a href="/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze">
-        Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze
+        {CELEBRAZIONI_TITLE}
       </a></h2>
       <p>Pubblicato il 19.08.2026 Stato: Aperto Scadenza presentazione domande 18.09.2026 13:00</p>
     </body></html>
@@ -70,6 +71,15 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     assert collected[0].get("source_id") == "regione-toscana"
     assert collected[0].get("source_endpoint_id") == "regione-toscana-tutti"
 
+    loaded_rules, _, loaded_aliases = radar.radar.load_rules()
+    direct_rule = radar.radar.v021.matching_rule(
+        {"source_id": "regione-toscana", "title": CELEBRAZIONI_TITLE},
+        loaded_rules,
+    )
+    assert loaded_aliases.get("regione-toscana-tutti") == "regione-toscana", loaded_aliases
+    assert direct_rule is not None, "Nessuna regola diretta per il titolo reale Celebrazioni"
+    assert direct_rule.get("id") == "rt-celebrazioni-storiche-2026", direct_rule
+
     result = radar.run_v04(
         date(2026, 8, 25),
         payloads=payloads,
@@ -81,6 +91,9 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         if item.get("rule_id") == "rt-celebrazioni-storiche-2026"
     ]
     diagnostics = {
+        "directRule": direct_rule.get("id"),
+        "ruleStats": result.get("ruleStats"),
+        "v022Stats": result.get("v022Stats"),
         "source": next((x for x in result.get("sources") or [] if x.get("sourceId") == "regione-toscana-tutti"), None),
         "review": [
             x for x in result.get("reviewQueue") or []
