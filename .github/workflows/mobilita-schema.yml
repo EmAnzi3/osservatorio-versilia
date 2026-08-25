@@ -1,0 +1,25 @@
+name: Mobilità - schema corrente
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/dump_mobilita_current.py'
+      - '.github/workflows/mobilita-schema.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump current Mobility data model
+        run: python scripts/dump_mobilita_current.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mobilita-current-schema-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/mobilita-v6-review/current-mobilita.json
+          retention-days: 2
