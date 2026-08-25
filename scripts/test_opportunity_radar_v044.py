@@ -55,8 +55,8 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         for url in item.get("urls") or []
     }
 
-    # Prima isola il collector HTML: il caso deve emergere dalla listing e dal dettaglio
-    # ufficiale senza dipendere dalle regole documentali successive.
+    # Il collector conserva l'identità dell'endpoint: serve al quality gate per
+    # associare freschezza e stato runtime alla sorgente che ha davvero visto la card.
     source_runtime = {**source, "_towns": list(config.get("municipalities") or [])}
     quality = radar.radar.v025.v022.v02.quality
     collected = quality.collect_html(
@@ -68,8 +68,7 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     assert len(collected) == 1, [(x.get("title"), x.get("url"), x.get("eligibility")) for x in collected]
     assert collected[0].get("url") == CELEBRAZIONI_URL
     assert collected[0].get("eligibility") == "eligible"
-    assert collected[0].get("source_id") == "regione-toscana"
-    assert collected[0].get("source_endpoint_id") == "regione-toscana-tutti"
+    assert collected[0].get("source_id") == "regione-toscana-tutti"
 
     loaded_rules, _, loaded_aliases = radar.radar.load_rules()
     direct_rule = radar.radar.v021.matching_rule(
@@ -78,7 +77,9 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     )
     assert loaded_aliases.get("regione-toscana-tutti") == "regione-toscana", loaded_aliases
     assert direct_rule is not None, "Nessuna regola diretta per il titolo reale Celebrazioni"
-    assert direct_rule.get("id") == "rt-celebrazioni-storiche-2026", direct_rule
+    assert direct_rule.get("id") == "rt-celebrazioni-2026", direct_rule
+    assert direct_rule.get("requires_versilia_nexus") is False, direct_rule
+    assert direct_rule.get("actionable") is True, direct_rule
 
     result = radar.run_v04(
         date(2026, 8, 25),
@@ -88,7 +89,7 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
     )
     matches = [
         item for item in result.get("opportunities") or []
-        if item.get("rule_id") == "rt-celebrazioni-storiche-2026"
+        if item.get("rule_id") == "rt-celebrazioni-2026"
     ]
     diagnostics = {
         "directRule": direct_rule.get("id"),
@@ -97,25 +98,23 @@ def _test_regione_toscana_bandi_tutti(config: dict, coverage: dict) -> None:
         "source": next((x for x in result.get("sources") or [] if x.get("sourceId") == "regione-toscana-tutti"), None),
         "review": [
             x for x in result.get("reviewQueue") or []
-            if x.get("source_id") == "regione-toscana" or x.get("source_endpoint_id") == "regione-toscana-tutti"
+            if x.get("source_id") == "regione-toscana-tutti"
         ],
         "qualityHold": [
             {
                 "title": x.get("title"),
                 "source_id": x.get("source_id"),
-                "source_endpoint_id": x.get("source_endpoint_id"),
                 "rule_id": x.get("rule_id"),
                 "eligibility": x.get("eligibility"),
                 "quality_gate": x.get("quality_gate"),
             }
             for x in result.get("qualityHold") or []
-            if x.get("source_id") == "regione-toscana" or x.get("source_endpoint_id") == "regione-toscana-tutti"
+            if x.get("source_id") == "regione-toscana-tutti"
         ],
     }
     assert len(matches) == 1, "Il fixture bandi-tutti non raggiunge l'output: " + repr(diagnostics)
     item = matches[0]
-    assert item.get("source_id") == "regione-toscana"
-    assert item.get("source_endpoint_id") == "regione-toscana-tutti"
+    assert item.get("source_id") == "regione-toscana-tutti"
     assert item.get("url") == CELEBRAZIONI_URL
     assert item.get("eligibility") == "conditional"
     assert item.get("applicant_eligibility") == "conditional"
