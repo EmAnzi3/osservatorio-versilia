@@ -1,0 +1,72 @@
+name: Mobilità v6 - site preview
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'review/mobilita-v6-preview-input.json'
+      - 'scripts/build_mobilita_v6_site_preview.py'
+      - 'scripts/capture_mobilita_v6_preview.py'
+      - '.github/workflows/mobilita-v6-site-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build site-coherent Mobility preview
+        run: python scripts/build_mobilita_v6_site_preview.py
+
+      - name: Install browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Start local site
+        run: |
+          python -m http.server 4173 --bind 127.0.0.1 > /tmp/mobilita-preview-http.log 2>&1 &
+          echo $! > /tmp/mobilita-preview-http.pid
+          sleep 2
+
+      - name: Capture and validate real site pages
+        run: python scripts/capture_mobilita_v6_preview.py
+
+      - name: Assemble review package
+        run: |
+          mkdir -p artifacts/mobilita-v6-site-review/data
+          cp review/mobilita-v6-preview-manifest.json artifacts/mobilita-v6-site-review/
+          cp review/mobilita-v6-preview-input.json artifacts/mobilita-v6-site-review/data/
+          cp data/site-data.json artifacts/mobilita-v6-site-review/data/site-data-preview.json
+          cp assets/mobilita-v6-preview.js artifacts/mobilita-v6-site-review/data/
+          cat > artifacts/mobilita-v6-site-review/LEGGIMI.txt <<'EOF'
+          ARTIFACT DI COLLAUDO — LOTTO MOBILITÀ V6
+
+          Le PNG sono catture del renderer reale dell'Osservatorio Versilia dopo l'iniezione del solo candidato TPL.
+          Non sono mockup e non sono una pagina HTML autonoma.
+
+          01-confronto-desktop.png: confronto Mobilità, desktop.
+          02-confronto-mobile.png: stesso confronto, viewport mobile.
+          03-forte-dei-marmi-dettaglio.png: scheda comunale con dettaglio TPL aperto; ferrovia = 0 effettivo.
+          04-massarosa-dettaglio-mobile.png: dettaglio comunale su mobile.
+
+          Il candidato Istat sulla popolazione insistente NON è materializzato: resta sospeso perché gli allegati pubblici 2021-2023 non espongono i sette Comuni.
+          EOF
+
+      - name: Upload site review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobilita-v6-site-review-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/mobilita-v6-site-review/
+          retention-days: 14
