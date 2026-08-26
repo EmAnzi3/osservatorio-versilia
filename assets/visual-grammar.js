@@ -552,7 +552,7 @@
     const metric = data.metrics?.[metricKey];
     const row = townRow(metric, townName);
     if (!metric || !row) return;
-    if (metric.meta?.compositeType === 'distribution') return;
+    if (['distribution','agricultureProfile'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
     const overlineText = delta.overline || 'Rispetto alla media Versilia';

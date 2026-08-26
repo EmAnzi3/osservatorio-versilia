@@ -253,6 +253,12 @@
       const values = metric.rows.map(row => row.parts?.[index]?.value).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
       return { value:values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, unit:part.unit || metric.meta.unit, label:`Media comuni Versilia · ${part.label || metric.meta.label}`, note:`Media semplice dei ${values.length} comuni con dato disponibile.` };
     }
+    if (metric.meta.compositeType === 'agricultureProfile') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      const values = metric.rows.map(row => row.parts?.[index]?.value).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
+      return { value:values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, unit:part.unit || metric.meta.unit, label:`Media comuni Versilia · ${part.label || metric.meta.label}`, note:`Media semplice dei ${values.length} comuni con dato disponibile.` };
+    }
     if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};
@@ -519,6 +525,30 @@
     return { headline:formatValue(diff,unit), direction:diff>0?'sopra la Versilia':diff<0?'sotto la Versilia':'in linea con la Versilia' };
   }
 
+  function updateAgricultureProfileTownPosition(metric,row,choice,position) {
+    if (!position || metric?.meta?.compositeType !== 'agricultureProfile') return;
+    const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0);
+    const localPart=row?.parts?.[index] || {};
+    const totalPart=metric.aggregate?.parts?.[index] || {};
+    const localRaw=localPart.value;
+    const totalRaw=totalPart.value;
+    const local=localRaw === null || localRaw === undefined ? NaN : Number(localRaw);
+    const total=totalRaw === null || totalRaw === undefined ? NaN : Number(totalRaw);
+    const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local / total * 100 : null;
+    const overline=position.querySelector('.overline');
+    const deltaEl=position.querySelector('[data-composite-delta]');
+    const noteEl=position.querySelector('p');
+    const aggLabel=position.querySelector('[data-composite-aggregate-label]');
+    const aggValue=position.querySelector('[data-composite-aggregate-value]');
+    if(overline) overline.textContent='Quota sul totale Versilia';
+    if(deltaEl) deltaEl.innerHTML=share === null
+      ? `n.d.<small>dato comunale non disponibile</small>`
+      : `${html(number2.format(share))}%<small>del totale della coltura</small>`;
+    if(noteEl) noteEl.textContent=`Quota del Comune sul totale Versilia della coltura, calcolato sui Comuni con dato disponibile (${totalPart.coverage || 'copertura dichiarata'}). I valori mancanti restano n.d.`;
+    if(aggLabel) aggLabel.textContent=`Versilia · ${totalPart.label || metric.meta.label}`;
+    if(aggValue) aggValue.textContent=formatValue(totalPart.value,totalPart.unit || metric.meta.unit);
+  }
+
   function updateFiscalRecoveryTownPosition(metric,row,choice,position) {
     if (!position || metric?.meta?.key !== 'fiscalRecoveryActivity') return;
     const overline=position.querySelector('.overline');
@@ -661,9 +691,9 @@
           renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:componentSelect.value});
         }
       };
-    } else if (metric.meta.detailGroup === 'tpl') {
-      // ux-history può ricostruire l'HTML interno di #compare-bars: il listener
-      // vive sul contenitore stabile e non sul singolo pulsante.
+    } else if (hasNormalized) {
+      // Lo switch assoluto/rapportato vive accanto al grafico: delega dal
+      // contenitore stabile perché il render sostituisce il markup interno.
       bars.onclick = event => {
         const scaleButton = event.target.closest('button[data-scale]');
         if (scaleButton && bars.contains(scaleButton)) {
@@ -867,7 +897,12 @@
       ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
 
-    if (selectable) updateFiscalRecoveryTownPosition(metric,row,options[0]?.key || 'summary',container.querySelector('.composite-versilia-position'));
+    if (selectable) {
+      const initialPosition=container.querySelector('.composite-versilia-position');
+      const initialChoice=options[0]?.key || 'summary';
+      updateFiscalRecoveryTownPosition(metric,row,initialChoice,initialPosition);
+      updateAgricultureProfileTownPosition(metric,row,initialChoice,initialPosition);
+    }
 
     const tablist = container.querySelector('[role="tablist"]');
     installTablist(tablist, onMetricSelect);
@@ -897,6 +932,7 @@
           if(aggValue) aggValue.textContent=agg.formatted;
         }
         updateFiscalRecoveryTownPosition(metric,row,choice,position);
+        updateAgricultureProfileTownPosition(metric,row,choice,position);
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
       };
       select?.addEventListener('change',()=>applyChoice(select.value));
