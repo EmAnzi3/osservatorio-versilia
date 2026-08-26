@@ -29,6 +29,7 @@ jobs:
       - name: Materialize approved lot
         run: |
           set -euo pipefail
+          python scripts/fix_agricoltura_materializer_idempotence.py
           python scripts/patch_agricoltura_release_v120.py
           python scripts/materialize_agricoltura_territorio_v120.py
           git diff > /tmp/agricoltura-first.diff
@@ -74,6 +75,7 @@ jobs:
           rm -f .github/workflows/agricoltura-probe.yml
           rm -f .github/workflows/agricoltura-implement.yml
           rm -f scripts/probe_agricoltura_istat.py
+          rm -f scripts/fix_agricoltura_materializer_idempotence.py
           git diff --check
 
       - name: Commit and push verified implementation
