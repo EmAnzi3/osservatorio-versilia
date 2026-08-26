@@ -89,6 +89,11 @@
     wasteServiceCost: ['costo rifiuti', 'ctotab', 'igiene urbana', 'costo servizio rifiuti'],
     landslideExposure: ['frane', 'rischio geomorfologico'],
     organicAgriculturalAreaShare: ['biologico', 'agricoltura biologica', 'sau bio'],
+    agriculturalFarms: ['aziende agricole', 'imprese agricole', 'censimento agricoltura'],
+    agriculturalUsedArea: ['sau', 'superficie agricola utilizzata', 'ettari agricoli'],
+    averageAgriculturalFarmSize: ['dimensione aziende agricole', 'ettari per azienda', 'azienda con sau'],
+    cropProfile: ['colture', 'seminativi', 'olivo', 'olive', 'vite', 'pascoli'],
+    irrigatedAgriculturalArea: ['irrigazione', 'superficie irrigata', 'sau irrigata'],
     currentRevenueAccruedPerResident: ['entrate correnti', 'accertamenti', 'risorse comunali'],
     currentExpenditureCommittedPerResident: ['spesa corrente', 'impegni', 'servizi comunali'],
     capitalExpenditureCommittedPerResident: ['investimenti', 'conto capitale', 'impegni capitale'],
@@ -182,6 +187,7 @@
       case 'eurPerResident': return `${number2.format(v)} €/ab`;
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
+      case 'hectaresPerFarm': return `${number2.format(v)} ha/azienda`;
       default: return number0.format(v);
     }
   }

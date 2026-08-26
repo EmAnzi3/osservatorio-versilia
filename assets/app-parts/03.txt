@@ -193,7 +193,7 @@
     if (metric.meta.compositeType === 'stock') return { choice:'share', scale:'value' };
     if (metric.meta.compositeType === 'omi') return { choice:'sale', scale:'value' };
     if (metric.meta.compositeType === 'mobility') return { choice:'part-2', scale:'rate' };
-    if (metric.meta.compositeType === 'securityMeasures') return { choice:'part-0', scale:'value' };
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) return { choice:'part-0', scale:'value' };
     return { choice:'', scale:'value' };
   }
 
@@ -210,7 +210,7 @@
       const rent = choice === 'rent';
       return { value: rent ? row.rentMean : row.saleMean, unit: rent ? 'rentm2' : 'eurm2' };
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = row.parts?.[index] || {};
       return { value:part.value, unit:part.unit || metric.meta.unit, part, index };
@@ -247,7 +247,7 @@
         note: 'Media semplice dei sette valori comunali di riferimento.'
       };
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};
       return { value:part.value, unit:part.unit || metric.meta.unit, label:`Versilia · ${part.label || metric.meta.label}`, note:metric.aggregate?.note };
@@ -334,7 +334,7 @@
     if (metric.meta.compositeType === 'omi') {
       return `<div class="compare-view-controls"><div><span class="compare-view-label">Quotazione</span><div class="scale-switch compact" role="group" aria-label="Lettura quotazioni immobiliari"><button type="button" data-composite-choice="sale" class="${choice === 'sale' ? 'active' : ''}">Vendita</button><button type="button" data-composite-choice="rent" class="${choice === 'rent' ? 'active' : ''}">Affitto</button></div></div></div>`;
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const labels = metric.rows?.[0]?.parts || [];
       return `<div class="compare-view-controls"><label class="compare-choice-select"><span>${html(metric.meta.selectorLabel || 'Lettura')}</span><select data-composite-component>${labels.map((part,index)=>`<option value="part-${index}" ${choice === `part-${index}` ? 'selected' : ''}>${html(part.selectorLabel || part.label)}</option>`).join('')}</select></label></div>`;
     }
@@ -350,7 +350,7 @@
     const rows = metric.rows.map(row => {
       const selected = compositeCompareSelection(metric,row,choice,scale);
       return { ...row, displayValue:selected.value, displayUnit:selected.unit };
-    }).sort((a,b)=>{const av=Number(a.displayValue),bv=Number(b.displayValue);return (Number.isFinite(bv)?bv:-Infinity)-(Number.isFinite(av)?av:-Infinity);});
+    }).sort((a,b)=>{const av=a.displayValue===null||a.displayValue===undefined?NaN:Number(a.displayValue),bv=b.displayValue===null||b.displayValue===undefined?NaN:Number(b.displayValue);return (Number.isFinite(bv)?bv:-Infinity)-(Number.isFinite(av)?av:-Infinity);});
     const max = Math.max(...rows.map(r => Math.abs(Number(r.displayValue) || 0)), 0.0001);
     return rows.map((row,index) => {
       const query = new URLSearchParams({ tema:metric.meta.theme, indicatore:metricKey });
@@ -375,7 +375,7 @@
       const defaults = compositeCompareDefaults(metric);
       return `<div class="comparison-bars">${compositeCompareBarRows(data,metricKey,defaults.choice,defaults.scale)}</div>`;
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const defaults = compositeCompareDefaults(metric);
       return `<div class="comparison-bars">${compositeCompareBarRows(data,metricKey,defaults.choice,defaults.scale)}</div>`;
     }
@@ -422,7 +422,7 @@
     if (metric.meta.compositeType === 'omi') {
       return `<div class="omi-town-summary"><article><span>Vendita · media comunale</span><strong>${html(formatValue(row.saleMean,'eurm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article><article><span>Affitto · media comunale</span><strong>${html(formatValue(row.rentMean,'rentm2'))}</strong><small>Media semplice delle ${html(number0.format((row.zones || []).length))} zone visualizzate</small></article></div><details class="detail-disclosure omi-town-zone-disclosure"><summary><span>Dettaglio per zona OMI</span><small>${html(metric.meta.year)} · abitazioni civili / stato normale</small></summary><div class="omi-town-zone-body">${omiZoneTableMarkup(row)}</div></details>`;
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const incomeSources = metric.meta.key === 'incomeSourceProfile';
       const totalCount = parts.reduce((sum, part) => sum + (Number(part.count) || 0), 0);
       const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';
@@ -449,7 +449,7 @@
       { key:'sale', label:'Vendita media comunale', value:row.saleMean, unit:'eurm2', formatted:formatValue(row.saleMean,'eurm2') },
       { key:'rent', label:'Affitto medio comunale', value:row.rentMean, unit:'rentm2', formatted:formatValue(row.rentMean,'rentm2') }
     ];
-    if (metric.meta.compositeType === 'securityMeasures') return (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatValue(part.value,part.unit || metric.meta.unit), index }));
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) return (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatValue(part.value,part.unit || metric.meta.unit), index }));
     if (metric.meta.compositeType !== 'distribution') return [];
     const summary = compositeSummary(metric,row);
     return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...(row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }))];
@@ -469,7 +469,7 @@
       const unit = rent ? 'rentm2' : 'eurm2';
       return { label: rent ? 'Versilia · affitto medio comunale' : 'Versilia · vendita media comunale', value, unit, formatted:formatValue(value,unit) };
     }
-    if (metric.meta.compositeType === 'securityMeasures') {
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};
       const unit = part.unit || metric.meta.unit;
@@ -486,7 +486,7 @@
       if (metric.meta.compositeType === 'demographicBreakdown') { const part=(r.parts || []).find(item=>item.key===choice); return {code:r.code,value:Number(part?.value)}; }
       if (metric.meta.compositeType === 'stock') return { code:r.code, value:Number(choice === 'count' ? r.count : r.value) };
       if (metric.meta.compositeType === 'omi') return { code:r.code, value:Number(choice === 'rent' ? r.rentMean : r.saleMean) };
-      if (metric.meta.compositeType === 'securityMeasures') { const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0); return { code:r.code, value:Number(r.parts?.[index]?.value) }; }
+      if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) { const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0); const raw=r.parts?.[index]?.value; return { code:r.code, value:raw===null||raw===undefined?NaN:Number(raw) }; }
       if (choice === 'summary') return { code:r.code, value:Number(r.summaryValue) };
       const index = Number(String(choice).replace('part-',''));
       return { code:r.code, value:Number(r.parts?.[index]?.value) };
@@ -597,7 +597,7 @@
     const demographicPyramid = document.getElementById('compare-demographic-pyramid');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
-    const selectableComposite = ['stock','mobility','omi','securityMeasures','demographicBreakdown'].includes(compositeType);
+    const selectableComposite = ['stock','mobility','omi','securityMeasures','agricultureProfile','demographicBreakdown'].includes(compositeType);
     const view = requestedView || compositeCompareDefaults(metric);
     const selectedAggregate = selectableComposite ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
     const aggregate = selectedAggregate || (normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate);
@@ -829,7 +829,7 @@
     const distribution = metric.meta.compositeType === 'distribution';
     const omi = metric.meta.compositeType === 'omi';
     const stock = metric.meta.compositeType === 'stock';
-    const securityMeasures = metric.meta.compositeType === 'securityMeasures';
+    const securityMeasures = ['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType);
     const demographicBreakdown = metric.meta.compositeType === 'demographicBreakdown';
     const selectable = distribution || omi || stock || securityMeasures || demographicBreakdown;
     const options = selectable ? compositeSelectionOptions(metric,row) : [];

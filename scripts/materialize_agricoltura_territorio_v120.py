@@ -34,7 +34,6 @@ SNAPSHOT_REF = "data/source-snapshots/istat-agricoltura-territorio-2020.json"
 CROP_PARTS = (
     ("ARLAND", "Seminativi"),
     ("OLIVOOILTR", "Olivo da olio"),
-    ("OLIVTTR", "Olive da tavola"),
     ("VINEY", "Vite"),
     ("PGRAPM", "Prati permanenti e pascoli"),
 )
@@ -70,15 +69,12 @@ def validate_snapshot(snapshot: dict, site: dict) -> None:
                 raise RuntimeError(f"Snapshot agricoltura: {name} senza {field}")
     for crop, _ in CROP_PARTS:
         present = sum(raw[code]["cropsHa"].get(crop) is not None for code in expected)
-        minimum = 4 if crop == "OLIVTTR" else 6
+        minimum = 6
         if present < minimum:
             raise RuntimeError(f"Snapshot agricoltura: copertura {crop} {present}/7 sotto il minimo {minimum}/7")
     # Assenze ammesse e note prima della pubblicazione.
     if raw["046013"]["cropsHa"].get("VINEY") is not None:
         raise RuntimeError("Il gate si aspetta VINEY n.d. a Forte dei Marmi")
-    olive_table_missing = {code for code in expected if raw[code]["cropsHa"].get("OLIVTTR") is None}
-    if olive_table_missing != {"046013", "046030", "046033"}:
-        raise RuntimeError("Perimetro n.d. OLIVTTR diverso da quello verificato")
 
 
 def meta(key: str, label: str, short: str, description: str, unit: str, keywords: list[str]) -> dict:
@@ -237,9 +233,9 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         },
         "method": {
             "type": "Dato censuario Istat per localizzazione dei terreni",
-            "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, OLIVTTR, VINEY, PGRAPM.",
-            "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Olive da tavola: eccezione esplicitamente approvata 4/7 (Forte dei Marmi, Stazzema e Viareggio n.d.).",
-            "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite; 4/7 olive da tavola (eccezione approvata)",
+            "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, VINEY, PGRAPM.",
+            "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Non sono pubblicate sottodimensioni con copertura inferiore a 6/7.",
+            "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite",
             "snapshot": SNAPSHOT_REF,
         },
     }
@@ -377,14 +373,13 @@ def patch_release_files() -> None:
     text = text.replace("valida tutti i 149 indicatori canonici, la ripartizione fra 145 valori incorporati", "valida tutti i 154 indicatori canonici, la ripartizione fra 150 valori incorporati")
     text = text.replace("ciascuno dei 145 indicatori incorporati", "ciascuno dei 150 indicatori incorporati")
     old_cov = "La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito."
-    new_cov = old_cov + " Per sottodimensioni esplicitamente approvate prima della pubblicazione può essere ammessa una copertura inferiore: nel profilo colture 2020, *olive da tavola* è l'eccezione documentata 4/7; le tre assenze restano `n.d.`."
-    text = text.replace(old_cov, new_cov)
+    # Nessuna eccezione sotto la soglia approvata 6/7.
     README.write_text(text, encoding="utf-8")
 
     history = HISTORY_DOC.read_text(encoding="utf-8")
     marker = "## Lotto Agricoltura e territorio v1.20.0"
     if marker not in history:
-        history += "\n\n## Lotto Agricoltura e territorio v1.20.0\n\nIl 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.\n\nLa copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). Per la sola sottocategoria *olive da tavola* è stata approvata prima della pubblicazione un'eccezione 4/7: Forte dei Marmi, Stazzema e Viareggio restano `n.d.`. Nessuna assenza viene trasformata in zero.\n"
+        history += "\n\n## Lotto Agricoltura e territorio v1.20.0\n\nIl 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.\n\nLa copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). Nessuna sottodimensione sotto 6/7 viene pubblicata e nessuna assenza viene trasformata in zero.\n"
     HISTORY_DOC.write_text(history, encoding="utf-8")
 
     coherence = COHERENCE_DOC.read_text(encoding="utf-8")
@@ -411,7 +406,7 @@ def main() -> None:
     save(REGISTRY_PATH, registry)
     patch_frontend()
     patch_release_files()
-    print("Agricoltura e territorio v1.20.0 materializzata: 5 indicatori canonici; OLIVTTR 4/7 esplicitamente documentato.")
+    print("Agricoltura e territorio v1.20.0 materializzata: 5 indicatori canonici; tutte le sottodimensioni pubblicate hanno copertura almeno 6/7.")
 
 
 if __name__ == "__main__":

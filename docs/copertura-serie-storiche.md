@@ -40,3 +40,10 @@ Una serie viene aggiunta soltanto se:
 3. tutti i sette Comuni sono coperti, salvo eccezioni dichiarate prima della pubblicazione;
 4. lo snapshot conserva valori elementari, URL e impronte dei file sorgente;
 5. i test automatici verificano che l'ultimo punto coincida con il valore corrente.
+
+
+## Lotto Agricoltura e territorio v1.20.0
+
+Il 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.
+
+La copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). Nessuna sottodimensione sotto 6/7 viene pubblicata e nessuna assenza viene trasformata in zero.

@@ -23,6 +23,10 @@ Il link a `/stato-dati/` deve essere presente nel markup iniziale, non aggiunto 
 6. Colori, font, spaziature, logo, ricerca e footer usano gli asset canonici. Non sono ammessi header/footer locali con un sottoinsieme dei link.
 7. Desktop e mobile devono essere verificati senza overflow orizzontale. I testi non possono uscire dai contenitori.
 
+### Selettori Agricoltura e territorio
+
+Il profilo colture riusa i controlli compositi canonici della pagina di confronto e delle schede comunali. SAU e superficie irrigata riusano il selettore assoluto/rapportato esistente. Non sono introdotte pagine, shell, colori o componenti paralleli. I valori `null` devono essere resi come `n.d.` e non possono essere classificati o ordinati come zeri reali.
+
 ## Profili ed eccezioni esplicite
 
 - `offline.html`: pagina di servizio senza shell, canonical o runtime completo; deve essere `noindex,nofollow`.
