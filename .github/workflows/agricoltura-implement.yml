@@ -35,7 +35,11 @@ jobs:
           python scripts/patch_agricoltura_release_v120.py
           python scripts/materialize_agricoltura_territorio_v120.py
           git diff > /tmp/agricoltura-second.diff
-          cmp /tmp/agricoltura-first.diff /tmp/agricoltura-second.diff
+          if ! cmp -s /tmp/agricoltura-first.diff /tmp/agricoltura-second.diff; then
+            echo "Materializzazione non idempotente:"
+            diff -u /tmp/agricoltura-first.diff /tmp/agricoltura-second.diff | head -200 || true
+            exit 1
+          fi
 
       - name: Validate canonical data and release contract
         run: |
