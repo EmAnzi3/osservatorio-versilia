@@ -1,0 +1,24 @@
+name: Agricoltura · probe fonti Istat
+
+on:
+  push:
+    branches: [feat/agricoltura-territorio]
+    paths:
+      - 'scripts/probe_agricoltura_istat.py'
+      - '.github/workflows/agricoltura-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe Istat SDMX and dataset structure
+        run: python scripts/probe_agricoltura_istat.py
