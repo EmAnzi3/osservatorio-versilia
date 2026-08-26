@@ -8,11 +8,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: agricoltura-materialize-v4
+  group: agricoltura-materialize-v5
   cancel-in-progress: true
 
 jobs:
   materialize:
+    if: ${{ !contains(github.event.head_commit.message, 'feat(agricoltura): materializza lotto territorio v1.20.0') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     steps:
@@ -73,9 +74,10 @@ jobs:
           python scripts/test_composite_indicators.py
           python scripts/test_static.py
 
-      - name: Remove one-shot workflow and fixers
+      - name: Prepare push without workflow-file changes
         run: |
-          rm -f .github/workflows/agricoltura-implement.yml
+          set -euo pipefail
+          git restore --source=HEAD -- .github/workflows/agricoltura-implement.yml .github/workflows/pages.yml
           rm -f scripts/probe_agricoltura_istat.py
           rm -f scripts/fix_agricoltura_materializer_idempotence.py
           rm -f scripts/fix_agricoltura_scope_6of7.py
