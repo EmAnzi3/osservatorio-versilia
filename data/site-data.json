@@ -23183,42 +23183,49 @@
         {
           "town": "Massarosa",
           "code": "046018",
+          "slug": "massarosa",
           "value": 192,
           "year": 2020
         },
         {
           "town": "Viareggio",
           "code": "046033",
+          "slug": "viareggio",
           "value": 146,
           "year": 2020
         },
         {
           "town": "Camaiore",
           "code": "046005",
+          "slug": "camaiore",
           "value": 319,
           "year": 2020
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
+          "slug": "pietrasanta",
           "value": 187,
           "year": 2020
         },
         {
           "town": "Seravezza",
           "code": "046028",
+          "slug": "seravezza",
           "value": 64,
           "year": 2020
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
+          "slug": "forte-dei-marmi",
           "value": 7,
           "year": 2020
         },
         {
           "town": "Stazzema",
           "code": "046030",
+          "slug": "stazzema",
           "value": 44,
           "year": 2020
         }
@@ -23280,70 +23287,91 @@
         {
           "town": "Massarosa",
           "code": "046018",
+          "slug": "massarosa",
           "value": 1370.61,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 20.085758793866752,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Viareggio",
           "code": "046033",
+          "slug": "viareggio",
           "value": 297.78,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 9.154715240949963,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Camaiore",
           "code": "046005",
+          "slug": "camaiore",
           "value": 589.78,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 6.90386585116034,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
+          "slug": "pietrasanta",
           "value": 329.33,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 7.8197234734170245,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Seravezza",
           "code": "046028",
+          "slug": "seravezza",
           "value": 86.33,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 2.187352728046661,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
+          "slug": "forte-dei-marmi",
           "value": 19.29,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 2.09966039707419,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Stazzema",
           "code": "046030",
+          "slug": "stazzema",
           "value": 175.32,
           "year": 2020,
           "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
             "value": 2.1880401614946363,
+            "unit": "percent",
             "year": 2020
           }
         }
@@ -23400,42 +23428,49 @@
         {
           "town": "Massarosa",
           "code": "046018",
+          "slug": "massarosa",
           "value": 5.157696335078534,
           "year": 2020
         },
         {
           "town": "Viareggio",
           "code": "046033",
+          "slug": "viareggio",
           "value": 4.103546099290781,
           "year": 2020
         },
         {
           "town": "Camaiore",
           "code": "046005",
+          "slug": "camaiore",
           "value": 2.2264649681528663,
           "year": 2020
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
+          "slug": "pietrasanta",
           "value": 2.138611111111111,
           "year": 2020
         },
         {
           "town": "Seravezza",
           "code": "046028",
+          "slug": "seravezza",
           "value": 1.540967741935484,
           "year": 2020
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
+          "slug": "forte-dei-marmi",
           "value": 3.251428571428572,
           "year": 2020
         },
         {
           "town": "Stazzema",
           "code": "046030",
+          "slug": "stazzema",
           "value": 3.3207142857142857,
           "year": 2020
         }
@@ -23492,6 +23527,7 @@
         {
           "town": "Massarosa",
           "code": "046018",
+          "slug": "massarosa",
           "value": 1370.61,
           "year": 2020,
           "parts": [
@@ -23507,6 +23543,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 165.77,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.23,
               "unit": "hectares"
             },
             {
@@ -23528,6 +23571,7 @@
         {
           "town": "Viareggio",
           "code": "046033",
+          "slug": "viareggio",
           "value": 297.78,
           "year": 2020,
           "parts": [
@@ -23543,6 +23587,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 6.82,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
               "unit": "hectares"
             },
             {
@@ -23564,6 +23615,7 @@
         {
           "town": "Camaiore",
           "code": "046005",
+          "slug": "camaiore",
           "value": 589.78,
           "year": 2020,
           "parts": [
@@ -23579,6 +23631,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 115.45,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.3,
               "unit": "hectares"
             },
             {
@@ -23600,6 +23659,7 @@
         {
           "town": "Pietrasanta",
           "code": "046024",
+          "slug": "pietrasanta",
           "value": 329.33,
           "year": 2020,
           "parts": [
@@ -23615,6 +23675,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 104.87,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.1,
               "unit": "hectares"
             },
             {
@@ -23636,6 +23703,7 @@
         {
           "town": "Seravezza",
           "code": "046028",
+          "slug": "seravezza",
           "value": 86.33,
           "year": 2020,
           "parts": [
@@ -23651,6 +23719,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 21.76,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 1.0,
               "unit": "hectares"
             },
             {
@@ -23672,6 +23747,7 @@
         {
           "town": "Forte dei Marmi",
           "code": "046013",
+          "slug": "forte-dei-marmi",
           "value": 19.29,
           "year": 2020,
           "parts": [
@@ -23687,6 +23763,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 0.6,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
               "unit": "hectares"
             },
             {
@@ -23708,6 +23791,7 @@
         {
           "town": "Stazzema",
           "code": "046030",
+          "slug": "stazzema",
           "value": 175.32,
           "year": 2020,
           "parts": [
@@ -23723,6 +23807,13 @@
               "label": "Olivo da olio",
               "selectorLabel": "Olivo da olio",
               "value": 5.58,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
               "unit": "hectares"
             },
             {
@@ -23765,10 +23856,19 @@
             "unit": "hectares"
           },
           {
+            "key": "OLIVTTR",
+            "label": "Olive da tavola",
+            "selectorLabel": "Olive da tavola",
+            "value": 1.63,
+            "availableValue": 1.63,
+            "coverage": "4/7",
+            "unit": "hectares"
+          },
+          {
             "key": "VINEY",
             "label": "Vite",
             "selectorLabel": "Vite",
-            "value": null,
+            "value": 24.37,
             "availableValue": 24.37,
             "coverage": "6/7",
             "unit": "hectares"
@@ -23783,13 +23883,13 @@
             "unit": "hectares"
           }
         ],
-        "note": "Per categorie con copertura incompleta il totale Versilia resta n.d.; la somma dei soli Comuni disponibili è conservata come dato tecnico nello snapshot/materializzazione."
+        "note": "Il totale di ciascuna coltura è la somma dei Comuni con dato disponibile; la copertura è dichiarata e i Comuni senza riga restano n.d."
       },
       "method": {
         "type": "Dato censuario Istat per localizzazione dei terreni",
-        "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, VINEY, PGRAPM.",
-        "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Non sono pubblicate sottodimensioni con copertura inferiore a 6/7.",
-        "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite",
+        "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, OLIVTTR, VINEY, PGRAPM.",
+        "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Olive da tavola: eccezione approvata 4/7; Forte dei Marmi, Stazzema e Viareggio restano n.d.",
+        "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite; 4/7 olive da tavola (eccezione approvata)",
         "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
       }
     },
@@ -23833,70 +23933,91 @@
         {
           "town": "Massarosa",
           "code": "046018",
+          "slug": "massarosa",
           "value": 241.67,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 24.532036706188077,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Viareggio",
           "code": "046033",
+          "slug": "viareggio",
           "value": 95.85,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 16.56584860006913,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Camaiore",
           "code": "046005",
+          "slug": "camaiore",
           "value": 126.58,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 18.105877472786826,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
+          "slug": "pietrasanta",
           "value": 44.84,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 11.648266008572543,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Seravezza",
           "code": "046028",
+          "slug": "seravezza",
           "value": 11.3,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 11.827506803433117,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
+          "slug": "forte-dei-marmi",
           "value": 0.6,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 2.636203866432337,
+            "unit": "percent",
             "year": 2020
           }
         },
         {
           "town": "Stazzema",
           "code": "046030",
+          "slug": "stazzema",
           "value": 2.92,
           "year": 2020,
           "normalized": {
+            "label": "Quota di SAU irrigata",
             "value": 2.093640209364021,
+            "unit": "percent",
             "year": 2020
           }
         }

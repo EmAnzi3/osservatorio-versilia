@@ -34,6 +34,7 @@ SNAPSHOT_REF = "data/source-snapshots/istat-agricoltura-territorio-2020.json"
 CROP_PARTS = (
     ("ARLAND", "Seminativi"),
     ("OLIVOOILTR", "Olivo da olio"),
+    ("OLIVTTR", "Olive da tavola"),
     ("VINEY", "Vite"),
     ("PGRAPM", "Prati permanenti e pascoli"),
 )
@@ -69,7 +70,7 @@ def validate_snapshot(snapshot: dict, site: dict) -> None:
                 raise RuntimeError(f"Snapshot agricoltura: {name} senza {field}")
     for crop, _ in CROP_PARTS:
         present = sum(raw[code]["cropsHa"].get(crop) is not None for code in expected)
-        minimum = 6
+        minimum = 4 if crop == "OLIVTTR" else 6
         if present < minimum:
             raise RuntimeError(f"Snapshot agricoltura: copertura {crop} {present}/7 sotto il minimo {minimum}/7")
     # Assenze ammesse e note prima della pubblicazione.
@@ -106,6 +107,7 @@ def meta(key: str, label: str, short: str, description: str, unit: str, keywords
 def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
     raw = snapshot["towns"]
     towns = site["towns"]
+    slug_by_code = {row["code"]: row["slug"] for row in site["metrics"]["population"]["rows"]}
 
     def item(town: dict) -> dict:
         return raw[town["code"]]
@@ -125,7 +127,7 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
     farms = {
         "meta": farms_meta,
         "sourceUrl": SOURCE_PAGE,
-        "rows": [{"town": t["name"], "code": t["code"], "value": item(t)["farms"], "year": 2020} for t in towns],
+        "rows": [{"town": t["name"], "code": t["code"], "slug": slug_by_code[t["code"]], "value": item(t)["farms"], "year": 2020} for t in towns],
         "aggregate": {"value": farms_total, "label": "Versilia · totale", "note": "Somma delle aziende con centro aziendale nei sette Comuni."},
         "method": {
             "type": "Dato censuario Istat",
@@ -151,8 +153,8 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         r = item(t)
         share = r["sauLocalizedHa"] / (r["municipalAreaKm2"] * 100) * 100
         sau_rows.append({
-            "town": t["name"], "code": t["code"], "value": r["sauLocalizedHa"], "year": 2020,
-            "normalized": {"value": share, "year": 2020},
+            "town": t["name"], "code": t["code"], "slug": slug_by_code[t["code"]], "value": r["sauLocalizedHa"], "year": 2020,
+            "normalized": {"label": "Quota della superficie comunale occupata da SAU", "value": share, "unit": "percent", "year": 2020},
         })
     sau = {
         "meta": sau_meta,
@@ -183,7 +185,7 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         "meta": avg_meta,
         "sourceUrl": SOURCE_PAGE,
         "rows": [{
-            "town": t["name"], "code": t["code"], "value": item(t)["sauCenterHa"] / item(t)["farmsWithSau"], "year": 2020,
+            "town": t["name"], "code": t["code"], "slug": slug_by_code[t["code"]], "value": item(t)["sauCenterHa"] / item(t)["farmsWithSau"], "year": 2020,
         } for t in towns],
         "aggregate": {
             "value": sau_center_total / farms_sau_total,
@@ -211,14 +213,14 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         parts = []
         for crop, label in CROP_PARTS:
             parts.append({"key": crop, "label": label, "selectorLabel": label, "value": item(t)["cropsHa"].get(crop), "unit": "hectares"})
-        crop_rows.append({"town": t["name"], "code": t["code"], "value": item(t)["sauLocalizedHa"], "year": 2020, "parts": parts})
+        crop_rows.append({"town": t["name"], "code": t["code"], "slug": slug_by_code[t["code"]], "value": item(t)["sauLocalizedHa"], "year": 2020, "parts": parts})
     aggregate_parts = []
     for crop, label in CROP_PARTS:
         values = [raw[code]["cropsHa"].get(crop) for code in raw]
         present = [v for v in values if v is not None]
         aggregate_parts.append({
             "key": crop, "label": label, "selectorLabel": label,
-            "value": sum(present) if len(present) == 7 else None,
+            "value": sum(present) if present else None,
             "availableValue": sum(present), "coverage": f"{len(present)}/7", "unit": "hectares",
         })
     crop = {
@@ -229,13 +231,13 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
             "value": sau_local_total,
             "label": "Versilia · profilo colture",
             "parts": aggregate_parts,
-            "note": "Per categorie con copertura incompleta il totale Versilia resta n.d.; la somma dei soli Comuni disponibili è conservata come dato tecnico nello snapshot/materializzazione.",
+            "note": "Il totale di ciascuna coltura è la somma dei Comuni con dato disponibile; la copertura è dichiarata e i Comuni senza riga restano n.d.",
         },
         "method": {
             "type": "Dato censuario Istat per localizzazione dei terreni",
-            "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, VINEY, PGRAPM.",
-            "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Non sono pubblicate sottodimensioni con copertura inferiore a 6/7.",
-            "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite",
+            "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, OLIVTTR, VINEY, PGRAPM.",
+            "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Olive da tavola: eccezione approvata 4/7; Forte dei Marmi, Stazzema e Viareggio restano n.d.",
+            "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite; 4/7 olive da tavola (eccezione approvata)",
             "snapshot": SNAPSHOT_REF,
         },
     }
@@ -254,8 +256,8 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         "meta": irr_meta,
         "sourceUrl": SOURCE_PAGE,
         "rows": [{
-            "town": t["name"], "code": t["code"], "value": item(t)["irrigatedAreaHa"], "year": 2020,
-            "normalized": {"value": item(t)["irrigatedAreaHa"] / item(t)["sauCenterHa"] * 100, "year": 2020},
+            "town": t["name"], "code": t["code"], "slug": slug_by_code[t["code"]], "value": item(t)["irrigatedAreaHa"], "year": 2020,
+            "normalized": {"label": "Quota di SAU irrigata", "value": item(t)["irrigatedAreaHa"] / item(t)["sauCenterHa"] * 100, "unit": "percent", "year": 2020},
         } for t in towns],
         "aggregate": {"value": irrig_total, "label": "Versilia · superficie irrigata", "note": "Somma degli ettari irrigati delle aziende con centro nei sette Comuni."},
         "normalizedAggregate": {

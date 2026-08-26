@@ -15,7 +15,7 @@
       "publisher": "Istat",
       "flow": "DF_DCAT_CENSAGRIC2020_UA_CROPS_2",
       "perspective": "Comune di localizzazione dei terreni",
-      "query": "https://esploradati.istat.it/SDMXWS/rest/data/DF_DCAT_CENSAGRIC2020_UA_CROPS_2/A.046005+046013+046018+046024+046028+046030+046033.ARU.ALL+ARLAND+OLIVOOILTR+VINEY+PGRAPM.TOT/IT1?startPeriod=2020&endPeriod=2020"
+      "query": "https://esploradati.istat.it/SDMXWS/rest/data/DF_DCAT_CENSAGRIC2020_UA_CROPS_2/A.046005+046013+046018+046024+046028+046030+046033.ARU.ALL+ARLAND+OLIVOOILTR+OLIVTTR+VINEY+PGRAPM.TOT/IT1?startPeriod=2020&endPeriod=2020"
     },
     "irrigation": {
       "publisher": "Istat",
@@ -38,12 +38,16 @@
     "ARLAND": "Seminativi",
     "OLIVOOILTR": "Olivo per produzione di olive da olio",
     "VINEY": "Vite",
-    "PGRAPM": "Prati permanenti e pascoli"
+    "PGRAPM": "Prati permanenti e pascoli",
+    "OLIVTTR": "Olivo per produzione di olive da tavola"
   },
   "missingPolicy": "Una riga assente dalla fonte resta null/n.d.; non viene trasformata in zero né stimata.",
   "coveragePolicy": {
     "defaultMinimum": "6/7",
-    "rule": "Non vengono pubblicate sottodimensioni con copertura inferiore a 6/7."
+    "rule": "Non vengono pubblicate sottodimensioni con copertura inferiore a 6/7.",
+    "exceptions": {
+      "OLIVTTR": "Olive da tavola: pubblicazione approvata con copertura 4/7; riga assente = n.d., non zero."
+    }
   },
   "towns": {
     "046005": {
@@ -54,7 +58,13 @@
       "sauLocalizedHa": 589.78,
       "municipalAreaKm2": 85.4275,
       "irrigatedAreaHa": 126.58,
-      "cropsHa": {"ARLAND": 342.64, "OLIVOOILTR": 115.45, "VINEY": 9.42, "PGRAPM": 85.78}
+      "cropsHa": {
+        "ARLAND": 342.64,
+        "OLIVOOILTR": 115.45,
+        "VINEY": 9.42,
+        "PGRAPM": 85.78,
+        "OLIVTTR": 0.3
+      }
     },
     "046013": {
       "name": "Forte dei Marmi",
@@ -64,7 +74,13 @@
       "sauLocalizedHa": 19.29,
       "municipalAreaKm2": 9.1872,
       "irrigatedAreaHa": 0.6,
-      "cropsHa": {"ARLAND": 0.83, "OLIVOOILTR": 0.6, "VINEY": null, "PGRAPM": 16.92}
+      "cropsHa": {
+        "ARLAND": 0.83,
+        "OLIVOOILTR": 0.6,
+        "VINEY": null,
+        "PGRAPM": 16.92,
+        "OLIVTTR": null
+      }
     },
     "046018": {
       "name": "Massarosa",
@@ -74,7 +90,13 @@
       "sauLocalizedHa": 1370.61,
       "municipalAreaKm2": 68.2379,
       "irrigatedAreaHa": 241.67,
-      "cropsHa": {"ARLAND": 888.46, "OLIVOOILTR": 165.77, "VINEY": 4.09, "PGRAPM": 274.85}
+      "cropsHa": {
+        "ARLAND": 888.46,
+        "OLIVOOILTR": 165.77,
+        "VINEY": 4.09,
+        "PGRAPM": 274.85,
+        "OLIVTTR": 0.23
+      }
     },
     "046024": {
       "name": "Pietrasanta",
@@ -84,7 +106,13 @@
       "sauLocalizedHa": 329.33,
       "municipalAreaKm2": 42.1153,
       "irrigatedAreaHa": 44.84,
-      "cropsHa": {"ARLAND": 173.68, "OLIVOOILTR": 104.87, "VINEY": 3.96, "PGRAPM": 28.63}
+      "cropsHa": {
+        "ARLAND": 173.68,
+        "OLIVOOILTR": 104.87,
+        "VINEY": 3.96,
+        "PGRAPM": 28.63,
+        "OLIVTTR": 0.1
+      }
     },
     "046028": {
       "name": "Seravezza",
@@ -94,7 +122,13 @@
       "sauLocalizedHa": 86.33,
       "municipalAreaKm2": 39.4678,
       "irrigatedAreaHa": 11.3,
-      "cropsHa": {"ARLAND": 28.79, "OLIVOOILTR": 21.76, "VINEY": 5.38, "PGRAPM": 22.48}
+      "cropsHa": {
+        "ARLAND": 28.79,
+        "OLIVOOILTR": 21.76,
+        "VINEY": 5.38,
+        "PGRAPM": 22.48,
+        "OLIVTTR": 1.0
+      }
     },
     "046030": {
       "name": "Stazzema",
@@ -104,7 +138,13 @@
       "sauLocalizedHa": 175.32,
       "municipalAreaKm2": 80.1265,
       "irrigatedAreaHa": 2.92,
-      "cropsHa": {"ARLAND": 54.62, "OLIVOOILTR": 5.58, "VINEY": 0.45, "PGRAPM": 99.38}
+      "cropsHa": {
+        "ARLAND": 54.62,
+        "OLIVOOILTR": 5.58,
+        "VINEY": 0.45,
+        "PGRAPM": 99.38,
+        "OLIVTTR": null
+      }
     },
     "046033": {
       "name": "Viareggio",
@@ -114,14 +154,21 @@
       "sauLocalizedHa": 297.78,
       "municipalAreaKm2": 32.5275,
       "irrigatedAreaHa": 95.85,
-      "cropsHa": {"ARLAND": 228.37, "OLIVOOILTR": 6.82, "VINEY": 1.07, "PGRAPM": 13.46}
+      "cropsHa": {
+        "ARLAND": 228.37,
+        "OLIVOOILTR": 6.82,
+        "VINEY": 1.07,
+        "PGRAPM": 13.46,
+        "OLIVTTR": null
+      }
     }
   },
   "derivations": {
     "sauTerritoryShare": "sauLocalizedHa / (municipalAreaKm2 * 100) * 100",
     "averageFarmSize": "sauCenterHa / farmsWithSau",
     "irrigatedSauShare": "irrigatedAreaHa / sauCenterHa * 100",
-    "aggregatePolicy": "Gli aggregati Versilia sono rapporti tra somme dei numeratori e somme dei denominatori; non medie semplici delle percentuali comunali."
+    "aggregatePolicy": "Gli aggregati Versilia sono rapporti tra somme dei numeratori e somme dei denominatori; non medie semplici delle percentuali comunali.",
+    "comparisonReference": "Nei confronti grafici e nelle schede comunali il riferimento Versilia è la media semplice dei valori comunali disponibili. I totali territoriali restano distinti e sono usati solo quando esplicitamente indicati."
   },
   "verification": {
     "githubActionsRun": "https://github.com/EmAnzi3/osservatorio-versilia/actions/runs/32983797355",

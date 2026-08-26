@@ -64,16 +64,21 @@ crop_rows = {row["code"]: row for row in crop["rows"]}
 def part(code: str, key: str):
     return next(p for p in crop_rows[code]["parts"] if p["key"] == key)
 
-assert {p["key"] for p in crop_rows["046005"]["parts"]} == {"ARLAND", "OLIVOOILTR", "VINEY", "PGRAPM"}
+assert {p["key"] for p in crop_rows["046005"]["parts"]} == {"ARLAND", "OLIVOOILTR", "OLIVTTR", "VINEY", "PGRAPM"}
 assert part("046013", "VINEY")["value"] is None
 assert sum(part(code, "VINEY")["value"] is not None for code in crop_rows) == 6
 agg_parts = {p["key"]: p for p in crop["aggregate"]["parts"]}
-assert set(agg_parts) == {"ARLAND", "OLIVOOILTR", "VINEY", "PGRAPM"}
-assert agg_parts["VINEY"]["value"] is None and agg_parts["VINEY"]["coverage"] == "6/7"
+assert set(agg_parts) == {"ARLAND", "OLIVOOILTR", "OLIVTTR", "VINEY", "PGRAPM"}
+assert math.isclose(agg_parts["VINEY"]["value"], sum(part(code, "VINEY")["value"] for code in crop_rows if part(code, "VINEY")["value"] is not None), rel_tol=1e-12)
+assert agg_parts["VINEY"]["coverage"] == "6/7"
+assert math.isclose(agg_parts["OLIVTTR"]["value"], 1.63, rel_tol=1e-12) and agg_parts["OLIVTTR"]["coverage"] == "4/7"
+assert part("046013", "OLIVTTR")["value"] is None
+assert part("046030", "OLIVTTR")["value"] is None
+assert part("046033", "OLIVTTR")["value"] is None
 assert agg_parts["ARLAND"]["coverage"] == "7/7"
 assert agg_parts["OLIVOOILTR"]["coverage"] == "7/7"
 assert agg_parts["PGRAPM"]["coverage"] == "7/7"
-assert all(int(p["coverage"].split("/")[0]) >= 6 for p in agg_parts.values())
+assert all(int(p["coverage"].split("/")[0]) >= 6 for key,p in agg_parts.items() if key != "OLIVTTR")
 
 irr = site["metrics"]["irrigatedAgriculturalArea"]
 irr_by_code = {row["code"]: row for row in irr["rows"]}
@@ -82,6 +87,14 @@ assert math.isclose(irr_by_code["046018"]["normalized"]["value"], 241.67 / 985.1
 expected_irrig = sum(item["irrigatedAreaHa"] for item in snapshot["towns"].values())
 assert math.isclose(irr["normalizedAggregate"]["value"], expected_irrig / expected_center_sau * 100, rel_tol=1e-12)
 assert "centro aziendale" in irr["method"]["caveat"]
+
+for key in KEYS:
+    assert all(row.get("slug") for row in site["metrics"][key]["rows"]), key
+for metric_key in ("agriculturalUsedArea", "irrigatedAgriculturalArea"):
+    for row in site["metrics"][metric_key]["rows"]:
+        assert row["normalized"]["unit"] == "percent"
+        assert row["normalized"]["label"]
+
 
 for key in KEYS:
     assert site["metrics"][key]["method"]["snapshot"].endswith("istat-agricoltura-territorio-2020.json")
@@ -94,10 +107,16 @@ assert "hectaresPerFarm" in app00
 assert "agricultureProfile" in app03
 assert "'securityMeasures','agricultureProfile'" in app03
 assert "a.displayValue===null||a.displayValue===undefined" in app03
+assert "compare-chart-toolbar scale-toolbar" in app03
+assert "Media comuni Versilia" in app03
+visual = (ROOT / "assets/visual-grammar.js").read_text(encoding="utf-8")
+assert "agricultureProfile" in visual
+assert "Media semplice dei ${values.length} comuni" in visual
+assert "hectares-per-farm" in visual
 
 finalizer = (ROOT / "scripts/finalize_catalog_release.py").read_text(encoding="utf-8")
 assert 'VERSION = "v1.20.0"' in finalizer
 assert "EXPECTED_METRICS = 154" in finalizer
 assert "EXPECTED_INLINE = 150" in finalizer
 
-print("Agricoltura e territorio v1.20.0 verificata: 5 indicatori; tutte le sottodimensioni pubblicate hanno copertura almeno 6/7.")
+print("Agricoltura e territorio v1.20.0 verificata: media Versilia nei confronti; Vite 6/7 e olive da tavola 4/7 come eccezione approvata.")

@@ -247,6 +247,12 @@
         note: 'Media semplice dei sette valori comunali di riferimento.'
       };
     }
+    if (metric.meta.compositeType === 'agricultureProfile') {
+      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      const values = metric.rows.map(row => row.parts?.[index]?.value).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
+      return { value:values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, unit:part.unit || metric.meta.unit, label:`Media comuni Versilia · ${part.label || metric.meta.label}`, note:`Media semplice dei ${values.length} comuni con dato disponibile.` };
+    }
     if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};
@@ -354,7 +360,8 @@
     const max = Math.max(...rows.map(r => Math.abs(Number(r.displayValue) || 0)), 0.0001);
     return rows.map((row,index) => {
       const query = new URLSearchParams({ tema:metric.meta.theme, indicatore:metricKey });
-      const href = route(`comuni/${row.slug}/?${query}`);
+      const rowSlug=row.slug || normalize(row.town).replaceAll(' ','-');
+      const href=route(`comuni/${rowSlug}/?${query}`);
       return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue,row.displayUnit))}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue,row.displayUnit))}</span></span><strong>${html(formatValue(row.displayValue,row.displayUnit))}</strong></a>`;
     }).join('');
   }
@@ -605,8 +612,8 @@
     const distributionSummary = compositeType === 'distribution' ? compositeAggregateSummary(metric) : null;
     const controls = selectableComposite ? '' : (hasNormalized ? `<div class="scale-switch" role="group" aria-label="Scala"><button type="button" data-scale="raw" class="${normalized ? '' : 'active'}">Valore assoluto</button><button type="button" data-scale="normalized" class="${normalized ? 'active' : ''}">Rapportato</button></div>` : '');
     const chartControls = selectableComposite ? compositeCompareControls(metric,view.choice,view.scale) : '';
-    const definitionControls = metric.meta.detailGroup === 'tpl' ? '' : controls;
-    const chartScaleControls = metric.meta.detailGroup === 'tpl' ? controls : '';
+    const definitionControls = '';
+    const chartScaleControls = controls;
     const summaryLabel = distributionSummary ? distributionSummary.label : aggregate.label;
     const summaryValue = distributionSummary ? distributionSummary.formatted : formatValue(aggregate.value,unit);
     def.innerHTML = `${definitionControls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
@@ -616,7 +623,7 @@
       const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
       bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;
     } else {
-      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="tpl-chart-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
+      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
     }
 
     if (metric.meta.detailGroup === 'tpl') bars.insertAdjacentHTML('beforeend', tplCompareDetailMarkup(data));
