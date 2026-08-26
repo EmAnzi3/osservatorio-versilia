@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "lot": "Agricoltura e territorio",
+  "referenceYear": 2020,
+  "cropReference": "annata agraria 2019/2020",
+  "retrievedOn": "2026-08-26",
+  "sources": {
+    "farmsAndAreas": {
+      "publisher": "Istat",
+      "flow": "DF_DCAT_CENSAGRIC2020_SURF_ALL",
+      "perspective": "centro aziendale",
+      "query": "https://esploradati.istat.it/SDMXWS/rest/data/DF_DCAT_CENSAGRIC2020_SURF_ALL/A.046005+046013+046018+046024+046028+046030+046033.HO+ARU+FUAA/IT1?startPeriod=2020&endPeriod=2020"
+    },
+    "localizedCrops": {
+      "publisher": "Istat",
+      "flow": "DF_DCAT_CENSAGRIC2020_UA_CROPS_2",
+      "perspective": "Comune di localizzazione dei terreni",
+      "query": "https://esploradati.istat.it/SDMXWS/rest/data/DF_DCAT_CENSAGRIC2020_UA_CROPS_2/A.046005+046013+046018+046024+046028+046030+046033.ARU.ALL+ARLAND+OLIVOOILTR+OLIVTTR+VINEY+PGRAPM.TOT/IT1?startPeriod=2020&endPeriod=2020"
+    },
+    "irrigation": {
+      "publisher": "Istat",
+      "flow": "DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS",
+      "perspective": "centro aziendale",
+      "query": "https://esploradati.istat.it/SDMXWS/rest/data/DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS/A.046005+046013+046018+046024+046028+046030+046033.IA/IT1?startPeriod=2020&endPeriod=2020"
+    },
+    "municipalArea": {
+      "publisher": "Istat — SITUAS",
+      "report": "Comuni - Dimensione",
+      "referenceDate": "2020-12-31",
+      "query": "https://situas-servizi.istat.it/publish/reportspooljson?pfun=74&pdata=31/12/2020"
+    }
+  },
+  "definitions": {
+    "HO": "Numero di aziende agricole con centro aziendale nel Comune",
+    "ARU": "Superficie agricola utilizzata, ettari",
+    "FUAA": "Aziende con superficie agricola utilizzata",
+    "IA": "Superficie irrigata almeno una volta nell'annata agraria di riferimento, ettari",
+    "ARLAND": "Seminativi",
+    "OLIVOOILTR": "Olivo per produzione di olive da olio",
+    "OLIVTTR": "Olive da tavola",
+    "VINEY": "Vite",
+    "PGRAPM": "Prati permanenti e pascoli"
+  },
+  "missingPolicy": "Una riga assente dalla fonte resta null/n.d.; non viene trasformata in zero né stimata.",
+  "coveragePolicy": {
+    "defaultMinimum": "6/7",
+    "explicitException": {
+      "crop": "OLIVTTR",
+      "minimum": "4/7",
+      "reason": "Eccezione approvata esplicitamente prima della pubblicazione; le righe assenti restano n.d."
+    }
+  },
+  "towns": {
+    "046005": {
+      "name": "Camaiore",
+      "farms": 319,
+      "sauCenterHa": 699.11,
+      "farmsWithSau": 314,
+      "sauLocalizedHa": 589.78,
+      "municipalAreaKm2": 85.4275,
+      "irrigatedAreaHa": 126.58,
+      "cropsHa": {"ARLAND": 342.64, "OLIVOOILTR": 115.45, "OLIVTTR": 0.3, "VINEY": 9.42, "PGRAPM": 85.78}
+    },
+    "046013": {
+      "name": "Forte dei Marmi",
+      "farms": 7,
+      "sauCenterHa": 22.76,
+      "farmsWithSau": 7,
+      "sauLocalizedHa": 19.29,
+      "municipalAreaKm2": 9.1872,
+      "irrigatedAreaHa": 0.6,
+      "cropsHa": {"ARLAND": 0.83, "OLIVOOILTR": 0.6, "OLIVTTR": null, "VINEY": null, "PGRAPM": 16.92}
+    },
+    "046018": {
+      "name": "Massarosa",
+      "farms": 192,
+      "sauCenterHa": 985.12,
+      "farmsWithSau": 191,
+      "sauLocalizedHa": 1370.61,
+      "municipalAreaKm2": 68.2379,
+      "irrigatedAreaHa": 241.67,
+      "cropsHa": {"ARLAND": 888.46, "OLIVOOILTR": 165.77, "OLIVTTR": 0.23, "VINEY": 4.09, "PGRAPM": 274.85}
+    },
+    "046024": {
+      "name": "Pietrasanta",
+      "farms": 187,
+      "sauCenterHa": 384.95,
+      "farmsWithSau": 180,
+      "sauLocalizedHa": 329.33,
+      "municipalAreaKm2": 42.1153,
+      "irrigatedAreaHa": 44.84,
+      "cropsHa": {"ARLAND": 173.68, "OLIVOOILTR": 104.87, "OLIVTTR": 0.1, "VINEY": 3.96, "PGRAPM": 28.63}
+    },
+    "046028": {
+      "name": "Seravezza",
+      "farms": 64,
+      "sauCenterHa": 95.54,
+      "farmsWithSau": 62,
+      "sauLocalizedHa": 86.33,
+      "municipalAreaKm2": 39.4678,
+      "irrigatedAreaHa": 11.3,
+      "cropsHa": {"ARLAND": 28.79, "OLIVOOILTR": 21.76, "OLIVTTR": 1.0, "VINEY": 5.38, "PGRAPM": 22.48}
+    },
+    "046030": {
+      "name": "Stazzema",
+      "farms": 44,
+      "sauCenterHa": 139.47,
+      "farmsWithSau": 42,
+      "sauLocalizedHa": 175.32,
+      "municipalAreaKm2": 80.1265,
+      "irrigatedAreaHa": 2.92,
+      "cropsHa": {"ARLAND": 54.62, "OLIVOOILTR": 5.58, "OLIVTTR": null, "VINEY": 0.45, "PGRAPM": 99.38}
+    },
+    "046033": {
+      "name": "Viareggio",
+      "farms": 146,
+      "sauCenterHa": 578.6,
+      "farmsWithSau": 141,
+      "sauLocalizedHa": 297.78,
+      "municipalAreaKm2": 32.5275,
+      "irrigatedAreaHa": 95.85,
+      "cropsHa": {"ARLAND": 228.37, "OLIVOOILTR": 6.82, "OLIVTTR": null, "VINEY": 1.07, "PGRAPM": 13.46}
+    }
+  },
+  "derivations": {
+    "sauTerritoryShare": "sauLocalizedHa / (municipalAreaKm2 * 100) * 100",
+    "averageFarmSize": "sauCenterHa / farmsWithSau",
+    "irrigatedSauShare": "irrigatedAreaHa / sauCenterHa * 100",
+    "aggregatePolicy": "Gli aggregati Versilia sono rapporti tra somme dei numeratori e somme dei denominatori; non medie semplici delle percentuali comunali."
+  },
+  "verification": {
+    "githubActionsRun": "https://github.com/EmAnzi3/osservatorio-versilia/actions/runs/32983797355",
+    "result": "success"
+  }
+}
