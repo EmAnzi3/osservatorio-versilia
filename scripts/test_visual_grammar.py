@@ -291,7 +291,7 @@ def browser_checks() -> None:
         page.goto(base + "comuni/massarosa/?tema=istruzione&indicatore=diplomaPlus", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
-        assert overline_text == "rispetto alla versilia", f"Etichetta inattesa: {overline_text!r}"
+        assert overline_text == "rispetto alla media versilia", f"Etichetta inattesa: {overline_text!r}"
         position_text = page.locator(".versilia-position").inner_text().lower()
         assert "su 7" not in position_text
         assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
