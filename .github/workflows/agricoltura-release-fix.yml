@@ -1,0 +1,82 @@
+name: Agricoltura · allinea gate release v1.20
+
+on:
+  push:
+    branches: ["feat/agricoltura-territorio"]
+
+permissions:
+  contents: write
+
+jobs:
+  patch-release-gates:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Allinea i soli contratti globali di release
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          patches = {
+            'scripts/test_costi_fiscalita_redditi_draft.py': [
+              ("assert DATA['version']=='v1.19.0'", "assert DATA['version']=='v1.20.0'"),
+              ("REG['expectedMetricCount']==149 and REG['expectedInlineMetricCount']==145", "REG['expectedMetricCount']==154 and REG['expectedInlineMetricCount']==150"),
+              ("149 indicatori = 145 inline + 4 esterni", "154 indicatori = 150 inline + 4 esterni"),
+            ],
+            'scripts/test_demography_lotto_a_materialized.py': [
+              ("assert SITE['version'] == 'v1.19.0'", "assert SITE['version'] == 'v1.20.0'"),
+              ("assert len(SITE['metrics']) == 149", "assert len(SITE['metrics']) == 154"),
+              ("assert REGISTRY['expectedMetricCount'] == 149", "assert REGISTRY['expectedMetricCount'] == 154"),
+              ("assert REGISTRY['expectedInlineMetricCount'] == 145", "assert REGISTRY['expectedInlineMetricCount'] == 150"),
+              ("catalogo v1.19 con 149 metriche", "catalogo v1.20 con 154 metriche"),
+            ],
+            'scripts/test_demography_lotto_a_v5.py': [
+              ("require(len(SITE['metrics']) == 149", "require(len(SITE['metrics']) == 154"),
+            ],
+            'scripts/test_income_lotto_a_v2.py': [
+              ("require(SITE['version'] == 'v1.19.0'", "require(SITE['version'] == 'v1.20.0'"),
+              ("require(len(SITE['metrics']) == 149", "require(len(SITE['metrics']) == 154"),
+              ("require(REGISTRY['expectedMetricCount'] == 149", "require(REGISTRY['expectedMetricCount'] == 154"),
+              ("require(REGISTRY['expectedInlineMetricCount'] == 145", "require(REGISTRY['expectedInlineMetricCount'] == 150"),
+            ],
+            'scripts/test_fiscal_lotto_b.py': [
+              ("require(len(site['metrics']) == 149", "require(len(site['metrics']) == 154"),
+              ("registry['expectedMetricCount'] == 149", "registry['expectedMetricCount'] == 154"),
+              ("Registry non riallineato a 149", "Registry non riallineato a 154"),
+              ("registry['expectedInlineMetricCount'] == 145", "registry['expectedInlineMetricCount'] == 150"),
+              ("Inline count non riallineato a 145", "Inline count non riallineato a 150"),
+            ],
+            'scripts/test_amministrazione_lotto_a.py': [
+              ('assert len(site["metrics"]) == 149', 'assert len(site["metrics"]) == 154'),
+              ('Attesi 149 indicatori', 'Attesi 154 indicatori'),
+              ('registry["expectedMetricCount"] == 149', 'registry["expectedMetricCount"] == 154'),
+              ('registry["expectedInlineMetricCount"] == 145', 'registry["expectedInlineMetricCount"] == 150'),
+              ('Amministrazione verificata: 149 indicatori', 'Amministrazione verificata: 154 indicatori'),
+            ],
+            'scripts/test_mobilita_tpl_v119.py': [
+              ('assert SITE["version"] == "v1.19.0"', 'assert SITE["version"] == "v1.20.0"'),
+              ('REGISTRY["expectedMetricCount"] == 149', 'REGISTRY["expectedMetricCount"] == 154'),
+              ('REGISTRY["expectedInlineMetricCount"] == 145', 'REGISTRY["expectedInlineMetricCount"] == 150'),
+            ],
+          }
+
+          for filename, replacements in patches.items():
+            path = Path(filename)
+            text = path.read_text(encoding='utf-8')
+            for old, new in replacements:
+              if old not in text:
+                raise SystemExit(f"Token atteso non trovato in {filename}: {old}")
+              text = text.replace(old, new, 1)
+            path.write_text(text, encoding='utf-8')
+
+          print('Gate storici riallineati al contratto globale v1.20.0.')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/test_costi_fiscalita_redditi_draft.py scripts/test_demography_lotto_a_materialized.py scripts/test_demography_lotto_a_v5.py scripts/test_income_lotto_a_v2.py scripts/test_fiscal_lotto_b.py scripts/test_amministrazione_lotto_a.py scripts/test_mobilita_tpl_v119.py
+          git commit -m "test(release): allinea gate storici al catalogo v1.20.0"
+          git push origin HEAD:feat/agricoltura-territorio
