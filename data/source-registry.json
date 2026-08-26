@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 149,
-  "expectedInlineMetricCount": 145,
+  "expectedMetricCount": 154,
+  "expectedInlineMetricCount": 150,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -376,6 +376,15 @@
       "acquisitionMethod": "Download dei GTFS ufficiali Autolinee Toscane e Trenitalia; selezione del calendario della data di riferimento; join spaziale dei punti di accesso ai confini comunali Istat 2026; conteggi senza stime.",
       "licenseName": "CC BY",
       "licenseUrl": "https://dati.toscana.it/dataset/rt-oraritb"
+    },
+    "istat-agriculture-census-2020": {
+      "publisher": "Istat",
+      "frequency": "census_or_irregular",
+      "frequencyLabel": "Censuaria o irregolare",
+      "expectedRelease": "Quando Istat pubblica una nuova base comunale omogenea del Censimento/struttura agricola",
+      "acquisitionMethod": "Interrogazione IstatData SDMX del 7° Censimento Agricoltura 2020; distinzione tra dati per centro aziendale e localizzazione dei terreni; superficie comunale SITUAS 31/12/2020 per la quota territoriale; nessuna stima dei valori mancanti.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
     }
   },
   "sourceProfileByUrl": {
@@ -432,7 +441,9 @@
     "https://dati.toscana.it/dataset/rt-oraritb": "regione-toscana-gtfs-scheduled",
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": "regione-toscana-gtfs-scheduled",
     "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
-    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled"
+    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled",
+    "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/": "istat-agriculture-census-2020",
+    "https://situas.istat.it/": "istat-agriculture-census-2020"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -547,6 +558,21 @@
     },
     "tplServiceSpan": {
       "profile": "regione-toscana-gtfs-scheduled"
+    },
+    "agriculturalFarms": {
+      "profile": "istat-agriculture-census-2020"
+    },
+    "agriculturalUsedArea": {
+      "profile": "istat-agriculture-census-2020"
+    },
+    "averageAgriculturalFarmSize": {
+      "profile": "istat-agriculture-census-2020"
+    },
+    "cropProfile": {
+      "profile": "istat-agriculture-census-2020"
+    },
+    "irrigatedAgriculturalArea": {
+      "profile": "istat-agriculture-census-2020"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -569,6 +595,8 @@
     "https://dati.toscana.it/dataset/rt-oraritb": "regione-toscana-gtfs-scheduled",
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": "regione-toscana-gtfs-scheduled",
     "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
-    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled"
+    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled",
+    "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/": "istat-agriculture-census-2020",
+    "https://situas.istat.it/": "istat-agriculture-census-2020"
   }
 }

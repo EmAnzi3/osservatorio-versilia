@@ -47,10 +47,10 @@ def seconds(value: str) -> int:
 
 
 def main() -> None:
-    assert SITE["version"] == "v1.19.0"
+    assert SITE["version"] == "v1.20.0"
     assert SITE["updated"] == "26 agosto 2026"
-    assert len(SITE["metrics"]) == REGISTRY["expectedMetricCount"] == 149
-    assert REGISTRY["expectedInlineMetricCount"] == 145
+    assert len(SITE["metrics"]) == REGISTRY["expectedMetricCount"] == 154
+    assert REGISTRY["expectedInlineMetricCount"] == 150
     assert REGISTRY["expectedExternalMetricCount"] == 4
 
     assert SNAP["snapshotVersion"] == "2026-08-26-v3"
@@ -159,8 +159,8 @@ def main() -> None:
         '<span>Bus</span>',
         '<span>Ferrovia</span>',
         '<span>Finestra di servizio</span>',
-        "const definitionControls = metric.meta.detailGroup === 'tpl'",
-        'class="tpl-chart-toolbar"',
+        "const definitionControls = '';",
+        'class="compare-chart-toolbar scale-toolbar"',
         "deepDiveMarkup(data, town, themeKey, metricKey)",
         "if (!isFlow) return '';",
     ):

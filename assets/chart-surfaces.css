@@ -267,3 +267,21 @@
     box-shadow: none !important;
   }
 }
+
+
+/* v1.20 review: switch di scala accanto al grafico */
+#compare-bars .compare-chart-toolbar.scale-toolbar {
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  min-width:0;
+  margin:0 0 18px;
+}
+#compare-bars .compare-chart-toolbar.scale-toolbar .scale-switch {
+  width:min(100%,430px);
+  margin:0;
+}
+@media (max-width:1000px) {
+  #compare-bars .compare-chart-toolbar.scale-toolbar { justify-content:stretch; }
+  #compare-bars .compare-chart-toolbar.scale-toolbar .scale-switch { width:100%; }
+}

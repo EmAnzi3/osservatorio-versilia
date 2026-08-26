@@ -59,8 +59,13 @@ def main():
     registry = load('data/source-registry.json')
     # Il gate Scuola verifica il contratto globale corrente senza congelarlo
     # alla release in cui il lotto MIM è stato introdotto.
-    assert registry['expectedMetricCount'] == 149
-    assert registry['expectedInlineMetricCount'] == 145
+    external = sum(
+        metric.get('dataStorage', {}).get('type') == 'external-climate'
+        for metric in site['metrics'].values()
+    )
+    assert registry['expectedMetricCount'] == len(site['metrics'])
+    assert registry['expectedExternalMetricCount'] == external == 4
+    assert registry['expectedInlineMetricCount'] == len(site['metrics']) - external
     for key in KEYS:
         assert registry['metricOverrides'][key]['profile'] == 'mim-school-year'
 

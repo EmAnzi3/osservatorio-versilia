@@ -24,8 +24,9 @@
     const max = Math.max(...rows.map(r => Number(r.displayValue) || 0), 0.0001);
     return rows.map((row, index) => {
       const query = new URLSearchParams({ tema: data.metrics[metricKey].meta.theme, indicatore: metricKey });
-      const href = route(`comuni/${row.slug}/?${query}`);
-      return `<a href="${href}" class="bar-row ${row.slug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
+      const rowSlug = row.slug || normalize(row.town).replaceAll(' ', '-');
+      const href = route(`comuni/${rowSlug}/?${query}`);
+      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
         <span class="bar-rank">${index + 1}</span><span class="bar-town">${html(row.town)}</span>
         <span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
           <span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue, row.displayUnit))}</span></span>

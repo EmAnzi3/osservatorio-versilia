@@ -126,6 +126,8 @@
     if (token === 'currency' || token === 'currency2' || token === 'eur' || token === '€') return 'currency';
     if (token === 'eurliter' || token === '€/l') return 'eurliter';
     if (token === 'eurperresident' || token === '€/ab' || token === '€/ab.') return 'eurperresident';
+    if (token === 'hectares' || token === 'ha') return 'hectares';
+    if (token === 'hectaresperfarm' || token === 'ha/azienda') return 'hectares-per-farm';
     return token;
   }
 
@@ -161,7 +163,10 @@
   }
 
   function aggregateFor(metric, normalized) {
-    return normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate;
+    const values = (metric?.rows || []).map(row => valueFor(row, metric, normalized)).map(finite).filter(value => value !== null);
+    if (!values.length) return normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate;
+    const value = values.reduce((sum,item) => sum + item, 0) / values.length;
+    return { value, label:`Media semplice dei ${values.length} comuni`, note:'Ogni comune con dato disponibile pesa allo stesso modo.' };
   }
 
   function finite(value) {
@@ -204,6 +209,8 @@
     if (kind === 'per10k') return `${formatted} ogni 10.000`;
     if (kind === 'eurm2') return `${formatted} €/m²`;
     if (kind === 'rentm2') return `${formatted} €/m²/mese`;
+    if (kind === 'hectares') return `${formatted} ha`;
+    if (kind === 'hectares-per-farm') return `${formatted} ha/azienda`;
     return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
   }
 
@@ -285,17 +292,23 @@
   function deltaFor(metric, row, metricKey = '') {
     const distribution = metric?.meta?.compositeType === 'distribution';
     const local = finite(distribution && row?.summaryValue !== undefined ? row.summaryValue : row?.value);
-    const aggregate = finite(distribution && metric?.aggregate?.summaryValue !== undefined ? metric.aggregate.summaryValue : metric?.aggregate?.value);
+    const meanReference = aggregateFor(metric, false);
+    const summaryValues = distribution ? (metric?.rows || []).map(item => finite(item?.summaryValue)).filter(value => value !== null) : [];
+    const aggregate = finite(distribution ? (summaryValues.length ? summaryValues.reduce((sum,value)=>sum+value,0)/summaryValues.length : null) : meanReference?.value);
     if (local === null || aggregate === null) {
       return { headline: 'n.d.', direction: 'confronto non disponibile', compact: 'confronto non disponibile' };
     }
 
     const key = metricKey || metric?.meta?.key || '';
     if (key === 'population') {
-      if (aggregate <= 0) {
+      const populationValues = (metric?.rows || [])
+        .map(item => finite(item?.value))
+        .filter(value => value !== null);
+      const populationTotal = populationValues.reduce((sum, value) => sum + value, 0);
+      if (populationTotal <= 0) {
         return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: 'Quota sulla Versilia' };
       }
-      const share = local / aggregate * 100;
+      const share = local / populationTotal * 100;
       const formattedShare = number1.format(share);
       return {
         headline: `${formattedShare}%`,
@@ -309,13 +322,13 @@
     const kind = unitKind(distribution ? metric?.meta?.summaryUnit : metric?.meta?.unit);
     if (kind === 'percent' || kind === 'percentage-points') {
       const diff = local - aggregate;
-      if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: 'in linea con Versilia' };
+      if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: 'in linea con la media Versilia' };
       const sign = diff > 0 ? '+' : '−';
       const abs = number1.format(Math.abs(diff));
       return {
         headline: `${sign}${abs} punti`,
-        direction: diff > 0 ? 'sopra la Versilia' : 'sotto la Versilia',
-        compact: `${sign}${abs} p.p. vs Versilia`,
+        direction: diff > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',
+        compact: `${sign}${abs} p.p. vs media Versilia`,
       };
     }
 
@@ -323,19 +336,19 @@
       const diff = local - aggregate;
       return {
         headline: formatAxis(diff, metric.meta.unit),
-        direction: diff === 0 ? 'in linea' : diff > 0 ? 'sopra la Versilia' : 'sotto la Versilia',
+        direction: diff === 0 ? 'in linea' : diff > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',
         compact: 'confronto con Versilia',
       };
     }
 
     const relative = ((local / aggregate) - 1) * 100;
-    if (Math.abs(relative) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: 'in linea con Versilia' };
+    if (Math.abs(relative) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: 'in linea con la media Versilia' };
     const sign = relative > 0 ? '+' : '−';
     const abs = number1.format(Math.abs(relative));
     return {
       headline: `${sign}${abs}%`,
-      direction: relative > 0 ? 'sopra la Versilia' : 'sotto la Versilia',
-      compact: `${sign}${abs}% vs Versilia`,
+      direction: relative > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',
+      compact: `${sign}${abs}% vs media Versilia`,
     };
   }
 
@@ -343,13 +356,13 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile'].includes(type)) return null;
     // demographicBreakdown visual selection: usa la cella selezionata, non il valore base 25–64 Totale.
     if (type === 'demographicBreakdown') {
       const part = (row?.parts || []).find(item => item.key === choice) || {};
       return { value: part.value, unit: part.unit || metric?.meta?.unit || 'percent' };
     }
-    if (type === 'securityMeasures') {
+    if (type === 'securityMeasures' || type === 'agricultureProfile') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
       const part = row?.parts?.[index] || {};
       return { value: part.value, unit: part.unit || metric?.meta?.unit || '' };
@@ -371,10 +384,16 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile'].includes(type)) return null;
     if (type === 'demographicBreakdown') {
       const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || {};
       return { value: part.value, label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`, unit: part.unit || metric?.meta?.unit || 'percent' };
+    }
+    if (type === 'agricultureProfile') {
+      const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+      const part = metric.aggregate?.parts?.[index] || {};
+      const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.value)).filter(value => value !== null);
+      return { value: values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, label:`Media semplice dei ${values.length} comuni · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
     }
     if (type === 'securityMeasures') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
@@ -537,11 +556,11 @@
     const metric = data.metrics?.[metricKey];
     const row = townRow(metric, townName);
     if (!metric || !row) return;
-    if (metric.meta?.compositeType === 'distribution') return;
+    if (['distribution','agricultureProfile'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
-    const overlineText = delta.overline || 'Rispetto alla Versilia';
-    const noteText = delta.note || 'Il confronto con la Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.';
+    const overlineText = delta.overline || 'Rispetto alla media Versilia';
+    const noteText = delta.note || 'Il confronto con la media dei Comuni della Versilia descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.';
     const signature = `${metricKey}|${delta.headline}|${delta.direction}|${overlineText}|${noteText}`;
     if (panel.dataset.visualGrammarSignature === signature) return;
     panel.dataset.visualGrammarSignature = signature;

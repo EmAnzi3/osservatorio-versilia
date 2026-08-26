@@ -49,6 +49,7 @@ jobs:
           python scripts/test_amministrazione_lotto_a.py
           python scripts/test_lavoro_istruzione_eta_genere.py
           python scripts/test_mobilita_tpl_v119.py
+          python scripts/test_agricoltura_territorio_v120.py
           node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-registry.json > /dev/null
@@ -61,6 +62,7 @@ jobs:
           python -m json.tool data/source-snapshots/rgs-formazione-2024.json > /dev/null
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
           python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null
+          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
@@ -119,6 +121,9 @@ jobs:
           python scripts/test_mobilita_tpl_v119_browser.py \
             --base http://127.0.0.1:8123/ \
             --screenshots-dir reports/mobilita-v119-browser
+
+      - name: Validate Agricoltura e territorio interactions
+        run: python scripts/test_agricoltura_review_interactions_v120.py
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -248,6 +253,9 @@ jobs:
             scripts/test_lavoro_istruzione_versilia_pyramid_browser.py \
             scripts/materialize_mobilita_tpl_v119.py \
             scripts/test_mobilita_tpl_v119.py \
+            scripts/materialize_agricoltura_territorio_v120.py \
+            scripts/test_agricoltura_territorio_v120.py \
+            scripts/test_agricoltura_review_interactions_v120.py \
             scripts/test_mobilita_tpl_v119_browser.py \
             scripts/test_percorsi_mobile_list_contract.py \
             scripts/finalize_catalog_release.py \

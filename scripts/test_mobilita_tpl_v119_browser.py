@@ -222,7 +222,7 @@ def main() -> None:
         assert "Punti di accesso GTFS attivi" in body
         assert all(town in body for town in TOWNS)
 
-        toolbar = page.locator("#compare-bars .tpl-chart-toolbar")
+        toolbar = page.locator("#compare-bars .compare-chart-toolbar.scale-toolbar")
         assert toolbar.count() == 1
         assert page.locator("#compare-definition .scale-switch").count() == 0
         assert toolbar.locator('[data-scale="raw"]').count() == 1
@@ -251,7 +251,7 @@ def main() -> None:
         normalized_definition = page.locator("#compare-definition").inner_text()
         assert "ogni 1.000" in normalized_definition
         assert "Media ponderata dei 7 Comuni" in normalized_definition
-        assert page.locator("#compare-bars .tpl-chart-toolbar").count() == 1
+        assert page.locator("#compare-bars .compare-chart-toolbar.scale-toolbar").count() == 1
         assert page.locator("#compare-definition .scale-switch").count() == 0
         assert "5,40 ogni 1.000" in normalized_definition
 
@@ -268,7 +268,7 @@ def main() -> None:
         page.wait_for_timeout(650)
         assert_no_overflow(page, "confronto 1024")
         assert_visible_metric_controls_not_clipped(page)
-        assert page.locator("#compare-bars .tpl-chart-toolbar").count() == 1
+        assert page.locator("#compare-bars .compare-chart-toolbar.scale-toolbar").count() == 1
         screenshot(page, shots, "03-confronto-accessi-1024.png")
         mid.close()
 
@@ -315,7 +315,7 @@ def main() -> None:
         page.goto(urljoin(base, f"confronta/mobilita/?indicatore={ACCESS}"), wait_until="networkidle")
         page.wait_for_timeout(700)
         assert_no_overflow(page, "confronto mobile")
-        assert page.locator("#compare-bars .tpl-chart-toolbar").count() == 1
+        assert page.locator("#compare-bars .compare-chart-toolbar.scale-toolbar").count() == 1
         detail = page.locator(".tpl-compare-detail")
         assert_element_not_clipped(detail.locator("summary"), "summary dettaglio mobile")
         assert_tpl_service_table(detail, mobile=True)

@@ -1,5 +1,5 @@
 {
-  "version": "v1.19.0",
+  "version": "v1.20.0",
   "updated": "26 agosto 2026",
   "themes": {
     "demografia": {
@@ -557,21 +557,26 @@
       "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Clima, suolo, rifiuti, agricoltura biologica ed esposizione concreta ai rischi idrogeologici.",
+      "description": "Clima, suolo, rifiuti, agricoltura e uso del territorio, coltivazioni biologiche ed esposizione concreta ai rischi idrogeologici.",
       "metrics": [
         "landUse",
         "landUseChange",
         "floodExposure",
         "landslideExposure",
+        "climateTemperatureTrend50y",
+        "climatePrecipitationTrend50y",
+        "climateTminTrend",
+        "climateTmaxTrend",
+        "agriculturalFarms",
+        "agriculturalUsedArea",
+        "averageAgriculturalFarmSize",
+        "cropProfile",
+        "irrigatedAgriculturalArea",
         "organicAgriculturalAreaShare",
         "recycling",
         "wastePerResident",
         "wasteServiceCost",
-        "residualWaste",
-        "climateTemperatureTrend50y",
-        "climatePrecipitationTrend50y",
-        "climateTminTrend",
-        "climateTmaxTrend"
+        "residualWaste"
       ],
       "sections": [
         {
@@ -599,8 +604,13 @@
         {
           "key": "agricoltura",
           "label": "Agricoltura e territorio",
-          "description": "Diffusione delle coltivazioni biologiche sulla superficie agricola utilizzata.",
+          "description": "Aziende, SAU, dimensione aziendale, colture, irrigazione e diffusione del biologico, distinguendo centro aziendale e localizzazione dei terreni.",
           "metrics": [
+            "agriculturalFarms",
+            "agriculturalUsedArea",
+            "averageAgriculturalFarmSize",
+            "cropProfile",
+            "irrigatedAgriculturalArea",
             "organicAgriculturalAreaShare"
           ]
         },
@@ -23137,6 +23147,897 @@
         "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
         "caveat": "Esplicitare denominatori e possibili differenze tra produzione, raccolta e costo del servizio.",
         "coverage": "7/7"
+      }
+    },
+    "agriculturalFarms": {
+      "meta": {
+        "key": "agriculturalFarms",
+        "theme": "ambiente",
+        "label": "Aziende agricole",
+        "shortLabel": "Aziende agricole",
+        "description": "Numero di aziende con centro aziendale nel Comune al Censimento agricolo 2020.",
+        "unit": "number",
+        "year": "2020",
+        "source": "Istat — 7° Censimento generale dell'agricoltura 2020",
+        "update": "Censimento 2020 · coltivazioni riferite all'annata agraria 2019/2020",
+        "freshness": "Ultima base censuaria comunale omogenea disponibile",
+        "polarity": "neutral",
+        "context": "Agricoltura e territorio",
+        "keywords": [
+          "agricoltura",
+          "aziende agricole",
+          "imprese agricole",
+          "censimento agricoltura"
+        ],
+        "sortable": true,
+        "periodType": "census",
+        "detailGroup": "agricoltura",
+        "sourceMeta": {
+          "publisher": "Istat",
+          "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
+          "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        }
+      },
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 192,
+          "year": 2020
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 146,
+          "year": 2020
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 319,
+          "year": 2020
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 187,
+          "year": 2020
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 64,
+          "year": 2020
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 7,
+          "year": 2020
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 44,
+          "year": 2020
+        }
+      ],
+      "aggregate": {
+        "value": 959,
+        "label": "Versilia · totale",
+        "note": "Somma delle aziende con centro aziendale nei sette Comuni."
+      },
+      "method": {
+        "type": "Dato censuario Istat",
+        "formula": "Indicatore HO del dataflow DF_DCAT_CENSAGRIC2020_SURF_ALL, selezionato per i sette codici comunali.",
+        "caveat": "Il Comune è attribuito in base al centro aziendale; i terreni dell'azienda possono trovarsi anche in altri Comuni.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
+      }
+    },
+    "agriculturalUsedArea": {
+      "meta": {
+        "key": "agriculturalUsedArea",
+        "theme": "ambiente",
+        "label": "Superficie agricola utilizzata (SAU)",
+        "shortLabel": "SAU del territorio",
+        "description": "Superficie agricola utilizzata localizzata fisicamente nel territorio comunale. La lettura rapportata indica la quota della superficie comunale occupata da SAU.",
+        "unit": "hectares",
+        "year": "2020",
+        "source": "Istat — 7° Censimento generale dell'agricoltura 2020",
+        "update": "Censimento 2020 · coltivazioni riferite all'annata agraria 2019/2020",
+        "freshness": "Ultima base censuaria comunale omogenea disponibile",
+        "polarity": "neutral",
+        "context": "Agricoltura e territorio",
+        "keywords": [
+          "sau",
+          "superficie agricola",
+          "agricoltura",
+          "territorio",
+          "ettari"
+        ],
+        "sortable": true,
+        "periodType": "census",
+        "detailGroup": "agricoltura",
+        "sourceMeta": {
+          "publisher": "Istat",
+          "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
+          "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "normalized": {
+          "label": "Quota della superficie comunale occupata da SAU",
+          "description": "SAU localizzata nel Comune divisa per la superficie comunale Istat-SITUAS al 31 dicembre 2020.",
+          "unit": "percent"
+        }
+      },
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "sourceUrls": {
+        "agriculture": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+        "municipalArea": "https://situas.istat.it/"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1370.61,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 20.085758793866752,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 297.78,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 9.154715240949963,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 589.78,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 6.90386585116034,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 329.33,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 7.8197234734170245,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 86.33,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 2.187352728046661,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 19.29,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 2.09966039707419,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 175.32,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota della superficie comunale occupata da SAU",
+            "value": 2.1880401614946363,
+            "unit": "percent",
+            "year": 2020
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 2868.4399999999996,
+        "label": "Versilia · SAU localizzata",
+        "note": "Somma degli ettari di SAU localizzati nei sette Comuni."
+      },
+      "normalizedAggregate": {
+        "value": 8.032827606060884,
+        "label": "Versilia · quota di territorio in SAU",
+        "note": "Rapporto tra SAU localizzata complessiva e superficie complessiva dei sette Comuni, entrambe sul perimetro territoriale 2020."
+      },
+      "method": {
+        "type": "Dato Istat + rapporto territoriale Osservatorio Versilia",
+        "formula": "SAU territoriale: ARU/ALL del dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2. Quota % = SAU localizzata (ha) / [superficie comunale SITUAS 31/12/2020 (km²) × 100] × 100.",
+        "caveat": "Per evitare di attribuire al Comune terreni di aziende con centro altrove, la SAU usa la localizzazione dei terreni, non il centro aziendale. Il denominatore SITUAS è allineato al 2020.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
+      }
+    },
+    "averageAgriculturalFarmSize": {
+      "meta": {
+        "key": "averageAgriculturalFarmSize",
+        "theme": "ambiente",
+        "label": "Dimensione media delle aziende agricole",
+        "shortLabel": "Dimensione media aziendale",
+        "description": "SAU delle aziende con centro nel Comune divisa per il numero di aziende con SAU.",
+        "unit": "hectaresPerFarm",
+        "year": "2020",
+        "source": "Istat — 7° Censimento generale dell'agricoltura 2020",
+        "update": "Censimento 2020 · coltivazioni riferite all'annata agraria 2019/2020",
+        "freshness": "Ultima base censuaria comunale omogenea disponibile",
+        "polarity": "neutral",
+        "context": "Agricoltura e territorio",
+        "keywords": [
+          "dimensione azienda",
+          "ettari per azienda",
+          "sau",
+          "aziende con sau"
+        ],
+        "sortable": true,
+        "periodType": "census",
+        "detailGroup": "agricoltura",
+        "sourceMeta": {
+          "publisher": "Istat",
+          "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
+          "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        }
+      },
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 5.157696335078534,
+          "year": 2020
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 4.103546099290781,
+          "year": 2020
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 2.2264649681528663,
+          "year": 2020
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2.138611111111111,
+          "year": 2020
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 1.540967741935484,
+          "year": 2020
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 3.251428571428572,
+          "year": 2020
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 3.3207142857142857,
+          "year": 2020
+        }
+      ],
+      "aggregate": {
+        "value": 3.100907150480256,
+        "label": "Versilia · dimensione media",
+        "note": "Rapporto tra la somma della SAU delle aziende e la somma delle aziende con SAU; non media semplice delle medie comunali."
+      },
+      "method": {
+        "type": "Indicatore derivato da dati censuari Istat",
+        "formula": "ARU / FUAA: SAU delle aziende con centro nel Comune divisa per aziende con SAU.",
+        "caveat": "Il denominatore è il numero di aziende con SAU, non il totale delle aziende agricole.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
+      }
+    },
+    "cropProfile": {
+      "meta": {
+        "key": "cropProfile",
+        "theme": "ambiente",
+        "label": "Profilo delle colture",
+        "shortLabel": "Profilo colture",
+        "description": "Superficie delle principali colture localizzata nel territorio comunale. Seleziona la coltura per confrontare gli ettari.",
+        "unit": "hectares",
+        "year": "2020",
+        "source": "Istat — 7° Censimento generale dell'agricoltura 2020",
+        "update": "Censimento 2020 · coltivazioni riferite all'annata agraria 2019/2020",
+        "freshness": "Ultima base censuaria comunale omogenea disponibile",
+        "polarity": "neutral",
+        "context": "Agricoltura e territorio",
+        "keywords": [
+          "colture",
+          "seminativi",
+          "olivo",
+          "olive",
+          "vite",
+          "pascoli",
+          "agricoltura"
+        ],
+        "sortable": true,
+        "periodType": "census",
+        "detailGroup": "agricoltura",
+        "sourceMeta": {
+          "publisher": "Istat",
+          "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
+          "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "compositeType": "agricultureProfile",
+        "selectorLabel": "Coltura"
+      },
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1370.61,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 888.46,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 165.77,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.23,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 4.09,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 274.85,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 297.78,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 228.37,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 6.82,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 1.07,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 13.46,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 589.78,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 342.64,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 115.45,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.3,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 9.42,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 85.78,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 329.33,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 173.68,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 104.87,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 0.1,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 3.96,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 28.63,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 86.33,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 28.79,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 21.76,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": 1.0,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 5.38,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 22.48,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 19.29,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 0.83,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 0.6,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": null,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 16.92,
+              "unit": "hectares"
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 175.32,
+          "year": 2020,
+          "parts": [
+            {
+              "key": "ARLAND",
+              "label": "Seminativi",
+              "selectorLabel": "Seminativi",
+              "value": 54.62,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVOOILTR",
+              "label": "Olivo da olio",
+              "selectorLabel": "Olivo da olio",
+              "value": 5.58,
+              "unit": "hectares"
+            },
+            {
+              "key": "OLIVTTR",
+              "label": "Olive da tavola",
+              "selectorLabel": "Olive da tavola",
+              "value": null,
+              "unit": "hectares"
+            },
+            {
+              "key": "VINEY",
+              "label": "Vite",
+              "selectorLabel": "Vite",
+              "value": 0.45,
+              "unit": "hectares"
+            },
+            {
+              "key": "PGRAPM",
+              "label": "Prati permanenti e pascoli",
+              "selectorLabel": "Prati permanenti e pascoli",
+              "value": 99.38,
+              "unit": "hectares"
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 2868.4399999999996,
+        "label": "Versilia · profilo colture",
+        "parts": [
+          {
+            "key": "ARLAND",
+            "label": "Seminativi",
+            "selectorLabel": "Seminativi",
+            "value": 1717.39,
+            "availableValue": 1717.39,
+            "coverage": "7/7",
+            "unit": "hectares"
+          },
+          {
+            "key": "OLIVOOILTR",
+            "label": "Olivo da olio",
+            "selectorLabel": "Olivo da olio",
+            "value": 420.85,
+            "availableValue": 420.85,
+            "coverage": "7/7",
+            "unit": "hectares"
+          },
+          {
+            "key": "OLIVTTR",
+            "label": "Olive da tavola",
+            "selectorLabel": "Olive da tavola",
+            "value": 1.63,
+            "availableValue": 1.63,
+            "coverage": "4/7",
+            "unit": "hectares"
+          },
+          {
+            "key": "VINEY",
+            "label": "Vite",
+            "selectorLabel": "Vite",
+            "value": 24.37,
+            "availableValue": 24.37,
+            "coverage": "6/7",
+            "unit": "hectares"
+          },
+          {
+            "key": "PGRAPM",
+            "label": "Prati permanenti e pascoli",
+            "selectorLabel": "Prati permanenti e pascoli",
+            "value": 541.5,
+            "availableValue": 541.5,
+            "coverage": "7/7",
+            "unit": "hectares"
+          }
+        ],
+        "note": "Il totale di ciascuna coltura è la somma dei Comuni con dato disponibile; la copertura è dichiarata e i Comuni senza riga restano n.d."
+      },
+      "method": {
+        "type": "Dato censuario Istat per localizzazione dei terreni",
+        "formula": "ARU per TYPE_OF_CROP nel dataflow DF_DCAT_CENSAGRIC2020_UA_CROPS_2: ARLAND, OLIVOOILTR, OLIVTTR, VINEY, PGRAPM.",
+        "caveat": "Una riga assente non è interpretata come zero. Vite: 6/7 (Forte dei Marmi n.d.). Olive da tavola: eccezione approvata 4/7; Forte dei Marmi, Stazzema e Viareggio restano n.d.",
+        "coverage": "7/7 seminativi, olivo da olio e prati/pascoli; 6/7 vite; 4/7 olive da tavola (eccezione approvata)",
+        "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
+      }
+    },
+    "irrigatedAgriculturalArea": {
+      "meta": {
+        "key": "irrigatedAgriculturalArea",
+        "theme": "ambiente",
+        "label": "Superficie irrigata",
+        "shortLabel": "SAU irrigata",
+        "description": "Superficie irrigata almeno una volta nell'annata agraria 2019/2020 dalle aziende con centro nel Comune. La lettura rapportata indica la quota sulla SAU delle stesse aziende.",
+        "unit": "hectares",
+        "year": "2020",
+        "source": "Istat — 7° Censimento generale dell'agricoltura 2020",
+        "update": "Censimento 2020 · coltivazioni riferite all'annata agraria 2019/2020",
+        "freshness": "Ultima base censuaria comunale omogenea disponibile",
+        "polarity": "neutral",
+        "context": "Agricoltura e territorio",
+        "keywords": [
+          "irrigazione",
+          "superficie irrigata",
+          "sau irrigata",
+          "acqua",
+          "agricoltura"
+        ],
+        "sortable": true,
+        "periodType": "census",
+        "detailGroup": "agricoltura",
+        "sourceMeta": {
+          "publisher": "Istat",
+          "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json",
+          "note": "Dati comunali ufficiali; nessuna stima dei valori mancanti."
+        },
+        "normalized": {
+          "label": "Quota di SAU irrigata",
+          "description": "Superficie irrigata divisa per la SAU delle aziende con centro nel Comune.",
+          "unit": "percent"
+        }
+      },
+      "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 241.67,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 24.532036706188077,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 95.85,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 16.56584860006913,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 126.58,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 18.105877472786826,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 44.84,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 11.648266008572543,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 11.3,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 11.827506803433117,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.6,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 2.636203866432337,
+            "unit": "percent",
+            "year": 2020
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 2.92,
+          "year": 2020,
+          "normalized": {
+            "label": "Quota di SAU irrigata",
+            "value": 2.093640209364021,
+            "unit": "percent",
+            "year": 2020
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 523.76,
+        "label": "Versilia · superficie irrigata",
+        "note": "Somma degli ettari irrigati delle aziende con centro nei sette Comuni."
+      },
+      "normalizedAggregate": {
+        "value": 18.02619125466779,
+        "label": "Versilia · quota di SAU irrigata",
+        "note": "Rapporto tra superficie irrigata complessiva e SAU complessiva delle aziende con centro nei sette Comuni."
+      },
+      "method": {
+        "type": "Dato censuario Istat + rapporto derivato",
+        "formula": "IA del dataflow DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS; quota % = IA / ARU del dataflow per centro aziendale.",
+        "caveat": "Misura le superfici delle aziende attribuite per centro aziendale, non necessariamente gli ettari fisicamente localizzati nello stesso Comune.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
       }
     },
     "organicAgriculturalAreaShare": {
