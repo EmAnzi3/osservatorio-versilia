@@ -17,6 +17,15 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 
 
+def massarosa_population_share_label() -> str:
+    data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    rows = data["metrics"]["population"]["rows"]
+    values = [row for row in rows if isinstance(row.get("value"), (int, float))]
+    numerator = next(float(row["value"]) for row in values if row["town"] == "Massarosa")
+    denominator = sum(float(row["value"]) for row in values)
+    return f"{numerator / denominator * 100:.1f}%".replace(".", ",")
+
+
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args: object) -> None:
         return
@@ -56,7 +65,7 @@ def static_checks() -> None:
     assert "Il Comune non è sempre il sistema" in home
     assert "Comune e sistema territoriale" in home
     assert "Quota sulla Versilia" in massarosa
-    assert "13,7%" in massarosa
+    assert massarosa_population_share_label() in massarosa
     assert "della popolazione versiliese" in massarosa
     assert "Scala di lettura" in massarosa
     assert "Ordine del valore" not in massarosa
@@ -139,7 +148,7 @@ def browser_checks() -> None:
         population_overline = page.locator(".versilia-position .overline").inner_text().strip().lower()
         assert population_overline == "quota sulla versilia", f"Etichetta popolazione inattesa: {population_overline!r}"
         population_text = page.locator(".versilia-position").inner_text().lower()
-        assert "13,7%" in population_text, f"Quota popolazione Massarosa inattesa: {population_text!r}"
+        assert massarosa_population_share_label() in population_text, f"Quota popolazione Massarosa inattesa: {population_text!r}"
         assert "della popolazione versiliese" in population_text
         assert "sopra la versilia" not in population_text
         assert "sotto la versilia" not in population_text
