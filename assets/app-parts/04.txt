@@ -49,7 +49,7 @@ hidden>
     });
   }
 
-  function deepDiveMarkup(data, town, themeKey) {
+  function deepDiveMarkup(data, town, themeKey, metricKey = '') {
     const detail = data.details[town.code];
     if (!detail) return '';
     if (themeKey === 'salute') {
@@ -68,9 +68,17 @@ hidden>
     }
     if (themeKey === 'mobilita') {
       const m = detail.mobility;
-      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Flussi e parco veicolare</h3></div><p>Pendolarismo rilevato dal censimento e consistenza del parco veicolare. Il saldo non misura la qualità della mobilità.</p></div>
-        <details class="detail-disclosure"><summary><span>Mostra origini e destinazioni</span><small>Prime cinque relazioni di pendolarismo</small></summary><div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></details>
-        </section>`;
+      const metric = data.metrics?.[metricKey];
+      const flowSection = data.themes?.mobilita?.sections?.find(section => section.key === 'pendolarismo');
+      const isTpl = metric?.meta?.detailGroup === 'tpl';
+      const isFlow = Boolean(flowSection?.metrics?.includes(metricKey));
+      if (isTpl && m.tpl) {
+        return `<section class="topic-deep-dive tpl-town-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Trasporto pubblico programmato</h3></div><p>Dettaglio del servizio GTFS nella giornata di riferimento. Corse, accessi e ampiezza oraria descrivono l’offerta programmata, non puntualità, capacità o passeggeri.</p></div>
+          <details class="detail-disclosure tpl-town-detail"><summary><span>Mostra il dettaglio TPL programmato</span><small>Bus, ferrovia, accessi, route e orari</small></summary><div class="deep-facts-grid"><article class="deep-fact"><span>Corse programmate</span><strong>${number0.format(m.tpl.trips)}</strong><small>${number0.format(m.tpl.busTrips)} bus · ${number0.format(m.tpl.railTrips)} ferrovia</small></article><article class="deep-fact"><span>Punti di accesso GTFS</span><strong>${number0.format(m.tpl.activeAccessPoints)}</strong><small>coppie feed e stop_id attive</small></article><article class="deep-fact"><span>Route GTFS attive</span><strong>${number0.format(m.tpl.routes)}</strong><small>dettaglio descrittivo</small></article><article class="deep-fact"><span>Ampiezza del servizio</span><strong>${number2.format(m.tpl.serviceSpanHours)} h</strong><small>${html(m.tpl.firstDeparture)}–${html(m.tpl.lastDeparture)}</small></article></div><p class="aggregate-note">Fotografia del servizio programmato del 26 agosto 2026. I punti GTFS non coincidono necessariamente con fermate fisiche uniche; gli orari “+1 giorno” appartengono alla stessa giornata operativa.</p></details></section>`;
+      }
+      if (!isFlow) return '';
+      return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Flussi di pendolarismo</h3></div><p>Origini e destinazioni principali dei flussi rilevati dal censimento. Il saldo non misura la qualità della mobilità.</p></div>
+        <details class="detail-disclosure"><summary><span>Mostra origini e destinazioni</span><small>Prime cinque relazioni di pendolarismo</small></summary><div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></details></section>`;
     }
     if (themeKey === 'ambiente') {
       const e = detail.environment;

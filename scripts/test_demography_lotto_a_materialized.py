@@ -43,15 +43,15 @@ def assert_series(metric: dict, years: list[int]) -> None:
 def main() -> None:
     # Il lotto Demografia resta invariato: questo gate segue però il contratto
     # globale corrente della release, che ora comprende anche Welfare.
-    assert SITE['version'] == 'v1.18.0'
-    assert len(SITE['metrics']) == 146
+    assert SITE['version'] == 'v1.19.0'
+    assert len(SITE['metrics']) == 149
     external = [
         key for key, metric in SITE['metrics'].items()
         if metric.get('dataStorage', {}).get('type') == 'external-climate'
     ]
     assert len(external) == 4, external
-    assert REGISTRY['expectedMetricCount'] == 146
-    assert REGISTRY['expectedInlineMetricCount'] == 142
+    assert REGISTRY['expectedMetricCount'] == 149
+    assert REGISTRY['expectedInlineMetricCount'] == 145
     assert REGISTRY['expectedExternalMetricCount'] == 4
 
     for key in NEW_KEYS:
@@ -158,7 +158,7 @@ def main() -> None:
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        'Demografia Lotto A materializzata OK: catalogo v1.18 con 146 metriche, 7/7, '
+        'Demografia Lotto A materializzata OK: catalogo v1.19 con 149 metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )

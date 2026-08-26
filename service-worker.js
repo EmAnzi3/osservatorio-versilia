@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260825-v118';
+const VERSION = 'ov-pwa-20260826-v119';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

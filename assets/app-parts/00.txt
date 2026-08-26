@@ -167,6 +167,7 @@
       case 'index': return number1.format(v);
       case 'decimal': return number2.format(v);
       case 'years': return `${number2.format(v)} anni`;
+      case 'hours': return `${number2.format(v)} h`;
       case 'nights': return `${number2.format(v)} notti`;
       case 'people': return `${number0.format(v)} persone`;
       case 'studentsPerClass': return `${number1.format(v)} alunni/classe`;

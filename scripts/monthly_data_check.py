@@ -61,14 +61,34 @@ def finding(level: str, code: str, message: str, metric: str | None = None) -> d
 
 
 def iter_metric_sources(metric: dict[str, Any]) -> Iterable[tuple[str, str]]:
+    candidates: list[tuple[str, str]] = []
     source_url = metric.get("sourceUrl")
     if isinstance(source_url, str) and source_url.strip():
-        yield "primary", source_url.strip()
+        candidates.append(("primary", source_url.strip()))
+
+    source_urls = metric.get("sourceUrls")
+    if isinstance(source_urls, dict):
+        for role, value in source_urls.items():
+            if isinstance(value, str) and value.strip():
+                candidates.append((f"source:{role}", value.strip()))
+    elif isinstance(source_urls, list):
+        for index, value in enumerate(source_urls, start=1):
+            if isinstance(value, str) and value.strip():
+                candidates.append((f"source:{index}", value.strip()))
+
     benchmark = metric.get("meta", {}).get("benchmark")
     if isinstance(benchmark, dict):
         benchmark_url = benchmark.get("url")
         if isinstance(benchmark_url, str) and benchmark_url.strip():
-            yield "benchmark", benchmark_url.strip()
+            candidates.append(("benchmark", benchmark_url.strip()))
+
+    seen: set[str] = set()
+    for role, url in candidates:
+        canonical = canonical_url(url)
+        if canonical in seen:
+            continue
+        seen.add(canonical)
+        yield role, url
 
 
 def validate_dataset(

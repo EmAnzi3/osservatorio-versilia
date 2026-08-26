@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 146,
-  "expectedInlineMetricCount": 142,
+  "expectedMetricCount": 149,
+  "expectedInlineMetricCount": 145,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -367,6 +367,15 @@
       "acquisitionMethod": "Download del CSV comunale ufficiale e calcolo del tasso come ricettività potenziale / residenti 3–36 mesi × 100.",
       "licenseName": "Licenza indicata nel catalogo Open Data Regione Toscana",
       "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "regione-toscana-gtfs-scheduled": {
+      "publisher": "Regione Toscana",
+      "frequency": "continuous",
+      "frequencyLabel": "Aggiornamento continuo del feed programmato",
+      "expectedRelease": "Feed mobile; la data di servizio viene congelata tramite snapshot e hash delle fonti",
+      "acquisitionMethod": "Download dei GTFS ufficiali Autolinee Toscane e Trenitalia; selezione del calendario della data di riferimento; join spaziale dei punti di accesso ai confini comunali Istat 2026; conteggi senza stime.",
+      "licenseName": "CC BY",
+      "licenseUrl": "https://dati.toscana.it/dataset/rt-oraritb"
     }
   },
   "sourceProfileByUrl": {
@@ -419,7 +428,11 @@
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?datasetId=DS0156EDISUPBARARCSTA2021": "mim-school-year",
     "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Edilizia+Scolastica&datasetId=DS0151EDIAMBFUNZSTA2021": "mim-school-year",
     "https://dati.istruzione.it/opendata/opendata/catalog/EDIETAORIGINESTA2021": "mim-school-year",
-    "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021": "mim-school-year"
+    "https://dati.istruzione.it/opendata/opendata/catalog/EDICOLLEGAMENTISTA2021": "mim-school-year",
+    "https://dati.toscana.it/dataset/rt-oraritb": "regione-toscana-gtfs-scheduled",
+    "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": "regione-toscana-gtfs-scheduled",
+    "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
+    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -525,6 +538,15 @@
     },
     "earlyChildhoodPotentialCapacityRate": {
       "profile": "regione-toscana-early-childhood"
+    },
+    "scheduledTplTripsPer1000": {
+      "profile": "regione-toscana-gtfs-scheduled"
+    },
+    "activeTplAccessPoints": {
+      "profile": "regione-toscana-gtfs-scheduled"
+    },
+    "tplServiceSpan": {
+      "profile": "regione-toscana-gtfs-scheduled"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -543,6 +565,10 @@
     "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx": "istat-social-services-annual",
     "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx": "istat-social-services-annual",
     "https://dati.toscana.it/dataset/serviziprimainfanzia": "regione-toscana-early-childhood",
-    "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv": "regione-toscana-early-childhood"
+    "https://dati.toscana.it/dataset/98ee6064-b61a-45e2-a790-86c55b278574/resource/01588909-8f0b-4b80-8af7-1749bab80a5e/download/opendata-_-da-pubblicare-24-25.csv": "regione-toscana-early-childhood",
+    "https://dati.toscana.it/dataset/rt-oraritb": "regione-toscana-gtfs-scheduled",
+    "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": "regione-toscana-gtfs-scheduled",
+    "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
+    "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled"
   }
 }

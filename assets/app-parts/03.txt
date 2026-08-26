@@ -578,6 +578,16 @@
     );
   }
 
+  function tplCompareDetailMarkup(data) {
+    const metric = data.metrics.scheduledTplTripsPer1000;
+    if (!metric) return '';
+    const rows = metric.rows
+      .map(row => ({ row, tpl:data.details?.[row.code]?.mobility?.tpl }))
+      .filter(item => item.tpl);
+    if (rows.length !== 7) return '';
+    return `<details class="detail-disclosure tpl-compare-detail"><summary><span>Dettaglio del servizio TPL programmato</span><small>Corse, modalità, accessi, route e orari · 7/7 Comuni</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th><th>Corse</th><th>Bus</th><th>Ferrovia</th><th>Punti GTFS</th><th>Route</th><th>Finestra di servizio</th></tr></thead><tbody>${rows.map(({row,tpl})=>`<tr><th>${html(row.town)}</th><td>${html(number0.format(tpl.trips))}</td><td>${html(number0.format(tpl.busTrips))}</td><td>${html(number0.format(tpl.railTrips))}</td><td>${html(number0.format(tpl.activeAccessPoints))}</td><td>${html(number0.format(tpl.routes))}</td><td class="tpl-service-cell"><span class="tpl-service-range">${html(tpl.firstDeparture)}–${html(tpl.lastDeparture)}</span><small class="tpl-service-span">${html(number2.format(tpl.serviceSpanHours))} h</small></td></tr>`).join('')}</tbody></table></div><p class="aggregate-note">Un punto GTFS è una coppia (feed, stop_id) attiva: direzioni, banchine o feed diversi possono descrivere separatamente luoghi fisicamente vicini. Le route sono un dettaglio descrittivo. Gli orari “+1 giorno” appartengono alla stessa giornata operativa GTFS.</p></details>`;
+  }
+
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
     const def = document.getElementById('compare-definition');
@@ -595,20 +605,26 @@
     const distributionSummary = compositeType === 'distribution' ? compositeAggregateSummary(metric) : null;
     const controls = selectableComposite ? '' : (hasNormalized ? `<div class="scale-switch" role="group" aria-label="Scala"><button type="button" data-scale="raw" class="${normalized ? '' : 'active'}">Valore assoluto</button><button type="button" data-scale="normalized" class="${normalized ? 'active' : ''}">Rapportato</button></div>` : '');
     const chartControls = selectableComposite ? compositeCompareControls(metric,view.choice,view.scale) : '';
+    const definitionControls = metric.meta.detailGroup === 'tpl' ? '' : controls;
+    const chartScaleControls = metric.meta.detailGroup === 'tpl' ? controls : '';
     const summaryLabel = distributionSummary ? distributionSummary.label : aggregate.label;
     const summaryValue = distributionSummary ? distributionSummary.formatted : formatValue(aggregate.value,unit);
-    def.innerHTML = `${controls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
+    def.innerHTML = `${definitionControls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
 
     if (selectableComposite) {
       const note = compositeType === 'omi' ? `<p class="composite-compare-note"><strong>Dettaglio OMI:</strong> il dettaglio delle singole sotto-aree è disponibile nelle schede dei comuni. Clicca una riga per aprire il territorio.</p>` : (compositeType === 'mobility' ? `<p class="composite-compare-note">Scegli la voce e l’unità direttamente dal grafico. “Ogni 1.000” rende più omogeneo il confronto tra comuni di dimensioni diverse.</p>` : '');
       const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
       bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;
     } else {
-      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars"><div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
+      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="tpl-chart-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
     }
 
+    if (metric.meta.detailGroup === 'tpl') bars.insertAdjacentHTML('beforeend', tplCompareDetailMarkup(data));
+
     installAgePyramidDelegation(bars);
-    def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data,themeKey,metricKey,button.dataset.scale === 'normalized',view)));
+    if (metric.meta.detailGroup !== 'tpl') {
+      def.querySelectorAll('[data-scale]').forEach(button => button.addEventListener('click', () => renderCompareMetric(data,themeKey,metricKey,button.dataset.scale === 'normalized',view)));
+    }
     if (selectableComposite) {
       // Delegate from #compare-bars: ux-history rebuilds the markup inside this node,
       // so listeners attached directly to buttons/selects would be lost after enhancement.
@@ -638,6 +654,16 @@
           renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:componentSelect.value});
         }
       };
+    } else if (metric.meta.detailGroup === 'tpl') {
+      // ux-history può ricostruire l'HTML interno di #compare-bars: il listener
+      // vive sul contenitore stabile e non sul singolo pulsante.
+      bars.onclick = event => {
+        const scaleButton = event.target.closest('button[data-scale]');
+        if (scaleButton && bars.contains(scaleButton)) {
+          renderCompareMetric(data,themeKey,metricKey,scaleButton.dataset.scale === 'normalized',view);
+        }
+      };
+      bars.onchange = null;
     } else {
       bars.onclick = null;
       bars.onchange = null;
@@ -829,7 +855,7 @@
         ${positionMarkup}</div>
       <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
-      ${deepDiveMarkup(data, town, themeKey)}
+      ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown) ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;

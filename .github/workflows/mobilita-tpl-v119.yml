@@ -1,0 +1,131 @@
+name: Mobilità TPL v1.19 · release gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'data/site-data.json'
+      - 'data/source-registry.json'
+      - 'data/source-snapshots/mobilita-tpl-2026-08-26.json'
+      - 'confronta/mobilita/index.html'
+      - 'scripts/materialize_mobilita_tpl_v119.py'
+      - 'scripts/test_mobilita_tpl_v119.py'
+      - 'scripts/test_mobilita_tpl_v119_browser.py'
+      - 'scripts/monthly_data_check.py'
+      - 'scripts/test_monthly_data_check.py'
+      - 'scripts/finalize_catalog_release.py'
+      - 'scripts/test_catalog_release_v116.py'
+      - 'scripts/build_static_safe.py'
+      - 'scripts/build_static_brand.py'
+      - 'assets/app-parts/**'
+      - 'assets/app.js'
+      - 'assets/chart-surfaces.css'
+      - 'service-worker.js'
+      - 'README.md'
+      - '.github/workflows/mobilita-tpl-v119.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobilita-tpl-v119-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate canonical TPL data and source monitoring
+        run: |
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_mobilita_tpl_v119.py
+          python scripts/test_monthly_data_check.py
+          python -m py_compile \
+            scripts/materialize_mobilita_tpl_v119.py \
+            scripts/test_mobilita_tpl_v119.py \
+            scripts/test_mobilita_tpl_v119_browser.py \
+            scripts/monthly_data_check.py
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json >/dev/null
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Build real site
+        run: python scripts/build_static_brand.py
+
+      - name: Ensure build does not rewrite canonical sources
+        run: git diff --exit-code -- . ':(exclude)dist'
+
+      - name: Materialize existing special sections
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Start release candidate server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-mobility-http.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-mobility-http.log
+          exit 1
+
+      - name: Validate TPL in the real renderer
+        run: |
+          mkdir -p reports/mobilita-v119-browser
+          python scripts/test_mobilita_tpl_v119_browser.py \
+            --base http://127.0.0.1:8123/ \
+            --screenshots-dir reports/mobilita-v119-browser
+
+      - name: Re-run the climate interaction regression
+        run: python scripts/test_climate_interactions.py --base-url http://127.0.0.1:8123
+
+      - name: Run structural, responsive and brand gates
+        run: |
+          python scripts/test_static.py
+          python scripts/test_indicator_pages.py
+          python scripts/test_brand_identity.py
+          python scripts/test_launch_foundations.py
+          python scripts/test_visual_grammar.py
+          python scripts/test_chart_surfaces.py
+          python scripts/test_mobile_interactions.py
+          python scripts/test_accordion_tools_persistence.py
+          python scripts/test_site_chrome.py
+          python scripts/test_site_consistency.py
+          python scripts/test_site_chrome_browser.py --base http://127.0.0.1:8123/
+          python scripts/test_pwa.py
+
+      - name: Upload navigable preview and QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-mobilita-v119-preview
+          path: |
+            dist
+            reports/mobilita-v119-browser
+          if-no-files-found: warn
+          retention-days: 14

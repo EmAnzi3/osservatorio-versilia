@@ -12,8 +12,8 @@ SNAP = json.loads((ROOT / "data" / "source-snapshots" / "welfare-prima-infanzia-
 KEYS = ["socialSpendingPerResident", "socialSpendingByUserArea", "earlyChildhoodPotentialCapacityRate"]
 TOWNS = {"Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"}
 
-assert SITE["version"] == "v1.18.0"
-assert len(SITE["metrics"]) == 146, len(SITE["metrics"])
+assert SITE["version"] == "v1.19.0"
+assert len(SITE["metrics"]) == 149, len(SITE["metrics"])
 for key in KEYS:
     assert key in SITE["metrics"], key
     rows = SITE["metrics"][key]["rows"]
@@ -72,4 +72,4 @@ assert set(SNAP["towns"]) == TOWNS
 assert SNAP["status"] == "release-verified-7of7"
 assert "socialServiceProfessionalUsers" not in SITE["metrics"], "La presa in carico non deve entrare nel lotto base senza verifica dedicata"
 
-print("OK Welfare + prima infanzia draft: 3 indicatori, copertura 7/7, 146 totali, spesa sociale arrotondata a 2 decimali.")
+print("OK Welfare + prima infanzia draft: 3 indicatori, copertura 7/7, 149 totali, spesa sociale arrotondata a 2 decimali.")

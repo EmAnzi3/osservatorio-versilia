@@ -1,6 +1,6 @@
 {
-  "version": "v1.18.0",
-  "updated": "25 agosto 2026",
+  "version": "v1.19.0",
+  "updated": "26 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -364,7 +364,7 @@
       "number": "06",
       "label": "Mobilità e infrastrutture",
       "question": "Come si muove e quanto è connessa la Versilia?",
-      "description": "Pendolarismo, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.",
+      "description": "Pendolarismo, trasporto pubblico, parco veicolare, ricarica elettrica, connettività digitale e mobilità lenta.",
       "metrics": [
         "outsideMunicipality",
         "outboundCommuters",
@@ -374,6 +374,9 @@
         "commuterBalanceRate",
         "outboundCommutersRate",
         "inboundCommutersRate",
+        "scheduledTplTripsPer1000",
+        "activeTplAccessPoints",
+        "tplServiceSpan",
         "motorization",
         "pollutingCars",
         "fuelPrices",
@@ -402,6 +405,16 @@
             "commuterBalanceRate",
             "outboundCommutersRate",
             "inboundCommutersRate"
+          ]
+        },
+        {
+          "key": "trasporto-pubblico",
+          "label": "Trasporto pubblico",
+          "description": "Offerta programmata di autobus e ferrovia: corse, punti di accesso e ampiezza della giornata di servizio sui GTFS ufficiali regionali.",
+          "metrics": [
+            "scheduledTplTripsPer1000",
+            "activeTplAccessPoints",
+            "tplServiceSpan"
           ]
         },
         {
@@ -26353,6 +26366,452 @@
         "coverage": "7/7"
       }
     },
+    "scheduledTplTripsPer1000": {
+      "meta": {
+        "key": "scheduledTplTripsPer1000",
+        "theme": "mobilita",
+        "label": "Corse TPL programmate",
+        "shortLabel": "Corse TPL programmate",
+        "description": "Corse di autobus e ferrovia programmate nel giorno di riferimento che servono almeno un punto di accesso utilizzabile dai passeggeri nel Comune. Nel confronto puoi passare dal valore assoluto alle corse ogni 1.000 residenti.",
+        "unit": "number",
+        "year": "26 agosto 2026",
+        "source": "Regione Toscana — GTFS Autolinee Toscane e Trenitalia",
+        "polarity": "neutral",
+        "detailGroup": "tpl",
+        "searchTerms": [
+          "tpl",
+          "trasporto pubblico",
+          "autobus",
+          "bus",
+          "treno",
+          "ferrovia",
+          "corse",
+          "partenze"
+        ],
+        "normalized": {
+          "label": "Corse TPL programmate ogni 1.000 residenti",
+          "description": "Corse programmate rapportate alla popolazione residente: consente un confronto meno dipendente dalla dimensione demografica dei Comuni.",
+          "unit": "per1000"
+        }
+      },
+      "sourceUrl": "https://dati.toscana.it/dataset/rt-oraritb",
+      "sourceUrls": {
+        "catalogo": "https://dati.toscana.it/dataset/rt-oraritb",
+        "gtfs-autolinee": "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs",
+        "gtfs-trenitalia": "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs",
+        "confini-istat": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 106,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 4.866403452391884,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 106
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 659,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 10.860250494396835,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 659
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 330,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 10.389446840663666,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 330
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 236,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 10.406561425169768,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 236
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 119,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 9.68739824161511,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 119
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 110,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 16.793893129770993,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 110
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 26,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 9.342436219906576,
+            "label": "Corse TPL programmate ogni 1.000 residenti",
+            "description": "Corse programmate rapportate alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 26
+        }
+      ],
+      "aggregate": {
+        "value": 226.57142857142858,
+        "label": "Media dei 7 Comuni",
+        "note": "Media aritmetica dei sette conteggi comunali. Il totale territoriale non è usato come benchmark perché una stessa corsa può servire più Comuni.",
+        "formatted": "227",
+        "totalValue": 1586,
+        "totalFormatted": "1.586"
+      },
+      "normalizedAggregate": {
+        "value": 10.005046681806713,
+        "label": "Media ponderata dei 7 Comuni",
+        "note": "Rapporto tra la somma dei conteggi comunali e la popolazione complessiva dei sette Comuni.",
+        "formatted": "10,01"
+      },
+      "method": {
+        "type": "Elaborazione GTFS Osservatorio Versilia",
+        "formula": "Per il 26 agosto 2026 si selezionano i service_id attivi da calendar e calendar_dates. Una trip_id è contata una sola volta per Comune se serve almeno uno stop_id geolocalizzato nel territorio comunale in cui sia consentita salita o discesa; il dettaglio separa autobus e ferrovia.",
+        "caveat": "Fotografia del servizio programmato di un mercoledì feriale estivo: non misura corse effettivamente svolte, puntualità, capacità o passeggeri. Una stessa corsa può servire più Comuni.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/mobilita-tpl-2026-08-26.json"
+      }
+    },
+    "activeTplAccessPoints": {
+      "meta": {
+        "key": "activeTplAccessPoints",
+        "theme": "mobilita",
+        "label": "Punti di accesso GTFS attivi",
+        "shortLabel": "Punti di accesso TPL",
+        "description": "Punti di accesso presenti nei GTFS ufficiali e serviti nel giorno di riferimento. Ogni punto è identificato dalla coppia feed e stop_id; nel confronto puoi leggere sia il conteggio sia i punti ogni 1.000 residenti.",
+        "unit": "number",
+        "year": "26 agosto 2026",
+        "source": "Regione Toscana — GTFS Autolinee Toscane e Trenitalia",
+        "polarity": "neutral",
+        "detailGroup": "tpl",
+        "searchTerms": [
+          "tpl",
+          "fermate",
+          "stop",
+          "gtfs",
+          "accesso",
+          "autobus",
+          "treno"
+        ],
+        "normalized": {
+          "label": "Punti di accesso GTFS ogni 1.000 residenti",
+          "description": "Punti GTFS attivi rapportati ai residenti. È una densità dell'offerta dati, non la distanza pedonale della popolazione dalle fermate.",
+          "unit": "per1000"
+        }
+      },
+      "sourceUrl": "https://dati.toscana.it/dataset/rt-oraritb",
+      "sourceUrls": {
+        "catalogo": "https://dati.toscana.it/dataset/rt-oraritb",
+        "gtfs-autolinee": "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs",
+        "gtfs-trenitalia": "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs",
+        "confini-istat": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 131,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 6.0141401156918555,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 131
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 254,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 4.185893210283454,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 254
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 151,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 4.753959008909738,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 151
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 107,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 4.718229120733751,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 107
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 102,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 8.303484207098665,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 102
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 31,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 4.732824427480916,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 31
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 80,
+          "formatted": null,
+          "series": null,
+          "normalized": {
+            "value": 28.74595759971254,
+            "label": "Punti di accesso GTFS ogni 1.000 residenti",
+            "description": "Punti di accesso GTFS attivi rapportati alla popolazione residente al 1° gennaio 2026.",
+            "unit": "per1000"
+          },
+          "benchmarkValue": 80
+        }
+      ],
+      "aggregate": {
+        "value": 122.28571428571429,
+        "label": "Media dei 7 Comuni",
+        "note": "Media aritmetica dei sette conteggi comunali di punti di accesso GTFS attivi. Il totale territoriale resta descrittivo e non è il riferimento del lollipop.",
+        "formatted": "122",
+        "totalValue": 856,
+        "totalFormatted": "856"
+      },
+      "normalizedAggregate": {
+        "value": 5.399949533181933,
+        "label": "Media ponderata dei 7 Comuni",
+        "note": "Rapporto tra gli 856 punti di accesso GTFS comunali e la popolazione complessiva.",
+        "formatted": "5,40"
+      },
+      "method": {
+        "type": "Elaborazione GTFS Osservatorio Versilia",
+        "formula": "Si contano le coppie (feed, stop_id) attive il 26 agosto 2026, utilizzabili dai passeggeri e attribuite al Comune tramite coordinate e confini Istat 2026; gli identificativi dei due feed non vengono fusi.",
+        "caveat": "Un punto GTFS è un punto di accesso dati: direzioni, banchine o feed differenti possono rappresentare separatamente luoghi fisicamente molto vicini. Non misura la copertura pedonale entro 500 metri.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/mobilita-tpl-2026-08-26.json"
+      }
+    },
+    "tplServiceSpan": {
+      "meta": {
+        "key": "tplServiceSpan",
+        "theme": "mobilita",
+        "label": "Ampiezza oraria programmata del servizio TPL",
+        "shortLabel": "Ampiezza oraria TPL",
+        "description": "Intervallo, calcolato sui secondi GTFS, tra la prima e l'ultima partenza programmata che serve il Comune nella giornata operativa di riferimento.",
+        "unit": "hours",
+        "year": "26 agosto 2026",
+        "source": "Regione Toscana — GTFS Autolinee Toscane e Trenitalia",
+        "polarity": "neutral",
+        "detailGroup": "tpl",
+        "searchTerms": [
+          "tpl",
+          "orario",
+          "prima corsa",
+          "ultima corsa",
+          "ampiezza",
+          "servizio",
+          "bus",
+          "treno"
+        ]
+      },
+      "sourceUrl": "https://dati.toscana.it/dataset/rt-oraritb",
+      "sourceUrls": {
+        "catalogo": "https://dati.toscana.it/dataset/rt-oraritb",
+        "gtfs-autolinee": "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs",
+        "gtfs-trenitalia": "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs",
+        "confini-istat": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 15.71,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 15.71
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 24.57,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 24.57
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 24.02,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 24.02
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 24.3,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 24.3
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 17.88,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 17.88
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 22.92,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 22.92
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 13.94,
+          "formatted": null,
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.94
+        }
+      ],
+      "aggregate": {
+        "value": 20.47714285714286,
+        "label": "Media dei 7 Comuni",
+        "note": "Media aritmetica delle sette ampiezze orarie comunali; la somma delle ore comunali non è un benchmark interpretabile.",
+        "formatted": "20,48 h",
+        "totalValue": 143.34,
+        "totalFormatted": "143,34 h"
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GTFS Osservatorio Versilia",
+        "formula": "Differenza in ore, calcolata sui secondi GTFS, tra la prima e l'ultima partenza programmata che serve almeno un punto di accesso del Comune il 26 agosto 2026. Gli orari oltre 24:00 restano nella stessa giornata operativa.",
+        "caveat": "Misura l'estensione temporale dell'offerta, non la frequenza: una singola corsa molto presto o molto tardi può ampliare la finestra senza implicare un servizio frequente durante tutta la giornata.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/mobilita-tpl-2026-08-26.json"
+      }
+    },
     "cashReceiptsPerResident": {
       "meta": {
         "key": "cashReceiptsPerResident",
@@ -45520,7 +45979,18 @@
         "totalVehicles": 23798,
         "cars": 16170,
         "motorization": 742.4,
-        "pollutingCars": 18.9
+        "pollutingCars": 18.9,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 106,
+          "busTrips": 86,
+          "railTrips": 20,
+          "activeAccessPoints": 131,
+          "routes": 6,
+          "firstDeparture": "05:52",
+          "lastDeparture": "21:34",
+          "serviceSpanHours": 15.71
+        }
       },
       "environment": {
         "wasteYears": [
@@ -46475,7 +46945,18 @@
         "totalVehicles": 59257,
         "cars": 39446,
         "motorization": 650.1,
-        "pollutingCars": 18.1
+        "pollutingCars": 18.1,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 659,
+          "busTrips": 549,
+          "railTrips": 110,
+          "activeAccessPoints": 254,
+          "routes": 21,
+          "firstDeparture": "05:30",
+          "lastDeparture": "06:04 (+1 giorno)",
+          "serviceSpanHours": 24.57
+        }
       },
       "environment": {
         "wasteYears": [
@@ -47390,7 +47871,18 @@
         "totalVehicles": 33727,
         "cars": 22650,
         "motorization": 713.1,
-        "pollutingCars": 19.4
+        "pollutingCars": 19.4,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 330,
+          "busTrips": 298,
+          "railTrips": 32,
+          "activeAccessPoints": 151,
+          "routes": 19,
+          "firstDeparture": "05:50",
+          "lastDeparture": "05:51 (+1 giorno)",
+          "serviceSpanHours": 24.02
+        }
       },
       "environment": {
         "wasteYears": [
@@ -48313,7 +48805,18 @@
         "totalVehicles": 25278,
         "cars": 16516,
         "motorization": 728.3,
-        "pollutingCars": 20
+        "pollutingCars": 20,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 236,
+          "busTrips": 182,
+          "railTrips": 54,
+          "activeAccessPoints": 107,
+          "routes": 12,
+          "firstDeparture": "05:23",
+          "lastDeparture": "05:41 (+1 giorno)",
+          "serviceSpanHours": 24.3
+        }
       },
       "environment": {
         "wasteYears": [
@@ -49156,7 +49659,18 @@
         "totalVehicles": 12560,
         "cars": 8607,
         "motorization": 700.7,
-        "pollutingCars": 18.4
+        "pollutingCars": 18.4,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 119,
+          "busTrips": 65,
+          "railTrips": 54,
+          "activeAccessPoints": 102,
+          "routes": 9,
+          "firstDeparture": "05:19",
+          "lastDeparture": "23:12",
+          "serviceSpanHours": 17.88
+        }
       },
       "environment": {
         "wasteYears": [
@@ -49927,7 +50441,18 @@
         "totalVehicles": 6974,
         "cars": 4839,
         "motorization": 738.8,
-        "pollutingCars": 19.4
+        "pollutingCars": 19.4,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 110,
+          "busTrips": 110,
+          "railTrips": 0,
+          "activeAccessPoints": 31,
+          "routes": 6,
+          "firstDeparture": "06:28",
+          "lastDeparture": "05:24 (+1 giorno)",
+          "serviceSpanHours": 22.92
+        }
       },
       "environment": {
         "wasteYears": [
@@ -50602,7 +51127,18 @@
         "totalVehicles": 3001,
         "cars": 2060,
         "motorization": 740.2,
-        "pollutingCars": 24.7
+        "pollutingCars": 24.7,
+        "tpl": {
+          "referenceDate": "26 agosto 2026",
+          "trips": 26,
+          "busTrips": 26,
+          "railTrips": 0,
+          "activeAccessPoints": 80,
+          "routes": 1,
+          "firstDeparture": "06:10",
+          "lastDeparture": "20:07",
+          "serviceSpanHours": 13.94
+        }
       },
       "environment": {
         "wasteYears": [
