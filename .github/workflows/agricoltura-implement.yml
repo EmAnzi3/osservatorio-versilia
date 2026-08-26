@@ -1,0 +1,81 @@
+name: Agricoltura · materializzazione finale
+
+on:
+  push:
+    branches: ["feat/agricoltura-territorio"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agricoltura-materialize
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize approved lot
+        run: |
+          set -euo pipefail
+          python scripts/patch_agricoltura_release_v120.py
+          python scripts/materialize_agricoltura_territorio_v120.py
+          git diff > /tmp/agricoltura-first.diff
+          python scripts/patch_agricoltura_release_v120.py
+          python scripts/materialize_agricoltura_territorio_v120.py
+          git diff > /tmp/agricoltura-second.diff
+          cmp /tmp/agricoltura-first.diff /tmp/agricoltura-second.diff
+
+      - name: Validate canonical data and release contract
+        run: |
+          set -euo pipefail
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json >/dev/null
+          python -m py_compile scripts/materialize_agricoltura_territorio_v120.py scripts/patch_agricoltura_release_v120.py scripts/test_agricoltura_territorio_v120.py
+          python scripts/test_agricoltura_territorio_v120.py
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_composite_indicators.py
+          python scripts/test_indicator_pages.py
+          python scripts/test_site_consistency.py --source-only
+
+      - name: Build static preview and smoke test
+        run: |
+          set -euo pipefail
+          git diff -- . ':(exclude)dist' > /tmp/before-build.diff
+          python scripts/build_static_brand.py
+          git diff -- . ':(exclude)dist' > /tmp/after-build.diff
+          cmp /tmp/before-build.diff /tmp/after-build.diff
+          node --check dist/assets/app-bundle.js
+          python scripts/test_static.py
+          python scripts/test_launch_foundations.py
+          python scripts/test_brand_identity.py
+          python scripts/test_visual_grammar.py
+          python scripts/test_chart_surfaces.py
+
+      - name: Remove one-shot probe and workflow
+        run: |
+          rm -f .github/workflows/agricoltura-probe.yml
+          rm -f .github/workflows/agricoltura-implement.yml
+          rm -f scripts/probe_agricoltura_istat.py
+          git diff --check
+
+      - name: Commit and push verified implementation
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat(agricoltura): materializza lotto territorio v1.20.0"
+          git push origin HEAD:feat/agricoltura-territorio
