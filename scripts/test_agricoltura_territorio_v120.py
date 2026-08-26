@@ -115,6 +115,7 @@ assert "agricultureProfile" in visual
 assert "Media semplice dei ${values.length} comuni" in visual
 assert "hectares-per-farm" in visual
 assert "const populationTotal = populationValues.reduce" in visual
+assert "const share = local / populationTotal * 100;" in visual
 
 finalizer = (ROOT / "scripts/finalize_catalog_release.py").read_text(encoding="utf-8")
 assert 'VERSION = "v1.20.0"' in finalizer
