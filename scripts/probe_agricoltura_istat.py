@@ -26,7 +26,7 @@ CSV_ACCEPT = "application/vnd.sdmx.data+csv;version=1.0.0"
 
 
 def request(url: str, *, accept: str | None = None, data: bytes | None = None, headers: dict[str, str] | None = None) -> tuple[int, str, bytes]:
-    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/5.0"}
+    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/5.1"}
     if accept:
         merged["Accept"] = accept
     if headers:
