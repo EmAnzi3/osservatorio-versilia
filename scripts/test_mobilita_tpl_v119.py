@@ -154,6 +154,11 @@ def main() -> None:
         "case 'hours':",
         "function tplCompareDetailMarkup(data)",
         'class="tpl-service-cell"',
+        'class="aggregate-note tpl-detail-note"',
+        'class="deep-facts-grid tpl-town-service-grid"',
+        '<span>Bus</span>',
+        '<span>Ferrovia</span>',
+        '<span>Finestra di servizio</span>',
         "const definitionControls = metric.meta.detailGroup === 'tpl'",
         'class="tpl-chart-toolbar"',
         "deepDiveMarkup(data, town, themeKey, metricKey)",
@@ -169,6 +174,9 @@ def main() -> None:
     assert "hoverLabel.className = 'bar-hover-label'" in visual_grammar
     assert "track.append(hoverLabel)" in visual_grammar
     assert ".tpl-service-range" in tpl_css and ".tpl-service-span" in tpl_css
+    assert ".tpl-compare-detail > .tpl-detail-note" in tpl_css
+    assert ".tpl-town-detail > .tpl-detail-note" in tpl_css
+    assert ".tpl-town-deep-dive .tpl-town-service-grid" in tpl_css
     source_page = (ROOT / "confronta" / "mobilita" / "index.html").read_text(encoding="utf-8")
     assert "Mobilità e infrastrutture · Confronto dei comuni della Versilia" in source_page
     assert "incidenti stradali e contesto provinciale della criminalità" not in source_page

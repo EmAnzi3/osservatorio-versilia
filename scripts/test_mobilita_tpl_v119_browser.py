@@ -92,6 +92,70 @@ def screenshot(page, directory: Path | None, name: str) -> None:
     page.screenshot(path=str(directory / name), full_page=True)
 
 
+def screenshot_locator(locator: Locator, directory: Path | None, name: str) -> None:
+    if directory is None:
+        return
+    directory.mkdir(parents=True, exist_ok=True)
+    locator.screenshot(path=str(directory / name))
+
+
+def assert_detail_note_fully_visible(detail: Locator, label: str) -> None:
+    note = detail.locator(":scope > .tpl-detail-note")
+    assert note.count() == 1, f"Nota TPL non univoca: {label}"
+    state = detail.evaluate(
+        """el => {
+          const note = el.querySelector(':scope > .tpl-detail-note');
+          const detailRect = el.getBoundingClientRect();
+          const noteRect = note.getBoundingClientRect();
+          const css = getComputedStyle(note);
+          return {
+            text: note.textContent.trim(),
+            detailBottom: detailRect.bottom,
+            noteBottom: noteRect.bottom,
+            detailScrollH: el.scrollHeight,
+            detailClientH: el.clientHeight,
+            noteScrollH: note.scrollHeight,
+            noteClientH: note.clientHeight,
+            paddingBottom: parseFloat(css.paddingBottom)
+          };
+        }"""
+    )
+    assert state["text"], f"Nota TPL vuota: {label}"
+    assert state["noteBottom"] <= state["detailBottom"] + 1, f"Nota oltre il box {label}: {state}"
+    assert state["detailScrollH"] <= state["detailClientH"] + 1, f"Contenuto tagliato nel box {label}: {state}"
+    assert state["noteScrollH"] <= state["noteClientH"] + 1, f"Testo nota tagliato {label}: {state}"
+    assert state["paddingBottom"] >= 12, f"Spazio inferiore insufficiente {label}: {state}"
+
+
+def assert_town_tpl_detail(detail: Locator, expected: dict[str, str]) -> None:
+    cards = detail.locator(".tpl-town-service-grid > .deep-fact")
+    assert cards.count() == 6, f"Dettaglio comunale TPL incompleto: {cards.count()} blocchi"
+    by_label: dict[str, Locator] = {}
+    for card in cards.all():
+        label = card.locator(":scope > span").inner_text().strip()
+        by_label[label] = card
+        sizes = card.evaluate("el => ({scrollH:el.scrollHeight, clientH:el.clientHeight})")
+        assert sizes["scrollH"] <= sizes["clientH"] + 1, f"Testo tagliato nella card {label}: {sizes}"
+    assert tuple(by_label) == (
+        "Corse programmate",
+        "Bus",
+        "Ferrovia",
+        "Punti di accesso GTFS",
+        "Route GTFS attive",
+        "Finestra di servizio",
+    )
+    for label, value in expected.items():
+        assert label in by_label, label
+        assert by_label[label].locator(":scope > strong").inner_text().strip() == value, (
+            label,
+            by_label[label].inner_text(),
+        )
+    service = by_label["Finestra di servizio"]
+    assert service.locator(".tpl-town-service-range").count() == 1
+    assert service.locator(".tpl-town-service-span").count() == 1
+    assert_detail_note_fully_visible(detail, "dettaglio comunale TPL")
+
+
 def assert_bar_tooltip(page) -> None:
     row = page.locator("#compare-bars .bar-row").first
     label = row.locator(".bar-hover-label")
@@ -131,6 +195,7 @@ def assert_tpl_service_table(detail: Locator, mobile: bool = False) -> None:
         )
         assert font_sizes[0] == font_sizes[1], f"Font-size incoerente: {font_sizes}"
         assert "\n" in cell.inner_text(), f"Finestra di servizio non separata: {cell.inner_text()}"
+    assert_detail_note_fully_visible(detail, "tabella TPL 7/7")
 
 
 def main() -> None:
@@ -177,7 +242,7 @@ def main() -> None:
         assert detail.count() == 1
         assert_element_not_clipped(detail.locator("summary"), "summary dettaglio TPL")
         assert_tpl_service_table(detail)
-        screenshot(page, shots, "02-dettaglio-tpl-desktop.png")
+        screenshot_locator(detail, shots, "02-dettaglio-tpl-desktop.png")
 
         page.locator('#compare-bars [data-scale="normalized"]').click()
         page.wait_for_timeout(260)
@@ -219,7 +284,18 @@ def main() -> None:
         assert deep.count() == 1
         assert "Trasporto pubblico programmato" in deep.inner_text()
         assert "Mostra origini e destinazioni" not in deep.inner_text()
+        town_detail = deep.locator(".tpl-town-detail")
+        town_detail.locator("summary").click()
+        assert_town_tpl_detail(town_detail, {
+            "Corse programmate": "659",
+            "Bus": "549",
+            "Ferrovia": "110",
+            "Punti di accesso GTFS": "254",
+            "Route GTFS attive": "21",
+            "Finestra di servizio": "05:30–06:04 (+1 giorno)",
+        })
         screenshot(page, shots, "04-viareggio-accessi-comune.png")
+        screenshot_locator(town_detail, shots, "04b-viareggio-dettaglio-tpl.png")
 
         select_metric(page, FTTH)
         assert page.locator(".tpl-town-deep-dive").count() == 0
@@ -243,6 +319,7 @@ def main() -> None:
         assert_tpl_service_table(detail, mobile=True)
         assert_no_overflow(page, "dettaglio confronto mobile")
         screenshot(page, shots, "05-confronto-mobile.png")
+        screenshot_locator(detail, shots, "05b-dettaglio-tpl-mobile.png")
 
         page.goto(urljoin(base, f"comuni/massarosa/?tema=mobilita&indicatore={TRIPS}"), wait_until="networkidle")
         page.wait_for_timeout(600)
@@ -250,17 +327,24 @@ def main() -> None:
         town_detail = page.locator(".tpl-town-detail")
         assert town_detail.count() == 1
         town_detail.locator("summary").click()
-        detail_text = town_detail.inner_text()
-        for token in ("106", "86 bus", "20 ferrovia", "131", "6", "15,71 h", "05:52", "21:34"):
-            assert token in detail_text, token
+        assert_town_tpl_detail(town_detail, {
+            "Corse programmate": "106",
+            "Bus": "86",
+            "Ferrovia": "20",
+            "Punti di accesso GTFS": "131",
+            "Route GTFS attive": "6",
+            "Finestra di servizio": "05:52–21:34",
+        })
+        assert "15,71 h" in town_detail.locator(".tpl-town-service-span").inner_text()
         assert "Mostra origini e destinazioni" not in page.locator("#town-topic").inner_text()
         screenshot(page, shots, "06-massarosa-tpl-mobile.png")
+        screenshot_locator(town_detail, shots, "06b-massarosa-dettaglio-tpl-mobile.png")
 
         page.goto(urljoin(base, f"comuni/forte-dei-marmi/?tema=mobilita&indicatore={TRIPS}"), wait_until="networkidle")
         page.wait_for_timeout(450)
         town_detail = page.locator(".tpl-town-detail")
         town_detail.locator("summary").click()
-        assert "0 ferrovia" in town_detail.inner_text()
+        assert_town_tpl_detail(town_detail, {"Ferrovia": "0"})
         assert "n.d." not in town_detail.inner_text().lower()
         mobile.close()
 
