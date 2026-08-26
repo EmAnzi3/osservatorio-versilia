@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: agricoltura-materialize-v2
+  group: agricoltura-materialize-v3
   cancel-in-progress: true
 
 jobs:
@@ -36,6 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/fix_agricoltura_materializer_idempotence.py
+          python scripts/fix_agricoltura_scope_6of7.py
           python scripts/patch_agricoltura_release_v120.py
           python scripts/materialize_agricoltura_territorio_v120.py
           git diff > /tmp/agricoltura-first.diff
@@ -58,8 +59,6 @@ jobs:
           python scripts/test_agricoltura_territorio_v120.py
           python scripts/finalize_catalog_release.py --check
           python scripts/test_catalog_release_v116.py
-          python scripts/test_composite_indicators.py
-          python scripts/test_indicator_pages.py
           python scripts/test_site_consistency.py --source-only
 
       - name: Build static preview and smoke test
@@ -70,18 +69,20 @@ jobs:
           git diff -- . ':(exclude)dist' > /tmp/after-build.diff
           cmp /tmp/before-build.diff /tmp/after-build.diff
           node --check dist/assets/app-bundle.js
+          python scripts/test_indicator_pages.py
+          python scripts/test_composite_indicators.py
           python scripts/test_static.py
           python scripts/test_launch_foundations.py
           python scripts/test_brand_identity.py
           python scripts/test_visual_grammar.py
           python scripts/test_chart_surfaces.py
 
-      - name: Remove one-shot probe and workflow
+      - name: Remove one-shot workflow and fixers
         run: |
-          rm -f .github/workflows/agricoltura-probe.yml
           rm -f .github/workflows/agricoltura-implement.yml
           rm -f scripts/probe_agricoltura_istat.py
           rm -f scripts/fix_agricoltura_materializer_idempotence.py
+          rm -f scripts/fix_agricoltura_scope_6of7.py
           git diff --check
 
       - name: Commit and push verified implementation
