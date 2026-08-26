@@ -35,7 +35,7 @@ jobs:
       - name: Apply review corrections and materialize
         run: |
           set -euo pipefail
-          python scripts/fix_agricoltura_review_v120.py
+          python scripts/fix_agricoltura_review_v120_v2.py
           python scripts/materialize_agricoltura_territorio_v120.py
           python scripts/patch_agricoltura_release_v120.py
           python scripts/materialize_agricoltura_territorio_v120.py
