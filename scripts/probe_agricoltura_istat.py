@@ -26,7 +26,7 @@ CSV_ACCEPT = "application/vnd.sdmx.data+csv;version=1.0.0"
 
 
 def request(url: str, *, accept: str | None = None, data: bytes | None = None, headers: dict[str, str] | None = None) -> tuple[int, str, bytes]:
-    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/3.0"}
+    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/4.0"}
     if accept:
         merged["Accept"] = accept
     if headers:
@@ -41,7 +41,7 @@ def request(url: str, *, accept: str | None = None, data: bytes | None = None, h
 
 def decode_json_bytes(body: bytes):
     value = json.loads(body.decode("utf-8", errors="replace"), strict=False)
-    for _ in range(3):
+    for _ in range(4):
         if not isinstance(value, str):
             break
         value = json.loads(value, strict=False)
@@ -56,8 +56,7 @@ def istat_csv(flow: str, key: str, *, quiet: bool = False) -> tuple[str, list[di
     if status != 200:
         print(body[:4000].decode("utf-8", errors="replace"))
         raise SystemExit(f"ISTAT query failed: {flow} {status}")
-    text = body.decode("utf-8-sig")
-    rows = list(csv.DictReader(io.StringIO(text)))
+    rows = list(csv.DictReader(io.StringIO(body.decode("utf-8-sig"))))
     if not quiet:
         for row in rows:
             print(json.dumps(row, ensure_ascii=False, sort_keys=True))
@@ -65,13 +64,10 @@ def istat_csv(flow: str, key: str, *, quiet: bool = False) -> tuple[str, list[di
 
 
 def print_coverage(label: str, rows: list[dict[str, str]], *, crop: str | None = None) -> None:
-    present = set()
-    zeros = set()
+    present, zeros = set(), set()
     for row in rows:
         code = row.get("REF_AREA")
-        if code not in TOWNS:
-            continue
-        if crop is not None and row.get("TYPE_OF_CROP") != crop:
+        if code not in TOWNS or (crop is not None and row.get("TYPE_OF_CROP") != crop):
             continue
         present.add(code)
         try:
@@ -79,35 +75,23 @@ def print_coverage(label: str, rows: list[dict[str, str]], *, crop: str | None =
                 zeros.add(code)
         except ValueError:
             pass
-    missing = [TOWNS[c] for c in TOWNS if c not in present]
-    zero_names = [TOWNS[c] for c in TOWNS if c in zeros]
-    print(f"COVERAGE {label}: {len(present)}/7; missing={missing}; explicit_zero={zero_names}")
+    print(
+        f"COVERAGE {label}: {len(present)}/7; "
+        f"missing={[TOWNS[c] for c in TOWNS if c not in present]}; "
+        f"explicit_zero={[TOWNS[c] for c in TOWNS if c in zeros]}"
+    )
 
 
 def probe_istat() -> None:
     areas = "+".join(TOWNS)
-
-    _, surf = istat_csv(
-        "DF_DCAT_CENSAGRIC2020_SURF_ALL",
-        f"A.{areas}.HO+ARU+FUAA",
-    )
+    _, surf = istat_csv("DF_DCAT_CENSAGRIC2020_SURF_ALL", f"A.{areas}.HO+ARU+FUAA")
     for dtype in ("HO", "ARU", "FUAA"):
         print_coverage(dtype, [r for r in surf if r.get("DATA_TYPE") == dtype])
 
-    # Una query wildcard sul solo Camaiore serve a identificare i codici ufficiali
-    # TYPE_OF_CROP della vista per localizzazione dei terreni senza affidarsi a mirror.
-    _, crop_catalog = istat_csv(
-        "DF_DCAT_CENSAGRIC2020_UA_CROPS_2",
-        "A.046005.ARU..TOT",
-        quiet=True,
-    )
+    _, crop_catalog = istat_csv("DF_DCAT_CENSAGRIC2020_UA_CROPS_2", "A.046005.ARU..TOT", quiet=True)
     crop_codes = sorted({r.get("TYPE_OF_CROP", "") for r in crop_catalog if r.get("TYPE_OF_CROP")})
-    print("LOCALIZED CROP CODES:", ",".join(crop_codes))
     print("LOCALIZED CROP CODES MATCH OLI:", [c for c in crop_codes if "OLI" in c.upper()])
-
-    approved_codes = ["ALL", "ARLAND", "VINEY", "PGRAPM"]
-    olive_candidates = [c for c in crop_codes if "OLI" in c.upper()]
-    query_codes = approved_codes + olive_candidates
+    query_codes = ["ALL", "ARLAND", "VINEY", "PGRAPM", "OLIVOOILTR", "OLIVTTR"]
     _, crops = istat_csv(
         "DF_DCAT_CENSAGRIC2020_UA_CROPS_2",
         f"A.{areas}.ARU.{'+'.join(query_codes)}.TOT",
@@ -115,15 +99,12 @@ def probe_istat() -> None:
     for crop in query_codes:
         print_coverage(f"localized ARU {crop}", crops, crop=crop)
 
-    _, irrigation = istat_csv(
-        "DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS",
-        f"A.{areas}.IA",
-    )
+    _, irrigation = istat_csv("DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS", f"A.{areas}.IA")
     print_coverage("IA", irrigation)
 
 
 def unwrap_items(value):
-    for _ in range(4):
+    for _ in range(5):
         if isinstance(value, str):
             value = json.loads(value, strict=False)
             continue
@@ -144,66 +125,10 @@ def field(entry: dict, *names: str):
     return None
 
 
-def probe_situas() -> None:
-    gateway = "https://situas.istat.it/ShibO2Module/api/Report/ReportByUrl"
-    payload = json.dumps({"url": "get_elenco_microservizi"}).encode("utf-8")
-    status, content_type, body = request(
-        gateway,
-        accept="application/json",
-        data=payload,
-        headers={
-            "Content-Type": "application/json",
-            "Referer": "https://situas.istat.it/web/",
-            "language": "IT",
-        },
-    )
-    print(f"\n=== SITUAS catalog ===\nstatus={status} type={content_type} bytes={len(body)}")
-    if status != 200:
-        print(body[:4000].decode("utf-8", errors="replace"))
-        raise SystemExit("SITUAS catalog failed")
-    catalog = unwrap_items(decode_json_bytes(body))
-    if isinstance(catalog, dict):
-        catalog = list(catalog.values())
-    if not isinstance(catalog, list):
-        print("Unexpected SITUAS catalog type:", type(catalog).__name__, repr(catalog)[:2000])
-        raise SystemExit("Unexpected SITUAS catalog shape")
-
-    candidates = []
-    for entry in catalog:
-        if not isinstance(entry, dict):
-            continue
-        text = json.dumps(entry, ensure_ascii=False).lower()
-        pfun = str(field(entry, "PFUN", "P_FUN", "ID_FUNZIONE", "ID") or "")
-        if pfun == "74" or ("comuni" in text and "dimension" in text):
-            candidates.append(entry)
-    print(f"catalog entries={len(catalog)} candidates={len(candidates)}")
-    for entry in candidates:
-        print("CANDIDATE", json.dumps(entry, ensure_ascii=False, sort_keys=True))
-
-    entry = next((e for e in candidates if str(field(e, "PFUN", "P_FUN", "ID_FUNZIONE", "ID") or "") == "74"), None)
-    if entry is None and candidates:
-        entry = candidates[0]
-    if entry is None:
-        raise SystemExit("SITUAS Comuni - Dimensione report not found")
-
-    link = None
-    for key, value in entry.items():
-        key_l = str(key).lower()
-        if "spool" in key_l and "count" not in key_l and isinstance(value, str) and value.startswith("http"):
-            link = value
-            break
-    if not link:
-        # Alcune versioni del catalogo espongono direttamente un campo URL/LINK.
-        for key, value in entry.items():
-            if str(key).lower() in {"url", "link", "purl"} and isinstance(value, str) and value.startswith("http"):
-                link = value
-                break
-    if not link:
-        print("No report link found in candidate keys:", list(entry))
-        raise SystemExit("SITUAS report link not found")
-    print("SPOOL_LINK", link)
+def situas_report(date: str) -> list[dict]:
+    link = f"https://situas-servizi.istat.it/publish/reportspooljson?pfun=74&pdata={date}"
     status, content_type, body = request(link, accept="application/json", headers={"Referer": "https://situas.istat.it/web/"})
-    print(f"SITUAS report status={status} type={content_type} bytes={len(body)}")
+    print(f"\n=== SITUAS Comuni - Dimensione {date} ===\nurl={link}\nstatus={status} type={content_type} bytes={len(body)}")
     if status != 200:
         print(body[:4000].decode("utf-8", errors="replace"))
         raise SystemExit("SITUAS report failed")
@@ -211,13 +136,16 @@ def probe_situas() -> None:
     if isinstance(report, dict):
         report = list(report.values())
     if not isinstance(report, list):
-        print("Unexpected SITUAS report type:", type(report).__name__, repr(report)[:2000])
-        raise SystemExit("Unexpected SITUAS report shape")
-    print(f"SITUAS report rows={len(report)}")
+        raise SystemExit(f"Unexpected SITUAS report shape: {type(report).__name__}")
+    return [row for row in report if isinstance(row, dict)]
+
+
+def probe_situas() -> None:
+    # Il report 74 è temporale: interrogare la data corrente evita la fotografia
+    # censuaria 1951 proposta come primo estremo dal catalogo dei microservizi.
+    report = situas_report("26/08/2026")
     found: dict[str, dict] = {}
     for row in report:
-        if not isinstance(row, dict):
-            continue
         raw_code = field(row, "PRO_COM_T", "PRO_COM", "COD_ISTAT", "CODICE_ISTAT")
         if raw_code is None:
             continue
@@ -228,6 +156,8 @@ def probe_situas() -> None:
     print(f"COVERAGE municipal surface: {len(found)}/7; missing={[TOWNS[c] for c in TOWNS if c not in found]}")
     if len(found) < 7:
         raise SystemExit("SITUAS municipal surface coverage incomplete")
+    if not all(field(row, "AREA_KMQ") is not None for row in found.values()):
+        raise SystemExit("SITUAS current report does not expose AREA_KMQ for all seven towns")
 
 
 if __name__ == "__main__":
