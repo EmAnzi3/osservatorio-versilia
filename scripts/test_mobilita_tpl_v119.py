@@ -160,7 +160,7 @@ def main() -> None:
         '<span>Ferrovia</span>',
         '<span>Finestra di servizio</span>',
         "const definitionControls = '';",
-        'class="tpl-chart-toolbar"',
+        'class="compare-chart-toolbar scale-toolbar"',
         "deepDiveMarkup(data, town, themeKey, metricKey)",
         "if (!isFlow) return '';",
     ):
