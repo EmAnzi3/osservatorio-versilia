@@ -1,7 +1,7 @@
 {
   "schemaVersion": "4.0",
-  "generatedAt": "2026-08-25T20:33:56+00:00",
-  "referenceDate": "2026-08-25",
+  "generatedAt": "2026-08-26T07:21:35+00:00",
+  "referenceDate": "2026-08-26",
   "municipalities": [
     "Camaiore",
     "Forte dei Marmi",
@@ -12,60 +12,60 @@
     "Viareggio"
   ],
   "counts": {
-    "candidates": 91,
-    "public": 29,
+    "candidates": 110,
+    "public": 31,
     "eligible": 6,
-    "conditional": 6,
+    "conditional": 8,
     "reviewInternal": 32,
-    "discardedNonMunicipal": 40,
+    "discardedNonMunicipal": 52,
     "staleSources": 1,
-    "preQualityOperational": 15,
-    "qualityPassed": 13,
+    "preQualityOperational": 22,
+    "qualityPassed": 20,
     "qualityHeld": 2,
-    "humanReviewMatched": 20,
-    "humanReviewPromoted": 3,
-    "humanReviewSuppressed": 17,
+    "humanReviewMatched": 29,
+    "humanReviewPromoted": 5,
+    "humanReviewSuppressed": 24,
     "archive": 1,
     "continuityHold": 0,
-    "duplicatesCollapsed": 1,
-    "discoveryReview": 116,
-    "applicationOpen": 25,
+    "duplicatesCollapsed": 7,
+    "discoveryReview": 138,
+    "applicationOpen": 27,
     "rollingOpen": 2,
     "announcedUpcoming": 2,
     "coverageHold": 0,
-    "new": 17,
-    "regionalSafetyNetAdded": 1,
-    "regionalUnresolved": 1,
+    "new": 19,
+    "regionalSafetyNetAdded": 0,
+    "regionalUnresolved": 0,
     "regionalOverdue": 0
   },
   "municipalitySummary": {
     "Camaiore": {
       "eligible": 5,
-      "conditional": 7
+      "conditional": 9
     },
     "Forte dei Marmi": {
       "eligible": 5,
-      "conditional": 5
+      "conditional": 7
     },
     "Massarosa": {
       "eligible": 5,
-      "conditional": 6
+      "conditional": 8
     },
     "Pietrasanta": {
       "eligible": 5,
-      "conditional": 6
+      "conditional": 8
     },
     "Seravezza": {
       "eligible": 6,
-      "conditional": 6
+      "conditional": 8
     },
     "Stazzema": {
       "eligible": 6,
-      "conditional": 6
+      "conditional": 8
     },
     "Viareggio": {
       "eligible": 5,
-      "conditional": 6
+      "conditional": 8
     }
   },
   "sources": [
@@ -73,17 +73,17 @@
       "sourceId": "regione-toscana",
       "status": "ok",
       "candidateCount": 37,
-      "publicCount": 8,
+      "publicCount": 3,
       "reviewCount": 0,
-      "discardedCount": 28,
+      "discardedCount": 27,
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-25",
-        "ageDays": 0,
+        "ageDays": 1,
         "maxAgeDays": 45
       },
       "error": null,
-      "preQualityPublicCount": 9,
+      "preQualityPublicCount": 10,
       "qualityHoldCount": 0
     },
     {
@@ -96,7 +96,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-14",
-        "ageDays": 11,
+        "ageDays": 12,
         "maxAgeDays": 45
       },
       "error": null,
@@ -113,7 +113,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-25",
-        "ageDays": 0,
+        "ageDays": 1,
         "maxAgeDays": 45
       },
       "error": null,
@@ -130,7 +130,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-16",
-        "ageDays": 70,
+        "ageDays": 71,
         "maxAgeDays": 120
       },
       "error": null,
@@ -147,7 +147,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-08",
-        "ageDays": 78,
+        "ageDays": 79,
         "maxAgeDays": 120
       },
       "error": null,
@@ -158,13 +158,13 @@
       "sourceId": "mic-spettacolo",
       "status": "ok",
       "candidateCount": 3,
-      "publicCount": 0,
+      "publicCount": 1,
       "reviewCount": 3,
       "discardedCount": 0,
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-12",
-        "ageDays": 13,
+        "ageDays": 14,
         "maxAgeDays": 120
       },
       "error": null,
@@ -181,7 +181,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-17",
-        "ageDays": 8,
+        "ageDays": 9,
         "maxAgeDays": 120
       },
       "error": null,
@@ -198,11 +198,28 @@
       "freshness": {
         "status": "stale",
         "observedDate": "2026-01-30",
-        "ageDays": 207,
+        "ageDays": 208,
         "maxAgeDays": 45
       },
       "error": null,
       "preQualityPublicCount": 0,
+      "qualityHoldCount": 0
+    },
+    {
+      "sourceId": "regione-toscana-tutti",
+      "status": "ok",
+      "candidateCount": 19,
+      "publicCount": 6,
+      "reviewCount": 0,
+      "discardedCount": 13,
+      "freshness": {
+        "status": "current",
+        "observedDate": "2026-08-25",
+        "ageDays": 1,
+        "maxAgeDays": 45
+      },
+      "error": null,
+      "preQualityPublicCount": 6,
       "qualityHoldCount": 0
     }
   ],
@@ -295,7 +312,7 @@
         "condition_label": "Ruolo territoriale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -388,8 +405,8 @@
         "condition_label": "Soglia demografica"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
-      "verification_status": "cached_recent",
+      "verified_at": "2026-08-26",
+      "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
     },
@@ -422,7 +439,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:28:24+00:00",
+      "detected_at": "2026-08-26T07:11:27+00:00",
       "fingerprint": "616d2151dd2f1ff1a3f298964b05c7e4ae0bf4d6b5eb067e1b4670491daf5f95",
       "municipality_eligibility": {
         "Camaiore": {
@@ -500,6 +517,101 @@
       "is_new": false
     },
     {
+      "id": "opp-242a57c879e32c",
+      "source_id": "mic-spettacolo",
+      "source_name": "Ministero della Cultura — Direzione generale Spettacolo",
+      "publisher": "Ministero della Cultura · Direzione generale Spettacolo",
+      "title": "Bando per la promozione della musica Jazz 2027",
+      "url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande",
+      "summary": "Contributi per progetti innovativi di promozione e valorizzazione della musica jazz, rivolti anche alle autonomie territoriali, con accordi di collaborazione già sottoscritti.",
+      "status": "open",
+      "opens_at": null,
+      "deadline_at": "2026-09-10",
+      "deadline_time": "16:00",
+      "published_at": null,
+      "beneficiary_text": "L'avviso ammette alla presentazione dei progetti le autonomie territoriali e gli organismi privati senza scopo di lucro.",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti.",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune rientra tra le autonomie territoriali ammesse, ma deve presentare un progetto jazz conforme e disporre degli accordi di collaborazione richiesti già sottoscritti."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "applicant_type": "Autonomia territoriale o organismo privato senza scopo di lucro",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Artisti, formazioni jazzistiche e pubblico delle attività di promozione e valorizzazione del jazz",
+      "partnership_required": true,
+      "project_requirements": "Il progetto deve perseguire le finalità dell'avviso e prevedere gli accordi di collaborazione richiesti, già sottoscritti al momento della domanda. Contributo massimo 35.000 euro per progetto.",
+      "geographic_scope": "Italia",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable_for_municipality": true,
+      "decision_class": "conditional_public_applicant",
+      "rule_id": "mic-jazz-2027",
+      "themes": [
+        "cultura"
+      ],
+      "eligibility_evidence": {
+        "rule_id": "mic-jazz-2027",
+        "text": "L'avviso ammette alla presentazione dei progetti le autonomie territoriali e gli organismi privati senza scopo di lucro.",
+        "source_url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande"
+      },
+      "verified_direct": true,
+      "verified_at": "2026-08-26",
+      "presentation": {
+        "source_label": "Ministero della Cultura · DG Spettacolo",
+        "source_mark": "MiC",
+        "source_class": "ministero",
+        "category": "cultura",
+        "description": "Contributi fino a 35.000 euro per progetti innovativi di promozione e valorizzazione della musica jazz.",
+        "condition_label": "Richiede accordi di collaborazione",
+        "source_favicon": "https://cultura.gov.it/favicon.ico"
+      },
+      "access_mode": "specific_requirement",
+      "quality_gate": {
+        "status": "pass",
+        "missing": [],
+        "reasons": []
+      },
+      "is_new": true,
+      "first_seen_at": "2026-08-26"
+    },
+    {
       "id": "opp-363f0714d4aca5",
       "source_id": "fondazione-cr-lucca",
       "source_name": "Fondazione Cassa di Risparmio di Lucca — bandi in corso",
@@ -531,7 +643,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:28:29+00:00",
+      "detected_at": "2026-08-26T07:11:33+00:00",
       "fingerprint": "85a2931c5ee60679a8c1b62a058c59f1af1e11e2c97fd294df74b74582b09508",
       "municipality_eligibility": {
         "Camaiore": {
@@ -640,7 +752,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-25T20:28:31+00:00",
+      "detected_at": "2026-08-26T07:11:34+00:00",
       "fingerprint": "c527f9da6d9004efdfe1b6c57e616d139865da8b659a9015f88922e7b2199073",
       "municipality_eligibility": {
         "Camaiore": {
@@ -804,7 +916,7 @@
         "condition_label": "Impegno assunzionale e delega ATS"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -841,7 +953,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:28:43+00:00",
+      "detected_at": "2026-08-26T07:11:49+00:00",
       "fingerprint": "7af7da5349575b73e2e20a9d4459f769682a72270d0fa7364d68b4df6fde56d1",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1005,7 +1117,7 @@
         "condition_label": "Pipeline di investimenti e progetto LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1098,7 +1210,7 @@
         "condition_label": "Comunità energetiche e partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1191,7 +1303,7 @@
         "condition_label": "Progetto/partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1284,10 +1396,119 @@
         "condition_label": "Città/progetto dimostrativo LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
+    },
+    {
+      "id": "opp-aad71fb1d25308",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
+      "publisher": "Regione Toscana",
+      "title": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze",
+      "url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze",
+      "summary": "Pubblicato il 19.08.2026 Pubblicato su BURT il 19.08.2026 Stato: Aperto Scadenza presentazione domande 18.09.2026 13:00",
+      "status": "open",
+      "opens_at": null,
+      "deadline_at": "2026-09-18",
+      "published_at": "2026-08-19",
+      "beneficiary_text": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze. Possono presentare domanda di contributo i soggetti di seguito indicati, promotori di iniziative ed eventi culturali, educativi, artistici, divulgativi o commemorativi realizzati nel territorio della Regione Toscana e dedicati alle ricorrenze oggetto del presente Avviso: Enti locali della Toscana; Enti del Terzo settore iscritti al Registro unico nazionale del Terzo settore (RUNTS), con sede legale e operativa in Toscana. I soggetti richiedenti devono essere in regola con la rendicontazione di eventuali contributi precedentemente concessi dal Settore regionale competente.. Possono presentare domanda di contributo gli Enti locali della Toscana e gli Enti del Terzo settore iscritti al RUNTS con sede legale e operativa in Toscana.",
+      "municipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "eligibility": "conditional",
+      "eligibility_reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso.",
+      "themes": [
+        "cultura"
+      ],
+      "funding_total_eur": null,
+      "max_contribution_eur": null,
+      "cofunding_text": null,
+      "priority": "medium",
+      "detected_at": "2026-08-26T07:19:23+00:00",
+      "fingerprint": "f495a66df90ea23fa198dfe7804b5313c61ff510d43941fbb89dde6bc3aae8af",
+      "municipality_eligibility": {
+        "Camaiore": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Forte dei Marmi": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Massarosa": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Pietrasanta": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Seravezza": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Stazzema": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        },
+        "Viareggio": {
+          "status": "conditional",
+          "reason": "Il Comune, in quanto Ente locale della Toscana, può presentare direttamente domanda; l'ammissibilità dipende dalla presentazione di un progetto dedicato a una delle tre ricorrenze previste dall'avviso."
+        }
+      },
+      "applicant_eligibility": "conditional",
+      "rule_id": "rt-celebrazioni-2026",
+      "applicant_type": "Ente locale della Toscana oppure Ente del Terzo settore RUNTS con sede legale e operativa in Toscana",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Comunità locali e pubblico delle iniziative culturali, educative, artistiche, divulgative o commemorative",
+      "partnership_required": false,
+      "project_requirements": "Il progetto deve essere dedicato a una sola tra le tre ricorrenze previste dall'avviso (San Francesco d'Assisi, Carlo Collodi o alluvione di Firenze del 1966), essere realizzato integralmente in Toscana nel 2026 e rispettare le condizioni di cofinanziamento e ammissibilità previste.",
+      "geographic_scope": "Toscana; iniziative realizzate integralmente nel territorio regionale",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "eligibility_evidence": {
+        "rule_id": "rt-celebrazioni-2026",
+        "text": "Possono presentare domanda di contributo gli Enti locali della Toscana e gli Enti del Terzo settore iscritti al RUNTS con sede legale e operativa in Toscana.",
+        "source_url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze"
+      },
+      "actionable_for_municipality": true,
+      "decision_class": "conditional_project_theme",
+      "exclusion_code": null,
+      "opportunity_type": "funding",
+      "lifecycle_stage": "application_open",
+      "deadline_evidence": "Scadenza presentazione domande 18 settembre 2026 ore 13:00.",
+      "territorial_evidence_url": null,
+      "quality_gate": {
+        "status": "pass",
+        "missing": [],
+        "reasons": []
+      },
+      "presentation": {
+        "source_label": "Regione Toscana",
+        "source_mark": "RT",
+        "source_class": "other",
+        "category": "cultura",
+        "description": "Pubblicato il 19.08.2026",
+        "condition_label": "Richiede requisito specifico",
+        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+      },
+      "deadline_time": "13:00",
+      "access_mode": "specific_requirement",
+      "also_seen_in": [
+        "regione-toscana-tutti",
+        "regione-toscana"
+      ],
+      "dedupe_key": "title:sostegno a progetti dedicati a san francesco collodi e alluvione di firenze|deadline:2026-09-18",
+      "is_new": true,
+      "first_seen_at": "2026-08-26"
     },
     {
       "id": "opp-91868513a3f796",
@@ -1377,15 +1598,15 @@
         "condition_label": "Partenariato transnazionale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "cached_recent",
       "is_new": true,
       "first_seen_at": "2026-08-25"
     },
     {
-      "id": "opp-06c5a1adf8c483",
-      "source_id": "regione-toscana",
-      "source_name": "Regione Toscana — bandi aperti",
+      "id": "opp-59e791c6c5503b",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
       "publisher": "Regione Toscana",
       "title": "Toscanaincontemporanea 2026",
       "url": "https://www.regione.toscana.it/it/-/toscanaincontemporanea-2026",
@@ -1411,8 +1632,8 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:26:27+00:00",
-      "fingerprint": "6b3f9e50c8ba4ed8c012835e1babf5057553b4122e541b405fdcfd2649b3fef3",
+      "detected_at": "2026-08-26T07:20:12+00:00",
+      "fingerprint": "d292f9661c0ad594b68235e5c81ad00c82e9222bc8ec01b214b34a0d706a02a0",
       "municipality_eligibility": {
         "Camaiore": {
           "status": "conditional",
@@ -1473,7 +1694,7 @@
       "presentation": {
         "source_label": "Regione Toscana",
         "source_mark": "RT",
-        "source_class": "regione",
+        "source_class": "other",
         "category": "cultura",
         "description": "Sostegno a progetti per la produzione, la conoscenza e la diffusione della creatività contemporanea.",
         "condition_label": "Richiede progetto culturale ammissibile",
@@ -1482,15 +1703,16 @@
       "deadline_time": "12:00",
       "access_mode": "specific_requirement",
       "also_seen_in": [
+        "regione-toscana-tutti",
         "regione-toscana"
       ],
       "dedupe_key": "title:toscanaincontemporanea 2026|deadline:2026-09-23",
       "is_new": false
     },
     {
-      "id": "opp-57c09781187870",
-      "source_id": "regione-toscana",
-      "source_name": "Regione Toscana — bandi aperti",
+      "id": "opp-04739a44581e08",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
       "publisher": "Regione Toscana",
       "title": "Bando Sistemi museali 2026",
       "url": "https://www.regione.toscana.it/it/-/bando-sistemi-museali-2026",
@@ -1515,8 +1737,8 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:26:23+00:00",
-      "fingerprint": "69b003c3ba50e65a8cc6eea24ad2df4b6a49081af539f4bf142f368e64e34616",
+      "detected_at": "2026-08-26T07:20:00+00:00",
+      "fingerprint": "93e219752c95b0b319e2b4272b3ac935108c5e8b771b934eb3bd678ee156d730",
       "municipality_eligibility": {
         "Camaiore": {
           "status": "conditional",
@@ -1577,7 +1799,7 @@
       "presentation": {
         "source_label": "Regione Toscana",
         "source_mark": "RT",
-        "source_class": "regione",
+        "source_class": "other",
         "category": "cultura",
         "description": "Sostegno ai Sistemi Museali della Toscana per attività coordinate di valorizzazione, gestione e sviluppo dei musei aderenti.",
         "condition_label": "Partecipazione tramite Sistema Museale",
@@ -1586,6 +1808,7 @@
       "deadline_time": "23:59",
       "access_mode": "specific_requirement",
       "also_seen_in": [
+        "regione-toscana-tutti",
         "regione-toscana"
       ],
       "dedupe_key": "title:bando sistemi museali 2026|deadline:2026-09-25",
@@ -1620,7 +1843,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:27:07+00:00",
+      "detected_at": "2026-08-26T07:09:57+00:00",
       "fingerprint": "35fcf629ad1c89c2dbabb1521b063ae333226b42fa3919b78253d5c8e20c3c2f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1784,15 +2007,15 @@
         "condition_label": "Soglia demografica"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
     },
     {
-      "id": "opp-0faeae8737eac3",
-      "source_id": "regione-toscana",
-      "source_name": "Regione Toscana — bandi aperti",
+      "id": "opp-caf9ac68441fb3",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
       "publisher": "Regione Toscana",
       "title": "Bando Amianto Edifici Pubblici 2026",
       "url": "https://www.regione.toscana.it/it/-/bando-amianto-2026",
@@ -1821,8 +2044,8 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-25T20:26:06+00:00",
-      "fingerprint": "3fd89f7ae7dcf377ddc231a0f317af0c009eb781fb1eac85369e75412684defd",
+      "detected_at": "2026-08-26T07:19:08+00:00",
+      "fingerprint": "d17b122ec4fa2b9761e0b073ab6fb91536cdae671e3bc8cd58ac8e422f92bd97",
       "municipality_eligibility": {
         "Camaiore": {
           "status": "eligible",
@@ -1883,7 +2106,7 @@
       "presentation": {
         "source_label": "Regione Toscana",
         "source_mark": "RT",
-        "source_class": "regione",
+        "source_class": "other",
         "category": "ambiente",
         "description": "Contributi agli Enti locali per rimuovere e smaltire materiali contenenti amianto dagli edifici pubblici.",
         "condition_label": null,
@@ -1892,6 +2115,7 @@
       "deadline_time": "16:00",
       "access_mode": "direct",
       "also_seen_in": [
+        "regione-toscana-tutti",
         "regione-toscana"
       ],
       "dedupe_key": "title:bando amianto edifici pubblici 2026|deadline:2026-09-30",
@@ -1985,8 +2209,8 @@
         "condition_label": "Progetto territoriale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
-      "verification_status": "cached_recent",
+      "verified_at": "2026-08-26",
+      "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
     },
@@ -2078,8 +2302,8 @@
         "condition_label": "Comune costiero"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
-      "verification_status": "cached_recent",
+      "verified_at": "2026-08-26",
+      "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
     },
@@ -2171,7 +2395,7 @@
         "condition_label": "Partenariato richiesto"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2205,7 +2429,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:27:04+00:00",
+      "detected_at": "2026-08-26T07:09:53+00:00",
       "fingerprint": "00b755c2877de98a35b2a453b01984d25f31463424ba7cb06c15b2027787688f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2308,7 +2532,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-25T20:27:08+00:00",
+      "detected_at": "2026-08-26T07:09:59+00:00",
       "fingerprint": "5c30d6ba375cb6bc880893d6b12e3d6dc53631edda47abacf9bd13c930a431bd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2385,9 +2609,9 @@
       "is_new": false
     },
     {
-      "id": "opp-0daa6f6b9e6dba",
-      "source_id": "regione-toscana",
-      "source_name": "Regione Toscana — bandi aperti",
+      "id": "opp-7fbab3d295ee2d",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
       "publisher": "Regione Toscana",
       "title": "Bando parcheggi 2026",
       "url": "https://www.regione.toscana.it/it/-/bando-parcheggi-2026",
@@ -2413,8 +2637,8 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:26:07+00:00",
-      "fingerprint": "604d07058385fbf92e4f57ce4321de3ce4c2e871a11e16526d5e705f0c18c113",
+      "detected_at": "2026-08-26T07:19:21+00:00",
+      "fingerprint": "52537afb758f0958ecb29df56ad3697667599e77c1c9ac3311d962199ec10ce4",
       "municipality_eligibility": {
         "Camaiore": {
           "status": "eligible",
@@ -2475,7 +2699,7 @@
       "presentation": {
         "source_label": "Regione Toscana",
         "source_mark": "RT",
-        "source_class": "regione",
+        "source_class": "other",
         "category": "mobilita",
         "description": "Contributi ai Comuni toscani per realizzare nuovi parcheggi pubblici e le opere strettamente connesse.",
         "condition_label": null,
@@ -2484,15 +2708,16 @@
       "deadline_time": null,
       "access_mode": "direct",
       "also_seen_in": [
+        "regione-toscana-tutti",
         "regione-toscana"
       ],
       "dedupe_key": "title:bando parcheggi 2026|deadline:2026-11-30",
       "is_new": false
     },
     {
-      "id": "opp-a1f6648ce28cb6",
-      "source_id": "regione-toscana",
-      "source_name": "Regione Toscana — bandi aperti",
+      "id": "opp-c83615a316d655",
+      "source_id": "regione-toscana-tutti",
+      "source_name": "Regione Toscana — tutti i bandi",
       "publisher": "Regione Toscana",
       "title": "Manifestazione di interesse per il reperimento di patrimonio immobiliare da destinare ad emergenza abitativa e/o residenza sociale",
       "url": "https://www.regione.toscana.it/it/-/manifestazione-di-interesse-per-il-reperimento-di-patrimonio-immobiliare-da-destinare-ad-emergenza-abitativa-e/o-residenza-sociale-1",
@@ -2521,8 +2746,8 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:26:21+00:00",
-      "fingerprint": "75758baf9422b3ba79f936109d1e1e0e0cfdefc395ba6f8760733f8c49cb6db8",
+      "detected_at": "2026-08-26T07:19:54+00:00",
+      "fingerprint": "14f431c160c5f2382754875e1304eba487fa3a68f28cbb6a9e0fb501346768a7",
       "municipality_eligibility": {
         "Camaiore": {
           "status": "conditional",
@@ -2583,7 +2808,7 @@
       "presentation": {
         "source_label": "Regione Toscana",
         "source_mark": "RT",
-        "source_class": "regione",
+        "source_class": "other",
         "category": "abitare",
         "description": "Manifestazione di interesse per reperire, recuperare o acquisire immobili destinati a emergenza abitativa, ERP o residenza sociale.",
         "condition_label": "Richiede patrimonio o progetto ammissibile",
@@ -2592,6 +2817,7 @@
       "deadline_time": null,
       "access_mode": "specific_requirement",
       "also_seen_in": [
+        "regione-toscana-tutti",
         "regione-toscana"
       ],
       "dedupe_key": "title:manifestazione di interesse per il reperimento di patrimonio immobiliare da destinare ad emergenza abitativa e o residenza sociale|deadline:2026-11-30",
@@ -2685,7 +2911,7 @@
         "condition_label": "Titolo di esclusività e requisiti evento"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -2778,7 +3004,7 @@
         "condition_label": "Misura a sportello"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2871,7 +3097,7 @@
         "condition_label": "DEGURBA e partenariato europeo"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2964,7 +3190,7 @@
         "condition_label": "SECAP / piano energia-clima"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3057,7 +3283,7 @@
         "condition_label": "In attesa del bando"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-25",
+      "verified_at": "2026-08-26",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3351,7 +3577,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:33:03+00:00",
+      "detected_at": "2026-08-26T07:17:33+00:00",
       "fingerprint": "c25be1fd8ef5b3446f6e55c7112ccee3e972a54ae365f4f1d93f07f9671c066c",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3442,7 +3668,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-25T20:33:00+00:00",
+      "detected_at": "2026-08-26T07:17:27+00:00",
       "fingerprint": "93f91999aa938515dd279e0c2316bf9d21b76be704d4c676bfbdbd34e1dfc7fd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3526,24 +3752,24 @@
     ]
   },
   "v022Stats": {
-    "humanReviewMatched": 20,
-    "humanReviewPromoted": 3,
-    "humanReviewSuppressed": 17,
-    "municipalityOverrides": 1,
+    "humanReviewMatched": 29,
+    "humanReviewPromoted": 5,
+    "humanReviewSuppressed": 24,
+    "municipalityOverrides": 2,
     "typeSuppressed": 1,
-    "lifecycleSuppressed": 1
+    "lifecycleSuppressed": 2
   },
   "ruleStats": {
-    "matched": 34,
-    "promoted_from_review": 8,
-    "role_suppressed": 16,
-    "geography_suppressed": 2,
-    "humanReviewMatched": 20,
-    "humanReviewPromoted": 3,
-    "humanReviewSuppressed": 17,
-    "municipalityOverrides": 1,
+    "matched": 47,
+    "promoted_from_review": 12,
+    "role_suppressed": 23,
+    "geography_suppressed": 1,
+    "humanReviewMatched": 29,
+    "humanReviewPromoted": 5,
+    "humanReviewSuppressed": 24,
+    "municipalityOverrides": 2,
     "typeSuppressed": 1,
-    "lifecycleSuppressed": 1
+    "lifecycleSuppressed": 2
   },
   "archive": [
     {
@@ -3581,13 +3807,13 @@
         "runtimeStatus": "ok",
         "freshness": "current",
         "observedDate": "2026-08-25",
-        "publicCount": 8,
+        "publicCount": 3,
         "candidateCount": 37,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
         "note": "Fonte regionale generalista; resta il canale di sicurezza anche quando un bando compare nei portali di programma.",
-        "verifiedOutputCount": 8
+        "verifiedOutputCount": 3
       },
       {
         "source_id": "regione-toscana-fesr",
@@ -3696,13 +3922,13 @@
         "runtimeStatus": "ok",
         "freshness": "current",
         "observedDate": "2026-08-12",
-        "publicCount": 0,
+        "publicCount": 1,
         "candidateCount": 3,
         "reviewCount": 3,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
         "note": "Canale nazionale per avvisi culturali che ammettono autonomie territoriali o enti locali.",
-        "verifiedOutputCount": 0
+        "verifiedOutputCount": 1
       },
       {
         "source_id": "ministero-interno-prefetture",
@@ -3835,7 +4061,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 24,
+        "candidateCount": 25,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -3877,11 +4103,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 1,
-        "candidateCount": 0,
+        "candidateCount": 1,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -3900,11 +4126,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 1,
-        "candidateCount": 0,
+        "candidateCount": 1,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4130,11 +4356,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 1,
-        "candidateCount": 0,
+        "candidateCount": 2,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4176,11 +4402,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 0,
+        "candidateCount": 7,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4268,11 +4494,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 0,
+        "candidateCount": 9,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4337,11 +4563,11 @@
         "pdfFallback": false,
         "archiveContinuity": false,
         "historicalReplay": true,
-        "runtimeStatus": "error",
+        "runtimeStatus": "ok",
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 0,
+        "candidateCount": 1,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4646,12 +4872,35 @@
         "replacementNeeded": false,
         "note": "Canale europeo dedicato a città, Comuni e autorità locali per preparare investimenti su energia e clima; presidia le call EUCF senza dipendere dal solo Funding & Tenders.",
         "verifiedOutputCount": 1
+      },
+      {
+        "source_id": "regione-toscana-tutti",
+        "label": "Regione Toscana · tutti i bandi",
+        "monitoringStatus": "active",
+        "role": "primary",
+        "priority": 101,
+        "favicon": "https://www.regione.toscana.it/favicon.ico",
+        "listingDiscovery": true,
+        "detailEnrichment": true,
+        "pdfFallback": true,
+        "archiveContinuity": true,
+        "historicalReplay": true,
+        "runtimeStatus": "ok",
+        "freshness": "current",
+        "observedDate": "2026-08-25",
+        "publicCount": 6,
+        "candidateCount": 19,
+        "reviewCount": 0,
+        "qualityHoldCount": 0,
+        "replacementNeeded": false,
+        "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId.",
+        "verifiedOutputCount": 6
       }
     ],
     "summary": {
-      "configured": 47,
-      "active": 46,
-      "healthyActive": 36,
+      "configured": 48,
+      "active": 47,
+      "healthyActive": 43,
       "degraded": 2,
       "planned": 1,
       "discovery": 39
@@ -4907,7 +5156,7 @@
         "source_id": "regione-toscana",
         "expected": "operational",
         "prediction": "operational",
-        "rule_id": "rt-celebrazioni-storiche-2026",
+        "rule_id": "rt-celebrazioni-2026",
         "official_url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze"
       },
       {
@@ -5057,10 +5306,10 @@
     ]
   },
   "deduplication": {
-    "inputRecords": 13,
-    "outputRecords": 12,
-    "duplicateGroups": 1,
-    "recordsCollapsed": 1
+    "inputRecords": 20,
+    "outputRecords": 14,
+    "duplicateGroups": 7,
+    "recordsCollapsed": 7
   },
   "hardeningVersion": "0.2.5",
   "discoveryQueue": [
@@ -5269,6 +5518,18 @@
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
     },
     {
+      "source_id": "funzione-pubblica",
+      "source_label": "Funzione Pubblica · Comuni",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento della funzione pubblica",
+      "territory": "Italia",
+      "title": "Aggiornamenti da Funzione Pubblica · Comuni",
+      "url": "https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/",
+      "summary": "Notizie dal Dipartimento della Funzione pubblica Vai al contenuto Vai alla navigazione del sito Governo Italiano Ministro per la Pubblica Amministrazione Presidenza del Consiglio dei ministri Seguici su: Cerca TORNA AL SITO PRINCIPALE Il Dipartimento La struttura Area di interesse TORNA AL SITO PRINCIPALE Cerca Ministro per la Pubblica Amministrazione Presidenza del Consiglio dei ministri Home / Il Dipartimento / Notizie Notizie dal Dipartimento della Funzione pubblica Tutti i contenuti della pagina Notizie dal Dipartimento della Funzione pubblica Notizie Dipartimento Notizie Ministro Concorsi",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Pagina ufficiale monitorata: nessuna scheda strutturata è stata promossa automaticamente."
+    },
+    {
       "source_id": "gse",
       "source_label": "GSE",
       "publisher": "Gestore dei Servizi Energetici",
@@ -5323,7 +5584,7 @@
       "territory": "Italia",
       "title": "Bandi e Avvisi",
       "url": "https://www.mase.gov.it/portale/bandi-e-avvisi",
-      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_arvc\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
+      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_zwai\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5396,6 +5657,18 @@
       "title": "Menu Bottom",
       "url": "https://www.mit.gov.it/documentazione/bonus-e-finanziamenti-cittadini-enti-locali-ed-imprese",
       "summary": "Crediti Privacy & Cookie Accessibilità Note Legali Dichiarazione di accessibiltà URP - Ufficio Relazioni con il Pubblico Comunica con noi Intranet {\"path\":{\"baseUrl\":\"\\/\",\"scriptPath\":null,\"pathPrefix\":\"\",\"currentPath\":\"node\\/18419\",\"currentPathIsAdmin\":false,\"isFront\":false,\"currentLanguage\":\"it\"},\"pluralDelimiter\":\"\\u0003\",\"suppressDeprecationErrors\":true,\"ckeditorAccordion\":{\"accordionStyle\":{\"collapseAll\":1,\"keepRowsOpen\":0}},\"statistics\":{\"data\":{\"nid\":\"18419\"},\"url\":\"\\/core\\/modules\\/statistics\\/statistics.php\"},\"cookies\":{\"cookiesjsr\":{\"config\":{\"cookie\":{\"name\":\"cookiesjsr\",\"expires\":3",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-dgcc",
+      "source_label": "MiC · Creatività Contemporanea",
+      "publisher": "Ministero della Cultura · Direzione generale Creatività Contemporanea",
+      "territory": "Italia",
+      "title": "AVVISI PUBBLICI APERTI",
+      "url": "https://creativitacontemporanea.cultura.gov.it/",
+      "summary": "CULTURA NEI PICCOLI COMUNI – ED. 1 È online la prima edizione dell’avviso pubblico Cultura nei piccoli comuni , promosso dall’Unità di missione per la cooperazione culturale con l’Africa e il Mediterraneo allargato, dal Piano Olivetti per la Cultura e dalla Direzione Generale Creatività Contemporanea del Ministero della Cultura, con il supporto tecnico-amministrativo di ALES. Scadenza: 31 agosto 2026 ore 12.00 SCOPRI DI PIÙ PREMIO NEW YORK – EDIZIONE 22 È online il bando per partecipare alla ventiduesima edizione del Premio New York , il programma di residenza e ricerca internazionale riservat",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5573,6 +5846,18 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
+      "title": "Consultazione di mercato per servizio di accoglienza PAF Ex Bocciodromo",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/genova/comunicazioni/consultazione-mercato-servizio-accoglienza-paf-ex-bocciodromo",
+      "summary": "CONSULTAZIONE DI MERCATO PAF Ex Bocciodromo Comunicazione 26 Agosto 2026 Ultimo aggiornamento 26 Agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
       "title": "Decreto 20 marzo 2026",
       "url": "https://dait.interno.gov.it/finanza-locale/documentazione/decreto-20-marzo-2026-lt",
       "summary": "Contributo in favore del comune di Latina per la gestione e manutenzione di opere stradali.",
@@ -5732,6 +6017,90 @@
       "title": "Visita presentazione Direttore Regionale della Agenzia delle Entrate",
       "url": "https://prefettura.interno.gov.it/it/prefetture/laquila/comunicati-stampa/visita-presentazione-direttore-regionale-agenzia-entrate",
       "summary": "Dott. Gaetano Scala, odierna assunzione incarico Comunicato stampa 25 Agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Avviso di indagine di mercato - Con il presente Avviso si comunica che il Ministero della Cultura sede in Via del Collegio Romano 27 in Roma, intende acquisire manifestazioni d’interesse per la partecipazione alla procedura negoziata",
+      "url": "https://cultura.gov.it/comunicato/avviso-di-indagine-di-mercato-con-il-presente-avviso-si-comunica-che-il-ministero-della-cultura-sede-in-via-del-collegio-romano-27-in-roma-intende-acquisire-manifestazioni-dinteresse-per-la-partecipazione-alla-procedura-negoziata",
+      "summary": "3 luglio 2026 Con il presente Avviso si comunica che il Ministero della Cultura sede in Via del Collegio Romano 27... Continua a leggere Avviso Avviso",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Avviso di selezione, mediante procedura comparativa per titoli e colloquio ai sensi dell’art. 7, comma 6, del decreto legislativo 30 marzo 2001, n. 165, per il conferimento di n. 1 incarico di assistente all'ufficio comunicazione ICR",
+      "url": "https://cultura.gov.it/comunicato/avviso-di-selezione-mediante-procedura-comparativa-per-titoli-e-colloquio-ai-sensi-dellart-7-comma-6-del-decreto-legislativo-30-marzo-2001-n-165-per-il-conferimento-di-n-1-incarico-di-assistente-allufficio-comunicazione-icr",
+      "summary": "30 luglio 2026 Si pubblica l' avviso di selezione, mediante procedura comparativa per titoli e colloquio ai sensi d... Continua a leggere Avviso Avviso",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Bando per la preselezione dei siti italiani da candidarsi al Marchio del patrimonio europeo nell’ambito della selezione 2027",
+      "url": "https://cultura.gov.it/comunicato/bando-per-la-preselezione-dei-siti-italiani-da-candidarsi-al-marchio-del-patrimonio-europeo-nellambito-della-selezione-2027",
+      "summary": "19 giugno 2026 In allegato il bando completo in formato PDF e relativi allegati. Continua a leggere Avviso Avviso",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Bando per la presentazione di domande di contributo in attuazione del decreto del Ministro della cultura rep. 383 del 27 ottobre 2025, disciplinante l’utilizzo del Fondo per l’apertura di nuove librerie sul territorio nazionale da parte di giovani…",
+      "url": "https://cultura.gov.it/comunicato/bando-per-la-presentazione-di-domande-di-contributo-in-attuazione-del-decreto-del-ministro-della-cultura-rep-383-del-27-ottobre-2025-disciplinante-lutilizzo-del-fondo-per-lapertura-di-nuove-librerie-sul-territorio-nazionale-da-parte-di-giovani",
+      "summary": "13 agosto 2026 Si pubblica DDG n. 792 del 13.08.2026 (qui accluso) relativo alla proroga del termine per il Bando p... Continua a leggere Avviso Avviso",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Cerca News",
+      "url": "https://cultura.gov.it/comunicati/avvisi",
+      "summary": "Nome Data di svolgimento Da: Data inizio A: Data fine Tipologia Tutte le tipologie Accordo Approfondimento Avviso Bando Circolare Comunicato Stampa Concorso Decreto Interrogazioni parlamentari Intervista News dal territorio Newsletter Notizie del giorno Pareri Programmazione Argomenti 100 Opere 18App 2x1000 5x1000 Altro Personale Archeologia Atto di Indirizzo Bonus Facciate CIS Cinema Collaboratori Comitato Scientifico ComitatoBorghi Concorsi Personale Cultura Dirigenti Domenicalmuseo Erogazioni liberali GEP2020 GrantOffice Libri e letture MedCulture PNRR ParitàdiGenere Pubblici Proclami Sciop",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Comunicazione esito dell' Avviso per il conferimento di incarichi di docenza nell’ambito del “Project for the creation of the LICHeC - Libyan Institute for Cultural Heritage Conservation”",
+      "url": "https://cultura.gov.it/comunicato/comunicazione-esito-dell-avviso-per-il-conferimento-di-incarichi-di-docenza-nellambito-del-project-for-the-creation-of-the-lichec-libyan-institute-for-cultural-heritage-conservation",
+      "summary": "12 agosto 2026 Comunicazione esito dell' Avviso per il conferimento di incarichi di docenza nell’ambito del “Projec... Continua a leggere Avviso Avviso",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "mic-generale",
+      "source_label": "Ministero della Cultura · Avvisi",
+      "publisher": "Ministero della Cultura",
+      "territory": "Italia",
+      "title": "Lista dei comunicati",
+      "url": "https://cultura.gov.it/comunicati/avvisi",
+      "summary": "Avviso Avviso",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5899,7 +6268,7 @@
       "territory": "Italia",
       "title": "Sezione Link Utili",
       "url": "https://avvisibandi.sport.governo.it/",
-      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"ce8d3bbf-4746-46f1-ad1a-3aa77270ce61\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
+      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"3d133c1f-2236-4ab4-8116-ccbca6ee59a2\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5948,6 +6317,42 @@
       "title": "Informativa Avviso \"Vita & Opportunità\"",
       "url": "https://www.disabilita.governo.it/it/avvisi-e-bandi/",
       "summary": "​​Comunicazione di avviso per il finanziamento di progetti per la promozione della partecipazione alla vita sociale e all’autonomia, per la promozione dei talenti e delle competenze delle persone con disabilità​. SCOPRI TUTTO 1 2 3 4 5 6 7 8 9 Ministro per le disabilità Presidenza del Consiglio dei Ministri Sede Largo Chigi, 19 00187 Roma Contatti Come inviare segnalazioni Accessibilità Dichiarazione di accessibilità Invia un feedback sull'accessibilità di questo sito Attuazione Misure PNRR Amministrazione trasparente Privacy Note legali Concessione patrocinio Preferenze cookie window.addEvent",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-pari-opportunita",
+      "source_label": "PCM · Pari opportunità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
+      "territory": "Italia",
+      "title": "Avviso Violenza 2022: pubblicate le Linee Guida aggiornate per la rendicontazione e attivata la nuova PEC",
+      "url": "https://www.pariopportunita.gov.it/it/news-e-media/news/?c=39da032a-22db-4b74-a6d1-47169edb48f1",
+      "summary": "Si pubblica l’aggiornamento delle Linee Guida per la rendicontazione. Si comunica, inoltre, che la casella pec avvisoviolenza2022@pec.governo.it a breve non sarà più attiva e che, pertanto, ogni documentazione e corrispondenza dovrà essere inviata necessariamente alla nuova casella pec VINCITORI_VIOLENZA_2022@pec.governo.it SCOPRI TUTTO BANDI E AVVISI TRATTA DEGLI ESSERI UMANI E GRAVE SFRUTTAMENTO 03/08/2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-pari-opportunita",
+      "source_label": "PCM · Pari opportunità",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
+      "territory": "Italia",
+      "title": "Avviso esplorativo per la manifestazione di interesse rivolto alle Regioni, alle Province autonome di Trento e Bolzano, ai Comuni e alle Città metropolitane per la partecipazione in qualità di partner del Dipartimento per le pari opportunità alla proposta progettuale denominata \"ACCOGLI\" relativa all’attivazione di un sistema di accoglienza dedicato alle persone vulnerabili potenziali vittime di tratta e grave sfruttamento lavorativo a valere sul Fondo asilo migrazione e integrazione 2021-2027",
+      "url": "https://www.pariopportunita.gov.it/it/news-e-media/news/?c=39da032a-22db-4b74-a6d1-47169edb48f1",
+      "summary": "Si pubblica l'Avviso esplorativo per la manifestazione di interesse rivolto alle Regioni, alle Province autonome di Trento e Bolzano, ai Comuni e alle Città metropolitane per la partecipazione in qualità di partner del Dipartimento per le pari opportunità della Presidenza del Consiglio dei ministri alla proposta progettuale denominata \"ACCOGLI\" relativa all’attivazione di un sistema di accoglienza dedicato alle persone vulnerabili potenziali vittime di tratta e grave sfruttamento lavorativo a valere sul Fondo asilo migrazione e integrazione (FAMI) 2021-2027. SCOPRI TUTTO ATTIVITÀ INTERNAZIONAL",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-mare",
+      "source_label": "PCM · Politiche del mare",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche del mare",
+      "territory": "Italia",
+      "title": "\"Capitale italiana del mare\"",
+      "url": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/",
+      "summary": "Il titolo “Capitale italiana del mare” è istituito per promuovere progetti, iniziative e attività volte alla valorizzazione e alla fruizione della cultura italiana del mare, anche attraverso forme di confronto e di competizione tra le diverse realtà territoriali marittime, a cui potranno partecipare tutti i Comuni costieri italiani. Procedura di selezione - anno 2026 Procedura di selezione - anno 2027 Dipartimento per le politiche del mare Presidenza del Consiglio dei Ministri Sede Via dei Robilant, 11 - 00135 Roma Recapiti telefonici Segreteria: 06.33565333 Indirizzi di posta elettronica e-ma",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6020,6 +6425,114 @@
       "title": "Potenziamento dei servizi e delle infrastrutture sociali di comunità - Misura INV2C2I1.1.1 (ex PNRR M5C3I1.1.1)",
       "url": "https://www.politichecoesione.governo.it/it/finanziamenti-avvisi-e-bandi/potenziamento-dei-servizi-e-delle-infrastrutture-sociali-di-comunita-misura-inv2c2i111-ex-pnrr-m5c3i111/",
       "summary": "Nella sezione “Provvedimenti di attuazione” è pubblicato il Decreto n. 303 del 9 luglio 2026 che autorizza il 24° trasferimento di risorse, pari a 8,43 milioni di euro, a favore dei Soggetti attuatori degli interventi per il potenziamento dei servizi e delle infrastrutture sociali di comunità nelle aree interne. Potenziamento dei servizi e delle infrastrutture sociali di comunità - Misura INV2C2I1.1.1 (ex PNRR M5C3I1.1.1) Elenco dei progetti finanziati - luglio 2025 Sistema di gestione e monitoraggio Materiali per soggetti attuatori Provvedimenti di attuazione News Farmacie rurali ubicate fuor",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Avviso agli enti e agli operatori volontari del Servizio civile universale: pubblicazione del materiale informativo relativo al Webinar del 14 luglio 2026",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/news/2026/8/materiale-webinar-14-luglio/",
+      "summary": "Politiche Giovanili Dipartimento 5 agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Comunicazione agli Enti: Avviso del 17 dicembre 2025 per la presentazione dei programmi di intervento di servizio civile universale specifici per il “Servizio civile agricolo”, il “Servizio civile ambientale per lo sviluppo sostenibile” e il “Servizio civile digitale” – pubblicazione delle graduatorie definitive",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/news/2026/7/grad_def_scascdagric/",
+      "summary": "Dipartimento Servizio Civile 30 luglio 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Comunicazione agli enti e agli operatori volontari del servizio civile universale - Calendario dei prossimi pagamenti",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/news/2026/8/pagamenti-agosto/",
+      "summary": "Venerdì 28 agosto Servizio Civile 19 AGOSTO 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Comunicazioni agli Enti",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/",
+      "summary": "Leggi le comunicazioni agli Enti di Servizio Civile Universale Servizio Civile 19 agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Concorso \"Chi sei tu? – Storie del Servizio Civile Universale\"",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/news/2026/7/concorso-video/",
+      "summary": "Leggi tutte le comunicazioni agli Enti",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Cosa ti serve sapere?",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/",
+      "summary": "Faq - Domande e risposte frequenti sulle attività del Dipartimento sulle Politiche Giovanili e sul Servizio Civile Servizio Civile",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "FAQ Enti - Presentazione programmi e progetti",
+      "url": "https://www.politichegiovanili.gov.it/faq/enti-progetti-scn/",
+      "summary": "Vai all'area FAQ",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Per gli Enti",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/",
+      "summary": "Programmi di intervento, bandi e ultime informazioni per le organizzazioni accreditate nelle procedure di Servizio Civile per la gestione amministrativa e formativa degli operatori volontari",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "pcm-politiche-giovanili-scu",
+      "source_label": "PCM · Politiche giovanili e Servizio civile",
+      "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
+      "territory": "Italia",
+      "title": "Servizio Civile",
+      "url": "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/",
+      "summary": "I numeri del Servizio civile universale Attestati Servizio Civile Universale Bandi e Avvisi di Servizio Civile Cosa è il Servizio Civile Servizio civile all'estero Storia Operatori volontari Servizio Civile in cifre Enti Corpi civili di pace Consulta Obiezione di coscienza Sistema Unico SC Ufficio SCU I numeri del Servizio civile PNRR",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6455,20 +6968,6 @@
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "regione-toscana-safety-net",
-      "source_label": "Regione Toscana · safety net Enti locali",
-      "publisher": "Regione Toscana",
-      "territory": "Toscana",
-      "title": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze",
-      "url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze",
-      "summary": "Pubblicato il 19.08.2026 Pubblicato su BURT il 19.08.2026 Stato: Aperto Scadenza presentazione domande 18.09.2026 13:00",
-      "published_at": "2026-08-19",
-      "deadline_at": "2026-09-18",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Safety net Regione Toscana: la fonte primaria indica esplicitamente un possibile ruolo di Enti locali/Comuni, ma il candidato non era contabilizzato dal flusso principale."
     }
   ],
   "discoverySources": [
@@ -6521,7 +7020,7 @@
       "status": "ok",
       "endpointCount": 2,
       "endpointOk": 2,
-      "candidateCount": 24,
+      "candidateCount": 25,
       "errors": [],
       "freshness": {
         "status": "discovery",
@@ -6536,7 +7035,7 @@
       "endpointOk": 0,
       "candidateCount": 0,
       "errors": [
-        "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/: <urlopen error timed out>"
+        "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.statocitta.pcm.gov.it'. (_ssl.c:1010)>"
       ],
       "freshness": {
         "status": "discovery",
@@ -6546,13 +7045,11 @@
     },
     {
       "sourceId": "mic-dgcc",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://creativitacontemporanea.cultura.gov.it/: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 1,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -6561,13 +7058,11 @@
     },
     {
       "sourceId": "pcm-politiche-mare",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 1,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -6693,13 +7188,11 @@
     },
     {
       "sourceId": "pcm-pari-opportunita",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://www.pariopportunita.gov.it/it/news-e-media/news/?c=39da032a-22db-4b74-a6d1-47169edb48f1: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 2,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -6721,13 +7214,11 @@
     },
     {
       "sourceId": "mic-generale",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://cultura.gov.it/comunicati/avvisi: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 7,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -6775,13 +7266,11 @@
     },
     {
       "sourceId": "pcm-politiche-giovanili-scu",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 9,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -6818,13 +7307,11 @@
     },
     {
       "sourceId": "funzione-pubblica",
-      "status": "error",
+      "status": "ok",
       "endpointCount": 1,
-      "endpointOk": 0,
-      "candidateCount": 0,
-      "errors": [
-        "https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/: <urlopen error timed out>"
-      ],
+      "endpointOk": 1,
+      "candidateCount": 1,
+      "errors": [],
       "freshness": {
         "status": "discovery",
         "observedDate": null,
@@ -7010,11 +7497,9 @@
     "classifierMetricScope": "known-candidate classification only; not total web coverage",
     "classifierRecall": 0.9444,
     "requiredFamilies": 25,
-    "configuredSources": 47,
+    "configuredSources": 48,
     "missingFamilies": [],
     "runtimeUnhealthyFamilies": [
-      "maritime-coastal",
-      "youth-civic-service",
       "education-school-infrastructure"
     ],
     "currentSentinelsResolved": 17,
@@ -7079,7 +7564,7 @@
           "evidence_url": "https://urbact.eu/news/apply-urbact-call-action-networks",
           "evidence_class": "official_historical",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7091,7 +7576,7 @@
           "evidence_url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
           "evidence_class": "official_rolling",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 2,
+          "ageDays": 3,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7103,7 +7588,7 @@
           "evidence_url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
           "evidence_class": "official_upcoming",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 2,
+          "ageDays": 3,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7115,7 +7600,7 @@
           "evidence_url": "https://erasmus-plus.ec.europa.eu/document/call-for-proposals-2026-for-the-erasmus-programme",
           "evidence_class": "official_programme_call",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7127,7 +7612,7 @@
           "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en",
           "evidence_class": "official_current",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7139,7 +7624,7 @@
           "evidence_url": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7151,7 +7636,7 @@
           "evidence_url": "https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7163,7 +7648,7 @@
           "evidence_url": "https://www.interregeurope.eu/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7175,7 +7660,7 @@
           "evidence_url": "https://www.affariregionali.it/it/aree-tematiche/montagna/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7187,7 +7672,7 @@
           "evidence_url": "https://www.protezionecivile.gov.it/it/normativa/decreto-cd-n-1149-del-3-aprile-2026/",
           "evidence_class": "official_upstream",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7199,7 +7684,7 @@
           "evidence_url": "https://www.masaf.gov.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/11795",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7211,7 +7696,7 @@
           "evidence_url": "https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7229,7 +7714,7 @@
         {
           "source_id": "pcm-sport",
           "family": "sport-social-infrastructure",
-          "ageDays": 1,
+          "ageDays": 2,
           "configured": true,
           "familyInContract": true,
           "fresh": true,
@@ -7238,7 +7723,7 @@
         {
           "source_id": "cinea-life",
           "family": "energy-climate-environment",
-          "ageDays": 1,
+          "ageDays": 2,
           "configured": true,
           "familyInContract": true,
           "fresh": true,
@@ -7248,7 +7733,7 @@
     }
   },
   "lifecycleSummary": {
-    "application_open": 25,
+    "application_open": 27,
     "rolling_open": 2,
     "announced_upcoming": 2
   },
@@ -7323,8 +7808,8 @@
   },
   "newOpportunityWindowDays": 7,
   "continuityReconciliation": {
-    "before": 24,
-    "reconciled": 24,
+    "before": 0,
+    "reconciled": 0,
     "remaining": 0
   },
   "regionalCompleteness": {
@@ -7332,19 +7817,9 @@
     "source": "Regione Toscana",
     "recentWindowDays": 21,
     "reviewGraceDays": 7,
-    "municipalCandidates": 1,
-    "safetyNetAdded": 1,
-    "unresolved": [
-      {
-        "title": "Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze",
-        "url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze",
-        "summary": "Pubblicato il 19.08.2026 Pubblicato su BURT il 19.08.2026 Stato: Aperto Scadenza presentazione domande 18.09.2026 13:00",
-        "published_at": "2026-08-19",
-        "age_days": 6,
-        "deadline_at": "2026-09-18",
-        "account_state": "discovery"
-      }
-    ],
+    "municipalCandidates": 0,
+    "safetyNetAdded": 0,
+    "unresolved": [],
     "overdue": [],
     "errors": []
   },
