@@ -457,7 +457,11 @@
         ${referencePosition !== null ? `<span class="comparison-reference" style="left:${referencePosition}%" aria-hidden="true"></span>` : ''}
         <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
         <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
-      if (track.innerHTML !== markup) track.innerHTML = markup;
+      track.innerHTML = markup;
+      const hoverLabel = document.createElement('span');
+      hoverLabel.className = 'bar-hover-label';
+      hoverLabel.textContent = `${row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune'} · ${formatAxis(value, unit)}`;
+      track.append(hoverLabel);
       if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
     });
 

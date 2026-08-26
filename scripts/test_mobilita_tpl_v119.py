@@ -163,8 +163,11 @@ def main() -> None:
     assert "Flussi e parco veicolare" not in app
     assert "Mobility TPL v1.19" not in (ROOT / "assets" / "fidelity.css").read_text(encoding="utf-8")
     tpl_css = (ROOT / "assets" / "chart-surfaces.css").read_text(encoding="utf-8")
+    visual_grammar = (ROOT / "assets" / "visual-grammar.js").read_text(encoding="utf-8")
     assert "Mobilità TPL v1.19 — regole locali" in tpl_css
     assert "#compare-bars .tpl-chart-toolbar" in tpl_css
+    assert "hoverLabel.className = 'bar-hover-label'" in visual_grammar
+    assert "track.append(hoverLabel)" in visual_grammar
     assert ".tpl-service-range" in tpl_css and ".tpl-service-span" in tpl_css
     source_page = (ROOT / "confronta" / "mobilita" / "index.html").read_text(encoding="utf-8")
     assert "Mobilità e infrastrutture · Confronto dei comuni della Versilia" in source_page
