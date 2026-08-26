@@ -5,6 +5,7 @@ on:
     branches: [feat/agricoltura-territorio]
     paths:
       - '.github/workflows/agricoltura-probe.yml'
+      - 'scripts/probe_agricoltura_istat.py'
   workflow_dispatch:
 
 permissions:
