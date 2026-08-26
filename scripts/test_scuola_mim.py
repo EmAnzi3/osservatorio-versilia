@@ -59,8 +59,8 @@ def main():
     registry = load('data/source-registry.json')
     # Il gate Scuola verifica il contratto globale corrente senza congelarlo
     # alla release in cui il lotto MIM è stato introdotto.
-    assert registry['expectedMetricCount'] == 146
-    assert registry['expectedInlineMetricCount'] == 142
+    assert registry['expectedMetricCount'] == 149
+    assert registry['expectedInlineMetricCount'] == 145
     for key in KEYS:
         assert registry['metricOverrides'][key]['profile'] == 'mim-school-year'
 

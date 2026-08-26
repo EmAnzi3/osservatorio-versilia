@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   release-gate:
@@ -43,11 +43,7 @@ jobs:
       - name: Probe official sources 7/7
         run: python scripts/probe_welfare_sources.py
 
-      - name: Promote canonical release
-        if: github.event_name == 'pull_request'
-        run: python scripts/promote_welfare_release.py
-
-      - name: Validate Welfare release
+      - name: Validate canonical Welfare release
         run: |
           python scripts/test_welfare_prima_infanzia_draft.py
           python scripts/finalize_catalog_release.py --check
@@ -89,21 +85,6 @@ jobs:
 
       - name: Validate municipal Welfare UI in browser
         run: python scripts/test_welfare_release_browser.py --base http://127.0.0.1:8123/
-
-      - name: Commit canonical release to PR branch
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Release già canonica: nessuna modifica da committare."
-          else
-            git commit -m "Release Welfare e prima infanzia v1.18.0"
-            git push origin HEAD:${{ github.head_ref }}
-          fi
 
       - name: Upload source probe
         if: always()

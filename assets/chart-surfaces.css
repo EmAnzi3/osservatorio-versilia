@@ -56,6 +56,149 @@
   background: var(--ov-chart-surface) !important;
 }
 
+/* Mobilità TPL v1.19 — regole locali, senza override della grammatica globale. */
+#compare-bars .tpl-chart-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  margin: 0 0 18px;
+}
+
+#compare-bars .tpl-chart-toolbar .scale-switch {
+  width: min(100%, 430px);
+  margin: 0;
+}
+
+.tpl-compare-detail,
+.tpl-compare-detail > summary,
+.tpl-compare-detail .indicator-table-scroll {
+  min-width: 0;
+}
+
+.tpl-compare-detail > summary {
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) auto;
+}
+
+.tpl-compare-detail > summary span,
+.tpl-compare-detail > summary small {
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+.tpl-compare-detail .indicator-table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tpl-compare-detail .indicator-values-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.tpl-compare-detail .indicator-values-table th,
+.tpl-compare-detail .indicator-values-table td {
+  min-width: 0;
+  vertical-align: top;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.tpl-compare-detail .indicator-values-table th:first-child {
+  width: 120px;
+}
+
+.tpl-compare-detail .indicator-values-table th:last-child {
+  width: 175px;
+}
+
+.tpl-service-cell {
+  min-width: 0;
+  white-space: normal;
+}
+
+.tpl-service-range,
+.tpl-service-span {
+  display: block;
+  white-space: nowrap;
+  font-size: inherit;
+  line-height: 1.35;
+}
+
+.tpl-service-span {
+  margin-top: 6px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.tpl-compare-detail > .tpl-detail-note,
+.tpl-town-detail > .tpl-detail-note {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 14px 18px 18px;
+  line-height: 1.55;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+}
+
+.tpl-town-deep-dive .deep-facts-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tpl-town-deep-dive .tpl-town-service-grid {
+  gap: 10px;
+  margin: 0;
+  padding: 18px;
+}
+
+.tpl-town-deep-dive .deep-fact,
+.tpl-town-deep-dive .deep-fact > span,
+.tpl-town-deep-dive .deep-fact > small {
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.tpl-town-service-fact .tpl-town-service-range {
+  font-size: clamp(18px, 2.1vw, 26px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.tpl-town-service-fact .tpl-town-service-span {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+@media (max-width: 1000px) {
+  #compare-bars .tpl-chart-toolbar {
+    justify-content: stretch;
+  }
+
+  #compare-bars .tpl-chart-toolbar .scale-switch {
+    width: 100%;
+  }
+
+  .tpl-town-deep-dive .deep-facts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 700px) {
   .explorer-chart,
   .topic-bars,
@@ -73,6 +216,42 @@
 
   .deep-bar-list {
     padding: 13px;
+  }
+
+  .tpl-compare-detail > summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .tpl-compare-detail > summary small {
+    grid-column: 1;
+    text-align: left;
+  }
+
+  .tpl-compare-detail .indicator-values-table {
+    min-width: 760px;
+    table-layout: auto;
+  }
+
+  .tpl-compare-detail .indicator-values-table th:first-child,
+  .tpl-compare-detail .indicator-values-table th:last-child {
+    width: auto;
+  }
+
+  .tpl-service-cell {
+    min-width: 150px;
+  }
+
+  .tpl-compare-detail > .tpl-detail-note,
+  .tpl-town-detail > .tpl-detail-note {
+    padding: 13px 14px 16px;
+  }
+
+  .tpl-town-deep-dive .tpl-town-service-grid {
+    padding: 14px;
+  }
+
+  .tpl-town-deep-dive .deep-facts-grid {
+    grid-template-columns: 1fr;
   }
 }
 

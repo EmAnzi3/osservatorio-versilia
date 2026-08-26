@@ -11,6 +11,7 @@ from pathlib import Path
 
 import monthly_data_check_coverage as coverage
 import monthly_data_check_status as status_model
+import monthly_data_check as checker
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKER = ROOT / "scripts" / "monthly_data_check.py"
@@ -126,6 +127,26 @@ def run_checker(work: Path, state: dict) -> dict:
 
 
 def main() -> None:
+    multi_sources = list(
+        checker.iter_metric_sources(
+            {
+                "sourceUrl": "https://example.org/catalog",
+                "sourceUrls": {
+                    "catalogo": "https://example.org/catalog",
+                    "bus": "https://example.org/bus.gtfs",
+                    "rail": "https://example.org/rail.gtfs",
+                },
+                "meta": {"benchmark": {"url": "https://example.org/benchmark.csv"}},
+            }
+        )
+    )
+    assert multi_sources == [
+        ("primary", "https://example.org/catalog"),
+        ("source:bus", "https://example.org/bus.gtfs"),
+        ("source:rail", "https://example.org/rail.gtfs"),
+        ("benchmark", "https://example.org/benchmark.csv"),
+    ]
+
     mef_old = (
         "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
         "?tree=2013&t=111"
