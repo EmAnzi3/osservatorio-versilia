@@ -26,7 +26,7 @@ CSV_ACCEPT = "application/vnd.sdmx.data+csv;version=1.0.0"
 
 
 def request(url: str, *, accept: str | None = None, data: bytes | None = None, headers: dict[str, str] | None = None) -> tuple[int, str, bytes]:
-    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/4.0"}
+    merged = {"User-Agent": "OsservatorioVersilia-agriculture-probe/5.0"}
     if accept:
         merged["Accept"] = accept
     if headers:
@@ -141,9 +141,9 @@ def situas_report(date: str) -> list[dict]:
 
 
 def probe_situas() -> None:
-    # Il report 74 è temporale: interrogare la data corrente evita la fotografia
-    # censuaria 1951 proposta come primo estremo dal catalogo dei microservizi.
-    report = situas_report("26/08/2026")
+    # La quota SAU usa un denominatore territoriale della stessa annualità 2020.
+    # SITUAS espone il report storico "Comuni - Dimensione" per data.
+    report = situas_report("31/12/2020")
     found: dict[str, dict] = {}
     for row in report:
         raw_code = field(row, "PRO_COM_T", "PRO_COM", "COD_ISTAT", "CODICE_ISTAT")
@@ -157,7 +157,7 @@ def probe_situas() -> None:
     if len(found) < 7:
         raise SystemExit("SITUAS municipal surface coverage incomplete")
     if not all(field(row, "AREA_KMQ") is not None for row in found.values()):
-        raise SystemExit("SITUAS current report does not expose AREA_KMQ for all seven towns")
+        raise SystemExit("SITUAS 2020 report does not expose AREA_KMQ for all seven towns")
 
 
 if __name__ == "__main__":
