@@ -132,7 +132,9 @@ def assert_town_tpl_detail(detail: Locator, expected: dict[str, str]) -> None:
     assert cards.count() == 6, f"Dettaglio comunale TPL incompleto: {cards.count()} blocchi"
     by_label: dict[str, Locator] = {}
     for card in cards.all():
-        label = card.locator(":scope > span").inner_text().strip()
+        # text_content conserva il testo sorgente: inner_text applica il
+        # text-transform: uppercase della card e rende fragile il contratto.
+        label = (card.locator(":scope > span").text_content() or "").strip()
         by_label[label] = card
         sizes = card.evaluate("el => ({scrollH:el.scrollHeight, clientH:el.clientHeight})")
         assert sizes["scrollH"] <= sizes["clientH"] + 1, f"Testo tagliato nella card {label}: {sizes}"
