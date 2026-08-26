@@ -375,13 +375,15 @@ def patch_release_files() -> None:
     text = text.replace("valida tutti i 149 indicatori canonici, la ripartizione fra 145 valori incorporati", "valida tutti i 154 indicatori canonici, la ripartizione fra 150 valori incorporati")
     text = text.replace("ciascuno dei 145 indicatori incorporati", "ciascuno dei 150 indicatori incorporati")
     old_cov = "La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito."
-    # Nessuna eccezione sotto la soglia approvata 6/7.
+    new_cov = old_cov + " Coperture inferiori richiedono un'eccezione esplicita, documentata nello snapshot e nei test: nella v1.20.0 l'unico caso è la sottodimensione “Olive da tavola” del Profilo colture, pubblicata 4/7 con gli altri tre Comuni indicati come `n.d.`."
+    if new_cov not in text:
+        text = text.replace(old_cov, new_cov)
     README.write_text(text, encoding="utf-8")
 
     history = HISTORY_DOC.read_text(encoding="utf-8")
     marker = "## Lotto Agricoltura e territorio v1.20.0"
     if marker not in history:
-        history += "\n\n## Lotto Agricoltura e territorio v1.20.0\n\nIl 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.\n\nLa copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). Nessuna sottodimensione sotto 6/7 viene pubblicata e nessuna assenza viene trasformata in zero.\n"
+        history += "\n\n## Lotto Agricoltura e territorio v1.20.0\n\nIl 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.\n\nLa copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). La sola eccezione approvata è “Olive da tavola”, pubblicata 4/7: Forte dei Marmi, Stazzema e Viareggio restano `n.d.`. Nessuna assenza viene trasformata in zero.\n"
     HISTORY_DOC.write_text(history, encoding="utf-8")
 
     coherence = COHERENCE_DOC.read_text(encoding="utf-8")
@@ -395,6 +397,15 @@ def patch_release_files() -> None:
         pages = pages.replace("          python scripts/test_mobilita_tpl_v119.py\n", "          python scripts/test_mobilita_tpl_v119.py\n          python scripts/test_agricoltura_territorio_v120.py\n")
         pages = pages.replace("          python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null\n", "          python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null\n          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null\n")
         pages = pages.replace("            scripts/materialize_mobilita_tpl_v119.py \\\n            scripts/test_mobilita_tpl_v119.py \\", "            scripts/materialize_mobilita_tpl_v119.py \\\n            scripts/test_mobilita_tpl_v119.py \\\n            scripts/materialize_agricoltura_territorio_v120.py \\\n            scripts/test_agricoltura_territorio_v120.py \\")
+    if "test_agricoltura_review_interactions_v120.py" not in pages:
+        pages = pages.replace(
+            "      - name: Validate PNRR Toscana town experience\n",
+            "      - name: Validate Agricoltura e territorio interactions\n        run: python scripts/test_agricoltura_review_interactions_v120.py\n\n      - name: Validate PNRR Toscana town experience\n",
+        )
+        pages = pages.replace(
+            "            scripts/test_agricoltura_territorio_v120.py \\\n",
+            "            scripts/test_agricoltura_territorio_v120.py \\\n            scripts/test_agricoltura_review_interactions_v120.py \\\n",
+        )
     PAGES.write_text(pages, encoding="utf-8")
 
 
@@ -408,7 +419,7 @@ def main() -> None:
     save(REGISTRY_PATH, registry)
     patch_frontend()
     patch_release_files()
-    print("Agricoltura e territorio v1.20.0 materializzata: 5 indicatori canonici; tutte le sottodimensioni pubblicate hanno copertura almeno 6/7.")
+    print("Agricoltura e territorio v1.20.0 materializzata: 5 indicatori canonici; soglia 6/7 rispettata, con la sola eccezione approvata Olive da tavola 4/7.")
 
 
 if __name__ == "__main__":

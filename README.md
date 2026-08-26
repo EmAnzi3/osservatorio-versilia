@@ -72,7 +72,7 @@ Il catalogo e i metadati dei 154 indicatori sono centralizzati in `data/site-dat
 
 Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot leggibili conservati in `data/source-snapshots/`. Gli snapshot riportano il perimetro territoriale, i conteggi o valori ufficiali utilizzati, le formule, le serie e i candidati esclusi.
 
-La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito.
+La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito. Coperture inferiori richiedono un'eccezione esplicita, documentata nello snapshot e nei test: nella v1.20.0 l'unico caso è la sottodimensione “Olive da tavola” del Profilo colture, pubblicata 4/7 con gli altri tre Comuni indicati come `n.d.`.
 
 ### Controllo mensile automatico
 

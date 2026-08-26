@@ -301,10 +301,14 @@
 
     const key = metricKey || metric?.meta?.key || '';
     if (key === 'population') {
-      if (aggregate <= 0) {
+      const populationValues = (metric?.rows || [])
+        .map(item => finite(item?.value))
+        .filter(value => value !== null);
+      const populationTotal = populationValues.reduce((sum, value) => sum + value, 0);
+      if (populationTotal <= 0) {
         return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: 'Quota sulla Versilia' };
       }
-      const share = local / aggregate * 100;
+      const share = local / populationTotal * 100;
       const formattedShare = number1.format(share);
       return {
         headline: `${formattedShare}%`,

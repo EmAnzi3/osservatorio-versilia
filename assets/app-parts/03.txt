@@ -253,12 +253,6 @@
       const values = metric.rows.map(row => row.parts?.[index]?.value).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
       return { value:values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, unit:part.unit || metric.meta.unit, label:`Media comuni Versilia · ${part.label || metric.meta.label}`, note:`Media semplice dei ${values.length} comuni con dato disponibile.` };
     }
-    if (metric.meta.compositeType === 'agricultureProfile') {
-      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
-      const part = metric.aggregate?.parts?.[index] || {};
-      const values = metric.rows.map(row => row.parts?.[index]?.value).filter(value => value !== null && value !== undefined && Number.isFinite(Number(value))).map(Number);
-      return { value:values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, unit:part.unit || metric.meta.unit, label:`Media comuni Versilia · ${part.label || metric.meta.label}`, note:`Media semplice dei ${values.length} comuni con dato disponibile.` };
-    }
     if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};

@@ -44,7 +44,7 @@
   "missingPolicy": "Una riga assente dalla fonte resta null/n.d.; non viene trasformata in zero né stimata.",
   "coveragePolicy": {
     "defaultMinimum": "6/7",
-    "rule": "Non vengono pubblicate sottodimensioni con copertura inferiore a 6/7.",
+    "rule": "Non vengono pubblicate sottodimensioni con copertura inferiore a 6/7, salvo eccezioni approvate esplicitamente e documentate qui.",
     "exceptions": {
       "OLIVTTR": "Olive da tavola: pubblicazione approvata con copertura 4/7; riga assente = n.d., non zero."
     }

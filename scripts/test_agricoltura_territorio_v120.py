@@ -106,6 +106,7 @@ app03 = (ROOT / "assets/app-parts/03.txt").read_text(encoding="utf-8")
 assert "hectaresPerFarm" in app00
 assert "agricultureProfile" in app03
 assert "'securityMeasures','agricultureProfile'" in app03
+assert app03.count("if (metric.meta.compositeType === 'agricultureProfile') {") == 1
 assert "a.displayValue===null||a.displayValue===undefined" in app03
 assert "compare-chart-toolbar scale-toolbar" in app03
 assert "Media comuni Versilia" in app03
@@ -113,6 +114,7 @@ visual = (ROOT / "assets/visual-grammar.js").read_text(encoding="utf-8")
 assert "agricultureProfile" in visual
 assert "Media semplice dei ${values.length} comuni" in visual
 assert "hectares-per-farm" in visual
+assert "const populationTotal = populationValues.reduce" in visual
 
 finalizer = (ROOT / "scripts/finalize_catalog_release.py").read_text(encoding="utf-8")
 assert 'VERSION = "v1.20.0"' in finalizer
