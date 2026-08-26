@@ -5,7 +5,7 @@ on:
     branches: ["feat/agricoltura-territorio"]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: agricoltura-preview-artifact
@@ -14,10 +14,12 @@ concurrency:
 jobs:
   build-preview:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,6 +32,14 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
+      - name: Apply review corrections and materialize
+        run: |
+          set -euo pipefail
+          python scripts/fix_agricoltura_review_v120.py
+          python scripts/materialize_agricoltura_territorio_v120.py
+          python scripts/patch_agricoltura_release_v120.py
+          python scripts/materialize_agricoltura_territorio_v120.py
+
       - name: Verify agriculture lot
         run: |
           set -euo pipefail
@@ -41,24 +51,42 @@ jobs:
           python scripts/test_catalog_release_v116.py
           python scripts/test_site_consistency.py --source-only
 
-      - name: Build preview
+      - name: Build preview and regression checks
         run: |
           set -euo pipefail
           python scripts/build_static_brand.py
           node --check dist/assets/app-bundle.js
+          node --check dist/assets/visual-grammar.js
           python scripts/test_indicator_pages.py
           python scripts/test_composite_indicators.py
           python scripts/test_static.py
+          if grep -R "comuni/undefined" dist --include='*.html' --include='*.js'; then
+            echo "Trovato hyperlink comunale undefined"
+            exit 1
+          fi
+          grep -q "Olive da tavola" dist/data/site-data.json
+          grep -q "Media semplice dei" dist/assets/visual-grammar.js
+
+      - name: Commit verified corrections
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/app-parts/01.txt assets/app-parts/03.txt assets/visual-grammar.js assets/chart-surfaces.css data/site-data.json data/source-registry.json data/source-snapshots/istat-agricoltura-territorio-2020.json scripts/materialize_agricoltura_territorio_v120.py scripts/test_agricoltura_territorio_v120.py README.md docs/coerenza-interfaccia.md docs/copertura-serie-storiche.md service-worker.js assets/app.js
+          if ! git diff --cached --quiet; then
+            git commit -m "fix(agricoltura): recepisci feedback collaudo PR114"
+            git push origin HEAD:feat/agricoltura-territorio
+          fi
 
       - name: Package preview
         run: |
           cd dist
-          zip -qr ../osservatorio-versilia-agricoltura-pr114.zip .
+          zip -qr ../osservatorio-versilia-agricoltura-pr114-review2.zip .
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-agricoltura-pr114
-          path: osservatorio-versilia-agricoltura-pr114.zip
+          name: osservatorio-versilia-agricoltura-pr114-review2
+          path: osservatorio-versilia-agricoltura-pr114-review2.zip
           if-no-files-found: error
           retention-days: 7
