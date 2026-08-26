@@ -55,7 +55,7 @@ def main() -> None:
             selector.select_option(label="Vite")
             page.wait_for_function("document.querySelector('[data-composite-primary-label]')?.textContent.trim() === 'Vite'")
             panel = page.locator(".composite-versilia-position")
-            overline = panel.locator(".overline").inner_text().strip()
+            overline = (panel.locator(".overline").text_content() or "").strip()
             assert overline == "Quota sul totale Versilia", overline
             headline = panel.locator("[data-composite-delta]").evaluate("el => el.childNodes[0].textContent.trim()")
             assert headline == "16,25%", f"Quota Vite Pietrasanta attesa 16,25%, trovata {headline}"
