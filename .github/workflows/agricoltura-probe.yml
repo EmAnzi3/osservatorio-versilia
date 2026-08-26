@@ -1,11 +1,9 @@
 name: Agricoltura · materializzazione finale
 
 on:
-  push:
-    branches: [feat/agricoltura-territorio]
-    paths:
-      - '.github/workflows/agricoltura-probe.yml'
-      - 'scripts/probe_agricoltura_istat.py'
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions:
@@ -13,12 +11,15 @@ permissions:
 
 jobs:
   materialize:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/agricoltura-territorio'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout branch
+      - name: Checkout head branch
         uses: actions/checkout@v4
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.ref || 'feat/agricoltura-territorio' }}
           fetch-depth: 0
 
       - name: Set up Python
