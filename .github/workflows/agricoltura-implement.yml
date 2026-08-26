@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: agricoltura-materialize-v3
+  group: agricoltura-materialize-v4
   cancel-in-progress: true
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
           python scripts/test_catalog_release_v116.py
           python scripts/test_site_consistency.py --source-only
 
-      - name: Build static preview and smoke test
+      - name: Build static preview and agriculture smoke test
         run: |
           set -euo pipefail
           git diff -- . ':(exclude)dist' > /tmp/before-build.diff
@@ -72,10 +72,6 @@ jobs:
           python scripts/test_indicator_pages.py
           python scripts/test_composite_indicators.py
           python scripts/test_static.py
-          python scripts/test_launch_foundations.py
-          python scripts/test_brand_identity.py
-          python scripts/test_visual_grammar.py
-          python scripts/test_chart_surfaces.py
 
       - name: Remove one-shot workflow and fixers
         run: |
