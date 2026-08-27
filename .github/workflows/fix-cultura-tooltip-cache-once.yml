@@ -1,0 +1,126 @@
+name: Fix Cultura tooltip cache once
+
+on:
+  push:
+    branches: ["feat/cultura-biblioteche"]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-verify-cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/cultura-biblioteche
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Bump only tooltip/history asset revision
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('scripts/build_static_safe.py'): [
+                  ('HISTORY_ASSET_VERSION = "20260827-v121-history-ui5"', 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"'),
+              ],
+              Path('assets/ux-history.js'): [
+                  ("const HOTFIX_VERSION = '20260827-v121-history-ui5';", "const HOTFIX_VERSION = '20260827-v121-history-ui6';"),
+              ],
+              Path('service-worker.js'): [
+                  ("const VERSION = 'ov-pwa-20260827-v121-history-ui2';", "const VERSION = 'ov-pwa-20260827-v121-tooltip-ui6';"),
+              ],
+              Path('scripts/test_cultura_history_cache_v121.py'): [
+                  ('HISTORY_ASSET_VERSION = "20260827-v121-history-ui5"', 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"'),
+                  ("const HOTFIX_VERSION = '20260827-v121-history-ui5';", "const HOTFIX_VERSION = '20260827-v121-history-ui6';"),
+                  ('ov-pwa-20260827-v121-history-ui2', 'ov-pwa-20260827-v121-tooltip-ui6'),
+              ],
+          }
+          for path, pairs in replacements.items():
+              text = path.read_text(encoding='utf-8')
+              for old, new in pairs:
+                  if old not in text:
+                      raise SystemExit(f'{path}: token non trovato: {old}')
+                  text = text.replace(old, new, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+          node --check assets/ux-history.js
+          python scripts/test_cultura_history_cache_v121.py
+          git diff --check
+
+      - name: Build real preview
+        run: |
+          python scripts/materialize_cultura_biblioteche_v121.py
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          grep -R 'assets/ux-history.js?v=20260827-v121-history-ui6' dist/comuni/camaiore/index.html
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-tooltip-http.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-tooltip-http.log
+          exit 1
+
+      - name: Verify only Cultura town tooltips in Chromium
+        run: |
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          metrics = (
+              'libraryLoansPerResident',
+              'libraryActiveBorrowersPer100',
+              'libraryWeeklyOpeningHours',
+          )
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1440, 'height': 1000})
+              for key in metrics:
+                  page.goto(f'http://127.0.0.1:8123/comuni/camaiore/?tema=comunita&indicatore={key}', wait_until='networkidle')
+                  page.wait_for_timeout(600)
+                  loaded = page.locator('script[src*="assets/ux-history.js?v=20260827-v121-history-ui6"]')
+                  assert loaded.count() == 1, f'{key}: asset tooltip ui6 non caricato'
+                  shell = page.locator('.history-panel .ux-view-shell')
+                  assert shell.count() == 1, f'{key}: switch assente'
+                  history = shell.locator('button[data-view-mode="history"]')
+                  assert history.count() == 1 and not history.is_disabled(), f'{key}: Storico non disponibile'
+                  history.click()
+                  page.wait_for_timeout(120)
+                  chart = shell.locator('[data-view-pane="history"] .trend-chart')
+                  assert chart.count() == 1, f'{key}: grafico comunale assente'
+                  point = chart.locator('.chart-point').nth(2)
+                  tooltip = point.locator('.chart-tooltip')
+                  assert tooltip.get_attribute('hidden') is not None, f'{key}: tooltip già aperto prima dell hover'
+                  point.hover(force=True)
+                  page.wait_for_timeout(100)
+                  assert tooltip.get_attribute('hidden') is None, f'{key}: hidden non rimosso al passaggio mouse'
+                  assert tooltip.is_visible(), f'{key}: tooltip non visibile'
+              browser.close()
+          print('OK: tooltip comunali Cultura visibili sui tre indicatori con asset ui6.')
+          PY
+
+      - name: Commit only tooltip/cache fix and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/fix-cultura-tooltip-cache-once.yml
+          git add assets/ux-history.js scripts/build_static_safe.py scripts/test_cultura_history_cache_v121.py service-worker.js
+          git diff --cached --check
+          git commit -m "Make Cultura town tooltips refresh reliably"
+          git push origin HEAD:feat/cultura-biblioteche
