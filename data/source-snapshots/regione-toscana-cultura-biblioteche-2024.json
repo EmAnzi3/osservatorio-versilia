@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "lot": "Cultura e biblioteche",
+    "release": "v1.21.0",
+    "referenceYear": 2024,
+    "coverage": "5/7 per eccezione approvata",
+    "townCodes": [
+      "046005",
+      "046013",
+      "046018",
+      "046024",
+      "046028",
+      "046030",
+      "046033"
+    ],
+    "acquiredAt": "2026-08-27"
+  },
+  "sources": {
+    "monitoringPage": "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+    "catalogPage": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
+    "indicatorCsv": {
+      "url": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv",
+      "sha256": "847b5e4a3d4d3104dd219e8da766228127d7ba764f7a2a7316f979b772608978",
+      "encoding": "Windows-1252",
+      "delimiter": "tab"
+    },
+    "librariesCsv": {
+      "url": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/873b9a04-a1a3-4dab-b0d3-7e98dd67e068/download/dataset_biblioteche.csv",
+      "sha256": "4914a35c89bede4ba5ae735925e62380a2db4db9dc578e072708356e552165c5",
+      "encoding": "Windows-1252",
+      "delimiter": "tab"
+    },
+    "indicatorRecordLayout": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf",
+    "librariesRecordLayout": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+    "license": "Creative Commons Attribution (catalogo Regione Toscana)",
+    "datasetLastUpdated": "2025-09-22T14:52:00Z"
+  },
+  "fieldDefinitions": {
+    "Indice di prestito Comunale": "prestiti pro capite – comune",
+    "Indice di impatto Comunale": "utenti attivi del servizio di prestito su 100 abitanti – comune",
+    "Ore medie di apertura settimanale Comunale": "media ponderata dell'orario per fasce orarie/giorni e numero di settimane – comune",
+    "Codice ICCU": "codice univoco biblioteca attribuito dall’Istituto Centrale per il Catalogo Unico",
+    "Stato": "stato di apertura/chiusura della biblioteca nell’anno di riferimento"
+  },
+  "current2024": [
+    {
+      "town": "Camaiore",
+      "code": "046005",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046005",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Camaiore",
+        "POPOLAZIONE": 31864,
+        "Indice di prestito Comunale": 0.25,
+        "Indice di impatto Comunale": 13.64,
+        "Ore medie di apertura settimanale Comunale": 56.04,
+        "Indice di apertura Comunale": 39.42
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046005",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Camaiore",
+          "POPOLAZIONE": 31864,
+          "Indice di prestito Comunale": 0.25,
+          "Indice di impatto Comunale": 13.64,
+          "Ore medie di apertura settimanale Comunale": 56.04,
+          "Indice di apertura Comunale": 39.42
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0072 Biblioteca comunale - Camaiore",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46005",
+          "Comune": "Camaiore",
+          "Popolazione all'1/1": 31864,
+          "Codice ICCU": "IT-LU0072",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": 39.42,
+          "ORESETTIMANALI": 56.04,
+          "SETTIMANEAPERTURA": 52,
+          "PRESTITITOTALI": 8028,
+          "ISCRITTIATTIVI": 4345
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": null
+    },
+    {
+      "town": "Forte dei Marmi",
+      "code": "046013",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046013",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Forte dei Marmi",
+        "POPOLAZIONE": 6777,
+        "Indice di prestito Comunale": 0.86,
+        "Indice di impatto Comunale": 11.57,
+        "Ore medie di apertura settimanale Comunale": 61.96,
+        "Indice di apertura Comunale": 48.63
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046013",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Forte dei Marmi",
+          "POPOLAZIONE": 6777,
+          "Indice di prestito Comunale": 0.86,
+          "Indice di impatto Comunale": 11.57,
+          "Ore medie di apertura settimanale Comunale": 61.96,
+          "Indice di apertura Comunale": 48.63
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0016 Biblioteca comunale - Forte dei Marmi",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46013",
+          "Comune": "Forte dei Marmi",
+          "Popolazione all'1/1": 6777,
+          "Codice ICCU": "IT-LU0016",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": 48.63,
+          "ORESETTIMANALI": 61.96,
+          "SETTIMANEAPERTURA": 50,
+          "PRESTITITOTALI": 5843,
+          "ISCRITTIATTIVI": 784
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": null
+    },
+    {
+      "town": "Massarosa",
+      "code": "046018",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046018",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Massarosa",
+        "POPOLAZIONE": 21865,
+        "Indice di prestito Comunale": null,
+        "Indice di impatto Comunale": null,
+        "Ore medie di apertura settimanale Comunale": null,
+        "Indice di apertura Comunale": null
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046018",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Massarosa",
+          "POPOLAZIONE": 21865,
+          "Indice di prestito Comunale": null,
+          "Indice di impatto Comunale": null,
+          "Ore medie di apertura settimanale Comunale": null,
+          "Indice di apertura Comunale": null
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0029 Biblioteca comunale - Massarosa",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46018",
+          "Comune": "Massarosa",
+          "Popolazione all'1/1": 21865,
+          "Codice ICCU": "IT-LU0029",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": null,
+          "ORESETTIMANALI": null,
+          "SETTIMANEAPERTURA": null,
+          "PRESTITITOTALI": null,
+          "ISCRITTIATTIVI": null
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": "Riga comunale presente ma indicatori del lotto non alimentati"
+    },
+    {
+      "town": "Pietrasanta",
+      "code": "046024",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046024",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Pietrasanta",
+        "POPOLAZIONE": 22788,
+        "Indice di prestito Comunale": 0.22,
+        "Indice di impatto Comunale": 2.83,
+        "Ore medie di apertura settimanale Comunale": 47.98,
+        "Indice di apertura Comunale": 36.85
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046024",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Pietrasanta",
+          "POPOLAZIONE": 22788,
+          "Indice di prestito Comunale": 0.22,
+          "Indice di impatto Comunale": 2.83,
+          "Ore medie di apertura settimanale Comunale": 47.98,
+          "Indice di apertura Comunale": 36.85
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0033 Biblioteca comunale - Pietrasanta",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46024",
+          "Comune": "Pietrasanta",
+          "Popolazione all'1/1": 22788,
+          "Codice ICCU": "IT-LU0033",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": 36.85,
+          "ORESETTIMANALI": 47.98,
+          "SETTIMANEAPERTURA": 52,
+          "PRESTITITOTALI": 5089,
+          "ISCRITTIATTIVI": 644
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": null
+    },
+    {
+      "town": "Seravezza",
+      "code": "046028",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046028",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Seravezza",
+        "POPOLAZIONE": 12435,
+        "Indice di prestito Comunale": 0.24,
+        "Indice di impatto Comunale": 2.81,
+        "Ore medie di apertura settimanale Comunale": 40.65,
+        "Indice di apertura Comunale": 30.76
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046028",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Seravezza",
+          "POPOLAZIONE": 12435,
+          "Indice di prestito Comunale": 0.24,
+          "Indice di impatto Comunale": 2.81,
+          "Ore medie di apertura settimanale Comunale": 40.65,
+          "Indice di apertura Comunale": 30.76
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0087 Biblioteca Comunale - Seravezza",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46028",
+          "Comune": "Seravezza",
+          "Popolazione all'1/1": 12435,
+          "Codice ICCU": "IT-LU0087",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": 30.76,
+          "ORESETTIMANALI": 40.65,
+          "SETTIMANEAPERTURA": 51,
+          "PRESTITITOTALI": 3018,
+          "ISCRITTIATTIVI": 350
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": null
+    },
+    {
+      "town": "Stazzema",
+      "code": "046030",
+      "indicatorRowPresent": false,
+      "selectedIndicatorRow": null,
+      "allIndicatorRows2024": [],
+      "libraries2024": [],
+      "libraryCount2024": 0,
+      "missingReason": "Riga assente dal monitoraggio regionale"
+    },
+    {
+      "town": "Viareggio",
+      "code": "046033",
+      "indicatorRowPresent": true,
+      "selectedIndicatorRow": {
+        "ANNO": 2024,
+        "CODISTAT": "046033",
+        "DESCRIZIONERETE": "Rete Lucchese",
+        "COMUNE": "Viareggio",
+        "POPOLAZIONE": 60755,
+        "Indice di prestito Comunale": 0.15,
+        "Indice di impatto Comunale": 8.58,
+        "Ore medie di apertura settimanale Comunale": 63.75,
+        "Indice di apertura Comunale": 44.78
+      },
+      "allIndicatorRows2024": [
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046033",
+          "DESCRIZIONERETE": "altri Lucca",
+          "COMUNE": "Viareggio",
+          "POPOLAZIONE": 60755,
+          "Indice di prestito Comunale": null,
+          "Indice di impatto Comunale": null,
+          "Ore medie di apertura settimanale Comunale": null,
+          "Indice di apertura Comunale": null
+        },
+        {
+          "ANNO": 2024,
+          "CODISTAT": "046033",
+          "DESCRIZIONERETE": "Rete Lucchese",
+          "COMUNE": "Viareggio",
+          "POPOLAZIONE": 60755,
+          "Indice di prestito Comunale": 0.15,
+          "Indice di impatto Comunale": 8.58,
+          "Ore medie di apertura settimanale Comunale": 63.75,
+          "Indice di apertura Comunale": 44.78
+        }
+      ],
+      "libraries2024": [
+        {
+          "Anno dati": "2024",
+          "Denominazione": "LU0039 Biblioteca comunale - Viareggio",
+          "Nome Sistema": "rete documentaria lucchese",
+          "Codice ISTAT Comune": "46033",
+          "Comune": "Viareggio",
+          "Popolazione all'1/1": 60755,
+          "Codice ICCU": "IT-LU0039",
+          "Stato": "Aperto/Attivo",
+          "INDICEAPERTURA": 44.78,
+          "ORESETTIMANALI": 63.75,
+          "SETTIMANEAPERTURA": 52,
+          "PRESTITITOTALI": 8898,
+          "ISCRITTIATTIVI": 5212
+        }
+      ],
+      "libraryCount2024": 1,
+      "missingReason": null
+    }
+  ],
+  "series": {
+    "libraryLoansPerResident": {
+      "years": [2019, 2020, 2021, 2022, 2023, 2024],
+      "values": {
+        "Camaiore": [0.21, 0.15, 0.18, 0.28, 0.11, 0.25],
+        "Forte dei Marmi": [0.77, 0.4, 0.58, 0.66, 0.87, 0.86],
+        "Massarosa": [0.09, 0.01, 0.01, 0.01, null, null],
+        "Pietrasanta": [0.18, 0.13, 0.15, 0.2, 0.25, 0.22],
+        "Seravezza": [0.18, 0.11, 0.18, 0.19, 0.25, 0.24],
+        "Stazzema": [null, null, null, null, null, null],
+        "Viareggio": [0.09, 0.04, 0.05, 0.09, 0.12, 0.15]
+      }
+    },
+    "libraryActiveBorrowersPer100": {
+      "years": [2019, 2020, 2021, 2022, 2023, 2024],
+      "values": {
+        "Camaiore": [10.59, 10.85, 13.47, 12.81, 2.63, 13.64],
+        "Forte dei Marmi": [34.99, 7.77, 7.18, 8.67, 10.54, 11.57],
+        "Massarosa": [1.17, 0.26, 0.22, null, null, null],
+        "Pietrasanta": [2.26, 1.52, 1.65, 2.29, 2.86, 2.83],
+        "Seravezza": [0.49, 1.67, 0.8, 2.08, 2.84, 2.81],
+        "Stazzema": [null, null, null, null, null, null],
+        "Viareggio": [5.96, 0.86, 1.45, 1.94, 7.82, 8.58]
+      }
+    },
+    "libraryWeeklyOpeningHours": {
+      "years": [2022, 2023, 2024],
+      "values": {
+        "Camaiore": [64.23, 14.33, 56.04],
+        "Forte dei Marmi": [61.53, 61.81, 61.96],
+        "Massarosa": [7.0, null, null],
+        "Pietrasanta": [47.98, 47.98, 47.98],
+        "Seravezza": [42.62, 41.11, 40.65],
+        "Stazzema": [null, null, null],
+        "Viareggio": [69.0, 63.75, 63.75]
+      }
+    }
+  },
+  "aggregation": {
+    "coveredTownCodes2024": ["046005", "046013", "046024", "046028", "046033"],
+    "excludedTownCodes2024": ["046018", "046030"],
+    "libraryLoansPerResident": {
+      "rule": "media ponderata per popolazione dei valori comunali disponibili",
+      "value": 0.22957554282827833,
+      "populationDenominator": 134619
+    },
+    "libraryActiveBorrowersPer100": {
+      "rule": "media ponderata per popolazione dei valori comunali disponibili",
+      "value": 8.421880566636212,
+      "populationDenominator": 134619
+    },
+    "libraryWeeklyOpeningHours": {
+      "rule": "media aritmetica dei valori comunali disponibili",
+      "value": 54.076,
+      "townCount": 5
+    }
+  },
+  "deduplication": {
+    "municipalIndicators": "preferire la riga comunale valorizzata; Viareggio 2024 ha una riga 'altri Lucca' nulla e una 'Rete Lucchese' valorizzata",
+    "libraries": "deduplicazione per Codice ICCU; nel 2024 una sola biblioteca ICCU per ciascuno dei sei Comuni presenti nel Dataset Biblioteche",
+    "activeBorrowers": "non sommare IscrittiAttivi tra sedi per ricostruire l'indice comunale"
+  },
+  "missing": {
+    "Massarosa": "riga indicatore 2024 presente e biblioteca IT-LU0029 Aperto/Attivo, ma i tre campi del lotto non sono alimentati; n.d.",
+    "Stazzema": "nessuna riga nel monitoraggio regionale né nel Dataset Biblioteche; n.d., non zero e non n.a."
+  },
+  "excludedCandidates": [
+    {
+      "field": "Indice di apertura Comunale",
+      "decision": "SOLO DETTAGLIO / non nuova card",
+      "reason": "sovrappone la dimensione dell'accessibilità oraria e i tracciati ufficiali presentano una formulazione non perfettamente coincidente"
+    },
+    {
+      "field": "Ore annue di apertura",
+      "decision": "SCARTARE",
+      "reason": "non esiste come indicatore comunale ufficiale autonomo nel dataset; non viene derivato artificialmente"
+    }
+  ],
+  "historyNotes": {
+    "loansAndImpact": "serie recente 2019–2024; 2020 da leggere come anno pandemico anomalo; nessuna interpolazione dei mancanti",
+    "opening": "serie limitata a 2022–2024 perché nel Dataset Indicatori 2019–2021 il campo 'Ore medie di apertura settimanale Comunale' coincide con l'Indice di apertura e non con ORESETTIMANALI del dettaglio biblioteche"
+  }
+}
