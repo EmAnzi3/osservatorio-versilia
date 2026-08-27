@@ -1,0 +1,61 @@
+name: Repair Cultura materializer cache once
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.ref == 'feat/cultura-biblioteche' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Repair materializer version targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/materialize_cultura_biblioteche_v121.py')
+          text = path.read_text(encoding='utf-8')
+          old_app = "replace_required(APP_JS, \"const VERSION='20260826-v120';\", \"const VERSION='20260827-v121';\")"
+          new_app = "replace_required(APP_JS, \"const VERSION='20260826-v120';\", \"const VERSION='20260827-v121-history-ui2';\")"
+          old_sw = "replace_required(SERVICE_WORKER, \"const VERSION = 'ov-pwa-20260826-v120';\", \"const VERSION = 'ov-pwa-20260827-v121';\")"
+          new_sw = "replace_required(SERVICE_WORKER, \"const VERSION = 'ov-pwa-20260826-v120';\", \"const VERSION = 'ov-pwa-20260827-v121-history-ui2';\")"
+          if new_app not in text:
+              if old_app not in text:
+                  raise SystemExit('Target APP_JS non trovato')
+              text = text.replace(old_app, new_app, 1)
+          if new_sw not in text:
+              if old_sw not in text:
+                  raise SystemExit('Target SERVICE_WORKER non trovato')
+              text = text.replace(old_sw, new_sw, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          python scripts/materialize_cultura_biblioteche_v121.py
+          python scripts/test_cultura_biblioteche_v121.py
+          python scripts/test_cultura_history_cache_v121.py
+
+      - name: Commit repair
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/materialize_cultura_biblioteche_v121.py
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Keep Cultura cache bust idempotent"
+          git push origin HEAD:"$BRANCH"
