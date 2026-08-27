@@ -1,0 +1,61 @@
+name: Normalize Cultura coverage once
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Normalize partial coverage contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          site_path = Path('data/site-data.json')
+          site = json.loads(site_path.read_text(encoding='utf-8'))
+          keys = (
+              'libraryLoansPerResident',
+              'libraryActiveBorrowersPer100',
+              'libraryWeeklyOpeningHours',
+          )
+          for key in keys:
+              site['metrics'][key]['method']['coverage'] = '5/7'
+          site_path.write_text(json.dumps(site, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          materializer = Path('scripts/materialize_cultura_biblioteche_v121.py')
+          text = materializer.read_text(encoding='utf-8')
+          text = text.replace('"coverage": "5/7 · eccezione approvata; Massarosa e Stazzema n.d.",', '"coverage": "5/7",')
+          materializer.write_text(text, encoding='utf-8')
+          assert text.count('"coverage": "5/7",') >= 3
+          PY
+          python scripts/test_cultura_biblioteche_v121.py
+
+      - name: Commit normalized sources
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json scripts/materialize_cultura_biblioteche_v121.py
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Normalize Cultura 5/7 coverage contract"
+          git push origin HEAD:"$BRANCH"
