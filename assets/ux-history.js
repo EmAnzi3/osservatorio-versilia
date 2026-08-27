@@ -89,6 +89,92 @@
       );
   }
 
+  function libraryHistoryChartMarkup(metric, selectedTown = '') {
+    const colors = ['#0f5c6e', '#b56843', '#64743d', '#855b7b', '#b88a1c', '#4e7096', '#914d47'];
+    const rows = (metric?.rows || []).map((row, index) => {
+      const years = row.series?.years || [];
+      const values = row.series?.values || [];
+      const points = years.map((year, pointIndex) => ({
+        year: Number(year),
+        value: values[pointIndex] === null || values[pointIndex] === undefined || values[pointIndex] === '' ? null : Number(values[pointIndex])
+      })).filter(point => Number.isFinite(point.year) && Number.isFinite(point.value));
+      return { town: row.town, slug: row.slug || '', color: colors[index % colors.length], points };
+    });
+    const plotted = rows.filter(row => row.points.length);
+    const years = [...new Set(plotted.flatMap(row => row.points.map(point => point.year)))].sort((a, b) => a - b);
+    if (!plotted.length || years.length < 2) {
+      return '<div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Non risultano almeno due annualità osservate.</p></div>';
+    }
+
+    const values = plotted.flatMap(row => row.points.map(point => point.value));
+    const rawMin = Math.min(...values), rawMax = Math.max(...values);
+    const padding = (rawMax - rawMin || Math.max(Math.abs(rawMax) * .1, 1)) * .08;
+    let min = rawMin - padding, max = rawMax + padding;
+    if (rawMin >= 0 && min < 0) min = 0;
+    const range = max - min || 1;
+    const width = 920, height = 390;
+    const left = metric.meta.unit === 'per100' ? 132 : 78, right = 30, top = 26, bottom = 52;
+    const chartWidth = width - left - right, chartHeight = height - top - bottom;
+    const firstYear = years[0], lastYear = years.at(-1), yearRange = Math.max(1, lastYear - firstYear);
+    const x = year => left + (year - firstYear) / yearRange * chartWidth;
+    const y = value => top + (max - value) / range * chartHeight;
+    const numeric = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const valueText = value => {
+      const formatted = numeric.format(value);
+      if (metric.meta.unit === 'hours') return `${formatted} ore`;
+      if (metric.meta.unit === 'per100') return `${formatted} ogni 100`;
+      return formatted;
+    };
+
+    const ticks = [0, .25, .5, .75, 1].map(fraction => {
+      const value = max - fraction * range;
+      const py = top + fraction * chartHeight;
+      return `<line class="ux-history-grid" x1="${left}" y1="${py}" x2="${width-right}" y2="${py}"></line><text class="ux-history-axis-label" x="${left-10}" y="${py+4}" text-anchor="end">${toolkit.escapeHtml(valueText(value))}</text>`;
+    }).join('');
+    const yearStep = Math.max(1, Math.ceil(years.length / 9));
+    const yearLabels = years.map((year, index) => {
+      if (!(index % yearStep === 0 || index === years.length - 1 || year === 2020)) return '';
+      const label = year === 2020 ? '2020*' : String(year);
+      return `<text class="ux-history-axis-label${year === 2020 ? ' library-pandemic-axis' : ''}" x="${x(year)}" y="${height-16}" text-anchor="middle">${toolkit.escapeHtml(label)}</text>`;
+    }).join('');
+
+    const groups = plotted.map(row => {
+      const byYear = new Map(row.points.map(point => [point.year, point.value]));
+      const segments = [];
+      let current = [];
+      years.forEach(year => {
+        if (byYear.has(year)) current.push({ year, value: byYear.get(year) });
+        else if (current.length) {
+          segments.push(current);
+          current = [];
+        }
+      });
+      if (current.length) segments.push(current);
+      const lines = segments.map(segment => segment.length >= 2
+        ? `<polyline class="ux-series-line" points="${segment.map(point => `${x(point.year)},${y(point.value)}`).join(' ')}"></polyline>`
+        : '').join('');
+      const points = row.points.map(point => {
+        const px = x(point.year), py = y(point.value), boxWidth = 230, boxHeight = 50;
+        const boxX = Math.max(left - 8, Math.min(width - right - boxWidth, px - boxWidth / 2));
+        const boxY = py < boxHeight + 28 ? py + 18 : py - boxHeight - 16;
+        const formatted = valueText(point.value);
+        const aria = `${row.town} · ${point.year}: ${formatted}`;
+        return `<g class="chart-point" tabindex="0" role="button" aria-label="${toolkit.escapeHtml(aria)}"><circle class="chart-hit" cx="${px}" cy="${py}" r="13"></circle><circle class="chart-dot ux-series-point" cx="${px}" cy="${py}" r="4"></circle><g class="chart-tooltip" hidden><line class="chart-guide" x1="${px}" y1="${py}" x2="${px}" y2="${boxY < py ? boxY + boxHeight : boxY}"></line><rect x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="8"></rect><text class="chart-tooltip-year" x="${boxX+12}" y="${boxY+16}">${toolkit.escapeHtml(`${row.town} · ${point.year}`)}</text><text class="chart-tooltip-value" x="${boxX+12}" y="${boxY+36}">${toolkit.escapeHtml(formatted)}</text></g></g>`;
+      }).join('');
+      return `<g class="ux-series-group ${row.slug === selectedTown ? 'is-selected' : ''}" data-history-town="${toolkit.escapeHtml(row.slug)}" style="--series-color:${row.color}">${lines}${points}</g>`;
+    }).join('');
+
+    const legend = rows.map(row => {
+      if (!row.points.length) return `<span class="ux-history-reference is-unavailable">${toolkit.escapeHtml(row.town)} · n.d.</span>`;
+      const start = row.points[0], end = row.points.at(-1);
+      return `<button type="button" data-history-select="${toolkit.escapeHtml(row.slug)}" data-town="${toolkit.escapeHtml(row.town)}" data-start="${start.value}" data-end="${end.value}" data-start-year="${start.year}" data-end-year="${end.year}" aria-pressed="${row.slug === selectedTown}" style="--series-color:${row.color}">${toolkit.escapeHtml(row.town)}</button>`;
+    }).join('');
+    const note = years.includes(2020)
+      ? 'Gli anni senza dato restano vuoti e non vengono interpolati. * 2020: anno pandemico anomalo.'
+      : 'Gli anni senza dato restano vuoti e non vengono interpolati.';
+    return `<div class="ux-history-card library-history-chart"><div class="ux-history-head"><div><strong>Andamento ${firstYear}–${lastYear}</strong><span>Una linea per Comune; tooltip sui valori osservati e vuoti dove il dato manca.</span></div><span>${toolkit.escapeHtml(metric.meta.source)}</span></div><div class="ux-history-scroll"><div class="ux-history-chart ${selectedTown ? 'has-selection' : ''}" data-unit="${toolkit.escapeHtml(metric.meta.unit)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${toolkit.escapeHtml(`${metric.meta.label}: confronto storico`)}">${ticks}${groups}${yearLabels}</svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p><div class="ux-history-legend" aria-label="Comuni">${legend}</div><p class="aggregate-note">${toolkit.escapeHtml(note)}</p></div>`;
+  }
+
   function enhanceCompare(data) {
     if (document.body.dataset.page !== 'compare') return;
     const target = document.getElementById('compare-bars');
@@ -103,12 +189,10 @@
         wireShell(existingShell, 'ov-compare-view', selectedTown, true);
         return;
       }
-      const historyDetail = document.querySelector('#compare-tools .library-history-detail');
-      if (!historyDetail) return;
+      document.querySelector('#compare-tools .library-history-detail')?.remove();
       const currentMarkup = target.innerHTML;
-      const historyMarkup = historyDetail.outerHTML;
-      historyDetail.remove();
-      const note = 'Lo storico mantiene tutti gli anni ufficiali disponibili: gli n.d. restano tali e la media di ogni anno usa soltanto i Comuni con dato.';
+      const historyMarkup = libraryHistoryChartMarkup(selected.metric, selectedTown);
+      const note = 'Lo storico usa lo stesso linguaggio grafico degli altri indicatori: una linea per Comune, tooltip sui valori osservati e vuoti espliciti dove il dato manca.';
       target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, true, note);
       wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
       return;
