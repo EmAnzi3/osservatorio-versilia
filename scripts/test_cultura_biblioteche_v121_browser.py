@@ -47,6 +47,20 @@ def assert_missing_rows(bars, key: str) -> None:
         assert "n.d." in text, f"{key}/{town}: il mancante non è mostrato come n.d. ({text})"
 
 
+def assert_town_metric(page, base: str, slug: str, town: str) -> None:
+    page.goto(urljoin(base, f"comuni/{slug}/"), wait_until="networkidle")
+    page.wait_for_timeout(350)
+    no_overflow(page, town)
+    text = page.locator("body").inner_text()
+    # Le schede comunali seguono il layout canonico del tema Comunità e non
+    # ripetono necessariamente il titolo della sottosezione. Verifichiamo quindi
+    # le tre card e il trattamento n.d., non una heading editoriale opzionale.
+    assert "Prestiti bibliotecari per residente" in text, f"{town}: card prestiti assente"
+    assert "Utenti attivi del prestito" in text, f"{town}: card utenti attivi assente"
+    assert "Ore medie di apertura settimanale" in text, f"{town}: card apertura assente"
+    assert "n.d." in text, f"{town}: mancanti non mostrati come n.d."
+
+
 def assert_compare(page, base: str, mobile: bool) -> None:
     page.goto(urljoin(base, "confronta/comunita/?indicatore=libraryLoansPerResident"), wait_until="networkidle")
     page.wait_for_timeout(450)
@@ -65,19 +79,8 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         assert "5/7" in definition or "5/7" in page.locator("body").inner_text(), f"{key}: copertura non visibile"
         assert_missing_rows(page.locator("#compare-bars .bar-row"), key)
 
-    page.goto(urljoin(base, "comuni/massarosa/"), wait_until="networkidle")
-    page.wait_for_timeout(350)
-    no_overflow(page, "Massarosa")
-    text = page.locator("body").inner_text()
-    assert "Cultura e biblioteche" in text
-    assert "Prestiti bibliotecari per residente" in text
-    assert "n.d." in text
-
-    page.goto(urljoin(base, "comuni/stazzema/"), wait_until="networkidle")
-    page.wait_for_timeout(350)
-    no_overflow(page, "Stazzema")
-    text = page.locator("body").inner_text()
-    assert "Cultura e biblioteche" in text and "n.d." in text
+    assert_town_metric(page, base, "massarosa", "Massarosa")
+    assert_town_metric(page, base, "stazzema", "Stazzema")
 
 
 def main() -> None:
@@ -97,7 +100,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: 7 righe comunali con n.d. espliciti, 5/7, schede comunali, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali, 5/7, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
