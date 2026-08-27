@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto pubblico e metodologico della release v1.20.0."""
+"""Contratto pubblico e metodologico della release v1.21.0."""
 from __future__ import annotations
 
 import json
@@ -68,7 +68,7 @@ def main() -> None:
     assert not malformed, f"Separatore delle migliaia corrotto: {malformed[:3]}"
 
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
-    assert "2026.08.26-v1.20.0" in app and "154 indicatori complessivi" in app
+    assert "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app
     assert "2026.08.20-v1.15.0" in app and "2026.08.20-v1.14.0" in app
     chart_app = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
     assert 'part.count === null || part.count === undefined' in chart_app, 'Le distribuzioni senza conteggi non devono mostrare NaN'
@@ -80,18 +80,19 @@ def main() -> None:
     ):
         assert token in chart_app, f"UI età×genere non canonicalizzata: {token}"
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "**v1.20.0** — 26 agosto 2026" in readme
-    assert "154 indicatori" in readme and "150 con valori incorporati" in readme
+    assert "**v1.21.0** — 27 agosto 2026" in readme
+    assert "157 indicatori" in readme and "153 con valori incorporati" in readme
     build_safe = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
     build_brand = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     service_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
     assert 'UX_ASSET_VERSION = "20260826-v120"' in build_safe
-    assert 'APP_BUNDLE_ASSET_VERSION = "20260826-v120"' in build_brand
+    assert 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"' in build_safe
+    assert 'APP_BUNDLE_ASSET_VERSION = "20260827-v121-history-ui3"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
-    assert 'PWA_JS_REVISION = "catalog-v120"' in build_brand
-    assert "20260826-v120" in development_loader
-    assert "ov-pwa-20260826-v120" in service_worker
+    assert 'PWA_JS_REVISION = "catalog-v121"' in build_brand
+    assert "20260827-v121" in development_loader
+    assert "ov-pwa-20260827-v121" in service_worker
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "

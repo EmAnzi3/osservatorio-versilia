@@ -5,6 +5,8 @@ import json
 import math
 from pathlib import Path
 
+from finalize_catalog_release import EXPECTED_EXTERNAL, EXPECTED_INLINE, EXPECTED_METRICS
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'data' / 'site-data.json'
 REGISTRY = ROOT / 'data' / 'source-registry.json'
@@ -45,10 +47,11 @@ def main() -> None:
     registry = json.loads(REGISTRY.read_text(encoding='utf-8'))
     snapshot = json.loads(SNAPSHOT.read_text(encoding='utf-8'))
 
-    require(len(site['metrics']) == 154, f"Conteggio metriche inatteso: {len(site['metrics'])}")
-    require(registry['expectedMetricCount'] == 154, 'Registry non riallineato a 154')
-    require(registry['expectedInlineMetricCount'] == 150, 'Inline count non riallineato a 150')
-    require(registry['expectedExternalMetricCount'] == 4, 'External count deve restare 4')
+    # Il lotto Fiscalità B resta invariato; il gate segue il contratto globale corrente.
+    require(len(site['metrics']) == EXPECTED_METRICS, f"Conteggio metriche inatteso: {len(site['metrics'])}")
+    require(registry['expectedMetricCount'] == EXPECTED_METRICS, 'Registry totale non riallineato')
+    require(registry['expectedInlineMetricCount'] == EXPECTED_INLINE, 'Inline count non riallineato')
+    require(registry['expectedExternalMetricCount'] == EXPECTED_EXTERNAL, 'External count non riallineato')
 
     metric = site['metrics'].get(KEY)
     require(metric is not None, 'Indicatore Fiscalità Lotto B assente')
@@ -80,7 +83,10 @@ def main() -> None:
     require(registry['metricOverrides'][KEY]['profile'] == 'siope-monthly', 'Profilo SIOPE non registrato')
     require(registry['sourceProfileByUrl'][snapshot['daitUrl']] == 'dait-fiscal-assessment-annual', 'Profilo DAIT non registrato')
 
-    print('Fiscalità Lotto B verificata: 1 card, 3 letture, SIOPE 7/7 e DAIT 2/7 beneficiari.')
+    print(
+        f'Fiscalità Lotto B verificata: 1 card, 3 letture, SIOPE 7/7 e DAIT 2/7 beneficiari; '
+        f'catalogo {EXPECTED_METRICS} = {EXPECTED_INLINE}+{EXPECTED_EXTERNAL}.'
+    )
 
 
 if __name__ == '__main__':

@@ -47,3 +47,14 @@ Una serie viene aggiunta soltanto se:
 Il 7° Censimento generale dell'Agricoltura Istat 2020 è usato come ultima base comunale censuaria omogenea. Aziende, dimensione media e irrigazione sono attribuite per centro aziendale; SAU territoriale e profilo colture usano invece il Comune di localizzazione dei terreni. La quota di SAU sulla superficie comunale usa come denominatore SITUAS al 31 dicembre 2020.
 
 La copertura è 7/7 per aziende, SAU, dimensione media, irrigazione, seminativi, olivo da olio e prati/pascoli; 6/7 per la vite (Forte dei Marmi `n.d.`). La sola eccezione approvata è “Olive da tavola”, pubblicata 4/7: Forte dei Marmi, Stazzema e Viareggio restano `n.d.`. Nessuna assenza viene trasformata in zero.
+
+
+## Lotto Cultura e biblioteche v1.21.0
+
+Il monitoraggio annuale Regione Toscana è usato con anno corrente 2024 per tre misure comunali: Indice di prestito, Indice di impatto e Ore medie di apertura settimanale. È approvata un'eccezione esplicita 5/7: Camaiore, Forte dei Marmi, Pietrasanta, Seravezza e Viareggio hanno valori 2024; Massarosa ha la riga comunale e la biblioteca IT-LU0029 aperta/attiva ma i campi del lotto non sono alimentati; Stazzema è assente dal monitoraggio. Entrambi restano `n.d.`, senza zeri, stime o trascinamento dell'ultimo valore.
+
+Prestiti e impatto espongono l'intera serie ufficiale 1998–2024 dove disponibile e segnalano il 2020 come anno pandemico anomalo. Per l'apertura la serie è limitata al 2022–2024: nel file Indicatori 2019–2021 il campo delle ore medie settimanali coincide con l'Indice di apertura e non con `ORESETTIMANALI` del dettaglio biblioteche.
+
+Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.
+
+Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.

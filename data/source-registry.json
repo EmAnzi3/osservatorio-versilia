@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 154,
-  "expectedInlineMetricCount": 150,
+  "expectedMetricCount": 157,
+  "expectedInlineMetricCount": 153,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -385,6 +385,15 @@
       "acquisitionMethod": "Interrogazione IstatData SDMX del 7° Censimento Agricoltura 2020; distinzione tra dati per centro aziendale e localizzazione dei terreni; superficie comunale SITUAS 31/12/2020 per la quota territoriale; nessuna stima dei valori mancanti.",
       "licenseName": "CC BY 4.0",
       "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "regione-toscana-biblioteche-annual": {
+      "publisher": "Regione Toscana",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la validazione annuale del monitoraggio biblioteche",
+      "acquisitionMethod": "Download dei CSV ufficiali Dataset Indicatori e Dataset Biblioteche; indicatori IFLA comunali preferiti, dettaglio sedi deduplicato per Codice ICCU; nessuna stima dei mancanti.",
+      "licenseName": "Creative Commons Attribution",
+      "licenseUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale"
     }
   },
   "sourceProfileByUrl": {
@@ -443,7 +452,13 @@
     "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
     "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled",
     "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/": "istat-agriculture-census-2020",
-    "https://situas.istat.it/": "istat-agriculture-census-2020"
+    "https://situas.istat.it/": "istat-agriculture-census-2020",
+    "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale": "regione-toscana-biblioteche-annual",
+    "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/873b9a04-a1a3-4dab-b0d3-7e98dd67e068/download/dataset_biblioteche.csv": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -573,6 +588,15 @@
     },
     "irrigatedAgriculturalArea": {
       "profile": "istat-agriculture-census-2020"
+    },
+    "libraryLoansPerResident": {
+      "profile": "regione-toscana-biblioteche-annual"
+    },
+    "libraryActiveBorrowersPer100": {
+      "profile": "regione-toscana-biblioteche-annual"
+    },
+    "libraryWeeklyOpeningHours": {
+      "profile": "regione-toscana-biblioteche-annual"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -597,6 +621,12 @@
     "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": "regione-toscana-gtfs-scheduled",
     "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip": "regione-toscana-gtfs-scheduled",
     "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/": "istat-agriculture-census-2020",
-    "https://situas.istat.it/": "istat-agriculture-census-2020"
+    "https://situas.istat.it/": "istat-agriculture-census-2020",
+    "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale": "regione-toscana-biblioteche-annual",
+    "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/873b9a04-a1a3-4dab-b0d3-7e98dd67e068/download/dataset_biblioteche.csv": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual"
   }
 }

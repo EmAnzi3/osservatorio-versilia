@@ -1,0 +1,62 @@
+name: Cultura e biblioteche v1.21 · release gate
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  cultura-v121:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Validate data contract and idempotence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_cultura_biblioteche_v121.py
+          python scripts/test_cultura_biblioteche_v121.py
+          python scripts/test_cultura_history_cache_v121.py
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json >/dev/null
+
+      - name: Build pre-rendered site
+        run: python scripts/build_static_brand.py
+
+      - name: Materialize public data status
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+
+      - name: Start local release server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-cultura-http.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-cultura-http.log
+          exit 1
+
+      - name: Validate Cultura in browser
+        run: python scripts/test_cultura_biblioteche_v121_browser.py --base http://127.0.0.1:8123/

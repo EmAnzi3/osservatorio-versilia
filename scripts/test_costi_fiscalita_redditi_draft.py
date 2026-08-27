@@ -3,6 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from finalize_catalog_release import (
+    EXPECTED_EXTERNAL,
+    EXPECTED_INLINE,
+    EXPECTED_METRICS,
+    VERSION,
+)
+
 ROOT=Path(__file__).resolve().parents[1]
 DATA=json.loads((ROOT/'data/site-data.json').read_text(encoding='utf-8'))
 REG=json.loads((ROOT/'data/source-registry.json').read_text(encoding='utf-8'))
@@ -22,10 +29,13 @@ def close(a,b,tol=.011): return abs(float(a)-float(b))<=tol
 
 
 def main():
-    # Questo test tutela Economia/Fiscalità, ma deve seguire il contratto globale
-    # della release corrente invece di congelare i conteggi della v1.17.0.
-    assert DATA['version']=='v1.20.0'
-    assert REG['expectedMetricCount']==154 and REG['expectedInlineMetricCount']==150 and REG['expectedExternalMetricCount']==4
+    # Questo test tutela Economia/Fiscalità, ma segue il contratto globale
+    # della release corrente invece di congelare i conteggi di una release precedente.
+    assert DATA['version'] == VERSION
+    assert len(DATA['metrics']) == EXPECTED_METRICS
+    assert REG['expectedMetricCount'] == EXPECTED_METRICS
+    assert REG['expectedInlineMetricCount'] == EXPECTED_INLINE
+    assert REG['expectedExternalMetricCount'] == EXPECTED_EXTERNAL
     for key in ['municipalIrpef','tariStandardHousehold','municipalImuStandard','fuelPrices','wasteServiceCost','incomeVsInflation']:
         assert key in DATA['metrics']
 
@@ -125,6 +135,9 @@ def main():
     assert state.get('status') in {'draft','published'}
     assert 'incomeVsInflation' in state['publishedInDraft']
     assert state['notPublished']==['schoolMeals']
-    print(f"Economia validata ({DATA['version']}): 154 indicatori = 150 inline + 4 esterni; redditi/inflazione e fiscalità coerenti")
+    print(
+        f"Economia validata ({DATA['version']}): {EXPECTED_METRICS} indicatori = "
+        f"{EXPECTED_INLINE} inline + {EXPECTED_EXTERNAL} esterni; redditi/inflazione e fiscalità coerenti"
+    )
 
 if __name__=='__main__': main()

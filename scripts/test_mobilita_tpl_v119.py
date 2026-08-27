@@ -8,6 +8,13 @@ import math
 from pathlib import Path
 
 import materialize_mobilita_tpl_v119 as materializer
+from finalize_catalog_release import (
+    EXPECTED_EXTERNAL,
+    EXPECTED_INLINE,
+    EXPECTED_METRICS,
+    UPDATED,
+    VERSION,
+)
 from monthly_data_check import iter_metric_sources
 
 
@@ -47,11 +54,13 @@ def seconds(value: str) -> int:
 
 
 def main() -> None:
-    assert SITE["version"] == "v1.20.0"
-    assert SITE["updated"] == "26 agosto 2026"
-    assert len(SITE["metrics"]) == REGISTRY["expectedMetricCount"] == 154
-    assert REGISTRY["expectedInlineMetricCount"] == 150
-    assert REGISTRY["expectedExternalMetricCount"] == 4
+    # Il lotto TPL resta v1.19, ma il gate deve seguire il contratto globale
+    # della release corrente invece di congelare i conteggi della v1.20.
+    assert SITE["version"] == VERSION
+    assert SITE["updated"] == UPDATED
+    assert len(SITE["metrics"]) == REGISTRY["expectedMetricCount"] == EXPECTED_METRICS
+    assert REGISTRY["expectedInlineMetricCount"] == EXPECTED_INLINE
+    assert REGISTRY["expectedExternalMetricCount"] == EXPECTED_EXTERNAL
 
     assert SNAP["snapshotVersion"] == "2026-08-26-v3"
     assert SNAP["status"] == "release-verified-7of7"

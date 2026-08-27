@@ -5,6 +5,8 @@ import json
 import math
 from pathlib import Path
 
+from finalize_catalog_release import EXPECTED_EXTERNAL, EXPECTED_INLINE, EXPECTED_METRICS
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
@@ -31,10 +33,11 @@ def main() -> None:
     training_snapshot = json.loads(TRAINING_SNAPSHOT.read_text(encoding="utf-8"))
     online_snapshot = json.loads(ONLINE_SNAPSHOT.read_text(encoding="utf-8"))
 
-    assert len(site["metrics"]) == 154, f"Attesi 154 indicatori, trovati {len(site['metrics'])}"
-    assert registry["expectedMetricCount"] == 154
-    assert registry["expectedInlineMetricCount"] == 150
-    assert registry["expectedExternalMetricCount"] == 4
+    # Il lotto Amministrazione resta invariato; il gate segue il contratto globale corrente.
+    assert len(site["metrics"]) == EXPECTED_METRICS, f"Attesi {EXPECTED_METRICS} indicatori, trovati {len(site['metrics'])}"
+    assert registry["expectedMetricCount"] == EXPECTED_METRICS
+    assert registry["expectedInlineMetricCount"] == EXPECTED_INLINE
+    assert registry["expectedExternalMetricCount"] == EXPECTED_EXTERNAL
 
     theme = site["themes"]["bilanci"]
     assert theme["label"] == "Bilanci e amministrazione"
@@ -129,7 +132,10 @@ def main() -> None:
     assert "media aritmetica" in online["aggregate"]["note"].lower()
     assert registry["metricOverrides"]["municipalOnlineServicesAdvanced"]["profile"] == "regione-toscana-indicatori-comunali"
 
-    print("Amministrazione verificata: 154 indicatori, 5 letture amministrative 7/7, servizi online ind18 2022 con storico reale 2018→2022.")
+    print(
+        f"Amministrazione verificata: {EXPECTED_METRICS} indicatori ({EXPECTED_INLINE}+{EXPECTED_EXTERNAL}), "
+        "5 letture amministrative 7/7, servizi online ind18 2022 con storico reale 2018→2022."
+    )
 
 
 if __name__ == "__main__":

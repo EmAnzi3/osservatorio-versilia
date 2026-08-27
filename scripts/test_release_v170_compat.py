@@ -2,8 +2,8 @@
 """Controlli di retrocompatibilità per Osservatorio Versilia v1.7+.
 
 Verifica che le release v1.5/v1.6 non abbiano perso indicatori o struttura,
-consentendo le aggiunte della v1.7 e la policy esplicita 6/7 per i soli
-conteggi assoluti FTTH.
+consentendo le aggiunte successive e le sole eccezioni di copertura esplicitamente
+approvate e documentate nel catalogo corrente.
 """
 from __future__ import annotations
 
@@ -63,6 +63,11 @@ PARTIAL_MISSING = {
     "ftthReachedHouseholds": "Forte dei Marmi",
     "ftthUnreachedHouseholds": "Forte dei Marmi",
     "fuelPrices": "Stazzema",
+}
+APPROVED_PARTIAL = {
+    "libraryLoansPerResident": ("5/7", {"Massarosa", "Stazzema"}),
+    "libraryActiveBorrowersPer100": ("5/7", {"Massarosa", "Stazzema"}),
+    "libraryWeeklyOpeningHours": ("5/7", {"Massarosa", "Stazzema"}),
 }
 
 LEGACY_THEME_KEYS = {
@@ -177,7 +182,17 @@ def main() -> None:
         require(metric.get("meta", {}).get("year") not in (None, ""), f"{key}: anno mancante")
         require(metric.get("meta", {}).get("source") not in (None, ""), f"{key}: fonte mancante")
         coverage = str(metric.get("method", {}).get("coverage", ""))
-        if key in PARTIAL_MISSING:
+        if key in APPROVED_PARTIAL:
+            expected_coverage, expected_missing = APPROVED_PARTIAL[key]
+            require(coverage == expected_coverage, f"{key}: deve dichiarare copertura {expected_coverage}")
+            missing = [row for row in rows if row.get("value") is None]
+            missing_towns = {row.get("town") for row in missing}
+            require(missing_towns == expected_missing, f"{key}: Comuni n.d. inattesi: {missing_towns}")
+            require(
+                all(row.get("formatted") == "n.d." for row in missing),
+                f"{key}: i valori mancanti approvati devono restare etichettati n.d.",
+            )
+        elif key in PARTIAL_MISSING:
             require(coverage == "6/7", f"{key}: deve dichiarare copertura 6/7")
             missing = [row for row in rows if row.get("value") is None]
             require(len(missing) == 1, f"{key}: copertura 6/7 senza un solo valore mancante")
