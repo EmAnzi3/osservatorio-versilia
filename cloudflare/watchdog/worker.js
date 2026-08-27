@@ -32,19 +32,23 @@ function githubHeaders(env) {
     "X-GitHub-Api-Version": "2022-11-28",
     "User-Agent": "osservatorio-versilia-cloudflare-watchdog",
   };
+
   if (env.GITHUB_TOKEN) {
     headers.Authorization = `Bearer ${env.GITHUB_TOKEN}`;
   }
+
   return headers;
 }
 
 function isAuthorized(request, env) {
   if (!env.WATCHDOG_KEY) return false;
+
   return request.headers.get("authorization") === `Bearer ${env.WATCHDOG_KEY}`;
 }
 
 function utcDateParts(now = new Date()) {
   const iso = now.toISOString();
+
   return {
     date: iso.slice(0, 10),
     month: iso.slice(0, 7),
@@ -54,14 +58,19 @@ function utcDateParts(now = new Date()) {
 
 async function listWorkflowRuns(env, workflow) {
   const cfg = config(env);
-  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(workflow)}/runs?per_page=20`;
+  const url =
+    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/` +
+    `${encodeURIComponent(workflow)}/runs?per_page=20`;
+
   const response = await fetch(url, {
     headers: githubHeaders(env),
     cache: "no-store",
   });
+
   if (!response.ok) {
     throw new Error(`GitHub runs API ${response.status}: ${await response.text()}`);
   }
+
   const payload = await response.json();
   return payload.workflow_runs || [];
 }
@@ -70,12 +79,17 @@ async function dispatchWorkflow(env, workflow, inputs = undefined) {
   if (!env.GITHUB_TOKEN) {
     throw new Error("GITHUB_TOKEN non configurato: dispatch impossibile");
   }
+
   const cfg = config(env);
   const body = { ref: cfg.ref };
-  if (inputs && Object.keys(inputs).length) body.inputs = inputs;
+
+  if (inputs && Object.keys(inputs).length) {
+    body.inputs = inputs;
+  }
 
   const response = await fetch(
-    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/${encodeURIComponent(workflow)}/dispatches`,
+    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/` +
+      `${encodeURIComponent(workflow)}/dispatches`,
     {
       method: "POST",
       headers: {
@@ -92,6 +106,7 @@ async function dispatchWorkflow(env, workflow, inputs = undefined) {
 
   let responseBody = null;
   const text = await response.text();
+
   if (text) {
     try {
       responseBody = JSON.parse(text);
@@ -99,13 +114,20 @@ async function dispatchWorkflow(env, workflow, inputs = undefined) {
       responseBody = text;
     }
   }
-  return { status: response.status, response: responseBody };
+
+  return {
+    status: response.status,
+    response: responseBody,
+  };
 }
 
 async function checkDaily(env, doDispatch) {
   const cfg = config(env);
   const { date } = utcDateParts();
-  const snapshotUrl = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.ref}/data/opportunity-daily-public.json?watchdog=${Date.now()}`;
+  const snapshotUrl =
+    `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.ref}/` +
+    `data/opportunity-daily-public.json?watchdog=${Date.now()}`;
+
   const response = await fetch(snapshotUrl, {
     headers: {
       "User-Agent": "osservatorio-versilia-cloudflare-watchdog",
@@ -126,6 +148,7 @@ async function checkDaily(env, doDispatch) {
 
   const snapshot = await response.json();
   const referenceDate = snapshot.referenceDate || null;
+
   if (referenceDate === date) {
     return {
       target: "daily",
@@ -165,6 +188,7 @@ async function checkDaily(env, doDispatch) {
   }
 
   const dispatch = await dispatchWorkflow(env, cfg.dailyWorkflow);
+
   return {
     target: "daily",
     status: "dispatched",
@@ -196,7 +220,11 @@ async function checkMonthly(env, doDispatch) {
       run.created_at?.slice(0, 7) === month &&
       (run.event === "schedule" || run.event === "workflow_dispatch"),
   );
-  const completed = relevant.find((run) => run.status === "completed");
+
+  const completed = relevant.find(
+    (run) => run.status === "completed" && run.conclusion === "success",
+  );
+
   if (completed) {
     return {
       target: "monthly",
@@ -210,6 +238,7 @@ async function checkMonthly(env, doDispatch) {
   }
 
   const active = relevant.find((run) => run.status !== "completed");
+
   if (active) {
     return {
       target: "monthly",
@@ -232,6 +261,7 @@ async function checkMonthly(env, doDispatch) {
   }
 
   const dispatch = await dispatchWorkflow(env, cfg.monthlyWorkflow);
+
   return {
     target: "monthly",
     status: "dispatched",
@@ -244,12 +274,15 @@ async function checkMonthly(env, doDispatch) {
 
 async function runChecks(env, target, doDispatch) {
   const results = [];
+
   if (target === "daily" || target === "all") {
     results.push(await checkDaily(env, doDispatch));
   }
+
   if (target === "monthly" || target === "all") {
     results.push(await checkMonthly(env, doDispatch));
   }
+
   return results;
 }
 
@@ -270,19 +303,27 @@ export default {
       return json({ error: "not_found", endpoints: ["/health", "/check"] }, 404);
     }
 
-    if (!isAuthorized(request, env)) {
-      return json({ error: "unauthorized" }, 401);
-    }
-
     const target = url.searchParams.get("target") || "all";
+
     if (!new Set(["daily", "monthly", "all"]).has(target)) {
-      return json({ error: "invalid_target", allowed: ["daily", "monthly", "all"] }, 400);
+      return json(
+        {
+          error: "invalid_target",
+          allowed: ["daily", "monthly", "all"],
+        },
+        400,
+      );
     }
 
     const doDispatch = url.searchParams.get("dispatch") === "1";
 
+    if (doDispatch && !isAuthorized(request, env)) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
     try {
       const results = await runChecks(env, target, doDispatch);
+
       return json({
         ok: true,
         mode: doDispatch ? "dispatch" : "dry-run",
