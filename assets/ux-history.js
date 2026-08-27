@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260827-v121-history-ui4';
+  const HOTFIX_VERSION = '20260827-v121-history-ui5';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -97,13 +97,23 @@
     const selectedTown = safeStorageGet('ov-history-town') || '';
     const selected = selectedMetric(data);
     if (!selected) return;
-    // Le biblioteche hanno copertura storica parziale per definizione (Stazzema assente,
-    // Massarosa interrompe prima del 2024). Il renderer canonico del lotto gestisce
-    // esplicitamente gli n.d.; il vecchio enhancer 7/7 non deve sostituirlo con
-    // "Serie storica non disponibile".
-    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;
-
     const existingShell = target.querySelector(':scope > .ux-view-shell');
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+        return;
+      }
+      const historyDetail = document.querySelector('#compare-tools .library-history-detail');
+      if (!historyDetail) return;
+      const currentMarkup = target.innerHTML;
+      const historyMarkup = historyDetail.outerHTML;
+      historyDetail.remove();
+      const note = 'Lo storico mantiene tutti gli anni ufficiali disponibili: gli n.d. restano tali e la media di ogni anno usa soltanto i Comuni con dato.';
+      target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, true, note);
+      wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
+      return;
+    }
+
     if (existingShell) {
       wireShell(existingShell, 'ov-compare-view', selectedTown, true);
       return;
@@ -249,11 +259,26 @@
     const selectedTown = document.body.dataset.town || '';
     const selected = selectedMetric(data);
     if (!selected) return;
-    // Per Cultura il pannello nativo usa la serie del singolo Comune e conserva
-    // correttamente anni mancanti e serie interrotte. L'enhancer generico richiede
-    // invece anni comuni a tutti e sette e cancellava quindi uno storico valido.
-    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;
     const existingShell = panel.querySelector('.ux-view-shell');
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-town-view', selectedTown, false);
+        return;
+      }
+      const row = selected.metric.rows?.find(item => (item.slug || '') === selectedTown);
+      const historyAvailable = Boolean(row?.series?.years?.length);
+      const title = panel.querySelector(':scope > .panel-title');
+      const historyMarkup = historyAvailable
+        ? [...panel.children].filter(child => child !== title).map(child => child.outerHTML).join('')
+        : '<div class="ux-history-unavailable"><strong>Serie storica non disponibile</strong><p>Per questo Comune non risultano osservazioni storiche nel monitoraggio regionale.</p></div>';
+      const currentMarkup = toolkit.comparisonBarsMarkup(selected.metric, selectedTown);
+      const note = historyAvailable
+        ? 'Lo storico del Comune termina all’ultima osservazione ufficiale disponibile; nessun valore mancante viene stimato o trascinato.'
+        : 'Per questo Comune il monitoraggio regionale non rende disponibile una serie storica.';
+      panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
+      wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
+      return;
+    }
     if (existingShell) {
       wireShell(existingShell, 'ov-town-view', selectedTown, false);
       refreshTownCompositeCurrent(selected.metric, existingShell, selectedTown, currentCompositeChoice());
