@@ -105,12 +105,11 @@ def build_rows(site: dict, snapshot: dict, metric_key: str, unit: str) -> list[d
     for town in site["towns"]:
         town_values = values[town["name"]]
         current = town_values[-1]
-        observed = [index for index, value in enumerate(town_values) if value is not None]
-        if observed:
-            last = observed[-1] + 1
-            row_series = {"years": years[:last], "values": town_values[:last]}
-        else:
-            row_series = None
+        pairs = [(year, value) for year, value in zip(years, town_values) if value is not None]
+        row_series = {
+            "years": [year for year, _ in pairs],
+            "values": [value for _, value in pairs],
+        } if pairs else None
         rows.append({
             "town": town["name"],
             "code": town["code"],
@@ -160,13 +159,13 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         "aggregate": {
             "value": agg[KEYS[0]]["value"],
             "label": "Versilia · comuni con dato disponibile (5/7)",
-            "note": "Media ponderata per la popolazione 2024 dei cinque Comuni con indicatore disponibile; Massarosa e Stazzema sono esclusi perché n.d.",
-            "formatted": "0,23 prestiti per residente",
+            "note": "Media aritmetica dei cinque Comuni con indicatore 2024 disponibile; Massarosa e Stazzema sono esclusi perché n.d.",
+            "formatted": "0,34 prestiti per residente",
         },
         "normalizedAggregate": None,
         "method": {
             "type": "Indicatore IFLA comunale ufficiale",
-            "formula": "Valore pubblicato nel campo “Indice di prestito Comunale” (prestiti pro capite). Aggregato Versilia = somma(indice comunale × popolazione comunale) / somma(popolazione), sui soli Comuni con dato disponibile.",
+            "formula": "Valore pubblicato nel campo “Indice di prestito Comunale” (prestiti pro capite). Aggregato Versilia = media aritmetica dei valori comunali disponibili; i Comuni n.d. non entrano né nel numeratore né nel divisore.",
             "caveat": "Copertura 2024 5/7 per eccezione approvata: Massarosa ha riga comunale ma valore non alimentato; Stazzema è assente dal monitoraggio regionale. Nessun mancante è trasformato in zero. Il 2020, incluso nello storico, è un anno anomalo per le limitazioni pandemiche.",
             "coverage": "5/7",
             "snapshot": SNAPSHOT_REF,
@@ -184,13 +183,13 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
         "aggregate": {
             "value": agg[KEYS[1]]["value"],
             "label": "Versilia · comuni con dato disponibile (5/7)",
-            "note": "Media ponderata per la popolazione 2024 dei cinque Comuni con indicatore disponibile. È un indice su 100 abitanti, non un conteggio di persone uniche della Versilia.",
-            "formatted": "8,42 ogni 100",
+            "note": "Media aritmetica dei cinque Comuni con indicatore 2024 disponibile. È un indice su 100 abitanti, non un conteggio di persone uniche della Versilia.",
+            "formatted": "7,89 ogni 100",
         },
         "normalizedAggregate": None,
         "method": {
             "type": "Indicatore IFLA comunale ufficiale",
-            "formula": "Valore pubblicato nel campo “Indice di impatto Comunale” = utenti attivi del servizio di prestito su 100 abitanti. Aggregato Versilia = somma(indice comunale × popolazione comunale) / somma(popolazione), sui soli Comuni con dato disponibile.",
+            "formula": "Valore pubblicato nel campo “Indice di impatto Comunale” = utenti attivi del servizio di prestito su 100 abitanti. Aggregato Versilia = media aritmetica dei valori comunali disponibili; i Comuni n.d. non entrano né nel numeratore né nel divisore.",
             "caveat": "L’unità ufficiale resta ogni 100 abitanti: non è convertita a 1.000. Copertura 2024 5/7 per eccezione approvata; Massarosa è n.d. e Stazzema è assente dal monitoraggio. Gli utenti attivi delle singole sedi non vengono sommati per ricostruire il valore comunale. Il 2020 è segnalato come anno pandemico anomalo.",
             "coverage": "5/7",
             "snapshot": SNAPSHOT_REF,
@@ -314,7 +313,7 @@ def patch_release_files() -> None:
             "5/7: Camaiore, Forte dei Marmi, Pietrasanta, Seravezza e Viareggio hanno valori 2024; Massarosa ha la riga "
             "comunale e la biblioteca IT-LU0029 aperta/attiva ma i campi del lotto non sono alimentati; Stazzema è assente "
             "dal monitoraggio. Entrambi restano `n.d.`, senza zeri, stime o trascinamento dell'ultimo valore.\n\n"
-            "Prestiti e impatto espongono la serie recente 2019–2024 e segnalano il 2020 come anno pandemico anomalo. "
+            "Prestiti e impatto espongono l'intera serie ufficiale 1998–2024 dove disponibile e segnalano il 2020 come anno pandemico anomalo. "
             "Per l'apertura la serie è limitata al 2022–2024: nel file Indicatori 2019–2021 il campo delle ore medie "
             "settimanali coincide con l'Indice di apertura e non con `ORESETTIMANALI` del dettaglio biblioteche.\n"
         )

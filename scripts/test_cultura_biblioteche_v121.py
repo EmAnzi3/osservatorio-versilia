@@ -32,8 +32,8 @@ CURRENT = {
     "046033": (0.15, 8.58, 63.75),
 }
 EXPECTED_AGG = {
-    "libraryLoansPerResident": 0.22957554282827833,
-    "libraryActiveBorrowersPer100": 8.421880566636212,
+    "libraryLoansPerResident": 0.344,
+    "libraryActiveBorrowersPer100": 7.886,
     "libraryWeeklyOpeningHours": 54.076,
 }
 
@@ -106,9 +106,20 @@ def main() -> None:
     opening = by_code(site["metrics"]["libraryWeeklyOpeningHours"])
 
     # Un Comune coperto per tutto il periodo verifica l'estensione canonica della serie.
-    require(loans["046005"]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico prestiti Camaiore inatteso")
-    require(impact["046005"]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico impatto Camaiore inatteso")
+    require(loans["046005"]["series"]["years"][0] == 1999 and loans["046005"]["series"]["years"][-1] == 2024, "Storico prestiti Camaiore non completo")
+    require(impact["046005"]["series"]["years"][0] == 1998 and impact["046005"]["series"]["years"][-1] == 2024, "Storico impatto Camaiore non completo")
     require(opening["046005"]["series"]["years"] == [2022, 2023, 2024], "Apertura Camaiore deve partire dal 2022")
+    require(loans["046013"]["series"]["years"][0] == 1998, "Forte prestiti deve includere il 1998")
+    require(impact["046013"]["series"]["years"][0] == 1998, "Forte impatto deve includere il 1998")
+    for metric in (site["metrics"]["libraryLoansPerResident"], site["metrics"]["libraryActiveBorrowersPer100"], site["metrics"]["libraryWeeklyOpeningHours"]):
+        for row in metric["rows"]:
+            if row["series"] is not None:
+                require(all(value is not None for value in row["series"]["values"]), f"{metric['meta']['key']}/{row['town']}: storico contiene null che il renderer convertirebbe in zero")
+    for key in KEYS:
+        available = [row["value"] for row in site["metrics"][key]["rows"] if row["value"] is not None]
+        require(math.isclose(site["metrics"][key]["aggregate"]["value"], sum(available) / len(available), rel_tol=0, abs_tol=1e-12), f"{key}: la media non usa soltanto i Comuni con dato")
+    require("ponderata per la popolazione" not in site["metrics"]["libraryLoansPerResident"]["aggregate"]["note"].lower(), "Prestiti: media ancora ponderata")
+    require("ponderata per la popolazione" not in site["metrics"]["libraryActiveBorrowersPer100"]["aggregate"]["note"].lower(), "Impatto: media ancora ponderata")
 
     # I mancanti non ricevono code nulle o serie artificiali: ogni serie termina
     # all'ultima osservazione realmente pubblicata dalla Regione Toscana.

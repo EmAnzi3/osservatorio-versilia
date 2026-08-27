@@ -741,9 +741,31 @@
     }
 
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || metric.meta.compositeType) ? '' : benchmarkMarkup(metric,aggregate,unit,null);
-    tools.innerHTML = `${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
     tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
     tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  }
+
+
+  function libraryHistoryTableMarkup(metric) {
+    const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
+    if (!keys.has(metric?.meta?.key)) return '';
+    const rows = metric.rows || [];
+    const years = [...new Set(rows.flatMap(row => row.series?.years || []))].sort((a,b)=>a-b);
+    if (!years.length) return '';
+    const maps = new Map(rows.map(row => [row.code, new Map((row.series?.years || []).map((year,index)=>[year,row.series.values[index]]))]));
+    const tableRows = [...years].reverse().map(year => {
+      const available = rows.map(row => maps.get(row.code)?.get(year)).filter(value => value !== null && value !== undefined);
+      const mean = available.length ? available.reduce((sum,value)=>sum+Number(value),0) / available.length : null;
+      const cells = rows.map(row => {
+        const value = maps.get(row.code)?.get(year);
+        return `<td>${value === null || value === undefined ? 'n.d.' : html(formatValue(value, metric.meta.unit))}</td>`;
+      }).join('');
+      return `<tr${year === 2020 ? ' class="library-pandemic-year"' : ''}><th scope="row">${html(String(year))}${year === 2020 ? ' *' : ''}</th>${cells}<td><b>${mean === null ? 'n.d.' : html(formatValue(mean, metric.meta.unit))}</b><small>${available.length}/7</small></td></tr>`;
+    }).join('');
+    const range = `${years[0]}–${years.at(-1)}`;
+    const pandemic = years.includes(2020) ? ' * 2020: anno pandemico anomalo.' : '';
+    return `<details class="detail-disclosure library-history-detail" open><summary><span>Serie storica completa</span><small>${html(range)} · valori ufficiali disponibili</small></summary><div class="indicator-table-scroll"><table class="library-history-table"><thead><tr><th>Anno</th>${rows.map(row=>`<th>${html(row.town)}</th>`).join('')}<th>Media comuni con dato</th></tr></thead><tbody>${tableRows}</tbody></table></div><p class="aggregate-note">La media di ogni anno è aritmetica e usa esclusivamente i Comuni con un valore disponibile; gli n.d. non entrano nel divisore.${html(pandemic)}</p></details>`;
   }
 
   function benchmarkMarkup(metric, aggregate, unit, localRow) {

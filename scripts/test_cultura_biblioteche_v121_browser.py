@@ -94,6 +94,14 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         definition = page.locator("#compare-definition").inner_text()
         assert "5/7" in definition or "5/7" in page.locator("body").inner_text(), f"{key}: copertura non visibile"
         assert_missing_rows(page.locator("#compare-bars .bar-row"), key)
+        history = page.locator(".library-history-detail")
+        assert history.count() == 1, f"{key}: storico completo non visibile nel confronto"
+        history_text = history.inner_text()
+        assert "Media comuni con dato" in history_text
+        if key in ("libraryLoansPerResident", "libraryActiveBorrowersPer100"):
+            assert "1998" in history_text and "2024" in history_text and "2020" in history_text
+        else:
+            assert "2022" in history_text and "2024" in history_text and "2021" not in history_text
 
     assert_town_missing_metrics(page, base, "massarosa", "Massarosa")
     assert_town_missing_metrics(page, base, "stazzema", "Stazzema")
