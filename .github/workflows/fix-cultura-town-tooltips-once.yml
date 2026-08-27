@@ -37,17 +37,8 @@ jobs:
           text = path.read_text(encoding='utf-8')
 
           if 'function wireLibraryTownTooltips(shell)' not in text:
-              old = '''  function wireShell(shell, storageKey, selectedTown, allowClear) {
-            if (!shell || wiredShells.has(shell)) return;
-            wiredShells.add(shell);
-            const historyButton = shell.querySelector('[data-view-mode="history"]');
-            const historyAvailable = Boolean(historyButton && !historyButton.disabled);
-            toolkit.wireViewShell(shell, storageKey, historyAvailable);
-            toolkit.wireHistorySelection(shell, selectedTown, allowClear);
-          }
-          '''
-              new = old + '''
-          function wireLibraryTownTooltips(shell) {
+              anchor = '  function historyMetric(metric) {'
+              helper = '''  function wireLibraryTownTooltips(shell) {
             if (!shell || shell.dataset.libraryTownTooltipsWired === '1') return;
             shell.dataset.libraryTownTooltipsWired = '1';
             shell.querySelectorAll('[data-view-pane="history"] .trend-chart').forEach(chart => {
@@ -69,11 +60,7 @@ jobs:
                 point.addEventListener('blur', hideAll);
                 point.addEventListener('click', () => show(point));
                 point.addEventListener('keydown', event => {
-                  if (event.key === 'Escape') {
-                    hideAll();
-                    point.blur();
-                    return;
-                  }
+                  if (event.key === 'Escape') { hideAll(); point.blur(); return; }
                   if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
                   event.preventDefault();
                   let next = index;
@@ -87,41 +74,25 @@ jobs:
               chart.addEventListener('mouseleave', hideAll);
             });
           }
-          '''
-              if old not in text:
-                  raise SystemExit('wireShell block not found')
-              text = text.replace(old, new, 1)
 
-          old_existing = '''    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
-              if (existingShell) {
-                wireShell(existingShell, 'ov-town-view', selectedTown, false);
-                return;
-              }
           '''
-          new_existing = '''    if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
-              if (existingShell) {
-                wireShell(existingShell, 'ov-town-view', selectedTown, false);
-                wireLibraryTownTooltips(existingShell);
-                return;
-              }
-          '''
-          if old_existing in text:
+              if anchor not in text:
+                  raise SystemExit('historyMetric anchor not found')
+              text = text.replace(anchor, helper + anchor, 1)
+
+          old_existing = "        wireShell(existingShell, 'ov-town-view', selectedTown, false);\n        return;"
+          new_existing = "        wireShell(existingShell, 'ov-town-view', selectedTown, false);\n        wireLibraryTownTooltips(existingShell);\n        return;"
+          if new_existing not in text:
+              if old_existing not in text:
+                  raise SystemExit('existing town shell anchor not found')
               text = text.replace(old_existing, new_existing, 1)
-          elif new_existing not in text:
-              raise SystemExit('existing library town shell block not found')
 
-          old_new = '''      wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
-              return;
-          '''
-          new_new = '''      const shell = panel.querySelector('.ux-view-shell');
-              wireShell(shell, 'ov-town-view', selectedTown, false);
-              wireLibraryTownTooltips(shell);
-              return;
-          '''
-          if old_new in text:
+          old_new = "      wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);\n      return;"
+          new_new = "      const shell = panel.querySelector('.ux-view-shell');\n      wireShell(shell, 'ov-town-view', selectedTown, false);\n      wireLibraryTownTooltips(shell);\n      return;"
+          if new_new not in text:
+              if old_new not in text:
+                  raise SystemExit('new town shell anchor not found')
               text = text.replace(old_new, new_new, 1)
-          elif new_new not in text:
-              raise SystemExit('new library town shell block not found')
 
           path.write_text(text, encoding='utf-8')
           PY
