@@ -42,13 +42,11 @@ function githubHeaders(env) {
 
 function isAuthorized(request, env) {
   if (!env.WATCHDOG_KEY) return false;
-
   return request.headers.get("authorization") === `Bearer ${env.WATCHDOG_KEY}`;
 }
 
 function utcDateParts(now = new Date()) {
   const iso = now.toISOString();
-
   return {
     date: iso.slice(0, 10),
     month: iso.slice(0, 7),
@@ -294,8 +292,8 @@ export default {
       return json({
         ok: true,
         service: "osservatorio-versilia-watchdog",
-        mode: "manual-poc",
-        cronEnabled: false,
+        mode: "watchdog-ready",
+        cronHandlerReady: true,
       });
     }
 
@@ -340,6 +338,36 @@ export default {
         },
         502,
       );
+    }
+  },
+
+  async scheduled(controller, env, ctx) {
+    const checkedAt = new Date().toISOString();
+
+    try {
+      const results = await runChecks(env, "all", true);
+      console.log(
+        JSON.stringify({
+          ok: true,
+          trigger: "cron",
+          cron: controller.cron,
+          scheduledTime: controller.scheduledTime,
+          checkedAt,
+          results,
+        }),
+      );
+    } catch (error) {
+      console.error(
+        JSON.stringify({
+          ok: false,
+          trigger: "cron",
+          cron: controller.cron,
+          scheduledTime: controller.scheduledTime,
+          checkedAt,
+          error: error instanceof Error ? error.message : String(error),
+        }),
+      );
+      throw error;
     }
   },
 };
