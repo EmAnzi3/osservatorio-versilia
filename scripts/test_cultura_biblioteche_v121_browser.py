@@ -36,6 +36,17 @@ def open_metric(page, key: str) -> None:
     assert f"indicatore={key}" in page.url
 
 
+def assert_missing_rows(bars, key: str) -> None:
+    # Il confronto mantiene tutti e sette i Comuni: i due mancanti devono essere
+    # righe esplicite n.d., non essere eliminati e soprattutto non diventare zeri.
+    assert bars.count() == 7, f"{key}: attese 7 righe comunali, trovate {bars.count()}"
+    for town in ("Massarosa", "Stazzema"):
+        row = bars.filter(has_text=town)
+        assert row.count() == 1, f"{key}: riga {town} assente o duplicata"
+        text = row.inner_text().lower()
+        assert "n.d." in text, f"{key}/{town}: il mancante non è mostrato come n.d. ({text})"
+
+
 def assert_compare(page, base: str, mobile: bool) -> None:
     page.goto(urljoin(base, "confronta/comunita/?indicatore=libraryLoansPerResident"), wait_until="networkidle")
     page.wait_for_timeout(450)
@@ -52,8 +63,7 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         no_overflow(page, f"{key} confronto")
         definition = page.locator("#compare-definition").inner_text()
         assert "5/7" in definition or "5/7" in page.locator("body").inner_text(), f"{key}: copertura non visibile"
-        bars = page.locator("#compare-bars .bar-row")
-        assert bars.count() == 5, f"{key}: i due n.d. non devono diventare barre/zeri ({bars.count()} barre)"
+        assert_missing_rows(page.locator("#compare-bars .bar-row"), key)
 
     page.goto(urljoin(base, "comuni/massarosa/"), wait_until="networkidle")
     page.wait_for_timeout(350)
@@ -87,7 +97,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: confronto, n.d., 5/7, schede comunali, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: 7 righe comunali con n.d. espliciti, 5/7, schede comunali, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
