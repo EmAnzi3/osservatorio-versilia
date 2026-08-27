@@ -5,6 +5,8 @@ import json
 import math
 from pathlib import Path
 
+from finalize_catalog_release import EXPECTED_EXTERNAL, EXPECTED_INLINE, EXPECTED_METRICS, VERSION
+
 ROOT = Path(__file__).resolve().parents[1]
 site = json.loads((ROOT / "data/site-data.json").read_text(encoding="utf-8"))
 registry = json.loads((ROOT / "data/source-registry.json").read_text(encoding="utf-8"))
@@ -18,11 +20,12 @@ KEYS = [
     "irrigatedAgriculturalArea",
 ]
 
-assert site["version"] == "v1.20.0"
-assert len(site["metrics"]) == 154
-assert registry["expectedMetricCount"] == 154
-assert registry["expectedInlineMetricCount"] == 150
-assert registry["expectedExternalMetricCount"] == 4
+# Il lotto Agricoltura resta v1.20, ma il gate segue il contratto globale corrente.
+assert site["version"] == VERSION
+assert len(site["metrics"]) == EXPECTED_METRICS
+assert registry["expectedMetricCount"] == EXPECTED_METRICS
+assert registry["expectedInlineMetricCount"] == EXPECTED_INLINE
+assert registry["expectedExternalMetricCount"] == EXPECTED_EXTERNAL
 assert all(key in site["metrics"] for key in KEYS)
 assert "organicAgriculturalAreaShare" in site["metrics"]
 
@@ -95,7 +98,6 @@ for metric_key in ("agriculturalUsedArea", "irrigatedAgriculturalArea"):
         assert row["normalized"]["unit"] == "percent"
         assert row["normalized"]["label"]
 
-
 for key in KEYS:
     assert site["metrics"][key]["method"]["snapshot"].endswith("istat-agricoltura-territorio-2020.json")
     assert registry["metricOverrides"][key]["profile"] == "istat-agriculture-census-2020"
@@ -118,8 +120,11 @@ assert "const populationTotal = populationValues.reduce" in visual
 assert "const share = local / populationTotal * 100;" in visual
 
 finalizer = (ROOT / "scripts/finalize_catalog_release.py").read_text(encoding="utf-8")
-assert 'VERSION = "v1.20.0"' in finalizer
-assert "EXPECTED_METRICS = 154" in finalizer
-assert "EXPECTED_INLINE = 150" in finalizer
+assert f'VERSION = "{VERSION}"' in finalizer
+assert f"EXPECTED_METRICS = {EXPECTED_METRICS}" in finalizer
+assert f"EXPECTED_INLINE = {EXPECTED_INLINE}" in finalizer
 
-print("Agricoltura e territorio v1.20.0 verificata: media Versilia nei confronti; Vite 6/7 e olive da tavola 4/7 come eccezione approvata.")
+print(
+    f"Agricoltura e territorio v1.20.0 verificata nel catalogo {VERSION}: "
+    "media Versilia nei confronti; Vite 6/7 e olive da tavola 4/7 come eccezione approvata."
+)
