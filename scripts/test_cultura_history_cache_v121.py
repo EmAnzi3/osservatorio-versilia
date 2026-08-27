@@ -20,7 +20,7 @@ assert 'PWA_JS_REVISION = "catalog-v121"' in BUILD_BRAND, "Revisione PWA del cat
 assert 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui4"' in BUILD_SAFE, "Cache-buster degli asset storici non aggiornato"
 assert 'script in {"ux-history-core.js", "ux-history.js"}' in BUILD_SAFE, "ux-history.js non usa il cache-buster storico dedicato"
 assert "const HOTFIX_VERSION = '20260827-v121-history-ui4';" in UX_HISTORY, "Fetch dati dell'enhancer storico non versionato"
-assert "LIBRARY_HISTORY_KEYS.has(selected.key)" in UX_HISTORY, "L'enhancer 7/7 continua a sovrascrivere gli storici Cultura"
+assert UX_HISTORY.count("LIBRARY_HISTORY_KEYS.has(selected.key)") >= 2, "L'enhancer 7/7 deve lasciare intatti gli storici Cultura sia nel confronto sia nelle schede comunali"
 assert "ov-pwa-20260827-v121-history-ui2" in SW, "Versione service worker non aggiornata"
 assert "app-parts" in SW and "\\d{2}\\.txt" in SW, "I moduli .txt non sono gestiti esplicitamente dal service worker"
 assert "networkFirst(request)" in SW, "Policy network-first assente"
