@@ -14,6 +14,7 @@ METRICS = (
 )
 KEYS = tuple(key for key, _ in METRICS)
 APP_BUNDLE_VERSION = "20260827-v121-history-ui3"
+HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"
 
 
 def assert_production_bundle_version(page) -> None:
@@ -23,7 +24,7 @@ def assert_production_bundle_version(page) -> None:
     assert f"v={APP_BUNDLE_VERSION}" in src, f"Cache-buster bundle inatteso: {src}"
 
 
-def assert_town_history(page, base: str) -> None:
+def assert_town_history(page, base: str, mobile: bool) -> None:
     for key, _short_label in METRICS:
         page.goto(
             urljoin(base, f"comuni/camaiore/?tema=comunita&indicatore={key}"),
@@ -31,6 +32,10 @@ def assert_town_history(page, base: str) -> None:
         )
         page.wait_for_timeout(450)
         assert_production_bundle_version(page)
+        history_script = page.locator(
+            f'script[src*="assets/ux-history.js?v={HISTORY_ASSET_VERSION}"]'
+        )
+        assert history_script.count() == 1, f"Camaiore/{key}: asset storico non aggiornato"
         no_overflow(page, f"Camaiore/{key}/storico")
         topic = page.locator("#town-topic")
         assert topic.count() == 1, f"Camaiore/{key}: contenitore tema assente"
@@ -48,6 +53,19 @@ def assert_town_history(page, base: str) -> None:
         assert history_pane.is_visible(), f"Camaiore/{key}: pannello Storico non visibile dopo click"
         chart = history_pane.locator(".trend-chart")
         assert chart.count() == 1 and chart.locator("svg").count() == 1, f"Camaiore/{key}: grafico storico non renderizzato"
+        points = chart.locator(".chart-point")
+        assert points.count() >= 3, f"Camaiore/{key}: punti storici insufficienti"
+        point = points.nth(2)
+        tooltip = point.locator(".chart-tooltip")
+        assert tooltip.count() == 1, f"Camaiore/{key}: markup tooltip assente"
+        assert tooltip.get_attribute("hidden") is not None, f"Camaiore/{key}: tooltip aperto prima dell'interazione"
+        if mobile:
+            point.click(force=True)
+        else:
+            point.hover(force=True)
+        page.wait_for_timeout(100)
+        assert tooltip.get_attribute("hidden") is None, f"Camaiore/{key}: tooltip non attivato"
+        assert tooltip.is_visible(), f"Camaiore/{key}: tooltip attivato ma non visibile"
         current_button.click()
         page.wait_for_timeout(80)
         assert shell.locator('[data-view-pane="current"] .ux-comparison-bars').count() == 1, f"Camaiore/{key}: vista Valore attuale assente"
@@ -166,8 +184,7 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         page.wait_for_timeout(80)
         assert current_pane.is_visible(), f"{key}: ritorno a Valore attuale non riuscito"
 
-    if not mobile:
-        assert_town_history(page, base)
+    assert_town_history(page, base, mobile)
     assert_town_missing_metrics(page, base, "massarosa", "Massarosa")
     assert_town_missing_metrics(page, base, "stazzema", "Stazzema")
 

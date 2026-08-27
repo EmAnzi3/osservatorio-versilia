@@ -320,7 +320,7 @@ def patch_release_files() -> None:
     HISTORY_DOC.write_text(history, encoding="utf-8")
 
     replace_required(APP_JS, "const VERSION='20260826-v120';", "const VERSION='20260827-v121-history-ui2';")
-    replace_required(SERVICE_WORKER, "const VERSION = 'ov-pwa-20260826-v120';", "const VERSION = 'ov-pwa-20260827-v121-history-ui2';")
+    replace_required(SERVICE_WORKER, "const VERSION = 'ov-pwa-20260826-v120';", "const VERSION = 'ov-pwa-20260827-v121-tooltip-ui6';")
 
     text = APP_PART_05.read_text(encoding="utf-8")
     if "2026.08.27-v1.21.0" not in text:
