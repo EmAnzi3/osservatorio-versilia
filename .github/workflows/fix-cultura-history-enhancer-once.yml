@@ -1,0 +1,129 @@
+name: Fix Cultura history enhancer once
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.ref == 'feat/cultura-biblioteche'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/cultura-biblioteche
+          fetch-depth: 0
+
+      - name: Patch Cultura history enhancer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('.')
+
+          def replace_once(path: Path, old: str, new: str) -> None:
+              text = path.read_text(encoding='utf-8')
+              if new in text:
+                  return
+              if old not in text:
+                  raise RuntimeError(f'Pattern missing in {path}: {old[:120]}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          history = root / 'assets/ux-history.js'
+          replace_once(history, "const HOTFIX_VERSION = '20260824-v116';", "const HOTFIX_VERSION = '20260827-v121-history-ui4';")
+          text = history.read_text(encoding='utf-8')
+          if 'const LIBRARY_HISTORY_KEYS' not in text:
+              marker = '  const toolkit = window.OVUXHistory;\n  if (!toolkit) return;\n'
+              replacement = marker + "  const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);\n"
+              if marker not in text:
+                  raise RuntimeError('History toolkit marker missing')
+              text = text.replace(marker, replacement, 1)
+          old_compare = '''    const selectedTown = safeStorageGet('ov-history-town') || '';\n    const existingShell = target.querySelector(':scope > .ux-view-shell');\n    if (existingShell) {\n      wireShell(existingShell, 'ov-compare-view', selectedTown, true);\n      return;\n    }\n\n    const selected = selectedMetric(data);\n    if (!selected) return;\n\n    const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));\n'''
+          new_compare = '''    const selectedTown = safeStorageGet('ov-history-town') || '';\n    const selected = selectedMetric(data);\n    if (!selected) return;\n    // Le biblioteche hanno copertura storica parziale per definizione (Stazzema assente,\n    // Massarosa interrompe prima del 2024). Il renderer canonico del lotto gestisce\n    // esplicitamente gli n.d.; il vecchio enhancer 7/7 non deve sostituirlo con\n    // "Serie storica non disponibile".\n    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;\n\n    const existingShell = target.querySelector(':scope > .ux-view-shell');\n    if (existingShell) {\n      wireShell(existingShell, 'ov-compare-view', selectedTown, true);\n      return;\n    }\n\n    const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));\n'''
+          if new_compare not in text:
+              if old_compare not in text:
+                  raise RuntimeError('Compare enhancer block missing')
+              text = text.replace(old_compare, new_compare, 1)
+          old_town = '''    const selectedTown = document.body.dataset.town || '';\n    const selected = selectedMetric(data);\n    if (!selected) return;\n    const existingShell = panel.querySelector('.ux-view-shell');\n'''
+          new_town = '''    const selectedTown = document.body.dataset.town || '';\n    const selected = selectedMetric(data);\n    if (!selected) return;\n    // Per Cultura il pannello nativo usa la serie del singolo Comune e conserva\n    // correttamente anni mancanti e serie interrotte. L'enhancer generico richiede\n    // invece anni comuni a tutti e sette e cancellava quindi uno storico valido.\n    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;\n    const existingShell = panel.querySelector('.ux-view-shell');\n'''
+          if new_town not in text:
+              if old_town not in text:
+                  raise RuntimeError('Town enhancer block missing')
+              text = text.replace(old_town, new_town, 1)
+          history.write_text(text, encoding='utf-8')
+
+          build_safe = root / 'scripts/build_static_safe.py'
+          replace_once(build_safe, 'HISTORY_ASSET_VERSION = "20260824-v116"', 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui4"')
+          replace_once(
+              build_safe,
+              'HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION',
+              'HISTORY_ASSET_VERSION if script in {"ux-history-core.js", "ux-history.js"} else UX_ASSET_VERSION',
+          )
+
+          catalog = root / 'scripts/test_catalog_release_v116.py'
+          text = catalog.read_text(encoding='utf-8')
+          marker = '    assert \'UX_ASSET_VERSION = "20260826-v120"\' in build_safe\n'
+          addition = '    assert \'HISTORY_ASSET_VERSION = "20260827-v121-history-ui4"\' in build_safe\n'
+          if addition not in text:
+              if marker not in text:
+                  raise RuntimeError('Catalog history version marker missing')
+              text = text.replace(marker, marker + addition, 1)
+          catalog.write_text(text, encoding='utf-8')
+
+          cache_test = root / 'scripts/test_cultura_history_cache_v121.py'
+          text = cache_test.read_text(encoding='utf-8')
+          if 'BUILD_SAFE =' not in text:
+              text = text.replace(
+                  'BUILD_BRAND = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")\n',
+                  'BUILD_BRAND = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")\nBUILD_SAFE = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")\nUX_HISTORY = (ROOT / "assets" / "ux-history.js").read_text(encoding="utf-8")\n',
+                  1,
+              )
+          assertion_marker = 'assert \'PWA_JS_REVISION = "catalog-v121"\' in BUILD_BRAND, "Revisione PWA del catalogo non aggiornata"\n'
+          additions = (
+              'assert \'HISTORY_ASSET_VERSION = "20260827-v121-history-ui4"\' in BUILD_SAFE, "Cache-buster degli asset storici non aggiornato"\n'
+              'assert \'script in {"ux-history-core.js", "ux-history.js"}\' in BUILD_SAFE, "ux-history.js non usa il cache-buster storico dedicato"\n'
+              'assert "const HOTFIX_VERSION = \'20260827-v121-history-ui4\';" in UX_HISTORY, "Fetch dati dell\'enhancer storico non versionato"\n'
+              'assert "LIBRARY_HISTORY_KEYS.has(selected.key)" in UX_HISTORY, "L\'enhancer 7/7 continua a sovrascrivere gli storici Cultura"\n'
+          )
+          if additions not in text:
+              if assertion_marker not in text:
+                  raise RuntimeError('Cache assertion marker missing')
+              text = text.replace(assertion_marker, assertion_marker + additions, 1)
+          text = text.replace(
+              'print("Cache policy Cultura verificata: app-bundle di produzione v1.21 cache-busted, renderer storico presente e policy runtime coerente.")',
+              'print("Cache policy Cultura verificata: bundle e enhancer storici versionati; il renderer parziale del lotto non viene più sovrascritto dal contratto 7/7.")',
+          )
+          cache_test.write_text(text, encoding='utf-8')
+
+          browser = root / 'scripts/test_cultura_biblioteche_v121_browser.py'
+          text = browser.read_text(encoding='utf-8')
+          old = '        assert chart.locator("svg").count() == 1, f"Camaiore/{key}: SVG storico assente"\n        assert topic.locator(".history-panel .comparison-bars").count() == 0, f"Camaiore/{key}: fallback confronto mostrato al posto dello storico"\n'
+          new = '        assert chart.locator("svg").count() == 1, f"Camaiore/{key}: SVG storico assente"\n        assert topic.locator(".history-panel .ux-view-shell").count() == 0, f"Camaiore/{key}: enhancer 7/7 ha sovrascritto lo storico parziale"\n        assert topic.locator(".history-panel .comparison-bars").count() == 0, f"Camaiore/{key}: fallback confronto mostrato al posto dello storico"\n'
+          if new not in text:
+              if old not in text:
+                  raise RuntimeError('Browser town chart marker missing')
+              text = text.replace(old, new, 1)
+          browser.write_text(text, encoding='utf-8')
+
+          (root / '.github/workflows/fix-cultura-history-enhancer-once.yml').unlink()
+          PY
+
+      - name: Commit history enhancer repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/ux-history.js scripts/build_static_safe.py scripts/test_catalog_release_v116.py scripts/test_cultura_history_cache_v121.py scripts/test_cultura_biblioteche_v121_browser.py .github/workflows/fix-cultura-history-enhancer-once.yml
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Preserve Cultura partial town histories"
+          git push origin HEAD:feat/cultura-biblioteche
