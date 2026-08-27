@@ -51,6 +51,10 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
+def by_code(metric: dict) -> dict[str, dict]:
+    return {row["code"]: row for row in metric["rows"]}
+
+
 def main() -> None:
     site = load(SITE)
     registry = load(REGISTRY)
@@ -82,22 +86,38 @@ def main() -> None:
 
     for index, key in enumerate(KEYS):
         metric = site["metrics"][key]
-        rows = {row["code"]: row for row in metric["rows"]}
+        rows = by_code(metric)
         require(set(rows) == CODES and len(rows) == 7, f"{key}: copertura righe non 7/7")
         require(metric["meta"]["year"] == "2024", f"{key}: anno corrente non 2024")
         for code in CODES:
             expected = CURRENT[code][index]
             require(rows[code]["value"] == expected, f"{key}/{code}: valore 2024 errato")
-            require(rows[code]["series"]["values"][-1] == expected, f"{key}/{code}: ultimo storico non coincide")
             if expected is None:
                 require(rows[code]["formatted"] == "n.d.", f"{key}/{code}: mancante non reso n.d.")
+            else:
+                require(rows[code]["series"] is not None, f"{key}/{code}: storico assente nonostante dato corrente")
+                require(rows[code]["series"]["values"][-1] == expected, f"{key}/{code}: ultimo storico non coincide")
         require(math.isclose(metric["aggregate"]["value"], EXPECTED_AGG[key], rel_tol=0, abs_tol=1e-12), f"{key}: aggregato errato")
         require("(5/7)" in metric["aggregate"]["label"], f"{key}: aggregato non dichiara 5/7")
-        require("5/7" in metric["method"]["coverage"], f"{key}: metodo non dichiara eccezione 5/7")
+        require(metric["method"]["coverage"] == "5/7", f"{key}: metodo non dichiara esattamente 5/7")
 
-    require(site["metrics"]["libraryLoansPerResident"]["rows"][0]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico prestiti inatteso")
-    require(site["metrics"]["libraryActiveBorrowersPer100"]["rows"][0]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico impatto inatteso")
-    require(site["metrics"]["libraryWeeklyOpeningHours"]["rows"][0]["series"]["years"] == [2022, 2023, 2024], "Apertura deve partire dal 2022")
+    loans = by_code(site["metrics"]["libraryLoansPerResident"])
+    impact = by_code(site["metrics"]["libraryActiveBorrowersPer100"])
+    opening = by_code(site["metrics"]["libraryWeeklyOpeningHours"])
+
+    # Un Comune coperto per tutto il periodo verifica l'estensione canonica della serie.
+    require(loans["046005"]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico prestiti Camaiore inatteso")
+    require(impact["046005"]["series"]["years"] == [2019, 2020, 2021, 2022, 2023, 2024], "Storico impatto Camaiore inatteso")
+    require(opening["046005"]["series"]["years"] == [2022, 2023, 2024], "Apertura Camaiore deve partire dal 2022")
+
+    # I mancanti non ricevono code nulle o serie artificiali: ogni serie termina
+    # all'ultima osservazione realmente pubblicata dalla Regione Toscana.
+    require(loans["046018"]["series"] is not None and loans["046018"]["series"]["years"][-1] == 2022, "Massarosa prestiti deve interrompersi al 2022")
+    require(impact["046018"]["series"] is not None and impact["046018"]["series"]["years"][-1] == 2021, "Massarosa impatto deve interrompersi al 2021")
+    require(opening["046018"]["series"] is not None and opening["046018"]["series"]["years"][-1] == 2022, "Massarosa apertura deve interrompersi al 2022")
+    for key in KEYS:
+        require(by_code(site["metrics"][key])["046030"]["series"] is None, f"{key}: Stazzema non deve avere una serie artificiale")
+
     require(site["metrics"]["libraryActiveBorrowersPer100"]["meta"]["unit"] == "per100", "Impatto convertito impropriamente a 1.000")
 
     profile = registry["sourceProfiles"].get("regione-toscana-biblioteche-annual")
@@ -116,7 +136,7 @@ def main() -> None:
     after = {path: sha(path) for path in tracked}
     require(before == after, "Materializzatore non idempotente: una seconda esecuzione produce diff")
 
-    print("Cultura e biblioteche v1.21.0 verificata: 3 indicatori, 2024 5/7 esplicito, serie senza stime, ICCU deduplicati, materializzatore idempotente.")
+    print("Cultura e biblioteche v1.21.0 verificata: 3 indicatori, 2024 5/7 esplicito, serie interrotte all'ultima osservazione reale, ICCU deduplicati, materializzatore idempotente.")
 
 
 if __name__ == "__main__":
