@@ -44,6 +44,7 @@ jobs:
           materializer.write_text(text, encoding='utf-8')
           assert text.count('"coverage": "5/7",') >= 3
           PY
+          python scripts/materialize_cultura_biblioteche_v121.py
           python scripts/test_cultura_biblioteche_v121.py
 
       - name: Commit normalized sources
