@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto pubblico e metodologico della release v1.20.0."""
+"""Contratto pubblico e metodologico della release v1.21.0."""
 from __future__ import annotations
 
 import json
@@ -68,7 +68,7 @@ def main() -> None:
     assert not malformed, f"Separatore delle migliaia corrotto: {malformed[:3]}"
 
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
-    assert "2026.08.26-v1.20.0" in app and "154 indicatori complessivi" in app
+    assert "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app
     assert "2026.08.20-v1.15.0" in app and "2026.08.20-v1.14.0" in app
     chart_app = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
     assert 'part.count === null || part.count === undefined' in chart_app, 'Le distribuzioni senza conteggi non devono mostrare NaN'
