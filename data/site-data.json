@@ -46024,17 +46024,13 @@
               2019,
               2020,
               2021,
-              2022,
-              2023,
-              2024
+              2022
             ],
             "values": [
               0.09,
               0.01,
               0.01,
-              0.01,
-              null,
-              null
+              0.01
             ]
           },
           "normalized": null,
@@ -46181,24 +46177,7 @@
           "slug": "stazzema",
           "value": null,
           "formatted": "n.d.",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              null,
-              null,
-              null,
-              null,
-              null,
-              null
-            ]
-          },
+          "series": null,
           "normalized": null,
           "benchmarkValue": null
         }
@@ -46269,18 +46248,12 @@
             "years": [
               2019,
               2020,
-              2021,
-              2022,
-              2023,
-              2024
+              2021
             ],
             "values": [
               1.17,
               0.26,
-              0.22,
-              null,
-              null,
-              null
+              0.22
             ]
           },
           "normalized": null,
@@ -46427,24 +46400,7 @@
           "slug": "stazzema",
           "value": null,
           "formatted": "n.d.",
-          "series": {
-            "years": [
-              2019,
-              2020,
-              2021,
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              null,
-              null,
-              null,
-              null,
-              null,
-              null
-            ]
-          },
+          "series": null,
           "normalized": null,
           "benchmarkValue": null
         }
@@ -46513,14 +46469,10 @@
           "formatted": "n.d.",
           "series": {
             "years": [
-              2022,
-              2023,
-              2024
+              2022
             ],
             "values": [
-              7.0,
-              null,
-              null
+              7.0
             ]
           },
           "normalized": null,
@@ -46637,18 +46589,7 @@
           "slug": "stazzema",
           "value": null,
           "formatted": "n.d.",
-          "series": {
-            "years": [
-              2022,
-              2023,
-              2024
-            ],
-            "values": [
-              null,
-              null,
-              null
-            ]
-          },
+          "series": null,
           "normalized": null,
           "benchmarkValue": null
         }

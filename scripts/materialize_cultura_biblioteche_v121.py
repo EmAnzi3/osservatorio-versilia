@@ -106,13 +106,19 @@ def build_rows(site: dict, snapshot: dict, metric_key: str, unit: str) -> list[d
     for town in site["towns"]:
         town_values = values[town["name"]]
         current = town_values[-1]
+        observed = [index for index, value in enumerate(town_values) if value is not None]
+        if observed:
+            last = observed[-1] + 1
+            row_series = {"years": years[:last], "values": town_values[:last]}
+        else:
+            row_series = None
         rows.append({
             "town": town["name"],
             "code": town["code"],
             "slug": slug_by_code[town["code"]],
             "value": current,
             "formatted": fmt(current, unit),
-            "series": {"years": years, "values": town_values},
+            "series": row_series,
             "normalized": None,
             "benchmarkValue": current,
         })
