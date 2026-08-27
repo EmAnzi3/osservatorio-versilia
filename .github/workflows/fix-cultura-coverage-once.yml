@@ -1,45 +1,67 @@
-name: Cultura 5/7 coverage contract
+name: Normalize Cultura series once
 
 on:
   pull_request:
     branches: ["main"]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  coverage-contract:
+  normalize-series:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout PR branch
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
 
-      - name: Validate approved partial coverage
+      - name: Stop histories at last real observation
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json
           from pathlib import Path
 
-          site = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
-          keys = (
-              'libraryLoansPerResident',
-              'libraryActiveBorrowersPer100',
-              'libraryWeeklyOpeningHours',
-          )
-          for key in keys:
-              metric = site['metrics'][key]
-              assert metric['method']['coverage'] == '5/7', (key, metric['method']['coverage'])
-              rows = {row['code']: row for row in metric['rows']}
-              assert sum(row['value'] is not None for row in rows.values()) == 5
-              assert rows['046018']['value'] is None and rows['046018']['formatted'] == 'n.d.'
-              assert rows['046030']['value'] is None and rows['046030']['formatted'] == 'n.d.'
-              assert '(5/7)' in metric['aggregate']['label']
-          print('Cultura 5/7 coverage contract OK: 5 valori + Massarosa/Stazzema n.d., senza zeri.')
+          materializer = Path('scripts/materialize_cultura_biblioteche_v121.py')
+          text = materializer.read_text(encoding='utf-8')
+          old = '''    for town in site["towns"]:\n        town_values = values[town["name"]]\n        current = town_values[-1]\n        rows.append({\n            "town": town["name"],\n            "code": town["code"],\n            "slug": slug_by_code[town["code"]],\n            "value": current,\n            "formatted": fmt(current, unit),\n            "series": {"years": years, "values": town_values},\n            "normalized": None,\n            "benchmarkValue": current,\n        })\n'''
+          new = '''    for town in site["towns"]:\n        town_values = values[town["name"]]\n        current = town_values[-1]\n        observed = [index for index, value in enumerate(town_values) if value is not None]\n        if observed:\n            last = observed[-1] + 1\n            row_series = {"years": years[:last], "values": town_values[:last]}\n        else:\n            row_series = None\n        rows.append({\n            "town": town["name"],\n            "code": town["code"],\n            "slug": slug_by_code[town["code"]],\n            "value": current,\n            "formatted": fmt(current, unit),\n            "series": row_series,\n            "normalized": None,\n            "benchmarkValue": current,\n        })\n'''
+          if new not in text:
+              assert old in text, 'build_rows non riconosciuto'
+              text = text.replace(old, new, 1)
+              materializer.write_text(text, encoding='utf-8')
+
+          test = Path('scripts/test_cultura_biblioteche_v121.py')
+          t = test.read_text(encoding='utf-8')
+          old_check = '''            require(rows[code]["series"]["values"][-1] == expected, f"{key}/{code}: ultimo storico non coincide")\n            if expected is None:\n                require(rows[code]["formatted"] == "n.d.", f"{key}/{code}: mancante non reso n.d.")\n'''
+          new_check = '''            if expected is None:\n                require(rows[code]["formatted"] == "n.d.", f"{key}/{code}: mancante non reso n.d.")\n            else:\n                require(rows[code]["series"]["values"][-1] == expected, f"{key}/{code}: ultimo storico non coincide")\n'''
+          if new_check not in t:
+              assert old_check in t, 'controllo storico non riconosciuto'
+              t = t.replace(old_check, new_check, 1)
+          anchor = '''    require(site["metrics"]["libraryActiveBorrowersPer100"]["meta"]["unit"] == "per100", "Impatto convertito impropriamente a 1.000")\n'''
+          addition = anchor + '''    mass_loans = {row["code"]: row for row in site["metrics"]["libraryLoansPerResident"]["rows"]}["046018"]\n    mass_impact = {row["code"]: row for row in site["metrics"]["libraryActiveBorrowersPer100"]["rows"]}["046018"]\n    mass_opening = {row["code"]: row for row in site["metrics"]["libraryWeeklyOpeningHours"]["rows"]}["046018"]\n    require(mass_loans["series"]["years"][-1] == 2022, "Massarosa prestiti deve interrompersi al 2022")\n    require(mass_impact["series"]["years"][-1] == 2021, "Massarosa impatto deve interrompersi al 2021")\n    require(mass_opening["series"]["years"][-1] == 2022, "Massarosa apertura deve interrompersi al 2022")\n    for key in KEYS:\n        stazzema = {row["code"]: row for row in site["metrics"][key]["rows"]}["046030"]\n        require(stazzema["series"] is None, f"{key}: Stazzema non deve avere una serie artificiale")\n'''
+          if 'Massarosa prestiti deve interrompersi al 2022' not in t:
+              assert anchor in t, 'anchor test non trovato'
+              t = t.replace(anchor, addition, 1)
+          test.write_text(t, encoding='utf-8')
           PY
+          python scripts/materialize_cultura_biblioteche_v121.py
+          python scripts/test_cultura_biblioteche_v121.py
+
+      - name: Commit normalized histories
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json scripts/materialize_cultura_biblioteche_v121.py scripts/test_cultura_biblioteche_v121.py
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Stop Cultura histories at last real observation"
+          git push origin HEAD:"$BRANCH"
