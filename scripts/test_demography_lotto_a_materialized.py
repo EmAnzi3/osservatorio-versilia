@@ -41,17 +41,17 @@ def assert_series(metric: dict, years: list[int]) -> None:
 
 
 def main() -> None:
-    # Il lotto Demografia resta invariato: questo gate segue però il contratto
-    # globale corrente della release, che ora comprende anche Welfare.
-    assert SITE['version'] == 'v1.20.0'
-    assert len(SITE['metrics']) == 154
+    # Il lotto Demografia resta invariato: questo gate segue il contratto
+    # globale corrente della release, che ora comprende Cultura e biblioteche.
+    assert SITE['version'] == 'v1.21.0'
+    assert len(SITE['metrics']) == 157
     external = [
         key for key, metric in SITE['metrics'].items()
         if metric.get('dataStorage', {}).get('type') == 'external-climate'
     ]
     assert len(external) == 4, external
-    assert REGISTRY['expectedMetricCount'] == 154
-    assert REGISTRY['expectedInlineMetricCount'] == 150
+    assert REGISTRY['expectedMetricCount'] == 157
+    assert REGISTRY['expectedInlineMetricCount'] == 153
     assert REGISTRY['expectedExternalMetricCount'] == 4
 
     for key in NEW_KEYS:
@@ -87,11 +87,8 @@ def main() -> None:
         assert all(part['unit'] == 'per100' for part in row['parts'])
     assert all(part['unit'] == 'per100' for part in dependency['aggregate']['parts'])
 
-    # Il renderer storico canonico deve riservare più spazio alle unità testuali lunghe:
-    # la correzione vale quindi sia nel confronto sia nelle pagine dei Comuni.
     assert "['per100','per1000','per10k','per100k'].includes(metric.meta.unit) ? 132 : 78" in HISTORY_CORE
 
-    # 80+ non deve diventare una nuova card: il composito espone 80–84 e 85+.
     assert 'share80Plus' not in SITE['metrics']
     age = SITE['metrics']['ageDistribution']
     age_labels = [part.get('selectorLabel') or part['label'] for part in age['rows'][0]['parts']]
@@ -114,7 +111,6 @@ def main() -> None:
     assert dependency_audit['unit'] == 'per100'
     assert '15–64' in dependency_audit['unitExplanation']
 
-    # Snapshot: copertura completa, P02 provvisorio 2025 e POSAS senza riga totale 999.
     assert set(SNAPSHOT['p02']['towns']) == set(EXPECTED_TOWNS)
     assert set(SNAPSHOT['posas']['towns']) == set(EXPECTED_TOWNS)
     assert set(SNAPSHOT['posas']['ageSex2026']) == set(EXPECTED_TOWNS)
@@ -135,11 +131,9 @@ def main() -> None:
             year = row['year']
             assert row['population'] == row['age0to14'] + row['age15to64'] + row['age65plus']
             assert row['age80plus'] <= row['age65plus']
-            # Il nuovo parsing per età deve riprodurre esattamente la popolazione già canonica.
             assert row['population'] == canonical_population[year], (
                 town, year, row['population'], canonical_population[year]
             )
-            # E deve ricostruire l'indice di vecchiaia già pubblicato entro l'arrotondamento a 1 decimale.
             reconstructed_old_age = row['age65plus'] / row['age0to14'] * 100
             assert abs(reconstructed_old_age - canonical_old_age[year]) <= 0.11, (
                 town, year, reconstructed_old_age, canonical_old_age[year]
@@ -151,14 +145,13 @@ def main() -> None:
         assert 999 not in {item['age'] for item in detail}
         assert sum(item['total'] for item in detail) == posas[-1]['population']
 
-    # Controllo formula su un caso noto, senza hardcodare il valore pubblicato.
     massarosa = SNAPSHOT['p02']['towns']['Massarosa'][-1]
     expected_rate = massarosa['naturalBalance'] / massarosa['meanPopulation'] * 1000
     actual = row_by_town(natural)['Massarosa']['value']
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        'Demografia Lotto A materializzata OK: catalogo v1.20 con 154 metriche, 7/7, '
+        'Demografia Lotto A materializzata OK: catalogo v1.21 con 157 metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )
