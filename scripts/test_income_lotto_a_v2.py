@@ -5,6 +5,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from finalize_catalog_release import (
+    EXPECTED_EXTERNAL,
+    EXPECTED_INLINE,
+    EXPECTED_METRICS,
+    VERSION,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / 'data/site-data.json').read_text(encoding='utf-8'))
 SNAPSHOT = json.loads((ROOT / 'data/source-snapshots/mef-income-lotto-a-2024.json').read_text(encoding='utf-8'))
@@ -26,11 +33,12 @@ def adults(town: str) -> int:
 
 
 def main() -> None:
-    require(SITE['version'] == 'v1.20.0', 'Versione dati inattesa')
-    require(len(SITE['metrics']) == 154, f"Metriche inattese: {len(SITE['metrics'])}")
-    require(REGISTRY['expectedMetricCount'] == 154, 'Registry totale inatteso')
-    require(REGISTRY['expectedInlineMetricCount'] == 150, 'Registry inline inatteso')
-    require(REGISTRY['expectedExternalMetricCount'] == 4, 'Registry external inatteso')
+    # Il lotto Redditi resta invariato; il gate segue il contratto globale corrente.
+    require(SITE['version'] == VERSION, 'Versione dati inattesa')
+    require(len(SITE['metrics']) == EXPECTED_METRICS, f"Metriche inattese: {len(SITE['metrics'])}")
+    require(REGISTRY['expectedMetricCount'] == EXPECTED_METRICS, 'Registry totale inatteso')
+    require(REGISTRY['expectedInlineMetricCount'] == EXPECTED_INLINE, 'Registry inline inatteso')
+    require(REGISTRY['expectedExternalMetricCount'] == EXPECTED_EXTERNAL, 'Registry external inatteso')
 
     # 1. Reddito per fonte: un solo composito, non una card per ogni fonte.
     source_metric = SITE['metrics']['incomeSourceProfile']
@@ -93,7 +101,10 @@ def main() -> None:
     require(decisions['taxpayersAdultPopulationRate'] == 'draft_materialized', 'Contribuenti ancora VERIFY')
     require(decisions['incomeSourceAndBandsDetail'] == 'visible_composite_and_8_band_detail', 'Fonti/fasce non marcate visibili')
 
-    print('Redditi Lotto A v2 OK: fonti, 8 fasce, pensioni e contribuenti/maggiorenni tutti materializzati con semantica verificata.')
+    print(
+        f"Redditi Lotto A v2 OK ({VERSION}): fonti, 8 fasce, pensioni e contribuenti/maggiorenni "
+        f"materializzati; contratto globale {EXPECTED_METRICS} = {EXPECTED_INLINE}+{EXPECTED_EXTERNAL}."
+    )
 
 
 if __name__ == '__main__':
