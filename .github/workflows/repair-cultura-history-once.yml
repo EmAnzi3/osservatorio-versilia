@@ -1,0 +1,56 @@
+name: Repair Cultura histories and means once
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Repair snapshot, histories, means and UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/repair_cultura_histories_means_v121.py
+          python scripts/materialize_cultura_biblioteche_v121.py
+          python scripts/test_cultura_biblioteche_v121.py
+          python -m json.tool data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json >/dev/null
+          python -m json.tool data/site-data.json >/dev/null
+          grep -q 'function libraryHistoryTableMarkup(metric)' assets/app-parts/03.txt
+
+      - name: Commit repaired canonical sources
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json \
+                  data/site-data.json data/source-registry.json README.md \
+                  docs/copertura-serie-storiche.md scripts/materialize_cultura_biblioteche_v121.py \
+                  scripts/test_cultura_biblioteche_v121.py scripts/test_cultura_biblioteche_v121_browser.py \
+                  assets/app-parts/03.txt assets/app.js assets/app-parts/05.txt service-worker.js \
+                  scripts/finalize_catalog_release.py scripts/test_catalog_release_v116.py
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Restore full Cultura histories and available-town means"
+          git push origin HEAD:"$BRANCH"
