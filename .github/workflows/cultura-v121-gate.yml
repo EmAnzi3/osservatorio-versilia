@@ -31,6 +31,7 @@ jobs:
           set -euo pipefail
           python scripts/materialize_cultura_biblioteche_v121.py
           python scripts/test_cultura_biblioteche_v121.py
+          python scripts/test_cultura_history_cache_v121.py
           python -m json.tool data/site-data.json >/dev/null
           python -m json.tool data/source-registry.json >/dev/null
           python -m json.tool data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json >/dev/null
