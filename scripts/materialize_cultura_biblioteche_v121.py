@@ -163,7 +163,7 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
             "type": "Indicatore IFLA comunale ufficiale",
             "formula": "Valore pubblicato nel campo “Indice di prestito Comunale” (prestiti pro capite). Aggregato Versilia = somma(indice comunale × popolazione comunale) / somma(popolazione), sui soli Comuni con dato disponibile.",
             "caveat": "Copertura 2024 5/7 per eccezione approvata: Massarosa ha riga comunale ma valore non alimentato; Stazzema è assente dal monitoraggio regionale. Nessun mancante è trasformato in zero. Il 2020, incluso nello storico, è un anno anomalo per le limitazioni pandemiche.",
-            "coverage": "5/7 nel 2024; serie recente 2019–2024, senza interpolazioni",
+            "coverage": "5/7",
             "snapshot": SNAPSHOT_REF,
         },
     }
@@ -187,7 +187,7 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
             "type": "Indicatore IFLA comunale ufficiale",
             "formula": "Valore pubblicato nel campo “Indice di impatto Comunale” = utenti attivi del servizio di prestito su 100 abitanti. Aggregato Versilia = somma(indice comunale × popolazione comunale) / somma(popolazione), sui soli Comuni con dato disponibile.",
             "caveat": "L’unità ufficiale resta ogni 100 abitanti: non è convertita a 1.000. Copertura 2024 5/7 per eccezione approvata; Massarosa è n.d. e Stazzema è assente dal monitoraggio. Gli utenti attivi delle singole sedi non vengono sommati per ricostruire il valore comunale. Il 2020 è segnalato come anno pandemico anomalo.",
-            "coverage": "5/7 nel 2024; serie recente 2019–2024, senza interpolazioni",
+            "coverage": "5/7",
             "snapshot": SNAPSHOT_REF,
         },
     }
@@ -211,7 +211,7 @@ def build_metrics(site: dict, snapshot: dict) -> OrderedDict:
             "type": "Indicatore comunale ufficiale Regione Toscana",
             "formula": "Valore pubblicato nel campo “Ore medie di apertura settimanale Comunale”. Aggregato Versilia = media aritmetica dei valori comunali disponibili.",
             "caveat": "Copertura 2024 5/7 per eccezione approvata. Massarosa ha riga comunale ma valore non alimentato; Stazzema è assente dal monitoraggio. Lo storico della card parte dal 2022: nel file Indicatori 2019–2021 il campo coincide con l’Indice di apertura e non con le ore settimanali del dettaglio biblioteche.",
-            "coverage": "5/7 nel 2024; serie 2022–2024, senza interpolazioni",
+            "coverage": "5/7",
             "snapshot": SNAPSHOT_REF,
         },
     }
