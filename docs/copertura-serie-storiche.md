@@ -56,3 +56,5 @@ Il monitoraggio annuale Regione Toscana è usato con anno corrente 2024 per tre 
 Prestiti e impatto espongono l'intera serie ufficiale 1998–2024 dove disponibile e segnalano il 2020 come anno pandemico anomalo. Per l'apertura la serie è limitata al 2022–2024: nel file Indicatori 2019–2021 il campo delle ore medie settimanali coincide con l'Indice di apertura e non con `ORESETTIMANALI` del dettaglio biblioteche.
 
 Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.
+
+Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.
