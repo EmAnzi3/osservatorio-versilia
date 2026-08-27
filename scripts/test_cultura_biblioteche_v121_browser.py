@@ -41,11 +41,21 @@ def assert_town_history(page, base: str) -> None:
         assert topic.count() == 1, f"Camaiore/{key}: contenitore tema assente"
         selected = topic.locator(f'button[data-metric="{key}"]').first
         assert selected.count() == 1 and selected.get_attribute("aria-selected") == "true", f"Camaiore/{key}: indicatore non selezionato"
-        chart = topic.locator(".history-panel .trend-chart")
-        assert chart.count() == 1, f"Camaiore/{key}: grafico storico non renderizzato"
-        assert chart.locator("svg").count() == 1, f"Camaiore/{key}: SVG storico assente"
-        assert topic.locator(".history-panel .ux-view-shell").count() == 0, f"Camaiore/{key}: enhancer 7/7 ha sovrascritto lo storico parziale"
-        assert topic.locator(".history-panel .comparison-bars").count() == 0, f"Camaiore/{key}: fallback confronto mostrato al posto dello storico"
+        shell = topic.locator(".history-panel .ux-view-shell")
+        assert shell.count() == 1, f"Camaiore/{key}: switch Attuale/Storico assente"
+        current_button = shell.locator('button[data-view-mode="current"]')
+        history_button = shell.locator('button[data-view-mode="history"]')
+        assert current_button.count() == 1 and history_button.count() == 1, f"Camaiore/{key}: toggle incompleto"
+        assert not history_button.is_disabled(), f"Camaiore/{key}: Storico disabilitato nonostante la serie disponibile"
+        history_button.click()
+        page.wait_for_timeout(120)
+        history_pane = shell.locator('[data-view-pane="history"]')
+        assert history_pane.is_visible(), f"Camaiore/{key}: pannello Storico non visibile dopo click"
+        chart = history_pane.locator(".trend-chart")
+        assert chart.count() == 1 and chart.locator("svg").count() == 1, f"Camaiore/{key}: grafico storico non renderizzato"
+        current_button.click()
+        page.wait_for_timeout(80)
+        assert shell.locator('[data-view-pane="current"] .ux-comparison-bars').count() == 1, f"Camaiore/{key}: vista Valore attuale assente"
 
 
 def no_overflow(page, label: str) -> None:
@@ -127,9 +137,21 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         no_overflow(page, f"{key} confronto")
         definition = page.locator("#compare-definition").inner_text()
         assert "5/7" in definition or "5/7" in page.locator("body").inner_text(), f"{key}: copertura non visibile"
-        assert_missing_rows(page.locator("#compare-bars .bar-row"), key)
-        history = page.locator(".library-history-detail")
-        assert history.count() == 1, f"{key}: storico completo non visibile nel confronto"
+        shell = page.locator("#compare-bars > .ux-view-shell")
+        assert shell.count() == 1, f"{key}: switch Attuale/Storico assente nel confronto"
+        current_button = shell.locator('button[data-view-mode="current"]')
+        history_button = shell.locator('button[data-view-mode="history"]')
+        assert current_button.count() == 1 and history_button.count() == 1, f"{key}: toggle confronto incompleto"
+        assert not history_button.is_disabled(), f"{key}: Storico disabilitato nel confronto"
+        current_pane = shell.locator('[data-view-pane="current"]')
+        assert current_pane.is_visible(), f"{key}: Valore attuale non visibile inizialmente"
+        assert_missing_rows(current_pane.locator(".bar-row"), key)
+        history_button.click()
+        page.wait_for_timeout(120)
+        history_pane = shell.locator('[data-view-pane="history"]')
+        assert history_pane.is_visible(), f"{key}: Storico non visibile dopo click"
+        history = history_pane.locator(".library-history-detail")
+        assert history.count() == 1, f"{key}: storico completo non visibile nel pannello Storico"
         history_text = history.inner_text()
         assert "Media comuni con dato" in history_text
         row_2024 = history.locator("tbody tr").filter(has_text="2024").first
@@ -142,6 +164,9 @@ def assert_compare(page, base: str, mobile: bool) -> None:
             assert "1998" in history_text and "2024" in history_text and "2020" in history_text
         else:
             assert "2022" in history_text and "2024" in history_text and "2021" not in history_text
+        current_button.click()
+        page.wait_for_timeout(80)
+        assert current_pane.is_visible(), f"{key}: ritorno a Valore attuale non riuscito"
 
     if not mobile:
         assert_town_history(page, base)
