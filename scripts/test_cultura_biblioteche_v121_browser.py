@@ -7,11 +7,12 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
-KEYS = (
-    "libraryLoansPerResident",
-    "libraryActiveBorrowersPer100",
-    "libraryWeeklyOpeningHours",
+METRICS = (
+    ("libraryLoansPerResident", "Prestiti bibliotecari per residente"),
+    ("libraryActiveBorrowersPer100", "Utenti attivi del prestito"),
+    ("libraryWeeklyOpeningHours", "Ore medie di apertura settimanale"),
 )
+KEYS = tuple(key for key, _ in METRICS)
 
 
 def no_overflow(page, label: str) -> None:
@@ -24,15 +25,15 @@ def open_metric(page, key: str) -> None:
     assert button.count() == 1, f"Indicatore non trovato nel confronto: {key}"
     if not button.is_visible():
         group = button.locator("xpath=ancestor::section[contains(concat(' ', normalize-space(@class), ' '), ' metric-group ')][1]")
-        assert group.count() == 1, f"Gruppo non trovato per {key}"
+        assert group.count() == 1, f"Gruppo indicatore non trovato: {key}"
         heading = group.locator(":scope > .metric-group-heading")
-        assert heading.count() == 1
+        assert heading.count() == 1 and heading.get_attribute("role") == "button"
         heading.click()
-        page.wait_for_timeout(150)
+        page.wait_for_timeout(180)
     assert button.is_visible(), f"Indicatore non visibile: {key}"
     button.scroll_into_view_if_needed()
     button.click()
-    page.wait_for_timeout(250)
+    page.wait_for_timeout(300)
     assert f"indicatore={key}" in page.url
 
 
@@ -47,23 +48,28 @@ def assert_missing_rows(bars, key: str) -> None:
         assert "n.d." in text, f"{key}/{town}: il mancante non è mostrato come n.d. ({text})"
 
 
-def assert_town_metric(page, base: str, slug: str, town: str) -> None:
-    page.goto(urljoin(base, f"comuni/{slug}/"), wait_until="networkidle")
-    page.wait_for_timeout(350)
-    no_overflow(page, town)
-    text = page.locator("body").inner_text()
-    # Le schede comunali seguono il layout canonico del tema Comunità e non
-    # ripetono necessariamente il titolo della sottosezione. Verifichiamo quindi
-    # le tre card e il trattamento n.d., non una heading editoriale opzionale.
-    assert "Prestiti bibliotecari per residente" in text, f"{town}: card prestiti assente"
-    assert "Utenti attivi del prestito" in text, f"{town}: card utenti attivi assente"
-    assert "Ore medie di apertura settimanale" in text, f"{town}: card apertura assente"
-    assert "n.d." in text, f"{town}: mancanti non mostrati come n.d."
+def assert_town_missing_metrics(page, base: str, slug: str, town: str) -> None:
+    # Le schede comunali canoniche selezionano tema e indicatore via query string,
+    # come già fanno gli altri gate del sito. Non si assume che una pagina comunale
+    # appena aperta renda visibili contemporaneamente tutte le sottosezioni.
+    for key, label in METRICS:
+        page.goto(
+            urljoin(base, f"comuni/{slug}/?tema=comunita&indicatore={key}"),
+            wait_until="networkidle",
+        )
+        page.wait_for_timeout(450)
+        no_overflow(page, f"{town}/{key}")
+        assert f"tema=comunita" in page.url and f"indicatore={key}" in page.url
+        topic = page.locator("#town-topic")
+        assert topic.count() == 1, f"{town}/{key}: contenitore tema assente"
+        text = topic.inner_text()
+        assert label in text, f"{town}/{key}: card indicatore assente"
+        assert "n.d." in text.lower(), f"{town}/{key}: mancante non mostrato come n.d."
 
 
 def assert_compare(page, base: str, mobile: bool) -> None:
     page.goto(urljoin(base, "confronta/comunita/?indicatore=libraryLoansPerResident"), wait_until="networkidle")
-    page.wait_for_timeout(450)
+    page.wait_for_timeout(500)
     no_overflow(page, "confronto mobile" if mobile else "confronto desktop")
     body = page.locator("body").inner_text()
     assert "Cultura e biblioteche" in body
@@ -79,8 +85,8 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         assert "5/7" in definition or "5/7" in page.locator("body").inner_text(), f"{key}: copertura non visibile"
         assert_missing_rows(page.locator("#compare-bars .bar-row"), key)
 
-    assert_town_metric(page, base, "massarosa", "Massarosa")
-    assert_town_metric(page, base, "stazzema", "Stazzema")
+    assert_town_missing_metrics(page, base, "massarosa", "Massarosa")
+    assert_town_missing_metrics(page, base, "stazzema", "Stazzema")
 
 
 def main() -> None:
@@ -100,7 +106,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali, 5/7, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali via URL canoniche, 5/7, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
