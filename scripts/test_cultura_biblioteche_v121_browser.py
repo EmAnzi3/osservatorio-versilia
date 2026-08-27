@@ -14,11 +14,6 @@ METRICS = (
 )
 KEYS = tuple(key for key, _ in METRICS)
 APP_BUNDLE_VERSION = "20260827-v121-history-ui3"
-EXPECTED_2024_MEAN = {
-    "libraryLoansPerResident": "0,34",
-    "libraryActiveBorrowersPer100": "7,89",
-    "libraryWeeklyOpeningHours": "54,08",
-}
 
 
 def assert_production_bundle_version(page) -> None:
@@ -81,8 +76,6 @@ def open_metric(page, key: str) -> None:
 
 
 def assert_missing_rows(bars, key: str) -> None:
-    # Il confronto mantiene tutti e sette i Comuni: i due mancanti devono essere
-    # righe esplicite n.d., non essere eliminati e soprattutto non diventare zeri.
     assert bars.count() == 7, f"{key}: attese 7 righe comunali, trovate {bars.count()}"
     for town in ("Massarosa", "Stazzema"):
         row = bars.filter(has_text=town)
@@ -92,10 +85,6 @@ def assert_missing_rows(bars, key: str) -> None:
 
 
 def assert_town_missing_metrics(page, base: str, slug: str, town: str) -> None:
-    # Le schede comunali selezionano tema e indicatore via query string. Il renderer
-    # usa nella barra di controllo lo shortLabel, mentre il contenuto principale
-    # mostra direttamente valore e descrizione: il gate verifica quindi la selezione
-    # effettiva della card e il valore n.d., senza richiedere il long label nel body.
     for key, short_label in METRICS:
         page.goto(
             urljoin(base, f"comuni/{slug}/?tema=comunita&indicatore={key}"),
@@ -146,24 +135,29 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         current_pane = shell.locator('[data-view-pane="current"]')
         assert current_pane.is_visible(), f"{key}: Valore attuale non visibile inizialmente"
         assert_missing_rows(current_pane.locator(".bar-row"), key)
+
         history_button.click()
         page.wait_for_timeout(120)
         history_pane = shell.locator('[data-view-pane="history"]')
         assert history_pane.is_visible(), f"{key}: Storico non visibile dopo click"
-        history = history_pane.locator(".library-history-detail")
-        assert history.count() == 1, f"{key}: storico completo non visibile nel pannello Storico"
+        history = history_pane.locator(".library-history-chart")
+        assert history.count() == 1, f"{key}: grafico storico non visibile nel pannello Storico"
+        assert history.locator("table").count() == 0, f"{key}: lo storico non deve essere tabellare"
+        chart = history.locator(".ux-history-chart")
+        assert chart.count() == 1 and chart.locator("svg").count() == 1, f"{key}: SVG storico assente"
+        assert chart.locator(".ux-series-group").count() == 6, f"{key}: attese 6 serie comunali osservate"
+        assert chart.locator(".chart-point").count() >= 12, f"{key}: punti storici insufficienti"
+        first_point = chart.locator(".chart-point").first
+        first_point.hover(force=True)
+        page.wait_for_timeout(60)
+        assert first_point.locator(".chart-tooltip").is_visible(), f"{key}: tooltip storico non attivo"
         history_text = history.inner_text()
-        assert "Media comuni con dato" in history_text
-        row_2024 = history.locator("tbody tr").filter(has_text="2024").first
-        assert row_2024.count() == 1, f"{key}: riga storica 2024 assente"
-        assert EXPECTED_2024_MEAN[key] in row_2024.inner_text(), (
-            f"{key}: media 2024 visibile errata ({row_2024.inner_text()})"
-        )
-        assert "5/7" in row_2024.inner_text(), f"{key}: media 2024 non dichiara 5/7"
+        assert "Stazzema · n.d." in history_text, f"{key}: assenza storica Stazzema non esplicita"
         if key in ("libraryLoansPerResident", "libraryActiveBorrowersPer100"):
             assert "1998" in history_text and "2024" in history_text and "2020" in history_text
         else:
             assert "2022" in history_text and "2024" in history_text and "2021" not in history_text
+
         current_button.click()
         page.wait_for_timeout(80)
         assert current_pane.is_visible(), f"{key}: ritorno a Valore attuale non riuscito"
@@ -191,7 +185,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: storici completi, medie sui soli Comuni con dato, n.d. espliciti, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: storici grafici con tooltip, switch Attuale/Storico, n.d. espliciti, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
