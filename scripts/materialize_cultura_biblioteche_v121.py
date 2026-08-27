@@ -16,7 +16,6 @@ FINALIZER = ROOT / "scripts" / "finalize_catalog_release.py"
 CATALOG_TEST = ROOT / "scripts" / "test_catalog_release_v116.py"
 README = ROOT / "README.md"
 HISTORY_DOC = ROOT / "docs" / "copertura-serie-storiche.md"
-PAGES = ROOT / ".github" / "workflows" / "pages.yml"
 APP_JS = ROOT / "assets" / "app.js"
 APP_PART_05 = ROOT / "assets" / "app-parts" / "05.txt"
 SERVICE_WORKER = ROOT / "service-worker.js"
@@ -285,8 +284,10 @@ def patch_release_files() -> None:
 
     text = CATALOG_TEST.read_text(encoding="utf-8")
     text = text.replace("release v1.20.0", "release v1.21.0")
-    text = text.replace('assert "2026.08.26-v1.20.0" in app and "154 indicatori complessivi" in app',
-                        'assert "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app')
+    text = text.replace(
+        'assert "2026.08.26-v1.20.0" in app and "154 indicatori complessivi" in app',
+        'assert "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app',
+    )
     CATALOG_TEST.write_text(text, encoding="utf-8")
 
     text = README.read_text(encoding="utf-8")
@@ -330,26 +331,9 @@ def patch_release_files() -> None:
         text = text.replace("154 indicatori complessivi", "157 indicatori complessivi", 1)
     APP_PART_05.write_text(text, encoding="utf-8")
 
-    pages = PAGES.read_text(encoding="utf-8")
-    if "test_cultura_biblioteche_v121.py" not in pages:
-        pages = pages.replace(
-            "          python scripts/test_agricoltura_territorio_v120.py\n",
-            "          python scripts/test_agricoltura_territorio_v120.py\n          python scripts/test_cultura_biblioteche_v121.py\n",
-        )
-        pages = pages.replace(
-            "          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null\n",
-            "          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null\n          python -m json.tool data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json > /dev/null\n",
-        )
-        pages = pages.replace(
-            "            scripts/test_agricoltura_review_interactions_v120.py \\\n",
-            "            scripts/test_agricoltura_review_interactions_v120.py \\\n            scripts/materialize_cultura_biblioteche_v121.py \\\n            scripts/test_cultura_biblioteche_v121.py \\\n            scripts/test_cultura_biblioteche_v121_browser.py \\\n",
-        )
-    if "Validate Cultura e biblioteche" not in pages:
-        pages = pages.replace(
-            "      - name: Validate PNRR Toscana town experience\n",
-            "      - name: Validate Cultura e biblioteche\n        run: python scripts/test_cultura_biblioteche_v121_browser.py --base http://127.0.0.1:8123/\n\n      - name: Validate PNRR Toscana town experience\n",
-        )
-    PAGES.write_text(pages, encoding="utf-8")
+    # I workflow CI non sono output del materializzatore dati. Il lotto ha gate
+    # dedicati versionati separatamente; mutare .github/workflows qui rendeva
+    # il materializzatore non idempotente durante i test della Draft PR.
 
 
 def main() -> None:
