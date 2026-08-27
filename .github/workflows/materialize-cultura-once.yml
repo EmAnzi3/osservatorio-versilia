@@ -1,0 +1,54 @@
+name: Materialize Cultura v1.21 once
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize canonical sources offline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_cultura_biblioteche_v121.py
+          first="$(git diff -- . ':(exclude).github/workflows/materialize-cultura-once.yml' | sha256sum | cut -d' ' -f1)"
+          python scripts/materialize_cultura_biblioteche_v121.py
+          second="$(git diff -- . ':(exclude).github/workflows/materialize-cultura-once.yml' | sha256sum | cut -d' ' -f1)"
+          test "$first" = "$second"
+          python scripts/test_cultura_biblioteche_v121.py
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-snapshots/regione-toscana-cultura-biblioteche-2024.json >/dev/null
+
+      - name: Commit materialized sources and remove one-shot workflow
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/materialize-cultura-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Materialize Cultura e biblioteche v1.21.0"
+          git push origin HEAD:"$BRANCH"
