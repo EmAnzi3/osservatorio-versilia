@@ -8,9 +8,9 @@ from urllib.parse import urljoin
 from playwright.sync_api import sync_playwright
 
 METRICS = (
-    ("libraryLoansPerResident", "Prestiti bibliotecari per residente"),
+    ("libraryLoansPerResident", "Prestiti bibliotecari"),
     ("libraryActiveBorrowersPer100", "Utenti attivi del prestito"),
-    ("libraryWeeklyOpeningHours", "Ore medie di apertura settimanale"),
+    ("libraryWeeklyOpeningHours", "Apertura settimanale"),
 )
 KEYS = tuple(key for key, _ in METRICS)
 
@@ -49,22 +49,32 @@ def assert_missing_rows(bars, key: str) -> None:
 
 
 def assert_town_missing_metrics(page, base: str, slug: str, town: str) -> None:
-    # Le schede comunali canoniche selezionano tema e indicatore via query string,
-    # come già fanno gli altri gate del sito. Non si assume che una pagina comunale
-    # appena aperta renda visibili contemporaneamente tutte le sottosezioni.
-    for key, label in METRICS:
+    # Le schede comunali selezionano tema e indicatore via query string. Il renderer
+    # usa nella barra di controllo lo shortLabel, mentre il contenuto principale
+    # mostra direttamente valore e descrizione: il gate verifica quindi la selezione
+    # effettiva della card e il valore n.d., senza richiedere il long label nel body.
+    for key, short_label in METRICS:
         page.goto(
             urljoin(base, f"comuni/{slug}/?tema=comunita&indicatore={key}"),
             wait_until="networkidle",
         )
         page.wait_for_timeout(450)
         no_overflow(page, f"{town}/{key}")
-        assert f"tema=comunita" in page.url and f"indicatore={key}" in page.url
+        assert "tema=comunita" in page.url and f"indicatore={key}" in page.url
         topic = page.locator("#town-topic")
         assert topic.count() == 1, f"{town}/{key}: contenitore tema assente"
-        text = topic.inner_text()
-        assert label in text, f"{town}/{key}: card indicatore assente"
-        assert "n.d." in text.lower(), f"{town}/{key}: mancante non mostrato come n.d."
+
+        selected = topic.locator(f'button[data-metric="{key}"]').first
+        assert selected.count() == 1, f"{town}/{key}: controllo indicatore assente"
+        assert selected.is_visible(), f"{town}/{key}: controllo indicatore non visibile"
+        assert short_label in selected.inner_text(), f"{town}/{key}: short label inatteso"
+        assert selected.get_attribute("aria-selected") == "true", f"{town}/{key}: indicatore non selezionato"
+
+        value = topic.locator(".town-metric-primary strong[data-composite-primary-value]")
+        assert value.count() == 1, f"{town}/{key}: valore principale assente"
+        assert value.inner_text().strip().lower() == "n.d.", (
+            f"{town}/{key}: mancante non mostrato come n.d. ({value.inner_text()})"
+        )
 
 
 def assert_compare(page, base: str, mobile: bool) -> None:
@@ -106,7 +116,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali via URL canoniche, 5/7, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali selezionate via URL, 5/7, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
