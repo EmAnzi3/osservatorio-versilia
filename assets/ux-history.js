@@ -44,6 +44,43 @@
     toolkit.wireHistorySelection(shell, selectedTown, allowClear);
   }
 
+  function wireLibraryTownTooltips(shell) {
+  if (!shell || shell.dataset.libraryTownTooltipsWired === '1') return;
+  shell.dataset.libraryTownTooltipsWired = '1';
+  shell.querySelectorAll('[data-view-pane="history"] .trend-chart').forEach(chart => {
+    const points = [...chart.querySelectorAll('.chart-point')];
+    if (!points.length) return;
+    const hideAll = () => points.forEach(point => {
+      point.classList.remove('active');
+      point.querySelector('.chart-tooltip')?.setAttribute('hidden', '');
+    });
+    const show = point => {
+      hideAll();
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+    points.forEach((point, index) => {
+      point.addEventListener('mouseenter', () => show(point));
+      point.addEventListener('mouseleave', hideAll);
+      point.addEventListener('focus', () => show(point));
+      point.addEventListener('blur', hideAll);
+      point.addEventListener('click', () => show(point));
+      point.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { hideAll(); point.blur(); return; }
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + points.length) % points.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % points.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = points.length - 1;
+        points[next]?.focus();
+      });
+    });
+    chart.addEventListener('mouseleave', hideAll);
+  });
+}
+
   function historyMetric(metric) {
     if (metric?.meta?.key === 'income' && metric.rows?.some(row => row.longSeries?.years?.length)) {
       return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
@@ -347,6 +384,7 @@
     if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
       if (existingShell) {
         wireShell(existingShell, 'ov-town-view', selectedTown, false);
+        wireLibraryTownTooltips(existingShell);
         return;
       }
       const row = selected.metric.rows?.find(item => (item.slug || '') === selectedTown);
@@ -360,7 +398,9 @@
         ? 'Lo storico del Comune termina all’ultima osservazione ufficiale disponibile; nessun valore mancante viene stimato o trascinato.'
         : 'Per questo Comune il monitoraggio regionale non rende disponibile una serie storica.';
       panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
-      wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
+      const shell = panel.querySelector('.ux-view-shell');
+      wireShell(shell, 'ov-town-view', selectedTown, false);
+      wireLibraryTownTooltips(shell);
       return;
     }
     if (existingShell) {
