@@ -6,6 +6,9 @@
   "observability": {
     "enabled": true
   },
+  "triggers": {
+    "crons": ["30 9 * * *"]
+  },
   "vars": {
     "GITHUB_OWNER": "EmAnzi3",
     "GITHUB_REPO": "osservatorio-versilia",
