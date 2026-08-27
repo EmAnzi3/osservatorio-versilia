@@ -1,24 +1,25 @@
-name: Normalize Cultura coverage once
+name: Cultura 5/7 coverage contract
 
 on:
   pull_request:
     branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  normalize:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+  coverage-contract:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
 
-      - name: Normalize partial coverage contract
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate approved partial coverage
         shell: bash
         run: |
           set -euo pipefail
@@ -26,38 +27,19 @@ jobs:
           import json
           from pathlib import Path
 
-          site_path = Path('data/site-data.json')
-          site = json.loads(site_path.read_text(encoding='utf-8'))
+          site = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
           keys = (
               'libraryLoansPerResident',
               'libraryActiveBorrowersPer100',
               'libraryWeeklyOpeningHours',
           )
           for key in keys:
-              site['metrics'][key]['method']['coverage'] = '5/7'
-          site_path.write_text(json.dumps(site, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          materializer = Path('scripts/materialize_cultura_biblioteche_v121.py')
-          text = materializer.read_text(encoding='utf-8')
-          text = text.replace('"coverage": "5/7 nel 2024; serie recente 2019–2024, senza interpolazioni",', '"coverage": "5/7",')
-          text = text.replace('"coverage": "5/7 nel 2024; serie 2022–2024, senza interpolazioni",', '"coverage": "5/7",')
-          materializer.write_text(text, encoding='utf-8')
-          assert text.count('"coverage": "5/7",') >= 3
+              metric = site['metrics'][key]
+              assert metric['method']['coverage'] == '5/7', (key, metric['method']['coverage'])
+              rows = {row['code']: row for row in metric['rows']}
+              assert sum(row['value'] is not None for row in rows.values()) == 5
+              assert rows['046018']['value'] is None and rows['046018']['formatted'] == 'n.d.'
+              assert rows['046030']['value'] is None and rows['046030']['formatted'] == 'n.d.'
+              assert '(5/7)' in metric['aggregate']['label']
+          print('Cultura 5/7 coverage contract OK: 5 valori + Massarosa/Stazzema n.d., senza zeri.')
           PY
-          python scripts/materialize_cultura_biblioteche_v121.py
-          python scripts/test_cultura_biblioteche_v121.py
-
-      - name: Commit normalized sources
-        env:
-          BRANCH: ${{ github.event.pull_request.head.ref }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site-data.json scripts/materialize_cultura_biblioteche_v121.py
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m "Normalize Cultura 5/7 coverage contract"
-          git push origin HEAD:"$BRANCH"
