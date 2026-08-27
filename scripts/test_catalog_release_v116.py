@@ -80,8 +80,8 @@ def main() -> None:
     ):
         assert token in chart_app, f"UI età×genere non canonicalizzata: {token}"
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "**v1.20.0** — 26 agosto 2026" in readme
-    assert "154 indicatori" in readme and "150 con valori incorporati" in readme
+    assert "**v1.21.0** — 27 agosto 2026" in readme
+    assert "157 indicatori" in readme and "153 con valori incorporati" in readme
     build_safe = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
     build_brand = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
@@ -90,8 +90,8 @@ def main() -> None:
     assert 'APP_BUNDLE_ASSET_VERSION = "20260826-v120"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
     assert 'PWA_JS_REVISION = "catalog-v120"' in build_brand
-    assert "20260826-v120" in development_loader
-    assert "ov-pwa-20260826-v120" in service_worker
+    assert "20260827-v121" in development_loader
+    assert "ov-pwa-20260827-v121" in service_worker
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "
