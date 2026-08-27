@@ -24,7 +24,7 @@ def require(condition: bool, message: str) -> None:
 
 def main() -> None:
     # Questa fase non crea nuove card demografiche; il totale riflette il catalogo corrente.
-    require(len(SITE['metrics']) == 154, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
+    require(len(SITE['metrics']) == 157, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
 
     age = SITE['metrics']['ageDistribution']
     require(age['meta']['year'] == '2026', 'ageDistribution non riallineata al 2026')
@@ -67,8 +67,6 @@ def main() -> None:
     require(sum(item['men'] + item['women'] for item in versilia_pyramid['displayBands']) == total_versilia,
             'Versilia: piramide aggregata non ricostruisce la somma dei sette comuni')
 
-    # Non deve esistere un secondo pannello che ripropone dati già pubblicati
-    # negli indicatori naturale / mobilità interna / mobilità estera.
     change = SITE['metrics']['populationChange']
     require('detailLabel' not in change['meta'], 'populationChange conserva un detailLabel duplicato')
     require('componentDetail' not in change.get('method', {}), 'populationChange conserva metodo duplicato')
