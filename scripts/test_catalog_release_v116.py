@@ -87,9 +87,9 @@ def main() -> None:
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     service_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
     assert 'UX_ASSET_VERSION = "20260826-v120"' in build_safe
-    assert 'APP_BUNDLE_ASSET_VERSION = "20260826-v120"' in build_brand
+    assert 'APP_BUNDLE_ASSET_VERSION = "20260827-v121-history-ui3"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
-    assert 'PWA_JS_REVISION = "catalog-v120"' in build_brand
+    assert 'PWA_JS_REVISION = "catalog-v121"' in build_brand
     assert "20260827-v121" in development_loader
     assert "ov-pwa-20260827-v121" in service_worker
 

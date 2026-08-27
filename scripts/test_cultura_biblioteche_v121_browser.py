@@ -13,11 +13,38 @@ METRICS = (
     ("libraryWeeklyOpeningHours", "Apertura settimanale"),
 )
 KEYS = tuple(key for key, _ in METRICS)
+APP_BUNDLE_VERSION = "20260827-v121-history-ui3"
 EXPECTED_2024_MEAN = {
     "libraryLoansPerResident": "0,34",
     "libraryActiveBorrowersPer100": "7,89",
     "libraryWeeklyOpeningHours": "54,08",
 }
+
+
+def assert_production_bundle_version(page) -> None:
+    scripts = page.locator('script[src*="assets/app-bundle.js"]')
+    assert scripts.count() == 1, f"Bundle applicativo di produzione assente o duplicato: {scripts.count()}"
+    src = scripts.first.get_attribute("src") or ""
+    assert f"v={APP_BUNDLE_VERSION}" in src, f"Cache-buster bundle inatteso: {src}"
+
+
+def assert_town_history(page, base: str) -> None:
+    for key, _short_label in METRICS:
+        page.goto(
+            urljoin(base, f"comuni/camaiore/?tema=comunita&indicatore={key}"),
+            wait_until="networkidle",
+        )
+        page.wait_for_timeout(450)
+        assert_production_bundle_version(page)
+        no_overflow(page, f"Camaiore/{key}/storico")
+        topic = page.locator("#town-topic")
+        assert topic.count() == 1, f"Camaiore/{key}: contenitore tema assente"
+        selected = topic.locator(f'button[data-metric="{key}"]').first
+        assert selected.count() == 1 and selected.get_attribute("aria-selected") == "true", f"Camaiore/{key}: indicatore non selezionato"
+        chart = topic.locator(".history-panel .trend-chart")
+        assert chart.count() == 1, f"Camaiore/{key}: grafico storico non renderizzato"
+        assert chart.locator("svg").count() == 1, f"Camaiore/{key}: SVG storico assente"
+        assert topic.locator(".history-panel .comparison-bars").count() == 0, f"Camaiore/{key}: fallback confronto mostrato al posto dello storico"
 
 
 def no_overflow(page, label: str) -> None:
@@ -85,6 +112,7 @@ def assert_town_missing_metrics(page, base: str, slug: str, town: str) -> None:
 def assert_compare(page, base: str, mobile: bool) -> None:
     page.goto(urljoin(base, "confronta/comunita/?indicatore=libraryLoansPerResident"), wait_until="networkidle")
     page.wait_for_timeout(500)
+    assert_production_bundle_version(page)
     no_overflow(page, "confronto mobile" if mobile else "confronto desktop")
     body = page.locator("body").inner_text()
     assert "Cultura e biblioteche" in body
@@ -114,6 +142,8 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         else:
             assert "2022" in history_text and "2024" in history_text and "2021" not in history_text
 
+    if not mobile:
+        assert_town_history(page, base)
     assert_town_missing_metrics(page, base, "massarosa", "Massarosa")
     assert_town_missing_metrics(page, base, "stazzema", "Stazzema")
 
