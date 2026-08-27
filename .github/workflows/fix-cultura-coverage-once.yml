@@ -1,52 +1,26 @@
-name: Normalize Cultura series once
+name: Cultura histories contract
 
 on:
   pull_request:
     branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  normalize-series:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+  history-contract:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR branch
+      - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
+          python-version: "3.12"
 
-      - name: Stop histories at last real observation
+      - name: Validate Cultura histories and 5/7 coverage
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-
-          materializer = Path('scripts/materialize_cultura_biblioteche_v121.py')
-          text = materializer.read_text(encoding='utf-8')
-          old = '''    for town in site["towns"]:\n        town_values = values[town["name"]]\n        current = town_values[-1]\n        rows.append({\n            "town": town["name"],\n            "code": town["code"],\n            "slug": slug_by_code[town["code"]],\n            "value": current,\n            "formatted": fmt(current, unit),\n            "series": {"years": years, "values": town_values},\n            "normalized": None,\n            "benchmarkValue": current,\n        })\n'''
-          new = '''    for town in site["towns"]:\n        town_values = values[town["name"]]\n        current = town_values[-1]\n        observed = [index for index, value in enumerate(town_values) if value is not None]\n        if observed:\n            last = observed[-1] + 1\n            row_series = {"years": years[:last], "values": town_values[:last]}\n        else:\n            row_series = None\n        rows.append({\n            "town": town["name"],\n            "code": town["code"],\n            "slug": slug_by_code[town["code"]],\n            "value": current,\n            "formatted": fmt(current, unit),\n            "series": row_series,\n            "normalized": None,\n            "benchmarkValue": current,\n        })\n'''
-          if new not in text:
-              assert old in text, 'build_rows non riconosciuto'
-              materializer.write_text(text.replace(old, new, 1), encoding='utf-8')
-          PY
-          python scripts/materialize_cultura_biblioteche_v121.py
           python scripts/test_cultura_biblioteche_v121.py
-
-      - name: Commit normalized histories
-        env:
-          BRANCH: ${{ github.event.pull_request.head.ref }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site-data.json scripts/materialize_cultura_biblioteche_v121.py
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m "Stop Cultura histories at last real observation"
-          git push origin HEAD:"$BRANCH"
