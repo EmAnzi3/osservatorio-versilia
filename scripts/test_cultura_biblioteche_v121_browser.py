@@ -13,6 +13,11 @@ METRICS = (
     ("libraryWeeklyOpeningHours", "Apertura settimanale"),
 )
 KEYS = tuple(key for key, _ in METRICS)
+EXPECTED_2024_MEAN = {
+    "libraryLoansPerResident": "0,34",
+    "libraryActiveBorrowersPer100": "7,89",
+    "libraryWeeklyOpeningHours": "54,08",
+}
 
 
 def no_overflow(page, label: str) -> None:
@@ -98,6 +103,12 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         assert history.count() == 1, f"{key}: storico completo non visibile nel confronto"
         history_text = history.inner_text()
         assert "Media comuni con dato" in history_text
+        row_2024 = history.locator("tbody tr").filter(has_text="2024").first
+        assert row_2024.count() == 1, f"{key}: riga storica 2024 assente"
+        assert EXPECTED_2024_MEAN[key] in row_2024.inner_text(), (
+            f"{key}: media 2024 visibile errata ({row_2024.inner_text()})"
+        )
+        assert "5/7" in row_2024.inner_text(), f"{key}: media 2024 non dichiara 5/7"
         if key in ("libraryLoansPerResident", "libraryActiveBorrowersPer100"):
             assert "1998" in history_text and "2024" in history_text and "2020" in history_text
         else:
@@ -124,7 +135,7 @@ def main() -> None:
         mobile.close()
         browser.close()
 
-    print("Browser Cultura v1.21 verificato: confronto 7 righe con n.d. espliciti, card comunali selezionate via URL, 5/7, desktop/mobile e chiaro/scuro.")
+    print("Browser Cultura v1.21 verificato: storici completi, medie sui soli Comuni con dato, n.d. espliciti, desktop/mobile e chiaro/scuro.")
 
 
 if __name__ == "__main__":
