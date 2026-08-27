@@ -8,7 +8,7 @@ In questa fase **non esiste alcun Cron Trigger Cloudflare**: il Worker espone so
 
 - verificare se lo snapshot giornaliero del Radar Opportunità è aggiornato alla data UTC corrente;
 - se lo snapshot è vecchio, poter avviare `opportunity-radar-daily.yml` tramite `workflow_dispatch`;
-- dal giorno 5 del mese, verificare se `monthly-data-refresh.yml` è già stato eseguito nel mese corrente;
+- dal giorno 5 del mese, verificare se `monthly-data-refresh.yml` è già stato eseguito con successo nel mese corrente;
 - evitare un nuovo dispatch se il workflow pertinente risulta già in esecuzione;
 - non conservare token o chiavi nel repository.
 
@@ -20,25 +20,18 @@ Pubblico. Restituisce soltanto lo stato del Worker e conferma che il PoC è in m
 
 ### `GET /check`
 
-Protetto da header:
-
-```text
-Authorization: Bearer <WATCHDOG_KEY>
-```
-
 Parametri:
 
 - `target=daily` — controlla solo il Radar Opportunità;
 - `target=monthly` — controlla solo il controllo mensile;
 - `target=all` — controlla entrambi; è il default;
-- senza `dispatch=1` — dry-run, non avvia nulla;
-- con `dispatch=1` — avvia il workflow soltanto se il controllo stabilisce che è necessario.
+- senza `dispatch=1` — dry-run pubblico, non avvia nulla e non richiede `WATCHDOG_KEY`;
+- con `dispatch=1` — avvia il workflow soltanto se necessario e richiede l'header `Authorization: Bearer <WATCHDOG_KEY>`.
 
 Esempio dry-run:
 
 ```bash
-curl -H "Authorization: Bearer $WATCHDOG_KEY" \
-  "https://<worker>.workers.dev/check?target=daily"
+curl "https://<worker>.workers.dev/check?target=daily"
 ```
 
 Esempio con dispatch abilitato:
@@ -52,7 +45,7 @@ curl -H "Authorization: Bearer $WATCHDOG_KEY" \
 
 ### `WATCHDOG_KEY`
 
-Chiave casuale lunga usata esclusivamente per proteggere `/check`.
+Chiave casuale lunga usata esclusivamente per autorizzare le chiamate con `dispatch=1`.
 
 ### `GITHUB_TOKEN`
 
@@ -61,7 +54,7 @@ Fine-grained personal access token GitHub limitato a:
 - repository: `EmAnzi3/osservatorio-versilia`;
 - repository permission: **Actions — Read and write**.
 
-Il token serve per il `workflow_dispatch`. Il controllo dello snapshot pubblico può funzionare anche senza token, ma il dispatch no.
+Il token serve per leggere lo stato dei workflow e per il `workflow_dispatch`.
 
 ## Variabili non sensibili
 
@@ -78,7 +71,7 @@ Sono già definite in `wrangler.jsonc`:
 3. Configurare i secret `WATCHDOG_KEY` e `GITHUB_TOKEN`.
 4. Aprire `/health` e verificare `cronEnabled: false`.
 5. Chiamare `/check?target=daily` senza `dispatch=1` e verificare che il risultato sia `current` oppure `stale`.
-6. Se il risultato è `stale`, ripetere con `dispatch=1`.
+6. Se il risultato è `stale`, ripetere con `dispatch=1` e la chiave corretta.
 7. Verificare in GitHub Actions che sia comparsa una nuova esecuzione `workflow_dispatch` di `Radar Opportunità · refresh giornaliero`.
 8. Attendere il completamento e ripetere il dry-run: il risultato deve diventare `current`.
 9. Solo dopo questo collaudo aggiungere il Cron Trigger Cloudflare e testare il controllo mensile.
@@ -96,13 +89,13 @@ Sono già definite in `wrangler.jsonc`:
 ### Monthly
 
 - `not_due` — siamo prima del giorno 5;
-- `completed` — un controllo mensile `schedule` o `workflow_dispatch` è già stato completato nel mese;
+- `completed` — un controllo mensile `schedule` o `workflow_dispatch` è già stato completato con successo nel mese;
 - `running` — il controllo mensile è già in corso;
-- `missing` — dal giorno 5 in poi non risulta alcuna esecuzione mensile completata;
+- `missing` — dal giorno 5 in poi non risulta alcuna esecuzione mensile completata con successo;
 - `dispatched` — il Worker ha richiesto il controllo mensile.
 
 ## Sicurezza
 
-Il Worker non modifica direttamente dati, issue, PR o pagine pubbliche. Può soltanto avviare due workflow GitHub già esistenti, e soltanto quando viene chiamato con la chiave `WATCHDOG_KEY` e con `dispatch=1`.
+Il Worker non modifica direttamente dati, issue, PR o pagine pubbliche. Il dry-run è pubblico e di sola lettura; l'avvio dei workflow richiede `dispatch=1` e una `WATCHDOG_KEY` valida.
 
 Il repository non deve mai contenere `WATCHDOG_KEY` o `GITHUB_TOKEN`.
