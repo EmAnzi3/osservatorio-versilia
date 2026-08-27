@@ -39,7 +39,8 @@ jobs:
 
           materializer = Path('scripts/materialize_cultura_biblioteche_v121.py')
           text = materializer.read_text(encoding='utf-8')
-          text = text.replace('"coverage": "5/7 · eccezione approvata; Massarosa e Stazzema n.d.",', '"coverage": "5/7",')
+          text = text.replace('"coverage": "5/7 nel 2024; serie recente 2019–2024, senza interpolazioni",', '"coverage": "5/7",')
+          text = text.replace('"coverage": "5/7 nel 2024; serie 2022–2024, senza interpolazioni",', '"coverage": "5/7",')
           materializer.write_text(text, encoding='utf-8')
           assert text.count('"coverage": "5/7",') >= 3
           PY
