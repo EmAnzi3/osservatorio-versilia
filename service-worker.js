@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260827-v121';
+const VERSION = 'ov-pwa-20260827-v121-history-ui2';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
@@ -97,9 +97,13 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Il codice applicativo deve aggiornarsi insieme all'HTML. Evitiamo di
-  // servire al primo caricamento JS/CSS obsoleti da una cache precedente.
-  if (/\.(?:js|css)$/.test(url.pathname) || url.pathname.endsWith('/site.webmanifest')) {
+  // I moduli app-parts sono codice JavaScript anche se hanno estensione .txt:
+  // devono aggiornarsi insieme all'HTML e agli altri asset applicativi.
+  if (
+    /\.(?:js|css)$/.test(url.pathname) ||
+    url.pathname.endsWith('/site.webmanifest') ||
+    /\/assets\/app-parts\/\d{2}\.txt$/.test(url.pathname)
+  ) {
     event.respondWith(networkFirst(request).catch(() => caches.match(request, { ignoreSearch: true })));
     return;
   }
