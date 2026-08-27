@@ -44,6 +44,7 @@ def assert_town_history(page, base: str) -> None:
         chart = topic.locator(".history-panel .trend-chart")
         assert chart.count() == 1, f"Camaiore/{key}: grafico storico non renderizzato"
         assert chart.locator("svg").count() == 1, f"Camaiore/{key}: SVG storico assente"
+        assert topic.locator(".history-panel .ux-view-shell").count() == 0, f"Camaiore/{key}: enhancer 7/7 ha sovrascritto lo storico parziale"
         assert topic.locator(".history-panel .comparison-bars").count() == 0, f"Camaiore/{key}: fallback confronto mostrato al posto dello storico"
 
 

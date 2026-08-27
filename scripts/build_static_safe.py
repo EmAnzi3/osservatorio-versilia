@@ -18,7 +18,7 @@ _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
 UX_ASSET_VERSION = "20260826-v120"
-HISTORY_ASSET_VERSION = "20260824-v116"
+HISTORY_ASSET_VERSION = "20260827-v121-history-ui4"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"
@@ -175,7 +175,7 @@ def prepare_shells_with_fonts() -> None:
             "social-presence.js",
         )
         missing_scripts = [
-            f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script == "ux-history-core.js" else UX_ASSET_VERSION}" defer></script>\n'
+            f'  <script src="{assets}assets/{script}?v={HISTORY_ASSET_VERSION if script in {"ux-history-core.js", "ux-history.js"} else UX_ASSET_VERSION}" defer></script>\n'
             for script in scripts
             if f"assets/{script}" not in text
         ]

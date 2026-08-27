@@ -3,9 +3,10 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260824-v116';
+  const HOTFIX_VERSION = '20260827-v121-history-ui4';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
+  const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
 
   let scheduled = false;
   const wiredShells = new WeakSet();
@@ -94,14 +95,19 @@
     if (!target || !target.innerHTML.trim()) return;
 
     const selectedTown = safeStorageGet('ov-history-town') || '';
+    const selected = selectedMetric(data);
+    if (!selected) return;
+    // Le biblioteche hanno copertura storica parziale per definizione (Stazzema assente,
+    // Massarosa interrompe prima del 2024). Il renderer canonico del lotto gestisce
+    // esplicitamente gli n.d.; il vecchio enhancer 7/7 non deve sostituirlo con
+    // "Serie storica non disponibile".
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;
+
     const existingShell = target.querySelector(':scope > .ux-view-shell');
     if (existingShell) {
       wireShell(existingShell, 'ov-compare-view', selectedTown, true);
       return;
     }
-
-    const selected = selectedMetric(data);
-    if (!selected) return;
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
     const historyView = historyMetric(selected.metric);
@@ -243,6 +249,10 @@
     const selectedTown = document.body.dataset.town || '';
     const selected = selectedMetric(data);
     if (!selected) return;
+    // Per Cultura il pannello nativo usa la serie del singolo Comune e conserva
+    // correttamente anni mancanti e serie interrotte. L'enhancer generico richiede
+    // invece anni comuni a tutti e sette e cancellava quindi uno storico valido.
+    if (LIBRARY_HISTORY_KEYS.has(selected.key)) return;
     const existingShell = panel.querySelector('.ux-view-shell');
     if (existingShell) {
       wireShell(existingShell, 'ov-town-view', selectedTown, false);
