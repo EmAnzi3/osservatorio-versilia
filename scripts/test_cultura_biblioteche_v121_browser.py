@@ -148,9 +148,13 @@ def assert_compare(page, base: str, mobile: bool) -> None:
         assert chart.locator(".ux-series-group").count() == 6, f"{key}: attese 6 serie comunali osservate"
         assert chart.locator(".chart-point").count() >= 12, f"{key}: punti storici insufficienti"
         first_point = chart.locator(".chart-point").first
-        first_point.hover(force=True)
+        tooltip = first_point.locator(".chart-tooltip")
+        assert tooltip.count() == 1, f"{key}: markup tooltip storico assente"
+        first_point.dispatch_event("mouseenter")
         page.wait_for_timeout(60)
-        assert first_point.locator(".chart-tooltip").is_visible(), f"{key}: tooltip storico non attivo"
+        assert tooltip.get_attribute("hidden") is None, f"{key}: tooltip storico non viene attivato"
+        first_point.dispatch_event("mouseleave")
+        assert tooltip.get_attribute("hidden") is not None, f"{key}: tooltip storico non viene chiuso"
         history_text = history.inner_text()
         assert "Stazzema · n.d." in history_text, f"{key}: assenza storica Stazzema non esplicita"
         if key in ("libraryLoansPerResident", "libraryActiveBorrowersPer100"):
