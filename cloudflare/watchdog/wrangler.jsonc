@@ -1,0 +1,14 @@
+{
+  "name": "osservatorio-versilia-watchdog",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-27",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "GITHUB_OWNER": "EmAnzi3",
+    "GITHUB_REPO": "osservatorio-versilia",
+    "GITHUB_REF": "main"
+  }
+}
