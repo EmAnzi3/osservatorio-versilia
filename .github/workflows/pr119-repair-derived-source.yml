@@ -1,0 +1,82 @@
+name: PR 119 repair derived source
+
+on:
+  push:
+    branches: ["automation/data-check-2026-08"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr119-repair-derived-source
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore MEF plus ISTAT source metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('data/site-data.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          metric = data['metrics']['taxpayersAdultPopulationRate']
+          metric['sourceUrls'] = {'denominator': 'https://demo.istat.it/'}
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Make fuel materializer date dynamic
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/materialize_validated_costs.py')
+          text = path.read_text(encoding='utf-8')
+          old = "'caveat':'Fotografia del 14 agosto 2026; Stazzema non ha impianti attivi nel dataset.'"
+          new = "'caveat':f\"Fotografia del {raw['referenceDate']}; Stazzema non ha impianti attivi nel dataset.\""
+          if old in text:
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding='utf-8')
+          elif new not in text:
+              raise SystemExit('Caveat carburanti atteso non trovato')
+          PY
+
+      - name: Refresh monthly monitor state
+        run: |
+          mkdir -p reports/runtime
+          python scripts/monthly_data_check_status.py \
+            --mode live \
+            --report-md reports/runtime/pr119-repair.md \
+            --report-json reports/runtime/pr119-repair.json \
+            --next-state reports/runtime/pr119-repair-state.json
+          cp reports/runtime/pr119-repair-state.json data/source-monitor-state.json
+          cp reports/runtime/pr119-repair.md reports/data-checks/2026-08.md
+
+      - name: Validate income Lotto A
+        run: python scripts/test_income_lotto_a_v2.py
+
+      - name: Commit repair
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json data/source-monitor-state.json reports/data-checks/2026-08.md scripts/materialize_validated_costs.py
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da registrare"
+            exit 0
+          fi
+          git commit -m "Ripristina monitoraggio MEF e ISTAT per contribuenti"
+          git push origin HEAD:automation/data-check-2026-08
