@@ -116,7 +116,7 @@ def sex_slide(parts, box, model, theme):
         f'<text x="{x+36}" y="{y+195}" class="section" fill="{theme["accent"]}">TOTALE · MASCHI · FEMMINE</text>',
     ]
     labels = {"totale":"Totale", "maschi":"Maschi", "femmine":"Femmine"}
-    cx, cw, start, step = x+245, w-335, y+270, 112
+    cx, cw, start, step = x+245, w-500, y+270, 112
     for i, key in enumerate(SEXES):
         value = float(pm[key]["value"])
         cy = start+i*step
