@@ -58,3 +58,8 @@ Prestiti e impatto espongono l'intera serie ufficiale 1998–2024 dove disponibi
 Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.
 
 Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche dei soli Comuni con valore disponibile nell'anno; gli `n.d.` non entrano nel divisore.
+
+
+## Speranza di vita ARS v1.22.0
+
+L'indicatore `lifeExpectancy` usa l'export ufficiale ARS Toscana dell'indicatore 1290. La serie è completa 2008–2022 per tutti i sette Comuni e per i tre sessi esposti dalla fonte: Totale, Maschi e Femmine. La Zona Versilia e la Toscana sono lette direttamente dallo stesso export; l'aggregato Versilia non è una media dei valori comunali. Lo snapshot conserva l'impronta SHA-256 di `dati.csv`. L'ultimo punto 2022 deve coincidere con il valore corrente già pubblicato. Nessuna interpolazione o stima è ammessa.

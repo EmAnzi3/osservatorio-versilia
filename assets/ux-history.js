@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260827-v121-history-ui6';
+  const HOTFIX_VERSION = '20260828-v122-lifeexp-ui1';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -109,11 +109,17 @@
 
   function renderHistoryMarkup(metric, series, selectedTown) {
     const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
+    if (metric?.meta?.compositeType === 'sexBreakdown') {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.')
+        .replace('confronto storico dei sette comuni', 'confronto storico dei sette Comuni e della Versilia')
+        .replace('aria-label="Comuni"', 'aria-label="Territori"');
+    }
     if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
     const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
     return markup
       .replace(
-        'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.',
+        'Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.',
         'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. I tooltip mostrano anche la variazione reale, calcolata come rapporto tra indice del reddito e indice dei prezzi.'
       )
       .replace(
@@ -241,8 +247,9 @@
     }
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const historyView = historyMetric(selected.metric);
-    const series = normalized ? null : toolkit.comparableSeries(historyView);
+    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
+    const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
     const currentMarkup = target.innerHTML;
     const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
@@ -281,8 +288,21 @@
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (!['distribution','omi','stock','securityMeasures'].includes(metric?.meta?.compositeType)) return metric;
-    const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })) };
+    if (!['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return metric;
+    const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })), aggregate:metric.aggregate ? { ...metric.aggregate } : metric.aggregate };
+    if (metric.meta.compositeType === 'sexBreakdown') {
+      const selected = choice || metric.meta.defaultSex || 'totale';
+      const option = (metric.meta.sexOptions || []).find(item=>item.key===selected);
+      clone.meta.label = option ? `${metric.meta.label} · ${option.label}` : metric.meta.label;
+      clone.meta.benchmark = metric.meta.benchmarksBySex?.[selected] || metric.meta.benchmark;
+      clone.rows = metric.rows.map(row => {
+        const part=(row.parts || []).find(item=>item.key===selected) || row.parts?.[0] || {};
+        return { ...row, value:part.value, formatted:part.formatted || row.formatted, series:part.series || row.series };
+      });
+      const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
+      clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, formatted:aggregatePart.formatted, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || option?.label || ''}` };
+      return clone;
+    }
     if (metric.meta.compositeType === 'securityMeasures') {
       const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
       const template = metric.rows?.[0]?.parts?.[index] || metric.aggregate?.parts?.[index] || {};
@@ -358,7 +378,7 @@
   }
 
   function refreshTownCompositeCurrent(metric, shell, selectedTown, choice) {
-    if (!shell || !['distribution','omi','stock','securityMeasures'].includes(metric?.meta?.compositeType)) return;
+    if (!shell || !['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return;
     const currentPane = shell.querySelector('[data-view-pane="current"]');
     if (!currentPane) return;
     const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
@@ -370,6 +390,13 @@
 
   function currentCompositeChoice() {
     return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || 'summary';
+  }
+
+  function withOfficialVersiliaSeries(metric, series) {
+    if (!series || metric?.meta?.compositeType !== 'sexBreakdown' || !metric.aggregate?.series?.years?.length) return series;
+    const map = new Map(metric.aggregate.series.years.map((year,index)=>[String(year),Number(metric.aggregate.series.values?.[index])]));
+    if (!series.years.every(year=>Number.isFinite(map.get(String(year))))) return series;
+    return { ...series, rows:[...series.rows,{ town:'Versilia', slug:'versilia', color:'var(--ink)', map:new Map(), realMap:new Map(), values:series.years.map(year=>map.get(String(year))), realSeries:null }] };
   }
 
   function enhanceTown(data) {
@@ -410,8 +437,9 @@
     }
 
     const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
-    const historyView = historyMetric(selected.metric);
-    const series = toolkit.comparableSeries(historyView);
+    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
+    const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
     const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
     const currentMarkup = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
@@ -451,7 +479,18 @@
       const metric = metricKey && data.metrics[metricKey] ? { ...data.metrics[metricKey], key: metricKey } : null;
       const shell = document.querySelector('.history-panel .ux-view-shell');
       if (!metric || !shell) return;
-      refreshTownCompositeCurrent(metric, shell, document.body.dataset.town || '', event.detail?.choice || 'summary');
+      const choice = event.detail?.choice || 'summary';
+      refreshTownCompositeCurrent(metric, shell, document.body.dataset.town || '', choice);
+      if (metric.meta?.compositeType === 'sexBreakdown') {
+        const selectedTown = document.body.dataset.town || '';
+        const historyView = historyMetric(compositeChoiceMetric(metric, choice));
+        const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+        const pane = shell.querySelector('[data-view-pane="history"]');
+        if (pane) {
+          pane.innerHTML = renderHistoryMarkup(historyView, series, selectedTown);
+          toolkit.wireHistorySelection(shell, selectedTown, false);
+        }
+      }
     });
   });
 

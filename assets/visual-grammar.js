@@ -356,7 +356,11 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','sexBreakdown'].includes(type)) return null;
+    if (type === 'sexBreakdown') {
+      const part = (row?.parts || []).find(item => item.key === choice) || row?.parts?.[0] || {};
+      return { value: part.value, unit: part.unit || metric?.meta?.unit || 'years' };
+    }
     // demographicBreakdown visual selection: usa la cella selezionata, non il valore base 25–64 Totale.
     if (type === 'demographicBreakdown') {
       const part = (row?.parts || []).find(item => item.key === choice) || {};
@@ -384,7 +388,11 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','sexBreakdown'].includes(type)) return null;
+    if (type === 'sexBreakdown') {
+      const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || metric.aggregate?.parts?.[0] || {};
+      return { value: part.value, label:`Versilia (ARS) · ${part.label || ''}`, unit: part.unit || metric?.meta?.unit || 'years' };
+    }
     if (type === 'demographicBreakdown') {
       const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || {};
       return { value: part.value, label:`Versilia · ${part.ageLabel || ''} · ${part.genderLabel || ''}`, unit: part.unit || metric?.meta?.unit || 'percent' };

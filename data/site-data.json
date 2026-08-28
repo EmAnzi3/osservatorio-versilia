@@ -1,6 +1,6 @@
 {
-  "version": "v1.21.0",
-  "updated": "27 agosto 2026",
+  "version": "v1.22.0",
+  "updated": "28 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -19618,94 +19618,1527 @@
           "year": "2022",
           "tuscany": 83.35,
           "source": "ARS Toscana — La salute dei comuni",
-          "url": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
-          "note": "Comune e Toscana condividono fonte, anno e metodo di calcolo. Il riferimento nazionale non è esposto perché non proviene dalla stessa tavola comunale."
+          "url": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
+          "note": "Comune, Zona Versilia e Toscana condividono fonte, anno e metodo di calcolo. Il riferimento nazionale non è esposto perché non proviene dalla stessa tavola ARS."
+        },
+        "compositeType": "sexBreakdown",
+        "selectorLabel": "Sesso",
+        "defaultSex": "totale",
+        "sexOptions": [
+          {
+            "key": "totale",
+            "label": "Totale"
+          },
+          {
+            "key": "maschi",
+            "label": "Maschi"
+          },
+          {
+            "key": "femmine",
+            "label": "Femmine"
+          }
+        ],
+        "benchmarksBySex": {
+          "totale": {
+            "year": "2022",
+            "tuscany": 83.35,
+            "source": "ARS Toscana — La salute dei comuni",
+            "url": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
+            "note": "Comune, Zona Versilia e Toscana condividono fonte, anno e metodo di calcolo. Il riferimento nazionale non è esposto perché non proviene dalla stessa tavola ARS."
+          },
+          "maschi": {
+            "year": "2022",
+            "tuscany": 81.27,
+            "source": "ARS Toscana — La salute dei comuni",
+            "url": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
+            "note": "Comune, Zona Versilia e Toscana condividono fonte, anno e metodo di calcolo. Il riferimento nazionale non è esposto perché non proviene dalla stessa tavola ARS."
+          },
+          "femmine": {
+            "year": "2022",
+            "tuscany": 85.32,
+            "source": "ARS Toscana — La salute dei comuni",
+            "url": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
+            "note": "Comune, Zona Versilia e Toscana condividono fonte, anno e metodo di calcolo. Il riferimento nazionale non è esposto perché non proviene dalla stessa tavola ARS."
+          }
+        },
+        "sourceMeta": {
+          "publisher": "ARS Toscana / ISPRO",
+          "snapshot": "data/source-snapshots/ars-life-expectancy-1290-2008-2022.json",
+          "note": "Export ufficiale ARS dell'indicatore 1290; serie 2008–2022 per Totale, Maschi e Femmine."
         }
       },
-      "sourceUrl": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+      "sourceUrl": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
       "rows": [
         {
           "town": "Massarosa",
           "code": "046018",
           "slug": "massarosa",
           "value": 82.24,
-          "formatted": "82,24 anni",
-          "series": null,
+          "formatted": "82,2 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              80.35,
+              80.67,
+              80.65,
+              80.9,
+              81.3,
+              81.77,
+              81.95,
+              82.13,
+              81.88,
+              82.63,
+              83.06,
+              83.12,
+              82.25,
+              82.26,
+              82.24
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 82.24
+          "benchmarkValue": 82.24,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 82.24,
+              "formatted": "82,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  80.35,
+                  80.67,
+                  80.65,
+                  80.9,
+                  81.3,
+                  81.77,
+                  81.95,
+                  82.13,
+                  81.88,
+                  82.63,
+                  83.06,
+                  83.12,
+                  82.25,
+                  82.26,
+                  82.24
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 80.16,
+              "formatted": "80,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  78.03,
+                  77.38,
+                  77.45,
+                  77.49,
+                  78.85,
+                  78.75,
+                  78.97,
+                  79.37,
+                  80.02,
+                  80.83,
+                  80.85,
+                  80.71,
+                  80.17,
+                  79.98,
+                  80.16
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 84.19,
+              "formatted": "84,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  82.49,
+                  83.94,
+                  83.85,
+                  84.35,
+                  83.73,
+                  84.83,
+                  84.93,
+                  84.83,
+                  83.21,
+                  84.38,
+                  85.12,
+                  85.2,
+                  84.09,
+                  84.37,
+                  84.19
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Viareggio",
           "code": "046033",
           "slug": "viareggio",
           "value": 82.58,
-          "formatted": "82,58 anni",
-          "series": null,
+          "formatted": "82,6 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              81.71,
+              81.01,
+              81.26,
+              81.53,
+              81.86,
+              81.73,
+              82.5,
+              82.42,
+              82.48,
+              82.82,
+              83.79,
+              84.04,
+              83.3,
+              82.73,
+              82.58
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 82.58
+          "benchmarkValue": 82.58,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 82.58,
+              "formatted": "82,6 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  81.71,
+                  81.01,
+                  81.26,
+                  81.53,
+                  81.86,
+                  81.73,
+                  82.5,
+                  82.42,
+                  82.48,
+                  82.82,
+                  83.79,
+                  84.04,
+                  83.3,
+                  82.73,
+                  82.58
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 80.42,
+              "formatted": "80,4 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  78.78,
+                  78.05,
+                  78.45,
+                  78.64,
+                  78.69,
+                  78.66,
+                  79.92,
+                  80.29,
+                  80.32,
+                  80.56,
+                  81.33,
+                  81.71,
+                  80.9,
+                  80.39,
+                  80.42
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 84.55,
+              "formatted": "84,5 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  84.3,
+                  83.6,
+                  83.68,
+                  84.05,
+                  84.68,
+                  84.48,
+                  84.74,
+                  84.23,
+                  84.29,
+                  84.75,
+                  85.91,
+                  86.06,
+                  85.41,
+                  84.8,
+                  84.55
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Camaiore",
           "code": "046005",
           "slug": "camaiore",
           "value": 82.71,
-          "formatted": "82,71 anni",
-          "series": null,
+          "formatted": "82,7 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              81.16,
+              81.34,
+              81.43,
+              81.58,
+              81.34,
+              81.1,
+              81.61,
+              81.9,
+              82.57,
+              82.56,
+              82.58,
+              83.24,
+              82.79,
+              82.76,
+              82.71
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 82.71
+          "benchmarkValue": 82.71,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 82.71,
+              "formatted": "82,7 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  81.16,
+                  81.34,
+                  81.43,
+                  81.58,
+                  81.34,
+                  81.1,
+                  81.61,
+                  81.9,
+                  82.57,
+                  82.56,
+                  82.58,
+                  83.24,
+                  82.79,
+                  82.76,
+                  82.71
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 80.19,
+              "formatted": "80,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  78.86,
+                  78.97,
+                  78.76,
+                  78.61,
+                  78.53,
+                  77.97,
+                  78.62,
+                  78.92,
+                  79.66,
+                  79.79,
+                  80.06,
+                  81.0,
+                  80.51,
+                  80.08,
+                  80.19
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 85.16,
+              "formatted": "85,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  83.24,
+                  83.41,
+                  83.82,
+                  84.31,
+                  84.02,
+                  84.22,
+                  84.47,
+                  84.82,
+                  85.34,
+                  85.24,
+                  84.95,
+                  85.35,
+                  84.83,
+                  85.34,
+                  85.16
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Pietrasanta",
           "code": "046024",
           "slug": "pietrasanta",
           "value": 83.21,
-          "formatted": "83,21 anni",
-          "series": null,
+          "formatted": "83,2 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              81.2,
+              81.49,
+              81.96,
+              82.02,
+              81.14,
+              81.0,
+              81.22,
+              81.85,
+              81.66,
+              82.68,
+              83.3,
+              83.88,
+              83.38,
+              82.95,
+              83.21
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 83.21
+          "benchmarkValue": 83.21,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 83.21,
+              "formatted": "83,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  81.2,
+                  81.49,
+                  81.96,
+                  82.02,
+                  81.14,
+                  81.0,
+                  81.22,
+                  81.85,
+                  81.66,
+                  82.68,
+                  83.3,
+                  83.88,
+                  83.38,
+                  82.95,
+                  83.21
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 80.31,
+              "formatted": "80,3 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  78.22,
+                  78.52,
+                  79.23,
+                  78.91,
+                  77.62,
+                  76.91,
+                  77.86,
+                  78.64,
+                  78.92,
+                  79.64,
+                  81.05,
+                  81.63,
+                  81.1,
+                  79.8,
+                  80.31
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 85.94,
+              "formatted": "85,9 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  83.93,
+                  84.15,
+                  84.42,
+                  85.03,
+                  84.44,
+                  84.9,
+                  84.29,
+                  84.88,
+                  84.11,
+                  85.57,
+                  85.11,
+                  85.72,
+                  85.43,
+                  85.84,
+                  85.94
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Seravezza",
           "code": "046028",
           "slug": "seravezza",
           "value": 81.86,
-          "formatted": "81,86 anni",
-          "series": null,
+          "formatted": "81,9 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              80.58,
+              81.12,
+              80.97,
+              81.62,
+              81.8,
+              82.36,
+              82.74,
+              82.45,
+              83.38,
+              82.6,
+              82.4,
+              82.04,
+              82.21,
+              82.01,
+              81.86
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 81.86
+          "benchmarkValue": 81.86,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 81.86,
+              "formatted": "81,9 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  80.58,
+                  81.12,
+                  80.97,
+                  81.62,
+                  81.8,
+                  82.36,
+                  82.74,
+                  82.45,
+                  83.38,
+                  82.6,
+                  82.4,
+                  82.04,
+                  82.21,
+                  82.01,
+                  81.86
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 79.67,
+              "formatted": "79,7 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  77.05,
+                  78.15,
+                  78.21,
+                  78.75,
+                  79.1,
+                  79.08,
+                  79.77,
+                  79.51,
+                  80.73,
+                  79.64,
+                  79.15,
+                  79.03,
+                  79.33,
+                  80.11,
+                  79.67
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 83.88,
+              "formatted": "83,9 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  83.55,
+                  83.59,
+                  83.29,
+                  83.89,
+                  83.98,
+                  85.43,
+                  85.22,
+                  85.16,
+                  85.37,
+                  85.04,
+                  85.29,
+                  84.76,
+                  84.96,
+                  84.17,
+                  83.88
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 84.72,
-          "formatted": "84,72 anni",
-          "series": null,
+          "formatted": "84,7 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              80.5,
+              81.24,
+              81.35,
+              82.35,
+              82.33,
+              81.25,
+              82.12,
+              82.17,
+              83.7,
+              83.28,
+              83.47,
+              84.21,
+              84.04,
+              84.75,
+              84.72
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 84.72
+          "benchmarkValue": 84.72,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 84.72,
+              "formatted": "84,7 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  80.5,
+                  81.24,
+                  81.35,
+                  82.35,
+                  82.33,
+                  81.25,
+                  82.12,
+                  82.17,
+                  83.7,
+                  83.28,
+                  83.47,
+                  84.21,
+                  84.04,
+                  84.75,
+                  84.72
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 82.42,
+              "formatted": "82,4 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  76.14,
+                  78.38,
+                  78.22,
+                  78.88,
+                  78.63,
+                  77.66,
+                  79.58,
+                  78.39,
+                  80.92,
+                  80.63,
+                  80.56,
+                  81.56,
+                  81.48,
+                  82.21,
+                  82.42
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 86.72,
+              "formatted": "86,7 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  84.12,
+                  83.18,
+                  84.14,
+                  85.41,
+                  85.84,
+                  83.99,
+                  84.22,
+                  85.12,
+                  85.98,
+                  85.47,
+                  85.7,
+                  86.34,
+                  86.1,
+                  86.59,
+                  86.72
+                ]
+              }
+            }
+          ]
         },
         {
           "town": "Stazzema",
           "code": "046030",
           "slug": "stazzema",
           "value": 79.57,
-          "formatted": "79,57 anni",
-          "series": null,
+          "formatted": "79,6 anni",
+          "series": {
+            "years": [
+              2008,
+              2009,
+              2010,
+              2011,
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017,
+              2018,
+              2019,
+              2020,
+              2021,
+              2022
+            ],
+            "values": [
+              78.39,
+              79.22,
+              79.87,
+              79.67,
+              80.53,
+              79.59,
+              80.44,
+              81.48,
+              79.9,
+              77.31,
+              77.27,
+              79.23,
+              80.67,
+              79.7,
+              79.57
+            ]
+          },
           "normalized": null,
-          "benchmarkValue": 79.57
+          "benchmarkValue": 79.57,
+          "parts": [
+            {
+              "key": "totale",
+              "label": "Totale",
+              "selectorLabel": "Totale",
+              "value": 79.57,
+              "formatted": "79,6 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  78.39,
+                  79.22,
+                  79.87,
+                  79.67,
+                  80.53,
+                  79.59,
+                  80.44,
+                  81.48,
+                  79.9,
+                  77.31,
+                  77.27,
+                  79.23,
+                  80.67,
+                  79.7,
+                  79.57
+                ]
+              }
+            },
+            {
+              "key": "maschi",
+              "label": "Maschi",
+              "selectorLabel": "Maschi",
+              "value": 74.22,
+              "formatted": "74,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  74.19,
+                  74.44,
+                  76.77,
+                  76.13,
+                  77.0,
+                  74.08,
+                  77.42,
+                  78.2,
+                  77.0,
+                  70.01,
+                  71.18,
+                  74.31,
+                  76.23,
+                  70.53,
+                  74.22
+                ]
+              }
+            },
+            {
+              "key": "femmine",
+              "label": "Femmine",
+              "selectorLabel": "Femmine",
+              "value": 84.24,
+              "formatted": "84,2 anni",
+              "unit": "years",
+              "series": {
+                "years": [
+                  2008,
+                  2009,
+                  2010,
+                  2011,
+                  2012,
+                  2013,
+                  2014,
+                  2015,
+                  2016,
+                  2017,
+                  2018,
+                  2019,
+                  2020,
+                  2021,
+                  2022
+                ],
+                "values": [
+                  82.41,
+                  83.86,
+                  83.75,
+                  82.94,
+                  84.39,
+                  85.65,
+                  83.06,
+                  83.29,
+                  83.07,
+                  84.36,
+                  83.53,
+                  84.46,
+                  85.64,
+                  87.35,
+                  84.24
+                ]
+              }
+            }
+          ]
         }
       ],
       "aggregate": {
         "value": 82.68,
         "label": "Valore ARS Versilia",
-        "note": "Aggregato pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale."
+        "note": "Aggregato Zona Versilia pubblicato direttamente da ARS Toscana con lo stesso metodo del dato comunale; non è una media calcolata dall'Osservatorio.",
+        "formatted": "82,7 anni",
+        "series": {
+          "years": [
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022
+          ],
+          "values": [
+            81.16,
+            81.12,
+            81.3,
+            81.56,
+            81.59,
+            81.52,
+            82.08,
+            82.18,
+            82.39,
+            82.63,
+            83.15,
+            83.46,
+            82.97,
+            82.71,
+            82.68
+          ]
+        },
+        "parts": [
+          {
+            "key": "totale",
+            "label": "Totale",
+            "selectorLabel": "Totale",
+            "value": 82.68,
+            "formatted": "82,7 anni",
+            "unit": "years",
+            "series": {
+              "years": [
+                2008,
+                2009,
+                2010,
+                2011,
+                2012,
+                2013,
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022
+              ],
+              "values": [
+                81.16,
+                81.12,
+                81.3,
+                81.56,
+                81.59,
+                81.52,
+                82.08,
+                82.18,
+                82.39,
+                82.63,
+                83.15,
+                83.46,
+                82.97,
+                82.71,
+                82.68
+              ]
+            }
+          },
+          {
+            "key": "maschi",
+            "label": "Maschi",
+            "selectorLabel": "Maschi",
+            "value": 80.3,
+            "formatted": "80,3 anni",
+            "unit": "years",
+            "series": {
+              "years": [
+                2008,
+                2009,
+                2010,
+                2011,
+                2012,
+                2013,
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022
+              ],
+              "values": [
+                78.35,
+                78.24,
+                78.46,
+                78.49,
+                78.54,
+                78.25,
+                79.23,
+                79.54,
+                80.0,
+                80.08,
+                80.64,
+                81.0,
+                80.57,
+                80.18,
+                80.3
+              ]
+            }
+          },
+          {
+            "key": "femmine",
+            "label": "Femmine",
+            "selectorLabel": "Femmine",
+            "value": 84.94,
+            "formatted": "84,9 anni",
+            "unit": "years",
+            "series": {
+              "years": [
+                2008,
+                2009,
+                2010,
+                2011,
+                2012,
+                2013,
+                2014,
+                2015,
+                2016,
+                2017,
+                2018,
+                2019,
+                2020,
+                2021,
+                2022
+              ],
+              "values": [
+                83.72,
+                83.72,
+                83.86,
+                84.38,
+                84.41,
+                84.62,
+                84.67,
+                84.6,
+                84.52,
+                84.96,
+                85.43,
+                85.68,
+                85.16,
+                85.09,
+                84.94
+              ]
+            }
+          }
+        ]
       },
       "normalizedAggregate": null,
       "method": {
-        "type": "Dato ufficiale",
-        "formula": "Valore pubblicato dalla fonte, senza trasformazione ulteriore.",
-        "caveat": "Verificare definizione, standardizzazione per età e perimetro ARS; mantenere il livello comunale solo se espressamente fornito.",
-        "coverage": "7/7"
+        "type": "Dato ufficiale ARS Toscana",
+        "formula": "Valore pubblicato da ARS Toscana per l'indicatore 1290 “Speranza di vita alla nascita”, senza trasformazioni statistiche dell'Osservatorio.",
+        "caveat": "Serie 2008–2022 con distinzione Totale, Maschi e Femmine. I valori comunali, della Zona Versilia e della Toscana provengono dallo stesso export ufficiale. Nessun valore è interpolato, stimato o ricostruito da medie comunali.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/ars-life-expectancy-1290-2008-2022.json"
+      },
+      "sourceUrls": {
+        "indicator": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi",
+        "export": "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290"
+      },
+      "history": {
+        "years": [
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "coverage": "7/7",
+        "sexes": [
+          "totale",
+          "maschi",
+          "femmine"
+        ],
+        "source": "ARS Toscana — indicatore 1290",
+        "aggregateType": "official-source",
+        "aggregateLabel": "Zona Versilia",
+        "note": "Serie ufficiale 2008–2022. Totale, Maschi e Femmine sono pubblicati da ARS per tutti i sette Comuni; la Zona Versilia è l'aggregato ufficiale della fonte."
       }
     },
     "mortalityAll": {
