@@ -110,13 +110,13 @@
   function renderHistoryMarkup(metric, series, selectedTown) {
     const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
     if (metric?.meta?.compositeType === 'sexBreakdown') {
-      return markup.replace('Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.');
+      return markup.replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.');
     }
     if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
     const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
     return markup
       .replace(
-        'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.',
+        'Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.',
         'Redditi nominali e inflazione sono riportati alla stessa base 2016 = 0%. I tooltip mostrano anche la variazione reale, calcolata come rapporto tra indice del reddito e indice dei prezzi.'
       )
       .replace(
