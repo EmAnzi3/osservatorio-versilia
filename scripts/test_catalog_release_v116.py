@@ -69,6 +69,10 @@ def main() -> None:
 
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
     assert "2026.08.28-v1.22.0" in app and "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app
+    assert "2026.08.27-v1.21.0','27 agosto 2026'" in app
+    assert "Aggiunti tre indicatori Cultura e biblioteche della Regione Toscana 2024" in app
+    assert "2026.08.26-v1.20.0','26 agosto 2026','154 indicatori complessivi" in app
+    assert app.index("2026.08.27-v1.21.0") < app.index("2026.08.26-v1.20.0")
     assert "2026.08.20-v1.15.0" in app and "2026.08.20-v1.14.0" in app
     chart_app = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
     assert 'part.count === null || part.count === undefined' in chart_app, 'Le distribuzioni senza conteggi non devono mostrare NaN'
