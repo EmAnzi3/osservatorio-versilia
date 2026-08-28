@@ -33,6 +33,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
       - name: Validate life expectancy draft data
         run: |
           python -m json.tool data/site-data.json >/dev/null
@@ -41,7 +47,6 @@ jobs:
           python scripts/test_salute_life_expectancy_v122.py
           node --check assets/ux-history.js
           node --check assets/ux-history-core.js
-          node --check assets/app-parts/03.txt || true
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
