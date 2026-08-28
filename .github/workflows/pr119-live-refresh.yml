@@ -31,12 +31,14 @@ jobs:
             scripts/update_agcom_sources.py \
             scripts/update_fuel_prices_mimit.py \
             scripts/audit_agcom_primary.py \
+            scripts/audit_fuel_prices_mimit.py \
             scripts/monthly_data_check_status.py
 
-      - name: Refresh official sources
-        run: |
-          python scripts/update_agcom_sources.py
-          python scripts/update_fuel_prices_mimit.py
+      - name: Refresh AGCOM official sources
+        run: python scripts/update_agcom_sources.py
+
+      - name: Refresh MIMIT fuel prices
+        run: python scripts/update_fuel_prices_mimit.py
 
       - name: Detect data changes
         id: changes
