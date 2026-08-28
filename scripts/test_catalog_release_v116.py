@@ -89,6 +89,7 @@ def main() -> None:
     build_safe = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
     build_brand = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+    export_script = (ROOT / "assets" / "export-v161.js").read_text(encoding="utf-8")
     service_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
     assert 'UX_ASSET_VERSION = "20260828-v122-lifeexp-ui1"' in build_safe
     assert 'HISTORY_ASSET_VERSION = "20260828-v122-lifeexp-ui1"' in build_safe
@@ -96,6 +97,8 @@ def main() -> None:
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
     assert 'PWA_JS_REVISION = "catalog-v122"' in build_brand
     assert "20260828-v122" in development_loader
+    assert "const VERSION = '20260828-v122-lifeexp-ui1';" in export_script
+    assert "function sexBreakdownRows(" in export_script
     assert "ov-pwa-20260828-v122" in service_worker
 
     print(

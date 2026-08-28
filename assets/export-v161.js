@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260824-v116';
+  const VERSION = '20260828-v122-lifeexp-ui1';
   let dataPromise = null;
 
   function loadData() {
@@ -74,12 +74,49 @@
       ]);
   }
 
+  function sexBreakdownRows(metric, label) {
+    const sources = [
+      ...metric.rows.map(row => ({ territory: row.town, code: row.code, parts: row.parts || [] })),
+      { territory: 'Versilia', code: '202M', parts: metric.aggregate?.parts || [] },
+    ];
+    const lines = [];
+    sources.forEach(source => {
+      source.parts.forEach(part => {
+        const years = Array.isArray(part.series?.years) ? part.series.years : [];
+        const values = Array.isArray(part.series?.values) ? part.series.values : [];
+        years.forEach((year, index) => {
+          const value = values[index];
+          if (value === null || value === undefined || value === '') return;
+          lines.push([
+            source.territory,
+            source.code,
+            label,
+            year,
+            part.label,
+            value,
+            part.unit || metric.meta.unit,
+            metric.sourceUrl,
+          ]);
+        });
+      });
+    });
+    return lines;
+  }
+
   async function exportSelectedMetric() {
     const data = await loadData();
     const selected = selectedMetric(data);
     if (!selected) throw new Error('Indicatore attivo non trovato');
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
     const label = selected.metric.meta.label;
+    if (selected.metric.meta.compositeType === 'sexBreakdown') {
+      const lines = [
+        ['Territorio', 'Codice Istat', 'Indicatore', 'Anno', 'Sesso', 'Valore', 'Unità', 'Fonte'],
+        ...sexBreakdownRows(selected.metric, label),
+      ];
+      saveCSV(selected.key, lines);
+      return;
+    }
     const rows = normalized
       ? normalizedRows(selected.metric)
       : historicalRows(selected.metric, label);
