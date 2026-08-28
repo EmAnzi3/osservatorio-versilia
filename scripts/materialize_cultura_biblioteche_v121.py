@@ -273,6 +273,14 @@ def apply_registry(registry: dict) -> None:
 
 
 def patch_release_files() -> None:
+    current_finalizer = FINALIZER.read_text(encoding="utf-8")
+    if (
+        'VERSION = "v1.20.0"' not in current_finalizer
+        and 'VERSION = "v1.21.0"' not in current_finalizer
+    ):
+        # Il lotto è già incorporato in una release successiva: non effettuare
+        # downgrade di versione né dei cache-buster durante i gate di regressione.
+        return
     text = FINALIZER.read_text(encoding="utf-8")
     text = text.replace("catalogo pubblico v1.20.0", "catalogo pubblico v1.21.0")
     text = text.replace('VERSION = "v1.20.0"', 'VERSION = "v1.21.0"')

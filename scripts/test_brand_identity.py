@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from build_static_brand import APP_BUNDLE_ASSET_VERSION
+from build_static_safe import UX_ASSET_VERSION
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -47,7 +48,7 @@ def main() -> None:
         require("assets/brand.css?v=20260824-ov4" in text, f"CSS brand assente in {page}")
         require(f"assets/app-bundle.js?v={APP_BUNDLE_ASSET_VERSION}" in text,
                 f"Bundle applicativo non cache-bustato in {page}")
-        require("assets/visual-grammar.js?v=20260826-v120" in text,
+        require(f"assets/visual-grammar.js?v={UX_ASSET_VERSION}" in text,
                 f"Grammatica visiva non cache-bustata in {page}")
         require("favicon.svg?v=20260824-ov4" in text, f"Favicon non cache-bustata in {page}")
         require(OLD_MARK not in text, f"Vecchia O ancora presente in {page}")
