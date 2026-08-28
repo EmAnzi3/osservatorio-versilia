@@ -1,0 +1,49 @@
+name: Radar continuity diagnostic PR
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Radar dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Validate continuity diagnostics
+        run: python scripts/test_opportunity_daily_continuity.py
+
+      - name: Materialize verified baseline
+        run: python scripts/materialize_opportunity_release_snapshot.py
+
+      - name: Reproduce live Radar continuity state
+        run: python scripts/opportunity_daily_refresh.py
+
+      - name: Upload continuity diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-continuity-diagnostic-pr
+          path: reports/runtime/opportunity-continuity-hold.json
+          if-no-files-found: ignore
+          retention-days: 3
