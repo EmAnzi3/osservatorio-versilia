@@ -40,7 +40,8 @@ assert app_version == ux_version == history_version == bundle_version == hotfix_
     bundle_version,
     hotfix_version,
 )
-release_suffix = CATALOG_VERSION.removeprefix("v").replace(".", "")
+release_parts = CATALOG_VERSION.removeprefix("v").split(".")
+release_suffix = "".join(release_parts[:2])
 assert pwa_revision == f"catalog-v{release_suffix}", "Revisione PWA non allineata alla release canonica"
 assert app_version in sw_version, "Service worker non allineato alla revisione asset corrente"
 
