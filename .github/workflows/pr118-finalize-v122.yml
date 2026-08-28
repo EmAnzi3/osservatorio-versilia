@@ -1,0 +1,102 @@
+name: PR118 · Finalize v1.22 release metadata
+
+on:
+  push:
+    branches:
+      - feature/life-expectancy-history-sex-v122
+    paths:
+      - .github/workflows/pr118-finalize-v122.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/life-expectancy-history-sex-v122
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Finalize v1.22 metadata and cache revisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_exact(path, old, new, count=None):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              found = text.count(old)
+              if count is not None and found != count:
+                  raise SystemExit(f'{path}: expected {count} occurrence(s) of {old!r}, found {found}')
+              if not found:
+                  raise SystemExit(f'{path}: token not found: {old!r}')
+              p.write_text(text.replace(old, new, count if count is not None else -1), encoding='utf-8')
+
+          replace_exact('scripts/finalize_catalog_release.py', 'catalogo pubblico v1.21.0', 'catalogo pubblico v1.22.0', 1)
+          replace_exact('scripts/finalize_catalog_release.py', 'VERSION = "v1.21.0"', 'VERSION = "v1.22.0"', 1)
+          replace_exact('scripts/finalize_catalog_release.py', 'UPDATED = "27 agosto 2026"', 'UPDATED = "28 agosto 2026"', 1)
+
+          replace_exact('README.md', 'Versione dati corrente: **v1.21.0** — 27 agosto 2026.', 'Versione dati corrente: **v1.22.0** — 28 agosto 2026.', 1)
+
+          p = Path('assets/app-parts/05.txt')
+          text = p.read_text(encoding='utf-8')
+          marker = "    const versions = [\n"
+          entry = "      ['2026.08.28-v1.22.0','28 agosto 2026','157 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Estesa la Speranza di vita alla nascita con serie ufficiali ARS 2008–2022 per Totale, Maschi e Femmine, aggregato ufficiale Versilia e benchmark Toscana.'],\n"
+          if '2026.08.28-v1.22.0' not in text:
+              if text.count(marker) != 1:
+                  raise SystemExit('assets/app-parts/05.txt: versions marker not unique')
+              text = text.replace(marker, marker + entry, 1)
+              p.write_text(text, encoding='utf-8')
+
+          replace_exact('scripts/build_static_safe.py', 'UX_ASSET_VERSION = "20260826-v120"', 'UX_ASSET_VERSION = "20260828-v122-lifeexp-ui1"', 1)
+          replace_exact('scripts/build_static_safe.py', 'HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"', 'HISTORY_ASSET_VERSION = "20260828-v122-lifeexp-ui1"', 1)
+          replace_exact('scripts/build_static_brand.py', 'APP_BUNDLE_ASSET_VERSION = "20260827-v121-history-ui3"', 'APP_BUNDLE_ASSET_VERSION = "20260828-v122-lifeexp-ui1"', 1)
+          replace_exact('scripts/build_static_brand.py', 'PWA_JS_REVISION = "catalog-v121"', 'PWA_JS_REVISION = "catalog-v122"', 1)
+
+          replace_exact('scripts/test_catalog_release_v116.py', 'release v1.21.0', 'release v1.22.0', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app', 'assert "2026.08.28-v1.22.0" in app and "2026.08.27-v1.21.0" in app and "157 indicatori complessivi" in app', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert "**v1.21.0** — 27 agosto 2026" in readme', 'assert "**v1.22.0** — 28 agosto 2026" in readme', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert \'UX_ASSET_VERSION = "20260826-v120"\' in build_safe', 'assert \'UX_ASSET_VERSION = "20260828-v122-lifeexp-ui1"\' in build_safe', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert \'HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"\' in build_safe', 'assert \'HISTORY_ASSET_VERSION = "20260828-v122-lifeexp-ui1"\' in build_safe', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert \'APP_BUNDLE_ASSET_VERSION = "20260827-v121-history-ui3"\' in build_brand', 'assert \'APP_BUNDLE_ASSET_VERSION = "20260828-v122-lifeexp-ui1"\' in build_brand', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert \'PWA_JS_REVISION = "catalog-v121"\' in build_brand', 'assert \'PWA_JS_REVISION = "catalog-v122"\' in build_brand', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert "20260827-v121" in development_loader', 'assert "20260828-v122" in development_loader', 1)
+          replace_exact('scripts/test_catalog_release_v116.py', 'assert "ov-pwa-20260827-v121" in service_worker', 'assert "ov-pwa-20260828-v122" in service_worker', 1)
+          PY
+
+          python scripts/finalize_catalog_release.py
+
+      - name: Validate finalized release
+        run: |
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_salute_life_expectancy_v122.py
+          cat assets/app-parts/*.txt > /tmp/ov-app.js
+          node --check /tmp/ov-app.js
+          node --check assets/visual-grammar.js
+          node --check assets/ux-history-core.js
+          node --check assets/ux-history.js
+
+      - name: Commit finalized v1.22 release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No release metadata changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md data/site-data.json data/source-registry.json assets/app-parts/05.txt scripts/finalize_catalog_release.py scripts/test_catalog_release_v116.py scripts/build_static_safe.py scripts/build_static_brand.py
+          git commit -m "chore: finalize public release v1.22.0"
+          git push origin HEAD:feature/life-expectancy-history-sex-v122
