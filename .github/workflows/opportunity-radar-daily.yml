@@ -50,6 +50,15 @@ jobs:
       - name: Scan live sources and build daily snapshot
         run: python scripts/opportunity_daily_refresh.py
 
+      - name: Upload continuity diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-continuity-diagnostic
+          path: reports/runtime/opportunity-continuity-hold.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Validate daily snapshot and freshness
         run: |
           python -m json.tool data/opportunity-daily-public.json > /dev/null
