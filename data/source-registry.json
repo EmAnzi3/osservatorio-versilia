@@ -419,8 +419,6 @@
     "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": "ispra-environment-annual",
     "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune": "ispra-environment-annual",
     "https://www.isprambiente.gov.it/it/banche-dati/banche-dati-folder/suolo-e-territorio/rischi-geologici-e-naturali": "ispra-hazards-irregular",
-    "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html": "agcom-quarterly",
-    "https://geo.agcom.it/reportistica/ai/index.html": "agcom-quarterly",
     "https://openbdap.rgs.mef.gov.it/it/FET/Analizza": "openbdap-annual",
     "https://www.siope.it/": "siope-monthly",
     "https://servizi.lavoro.gov.it/runts/it-it/Ricerca-enti": "runts-continuous",
@@ -460,7 +458,9 @@
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual",
     "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": "ars-toscana-mixed",
-    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed"
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed",
+    "https://maps.agcom.it/": "agcom-quarterly",
+    "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data": "agcom-quarterly"
   },
   "metricOverrides": {
     "lifeExpectancy": {

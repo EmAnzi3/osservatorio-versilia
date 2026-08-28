@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Verifica i conteggi assoluti FTTH sul CSV comunale primario AGCOM.
+"""Verifica i conteggi assoluti FTTH sul dataset comunale primario AGCOM.
 
-La pagina AI-ready AGCOM è la fonte di discovery. Il programma tenta di
-ricavare da lì l'endpoint CSV e usa un endpoint noto soltanto come fallback.
-Nessun conteggio viene ricostruito dalle percentuali.
+Il controllo usa direttamente l'endpoint machine-readable ufficiale ArcGIS.
+La mappa AGCOM resta il riferimento pubblico; nessun conteggio viene
+ricostruito dalle percentuali.
 """
 from __future__ import annotations
 
@@ -12,7 +12,6 @@ import csv
 import io
 import json
 import math
-import re
 import sys
 import urllib.error
 import urllib.request
@@ -25,8 +24,11 @@ if str(SCRIPT_DIR) not in sys.path:
 
 import update_agid_indicators as base  # noqa: E402
 
-AI_READY_PAGE = "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html"
-FALLBACK_CSV_URL = (
+PUBLIC_MAP_URL = "https://maps.agcom.it/"
+# Alias di compatibilità per i materializzatori storici: il nome resta disponibile,
+# ma punta alla mappa pubblica AGCOM corrente e non alle vecchie pagine dismesse.
+AI_READY_PAGE = PUBLIC_MAP_URL
+OFFICIAL_CSV_URL = (
     "https://geo.agcom.it/arcgis/sharing/rest/content/items/"
     "25830559c5784c1eb5eb1cf748889f4c/data"
 )
@@ -39,28 +41,14 @@ def fetch_bytes(url: str, accept: str = "*/*") -> bytes:
 
 
 def discover_csv_url() -> tuple[str, str]:
-    try:
-        html = fetch_bytes(AI_READY_PAGE, "text/html,*/*").decode("utf-8", errors="replace")
-        match = re.search(
-            r'https://geo\.agcom\.it/arcgis/sharing/rest/content/items/[a-f0-9]{32}/data',
-            html,
-            flags=re.IGNORECASE,
-        )
-        if match:
-            return match.group(0), "discovered_from_ai_ready_page"
-        href = re.search(r'href=["\']([^"\']+)["\'][^>]*>\s*(?:Scarica\s+CSV|Download)', html, flags=re.IGNORECASE)
-        if href:
-            return urllib.parse.urljoin(AI_READY_PAGE, href.group(1)), "discovered_from_ai_ready_href"
-    except Exception as exc:  # discovery fallback is recorded below
-        return FALLBACK_CSV_URL, f"fallback_after_discovery_error: {exc}"
-    return FALLBACK_CSV_URL, "fallback_no_endpoint_found_in_ai_ready_page"
+    """Restituisce l'endpoint ufficiale stabile senza interrogare pagine dismesse."""
+    return OFFICIAL_CSV_URL, "official_arcgis_item_data"
 
 
 def parse_int(value: str) -> int | None:
     raw = (value or "").strip()
     if not raw:
         return None
-    # AGCOM usa separatori italiani; per i conteggi comunali i decimali non sono attesi.
     raw = raw.replace(".", "").replace(",", "")
     try:
         return int(float(raw))
@@ -185,7 +173,7 @@ def audit(data: dict[str, Any], snapshot: dict[str, Any]) -> tuple[dict[str, Any
 
     snapshot["agcomAudit"] = {
         "sourceType": "primary_official_csv",
-        "aiReadyPage": AI_READY_PAGE,
+        "publicMapUrl": PUBLIC_MAP_URL,
         "officialCsvUrl": csv_url,
         "discovery": discovery,
         "rowCount": len(rows),
@@ -193,7 +181,7 @@ def audit(data: dict[str, Any], snapshot: dict[str, Any]) -> tuple[dict[str, Any
         "invalidAbsoluteTowns": [town_names[code] for code in sorted(invalid)],
         "rows": report_rows,
         "rule": (
-            "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal CSV comunale AGCOM; "
+            "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal dataset comunale AGCOM; "
             "il controllo demografico segnala valori palesemente incompatibili con la popolazione residente."
         ),
     }
@@ -205,9 +193,9 @@ def write_report(snapshot: dict[str, Any], path: Path) -> None:
     lines = [
         "# Audit primario AGCOM — conteggi FTTH",
         "",
-        f"- Pagina AI-ready: {audit['aiReadyPage']}",
-        f"- CSV acquisito: {audit['officialCsvUrl']}",
-        f"- Discovery: `{audit['discovery']}`",
+        f"- Mappa pubblica: {audit['publicMapUrl']}",
+        f"- Dataset acquisito: {audit['officialCsvUrl']}",
+        f"- Accesso: `{audit['discovery']}`",
         f"- Righe CSV: **{audit['rowCount']}**",
         f"- Comuni non validati: **{', '.join(audit['invalidAbsoluteTowns']) or 'nessuno'}**",
         "",
@@ -240,6 +228,7 @@ def main(argv: list[str] | None = None) -> int:
     print(json.dumps({
         "status": "ok",
         "officialCsvUrl": csv_url,
+        "publicMapUrl": PUBLIC_MAP_URL,
         "discovery": discovery,
         "invalidTowns": snapshot["agcomAudit"]["invalidAbsoluteTowns"],
         "report": str(args.report_md),
