@@ -7,21 +7,22 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
+from build_static_brand import APP_BUNDLE_ASSET_VERSION
+from build_static_safe import HISTORY_ASSET_VERSION
+
 METRICS = (
     ("libraryLoansPerResident", "Prestiti bibliotecari"),
     ("libraryActiveBorrowersPer100", "Utenti attivi del prestito"),
     ("libraryWeeklyOpeningHours", "Apertura settimanale"),
 )
 KEYS = tuple(key for key, _ in METRICS)
-APP_BUNDLE_VERSION = "20260827-v121-history-ui3"
-HISTORY_ASSET_VERSION = "20260827-v121-history-ui6"
 
 
 def assert_production_bundle_version(page) -> None:
     scripts = page.locator('script[src*="assets/app-bundle.js"]')
     assert scripts.count() == 1, f"Bundle applicativo di produzione assente o duplicato: {scripts.count()}"
     src = scripts.first.get_attribute("src") or ""
-    assert f"v={APP_BUNDLE_VERSION}" in src, f"Cache-buster bundle inatteso: {src}"
+    assert f"v={APP_BUNDLE_ASSET_VERSION}" in src, f"Cache-buster bundle inatteso: {src}"
 
 
 def assert_town_history(page, base: str, mobile: bool) -> None:
