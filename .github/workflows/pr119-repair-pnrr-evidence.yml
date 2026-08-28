@@ -1,0 +1,73 @@
+name: PR 119 repair PNRR evidence
+
+on:
+  push:
+    branches: ["automation/data-check-2026-08"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr119-repair-pnrr-evidence
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Preserve public PNRR evidence contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/monthly_data_check_status.py')
+          text = path.read_text(encoding='utf-8')
+          old1 = '    metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}\n    return {'
+          new1 = '    metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}\n    dates = list(audit_result.get("dataElaborationDates") or [])\n    return {'
+          old2 = '        "dataElaborationDates": list(audit_result.get("dataElaborationDates") or []),\n        "metric": metric_key,'
+          new2 = '        "dataElaborationDates": dates,\n        "dataElaborationDate": dates[-1] if dates else "",\n        "match7of7": str(metric_verdicts.get(metric_key) or audit_result.get("verdict") or "") == "match",\n        "metric": metric_key,'
+          if old1 in text:
+              text = text.replace(old1, new1, 1)
+          elif 'dates = list(audit_result.get("dataElaborationDates") or [])' not in text:
+              raise SystemExit('Punto di inserimento dates non trovato')
+          if old2 in text:
+              text = text.replace(old2, new2, 1)
+          elif '"dataElaborationDate": dates[-1] if dates else ""' not in text:
+              raise SystemExit('Punto di inserimento compatibilità PNRR non trovato')
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Refresh live monitor state
+        run: |
+          mkdir -p reports/runtime
+          python scripts/monthly_data_check_status.py \
+            --mode live \
+            --report-md reports/runtime/pr119-pnrr.md \
+            --report-json reports/runtime/pr119-pnrr.json \
+            --next-state reports/runtime/pr119-pnrr-state.json
+          cp reports/runtime/pr119-pnrr-state.json data/source-monitor-state.json
+          cp reports/runtime/pr119-pnrr.md reports/data-checks/2026-08.md
+
+      - name: Validate affected contracts
+        run: |
+          python scripts/test_income_lotto_a_v2.py
+          python scripts/test_pnrr_toscana_draft.py
+          python scripts/test_pnrr_toscana_review.py
+
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/monthly_data_check_status.py data/source-monitor-state.json reports/data-checks/2026-08.md
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da registrare"
+            exit 0
+          fi
+          git commit -m "Mantiene compatibilità evidenza PNRR nel monitor"
+          git push origin HEAD:automation/data-check-2026-08
