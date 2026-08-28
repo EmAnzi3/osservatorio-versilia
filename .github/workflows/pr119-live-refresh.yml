@@ -9,7 +9,7 @@ permissions:
 
 concurrency:
   group: pr119-live-refresh
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   refresh:
@@ -50,17 +50,6 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Establish live monitoring baseline
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          mkdir -p reports/runtime
-          python scripts/monthly_data_check_status.py \
-            --mode live \
-            --report-md reports/runtime/pr119-baseline.md \
-            --report-json reports/runtime/pr119-baseline.json \
-            --next-state reports/runtime/pr119-baseline-state.json
-          cp reports/runtime/pr119-baseline-state.json data/source-monitor-state.json
-
       - name: Mark MIMIT period verified by the updater
         if: steps.changes.outputs.changed == 'true'
         run: |
@@ -89,6 +78,7 @@ jobs:
       - name: Run final live monitor
         if: steps.changes.outputs.changed == 'true'
         run: |
+          mkdir -p reports/runtime
           python scripts/monthly_data_check_status.py \
             --mode live \
             --report-md reports/runtime/pr119-final.md \
