@@ -4,12 +4,14 @@
 from pathlib import Path
 import os
 
+from build_static_safe import UX_ASSET_VERSION
+
 DIST = Path(__file__).resolve().parents[1] / "dist"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = "https://osservatorioversilia.it/images/versilia-viareggio-apuane.jpg"
 TWITTER_SITE = "@OssVersilia"
-SOCIAL_ASSET_VERSION = "20260826-v120"
+SOCIAL_ASSET_VERSION = UX_ASSET_VERSION
 SOCIAL_PROFILES = (
     "https://www.facebook.com/osservatorioversilia",
     "https://www.instagram.com/osservatorioversilia/",

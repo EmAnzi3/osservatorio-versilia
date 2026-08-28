@@ -148,7 +148,7 @@
       "frequency": "annual_or_irregular",
       "frequencyLabel": "Annuale o pluriennale, secondo l'indicatore",
       "expectedRelease": "Secondo gli aggiornamenti della banca dati La salute dei comuni",
-      "acquisitionMethod": "Trascrizione controllata dei valori comunali e degli aggregati pubblicati direttamente da ARS Toscana.",
+      "acquisitionMethod": "Download dell'export ufficiale ARS per indicatore; snapshot con impronta SHA-256 e valori comunali/territoriali conservati senza stime.",
       "licenseName": "Condizioni d'uso ARS Toscana",
       "licenseUrl": "https://www.ars.toscana.it/"
     },
@@ -458,13 +458,13 @@
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/873b9a04-a1a3-4dab-b0d3-7e98dd67e068/download/dataset_biblioteche.csv": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
-    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual"
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual",
+    "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": "ars-toscana-mixed",
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed"
   },
   "metricOverrides": {
     "lifeExpectancy": {
-      "frequency": "irregular",
-      "frequencyLabel": "Pluriennale o irregolare",
-      "expectedRelease": "Secondo gli aggiornamenti del Registro di mortalità ARS/ISPRO"
+      "profile": "ars-toscana-mixed"
     },
     "mortalityAll": {
       "frequency": "irregular",
@@ -627,6 +627,8 @@
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/6e2fd7ad-9699-4d1d-b90d-c96a69a18179/download/dataset_indicatori.csv": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/873b9a04-a1a3-4dab-b0d3-7e98dd67e068/download/dataset_biblioteche.csv": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
-    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual"
+    "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual",
+    "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": "ars-toscana-mixed",
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed"
   }
 }

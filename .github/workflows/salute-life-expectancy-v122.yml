@@ -1,0 +1,108 @@
+name: Salute life expectancy v1.22 · release gate
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "assets/**"
+      - "data/**"
+      - "scripts/**"
+      - ".github/workflows/salute-life-expectancy-v122.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "life-expectancy-v122-fast-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  validate-and-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install chromium
+
+      - name: Validate ARS life expectancy contract
+        run: |
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-snapshots/ars-life-expectancy-1290-2008-2022.json >/dev/null
+          python scripts/test_salute_life_expectancy_v122.py
+          python scripts/patch_salute_life_expectancy_v122_visual_grammar.py
+          git diff --exit-code -- assets/visual-grammar.js
+          node --check assets/visual-grammar.js
+          node --check assets/ux-history.js
+          node --check assets/ux-history-core.js
+
+      - name: Build pre-rendered site
+        run: python scripts/build_static_brand.py
+
+      - name: Materialize public data status
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+
+      - name: Build existing PNRR town deep dive
+        run: |
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+
+      - name: Include Percorsi Versilia
+        run: python scripts/copy_percorsi_dist.py
+
+      - name: Start local preview server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-lifeexp-http.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-lifeexp-http.log
+          exit 1
+
+      - name: Verify lollipops against selected ARS sex values
+        run: python scripts/test_salute_life_expectancy_v122_browser.py --base http://127.0.0.1:8123/
+
+      - name: Add preview manifest
+        shell: bash
+        run: |
+          cat > dist/PR118-PREVIEW.txt <<'EOF'
+          Osservatorio Versilia · PR #118
+          Draft: storico e distinzione per sesso della speranza di vita alla nascita.
+
+          Pagina principale da controllare:
+          /confronta/salute/?indicatore=lifeExpectancy
+
+          Gate browser verificato:
+          - Totale / Maschi / Femmine;
+          - posizione lollipop coerente con il valore ARS selezionato;
+          - riferimento ufficiale Versilia (ARS), non media semplice dei 7 Comuni;
+          - scala 0–100 anni.
+
+          Questa anteprima non implica approvazione, merge o pubblicazione su main.
+          EOF
+
+      - name: Upload verified PR118 draft preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-pr118-life-expectancy-preview-verified
+          path: dist
+          if-no-files-found: error
+          retention-days: 14

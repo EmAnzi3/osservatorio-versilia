@@ -330,7 +330,7 @@
       chartMarkup = `<div class="ux-history-scroll"><div class="ux-history-chart ${selectedSlug ? 'has-selection' : ''}" data-unit="${escapeHtml(metric.meta.unit)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(`${metric.meta.label}: confronto storico dei sette comuni`)}">${ticks}${zero}${paths}${yearLabels}</svg></div></div><p class="ux-history-scroll-hint">Scorri il grafico orizzontalmente per leggere l’intera serie.</p>`;
     }
 
-    return `<div class="ux-history-card"><div class="ux-history-head"><div><strong>${escapeHtml(modeLabel)}</strong><span>${isTwoPoint ? 'Confronto diretto tra le due annualità disponibili, in ordine alfabetico e senza graduatorie.' : 'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.'}</span></div><span>${escapeHtml(metric.meta.source)}</span></div>${chartMarkup}<div class="ux-history-legend" aria-label="Comuni">${legend}</div><div class="ux-history-summary" aria-live="polite">${summaryMarkup(null, metric.meta.unit)}</div></div>`;
+    return `<div class="ux-history-card"><div class="ux-history-head"><div><strong>${escapeHtml(modeLabel)}</strong><span>${isTwoPoint ? 'Confronto diretto tra le due annualità disponibili, in ordine alfabetico e senza graduatorie.' : 'Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.'}</span></div><span>${escapeHtml(metric.meta.source)}</span></div>${chartMarkup}<div class="ux-history-legend" aria-label="Comuni">${legend}</div><div class="ux-history-summary" aria-live="polite">${summaryMarkup(null, metric.meta.unit)}</div></div>`;
   }
 
   function comparisonBarsMarkup(metric, selectedSlug = '') {

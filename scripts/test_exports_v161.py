@@ -107,8 +107,34 @@ def main() -> None:
 
         page.goto(base + "confronta/salute/?indicatore=lifeExpectancy", wait_until="networkidle")
         life = download_csv(page, str(temp / "life.csv"))
-        require(len(life) == 8,
-                "CSV senza storico: deve restare una riga corrente per ciascun Comune")
+        require(life[0] == [
+            "Territorio", "Codice Istat", "Indicatore", "Anno",
+            "Sesso", "Valore", "Unità", "Fonte",
+        ], "CSV speranza di vita: intestazione inattesa")
+        life_rows = life[1:]
+        expected_life_territories = {
+            "Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta",
+            "Seravezza", "Stazzema", "Viareggio", "Versilia",
+        }
+        expected_life_years = {str(year) for year in range(2008, 2023)}
+        expected_life_sexes = {"Totale", "Maschi", "Femmine"}
+        require(len(life_rows) == 360,
+                f"CSV speranza di vita: attese 360 osservazioni, trovate {len(life_rows)}")
+        require({row[0] for row in life_rows} == expected_life_territories,
+                "CSV speranza di vita: copertura territoriale incompleta")
+        require({row[3] for row in life_rows} == expected_life_years,
+                "CSV speranza di vita: annualità 2008–2022 incomplete")
+        require({row[4] for row in life_rows} == expected_life_sexes,
+                "CSV speranza di vita: disaggregazione per sesso incompleta")
+        require({row[6] for row in life_rows} == {"years"},
+                "CSV speranza di vita: unità inattesa")
+        require({row[1] for row in life_rows if row[0] == "Versilia"} == {"202M"},
+                "CSV speranza di vita: codice ufficiale Versilia mancante")
+        for territory in expected_life_territories:
+            for sex in expected_life_sexes:
+                rows = [row for row in life_rows if row[0] == territory and row[4] == sex]
+                require(len(rows) == 15 and {row[3] for row in rows} == expected_life_years,
+                        f"CSV speranza di vita: serie incompleta per {territory}, {sex}")
 
         page.goto(base + "confronta/economia/?indicatore=tourismPresences", wait_until="networkidle")
         page.locator('[data-scale="normalized"]').click()

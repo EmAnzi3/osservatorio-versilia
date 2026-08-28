@@ -10,6 +10,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from finalize_catalog_release import VERSION as CATALOG_VERSION, UPDATED as CATALOG_UPDATED
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
@@ -60,7 +62,7 @@ def main() -> None:
     registry = load(REGISTRY)
     snapshot = load(SNAPSHOT)
 
-    require(site["version"] == "v1.21.0" and site["updated"] == "27 agosto 2026", "Release non finalizzata")
+    require(site["version"] == CATALOG_VERSION and site["updated"] == CATALOG_UPDATED, "Release catalogo corrente non finalizzata")
     require(len(site["metrics"]) == 157, "Conteggio catalogo diverso da 157")
     require(registry["expectedMetricCount"] == 157, "Conteggio registry diverso da 157")
     require(registry["expectedInlineMetricCount"] == 153 and registry["expectedExternalMetricCount"] == 4, "Ripartizione 153+4 incoerente")

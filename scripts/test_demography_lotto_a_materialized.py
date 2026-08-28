@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from finalize_catalog_release import VERSION
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / 'data/site-data.json').read_text(encoding='utf-8'))
 REGISTRY = json.loads((ROOT / 'data/source-registry.json').read_text(encoding='utf-8'))
@@ -42,8 +44,8 @@ def assert_series(metric: dict, years: list[int]) -> None:
 
 def main() -> None:
     # Il lotto Demografia resta invariato: questo gate segue il contratto
-    # globale corrente della release, che ora comprende Cultura e biblioteche.
-    assert SITE['version'] == 'v1.21.0'
+    # globale corrente della release.
+    assert SITE['version'] == VERSION
     assert len(SITE['metrics']) == 157
     external = [
         key for key, metric in SITE['metrics'].items()
@@ -151,7 +153,7 @@ def main() -> None:
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        'Demografia Lotto A materializzata OK: catalogo v1.21 con 157 metriche, 7/7, '
+        f'Demografia Lotto A materializzata OK: catalogo {VERSION} con 157 metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )

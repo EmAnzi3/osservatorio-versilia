@@ -1,7 +1,7 @@
 {
   "schemaVersion": "4.0",
-  "generatedAt": "2026-08-27T17:50:43+00:00",
-  "referenceDate": "2026-08-27",
+  "generatedAt": "2026-08-28T09:42:01+00:00",
+  "referenceDate": "2026-08-28",
   "municipalities": [
     "Camaiore",
     "Forte dei Marmi",
@@ -28,7 +28,7 @@
     "archive": 1,
     "continuityHold": 0,
     "duplicatesCollapsed": 7,
-    "discoveryReview": 120,
+    "discoveryReview": 122,
     "applicationOpen": 27,
     "rollingOpen": 2,
     "announcedUpcoming": 2,
@@ -78,7 +78,7 @@
       "discardedCount": 27,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "ageDays": 0,
         "maxAgeDays": 45
       },
@@ -96,7 +96,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-14",
-        "ageDays": 13,
+        "ageDays": 14,
         "maxAgeDays": 45
       },
       "error": null,
@@ -112,7 +112,7 @@
       "discardedCount": 9,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "ageDays": 0,
         "maxAgeDays": 45
       },
@@ -130,7 +130,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-16",
-        "ageDays": 72,
+        "ageDays": 73,
         "maxAgeDays": 120
       },
       "error": null,
@@ -147,7 +147,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-08",
-        "ageDays": 80,
+        "ageDays": 81,
         "maxAgeDays": 120
       },
       "error": null,
@@ -164,7 +164,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-12",
-        "ageDays": 15,
+        "ageDays": 16,
         "maxAgeDays": 120
       },
       "error": null,
@@ -181,7 +181,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-17",
-        "ageDays": 10,
+        "ageDays": 11,
         "maxAgeDays": 120
       },
       "error": null,
@@ -198,7 +198,7 @@
       "freshness": {
         "status": "stale",
         "observedDate": "2026-01-30",
-        "ageDays": 209,
+        "ageDays": 210,
         "maxAgeDays": 45
       },
       "error": null,
@@ -214,7 +214,7 @@
       "discardedCount": 14,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "ageDays": 0,
         "maxAgeDays": 45
       },
@@ -312,7 +312,7 @@
         "condition_label": "Ruolo territoriale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -405,7 +405,7 @@
         "condition_label": "Soglia demografica"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -439,7 +439,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:40:40+00:00",
+      "detected_at": "2026-08-28T09:33:24+00:00",
       "fingerprint": "616d2151dd2f1ff1a3f298964b05c7e4ae0bf4d6b5eb067e1b4670491daf5f95",
       "municipality_eligibility": {
         "Camaiore": {
@@ -592,7 +592,7 @@
         "source_url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "presentation": {
         "source_label": "Ministero della Cultura · DG Spettacolo",
         "source_mark": "MiC",
@@ -643,7 +643,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:40:47+00:00",
+      "detected_at": "2026-08-28T09:33:30+00:00",
       "fingerprint": "85a2931c5ee60679a8c1b62a058c59f1af1e11e2c97fd294df74b74582b09508",
       "municipality_eligibility": {
         "Camaiore": {
@@ -752,7 +752,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-27T17:40:49+00:00",
+      "detected_at": "2026-08-28T09:33:31+00:00",
       "fingerprint": "c527f9da6d9004efdfe1b6c57e616d139865da8b659a9015f88922e7b2199073",
       "municipality_eligibility": {
         "Camaiore": {
@@ -916,7 +916,7 @@
         "condition_label": "Impegno assunzionale e delega ATS"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -953,7 +953,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:41:03+00:00",
+      "detected_at": "2026-08-28T09:33:44+00:00",
       "fingerprint": "7af7da5349575b73e2e20a9d4459f769682a72270d0fa7364d68b4df6fde56d1",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1117,7 +1117,7 @@
         "condition_label": "Pipeline di investimenti e progetto LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1210,7 +1210,7 @@
         "condition_label": "Comunità energetiche e partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1303,7 +1303,7 @@
         "condition_label": "Progetto/partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1396,7 +1396,7 @@
         "condition_label": "Città/progetto dimostrativo LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -1432,7 +1432,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:48:11+00:00",
+      "detected_at": "2026-08-28T09:40:13+00:00",
       "fingerprint": "f495a66df90ea23fa198dfe7804b5313c61ff510d43941fbb89dde6bc3aae8af",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1598,7 +1598,7 @@
         "condition_label": "Partenariato transnazionale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "cached_recent",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -1632,7 +1632,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:48:57+00:00",
+      "detected_at": "2026-08-28T09:40:53+00:00",
       "fingerprint": "d292f9661c0ad594b68235e5c81ad00c82e9222bc8ec01b214b34a0d706a02a0",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1737,7 +1737,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:48:48+00:00",
+      "detected_at": "2026-08-28T09:40:45+00:00",
       "fingerprint": "93e219752c95b0b319e2b4272b3ac935108c5e8b771b934eb3bd678ee156d730",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1843,7 +1843,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:39:10+00:00",
+      "detected_at": "2026-08-28T09:32:02+00:00",
       "fingerprint": "35fcf629ad1c89c2dbabb1521b063ae333226b42fa3919b78253d5c8e20c3c2f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2007,7 +2007,7 @@
         "condition_label": "Soglia demografica"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2044,7 +2044,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-27T17:47:56+00:00",
+      "detected_at": "2026-08-28T09:40:01+00:00",
       "fingerprint": "d17b122ec4fa2b9761e0b073ab6fb91536cdae671e3bc8cd58ac8e422f92bd97",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2209,7 +2209,7 @@
         "condition_label": "Progetto territoriale"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "cached_recent",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2302,7 +2302,7 @@
         "condition_label": "Comune costiero"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "cached_recent",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2395,7 +2395,7 @@
         "condition_label": "Partenariato richiesto"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -2429,7 +2429,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:39:07+00:00",
+      "detected_at": "2026-08-28T09:31:59+00:00",
       "fingerprint": "00b755c2877de98a35b2a453b01984d25f31463424ba7cb06c15b2027787688f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2532,7 +2532,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-08-27T17:39:12+00:00",
+      "detected_at": "2026-08-28T09:32:04+00:00",
       "fingerprint": "5c30d6ba375cb6bc880893d6b12e3d6dc53631edda47abacf9bd13c930a431bd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2637,7 +2637,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:48:09+00:00",
+      "detected_at": "2026-08-28T09:40:12+00:00",
       "fingerprint": "52537afb758f0958ecb29df56ad3697667599e77c1c9ac3311d962199ec10ce4",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2746,7 +2746,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:48:43+00:00",
+      "detected_at": "2026-08-28T09:40:41+00:00",
       "fingerprint": "14f431c160c5f2382754875e1304eba487fa3a68f28cbb6a9e0fb501346768a7",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2911,7 +2911,7 @@
         "condition_label": "Titolo di esclusività e requisiti evento"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": true
@@ -3004,7 +3004,7 @@
         "condition_label": "Misura a sportello"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3097,7 +3097,7 @@
         "condition_label": "DEGURBA e partenariato europeo"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3190,7 +3190,7 @@
         "condition_label": "SECAP / piano energia-clima"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3283,7 +3283,7 @@
         "condition_label": "In attesa del bando"
       },
       "verified_direct": true,
-      "verified_at": "2026-08-27",
+      "verified_at": "2026-08-28",
       "verification_status": "live",
       "is_new": true,
       "first_seen_at": "2026-08-25"
@@ -3577,7 +3577,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:46:11+00:00",
+      "detected_at": "2026-08-28T09:38:16+00:00",
       "fingerprint": "c25be1fd8ef5b3446f6e55c7112ccee3e972a54ae365f4f1d93f07f9671c066c",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3668,7 +3668,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-08-27T17:46:06+00:00",
+      "detected_at": "2026-08-28T09:38:11+00:00",
       "fingerprint": "93f91999aa938515dd279e0c2316bf9d21b76be704d4c676bfbdbd34e1dfc7fd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3806,7 +3806,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "publicCount": 3,
         "candidateCount": 37,
         "reviewCount": 0,
@@ -3852,7 +3852,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "publicCount": 1,
         "candidateCount": 10,
         "reviewCount": 0,
@@ -4061,7 +4061,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 21,
+        "candidateCount": 22,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4751,7 +4751,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 1,
+        "candidateCount": 2,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4887,7 +4887,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-08-27",
+        "observedDate": "2026-08-28",
         "publicCount": 6,
         "candidateCount": 20,
         "reviewCount": 0,
@@ -5572,7 +5572,7 @@
       "territory": "Italia",
       "title": "Bandi e Avvisi",
       "url": "https://www.mase.gov.it/portale/bandi-e-avvisi",
-      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_vhsc\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
+      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_wfzi\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5608,7 +5608,7 @@
       "territory": "Italia",
       "title": "Briciole di pane",
       "url": "https://www.mit.gov.it/documentazione/bonus-e-finanziamenti-cittadini-enti-locali-ed-imprese",
-      "summary": "Home Documentazione Bonus e finanziamenti a cittadini, enti locali ed imprese Bonus e finanziamenti a cittadini, enti locali ed imprese Per un facile raggiungimento delle informazioni, in questa pagina vengono descritti: Bonus o agevolazioni per cittadini, enti locali ed imprese, realizzati anche in collaborazione con altre strutture. Iniziative di bonus o finanziamenti SCADUTE. Visto il rapido aggiornamento delle informazioni, la validità dei contenuti è quella riportata sui portali stessi, e non la sintesi sotto elencata Bonus e contributi attivi o da attivare Fondo adeguamento dei prezzi pe",
+      "summary": "Home Documentazione Bonus e finanziamenti a cittadini, enti locali ed imprese Bonus e finanziamenti a cittadini, enti locali ed imprese Per un facile raggiungimento delle informazioni, in questa pagina vengono descritti: Bonus o agevolazioni per cittadini, enti locali ed imprese, realizzati anche in collaborazione con altre strutture. Iniziative di bonus o finanziamenti SCADUTE. Visto il rapido aggiornamento delle informazioni, la validità dei contenuti è quella riportata sui portali stessi, e non la sintesi sotto elencata Bonus e contributi attivi o da attivare Credito d’imposta a favore impr",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5726,9 +5726,21 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Avviso ricerca immobile da adibire a sede di caserma CC di Villafranca",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/asti/comunicazioni/avviso-ricerca-immobile-adibire-sede-caserma-cc-villafranca",
-      "summary": "Termine ultimo entro cui presentare le offerte: 15/09/2026 Comunicazione 27 Agosto 2026 Ultimo aggiornamento 27 Agosto 2026",
+      "title": "Avviso di ricerca nuovo immobile Stazione Carabinieri di Altopascio",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lucca/comunicazioni/avviso-ricerca-nuovo-immobile-stazione-carabinieri-altopascio",
+      "summary": "Comunicazione 28 Agosto 2026 Ultimo aggiornamento 28 Agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Avviso di ricerca nuovo immobile Stazione Carabinieri di Lammari",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lucca/comunicazioni/avviso-ricerca-nuovo-immobile-stazione-carabinieri-lammari",
+      "summary": "Comunicazione 28 Agosto 2026 Ultimo aggiornamento 28 Agosto 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5882,6 +5894,18 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
+      "title": "Incontro in Prefettura per la prosecuzione del progetto MIGRALP",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/torino/comunicati-stampa/incontro-prefettura-prosecuzione-progetto-migralp",
+      "summary": "Comunicato stampa 27 Agosto 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
       "title": "Iniziative per promozione della conoscenza della tragedia delle foibe",
       "url": "https://prefettura.interno.gov.it/it/prefetture/cuneo/comunicazioni/iniziative-promozione-conoscenza-tragedia-foibe",
       "summary": "Comunicazione 27 Agosto 2026 Ultimo aggiornamento 27 Agosto 2026",
@@ -5930,18 +5954,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Promozione della conoscenza della tragedia delle foibe",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/laquila/comunicazioni/promozione-conoscenza-tragedia-foibe",
-      "summary": "Comunicazione 27 Agosto 2026 Ultimo aggiornamento 27 Agosto 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "Quesiti",
       "url": "https://dait.interno.gov.it/finanza-locale",
       "summary": "E' possibile inviare quesiti alla Direzione Centrale esclusivamente ai seguenti indirizzi di posta ordinaria: fondoprogettazione.fl@interno.it [Quesiti relativi a contributi per progettazione]; per quesiti inerenti il PNRR accedi all' Area PNRR e Enti locali . N.B . Si prega di non inviare email certificate (PEC) a caselle di posta ordinaria in quanto, per ragioni di sicurezza, il sistema non ne permette la lettura.",
@@ -5954,9 +5966,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Sicurezza nel Comune di Riva del Po",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/ferrara/notizie/sicurezza-nel-comune-riva-po",
-      "summary": "Deciso in C.P.O.S.P. il potenziamento del dispositivo di controllo del territorio Notizia 27 Agosto 2026 Ultimo aggiornamento 27 Agosto 2026",
+      "title": "SERVIZIO STRAORDINARIO ALTO IMPATTO ED INTERFORZE - AREE DELLA MOVIDA",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/milano/comunicazioni/servizio-straordinario-alto-impatto-ed-interforze-aree-movida",
+      "summary": "Comunicazione 28 Agosto 2026 Ultimo aggiornamento 28 Agosto 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6076,7 +6088,7 @@
       "territory": "Italia",
       "title": "Sezione Link Utili",
       "url": "https://www.padigitale2026.gov.it/enti/comuni",
-      "summary": "Note legali Informativa privacy Dichiarazione di accessibilità (self.__next_f=self.__next_f||[]).push([0]) self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n3:I[87555,[],\\\"\\\"]\\n4:I[31295,[],\\\"\\\"]\\n6:I[59665,[],\\\"OutletBoundary\\\"]\\n8:I[74911,[],\\\"AsyncMetadataOutlet\\\"]\\na:I[59665,[],\\\"ViewportBoundary\\\"]\\nc:I[59665,[],\\\"MetadataBoundary\\\"]\\nd:\\\"$Sreact.suspense\\\"\\nf:I[28393,[],\\\"\\\"]\\n:HL[\\\"/_next/static/media/56b5d6ac638045ae-s.p.woff2?dpl=dpl_DNjEzL2csmF6d3aD6pis2ZGjagqb\\\",\\\"font\\\",{\\\"crossOrigin\\\":\\\"\\\",\\\"type\\\":\\\"font/woff2\\\"}]\\n:HL[\\\"/_next/static/media/5c0c2bcbaa4149ca-s.p.woff2?dpl=dpl_DNjEzL",
+      "summary": "Note legali Informativa privacy Dichiarazione di accessibilità (self.__next_f=self.__next_f||[]).push([0]) self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n3:I[87555,[],\\\"\\\"]\\n4:I[31295,[],\\\"\\\"]\\n6:I[59665,[],\\\"OutletBoundary\\\"]\\n8:I[74911,[],\\\"AsyncMetadataOutlet\\\"]\\na:I[59665,[],\\\"ViewportBoundary\\\"]\\nc:I[59665,[],\\\"MetadataBoundary\\\"]\\nd:\\\"$Sreact.suspense\\\"\\nf:I[28393,[],\\\"\\\"]\\n:HL[\\\"/_next/static/media/56b5d6ac638045ae-s.p.woff2?dpl=dpl_7icBEMbyXoyyHCWdkZQq1QfpMqgH\\\",\\\"font\\\",{\\\"crossOrigin\\\":\\\"\\\",\\\"type\\\":\\\"font/woff2\\\"}]\\n:HL[\\\"/_next/static/media/5c0c2bcbaa4149ca-s.p.woff2?dpl=dpl_7icBEM",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6208,7 +6220,7 @@
       "territory": "Italia",
       "title": "Sezione Link Utili",
       "url": "https://avvisibandi.sport.governo.it/",
-      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"3e7bf9c9-f596-4c40-b49a-434f021133be\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
+      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"fd40922f-c35b-42e7-a737-12556298eddb\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6682,6 +6694,18 @@
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
     },
     {
+      "source_id": "interreg-europe",
+      "source_label": "UE · Interreg Europe",
+      "publisher": "Interreg Europe 2021-2027",
+      "territory": "Europa",
+      "title": "Strong Interreg, Strong regions, strong Europe",
+      "url": "https://www.interregeurope.eu/",
+      "summary": "What comes after 2027 for Interregional Cooperation? Join us for an #EURegionsWeek side event to look ahead to the next programming period. Register today",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
       "source_id": "eu-neb",
       "source_label": "UE · New European Bauhaus",
       "publisher": "Commissione europea · New European Bauhaus",
@@ -6804,7 +6828,7 @@
       "status": "ok",
       "endpointCount": 2,
       "endpointOk": 2,
-      "candidateCount": 21,
+      "candidateCount": 22,
       "errors": [],
       "freshness": {
         "status": "discovery",
@@ -7206,7 +7230,7 @@
       "status": "ok",
       "endpointCount": 1,
       "endpointOk": 1,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "errors": [],
       "freshness": {
         "status": "discovery",
@@ -7358,7 +7382,7 @@
           "evidence_url": "https://urbact.eu/news/apply-urbact-call-action-networks",
           "evidence_class": "official_historical",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7370,7 +7394,7 @@
           "evidence_url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
           "evidence_class": "official_rolling",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 4,
+          "ageDays": 5,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7382,7 +7406,7 @@
           "evidence_url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
           "evidence_class": "official_upcoming",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 4,
+          "ageDays": 5,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7394,7 +7418,7 @@
           "evidence_url": "https://erasmus-plus.ec.europa.eu/document/call-for-proposals-2026-for-the-erasmus-programme",
           "evidence_class": "official_programme_call",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7406,7 +7430,7 @@
           "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en",
           "evidence_class": "official_current",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7418,7 +7442,7 @@
           "evidence_url": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7430,7 +7454,7 @@
           "evidence_url": "https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7442,7 +7466,7 @@
           "evidence_url": "https://www.interregeurope.eu/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7454,7 +7478,7 @@
           "evidence_url": "https://www.affariregionali.it/it/aree-tematiche/montagna/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7466,7 +7490,7 @@
           "evidence_url": "https://www.protezionecivile.gov.it/it/normativa/decreto-cd-n-1149-del-3-aprile-2026/",
           "evidence_class": "official_upstream",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7478,7 +7502,7 @@
           "evidence_url": "https://www.masaf.gov.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/11795",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7490,7 +7514,7 @@
           "evidence_url": "https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 5,
+          "ageDays": 6,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7508,7 +7532,7 @@
         {
           "source_id": "pcm-sport",
           "family": "sport-social-infrastructure",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true,
@@ -7517,7 +7541,7 @@
         {
           "source_id": "cinea-life",
           "family": "energy-climate-environment",
-          "ageDays": 3,
+          "ageDays": 4,
           "configured": true,
           "familyInContract": true,
           "fresh": true,

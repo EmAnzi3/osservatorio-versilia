@@ -272,7 +272,36 @@ def apply_registry(registry: dict) -> None:
     registry["expectedExternalMetricCount"] = 4
 
 
+def patch_public_changelog() -> None:
+    v120 = "      ['2026.08.26-v1.20.0','26 agosto 2026','154 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto Agricoltura e territorio: aziende agricole, SAU territoriale e quota comunale, dimensione media aziendale, profilo colture e superficie irrigata dal 7° Censimento Istat 2020.'],"
+    v121 = "      ['2026.08.27-v1.21.0','27 agosto 2026','157 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunti tre indicatori Cultura e biblioteche della Regione Toscana 2024: prestiti per residente, utenti attivi del prestito ogni 100 residenti e ore medie di apertura settimanale, con copertura corrente 5/7 e serie storiche ufficiali senza stime.'],"
+    legacy_v121 = "      ['2026.08.27-v1.21.0','26 agosto 2026','157 indicatori complessivi in 11 temi, inclusi i 4 indicatori climatici. Aggiunto Agricoltura e territorio: aziende agricole, SAU territoriale e quota comunale, dimensione media aziendale, profilo colture e superficie irrigata dal 7° Censimento Istat 2020.'],"
+
+    text = APP_PART_05.read_text(encoding="utf-8")
+    if legacy_v121 in text:
+        text = text.replace(legacy_v121, v121, 1)
+    if v121 not in text:
+        if v120 not in text:
+            raise RuntimeError("Versione v1.20.0 non trovata nel changelog pubblico")
+        text = text.replace(v120, f"{v121}\n{v120}", 1)
+    elif v120 not in text:
+        text = text.replace(v121, f"{v121}\n{v120}", 1)
+    APP_PART_05.write_text(text, encoding="utf-8")
+
+
 def patch_release_files() -> None:
+    # Il changelog deve conservare sia la release Agricoltura v1.20 sia la
+    # successiva Cultura v1.21, anche quando il lotto viene rieseguito su una
+    # versione del catalogo più recente.
+    patch_public_changelog()
+    current_finalizer = FINALIZER.read_text(encoding="utf-8")
+    if (
+        'VERSION = "v1.20.0"' not in current_finalizer
+        and 'VERSION = "v1.21.0"' not in current_finalizer
+    ):
+        # Il lotto è già incorporato in una release successiva: non effettuare
+        # downgrade di versione né dei cache-buster durante i gate di regressione.
+        return
     text = FINALIZER.read_text(encoding="utf-8")
     text = text.replace("catalogo pubblico v1.20.0", "catalogo pubblico v1.21.0")
     text = text.replace('VERSION = "v1.20.0"', 'VERSION = "v1.21.0"')
@@ -321,14 +350,6 @@ def patch_release_files() -> None:
 
     replace_required(APP_JS, "const VERSION='20260826-v120';", "const VERSION='20260827-v121-history-ui2';")
     replace_required(SERVICE_WORKER, "const VERSION = 'ov-pwa-20260826-v120';", "const VERSION = 'ov-pwa-20260827-v121-tooltip-ui6';")
-
-    text = APP_PART_05.read_text(encoding="utf-8")
-    if "2026.08.27-v1.21.0" not in text:
-        if "2026.08.26-v1.20.0" not in text:
-            raise RuntimeError("Versione v1.20.0 non trovata nel changelog pubblico")
-        text = text.replace("2026.08.26-v1.20.0", "2026.08.27-v1.21.0", 1)
-        text = text.replace("154 indicatori complessivi", "157 indicatori complessivi", 1)
-    APP_PART_05.write_text(text, encoding="utf-8")
 
     # I workflow CI non sono output del materializzatore dati. Il lotto ha gate
     # dedicati versionati separatamente; mutare .github/workflows qui rendeva
