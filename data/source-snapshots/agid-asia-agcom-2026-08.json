@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-07T09:26:28+00:00",
+  "generatedAt": "2026-08-28T15:06:59+00:00",
   "scope": "Sette Comuni della Versilia storica",
   "acquisitionLayer": {
     "name": "AgID — Cruscotto Italia",
@@ -25,7 +25,7 @@
     "agcom": {
       "owner": "AGCOM",
       "dataset": "Broadband Map — reportistica comunale rete cablata",
-      "url": "https://maps.agcom.it/",
+      "url": "https://geo.agcom.it/reportistica/ai/index.html",
       "license": "CC BY 4.0",
       "dataPeriod": "31/12/2025"
     }
@@ -641,9 +641,9 @@
   },
   "agcomAudit": {
     "sourceType": "primary_official_csv",
-    "aiReadyPage": "https://maps.agcom.it/",
+    "publicMapUrl": "https://maps.agcom.it/",
     "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
-    "discovery": "discovered_from_ai_ready_page",
+    "discovery": "official_arcgis_item_data",
     "rowCount": 7896,
     "invalidAbsoluteTownCodes": [
       "046013"
@@ -800,7 +800,7 @@
         }
       }
     ],
-    "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal CSV comunale AGCOM; il controllo demografico segnala valori palesemente incompatibili con la popolazione residente."
+    "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal dataset comunale AGCOM; il controllo demografico segnala valori palesemente incompatibili con la popolazione residente."
   },
   "agcomPrimarySource": {
     "aiReadyPage": "https://maps.agcom.it/",
