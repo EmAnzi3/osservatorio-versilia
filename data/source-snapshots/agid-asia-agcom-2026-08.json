@@ -25,7 +25,7 @@
     "agcom": {
       "owner": "AGCOM",
       "dataset": "Broadband Map — reportistica comunale rete cablata",
-      "url": "https://geo.agcom.it/reportistica/ai/index.html",
+      "url": "https://maps.agcom.it/",
       "license": "CC BY 4.0",
       "dataPeriod": "31/12/2025"
     }
@@ -641,7 +641,7 @@
   },
   "agcomAudit": {
     "sourceType": "primary_official_csv",
-    "aiReadyPage": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+    "aiReadyPage": "https://maps.agcom.it/",
     "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
     "discovery": "discovered_from_ai_ready_page",
     "rowCount": 7896,
@@ -803,7 +803,7 @@
     "rule": "Nessun conteggio assoluto viene ricostruito dalle percentuali. I valori sono letti dal CSV comunale AGCOM; il controllo demografico segnala valori palesemente incompatibili con la popolazione residente."
   },
   "agcomPrimarySource": {
-    "aiReadyPage": "https://geo.agcom.it/reportistica/ai/ai_251231_260210_comuni.html",
+    "aiReadyPage": "https://maps.agcom.it/",
     "officialCsvUrl": "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data",
     "period": "31/12/2025",
     "role": "Fonte primaria utilizzata per percentuali e conteggi FTTH"
