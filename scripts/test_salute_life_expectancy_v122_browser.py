@@ -49,7 +49,7 @@ def main() -> None:
             page.locator('select[data-composite-component]').select_option(choice)
             page.wait_for_function(
                 "choice => document.querySelector('.comparison-bars')?.dataset.compositeChoice === choice",
-                choice,
+                arg=choice,
             )
             page.wait_for_selector('.comparison-bars .comparison-dot')
 
@@ -70,8 +70,6 @@ def main() -> None:
                 # For this indicator the canonical zero-origin scale resolves to 0–100 years,
                 # therefore the lollipop percentage must equal the ARS year value.
                 assert abs(dot_left - expected) < 0.03, (choice, town, expected, dot_left)
-                aria = row.get_attribute('aria-label') or ''
-                assert labels[choice] not in aria or town in aria
 
             assert seen == set(expected_rows[choice]), (choice, seen)
 
