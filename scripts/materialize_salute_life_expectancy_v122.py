@@ -58,7 +58,11 @@ def save(path: Path, value: dict) -> None:
 
 
 def parse_number(raw: str) -> float:
-    text = str(raw or "").strip().replace(".", "").replace(",", ".")
+    text = str(raw or "").strip()
+    if "," in text and "." in text:
+        text = text.replace(".", "").replace(",", ".")
+    elif "," in text:
+        text = text.replace(",", ".")
     return float(text)
 
 
@@ -82,7 +86,12 @@ def download_snapshot() -> dict:
     if csv_sha != EXPECTED_CSV_SHA256:
         raise RuntimeError(f"Export ARS 1290 cambiato: SHA dati.csv {csv_sha}")
     text = raw_csv.decode("utf-8-sig")
-    reader = csv.DictReader(io.StringIO(text), delimiter=";")
+    try:
+        dialect = csv.Sniffer().sniff(text[:30000], delimiters=",;\t|")
+        delimiter = dialect.delimiter
+    except csv.Error:
+        delimiter = ","
+    reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
     required = {
         "id_indicatore", "anno", "codice_geografia", "geografia",
         "misura_grezza", "sesso"
@@ -135,7 +144,7 @@ def download_snapshot() -> dict:
             "csvMember": csv_name,
             "csvSha256": csv_sha,
             "csvEncoding": "utf-8-sig",
-            "delimiter": ";",
+            "delimiter": delimiter,
             "headers": reader.fieldnames,
         },
         "scope": {
