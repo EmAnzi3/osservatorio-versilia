@@ -203,6 +203,34 @@ def append_report_section(
     for key in labels:
         lines.append(f"| {labels[key]} | {counts.get(key, 0)} |")
 
+    detail_states = {
+        "source_access_limited",
+        "release_detected",
+        "update_expected",
+        "source_unavailable",
+        "verification_required",
+    }
+    details = [
+        (metric_key, item)
+        for metric_key, item in sorted(metrics.items())
+        if isinstance(item, dict) and str(item.get("status") or "verification_required") in detail_states
+    ]
+    if details:
+        lines.extend(
+            [
+                "",
+                "#### Dettaglio indicatori da verificare",
+                "",
+                "| Indicatore | Stato | Periodo pubblicato | Ultimo periodo osservato |",
+                "|---|---|---|---|",
+            ]
+        )
+        for metric_key, item in details:
+            status = str(item.get("status") or "verification_required")
+            published = str(item.get("publishedPeriod") or "n.d.")
+            observed = str(item.get("observedLatestPeriod") or "n.d.")
+            lines.append(f"| `{metric_key}` | {labels.get(status, status)} | {published} | {observed} |")
+
     if pnrr_result is not None:
         metric_verdicts = pnrr_result.get("metricVerdicts")
         metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}
