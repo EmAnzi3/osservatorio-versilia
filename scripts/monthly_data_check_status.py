@@ -111,11 +111,14 @@ def build_metric_state(
 def verification_evidence(audit_result: dict[str, Any], metric_key: str) -> dict[str, Any]:
     metric_verdicts = audit_result.get("metricVerdicts")
     metric_verdicts = metric_verdicts if isinstance(metric_verdicts, dict) else {}
+    dates = list(audit_result.get("dataElaborationDates") or [])
     return {
         "provider": "Regione Toscana — Open Data PNRR",
         "url": str(audit_result.get("resource") or pnrr_toscana_audit.MAIN_CSV_URL),
         "datasetUrl": str(audit_result.get("dataset") or pnrr_toscana_audit.DATASET_URL),
-        "dataElaborationDates": list(audit_result.get("dataElaborationDates") or []),
+        "dataElaborationDates": dates,
+        "dataElaborationDate": dates[-1] if dates else "",
+        "match7of7": str(metric_verdicts.get(metric_key) or audit_result.get("verdict") or "") == "match",
         "metric": metric_key,
         "verdict": str(metric_verdicts.get(metric_key) or audit_result.get("verdict") or ""),
         "recordsScanned": int(audit_result.get("recordsScanned") or 0),
