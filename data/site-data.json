@@ -7348,6 +7348,9 @@
         "caveat": "Non è la percentuale degli adulti che paga l’IRPEF. Il numeratore MEF è il numero complessivo di contribuenti e può includere anche contribuenti minorenni; il denominatore è invece limitato ai residenti 18+.",
         "coverage": "7/7",
         "additionalSource": "https://demo.istat.it/"
+      },
+      "sourceUrls": {
+        "denominator": "https://demo.istat.it/"
       }
     },
     "businessValueAdded": {
