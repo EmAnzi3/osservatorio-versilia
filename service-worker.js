@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260827-v121-tooltip-ui6';
+const VERSION = 'ov-pwa-20260828-v122-lifeexp-ui1';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
