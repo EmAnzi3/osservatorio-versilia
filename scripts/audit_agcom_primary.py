@@ -25,6 +25,9 @@ if str(SCRIPT_DIR) not in sys.path:
 import update_agid_indicators as base  # noqa: E402
 
 PUBLIC_MAP_URL = "https://maps.agcom.it/"
+# Alias di compatibilità per i materializzatori storici: il nome resta disponibile,
+# ma punta alla mappa pubblica AGCOM corrente e non alle vecchie pagine dismesse.
+AI_READY_PAGE = PUBLIC_MAP_URL
 OFFICIAL_CSV_URL = (
     "https://geo.agcom.it/arcgis/sharing/rest/content/items/"
     "25830559c5784c1eb5eb1cf748889f4c/data"
