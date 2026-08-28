@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Temporary CI probe for the official ARS life-expectancy CSV export.
+"""Temporary CI probe for the official ARS life-expectancy export.
 
 This file is diagnostic only and will be removed before the PR is ready.
 """
@@ -9,13 +9,14 @@ import csv
 import hashlib
 import io
 import json
+import zipfile
 
 import requests
 
 EXPORT_URL = "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290"
 TARGET_CODES = {"046005", "046013", "046018", "046024", "046028", "046030", "046033"}
 TARGET_NAMES = {
-    "CAM AIORE".replace(" ", ""),
+    "CAMAIORE",
     "FORTEDEIMARMI",
     "MASSAROSA",
     "PIETRASANTA",
@@ -32,6 +33,15 @@ def norm(value: object) -> str:
     return "".join(ch for ch in str(value or "").upper() if ch.isalnum())
 
 
+def decode(raw: bytes) -> tuple[str, str]:
+    for encoding in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
+        try:
+            return raw.decode(encoding), encoding
+        except UnicodeDecodeError:
+            continue
+    raise RuntimeError("Unable to decode ARS CSV")
+
+
 def main() -> None:
     response = requests.get(
         EXPORT_URL,
@@ -42,35 +52,39 @@ def main() -> None:
         },
     )
     response.raise_for_status()
-    raw = response.content
+    outer = response.content
     print("=== EXPORT METADATA ===")
     print(json.dumps({
         "url": response.url,
         "status": response.status_code,
         "content_type": response.headers.get("content-type"),
         "content_disposition": response.headers.get("content-disposition"),
+        "bytes": len(outer),
+        "sha256": hashlib.sha256(outer).hexdigest(),
+    }, ensure_ascii=False))
+
+    with zipfile.ZipFile(io.BytesIO(outer)) as archive:
+        names = archive.namelist()
+        print("=== ZIP MEMBERS ===")
+        print(json.dumps(names, ensure_ascii=False))
+        csv_name = next((name for name in names if name.lower().endswith(".csv")), None)
+        if not csv_name:
+            raise RuntimeError("ARS export does not contain a CSV")
+        raw = archive.read(csv_name)
+
+    text, encoding = decode(raw)
+    print("=== CSV METADATA ===")
+    print(json.dumps({
+        "member": csv_name,
+        "encoding": encoding,
         "bytes": len(raw),
         "sha256": hashlib.sha256(raw).hexdigest(),
     }, ensure_ascii=False))
-
-    text = None
-    used_encoding = None
-    for encoding in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
-        try:
-            text = raw.decode(encoding)
-            used_encoding = encoding
-            break
-        except UnicodeDecodeError:
-            continue
-    if text is None:
-        raise RuntimeError("Unable to decode ARS export")
-
-    print(f"encoding={used_encoding}")
     print("=== FIRST RAW LINES ===")
-    for line in text.splitlines()[:12]:
+    for line in text.splitlines()[:8]:
         print(line[:2000])
 
-    sample = text[:20000]
+    sample = text[:30000]
     try:
         dialect = csv.Sniffer().sniff(sample, delimiters=";,\t|")
         delimiter = dialect.delimiter
@@ -78,13 +92,18 @@ def main() -> None:
         delimiter = ";"
     print(f"delimiter={delimiter!r}")
 
-    reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
+    reader = csv.DictReader(io.StringIO(text, newline=""), delimiter=delimiter)
     print("=== HEADERS ===")
     print(json.dumps(reader.fieldnames, ensure_ascii=False))
-
     rows = list(reader)
     print(f"row_count={len(rows)}")
-    print("=== TARGET ROWS ===")
+
+    print("=== DISTINCT VALUES BY COLUMN ===")
+    for field in reader.fieldnames or []:
+        values = sorted({str(row.get(field, "")).strip() for row in rows})
+        if len(values) <= 40:
+            print(json.dumps({"field": field, "values": values}, ensure_ascii=False))
+
     matched = []
     for row in rows:
         normalized_values = {norm(v) for v in row.values()}
@@ -93,7 +112,10 @@ def main() -> None:
             name and (name in normalized_values or name in joined) for name in TARGET_NAMES
         ):
             matched.append(row)
-            print(json.dumps(row, ensure_ascii=False, sort_keys=True))
+
+    print("=== TARGET ROWS ===")
+    for row in matched:
+        print(json.dumps(row, ensure_ascii=False, sort_keys=True))
     print(f"target_row_count={len(matched)}")
 
 
