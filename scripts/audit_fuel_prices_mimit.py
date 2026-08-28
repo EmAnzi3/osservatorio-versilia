@@ -2,24 +2,47 @@
 """Extract municipal self-service petrol/diesel medians from MIMIT daily open data."""
 from __future__ import annotations
 
-import argparse, csv, io, json, re, statistics, unicodedata, urllib.request
+import argparse, csv, io, json, re, statistics, time, unicodedata, urllib.error, urllib.request
 from pathlib import Path
 
 ANAG = 'https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv'
 PRICES = 'https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv'
 TOWNS = ['Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio']
 FUELS = {'benzina': 'Benzina self', 'gasolio': 'Gasolio self'}
-UA = {'User-Agent': 'OsservatorioVersilia-data-audit/1.0'}
+UA = {
+    'User-Agent': 'Mozilla/5.0 (compatible; OsservatorioVersilia/1.0; +https://osservatorioversilia.it/)',
+    'Accept': 'text/csv,text/plain;q=0.9,*/*;q=0.8',
+    'Accept-Encoding': 'identity',
+    'Connection': 'close',
+}
 
 
-def fetch(url: str) -> str:
-    req=urllib.request.Request(url,headers=UA)
-    with urllib.request.urlopen(req,timeout=90) as r:
-        raw=r.read()
-    for enc in ('utf-8-sig','utf-8','cp1252','latin-1'):
-        try: return raw.decode(enc)
-        except UnicodeDecodeError: pass
-    raise RuntimeError('encoding MIMIT non riconosciuto')
+def fetch(url: str, attempts: int = 3, timeout: int = 180) -> str:
+    """Scarica un export MIMIT con retry prudenziale.
+
+    I CSV nazionali possono essere lenti a partire dal server ministeriale: un
+    timeout di rete non deve trasformarsi in un falso "dato invariato". Dopo
+    tre tentativi l'audit fallisce esplicitamente e non modifica alcun dato.
+    """
+    last_error: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                raw = response.read()
+            if not raw:
+                raise RuntimeError('export MIMIT vuoto')
+            for enc in ('utf-8-sig','utf-8','cp1252','latin-1'):
+                try:
+                    return raw.decode(enc)
+                except UnicodeDecodeError:
+                    pass
+            raise RuntimeError('encoding MIMIT non riconosciuto')
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, RuntimeError) as exc:
+            last_error = exc
+            if attempt < attempts:
+                time.sleep(5 * attempt)
+    raise RuntimeError(f'download MIMIT fallito dopo {attempts} tentativi: {last_error}')
 
 
 def norm(v: str) -> str:
