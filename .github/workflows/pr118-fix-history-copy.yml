@@ -1,0 +1,48 @@
+name: PR118 · Align historical copy overrides
+
+on:
+  push:
+    branches:
+      - feature/life-expectancy-history-sex-v122
+    paths:
+      - .github/workflows/pr118-fix-history-copy.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/life-expectancy-history-sex-v122
+          fetch-depth: 0
+
+      - name: Patch current canonical subtitle token
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('assets/ux-history.js')
+          text = p.read_text(encoding='utf-8')
+          old = 'Una linea per comune; sono mostrati solo gli anni disponibili per tutti e sette.'
+          new = 'Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.'
+          count = text.count(old)
+          if count != 2:
+              raise SystemExit(f'Expected 2 legacy subtitle tokens, found {count}')
+          p.write_text(text.replace(old, new), encoding='utf-8')
+          PY
+          node --check assets/ux-history.js
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/ux-history.js
+          git commit -m "fix: restore specialized historical chart copy"
+          git push origin HEAD:feature/life-expectancy-history-sex-v122
