@@ -1,0 +1,119 @@
+name: PR 119 live refresh
+
+on:
+  push:
+    branches: ["automation/data-check-2026-08"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr119-live-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate refresh utilities
+        run: |
+          python -m py_compile \
+            scripts/update_agcom_sources.py \
+            scripts/update_fuel_prices_mimit.py \
+            scripts/audit_agcom_primary.py \
+            scripts/monthly_data_check_status.py
+
+      - name: Refresh official sources
+        run: |
+          python scripts/update_agcom_sources.py
+          python scripts/update_fuel_prices_mimit.py
+
+      - name: Detect data changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/site-data.json data/source-registry.json data/source-monitor-state.json data/source-snapshots; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Establish live monitoring baseline
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          mkdir -p reports/runtime
+          python scripts/monthly_data_check_status.py \
+            --mode live \
+            --report-md reports/runtime/pr119-baseline.md \
+            --report-json reports/runtime/pr119-baseline.json \
+            --next-state reports/runtime/pr119-baseline-state.json
+          cp reports/runtime/pr119-baseline-state.json data/source-monitor-state.json
+
+      - name: Mark MIMIT period verified by the updater
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          state_path = Path('data/source-monitor-state.json')
+          state = json.loads(state_path.read_text(encoding='utf-8'))
+          period = str(data['metrics']['fuelPrices']['meta']['year'])
+          item = state.setdefault('metrics', {}).setdefault('fuelPrices', {})
+          item['publishedPeriod'] = period
+          item['observedLatestPeriod'] = period
+          item['status'] = 'current'
+          item['verificationEvidence'] = {
+              'provider': 'MIMIT — Osservaprezzi carburanti',
+              'url': 'https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv',
+              'period': period,
+              'method': 'mediana comunale impianti attivi, self-service',
+              'coverage': data['metrics']['fuelPrices'].get('method', {}).get('coverage', '')
+          }
+          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(f'MIMIT fuel period verified: {period}')
+          PY
+
+      - name: Run final live monitor
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          python scripts/monthly_data_check_status.py \
+            --mode live \
+            --report-md reports/runtime/pr119-final.md \
+            --report-json reports/runtime/pr119-final.json \
+            --next-state reports/runtime/pr119-final-state.json
+          cp reports/runtime/pr119-final-state.json data/source-monitor-state.json
+          cp reports/runtime/pr119-final.md reports/data-checks/2026-08.md
+
+      - name: Commit verified refresh
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/site-data.json \
+            data/source-registry.json \
+            data/source-monitor-state.json \
+            data/source-snapshots \
+            reports/data-checks/2026-08.md
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da registrare"
+            exit 0
+          fi
+          git commit -m "Aggiorna fonti AGCOM e prezzi carburanti MIMIT"
+          git push origin HEAD:automation/data-check-2026-08
+
+      - name: No-op after verified refresh
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "Fonti e valori già allineati; nessun nuovo commit."
