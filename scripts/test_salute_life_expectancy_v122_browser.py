@@ -83,6 +83,28 @@ def main() -> None:
             axis = page.locator('.comparison-bars > .comparison-axis').inner_text()
             assert '0,0 anni' in axis and '100 anni' in axis, (choice, axis)
 
+            history = page.locator('[data-view-pane="history"]')
+            history.wait_for(state='attached')
+            page.wait_for_function(
+                "label => document.querySelector('[data-view-pane=\"history\"] .ux-history-chart svg')?.getAttribute('aria-label')?.includes(label)",
+                arg=labels[choice],
+            )
+            page.wait_for_selector('[data-view-pane="history"] .ux-history-chart[data-ov-tooltip-wired="1"]', state='attached')
+            chart = history.locator('.ux-history-chart')
+            assert chart.get_attribute('data-ov-tooltip-wired') == '1'
+            assert 'sette Comuni e della Versilia' in (chart.locator('svg').get_attribute('aria-label') or '')
+            assert history.locator('.ux-history-legend').get_attribute('aria-label') == 'Territori'
+            assert history.locator('.ux-history-legend [data-history-select]').count() == 8
+            groups = chart.locator('[data-history-town]')
+            assert groups.count() == 8
+            assert chart.locator('.chart-point').count() == 120
+            assert chart.locator('.chart-point .chart-tooltip').count() == 120
+            versilia_history = chart.locator('[data-history-town="versilia"]')
+            assert versilia_history.count() == 1
+            assert versilia_history.locator('.chart-point').count() == 15
+            versilia_button = history.locator('[data-history-select="versilia"]')
+            assert float(versilia_button.get_attribute('data-end') or 'nan') == float(expected_versilia[choice])
+
         # Regression explicitly covering the discrepancy reported during review.
         page.locator('select[data-composite-component]').select_option('femmine')
         page.wait_for_function("() => document.querySelector('.comparison-bars')?.dataset.compositeChoice === 'femmine'")
