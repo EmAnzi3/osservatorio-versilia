@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: "life-expectancy-v122-${{ github.ref }}"
+  group: "life-expectancy-v122-fast-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
