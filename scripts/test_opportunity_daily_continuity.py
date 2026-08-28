@@ -3,9 +3,14 @@ from __future__ import annotations
 
 import json
 import tempfile
+from datetime import date
 from pathlib import Path
 
-from opportunity_daily_refresh import _reconcile_final_continuity, _write_continuity_diagnostic
+from opportunity_daily_refresh import (
+    _reconcile_final_continuity,
+    _restore_recent_verified_continuity,
+    _write_continuity_diagnostic,
+)
 
 
 def main() -> int:
@@ -94,8 +99,80 @@ def main() -> int:
     _reconcile_final_continuity(second)
     assert len(second["continuityHold"]) == 1
 
+    # Una verifica diretta del run precedente può sopravvivere per massimo due
+    # giorni a una mancata riconferma live, ma resta marcata cached_recent.
+    previous = {
+        "referenceDate": "2026-08-27",
+        "municipalities": ["Massarosa"],
+        "opportunities": [
+            {
+                "id": "opp-jazz",
+                "rule_id": "mic-jazz-2027",
+                "source_id": "mic-spettacolo",
+                "title": "Bando Jazz 2027",
+                "url": "https://example.test/jazz",
+                "deadline_at": "2026-09-10",
+                "eligibility": "conditional",
+                "municipality_eligibility": {
+                    "Massarosa": {"status": "conditional", "reason": "test"}
+                },
+                "verified_direct": True,
+                "verified_at": "2026-08-27",
+                "verification_status": "live",
+                "first_seen_at": "2026-08-25",
+            }
+        ],
+    }
+    transient = {
+        "referenceDate": "2026-08-28",
+        "municipalities": ["Massarosa"],
+        "opportunities": [],
+        "archive": [],
+        "continuityHold": [
+            {
+                "identity_key": "rule:mic-jazz-2027",
+                "title": "Bando Jazz 2027",
+                "source_id": "mic-spettacolo",
+                "url": "https://example.test/jazz",
+                "deadline_at": "2026-09-10",
+            }
+        ],
+        "counts": {"continuityHold": 1},
+        "sources": [{"sourceId": "mic-spettacolo", "publicCount": 0}],
+        "sourceCoverage": {"rows": [{"source_id": "mic-spettacolo", "publicCount": 0}]},
+        "municipalitySummary": {"Massarosa": {"eligible": 0, "conditional": 0}},
+    }
+    restored = _restore_recent_verified_continuity(transient, previous, date(2026, 8, 28))
+    assert len(restored) == 1
+    assert transient["continuityHold"] == []
+    assert transient["opportunities"][0]["verification_status"] == "cached_recent"
+    assert transient["counts"]["continuityFallback"] == 1
+    assert transient["counts"]["public"] == 1
+    assert transient["municipalitySummary"]["Massarosa"]["conditional"] == 1
+    assert transient["sources"][0]["publicCount"] == 1
+    assert transient["sourceCoverage"]["rows"][0]["publicCount"] == 1
+
+    # Oltre la grace il gate deve restare attivo: niente trascinamento indefinito.
+    stale = json.loads(json.dumps(transient))
+    stale["opportunities"] = []
+    stale["continuityHold"] = [
+        {
+            "identity_key": "rule:mic-jazz-2027",
+            "title": "Bando Jazz 2027",
+            "source_id": "mic-spettacolo",
+            "url": "https://example.test/jazz",
+            "deadline_at": "2026-09-10",
+        }
+    ]
+    stale["counts"] = {"continuityHold": 1}
+    previous_stale = json.loads(json.dumps(previous))
+    previous_stale["opportunities"][0]["verified_at"] = "2026-08-20"
+    assert _restore_recent_verified_continuity(stale, previous_stale, date(2026, 8, 28)) == []
+    assert len(stale["continuityHold"]) == 1
+
     print("Riconciliazione finale continuità Radar: PASS")
     print("Diagnostica continuity hold Radar: PASS")
+    print("Fallback continuità verificata: PASS")
     return 0
 
 
