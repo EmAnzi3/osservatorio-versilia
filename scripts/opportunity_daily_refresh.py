@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASELINE = ROOT / "data" / "opportunity-release.json"
 DEFAULT_DAILY = ROOT / "data" / "opportunity-daily-public.json"
 DEFAULT_REPORT = ROOT / "reports" / "runtime" / "opportunity-daily-summary.md"
+DEFAULT_CONTINUITY_DIAGNOSTIC = ROOT / "reports" / "runtime" / "opportunity-continuity-hold.json"
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -51,9 +52,54 @@ def _previous_snapshot(daily: Path, baseline: Path) -> tuple[Path, dict[str, Any
     return baseline, _load(baseline)
 
 
+def _write_continuity_diagnostic(
+    result: dict[str, Any],
+    path: Path = DEFAULT_CONTINUITY_DIAGNOSTIC,
+) -> Path | None:
+    holds = list(result.get("continuityHold") or [])
+    if not holds:
+        return None
+
+    fields = (
+        "identity_key",
+        "coverage_id",
+        "rule_id",
+        "title",
+        "source_id",
+        "deadline_at",
+        "url",
+        "reason",
+    )
+    diagnostic_holds = [
+        {field: hold.get(field) for field in fields if hold.get(field) not in {None, ""}}
+        for hold in holds
+    ]
+    payload = {
+        "referenceDate": result.get("referenceDate"),
+        "count": len(diagnostic_holds),
+        "holds": diagnostic_holds,
+    }
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    print(f"CONTINUITY HOLD: {len(diagnostic_holds)} opportunità irrisolte")
+    for index, hold in enumerate(diagnostic_holds, start=1):
+        print(f"CONTINUITY HOLD #{index}")
+        print(f"  Titolo: {hold.get('title') or 'n.d.'}")
+        print(f"  Fonte: {hold.get('source_id') or 'n.d.'}")
+        print(f"  Scadenza: {hold.get('deadline_at') or 'n.d.'}")
+        print(f"  Identità: {hold.get('identity_key') or hold.get('coverage_id') or hold.get('rule_id') or 'n.d.'}")
+        print(f"  URL: {hold.get('url') or 'n.d.'}")
+        print(f"  Motivo: {hold.get('reason') or 'n.d.'}")
+    print(f"Diagnostica continuità salvata in: {path}")
+    return path
+
+
 def _assert_publishable(result: dict[str, Any]) -> None:
     problems: list[str] = []
     if result.get("continuityHold"):
+        _write_continuity_diagnostic(result)
         problems.append(f"continuityHold={len(result.get('continuityHold') or [])}")
     if result.get("coverageHold"):
         problems.append(f"coverageHold={len(result.get('coverageHold') or [])}")
