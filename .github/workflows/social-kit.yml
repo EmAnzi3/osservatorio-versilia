@@ -29,6 +29,8 @@ on:
       - "scripts/plan_social_week.py"
       - "scripts/generate_social_kit.py"
       - "scripts/generate_weekly_social_kit.py"
+      - "scripts/generate_weekly_social_kit_entrypoint.py"
+      - "scripts/generate_life_expectancy_social.py"
       - "scripts/test_social_calendar.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
@@ -44,6 +46,8 @@ on:
       - "scripts/plan_social_week.py"
       - "scripts/generate_social_kit.py"
       - "scripts/generate_weekly_social_kit.py"
+      - "scripts/generate_weekly_social_kit_entrypoint.py"
+      - "scripts/generate_life_expectancy_social.py"
       - "scripts/test_social_calendar.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
@@ -102,7 +106,7 @@ jobs:
         run: python scripts/test_social_calendar.py
 
       - name: Generate four-slide weekly package
-        run: python scripts/generate_weekly_social_kit.py --plan /tmp/social-week.json
+        run: python scripts/generate_weekly_social_kit_entrypoint.py --plan /tmp/social-week.json
 
       - name: Run weekly Social Kit quality gate
         run: python scripts/test_weekly_social_kit.py
