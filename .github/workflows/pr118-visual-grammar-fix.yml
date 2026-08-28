@@ -1,0 +1,45 @@
+name: PR118 · Apply life expectancy visual grammar fix
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "scripts/patch_salute_life_expectancy_v122_visual_grammar.py"
+      - "assets/visual-grammar.js"
+      - ".github/workflows/pr118-visual-grammar-fix.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/life-expectancy-history-sex-v122
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Patch canonical visual grammar
+        run: |
+          python scripts/patch_salute_life_expectancy_v122_visual_grammar.py
+          node --check assets/visual-grammar.js
+
+      - name: Commit canonical fix
+        run: |
+          if git diff --quiet -- assets/visual-grammar.js; then
+            echo "No visual grammar changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/visual-grammar.js
+          git commit -m "fix: use selected sex in life expectancy lollipops"
+          git push origin HEAD:feature/life-expectancy-history-sex-v122
