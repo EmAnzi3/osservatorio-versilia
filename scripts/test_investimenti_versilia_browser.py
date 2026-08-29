@@ -79,10 +79,11 @@ def assert_town_position(
     panel = page.locator("#town-topic .versilia-position")
     assert panel.count() == 1
     text = " ".join(panel.inner_text().split())
+    folded = text.casefold()
     for token in expected:
-        assert token in text, f"{key}: manca {token!r} in {text!r}"
+        assert token.casefold() in folded, f"{key}: manca {token!r} in {text!r}"
     for token in forbidden:
-        assert token not in text, f"{key}: confronto errato ancora presente ({text})"
+        assert token.casefold() not in folded, f"{key}: confronto errato ancora presente ({text})"
 
 
 def assert_towns(page: Page, base: str) -> None:
@@ -90,14 +91,14 @@ def assert_towns(page: Page, base: str) -> None:
         page,
         base,
         "publicWorks",
-        ("Rispetto al valore Versilia", "0 €", "in linea", "Valore pro capite Versilia", "1.409"),
+        ("Rispetto al valore Versilia", "0,0 €", "in linea", "Valore pro capite Versilia", "1.409"),
         ("−47", "+47", "2.659"),
     )
     assert_town_position(
         page,
         base,
         "pnrrFunding",
-        ("Rispetto al valore Versilia", "+42 €", "Versilia · risorse PNRR per residente", "231"),
+        ("Rispetto al valore Versilia", "+42,4 €", "Versilia · risorse PNRR per residente", "231"),
         ("−10", "+10", "306"),
     )
     assert_town_position(
