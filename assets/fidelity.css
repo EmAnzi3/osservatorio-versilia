@@ -882,3 +882,27 @@
 .site-header nav::-webkit-scrollbar{display:none}.site-header nav a,.site-header nav a:nth-child(n+3){display:inline-flex;flex:0 0 auto;scroll-snap-align:start}
 .global-search-trigger{flex:0 0 38px}.site-brand{gap:8px}.site-brand-copy strong{font-size:12px}}
 @media (max-width:380px){.site-brand-copy{display:none}.site-header-inner{width:min(100% - 20px,1240px)}}
+
+/* v124-water-remediation */
+.water-quality-compare,.remediation-compare-list{display:grid;gap:12px}
+.water-quality-compare-row,.remediation-compare-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:16px;align-items:center;padding:16px 18px;border:1px solid var(--line,#d8dee7);border-radius:14px;text-decoration:none;color:inherit;min-width:0}
+.water-quality-compare-row span,.remediation-compare-row span{display:grid;text-align:right}
+.water-quality-compare-row em{font-style:normal;font-weight:650}
+.water-quality-selector,.remediation-selector{display:grid;gap:7px;margin:0 0 16px;max-width:560px}
+.water-quality-selector select,.remediation-selector select{min-height:44px;padding:10px 14px;border-radius:10px;border:1px solid var(--line,#d8dee7);background:var(--surface,#fff);color:inherit}
+.water-quality-locality,.remediation-town,.remediation-shell{min-width:0}
+.water-quality-locality-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 0}
+.water-quality-locality-head h4{margin:0 0 4px}
+.water-quality-table-wrap{overflow-x:auto;max-width:100%;border:1px solid var(--line,#d8dee7);border-radius:14px}
+.water-quality-table{width:100%;min-width:760px;border-collapse:collapse}
+.water-quality-table th,.water-quality-table td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line,#e7ebf0)}
+.water-quality-table td:first-child{min-width:260px}
+.water-quality-table td small{display:block;margin-top:5px;max-width:48ch;font-weight:400;line-height:1.35}
+.remediation-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.remediation-summary article{padding:16px 18px;border:1px solid var(--line,#d8dee7);border-radius:14px}
+.remediation-summary span{display:block;margin-bottom:5px} .remediation-summary strong{font-size:1.7rem}
+.remediation-procedure-list{display:grid;gap:12px}
+.remediation-procedure-list article{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:18px;padding:16px 18px;border:1px solid var(--line,#d8dee7);border-radius:14px;min-width:0}
+.remediation-procedure-list h4{margin:5px 0} .remediation-procedure-list p{margin:0}
+.remediation-procedure-list dl{margin:0;display:grid;gap:10px} .remediation-procedure-list dt{font-size:.78rem;opacity:.7} .remediation-procedure-list dd{margin:2px 0 0}
+@media(max-width:720px){.water-quality-compare-row,.remediation-compare-row{grid-template-columns:1fr auto}.water-quality-compare-row em{grid-column:1/-1}.remediation-procedure-list{grid-template-columns:1fr}.remediation-summary{grid-template-columns:1fr 1fr}}

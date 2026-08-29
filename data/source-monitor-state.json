@@ -2102,6 +2102,81 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://esploradati.istat.it/": {
+      "url": "https://esploradati.istat.it/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://esploradati.istat.it/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "waterNetworkLosses"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "istat-water-irregular"
+      ],
+      "frequencies": [
+        "census_or_irregular"
+      ]
+    },
+    "https://www.gaia-spa.it/analisiweb_v2/": {
+      "url": "https://www.gaia-spa.it/analisiweb_v2/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.gaia-spa.it/analisiweb_v2/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "drinkingWaterQuality"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "gaia-quality-semiannual"
+      ],
+      "frequencies": [
+        "semiannual"
+      ]
+    },
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": {
+      "url": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "remediationProceedings"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "sisbon-weekly"
+      ],
+      "frequencies": [
+        "weekly"
+      ]
     }
   },
   "metrics": {
@@ -3149,6 +3224,24 @@
       "checkedAt": "2026-08-29T12:22:42+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
+    },
+    "waterNetworkLosses": {
+      "publishedPeriod": "2018",
+      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "observedLatestPeriod": "2018",
+      "status": "current"
+    },
+    "drinkingWaterQuality": {
+      "publishedPeriod": "2° semestre 2025",
+      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "observedLatestPeriod": "2° semestre 2025",
+      "status": "current"
+    },
+    "remediationProceedings": {
+      "publishedPeriod": "29 agosto 2026",
+      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "observedLatestPeriod": "29 agosto 2026",
+      "status": "current"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 162,
-  "expectedInlineMetricCount": 158,
+  "expectedMetricCount": 165,
+  "expectedInlineMetricCount": 161,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -421,6 +421,33 @@
       "acquisitionMethod": "Download delle tabelle comunali ufficiali ISPRA e calcolo delle quote sui chilometri elementari, senza medie di percentuali.",
       "licenseName": "Condizioni ISPRA",
       "licenseUrl": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea"
+    },
+    "istat-water-irregular": {
+      "publisher": "Istat",
+      "frequency": "census_or_irregular",
+      "frequencyLabel": "Censuaria o irregolare",
+      "expectedRelease": "Quando Istat diffonde un nuovo dettaglio comunale omogeneo",
+      "acquisitionMethod": "Dataflow Istat sulla distribuzione di acqua potabile; indicatori derivati dai volumi elementari conservati nello snapshot.",
+      "licenseName": "CC BY 4.0",
+      "licenseUrl": "https://www.istat.it/note-legali/"
+    },
+    "gaia-quality-semiannual": {
+      "publisher": "GAIA S.p.A.",
+      "frequency": "semiannual",
+      "frequencyLabel": "Semestrale",
+      "expectedRelease": "Aggiornamento semestrale del portale Laboratorio Analisi",
+      "acquisitionMethod": "Acquisizione delle tabelle ufficiali per località, senza aggregare le concentrazioni a Comune.",
+      "licenseName": "Condizioni indicate da GAIA S.p.A.",
+      "licenseUrl": "https://www.gaia-spa.it/"
+    },
+    "sisbon-weekly": {
+      "publisher": "Regione Toscana / ARPAT",
+      "frequency": "weekly",
+      "frequencyLabel": "Settimanale",
+      "expectedRelease": "Aggiornamento del flusso pubblico SISBON/GEOscopio",
+      "acquisitionMethod": "Export pubblico SISBON; conteggio per codice_regionale univoco e stato dell’iter.",
+      "licenseName": "CC Attribution / condizioni Open Data Regione Toscana",
+      "licenseUrl": "https://dati.toscana.it/dataset/sisbon"
     }
   },
   "sourceProfileByUrl": {
@@ -492,7 +519,10 @@
     "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/": "arpat-bathing-annual",
     "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb": "fee-blue-flag-annual",
     "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea": "ispra-coast-irregular",
-    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular"
+    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular",
+    "https://esploradati.istat.it/": "istat-water-irregular",
+    "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -644,6 +674,15 @@
     },
     "rigidDefenceProtectedCoast": {
       "profile": "ispra-coast-irregular"
+    },
+    "waterNetworkLosses": {
+      "profile": "istat-water-irregular"
+    },
+    "drinkingWaterQuality": {
+      "profile": "gaia-quality-semiannual"
+    },
+    "remediationProceedings": {
+      "profile": "sisbon-weekly"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -681,7 +720,10 @@
     "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/": "arpat-bathing-annual",
     "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb": "fee-blue-flag-annual",
     "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea": "ispra-coast-irregular",
-    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular"
+    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular",
+    "https://esploradati.istat.it/": "istat-water-irregular",
+    "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto pubblico e metodologico della release v1.23.0."""
+"""Contratto pubblico e metodologico della release v1.24.0."""
 from __future__ import annotations
 
 import json
@@ -68,7 +68,7 @@ def main() -> None:
     assert not malformed, f"Separatore delle migliaia corrotto: {malformed[:3]}"
 
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
-    assert "2026.08.28-v1.23.0" in app and "2026.08.28-v1.22.0" in app and "162 indicatori complessivi" in app
+    assert "2026.08.29-v1.24.0" in app and "2026.08.28-v1.23.0" in app and "165 indicatori complessivi" in app
     assert "2026.08.27-v1.21.0','27 agosto 2026'" in app
     assert "Aggiunti tre indicatori Cultura e biblioteche della Regione Toscana 2024" in app
     assert "2026.08.26-v1.20.0','26 agosto 2026','154 indicatori complessivi" in app
@@ -84,22 +84,22 @@ def main() -> None:
     ):
         assert token in chart_app, f"UI età×genere non canonicalizzata: {token}"
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "**v1.23.0** — 28 agosto 2026" in readme
-    assert "162 indicatori" in readme and "158 con valori incorporati" in readme
+    assert "**v1.24.0** — 29 agosto 2026" in readme
+    assert "165 indicatori" in readme and "161 con valori incorporati" in readme
     build_safe = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
     build_brand = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     export_script = (ROOT / "assets" / "export-v161.js").read_text(encoding="utf-8")
     service_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
-    assert 'UX_ASSET_VERSION = "20260829-v123-coast-ui2"' in build_safe
-    assert 'HISTORY_ASSET_VERSION = "20260829-v123-coast-ui2"' in build_safe
-    assert 'APP_BUNDLE_ASSET_VERSION = "20260829-v123-coast-ui2"' in build_brand
+    assert 'UX_ASSET_VERSION = "20260829-v124-water-ui1"' in build_safe
+    assert 'HISTORY_ASSET_VERSION = "20260829-v124-water-ui1"' in build_safe
+    assert 'APP_BUNDLE_ASSET_VERSION = "20260829-v124-water-ui1"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
-    assert 'PWA_JS_REVISION = "catalog-v123"' in build_brand
-    assert "20260829-v123" in development_loader
-    assert "const VERSION = '20260829-v123-coast-ui2';" in export_script
+    assert 'PWA_JS_REVISION = "catalog-v124"' in build_brand
+    assert "20260829-v124" in development_loader
+    assert "const VERSION = '20260829-v124-water-ui1';" in export_script
     assert "function sexBreakdownRows(" in export_script
-    assert "ov-pwa-20260829-v123" in service_worker
+    assert "ov-pwa-20260829-v124" in service_worker
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "
