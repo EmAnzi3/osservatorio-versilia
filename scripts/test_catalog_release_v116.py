@@ -96,10 +96,10 @@ def main() -> None:
     assert 'APP_BUNDLE_ASSET_VERSION = "20260829-v123-coast-ui2"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
     assert 'PWA_JS_REVISION = "catalog-v123"' in build_brand
-    assert "20260828-v123" in development_loader
+    assert "20260829-v123" in development_loader
     assert "const VERSION = '20260829-v123-coast-ui2';" in export_script
     assert "function sexBreakdownRows(" in export_script
-    assert "ov-pwa-20260828-v123" in service_worker
+    assert "ov-pwa-20260829-v123" in service_worker
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "
