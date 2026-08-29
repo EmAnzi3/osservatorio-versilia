@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from finalize_catalog_release import EXPECTED_METRICS
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / 'data' / 'site-data.json').read_text(encoding='utf-8'))
 AUDIT = json.loads((ROOT / 'data' / 'data-audit-lotto-a.json').read_text(encoding='utf-8'))
@@ -24,7 +26,7 @@ def require(condition: bool, message: str) -> None:
 
 def main() -> None:
     # Questa fase non crea nuove card demografiche; il totale riflette il catalogo corrente.
-    require(len(SITE['metrics']) == 157, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
+    require(len(SITE['metrics']) == EXPECTED_METRICS, f"Conteggio metriche inatteso: {len(SITE['metrics'])}")
 
     age = SITE['metrics']['ageDistribution']
     require(age['meta']['year'] == '2026', 'ageDistribution non riallineata al 2026')

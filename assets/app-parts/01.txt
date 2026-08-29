@@ -26,11 +26,13 @@
       const query = new URLSearchParams({ tema: data.metrics[metricKey].meta.theme, indicatore: metricKey });
       const rowSlug = row.slug || normalize(row.town).replaceAll(' ', '-');
       const href = route(`comuni/${rowSlug}/?${query}`);
-      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue, row.displayUnit))}">
-        <span class="bar-rank">${index + 1}</span><span class="bar-town">${html(row.town)}</span>
-        <span class="bar-track"><span class="bar-fill" style="width:${Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
-          <span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue, row.displayUnit))}</span></span>
-        <strong>${html(formatValue(row.displayValue, row.displayUnit))}</strong>
+      const missing = row.displayValue === null || row.displayValue === undefined;
+      const formatted = formatMetricRowValue(row, row.displayValue, row.displayUnit);
+      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatted)}">
+        <span class="bar-rank">${missing ? '—' : index + 1}</span><span class="bar-town">${html(row.town)}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${missing ? 0 : Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
+          <span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span>
+        <strong>${html(formatted)}</strong>
       </a>`;
     }).join('');
   }

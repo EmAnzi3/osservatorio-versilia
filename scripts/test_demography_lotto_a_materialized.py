@@ -5,7 +5,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from finalize_catalog_release import VERSION
+from finalize_catalog_release import (
+    EXPECTED_EXTERNAL,
+    EXPECTED_INLINE,
+    EXPECTED_METRICS,
+    VERSION,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = json.loads((ROOT / 'data/site-data.json').read_text(encoding='utf-8'))
@@ -46,15 +51,15 @@ def main() -> None:
     # Il lotto Demografia resta invariato: questo gate segue il contratto
     # globale corrente della release.
     assert SITE['version'] == VERSION
-    assert len(SITE['metrics']) == 157
+    assert len(SITE['metrics']) == EXPECTED_METRICS
     external = [
         key for key, metric in SITE['metrics'].items()
         if metric.get('dataStorage', {}).get('type') == 'external-climate'
     ]
-    assert len(external) == 4, external
-    assert REGISTRY['expectedMetricCount'] == 157
-    assert REGISTRY['expectedInlineMetricCount'] == 153
-    assert REGISTRY['expectedExternalMetricCount'] == 4
+    assert len(external) == EXPECTED_EXTERNAL, external
+    assert REGISTRY['expectedMetricCount'] == EXPECTED_METRICS
+    assert REGISTRY['expectedInlineMetricCount'] == EXPECTED_INLINE
+    assert REGISTRY['expectedExternalMetricCount'] == EXPECTED_EXTERNAL
 
     for key in NEW_KEYS:
         assert key in SITE['metrics'], key
@@ -153,7 +158,7 @@ def main() -> None:
     assert abs(actual - expected_rate) < 1e-8
 
     print(
-        f'Demografia Lotto A materializzata OK: catalogo {VERSION} con 157 metriche, 7/7, '
+        f'Demografia Lotto A materializzata OK: catalogo {VERSION} con {EXPECTED_METRICS} metriche, 7/7, '
         'P02 2019–2025 + POSAS 2019–2026, dipendenza leggibile ogni 100 persone 15–64, '
         'assi storici con margine per unità lunghe, nessun duplicato 80+, UI canonica.'
     )

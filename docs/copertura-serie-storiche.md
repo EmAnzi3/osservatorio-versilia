@@ -63,3 +63,10 @@ Per Cultura e biblioteche, le medie territoriali annuali sono medie aritmetiche 
 ## Speranza di vita ARS v1.22.0
 
 L'indicatore `lifeExpectancy` usa l'export ufficiale ARS Toscana dell'indicatore 1290. La serie è completa 2008–2022 per tutti i sette Comuni e per i tre sessi esposti dalla fonte: Totale, Maschi e Femmine. La Zona Versilia e la Toscana sono lette direttamente dallo stesso export; l'aggregato Versilia non è una media dei valori comunali. Lo snapshot conserva l'impronta SHA-256 di `dati.csv`. L'ultimo punto 2022 deve coincidere con il valore corrente già pubblicato. Nessuna interpolazione o stima è ammessa.
+
+
+## Lotto Costa e mare v1.23.0
+
+Il lotto usa quattro Comuni costieri (Camaiore, Forte dei Marmi, Pietrasanta e Viareggio). Massarosa, Seravezza e Stazzema sono fuori dall'universo marino e vengono resi `n.a.`, mai zero o `n.d.`. La classificazione ARPAT 2025 è quadriennale (2022–2025), mentre i campioni non conformi descrivono la sola stagione 2025. Gli aggregati delle quote sono rapporti delle somme elementari. Bandiera Blu conserva lo storico ufficiale 2019–2026; Pietrasanta è assente nel 2021 senza interpolazione. Dinamica del litorale e Costa protetta restano card separate perché usano universi ISPRA diversi.
+
+Il candidato Ripascimenti resta rinviato: non è stato reperito un dataset ufficiale strutturato con codice, tratto o Comune, anno, volume, stato di realizzazione e chiave di deduplicazione.

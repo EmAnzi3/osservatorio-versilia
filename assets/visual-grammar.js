@@ -163,6 +163,10 @@
   }
 
   function aggregateFor(metric, normalized) {
+    if (metric?.meta?.comparisonReference === 'aggregate') {
+      const declared = normalized && metric?.normalizedAggregate ? metric.normalizedAggregate : metric?.aggregate;
+      if (finite(declared?.value) !== null) return declared;
+    }
     const values = (metric?.rows || []).map(row => valueFor(row, metric, normalized)).map(finite).filter(value => value !== null);
     if (!values.length) return normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate;
     const value = values.reduce((sum,item) => sum + item, 0) / values.length;
@@ -290,6 +294,15 @@
   }
 
   function deltaFor(metric, row, metricKey = '') {
+    if (row?.notApplicable) {
+      return {
+        headline: 'n.a.',
+        direction: 'Comune non costiero',
+        compact: 'indicatore non applicabile',
+        overline: 'Applicabilità territoriale',
+        note: row.applicabilityNote || 'Indicatore marino non applicabile a questo Comune.',
+      };
+    }
     const distribution = metric?.meta?.compositeType === 'distribution';
     const local = finite(distribution && row?.summaryValue !== undefined ? row.summaryValue : row?.value);
     const meanReference = aggregateFor(metric, false);
@@ -320,15 +333,35 @@
     }
 
     const kind = unitKind(distribution ? metric?.meta?.summaryUnit : metric?.meta?.unit);
+    const declaredAggregate = metric?.meta?.comparisonReference === 'aggregate';
+    const comparisonLabel = metric?.meta?.comparisonLabel || (declaredAggregate ? 'valore Versilia' : 'media Versilia');
+    const overline = metric?.meta?.comparisonOverline;
+    const note = metric?.meta?.comparisonNote;
     if (kind === 'percent' || kind === 'percentage-points') {
       const diff = local - aggregate;
-      if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: 'in linea con la media Versilia' };
+      if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
       const sign = diff > 0 ? '+' : '−';
       const abs = number1.format(Math.abs(diff));
       return {
         headline: `${sign}${abs} punti`,
-        direction: diff > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',
-        compact: `${sign}${abs} p.p. vs media Versilia`,
+        direction: diff > 0 ? `sopra la ${comparisonLabel}` : `sotto la ${comparisonLabel}`,
+        compact: `${sign}${abs} p.p. vs ${comparisonLabel}`,
+        overline,
+        note,
+      };
+    }
+
+    if (metric?.meta?.comparisonDifference === 'absolute') {
+      const diff = local - aggregate;
+      const formatted = formatAxis(Math.abs(diff), metric.meta.unit);
+      if (Math.abs(diff) < 0.5) return { headline: formatAxis(0, metric.meta.unit), direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
+      const sign = diff > 0 ? '+' : '−';
+      return {
+        headline: `${sign}${formatted}`,
+        direction: diff > 0 ? `sopra il ${comparisonLabel}` : `sotto il ${comparisonLabel}`,
+        compact: `${sign}${formatted} vs ${comparisonLabel}`,
+        overline,
+        note,
       };
     }
 
@@ -470,7 +503,7 @@
       if (!track) return;
       const x = position(value, scale);
       if (x === null) {
-        const missing = '<span class="comparison-missing">Dato non disponibile</span>';
+        const missing = `<span class="comparison-missing">${row?.notApplicable ? 'Non applicabile' : 'Dato non disponibile'}</span>`;
         if (track.innerHTML !== missing) track.innerHTML = missing;
         rowEl.classList.add('missing');
         return;

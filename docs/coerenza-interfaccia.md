@@ -27,6 +27,10 @@ Il link a `/stato-dati/` deve essere presente nel markup iniziale, non aggiunto 
 
 Il profilo colture riusa i controlli compositi canonici della pagina di confronto e delle schede comunali. SAU e superficie irrigata riusano il selettore assoluto/rapportato esistente. Non sono introdotte pagine, shell, colori o componenti paralleli. I valori `null` devono essere resi come `n.d.` e non possono essere classificati o ordinati come zeri reali.
 
+### Selettori Costa e mare
+
+Qualità delle aree, campioni non conformi e dinamica del litorale riusano il selettore composito canonico. Le tabelle di dettaglio dichiarano numeratori, denominatori e chilometri. I Comuni non costieri espongono `n.a.` e non partecipano a ordinamento, media o aggregazione.
+
 ## Profili ed eccezioni esplicite
 
 - `offline.html`: pagina di servizio senza shell, canonical o runtime completo; deve essere `noindex,nofollow`.

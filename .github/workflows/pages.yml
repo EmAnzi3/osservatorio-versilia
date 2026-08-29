@@ -50,6 +50,9 @@ jobs:
           python scripts/test_lavoro_istruzione_eta_genere.py
           python scripts/test_mobilita_tpl_v119.py
           python scripts/test_agricoltura_territorio_v120.py
+          python scripts/test_cultura_biblioteche_v121.py
+          python scripts/test_costa_mare_v123.py
+          python scripts/test_investimenti_versilia.py
           node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null
           python -m json.tool data/source-registry.json > /dev/null
@@ -63,6 +66,7 @@ jobs:
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
           python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null
           python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null
+          python -m json.tool data/source-snapshots/costa-mare-v123.json > /dev/null
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
@@ -124,6 +128,12 @@ jobs:
 
       - name: Validate Agricoltura e territorio interactions
         run: python scripts/test_agricoltura_review_interactions_v120.py
+
+      - name: Validate Costa e mare
+        run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Investimenti e opere
+        run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -256,6 +266,12 @@ jobs:
             scripts/materialize_agricoltura_territorio_v120.py \
             scripts/test_agricoltura_territorio_v120.py \
             scripts/test_agricoltura_review_interactions_v120.py \
+            scripts/materialize_costa_mare_v123.py \
+            scripts/patch_investimenti_versilia.py \
+            scripts/test_costa_mare_v123.py \
+            scripts/test_costa_mare_v123_browser.py \
+            scripts/test_investimenti_versilia.py \
+            scripts/test_investimenti_versilia_browser.py \
             scripts/test_mobilita_tpl_v119_browser.py \
             scripts/test_percorsi_mobile_list_contract.py \
             scripts/finalize_catalog_release.py \
@@ -322,7 +338,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v116-catalogo-preview
+          name: osservatorio-versilia-v123-costa-mare-preview
           path: dist
           retention-days: 14
 

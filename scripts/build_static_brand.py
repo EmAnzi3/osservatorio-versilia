@@ -12,9 +12,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260824-ov4"
-APP_BUNDLE_ASSET_VERSION = "20260828-v122-lifeexp-ui1"
+APP_BUNDLE_ASSET_VERSION = "20260828-v123-coast-ui1"
 PWA_ASSET_VERSION = "20260824-pwa9"
-PWA_JS_REVISION = "catalog-v122"
+PWA_JS_REVISION = "catalog-v123"
 MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
 CHART_SURFACE_ASSET_VERSION = "20260826-v120"
 OLD_MARK = '<span class="site-brand-mark">O</span>'

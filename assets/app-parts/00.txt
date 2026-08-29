@@ -94,6 +94,11 @@
     averageAgriculturalFarmSize: ['dimensione aziende agricole', 'ettari per azienda', 'azienda con sau'],
     cropProfile: ['colture', 'seminativi', 'olivo', 'olive', 'vite', 'pascoli'],
     irrigatedAgriculturalArea: ['irrigazione', 'superficie irrigata', 'sau irrigata'],
+    bathingWaterQuality: ['balneazione', 'qualità acque', 'mare', 'aree eccellenti'],
+    bathingNonCompliantSamples: ['balneazione', 'campioni non conformi', 'escherichia coli', 'enterococchi'],
+    blueFlagBeaches: ['bandiera blu', 'spiagge', 'mare', 'fee'],
+    shorelineDynamics: ['erosione', 'avanzamento', 'litorale', 'costa'],
+    rigidDefenceProtectedCoast: ['costa protetta', 'opere rigide', 'difesa costiera'],
     currentRevenueAccruedPerResident: ['entrate correnti', 'accertamenti', 'risorse comunali'],
     currentExpenditureCommittedPerResident: ['spesa corrente', 'impegni', 'servizi comunali'],
     capitalExpenditureCommittedPerResident: ['investimenti', 'conto capitale', 'impegni capitale'],
@@ -190,6 +195,11 @@
       case 'hectaresPerFarm': return `${number2.format(v)} ha/azienda`;
       default: return number0.format(v);
     }
+  }
+
+  function formatMetricRowValue(row, value, unit) {
+    if (row?.notApplicable) return 'n.a.';
+    return formatValue(value, unit);
   }
 
   function interpretation(metric) {

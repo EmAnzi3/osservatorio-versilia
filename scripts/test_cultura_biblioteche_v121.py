@@ -10,7 +10,13 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from finalize_catalog_release import VERSION as CATALOG_VERSION, UPDATED as CATALOG_UPDATED
+from finalize_catalog_release import (
+    EXPECTED_EXTERNAL,
+    EXPECTED_INLINE,
+    EXPECTED_METRICS,
+    UPDATED as CATALOG_UPDATED,
+    VERSION as CATALOG_VERSION,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
@@ -63,9 +69,13 @@ def main() -> None:
     snapshot = load(SNAPSHOT)
 
     require(site["version"] == CATALOG_VERSION and site["updated"] == CATALOG_UPDATED, "Release catalogo corrente non finalizzata")
-    require(len(site["metrics"]) == 157, "Conteggio catalogo diverso da 157")
-    require(registry["expectedMetricCount"] == 157, "Conteggio registry diverso da 157")
-    require(registry["expectedInlineMetricCount"] == 153 and registry["expectedExternalMetricCount"] == 4, "Ripartizione 153+4 incoerente")
+    require(len(site["metrics"]) == EXPECTED_METRICS, f"Conteggio catalogo diverso da {EXPECTED_METRICS}")
+    require(registry["expectedMetricCount"] == EXPECTED_METRICS, "Conteggio registry incoerente")
+    require(
+        registry["expectedInlineMetricCount"] == EXPECTED_INLINE
+        and registry["expectedExternalMetricCount"] == EXPECTED_EXTERNAL,
+        f"Ripartizione {EXPECTED_INLINE}+{EXPECTED_EXTERNAL} incoerente",
+    )
 
     community = site["themes"]["comunita"]
     section = next((item for item in community["sections"] if item["key"] == "cultura-biblioteche"), None)
