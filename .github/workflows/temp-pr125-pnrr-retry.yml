@@ -1,0 +1,21 @@
+name: TEMP PR125 PNRR retry
+on:
+  push:
+    branches: ["automation/data-check-2026-08"]
+    paths: [".github/workflows/temp-pr125-pnrr-retry.yml"]
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/temp_pr125_pnrr_retry.py
+      - run: python -m py_compile scripts/pnrr_toscana_audit.py && python scripts/test_monthly_data_check.py
+      - run: mkdir -p reports/runtime && python scripts/pnrr_toscana_audit.py --data data/site-data.json --json-out reports/runtime/pnrr-live.json --md-out reports/runtime/pnrr-live.md
+      - run: python scripts/monthly_data_check_status.py --data data/site-data.json --registry data/source-registry.json --state data/source-monitor-state.json --report-md reports/data-checks/2026-08.md --report-json reports/runtime/data-check.json --next-state reports/runtime/source-monitor-state.next.json --mode live && cp reports/runtime/source-monitor-state.next.json data/source-monitor-state.json
+      - run: git config user.name github-actions[bot] && git config user.email 41898282+github-actions[bot]@users.noreply.github.com && git add scripts/pnrr_toscana_audit.py data/source-monitor-state.json reports/data-checks/2026-08.md && git commit -m 'Rende robusta la verifica PNRR del monitor' && git push origin HEAD:automation/data-check-2026-08
