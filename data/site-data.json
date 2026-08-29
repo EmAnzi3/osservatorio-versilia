@@ -43533,7 +43533,7 @@
         "shortLabel": "Prezzi carburanti",
         "description": "Mediana comunale dei prezzi self-service negli impianti attivi MIMIT. Stazzema è n.d. perché non risultano impianti attivi.",
         "unit": "eurliter",
-        "year": "2026-08-27",
+        "year": "2026-08-28",
         "source": "MIMIT — Osservaprezzi carburanti",
         "polarity": "neutral",
         "compositeType": "securityMeasures",
@@ -43555,7 +43555,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               2.018
@@ -43581,7 +43581,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.018
@@ -43589,7 +43589,7 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.147
@@ -43605,7 +43605,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               2.019
@@ -43623,7 +43623,7 @@
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.144,
+              "value": 2.141,
               "unit": "eurliter"
             }
           ],
@@ -43631,7 +43631,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.019
@@ -43639,10 +43639,10 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
-                2.144
+                2.141
               ]
             }
           }
@@ -43655,7 +43655,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               2.029
@@ -43681,7 +43681,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.029
@@ -43689,7 +43689,7 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.139
@@ -43705,7 +43705,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               2.019
@@ -43731,7 +43731,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.019
@@ -43739,7 +43739,7 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.149
@@ -43755,7 +43755,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               1.999
@@ -43781,7 +43781,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 1.999
@@ -43789,7 +43789,7 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 2.144
@@ -43801,29 +43801,29 @@
           "town": "Forte dei Marmi",
           "code": "046013",
           "slug": "forte-dei-marmi",
-          "value": 2.009,
+          "value": 1.999,
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
-              2.009
+              1.999
             ]
           },
           "normalized": null,
-          "benchmarkValue": 2.009,
+          "benchmarkValue": 1.999,
           "parts": [
             {
               "label": "Benzina self",
               "selectorLabel": "Benzina self",
-              "value": 2.009,
+              "value": 1.999,
               "unit": "eurliter"
             },
             {
               "label": "Gasolio self",
               "selectorLabel": "Gasolio self",
-              "value": 2.134,
+              "value": 2.129,
               "unit": "eurliter"
             }
           ],
@@ -43831,18 +43831,18 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
-                2.009
+                1.999
               ]
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
-                2.134
+                2.129
               ]
             }
           }
@@ -43855,7 +43855,7 @@
           "formatted": "",
           "series": {
             "years": [
-              "2026-08-27"
+              "2026-08-28"
             ],
             "values": [
               null
@@ -43881,7 +43881,7 @@
           "componentSeries": {
             "Benzina self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 null
@@ -43889,7 +43889,7 @@
             },
             "Gasolio self": {
               "years": [
-                "2026-08-27"
+                "2026-08-28"
               ],
               "values": [
                 null
@@ -43899,20 +43899,20 @@
         }
       ],
       "aggregate": {
-        "value": 2.0155,
+        "value": 2.0138333333333334,
         "label": "Media delle mediane comunali disponibili",
         "note": "Media semplice dei sei Comuni con impianti attivi; Stazzema resta n.d.",
         "parts": [
           {
             "label": "Benzina self",
             "selectorLabel": "Benzina self",
-            "value": 2.0155,
+            "value": 2.0138333333333334,
             "unit": "eurliter"
           },
           {
             "label": "Gasolio self",
             "selectorLabel": "Gasolio self",
-            "value": 2.1428333333333334,
+            "value": 2.1415,
             "unit": "eurliter"
           }
         ]
@@ -43921,7 +43921,7 @@
       "method": {
         "type": "Elaborazione Osservatorio su open data MIMIT",
         "formula": "Mediana dei prezzi self-service degli impianti attivi per Comune e carburante.",
-        "caveat": "Fotografia del 27 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
+        "caveat": "Fotografia del 28 agosto 2026; Stazzema non ha impianti attivi nel dataset.",
         "coverage": "6/7"
       }
     },
