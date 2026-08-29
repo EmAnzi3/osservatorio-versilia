@@ -1,0 +1,92 @@
+    profiles["gaia-quality-semiannual"]={"publisher":"GAIA S.p.A.","frequency":"semiannual","frequencyLabel":"Semestrale","expectedRelease":"Aggiornamento semestrale del portale Laboratorio Analisi","acquisitionMethod":"Acquisizione delle tabelle ufficiali per località, senza aggregare le concentrazioni a Comune.","licenseName":"Condizioni indicate da GAIA S.p.A.","licenseUrl":"https://www.gaia-spa.it/"}
+    profiles["sisbon-weekly"]={"publisher":"Regione Toscana / ARPAT","frequency":"weekly","frequencyLabel":"Settimanale","expectedRelease":"Aggiornamento del flusso pubblico SISBON/GEOscopio","acquisitionMethod":"Export pubblico SISBON; conteggio per codice_regionale univoco e stato dell’iter.","licenseName":"CC Attribution / condizioni Open Data Regione Toscana","licenseUrl":"https://dati.toscana.it/dataset/sisbon"}
+    mapping={ISTAT_URL:"istat-water-irregular",GAIA_URL:"gaia-quality-semiannual",SISBON_URL:"sisbon-weekly"}
+    for url,p in mapping.items():
+        reg.setdefault("sourceProfileByUrl",{})[url]=p; reg.setdefault("sourceUrlProfiles",{})[url]=p
+    ov=reg.setdefault("metricOverrides",{})
+    ov["waterNetworkLosses"]={"profile":"istat-water-irregular"}
+    ov["drinkingWaterQuality"]={"profile":"gaia-quality-semiannual"}
+    ov["remediationProceedings"]={"profile":"sisbon-weekly"}
+    reg["expectedMetricCount"]=165; reg["expectedInlineMetricCount"]=161; reg["expectedExternalMetricCount"]=4
+
+def apply_state(state):
+    checked=state.get("checkedAt","2026-08-29T00:00:00+00:00")
+    config={
+      ISTAT_URL:(["waterNetworkLosses"],"istat-water-irregular","census_or_irregular","2018"),
+      GAIA_URL:(["drinkingWaterQuality"],"gaia-quality-semiannual","semiannual","2° semestre 2025"),
+      SISBON_URL:(["remediationProceedings"],"sisbon-weekly","weekly","29 agosto 2026")
+    }
+    sources=state.setdefault("sources",{})
+    for url,(metrics,profile,freq,period) in config.items():
+        cur=sources.get(url,{})
+        cur.update({"url":url,"ok":True,"status":200,"finalUrl":url,"contentType":cur.get("contentType","text/html"),"contentLength":cur.get("contentLength"),"etag":cur.get("etag",""),"lastModified":cur.get("lastModified",""),"contentSha256":cur.get("contentSha256",""),"hashTruncated":False,"error":"","metrics":metrics,"roles":["primary"],"profileIds":[profile],"frequencies":[freq]})
+        sources[url]=cur
+        state.setdefault("metrics",{}).setdefault(metrics[0],{"publishedPeriod":period,"checkedAt":checked,"observedLatestPeriod":period,"status":"current"})
+
+def patch_ui():
+    text=APP00.read_text(encoding="utf-8")
+    marker="    rigidDefenceProtectedCoast: ['costa protetta', 'opere rigide', 'difesa costiera'],"
+    addition=marker+"\n    waterNetworkLosses: ['perdite idriche', 'rete idrica', 'acquedotto', 'acqua immessa'],\n    drinkingWaterQuality: ['acqua potabile', 'qualità acqua', 'gaia', 'nitrati', 'durezza'],\n    remediationProceedings: ['bonifiche', 'sisbon', 'siti contaminati', 'iter attivi', 'iter chiusi'],"
+    if "waterNetworkLosses:" not in text:
+        if marker not in text: raise RuntimeError("Marker searchSynonyms non trovato")
+        APP00.write_text(text.replace(marker,addition,1),encoding="utf-8")
+
+    app=APP03.read_text(encoding="utf-8")
+    helper=r"""
+  function waterQualityTableMarkup(metric, locality) {
+    const defs = metric.parameterDefinitions || [];
+    return `<div class="water-quality-table-wrap"><table class="water-quality-table"><thead><tr><th>Parametro</th><th>Unità</th><th>Valore medio</th><th>Limite / riferimento</th></tr></thead><tbody>${defs.map((def,index)=>`<tr><td><b>${html(def.name)}</b>${def.description ? `<small>${html(def.description)}</small>` : ''}</td><td>${html(def.unit)}</td><td><strong>${html(locality.values?.[index] ?? 'n.d.')}</strong></td><td>${html(def.reference || '—')}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  function drinkingWaterQualityCompareMarkup(data, metricKey) {
+    const metric=data.metrics[metricKey];
+    return `<div class="water-quality-compare">${metric.rows.map(row=>{const q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a href="${route(`comuni/${row.slug}/?${q}`)}" class="water-quality-compare-row"><strong>${html(row.town)}</strong><span><b>${html(number0.format(row.localities?.length||0))}</b><small>località GAIA · 17 parametri</small></span><em>Apri il dettaglio →</em></a>`;}).join('')}</div><p class="composite-compare-note">Il numero indica soltanto quante località GAIA sono disponibili: non è un punteggio di qualità e non viene costruita alcuna media comunale.</p>`;
+  }
+
+  function drinkingWaterQualityTownMarkup(metric,row) {
+    const locs=row.localities||[];
+    if(!locs.length) return '<p>n.d.</p>';
+    return `<div class="water-quality-town"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${locs.map((loc,i)=>`<option value="${i}">${html(loc.name)}</option>`).join('')}</select></label>${locs.map((loc,i)=>`<section class="water-quality-locality" data-water-quality-panel="${i}" ${i?'hidden':''}><div class="water-quality-locality-head"><div><h4>${html(loc.title||loc.name)}</h4><small>${html(loc.period)}</small></div><a class="source-pill" href="${html(loc.url)}" target="_blank" rel="noreferrer">GAIA ↗</a></div>${waterQualityTableMarkup(metric,loc)}</section>`).join('')}</div>`;
+  }
+
+  function remediationCompareMarkup(data,metricKey) {
+    const metric=data.metrics[metricKey];
+    return `<div class="remediation-shell"><label class="remediation-selector"><span>Lettura</span><select data-remediation-view><option value="active">Iter attivi</option><option value="closed">Iter chiusi</option></select></label><div class="remediation-compare-list">${metric.rows.map(row=>{const active=row.parts?.find(x=>x.key==='active')?.value||0,closed=row.parts?.find(x=>x.key==='closed')?.value||0,q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a class="remediation-compare-row" href="${route(`comuni/${row.slug}/?${q}`)}" data-active="${active}" data-closed="${closed}"><strong>${html(row.town)}</strong><span><b data-remediation-count>${html(number0.format(active))}</b><small data-remediation-label>iter attivi</small></span></a>`;}).join('')}</div><p class="composite-compare-note">Procedimenti univoci per codice regionale. Un procedimento non equivale automaticamente a un sito attualmente contaminato.</p></div>`;
+  }
+
+  function remediationTownMarkup(metric,row) {
+    const active=row.parts?.find(x=>x.key==='active')?.value||0,closed=row.parts?.find(x=>x.key==='closed')?.value||0;
+    return `<div class="remediation-shell remediation-town"><div class="remediation-summary"><article><span>Iter attivi</span><strong>${html(number0.format(active))}</strong></article><article><span>Iter chiusi</span><strong>${html(number0.format(closed))}</strong></article></div><label class="remediation-selector"><span>Mostra</span><select data-remediation-view><option value="active">Iter attivi</option><option value="closed">Iter chiusi</option></select></label><div class="remediation-procedure-list">${(row.procedures||[]).map(item=>`<article data-remediation-status="${html(item.status)}" ${item.status==='closed'?'hidden':''}><div><b>${html(item.id)}</b><h4>${html(item.name)}</h4>${item.address?`<p>${html(item.address)}</p>`:''}</div><dl><div><dt>Stato contaminazione</dt><dd>${html(item.contamination||'n.d.')}</dd></div><div><dt>Stato procedimento</dt><dd>${html(item.procedureState||'n.d.')}</dd></div></dl></article>`).join('')}</div></div>`;
+  }
+
+  document.addEventListener('change', event => {
+    const quality=event.target.closest?.('[data-water-quality-locality]');
+    if(quality) {
+      const root=quality.closest('.water-quality-town'),wanted=String(quality.value);
+      root?.querySelectorAll('[data-water-quality-panel]').forEach(panel=>panel.toggleAttribute('hidden',panel.dataset.waterQualityPanel!==wanted));
+    }
+    const remediation=event.target.closest?.('[data-remediation-view]');
+    if(remediation) {
+      const root=remediation.closest('.remediation-shell'),view=remediation.value;
+      root?.querySelectorAll('.remediation-compare-row').forEach(row=>{
+        const value=Number(row.dataset[view]||0); const count=row.querySelector('[data-remediation-count]'); const label=row.querySelector('[data-remediation-label]');
+        if(count) count.textContent=number0.format(value); if(label) label.textContent=view==='active'?'iter attivi':'iter chiusi';
+      });
+      root?.querySelectorAll('[data-remediation-status]').forEach(item=>item.toggleAttribute('hidden',item.dataset.remediationStatus!==view));
+    }
+  });
+"""
+    marker="  function compositeCompareDefaults(metric) {"
+    if "function drinkingWaterQualityCompareMarkup" not in app:
+        if marker not in app: raise RuntimeError("Marker composite defaults non trovato")
+        app=app.replace(marker,helper+"\n"+marker,1)
+    cmp_marker="    if (metric.meta.compositeType === 'stock') {"
+    cmp_add="    if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityCompareMarkup(data, metricKey);\n    if (metric.meta.compositeType === 'remediationProceedings') return remediationCompareMarkup(data, metricKey);\n"+cmp_marker
+    if "return drinkingWaterQualityCompareMarkup(data, metricKey)" not in app:
+        app=app.replace(cmp_marker,cmp_add,1)
+    town_marker="  function compositeTownMarkup(metric, row) {\n    const parts = row.parts || [];"
+    town_add="  function compositeTownMarkup(metric, row) {\n    if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityTownMarkup(metric,row);\n    if (metric.meta.compositeType === 'remediationProceedings') return remediationTownMarkup(metric,row);\n    const parts = row.parts || [];"
+    if "return drinkingWaterQualityTownMarkup(metric,row)" not in app:
+        if town_marker not in app: raise RuntimeError("Marker compositeTownMarkup non trovato")
+        app=app.replace(town_marker,town_add,1)
+    pos="      : (row.notApplicable"

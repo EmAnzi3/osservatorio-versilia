@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "release": "v1.24.0",
+  "acquiredAt": "2026-08-29",
+  "sources": {
+    "istatWaterDistribution": {
+      "flow": "12_60_DF_DCCV_CONSACQUA_2",
+      "sha256": "337f83c658af4a92f9d677c880bf887a91a458b19aa57a0c47757651064790bf",
+      "unit": "thousand m3",
+      "years": ["2012", "2015", "2018"],
+      "url": "https://esploradati.istat.it/"
+    },
+    "gaiaQuality": {
+      "mainSha256": "97d6dbe6a9f3549fe9d43c7bb2bf832ee2e1819effa2bf1b7b69fe46a37c83eb",
+      "pianDiConcaSha256": "fd938a487dccf6f9ed64325f2df855e36c2706c75ffd45cedd8c6ee607c612f3",
+      "indexSha256": "59b0448036a771d54d471a654f66d4c859601661970c1141e11a096d47f04cba",
+      "url": "https://www.gaia-spa.it/analisiweb_v2/",
+      "period": "2° Semestre 2025"
+    },
+    "sisbon": {
+      "csvSha256": "e5bd50e5b6a4a88b0f7bec0762b8719b69064ae1841bdbde925c5501e363dbcb",
+      "zipSha256": "3a12195db552d4a7101f1a598cb5cda4010100363e658b38d6f2db82582ed206",
+      "url": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
+      "snapshot": "2026-08-29"
+    }
+  },
+  "parameterDefinitions": [
+    {"name":"Concentrazione ioni Idrogeno","unit":"Unità pH","reference":"> 6,5 e < 9,5","description":"E' la misura della quantità di ioni idrogeno presenti nell’acqua. È misurata su una scala da 0 a 14, in cui 7 indica la neutralità. Valori di pH inferiori a 7 indicano che una sostanza è acida, pH superiori a 7 indicano che è basica"},
+    {"name":"Conduttività a 20°C","unit":"(µS/cm) a 20°C","reference":"2500","description":"E’ la misura della capacità di condurre corrente: poiché l’acqua pura non ha questa capacità, dipende dal contenuto di sali in essa disciolti. Tanto più è elevata la concentrazione degli ioni nell’acqua tanto più elevata sarà la conducibilità."},
+    {"name":"Durezza (da calcolo)","unit":"(°F)","reference":"Valore consigliato 15 - 50","description":"Rappresenta il contenuto nell’acqua di ioni calcio e magnesio. Si esprime in gradi °F: 1 grado francese equivale a 10 mg/l di carbonato di calcio e a 0,56 °D (gradi tedeschi). Le acque sono classificate in base al grado di durezza in : (1) Dolce: grado di durezza inferiore a 10 °F, (2) Moderatamente dura: grado di durezza tra 10 e 20 °F, (3) Dura: grado di durezza tra 20 e 30°F, (4) Molto dura: grado di durezza oltre 30°F."},
+    {"name":"Residuo secco a 180°","unit":"(mg/L)","reference":"Valore massimo consigliato 1500","description":"Rappresenta il contenuto di sali minerali dell’acqua ottenuti evaporando a 180 C° un litro di acqua."},
+    {"name":"Disinfettante residuo","unit":"(mg/L)","reference":"-","description":"Rappresenta la quantità di disinfettante residuo presente nell’acqua al momento dell’analisi. Deriva dal trattamento di disinfezione, effettuato per lo più con ipoclorito di sodio o di calcio o biossido di cloro. La disinfezione garantisce l’assenza di contaminazione microbiologica durante il trasporto dell’acqua nella rete di distribuzione."},
+    {"name":"Ammonio (NH4)","unit":"(mg/L)","reference":"0,50","description":"La presenza di questo elemento nelle acque può avere origine da deiezioni umane o animali o può derivare dai fertilizzanti usati in agricoltura. Può essere anche dovuta a fattori geologici come la degradazione di materiale in via di fossilizzazione. Viene biodegradato nell’ambiente e la sua presenza è correlata a Nitriti e Nitrati."},
+    {"name":"Nitrito (NO2)","unit":"(mg/L)","reference":"0,50","description":"Possono formarsi in natura per riduzione dei nitrati o per ossidazione dell’ammoniaca ad opera di microorganismi. Il limite normativo è basso poiché possono reagire con l’emoglobina riducendo il trasporto di ossigeno dai polmoni agli organi e tessuti."},
+    {"name":"Nitrato (NO3)","unit":"(mg/L)","reference":"50","description":"Sono composti presenti nelle acque sia per effetto di fenomeni naturali che come conseguenza delle attività dell’uomo, come per esempio i trattamenti di fertilizzazione dei terreni o l’infiltrazione di acque di scolo."},
+    {"name":"Solfati","unit":"(mg/L)","reference":"250","description":"I solfati sono sali che vengono prevalentemente ceduti dalle rocce di tipo gessoso, con le quali viene a contatto l’acqua nel suo percorso sotterraneo o superficiale. Quantità elevate possono causare sapori sgradevoli all’acqua."},
+    {"name":"Cloruro","unit":"(mg/L)","reference":"250","description":"Gli ioni cloruro sono abbondantementi distribuiti in natura sottoforma di sali di sodio, potassio e di calcio. La loro presenza aumenta la conducibilità elettrica delle acque e di conseguenza anche il residuo fisso. La normativa indica un valore di parametro che è legato ad aspetti organollettici dato che possono conferire una maggiore sapidità all'acqua."},
+    {"name":"Manganese","unit":"(µg/L)","reference":"50","description":"E' uno fra i metalli più abbondanti presenti nella crosta terrestre ed è un elemento essenziale alla vita dell'uomo. La sua presenza può determinare fenomeni di acqua scura a seguito di depositi che possono essere presenti nel sistema di distribuzione, non presentando rischi sanitari."},
+    {"name":"Calcio","unit":"(mg/L)","reference":"-","description":"Il calcio deriva dal discioglimento delle rocce calcaree. E’ il minerale più diffuso nell’organismo ed è un elemento indispensabile alla vita. Infatti, è un componente fondamentale per la crescita delle ossa ed alla formazione dei denti. Con l’acqua si apporta un contributo fondamentale al fabbisogno quotidiano di calcio."},
+    {"name":"Magnesio","unit":"(mg/L)","reference":"-","description":"Elemento indispensabile all’organismo umano in quanto entra a far parte dei sistemi metabolici ed interagisce con molti ormoni e fattori di crescita; la sua carenza può ridurre il tono muscolare e causare crampi. Il magnesio si trova in quasi tutti gli alimenti ed anche l’acqua contribuisce al fabbisogno giornaliero in quanto il magnesio in forma solubile è facilmente biodisponibile."},
+    {"name":"Alcalinità (HCO3)","unit":"(mg/L)","reference":"-","description":"La presenza dello ione idrogeno carbonato o ione bicarbonato ( nome più comune) nelle acque è dovuto principalmente ai sali disciolti di calcio e magnesio. Esso contribuisce alla durezza e alla capacità tampone dell’acqua."},
+    {"name":"Fluoruro","unit":"(mg/L)","reference":"1,50","description":"Lo ione fluoruro si trova in natura come costituente di rocce e terreni in combinazione di altri elementi, ma può anche derivare da attività industriali presenti sul territorio. Assunto a basse concentrazioni presenta effetti protettivi verso le carie dentali specialmente nei bambini."},
+    {"name":"Potassio","unit":"(mg/L)","reference":"-","description":"E' un elemento indispensabile per l’organismo umano ed il fabbisogno giornaliero può essere garantito dall’alimentazione in quanto presente in alimenti e bevande in forma ionica che è facilmente assimilabile. Entra nelle reazioni cellulari ed è importante nella conducibilità dello stimolo nel sistema nervoso. L’alterazione del contenuto in potassio nell’organismo può causare disturbi della funzionalità muscolare."},
+    {"name":"Sodio","unit":"(mg/L)","reference":"200","description":"È un elemento essenziale per la vita, molto importante per il metabolismo umano poiché serve al mantenimento del bilancio idrico ed alla regolazione osmotica tra i componenti intra ed extra cellulari. La sua diminuzione può far insorgere stanchezza e crampi muscolari. Se assunto in eccesso è dannoso, infatti è fattore di rischio nell’ipertensione arteriosa."}
+  ],
+  "activeStateCodes": ["10","40","50","60","70","120","135","140"],
+  "closedStateCodes": ["200","210","220","230","280"],
+  "versilia": {
+    "waterNetworkLosses": {
+      "2012":{"immessa":24548,"erogata":16925,"perditePct":31.05344630927163},
+      "2015":{"immessa":22294,"erogata":13197,"perditePct":40.80470081636315},
+      "2018":{"immessa":22502,"erogata":13437,"perditePct":40.28530797262466}
+    },
+    "remediationProceedings":{"active":56,"closed":96,"total":152}
+  },
+  "deferred": ["drinkingWaterSuppliedPerCapita","sewerCoverage","treatmentCoverage"]
+}
