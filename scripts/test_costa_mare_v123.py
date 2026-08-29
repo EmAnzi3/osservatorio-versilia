@@ -209,6 +209,12 @@ def assert_registry_and_ui(data: dict) -> None:
     assert "selected.metric.meta.detailGroup === 'coast'" in export
     assert "row.notApplicable ? 'n.a.'" in export
     assert "Applicabilità" in export
+    history_core = (ROOT / "assets" / "ux-history-core.js").read_text(encoding="utf-8")
+    history = (ROOT / "assets" / "ux-history.js").read_text(encoding="utf-8")
+    assert "metric.rows.filter(row => !row?.notApplicable)" in history_core
+    assert "metric?.meta?.detailGroup === 'coast'" in history
+    assert "Quattro Comuni costieri più l’aggregato ufficiale Versilia" in history
+    assert "selectedRow?.notApplicable" in history
 
 
 def main() -> None:

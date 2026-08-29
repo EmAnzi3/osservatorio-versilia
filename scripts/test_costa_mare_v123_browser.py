@@ -149,6 +149,10 @@ def assert_compare(page: Page, base: str, mobile: bool) -> None:
     page.wait_for_timeout(180)
     history = shell.locator('[data-view-pane="history"]:visible')
     assert "2019" in history.inner_text() and "2026" in history.inner_text()
+    groups = history.locator(".ux-series-group")
+    assert groups.count() == 5, f"Storico Bandiera Blu: attesi 4 Comuni costieri + Versilia, trovati {groups.count()}"
+    legend = history.locator('.ux-history-legend[aria-label="Territori costieri e Versilia"]')
+    assert legend.count() == 1 and "Versilia" in legend.inner_text()
     point = history.locator(".chart-point").first
     tooltip = point.locator(".chart-tooltip")
     assert point.count() == tooltip.count() == 1

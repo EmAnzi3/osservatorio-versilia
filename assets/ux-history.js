@@ -109,6 +109,12 @@
 
   function renderHistoryMarkup(metric, series, selectedTown) {
     const markup = toolkit.historicalChartMarkup(metric, series, selectedTown);
+    if (metric?.meta?.detailGroup === 'coast' && metric.aggregate?.series?.years?.length) {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Quattro Comuni costieri più l’aggregato ufficiale Versilia; i Comuni non costieri restano n.a. e non entrano nello storico.')
+        .replace('confronto storico dei sette comuni', 'confronto storico dei quattro Comuni costieri e della Versilia')
+        .replace('aria-label="Comuni"', 'aria-label="Territori costieri e Versilia"');
+    }
     if (metric?.meta?.compositeType === 'sexBreakdown') {
       return markup
         .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.')
@@ -393,7 +399,9 @@
   }
 
   function withOfficialVersiliaSeries(metric, series) {
-    if (!series || metric?.meta?.compositeType !== 'sexBreakdown' || !metric.aggregate?.series?.years?.length) return series;
+    const includesOfficialAggregate = metric?.meta?.compositeType === 'sexBreakdown'
+      || metric?.meta?.detailGroup === 'coast';
+    if (!series || !includesOfficialAggregate || !metric.aggregate?.series?.years?.length) return series;
     const map = new Map(metric.aggregate.series.years.map((year,index)=>[String(year),Number(metric.aggregate.series.values?.[index])]));
     if (!series.years.every(year=>Number.isFinite(map.get(String(year))))) return series;
     return { ...series, rows:[...series.rows,{ town:'Versilia', slug:'versilia', color:'var(--ink)', map:new Map(), realMap:new Map(), values:series.years.map(year=>map.get(String(year))), realSeries:null }] };
@@ -439,7 +447,10 @@
     const fixedDetail = panel.querySelector('.composite-fixed-detail')?.outerHTML || '';
     const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
     const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
-    const series = withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
+    const selectedRow = historyView.rows?.find(row => (row.slug || '') === selectedTown);
+    const series = selectedRow?.notApplicable
+      ? null
+      : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
     const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
     const currentMarkup = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
@@ -448,9 +459,11 @@
       ? selected.metric.historyPresentation?.note
       : historyAvailable && selected.metric?.meta?.key === 'income'
         ? selected.metric.meta.longHistoryNote
-        : historyAvailable
-          ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
-          : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+        : selectedRow?.notApplicable
+          ? 'Questo Comune non ha costa marina: lo storico non è applicabile e resta n.a.'
+          : historyAvailable
+            ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
+            : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
     wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);

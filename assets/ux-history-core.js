@@ -100,7 +100,9 @@
 
   function comparableSeries(metric) {
     if (!metric?.rows?.length) return null;
-    const rows = metric.rows.map((row, index) => {
+    const applicableRows = metric.rows.filter(row => !row?.notApplicable);
+    if (!applicableRows.length) return null;
+    const rows = applicableRows.map((row, index) => {
       const years = row.series?.years || [];
       const values = row.series?.values || [];
       const map = new Map();
