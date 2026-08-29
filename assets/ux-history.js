@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260828-v123-coast-ui1';
+  const HOTFIX_VERSION = '20260829-v123-coast-ui2';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);

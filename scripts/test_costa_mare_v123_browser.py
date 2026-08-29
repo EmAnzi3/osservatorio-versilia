@@ -64,6 +64,23 @@ def assert_applicability(page: Page, key: str) -> None:
         assert row.locator(".comparison-missing").count() == 1
 
 
+def assert_detail_note_spacing(detail: Locator, label: str) -> None:
+    note = detail.locator(":scope > .aggregate-note")
+    assert note.count() == 1, f"{label}: nota di dettaglio assente"
+    padding = note.evaluate(
+        """element => {
+          const style = getComputedStyle(element);
+          return {
+            top: parseFloat(style.paddingTop),
+            right: parseFloat(style.paddingRight),
+            bottom: parseFloat(style.paddingBottom),
+            left: parseFloat(style.paddingLeft),
+          };
+        }"""
+    )
+    assert min(padding.values()) >= 14, f"{label}: testo troppo vicino ai bordi ({padding})"
+
+
 def assert_detail(page: Page, key: str, mobile: bool) -> None:
     detail = page.locator("#compare-bars .coast-detail:visible")
     assert detail.count() == 1, f"{key}: dettaglio costiero assente o duplicato"
@@ -74,6 +91,7 @@ def assert_detail(page: Page, key: str, mobile: bool) -> None:
     text = detail.inner_text()
     assert all(town in text for town in COASTAL), f"{key}: manca un Comune costiero nel dettaglio ({text})"
     assert all(town not in text for town in NOT_APPLICABLE), f"{key}: Comune non costiero presente nel dettaglio ({text})"
+    assert_detail_note_spacing(detail, f"{key}/confronto")
     scroller = detail.locator(".indicator-table-scroll")
     state = scroller.evaluate("el => ({scroll:el.scrollWidth, client:el.clientWidth})")
     if mobile:
@@ -173,7 +191,10 @@ def assert_towns(page: Page, base: str, mobile: bool) -> None:
     no_overflow(page, "Viareggio qualità balneazione")
     value = page.locator("#town-topic .town-metric-primary strong").first.inner_text()
     assert "83,3%" in value
-    assert page.locator("#town-topic .coast-detail tbody tr").count() == 1
+    town_detail = page.locator("#town-topic .coast-detail")
+    assert town_detail.count() == 1
+    assert town_detail.locator("tbody tr").count() == 1
+    assert_detail_note_spacing(town_detail, "Viareggio/qualità balneazione")
     selector = page.locator("#town-topic select[data-composite-choice]")
     assert selector.count() == 1
     selector.select_option("part-1")

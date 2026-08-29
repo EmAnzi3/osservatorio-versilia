@@ -339,13 +339,13 @@
     const note = metric?.meta?.comparisonNote;
     if (kind === 'percent' || kind === 'percentage-points') {
       const diff = local - aggregate;
-      if (Math.abs(diff) < 0.05) return { headline: '0,0 punti', direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
+      if (Math.abs(diff) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };
       const sign = diff > 0 ? '+' : '−';
       const abs = number1.format(Math.abs(diff));
       return {
-        headline: `${sign}${abs} punti`,
+        headline: `${sign}${abs}%`,
         direction: diff > 0 ? `sopra la ${comparisonLabel}` : `sotto la ${comparisonLabel}`,
-        compact: `${sign}${abs} p.p. vs ${comparisonLabel}`,
+        compact: `${sign}${abs}% vs ${comparisonLabel}`,
         overline,
         note,
       };

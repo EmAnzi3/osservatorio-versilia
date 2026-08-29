@@ -105,8 +105,8 @@ def assert_towns(page: Page, base: str) -> None:
         page,
         base,
         "pnrrConcluded",
-        ("Rispetto alla quota Versilia", "+17,6 punti", "Versilia · 74 su 101", "73,3%"),
-        ("+16,8", "74,1%"),
+        ("Rispetto alla quota Versilia", "+17,6%", "Versilia · 74 su 101", "73,3%"),
+        ("+16,8", "74,1%", "punti", "p.p."),
     )
 
 

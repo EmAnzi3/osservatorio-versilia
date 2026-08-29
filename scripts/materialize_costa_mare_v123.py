@@ -31,8 +31,8 @@ BUILD_BRAND = ROOT / "scripts" / "build_static_brand.py"
 
 VERSION = "v1.23.0"
 UPDATED = "28 agosto 2026"
-ASSET_VERSION = "20260828-v123-coast-ui1"
-PWA_VERSION = "ov-pwa-20260828-v123-coast-ui1"
+ASSET_VERSION = "20260829-v123-coast-ui2"
+PWA_VERSION = "ov-pwa-20260829-v123-coast-ui2"
 SNAPSHOT_REF = "data/source-snapshots/costa-mare-v123.json"
 
 KEYS = (
