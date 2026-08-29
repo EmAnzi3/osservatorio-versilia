@@ -17,10 +17,13 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import monthly_data_check_coverage as coverage  # noqa: E402
+import monitor_semantic_checks as semantics  # noqa: E402
 import pnrr_toscana_audit  # noqa: E402
+import update_fuel_prices_mimit as fuel_mimit  # noqa: E402
 from data_status_model import canonical_url, published_period  # noqa: E402
 
 PNRR_METRICS = ("pnrrFunding", "pnrrConcluded")
+FUEL_METRIC = "fuelPrices"
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -106,6 +109,94 @@ def build_metric_state(
             item["status"] = "source_checked"
         result[key] = item
     return result
+
+
+def apply_fuel_verification_result(
+    metric: dict[str, Any],
+    item: dict[str, Any],
+    live: dict[str, Any],
+    checked_at: str,
+) -> dict[str, Any]:
+    published = str(item.get("publishedPeriod") or "")
+    observed = str(live.get("referenceDate") or "")
+    values_match = semantics.fuel_metric_matches(metric, live)
+    evidence = {
+        "provider": "Ministero delle Imprese e del Made in Italy",
+        "url": str(live.get("sourceUrls", {}).get("prezzi") or fuel_mimit.audit.PRICES),
+        "referenceDate": observed,
+        "coverage": str(live.get("coverage") or ""),
+        "valuesMatchPublished": values_match,
+        "towns": live.get("towns", {}),
+    }
+    item["checkedAt"] = checked_at or str(item.get("checkedAt") or "")
+    item["observedLatestPeriod"] = observed
+    item["verificationEvidence"] = evidence
+    if observed and published and observed > published:
+        item["status"] = "release_detected"
+        evidence["verdict"] = "new_period"
+        item["releaseEvidence"] = evidence
+    elif observed == published and values_match:
+        item["status"] = "current"
+        evidence["verdict"] = "match"
+        item.pop("releaseEvidence", None)
+    elif observed == published:
+        item["status"] = "verification_required"
+        evidence["verdict"] = "same_period_values_differ"
+        item["releaseEvidence"] = evidence
+    else:
+        item["status"] = "verification_required"
+        evidence["verdict"] = "period_not_comparable"
+        item["releaseEvidence"] = evidence
+    return evidence
+
+
+def run_fuel_verification(
+    data: dict[str, Any],
+    metrics: dict[str, dict[str, Any]],
+    report: dict[str, Any],
+    checked_at: str,
+) -> tuple[dict[str, Any] | None, str]:
+    metric = data.get("metrics", {}).get(FUEL_METRIC)
+    item = metrics.get(FUEL_METRIC)
+    if not isinstance(metric, dict) or not isinstance(item, dict):
+        return None, ""
+    source_key = canonical_url(str(metric.get("sourceUrl") or ""))
+    needs_semantic_check = source_key in changed_urls(report) or str(item.get("status") or "") in {
+        "verification_required",
+        "release_detected",
+    }
+    if not needs_semantic_check:
+        return None, ""
+    try:
+        live = fuel_mimit.collect()
+    except Exception as exc:
+        item["status"] = "verification_required"
+        return None, f"{type(exc).__name__}: {exc}"
+    return apply_fuel_verification_result(metric, item, live, checked_at), ""
+
+
+def append_fuel_report_section(
+    report_md: Path,
+    result: dict[str, Any] | None,
+    error: str = "",
+) -> None:
+    if result is None and not error:
+        return
+    lines = ["", "### Verifica carburanti MIMIT", ""]
+    if result is not None:
+        lines.extend(
+            [
+                f"- Fotografia: `{result.get('referenceDate') or 'n.d.'}`",
+                f"- Copertura: `{result.get('coverage') or 'n.d.'}`",
+                f"- Esito semantico: `{result.get('verdict') or 'n.d.'}`",
+                f"- Valori pubblicati coincidenti: `{'sì' if result.get('valuesMatchPublished') else 'no'}`",
+                "- Il cambio quotidiano del CSV non viene più interpretato da solo come anomalia: il periodo e i valori vengono verificati semanticamente.",
+            ]
+        )
+    else:
+        lines.append(f"Controllo semantico non completato: `{error}`. Nessun valore viene modificato automaticamente.")
+    with report_md.open("a", encoding="utf-8") as handle:
+        handle.write("\n".join(lines) + "\n")
 
 
 def verification_evidence(audit_result: dict[str, Any], metric_key: str) -> dict[str, Any]:
@@ -289,9 +380,21 @@ def main(argv: list[str] | None = None) -> int:
     next_state["schemaVersion"] = 2
     metrics = build_metric_state(data, previous, next_state, report)
 
+    fuel_result = None
+    fuel_error = ""
     pnrr_result = None
     pnrr_error = ""
     if args.mode == "live":
+        fuel_result, fuel_error = run_fuel_verification(
+            data,
+            metrics,
+            report,
+            str(next_state.get("checkedAt") or ""),
+        )
+        if fuel_result is not None:
+            report["fuelMimitVerification"] = fuel_result
+        elif fuel_error:
+            report["fuelMimitVerificationError"] = fuel_error
         pnrr_result, pnrr_error = run_pnrr_verification(
             data,
             metrics,
@@ -312,6 +415,7 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     append_report_section(args.report_md, next_state, pnrr_result, pnrr_error)
+    append_fuel_report_section(args.report_md, fuel_result, fuel_error)
     return 0
 
 

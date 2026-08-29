@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import io
 import json
 import subprocess
+import zipfile
 import sys
 import tempfile
 from pathlib import Path
@@ -12,6 +14,7 @@ from pathlib import Path
 import monthly_data_check_coverage as coverage
 import monthly_data_check_status as status_model
 import monthly_data_check as checker
+import monitor_semantic_checks as semantics
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKER = ROOT / "scripts" / "monthly_data_check.py"
@@ -200,6 +203,51 @@ def main() -> None:
         },
     )
     assert not redirect_changes["redirect"]
+
+    # Due ZIP con gli stessi membri ma timestamp differenti devono produrre lo
+    # stesso hash semantico: ARS rigenera il contenitore senza cambiare il CSV.
+    def zip_payload(year: int) -> bytes:
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w") as archive:
+            info = zipfile.ZipInfo("data.csv", date_time=(year, 1, 1, 0, 0, 0))
+            archive.writestr(info, "anno,valore\n2022,1.0\n")
+        return buffer.getvalue()
+
+    zip_hash_a, zip_mode_a = semantics.semantic_content_hash(zip_payload(2025))
+    zip_hash_b, zip_mode_b = semantics.semantic_content_hash(zip_payload(2026))
+    assert zip_mode_a == zip_mode_b == "zip-members"
+    assert zip_hash_a == zip_hash_b
+
+    volatile_url = "https://example.org/live.gtfs"
+    volatile_changes = checker.compare_states(
+        {"sources": {volatile_url: {"ok": True, "finalUrl": volatile_url, "contentSha256": "old", "contentHashMode": "raw"}}},
+        {volatile_url: {"ok": True, "finalUrl": volatile_url, "contentSha256": "new", "contentHashMode": "raw", "contentChangePolicy": "informational", "contentChangeReason": "feed continuo"}},
+    )
+    assert not volatile_changes["content"]
+    assert volatile_changes["informationalContent"] == [{"url": volatile_url, "reason": "feed continuo"}]
+
+    zip_migration = checker.compare_states(
+        {"sources": {volatile_url: {"ok": True, "finalUrl": volatile_url, "contentSha256": "legacy"}}},
+        {volatile_url: {"ok": True, "finalUrl": volatile_url, "contentSha256": zip_hash_a, "contentHashMode": "zip-members"}},
+    )
+    assert not zip_migration["content"]
+
+    fuel_metric = {
+        "rows": [
+            {"town": "A", "stationCount": 1, "parts": [{"label": "Benzina self", "value": 1.8}, {"label": "Gasolio self", "value": 1.7}]},
+            {"town": "B", "stationCount": 0, "parts": [{"label": "Benzina self", "value": None}, {"label": "Gasolio self", "value": None}]},
+        ]
+    }
+    fuel_live = {"referenceDate": "2026-08-28", "coverage": "1/2", "sourceUrls": {"prezzi": "https://example.org/fuel.csv"}, "towns": {"A": {"benzina": 1.8, "gasolio": 1.7, "stations": 1}, "B": {"benzina": None, "gasolio": None, "stations": 0}}}
+    assert semantics.fuel_metric_matches(fuel_metric, fuel_live)
+    fuel_state = {"publishedPeriod": "2026-08-28", "status": "verification_required"}
+    evidence = status_model.apply_fuel_verification_result(fuel_metric, fuel_state, fuel_live, "2026-08-29T00:00:00+00:00")
+    assert fuel_state["status"] == "current"
+    assert evidence["verdict"] == "match"
+    newer_state = {"publishedPeriod": "2026-08-27", "status": "current"}
+    evidence = status_model.apply_fuel_verification_result(fuel_metric, newer_state, fuel_live, "2026-08-29T00:00:00+00:00")
+    assert newer_state["status"] == "release_detected"
+    assert evidence["verdict"] == "new_period"
 
     # L'ingresso di una URL nella nuova baseline del monitor non è un'anomalia
     # del dato. Solo contenuto o redirect cambiati di una fonte già monitorata

@@ -18,6 +18,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+
+import monitor_semantic_checks as semantics
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -437,6 +439,9 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
         "etag": "",
         "lastModified": "",
         "contentSha256": "",
+        "contentHashMode": "raw",
+        "contentChangePolicy": "",
+        "contentChangeReason": "",
         "hashTruncated": False,
         "error": "",
     }
@@ -478,16 +483,22 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
     if result["ok"] and should_hash(result["finalUrl"], result["contentType"], registry):
         try:
             with open_request(url, "GET", timeout) as content_response:
-                digest = hashlib.sha256()
+                payload = bytearray()
                 total = 0
                 while total <= max_bytes:
                     chunk = content_response.read(min(65_536, max_bytes + 1 - total))
                     if not chunk:
                         break
-                    digest.update(chunk)
+                    payload.extend(chunk)
                     total += len(chunk)
-                result["contentSha256"] = digest.hexdigest()
                 result["hashTruncated"] = total > max_bytes
+                if result["hashTruncated"]:
+                    result["contentSha256"] = hashlib.sha256(bytes(payload)).hexdigest()
+                    result["contentHashMode"] = "raw"
+                else:
+                    digest, mode = semantics.semantic_content_hash(bytes(payload))
+                    result["contentSha256"] = digest
+                    result["contentHashMode"] = mode
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, socket.timeout) as exc:
             result["error"] = f"Metadati raggiungibili, hash non disponibile: {exc}"
     return result
@@ -504,6 +515,9 @@ def offline_source(url: str) -> dict[str, Any]:
         "etag": "",
         "lastModified": "",
         "contentSha256": "",
+        "contentHashMode": "raw",
+        "contentChangePolicy": "",
+        "contentChangeReason": "",
         "hashTruncated": False,
         "error": "",
     }
@@ -517,6 +531,7 @@ def compare_states(previous: dict[str, Any], current: dict[str, dict[str, Any]])
         "added": [],
         "removed": [],
         "content": [],
+        "informationalContent": [],
         "redirect": [],
         "metadata": [],
         "unreachable": [],
@@ -537,8 +552,22 @@ def compare_states(previous: dict[str, Any], current: dict[str, dict[str, Any]])
             changes["unreachable"].append({"url": url, "error": item.get("error", "")})
         if not old.get("ok") and item.get("ok"):
             changes["recovered"].append({"url": url})
-        if old.get("contentSha256") and item.get("contentSha256") and old["contentSha256"] != item["contentSha256"]:
-            changes["content"].append({"url": url})
+        old_mode = str(old.get("contentHashMode") or "raw")
+        new_mode = str(item.get("contentHashMode") or "raw")
+        if (
+            old.get("contentSha256")
+            and item.get("contentSha256")
+            and old_mode == new_mode
+            and old["contentSha256"] != item["contentSha256"]
+        ):
+            content_item = {"url": url}
+            reason = str(item.get("contentChangeReason") or "")
+            if reason:
+                content_item["reason"] = reason
+            if str(item.get("contentChangePolicy") or "") == "informational":
+                changes["informationalContent"].append(content_item)
+            else:
+                changes["content"].append(content_item)
         if old.get("finalUrl") and item.get("finalUrl") and old["finalUrl"] != item["finalUrl"]:
             changes["redirect"].append(
                 {"url": url, "before": old.get("finalUrl"), "after": item.get("finalUrl")}
@@ -625,17 +654,26 @@ def build_report(
                 "",
             ]
         )
-    if changes["metadata"]:
-        lines.extend(
-            [
-                "### Segnali informativi",
-                "",
-                "Sono cambiati ETag o Last-Modified di alcune pagine. Il segnale non modifica automaticamente alcun dato.",
-                "",
-                url_list(changes["metadata"]),
-                "",
-            ]
-        )
+    if changes["metadata"] or changes.get("informationalContent"):
+        lines.extend(["### Segnali informativi", ""])
+        if changes.get("informationalContent"):
+            lines.extend(
+                [
+                    "Il contenuto di alcune fonti operative continue è cambiato, ma la politica della fonte classifica il cambio come informativo: gli indicatori pubblicati usano una fotografia datata e versionata.",
+                    "",
+                    url_list(changes["informationalContent"]),
+                    "",
+                ]
+            )
+        if changes["metadata"]:
+            lines.extend(
+                [
+                    "Sono cambiati ETag o Last-Modified di alcune pagine. Il segnale non modifica automaticamente alcun dato.",
+                    "",
+                    url_list(changes["metadata"]),
+                    "",
+                ]
+            )
     lines.extend(
         [
             "### Regola di pubblicazione",
@@ -683,6 +721,10 @@ def main() -> int:
         probe["roles"] = sorted(source["roles"])
         probe["profileIds"] = sorted(source.get("profileIds", []))
         probe["frequencies"] = sorted(source.get("frequencies", []))
+        source_policy = semantics.source_change_policy(url, registry)
+        if source_policy:
+            probe["contentChangePolicy"] = source_policy.get("contentChange", "")
+            probe["contentChangeReason"] = source_policy.get("reason", "")
         probes[url] = probe
 
     changes = compare_states(previous, probes)
