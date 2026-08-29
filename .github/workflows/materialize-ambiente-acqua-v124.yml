@@ -25,6 +25,22 @@ jobs:
           python-version: '3.12'
       - name: Assemble materializer
         run: cat scripts/v124-parts/*.part > scripts/materialize_ambiente_acqua_v124.py
+      - name: Harden SISBON parser
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/materialize_ambiente_acqua_v124.py')
+          s=p.read_text(encoding='utf-8')
+          old='''    procedures=[]\n    for row in csv.DictReader(io.StringIO(text)):\n        town=clean(row.get("nome_comune",""))'''
+          new='''    procedures=[]\n    sample=text[:8192]\n    try:\n        dialect=csv.Sniffer().sniff(sample, delimiters=",;\\t")\n    except csv.Error:\n        dialect=csv.excel\n    reader=csv.DictReader(io.StringIO(text), dialect=dialect)\n    fieldmap={clean(name).casefold():name for name in (reader.fieldnames or [])}\n    if "nome_comune" not in fieldmap:\n        raise RuntimeError(f"SISBON schema inatteso: headers={reader.fieldnames!r}; preview={text[:300]!r}")\n    def cell(row,name):\n        key=fieldmap.get(name.casefold())\n        return row.get(key,"") if key else ""\n    for row in reader:\n        town=clean(cell(row,"nome_comune"))'''
+          if old not in s:
+              raise SystemExit('SISBON parser marker not found')
+          s=s.replace(old,new,1)
+          for name in ['stato_corr_proc','geojson','codice_regionale','denominazione_sito','indirizzo','d_stato_cont','d_stato_proc']:
+              s=s.replace(f'row.get("{name}","")',f'cell(row,"{name}")')
+          s=s.replace('row.get("geojson") or "{}"','cell(row,"geojson") or "{}"')
+          p.write_text(s,encoding='utf-8')
+          PY
       - name: Install source readers
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
       - name: Materialize verified data and UI
