@@ -8,6 +8,7 @@ on:
       - '.github/workflows/materialize-ambiente-acqua-v124.yml'
       - 'scripts/v124-parts/**'
       - 'scripts/v124-patch-sisbon.py'
+      - 'scripts/v124-fix-js.py'
       - 'data/source-snapshots/ambiente-acqua-v124-manifest.json'
 
 permissions:
@@ -32,6 +33,8 @@ jobs:
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
       - name: Materialize verified data and UI
         run: python scripts/materialize_ambiente_acqua_v124.py
+      - name: Normalize custom comparison syntax
+        run: python scripts/v124-fix-js.py
       - name: Validate Python release contract
         run: |
           python scripts/finalize_catalog_release.py --check
@@ -43,7 +46,7 @@ jobs:
       - name: Remove bootstrap files
         run: |
           rm -rf scripts/v124-parts
-          rm -f scripts/v124-patch-sisbon.py
+          rm -f scripts/v124-patch-sisbon.py scripts/v124-fix-js.py
           rm .github/workflows/materialize-ambiente-acqua-v124.yml
       - name: Commit materialized release
         run: |
