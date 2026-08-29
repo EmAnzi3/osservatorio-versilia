@@ -1,0 +1,98 @@
+name: Costa e mare v1.23 · release gate
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "assets/**"
+      - "data/**"
+      - "docs/**"
+      - "scripts/**"
+      - "service-worker.js"
+      - ".github/workflows/costa-mare-v123.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "costa-mare-v123-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  validate-and-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Validate materialization and source contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_costa_mare_v123.py
+          python scripts/patch_investimenti_versilia.py
+          git diff --exit-code
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_costa_mare_v123.py
+          python scripts/test_investimenti_versilia.py
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-monitor-state.json >/dev/null
+          python -m json.tool data/source-snapshots/costa-mare-v123.json >/dev/null
+          node --check assets/visual-grammar.js
+
+      - name: Build pre-rendered site
+        run: python scripts/build_static_brand.py
+
+      - name: Ensure build preserves canonical sources
+        run: git diff --exit-code -- . ':(exclude)dist'
+
+      - name: Materialize public data status
+        run: |
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+
+      - name: Build existing PNRR town deep dive
+        run: |
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+
+      - name: Start local preview server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-costa-http.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-costa-http.log
+          exit 1
+
+      - name: Validate Costa e mare in browser
+        run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Investimenti e opere in browser
+        run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload verified draft preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-v123-costa-mare-preview-verified
+          path: dist
+          if-no-files-found: error
+          retention-days: 14

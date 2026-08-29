@@ -266,7 +266,36 @@ def validate_dataset(
                 findings.append(finding("error", "row_shape", "Riga comunale non valida.", metric_key))
                 continue
             rows_total += 1
-            if row.get("value") is None:
+            not_applicable = row.get("notApplicable") is True
+            if not_applicable:
+                if row.get("value") is not None:
+                    findings.append(
+                        finding(
+                            "error",
+                            "not_applicable_value",
+                            f"Valore presente nonostante n.a. per {row.get('town', row.get('code', '?'))}.",
+                            metric_key,
+                        )
+                    )
+                if row.get("formatted") != "n.a.":
+                    findings.append(
+                        finding(
+                            "error",
+                            "not_applicable_format",
+                            f"Il valore n.a. non è formattato correttamente per {row.get('town', row.get('code', '?'))}.",
+                            metric_key,
+                        )
+                    )
+                if not str(row.get("applicabilityNote") or "").strip():
+                    findings.append(
+                        finding(
+                            "error",
+                            "not_applicable_note",
+                            f"Motivo di non applicabilità assente per {row.get('town', row.get('code', '?'))}.",
+                            metric_key,
+                        )
+                    )
+            elif row.get("value") is None:
                 findings.append(
                     finding(
                         "error",
@@ -276,6 +305,15 @@ def validate_dataset(
                     )
                 )
             series = row.get("series")
+            if not_applicable and series is not None:
+                findings.append(
+                    finding(
+                        "error",
+                        "not_applicable_series",
+                        f"Serie presente nonostante n.a. per {row.get('town', row.get('code', '?'))}.",
+                        metric_key,
+                    )
+                )
             if series is None:
                 continue
             has_series = True

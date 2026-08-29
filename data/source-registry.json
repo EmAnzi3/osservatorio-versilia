@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 157,
-  "expectedInlineMetricCount": 153,
+  "expectedMetricCount": 162,
+  "expectedInlineMetricCount": 158,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -394,6 +394,33 @@
       "acquisitionMethod": "Download dei CSV ufficiali Dataset Indicatori e Dataset Biblioteche; indicatori IFLA comunali preferiti, dettaglio sedi deduplicato per Codice ICCU; nessuna stima dei mancanti.",
       "licenseName": "Creative Commons Attribution",
       "licenseUrl": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale"
+    },
+    "arpat-bathing-annual": {
+      "publisher": "ARPAT",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo la conclusione e validazione della stagione balneare",
+      "acquisitionMethod": "Download dei dati e del rapporto ufficiale ARPAT; deduplica dei campioni su Codice area + Data + Rout./Suppl.; classificazioni e chilometri conservati nello snapshot.",
+      "licenseName": "Condizioni ARPAT",
+      "licenseUrl": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/"
+    },
+    "fee-blue-flag-annual": {
+      "publisher": "FEE Italia",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Primavera dell'anno di assegnazione",
+      "acquisitionMethod": "Consultazione degli elenchi ufficiali FEE Italia; località separate contate una volta, denominazioni unite da / non spezzate.",
+      "licenseName": "Condizioni FEE Italia",
+      "licenseUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb"
+    },
+    "ispra-coast-irregular": {
+      "publisher": "ISPRA",
+      "frequency": "census_or_irregular",
+      "frequencyLabel": "Quinquennale o irregolare",
+      "expectedRelease": "Alla pubblicazione di un nuovo rilievo costiero ISPRA omogeneo",
+      "acquisitionMethod": "Download delle tabelle comunali ufficiali ISPRA e calcolo delle quote sui chilometri elementari, senza medie di percentuali.",
+      "licenseName": "Condizioni ISPRA",
+      "licenseUrl": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea"
     }
   },
   "sourceProfileByUrl": {
@@ -460,7 +487,12 @@
     "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": "ars-toscana-mixed",
     "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed",
     "https://maps.agcom.it/": "agcom-quarterly",
-    "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data": "agcom-quarterly"
+    "https://geo.agcom.it/arcgis/sharing/rest/content/items/25830559c5784c1eb5eb1cf748889f4c/data": "agcom-quarterly",
+    "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/": "arpat-bathing-annual",
+    "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/": "arpat-bathing-annual",
+    "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb": "fee-blue-flag-annual",
+    "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea": "ispra-coast-irregular",
+    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -597,6 +629,21 @@
     },
     "libraryWeeklyOpeningHours": {
       "profile": "regione-toscana-biblioteche-annual"
+    },
+    "bathingWaterQuality": {
+      "profile": "arpat-bathing-annual"
+    },
+    "bathingNonCompliantSamples": {
+      "profile": "arpat-bathing-annual"
+    },
+    "blueFlagBeaches": {
+      "profile": "fee-blue-flag-annual"
+    },
+    "shorelineDynamics": {
+      "profile": "ispra-coast-irregular"
+    },
+    "rigidDefenceProtectedCoast": {
+      "profile": "ispra-coast-irregular"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -629,6 +676,11 @@
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/788569d3-24e3-414f-a886-f55b89115b1a/download/tracciato-dataset-indicator.pdf": "regione-toscana-biblioteche-annual",
     "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf": "regione-toscana-biblioteche-annual",
     "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1290-speranza-vita-alla-nascita?dettaglio=ric_anno_geo_comuni&par_top_geografia=046033&provenienza=comuni_elenco_indicatori_sintesi": "ars-toscana-mixed",
-    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed"
+    "https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore=1290": "ars-toscana-mixed",
+    "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/": "arpat-bathing-annual",
+    "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/": "arpat-bathing-annual",
+    "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb": "fee-blue-flag-annual",
+    "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea": "ispra-coast-irregular",
+    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular"
   }
 }

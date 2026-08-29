@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260828-v122-lifeexp-ui1';
+  const VERSION = '20260829-v123-coast-ui2';
   let dataPromise = null;
 
   function loadData() {
@@ -103,6 +103,55 @@
     return lines;
   }
 
+  function coastRows(metric, label) {
+    const lines = [];
+    metric.rows.forEach(row => {
+      const applicability = row.notApplicable ? 'Comune non costiero' : 'Applicabile';
+      if (metric.meta.compositeType && Array.isArray(row.parts)) {
+        row.parts.forEach(part => lines.push([
+          row.town,
+          row.code,
+          label,
+          metric.meta.year,
+          part.label,
+          row.notApplicable ? 'n.a.' : part.value,
+          part.unit || metric.meta.unit,
+          applicability,
+          metric.sourceUrl,
+        ]));
+        return;
+      }
+      const years = Array.isArray(row.series?.years) ? row.series.years : [];
+      const values = Array.isArray(row.series?.values) ? row.series.values : [];
+      if (years.length) {
+        years.forEach((year, index) => lines.push([
+          row.town,
+          row.code,
+          label,
+          year,
+          metric.meta.label,
+          values[index],
+          metric.meta.unit,
+          applicability,
+          metric.sourceUrl,
+        ]));
+        return;
+      }
+      lines.push([
+        row.town,
+        row.code,
+        label,
+        metric.meta.year,
+        metric.meta.label,
+        row.notApplicable ? 'n.a.' : row.value,
+        metric.meta.unit,
+        applicability,
+        metric.sourceUrl,
+      ]);
+    });
+    return lines;
+  }
+
   async function exportSelectedMetric() {
     const data = await loadData();
     const selected = selectedMetric(data);
@@ -113,6 +162,14 @@
       const lines = [
         ['Territorio', 'Codice Istat', 'Indicatore', 'Anno', 'Sesso', 'Valore', 'Unità', 'Fonte'],
         ...sexBreakdownRows(selected.metric, label),
+      ];
+      saveCSV(selected.key, lines);
+      return;
+    }
+    if (selected.metric.meta.detailGroup === 'coast') {
+      const lines = [
+        ['Comune', 'Codice Istat', 'Indicatore', 'Anno', 'Componente', 'Valore', 'Unità', 'Applicabilità', 'Fonte'],
+        ...coastRows(selected.metric, label),
       ];
       saveCSV(selected.key, lines);
       return;

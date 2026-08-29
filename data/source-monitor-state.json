@@ -1769,6 +1769,107 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/": {
+      "url": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "bathingWaterQuality",
+        "bathingNonCompliantSamples"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "arpat-bathing-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb": {
+      "url": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "blueFlagBeaches"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "fee-blue-flag-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea": {
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "shorelineDynamics"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "ispra-coast-irregular"
+      ],
+      "frequencies": [
+        "census_or_irregular"
+      ]
+    },
+    "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": {
+      "url": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "rigidDefenceProtectedCoast"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "ispra-coast-irregular"
+      ],
+      "frequencies": [
+        "census_or_irregular"
+      ]
     }
   },
   "metrics": {
@@ -2748,6 +2849,36 @@
       "checkedAt": "2026-08-28T14:20:32+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
+    },
+    "bathingWaterQuality": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-08-28T18:00:00+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current"
+    },
+    "bathingNonCompliantSamples": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-08-28T18:00:00+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current"
+    },
+    "blueFlagBeaches": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-28T18:00:00+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "shorelineDynamics": {
+      "publishedPeriod": "2006–2020",
+      "checkedAt": "2026-08-28T18:00:00+00:00",
+      "observedLatestPeriod": "2006–2020",
+      "status": "current"
+    },
+    "rigidDefenceProtectedCoast": {
+      "publishedPeriod": "2020",
+      "checkedAt": "2026-08-28T18:00:00+00:00",
+      "observedLatestPeriod": "2020",
+      "status": "current"
     }
   }
 }

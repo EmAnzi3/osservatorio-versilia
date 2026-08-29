@@ -1,5 +1,5 @@
 {
-  "version": "v1.22.0",
+  "version": "v1.23.0",
   "updated": "28 agosto 2026",
   "themes": {
     "demografia": {
@@ -557,7 +557,7 @@
       "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Clima, suolo, rifiuti, agricoltura e uso del territorio, coltivazioni biologiche ed esposizione concreta ai rischi idrogeologici.",
+      "description": "Clima, suolo, costa, mare, rifiuti, agricoltura, uso del territorio ed esposizione ai rischi idrogeologici.",
       "metrics": [
         "landUse",
         "landUseChange",
@@ -567,6 +567,11 @@
         "climatePrecipitationTrend50y",
         "climateTminTrend",
         "climateTmaxTrend",
+        "bathingWaterQuality",
+        "bathingNonCompliantSamples",
+        "blueFlagBeaches",
+        "shorelineDynamics",
+        "rigidDefenceProtectedCoast",
         "agriculturalFarms",
         "agriculturalUsedArea",
         "averageAgriculturalFarmSize",
@@ -599,6 +604,18 @@
             "climatePrecipitationTrend50y",
             "climateTminTrend",
             "climateTmaxTrend"
+          ]
+        },
+        {
+          "key": "costa-mare",
+          "label": "Costa e mare",
+          "description": "Balneazione, riconoscimenti FEE e assetto fisico del litorale nei quattro Comuni costieri.",
+          "metrics": [
+            "bathingWaterQuality",
+            "bathingNonCompliantSamples",
+            "blueFlagBeaches",
+            "shorelineDynamics",
+            "rigidDefenceProtectedCoast"
           ]
         },
         {
@@ -14980,7 +14997,7 @@
         "theme": "lavoro",
         "label": "Divario occupazionale di genere 15–64 anni",
         "shortLabel": "Divario di genere",
-        "description": "Differenza, in punti percentuali, tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
+        "description": "Scarto tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
         "unit": "percentagePoints",
         "year": "2023",
         "source": "Istat — Censimento permanente, dati per sezione",
@@ -14993,7 +15010,7 @@
           "code": "046018",
           "slug": "massarosa",
           "value": 16.81241352612966,
-          "formatted": "16,8 p.p.",
+          "formatted": "16,8%",
           "series": {
             "years": [
               2021,
@@ -15012,7 +15029,7 @@
           "code": "046033",
           "slug": "viareggio",
           "value": 13.902650297211075,
-          "formatted": "13,9 p.p.",
+          "formatted": "13,9%",
           "series": {
             "years": [
               2021,
@@ -15031,7 +15048,7 @@
           "code": "046005",
           "slug": "camaiore",
           "value": 16.118969689322206,
-          "formatted": "16,1 p.p.",
+          "formatted": "16,1%",
           "series": {
             "years": [
               2021,
@@ -15050,7 +15067,7 @@
           "code": "046024",
           "slug": "pietrasanta",
           "value": 15.769724704984256,
-          "formatted": "15,8 p.p.",
+          "formatted": "15,8%",
           "series": {
             "years": [
               2021,
@@ -15069,7 +15086,7 @@
           "code": "046028",
           "slug": "seravezza",
           "value": 18.189491718364174,
-          "formatted": "18,2 p.p.",
+          "formatted": "18,2%",
           "series": {
             "years": [
               2021,
@@ -15088,7 +15105,7 @@
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 15.016131515042986,
-          "formatted": "15,0 p.p.",
+          "formatted": "15,0%",
           "series": {
             "years": [
               2021,
@@ -15107,7 +15124,7 @@
           "code": "046030",
           "slug": "stazzema",
           "value": 19.338004074125344,
-          "formatted": "19,3 p.p.",
+          "formatted": "19,3%",
           "series": {
             "years": [
               2021,
@@ -25489,6 +25506,1523 @@
         "snapshot": "data/source-snapshots/istat-agricoltura-territorio-2020.json"
       }
     },
+    "bathingWaterQuality": {
+      "meta": {
+        "key": "bathingWaterQuality",
+        "theme": "ambiente",
+        "label": "Qualità delle aree di balneazione",
+        "shortLabel": "Qualità balneazione",
+        "description": "Quota delle aree e dei chilometri di costa classificati eccellenti da ARPAT per il 2025, sulla base dei dati 2022–2025.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "ARPAT — classificazione delle acque di balneazione",
+        "polarity": "neutral",
+        "context": "Costa e mare",
+        "detailGroup": "coast",
+        "searchTerms": [
+          "balneazione",
+          "qualità acque",
+          "mare",
+          "costa",
+          "aree eccellenti"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/costa-mare-v123.json",
+          "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Lettura",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "percentagePoints",
+        "comparisonLabel": "quota Versilia costiera",
+        "comparisonOverline": "Rispetto alla quota Versilia costiera",
+        "comparisonNote": "Il riferimento usa il rapporto tra le somme elementari dei quattro Comuni costieri; non la media semplice delle percentuali comunali."
+      },
+      "sourceUrl": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+      "sourceUrls": {
+        "report2025": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+        "archive": "https://www.arpat.toscana.it/datiemappe/balneazione-in-toscana-dati-relativi-alle-stagioni-precedenti/"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 83.33333333333334,
+          "formatted": "83,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 83.33333333333334,
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": 83.33333333333334
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": 96.36608344549126
+            }
+          ],
+          "coastDetail": {
+            "areas": {
+              "excellent": 5,
+              "good": 1,
+              "sufficient": 0,
+              "poor": 0,
+              "total": 6
+            },
+            "kilometres": {
+              "excellent": 7.16,
+              "good": 0.27,
+              "sufficient": 0.0,
+              "poor": 0.0,
+              "total": 7.43
+            }
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 66.66666666666666,
+          "formatted": "66,7%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 66.66666666666666,
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": 66.66666666666666
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": 90.12345679012344
+            }
+          ],
+          "coastDetail": {
+            "areas": {
+              "excellent": 2,
+              "good": 0,
+              "sufficient": 0,
+              "poor": 1,
+              "total": 3
+            },
+            "kilometres": {
+              "excellent": 2.92,
+              "good": 0.0,
+              "sufficient": 0.0,
+              "poor": 0.32,
+              "total": 3.24
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 44.44444444444444,
+          "formatted": "44,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44.44444444444444,
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": 44.44444444444444
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": 74.94736842105263
+            }
+          ],
+          "coastDetail": {
+            "areas": {
+              "excellent": 4,
+              "good": 5,
+              "sufficient": 0,
+              "poor": 0,
+              "total": 9
+            },
+            "kilometres": {
+              "excellent": 3.56,
+              "good": 1.19,
+              "sufficient": 0.0,
+              "poor": 0.0,
+              "total": 4.75
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 100.0,
+          "formatted": "100,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 100.0,
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": 100.0
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": 100.0
+            }
+          ],
+          "coastDetail": {
+            "areas": {
+              "excellent": 3,
+              "good": 0,
+              "sufficient": 0,
+              "poor": 0,
+              "total": 3
+            },
+            "kilometres": {
+              "excellent": 5.2,
+              "good": 0.0,
+              "sufficient": 0.0,
+              "poor": 0.0,
+              "total": 5.2
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "areas",
+              "label": "Aree eccellenti",
+              "selectorLabel": "Aree",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "kilometres",
+              "label": "Costa classificata eccellente",
+              "selectorLabel": "km di costa",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 66.66666666666666,
+        "label": "Versilia costiera · aree eccellenti",
+        "parts": [
+          {
+            "key": "areas",
+            "label": "Aree eccellenti",
+            "selectorLabel": "Aree",
+            "unit": "percent",
+            "value": 66.66666666666666,
+            "numerator": 14,
+            "denominator": 21
+          },
+          {
+            "key": "kilometres",
+            "label": "Costa classificata eccellente",
+            "selectorLabel": "km di costa",
+            "unit": "percent",
+            "value": 91.36760426770125,
+            "numerator": 18.84,
+            "denominator": 20.62
+          }
+        ],
+        "coastDetail": {
+          "areas": {
+            "excellent": 14,
+            "good": 6,
+            "sufficient": 0,
+            "poor": 1,
+            "total": 21
+          },
+          "kilometres": {
+            "excellent": 18.84,
+            "good": 1.46,
+            "sufficient": 0.0,
+            "poor": 0.32,
+            "total": 20.62
+          }
+        },
+        "note": "Rapporti tra le somme dei numeratori e dei denominatori dei quattro Comuni costieri; non medie semplici delle percentuali comunali."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Classificazione ufficiale ARPAT quadriennale",
+        "formula": "Aree: aree eccellenti / aree classificate × 100. km: km in classe eccellente / km classificati × 100. Aggregati Versilia calcolati sulle somme elementari.",
+        "caveat": "La classificazione 2025 usa i dati 2022–2025 e non coincide con gli esiti dei soli campioni 2025. Nessuna lunghezza è stimata.",
+        "coverage": "4/4 Comuni costieri + 3 n.a.",
+        "snapshot": "data/source-snapshots/costa-mare-v123.json"
+      }
+    },
+    "bathingNonCompliantSamples": {
+      "meta": {
+        "key": "bathingNonCompliantSamples",
+        "theme": "ambiente",
+        "label": "Campioni di balneazione non conformi",
+        "shortLabel": "Campioni non conformi",
+        "description": "Quota dei campioni 2025 che superano almeno uno dei limiti microbiologici per le acque marine, distinguendo routinari e supplettivi.",
+        "unit": "percent",
+        "year": "2025",
+        "source": "ARPAT — controlli delle acque di balneazione",
+        "polarity": "neutral",
+        "context": "Costa e mare",
+        "detailGroup": "coast",
+        "searchTerms": [
+          "balneazione",
+          "campioni",
+          "non conformi",
+          "escherichia coli",
+          "enterococchi",
+          "mare"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/costa-mare-v123.json",
+          "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Tipo di campione",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "percentagePoints",
+        "comparisonLabel": "quota Versilia costiera",
+        "comparisonOverline": "Rispetto alla quota Versilia costiera",
+        "comparisonNote": "Il riferimento usa campioni non conformi complessivi divisi per i campioni complessivi dei quattro Comuni costieri; non la media semplice delle percentuali comunali."
+      },
+      "sourceUrl": "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 13.636363636363635,
+          "formatted": "13,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13.636363636363635,
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": 13.636363636363635,
+              "nonCompliant": 6,
+              "total": 44
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": 16.666666666666664,
+              "nonCompliant": 6,
+              "total": 36
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": 0.0,
+              "nonCompliant": 0,
+              "total": 8
+            }
+          ],
+          "coastDetail": {
+            "name": "Viareggio",
+            "all": {
+              "nonCompliant": 6,
+              "total": 44
+            },
+            "routine": {
+              "nonCompliant": 6,
+              "total": 36,
+              "affectedAreas": 4,
+              "areas": 6
+            },
+            "supplementary": {
+              "nonCompliant": 0,
+              "total": 8
+            }
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 28.57142857142857,
+          "formatted": "28,6%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 28.57142857142857,
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": 28.57142857142857,
+              "nonCompliant": 8,
+              "total": 28
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": 38.88888888888889,
+              "nonCompliant": 7,
+              "total": 18
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": 10.0,
+              "nonCompliant": 1,
+              "total": 10
+            }
+          ],
+          "coastDetail": {
+            "name": "Camaiore",
+            "all": {
+              "nonCompliant": 8,
+              "total": 28
+            },
+            "routine": {
+              "nonCompliant": 7,
+              "total": 18,
+              "affectedAreas": 3,
+              "areas": 3
+            },
+            "supplementary": {
+              "nonCompliant": 1,
+              "total": 10
+            }
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 23.28767123287671,
+          "formatted": "23,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 23.28767123287671,
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": 23.28767123287671,
+              "nonCompliant": 17,
+              "total": 73
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": 22.22222222222222,
+              "nonCompliant": 12,
+              "total": 54
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": 26.31578947368421,
+              "nonCompliant": 5,
+              "total": 19
+            }
+          ],
+          "coastDetail": {
+            "name": "Pietrasanta",
+            "all": {
+              "nonCompliant": 17,
+              "total": 73
+            },
+            "routine": {
+              "nonCompliant": 12,
+              "total": 54,
+              "affectedAreas": 9,
+              "areas": 9
+            },
+            "supplementary": {
+              "nonCompliant": 5,
+              "total": 19
+            }
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 18.181818181818183,
+          "formatted": "18,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.181818181818183,
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": 18.181818181818183,
+              "nonCompliant": 4,
+              "total": 22
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": 22.22222222222222,
+              "nonCompliant": 4,
+              "total": 18
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": 0.0,
+              "nonCompliant": 0,
+              "total": 4
+            }
+          ],
+          "coastDetail": {
+            "name": "Forte dei Marmi",
+            "all": {
+              "nonCompliant": 4,
+              "total": 22
+            },
+            "routine": {
+              "nonCompliant": 4,
+              "total": 18,
+              "affectedAreas": 3,
+              "areas": 3
+            },
+            "supplementary": {
+              "nonCompliant": 0,
+              "total": 4
+            }
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "all",
+              "label": "Tutti i campioni",
+              "selectorLabel": "Tutti",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "routine",
+              "label": "Campioni routinari",
+              "selectorLabel": "Routinari",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "supplementary",
+              "label": "Campioni supplettivi",
+              "selectorLabel": "Supplettivi",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 20.958083832335326,
+        "label": "Versilia costiera · campioni non conformi",
+        "parts": [
+          {
+            "key": "all",
+            "label": "Tutti i campioni",
+            "selectorLabel": "Tutti",
+            "unit": "percent",
+            "value": 20.958083832335326,
+            "nonCompliant": 35,
+            "total": 167
+          },
+          {
+            "key": "routine",
+            "label": "Campioni routinari",
+            "selectorLabel": "Routinari",
+            "unit": "percent",
+            "value": 23.015873015873016,
+            "nonCompliant": 29,
+            "total": 126
+          },
+          {
+            "key": "supplementary",
+            "label": "Campioni supplettivi",
+            "selectorLabel": "Supplettivi",
+            "unit": "percent",
+            "value": 14.634146341463413,
+            "nonCompliant": 6,
+            "total": 41
+          }
+        ],
+        "coastDetail": {
+          "all": {
+            "nonCompliant": 35,
+            "total": 167
+          },
+          "routine": {
+            "nonCompliant": 29,
+            "total": 126,
+            "affectedAreas": 19,
+            "areas": 21
+          },
+          "supplementary": {
+            "nonCompliant": 6,
+            "total": 41
+          }
+        },
+        "note": "35 campioni non conformi su 167 unici. Una riga che supera entrambi i parametri conta una sola volta."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su campioni ufficiali ARPAT",
+        "formula": "Non conforme se Enterococchi intestinali > 200 oppure Escherichia coli > 500 MPN/100 ml; deduplica su Codice area + Data + Rout./Suppl.; quota = campioni non conformi / campioni unici × 100.",
+        "caveat": "I campioni non conformi non sono chiamati episodi. Il dettaglio delle aree interessate usa soltanto i campioni routinari.",
+        "coverage": "4/4 Comuni costieri + 3 n.a.; 167 campioni unici",
+        "snapshot": "data/source-snapshots/costa-mare-v123.json"
+      }
+    },
+    "blueFlagBeaches": {
+      "meta": {
+        "key": "blueFlagBeaches",
+        "theme": "ambiente",
+        "label": "Spiagge Bandiera Blu",
+        "shortLabel": "Spiagge Bandiera Blu",
+        "description": "Numero di spiagge o località costiere riconosciute da FEE Italia. Le denominazioni unite da una barra non vengono spezzate.",
+        "unit": "number",
+        "year": "2026",
+        "source": "FEE Italia — Programma Bandiera Blu",
+        "polarity": "neutral",
+        "context": "Costa e mare",
+        "detailGroup": "coast",
+        "searchTerms": [
+          "bandiera blu",
+          "spiagge",
+          "mare",
+          "costa",
+          "fee"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/costa-mare-v123.json",
+          "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        }
+      },
+      "sourceUrl": "https://www.bandierablu.org/common/blueflag.asp?anno=2026&tipo=bb",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 2,
+          "formatted": "2",
+          "normalized": null,
+          "benchmarkValue": 2,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025,
+              2026
+            ],
+            "values": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          },
+          "coastDetail": {
+            "localities2026": [
+              "Marina di Viareggio (Ponente/Levante)",
+              "Torre del Lago Puccini"
+            ]
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1,
+          "formatted": "1",
+          "normalized": null,
+          "benchmarkValue": 1,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025,
+              2026
+            ],
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          "coastDetail": {
+            "localities2026": [
+              "Lido di Camaiore"
+            ]
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2,
+          "formatted": "2",
+          "normalized": null,
+          "benchmarkValue": 2,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025,
+              2026
+            ],
+            "values": [
+              1,
+              1,
+              0,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          },
+          "coastDetail": {
+            "localities2026": [
+              "La Versiliana",
+              "Tonfano"
+            ]
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 1,
+          "formatted": "1",
+          "normalized": null,
+          "benchmarkValue": 1,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025,
+              2026
+            ],
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          "coastDetail": {
+            "localities2026": [
+              "Litorale"
+            ]
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        }
+      ],
+      "aggregate": {
+        "value": 6,
+        "label": "Versilia costiera · totale",
+        "note": "Somma delle sei località 2026 elencate separatamente da FEE Italia nei quattro Comuni costieri.",
+        "series": {
+          "years": [
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025,
+            2026
+          ],
+          "values": [
+            5,
+            5,
+            4,
+            6,
+            6,
+            6,
+            6,
+            6
+          ]
+        }
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Conteggio da elenco ufficiale FEE Italia",
+        "formula": "Conteggio delle località elencate separatamente per Comune; le denominazioni unite con / restano una sola località.",
+        "caveat": "Bandiera Blu considera un insieme di criteri ambientali e gestionali e non è un proxy diretto della sola qualità microbiologica. Pietrasanta è assente nel 2021 e ricompare nel 2022: nessuna interpolazione.",
+        "coverage": "4/4 Comuni costieri + 3 n.a.; storico 2019–2026",
+        "snapshot": "data/source-snapshots/costa-mare-v123.json"
+      }
+    },
+    "shorelineDynamics": {
+      "meta": {
+        "key": "shorelineDynamics",
+        "theme": "ambiente",
+        "label": "Dinamica del litorale",
+        "shortLabel": "Dinamica del litorale",
+        "description": "Quota della costa naturale bassa in erosione, stabile o in avanzamento tra 2006 e 2020 secondo le variazioni superiori a 5 metri rilevate da ISPRA.",
+        "unit": "percent",
+        "year": "2006–2020",
+        "source": "ISPRA — Dinamica litoranea",
+        "polarity": "neutral",
+        "context": "Costa e mare",
+        "detailGroup": "coast",
+        "searchTerms": [
+          "erosione",
+          "avanzamento",
+          "litorale",
+          "costa",
+          "spiaggia",
+          "stabilità"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/costa-mare-v123.json",
+          "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Dinamica",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "percentagePoints",
+        "comparisonLabel": "quota Versilia costiera",
+        "comparisonOverline": "Rispetto alla quota Versilia costiera",
+        "comparisonNote": "Il riferimento usa i chilometri della classe selezionata divisi per i chilometri analizzati complessivi dei quattro Comuni costieri; non la media semplice delle percentuali comunali."
+      },
+      "sourceUrl": "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 1.4695982166155979,
+          "formatted": "1,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1.4695982166155979,
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": 1.4695982166155979,
+              "kilometres": 0.117421940399078
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": 8.73536387211751,
+              "kilometres": 0.6979617723803617
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": 89.79503791126689,
+              "kilometres": 7.17468725161613
+            }
+          ],
+          "coastDetail": {
+            "name": "Viareggio",
+            "analysedKm": 7.99007096439557,
+            "erosionKm": 0.117421940399078,
+            "stableKm": 0.6979617723803617,
+            "advanceKm": 7.17468725161613
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 0.3432956210789252,
+          "formatted": "0,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.3432956210789252,
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": 0.3432956210789252,
+              "kilometres": 0.0100189572193096
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": 2.7261216113857007,
+              "kilometres": 0.0795608627726403
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": 96.93058276753537,
+              "kilometres": 2.82888362787306
+            }
+          ],
+          "coastDetail": {
+            "name": "Camaiore",
+            "analysedKm": 2.91846344786501,
+            "erosionKm": 0.0100189572193096,
+            "stableKm": 0.0795608627726403,
+            "advanceKm": 2.82888362787306
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 0.4716376432538322,
+          "formatted": "0,5%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.4716376432538322,
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": 0.4716376432538322,
+              "kilometres": 0.0202974114120675
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": 0.768386255180252,
+              "kilometres": 0.033068293355833056
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": 98.75997610156591,
+              "kilometres": 4.25023722057018
+            }
+          ],
+          "coastDetail": {
+            "name": "Pietrasanta",
+            "analysedKm": 4.3036029253380805,
+            "erosionKm": 0.0202974114120675,
+            "stableKm": 0.033068293355833056,
+            "advanceKm": 4.25023722057018
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 7.934351935490937,
+          "formatted": "7,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7.934351935490937,
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": 7.934351935490937,
+              "kilometres": 0.378408351146785
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": 23.18829449499856,
+              "kilometres": 1.1059056060405954
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": 68.87735356951052,
+              "kilometres": 3.28492686075689
+            }
+          ],
+          "coastDetail": {
+            "name": "Forte dei Marmi",
+            "analysedKm": 4.7692408179442705,
+            "erosionKm": 0.378408351146785,
+            "stableKm": 1.1059056060405954,
+            "advanceKm": 3.28492686075689
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile.",
+          "parts": [
+            {
+              "key": "erosion",
+              "label": "Costa in erosione",
+              "selectorLabel": "Erosione",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "stable",
+              "label": "Costa stabile",
+              "selectorLabel": "Stabile",
+              "unit": "percent",
+              "value": null
+            },
+            {
+              "key": "advance",
+              "label": "Costa in avanzamento",
+              "selectorLabel": "Avanzamento",
+              "unit": "percent",
+              "value": null
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 2.633185038997345,
+        "label": "Versilia costiera · dinamica del litorale",
+        "parts": [
+          {
+            "key": "erosion",
+            "label": "Costa in erosione",
+            "selectorLabel": "Erosione",
+            "unit": "percent",
+            "value": 2.633185038997345,
+            "kilometres": 0.5261466601772401
+          },
+          {
+            "key": "stable",
+            "label": "Costa stabile",
+            "selectorLabel": "Stabile",
+            "unit": "percent",
+            "value": 9.591413162949351,
+            "kilometres": 1.916496534549431
+          },
+          {
+            "key": "advance",
+            "label": "Costa in avanzamento",
+            "selectorLabel": "Avanzamento",
+            "unit": "percent",
+            "value": 87.77540179805331,
+            "kilometres": 17.53873496081626
+          }
+        ],
+        "coastDetail": {
+          "analysedKm": 19.98137815554293,
+          "erosionKm": 0.5261466601772401,
+          "stableKm": 1.916496534549431,
+          "advanceKm": 17.53873496081626
+        },
+        "note": "Quote calcolate sulle somme dei chilometri dei quattro Comuni costieri, non come media delle percentuali comunali."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione su indicatore territoriale ISPRA",
+        "formula": "Erosione: arretramento >5 m; stabile: variazione entro ±5 m; avanzamento: >5 m. Quota = km della classe / km di costa naturale bassa analizzata × 100.",
+        "caveat": "L'universo è la costa naturale bassa analizzata da ISPRA, diverso dalla lunghezza usata nella card Costa protetta. Avanzamento ed erosione non sono classificati automaticamente come esito positivo o negativo.",
+        "coverage": "4/4 Comuni costieri + 3 n.a.",
+        "snapshot": "data/source-snapshots/costa-mare-v123.json"
+      }
+    },
+    "rigidDefenceProtectedCoast": {
+      "meta": {
+        "key": "rigidDefenceProtectedCoast",
+        "theme": "ambiente",
+        "label": "Costa protetta da opere di difesa rigide",
+        "shortLabel": "Costa protetta",
+        "description": "Quota della costa protetta da opere di difesa rigide secondo la metodologia territoriale ISPRA 2020.",
+        "unit": "percent",
+        "year": "2020",
+        "source": "ISPRA — Costa protetta",
+        "polarity": "neutral",
+        "context": "Costa e mare",
+        "detailGroup": "coast",
+        "searchTerms": [
+          "costa protetta",
+          "opere rigide",
+          "difesa costiera",
+          "litorale",
+          "erosione"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/costa-mare-v123.json",
+          "note": "Quattro Comuni costieri; Massarosa, Seravezza e Stazzema sono non applicabili e restano n.a."
+        },
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "percentagePoints",
+        "comparisonLabel": "quota Versilia",
+        "comparisonOverline": "Rispetto alla quota Versilia",
+        "comparisonNote": "La quota Versilia è il rapporto tra i chilometri complessivamente protetti e la costa complessiva dei quattro Comuni costieri; non è la media semplice delle percentuali comunali."
+      },
+      "sourceUrl": "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0.0,
+          "formatted": "0,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "coastDetail": {
+            "name": "Viareggio",
+            "coastKm": 8.689269742678789,
+            "protectedKm": 0.0
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 7.193891103366538,
+          "formatted": "7,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7.193891103366538,
+          "coastDetail": {
+            "name": "Camaiore",
+            "coastKm": 2.9440775904766894,
+            "protectedKm": 0.2117937358575105
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 4.920729334797483,
+          "formatted": "4,9%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4.920729334797483,
+          "coastDetail": {
+            "name": "Pietrasanta",
+            "coastKm": 4.3444820108490285,
+            "protectedKm": 0.2137802007528477
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 4.354957789919645,
+          "formatted": "4,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 4.354957789919645,
+          "coastDetail": {
+            "name": "Forte dei Marmi",
+            "coastKm": 4.776514706292495,
+            "protectedKm": 0.20801519928834244
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": null,
+          "formatted": "n.a.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "notApplicable": true,
+          "applicabilityNote": "Comune non costiero: indicatore marino non applicabile."
+        }
+      ],
+      "aggregate": {
+        "value": 3.052802509022846,
+        "label": "Versilia costiera · costa protetta",
+        "note": "0,634 km protetti su 20,754 km di costa nel perimetro ISPRA 2020.",
+        "coastDetail": {
+          "coastKm": 20.754344050297004,
+          "protectedKm": 0.6335891358987007
+        }
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Indicatore territoriale ISPRA",
+        "formula": "km di costa protetta da opere rigide / km di costa dell'universo ISPRA × 100; aggregato Versilia sui km elementari.",
+        "caveat": "Il denominatore è diverso da quello della Dinamica del litorale. L'indicatore esclude i ripascimenti artificiali. Lo zero di Viareggio è un valore reale della fonte, non un dato mancante.",
+        "coverage": "4/4 Comuni costieri + 3 n.a.",
+        "snapshot": "data/source-snapshots/costa-mare-v123.json"
+      }
+    },
     "organicAgriculturalAreaShare": {
       "meta": {
         "key": "organicAgriculturalAreaShare",
@@ -26976,7 +28510,12 @@
         "unit": "currency",
         "year": "2026",
         "source": "MEF / RGS — BDAP-MOP",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "absolute",
+        "comparisonLabel": "valore Versilia",
+        "comparisonOverline": "Rispetto al valore Versilia",
+        "comparisonNote": "Il riferimento Versilia divide il valore complessivo delle opere monitorate per i residenti dei sette Comuni; non è la media semplice dei sette valori comunali."
       },
       "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [
@@ -27074,7 +28613,12 @@
         "unit": "currency",
         "year": "2026",
         "source": "Regione Toscana — Open Data PNRR",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "absolute",
+        "comparisonLabel": "valore Versilia",
+        "comparisonOverline": "Rispetto al valore Versilia",
+        "comparisonNote": "Il riferimento Versilia divide le risorse complessive dei progetti selezionati per i residenti dei sette Comuni; non è la media semplice dei sette valori comunali."
       },
       "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
       "rows": [
@@ -27172,7 +28716,12 @@
         "unit": "percent",
         "year": "2026",
         "source": "Regione Toscana — Open Data PNRR",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "percentagePoints",
+        "comparisonLabel": "quota Versilia",
+        "comparisonOverline": "Rispetto alla quota Versilia",
+        "comparisonNote": "Il riferimento Versilia è la quota complessiva di progetti conclusi (74 su 101); non è la media semplice delle sette percentuali comunali."
       },
       "sourceUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
       "rows": [

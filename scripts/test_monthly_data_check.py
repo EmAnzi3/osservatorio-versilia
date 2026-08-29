@@ -31,7 +31,12 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def run_checker(work: Path, state: dict) -> dict:
+def run_checker(
+    work: Path,
+    state: dict,
+    *,
+    not_applicable_code: str | None = None,
+) -> dict:
     data = {
         "towns": TOWNS,
         "metrics": {
@@ -62,6 +67,21 @@ def run_checker(work: Path, state: dict) -> dict:
             }
         },
     }
+    if not_applicable_code is not None:
+        row = next(
+            item
+            for item in data["metrics"]["population"]["rows"]
+            if item["code"] == not_applicable_code
+        )
+        row.update(
+            {
+                "value": None,
+                "formatted": "n.a.",
+                "notApplicable": True,
+                "applicabilityNote": "Fenomeno non applicabile a questo territorio.",
+                "series": None,
+            }
+        )
     registry = {
         "schemaVersion": 2,
         "expectedMetricCount": 1,
@@ -263,6 +283,20 @@ def main() -> None:
         assert second["status"] == "no_changes"
         assert not second["changes"]["content"]
         assert not second["changes"]["removed"]
+
+        # Un n.a. esplicito descrive un fenomeno fuori perimetro e non è un
+        # valore corrente mancante. Il monitor deve però continuare a esigere
+        # flag, formato, motivazione e assenza di una serie artificiale.
+        not_applicable = run_checker(
+            work / "not-applicable",
+            baseline,
+            not_applicable_code="046018",
+        )
+        assert not any(
+            item["code"] == "value_missing" and item.get("metric") == "population"
+            for item in not_applicable["findings"]
+        )
+        assert not not_applicable["findings"], not_applicable["findings"]
 
         changed = dict(baseline)
         sources = dict(baseline["sources"])

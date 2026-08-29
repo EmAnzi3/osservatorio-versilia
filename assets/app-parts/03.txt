@@ -375,7 +375,8 @@
       const query = new URLSearchParams({ tema:metric.meta.theme, indicatore:metricKey });
       const rowSlug=row.slug || normalize(row.town).replaceAll(' ','-');
       const href=route(`comuni/${rowSlug}/?${query}`);
-      return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatValue(row.displayValue,row.displayUnit))}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatValue(row.displayValue,row.displayUnit))}</span></span><strong>${html(formatValue(row.displayValue,row.displayUnit))}</strong></a>`;
+      const formatted=formatMetricRowValue(row,row.displayValue,row.displayUnit);
+      return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatted)}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span><strong>${html(formatted)}</strong></a>`;
     }).join('');
   }
 
@@ -447,7 +448,7 @@
       const incomeSources = metric.meta.key === 'incomeSourceProfile';
       const totalCount = parts.reduce((sum, part) => sum + (Number(part.count) || 0), 0);
       const showStaffCounts = metric.meta.key === 'municipalStaffAgeStructure';
-      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,part.unit || metric.meta.unit))}</strong><small>${incomeSources ? (part.count === null || part.count === undefined ? 'n.d. · dichiaranti con questa fonte' : `${html(number0.format(part.count))} dichiaranti con questa fonte`) : (showStaffCounts && part.count !== undefined ? `${html(number0.format(part.count))} dipendenti su ${html(number0.format(totalCount))} · ${html(metric.meta.year)}` : html(metric.meta.year))}</small></article>`).join('')}</div>`;
+      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatMetricRowValue(row,part.value,part.unit || metric.meta.unit))}</strong><small>${row.notApplicable ? 'Comune non costiero' : (incomeSources ? (part.count === null || part.count === undefined ? 'n.d. · dichiaranti con questa fonte' : `${html(number0.format(part.count))} dichiaranti con questa fonte`) : (showStaffCounts && part.count !== undefined ? `${html(number0.format(part.count))} dipendenti su ${html(number0.format(totalCount))} · ${html(metric.meta.year)}` : html(metric.meta.year)))}</small></article>`).join('')}</div>`;
     }
     if (metric.meta.compositeType === 'mobility') {
       return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===2?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatValue(part.value,'per1000'))}</strong><small>${html(number0.format(part.count))} persone · ${html(metric.meta.year)}</small></article>`).join('')}</div>`;
@@ -471,7 +472,7 @@
       { key:'sale', label:'Vendita media comunale', value:row.saleMean, unit:'eurm2', formatted:formatValue(row.saleMean,'eurm2') },
       { key:'rent', label:'Affitto medio comunale', value:row.rentMean, unit:'rentm2', formatted:formatValue(row.rentMean,'rentm2') }
     ];
-    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) return (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatValue(part.value,part.unit || metric.meta.unit), index }));
+    if (['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType)) return (row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:part.unit || metric.meta.unit, formatted:formatMetricRowValue(row,part.value,part.unit || metric.meta.unit), index }));
     if (metric.meta.compositeType !== 'distribution') return [];
     const summary = compositeSummary(metric,row);
     return [{ key:'summary', label:summary.label, value:summary.value, unit:summary.unit, formatted:summary.formatted }, ...(row.parts || []).map((part,index)=>({ key:`part-${index}`, label:part.selectorLabel || part.label, value:part.value, unit:'percent', formatted:`${number1.format(part.value)}%`, index }))];
@@ -522,8 +523,8 @@
     if (!Number.isFinite(Number(local)) || !Number.isFinite(Number(aggregate))) return { headline:'n.d.', direction:'confronto non disponibile' };
     const diff=Number(local)-Number(aggregate);
     if (unit==='percent') {
-      if (Math.abs(diff)<0.05) return { headline:'0,0 punti', direction:'in linea con la Versilia' };
-      return { headline:`${diff>0?'+':'−'}${number1.format(Math.abs(diff))} punti`, direction:diff>0?'sopra la Versilia':'sotto la Versilia' };
+      if (Math.abs(diff)<0.05) return { headline:'0,0%', direction:'in linea con la Versilia' };
+      return { headline:`${diff>0?'+':'−'}${number1.format(Math.abs(diff))}%`, direction:diff>0?'sopra la Versilia':'sotto la Versilia' };
     }
     if (unit==='years') {
       if (Math.abs(diff)<0.05) return { headline:'0,0 anni', direction:'in linea con la Versilia' };
@@ -636,6 +637,49 @@
     return `<details class="detail-disclosure tpl-compare-detail"><summary><span>Dettaglio del servizio TPL programmato</span><small>Corse, modalità, accessi, route e orari · 7/7 Comuni</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th><th>Corse</th><th>Bus</th><th>Ferrovia</th><th>Punti GTFS</th><th>Route</th><th>Finestra di servizio</th></tr></thead><tbody>${rows.map(({row,tpl})=>`<tr><th>${html(row.town)}</th><td>${html(number0.format(tpl.trips))}</td><td>${html(number0.format(tpl.busTrips))}</td><td>${html(number0.format(tpl.railTrips))}</td><td>${html(number0.format(tpl.activeAccessPoints))}</td><td>${html(number0.format(tpl.routes))}</td><td class="tpl-service-cell"><span class="tpl-service-range">${html(tpl.firstDeparture)}–${html(tpl.lastDeparture)}</span><small class="tpl-service-span">${html(number2.format(tpl.serviceSpanHours))} h</small></td></tr>`).join('')}</tbody></table></div><p class="aggregate-note tpl-detail-note">Un punto GTFS è una coppia (feed, stop_id) attiva: direzioni, banchine o feed diversi possono descrivere separatamente luoghi fisicamente vicini. Le route sono un dettaglio descrittivo. Gli orari “+1 giorno” appartengono alla stessa giornata operativa GTFS.</p></details>`;
   }
 
+  function coastDetailMarkup(metric, rows, title) {
+    if (metric?.meta?.detailGroup !== 'coast') return '';
+    const applicable = (rows || []).filter(row => !row.notApplicable && row.coastDetail);
+    if (!applicable.length) {
+      return `<aside class="benchmark-unavailable coast-not-applicable"><span class="overline">Applicabilità territoriale</span><h3>Indicatore non applicabile</h3><p>Questo Comune non ha costa marina; il valore resta n.a. e non entra nei calcoli Versilia.</p></aside>`;
+    }
+    const key = metric.meta.key;
+    let head = '';
+    let body = '';
+    let note = '';
+    if (key === 'bathingWaterQuality') {
+      head = '<tr><th>Comune</th><th>Aree ecc.</th><th>Buone</th><th>Suff.</th><th>Scarse</th><th>Totale</th><th>km ecc.</th><th>km buoni</th><th>km suff.</th><th>km scarsi</th><th>km totali</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(number0.format(d.areas.excellent))}</td><td>${html(number0.format(d.areas.good))}</td><td>${html(number0.format(d.areas.sufficient))}</td><td>${html(number0.format(d.areas.poor))}</td><td>${html(number0.format(d.areas.total))}</td><td>${html(number2.format(d.kilometres.excellent))}</td><td>${html(number2.format(d.kilometres.good))}</td><td>${html(number2.format(d.kilometres.sufficient))}</td><td>${html(number2.format(d.kilometres.poor))}</td><td>${html(number2.format(d.kilometres.total))}</td></tr>`; }).join('');
+      note = 'La classificazione 2025 usa i dati 2022–2025. Aree e chilometri sono universi distinti nella stessa card.';
+    } else if (key === 'bathingNonCompliantSamples') {
+      head = '<tr><th>Comune</th><th>Tutti · NC/totale</th><th>Routinari · NC/totale</th><th>Supplettivi · NC/totale</th><th>Aree con almeno un routinario NC</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(`${d.all.nonCompliant}/${d.all.total}`)}</td><td>${html(`${d.routine.nonCompliant}/${d.routine.total}`)}</td><td>${html(`${d.supplementary.nonCompliant}/${d.supplementary.total}`)}</td><td>${html(`${d.routine.affectedAreas}/${d.routine.areas}`)}</td></tr>`; }).join('');
+      note = 'NC significa campione non conforme, non episodio. Deduplica: Codice area + Data + Rout./Suppl.';
+    } else if (key === 'blueFlagBeaches') {
+      head = '<tr><th>Comune</th><th>Località 2026</th><th>Numero</th></tr>';
+      body = applicable.map(row => `<tr><th>${html(row.town)}</th><td>${html(row.coastDetail.localities2026.join('; '))}</td><td>${html(number0.format(row.value))}</td></tr>`).join('');
+      note = 'Le denominazioni unite da una barra restano una sola località. Il riconoscimento non misura soltanto la qualità microbiologica.';
+    } else if (key === 'shorelineDynamics') {
+      head = '<tr><th>Comune</th><th>Analizzata km</th><th>Erosione km</th><th>Stabile km</th><th>Avanzamento km</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(number3.format(d.analysedKm))}</td><td>${html(number3.format(d.erosionKm))}</td><td>${html(number3.format(d.stableKm))}</td><td>${html(number3.format(d.advanceKm))}</td></tr>`; }).join('');
+      note = 'Erosione e avanzamento indicano variazioni superiori a 5 m nel periodo 2006–2020; stabile indica variazioni entro ±5 m.';
+    } else if (key === 'rigidDefenceProtectedCoast') {
+      head = '<tr><th>Comune</th><th>Costa km</th><th>Protetta km</th><th>Quota</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(number3.format(d.coastKm))}</td><td>${html(number3.format(d.protectedKm))}</td><td>${html(formatValue(row.value,'percent'))}</td></tr>`; }).join('');
+      note = 'Sono considerate le opere rigide della metodologia ISPRA 2020; i ripascimenti artificiali sono esclusi.';
+    }
+    if (!head || !body) return '';
+    return `<details class="detail-disclosure coast-detail" open><summary><span>${html(title)}</span><small>Valori elementari e denominatori</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="aggregate-note">${html(note)}</p></details>`;
+  }
+
+  function coastCompareDetailMarkup(metric) {
+    return coastDetailMarkup(metric, metric.rows, 'Dettaglio dei quattro Comuni costieri');
+  }
+
+  function coastTownDetailMarkup(metric, row) {
+    return coastDetailMarkup(metric, [row], `Dettaglio · ${row.town}`);
+  }
+
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
     const def = document.getElementById('compare-definition');
@@ -668,6 +712,7 @@
     }
 
     if (metric.meta.detailGroup === 'tpl') bars.insertAdjacentHTML('beforeend', tplCompareDetailMarkup(data));
+    if (metric.meta.detailGroup === 'coast') bars.insertAdjacentHTML('beforeend', coastCompareDetailMarkup(metric));
 
     installAgePyramidDelegation(bars);
     if (metric.meta.detailGroup !== 'tpl') {
@@ -814,8 +859,8 @@
     }
     else if (isOmi) rows.forEach(row => (row.zones || []).forEach(zone => lines.push([row.town,row.code,label,metric.meta.year,zone.code,zone.label,zone.sale,zone.rent,metric.sourceUrl])));
     else if (isDemographic) rows.forEach(row => (row.parts || []).forEach(part => lines.push([row.town,row.code,label,metric.meta.year,part.ageLabel,part.genderLabel,part.value,part.numerator,part.denominator,metric.sourceUrl])));
-    else if (metric.meta.compositeType) rows.forEach(row => ((metric.meta.key === 'incomeDistribution' && row.detailParts?.length) ? row.detailParts : (row.parts || [])).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, part.value, part.unit || metric.meta.unit, part.count, metric.sourceUrl])));
-    else rows.forEach(row => lines.push([row.town, row.code, label, metric.meta.year, row.displayValue, row.displayUnit, metric.sourceUrl]));
+    else if (metric.meta.compositeType) rows.forEach(row => ((metric.meta.key === 'incomeDistribution' && row.detailParts?.length) ? row.detailParts : (row.parts || [])).forEach(part => lines.push([row.town, row.code, label, metric.meta.year, part.label, row.notApplicable ? 'n.a.' : part.value, part.unit || metric.meta.unit, part.count, metric.sourceUrl])));
+    else rows.forEach(row => lines.push([row.town, row.code, label, metric.meta.year, row.notApplicable ? 'n.a.' : row.displayValue, row.displayUnit, metric.sourceUrl]));
     const csv = '\ufeff' + lines.map(line => line.map(cell => `"${String(cell ?? '').replaceAll('"', '""')}"`).join(';')).join('\r\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `osservatorio-versilia-${metricKey}.csv`; a.click(); URL.revokeObjectURL(a.href);
@@ -916,25 +961,28 @@
     const defaultSexChoice = sexBreakdown ? (metric.meta.defaultSex || 'totale') : null;
     const summary = distribution ? compositeSummary(metric,row) : (sexBreakdown ? (options.find(option=>option.key===defaultSexChoice) || options[0]) : (demographicBreakdown ? (options.find(option=>option.key===defaultDemographicChoice) || options[0]) : ((omi || stock || securityMeasures) ? options[0] : null)));
     const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (sexBreakdown ? compositeSelectionAggregate(metric,defaultSexChoice) : (demographicBreakdown ? compositeSelectionAggregate(metric,defaultDemographicChoice) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)))));
-    const summaryDelta = selectable ? compositeDeltaText(summary.value,aggregateSummary.value,summary.unit) : null;
+    const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;
     const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
     const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
     const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${demographicAgeOptionsMarkup(metric,metric.meta.defaultAge || '25-64')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
     const primaryLabel = selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
-    const primaryValue = selectable ? summary.formatted : formatValue(row.value, metric.meta.unit);
+    const primaryValue = selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
     const positionMarkup = selectable
       ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
-      : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`;
+      : (row.notApplicable
+        ? `<aside class="versilia-position"><span class="overline">Applicabilità territoriale</span><strong>n.a.<small>Comune non costiero</small></strong><p>${html(row.applicabilityNote)}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`
+        : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`);
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
-      <div class="town-metric-layout"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>
+      <div class="town-metric-layout"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
         ${selector}
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         ${positionMarkup}</div>
       <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
+      ${coastTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown) ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
@@ -959,7 +1007,7 @@
       const applyChoice=(choice)=>{
         const selected=options.find(option=>option.key===choice) || options[0];
         const agg=compositeSelectionAggregate(metric,choice);
-        const delta=compositeDeltaText(selected.value,agg.value,selected.unit);
+        const delta=row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(selected.value,agg.value,selected.unit);
         const labelEl=container.querySelector('[data-composite-primary-label]');
         const valueEl=container.querySelector('[data-composite-primary-value]');
         const position=container.querySelector('.composite-versilia-position');
@@ -1005,8 +1053,8 @@
     const metric = data.metrics[key];
     const row = metric.rows.find(r => r.code === town.code);
     const rank = metricRows(data, key).findIndex(item => item.code === town.code) + 1;
-    const cardValue = metric.meta.compositeType === 'distribution' ? compositeSummary(metric,row).formatted : formatValue(row.value, metric.meta.unit);
-    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(cardValue)}</strong><small>${html(metric.meta.year)} · ${rank}° valore</small></button>`;
+    const cardValue = metric.meta.compositeType === 'distribution' ? compositeSummary(metric,row).formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
+    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(cardValue)}</strong><small>${html(metric.meta.year)} · ${row.notApplicable ? 'n.a.' : `${rank}° valore`}</small></button>`;
   }
 
   function seriesChart(series, unit, label = 'Serie storica') {

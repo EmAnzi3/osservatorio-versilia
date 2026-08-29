@@ -493,6 +493,18 @@
   border-top: 1px solid var(--theme-line, var(--line));
 }
 .method-disclosure-body { padding: 18px; }
+.detail-disclosure > .aggregate-note {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 15px 18px 18px;
+  line-height: 1.55;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+}
 .method-disclosure-body dl { display: grid; gap: 10px; margin: 0; }
 .method-disclosure-body dl > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; }
 .method-disclosure-body dt { color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .06em; }
@@ -511,6 +523,7 @@
   .method-disclosure > summary,
   .detail-disclosure > summary { padding: 13px 14px; }
   .method-disclosure-body { padding: 15px 14px; }
+  .detail-disclosure > .aggregate-note { padding: 14px 14px 16px; }
   .method-disclosure-body dl > div { grid-template-columns: 1fr; gap: 3px; }
   .detail-disclosure .deep-columns,
   .detail-disclosure .risk-grid,
