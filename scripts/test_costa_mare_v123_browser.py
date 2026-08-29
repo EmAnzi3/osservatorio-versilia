@@ -201,6 +201,18 @@ def assert_towns(page: Page, base: str, mobile: bool) -> None:
     page.wait_for_timeout(220)
     assert "96,4%" in page.locator("#town-topic .town-metric-primary strong").first.inner_text()
 
+    page.goto(
+        urljoin(base, "comuni/camaiore/?tema=ambiente&indicatore=bathingWaterQuality"),
+        wait_until="networkidle",
+    )
+    page.wait_for_timeout(420)
+    selector = page.locator("#town-topic select[data-composite-choice]")
+    selector.select_option("part-1")
+    page.wait_for_timeout(220)
+    position = " ".join(page.locator("#town-topic .versilia-position").inner_text().split())
+    assert "−1,2%" in position, f"Camaiore: scostamento percentuale incoerente ({position})"
+    assert "punti" not in position.casefold() and "p.p." not in position.casefold(), position
+
     for key in METRICS:
         page.goto(
             urljoin(base, f"comuni/massarosa/?tema=ambiente&indicatore={key}"),

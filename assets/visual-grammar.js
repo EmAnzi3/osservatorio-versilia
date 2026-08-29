@@ -203,7 +203,7 @@
     if (kind === 'eurperresident') return `${number2.format(n)} €/ab`;
     const formatted = kind === 'count' ? number0.format(n) : (Math.abs(n) >= 100 ? number0.format(n) : number1.format(n));
     if (kind === 'percent') return `${formatted}%`;
-    if (kind === 'percentage-points') return `${formatted} p.p.`;
+    if (kind === 'percentage-points') return `${formatted}%`;
     if (kind === 'currency') return `${formatted} €`;
     if (kind === 'millioncurrency') return `${formatted} mln €`;
     if (kind === 'years') return `${formatted} anni`;

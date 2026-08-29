@@ -71,7 +71,7 @@
     if (!Number.isFinite(number)) return 'n.d.';
     switch (unit) {
       case 'percent': return `${formatNumber(number, 1)}%`;
-      case 'percentagePoints': return `${formatNumber(number, 1)} p.p.`;
+      case 'percentagePoints': return `${formatNumber(number, 1)}%`;
       case 'currency': return `${formatNumber(number, 0)} €`;
       case 'currency2': return `${formatNumber(number, 2)} €`;
       case 'eurliter': return `${formatNumber(number, 3)} €/l`;
@@ -152,7 +152,7 @@
     const delta = end - start;
     const sign = delta > 0 ? '+' : '';
     if (unit === 'percent' || unit === 'percentagePoints') {
-      return `${sign}${formatNumber(delta, 1)} p.p.`;
+      return `${sign}${formatNumber(delta, 1)}%`;
     }
     if (compact || start <= 0) return `${sign}${formatValue(delta, unit)}`;
     const relative = delta / start * 100;

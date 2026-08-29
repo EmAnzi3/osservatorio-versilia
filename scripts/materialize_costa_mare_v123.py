@@ -679,9 +679,9 @@ def patch_release_files() -> None:
     test = test.replace('HISTORY_ASSET_VERSION = "20260828-v122-lifeexp-ui1"', f'HISTORY_ASSET_VERSION = "{ASSET_VERSION}"')
     test = test.replace('APP_BUNDLE_ASSET_VERSION = "20260828-v122-lifeexp-ui1"', f'APP_BUNDLE_ASSET_VERSION = "{ASSET_VERSION}"')
     test = test.replace('PWA_JS_REVISION = "catalog-v122"', 'PWA_JS_REVISION = "catalog-v123"')
-    test = test.replace('assert "20260828-v122" in development_loader', 'assert "20260828-v123" in development_loader')
+    test = test.replace('assert "20260828-v122" in development_loader', 'assert "20260829-v123" in development_loader')
     test = test.replace("const VERSION = '20260828-v122-lifeexp-ui1';", f"const VERSION = '{ASSET_VERSION}';")
-    test = test.replace('assert "ov-pwa-20260828-v122" in service_worker', 'assert "ov-pwa-20260828-v123" in service_worker')
+    test = test.replace('assert "ov-pwa-20260828-v122" in service_worker', 'assert "ov-pwa-20260829-v123" in service_worker')
     CATALOG_TEST.write_text(test, encoding="utf-8")
 
 

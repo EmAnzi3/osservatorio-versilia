@@ -68,7 +68,7 @@ def main() -> int:
     )
     print(
         "Investimenti e opere: confronto riallineato agli aggregati Versilia "
-        "(rapporti dei totali; scarti in euro o punti percentuali)."
+        "(rapporti dei totali; scarti in euro o percentuale)."
     )
     return 0
 

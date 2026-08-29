@@ -294,7 +294,10 @@ def browser_checks() -> None:
         assert overline_text == "rispetto alla media versilia", f"Etichetta inattesa: {overline_text!r}"
         position_text = page.locator(".versilia-position").inner_text().lower()
         assert "su 7" not in position_text
-        assert "punti" in position_text, "Scostamento percentuale non espresso in punti"
+        assert "%" in position_text, "Scostamento percentuale privo del simbolo %"
+        assert "punti" not in position_text and "p.p." not in position_text, (
+            f"Scostamento percentuale espresso con un'unità incoerente: {position_text!r}"
+        )
         assert page.locator(".all-indicators, .indicator-groups").count() == 0
         assert page.locator('[data-metric="diplomaPlus"]').count() == 1
         town_reference = page.locator(".versilia-position > div")

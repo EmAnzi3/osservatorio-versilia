@@ -215,6 +215,13 @@ def assert_registry_and_ui(data: dict) -> None:
     assert "metric?.meta?.detailGroup === 'coast'" in history
     assert "Quattro Comuni costieri più l’aggregato ufficiale Versilia" in history
     assert "selectedRow?.notApplicable" in history
+    visual = (ROOT / "assets" / "visual-grammar.js").read_text(encoding="utf-8")
+    fidelity = (ROOT / "assets" / "fidelity.css").read_text(encoding="utf-8")
+    assert "headline: '0,0%'" in visual
+    assert "headline: `${sign}${abs}%`" in visual
+    assert "p.p. vs ${comparisonLabel}" not in visual
+    assert ".detail-disclosure > .aggregate-note" in fidelity
+    assert "padding: 15px 18px 18px" in fidelity
 
 
 def main() -> None:

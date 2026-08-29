@@ -127,7 +127,7 @@ def main() -> None:
             context.close()
         browser.close()
 
-    print("Browser Investimenti e opere: aggregati Versilia e scarti euro/p.p. verificati desktop/mobile.")
+    print("Browser Investimenti e opere: aggregati Versilia e scarti percentuali coerenti verificati desktop/mobile.")
 
 
 if __name__ == "__main__":

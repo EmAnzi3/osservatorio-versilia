@@ -14997,7 +14997,7 @@
         "theme": "lavoro",
         "label": "Divario occupazionale di genere 15–64 anni",
         "shortLabel": "Divario di genere",
-        "description": "Differenza, in punti percentuali, tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
+        "description": "Scarto tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.",
         "unit": "percentagePoints",
         "year": "2023",
         "source": "Istat — Censimento permanente, dati per sezione",
@@ -15010,7 +15010,7 @@
           "code": "046018",
           "slug": "massarosa",
           "value": 16.81241352612966,
-          "formatted": "16,8 p.p.",
+          "formatted": "16,8%",
           "series": {
             "years": [
               2021,
@@ -15029,7 +15029,7 @@
           "code": "046033",
           "slug": "viareggio",
           "value": 13.902650297211075,
-          "formatted": "13,9 p.p.",
+          "formatted": "13,9%",
           "series": {
             "years": [
               2021,
@@ -15048,7 +15048,7 @@
           "code": "046005",
           "slug": "camaiore",
           "value": 16.118969689322206,
-          "formatted": "16,1 p.p.",
+          "formatted": "16,1%",
           "series": {
             "years": [
               2021,
@@ -15067,7 +15067,7 @@
           "code": "046024",
           "slug": "pietrasanta",
           "value": 15.769724704984256,
-          "formatted": "15,8 p.p.",
+          "formatted": "15,8%",
           "series": {
             "years": [
               2021,
@@ -15086,7 +15086,7 @@
           "code": "046028",
           "slug": "seravezza",
           "value": 18.189491718364174,
-          "formatted": "18,2 p.p.",
+          "formatted": "18,2%",
           "series": {
             "years": [
               2021,
@@ -15105,7 +15105,7 @@
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 15.016131515042986,
-          "formatted": "15,0 p.p.",
+          "formatted": "15,0%",
           "series": {
             "years": [
               2021,
@@ -15124,7 +15124,7 @@
           "code": "046030",
           "slug": "stazzema",
           "value": 19.338004074125344,
-          "formatted": "19,3 p.p.",
+          "formatted": "19,3%",
           "series": {
             "years": [
               2021,

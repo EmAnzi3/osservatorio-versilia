@@ -88,7 +88,7 @@ def percent(value: float) -> str:
 
 
 def percentage_points(value: float) -> str:
-    return f"{value:.1f}".replace(".", ",") + " p.p."
+    return f"{value:.1f}".replace(".", ",") + "%"
 
 
 def per_thousand(value: float) -> str:
@@ -155,7 +155,7 @@ def build_metrics() -> dict[str, dict[str, object]]:
             {"type": "Elaborazione Osservatorio su dati ufficiali", "formula": "uomini occupati 15–64 anni / uomini residenti 15–64 anni × 100", "caveat": "La fascia 15–64 anni e l’anno 2023 non coincidono con i tre indicatori generali della sezione, riferiti ai 25–64enni nel 2024.", "coverage": "7/7"},
         ),
         "employmentGenderGap": metric(
-            {"key": "employmentGenderGap", "theme": "lavoro", "label": "Divario occupazionale di genere 15–64 anni", "shortLabel": "Divario di genere", "description": "Differenza, in punti percentuali, tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.", "unit": "percentagePoints", "year": "2023", "source": "Istat — Censimento permanente, dati per sezione", "polarity": "negative"},
+            {"key": "employmentGenderGap", "theme": "lavoro", "label": "Divario occupazionale di genere 15–64 anni", "shortLabel": "Divario di genere", "description": "Scarto tra il tasso di occupazione maschile e quello femminile nella fascia 15–64 anni.", "unit": "percentagePoints", "year": "2023", "source": "Istat — Censimento permanente, dati per sezione", "polarity": "negative"},
             ISTAT_URL,
             rows(lambda town: 100 * ISTAT_RAW[town]["P102"] / ISTAT_RAW[town]["male1564"] - 100 * ISTAT_RAW[town]["P103"] / ISTAT_RAW[town]["female1564"], percentage_points),
             {"value": male_total - female_total, "label": "Divario Versilia", "note": "Differenza tra i due tassi ponderati calcolati sulle rispettive popolazioni 15–64 anni."},
@@ -308,7 +308,7 @@ def update_app() -> None:
         (
             "      case 'percent': return `${number1.format(v)}%`;\n",
             "      case 'percent': return `${number1.format(v)}%`;\n"
-            "      case 'percentagePoints': return `${number1.format(v)} p.p.`;\n",
+            "      case 'percentagePoints': return `${number1.format(v)}%`;\n",
         ),
         (
             "      case 'people': return `${number0.format(v)} persone`;\n",

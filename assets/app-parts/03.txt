@@ -523,8 +523,8 @@
     if (!Number.isFinite(Number(local)) || !Number.isFinite(Number(aggregate))) return { headline:'n.d.', direction:'confronto non disponibile' };
     const diff=Number(local)-Number(aggregate);
     if (unit==='percent') {
-      if (Math.abs(diff)<0.05) return { headline:'0,0 punti', direction:'in linea con la Versilia' };
-      return { headline:`${diff>0?'+':'−'}${number1.format(Math.abs(diff))} punti`, direction:diff>0?'sopra la Versilia':'sotto la Versilia' };
+      if (Math.abs(diff)<0.05) return { headline:'0,0%', direction:'in linea con la Versilia' };
+      return { headline:`${diff>0?'+':'−'}${number1.format(Math.abs(diff))}%`, direction:diff>0?'sopra la Versilia':'sotto la Versilia' };
     }
     if (unit==='years') {
       if (Math.abs(diff)<0.05) return { headline:'0,0 anni', direction:'in linea con la Versilia' };

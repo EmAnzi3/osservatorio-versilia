@@ -21,7 +21,8 @@ Il link a `/stato-dati/` deve essere presente nel markup iniziale, non aggiunto 
 4. Ogni link interno deve risolvere a una route realmente prodotta dalla build.
 5. Ogni pagina indicizzabile deve comparire una sola volta nella sitemap; pagine `noindex`, 404 e offline ne restano fuori.
 6. Colori, font, spaziature, logo, ricerca e footer usano gli asset canonici. Non sono ammessi header/footer locali con un sottoinsieme dei link.
-7. Desktop e mobile devono essere verificati senza overflow orizzontale. I testi non possono uscire dai contenitori.
+7. Desktop e mobile devono essere verificati senza overflow orizzontale. I testi non possono uscire dai contenitori e note, didascalie e celle non possono restare appoggiate ai bordi: il margine interno minimo verificato è 14 px.
+8. Le grandezze percentuali usano sempre il simbolo `%`, anche negli scostamenti tra Comune e riferimento Versilia. Nell'interfaccia non si alternano `%`, “punti” e `p.p.` per la stessa lettura.
 
 ### Selettori Agricoltura e territorio
 
