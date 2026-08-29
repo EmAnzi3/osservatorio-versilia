@@ -69,6 +69,15 @@ APPROVED_PARTIAL = {
     "libraryActiveBorrowersPer100": ("5/7", {"Massarosa", "Stazzema"}),
     "libraryWeeklyOpeningHours": ("5/7", {"Massarosa", "Stazzema"}),
 }
+APPROVED_NOT_APPLICABLE = {
+    "bathingWaterQuality",
+    "bathingNonCompliantSamples",
+    "blueFlagBeaches",
+    "shorelineDynamics",
+    "rigidDefenceProtectedCoast",
+}
+COASTAL_TOWNS = {"Camaiore", "Forte dei Marmi", "Pietrasanta", "Viareggio"}
+NON_COASTAL_TOWNS = {"Massarosa", "Seravezza", "Stazzema"}
 
 LEGACY_THEME_KEYS = {
     "lavoro": {
@@ -182,7 +191,41 @@ def main() -> None:
         require(metric.get("meta", {}).get("year") not in (None, ""), f"{key}: anno mancante")
         require(metric.get("meta", {}).get("source") not in (None, ""), f"{key}: fonte mancante")
         coverage = str(metric.get("method", {}).get("coverage", ""))
-        if key in APPROVED_PARTIAL:
+        if key in APPROVED_NOT_APPLICABLE:
+            applicable = [row for row in rows if not row.get("notApplicable", False)]
+            not_applicable = [row for row in rows if row.get("notApplicable") is True]
+            require(
+                metric.get("meta", {}).get("detailGroup") == "coast",
+                f"{key}: eccezione n.a. ammessa soltanto nel gruppo Costa e mare",
+            )
+            require(
+                "4/4 Comuni costieri + 3 n.a." in coverage,
+                f"{key}: perimetro costiero non dichiarato nel metodo",
+            )
+            require(
+                {row.get("town") for row in applicable} == COASTAL_TOWNS,
+                f"{key}: insieme dei Comuni costieri inatteso",
+            )
+            require(
+                {row.get("town") for row in not_applicable} == NON_COASTAL_TOWNS,
+                f"{key}: insieme dei Comuni non costieri inatteso",
+            )
+            require(
+                all(row.get("value") is not None and row.get("formatted") != "n.a." for row in applicable),
+                f"{key}: un Comune costiero è stato trasformato in n.a.",
+            )
+            require(
+                all(
+                    row.get("value") is None
+                    and row.get("formatted") == "n.a."
+                    and row.get("series") is None
+                    and row.get("benchmarkValue") is None
+                    and "non costiero" in str(row.get("applicabilityNote", "")).lower()
+                    for row in not_applicable
+                ),
+                f"{key}: n.a. costiero incompleto o trasformato in dato mancante ordinario",
+            )
+        elif key in APPROVED_PARTIAL:
             expected_coverage, expected_missing = APPROVED_PARTIAL[key]
             require(coverage == expected_coverage, f"{key}: deve dichiarare copertura {expected_coverage}")
             missing = [row for row in rows if row.get("value") is None]
