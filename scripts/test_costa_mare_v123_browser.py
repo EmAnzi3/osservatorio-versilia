@@ -67,12 +67,13 @@ def assert_applicability(page: Page, key: str) -> None:
 def assert_detail(page: Page, key: str, mobile: bool) -> None:
     detail = page.locator("#compare-bars .coast-detail:visible")
     assert detail.count() == 1, f"{key}: dettaglio costiero assente o duplicato"
-    if not detail.get_attribute("open"):
+    if not detail.evaluate("element => element.open"):
         detail.locator("summary").click()
+    assert detail.evaluate("element => element.open"), f"{key}: dettaglio costiero non aperto"
     assert detail.locator("tbody tr").count() == 4, f"{key}: dettaglio non limitato ai 4 Comuni costieri"
     text = detail.inner_text()
-    assert all(town in text for town in COASTAL)
-    assert all(town not in text for town in NOT_APPLICABLE)
+    assert all(town in text for town in COASTAL), f"{key}: manca un Comune costiero nel dettaglio ({text})"
+    assert all(town not in text for town in NOT_APPLICABLE), f"{key}: Comune non costiero presente nel dettaglio ({text})"
     scroller = detail.locator(".indicator-table-scroll")
     state = scroller.evaluate("el => ({scroll:el.scrollWidth, client:el.clientWidth})")
     if mobile:
