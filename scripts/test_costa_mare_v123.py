@@ -6,6 +6,8 @@ import json
 import math
 from pathlib import Path
 
+import materialize_costa_mare_v123 as coast_materializer
+
 
 ROOT = Path(__file__).resolve().parents[1]
 KEYS = (
@@ -180,6 +182,58 @@ def assert_protected(metric: dict, snapshot: dict) -> None:
     assert metric["meta"]["polarity"] == "neutral"
 
 
+def assert_monitor_state_preservation() -> None:
+    url = coast_materializer.ISPRA_PROTECTED_URL
+    metric = coast_materializer.KEYS[4]
+    state = {
+        "sources": {
+            url: {
+                "url": url,
+                "ok": True,
+                "status": 200,
+                "finalUrl": url,
+                "contentType": "text/html",
+                "contentLength": "70716",
+                "etag": "live-etag",
+                "lastModified": "Sat, 29 Aug 2026 12:00:00 GMT",
+                "contentSha256": "live-hash",
+                "contentHashMode": "raw",
+                "contentChangePolicy": "",
+                "contentChangeReason": "",
+                "hashTruncated": False,
+                "error": "",
+                "metrics": [metric],
+                "roles": ["primary"],
+                "profileIds": ["ispra-coast-irregular"],
+                "frequencies": ["census_or_irregular"],
+                "probeMethod": "urllib",
+            }
+        },
+        "metrics": {
+            metric: {
+                "publishedPeriod": "2020",
+                "checkedAt": "2026-08-29T12:22:42+00:00",
+                "observedLatestPeriod": "2020",
+                "status": "current",
+                "verificationEvidence": {"verdict": "match"},
+            }
+        },
+    }
+    before_source = dict(state["sources"][url])
+    before_metric = dict(state["metrics"][metric])
+    coast_materializer.apply_monitor_state(state)
+    assert state["sources"][url] == before_source
+    assert state["metrics"][metric] == before_metric
+
+    empty = {"sources": {}, "metrics": {}}
+    coast_materializer.apply_monitor_state(empty)
+    for key in coast_materializer.KEYS:
+        assert empty["metrics"][key]["status"] == "current"
+        assert empty["metrics"][key]["checkedAt"] == "2026-08-28T18:00:00+00:00"
+    assert empty["sources"][coast_materializer.ARPAT_URL]["metrics"] == [
+        coast_materializer.KEYS[0], coast_materializer.KEYS[1]
+    ]
+
 def assert_registry_and_ui(data: dict) -> None:
     registry = load("data/source-registry.json")
     monitor = load("data/source-monitor-state.json")
@@ -248,6 +302,7 @@ def main() -> None:
     assert_blue_flags(data["metrics"][KEYS[2]], snapshot)
     assert_dynamics(data["metrics"][KEYS[3]], snapshot)
     assert_protected(data["metrics"][KEYS[4]], snapshot)
+    assert_monitor_state_preservation()
     assert_registry_and_ui(data)
     print("Costa e mare v1.23.0: 5 card, fonti, aggregati e 4 costieri + 3 n.a. verificati.")
 

@@ -554,6 +554,14 @@ def apply_registry(registry: dict[str, Any]) -> None:
 
 
 def apply_monitor_state(state: dict[str, Any]) -> None:
+    """Inizializza lo stato v1.23 senza degradare verifiche live più recenti.
+
+    Il materializzatore della release può essere rilanciato in CI dopo che il
+    monitor ha già registrato metadati, hash, evidenze e timestamp più recenti.
+    Questi dati operativi non appartengono alla materializzazione e non devono
+    essere riscritti. I valori qui sotto sono quindi solo default per una baseline
+    che ancora non contiene le fonti o gli indicatori Costa e mare.
+    """
     checked = "2026-08-28T18:00:00+00:00"
     source_config = {
         ARPAT_URL: ([KEYS[0], KEYS[1]], "arpat-bathing-annual", "annual"),
@@ -561,8 +569,9 @@ def apply_monitor_state(state: dict[str, Any]) -> None:
         ISPRA_DYNAMICS_URL: ([KEYS[3]], "ispra-coast-irregular", "census_or_irregular"),
         ISPRA_PROTECTED_URL: ([KEYS[4]], "ispra-coast-irregular", "census_or_irregular"),
     }
+    sources = state.setdefault("sources", {})
     for url, (metrics, profile, frequency) in source_config.items():
-        state.setdefault("sources", {})[url] = {
+        defaults = {
             "url": url,
             "ok": True,
             "status": 200,
@@ -579,6 +588,13 @@ def apply_monitor_state(state: dict[str, Any]) -> None:
             "profileIds": [profile],
             "frequencies": [frequency],
         }
+        current = sources.get(url)
+        if not isinstance(current, dict):
+            sources[url] = defaults
+            continue
+        for field, value in defaults.items():
+            current.setdefault(field, value)
+
     periods = {
         KEYS[0]: "2025",
         KEYS[1]: "2025",
@@ -586,14 +602,21 @@ def apply_monitor_state(state: dict[str, Any]) -> None:
         KEYS[3]: "2006–2020",
         KEYS[4]: "2020",
     }
+    metrics_state = state.setdefault("metrics", {})
     for key, period in periods.items():
-        state.setdefault("metrics", {})[key] = {
-            "publishedPeriod": period,
-            "checkedAt": checked,
-            "observedLatestPeriod": period,
-            "status": "current",
-        }
-
+        current = metrics_state.get(key)
+        if not isinstance(current, dict):
+            metrics_state[key] = {
+                "publishedPeriod": period,
+                "checkedAt": checked,
+                "observedLatestPeriod": period,
+                "status": "current",
+            }
+            continue
+        current.setdefault("publishedPeriod", period)
+        current.setdefault("checkedAt", checked)
+        current.setdefault("observedLatestPeriod", period)
+        current.setdefault("status", "current")
 
 def patch_search_terms() -> None:
     marker = "    irrigatedAgriculturalArea: ['irrigazione', 'superficie irrigata', 'sau irrigata'],"
