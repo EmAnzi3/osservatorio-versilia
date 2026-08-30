@@ -191,48 +191,83 @@
 
   function waterQualityTableMarkup(metric, locality) {
     const defs = metric.parameterDefinitions || [];
-    return `<div class="water-quality-table-wrap"><table class="water-quality-table"><thead><tr><th>Parametro</th><th>Unità</th><th>Valore medio</th><th>Limite / riferimento</th></tr></thead><tbody>${defs.map((def,index)=>`<tr><td><b>${html(def.name)}</b>${def.description ? `<small>${html(def.description)}</small>` : ''}</td><td>${html(def.unit)}</td><td><strong>${html(locality.values?.[index] ?? 'n.d.')}</strong></td><td>${html(def.reference || '—')}</td></tr>`).join('')}</tbody></table></div>`;
+    return `<div class="water-quality-table-wrap"><table class="water-quality-table"><thead><tr><th>Parametro</th><th>Unità</th><th>Valore medio pubblicato</th><th>Limite / riferimento</th></tr></thead><tbody>${defs.map((def,index)=>`<tr><td><b>${html(def.name)}</b></td><td>${html(def.unit)}</td><td><strong>${html(locality.values?.[index] ?? 'n.d.')}</strong></td><td>${html(def.reference || '—')}</td></tr>`).join('')}</tbody></table></div>`;
   }
 
-  function drinkingWaterQualityCompareMarkup(data, metricKey) {
-    const metric=data.metrics[metricKey];
-    return `<div class="water-quality-compare">${metric.rows.map(row=>{const q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a href="${route(`comuni/${row.slug}/?${q}`)}" class="water-quality-compare-row"><strong>${html(row.town)}</strong><span><b>${html(number0.format(row.localities?.length||0))}</b><small>località GAIA · 17 parametri</small></span><em>Apri il dettaglio →</em></a>`;}).join('')}</div><p class="composite-compare-note">Il numero indica soltanto quante località GAIA sono disponibili: non è un punteggio di qualità e non viene costruita alcuna media comunale.</p>`;
+  function waterQualityNumericValue(raw) {
+    const text=String(raw ?? '').trim();
+    if(!text || /[<>]/.test(text)) return null;
+    const value=Number(text.replace(',','.'));
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function waterQualityObservation(row, parameterIndex) {
+    const values=(row.localities||[]).map(locality=>({locality,raw:String(locality.values?.[parameterIndex] ?? 'n.d.').trim()}));
+    if(values.length===1) return {kind:'single',label:'Valore della località GAIA',formatted:values[0].raw,values};
+    const numeric=values.map(item=>({...item,numeric:waterQualityNumericValue(item.raw)}));
+    if(numeric.length && numeric.every(item=>item.numeric!==null)) {
+      const ordered=[...numeric].sort((a,b)=>a.numeric-b.numeric);
+      const first=ordered[0],last=ordered.at(-1);
+      return {kind:'range',label:'Intervallo osservato nelle località GAIA',formatted:first.numeric===last.numeric?first.raw:`${first.raw} – ${last.raw}`,values};
+    }
+    return {kind:'values',label:'Valori per località',formatted:'Valori originali GAIA',values};
+  }
+
+  function waterQualityValuesMarkup(observation, unit) {
+    return `<ul class="water-quality-values-list">${observation.values.map(item=>`<li><span>${html(item.locality.name)}</span><strong>${html(item.raw)}${unit ? ` <small>${html(unit)}</small>` : ''}</strong></li>`).join('')}</ul>`;
+  }
+
+  function drinkingWaterQualityCompareMarkup(data, metricKey, parameterIndex=0) {
+    const metric=data.metrics[metricKey],defs=metric.parameterDefinitions||[];
+    const safeIndex=Math.max(0,Math.min(defs.length-1,Number(parameterIndex)||0)),def=defs[safeIndex]||{};
+    return `<div class="water-quality-compare-shell"><div class="water-quality-compare-controls"><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-compare>${defs.map((item,index)=>`<option value="${index}" ${index===safeIndex?'selected':''}>${html(item.name)}</option>`).join('')}</select></label><dl class="water-quality-parameter-meta"><div><dt>Unità</dt><dd>${html(def.unit||'—')}</dd></div><div><dt>Limite / riferimento GAIA</dt><dd>${html(def.reference||'—')}</dd></div><div><dt>Periodo</dt><dd>${html(metric.meta.year)}</dd></div></dl></div><div class="water-quality-compare">${metric.rows.map(row=>{const q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey}),observation=waterQualityObservation(row,safeIndex),expanded=observation.kind==='values',detailLabel=observation.values.length===1?'Mostra il valore della località':`Mostra i ${observation.values.length} valori per località`;return `<article class="water-quality-compare-card"><header><div><a href="${route(`comuni/${row.slug}/?${q}`)}">${html(row.town)}</a><small>${html(number0.format(row.localities?.length||0))} località GAIA disponibili</small></div><a href="${route(`comuni/${row.slug}/?${q}`)}" class="water-quality-town-link">Apri la scheda →</a></header><div class="water-quality-observation"><span>${html(observation.label)}</span><strong>${html(observation.formatted)}</strong><small>${html(def.unit||'')}</small></div><details class="water-quality-values-disclosure" ${expanded?'open':''}><summary><span>${expanded?'Valori originali per località':detailLabel}</span><b aria-hidden="true"></b></summary>${waterQualityValuesMarkup(observation,def.unit)}</details></article>`;}).join('')}</div><p class="composite-compare-note">I valori sono quelli pubblicati da GAIA per le singole località. L’intervallo minimo–massimo compare solo quando tutti i valori sono numerici; i valori con “&lt;” restano invariati e vengono mostrati direttamente.</p></div>`;
+  }
+
+  function waterQualitySelectedMarkup(metric,row,localityIndex=0,parameterIndex=0) {
+    const localities=row.localities||[],defs=metric.parameterDefinitions||[];
+    const safeLocality=Math.max(0,Math.min(localities.length-1,Number(localityIndex)||0));
+    const safeParameter=Math.max(0,Math.min(defs.length-1,Number(parameterIndex)||0));
+    const locality=localities[safeLocality],def=defs[safeParameter];
+    if(!locality||!def) return '<p>Dato non disponibile.</p>';
+    const value=String(locality.values?.[safeParameter] ?? 'n.d.');
+    return `<article class="water-quality-parameter-card"><div class="water-quality-card-head"><div><span class="overline">Parametro selezionato</span><h4>${html(def.name)}</h4></div><a class="source-pill" href="${html(locality.url)}" target="_blank" rel="noreferrer">GAIA ↗</a></div><div class="water-quality-card-value"><strong>${html(value)}</strong><span>${html(def.unit||'')}</span></div><dl><div><dt>Località GAIA</dt><dd>${html(locality.name)}</dd></div><div><dt>Periodo</dt><dd>${html(locality.period||metric.meta.year)}</dd></div><div><dt>Limite / riferimento</dt><dd>${html(def.reference||'—')}</dd></div><div><dt>Valore</dt><dd>Media pubblicata da GAIA</dd></div></dl>${def.description?`<details class="water-quality-description"><summary><span>Come si legge il parametro</span><b aria-hidden="true"></b></summary><p>${html(def.description)}</p></details>`:''}</article><details class="water-quality-all-parameters"><summary><span>Mostra tutti i ${defs.length} parametri</span><b aria-hidden="true"></b></summary>${waterQualityTableMarkup(metric,locality)}</details>`;
   }
 
   function drinkingWaterQualityTownMarkup(metric,row) {
-    const locs=row.localities||[];
-    if(!locs.length) return '<p>n.d.</p>';
-    return `<div class="water-quality-town"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${locs.map((loc,i)=>`<option value="${i}">${html(loc.name)}</option>`).join('')}</select></label>${locs.map((loc,i)=>`<section class="water-quality-locality" data-water-quality-panel="${i}" ${i?'hidden':''}><div class="water-quality-locality-head"><div><h4>${html(loc.title||loc.name)}</h4><small>${html(loc.period)}</small></div><a class="source-pill" href="${html(loc.url)}" target="_blank" rel="noreferrer">GAIA ↗</a></div>${waterQualityTableMarkup(metric,loc)}</section>`).join('')}</div>`;
+    const localities=row.localities||[],defs=metric.parameterDefinitions||[];
+    if(!localities.length||!defs.length) return '<p>Dato non disponibile.</p>';
+    return `<div class="water-quality-town"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div>`;
   }
 
-  function remediationCompareMarkup(data,metricKey) {
-    const metric=data.metrics[metricKey];
-    return `<div class="remediation-shell"><label class="remediation-selector"><span>Lettura</span><select data-remediation-view><option value="active">Iter attivi</option><option value="closed">Iter chiusi</option></select></label><div class="remediation-compare-list">${metric.rows.map(row=>{const active=row.parts?.find(x=>x.key==='active')?.value||0,closed=row.parts?.find(x=>x.key==='closed')?.value||0,q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a class="remediation-compare-row" href="${route(`comuni/${row.slug}/?${q}`)}" data-active="${active}" data-closed="${closed}"><strong>${html(row.town)}</strong><span><b data-remediation-count>${html(number0.format(active))}</b><small data-remediation-label>iter attivi</small></span></a>`;}).join('')}</div><p class="composite-compare-note">Procedimenti univoci per codice regionale. Un procedimento non equivale automaticamente a un sito attualmente contaminato.</p></div>`;
+  function remediationPartValue(source,key) {
+    return Number(source?.parts?.find(item=>item.key===key)?.value)||0;
+  }
+
+  function remediationCompareMarkup(data,metricKey,view='active') {
+    const metric=data.metrics[metricKey],selected=view==='closed'?'closed':'active';
+    const rows=[...metric.rows].sort((a,b)=>remediationPartValue(b,selected)-remediationPartValue(a,selected));
+    return `<div class="remediation-shell remediation-compare-shell"><div class="remediation-compare-controls"><label class="remediation-selector"><span>Ordina per</span><select data-remediation-compare-view><option value="active" ${selected==='active'?'selected':''}>Iter attivi</option><option value="closed" ${selected==='closed'?'selected':''}>Iter chiusi</option></select></label><p>Conteggi SISBON, non percentuali. Entrambi gli stati restano visibili.</p></div><div class="remediation-compare-list">${rows.map(row=>{const active=remediationPartValue(row,'active'),closed=remediationPartValue(row,'closed'),q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a class="remediation-compare-row" href="${route(`comuni/${row.slug}/?${q}`)}"><strong>${html(row.town)}</strong><span class="remediation-count-pair"><span class="remediation-count remediation-count-active ${selected==='active'?'selected':''}"><small>Iter attivi</small><b>${html(number0.format(active))}</b></span><span class="remediation-count remediation-count-closed ${selected==='closed'?'selected':''}"><small>Iter chiusi</small><b>${html(number0.format(closed))}</b></span></span><em>Apri il dettaglio →</em></a>`;}).join('')}</div><p class="composite-compare-note">Procedimenti univoci per codice regionale. Un procedimento non equivale automaticamente a un sito attualmente contaminato.</p></div>`;
+  }
+
+  function signedNumber(value,percent=false) {
+    const numeric=Number(value)||0,abs=Math.abs(numeric),formatted=Number.isInteger(abs)?number0.format(abs):number1.format(abs);
+    return `${numeric>0?'+':numeric<0?'−':''}${formatted}${percent?'%':''}`;
+  }
+
+  function remediationBenchmarkMarkup(metric,row,view='active') {
+    const selected=view==='closed'?'closed':'active',local=remediationPartValue(row,selected),total=remediationPartValue(metric.aggregate,selected);
+    const towns=Math.max(1,metric.rows?.length||7),mean=total/towns,difference=local-mean,deviation=mean?difference/mean*100:0;
+    return `<section class="remediation-benchmark" data-remediation-benchmark><span class="overline">Benchmark comunale</span><h4>Rispetto alla media dei Comuni della Versilia</h4><div><article><span>${html(row.town)}</span><strong>${html(number0.format(local))}</strong></article><article><span>Media dei ${towns} Comuni</span><strong>${html(number1.format(mean))}</strong></article><article><span>Differenza</span><strong>${html(signedNumber(difference))}</strong></article><article><span>Scostamento</span><strong>${html(signedNumber(deviation,true))}</strong></article></div><p>Base del confronto: ${html(number0.format(total))} ${selected==='active'?'iter attivi':'iter chiusi'} ÷ ${towns} Comuni.</p></section>`;
   }
 
   function remediationTownMarkup(metric,row) {
-    const active=row.parts?.find(x=>x.key==='active')?.value||0,closed=row.parts?.find(x=>x.key==='closed')?.value||0;
-    return `<div class="remediation-shell remediation-town"><div class="remediation-summary"><article><span>Iter attivi</span><strong>${html(number0.format(active))}</strong></article><article><span>Iter chiusi</span><strong>${html(number0.format(closed))}</strong></article></div><label class="remediation-selector"><span>Mostra</span><select data-remediation-view><option value="active">Iter attivi</option><option value="closed">Iter chiusi</option></select></label><div class="remediation-procedure-list">${(row.procedures||[]).map(item=>`<article data-remediation-status="${html(item.status)}" ${item.status==='closed'?'hidden':''}><div><b>${html(item.id)}</b><h4>${html(item.name)}</h4>${item.address?`<p>${html(item.address)}</p>`:''}</div><dl><div><dt>Stato contaminazione</dt><dd>${html(item.contamination||'n.d.')}</dd></div><div><dt>Stato procedimento</dt><dd>${html(item.procedureState||'n.d.')}</dd></div></dl></article>`).join('')}</div></div>`;
+    const active=remediationPartValue(row,'active'),closed=remediationPartValue(row,'closed');
+    return `<div class="remediation-shell remediation-town"><div class="remediation-summary"><article class="active"><span>Iter attivi</span><strong>${html(number0.format(active))}</strong></article><article class="closed"><span>Iter chiusi</span><strong>${html(number0.format(closed))}</strong></article></div><label class="remediation-selector"><span>Mostra i procedimenti</span><select data-remediation-town-view><option value="active">Iter attivi</option><option value="closed">Iter chiusi</option></select></label><div data-remediation-benchmark-host>${remediationBenchmarkMarkup(metric,row,'active')}</div><div class="remediation-procedure-list">${(row.procedures||[]).map(item=>`<details data-remediation-status="${html(item.status)}" ${item.status==='closed'?'hidden':''}><summary><span><b>${html(item.id)}</b> · ${html(item.name)}</span><i aria-hidden="true"></i></summary><dl><div><dt>Codice regionale</dt><dd>${html(item.id)}</dd></div><div><dt>Denominazione sito</dt><dd>${html(item.name)}</dd></div><div><dt>Indirizzo / localizzazione</dt><dd>${html(item.address||'n.d.')}</dd></div><div><dt>Stato contaminazione</dt><dd>${html(item.contamination||'n.d.')}</dd></div><div><dt>Stato procedimento</dt><dd>${html(item.procedureState||'n.d.')}</dd></div></dl></details>`).join('')}</div></div>`;
   }
 
-  document.addEventListener('change', event => {
-    const quality=event.target.closest?.('[data-water-quality-locality]');
-    if(quality) {
-      const root=quality.closest('.water-quality-town'),wanted=String(quality.value);
-      root?.querySelectorAll('[data-water-quality-panel]').forEach(panel=>panel.toggleAttribute('hidden',panel.dataset.waterQualityPanel!==wanted));
-    }
-    const remediation=event.target.closest?.('[data-remediation-view]');
-    if(remediation) {
-      const root=remediation.closest('.remediation-shell'),view=remediation.value;
-      root?.querySelectorAll('.remediation-compare-row').forEach(row=>{
-        const value=Number(row.dataset[view]||0); const count=row.querySelector('[data-remediation-count]'); const label=row.querySelector('[data-remediation-label]');
-        if(count) count.textContent=number0.format(value); if(label) label.textContent=view==='active'?'iter attivi':'iter chiusi';
-      });
-      root?.querySelectorAll('[data-remediation-status]').forEach(item=>item.toggleAttribute('hidden',item.dataset.remediationStatus!==view));
-    }
-  });
-
   function compositeCompareDefaults(metric) {
+    if (metric.meta.compositeType === 'drinkingWaterQuality') return { choice:'0', scale:'value' };
+    if (metric.meta.compositeType === 'remediationProceedings') return { choice:'active', scale:'value' };
     if (metric.meta.compositeType === 'sexBreakdown') return { choice:metric.meta.defaultSex || 'totale', scale:'value' };
     if (metric.meta.compositeType === 'demographicBreakdown') return { choice:`${metric.meta.defaultAge || '25-64'}|${metric.meta.defaultGender || 'total'}`, scale:'value' };
     if (metric.meta.compositeType === 'stock') return { choice:'share', scale:'value' };
@@ -251,8 +286,6 @@
       const part = (row.parts || []).find(item => item.key === choice) || row.parts?.[0] || {};
       return { value:part.value, unit:part.unit || metric.meta.unit, part };
     }
-    if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityCompareMarkup(data, metricKey);
-    if (metric.meta.compositeType === 'remediationProceedings') return remediationCompareMarkup(data, metricKey);
     if (metric.meta.compositeType === 'stock') {
       const count = choice === 'count';
       return { value: count ? row.count : row.value, unit: count ? 'number' : 'percent' };
@@ -275,6 +308,11 @@
   }
 
   function compositeCompareAggregate(metric, choice, scale = 'value') {
+    if (metric.meta.compositeType === 'remediationProceedings') {
+      const key=choice==='closed'?'closed':'active';
+      const part=(metric.aggregate?.parts||[]).find(item=>item.key===key)||{};
+      return {value:part.value,unit:'number',label:`Versilia · ${part.label||'procedimenti'}`,note:metric.aggregate?.note};
+    }
     if (metric.meta.compositeType === 'sexBreakdown') {
       const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || metric.aggregate?.parts?.[0] || {};
       return { value:part.value, unit:part.unit || metric.meta.unit, label:`Versilia · ${part.label || metric.meta.label}`, note:metric.aggregate?.note };
@@ -426,9 +464,11 @@
     }).join('');
   }
 
-  function compositeCompareMarkup(data, metricKey) {
+  function compositeCompareMarkup(data, metricKey, view={}) {
     const metric = data.metrics[metricKey];
     const rows = metricRows(data, metricKey);
+    if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityCompareMarkup(data,metricKey,view.choice);
+    if (metric.meta.compositeType === 'remediationProceedings') return remediationCompareMarkup(data,metricKey,view.choice);
     if (metric.meta.compositeType === 'stock') {
       return `<div class="composite-stock-list">${rows.map(row=>{const query=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});return `<a class="composite-stock-row" href="${route(`comuni/${row.slug}/?${query}`)}"><strong>${html(row.town)}</strong><span><b>${html(formatValue(row.value,'percent'))}</b><small>quota residenti</small></span><span><b>${html(formatValue(row.count,'number'))}</b><small>residenti stranieri</small></span></a>`;}).join('')}</div>`;
     }
@@ -738,8 +778,9 @@
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
     const selectableComposite = ['stock','mobility','omi','securityMeasures','agricultureProfile','demographicBreakdown','sexBreakdown'].includes(compositeType);
+    const specialComposite = ['drinkingWaterQuality','remediationProceedings'].includes(compositeType);
     const view = requestedView || compositeCompareDefaults(metric);
-    const selectedAggregate = selectableComposite ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
+    const selectedAggregate = (selectableComposite || compositeType === 'remediationProceedings') ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
     const aggregate = selectedAggregate || (normalized && metric.normalizedAggregate ? metric.normalizedAggregate : metric.aggregate);
     const unit = selectedAggregate?.unit || (normalized && metric.meta.normalized ? metric.meta.normalized.unit : metric.meta.unit);
     const distributionSummary = compositeType === 'distribution' ? compositeAggregateSummary(metric) : null;
@@ -749,14 +790,16 @@
     const chartScaleControls = controls;
     const summaryLabel = distributionSummary ? distributionSummary.label : aggregate.label;
     const summaryValue = distributionSummary ? distributionSummary.formatted : formatValue(aggregate.value,unit);
-    def.innerHTML = `${definitionControls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
+    def.innerHTML = compositeType === 'drinkingWaterQuality'
+      ? `<div class="indicator-definition water-quality-definition"><h2>${html(metric.meta.label)}</h2><p>${html(metric.meta.description)}</p><dl><div><dt>Periodo</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Copertura</dt><dd>${html(number0.format(metric.aggregate?.value||0))} località GAIA · 7 Comuni</dd></div><div><dt>Parametri</dt><dd>${html(number0.format(metric.parameterDefinitions?.length||0))} per località</dd></div></dl><small class="aggregate-note">Nessuna media comunale delle concentrazioni e nessun indice sintetico.</small></div>`
+      : `${definitionControls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
 
     if (selectableComposite) {
       const note = compositeType === 'omi' ? `<p class="composite-compare-note"><strong>Dettaglio OMI:</strong> il dettaglio delle singole sotto-aree è disponibile nelle schede dei comuni. Clicca una riga per aprire il territorio.</p>` : (compositeType === 'mobility' ? `<p class="composite-compare-note">Scegli la voce e l’unità direttamente dal grafico. “Ogni 1.000” rende più omogeneo il confronto tra comuni di dimensioni diverse.</p>` : '');
       const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
       bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;
     } else {
-      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
+      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
     }
 
     if (metric.meta.detailGroup === 'tpl') bars.insertAdjacentHTML('beforeend', tplCompareDetailMarkup(data));
@@ -793,6 +836,19 @@
         const componentSelect = event.target.closest('select[data-composite-component]');
         if (componentSelect && bars.contains(componentSelect)) {
           renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:componentSelect.value});
+        }
+      };
+    } else if (specialComposite) {
+      bars.onclick = null;
+      bars.onchange = event => {
+        const qualitySelect=event.target.closest('select[data-water-quality-parameter-compare]');
+        if(qualitySelect&&bars.contains(qualitySelect)) {
+          renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:qualitySelect.value});
+          return;
+        }
+        const remediationSelect=event.target.closest('select[data-remediation-compare-view]');
+        if(remediationSelect&&bars.contains(remediationSelect)) {
+          renderCompareMetric(data,themeKey,metricKey,normalized,{...view,choice:remediationSelect.value});
         }
       };
     } else if (hasNormalized) {
@@ -1003,6 +1059,8 @@
     const securityMeasures = ['securityMeasures','agricultureProfile'].includes(metric.meta.compositeType);
     const demographicBreakdown = metric.meta.compositeType === 'demographicBreakdown';
     const sexBreakdown = metric.meta.compositeType === 'sexBreakdown';
+    const drinkingQuality = metric.meta.compositeType === 'drinkingWaterQuality';
+    const remediation = metric.meta.compositeType === 'remediationProceedings';
     const selectable = distribution || omi || stock || securityMeasures || demographicBreakdown || sexBreakdown;
     const options = selectable ? compositeSelectionOptions(metric,row) : [];
     const defaultDemographicChoice = demographicBreakdown ? `${metric.meta.defaultAge || '25-64'}|${metric.meta.defaultGender || 'total'}` : null;
@@ -1010,15 +1068,17 @@
     const summary = distribution ? compositeSummary(metric,row) : (sexBreakdown ? (options.find(option=>option.key===defaultSexChoice) || options[0]) : (demographicBreakdown ? (options.find(option=>option.key===defaultDemographicChoice) || options[0]) : ((omi || stock || securityMeasures) ? options[0] : null)));
     const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (sexBreakdown ? compositeSelectionAggregate(metric,defaultSexChoice) : (demographicBreakdown ? compositeSelectionAggregate(metric,defaultDemographicChoice) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)))));
     const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;
-    const panelOverline = composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
-    const panelTitle = composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
+    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
+    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
     const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${demographicAgeOptionsMarkup(metric,metric.meta.defaultAge || '25-64')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
-    const primaryLabel = selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
-    const primaryValue = selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
+    const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
+    const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
     const positionMarkup = selectable
       ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
-      : (['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)
-        ? `<aside class="versilia-position"><span class="overline">Lettura del dato</span><strong>${html(row.formatted || formatValue(row.value,metric.meta.unit))}</strong><p>Dettaglio descrittivo: nessuna graduatoria di qualità.</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`
+      : (drinkingQuality
+        ? `<aside class="versilia-position water-quality-coverage"><span class="overline">Copertura GAIA disponibile</span><strong>${html(number0.format(row.localities?.length||0))}<small>località</small></strong><p>I valori restano distinti per località: nessuna media comunale e nessun indice sintetico.</p><div><span>Parametri per località</span><b>${html(number0.format(metric.parameterDefinitions?.length||0))}</b></div></aside>`
+        : remediation
+        ? `<aside class="versilia-position remediation-overview"><span class="overline">Fotografia SISBON</span><strong>${html(number0.format(remediationPartValue(row,'active')+remediationPartValue(row,'closed')))}<small>procedimenti</small></strong><p>Il conteggio non equivale automaticamente a siti attualmente contaminati.</p><div><span>Attivi / chiusi</span><b>${html(number0.format(remediationPartValue(row,'active')))} / ${html(number0.format(remediationPartValue(row,'closed')))}</b></div></aside>`
         : row.notApplicable
         ? `<aside class="versilia-position"><span class="overline">Applicabilità territoriale</span><strong>n.a.<small>Comune non costiero</small></strong><p>${html(row.applicabilityNote)}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`
         : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`);
@@ -1081,6 +1141,28 @@
       demoAge?.addEventListener('change',applyDemographic);
       demoGender?.addEventListener('change',applyDemographic);
     }
+    if (drinkingQuality) {
+      const root=container.querySelector('.water-quality-town');
+      const localitySelect=root?.querySelector('[data-water-quality-locality]');
+      const parameterSelect=root?.querySelector('[data-water-quality-parameter-town]');
+      const selectedHost=root?.querySelector('[data-water-quality-selected]');
+      const applyWaterQuality=()=>{
+        if(selectedHost) selectedHost.innerHTML=waterQualitySelectedMarkup(metric,row,localitySelect?.value||0,parameterSelect?.value||0);
+      };
+      localitySelect?.addEventListener('change',applyWaterQuality);
+      parameterSelect?.addEventListener('change',applyWaterQuality);
+    }
+    if (remediation) {
+      const root=container.querySelector('.remediation-town');
+      const viewSelect=root?.querySelector('[data-remediation-town-view]');
+      const benchmarkHost=root?.querySelector('[data-remediation-benchmark-host]');
+      const applyRemediation=()=>{
+        const view=viewSelect?.value==='closed'?'closed':'active';
+        root?.querySelectorAll('[data-remediation-status]').forEach(item=>item.toggleAttribute('hidden',item.dataset.remediationStatus!==view));
+        if(benchmarkHost) benchmarkHost.innerHTML=remediationBenchmarkMarkup(metric,row,view);
+      };
+      viewSelect?.addEventListener('change',applyRemediation);
+    }
     installChartInteractions(container);
     installAgePyramidDelegation(container);
     scrollActiveControl(tablist);
@@ -1103,8 +1185,10 @@
     const metric = data.metrics[key];
     const row = metric.rows.find(r => r.code === town.code);
     const rank = metricRows(data, key).findIndex(item => item.code === town.code) + 1;
-    const cardValue = metric.meta.compositeType === 'distribution' ? compositeSummary(metric,row).formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
-    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(cardValue)}</strong><small>${html(metric.meta.year)} · ${row.notApplicable ? 'n.a.' : `${rank}° valore`}</small></button>`;
+    const drinkingQuality=metric.meta.compositeType==='drinkingWaterQuality',remediation=metric.meta.compositeType==='remediationProceedings';
+    const cardValue = drinkingQuality ? `${number0.format(row.localities?.length||0)} località GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : metric.meta.compositeType === 'distribution' ? compositeSummary(metric,row).formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
+    const cardMeta=drinkingQuality ? `${metric.meta.year} · dettaglio analitico` : remediation ? `${metric.meta.year} · conteggi SISBON` : `${metric.meta.year} · ${row.notApplicable ? 'n.a.' : `${rank}° valore`}`;
+    return `<button type="button" data-indicator="${key}" class="${key === activeKey ? 'active' : ''}" aria-pressed="${key === activeKey}"><span>${html(metric.meta.shortLabel)}</span><strong>${html(cardValue)}</strong><small>${html(cardMeta)}</small></button>`;
   }
 
   function seriesChart(series, unit, label = 'Serie storica') {

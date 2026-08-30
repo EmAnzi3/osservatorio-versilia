@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260829-v124-water-ui1';
+  const HOTFIX_VERSION = '20260830-v124-water-ui2';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -232,6 +232,7 @@
     const selectedTown = safeStorageGet('ov-history-town') || '';
     const selected = selectedMetric(data);
     if (!selected) return;
+    if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = target.querySelector(':scope > .ux-view-shell');
     if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
       if (existingShell) {
@@ -415,6 +416,7 @@
     const selectedTown = document.body.dataset.town || '';
     const selected = selectedMetric(data);
     if (!selected) return;
+    if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = panel.querySelector('.ux-view-shell');
     if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
       if (existingShell) {
