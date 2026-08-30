@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -161,7 +162,8 @@ def run_fuel_verification(
     if not isinstance(metric, dict) or not isinstance(item, dict):
         return None, ""
     source_key = canonical_url(str(metric.get("sourceUrl") or ""))
-    needs_semantic_check = source_key in changed_urls(report) or str(item.get("status") or "") in {
+    run_trigger = str(os.environ.get("MONITOR_RUN_TRIGGER") or "").strip()
+    needs_semantic_check = run_trigger == "schedule" or source_key in changed_urls(report) or str(item.get("status") or "") in {
         "verification_required",
         "release_detected",
     }
@@ -395,6 +397,26 @@ def main(argv: list[str] | None = None) -> int:
             report["fuelMimitVerification"] = fuel_result
         elif fuel_error:
             report["fuelMimitVerificationError"] = fuel_error
+
+        # Solo il run schedulato mensile trasforma il normale avanzamento
+        # giornaliero MIMIT in una modifica da revisionare.
+        if (
+            str(os.environ.get("MONITOR_RUN_TRIGGER") or "").strip() == "schedule"
+            and isinstance(fuel_result, dict)
+            and fuel_result.get("verdict") == "new_period"
+            and report.get("status") == "no_changes"
+        ):
+            report["status"] = "changes_detected"
+            current_md = args.report_md.read_text(encoding="utf-8")
+            args.report_md.write_text(
+                current_md.replace("**Esito:** `no_changes`", "**Esito:** `changes_detected`", 1),
+                encoding="utf-8",
+            )
+            output_path = os.environ.get("GITHUB_OUTPUT")
+            if output_path:
+                with open(output_path, "a", encoding="utf-8") as output:
+                    output.write("status=changes_detected\n")
+
         pnrr_result, pnrr_error = run_pnrr_verification(
             data,
             metrics,

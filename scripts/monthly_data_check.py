@@ -442,6 +442,8 @@ def probe_source(url: str, registry: dict[str, Any]) -> dict[str, Any]:
         "contentHashMode": "raw",
         "contentChangePolicy": "",
         "contentChangeReason": "",
+        "redirectChangePolicy": "",
+        "redirectChangeReason": "",
         "hashTruncated": False,
         "error": "",
     }
@@ -518,6 +520,8 @@ def offline_source(url: str) -> dict[str, Any]:
         "contentHashMode": "raw",
         "contentChangePolicy": "",
         "contentChangeReason": "",
+        "redirectChangePolicy": "",
+        "redirectChangeReason": "",
         "hashTruncated": False,
         "error": "",
     }
@@ -527,12 +531,50 @@ def compare_states(previous: dict[str, Any], current: dict[str, dict[str, Any]])
     previous_sources = previous.get("sources")
     if not isinstance(previous_sources, dict):
         previous_sources = {}
+
+    # Anche le chiavi della baseline precedente devono passare dallo stesso
+    # canonicalizzatore usato oggi: evita falsi add/remove per ':' vs '%3A'.
+    normalized_previous: dict[str, dict[str, Any]] = {}
+    for raw_url, raw_item in previous_sources.items():
+        if not isinstance(raw_item, dict):
+            continue
+        try:
+            url = canonical_url(str(raw_url))
+        except Exception:
+            url = str(raw_url)
+        item = dict(raw_item)
+        item["url"] = url
+        if item.get("finalUrl"):
+            try:
+                item["finalUrl"] = canonical_url(str(item["finalUrl"]))
+            except Exception:
+                pass
+        normalized_previous.setdefault(url, item)
+    previous_sources = normalized_previous
+
+    normalized_current: dict[str, dict[str, Any]] = {}
+    for raw_url, raw_item in current.items():
+        try:
+            url = canonical_url(str(raw_url))
+        except Exception:
+            url = str(raw_url)
+        item = dict(raw_item)
+        item["url"] = url
+        if item.get("finalUrl"):
+            try:
+                item["finalUrl"] = canonical_url(str(item["finalUrl"]))
+            except Exception:
+                pass
+        normalized_current[url] = item
+    current = normalized_current
+
     changes: dict[str, list[dict[str, Any]]] = {
         "added": [],
         "removed": [],
         "content": [],
         "informationalContent": [],
         "redirect": [],
+        "informationalRedirect": [],
         "metadata": [],
         "unreachable": [],
         "recovered": [],
@@ -568,16 +610,22 @@ def compare_states(previous: dict[str, Any], current: dict[str, dict[str, Any]])
                 changes["informationalContent"].append(content_item)
             else:
                 changes["content"].append(content_item)
-        if old.get("finalUrl") and item.get("finalUrl") and old["finalUrl"] != item["finalUrl"]:
-            changes["redirect"].append(
-                {"url": url, "before": old.get("finalUrl"), "after": item.get("finalUrl")}
-            )
+        old_final = str(old.get("finalUrl") or "")
+        new_final = str(item.get("finalUrl") or "")
+        if old_final and new_final and old_final != new_final:
+            redirect_item = {"url": url, "before": old_final, "after": new_final}
+            reason = str(item.get("redirectChangeReason") or "")
+            if reason:
+                redirect_item["reason"] = reason
+            if str(item.get("redirectChangePolicy") or "") == "informational":
+                changes["informationalRedirect"].append(redirect_item)
+            else:
+                changes["redirect"].append(redirect_item)
         old_meta = (str(old.get("etag") or ""), str(old.get("lastModified") or ""))
         new_meta = (str(item.get("etag") or ""), str(item.get("lastModified") or ""))
         if old_meta != new_meta and any(old_meta) and any(new_meta):
             changes["metadata"].append({"url": url})
     return changes
-
 
 def url_list(items: list[dict[str, Any]]) -> str:
     if not items:
@@ -654,7 +702,7 @@ def build_report(
                 "",
             ]
         )
-    if changes["metadata"] or changes.get("informationalContent"):
+    if changes["metadata"] or changes.get("informationalContent") or changes.get("informationalRedirect"):
         lines.extend(["### Segnali informativi", ""])
         if changes.get("informationalContent"):
             lines.extend(
@@ -662,6 +710,15 @@ def build_report(
                     "Il contenuto di alcune fonti operative continue è cambiato, ma la politica della fonte classifica il cambio come informativo: gli indicatori pubblicati usano una fotografia datata e versionata.",
                     "",
                     url_list(changes["informationalContent"]),
+                    "",
+                ]
+            )
+        if changes.get("informationalRedirect"):
+            lines.extend(
+                [
+                    "Sono cambiati reindirizzamenti tecnici di landing page esplicitamente classificate come informative; il segnale non equivale a un nuovo rilascio dati.",
+                    "",
+                    url_list(changes["informationalRedirect"]),
                     "",
                 ]
             )
@@ -725,6 +782,8 @@ def main() -> int:
         if source_policy:
             probe["contentChangePolicy"] = source_policy.get("contentChange", "")
             probe["contentChangeReason"] = source_policy.get("reason", "")
+            probe["redirectChangePolicy"] = source_policy.get("redirectChange", "")
+            probe["redirectChangeReason"] = source_policy.get("reason", "")
         probes[url] = probe
 
     changes = compare_states(previous, probes)

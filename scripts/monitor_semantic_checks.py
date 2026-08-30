@@ -43,6 +43,7 @@ def source_change_policy(url: str, registry: dict[str, Any]) -> dict[str, str]:
         return {}
     return {
         "contentChange": str(item.get("contentChange") or "").strip(),
+        "redirectChange": str(item.get("redirectChange") or "").strip(),
         "reason": str(item.get("reason") or "").strip(),
     }
 
