@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "snapshotVersion": "2026-08-31-gis-v1",
+  "verifiedAt": "2026-08-30T23:40:01+00:00",
+  "scope": {
+    "towns": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ],
+    "crsForMeasurements": "EPSG:3003"
+  },
+  "sources": {
+    "istatBoundaries": {
+      "label": "Istat — Confini delle unità amministrative al 1 gennaio 2026, versione generalizzata",
+      "url": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip",
+      "sizeBytes": 10450609,
+      "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6"
+    },
+    "reticulum": {
+      "label": "Regione Toscana — Reticolo idrografico e di gestione DCRT 24/2025",
+      "url": "https://www.regione.toscana.it/documents/d/guest/infrastruttura_rev25-zip",
+      "sizeBytes": 48706934,
+      "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122"
+    },
+    "hydraulicWorks": {
+      "label": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+      "url": "https://www.regione.toscana.it/documents/10180/22470380/shp%2Bfiles%2Bcensimento%2Bopere%2Bidrauliche.zip/de6d5e57-de9f-4555-7e55-52ff32654a0e?t=1636713609857",
+      "sizeBytes": 1116181,
+      "sha256": "532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560"
+    }
+  },
+  "boundaries": {
+    "sourceLayer": "Com01012026_g_WGS84.shp",
+    "method": "Selezione dei sette Comuni Istat al 1 gennaio 2026 e riproiezione in EPSG:3003.",
+    "byTown": {
+      "Camaiore": {
+        "istatCode": "046005",
+        "areaKm2": 84.817881
+      },
+      "Forte dei Marmi": {
+        "istatCode": "046013",
+        "areaKm2": 9.255013
+      },
+      "Massarosa": {
+        "istatCode": "046018",
+        "areaKm2": 67.910451
+      },
+      "Pietrasanta": {
+        "istatCode": "046024",
+        "areaKm2": 42.22817
+      },
+      "Seravezza": {
+        "istatCode": "046028",
+        "areaKm2": 39.520172
+      },
+      "Stazzema": {
+        "istatCode": "046030",
+        "areaKm2": 80.26531
+      },
+      "Viareggio": {
+        "istatCode": "046033",
+        "areaKm2": 32.753597
+      }
+    }
+  },
+  "managedReticulum": {
+    "sourceLayer": "reticoloDCR242025.shp",
+    "filter": {
+      "COMPLR79": "Toscana Nord",
+      "RETGESLR79": "SI"
+    },
+    "sourceFeaturesAfterFilter": 26133,
+    "sourceNetworkKm": 7817.217056,
+    "method": "Intersezione con i confini comunali Istat 2026 e ricalcolo della lunghezza sulla geometria risultante. Il campo LENGTH della sorgente non viene riutilizzato. Il controllo union_all conferma assenza di sovrapposizioni lineari significative nel reticolo filtrato.",
+    "byTown": {
+      "Camaiore": {
+        "km": 204.809871,
+        "sourceFeaturesIntersecting": 667
+      },
+      "Forte dei Marmi": {
+        "km": 11.609746,
+        "sourceFeaturesIntersecting": 30
+      },
+      "Massarosa": {
+        "km": 192.01491,
+        "sourceFeaturesIntersecting": 638
+      },
+      "Pietrasanta": {
+        "km": 99.736904,
+        "sourceFeaturesIntersecting": 280
+      },
+      "Seravezza": {
+        "km": 49.446972,
+        "sourceFeaturesIntersecting": 183
+      },
+      "Stazzema": {
+        "km": 130.315069,
+        "sourceFeaturesIntersecting": 593
+      },
+      "Viareggio": {
+        "km": 57.108279,
+        "sourceFeaturesIntersecting": 104
+      }
+    },
+    "aggregateSevenTowns": {
+      "km": 745.041751,
+      "uniqueSourceFeaturesIntersecting": 2356
+    }
+  },
+  "hydraulicWorks": {
+    "approval": "DGRT 1155/2021",
+    "sourceFeatureCounts": {
+      "area": 82,
+      "line": 2572,
+      "point": 1012
+    },
+    "method": "Conteggio delle feature ufficiali areali, lineari e puntuali che intersecano ciascun confine Istat 2026. Una feature che attraversa più Comuni compare nelle rispettive schede; l'aggregato dei sette Comuni è invece ricalcolato sulla loro unione e deduplicato per feature sorgente.",
+    "byTown": {
+      "Camaiore": {
+        "area": {
+          "sourceFeaturesIntersecting": 2,
+          "types": {
+            "cassa di espansione": 2
+          },
+          "clippedHectares": 14.934259
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 37,
+          "types": {
+            "difesa di sponda": 29,
+            "argine": 8
+          },
+          "clippedKm": 18.040209
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 4,
+          "types": {
+            "soglia": 3,
+            "sfioratore": 1
+          }
+        },
+        "featurePresenceTotal": 43
+      },
+      "Forte dei Marmi": {
+        "area": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {},
+          "clippedHectares": 0.0
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 5,
+          "types": {
+            "argine": 3,
+            "difesa di sponda": 2
+          },
+          "clippedKm": 1.793474
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {}
+        },
+        "featurePresenceTotal": 5
+      },
+      "Massarosa": {
+        "area": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {},
+          "clippedHectares": 0.0
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 11,
+          "types": {
+            "argine": 7,
+            "difesa di sponda": 4
+          },
+          "clippedKm": 4.928498
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {}
+        },
+        "featurePresenceTotal": 11
+      },
+      "Pietrasanta": {
+        "area": {
+          "sourceFeaturesIntersecting": 2,
+          "types": {
+            "cassa di espansione": 2
+          },
+          "clippedHectares": 28.256507
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 54,
+          "types": {
+            "difesa di sponda": 30,
+            "argine": 24
+          },
+          "clippedKm": 25.608137
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 8,
+          "types": {
+            "soglia": 6,
+            "sfioratore": 2
+          }
+        },
+        "featurePresenceTotal": 64
+      },
+      "Seravezza": {
+        "area": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {},
+          "clippedHectares": 0.0
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 73,
+          "types": {
+            "difesa di sponda": 56,
+            "argine": 17
+          },
+          "clippedKm": 24.999481
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 2,
+          "types": {
+            "briglia": 1,
+            "soglia": 1
+          }
+        },
+        "featurePresenceTotal": 75
+      },
+      "Stazzema": {
+        "area": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {},
+          "clippedHectares": 0.0
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 67,
+          "types": {
+            "difesa di sponda": 67
+          },
+          "clippedKm": 12.533345
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 23,
+          "types": {
+            "briglia": 12,
+            "soglia": 11
+          }
+        },
+        "featurePresenceTotal": 90
+      },
+      "Viareggio": {
+        "area": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {},
+          "clippedHectares": 0.0
+        },
+        "line": {
+          "sourceFeaturesIntersecting": 10,
+          "types": {
+            "argine": 5,
+            "difesa di sponda": 5
+          },
+          "clippedKm": 2.748163
+        },
+        "point": {
+          "sourceFeaturesIntersecting": 0,
+          "types": {}
+        },
+        "featurePresenceTotal": 10
+      }
+    },
+    "aggregateSevenTowns": {
+      "area": {
+        "uniqueSourceFeatures": 4,
+        "types": {
+          "cassa di espansione": 4
+        }
+      },
+      "line": {
+        "uniqueSourceFeatures": 224,
+        "types": {
+          "difesa di sponda": 169,
+          "argine": 55
+        }
+      },
+      "point": {
+        "uniqueSourceFeatures": 37,
+        "types": {
+          "soglia": 21,
+          "briglia": 13,
+          "sfioratore": 3
+        }
+      },
+      "uniqueSourceFeaturesTotal": 265
+    }
+  }
+}
