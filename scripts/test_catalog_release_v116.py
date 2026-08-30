@@ -91,15 +91,15 @@ def main() -> None:
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
     export_script = (ROOT / "assets" / "export-v161.js").read_text(encoding="utf-8")
     service_worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
-    assert 'UX_ASSET_VERSION = "20260829-v124-water-ui1"' in build_safe
-    assert 'HISTORY_ASSET_VERSION = "20260829-v124-water-ui1"' in build_safe
-    assert 'APP_BUNDLE_ASSET_VERSION = "20260829-v124-water-ui1"' in build_brand
+    assert 'UX_ASSET_VERSION = "20260830-v124-water-ui2"' in build_safe
+    assert 'HISTORY_ASSET_VERSION = "20260830-v124-water-ui2"' in build_safe
+    assert 'APP_BUNDLE_ASSET_VERSION = "20260830-v124-water-ui2"' in build_brand
     assert 'CHART_SURFACE_ASSET_VERSION = "20260826-v120"' in build_brand
     assert 'PWA_JS_REVISION = "catalog-v124"' in build_brand
-    assert "20260829-v124" in development_loader
-    assert "const VERSION = '20260829-v124-water-ui1';" in export_script
+    assert "20260830-v124" in development_loader
+    assert "const VERSION = '20260830-v124-water-ui2';" in export_script
     assert "function sexBreakdownRows(" in export_script
-    assert "ov-pwa-20260829-v124" in service_worker
+    assert "ov-pwa-20260830-v124" in service_worker
 
     print(
         f"Release {VERSION} verificata: catalogo completo, tooltip coerenti, "

@@ -17,8 +17,8 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260829-v124-water-ui1"
-HISTORY_ASSET_VERSION = "20260829-v124-water-ui1"
+UX_ASSET_VERSION = "20260830-v124-water-ui2"
+HISTORY_ASSET_VERSION = "20260830-v124-water-ui2"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"

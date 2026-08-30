@@ -52,6 +52,7 @@ jobs:
           python scripts/test_agricoltura_territorio_v120.py
           python scripts/test_cultura_biblioteche_v121.py
           python scripts/test_costa_mare_v123.py
+          python scripts/test_ambiente_acqua_v124_ui.py
           python scripts/test_investimenti_versilia.py
           node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null

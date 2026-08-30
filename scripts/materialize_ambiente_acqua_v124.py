@@ -30,8 +30,8 @@ COHERENCE=ROOT/"docs/coerenza-interfaccia.md"
 
 VERSION="v1.24.0"
 UPDATED="29 agosto 2026"
-ASSET_VERSION="20260829-v124-water-ui1"
-PWA_VERSION="ov-pwa-20260829-v124-water-ui1"
+ASSET_VERSION="20260830-v124-water-ui2"
+PWA_VERSION="ov-pwa-20260830-v124-water-ui2"
 KEYS=("waterNetworkLosses","drinkingWaterQuality","remediationProceedings")
 ISTAT_URL="https://esploradati.istat.it/"
 GAIA_URL="https://www.gaia-spa.it/analisiweb_v2/"

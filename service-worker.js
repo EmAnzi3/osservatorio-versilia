@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260829-v124-water-ui1';
+const VERSION = 'ov-pwa-20260830-v124-water-ui2';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
