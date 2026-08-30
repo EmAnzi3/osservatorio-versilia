@@ -1,0 +1,81 @@
+{
+  "schema": "ambiente-acqua-bonifiche-v124",
+  "generatedAt": "2026-08-29",
+  "scope": {
+    "municipalityCodes": ["046005", "046013", "046018", "046024", "046028", "046030", "046033"]
+  },
+  "sources": {
+    "istatWaterDistribution": {
+      "publisher": "Istat",
+      "dataset": "12_60_DF_DCCV_CONSACQUA_2 — Distribuzione di acqua potabile",
+      "sha256": "337f83c658af4a92f9d677c880bf887a91a458b19aa57a0c47757651064790bf",
+      "years": [2012, 2015, 2018],
+      "unit": "migliaia di m³",
+      "license": "CC BY 4.0"
+    },
+    "gaiaWaterQuality": {
+      "publisher": "GAIA S.p.A.",
+      "dataset": "Laboratorio Analisi / Qualità dell’acqua",
+      "sha256": "97d6dbe6a9f3549fe9d43c7bb2bf832ee2e1819effa2bf1b7b69fe46a37c83eb",
+      "pianDiConcaSha256": "fd938a487dccf6f9ed64325f2df855e36c2706c75ffd45cedd8c6ee607c612f3",
+      "period": "2° Semestre 2025",
+      "municipalities": 7,
+      "localities": 70,
+      "parametersPerLocality": 17,
+      "values": 1190
+    },
+    "sisbon": {
+      "publisher": "Regione Toscana / ARPAT",
+      "dataset": "procedimenti_pubblici",
+      "sha256": "e5bd50e5b6a4a88b0f7bec0762b8719b69064ae1841bdbde925c5501e363dbcb",
+      "snapshot": "2026-08-29",
+      "uniqueRegionalCodesVersilia": 152
+    }
+  },
+  "waterNetworkLosses": {
+    "formula": "(acqua immessa - acqua erogata) / acqua immessa * 100",
+    "towns2018": {
+      "046005": {"input": 4343, "supplied": 2695, "lossPercent": 37.94612},
+      "046013": {"input": 2763, "supplied": 1648, "lossPercent": 40.35469},
+      "046018": {"input": 2689, "supplied": 1560, "lossPercent": 41.98698},
+      "046024": {"input": 3839, "supplied": 2197, "lossPercent": 42.77156},
+      "046028": {"input": 1660, "supplied": 795, "lossPercent": 52.10843},
+      "046030": {"input": 389, "supplied": 173, "lossPercent": 55.52699},
+      "046033": {"input": 6819, "supplied": 4369, "lossPercent": 35.92902}
+    },
+    "versiliaSeries": [
+      {"year": 2012, "input": 24548, "supplied": 16925, "lossPercent": 31.05345},
+      {"year": 2015, "input": 22294, "supplied": 13197, "lossPercent": 40.80470},
+      {"year": 2018, "input": 22502, "supplied": 13437, "lossPercent": 40.28531}
+    ]
+  },
+  "drinkingWaterQuality": {
+    "countsByMunicipality": {
+      "046005": 20,
+      "046013": 1,
+      "046018": 8,
+      "046024": 11,
+      "046028": 12,
+      "046030": 16,
+      "046033": 2
+    },
+    "detailPayload": "to be materialized from the verified 70-locality GAIA extraction"
+  },
+  "remediationProceedings": {
+    "classification": {
+      "closedStateCodes": [200, 210, 220, 230, 280],
+      "activeStateCodes": [10, 40, 50, 60, 70, 120, 135, 140]
+    },
+    "countsByMunicipality": {
+      "046005": {"active": 9, "closed": 22, "total": 31},
+      "046013": {"active": 10, "closed": 11, "total": 21},
+      "046018": {"active": 6, "closed": 10, "total": 16},
+      "046024": {"active": 10, "closed": 13, "total": 23},
+      "046028": {"active": 3, "closed": 6, "total": 9},
+      "046030": {"active": 3, "closed": 4, "total": 7},
+      "046033": {"active": 15, "closed": 30, "total": 45}
+    },
+    "versilia": {"active": 56, "closed": 96, "total": 152},
+    "detailPayload": "to be materialized from the verified SISBON CSV using codice_regionale as unique key"
+  }
+}

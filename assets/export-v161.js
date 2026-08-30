@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260829-v123-coast-ui2';
+  const VERSION = '20260830-v124-water-ui3';
   let dataPromise = null;
 
   function loadData() {

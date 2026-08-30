@@ -52,6 +52,7 @@ jobs:
           python scripts/test_agricoltura_territorio_v120.py
           python scripts/test_cultura_biblioteche_v121.py
           python scripts/test_costa_mare_v123.py
+          python scripts/test_ambiente_acqua_v124_ui.py
           python scripts/test_investimenti_versilia.py
           node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null
@@ -131,6 +132,9 @@ jobs:
 
       - name: Validate Costa e mare
         run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Ambiente acqua e bonifiche
+        run: python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate Investimenti e opere
         run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
@@ -270,6 +274,7 @@ jobs:
             scripts/patch_investimenti_versilia.py \
             scripts/test_costa_mare_v123.py \
             scripts/test_costa_mare_v123_browser.py \
+            scripts/test_ambiente_acqua_v124_browser.py \
             scripts/test_investimenti_versilia.py \
             scripts/test_investimenti_versilia_browser.py \
             scripts/test_mobilita_tpl_v119_browser.py \
@@ -338,7 +343,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v123-costa-mare-preview
+          name: osservatorio-versilia-v124-acqua-bonifiche-preview
           path: dist
           retention-days: 14
 

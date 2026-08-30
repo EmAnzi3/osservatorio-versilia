@@ -14,6 +14,7 @@ ASIA_DATAFLOW_URL = (
     "IT1,Z0500DICA,1.0/DICA_ASIA/DICA_ASIAULP/"
     "183_1163_DF_DICA_ASIAULP_TERRIFDATA_7"
 )
+ISTATDATA_WATER_URL = "https://esploradati.istat.it/"
 PNRR_TOSCANA_URL = "https://dati.toscana.it/dataset/regione-toscana-pnrr"
 ASIA_DATAFLOW_KEYS = {
     "localEmployees",
@@ -21,6 +22,7 @@ ASIA_DATAFLOW_KEYS = {
     "localUnitsChange",
     "localEmployeesChange",
 }
+ISTATDATA_WATER_KEYS = {"waterNetworkLosses"}
 
 EXPECTED = {
     "oldAgeIndex": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
@@ -35,6 +37,7 @@ EXPECTED = {
     "pnrrFunding": PNRR_TOSCANA_URL,
     "pnrrConcluded": PNRR_TOSCANA_URL,
     "cashReceiptsPerResident": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+    "waterNetworkLosses": ISTATDATA_WATER_URL,
 }
 
 FORBIDDEN_SUBSTRINGS = (
@@ -75,10 +78,14 @@ def main() -> None:
                     f"Link fonte fragile o obsoleto: {key} -> {url}")
 
         if "esploradati.istat.it" in url:
-            require(key in ASIA_DATAFLOW_KEYS,
-                    f"Permalink EsploraDati inatteso: {key} -> {url}")
-            require(url == ASIA_DATAFLOW_URL,
-                    f"Dataflow ASIA inatteso: {key} -> {url}")
+            if key in ASIA_DATAFLOW_KEYS:
+                require(url == ASIA_DATAFLOW_URL,
+                        f"Dataflow ASIA inatteso: {key} -> {url}")
+            else:
+                require(key in ISTATDATA_WATER_KEYS,
+                        f"Permalink EsploraDati inatteso: {key} -> {url}")
+                require(url == ISTATDATA_WATER_URL,
+                        f"Fonte IstatData acqua inattesa: {key} -> {url}")
 
     require(len(links) == len(DATA["metrics"]),
             "Almeno un indicatore è privo di sourceUrl")
@@ -90,6 +97,10 @@ def main() -> None:
     for key in ASIA_DATAFLOW_KEYS:
         require(DATA["metrics"][key]["sourceUrl"] == ASIA_DATAFLOW_URL,
                 f"Fonte ASIA inattesa: {key}")
+
+    for key in ISTATDATA_WATER_KEYS:
+        require(DATA["metrics"][key]["sourceUrl"] == ISTATDATA_WATER_URL,
+                f"Fonte IstatData acqua inattesa: {key}")
 
     require(DATA["metrics"]["schoolStudents"]["sourceUrl"] ==
             DATA["metrics"]["studentsPerClass"]["sourceUrl"] ==

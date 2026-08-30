@@ -61,3 +61,7 @@ python scripts/test_site_consistency.py --source-only
 ## Pubblicazione
 
 Le modifiche si preparano su branch e pull request. Il merge su `main` avvia la pubblicazione GitHub Pages e richiede quindi approvazione esplicita del proprietario del progetto.
+
+### Acqua e bonifiche v1.24.0
+
+Le tabelle analitiche mantengono almeno 14 px di padding, gestiscono l’overflow orizzontale e le differenze percentuali restano espresse con `%`, senza `punti` o `p.p.`.
