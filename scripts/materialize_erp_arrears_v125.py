@@ -355,10 +355,19 @@ def patch_release_contract() -> None:
 
     test = CATALOG_TEST.read_text(encoding="utf-8")
     test = test.replace('release v1.24.0', 'release v1.25.0')
-    test = test.replace('v1.24.0', 'v1.25.0').replace('29 agosto 2026', '30 agosto 2026')
-    test = test.replace('165 indicatori complessivi', '166 indicatori complessivi')
-    test = test.replace('"165 indicatori"', '"166 indicatori"').replace('"161 con valori incorporati"', '"162 con valori incorporati"')
-    test = test.replace('165, 161, 4', '166, 162, 4')
+    test = test.replace(
+        'assert "2026.08.29-v1.24.0" in app and "2026.08.28-v1.23.0" in app and "165 indicatori complessivi" in app',
+        'assert "2026.08.30-v1.25.0" in app and "2026.08.29-v1.24.0" in app and "166 indicatori complessivi" in app',
+    )
+    test = test.replace('**v1.24.0** — 29 agosto 2026', '**v1.25.0** — 30 agosto 2026')
+    test = test.replace('"165 indicatori" in readme and "161 con valori incorporati" in readme', '"166 indicatori" in readme and "162 con valori incorporati" in readme')
+    test = test.replace('UX_ASSET_VERSION = "20260830-v124-water-ui3"', 'UX_ASSET_VERSION = "20260830-v125-erp-arrears"')
+    test = test.replace('HISTORY_ASSET_VERSION = "20260830-v124-water-ui3"', 'HISTORY_ASSET_VERSION = "20260830-v125-erp-arrears"')
+    test = test.replace('APP_BUNDLE_ASSET_VERSION = "20260830-v124-water-ui3"', 'APP_BUNDLE_ASSET_VERSION = "20260830-v125-erp-arrears"')
+    test = test.replace('PWA_JS_REVISION = "catalog-v124"', 'PWA_JS_REVISION = "catalog-v125"')
+    test = test.replace('20260830-v124" in development_loader', '20260830-v125-erp-arrears" in development_loader')
+    test = test.replace("const VERSION = '20260830-v124-water-ui3';", "const VERSION = '20260830-v125-erp-arrears';")
+    test = test.replace('ov-pwa-20260830-v124" in service_worker', 'ov-pwa-20260830-v125-erp-arrears" in service_worker')
     CATALOG_TEST.write_text(test, encoding="utf-8")
 
 
