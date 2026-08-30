@@ -3,6 +3,8 @@ name: Materialize Bonifica v1.26.0
 on:
   push:
     branches: ["feat/bonifica-rischio-v126"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
