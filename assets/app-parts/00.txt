@@ -83,6 +83,7 @@
     housingStockPer1000: ['patrimonio abitativo', 'abitazioni per residenti', 'case per abitante'],
     nonOccupiedHomesPer1000: ['case non occupate per residenti', 'abitazioni vuote', 'seconde case'],
     cohabitingHouseholds: ['famiglie coabitanti', 'coabitazione', 'disagio abitativo'],
+    erpArrears: ['morosità erp', 'edilizia residenziale pubblica', 'erp lucca', 'affitti erp', 'canoni non incassati'],
     landUse: ['consumo di suolo', 'cementificazione'],
     landUseChange: ['nuovo suolo consumato'], recycling: ['raccolta differenziata', 'rifiuti'],
     wastePerResident: ['rifiuti pro capite', 'kg'], floodExposure: ['alluvione', 'rischio idraulico'],
@@ -176,6 +177,8 @@
       case 'currency2': return currency2.format(v);
       case 'millionCurrency': return `${number1.format(v)} mln €`;
       case 'percent': return `${number1.format(v)}%`;
+      case '%': return `${number2.format(v)}%`;
+      case 'percent2': return `${number2.format(v)}%`;
       case 'percentagePoints': return `${number1.format(v)}%`;
       case 'index': return number1.format(v);
       case 'decimal': return number2.format(v);

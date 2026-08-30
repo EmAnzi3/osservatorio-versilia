@@ -943,3 +943,69 @@
   .water-quality-compare-controls,.water-quality-town-controls{grid-template-columns:1fr;padding:16px 14px}.water-quality-parameter-meta{grid-template-columns:1fr}.water-quality-range-chart{padding:12px}.water-quality-range-axis{display:none}.water-quality-range-row{grid-template-columns:minmax(0,1fr) auto;gap:9px 12px;padding:14px}.water-quality-range-track{grid-column:1/-1;grid-row:2}.water-quality-range-values{grid-column:1;grid-row:3}.water-quality-range-row>em{grid-column:2;grid-row:3;align-self:end}.water-quality-card-head{flex-direction:column}.water-quality-card-value{align-items:flex-start;flex-direction:column;padding:16px 14px}.water-quality-parameter-card{padding:18px 14px}.water-quality-parameter-card>dl{grid-template-columns:1fr}.water-quality-table{min-width:660px}.water-quality-town-disclosure-body{padding-inline:12px}
   .remediation-compare-controls{align-items:stretch;flex-direction:column;padding:16px 14px}.remediation-compare-controls .remediation-selector{width:100%}.remediation-compare-row{grid-template-columns:1fr;padding:14px}.remediation-count-pair{grid-template-columns:repeat(2,minmax(0,1fr))}.remediation-compare-row>em{justify-self:start}.remediation-summary article{padding:16px 14px}.remediation-benchmark{padding:16px 14px}.remediation-benchmark>div{grid-template-columns:repeat(2,minmax(0,1fr))}.remediation-procedure-list summary{align-items:flex-start;padding:14px}.remediation-procedure-list dl{grid-template-columns:1fr;padding:14px}.remediation-procedure-list dl>div:nth-child(2),.remediation-procedure-list dl>div:last-child{grid-column:auto}
 }
+
+/* v1.25 ERP review — contrasto, respiro e gerarchia */
+.town-topic.erp-arrears-view .history-panel {
+  background: #f5f8f7;
+  border-color: #d6e1df;
+}
+.town-topic.erp-arrears-view .history-panel .ux-history-card {
+  background: #ffffff;
+  border-color: #d6e1df;
+}
+.town-topic.erp-arrears-view .versilia-position {
+  background: #eef3f6;
+  border-color: #d3dfe6;
+}
+.erp-arrears-detail {
+  background: #ffffff;
+  border-color: #cbd9d6;
+  box-shadow: 0 8px 24px rgba(24, 54, 62, .05);
+}
+.erp-arrears-detail > summary {
+  min-height: 64px;
+  padding: 18px 22px;
+  background: #f1f6f5;
+}
+.erp-arrears-detail .composite-town-detail {
+  margin-top: 0;
+  padding: 18px 20px 20px;
+  gap: 14px;
+  background: #ffffff;
+  border-top: 1px solid #dce6e3;
+}
+.erp-arrears-detail .composite-town-detail > div {
+  border: 1px solid #d5e1de;
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: #f5f9f8;
+}
+.erp-arrears-detail .composite-town-detail > div:nth-child(2) {
+  background: #eef4f8;
+  border-color: #d7e1e8;
+}
+.erp-arrears-detail .composite-town-detail small {
+  margin-left: 0;
+}
+.erp-arrears-detail > .aggregate-note {
+  margin: 0;
+  padding: 16px 20px 18px;
+  background: #ffffff;
+  border-top: 1px solid #e1e8e6;
+}
+@media (max-width: 700px) {
+  .erp-arrears-detail > summary {
+    padding: 16px 17px;
+  }
+  .erp-arrears-detail .composite-town-detail {
+    padding: 14px 14px 16px;
+    gap: 10px;
+  }
+  .erp-arrears-detail .composite-town-detail > div {
+    padding: 14px 15px;
+  }
+  .erp-arrears-detail > .aggregate-note {
+    padding: 14px 15px 16px;
+  }
+}
+

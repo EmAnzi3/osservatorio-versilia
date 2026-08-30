@@ -33,6 +33,12 @@
     installCrimeInteractions(data);
   }
 
+  function erpArrearsDetailMarkup(metric, row) {
+    if (metric?.meta?.key !== 'erpArrears' || !row?.accounting) return '';
+    const detail = row.accounting;
+    return `<details class="detail-disclosure erp-arrears-detail"><summary><span>Dettaglio contabile ${html(String(detail.year))}</span><small>valori cumulati · E.R.P. Lucca</small></summary><div class="composite-town-detail"><div><span>Importi emessi cumulati</span><b>${html(formatValue(detail.issued,'currency2'))}</b><small>denominatore del rapporto</small></div><div><span>Morosità cumulata</span><b>${html(formatValue(detail.arrears,'currency2'))}</b><small>somme non ancora incassate</small></div></div><p class="aggregate-note">La percentuale è ricalcolata dagli importi sopra indicati; non viene usata la percentuale stampata nel prospetto sorgente quando non riconcilia.</p></details>`;
+  }
+
   function compositePartLegend(metric) {
     const parts = metric.rows?.[0]?.parts || metric.aggregate?.parts || [];
     return `<div class="composite-legend">${parts.map((part, index) => `<span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span>`).join('')}</div>`;
@@ -1098,6 +1104,7 @@
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
     container.dataset.theme = themeKey;
+    container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');
     const historical = Boolean(row.series?.values?.length);
     const composite = Boolean(metric.meta.compositeType);
     const distribution = metric.meta.compositeType === 'distribution';
@@ -1141,6 +1148,7 @@
         ${composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
       ${coastTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
+      ${erpArrearsDetailMarkup(metric,row)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}
       ${methodDisclosure(metric)}
       <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;

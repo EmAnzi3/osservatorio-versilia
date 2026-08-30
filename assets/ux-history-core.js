@@ -70,6 +70,7 @@
     const number = Number(value);
     if (!Number.isFinite(number)) return 'n.d.';
     switch (unit) {
+      case '%': return `${formatNumber(number, 2)}%`;
       case 'percent': return `${formatNumber(number, 1)}%`;
       case 'percentagePoints': return `${formatNumber(number, 1)}%`;
       case 'currency': return `${formatNumber(number, 0)} €`;
@@ -151,7 +152,7 @@
   function deltaMarkup(start, end, unit, compact = false) {
     const delta = end - start;
     const sign = delta > 0 ? '+' : '';
-    if (unit === 'percent' || unit === 'percentagePoints') {
+    if (unit === '%' || unit === 'percent' || unit === 'percentagePoints') {
       return `${sign}${formatNumber(delta, 1)}%`;
     }
     if (compact || start <= 0) return `${sign}${formatValue(delta, unit)}`;

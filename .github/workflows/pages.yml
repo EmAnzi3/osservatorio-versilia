@@ -53,6 +53,7 @@ jobs:
           python scripts/test_cultura_biblioteche_v121.py
           python scripts/test_costa_mare_v123.py
           python scripts/test_ambiente_acqua_v124_ui.py
+          python scripts/test_erp_arrears_v125.py
           python scripts/test_investimenti_versilia.py
           node --check assets/visual-grammar.js
           python -m json.tool data/site-data.json > /dev/null
@@ -68,6 +69,7 @@ jobs:
           python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null
           python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null
           python -m json.tool data/source-snapshots/costa-mare-v123.json > /dev/null
+          python -m json.tool data/source-snapshots/erp-lucca-arrears-2020-2024.json > /dev/null
 
       - name: Build pre-rendered site
         run: python scripts/build_static_brand.py
@@ -135,6 +137,13 @@ jobs:
 
       - name: Validate Ambiente acqua e bonifiche
         run: python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Morosità ERP
+        run: |
+          mkdir -p reports/erp-arrears-v125-browser
+          python scripts/test_erp_arrears_v125_browser.py \
+            --base http://127.0.0.1:8123/ \
+            --screenshots-dir reports/erp-arrears-v125-browser
 
       - name: Validate Investimenti e opere
         run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
@@ -279,6 +288,9 @@ jobs:
             scripts/test_investimenti_versilia_browser.py \
             scripts/test_mobilita_tpl_v119_browser.py \
             scripts/test_percorsi_mobile_list_contract.py \
+            scripts/materialize_erp_arrears_v125.py \
+            scripts/test_erp_arrears_v125.py \
+            scripts/test_erp_arrears_v125_browser.py \
             scripts/finalize_catalog_release.py \
             scripts/test_catalog_release_v116.py
 
@@ -343,7 +355,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v124-acqua-bonifiche-preview
+          name: osservatorio-versilia-v125-morosita-erp-preview
           path: dist
           retention-days: 14
 

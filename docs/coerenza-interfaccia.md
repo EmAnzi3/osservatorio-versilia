@@ -65,3 +65,8 @@ Le modifiche si preparano su branch e pull request. Il merge su `main` avvia la 
 ### Acqua e bonifiche v1.24.0
 
 Le tabelle analitiche mantengono almeno 14 px di padding, gestiscono l’overflow orizzontale e le differenze percentuali restano espresse con `%`, senza `punti` o `p.p.`.
+
+
+### Morosità ERP v1.25.0
+
+`erpArrears` resta una metrica percentuale canonica nel tema Abitare. Il confronto usa la grammatica grafica scalare esistente; le schede comunali riusano serie storica, fonte, metodo e un disclosure con i due importi contabili 2024. Non vengono introdotti ranking, proxy, punteggi o metriche ERP aggiuntive. La visualizzazione usa due decimali perché le differenze tra Comuni sono contenute.
