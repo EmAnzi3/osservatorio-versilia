@@ -70,8 +70,12 @@ def main() -> None:
                 check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024"])
                 primary_value = page.locator(".town-metric-primary [data-composite-primary-value]").inner_text().strip()
                 assert primary_value == "3,48%", primary_value
-                y_labels = page.locator(".trend-chart .chart-y-label").all_inner_texts()
+                history_card = page.locator(".history-panel .ux-history-card")
+                history_card.wait_for(state="visible")
+                y_labels = history_card.locator(".ux-history-axis-label").all_inner_texts()
                 assert any("%" in item for item in y_labels), y_labels
+                history_summary = history_card.locator(".ux-history-summary").inner_text()
+                assert "%" in history_summary, history_summary
                 assert "percent2" not in body_text(page)
 
                 detail = page.locator("details.erp-arrears-detail")

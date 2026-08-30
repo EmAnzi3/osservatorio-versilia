@@ -11,6 +11,7 @@ REGISTRY = ROOT / "data/source-registry.json"
 SNAPSHOT = ROOT / "data/source-snapshots/erp-lucca-arrears-2020-2024.json"
 APP00 = ROOT / "assets/app-parts/00.txt"
 APP03 = ROOT / "assets/app-parts/03.txt"
+UXHC = ROOT / "assets/ux-history-core.js"
 FINALIZER = ROOT / "scripts/finalize_catalog_release.py"
 
 EXPECTED_2024 = {
@@ -116,12 +117,15 @@ def main() -> None:
 
     app00 = APP00.read_text(encoding="utf-8")
     app03 = APP03.read_text(encoding="utf-8")
+    history_core = UXHC.read_text(encoding="utf-8")
     assert "case '%'" in app00
     assert "erpArrears: ['morosità erp'" in app00
     assert "function erpArrearsDetailMarkup" in app03
     assert "Importi emessi cumulati" in app03 and "Morosità cumulata" in app03
     assert "${erpArrearsDetailMarkup(metric,row)}" in app03
     assert "erp-arrears-view" in app03
+    assert "case '%'" in history_core
+    assert "unit === '%' || unit === 'percent'" in history_core
 
     finalizer = FINALIZER.read_text(encoding="utf-8")
     assert 'VERSION = "v1.25.0"' in finalizer

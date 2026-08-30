@@ -25,6 +25,7 @@ APP03 = ROOT / "assets/app-parts/03.txt"
 APP05 = ROOT / "assets/app-parts/05.txt"
 APPJS = ROOT / "assets/app.js"
 UXH = ROOT / "assets/ux-history.js"
+UXHC = ROOT / "assets/ux-history-core.js"
 EXPORT = ROOT / "assets/export-v161.js"
 SW = ROOT / "service-worker.js"
 BUILD_SAFE = ROOT / "scripts/build_static_safe.py"
@@ -352,6 +353,22 @@ def patch_ui() -> None:
             raise RuntimeError("Hook dettaglio comunale non trovato")
         app = app.replace(call, replacement, 1)
     APP03.write_text(app, encoding="utf-8")
+
+    history_core = UXHC.read_text(encoding="utf-8")
+    precise_percent = "      case '%': return `${formatNumber(number, 2)}%`;"
+    percent_line = "      case 'percent': return `${formatNumber(number, 1)}%`;"
+    if precise_percent not in history_core:
+        if percent_line not in history_core:
+            raise RuntimeError("Formatter percent storico non trovato")
+        history_core = history_core.replace(percent_line, precise_percent + "\n" + percent_line, 1)
+    old_delta = "    if (unit === 'percent' || unit === 'percentagePoints') {"
+    new_delta = "    if (unit === '%' || unit === 'percent' || unit === 'percentagePoints') {"
+    if new_delta not in history_core:
+        if old_delta not in history_core:
+            raise RuntimeError("Delta percent storico non trovato")
+        history_core = history_core.replace(old_delta, new_delta, 1)
+    UXHC.write_text(history_core, encoding="utf-8")
+
 
 
 def patch_release_contract() -> None:
