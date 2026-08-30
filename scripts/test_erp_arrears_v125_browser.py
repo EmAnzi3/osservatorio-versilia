@@ -32,7 +32,7 @@ def main() -> None:
 
     compare = urljoin(args.base, "confronta/abitare/?indicatore=erpArrears")
     town = urljoin(args.base, "comuni/massarosa/?tema=abitare&indicatore=erpArrears")
-    indicator = urljoin(args.base, "indicatori/erpArrears/")
+    indicator = urljoin(args.base, "indicatori/morosita-erp/")
 
     configurations = [
         ("desktop", {"width": 1440, "height": 1000}),
