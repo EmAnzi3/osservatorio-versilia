@@ -1,0 +1,61 @@
+name: Fix v1.25 ERP colors
+
+on:
+  push:
+    branches: ["feat/v125-morosita-erp"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-v125-erp-colors
+  cancel-in-progress: true
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v125-morosita-erp
+          fetch-depth: 0
+      - name: Apply only requested color changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('assets/fidelity.css')
+          text = p.read_text(encoding='utf-8')
+
+          # 1) Restore the upper primary metric card to its original inherited theme background.
+          old_primary = ".town-topic.erp-arrears-view .town-metric-primary {\n  background: #ffffff;\n}\n"
+          if old_primary not in text:
+              raise SystemExit('ERP primary-card override not found')
+          text = text.replace(old_primary, '', 1)
+
+          # 2) Change ONLY the historical card surface away from the beige family.
+          anchor = ".town-topic.erp-arrears-view .history-panel {\n  background: #f5f8f7;\n  border-color: #d6e1df;\n}\n"
+          history_card = anchor + ".town-topic.erp-arrears-view .history-panel .ux-history-card {\n  background: #ffffff;\n  border-color: #d6e1df;\n}\n"
+          if '.town-topic.erp-arrears-view .history-panel .ux-history-card {' not in text:
+              if anchor not in text:
+                  raise SystemExit('ERP history-panel anchor not found')
+              text = text.replace(anchor, history_card, 1)
+
+          p.write_text(text, encoding='utf-8')
+          PY
+
+          git diff --check -- assets/fidelity.css
+          git diff -- assets/fidelity.css
+
+      - name: Commit CSS only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/fidelity.css
+          git diff --cached --quiet && exit 0
+          git commit -m "Ripristina box ERP e differenzia lo storico"
+          git push origin HEAD:feat/v125-morosita-erp
