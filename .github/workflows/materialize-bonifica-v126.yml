@@ -26,6 +26,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install GIS dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "geopandas==1.0.1" "pyogrio==0.10.0"
+
+      - name: Materialize GIS support
+        run: |
+          python scripts/materialize_bonifica_gis_v126.py
+          python -m json.tool data/source-snapshots/bonifica-rischio-v126-gis.json > /dev/null
+
       - name: Materialize canonical Lotto 6 data
         run: |
           python scripts/materialize_bonifica_rischio_v126.py
@@ -43,6 +53,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/site-data.json data/source-registry.json data/source-monitor-state.json assets/app-parts/00.txt assets/app-parts/05.txt
-          git commit -m "Materialize Bonifica e rischio idraulico v1.26.0"
+          git add data/source-snapshots/bonifica-rischio-v126-gis.json data/site-data.json data/source-registry.json data/source-monitor-state.json assets/app-parts/00.txt assets/app-parts/05.txt
+          git commit -m "Materialize Bonifica GIS v1.26.0"
           git push origin HEAD:feat/bonifica-rischio-v126
