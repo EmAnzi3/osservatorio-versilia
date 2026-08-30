@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-08-29T12:22:42+00:00",
+  "checkedAt": "2026-08-31T00:30:00+00:00",
   "mode": "live",
   "sources": {
     "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall": {
@@ -2202,6 +2202,57 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": {
+      "url": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabProgrammedInterventionLength"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "cb1-pmo-2026"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": {
+      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabProgrammedInterventions",
+        "pabProgrammedMaintenanceValue"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-pab-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
     }
   },
   "metrics": {
@@ -3272,6 +3323,24 @@
       "publishedPeriod": "2024",
       "checkedAt": "2026-08-29T12:22:42+00:00",
       "observedLatestPeriod": "2024",
+      "status": "current"
+    },
+    "pabProgrammedInterventionLength": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T00:30:00+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabProgrammedInterventions": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T00:30:00+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T00:30:00+00:00",
+      "observedLatestPeriod": "2026",
       "status": "current"
     }
   }

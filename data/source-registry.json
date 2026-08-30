@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 166,
-  "expectedInlineMetricCount": 162,
+  "expectedMetricCount": 169,
+  "expectedInlineMetricCount": 165,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -457,6 +457,24 @@
       "acquisitionMethod": "Lettura dei prospetti comunali nei bilanci d’esercizio; importi elementari conservati nello snapshot con SHA-256 dei PDF e percentuali ricalcolate offline.",
       "licenseName": "Condizioni indicate da E.R.P. Lucca S.r.l.",
       "licenseUrl": "https://www.erplucca.it/"
+    },
+    "cb1-pmo-2026": {
+      "publisher": "Consorzio 1 Toscana Nord",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, secondo il Piano delle Attività di Bonifica",
+      "expectedRelease": "Dopo l’approvazione annuale del PAB e l’aggiornamento del portale manutenzioni",
+      "acquisitionMethod": "Export CSV comunali del portale manutenzioni; somma del campo Metri per Comune e conversione in km-intervento, senza deduplicare come reticolo fisico.",
+      "licenseName": "Condizioni indicate dal Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://cbtoscananord.it/"
+    },
+    "regione-toscana-pab-annual": {
+      "publisher": "Regione Toscana / Consorzio 1 Toscana Nord",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo l’approvazione del PAB da parte della Giunta regionale",
+      "acquisitionMethod": "Lettura dell’Allegato A-1 approvato; conteggio dei codici intervento univoci e somma degli importi per Comune. Nessuna stima di avanzamento lavori.",
+      "licenseName": "Condizioni indicate da Regione Toscana e Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
     }
   },
   "sourceProfileByUrl": {
@@ -532,7 +550,9 @@
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
     "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
-    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet",
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -696,6 +716,15 @@
     },
     "erpArrears": {
       "profile": "erp-lucca-annual-balance-sheet"
+    },
+    "pabProgrammedInterventionLength": {
+      "profile": "cb1-pmo-2026"
+    },
+    "pabProgrammedInterventions": {
+      "profile": "regione-toscana-pab-annual"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "profile": "regione-toscana-pab-annual"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -737,7 +766,9 @@
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
     "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
-    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet",
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {

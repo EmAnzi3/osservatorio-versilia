@@ -199,6 +199,7 @@
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
       case 'hectaresPerFarm': return `${number2.format(v)} ha/azienda`;
+      case 'kmIntervention': return `${number3.format(v)} km-intervento`;
       default: return number0.format(v);
     }
   }
