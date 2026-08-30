@@ -177,14 +177,19 @@
   scheduleEnhancement();
 
   /* app.js imports the application module before fidelity.js, but the module
-     completes its data fetch/render asynchronously. Wait for a real rendered
-     page target before bootstrapping the climate layer. This is deliberately a
-     bounded startup poll, not a DOM observer: after at most 4 seconds it stops. */
+     completes its data fetch/render asynchronously. A pre-rendered town page
+     already contains a history panel, so that element alone is not a reliable
+     readiness signal for direct links. Wait until the metric requested in the
+     URL is the active town control before bootstrapping the climate layer. */
   function loadClimateV3WhenReady(attempt = 0) {
     if (document.querySelector('script[data-ov-climate-v2]')) return;
     const page = document.body.dataset.page;
+    const requestedMetric = new URL(location.href).searchParams.get('indicatore');
+    const requestedTownMetricReady = !requestedMetric || [...document.querySelectorAll('[data-metric]')].some(button => (
+      button.dataset.metric === requestedMetric && button.classList.contains('active')
+    ));
     const ready = page === 'town'
-      ? Boolean(document.querySelector('.town-profile .history-panel'))
+      ? Boolean(document.querySelector('.town-profile .history-panel')) && requestedTownMetricReady
       : page === 'compare'
         ? Boolean(document.getElementById('compare-bars'))
         : Boolean(document.querySelector('#app main'));
