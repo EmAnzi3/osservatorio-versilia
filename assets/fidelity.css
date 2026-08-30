@@ -945,11 +945,12 @@
 }
 
 /* v1.25 ERP review — contrasto, respiro e gerarchia */
-.town-topic.erp-arrears-view .town-metric-primary {
-  background: #ffffff;
-}
 .town-topic.erp-arrears-view .history-panel {
   background: #f5f8f7;
+  border-color: #d6e1df;
+}
+.town-topic.erp-arrears-view .history-panel .ux-history-card {
+  background: #ffffff;
   border-color: #d6e1df;
 }
 .town-topic.erp-arrears-view .versilia-position {
