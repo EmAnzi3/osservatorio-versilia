@@ -596,13 +596,15 @@
         "residualWaste",
         "pabProgrammedInterventionLength",
         "pabProgrammedInterventions",
-        "pabProgrammedMaintenanceValue"
+        "pabProgrammedMaintenanceValue",
+        "managedReticulumLength",
+        "hydraulicWorksCensusElements"
       ],
       "sections": [
         {
           "key": "territorio",
           "label": "Territorio e rischi",
-          "description": "Consumo di suolo, esposizione idrogeologica e programmazione della manutenzione idraulica.",
+          "description": "Consumo di suolo, esposizione idrogeologica, reticolo in gestione, opere idrauliche e programmazione della manutenzione.",
           "metrics": [
             "landUse",
             "landUseChange",
@@ -610,7 +612,9 @@
             "landslideExposure",
             "pabProgrammedInterventionLength",
             "pabProgrammedInterventions",
-            "pabProgrammedMaintenanceValue"
+            "pabProgrammedMaintenanceValue",
+            "managedReticulumLength",
+            "hydraulicWorksCensusElements"
           ]
         },
         {
@@ -55529,6 +55533,231 @@
         "caveat": "Importo programmato, non spesa sostenuta o valore eseguito.",
         "coverage": "7/7",
         "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
+      }
+    },
+    "managedReticulumLength": {
+      "meta": {
+        "key": "managedReticulumLength",
+        "theme": "ambiente",
+        "label": "Reticolo idrografico in gestione",
+        "shortLabel": "Reticolo in gestione",
+        "description": "Lunghezza fisica del reticolo idrografico attribuito alla gestione del Consorzio 1 Toscana Nord all’interno del confine comunale Istat 2026.",
+        "unit": "km",
+        "year": "2025",
+        "source": "Regione Toscana — Reticolo idrografico e di gestione DCRT 24/2025",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "bonifica",
+          "reticolo",
+          "corsi d’acqua",
+          "consorzio",
+          "toscana nord",
+          "gestione"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
+          "note": "Il reticolo è filtrato sui campi ufficiali COMPLR79=Toscana Nord e RETGESLR79=SI; la lunghezza è ricalcolata dopo il clipping comunale."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 192.01491,
+          "formatted": "192,015 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 192.01491
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 57.108279,
+          "formatted": "57,108 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 57.108279
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 204.809871,
+          "formatted": "204,810 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 204.809871
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 99.736904,
+          "formatted": "99,737 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 99.736904
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 49.446972,
+          "formatted": "49,447 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.446972
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 11.609746,
+          "formatted": "11,610 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11.609746
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 130.315069,
+          "formatted": "130,315 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 130.315069
+        }
+      ],
+      "aggregate": {
+        "value": 745.041751,
+        "label": "Versilia · reticolo in gestione",
+        "note": "Lunghezza sul perimetro unito dei sette Comuni; non somma valori provinciali o UIO esterne al perimetro dell’Osservatorio."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GIS da reticolo ufficiale DCRT 24/2025 e confini Istat 2026",
+        "formula": "Filtro COMPLR79=Toscana Nord e RETGESLR79=SI; intersezione con ciascun poligono comunale; ricalcolo della lunghezza della geometria risultante in EPSG:3003.",
+        "caveat": "Non viene riutilizzato il campo LENGTH dopo il clipping. Il controllo geometrico sul reticolo filtrato non rileva sovrapposizioni lineari significative.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json"
+      }
+    },
+    "hydraulicWorksCensusElements": {
+      "meta": {
+        "key": "hydraulicWorksCensusElements",
+        "theme": "ambiente",
+        "label": "Elementi di opere idrauliche censiti",
+        "shortLabel": "Opere idrauliche · elementi censiti",
+        "description": "Numero di feature ufficiali del censimento regionale delle opere idrauliche che intersecano il territorio comunale, considerando separatamente elementi areali, lineari e puntuali.",
+        "unit": "number",
+        "year": "2021",
+        "source": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "opere idrauliche",
+          "argini",
+          "difese di sponda",
+          "briglie",
+          "soglie",
+          "casse di espansione",
+          "sfioratori"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
+          "note": "È un conteggio di elementi censiti, non una stima del numero di cantieri o interventi. Una feature che attraversa più Comuni compare in ciascuna scheda comunale."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 11,
+          "formatted": "11",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 10,
+          "formatted": "10",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 10
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 43,
+          "formatted": "43",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 43
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 64,
+          "formatted": "64",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 64
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 75,
+          "formatted": "75",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 75
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 5,
+          "formatted": "5",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 90,
+          "formatted": "90",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 90
+        }
+      ],
+      "aggregate": {
+        "value": 265,
+        "label": "Versilia · elementi distinti censiti",
+        "note": "Conteggio deduplicato delle feature sorgente che intersecano l’unione dei sette Comuni: aree, linee e punti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GIS dal censimento opere idrauliche DGRT 1155/2021 e confini Istat 2026",
+        "formula": "Intersezione delle feature OPI areali, lineari e puntuali con ciascun Comune; somma delle presenze per la scheda comunale. L’aggregato Versilia è ricalcolato sulla geometria unita dei sette Comuni e deduplicato per feature sorgente.",
+        "caveat": "Il valore misura elementi cartografici censiti. Una struttura lineare può essere articolata in più feature e una feature di confine può appartenire a più schede comunali.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json"
       }
     }
   },
