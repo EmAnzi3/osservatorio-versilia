@@ -339,7 +339,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v123-costa-mare-preview
+          name: osservatorio-versilia-v124-acqua-bonifiche-preview
           path: dist
           retention-days: 14
 
