@@ -76,3 +76,8 @@ Il candidato Ripascimenti resta rinviato: non è stato reperito un dataset uffic
 - Perdite rete idrica: serie comunali Istat 2012, 2015, 2018; nessuna interpolazione.
 - Qualità acqua potabile: dettaglio GAIA 2° semestre 2025 per 70 località; nessuna media comunale delle concentrazioni.
 - SISBON: fotografia 29 agosto 2026, 152 codici regionali univoci.
+
+
+## Morosità ERP v1.25.0
+
+L’indicatore `erpArrears` usa i prospetti comunali contenuti nei bilanci E.R.P. Lucca dal 2020 al 2024. Per ogni anno e Comune conserva importi emessi cumulati e morosità cumulata e calcola `morosità / emesso × 100`. L’aggregato Versilia è ottenuto sommando prima i due importi dei sette Comuni e calcolando poi il rapporto, non mediando le percentuali. Nel prospetto 2023 le percentuali stampate non riconciliano con gli importi e coincidono con il 2022: non vengono quindi utilizzate. Gli importi elementari pubblicati, inclusa la discontinuità 2023 di Massarosa, sono mantenuti senza stime o interpolazioni.

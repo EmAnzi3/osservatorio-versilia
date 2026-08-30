@@ -2177,6 +2177,31 @@
       "frequencies": [
         "weekly"
       ]
+    },
+    "https://at.erplucca.it/default?path=75&t=1": {
+      "url": "https://at.erplucca.it/default?path=75&t=1",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://at.erplucca.it/default?path=75&t=1",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "erpArrears"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "erp-lucca-annual-balance-sheet"
+      ],
+      "frequencies": [
+        "annual"
+      ]
     }
   },
   "metrics": {
@@ -3241,6 +3266,12 @@
       "publishedPeriod": "29 agosto 2026",
       "checkedAt": "2026-08-29T12:22:42+00:00",
       "observedLatestPeriod": "29 agosto 2026",
+      "status": "current"
+    },
+    "erpArrears": {
+      "publishedPeriod": "2024",
+      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "observedLatestPeriod": "2024",
       "status": "current"
     }
   }

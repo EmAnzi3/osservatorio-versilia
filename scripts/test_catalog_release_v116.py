@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto pubblico e metodologico della release v1.24.0."""
+"""Contratto pubblico e metodologico della release v1.25.0."""
 from __future__ import annotations
 
 import json
@@ -68,7 +68,7 @@ def main() -> None:
     assert not malformed, f"Separatore delle migliaia corrotto: {malformed[:3]}"
 
     app = (ROOT / "assets" / "app-parts" / "05.txt").read_text(encoding="utf-8")
-    assert "2026.08.29-v1.24.0" in app and "2026.08.28-v1.23.0" in app and "165 indicatori complessivi" in app
+    assert "2026.08.29-v1.25.0" in app and "2026.08.28-v1.23.0" in app and "166 indicatori complessivi" in app
     assert "2026.08.27-v1.21.0','27 agosto 2026'" in app
     assert "Aggiunti tre indicatori Cultura e biblioteche della Regione Toscana 2024" in app
     assert "2026.08.26-v1.20.0','26 agosto 2026','154 indicatori complessivi" in app
@@ -84,8 +84,8 @@ def main() -> None:
     ):
         assert token in chart_app, f"UI età×genere non canonicalizzata: {token}"
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "**v1.24.0** — 29 agosto 2026" in readme
-    assert "165 indicatori" in readme and "161 con valori incorporati" in readme
+    assert "**v1.25.0** — 30 agosto 2026" in readme
+    assert "166 indicatori" in readme and "162 con valori incorporati" in readme
     build_safe = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
     build_brand = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
     development_loader = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")

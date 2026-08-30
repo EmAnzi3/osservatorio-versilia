@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 165,
-  "expectedInlineMetricCount": 161,
+  "expectedMetricCount": 166,
+  "expectedInlineMetricCount": 162,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -448,6 +448,15 @@
       "acquisitionMethod": "Export pubblico SISBON; conteggio per codice_regionale univoco e stato dell’iter.",
       "licenseName": "CC Attribution / condizioni Open Data Regione Toscana",
       "licenseUrl": "https://dati.toscana.it/dataset/sisbon"
+    },
+    "erp-lucca-annual-balance-sheet": {
+      "publisher": "E.R.P. Lucca S.r.l.",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo l’approvazione del bilancio d’esercizio",
+      "acquisitionMethod": "Lettura dei prospetti comunali nei bilanci d’esercizio; importi elementari conservati nello snapshot con SHA-256 dei PDF e percentuali ricalcolate offline.",
+      "licenseName": "Condizioni indicate da E.R.P. Lucca S.r.l.",
+      "licenseUrl": "https://www.erplucca.it/"
     }
   },
   "sourceProfileByUrl": {
@@ -522,7 +531,8 @@
     "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular",
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
-    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly"
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -683,6 +693,9 @@
     },
     "remediationProceedings": {
       "profile": "sisbon-weekly"
+    },
+    "erpArrears": {
+      "profile": "erp-lucca-annual-balance-sheet"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -723,7 +736,8 @@
     "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta": "ispra-coast-irregular",
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
-    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly"
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {

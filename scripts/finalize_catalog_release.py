@@ -18,12 +18,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 
-VERSION = "v1.24.0"
-UPDATED = "29 agosto 2026"
+VERSION = "v1.25.0"
+UPDATED = "30 agosto 2026"
 EXPECTED_TOWNS = 7
 EXPECTED_THEMES = 11
-EXPECTED_METRICS = 165
-EXPECTED_INLINE = 161
+EXPECTED_METRICS = 166
+EXPECTED_INLINE = 162
 EXPECTED_EXTERNAL = 4
 
 
