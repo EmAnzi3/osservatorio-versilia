@@ -70,8 +70,7 @@ jobs:
                   scripts/test_catalog_release_v116.py \
                   docs/copertura-serie-storiche.md \
                   docs/coerenza-interfaccia.md \
-                  README.md \
-                  .github/workflows/pages.yml
+                  README.md
           if git diff --cached --quiet; then
             echo "Nessuna modifica da materializzare"
             exit 0
