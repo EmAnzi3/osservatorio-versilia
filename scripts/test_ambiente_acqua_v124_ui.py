@@ -27,7 +27,7 @@ def function_source(name: str, next_name: str) -> str:
 
 
 def main() -> None:
-    require(len(SITE["metrics"]) == 165, "Il catalogo deve restare a 165 indicatori")
+    require(len(SITE["metrics"]) == 166, "Il catalogo deve restare a 166 indicatori")
 
     quality = SITE["metrics"]["drinkingWaterQuality"]
     require(len(quality["parameterDefinitions"]) == 17, "GAIA: attesi 17 parametri")
