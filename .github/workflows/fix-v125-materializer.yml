@@ -1,0 +1,56 @@
+name: Fix v1.25 materializer idempotence
+
+on:
+  push:
+    branches: ["feat/v125-morosita-erp"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-v125-materializer
+  cancel-in-progress: true
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/v125-morosita-erp
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Patch materializer and verify idempotence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/materialize_erp_arrears_v125.py')
+          text=p.read_text(encoding='utf-8')
+          old='''    test = CATALOG_TEST.read_text(encoding="utf-8")\n    test = test.replace('release v1.24.0', 'release v1.25.0')\n    test = test.replace('v1.24.0', 'v1.25.0').replace('29 agosto 2026', '30 agosto 2026')\n    test = test.replace('165 indicatori complessivi', '166 indicatori complessivi')\n    test = test.replace('"165 indicatori"', '"166 indicatori"').replace('"161 con valori incorporati"', '"162 con valori incorporati"')\n    test = test.replace('165, 161, 4', '166, 162, 4')\n    CATALOG_TEST.write_text(test, encoding="utf-8")\n'''
+          new='''    test = CATALOG_TEST.read_text(encoding="utf-8")\n    test = test.replace('release v1.24.0', 'release v1.25.0')\n    test = test.replace(\n        'assert "2026.08.29-v1.24.0" in app and "2026.08.28-v1.23.0" in app and "165 indicatori complessivi" in app',\n        'assert "2026.08.30-v1.25.0" in app and "2026.08.29-v1.24.0" in app and "166 indicatori complessivi" in app',\n    )\n    test = test.replace('**v1.24.0** — 29 agosto 2026', '**v1.25.0** — 30 agosto 2026')\n    test = test.replace('"165 indicatori" in readme and "161 con valori incorporati" in readme', '"166 indicatori" in readme and "162 con valori incorporati" in readme')\n    test = test.replace('UX_ASSET_VERSION = "20260830-v124-water-ui3"', 'UX_ASSET_VERSION = "20260830-v125-erp-arrears"')\n    test = test.replace('HISTORY_ASSET_VERSION = "20260830-v124-water-ui3"', 'HISTORY_ASSET_VERSION = "20260830-v125-erp-arrears"')\n    test = test.replace('APP_BUNDLE_ASSET_VERSION = "20260830-v124-water-ui3"', 'APP_BUNDLE_ASSET_VERSION = "20260830-v125-erp-arrears"')\n    test = test.replace('PWA_JS_REVISION = "catalog-v124"', 'PWA_JS_REVISION = "catalog-v125"')\n    test = test.replace('20260830-v124" in development_loader', '20260830-v125-erp-arrears" in development_loader')\n    test = test.replace("const VERSION = '20260830-v124-water-ui3';", "const VERSION = '20260830-v125-erp-arrears';")\n    test = test.replace('ov-pwa-20260830-v124" in service_worker', 'ov-pwa-20260830-v125-erp-arrears" in service_worker')\n    CATALOG_TEST.write_text(test, encoding="utf-8")\n'''
+          if old not in text:
+              raise SystemExit('Blocco patch_release_contract atteso non trovato')
+          p.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+          python -m py_compile scripts/materialize_erp_arrears_v125.py
+          cp scripts/test_catalog_release_v116.py /tmp/catalog-before.py
+          python scripts/materialize_erp_arrears_v125.py
+          diff -u /tmp/catalog-before.py scripts/test_catalog_release_v116.py
+          git diff --exit-code -- data/site-data.json data/source-registry.json data/source-monitor-state.json data/source-snapshots/erp-lucca-arrears-2020-2024.json assets scripts/build_static_safe.py scripts/build_static_brand.py scripts/finalize_catalog_release.py scripts/test_catalog_release_v116.py docs README.md service-worker.js .github/workflows/pages.yml || true
+          python scripts/test_erp_arrears_v125.py
+          python scripts/finalize_catalog_release.py --check
+      - name: Commit patch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/materialize_erp_arrears_v125.py
+          git diff --cached --quiet && exit 0
+          git commit -m "Rende idempotente il contratto v1.25"
+          git push origin HEAD:feat/v125-morosita-erp
