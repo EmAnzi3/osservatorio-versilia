@@ -77,9 +77,10 @@ def main() -> None:
                 history_button.click()
                 history_card = page.locator(".history-panel .ux-history-card")
                 history_card.wait_for(state="visible")
-                y_labels = history_card.locator(".ux-history-axis-label").all_inner_texts()
+                # Gli assi sono elementi SVG: textContent è affidabile, innerText può essere null in Chromium.
+                y_labels = [item or "" for item in history_card.locator(".ux-history-axis-label").all_text_contents()]
                 assert any("%" in item for item in y_labels), y_labels
-                history_summary = history_card.locator(".ux-history-summary").inner_text()
+                history_summary = history_card.locator(".ux-history-summary").text_content() or ""
                 assert "%" in history_summary, history_summary
                 assert "percent2" not in body_text(page)
 
