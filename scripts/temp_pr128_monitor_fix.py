@@ -28,18 +28,12 @@ def replace_once(value: str, old: str, new: str, label: str) -> str:
 # 1) Canonicalizzazione delle chiavi della baseline e redirect informativi.
 path = "scripts/monthly_data_check.py"
 value = text(path)
-value = replace_once(
-    value,
-    '        "contentChangeReason": "",\n        "hashTruncated": False,',
-    '        "contentChangeReason": "",\n        "redirectChangePolicy": "",\n        "redirectChangeReason": "",\n        "hashTruncated": False,',
-    "campi probe redirect",
-)
-value = replace_once(
-    value,
-    '        "contentChangeReason": "",\n        "hashTruncated": False,\n        "error": "",\n    }\n\n\ndef compare_states',
-    '        "contentChangeReason": "",\n        "redirectChangePolicy": "",\n        "redirectChangeReason": "",\n        "hashTruncated": False,\n        "error": "",\n    }\n\n\ndef compare_states',
-    "campi offline redirect",
-)
+old = '        "contentChangeReason": "",\n        "hashTruncated": False,'
+new = '        "contentChangeReason": "",\n        "redirectChangePolicy": "",\n        "redirectChangeReason": "",\n        "hashTruncated": False,'
+count = value.count(old)
+if count != 2:
+    raise SystemExit(f"campi probe/offline redirect: attese 2 occorrenze, trovate {count}")
+value = value.replace(old, new)
 value = replace_once(
     value,
     '        if source_policy:\n            probe["contentChangePolicy"] = source_policy.get("contentChange", "")\n            probe["contentChangeReason"] = source_policy.get("reason", "")\n        probes[url] = probe',
