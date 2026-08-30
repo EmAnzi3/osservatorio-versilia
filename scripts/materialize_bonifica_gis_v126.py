@@ -44,12 +44,12 @@ SOURCES = {
     },
     "reticulum": {
         "url": "https://www.regione.toscana.it/documents/d/guest/infrastruttura_rev25-zip",
-        "sha256": "be2521ed6627a301e8f0beaf2650e7a1bbac75aecdb17be80611777302be47a0",
+        "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122",
         "label": "Regione Toscana - Reticolo idrografico e di gestione DCRT 24/2025",
     },
     "hydraulicWorks": {
         "url": "https://www.regione.toscana.it/documents/10180/22470380/shp%2Bfiles%2Bcensimento%2Bopere%2Bidrauliche.zip/de6d5e57-de9f-4555-7e55-52ff32654a0e?t=1636713609857",
-        "sha256": "7b9118a577ebe6f5c815656598fdebf1c0ed1ad1b18e0934e420ac29c81aed49",
+        "sha256": "532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560",
         "label": "Regione Toscana - Ricognizione opere idrauliche DGRT 1155/2021",
     },
 }
