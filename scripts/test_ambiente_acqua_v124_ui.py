@@ -44,11 +44,23 @@ def main() -> None:
     quality_compare = function_source("drinkingWaterQualityCompareMarkup", "waterQualitySelectedMarkup")
     quality_town = function_source("drinkingWaterQualityTownMarkup", "remediationPartValue")
     require("data-water-quality-parameter-compare" in quality_compare, "Confronto: selettore parametro assente")
-    require("Intervallo osservato nelle località GAIA" in APP, "Confronto: etichetta intervallo assente")
+    require("water-quality-range-chart" in quality_compare, "Confronto: grafico comunale min–max assente")
+    require("waterQualityChartSeries" in APP and "waterQualityCensoredLimit" in APP,
+            "Confronto: intervalli o valori censurati non gestiti")
+    require("water-quality-values-disclosure" not in quality_compare,
+            "Confronto: la granularità per località non deve comparire nella pagina tematica")
+    require("località GAIA disponibili" not in quality_compare,
+            "Confronto: ricompare il conteggio delle località al posto del grafico")
     require("Valore di sintesi" not in quality_compare, "Confronto: ricompare il falso valore sintetico")
     require("data-water-quality-locality" in quality_town, "Scheda: selettore località assente")
     require("data-water-quality-parameter-town" in quality_town, "Scheda: selettore parametro assente")
+    require("water-quality-town-disclosure" in quality_town,
+            "Scheda: il dettaglio per località deve stare in un accordion chiuso")
     require("Mostra tutti i ${defs.length} parametri" in APP, "Scheda: accordion dei 17 parametri assente")
+    require("water-quality-coverage" not in APP,
+            "Scheda: non deve ricomparire un confronto o una copertura laterale fuorviante")
+    require("town-metric-layout${drinkingQuality?' single-column':''}" in APP,
+            "Scheda: il riepilogo GAIA deve occupare tutta la larghezza senza benchmark")
 
     remediation = SITE["metrics"]["remediationProceedings"]
     active = sum(next(part["value"] for part in row["parts"] if part["key"] == "active") for row in remediation["rows"])
@@ -73,6 +85,7 @@ def main() -> None:
     require("Rispetto alla media dei Comuni della Versilia" in APP, "Benchmark comunale non esplicitato")
     require("details[open] summary i::before{content:\"−\"}" in CSS, "Accordion: icona meno nello stato aperto assente")
     require("padding:14px" in CSS and "padding:16px" in CSS, "Padding minimo dei nuovi componenti non verificabile")
+    require("background:#fff" in CSS, "Le superfici operative dei nuovi componenti devono essere bianche")
     require(HISTORY.count("['drinkingWaterQuality','remediationProceedings'].includes") >= 2,
             "La UX storica generica deve ignorare entrambi i renderer descrittivi")
 

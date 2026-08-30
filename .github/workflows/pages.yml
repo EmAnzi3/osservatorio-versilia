@@ -133,6 +133,9 @@ jobs:
       - name: Validate Costa e mare
         run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
 
+      - name: Validate Ambiente acqua e bonifiche
+        run: python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8123/
+
       - name: Validate Investimenti e opere
         run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
 
@@ -271,6 +274,7 @@ jobs:
             scripts/patch_investimenti_versilia.py \
             scripts/test_costa_mare_v123.py \
             scripts/test_costa_mare_v123_browser.py \
+            scripts/test_ambiente_acqua_v124_browser.py \
             scripts/test_investimenti_versilia.py \
             scripts/test_investimenti_versilia_browser.py \
             scripts/test_mobilita_tpl_v119_browser.py \

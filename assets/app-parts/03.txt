@@ -201,26 +201,73 @@
     return Number.isFinite(value) ? value : null;
   }
 
-  function waterQualityObservation(row, parameterIndex) {
-    const values=(row.localities||[]).map(locality=>({locality,raw:String(locality.values?.[parameterIndex] ?? 'n.d.').trim()}));
-    if(values.length===1) return {kind:'single',label:'Valore della località GAIA',formatted:values[0].raw,values};
-    const numeric=values.map(item=>({...item,numeric:waterQualityNumericValue(item.raw)}));
-    if(numeric.length && numeric.every(item=>item.numeric!==null)) {
-      const ordered=[...numeric].sort((a,b)=>a.numeric-b.numeric);
-      const first=ordered[0],last=ordered.at(-1);
-      return {kind:'range',label:'Intervallo osservato nelle località GAIA',formatted:first.numeric===last.numeric?first.raw:`${first.raw} – ${last.raw}`,values};
-    }
-    return {kind:'values',label:'Valori per località',formatted:'Valori originali GAIA',values};
+  function waterQualityCensoredLimit(raw) {
+    const match=String(raw ?? '').trim().match(/^<\s*([0-9]+(?:[.,][0-9]+)?)/);
+    if(!match) return null;
+    const value=Number(match[1].replace(',','.'));
+    return Number.isFinite(value) ? value : null;
   }
 
-  function waterQualityValuesMarkup(observation, unit) {
-    return `<ul class="water-quality-values-list">${observation.values.map(item=>`<li><span>${html(item.locality.name)}</span><strong>${html(item.raw)}${unit ? ` <small>${html(unit)}</small>` : ''}</strong></li>`).join('')}</ul>`;
+  function waterQualityChartSeries(row, parameterIndex) {
+    const samples=(row.localities||[]).map(locality=>{
+      const raw=String(locality.values?.[parameterIndex] ?? 'n.d.').trim();
+      return {raw,numeric:waterQualityNumericValue(raw),censoredLimit:waterQualityCensoredLimit(raw)};
+    });
+    const numeric=samples.filter(item=>item.numeric!==null).sort((a,b)=>a.numeric-b.numeric);
+    const censored=samples.filter(item=>item.censoredLimit!==null);
+    const censoredLabels=[...new Set(censored.map(item=>item.raw))];
+    const minimum=numeric[0]||null,maximum=numeric.at(-1)||null;
+    const censorLimit=censored.length?Math.max(...censored.map(item=>item.censoredLimit)):null;
+    const rangeLabel=minimum
+      ? `${minimum.raw}${minimum.numeric===maximum.numeric?'':` – ${maximum.raw}`}${censored.length?' · presenti valori < soglia':''}`
+      : (censoredLabels.length?censoredLabels.join(' · '):'n.d.');
+    return {row,minimum,maximum,censorLimit,hasCensored:Boolean(censored.length),rangeLabel};
+  }
+
+  function waterQualityChartDomain(series) {
+    const numeric=series.flatMap(item=>[item.minimum?.numeric,item.maximum?.numeric,item.censorLimit]).filter(value=>Number.isFinite(value));
+    if(!numeric.length) return {minimum:0,maximum:1};
+    let minimum=Math.min(...numeric),maximum=Math.max(...numeric);
+    if(!series.some(item=>item.minimum)) minimum=Math.min(0,minimum);
+    if(maximum<=minimum) {
+      const padding=Math.max(Math.abs(maximum)*.05,.1);
+      minimum=Math.max(0,minimum-padding);
+      maximum+=padding;
+    }
+    return {minimum,maximum};
+  }
+
+  function waterQualityChartPosition(value,domain) {
+    if(!Number.isFinite(value)) return 0;
+    return Math.max(0,Math.min(100,(value-domain.minimum)/(domain.maximum-domain.minimum)*100));
+  }
+
+  function waterQualityChartNumber(value) {
+    return new Intl.NumberFormat('it-IT',{maximumFractionDigits:3}).format(value);
   }
 
   function drinkingWaterQualityCompareMarkup(data, metricKey, parameterIndex=0) {
     const metric=data.metrics[metricKey],defs=metric.parameterDefinitions||[];
     const safeIndex=Math.max(0,Math.min(defs.length-1,Number(parameterIndex)||0)),def=defs[safeIndex]||{};
-    return `<div class="water-quality-compare-shell"><div class="water-quality-compare-controls"><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-compare>${defs.map((item,index)=>`<option value="${index}" ${index===safeIndex?'selected':''}>${html(item.name)}</option>`).join('')}</select></label><dl class="water-quality-parameter-meta"><div><dt>Unità</dt><dd>${html(def.unit||'—')}</dd></div><div><dt>Limite / riferimento GAIA</dt><dd>${html(def.reference||'—')}</dd></div><div><dt>Periodo</dt><dd>${html(metric.meta.year)}</dd></div></dl></div><div class="water-quality-compare">${metric.rows.map(row=>{const q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey}),observation=waterQualityObservation(row,safeIndex),expanded=observation.kind==='values',detailLabel=observation.values.length===1?'Mostra il valore della località':`Mostra i ${observation.values.length} valori per località`;return `<article class="water-quality-compare-card"><header><div><a href="${route(`comuni/${row.slug}/?${q}`)}">${html(row.town)}</a><small>${html(number0.format(row.localities?.length||0))} località GAIA disponibili</small></div><a href="${route(`comuni/${row.slug}/?${q}`)}" class="water-quality-town-link">Apri la scheda →</a></header><div class="water-quality-observation"><span>${html(observation.label)}</span><strong>${html(observation.formatted)}</strong><small>${html(def.unit||'')}</small></div><details class="water-quality-values-disclosure" ${expanded?'open':''}><summary><span>${expanded?'Valori originali per località':detailLabel}</span><b aria-hidden="true"></b></summary>${waterQualityValuesMarkup(observation,def.unit)}</details></article>`;}).join('')}</div><p class="composite-compare-note">I valori sono quelli pubblicati da GAIA per le singole località. L’intervallo minimo–massimo compare solo quando tutti i valori sono numerici; i valori con “&lt;” restano invariati e vengono mostrati direttamente.</p></div>`;
+    const series=[...metric.rows].sort((a,b)=>a.town.localeCompare(b.town,'it')).map(row=>waterQualityChartSeries(row,safeIndex));
+    const domain=waterQualityChartDomain(series),midpoint=(domain.minimum+domain.maximum)/2;
+    const rows=series.map(item=>{
+      const q=new URLSearchParams({tema:metric.meta.theme,indicatore:metricKey});
+      const start=waterQualityChartPosition(item.minimum?.numeric,domain),end=waterQualityChartPosition(item.maximum?.numeric,domain);
+      const censor=waterQualityChartPosition(item.censorLimit,domain);
+      const numericMark=item.minimum
+        ? (item.minimum.numeric===item.maximum.numeric
+          ? `<i class="water-quality-range-point" style="left:${start}%"></i>`
+          : `<i class="water-quality-range-segment" style="left:${start}%;width:${Math.max(1,end-start)}%"><b></b><b></b></i>`)
+        : '';
+      const censoredMark=item.hasCensored
+        ? (item.minimum
+          ? `<i class="water-quality-censored-marker" style="left:${censor}%"></i>`
+          : `<i class="water-quality-censored-band" style="width:${Math.max(2,censor)}%"></i>`)
+        : '';
+      return `<a class="water-quality-range-row" role="listitem" href="${route(`comuni/${item.row.slug}/?${q}`)}" aria-label="${html(item.row.town)}: ${html(item.rangeLabel)} ${html(def.unit||'')}"><strong>${html(item.row.town)}</strong><span class="water-quality-range-track" aria-hidden="true">${numericMark}${censoredMark}</span><span class="water-quality-range-values">${html(item.rangeLabel)}<small>${html(def.unit||'')}</small></span><em>Apri la scheda →</em></a>`;
+    }).join('');
+    return `<div class="water-quality-compare-shell"><div class="water-quality-compare-controls"><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-compare>${defs.map((item,index)=>`<option value="${index}" ${index===safeIndex?'selected':''}>${html(item.name)}</option>`).join('')}</select></label><dl class="water-quality-parameter-meta"><div><dt>Unità</dt><dd>${html(def.unit||'—')}</dd></div><div><dt>Limite / riferimento GAIA</dt><dd>${html(def.reference||'—')}</dd></div><div><dt>Periodo</dt><dd>${html(metric.meta.year)}</dd></div></dl></div><div class="water-quality-range-chart" role="list" aria-label="Confronto comunale per ${html(def.name)}"><div class="water-quality-range-axis" aria-hidden="true"><span>Comune</span><span class="water-quality-range-scale"><i style="left:0">${html(waterQualityChartNumber(domain.minimum))}</i><i style="left:50%">${html(waterQualityChartNumber(midpoint))}</i><i style="left:100%">${html(waterQualityChartNumber(domain.maximum))}</i></span><span>Minimo – massimo</span><span></span></div>${rows}</div><p class="composite-compare-note">Ogni riga rappresenta un Comune. La linea collega il minimo e il massimo osservati nelle sue località; il punto indica un valore unico. Il tratteggio segnala valori pubblicati da GAIA con “&lt;”, che non vengono trasformati in numeri. Il dettaglio delle singole località è disponibile soltanto nelle schede comunali.</p></div>`;
   }
 
   function waterQualitySelectedMarkup(metric,row,localityIndex=0,parameterIndex=0) {
@@ -236,7 +283,7 @@
   function drinkingWaterQualityTownMarkup(metric,row) {
     const localities=row.localities||[],defs=metric.parameterDefinitions||[];
     if(!localities.length||!defs.length) return '<p>Dato non disponibile.</p>';
-    return `<div class="water-quality-town"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div>`;
+    return `<div class="water-quality-town"><details class="water-quality-town-disclosure"><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
   }
 
   function remediationPartValue(source,key) {
@@ -1076,7 +1123,7 @@
     const positionMarkup = selectable
       ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
       : (drinkingQuality
-        ? `<aside class="versilia-position water-quality-coverage"><span class="overline">Copertura GAIA disponibile</span><strong>${html(number0.format(row.localities?.length||0))}<small>località</small></strong><p>I valori restano distinti per località: nessuna media comunale e nessun indice sintetico.</p><div><span>Parametri per località</span><b>${html(number0.format(metric.parameterDefinitions?.length||0))}</b></div></aside>`
+        ? ''
         : remediation
         ? `<aside class="versilia-position remediation-overview"><span class="overline">Fotografia SISBON</span><strong>${html(number0.format(remediationPartValue(row,'active')+remediationPartValue(row,'closed')))}<small>procedimenti</small></strong><p>Il conteggio non equivale automaticamente a siti attualmente contaminati.</p><div><span>Attivi / chiusi</span><b>${html(number0.format(remediationPartValue(row,'active')))} / ${html(number0.format(remediationPartValue(row,'closed')))}</b></div></aside>`
         : row.notApplicable
@@ -1085,7 +1132,7 @@
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
-      <div class="town-metric-layout"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
+      <div class="town-metric-layout${drinkingQuality?' single-column':''}"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
         ${selector}
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
