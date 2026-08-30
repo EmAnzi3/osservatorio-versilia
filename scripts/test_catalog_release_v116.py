@@ -40,7 +40,7 @@ def main():
     assert site['metrics']['managedReticulumLength']['meta']['unit']=='km'
     text=' '.join([site['metrics']['pabProgrammedInterventionLength']['meta']['description'],site['metrics']['pabProgrammedInterventionLength']['method']['caveat']]); assert 'km-intervento' in text and 'reticolo fisico' in text
     ret_text=' '.join(site['metrics']['managedReticulumLength']['method'][k] for k in ('formula','caveat')); assert 'COMPLR79' in ret_text and 'RETGESLR79' in ret_text and 'LENGTH' in ret_text
-    works_text=' '.join([site['metrics']['hydraulicWorksCensusElements']['meta']['description'],site['metrics']['hydraulicWorksCensusElements']['method']['caveat']]); assert 'feature' in works_text and 'cantieri' in works_text
+    works_text=' '.join([site['metrics']['hydraulicWorksCensusElements']['meta']['description'],site['metrics']['hydraulicWorksCensusElements']['meta']['sourceMeta']['note'],site['metrics']['hydraulicWorksCensusElements']['method']['caveat']]); assert 'feature' in works_text and 'cantieri' in works_text
 
     assert snap['portalExports']['rowsTotal']==1265 and snap['portalExports']['metresTotal']==1004094 and snap['portalExports']['amountCsvTotal']==4165255
     assert snap['published']['pabProgrammedInterventions']['total']==1259 and snap['published']['pabProgrammedMaintenanceValue']['total']==5196433.08
