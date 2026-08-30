@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke test browser desktop/mobile e light/dark per Morosità ERP v1.25.0."""
+"""Browser gate desktop/mobile e light/dark per Morosità ERP v1.25.0."""
 from __future__ import annotations
 
 import argparse
@@ -20,6 +20,10 @@ def check_page(page, url: str, required: list[str]) -> None:
     for token in required:
         assert token in text, (url, token)
     assert page.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), f"Overflow orizzontale: {url}"
+
+
+def css_number(locator, property_name: str) -> float:
+    return float(locator.evaluate(f"el => parseFloat(getComputedStyle(el).{property_name})"))
 
 
 def main() -> None:
@@ -46,12 +50,30 @@ def main() -> None:
             for scheme in schemes:
                 context = browser.new_context(viewport=viewport, color_scheme=scheme)
                 page = context.new_page()
+
                 check_page(page, compare, ["Morosità ERP", "8,56%", "Viareggio", "10,83%", "Massarosa", "3,48%"])
+                page.locator(".comparison-legend").wait_for(state="visible")
+                legend = page.locator(".comparison-legend").inner_text()
+                assert "Versilia · 7 Comuni" in legend, legend
+                assert "Media semplice" not in legend, legend
+                assert "percent2" not in body_text(page), "L'unità tecnica percent2 non deve essere visibile"
+
+                camaiore = page.locator(".comparison-bars > .bar-row").filter(has_text="Camaiore").first
+                reference = camaiore.locator(".comparison-reference")
+                dot = camaiore.locator(".comparison-dot")
+                assert reference.count() == 1 and dot.count() == 1
+                reference_left = float(reference.evaluate("el => parseFloat(el.style.left)"))
+                dot_left = float(dot.evaluate("el => parseFloat(el.style.left)"))
+                assert reference_left > dot_left, (reference_left, dot_left, "8,56% deve stare a destra di Camaiore 7,37%")
                 page.screenshot(path=output / f"compare-{label}-{scheme}.png", full_page=True)
 
-                # Il dettaglio contabile è intenzionalmente chiuso: prima si verifica
-                # il summary, poi si apre l'accordion e si controlla il contenuto.
                 check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024"])
+                primary_value = page.locator(".town-metric-primary [data-composite-primary-value]").inner_text().strip()
+                assert primary_value == "3,48%", primary_value
+                y_labels = page.locator(".trend-chart .chart-y-label").all_inner_texts()
+                assert any("%" in item for item in y_labels), y_labels
+                assert "percent2" not in body_text(page)
+
                 detail = page.locator("details.erp-arrears-detail")
                 assert detail.count() == 1, "Accordion dettaglio contabile ERP assente o duplicato"
                 detail.evaluate("el => el.open = true")
@@ -63,6 +85,14 @@ def main() -> None:
                     "72.398,09",
                 ):
                     assert token in expanded, (town, token)
+
+                summary = detail.locator(":scope > summary")
+                first_card = detail.locator(".composite-town-detail > div").first
+                assert css_number(summary, "paddingLeft") >= 16
+                assert css_number(first_card, "paddingLeft") >= 14
+                detail_background = detail.evaluate("el => getComputedStyle(el).backgroundColor")
+                card_background = first_card.evaluate("el => getComputedStyle(el).backgroundColor")
+                assert detail_background != card_background, (detail_background, card_background)
                 assert page.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), f"Overflow orizzontale dopo apertura dettaglio: {town}"
                 page.screenshot(path=output / f"massarosa-{label}-{scheme}.png", full_page=True)
 
@@ -70,7 +100,7 @@ def main() -> None:
                 context.close()
         browser.close()
 
-    print("Morosità ERP v1.25.0 browser: desktop/mobile 390×844 e light/dark verificati.")
+    print("Morosità ERP v1.25.0 browser: benchmark Versilia 8,56%, unità %, contrasto e padding verificati desktop/mobile light/dark.")
 
 
 if __name__ == "__main__":

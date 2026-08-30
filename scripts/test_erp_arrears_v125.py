@@ -23,11 +23,11 @@ EXPECTED_2024 = {
     "046033": 10.83,
 }
 EXPECTED_HASHES = {
-    2020: "7f018ba02adbff4ac10923a35d575547449508641123372f64172f5c9f8ce60d",
-    2021: "651d55b4a126f48cfb8fd1169b219feaf8d9f989c706796442300565a7eea624",
-    2022: "7baea08a7a7f987125c6ad2fad25f16d9bfc23b98d9534cc893b3e6a701054b8",
-    2023: "d30e26daf98116440780c6120cecb2b57ae5e1dea98303bcc73cf295e835ce1e",
-    2024: "80c1b1eee9d8b81a725580e928b0f00f008837979bb8c3387ab11191aa9658ba",
+    2020: "0362d001246832bc66040c533a14b503ed9e6e3416d11a870638b56ccc3199bd",
+    2021: "52d476f097066a3807099202ca508e961c6c61c5efe452a9861df538c980f757",
+    2022: "831ba0712eb026ec955e45763831fe12ab6a941bc6f7940c585b888371ff872a",
+    2023: "de36675ef97245b818bee99caec598f334166884e61c300c2be28c5d13902983",
+    2024: "ca00f1a212d6fa29bdfa688ebc949ee5d9fb3c708342d36f07832add8b495422",
 }
 
 
@@ -53,9 +53,12 @@ def main() -> None:
 
     metric = site["metrics"]["erpArrears"]
     assert metric["meta"]["theme"] == "abitare"
-    assert metric["meta"]["unit"] == "percent2"
+    assert metric["meta"]["unit"] == "%"
     assert metric["meta"]["year"] == "2024"
     assert metric["meta"]["polarity"] == "neutral"
+    assert metric["meta"]["comparisonReference"] == "aggregate"
+    assert metric["meta"]["comparisonLabel"] == "valore Versilia"
+    assert "non la media semplice" in metric["meta"]["comparisonNote"]
     assert metric["sourceUrl"] == "https://at.erplucca.it/default?path=75&t=1"
     assert metric["method"]["coverage"] == "7/7 · 2020–2024"
     assert "percentuali stampate incoerenti" in metric["method"]["caveat"]
@@ -80,6 +83,9 @@ def main() -> None:
         assert close(row["value"], arrears / issued * 100.0)
 
     assert close(metric["aggregate"]["value"], 8.56)
+    simple_mean = sum(row["value"] for row in metric["rows"]) / len(metric["rows"])
+    assert close(simple_mean, 6.31)
+    assert not close(simple_mean, metric["aggregate"]["value"]), "Il benchmark ERP non deve usare la media semplice comunale"
     assert metric["aggregate"]["accounting"]["issued"] == 50285906.83
     assert metric["aggregate"]["accounting"]["arrears"] == 4304930.64
     assert close(metric["aggregate"]["accounting"]["arrears"] / metric["aggregate"]["accounting"]["issued"] * 100.0, 8.56)
@@ -100,6 +106,7 @@ def main() -> None:
 
     hashes = {item["year"]: item["sha256"] for item in snapshot["sourceDocuments"]}
     assert hashes == EXPECTED_HASHES
+    assert any(item["type"] == "published_header_date_mismatch" and item["year"] == 2022 for item in snapshot["anomalies"])
     assert any(item["type"] == "published_percentage_inconsistency" and item["year"] == 2023 for item in snapshot["anomalies"])
 
     assert registry["metricOverrides"]["erpArrears"]["profile"] == "erp-lucca-annual-balance-sheet"
@@ -109,11 +116,12 @@ def main() -> None:
 
     app00 = APP00.read_text(encoding="utf-8")
     app03 = APP03.read_text(encoding="utf-8")
-    assert "case 'percent2'" in app00
+    assert "case '%'" in app00
     assert "erpArrears: ['morosità erp'" in app00
     assert "function erpArrearsDetailMarkup" in app03
     assert "Importi emessi cumulati" in app03 and "Morosità cumulata" in app03
     assert "${erpArrearsDetailMarkup(metric,row)}" in app03
+    assert "erp-arrears-view" in app03
 
     finalizer = FINALIZER.read_text(encoding="utf-8")
     assert 'VERSION = "v1.25.0"' in finalizer

@@ -59,11 +59,11 @@ DATA = {
     "046033": [(20275358.16,2333819.91),(21713625.62,2401763.10),(23257105.59,2558637.44),(23303630.28,2712346.75),(26379101.73,2855639.38)],
 }
 DOCUMENTS = [
-    {"year":2020,"file":"estratto assemblea Bilancio_2020(1).pdf","sha256":"7f018ba02adbff4ac10923a35d575547449508641123372f64172f5c9f8ce60d"},
-    {"year":2021,"file":"estratto assemblea Soci Bilancio_2021.pdf","sha256":"651d55b4a126f48cfb8fd1169b219feaf8d9f989c706796442300565a7eea624"},
-    {"year":2022,"file":"estratto assemblea Soci Bilancio_2022.pdf","sha256":"7baea08a7a7f987125c6ad2fad25f16d9bfc23b98d9534cc893b3e6a701054b8"},
-    {"year":2023,"file":"estratto assemblea Soci Bilancio_2023.pdf","sha256":"d30e26daf98116440780c6120cecb2b57ae5e1dea98303bcc73cf295e835ce1e"},
-    {"year":2024,"file":"estratto assemblea Soci Bilancio_2024.pdf","sha256":"80c1b1eee9d8b81a725580e928b0f00f008837979bb8c3387ab11191aa9658ba"},
+    {"year":2020,"file":"estratto assemblea Bilancio_2020(1).pdf","sha256":"0362d001246832bc66040c533a14b503ed9e6e3416d11a870638b56ccc3199bd"},
+    {"year":2021,"file":"estratto assemblea Soci Bilancio_2021.pdf","sha256":"52d476f097066a3807099202ca508e961c6c61c5efe452a9861df538c980f757"},
+    {"year":2022,"file":"estratto assemblea Soci Bilancio_2022.pdf","sha256":"831ba0712eb026ec955e45763831fe12ab6a941bc6f7940c585b888371ff872a"},
+    {"year":2023,"file":"estratto assemblea Soci Bilancio_2023.pdf","sha256":"de36675ef97245b818bee99caec598f334166884e61c300c2be28c5d13902983"},
+    {"year":2024,"file":"estratto assemblea Soci Bilancio_2024.pdf","sha256":"ca00f1a212d6fa29bdfa688ebc949ee5d9fb3c708342d36f07832add8b495422"},
 ]
 
 
@@ -127,6 +127,11 @@ def build_snapshot() -> dict:
         "aggregate": {"method":"sum_then_ratio", "label":"Versilia · 7 Comuni", "values":aggregate},
         "anomalies": [
             {
+                "year": 2022,
+                "type": "published_header_date_mismatch",
+                "note": "Intestazione tabella riportata come 31/12/2021 nel bilancio 2022; valori riferiti all’esercizio 2022.",
+            },
+            {
                 "year": 2023,
                 "type": "published_percentage_inconsistency",
                 "note": "Nel prospetto 2023 la colonna percentuale stampata ripete i valori del 2022 e non riconcilia con gli importi elementari pubblicati. L'Osservatorio conserva gli importi pubblicati e ricalcola tutte le percentuali con la formula canonica.",
@@ -172,7 +177,11 @@ def build_metric(snapshot: dict) -> dict:
             "label": "Morosità ERP",
             "shortLabel": "Morosità ERP",
             "description": "Quota degli importi emessi cumulati per gli alloggi ERP che risulta ancora non incassata dagli assegnatari per fitti e spese accessorie.",
-            "unit": "percent2",
+            "unit": "%",
+            "comparisonReference": "aggregate",
+            "comparisonLabel": "valore Versilia",
+            "comparisonOverline": "Rispetto alla Versilia",
+            "comparisonNote": "Il riferimento è il rapporto calcolato sulla somma della morosità e degli importi emessi dei sette Comuni, non la media semplice delle percentuali comunali.",
             "year": "2024",
             "source": "E.R.P. Lucca S.r.l. — Bilanci d’esercizio",
             "polarity": "neutral",
@@ -310,14 +319,20 @@ def patch_ui() -> None:
             raise RuntimeError("Marker sinonimi Abitare non trovato")
         text = text.replace(synonym_marker, synonym_marker + "\n" + synonym_line, 1)
     percent_marker = "      case 'percent': return `${number1.format(v)}%`;"
-    percent2_line = "      case 'percent2': return `${number2.format(v)}%`;"
-    if percent2_line not in text:
+    percent_precise_line = "      case '%': return `${number2.format(v)}%`;"
+    if percent_precise_line not in text:
         if percent_marker not in text:
             raise RuntimeError("Marker format percent non trovato")
-        text = text.replace(percent_marker, percent_marker + "\n" + percent2_line, 1)
+        text = text.replace(percent_marker, percent_marker + "\n" + percent_precise_line, 1)
     APP00.write_text(text, encoding="utf-8")
 
     app = APP03.read_text(encoding="utf-8")
+    view_marker = "    container.dataset.theme = themeKey;"
+    view_line = "    container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');"
+    if view_line not in app:
+        if view_marker not in app:
+            raise RuntimeError("Marker vista comunale ERP non trovato")
+        app = app.replace(view_marker, view_marker + "\n" + view_line, 1)
     helper_marker = "  function compositePartLegend(metric) {"
     helper = r'''  function erpArrearsDetailMarkup(metric, row) {
     if (metric?.meta?.key !== 'erpArrears' || !row?.accounting) return '';
