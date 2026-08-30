@@ -48,12 +48,24 @@ def main() -> None:
                 page = context.new_page()
                 check_page(page, compare, ["Morosità ERP", "8,56%", "Viareggio", "10,83%", "Massarosa", "3,48%"])
                 page.screenshot(path=output / f"compare-{label}-{scheme}.png", full_page=True)
-                check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024", "Importi emessi cumulati", "Morosità cumulata"])
-                page.locator("details.erp-arrears-detail").evaluate("el => el.open = true")
+
+                # Il dettaglio contabile è intenzionalmente chiuso: prima si verifica
+                # il summary, poi si apre l'accordion e si controlla il contenuto.
+                check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024"])
+                detail = page.locator("details.erp-arrears-detail")
+                assert detail.count() == 1, "Accordion dettaglio contabile ERP assente o duplicato"
+                detail.evaluate("el => el.open = true")
                 expanded = body_text(page)
-                assert "2.078.965,36" in expanded
-                assert "72.398,09" in expanded
+                for token in (
+                    "Importi emessi cumulati",
+                    "Morosità cumulata",
+                    "2.078.965,36",
+                    "72.398,09",
+                ):
+                    assert token in expanded, (town, token)
+                assert page.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), f"Overflow orizzontale dopo apertura dettaglio: {town}"
                 page.screenshot(path=output / f"massarosa-{label}-{scheme}.png", full_page=True)
+
                 check_page(page, indicator, ["Morosità ERP", "8,56%", "2020", "2024", "Fonte originale"])
                 context.close()
         browser.close()
