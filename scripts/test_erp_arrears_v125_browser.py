@@ -70,6 +70,11 @@ def main() -> None:
                 check_page(page, town, ["Morosità ERP", "3,48%", "Dettaglio contabile 2024"])
                 primary_value = page.locator(".town-metric-primary [data-composite-primary-value]").inner_text().strip()
                 assert primary_value == "3,48%", primary_value
+
+                history_button = page.locator('.history-panel [data-view-mode="history"]')
+                assert history_button.count() == 1, "Comando Storico assente nella scheda comunale ERP"
+                assert not history_button.is_disabled(), "Vista Storico ERP disabilitata nonostante la serie 2020–2024"
+                history_button.click()
                 history_card = page.locator(".history-panel .ux-history-card")
                 history_card.wait_for(state="visible")
                 y_labels = history_card.locator(".ux-history-axis-label").all_inner_texts()
