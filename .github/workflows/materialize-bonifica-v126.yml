@@ -1,0 +1,46 @@
+name: Materialize Bonifica v1.26.0
+
+on:
+  push:
+    branches: ["feat/bonifica-rischio-v126"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/bonifica-rischio-v126
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize canonical Lotto 6 data
+        run: |
+          python scripts/materialize_bonifica_rischio_v126.py
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python -m json.tool data/source-snapshots/bonifica-rischio-v126.json > /dev/null
+
+      - name: Commit generated canonical files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json data/source-registry.json data/source-monitor-state.json assets/app-parts/00.txt assets/app-parts/05.txt
+          git commit -m "Materialize Bonifica e rischio idraulico v1.26.0"
+          git push origin HEAD:feat/bonifica-rischio-v126
