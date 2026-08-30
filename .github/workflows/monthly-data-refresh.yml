@@ -43,6 +43,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PYTHONUNBUFFERED: "1"
+      MONITOR_RUN_TRIGGER: ${{ github.event_name }}
 
     steps:
       - name: Checkout
@@ -127,7 +128,7 @@ jobs:
           - le anomalie bloccano il controllo;
           - il controllo distingue raggiungibilità della fonte e attualità del dato;
           - per i due indicatori PNRR usa anche il feed ufficiale machine-readable di Regione Toscana come verifica del perimetro ReGiS;
-          - ogni esecuzione live registra metadata aggiornati in una PR in bozza;
+          - una PR in bozza viene aperta solo quando il controllo trova modifiche sostanziali o richiede una baseline;
           - ogni commento mensile menziona il responsabile del progetto.
           EOF
             ISSUE_URL="$(gh issue create --title "$TITLE" --body-file /tmp/data-check-register.md)"
@@ -139,7 +140,8 @@ jobs:
         if: >-
           github.event_name != 'pull_request' &&
           steps.prepare.outputs.mode == 'live' &&
-          steps.monitor.outputs.status != 'attention_required'
+          (steps.monitor.outputs.status == 'changes_detected' ||
+           steps.monitor.outputs.status == 'baseline_required')
         env:
           REPORT_MD: ${{ steps.monitor.outputs.report_md }}
           NEXT_STATE: ${{ steps.monitor.outputs.next_state }}
@@ -165,7 +167,7 @@ jobs:
 
           Il controllo mensile ha restituito: \`$CHECK_STATUS\`.
 
-          Questa PR registra la data effettiva del controllo, lo stato operativo delle fonti e degli indicatori e gli eventuali segnali da verificare. Anche quando non emergono variazioni sostanziali, la PR aggiorna i soli metadata di controllo: i valori di \`data/site-data.json\` restano invariati.
+          Questa PR viene aperta solo quando il controllo rileva modifiche sostanziali o richiede una baseline. I run \`no_changes\` restano nel registro e negli artifact del workflow, senza generare una nuova PR.
 
           Un cambiamento tecnico della fonte non equivale automaticamente a un nuovo rilascio. Per PNRR, una fotografia machine-readable ufficiale Regione Toscana/ReGiS diversa da quella pubblicata genera soltanto \`release_detected\`: l'aggiornamento dei valori richiede acquisizione, validazione e revisione separata prima del merge.
 

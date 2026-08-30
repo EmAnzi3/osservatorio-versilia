@@ -204,6 +204,26 @@ def main() -> None:
     )
     assert not redirect_changes["redirect"]
 
+    arpat_legacy = "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO"
+    arpat_canonical = checker.canonical_url(arpat_legacy)
+    arpat_changes = checker.compare_states(
+        {"sources": {arpat_legacy: {"ok": True, "finalUrl": arpat_legacy}}},
+        {arpat_canonical: {"ok": True, "finalUrl": arpat_canonical}},
+    )
+    assert not arpat_changes["added"]
+    assert not arpat_changes["removed"]
+    assert not arpat_changes["redirect"]
+
+    istat_url = "https://esploradati.istat.it/"
+    info_redirect = checker.compare_states(
+        {"sources": {istat_url: {"ok": True, "finalUrl": "https://old.example/"}}},
+        {istat_url: {"ok": True, "finalUrl": "https://new.example/", "redirectChangePolicy": "informational", "redirectChangeReason": "landing tecnica"}},
+    )
+    assert not info_redirect["redirect"]
+    assert info_redirect["informationalRedirect"] == [
+        {"url": istat_url, "before": "https://old.example/", "after": "https://new.example/", "reason": "landing tecnica"}
+    ]
+
     # Due ZIP con gli stessi membri ma timestamp differenti devono produrre lo
     # stesso hash semantico: ARS rigenera il contenitore senza cambiare il CSV.
     def zip_payload(year: int) -> bytes:
