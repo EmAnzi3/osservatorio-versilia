@@ -1,102 +1,10 @@
-name: Refine Bonifica v1.26
+name: Refine Bonifica v1.26 (archived)
 
 on:
-  push:
-    branches: ["feat/bonifica-rischio-v126"]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  refine:
-    if: github.actor != 'github-actions[bot]'
+  archived:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-        with:
-          ref: feat/bonifica-rischio-v126
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Refine materializer, contract and status metadata
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          materializer = Path('scripts/materialize_bonifica_rischio_v126.py')
-          text = materializer.read_text(encoding='utf-8')
-          replacements = [
-              ("'Interventi PAB · km-intervento'", "'Interventi PAB · km'"),
-              ("'kmIntervention','2026','Consorzio 1 Toscana Nord — Portale manutenzioni PAB 2026'", "'km','2026','Consorzio 1 Toscana Nord — Portale manutenzioni PAB 2026'"),
-              ("rows(site,L,lambda v:it(v,3)+' km-intervento')", "rows(site,L,lambda v:it(v,2)+' km')"),
-              ("rows(site,R,lambda v:it(v,3)+' km')", "rows(site,R,lambda v:it(v,2)+' km')"),
-              ("case 'km': return `${number3.format(v)} km`;", "case 'km': return `${number2.format(v)} km`;"),
-              ("case 'kmIntervention': return `${number3.format(v)} km-intervento`;", "case 'kmIntervention': return `${number2.format(v)} km-intervento`;"),
-          ]
-          for old, new in replacements:
-              if old not in text:
-                  raise SystemExit(f'Materializer token not found: {old}')
-              text = text.replace(old, new, 1)
-          materializer.write_text(text, encoding='utf-8')
-
-          test = Path('scripts/test_catalog_release_v116.py')
-          text = test.read_text(encoding='utf-8')
-          old = "assert site['metrics']['pabProgrammedInterventionLength']['meta']['unit']=='kmIntervention'"
-          new = "assert site['metrics']['pabProgrammedInterventionLength']['meta']['unit']=='km'"
-          if old not in text:
-              raise SystemExit('PAB unit assertion not found')
-          text = text.replace(old, new, 1)
-          anchor = "assert site['metrics']['managedReticulumLength']['meta']['unit']=='km'"
-          addition = anchor + "\n    assert next(r for r in site['metrics']['pabProgrammedInterventionLength']['rows'] if r['town']=='Massarosa')['formatted']=='317,41 km'\n    assert next(r for r in site['metrics']['managedReticulumLength']['rows'] if r['town']=='Massarosa')['formatted']=='192,01 km'"
-          text = text.replace(anchor, addition, 1)
-          test.write_text(text, encoding='utf-8')
-
-          snap_path = Path('data/source-snapshots/bonifica-rischio-v126.json')
-          snap = json.loads(snap_path.read_text(encoding='utf-8'))
-          status = snap['sources']['statusLayer']
-          status['massExtractionAvailable'] = True
-          status['snapshot'] = 'data/source-snapshots/bonifica-rischio-v126-status.json'
-          status['featureTypes'] = ['cb_pmo_lineare', 'interventi_puntuali']
-          status['note'] = ('Estrazione WFS massiva acquisita il 31/08/2026. Le 1.265 righe degli export comunali sono state ricondotte a 1.265 feature distinte di cb_pmo_lineare; '
-                            'interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato. I conteggi di stato sono derivabili; gli importi usano il campo operativo importo_lordo e non coincidono con il valore approvato dell’Allegato A-1.')
-          snap['deferred']['inProgressCompletedCountsAndValues'] = ('Estrazione massiva WFS acquisita e congelata in bonifica-rischio-v126-status.json. I conteggi sono tecnicamente disponibili; '
-                                                                    'la promozione degli importi richiede esplicitare che si tratta di importo_lordo operativo, non dell’importo PAB A-1 né di spesa pagata/liquidata.')
-          snap_path.write_text(json.dumps(snap, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          PY
-
-      - name: Materialize canonical files
-        run: |
-          python scripts/materialize_bonifica_rischio_v126.py
-          python - <<'PY'
-          from pathlib import Path
-          app0 = Path('assets/app-parts/00.txt')
-          text = app0.read_text(encoding='utf-8')
-          text = text.replace("case 'km': return `${number3.format(v)} km`;", "case 'km': return `${number2.format(v)} km`;")
-          text = text.replace("case 'kmIntervention': return `${number3.format(v)} km-intervento`;", "case 'kmIntervention': return `${number2.format(v)} km-intervento`;")
-          app0.write_text(text, encoding='utf-8')
-          PY
-          python scripts/finalize_catalog_release.py --check
-          python scripts/test_catalog_release_v116.py
-          python -m json.tool data/source-snapshots/bonifica-rischio-v126.json > /dev/null
-          python -m json.tool data/source-snapshots/bonifica-rischio-v126-status.json > /dev/null
-
-      - name: Commit refinements
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo "No generated changes"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add scripts/materialize_bonifica_rischio_v126.py scripts/test_catalog_release_v116.py data/source-snapshots/bonifica-rischio-v126.json data/site-data.json data/source-registry.json data/source-monitor-state.json assets/app-parts/00.txt assets/app-parts/05.txt
-          git commit -m "Refine Bonifica units and WFS status metadata"
-          git push origin HEAD:feat/bonifica-rischio-v126
+      - run: echo "One-shot refinement already applied."
