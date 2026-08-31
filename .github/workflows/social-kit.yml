@@ -29,6 +29,7 @@ on:
       - "scripts/plan_social_week.py"
       - "scripts/generate_social_kit.py"
       - "scripts/generate_weekly_social_kit.py"
+      - "scripts/prepare_social_site_data.py"
       - "scripts/test_social_calendar.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
@@ -44,6 +45,7 @@ on:
       - "scripts/plan_social_week.py"
       - "scripts/generate_social_kit.py"
       - "scripts/generate_weekly_social_kit.py"
+      - "scripts/prepare_social_site_data.py"
       - "scripts/test_social_calendar.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
@@ -100,6 +102,9 @@ jobs:
 
       - name: Validate calendar and known collisions
         run: python scripts/test_social_calendar.py
+
+      - name: Prepare common social history windows
+        run: python scripts/prepare_social_site_data.py --plan /tmp/social-week.json
 
       - name: Generate four-slide weekly package
         run: python scripts/generate_weekly_social_kit.py --plan /tmp/social-week.json
