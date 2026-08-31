@@ -755,6 +755,10 @@
     "https://esploradati.istat.it/": {
       "redirectChange": "informational",
       "reason": "Landing page Istat: un cambio di redirect tecnico non dimostra la disponibilità di una nuova annualità dell'indicatore."
+    },
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON%3AREPORT_PER_RT%3A%3ACSV%3AIR_REPORT_GEOSCOPIO": {
+      "redirectChange": "informational",
+      "reason": "Endpoint SISBON ARPAT: il passaggio tecnico dal dominio sira.arpat.toscana.it al portale www.arpat.toscana.it/sira non equivale a un nuovo rilascio; periodo e dati restano verificati separatamente."
     }
   }
 }
