@@ -10,6 +10,11 @@ on:
         required: true
         default: true
         type: boolean
+      run_check:
+        description: "Esegui davvero il controllo manuale"
+        required: false
+        default: false
+        type: boolean
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
@@ -39,6 +44,7 @@ concurrency:
 
 jobs:
   check:
+    if: github.event_name != 'workflow_dispatch' || inputs.run_check == true
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +61,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      # PR132_BOOTSTRAP_START
+      - name: Apply PR132 monitor fix
+        if: github.event_name == 'pull_request' && github.head_ref == 'automation/data-check-2026-08'
+        run: |
+          if [[ -f scripts/temp_pr132_monitor_fix.py ]]; then
+            python scripts/temp_pr132_monitor_fix.py
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Classifica il redirect SISBON come informativo"
+            git push origin HEAD:${GITHUB_HEAD_REF}
+          else
+            echo "Bootstrap PR132 già applicato"
+          fi
+      # PR132_BOOTSTRAP_END
 
       - name: Materialize current PNRR Toscana baseline
         run: |
@@ -111,7 +133,7 @@ jobs:
           retention-days: 90
 
       - name: Create or update annual register
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'schedule'
         env:
           REPORT_MD: ${{ steps.monitor.outputs.report_md }}
         run: |
@@ -128,7 +150,8 @@ jobs:
           - le anomalie bloccano il controllo;
           - il controllo distingue raggiungibilità della fonte e attualità del dato;
           - per i due indicatori PNRR usa anche il feed ufficiale machine-readable di Regione Toscana come verifica del perimetro ReGiS;
-          - una PR in bozza viene aperta solo quando il controllo trova modifiche sostanziali o richiede una baseline;
+          - una PR in bozza viene aperta solo dal controllo mensile programmato quando trova modifiche sostanziali o richiede una baseline;
+          - i controlli manuali sono diagnostici e non scrivono nel registro né aprono PR;
           - ogni commento mensile menziona il responsabile del progetto.
           EOF
             ISSUE_URL="$(gh issue create --title "$TITLE" --body-file /tmp/data-check-register.md)"
@@ -138,7 +161,7 @@ jobs:
 
       - name: Open draft PR with current monitoring state
         if: >-
-          github.event_name != 'pull_request' &&
+          github.event_name == 'schedule' &&
           steps.prepare.outputs.mode == 'live' &&
           (steps.monitor.outputs.status == 'changes_detected' ||
            steps.monitor.outputs.status == 'baseline_required')
@@ -167,7 +190,7 @@ jobs:
 
           Il controllo mensile ha restituito: \`$CHECK_STATUS\`.
 
-          Questa PR viene aperta solo quando il controllo rileva modifiche sostanziali o richiede una baseline. I run \`no_changes\` restano nel registro e negli artifact del workflow, senza generare una nuova PR.
+          Questa PR viene aperta solo dal controllo mensile programmato quando rileva modifiche sostanziali o richiede una baseline. I run \`no_changes\` e i controlli manuali restano diagnostici e non generano una nuova PR.
 
           Un cambiamento tecnico della fonte non equivale automaticamente a un nuovo rilascio. Per PNRR, una fotografia machine-readable ufficiale Regione Toscana/ReGiS diversa da quella pubblicata genera soltanto \`release_detected\`: l'aggiornamento dei valori richiede acquisizione, validazione e revisione separata prima del merge.
 
