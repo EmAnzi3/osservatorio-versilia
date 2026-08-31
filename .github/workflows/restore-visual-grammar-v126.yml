@@ -1,0 +1,85 @@
+name: Restore visual grammar v1.26
+
+on:
+  push:
+    branches: ["feat/bonifica-rischio-v126"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/bonifica-rischio-v126
+          fetch-depth: 0
+
+      - name: Restore canonical visual grammar and reapply intended comparison fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git show origin/main:assets/visual-grammar.css > assets/visual-grammar.css
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('assets/visual-grammar.css')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = [
+              (
+                  'grid-template-columns: minmax(105px, 1.05fr) minmax(190px, 3fr) minmax(76px, auto);',
+                  'grid-template-columns: minmax(105px, 1.05fr) minmax(190px, 3fr) 110px;'
+              ),
+              (
+                  'margin: 2px 82px 0 min(118px, 19%);',
+                  'margin: 2px 123px 0 min(118px, 19%);'
+              ),
+              (
+                  'grid-template-columns: minmax(78px, .9fr) minmax(88px, 1.55fr) auto;',
+                  'grid-template-columns: minmax(78px, .9fr) minmax(88px, 1.55fr) 96px;'
+              ),
+              (
+                  'margin-inline: 86px 58px;',
+                  'margin-inline: 86px 104px;'
+              ),
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Expected visual grammar token not found: {old}')
+              text = text.replace(old, new, 1)
+
+          town_block = '''.bar-row.comparison-row .bar-town {\n  font-weight: 690;\n}\n'''
+          strong_block = '''.bar-row.comparison-row .bar-town {\n  font-weight: 690;\n}\n\n.bar-row.comparison-row > strong {\n  text-align: right;\n  white-space: nowrap;\n  font-variant-numeric: tabular-nums;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n'''
+          if town_block not in text:
+              raise SystemExit('Comparison town block not found')
+          text = text.replace(town_block, strong_block, 1)
+
+          text += '''\n/* v1.26: il riferimento Versilia resta cromaticamente distinto dal dato locale. */\n.comparison-reference,\n.comparison-legend-reference {\n  background: var(--ink);\n  opacity: .88;\n}\n'''
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Guard against accidental stylesheet truncation
+        run: |
+          grep -q 'demographic-rate-pyramid-chart' assets/visual-grammar.css
+          grep -q 'PR91 mobile containment' assets/visual-grammar.css
+          grep -q 'demographic-rate-table-wrap' assets/visual-grammar.css
+          grep -q 'grid-template-columns: minmax(105px, 1.05fr) minmax(190px, 3fr) 110px;' assets/visual-grammar.css
+
+      - name: Commit restored stylesheet
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain -- assets/visual-grammar.css)" ]]; then
+            echo "No stylesheet changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/visual-grammar.css
+          git commit -m "Restore mobile visual grammar containment"
+          git push origin HEAD:feat/bonifica-rischio-v126
