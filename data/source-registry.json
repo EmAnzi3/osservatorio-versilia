@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 171,
-  "expectedInlineMetricCount": 167,
+  "expectedMetricCount": 175,
+  "expectedInlineMetricCount": 171,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -493,6 +493,15 @@
       "acquisitionMethod": "Download shapefile DGRT 1155/2021 e attribuzione spaziale delle feature areali, lineari e puntuali ai confini comunali Istat 2026.",
       "licenseName": "Open data Regione Toscana",
       "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "cb1-pmo-status-2026": {
+      "publisher": "Consorzio 1 Toscana Nord",
+      "frequency": "irregular",
+      "frequencyLabel": "Aggiornamento operativo del portale",
+      "expectedRelease": "Durante l’esecuzione del Piano delle Attività di Bonifica 2026",
+      "acquisitionMethod": "Estrazione WFS massiva del progetto pmo_stato_lavori; riconciliazione 1:1 delle 1.265 righe degli export comunali con cb_pmo_lineare; classificazione tramite lavori_inizio e lavori_fine.",
+      "licenseName": "Condizioni indicate dal Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://cbtoscananord.it/"
     }
   },
   "sourceProfileByUrl": {
@@ -751,6 +760,18 @@
     },
     "hydraulicWorksCensusElements": {
       "profile": "regione-toscana-opere-idrauliche-2021"
+    },
+    "pabInterventionsInProgress": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabInterventionsCompleted": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabInProgressOperationalGrossValue": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabCompletedOperationalGrossValue": {
+      "profile": "cb1-pmo-status-2026"
     }
   },
   "requestTimeoutSeconds": 20,
