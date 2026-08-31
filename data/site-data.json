@@ -1,6 +1,6 @@
 {
-  "version": "v1.25.0",
-  "updated": "30 agosto 2026",
+  "version": "v1.26.0",
+  "updated": "31 agosto 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -566,7 +566,7 @@
       "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Clima, suolo, costa, mare, acqua, bonifiche, rifiuti, agricoltura, uso del territorio ed esposizione ai rischi idrogeologici.",
+      "description": "Ambiente, clima, costa, acqua, bonifiche, agricoltura, rifiuti e rischi del territorio.",
       "metrics": [
         "landUse",
         "landUseChange",
@@ -593,18 +593,36 @@
         "recycling",
         "wastePerResident",
         "wasteServiceCost",
-        "residualWaste"
+        "residualWaste",
+        "pabProgrammedInterventionLength",
+        "pabProgrammedInterventions",
+        "pabProgrammedMaintenanceValue",
+        "managedReticulumLength",
+        "hydraulicWorksCensusElements",
+        "pabInterventionsInProgress",
+        "pabInterventionsCompleted",
+        "pabInProgressOperationalGrossValue",
+        "pabCompletedOperationalGrossValue"
       ],
       "sections": [
         {
           "key": "territorio",
           "label": "Territorio e rischi",
-          "description": "Consumo di suolo ed esposizione idrogeologica.",
+          "description": "Consumo di suolo, esposizione idrogeologica, reticolo in gestione, opere idrauliche e programmazione della manutenzione.",
           "metrics": [
             "landUse",
             "landUseChange",
             "floodExposure",
-            "landslideExposure"
+            "landslideExposure",
+            "pabProgrammedInterventionLength",
+            "pabProgrammedInterventions",
+            "pabProgrammedMaintenanceValue",
+            "managedReticulumLength",
+            "hydraulicWorksCensusElements",
+            "pabInterventionsInProgress",
+            "pabInterventionsCompleted",
+            "pabInProgressOperationalGrossValue",
+            "pabCompletedOperationalGrossValue"
           ]
         },
         {
@@ -55188,6 +55206,1014 @@
         "formula": "Totale Ricettività potenziale / Totale 3-36 mesi x 100",
         "caveat": "Misura l'offerta potenziale localizzata nel Comune, non gli iscritti effettivi, la lista d'attesa, la qualità del servizio o la possibilità di frequentare strutture in altri Comuni. Non va confuso con l'Indicatore di Lisbona pubblicato nello stesso dataset: per questo motivo quest'ultimo non è usato nel calcolo.",
         "coverage": "7/7 Comuni · anno educativo 2024/25"
+      }
+    },
+    "pabProgrammedInterventionLength": {
+      "meta": {
+        "key": "pabProgrammedInterventionLength",
+        "theme": "ambiente",
+        "label": "Lunghezza interventi PAB programmati",
+        "shortLabel": "Interventi PAB · km",
+        "description": "Somma delle lunghezze delle attività di manutenzione ordinaria programmate nel PAB 2026 nei sette Comuni. La misura è espressa in km-intervento: interventi ripetuti sullo stesso tratto vengono contati separatamente.",
+        "unit": "km",
+        "year": "2026",
+        "source": "Consorzio 1 Toscana Nord — Portale manutenzioni PAB 2026",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "bonifica",
+          "pab",
+          "manutenzione",
+          "reticolo",
+          "corsi d’acqua",
+          "km-intervento"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126.json",
+          "note": "Il dato misura attività programmate e non chilometri fisici unici di reticolo."
+        }
+      },
+      "sourceUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 317.413,
+          "formatted": "317,41 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 317.413
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 101.693,
+          "formatted": "101,69 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 101.693
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 270.094,
+          "formatted": "270,09 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 270.094
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 174.004,
+          "formatted": "174,00 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 174.004
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 50.704,
+          "formatted": "50,70 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 50.704
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 18.41,
+          "formatted": "18,41 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 18.41
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 71.776,
+          "formatted": "71,78 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 71.776
+        }
+      ],
+      "aggregate": {
+        "value": 1004.094,
+        "label": "Versilia · totale programmato",
+        "note": "Somma dei km-intervento programmati nei sette Comuni; non rappresenta la lunghezza fisica unica del reticolo sottoposto a manutenzione."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione da export ufficiale Consorzio 1 Toscana Nord",
+        "formula": "Somma del campo Metri per Comune / 1.000.",
+        "caveat": "Se lo stesso tratto è oggetto di più interventi nell’anno, la sua lunghezza ricorre più volte: il dato è km-intervento, non km di reticolo fisico.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
+      }
+    },
+    "pabProgrammedInterventions": {
+      "meta": {
+        "key": "pabProgrammedInterventions",
+        "theme": "ambiente",
+        "label": "Interventi PAB programmati",
+        "shortLabel": "Interventi PAB programmati",
+        "description": "Numero di interventi di manutenzione ordinaria programmati nel PAB 2026, conteggiati tramite il codice univoco dell’Allegato A-1 per i sette Comuni.",
+        "unit": "number",
+        "year": "2026",
+        "source": "Regione Toscana / Consorzio 1 Toscana Nord — PAB 2026, Allegato A-1",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "bonifica",
+          "pab",
+          "interventi",
+          "manutenzione",
+          "allegato a-1"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126.json",
+          "note": "Conteggio dei codici univoci PAB 2026; non equivale al numero di righe degli export del portale."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 464,
+          "formatted": "464",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 464
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 102,
+          "formatted": "102",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 102
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 341,
+          "formatted": "341",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 341
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 182,
+          "formatted": "182",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 182
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 52,
+          "formatted": "52",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 52
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 27,
+          "formatted": "27",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 27
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 91,
+          "formatted": "91",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 91
+        }
+      ],
+      "aggregate": {
+        "value": 1259,
+        "label": "Versilia · totale programmato",
+        "note": "Conteggio dei codici intervento univoci del PAB 2026 attribuiti ai sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Conteggio da Allegato A-1 PAB 2026",
+        "formula": "Conteggio dei codici univoci 2026CB1E… associati ai sette Comuni.",
+        "caveat": "Programmazione approvata; non misura lo stato di avanzamento.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
+      }
+    },
+    "pabProgrammedMaintenanceValue": {
+      "meta": {
+        "key": "pabProgrammedMaintenanceValue",
+        "theme": "ambiente",
+        "label": "Valore manutenzione PAB programmata",
+        "shortLabel": "Valore PAB programmato",
+        "description": "Valore economico degli interventi di manutenzione ordinaria programmati nel PAB 2026 per i sette Comuni, ricostruito dagli importi dell’Allegato A-1.",
+        "unit": "currency2",
+        "year": "2026",
+        "source": "Regione Toscana / Consorzio 1 Toscana Nord — PAB 2026, Allegato A-1",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "bonifica",
+          "pab",
+          "manutenzione",
+          "importi",
+          "valore",
+          "allegato a-1"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126.json",
+          "note": "Somma degli importi programmati; non rappresenta spesa liquidata, pagata o valore dei soli lavori completati."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1998372.37,
+          "formatted": "€ 1.998.372,37",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1998372.37
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 454075.17,
+          "formatted": "€ 454.075,17",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 454075.17
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1060763.74,
+          "formatted": "€ 1.060.763,74",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1060763.74
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 821438.02,
+          "formatted": "€ 821.438,02",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 821438.02
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 370837.0,
+          "formatted": "€ 370.837,00",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 370837.0
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 98194.06,
+          "formatted": "€ 98.194,06",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 98194.06
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 392752.72,
+          "formatted": "€ 392.752,72",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 392752.72
+        }
+      ],
+      "aggregate": {
+        "value": 5196433.08,
+        "label": "Versilia · valore programmato",
+        "note": "Somma degli importi PAB 2026 degli interventi univoci attribuiti ai sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Somma da Allegato A-1 PAB 2026",
+        "formula": "Somma degli importi ufficiali associati ai codici univoci PAB 2026 dei sette Comuni.",
+        "caveat": "Importo programmato, non spesa sostenuta o valore eseguito.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126.json"
+      }
+    },
+    "managedReticulumLength": {
+      "meta": {
+        "key": "managedReticulumLength",
+        "theme": "ambiente",
+        "label": "Reticolo idrografico in gestione",
+        "shortLabel": "Reticolo in gestione",
+        "description": "Lunghezza fisica del reticolo idrografico attribuito alla gestione del Consorzio 1 Toscana Nord all’interno del confine comunale Istat 2026.",
+        "unit": "km",
+        "year": "2025",
+        "source": "Regione Toscana — Reticolo idrografico e di gestione DCRT 24/2025",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "bonifica",
+          "reticolo",
+          "corsi d’acqua",
+          "consorzio",
+          "toscana nord",
+          "gestione"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
+          "note": "Il reticolo è filtrato sui campi ufficiali COMPLR79=Toscana Nord e RETGESLR79=SI; la lunghezza è ricalcolata dopo il clipping comunale."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 192.01491,
+          "formatted": "192,01 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 192.01491
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 57.108279,
+          "formatted": "57,11 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 57.108279
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 204.809871,
+          "formatted": "204,81 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 204.809871
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 99.736904,
+          "formatted": "99,74 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 99.736904
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 49.446972,
+          "formatted": "49,45 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 49.446972
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 11.609746,
+          "formatted": "11,61 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11.609746
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 130.315069,
+          "formatted": "130,32 km",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 130.315069
+        }
+      ],
+      "aggregate": {
+        "value": 745.041751,
+        "label": "Versilia · reticolo in gestione",
+        "note": "Lunghezza sul perimetro unito dei sette Comuni; non somma valori provinciali o UIO esterne al perimetro dell’Osservatorio."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GIS da reticolo ufficiale DCRT 24/2025 e confini Istat 2026",
+        "formula": "Filtro COMPLR79=Toscana Nord e RETGESLR79=SI; intersezione con ciascun poligono comunale; ricalcolo della lunghezza della geometria risultante in EPSG:3003.",
+        "caveat": "Non viene riutilizzato il campo LENGTH dopo il clipping. Il controllo geometrico sul reticolo filtrato non rileva sovrapposizioni lineari significative.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json"
+      }
+    },
+    "hydraulicWorksCensusElements": {
+      "meta": {
+        "key": "hydraulicWorksCensusElements",
+        "theme": "ambiente",
+        "label": "Elementi di opere idrauliche censiti",
+        "shortLabel": "Opere idrauliche · elementi censiti",
+        "description": "Numero di feature ufficiali del censimento regionale delle opere idrauliche che intersecano il territorio comunale, considerando separatamente elementi areali, lineari e puntuali.",
+        "unit": "number",
+        "year": "2021",
+        "source": "Regione Toscana — Ricognizione opere idrauliche DGRT 1155/2021",
+        "polarity": "neutral",
+        "context": "Bonifica e manutenzione idraulica",
+        "searchTerms": [
+          "opere idrauliche",
+          "argini",
+          "difese di sponda",
+          "briglie",
+          "soglie",
+          "casse di espansione",
+          "sfioratori"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
+          "note": "È un conteggio di elementi censiti, non una stima del numero di cantieri o interventi. Una feature che attraversa più Comuni compare in ciascuna scheda comunale."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 11,
+          "formatted": "11",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 11
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 10,
+          "formatted": "10",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 10
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 43,
+          "formatted": "43",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 43
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 64,
+          "formatted": "64",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 64
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 75,
+          "formatted": "75",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 75
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 5,
+          "formatted": "5",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 5
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 90,
+          "formatted": "90",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 90
+        }
+      ],
+      "aggregate": {
+        "value": 265,
+        "label": "Versilia · elementi distinti censiti",
+        "note": "Conteggio deduplicato delle feature sorgente che intersecano l’unione dei sette Comuni: aree, linee e punti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GIS dal censimento opere idrauliche DGRT 1155/2021 e confini Istat 2026",
+        "formula": "Intersezione delle feature OPI areali, lineari e puntuali con ciascun Comune; somma delle presenze per la scheda comunale. L’aggregato Versilia è ricalcolato sulla geometria unita dei sette Comuni e deduplicato per feature sorgente.",
+        "caveat": "Il valore misura elementi cartografici censiti. Una struttura lineare può essere articolata in più feature e una feature di confine può appartenire a più schede comunali.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json"
+      }
+    },
+    "pabInterventionsInProgress": {
+      "meta": {
+        "key": "pabInterventionsInProgress",
+        "theme": "ambiente",
+        "label": "Interventi di manutenzione in corso",
+        "shortLabel": "Interventi in corso",
+        "description": "Numero di feature operative associate agli export comunali PAB 2026 che al 31 agosto 2026 hanno lavori_inizio valorizzato e lavori_fine vuoto.",
+        "unit": "number",
+        "year": "2026",
+        "source": "Consorzio 1 Toscana Nord — Portale manutenzioni, layer operativo pmo_stato_lavori",
+        "polarity": "neutral",
+        "context": "Stato lavori di manutenzione 2026",
+        "searchTerms": [
+          "bonifica",
+          "manutenzione",
+          "pab",
+          "stato lavori",
+          "in corso",
+          "completati"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json",
+          "note": "Situazione congelata al 31 agosto 2026. Le 1.265 righe degli export comunali sono ricondotte a 1.265 feature distinte di cb_pmo_lineare. Il layer interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato."
+        }
+      },
+      "sourceUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 6,
+          "formatted": "6",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 6
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 91,
+          "formatted": "91",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 91
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 43,
+          "formatted": "43",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 43
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 26,
+          "formatted": "26",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 26
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 56,
+          "formatted": "56",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 56
+        }
+      ],
+      "aggregate": {
+        "value": 222,
+        "label": "Versilia · interventi in corso",
+        "note": "Somma delle feature operative classificate in corso nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione da estrazione WFS massiva del portale manutenzioni Consorzio 1 Toscana Nord",
+        "formula": "Conteggio delle feature con lavori_inizio valorizzato e lavori_fine vuoto.",
+        "caveat": "Il conteggio riguarda feature operative del portale, non codici univoci dell’Allegato A-1. Lo snapshot operativo contiene 1.265 feature, mentre l’Allegato A-1 approvato contiene 1.259 codici univoci.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json"
+      }
+    },
+    "pabInterventionsCompleted": {
+      "meta": {
+        "key": "pabInterventionsCompleted",
+        "theme": "ambiente",
+        "label": "Interventi di manutenzione completati",
+        "shortLabel": "Interventi completati",
+        "description": "Numero di feature operative associate agli export comunali PAB 2026 che al 31 agosto 2026 hanno lavori_fine valorizzato.",
+        "unit": "number",
+        "year": "2026",
+        "source": "Consorzio 1 Toscana Nord — Portale manutenzioni, layer operativo pmo_stato_lavori",
+        "polarity": "neutral",
+        "context": "Stato lavori di manutenzione 2026",
+        "searchTerms": [
+          "bonifica",
+          "manutenzione",
+          "pab",
+          "stato lavori",
+          "in corso",
+          "completati"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json",
+          "note": "Situazione congelata al 31 agosto 2026. Le 1.265 righe degli export comunali sono ricondotte a 1.265 feature distinte di cb_pmo_lineare. Il layer interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato."
+        }
+      },
+      "sourceUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 150,
+          "formatted": "150",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 150
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 68,
+          "formatted": "68",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 68
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 7,
+          "formatted": "7",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 7
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 13,
+          "formatted": "13",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 13
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 9,
+          "formatted": "9",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9
+        }
+      ],
+      "aggregate": {
+        "value": 248,
+        "label": "Versilia · interventi completati",
+        "note": "Somma delle feature operative classificate completate nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione da estrazione WFS massiva del portale manutenzioni Consorzio 1 Toscana Nord",
+        "formula": "Conteggio delle feature con lavori_fine valorizzato.",
+        "caveat": "Il conteggio riguarda feature operative del portale, non codici univoci dell’Allegato A-1. Lo snapshot operativo contiene 1.265 feature, mentre l’Allegato A-1 approvato contiene 1.259 codici univoci.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json"
+      }
+    },
+    "pabInProgressOperationalGrossValue": {
+      "meta": {
+        "key": "pabInProgressOperationalGrossValue",
+        "theme": "ambiente",
+        "label": "Valore lordo operativo degli interventi in corso",
+        "shortLabel": "Valore operativo · in corso",
+        "description": "Somma del campo operativo importo_lordo delle feature di manutenzione classificate in corso al 31 agosto 2026.",
+        "unit": "currency2",
+        "year": "2026",
+        "source": "Consorzio 1 Toscana Nord — Portale manutenzioni, layer operativo pmo_stato_lavori",
+        "polarity": "neutral",
+        "context": "Stato lavori di manutenzione 2026",
+        "searchTerms": [
+          "bonifica",
+          "manutenzione",
+          "pab",
+          "stato lavori",
+          "in corso",
+          "completati"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json",
+          "note": "Situazione congelata al 31 agosto 2026. Le 1.265 righe degli export comunali sono ricondotte a 1.265 feature distinte di cb_pmo_lineare. Il layer interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato."
+        }
+      },
+      "sourceUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 9024.94,
+          "formatted": "€ 9.024,94",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 9024.94
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0.0,
+          "formatted": "€ 0,00",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 246984.54,
+          "formatted": "€ 246.984,54",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 246984.54
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 132058.98,
+          "formatted": "€ 132.058,98",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 132058.98
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 102166.89,
+          "formatted": "€ 102.166,89",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 102166.89
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.0,
+          "formatted": "€ 0,00",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 154272.8,
+          "formatted": "€ 154.272,80",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 154272.8
+        }
+      ],
+      "aggregate": {
+        "value": 644508.15,
+        "label": "Versilia · valore lordo operativo in corso",
+        "note": "Somma del campo importo_lordo delle feature classificate in corso nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione da estrazione WFS massiva del portale manutenzioni Consorzio 1 Toscana Nord",
+        "formula": "Somma di importo_lordo per le feature con lavori_inizio valorizzato e lavori_fine vuoto.",
+        "caveat": "Il valore è il campo operativo importo_lordo del WFS: non coincide con l’importo programmato approvato dell’Allegato A-1 e non rappresenta spesa pagata, liquidata o certificata.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json"
+      }
+    },
+    "pabCompletedOperationalGrossValue": {
+      "meta": {
+        "key": "pabCompletedOperationalGrossValue",
+        "theme": "ambiente",
+        "label": "Valore lordo operativo degli interventi completati",
+        "shortLabel": "Valore operativo · completati",
+        "description": "Somma del campo operativo importo_lordo delle feature di manutenzione classificate completate al 31 agosto 2026.",
+        "unit": "currency2",
+        "year": "2026",
+        "source": "Consorzio 1 Toscana Nord — Portale manutenzioni, layer operativo pmo_stato_lavori",
+        "polarity": "neutral",
+        "context": "Stato lavori di manutenzione 2026",
+        "searchTerms": [
+          "bonifica",
+          "manutenzione",
+          "pab",
+          "stato lavori",
+          "in corso",
+          "completati"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json",
+          "note": "Situazione congelata al 31 agosto 2026. Le 1.265 righe degli export comunali sono ricondotte a 1.265 feature distinte di cb_pmo_lineare. Il layer interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato."
+        }
+      },
+      "sourceUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 12003.72,
+          "formatted": "€ 12.003,72",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 12003.72
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0.0,
+          "formatted": "€ 0,00",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 329096.89,
+          "formatted": "€ 329.096,89",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 329096.89
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 205685.93,
+          "formatted": "€ 205.685,93",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 205685.93
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 67506.08,
+          "formatted": "€ 67.506,08",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 67506.08
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 19604.17,
+          "formatted": "€ 19.604,17",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19604.17
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 60084.34,
+          "formatted": "€ 60.084,34",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 60084.34
+        }
+      ],
+      "aggregate": {
+        "value": 693981.13,
+        "label": "Versilia · valore lordo operativo completato",
+        "note": "Somma del campo importo_lordo delle feature classificate completate nei sette Comuni."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione da estrazione WFS massiva del portale manutenzioni Consorzio 1 Toscana Nord",
+        "formula": "Somma di importo_lordo per le feature con lavori_fine valorizzato.",
+        "caveat": "Il valore è il campo operativo importo_lordo del WFS: non coincide con l’importo programmato approvato dell’Allegato A-1 e non rappresenta spesa pagata, liquidata o certificata.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json"
       }
     }
   },

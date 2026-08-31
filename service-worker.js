@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260830-v125-erp-arrears';
+const VERSION = 'ov-pwa-20260831-v126-bonifica-rischio';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

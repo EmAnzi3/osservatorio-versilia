@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gate dati e contratto per Morosità ERP v1.25.0."""
+"""Gate dati e contratto per Morosità ERP introdotta nella v1.25.0."""
 from __future__ import annotations
 
 import json
@@ -12,7 +12,6 @@ SNAPSHOT = ROOT / "data/source-snapshots/erp-lucca-arrears-2020-2024.json"
 APP00 = ROOT / "assets/app-parts/00.txt"
 APP03 = ROOT / "assets/app-parts/03.txt"
 UXHC = ROOT / "assets/ux-history-core.js"
-FINALIZER = ROOT / "scripts/finalize_catalog_release.py"
 
 EXPECTED_2024 = {
     "046005": 7.37,
@@ -40,17 +39,22 @@ def close(a: float, b: float, tolerance: float = 0.011) -> bool:
     return abs(float(a) - float(b)) <= tolerance
 
 
+def semver_tuple(version: str) -> tuple[int, int, int]:
+    return tuple(int(part) for part in version.lstrip("v").split("."))  # type: ignore[return-value]
+
+
 def main() -> None:
     site = load(SITE)
     registry = load(REGISTRY)
     snapshot = load(SNAPSHOT)
 
-    assert site["version"] == "v1.25.0"
-    assert site["updated"] == "30 agosto 2026"
-    assert len(site["metrics"]) == 166
-    assert registry["expectedMetricCount"] == 166
-    assert registry["expectedInlineMetricCount"] == 162
+    # Questo è un regression gate della funzionalità introdotta in v1.25:
+    # non deve bloccare release successive che aggiungono indicatori.
+    assert semver_tuple(site["version"]) >= (1, 25, 0)
+    assert len(site["metrics"]) >= 166
+    assert registry["expectedMetricCount"] == len(site["metrics"])
     assert registry["expectedExternalMetricCount"] == 4
+    assert registry["expectedInlineMetricCount"] == len(site["metrics"]) - 4
 
     metric = site["metrics"]["erpArrears"]
     assert metric["meta"]["theme"] == "abitare"
@@ -127,12 +131,7 @@ def main() -> None:
     assert "case '%'" in history_core
     assert "unit === '%' || unit === 'percent'" in history_core
 
-    finalizer = FINALIZER.read_text(encoding="utf-8")
-    assert 'VERSION = "v1.25.0"' in finalizer
-    assert 'EXPECTED_METRICS = 166' in finalizer
-    assert 'EXPECTED_INLINE = 162' in finalizer
-
-    print("Morosità ERP v1.25.0: dati, formula, anomalie, UI e contratto verificati.")
+    print("Morosità ERP v1.25.0 preservata: dati, formula, anomalie e UI verificati nella release corrente.")
 
 
 if __name__ == "__main__":

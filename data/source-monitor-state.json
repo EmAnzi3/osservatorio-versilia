@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-08-29T12:22:42+00:00",
+  "checkedAt": "2026-08-31T17:19:31+02:00",
   "mode": "live",
   "sources": {
     "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall": {
@@ -2202,6 +2202,113 @@
       "frequencies": [
         "annual"
       ]
+    },
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": {
+      "url": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabProgrammedInterventionLength",
+        "pabInterventionsInProgress",
+        "pabInterventionsCompleted",
+        "pabInProgressOperationalGrossValue",
+        "pabCompletedOperationalGrossValue"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "cb1-pmo-2026",
+        "cb1-pmo-status-2026"
+      ],
+      "frequencies": [
+        "annual",
+        "irregular"
+      ]
+    },
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": {
+      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabProgrammedInterventions",
+        "pabProgrammedMaintenanceValue"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-pab-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": {
+      "url": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "managedReticulumLength"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-reticolo-2025"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
+    },
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": {
+      "url": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "hydraulicWorksCensusElements"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-opere-idrauliche-2021"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
     }
   },
   "metrics": {
@@ -3272,6 +3379,60 @@
       "publishedPeriod": "2024",
       "checkedAt": "2026-08-29T12:22:42+00:00",
       "observedLatestPeriod": "2024",
+      "status": "current"
+    },
+    "pabProgrammedInterventionLength": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabProgrammedInterventions": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "managedReticulumLength": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current"
+    },
+    "hydraulicWorksCensusElements": {
+      "publishedPeriod": "2021",
+      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "observedLatestPeriod": "2021",
+      "status": "current"
+    },
+    "pabInterventionsInProgress": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabInterventionsCompleted": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabInProgressOperationalGrossValue": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "pabCompletedOperationalGrossValue": {
+      "publishedPeriod": "2026",
+      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "observedLatestPeriod": "2026",
       "status": "current"
     }
   }

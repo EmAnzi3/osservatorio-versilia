@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 166,
-  "expectedInlineMetricCount": 162,
+  "expectedMetricCount": 175,
+  "expectedInlineMetricCount": 171,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -457,6 +457,51 @@
       "acquisitionMethod": "Lettura dei prospetti comunali nei bilanci d’esercizio; importi elementari conservati nello snapshot con SHA-256 dei PDF e percentuali ricalcolate offline.",
       "licenseName": "Condizioni indicate da E.R.P. Lucca S.r.l.",
       "licenseUrl": "https://www.erplucca.it/"
+    },
+    "cb1-pmo-2026": {
+      "publisher": "Consorzio 1 Toscana Nord",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale, secondo il Piano delle Attività di Bonifica",
+      "expectedRelease": "Dopo l’approvazione annuale del PAB e l’aggiornamento del portale manutenzioni",
+      "acquisitionMethod": "Export CSV comunali del portale manutenzioni; somma del campo Metri per Comune e conversione in km-intervento, senza deduplicare come reticolo fisico.",
+      "licenseName": "Condizioni indicate dal Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://cbtoscananord.it/"
+    },
+    "regione-toscana-pab-annual": {
+      "publisher": "Regione Toscana / Consorzio 1 Toscana Nord",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale",
+      "expectedRelease": "Dopo l’approvazione del PAB da parte della Giunta regionale",
+      "acquisitionMethod": "Lettura dell’Allegato A-1 approvato; conteggio dei codici intervento univoci e somma degli importi per Comune. Nessuna stima di avanzamento lavori.",
+      "licenseName": "Condizioni indicate da Regione Toscana e Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "regione-toscana-reticolo-2025": {
+      "publisher": "Regione Toscana",
+      "frequency": "irregular",
+      "frequencyLabel": "Aggiornamento con deliberazione del Consiglio regionale",
+      "expectedRelease": "Alla revisione del reticolo idrografico e di gestione",
+      "acquisitionMethod": "Download shapefile DCRT 24/2025, filtro del reticolo in gestione del Consorzio 1 Toscana Nord, clipping sui confini comunali Istat 2026 e ricalcolo geometrico delle lunghezze.",
+      "licenseName": "Open data Regione Toscana",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "regione-toscana-opere-idrauliche-2021": {
+      "publisher": "Regione Toscana",
+      "frequency": "irregular",
+      "frequencyLabel": "Ricognizione normativa non annuale",
+      "expectedRelease": "A eventuale aggiornamento della ricognizione regionale",
+      "acquisitionMethod": "Download shapefile DGRT 1155/2021 e attribuzione spaziale delle feature areali, lineari e puntuali ai confini comunali Istat 2026.",
+      "licenseName": "Open data Regione Toscana",
+      "licenseUrl": "https://www.regione.toscana.it/open-data"
+    },
+    "cb1-pmo-status-2026": {
+      "publisher": "Consorzio 1 Toscana Nord",
+      "frequency": "irregular",
+      "frequencyLabel": "Aggiornamento operativo del portale",
+      "expectedRelease": "Durante l’esecuzione del Piano delle Attività di Bonifica 2026",
+      "acquisitionMethod": "Estrazione WFS massiva del progetto pmo_stato_lavori; riconciliazione 1:1 delle 1.265 righe degli export comunali con cb_pmo_lineare; classificazione tramite lavori_inizio e lavori_fine.",
+      "licenseName": "Condizioni indicate dal Consorzio 1 Toscana Nord",
+      "licenseUrl": "https://cbtoscananord.it/"
     }
   },
   "sourceProfileByUrl": {
@@ -532,7 +577,11 @@
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
     "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
-    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet",
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
+    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -696,6 +745,33 @@
     },
     "erpArrears": {
       "profile": "erp-lucca-annual-balance-sheet"
+    },
+    "pabProgrammedInterventionLength": {
+      "profile": "cb1-pmo-2026"
+    },
+    "pabProgrammedInterventions": {
+      "profile": "regione-toscana-pab-annual"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "profile": "regione-toscana-pab-annual"
+    },
+    "managedReticulumLength": {
+      "profile": "regione-toscana-reticolo-2025"
+    },
+    "hydraulicWorksCensusElements": {
+      "profile": "regione-toscana-opere-idrauliche-2021"
+    },
+    "pabInterventionsInProgress": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabInterventionsCompleted": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabInProgressOperationalGrossValue": {
+      "profile": "cb1-pmo-status-2026"
+    },
+    "pabCompletedOperationalGrossValue": {
+      "profile": "cb1-pmo-status-2026"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -737,7 +813,11 @@
     "https://esploradati.istat.it/": "istat-water-irregular",
     "https://www.gaia-spa.it/analisiweb_v2/": "gaia-quality-semiannual",
     "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": "sisbon-weekly",
-    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet"
+    "https://at.erplucca.it/default?path=75&t=1": "erp-lucca-annual-balance-sheet",
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
+    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {

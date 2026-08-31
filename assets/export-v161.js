@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260830-v125-erp-arrears';
+  const VERSION = '20260831-v126-bonifica-rischio';
   let dataPromise = null;
 
   function loadData() {
