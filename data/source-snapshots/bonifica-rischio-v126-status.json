@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "snapshotVersion": "2026-08-31-wfs-status-v1",
+  "referenceTimestamp": "2026-08-31T17:19:31+02:00",
+  "scope": {
+    "project": "pmo_stato_lavori",
+    "featureType": "cb_pmo_lineare",
+    "towns": ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"],
+    "municipalSelectionSource": "sette export CSV comunali del portale manutenzioni già acquisiti"
+  },
+  "wfs": {
+    "endpoint": "https://geoportale.cbtoscananord.it/index.php/lizmap/service?repository=geoportale&project=pmo_stato_lavori",
+    "capabilities": {
+      "version": "1.1.0",
+      "featureTypes": ["interventi_puntuali", "cb_pmo_lineare", "cb_reticolo"],
+      "cb_pmo_lineareNumberOfFeatures": 5419
+    },
+    "files": {
+      "cb_pmo_lineare.csv": {"sizeBytes": 1565839, "sha256": "81cb1aa82f7df4b4243f4372e35e5ab7bac2624e42ded67c25a6e1a911f4f322", "features": 5419},
+      "cb_pmo_lineare.geojson": {"sizeBytes": 10551542, "sha256": "3af621ed555fc9998115b9f93228b78a72d70a539d79a89ee1897d407547c47f", "features": 5419},
+      "interventi_puntuali.csv": {"sizeBytes": 70125, "sha256": "d92a0b2fc7659a5c555083e83d0b4b373d818af38c283be69a05900079e23438", "features": 251},
+      "interventi_puntuali.geojson": {"sizeBytes": 262232, "sha256": "fd1838c1cb608e4a892ff440c14d7cd4fed0073944d620adfaea252828169ceb", "features": 251}
+    }
+  },
+  "matching": {
+    "municipalExportRows": 1265,
+    "matchedRows": 1265,
+    "uniqueWfsFeatureIds": 1265,
+    "rule": "join su corso d'acqua e intervento normalizzati, date programma, Metri e Importo arrotondati all'intero con ROUND_HALF_UP; le due collisioni perfettamente identiche di Quadrellara sono risolte uno-a-uno su due feature WFS distinte",
+    "wfsCodeBreakdown": {"2026CB1E": 1244, "2026CB1P": 16, "withoutCodiceRt": 5},
+    "note": "Il layer operativo WFS non è una copia uno-a-uno dell'Allegato A-1: il perimetro comunale corrente contiene 1265 feature mentre l'Allegato A-1 contiene 1259 codici univoci approvati."
+  },
+  "punctualLayer": {
+    "featuresGlobal": 251,
+    "versiliaUioFeatures": 3,
+    "sharedIdsWithCbPmoLineare": 251,
+    "rule": "non sommare interventi_puntuali a cb_pmo_lineare: tutte le 251 feature puntuali condividono lo stesso campo id con una feature del layer lineare e costituiscono una rappresentazione alternativa di un sottoinsieme"
+  },
+  "statusRule": {
+    "programmato": "lavori_inizio vuoto e lavori_fine vuoto",
+    "in_corso": "lavori_inizio valorizzato e lavori_fine vuoto",
+    "completato": "lavori_fine valorizzato"
+  },
+  "byTown": {
+    "Camaiore": {"programmato": {"features": 101, "grossAmountEur": 230234.42, "activityMetres": 92513.22}, "in_corso": {"features": 91, "grossAmountEur": 246984.54, "activityMetres": 64965.94}, "completato": {"features": 150, "grossAmountEur": 329096.89, "activityMetres": 112615.58}},
+    "Forte dei Marmi": {"programmato": {"features": 14, "grossAmountEur": 54773.48, "activityMetres": 9754.84}, "in_corso": {"features": 0, "grossAmountEur": 0.0, "activityMetres": 0.0}, "completato": {"features": 13, "grossAmountEur": 19604.17, "activityMetres": 8654.75}},
+    "Massarosa": {"programmato": {"features": 462, "grossAmountEur": 1654055.35, "activityMetres": 307801.82}, "in_corso": {"features": 6, "grossAmountEur": 9024.94, "activityMetres": 5361.96}, "completato": {"features": 1, "grossAmountEur": 12003.72, "activityMetres": 4259.46}},
+    "Pietrasanta": {"programmato": {"features": 71, "grossAmountEur": 317260.84, "activityMetres": 65265.03}, "in_corso": {"features": 43, "grossAmountEur": 132058.98, "activityMetres": 30265.77}, "completato": {"features": 68, "grossAmountEur": 205685.93, "activityMetres": 78464.35}},
+    "Seravezza": {"programmato": {"features": 18, "grossAmountEur": 107803.9, "activityMetres": 20664.5}, "in_corso": {"features": 26, "grossAmountEur": 102166.89, "activityMetres": 17386.57}, "completato": {"features": 7, "grossAmountEur": 67506.08, "activityMetres": 12653.64}},
+    "Stazzema": {"programmato": {"features": 27, "grossAmountEur": 85248.36, "activityMetres": 25195.75}, "in_corso": {"features": 56, "grossAmountEur": 154272.8, "activityMetres": 34571.64}, "completato": {"features": 9, "grossAmountEur": 60084.34, "activityMetres": 12005.58}},
+    "Viareggio": {"programmato": {"features": 102, "grossAmountEur": 377377.54, "activityMetres": 101698.18}, "in_corso": {"features": 0, "grossAmountEur": 0.0, "activityMetres": 0.0}, "completato": {"features": 0, "grossAmountEur": 0.0, "activityMetres": 0.0}}
+  },
+  "aggregateSevenTowns": {
+    "programmato": {"features": 795, "grossAmountEur": 2826753.89, "activityMetres": 622893.34},
+    "in_corso": {"features": 222, "grossAmountEur": 644508.15, "activityMetres": 152551.88},
+    "completato": {"features": 248, "grossAmountEur": 693981.13, "activityMetres": 228653.36}
+  },
+  "economicField": {
+    "field": "importo_lordo",
+    "sumGrossAmountEur": 4165243.17,
+    "municipalCsvRoundedSumEur": 4165255,
+    "pabA1ApprovedProgrammedAmountEur": 5196433.08,
+    "caveat": "Gli importi di stato sono il campo operativo importo_lordo del WFS. Non coincidono con l'importo programmato approvato dell'Allegato A-1 e non rappresentano spesa pagata o liquidata."
+  },
+  "geometry": {
+    "selectedFeatures": 1265,
+    "featuresWithGeometry": 1216,
+    "featuresWithoutGeometry": 49,
+    "missingGeometryActivityMetres": 28562.44,
+    "rawGeometryLengthKm": 975.563224,
+    "unionGeometryLengthKmPartial": 574.866253,
+    "publishPhysicalUniqueKm": false,
+    "reason": "49 feature selezionate non espongono geometria nel GeoJSON, incluse 28.562,44 m di attività lineare; la deduplica fisica completa resta quindi non pubblicabile."
+  }
+}
