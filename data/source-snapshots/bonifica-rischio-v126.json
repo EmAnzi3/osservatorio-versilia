@@ -2,52 +2,260 @@
   "schemaVersion": 1,
   "snapshotVersion": "2026-08-31-v2",
   "referenceYear": 2026,
-  "scope": {"theme": "ambiente", "section": "territorio", "lot": "Lotto 6 — Bonifica e rischio idraulico", "towns": ["Massarosa", "Viareggio", "Camaiore", "Pietrasanta", "Seravezza", "Forte dei Marmi", "Stazzema"]},
+  "scope": {
+    "theme": "ambiente",
+    "section": "territorio",
+    "lot": "Lotto 6 — Bonifica e rischio idraulico",
+    "towns": [
+      "Massarosa",
+      "Viareggio",
+      "Camaiore",
+      "Pietrasanta",
+      "Seravezza",
+      "Forte dei Marmi",
+      "Stazzema"
+    ]
+  },
   "sources": {
-    "sourcePackage": {"file": "Bonifica.zip", "sizeBytes": 61589379, "sha256": "f7e4530a121b051be85f3728ec8aaed400e40c15cbc83276b2765d982d881a30"},
-    "pabA1": {"file": "Delibera n.367 del 30-03-2026- Allegato A1.pdf", "sizeBytes": 11484054, "sha256": "c97b4c3dc7d1ac838121c381a279a41335cc012fb3823d9d073f91d626c6c0d9", "approval": "DGR Toscana 367 del 30/03/2026", "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica"},
-    "reticolo": {"archive": "Infrastruttura_rev25.zip", "sizeBytes": 48706934, "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122", "layer": "reticoloDCR242025", "crs": "EPSG:3003", "features": 215923, "geometry": {"LineString": 215915, "MultiLineString": 8}, "fields": ["LENGTH", "IDRETLR79", "NOME", "ALIAS", "COMPLR79", "RETIDRLR79", "RETGESLR79", "DESRETLR79", "ID523_1904", "CI523_1904", "AC523_1904", "DT523_1904", "GC_01_02", "OPERE_LR16"], "managementFilter": {"COMPLR79": "Toscana Nord", "RETGESLR79": "SI"}},
-    "hydraulicWorks": {"archive": "shp files censimento opere idrauliche.zip", "sizeBytes": 1116181, "sha256": "532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560", "crs": "EPSG:3003"},
-    "istatBoundaries": {"file": "Limiti01012026_g.zip", "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6", "sizeBytes": 10450609, "lastModified": "2026-03-06", "canonical": true, "availableInDevelopmentSession": true, "note": "Confini Istat al 1 gennaio 2026 materializzati e usati per il clipping riproducibile del reticolo e delle opere; risultati congelati in data/source-snapshots/bonifica-rischio-v126-gis.json."},
-    "statusLayer": {"project": "pmo_stato_lavori", "confirmedFields": ["programma_inizio", "programma_fine", "lavori_inizio", "lavori_fine"], "statusRule": {"programmed": "lavori_inizio vuoto", "inProgress": "lavori_inizio valorizzato e lavori_fine vuoto", "completed": "lavori_fine valorizzato"}, "massExtractionAvailable": false, "note": "Schema e campioni verificati, ma senza snapshot massivo delle feature con stato: nessun conteggio/importo in corso o completato viene pubblicato."}
+    "sourcePackage": {
+      "file": "Bonifica.zip",
+      "sizeBytes": 61589379,
+      "sha256": "f7e4530a121b051be85f3728ec8aaed400e40c15cbc83276b2765d982d881a30"
+    },
+    "pabA1": {
+      "file": "Delibera n.367 del 30-03-2026- Allegato A1.pdf",
+      "sizeBytes": 11484054,
+      "sha256": "c97b4c3dc7d1ac838121c381a279a41335cc012fb3823d9d073f91d626c6c0d9",
+      "approval": "DGR Toscana 367 del 30/03/2026",
+      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica"
+    },
+    "reticolo": {
+      "archive": "Infrastruttura_rev25.zip",
+      "sizeBytes": 48706934,
+      "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122",
+      "layer": "reticoloDCR242025",
+      "crs": "EPSG:3003",
+      "features": 215923,
+      "geometry": {
+        "LineString": 215915,
+        "MultiLineString": 8
+      },
+      "fields": [
+        "LENGTH",
+        "IDRETLR79",
+        "NOME",
+        "ALIAS",
+        "COMPLR79",
+        "RETIDRLR79",
+        "RETGESLR79",
+        "DESRETLR79",
+        "ID523_1904",
+        "CI523_1904",
+        "AC523_1904",
+        "DT523_1904",
+        "GC_01_02",
+        "OPERE_LR16"
+      ],
+      "managementFilter": {
+        "COMPLR79": "Toscana Nord",
+        "RETGESLR79": "SI"
+      }
+    },
+    "hydraulicWorks": {
+      "archive": "shp files censimento opere idrauliche.zip",
+      "sizeBytes": 1116181,
+      "sha256": "532b29090ce6fd09f06cf87a1f074b173eeddb57cb3ee1a92560e74ef17bb560",
+      "crs": "EPSG:3003"
+    },
+    "istatBoundaries": {
+      "file": "Limiti01012026_g.zip",
+      "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6",
+      "sizeBytes": 10450609,
+      "lastModified": "2026-03-06",
+      "canonical": true,
+      "availableInDevelopmentSession": true,
+      "note": "Confini Istat al 1 gennaio 2026 materializzati e usati per il clipping riproducibile del reticolo e delle opere; risultati congelati in data/source-snapshots/bonifica-rischio-v126-gis.json."
+    },
+    "statusLayer": {
+      "project": "pmo_stato_lavori",
+      "confirmedFields": [
+        "programma_inizio",
+        "programma_fine",
+        "lavori_inizio",
+        "lavori_fine"
+      ],
+      "statusRule": {
+        "programmed": "lavori_inizio vuoto",
+        "inProgress": "lavori_inizio valorizzato e lavori_fine vuoto",
+        "completed": "lavori_fine valorizzato"
+      },
+      "massExtractionAvailable": true,
+      "note": "Estrazione WFS massiva acquisita il 31/08/2026. Le 1.265 righe degli export comunali sono state ricondotte a 1.265 feature distinte di cb_pmo_lineare; interventi_puntuali è una rappresentazione alternativa di un sottoinsieme e non viene sommato. I conteggi di stato sono derivabili; gli importi usano il campo operativo importo_lordo e non coincidono con il valore approvato dell’Allegato A-1.",
+      "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json",
+      "featureTypes": [
+        "cb_pmo_lineare",
+        "interventi_puntuali"
+      ]
+    }
   },
   "portalExports": {
-    "fields": ["Comune", "Corso d’Acqua", "Intervento Previsto", "Inizio", "Fine", "Metri", "Importo"],
+    "fields": [
+      "Comune",
+      "Corso d’Acqua",
+      "Intervento Previsto",
+      "Inizio",
+      "Fine",
+      "Metri",
+      "Importo"
+    ],
     "rowsTotal": 1265,
     "metresTotal": 1004094,
     "amountCsvTotal": 4165255,
     "files": {
-      "Camaiore": {"file": "estratto_manutenzioni_toscana_nord.csv", "rows": 342, "metres": 270094, "amount": 806319, "sha256": "eff12cc8be8022c4ac2e7021e6d63ca943419366b28f176d2a38ab6c788d2632"},
-      "Forte dei Marmi": {"file": "estratto_manutenzioni_toscana_nord (1).csv", "rows": 27, "metres": 18410, "amount": 74378, "sha256": "f13ad60580a7cf3d9b1d27d17523c6bc56c9c5e1a6280569a8b8d72cbbfe2997"},
-      "Massarosa": {"file": "estratto_manutenzioni_toscana_nord (2).csv", "rows": 469, "metres": 317413, "amount": 1675089, "sha256": "7a8081d2f4dac3d3e7f767e1b9537d83444be835223ee23fea4c0e9f72fe9cdb"},
-      "Pietrasanta": {"file": "estratto_manutenzioni_toscana_nord (4).csv", "rows": 182, "metres": 174004, "amount": 655009, "sha256": "5e186ae4abb2b6eb060d47a9e0f113194edc4533ca99673f2685c3e0eff73fca"},
-      "Seravezza": {"file": "estratto_manutenzioni_toscana_nord (5).csv", "rows": 51, "metres": 50704, "amount": 277478, "sha256": "5e34973da1dbfb93f3f2a90ce68d54ee4eec6fb309e87ffd4063eed4de774ec0"},
-      "Stazzema": {"file": "estratto_manutenzioni_toscana_nord (6).csv", "rows": 92, "metres": 71776, "amount": 299605, "sha256": "49db01bdb5073120cec5fed3a74b298e8f59d2e44d2916fbe9112d1da6f5a006"},
-      "Viareggio": {"file": "estratto_manutenzioni_toscana_nord (7).csv", "rows": 102, "metres": 101693, "amount": 377377, "sha256": "b45b9aa23deda61c2f6b1f66ab63f48d12e35e5c856156c26983d50f4bb4b4f1"}
+      "Camaiore": {
+        "file": "estratto_manutenzioni_toscana_nord.csv",
+        "rows": 342,
+        "metres": 270094,
+        "amount": 806319,
+        "sha256": "eff12cc8be8022c4ac2e7021e6d63ca943419366b28f176d2a38ab6c788d2632"
+      },
+      "Forte dei Marmi": {
+        "file": "estratto_manutenzioni_toscana_nord (1).csv",
+        "rows": 27,
+        "metres": 18410,
+        "amount": 74378,
+        "sha256": "f13ad60580a7cf3d9b1d27d17523c6bc56c9c5e1a6280569a8b8d72cbbfe2997"
+      },
+      "Massarosa": {
+        "file": "estratto_manutenzioni_toscana_nord (2).csv",
+        "rows": 469,
+        "metres": 317413,
+        "amount": 1675089,
+        "sha256": "7a8081d2f4dac3d3e7f767e1b9537d83444be835223ee23fea4c0e9f72fe9cdb"
+      },
+      "Pietrasanta": {
+        "file": "estratto_manutenzioni_toscana_nord (4).csv",
+        "rows": 182,
+        "metres": 174004,
+        "amount": 655009,
+        "sha256": "5e186ae4abb2b6eb060d47a9e0f113194edc4533ca99673f2685c3e0eff73fca"
+      },
+      "Seravezza": {
+        "file": "estratto_manutenzioni_toscana_nord (5).csv",
+        "rows": 51,
+        "metres": 50704,
+        "amount": 277478,
+        "sha256": "5e34973da1dbfb93f3f2a90ce68d54ee4eec6fb309e87ffd4063eed4de774ec0"
+      },
+      "Stazzema": {
+        "file": "estratto_manutenzioni_toscana_nord (6).csv",
+        "rows": 92,
+        "metres": 71776,
+        "amount": 299605,
+        "sha256": "49db01bdb5073120cec5fed3a74b298e8f59d2e44d2916fbe9112d1da6f5a006"
+      },
+      "Viareggio": {
+        "file": "estratto_manutenzioni_toscana_nord (7).csv",
+        "rows": 102,
+        "metres": 101693,
+        "amount": 377377,
+        "sha256": "b45b9aa23deda61c2f6b1f66ab63f48d12e35e5c856156c26983d50f4bb4b4f1"
+      }
     }
   },
   "pabA1ByTown": {
-    "Camaiore": {"interventions": 341, "programmedAmountEur": 1060763.74},
-    "Forte dei Marmi": {"interventions": 27, "programmedAmountEur": 98194.06},
-    "Massarosa": {"interventions": 464, "programmedAmountEur": 1998372.37},
-    "Pietrasanta": {"interventions": 182, "programmedAmountEur": 821438.02},
-    "Seravezza": {"interventions": 52, "programmedAmountEur": 370837.0},
-    "Stazzema": {"interventions": 91, "programmedAmountEur": 392752.72},
-    "Viareggio": {"interventions": 102, "programmedAmountEur": 454075.17}
+    "Camaiore": {
+      "interventions": 341,
+      "programmedAmountEur": 1060763.74
+    },
+    "Forte dei Marmi": {
+      "interventions": 27,
+      "programmedAmountEur": 98194.06
+    },
+    "Massarosa": {
+      "interventions": 464,
+      "programmedAmountEur": 1998372.37
+    },
+    "Pietrasanta": {
+      "interventions": 182,
+      "programmedAmountEur": 821438.02
+    },
+    "Seravezza": {
+      "interventions": 52,
+      "programmedAmountEur": 370837.0
+    },
+    "Stazzema": {
+      "interventions": 91,
+      "programmedAmountEur": 392752.72
+    },
+    "Viareggio": {
+      "interventions": 102,
+      "programmedAmountEur": 454075.17
+    }
   },
   "published": {
-    "pabProgrammedInterventionLength": {"unit": "km-intervento", "byTown": {"Camaiore": 270.094, "Forte dei Marmi": 18.41, "Massarosa": 317.413, "Pietrasanta": 174.004, "Seravezza": 50.704, "Stazzema": 71.776, "Viareggio": 101.693}, "total": 1004.094, "source": "portalExports.Metri", "rule": "somma metri / 1000; nessuna deduplica come reticolo fisico"},
-    "pabProgrammedInterventions": {"unit": "number", "byTown": {"Camaiore": 341, "Forte dei Marmi": 27, "Massarosa": 464, "Pietrasanta": 182, "Seravezza": 52, "Stazzema": 91, "Viareggio": 102}, "total": 1259, "source": "PAB A-1", "rule": "conteggio codici univoci"},
-    "pabProgrammedMaintenanceValue": {"unit": "EUR", "byTown": {"Camaiore": 1060763.74, "Forte dei Marmi": 98194.06, "Massarosa": 1998372.37, "Pietrasanta": 821438.02, "Seravezza": 370837.0, "Stazzema": 392752.72, "Viareggio": 454075.17}, "total": 5196433.08, "source": "PAB A-1", "rule": "somma importi dei codici univoci"}
+    "pabProgrammedInterventionLength": {
+      "unit": "km-intervento",
+      "byTown": {
+        "Camaiore": 270.094,
+        "Forte dei Marmi": 18.41,
+        "Massarosa": 317.413,
+        "Pietrasanta": 174.004,
+        "Seravezza": 50.704,
+        "Stazzema": 71.776,
+        "Viareggio": 101.693
+      },
+      "total": 1004.094,
+      "source": "portalExports.Metri",
+      "rule": "somma metri / 1000; nessuna deduplica come reticolo fisico"
+    },
+    "pabProgrammedInterventions": {
+      "unit": "number",
+      "byTown": {
+        "Camaiore": 341,
+        "Forte dei Marmi": 27,
+        "Massarosa": 464,
+        "Pietrasanta": 182,
+        "Seravezza": 52,
+        "Stazzema": 91,
+        "Viareggio": 102
+      },
+      "total": 1259,
+      "source": "PAB A-1",
+      "rule": "conteggio codici univoci"
+    },
+    "pabProgrammedMaintenanceValue": {
+      "unit": "EUR",
+      "byTown": {
+        "Camaiore": 1060763.74,
+        "Forte dei Marmi": 98194.06,
+        "Massarosa": 1998372.37,
+        "Pietrasanta": 821438.02,
+        "Seravezza": 370837.0,
+        "Stazzema": 392752.72,
+        "Viareggio": 454075.17
+      },
+      "total": 5196433.08,
+      "source": "PAB A-1",
+      "rule": "somma importi dei codici univoci"
+    }
   },
   "publishedViaGisSnapshot": {
     "snapshot": "data/source-snapshots/bonifica-rischio-v126-gis.json",
-    "metrics": ["managedReticulumLength", "hydraulicWorksCensusElements"],
+    "metrics": [
+      "managedReticulumLength",
+      "hydraulicWorksCensusElements"
+    ],
     "note": "I confini Istat 2026 sono stati materializzati; reticolo gestito e censimento delle opere sono ora pubblicabili senza proxy."
   },
   "deferred": {
     "maintainedPhysicalKmAndShare": "Richiede geometrie massive degli interventi PAB per deduplicare i tratti fisici interessati; i km-intervento degli export non possono essere usati come proxy.",
-    "inProgressCompletedCountsAndValues": "Richiede estrazione massiva del layer pmo_stato_lavori; i campi di stato sono verificati solo su campioni."
+    "inProgressCompletedCountsAndValues": "Estrazione massiva WFS acquisita e congelata in bonifica-rischio-v126-status.json. I conteggi sono tecnicamente disponibili; la promozione degli importi richiede esplicitare che si tratta di importo_lordo operativo, non dell’importo PAB A-1 né di spesa pagata/liquidata."
   },
-  "methodNotes": ["UIO Versilia non coincide con i sette Comuni dell’Osservatorio e non viene usata come aggregato.", "n.d. non viene mai trasformato in zero.", "La colonna LENGTH del reticolo non viene usata dopo il clipping: la lunghezza è ricalcolata sulla geometria risultante.", "L’aggregato delle opere idrauliche sui sette Comuni è deduplicato per feature sorgente sulla geometria unita; i valori comunali restano presenze territoriali e possono condividere una feature di confine."]
+  "methodNotes": [
+    "UIO Versilia non coincide con i sette Comuni dell’Osservatorio e non viene usata come aggregato.",
+    "n.d. non viene mai trasformato in zero.",
+    "La colonna LENGTH del reticolo non viene usata dopo il clipping: la lunghezza è ricalcolata sulla geometria risultante.",
+    "L’aggregato delle opere idrauliche sui sette Comuni è deduplicato per feature sorgente sulla geometria unita; i valori comunali restano presenze territoriali e possono condividere una feature di confine."
+  ]
 }

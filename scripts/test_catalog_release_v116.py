@@ -36,8 +36,10 @@ def main():
       'hydraulicWorksCensusElements':({'Massarosa':11,'Viareggio':10,'Camaiore':43,'Pietrasanta':64,'Seravezza':75,'Forte dei Marmi':5,'Stazzema':90},265,'2021')}
     for k,(vals,total,period) in expected.items():
         m=site['metrics'][k]; got={r['town']:r['value'] for r in m['rows']}; assert got==vals; assert abs(m['aggregate']['value']-total)<1e-6; assert state['metrics'][k]['publishedPeriod']==period; assert k in registry['metricOverrides']
-    assert site['metrics']['pabProgrammedInterventionLength']['meta']['unit']=='kmIntervention'
+    assert site['metrics']['pabProgrammedInterventionLength']['meta']['unit']=='km'
     assert site['metrics']['managedReticulumLength']['meta']['unit']=='km'
+    assert next(r for r in site['metrics']['pabProgrammedInterventionLength']['rows'] if r['town']=='Massarosa')['formatted']=='317,41 km'
+    assert next(r for r in site['metrics']['managedReticulumLength']['rows'] if r['town']=='Massarosa')['formatted']=='192,01 km'
     text=' '.join([site['metrics']['pabProgrammedInterventionLength']['meta']['description'],site['metrics']['pabProgrammedInterventionLength']['method']['caveat']]); assert 'km-intervento' in text and 'reticolo fisico' in text
     ret_text=' '.join(site['metrics']['managedReticulumLength']['method'][k] for k in ('formula','caveat')); assert 'COMPLR79' in ret_text and 'RETGESLR79' in ret_text and 'LENGTH' in ret_text
     works_text=' '.join([site['metrics']['hydraulicWorksCensusElements']['meta']['description'],site['metrics']['hydraulicWorksCensusElements']['meta']['sourceMeta']['note'],site['metrics']['hydraulicWorksCensusElements']['method']['caveat']]); assert 'feature' in works_text and 'cantieri' in works_text

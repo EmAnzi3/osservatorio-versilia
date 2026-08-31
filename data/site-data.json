@@ -55205,9 +55205,9 @@
         "key": "pabProgrammedInterventionLength",
         "theme": "ambiente",
         "label": "Lunghezza interventi PAB programmati",
-        "shortLabel": "Interventi PAB · km-intervento",
+        "shortLabel": "Interventi PAB · km",
         "description": "Somma delle lunghezze delle attività di manutenzione ordinaria programmate nel PAB 2026 nei sette Comuni. La misura è espressa in km-intervento: interventi ripetuti sullo stesso tratto vengono contati separatamente.",
-        "unit": "kmIntervention",
+        "unit": "km",
         "year": "2026",
         "source": "Consorzio 1 Toscana Nord — Portale manutenzioni PAB 2026",
         "polarity": "neutral",
@@ -55232,7 +55232,7 @@
           "code": "046018",
           "slug": "massarosa",
           "value": 317.413,
-          "formatted": "317,413 km-intervento",
+          "formatted": "317,41 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 317.413
@@ -55242,7 +55242,7 @@
           "code": "046033",
           "slug": "viareggio",
           "value": 101.693,
-          "formatted": "101,693 km-intervento",
+          "formatted": "101,69 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 101.693
@@ -55252,7 +55252,7 @@
           "code": "046005",
           "slug": "camaiore",
           "value": 270.094,
-          "formatted": "270,094 km-intervento",
+          "formatted": "270,09 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 270.094
@@ -55262,7 +55262,7 @@
           "code": "046024",
           "slug": "pietrasanta",
           "value": 174.004,
-          "formatted": "174,004 km-intervento",
+          "formatted": "174,00 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 174.004
@@ -55272,7 +55272,7 @@
           "code": "046028",
           "slug": "seravezza",
           "value": 50.704,
-          "formatted": "50,704 km-intervento",
+          "formatted": "50,70 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 50.704
@@ -55282,7 +55282,7 @@
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 18.41,
-          "formatted": "18,410 km-intervento",
+          "formatted": "18,41 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 18.41
@@ -55292,7 +55292,7 @@
           "code": "046030",
           "slug": "stazzema",
           "value": 71.776,
-          "formatted": "71,776 km-intervento",
+          "formatted": "71,78 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 71.776
@@ -55567,7 +55567,7 @@
           "code": "046018",
           "slug": "massarosa",
           "value": 192.01491,
-          "formatted": "192,015 km",
+          "formatted": "192,01 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 192.01491
@@ -55577,7 +55577,7 @@
           "code": "046033",
           "slug": "viareggio",
           "value": 57.108279,
-          "formatted": "57,108 km",
+          "formatted": "57,11 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 57.108279
@@ -55587,7 +55587,7 @@
           "code": "046005",
           "slug": "camaiore",
           "value": 204.809871,
-          "formatted": "204,810 km",
+          "formatted": "204,81 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 204.809871
@@ -55597,7 +55597,7 @@
           "code": "046024",
           "slug": "pietrasanta",
           "value": 99.736904,
-          "formatted": "99,737 km",
+          "formatted": "99,74 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 99.736904
@@ -55607,7 +55607,7 @@
           "code": "046028",
           "slug": "seravezza",
           "value": 49.446972,
-          "formatted": "49,447 km",
+          "formatted": "49,45 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 49.446972
@@ -55617,7 +55617,7 @@
           "code": "046013",
           "slug": "forte-dei-marmi",
           "value": 11.609746,
-          "formatted": "11,610 km",
+          "formatted": "11,61 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 11.609746
@@ -55627,7 +55627,7 @@
           "code": "046030",
           "slug": "stazzema",
           "value": 130.315069,
-          "formatted": "130,315 km",
+          "formatted": "130,32 km",
           "series": null,
           "normalized": null,
           "benchmarkValue": 130.315069
