@@ -145,6 +145,18 @@ jobs:
             exit 0
           fi
           git commit -m "Aggiorna Radar Opportunità $(date -u +%F)"
+
+          # La build pubblica modifica file tracciati che non appartengono allo
+          # snapshot giornaliero. Dopo aver committato l'unico file autorizzato,
+          # ripristiniamo il working tree così fetch/rebase possano operare in
+          # modo deterministico senza includere artefatti di build nel commit.
+          git restore --worktree -- .
+          if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+            echo "Working tree tracciato non pulito prima del rebase:"
+            git status --short --untracked-files=no
+            exit 1
+          fi
+
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
