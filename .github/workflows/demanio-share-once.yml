@@ -1,0 +1,38 @@
+name: Applica quota demanio una volta
+
+on:
+  push:
+    branches:
+      - staging/demanio-marittimo-v127
+    paths:
+      - .github/workflows/demanio-share-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging/demanio-marittimo-v127
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Applica modifica circoscritta
+        run: |
+          set -euo pipefail
+          python scripts/patch_demanio_share_v127.py
+          python -m json.tool data/site-data.json >/dev/null
+          python scripts/test_costa_mare_v123.py
+      - name: Commit della sola modifica richiesta
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/app-parts/03.txt data/site-data.json scripts/materialize_demanio_marittimo_v127.py scripts/test_costa_mare_v123_browser.py
+          git diff --cached --quiet && exit 0
+          git commit -m "fix: mostra peso percentuale del demanio sul totale costiero"
+          git push origin HEAD:staging/demanio-marittimo-v127
