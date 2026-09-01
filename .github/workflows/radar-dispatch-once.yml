@@ -1,4 +1,4 @@
-name: Radar Opportunità · probe coverage diretta v2
+name: Radar Opportunità · probe coverage diretta v3
 
 on:
   push:
@@ -28,6 +28,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
+
+      - name: Regression lifecycle scaduti
+        run: python scripts/test_opportunity_expired_lifecycle.py
 
       - name: Probe verified coverage entries in parallel
         run: python scripts/probe_opportunity_verified_live.py
