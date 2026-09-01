@@ -20,8 +20,10 @@ from urllib.parse import urlsplit
 
 import opportunity_daily_refresh as daily
 import opportunity_pdf_evidence as pdf_evidence
+import opportunity_radar_v03_post as v03_post
 
 _ORIGINAL_VERIFY = daily.radar.core.verify_entry
+_ORIGINAL_V03_VERIFIED_TEXT = v03_post._verified_text
 _BROWSER_UA = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36"
@@ -146,6 +148,53 @@ def _fetch_official_payload(url: str) -> str:
             return _fetch_playwright_text(url, timeout_ms=30_000)
         except Exception as browser_error:
             raise RuntimeError(f"HTTP: {http_error}; Chromium: {browser_error}") from browser_error
+
+
+def _verified_detail_payload_text(radar_module: Any, entry: dict[str, Any], payload: str) -> str | None:
+    """Applica gli stessi required_terms dei detail verificati a un payload live."""
+    text = payload if _is_pdf_url(str(entry.get("url") or "")) else radar_module.base.visible(payload)
+    folded = radar_module.v025.fold(text)
+    required = list(entry.get("required_terms") or [])
+    if all(radar_module.v025.fold(term) in folded for term in required):
+        return text
+    return None
+
+
+def verified_detail_text_resilient(
+    radar_module: Any,
+    entry: dict[str, Any],
+    detail_payloads: dict[str, str] | None,
+    live: bool,
+) -> str | None:
+    """Riconferma direttamente un detail noto anche se il listing non lo riscopre.
+
+    Le opportunità rule-based già documentate non dipendono dalla presenza nella
+    pagina indice del giorno: viene interrogato il loro URL ufficiale e vengono
+    richiesti tutti i required_terms versionati. Un HTTP 200 privo dell'evidenza
+    non basta; in quel caso si tenta Chromium. Se i termini non sono confermati,
+    la funzione restituisce None e i normali hold restano attivi.
+    """
+    url = str(entry.get("url") or "")
+    if not live or (detail_payloads and url in detail_payloads):
+        return _ORIGINAL_V03_VERIFIED_TEXT(radar_module, entry, detail_payloads, live)
+
+    try:
+        payload = _fetch_official_payload(url)
+        checked = _verified_detail_payload_text(radar_module, entry, payload)
+        if checked is not None:
+            return checked
+    except Exception:
+        pass
+
+    if not _is_pdf_url(url):
+        try:
+            rendered = _fetch_playwright_text(url, timeout_ms=30_000)
+            checked = _verified_detail_payload_text(radar_module, entry, rendered)
+            if checked is not None:
+                return checked
+        except Exception:
+            pass
+    return None
 
 
 def _verify_official_evidence_set(
@@ -305,10 +354,12 @@ def verify_entry_resilient(
 
 def main() -> int:
     daily.radar.core.verify_entry = verify_entry_resilient
+    v03_post._verified_text = verified_detail_text_resilient
     try:
         return daily.main()
     finally:
         daily.radar.core.verify_entry = _ORIGINAL_VERIFY
+        v03_post._verified_text = _ORIGINAL_V03_VERIFIED_TEXT
 
 
 if __name__ == "__main__":
