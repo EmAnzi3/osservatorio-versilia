@@ -1,0 +1,43 @@
+name: Materialize Demanio v1.27 once
+
+on:
+  push:
+    branches: ["staging/demanio-marittimo-v127"]
+    paths: [".github/workflows/materialize-demanio-v127-once.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging/demanio-marittimo-v127
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Materialize approved lot
+        run: |
+          python scripts/materialize_demanio_marittimo_v127.py
+          find . -type f -not -path './.git/*' -print0 | sort -z | xargs -0 sha256sum > /tmp/v127-before-second-run.sha256
+          python scripts/materialize_demanio_marittimo_v127.py
+          find . -type f -not -path './.git/*' -print0 | sort -z | xargs -0 sha256sum > /tmp/v127-after-second-run.sha256
+          diff -u /tmp/v127-before-second-run.sha256 /tmp/v127-after-second-run.sha256
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_demanio_marittimo_v127.py
+          python scripts/test_costa_mare_v123.py
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-monitor-state.json >/dev/null
+      - name: Remove one-shot workflow and commit generated canonical files
+        run: |
+          rm .github/workflows/materialize-demanio-v127-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "Materialize v1.27.0 demanio marittimo"
+          git push origin HEAD:staging/demanio-marittimo-v127
