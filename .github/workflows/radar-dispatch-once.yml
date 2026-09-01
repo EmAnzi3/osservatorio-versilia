@@ -1,0 +1,20 @@
+name: Radar Opportunità · trigger one-shot
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/radar-dispatch-once.yml"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily Radar on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run opportunity-radar-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
