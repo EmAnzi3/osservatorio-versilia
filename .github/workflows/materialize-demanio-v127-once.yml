@@ -41,3 +41,5 @@ jobs:
           git diff --cached --check
           git commit -m "Materialize v1.27.0 demanio marittimo"
           git push origin HEAD:staging/demanio-marittimo-v127
+
+# one-shot trigger
