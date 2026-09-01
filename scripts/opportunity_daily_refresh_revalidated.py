@@ -3,13 +3,14 @@
 
 Il Radar mantiene i gate esistenti. Questo wrapper interviene solo sul trasporto
 della verifica puntuale: i PDF vengono estratti come testo invece di essere
-decodificati come HTML e, per le pagine HTML che rifiutano il bot user-agent,
-viene tentato un secondo fetch con intestazioni da browser. I required_terms
-restano obbligatori; se la fonte non li conferma, il coverage/continuity hold
-resta attivo.
+decodificati come HTML e, per le pagine HTML che rifiutano o degradano il fetch
+bot, vengono tentati un fetch browser-like con retry e, come ultima risorsa, un
+browser Chromium reale. I required_terms restano obbligatori; se la fonte non
+li conferma, il coverage/continuity hold resta attivo.
 """
 from __future__ import annotations
 
+import time
 import urllib.request
 from datetime import date
 from typing import Any
@@ -29,18 +30,65 @@ def _is_pdf_url(url: str) -> bool:
     return urlsplit(url).path.casefold().endswith(".pdf")
 
 
-def _fetch_browser_html(url: str, timeout: int = 30) -> str:
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": _BROWSER_UA,
-            "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
-            "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
-        },
-    )
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        charset = response.headers.get_content_charset() or "utf-8"
-        return response.read().decode(charset, errors="replace")
+def _fetch_browser_html(url: str, timeout: int = 30, attempts: int = 3) -> str:
+    """Fetch HTTP con intestazioni browser e retry breve per errori transitori."""
+    last_error: Exception | None = None
+    for attempt in range(max(1, attempts)):
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": _BROWSER_UA,
+                "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
+                "Cache-Control": "no-cache",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                charset = response.headers.get_content_charset() or "utf-8"
+                return response.read().decode(charset, errors="replace")
+        except Exception as exc:  # pragma: no cover - dipende dalla rete live
+            last_error = exc
+            if attempt + 1 < max(1, attempts):
+                time.sleep(1.0 + attempt)
+    assert last_error is not None
+    raise last_error
+
+
+def _fetch_playwright_text(url: str, timeout_ms: int = 45_000) -> str:
+    """Ultimo trasporto: rende la pagina con Chromium e restituisce testo visibile."""
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent=_BROWSER_UA,
+            locale="it-IT",
+            extra_http_headers={
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
+                "Cache-Control": "no-cache",
+            },
+        )
+        page = context.new_page()
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            try:
+                page.wait_for_load_state("networkidle", timeout=8_000)
+            except PlaywrightTimeoutError:
+                # Molti portali mantengono connessioni analytics aperte: il DOM
+                # già caricato è sufficiente per verificare i termini obbligatori.
+                pass
+            try:
+                text = page.locator("body").inner_text(timeout=10_000)
+            except Exception:
+                text = page.content()
+            if not text.strip():
+                text = page.content()
+            return text
+        finally:
+            context.close()
+            browser.close()
 
 
 def _verify_fetched_payload(
@@ -123,8 +171,8 @@ def verify_entry_resilient(
     if original[2]:
         errors.append(str(original[2]))
 
-    # Alcuni portali istituzionali rispondono diversamente al bot UA. Il secondo
-    # trasporto non abbassa il gate: i required_terms vengono ricontrollati.
+    # Secondo trasporto: HTTP browser-like con retry. Il gate non cambia:
+    # i required_terms vengono sempre ricontrollati dal verificatore originale.
     try:
         html = _fetch_browser_html(url)
         checked = _verify_fetched_payload(entry, today, html)
@@ -134,6 +182,18 @@ def verify_entry_resilient(
             errors.append(str(checked[2]))
     except Exception as exc:  # pragma: no cover - dipende dalla rete live
         errors.append(f"HTML browser fallback: {exc}")
+
+    # Terzo trasporto: Chromium reale per portali dinamici/anti-bot. Anche qui
+    # una pagina viene accettata solo se contiene tutti i required_terms.
+    try:
+        rendered = _fetch_playwright_text(url)
+        checked = _verify_fetched_payload(entry, today, rendered)
+        if checked[0]:
+            return True, "live", None
+        if checked[2]:
+            errors.append(str(checked[2]))
+    except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
+        errors.append(f"Chromium fallback: {exc}")
 
     # Se la verifica robusta non riconferma la fonte, l'unico comportamento
     # permissivo resta il cached_recent originale entro la sua finestra prevista.
