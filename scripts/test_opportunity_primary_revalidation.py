@@ -208,6 +208,60 @@ def _test_pcm_pdf_alternate_rechecks_same_terms() -> None:
     assert error is None
 
 
+def _test_verified_detail_uses_direct_evidence_after_listing_loss() -> None:
+    entry = {
+        "rule_id": "mic-jazz-2027",
+        "source_id": "mic-spettacolo",
+        "title": "Bando per la promozione della musica Jazz 2027",
+        "url": "https://example.test/jazz",
+        "required_terms": ["autonomie territoriali", "10 settembre 2026", "16:00", "35 mila euro"],
+    }
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+    try:
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina indice/intermedia senza il bando"
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: (
+            "Bando musica jazz. Autonomie territoriali. 35 mila euro. "
+            "Domande entro le ore 16:00 del 10 settembre 2026."
+        )
+        text = revalidation.verified_detail_text_resilient(
+            revalidation.daily.radar.radar,
+            entry,
+            None,
+            True,
+        )
+    finally:
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+    assert text is not None
+    assert "10 settembre 2026" in text
+
+
+def _test_verified_detail_does_not_weaken_required_terms() -> None:
+    entry = {
+        "rule_id": "mic-jazz-2027",
+        "source_id": "mic-spettacolo",
+        "title": "Bando per la promozione della musica Jazz 2027",
+        "url": "https://example.test/jazz",
+        "required_terms": ["autonomie territoriali", "10 settembre 2026", "16:00", "35 mila euro"],
+    }
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+    try:
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina senza termini"
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: "ancora senza evidenza completa"
+        text = revalidation.verified_detail_text_resilient(
+            revalidation.daily.radar.radar,
+            entry,
+            None,
+            True,
+        )
+    finally:
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+    assert text is None
+
+
 def _test_no_gate_weakening() -> None:
     entry = _entry("https://example.test/bando")
     original_verify = revalidation._ORIGINAL_VERIFY
@@ -241,10 +295,12 @@ def _test_no_gate_weakening() -> None:
 def _test_entrypoint_delegation() -> None:
     original_main = revalidation.daily.main
     original_verify = revalidation.daily.radar.core.verify_entry
+    original_detail = revalidation.v03_post._verified_text
     observed: dict[str, bool] = {}
 
     def fake_daily_main() -> int:
-        observed["patched"] = revalidation.daily.radar.core.verify_entry is revalidation.verify_entry_resilient
+        observed["verify_patched"] = revalidation.daily.radar.core.verify_entry is revalidation.verify_entry_resilient
+        observed["detail_patched"] = revalidation.v03_post._verified_text is revalidation.verified_detail_text_resilient
         return 0
 
     try:
@@ -253,9 +309,12 @@ def _test_entrypoint_delegation() -> None:
     finally:
         revalidation.daily.main = original_main
         revalidation.daily.radar.core.verify_entry = original_verify
+        revalidation.v03_post._verified_text = original_detail
 
-    assert observed.get("patched") is True
+    assert observed.get("verify_patched") is True
+    assert observed.get("detail_patched") is True
     assert revalidation.daily.radar.core.verify_entry is original_verify
+    assert revalidation.v03_post._verified_text is original_detail
 
 
 def main() -> int:
@@ -265,6 +324,8 @@ def main() -> int:
     _test_official_alternate_rechecks_same_terms()
     _test_pcm_html_alternate_rechecks_same_terms()
     _test_pcm_pdf_alternate_rechecks_same_terms()
+    _test_verified_detail_uses_direct_evidence_after_listing_loss()
+    _test_verified_detail_does_not_weaken_required_terms()
     _test_no_gate_weakening()
     _test_entrypoint_delegation()
     print("Riconferma fonti primarie Radar: PASS")
