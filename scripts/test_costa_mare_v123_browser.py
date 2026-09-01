@@ -203,6 +203,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
             page.wait_for_timeout(220)
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "174" in aria, aria
+            assert_detail(page, key, mobile)
             detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
             assert "Licenze" in detail and "Atti formali" in detail
         else:
@@ -212,6 +213,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
             page.wait_for_timeout(220)
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "1.704.536" in aria, aria
+            assert_detail(page, key, mobile)
             detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
             assert "Dovuto totale" in detail and "Canone minimo" in detail
 
