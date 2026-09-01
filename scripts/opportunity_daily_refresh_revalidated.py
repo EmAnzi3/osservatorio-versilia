@@ -142,10 +142,10 @@ def verify_entry_resilient(
     return False, "failed", "; ".join(dict.fromkeys(errors)) or "fonte primaria non verificabile"
 
 
-def main(argv: list[str] | None = None) -> int:
+def main() -> int:
     daily.radar.core.verify_entry = verify_entry_resilient
     try:
-        return daily.main(argv)
+        return daily.main()
     finally:
         daily.radar.core.verify_entry = _ORIGINAL_VERIFY
 
