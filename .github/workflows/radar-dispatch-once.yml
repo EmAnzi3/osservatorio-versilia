@@ -1,4 +1,4 @@
-name: Radar Opportunità · preflight continuità rule-based
+name: Radar Opportunità · trigger one-shot
 
 on:
   push:
@@ -7,46 +7,14 @@ on:
       - ".github/workflows/radar-dispatch-once.yml"
 
 permissions:
+  actions: write
   contents: read
 
 jobs:
-  preflight:
+  dispatch:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v4
-        with:
-          ref: main
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install dependencies
-        run: |
-          python -m pip install -r requirements-ci.txt
-          python -m playwright install --with-deps chromium
-      - name: Run revalidation unit tests
-        run: python scripts/test_opportunity_primary_revalidation.py
-      - name: Reconfirm Jazz direct evidence live
-        run: |
-          python - <<'PY'
-          import json
-          import sys
-          from pathlib import Path
-
-          sys.path.insert(0, 'scripts')
-          import opportunity_daily_refresh_revalidated as revalidation
-
-          payload = json.loads(Path('data/opportunity-verified-details-v03.json').read_text(encoding='utf-8'))
-          entry = next(x for x in payload['entries'] if x.get('rule_id') == 'mic-jazz-2027')
-          print(f"Jazz verification source: {entry['url']}")
-          text = revalidation.verified_detail_text_resilient(
-              revalidation.daily.radar.radar,
-              entry,
-              None,
-              True,
-          )
-          assert text is not None, 'Jazz 2027 non riconfermato dal decreto ufficiale MiC'
-          print('mic-jazz-2027: LIVE PASS')
-          PY
+      - name: Trigger daily Radar on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run opportunity-radar-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
