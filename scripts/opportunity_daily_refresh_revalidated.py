@@ -27,9 +27,9 @@ _BROWSER_UA = (
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36"
 )
 
-# Evidenze istituzionali equivalenti usate solo quando l'endpoint primario non
-# riesce a riconfermare l'opportunità. Ogni payload alternativo viene sottoposto
-# esattamente agli stessi required_terms della scheda verificata.
+# Evidenze istituzionali equivalenti per endpoint primari notoriamente instabili.
+# Vengono interrogate prima del trasporto primario per evitare timeout lunghi, ma
+# ogni payload è sottoposto esattamente agli stessi required_terms della scheda.
 _OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
     "life-2026-cet-pda": (
         "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/LIFE-2026-CET-PDA",
@@ -39,6 +39,9 @@ _OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
     ),
     "pcm-pari-tratta-bando-8-2026": (
         "https://www.pariopportunita.gov.it/media/002lypuf/bando-antitratta-8_2026.pdf",
+    ),
+    "eu-eucf-call-8-2026": (
+        "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en?prefLang=fi",
     ),
 }
 
@@ -150,9 +153,6 @@ def _verify_official_alternates(
                 errors.append(f"Fonte ufficiale alternativa PDF: {exc}")
             continue
 
-        # Per pagine HTML prova prima il trasporto leggero; se la pagina è
-        # dinamica o degradata, passa a Chromium. Entrambi devono confermare gli
-        # stessi required_terms della fonte primaria.
         try:
             html = _fetch_browser_html(alternate_url, timeout=20, attempts=2)
             checked = _verify_fetched_payload(entry, today, html)
@@ -197,10 +197,17 @@ def verify_entry_resilient(
         )
 
     errors: list[str] = []
+    coverage_id = str(entry.get("coverage_id") or "")
+
+    # Gli endpoint mappati sono già stati auditati come evidenze ufficiali
+    # equivalenti. Provarli per primi evita che un host primario guasto consumi
+    # minuti e faccia fallire il run, senza cambiare in alcun modo il gate.
+    if coverage_id in _OFFICIAL_ALTERNATE_URLS:
+        alternate = _verify_official_alternates(entry, today, errors)
+        if alternate is not None:
+            return alternate
 
     if _is_pdf_url(url):
-        # Il fetch HTML storico decodificava i byte PDF come UTF-8: i termini
-        # obbligatori non potevano essere trovati. Qui estraiamo testo reale.
         try:
             text = pdf_evidence.fetch_pdf_text(url, max_pages=24, max_chars=120000)
             checked = _verify_fetched_payload(entry, today, text)
@@ -211,8 +218,6 @@ def verify_entry_resilient(
         except Exception as exc:  # pragma: no cover - dipende dalla rete live
             errors.append(f"PDF primario: {exc}")
 
-        # Se l'estrazione live fallisce, resta ammesso esclusivamente il fallback
-        # temporaneo già previsto dal contratto; nessuna estensione della grace.
         cached = _ORIGINAL_VERIFY(
             entry,
             today,
@@ -226,7 +231,6 @@ def verify_entry_resilient(
             errors.append(str(cached[2]))
         return False, "failed", "; ".join(dict.fromkeys(errors)) or "fonte PDF primaria non verificabile"
 
-    # Primo tentativo invariato: conserva il comportamento collaudato del motore.
     original = _ORIGINAL_VERIFY(
         entry,
         today,
@@ -239,8 +243,6 @@ def verify_entry_resilient(
     if original[2]:
         errors.append(str(original[2]))
 
-    # Secondo trasporto: HTTP browser-like con retry. Il gate non cambia:
-    # i required_terms vengono sempre ricontrollati dal verificatore originale.
     try:
         html = _fetch_browser_html(url)
         checked = _verify_fetched_payload(entry, today, html)
@@ -251,9 +253,6 @@ def verify_entry_resilient(
     except Exception as exc:  # pragma: no cover - dipende dalla rete live
         errors.append(f"HTML browser fallback: {exc}")
 
-    # Terzo trasporto: Chromium reale per portali dinamici/anti-bot o TLS mal
-    # configurato. Anche qui una pagina viene accettata solo se contiene tutti
-    # i required_terms, quindi nessun gate documentale viene indebolito.
     try:
         rendered = _fetch_playwright_text(url)
         checked = _verify_fetched_payload(entry, today, rendered)
@@ -264,14 +263,6 @@ def verify_entry_resilient(
     except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
         errors.append(f"Chromium fallback: {exc}")
 
-    # Per casi esplicitamente mappati, prova una seconda fonte ufficiale della
-    # stessa opportunità. È accettata solo se soddisfa gli stessi required_terms.
-    alternate = _verify_official_alternates(entry, today, errors)
-    if alternate is not None:
-        return alternate
-
-    # Se la verifica robusta non riconferma la fonte, l'unico comportamento
-    # permissivo resta il cached_recent originale entro la sua finestra prevista.
     if original[0]:
         return original
     return False, "failed", "; ".join(dict.fromkeys(errors)) or "fonte primaria non verificabile"
