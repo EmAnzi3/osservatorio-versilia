@@ -1,4 +1,4 @@
-name: Radar Opportunità · probe finale fonti instabili
+name: Radar Opportunità · probe finale fonti instabili v2
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
