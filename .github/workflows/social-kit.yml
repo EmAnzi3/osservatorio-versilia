@@ -20,6 +20,7 @@ on:
     branches: ["main"]
     paths:
       - "data/site-data.json"
+      - "data/meteo-clima-minmax-poc.json"
       - "social-kit/config/design-system.json"
       - "social-kit/config/themes.json"
       - "social-kit/config/question-bank.json"
@@ -31,11 +32,14 @@ on:
       - "scripts/generate_weekly_social_kit.py"
       - "scripts/prepare_social_site_data.py"
       - "scripts/test_social_calendar.py"
+      - "scripts/test_social_data_fidelity.py"
+      - "scripts/test_social_data_fidelity_ci.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
   pull_request:
     paths:
       - "data/site-data.json"
+      - "data/meteo-clima-minmax-poc.json"
       - "social-kit/config/design-system.json"
       - "social-kit/config/themes.json"
       - "social-kit/config/question-bank.json"
@@ -47,6 +51,8 @@ on:
       - "scripts/generate_weekly_social_kit.py"
       - "scripts/prepare_social_site_data.py"
       - "scripts/test_social_calendar.py"
+      - "scripts/test_social_data_fidelity.py"
+      - "scripts/test_social_data_fidelity_ci.py"
       - "scripts/test_weekly_social_kit.py"
       - ".github/workflows/social-kit.yml"
 
@@ -100,6 +106,11 @@ jobs:
           cp "${{ steps.planner.outputs.json_path }}" /tmp/social-week.json
           cp "${{ steps.planner.outputs.markdown_path }}" /tmp/social-week.md
 
+      - name: Freeze canonical datasets for fidelity checks
+        run: |
+          cp data/site-data.json /tmp/social-site-data-canonical.json
+          cp data/meteo-clima-minmax-poc.json /tmp/social-climate-canonical.json
+
       - name: Validate calendar and known collisions
         run: python scripts/test_social_calendar.py
 
@@ -108,6 +119,12 @@ jobs:
 
       - name: Generate four-slide weekly package
         run: python scripts/generate_weekly_social_kit.py --plan /tmp/social-week.json
+
+      - name: Verify Social Kit data fidelity
+        run: |
+          python scripts/test_social_data_fidelity_ci.py \
+            --canonical-site /tmp/social-site-data-canonical.json \
+            --canonical-climate /tmp/social-climate-canonical.json
 
       - name: Run weekly Social Kit quality gate
         run: python scripts/test_weekly_social_kit.py
@@ -119,14 +136,23 @@ jobs:
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           data = json.load(open('social-kit/dist/manifest.json', encoding='utf-8'))
+          fidelity = json.load(open('social-kit/dist/data-fidelity.json', encoding='utf-8'))
           print(f"status={data['status']}")
           print(f"posts={data['posts']}")
           print(f"slides={data['slides']}")
           print(f"manual={len(data.get('manual_required', []))}")
+          print(f"fidelity={fidelity['status']}")
+          print(f"numeric_checks={fidelity['numeric_checks']}")
+          print(f"rendered_checks={fidelity['rendered_value_checks']}")
           PY
 
       - name: Add package to workflow summary
-        run: cat social-kit/dist/README.md >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          cat social-kit/dist/README.md >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "## Fedeltà dati" >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "**${{ steps.package.outputs.fidelity }}** · ${{ steps.package.outputs.numeric_checks }} controlli numerici · ${{ steps.package.outputs.rendered_checks }} controlli sui valori renderizzati." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload weekly Social Kit
         uses: actions/upload-artifact@v4
@@ -146,6 +172,9 @@ jobs:
           POSTS: ${{ steps.package.outputs.posts }}
           SLIDES: ${{ steps.package.outputs.slides }}
           MANUAL: ${{ steps.package.outputs.manual }}
+          FIDELITY: ${{ steps.package.outputs.fidelity }}
+          NUMERIC_CHECKS: ${{ steps.package.outputs.numeric_checks }}
+          RENDERED_CHECKS: ${{ steps.package.outputs.rendered_checks }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           cp /tmp/social-week.md /tmp/social-issue.md
@@ -155,11 +184,12 @@ jobs:
           ## Materiale della settimana
 
           **Pacchetto:** \`social-kit-${WEEK_START}\`  
-          **Stato:** ${PACKAGE_STATUS} · ${POSTS} caroselli · ${SLIDES} PNG · ${MANUAL} interventi manuali.
+          **Stato:** ${PACKAGE_STATUS} · ${POSTS} caroselli · ${SLIDES} PNG · ${MANUAL} interventi manuali.  
+          **Fedeltà dati:** **${FIDELITY}** · ${NUMERIC_CHECKS} controlli numerici · ${RENDERED_CHECKS} controlli sui valori effettivamente renderizzati.
 
           [Apri l'esecuzione e scarica il pacchetto dalla sezione **Artifacts**](${RUN_URL})
 
-          Dentro lo ZIP, per ciascuna uscita trovi le quattro immagini 1080×1350, i copy per Facebook/Instagram/LinkedIn/X, ALT e provenienza. Il pacchetto resta disponibile per 45 giorni.
+          Dentro lo ZIP, per ciascuna uscita trovi le quattro immagini 1080×1350, i copy per Facebook/Instagram/LinkedIn/X, ALT, provenienza e \`data-fidelity.json\`. Il pacchetto resta disponibile per 45 giorni.
           EOF
 
           export TITLE
@@ -169,4 +199,37 @@ jobs:
             gh issue edit "$NUMBER" --title "$TITLE" --body-file /tmp/social-issue.md
           else
             gh issue create --title "$TITLE" --body-file /tmp/social-issue.md
+          fi
+
+      - name: Mark weekly issue as blocked when generation or fidelity fails
+        if: failure() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: ${{ steps.planner.outputs.issue_title }}
+          WEEK_START: ${{ steps.planner.outputs.week_start }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "${TITLE:-}" ]; then
+            TITLE="Piano social · settimana ${WEEK_START:-non determinata}"
+          fi
+          cat > /tmp/social-blocked.md <<EOF
+          # BLOCCO AUTOMATICO · SOCIAL KIT NON PUBBLICABILE
+
+          Il workflow non ha superato tutti i controlli obbligatori. **Nessun pacchetto prodotto da questa esecuzione è autorizzato alla pubblicazione.**
+
+          Il blocco può dipendere da generazione, qualità grafica o **fedeltà dei dati rispetto ai dataset canonici dell'Osservatorio**.
+
+          [Apri l'esecuzione e verifica il controllo fallito](${RUN_URL})
+
+          La dicitura **Fedeltà dati: PASS** comparirà nell'issue solo dopo un'esecuzione completata con successo.
+          EOF
+
+          export TITLE
+          ISSUES_JSON="$(gh issue list --state open --limit 100 --json number,title)"
+          NUMBER="$(printf '%s' "$ISSUES_JSON" | python -c 'import json, os, sys; items=json.load(sys.stdin); title=os.environ["TITLE"]; print(next((str(x["number"]) for x in items if x["title"] == title), ""))')"
+          if [ -n "$NUMBER" ]; then
+            gh issue edit "$NUMBER" --title "$TITLE" --body-file /tmp/social-blocked.md
+          else
+            gh issue create --title "$TITLE" --body-file /tmp/social-blocked.md
           fi
