@@ -268,6 +268,9 @@ def verify_entry_resilient(
     fallback_max_days: int = 7,
 ) -> tuple[bool, str, str | None]:
     """Riconferma la stessa evidenza primaria con trasporti adatti al contenuto."""
+    if daily.radar.core._is_expired_application(entry, today):
+        return True, "expired_deadline", None
+
     url = str(entry.get("url") or "")
 
     if not live or (detail_payloads and url in detail_payloads):
