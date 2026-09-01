@@ -19,93 +19,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Materialize approved lot and wire regressions
+      - name: Materialize and wire regressions
         run: |
           python scripts/materialize_demanio_marittimo_v127.py
-          python - <<'PY'
-          from pathlib import Path
-
-          wrapper = Path('scripts/test_costa_mare_v123.py')
-          text = wrapper.read_text(encoding='utf-8')
-          if 'import test_demanio_marittimo_v127 as demanio' not in text:
-              text = text.replace(
-                  'import test_costa_mare_v123_legacy as legacy\n',
-                  'import test_costa_mare_v123_legacy as legacy\nimport test_demanio_marittimo_v127 as demanio\n',
-                  1,
-              )
-          marker = '    legacy.assert_registry_and_ui(legacy_compatible_view(data))\n'
-          addition = marker + '    if version_tuple(data.get("version")) >= (1, 27, 0):\n        demanio.main()\n'
-          if 'demanio.main()' not in text:
-              if marker not in text:
-                  raise SystemExit('Costa data regression marker not found')
-              text = text.replace(marker, addition, 1)
-          wrapper.write_text(text, encoding='utf-8')
-
-          browser = Path('scripts/test_costa_mare_v123_browser.py')
-          text = browser.read_text(encoding='utf-8')
-          constants = 'NOT_APPLICABLE = ("Massarosa", "Seravezza", "Stazzema")\n'
-          if 'DEMANIO_METRICS =' not in text:
-              text = text.replace(constants, constants + 'DEMANIO_METRICS = ("maritimeConcessions", "maritimeConcessionFeesDue")\n', 1)
-          marker = '\ndef assert_towns(page: Page, base: str, mobile: bool) -> None:\n'
-          function = r'''
-def assert_demanio(page: Page, base: str, mobile: bool) -> None:
-    page.goto(
-        urljoin(base, "confronta/ambiente/?indicatore=maritimeConcessions"),
-        wait_until="networkidle",
-    )
-    page.wait_for_timeout(500)
-    for key in DEMANIO_METRICS:
-        open_metric(page, key)
-        no_overflow(page, f"{key}/confronto")
-        assert_applicability(page, key)
-        assert_detail(page, key, mobile)
-        selector = page.locator("#compare-bars select[data-composite-component]:visible")
-        assert selector.count() == 1 and selector.locator("option").count() == 2, key
-        if key == "maritimeConcessions":
-            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
-            assert "359" in aria, aria
-            selector.select_option("part-1")
-            page.wait_for_timeout(220)
-            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
-            assert "174" in aria, aria
-            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
-            assert "Licenze" in detail and "Atti formali" in detail
-        else:
-            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
-            assert "2.669.422" in aria, aria
-            selector.select_option("part-1")
-            page.wait_for_timeout(220)
-            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
-            assert "1.704.536" in aria, aria
-            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
-            assert "Dovuto totale" in detail and "Canone minimo" in detail
-
-    for key in DEMANIO_METRICS:
-        page.goto(
-            urljoin(base, f"comuni/massarosa/?tema=ambiente&indicatore={key}"),
-            wait_until="networkidle",
-        )
-        page.wait_for_timeout(300)
-        primary = page.locator("#town-topic .town-metric-primary strong").first.inner_text().strip().lower()
-        assert primary == "n.a.", f"{key}: Massarosa non è n.a. ({primary})"
-        applicability = page.locator("#town-topic .coast-not-applicable")
-        assert applicability.count() == 1 and "non applicabile" in applicability.inner_text().lower()
-
-'''
-          if 'def assert_demanio(' not in text:
-              if marker not in text:
-                  raise SystemExit('Costa browser regression marker not found')
-              text = text.replace(marker, function + marker, 1)
-          desktop_marker = '        assert_towns(desktop.new_page(), base, mobile=False)\n'
-          if 'assert_demanio(desktop.new_page()' not in text:
-              text = text.replace(desktop_marker, desktop_marker + '        assert_demanio(desktop.new_page(), base, mobile=False)\n', 1)
-          mobile_marker = '        assert_towns(mobile.new_page(), base, mobile=True)\n'
-          if 'assert_demanio(mobile.new_page()' not in text:
-              text = text.replace(mobile_marker, mobile_marker + '        assert_demanio(mobile.new_page(), base, mobile=True)\n', 1)
-          browser.write_text(text, encoding='utf-8')
-          PY
+          python scripts/patch_demanio_regressions_v127.py
           find . -type f -not -path './.git/*' -print0 | sort -z | xargs -0 sha256sum > /tmp/v127-before-second-run.sha256
           python scripts/materialize_demanio_marittimo_v127.py
+          python scripts/patch_demanio_regressions_v127.py
           find . -type f -not -path './.git/*' -print0 | sort -z | xargs -0 sha256sum > /tmp/v127-after-second-run.sha256
           diff -u /tmp/v127-before-second-run.sha256 /tmp/v127-after-second-run.sha256
           python scripts/finalize_catalog_release.py --check
@@ -126,4 +46,4 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
           git commit -m "Wire v1.27.0 demanio regressions"
           git push origin HEAD:staging/demanio-marittimo-v127
 
-# one-shot trigger v5
+# one-shot trigger v6
