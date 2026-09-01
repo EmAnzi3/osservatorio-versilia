@@ -38,24 +38,28 @@ def _test_direct_pdf_revalidation() -> None:
     assert error is None
 
 
+def _fake_verify(entry, today, *, detail_payloads=None, live=True, fallback_max_days=7):
+    if detail_payloads:
+        payload = detail_payloads[str(entry.get("url"))].casefold()
+        missing = [term for term in entry.get("required_terms") or [] if term.casefold() not in payload]
+        if not missing:
+            return True, "live", None
+        return False, "failed", "termini obbligatori non trovati"
+    return False, "failed", "HTTP 403 dal trasporto bot"
+
+
 def _test_html_browser_fallback_rechecks_terms() -> None:
     entry = _entry("https://example.test/bando")
     original_verify = revalidation._ORIGINAL_VERIFY
     original_fetch = revalidation._fetch_browser_html
-
-    def fake_verify(entry, today, *, detail_payloads=None, live=True, fallback_max_days=7):
-        if detail_payloads:
-            payload = detail_payloads[str(entry.get("url"))].casefold()
-            missing = [term for term in entry.get("required_terms") or [] if term.casefold() not in payload]
-            if not missing:
-                return True, "live", None
-            return False, "failed", "termini obbligatori non trovati"
-        return False, "failed", "HTTP 403 dal trasporto bot"
-
+    original_playwright = revalidation._fetch_playwright_text
     try:
-        revalidation._ORIGINAL_VERIFY = fake_verify
-        revalidation._fetch_browser_html = lambda url, timeout=30: (
+        revalidation._ORIGINAL_VERIFY = _fake_verify
+        revalidation._fetch_browser_html = lambda url, timeout=30, attempts=3: (
             "<html><body>Termine alfa · 30 settembre 2026</body></html>"
+        )
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("Chromium non deve essere chiamato se il fetch HTTP è sufficiente")
         )
         ok, status, error = revalidation.verify_entry_resilient(
             entry,
@@ -66,6 +70,33 @@ def _test_html_browser_fallback_rechecks_terms() -> None:
     finally:
         revalidation._ORIGINAL_VERIFY = original_verify
         revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+    assert ok is True, error
+    assert status == "live", status
+    assert error is None
+
+
+def _test_playwright_fallback_rechecks_terms() -> None:
+    entry = _entry("https://example.test/dynamic")
+    original_verify = revalidation._ORIGINAL_VERIFY
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+    try:
+        revalidation._ORIGINAL_VERIFY = _fake_verify
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina intermedia senza evidenza"
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: (
+            "Pagina resa da Chromium: termine alfa · 30 settembre 2026"
+        )
+        ok, status, error = revalidation.verify_entry_resilient(
+            entry,
+            date(2026, 9, 1),
+            live=True,
+            fallback_max_days=7,
+        )
+    finally:
+        revalidation._ORIGINAL_VERIFY = original_verify
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
     assert ok is True, error
     assert status == "live", status
     assert error is None
@@ -75,15 +106,17 @@ def _test_no_gate_weakening() -> None:
     entry = _entry("https://example.test/bando")
     original_verify = revalidation._ORIGINAL_VERIFY
     original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
 
-    def fake_verify(entry, today, *, detail_payloads=None, live=True, fallback_max_days=7):
+    def always_fail(entry, today, *, detail_payloads=None, live=True, fallback_max_days=7):
         if detail_payloads:
             return False, "failed", "termini obbligatori non trovati"
         return False, "failed", "fonte primaria non verificabile"
 
     try:
-        revalidation._ORIGINAL_VERIFY = fake_verify
-        revalidation._fetch_browser_html = lambda url, timeout=30: "<html><body>contenuto diverso</body></html>"
+        revalidation._ORIGINAL_VERIFY = always_fail
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "<html><body>contenuto diverso</body></html>"
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: "contenuto reso ma ancora privo dei termini"
         ok, status, error = revalidation.verify_entry_resilient(
             entry,
             date(2026, 9, 1),
@@ -93,6 +126,7 @@ def _test_no_gate_weakening() -> None:
     finally:
         revalidation._ORIGINAL_VERIFY = original_verify
         revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
     assert ok is False
     assert status == "failed"
     assert error
@@ -121,6 +155,7 @@ def _test_entrypoint_delegation() -> None:
 def main() -> int:
     _test_direct_pdf_revalidation()
     _test_html_browser_fallback_rechecks_terms()
+    _test_playwright_fallback_rechecks_terms()
     _test_no_gate_weakening()
     _test_entrypoint_delegation()
     print("Riconferma fonti primarie Radar: PASS")
