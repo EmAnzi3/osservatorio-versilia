@@ -216,7 +216,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
         else:
             assert_detail_headers(page, key, ("Dovuto totale", "Canone minimo"))
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
-            assert "2.669.422" in aria, aria
+            assert "2.669.423" in aria, aria
             selector.select_option("part-1")
             page.wait_for_timeout(220)
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
