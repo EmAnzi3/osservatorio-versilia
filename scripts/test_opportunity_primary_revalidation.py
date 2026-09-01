@@ -98,10 +98,31 @@ def _test_no_gate_weakening() -> None:
     assert error
 
 
+def _test_entrypoint_delegation() -> None:
+    original_main = revalidation.daily.main
+    original_verify = revalidation.daily.radar.core.verify_entry
+    observed: dict[str, bool] = {}
+
+    def fake_daily_main() -> int:
+        observed["patched"] = revalidation.daily.radar.core.verify_entry is revalidation.verify_entry_resilient
+        return 0
+
+    try:
+        revalidation.daily.main = fake_daily_main
+        assert revalidation.main() == 0
+    finally:
+        revalidation.daily.main = original_main
+        revalidation.daily.radar.core.verify_entry = original_verify
+
+    assert observed.get("patched") is True
+    assert revalidation.daily.radar.core.verify_entry is original_verify
+
+
 def main() -> int:
     _test_direct_pdf_revalidation()
     _test_html_browser_fallback_rechecks_terms()
     _test_no_gate_weakening()
+    _test_entrypoint_delegation()
     print("Riconferma fonti primarie Radar: PASS")
     return 0
 
