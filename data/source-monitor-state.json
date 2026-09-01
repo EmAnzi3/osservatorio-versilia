@@ -2309,6 +2309,32 @@
       "frequencies": [
         "irregular"
       ]
+    },
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": {
+      "url": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "maritimeConcessions",
+        "maritimeConcessionFeesDue"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mit-sid-demanio-irregular"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
     }
   },
   "metrics": {
@@ -3433,6 +3459,18 @@
       "publishedPeriod": "2026",
       "checkedAt": "2026-08-31T17:19:31+02:00",
       "observedLatestPeriod": "2026",
+      "status": "current"
+    },
+    "maritimeConcessions": {
+      "publishedPeriod": "2026-08",
+      "checkedAt": "2026-09-01T16:30:00+00:00",
+      "observedLatestPeriod": "2026-08",
+      "status": "current"
+    },
+    "maritimeConcessionFeesDue": {
+      "publishedPeriod": "2026-08",
+      "checkedAt": "2026-09-01T16:30:00+00:00",
+      "observedLatestPeriod": "2026-08",
       "status": "current"
     }
   }

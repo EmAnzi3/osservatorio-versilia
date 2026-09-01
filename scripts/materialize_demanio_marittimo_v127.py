@@ -90,7 +90,7 @@ def patch_release():
  if v127 not in t:
   if v126 not in t:raise RuntimeError('Changelog v1.26.0 non trovato')
   APP05.write_text(t.replace(v126,v127+'\n'+v126,1),encoding='utf-8')
- repl(CAT,'release v1.26.0','release v1.27.0'); repl(CAT,"assert '2026.08.31-v1.26.0' in app5 and '175 indicatori complessivi' in app5 and '2026.08.30-v1.25.0' in app5","assert '2026.09.01-v1.27.0' in app5 and '177 indicatori complessivi' in app5 and '2026.08.31-v1.26.0' in app5"); repl(CAT,"assert '**v1.26.0** — 31 agosto 2026' in readme and '175 indicatori' in readme and '171 con valori incorporati' in readme","assert '**v1.27.0** — 1 settembre 2026' in readme and '177 indicatori' in readme and '173 con valori incorporati' in readme")
+ repl(CAT,'release v1.26.0','release v1.27.0'); repl(CAT,"'2026.08.31-v1.26.0' in app5 and '175 indicatori complessivi' in app5 and '2026.08.30-v1.25.0' in app5","'2026.09.01-v1.27.0' in app5 and '177 indicatori complessivi' in app5 and '2026.08.31-v1.26.0' in app5"); repl(CAT,"assert '**v1.26.0** — 31 agosto 2026' in readme and '175 indicatori' in readme and '171 con valori incorporati' in readme","assert '**v1.27.0** — 1 settembre 2026' in readme and '177 indicatori' in readme and '173 con valori incorporati' in readme")
 def patch_workflow():
  t=PAGES.read_text(encoding='utf-8')
  if 'test_demanio_marittimo_v127.py' in t:return

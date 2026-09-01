@@ -809,6 +809,15 @@
       body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(number3.format(d.coastKm))}</td><td>${html(number3.format(d.protectedKm))}</td><td>${html(formatValue(row.value,'percent'))}</td></tr>`; }).join('');
       note = 'Sono considerate le opere rigide della metodologia ISPRA 2020; i ripascimenti artificiali sono esclusi.';
     }
+    else if (key === 'maritimeConcessions') {
+      head = '<tr><th>Comune</th><th>Totali</th><th>Turistico-ricreative</th><th>Quota TR</th><th>Licenze</th><th>Atti formali</th><th>Consegne</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail, types=Object.fromEntries((d.titleTypeBreakdown||[]).map(x=>[x.label,x.count])); return `<tr><th>${html(row.town)}</th><td>${html(number0.format(d.totalConcessions))}</td><td>${html(number0.format(d.touristRecreationalConcessions))}</td><td>${html(number1.format(d.touristRecreationalShare))}%</td><td>${html(number0.format(types['Licenza']||0))}</td><td>${html(number0.format(types['Atto Formale']||0))}</td><td>${html(number0.format(types['Consegna']||0))}</td></tr>`; }).join('');
+      note = 'Il dettaglio usa i titoli unici idconc. Una concessione classificata dal SID come stabilimento balneare non viene trasformata nel conteggio degli stabilimenti.';
+    } else if (key === 'maritimeConcessionFeesDue') {
+      head = '<tr><th>Comune</th><th>Dovuto totale</th><th>Dovuto TR</th><th>Media totale</th><th>Mediana totale</th><th>Canone minimo</th></tr>';
+      body = applicable.map(row => { const d=row.coastDetail; return `<tr><th>${html(row.town)}</th><td>${html(formatValue(d.canoneDovutoEur,'currency2'))}</td><td>${html(formatValue(d.touristRecreationalCanoneDovutoEur,'currency2'))}</td><td>${html(formatValue(d.meanCanoneEur,'currency2'))}</td><td>${html(formatValue(d.medianCanoneEur,'currency2'))}</td><td>${html(number0.format(d.minimumCanoneCount))} · ${html(number1.format(d.minimumCanoneShare))}%</td></tr>`; }).join('');
+      note = 'Sono canoni dovuti registrati dal SID, non incassi o gettito comunale. Media e mediana sono calcolate sul totale dei titoli del Comune.';
+    }
     if (!head || !body) return '';
     return `<details class="detail-disclosure coast-detail" open><summary><span>${html(title)}</span><small>Valori elementari e denominatori</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="aggregate-note">${html(note)}</p></details>`;
   }

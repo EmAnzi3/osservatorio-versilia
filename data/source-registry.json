@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 175,
-  "expectedInlineMetricCount": 171,
+  "expectedMetricCount": 177,
+  "expectedInlineMetricCount": 173,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -502,6 +502,15 @@
       "acquisitionMethod": "Estrazione WFS massiva del progetto pmo_stato_lavori; riconciliazione 1:1 delle 1.265 righe degli export comunali con cb_pmo_lineare; classificazione tramite lavori_inizio e lavori_fine.",
       "licenseName": "Condizioni indicate dal Consorzio 1 Toscana Nord",
       "licenseUrl": "https://cbtoscananord.it/"
+    },
+    "mit-sid-demanio-irregular": {
+      "publisher": "Ministero delle Infrastrutture e dei Trasporti / SID",
+      "frequency": "irregular",
+      "frequencyLabel": "Irregolare",
+      "expectedRelease": "Quando il MIT pubblica un nuovo snapshot open data SID omogeneo",
+      "acquisitionMethod": "Download CSV/SHP MIT/SID, deduplica per idconc e fotografia comunale congelata nello snapshot della repository.",
+      "licenseName": "CC BY",
+      "licenseUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026"
     }
   },
   "sourceProfileByUrl": {
@@ -581,7 +590,8 @@
     "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
     "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
     "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
-    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021"
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021",
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -772,6 +782,12 @@
     },
     "pabCompletedOperationalGrossValue": {
       "profile": "cb1-pmo-status-2026"
+    },
+    "maritimeConcessions": {
+      "profile": "mit-sid-demanio-irregular"
+    },
+    "maritimeConcessionFeesDue": {
+      "profile": "mit-sid-demanio-irregular"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -817,7 +833,8 @@
     "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": "cb1-pmo-2026",
     "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
     "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
-    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021"
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021",
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {
