@@ -1,4 +1,4 @@
-name: Radar Opportunità · trigger one-shot
+name: Radar Opportunità · probe coverage diretta
 
 on:
   push:
@@ -7,14 +7,27 @@ on:
       - ".github/workflows/radar-dispatch-once.yml"
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  dispatch:
+  probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger daily Radar on main
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run opportunity-radar-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Radar dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Probe verified coverage entries
+        run: python scripts/probe_opportunity_verified_live.py
