@@ -100,6 +100,13 @@ def assert_detail(page: Page, key: str, mobile: bool) -> None:
     no_overflow(page, f"{key}/dettaglio")
 
 
+def assert_detail_headers(page: Page, key: str, expected: tuple[str, ...]) -> None:
+    detail = page.locator("#compare-bars .coast-detail:visible")
+    headers = [text.strip() for text in detail.locator("thead th").all_text_contents()]
+    assert all(label in headers for label in expected), f"{key}: intestazioni renderizzate={headers}"
+    assert all(detail.locator("thead th").nth(index).is_visible() for index in range(len(headers))), f"{key}: intestazioni non visibili={headers}"
+
+
 def assert_coast_export(page: Page) -> None:
     with page.expect_download() as download_info:
         page.locator("#compare-tools [data-download]").click()
@@ -197,6 +204,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
         selector = page.locator("#compare-bars select[data-composite-component]:visible")
         assert selector.count() == 1 and selector.locator("option").count() == 2, key
         if key == "maritimeConcessions":
+            assert_detail_headers(page, key, ("Licenze", "Atti formali", "Consegne"))
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "359" in aria, aria
             selector.select_option("part-1")
@@ -204,9 +212,9 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "174" in aria, aria
             assert_detail(page, key, mobile)
-            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
-            assert "Licenze" in detail and "Atti formali" in detail
+            assert_detail_headers(page, key, ("Licenze", "Atti formali", "Consegne"))
         else:
+            assert_detail_headers(page, key, ("Dovuto totale", "Canone minimo"))
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "2.669.422" in aria, aria
             selector.select_option("part-1")
@@ -214,8 +222,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
             aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
             assert "1.704.536" in aria, aria
             assert_detail(page, key, mobile)
-            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
-            assert "Dovuto totale" in detail and "Canone minimo" in detail
+            assert_detail_headers(page, key, ("Dovuto totale", "Canone minimo"))
 
     for key in DEMANIO_METRICS:
         page.goto(
