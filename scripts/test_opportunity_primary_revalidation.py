@@ -111,6 +111,10 @@ def _test_official_alternate_rechecks_same_terms() -> None:
     original_playwright = revalidation._fetch_playwright_text
     calls: list[str] = []
 
+    def browser_fetch(url: str, timeout: int = 30, attempts: int = 3) -> str:
+        calls.append(url)
+        return "pagina senza evidenza sufficiente"
+
     def rendered(url: str, timeout_ms: int = 45_000) -> str:
         calls.append(url)
         if "funding-tenders" in url:
@@ -119,7 +123,7 @@ def _test_official_alternate_rechecks_same_terms() -> None:
 
     try:
         revalidation._ORIGINAL_VERIFY = _fake_verify
-        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina primaria senza evidenza sufficiente"
+        revalidation._fetch_browser_html = browser_fetch
         revalidation._fetch_playwright_text = rendered
         ok, status, error = revalidation.verify_entry_resilient(
             entry,
@@ -136,6 +140,72 @@ def _test_official_alternate_rechecks_same_terms() -> None:
     assert status == "live", status
     assert error is None
     assert any("funding-tenders" in url for url in calls), calls
+
+
+def _test_pcm_html_alternate_rechecks_same_terms() -> None:
+    entry = _entry("https://primary.example.test/capitale-mare")
+    entry["coverage_id"] = "pcm-capitale-mare-2027"
+    entry["required_terms"] = ["capitale italiana del mare", "comuni costieri", "30 settembre 2026"]
+    original_verify = revalidation._ORIGINAL_VERIFY
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+
+    def browser_fetch(url: str, timeout: int = 30, attempts: int = 3) -> str:
+        if "statocitta.pcm.gov.it" in url:
+            return "Capitale italiana del mare 2027 · Comuni costieri · 30 settembre 2026"
+        return "pagina primaria senza evidenza sufficiente"
+
+    try:
+        revalidation._ORIGINAL_VERIFY = _fake_verify
+        revalidation._fetch_browser_html = browser_fetch
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: "pagina primaria senza evidenza sufficiente"
+        ok, status, error = revalidation.verify_entry_resilient(
+            entry,
+            date(2026, 9, 1),
+            live=True,
+            fallback_max_days=7,
+        )
+    finally:
+        revalidation._ORIGINAL_VERIFY = original_verify
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+
+    assert ok is True, error
+    assert status == "live", status
+    assert error is None
+
+
+def _test_pcm_pdf_alternate_rechecks_same_terms() -> None:
+    entry = _entry("https://primary.example.test/bando-8")
+    entry["coverage_id"] = "pcm-pari-tratta-bando-8-2026"
+    entry["required_terms"] = ["Bando n. 8/2026", "enti locali", "30 settembre 2026"]
+    original_verify = revalidation._ORIGINAL_VERIFY
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+    original_pdf = revalidation.pdf_evidence.fetch_pdf_text
+
+    try:
+        revalidation._ORIGINAL_VERIFY = _fake_verify
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina primaria senza evidenza sufficiente"
+        revalidation._fetch_playwright_text = lambda *args, **kwargs: "pagina primaria senza evidenza sufficiente"
+        revalidation.pdf_evidence.fetch_pdf_text = lambda *args, **kwargs: (
+            "Bando n. 8/2026 · enti locali · termine 30 settembre 2026"
+        )
+        ok, status, error = revalidation.verify_entry_resilient(
+            entry,
+            date(2026, 9, 1),
+            live=True,
+            fallback_max_days=7,
+        )
+    finally:
+        revalidation._ORIGINAL_VERIFY = original_verify
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+        revalidation.pdf_evidence.fetch_pdf_text = original_pdf
+
+    assert ok is True, error
+    assert status == "live", status
+    assert error is None
 
 
 def _test_no_gate_weakening() -> None:
@@ -193,6 +263,8 @@ def main() -> int:
     _test_html_browser_fallback_rechecks_terms()
     _test_playwright_fallback_rechecks_terms()
     _test_official_alternate_rechecks_same_terms()
+    _test_pcm_html_alternate_rechecks_same_terms()
+    _test_pcm_pdf_alternate_rechecks_same_terms()
     _test_no_gate_weakening()
     _test_entrypoint_delegation()
     print("Riconferma fonti primarie Radar: PASS")
