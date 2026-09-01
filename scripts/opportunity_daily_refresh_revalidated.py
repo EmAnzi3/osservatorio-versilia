@@ -6,9 +6,9 @@ della verifica puntuale: i PDF vengono estratti come testo invece di essere
 decodificati come HTML e, per le pagine HTML che rifiutano o degradano il fetch
 bot, vengono tentati un fetch browser-like con retry e, come ultima risorsa, un
 browser Chromium reale. Per fonti ufficiali note con endpoint primario instabile
-può essere usata una seconda pagina istituzionale equivalente. I required_terms
-restano obbligatori; se nessuna fonte ufficiale li conferma, il coverage/continuity
-hold resta attivo.
+può essere usata una seconda pagina o un allegato istituzionale equivalente.
+I required_terms restano obbligatori; se nessuna fonte ufficiale li conferma,
+il coverage/continuity hold resta attivo.
 """
 from __future__ import annotations
 
@@ -27,12 +27,18 @@ _BROWSER_UA = (
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36"
 )
 
-# Seconda evidenza ufficiale, usata solo quando l'endpoint CINEA primario non
-# riesce a riconfermare il topic. Il Funding & Tenders Portal è il portale
-# istituzionale UE della stessa call e viene sottoposto agli stessi required_terms.
+# Evidenze istituzionali equivalenti usate solo quando l'endpoint primario non
+# riesce a riconfermare l'opportunità. Ogni payload alternativo viene sottoposto
+# esattamente agli stessi required_terms della scheda verificata.
 _OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
     "life-2026-cet-pda": (
         "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/LIFE-2026-CET-PDA",
+    ),
+    "pcm-capitale-mare-2027": (
+        "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/2026/capitale-italiana-del-mare-2027-aperte-le-candidature-per-i-comuni-costieri/",
+    ),
+    "pcm-pari-tratta-bando-8-2026": (
+        "https://www.pariopportunita.gov.it/media/002lypuf/bando-antitratta-8_2026.pdf",
     ),
 }
 
@@ -132,15 +138,40 @@ def _verify_official_alternates(
     """Prova endpoint istituzionali equivalenti senza cambiare i gate documentali."""
     coverage_id = str(entry.get("coverage_id") or "")
     for alternate_url in _OFFICIAL_ALTERNATE_URLS.get(coverage_id, ()):
+        if _is_pdf_url(alternate_url):
+            try:
+                payload = pdf_evidence.fetch_pdf_text(alternate_url, max_pages=24, max_chars=120000)
+                checked = _verify_fetched_payload(entry, today, payload)
+                if checked[0]:
+                    return True, "live", None
+                if checked[2]:
+                    errors.append(f"Fonte ufficiale alternativa PDF: {checked[2]}")
+            except Exception as exc:  # pragma: no cover - dipende dalla rete live
+                errors.append(f"Fonte ufficiale alternativa PDF: {exc}")
+            continue
+
+        # Per pagine HTML prova prima il trasporto leggero; se la pagina è
+        # dinamica o degradata, passa a Chromium. Entrambi devono confermare gli
+        # stessi required_terms della fonte primaria.
+        try:
+            html = _fetch_browser_html(alternate_url, timeout=20, attempts=2)
+            checked = _verify_fetched_payload(entry, today, html)
+            if checked[0]:
+                return True, "live", None
+            if checked[2]:
+                errors.append(f"Fonte ufficiale alternativa HTML: {checked[2]}")
+        except Exception as exc:  # pragma: no cover - dipende dalla rete live
+            errors.append(f"Fonte ufficiale alternativa HTML: {exc}")
+
         try:
             rendered = _fetch_playwright_text(alternate_url, timeout_ms=60_000)
             checked = _verify_fetched_payload(entry, today, rendered)
             if checked[0]:
                 return True, "live", None
             if checked[2]:
-                errors.append(f"Fonte ufficiale alternativa: {checked[2]}")
+                errors.append(f"Fonte ufficiale alternativa Chromium: {checked[2]}")
         except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
-            errors.append(f"Fonte ufficiale alternativa: {exc}")
+            errors.append(f"Fonte ufficiale alternativa Chromium: {exc}")
     return None
 
 
@@ -233,7 +264,7 @@ def verify_entry_resilient(
     except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
         errors.append(f"Chromium fallback: {exc}")
 
-    # Per casi esplicitamente mappati, prova una seconda pagina ufficiale della
+    # Per casi esplicitamente mappati, prova una seconda fonte ufficiale della
     # stessa opportunità. È accettata solo se soddisfa gli stessi required_terms.
     alternate = _verify_official_alternates(entry, today, errors)
     if alternate is not None:
