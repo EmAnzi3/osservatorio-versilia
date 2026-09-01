@@ -1,4 +1,4 @@
-name: Radar Opportunità · trigger one-shot
+name: Radar Opportunità · probe seven one-shot
 
 on:
   push:
@@ -7,14 +7,69 @@ on:
       - ".github/workflows/radar-dispatch-once.yml"
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  dispatch:
+  probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Trigger daily Radar on main
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run opportunity-radar-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install probe dependencies
+        run: |
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Verify seven unstable primary sources live
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          sys.path.insert(0, 'scripts')
+          import opportunity_daily_refresh_revalidated as revalidation
+
+          targets = {
+              'life-2026-cet-pda',
+              'life-2026-cet-enercom',
+              'life-2026-cet-heatcoolplan',
+              'life-2026-cet-empower',
+              'pcm-pari-tratta-bando-8-2026',
+              'pcm-capitale-mare-2027',
+              'eu-eucf-call-8-2026',
+          }
+          entries = {}
+          for path in sorted(Path('data').glob('opportunity-verified-v*.json')):
+              try:
+                  payload = json.loads(path.read_text(encoding='utf-8'))
+              except Exception:
+                  continue
+              rows = payload if isinstance(payload, list) else payload.get('entries') or payload.get('opportunities') or payload.get('verified') or []
+              if isinstance(rows, dict):
+                  rows = list(rows.values())
+              for row in rows:
+                  if isinstance(row, dict) and row.get('coverage_id') in targets:
+                      entries[row['coverage_id']] = row
+
+          missing = targets - set(entries)
+          assert not missing, f'Entry verificate mancanti: {sorted(missing)}'
+          today = datetime.now(timezone.utc).date()
+          for coverage_id in sorted(targets):
+              ok, status, error = revalidation.verify_entry_resilient(
+                  entries[coverage_id],
+                  today,
+                  live=True,
+                  fallback_max_days=7,
+              )
+              print(f'{coverage_id}: ok={ok} status={status} error={error}')
+              assert ok and status == 'live', (coverage_id, ok, status, error)
+          print('Sette fonti instabili riconfermate LIVE: PASS')
+          PY
