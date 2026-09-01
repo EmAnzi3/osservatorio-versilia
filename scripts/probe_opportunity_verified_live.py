@@ -3,13 +3,16 @@
 
 Esegue lo stesso verificatore resiliente usato dal refresh giornaliero, ma solo
 sulle entry versionate dei layer v0.4-v0.4.4. Non pubblica né modifica snapshot.
+Le verifiche indipendenti sono parallele per non sommare i timeout dei portali.
 """
 from __future__ import annotations
 
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
@@ -27,42 +30,54 @@ VERIFIED_FILES = (
 )
 
 
+def _check(task: tuple[Path, int, dict[str, Any]], today: date) -> dict[str, Any]:
+    path, max_days, entry = task
+    coverage_id = str(entry.get("coverage_id") or "").strip()
+    ok, status, error = hardened.verify_entry_resilient(
+        entry,
+        today,
+        live=True,
+        fallback_max_days=max_days,
+    )
+    return {
+        "file": path.name,
+        "coverage_id": coverage_id,
+        "title": str(entry.get("title") or ""),
+        "source_id": str(entry.get("source_id") or ""),
+        "url": str(entry.get("url") or ""),
+        "ok": bool(ok),
+        "status": str(status),
+        "reason": str(error or ""),
+    }
+
+
 def main() -> int:
     today = date.today()
-    failed: list[dict[str, str]] = []
-    checked = 0
-
+    tasks: list[tuple[Path, int, dict[str, Any]]] = []
     for path in VERIFIED_FILES:
         payload = json.loads(path.read_text(encoding="utf-8"))
         max_days = int(payload.get("evidenceFallbackMaxDays") or 7)
         for entry in payload.get("entries") or []:
-            coverage_id = str(entry.get("coverage_id") or "").strip()
-            url = str(entry.get("url") or "").strip()
-            if not coverage_id or not url:
-                continue
-            checked += 1
-            result = hardened.verify_entry_resilient(
-                entry,
-                today,
-                live=True,
-                fallback_max_days=max_days,
+            if entry.get("coverage_id") and entry.get("url"):
+                tasks.append((path, max_days, entry))
+
+    rows: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = {pool.submit(_check, task, today): task for task in tasks}
+        for future in as_completed(futures):
+            row = future.result()
+            rows.append(row)
+            print(
+                f"{row['file']} :: {row['coverage_id']} :: ok={row['ok']} :: status={row['status']}",
+                flush=True,
             )
-            ok, status, error = result
-            print(f"{path.name} :: {coverage_id} :: ok={ok} :: status={status}", flush=True)
-            if not ok:
-                row = {
-                    "file": path.name,
-                    "coverage_id": coverage_id,
-                    "title": str(entry.get("title") or ""),
-                    "source_id": str(entry.get("source_id") or ""),
-                    "url": url,
-                    "reason": str(error or "verifica fallita"),
-                }
-                failed.append(row)
+            if not row["ok"]:
                 print("COVERAGE HOLD DETECTED", flush=True)
                 print(json.dumps(row, ensure_ascii=False, indent=2), flush=True)
 
-    print(f"Verified entries checked: {checked}", flush=True)
+    rows.sort(key=lambda x: (x["file"], x["coverage_id"]))
+    failed = [row for row in rows if not row["ok"]]
+    print(f"Verified entries checked: {len(rows)}", flush=True)
     print(f"Coverage holds: {len(failed)}", flush=True)
     if failed:
         print(json.dumps(failed, ensure_ascii=False, indent=2), flush=True)
