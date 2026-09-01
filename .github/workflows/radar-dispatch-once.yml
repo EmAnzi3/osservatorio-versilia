@@ -18,3 +18,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run opportunity-radar-daily.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+# one-shot attempt 2
