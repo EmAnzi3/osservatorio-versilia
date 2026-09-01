@@ -18,6 +18,7 @@ METRICS = (
 )
 COASTAL = ("Camaiore", "Forte dei Marmi", "Pietrasanta", "Viareggio")
 NOT_APPLICABLE = ("Massarosa", "Seravezza", "Stazzema")
+DEMANIO_METRICS = ("maritimeConcessions", "maritimeConcessionFeesDue")
 
 
 def no_overflow(page: Page, label: str) -> None:
@@ -182,6 +183,50 @@ def assert_compare(page: Page, base: str, mobile: bool) -> None:
     assert tooltip.get_attribute("hidden") is None and tooltip.is_visible()
 
 
+def assert_demanio(page: Page, base: str, mobile: bool) -> None:
+    page.goto(
+        urljoin(base, "confronta/ambiente/?indicatore=maritimeConcessions"),
+        wait_until="networkidle",
+    )
+    page.wait_for_timeout(500)
+    for key in DEMANIO_METRICS:
+        open_metric(page, key)
+        no_overflow(page, f"{key}/confronto")
+        assert_applicability(page, key)
+        assert_detail(page, key, mobile)
+        selector = page.locator("#compare-bars select[data-composite-component]:visible")
+        assert selector.count() == 1 and selector.locator("option").count() == 2, key
+        if key == "maritimeConcessions":
+            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
+            assert "359" in aria, aria
+            selector.select_option("part-1")
+            page.wait_for_timeout(220)
+            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
+            assert "174" in aria, aria
+            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
+            assert "Licenze" in detail and "Atti formali" in detail
+        else:
+            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
+            assert "2.669.422" in aria, aria
+            selector.select_option("part-1")
+            page.wait_for_timeout(220)
+            aria = visible_bar(page, "Viareggio").get_attribute("aria-label") or ""
+            assert "1.704.536" in aria, aria
+            detail = page.locator("#compare-bars .coast-detail:visible").inner_text()
+            assert "Dovuto totale" in detail and "Canone minimo" in detail
+
+    for key in DEMANIO_METRICS:
+        page.goto(
+            urljoin(base, f"comuni/massarosa/?tema=ambiente&indicatore={key}"),
+            wait_until="networkidle",
+        )
+        page.wait_for_timeout(300)
+        primary = page.locator("#town-topic .town-metric-primary strong").first.inner_text().strip().lower()
+        assert primary == "n.a.", f"{key}: Massarosa non è n.a. ({primary})"
+        applicability = page.locator("#town-topic .coast-not-applicable")
+        assert applicability.count() == 1 and "non applicabile" in applicability.inner_text().lower()
+
+
 def assert_towns(page: Page, base: str, mobile: bool) -> None:
     page.goto(
         urljoin(base, "comuni/viareggio/?tema=ambiente&indicatore=bathingWaterQuality"),
@@ -240,6 +285,7 @@ def main() -> None:
         desktop = browser.new_context(viewport={"width": 1440, "height": 1000})
         assert_compare(desktop.new_page(), base, mobile=False)
         assert_towns(desktop.new_page(), base, mobile=False)
+        assert_demanio(desktop.new_page(), base, mobile=False)
         desktop.close()
 
         mobile = browser.new_context(
@@ -247,6 +293,7 @@ def main() -> None:
         )
         assert_compare(mobile.new_page(), base, mobile=True)
         assert_towns(mobile.new_page(), base, mobile=True)
+        assert_demanio(mobile.new_page(), base, mobile=True)
         mobile.close()
         browser.close()
 

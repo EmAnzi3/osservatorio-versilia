@@ -12,6 +12,7 @@ import copy
 import re
 
 import test_costa_mare_v123_legacy as legacy
+import test_demanio_marittimo_v127 as demanio
 
 
 def version_tuple(value: str) -> tuple[int, ...]:
@@ -69,6 +70,8 @@ def main() -> None:
     legacy.assert_protected(data["metrics"][legacy.KEYS[4]], snapshot)
     legacy.assert_monitor_state_preservation()
     legacy.assert_registry_and_ui(legacy_compatible_view(data))
+    if version_tuple(data.get("version")) >= (1, 27, 0):
+        demanio.main()
     print(f"Costa e mare v1.23 preservata nella release {data['version']}: regressione verificata.")
 
 
