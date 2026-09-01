@@ -187,6 +187,24 @@ def _verify_official_alternates(
                 return True, "live", None
             if checked[2]:
                 errors.append(f"Fonte ufficiale alternativa {alternate_url}: {checked[2]}")
+
+            # Un HTTP 200 può essere una pagina intermedia/anti-bot priva dei
+            # termini obbligatori. In quel caso va comunque tentato Chromium,
+            # mantenendo identica la verifica documentale sui required_terms.
+            if not _is_pdf_url(alternate_url):
+                try:
+                    rendered = _fetch_playwright_text(alternate_url, timeout_ms=30_000)
+                    rendered_checked = _verify_fetched_payload(entry, today, rendered)
+                    if rendered_checked[0]:
+                        return True, "live", None
+                    if rendered_checked[2]:
+                        errors.append(
+                            f"Fonte ufficiale alternativa Chromium {alternate_url}: {rendered_checked[2]}"
+                        )
+                except Exception as browser_error:  # pragma: no cover - rete/browser live
+                    errors.append(
+                        f"Fonte ufficiale alternativa Chromium {alternate_url}: {browser_error}"
+                    )
         except Exception as exc:  # pragma: no cover - dipende dalla rete live
             errors.append(f"Fonte ufficiale alternativa {alternate_url}: {exc}")
     return None
