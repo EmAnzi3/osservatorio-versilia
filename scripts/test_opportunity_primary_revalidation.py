@@ -102,6 +102,42 @@ def _test_playwright_fallback_rechecks_terms() -> None:
     assert error is None
 
 
+def _test_official_alternate_rechecks_same_terms() -> None:
+    entry = _entry("https://primary.example.test/pda")
+    entry["coverage_id"] = "life-2026-cet-pda"
+    entry["required_terms"] = ["LIFE-2026-CET-PDA", "Open", "16 September 2026"]
+    original_verify = revalidation._ORIGINAL_VERIFY
+    original_fetch = revalidation._fetch_browser_html
+    original_playwright = revalidation._fetch_playwright_text
+    calls: list[str] = []
+
+    def rendered(url: str, timeout_ms: int = 45_000) -> str:
+        calls.append(url)
+        if "funding-tenders" in url:
+            return "LIFE-2026-CET-PDA · Open · 16 September 2026"
+        return "pagina primaria senza evidenza sufficiente"
+
+    try:
+        revalidation._ORIGINAL_VERIFY = _fake_verify
+        revalidation._fetch_browser_html = lambda *args, **kwargs: "pagina primaria senza evidenza sufficiente"
+        revalidation._fetch_playwright_text = rendered
+        ok, status, error = revalidation.verify_entry_resilient(
+            entry,
+            date(2026, 9, 1),
+            live=True,
+            fallback_max_days=7,
+        )
+    finally:
+        revalidation._ORIGINAL_VERIFY = original_verify
+        revalidation._fetch_browser_html = original_fetch
+        revalidation._fetch_playwright_text = original_playwright
+
+    assert ok is True, error
+    assert status == "live", status
+    assert error is None
+    assert any("funding-tenders" in url for url in calls), calls
+
+
 def _test_no_gate_weakening() -> None:
     entry = _entry("https://example.test/bando")
     original_verify = revalidation._ORIGINAL_VERIFY
@@ -156,6 +192,7 @@ def main() -> int:
     _test_direct_pdf_revalidation()
     _test_html_browser_fallback_rechecks_terms()
     _test_playwright_fallback_rechecks_terms()
+    _test_official_alternate_rechecks_same_terms()
     _test_no_gate_weakening()
     _test_entrypoint_delegation()
     print("Riconferma fonti primarie Radar: PASS")
