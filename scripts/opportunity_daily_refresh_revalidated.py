@@ -6,9 +6,9 @@ della verifica puntuale: i PDF vengono estratti come testo invece di essere
 decodificati come HTML e, per le pagine HTML che rifiutano o degradano il fetch
 bot, vengono tentati un fetch browser-like con retry e, come ultima risorsa, un
 browser Chromium reale. Per fonti ufficiali note con endpoint primario instabile
-può essere usata una seconda pagina o un allegato istituzionale equivalente.
-I required_terms restano obbligatori; se nessuna fonte ufficiale li conferma,
-il coverage/continuity hold resta attivo.
+può essere usata una pagina, un allegato o un insieme di pagine istituzionali
+equivalenti. I required_terms restano obbligatori; se nessuna evidenza ufficiale
+li conferma, il coverage/continuity hold resta attivo.
 """
 from __future__ import annotations
 
@@ -27,21 +27,29 @@ _BROWSER_UA = (
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36"
 )
 
-# Evidenze istituzionali equivalenti per endpoint primari notoriamente instabili.
-# Vengono interrogate prima del trasporto primario per evitare timeout lunghi, ma
-# ogni payload è sottoposto esattamente agli stessi required_terms della scheda.
+# Evidenze istituzionali equivalenti su host alternativi. Sono usate prima del
+# trasporto primario per i casi in cui GitHub Actions ha mostrato timeout/502.
 _OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
     "life-2026-cet-pda": (
         "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/LIFE-2026-CET-PDA",
     ),
     "pcm-capitale-mare-2027": (
+        "https://www.ministroprotezionecivileemare.gov.it/it/notizie/mare-musumeci-al-via-selezione-capitale-del-mare-2027/",
         "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/2026/capitale-italiana-del-mare-2027-aperte-le-candidature-per-i-comuni-costieri/",
     ),
     "pcm-pari-tratta-bando-8-2026": (
+        "https://bandi.regione.piemonte.it/system/files/bando%20DPO-antitratta-8_2026.pdf",
         "https://www.pariopportunita.gov.it/media/002lypuf/bando-antitratta-8_2026.pdf",
     ),
+}
+
+# Alcuni fatti della stessa opportunità sono pubblicati su pagine ufficiali
+# distinte dello stesso programma. I payload vengono concatenati e poi passati
+# allo stesso verificatore, che deve comunque trovare tutti i required_terms.
+_OFFICIAL_EVIDENCE_SETS: dict[str, tuple[str, ...]] = {
     "eu-eucf-call-8-2026": (
-        "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en?prefLang=fi",
+        "https://www.eucityfacility.eu/calls/call-8",
+        "https://www.eucityfacility.eu/news/european-city-facility-announces-new-calls-support-city-investments-green-transition",
     ),
 }
 
@@ -76,12 +84,7 @@ def _fetch_browser_html(url: str, timeout: int = 30, attempts: int = 3) -> str:
 
 
 def _fetch_playwright_text(url: str, timeout_ms: int = 45_000) -> str:
-    """Ultimo trasporto: rende la pagina con Chromium e restituisce testo visibile.
-
-    Chromium può proseguire anche in presenza di un certificato TLS mal configurato
-    dalla fonte. Questo non rende l'evidenza automaticamente valida: il payload
-    ottenuto deve comunque superare integralmente i required_terms già verificati.
-    """
+    """Ultimo trasporto: rende la pagina con Chromium e restituisce testo visibile."""
     from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
     from playwright.sync_api import sync_playwright
 
@@ -102,8 +105,6 @@ def _fetch_playwright_text(url: str, timeout_ms: int = 45_000) -> str:
             try:
                 page.wait_for_load_state("networkidle", timeout=8_000)
             except PlaywrightTimeoutError:
-                # Molti portali mantengono connessioni analytics aperte: il DOM
-                # già caricato è sufficiente per verificare i termini obbligatori.
                 pass
             try:
                 text = page.locator("body").inner_text(timeout=10_000)
@@ -133,6 +134,43 @@ def _verify_fetched_payload(
     )
 
 
+def _fetch_official_payload(url: str) -> str:
+    """Scarica una singola evidenza istituzionale con trasporti brevi e robusti."""
+    if _is_pdf_url(url):
+        return pdf_evidence.fetch_pdf_text(url, max_pages=24, max_chars=120000)
+    try:
+        return _fetch_browser_html(url, timeout=12, attempts=2)
+    except Exception as http_error:
+        try:
+            return _fetch_playwright_text(url, timeout_ms=30_000)
+        except Exception as browser_error:
+            raise RuntimeError(f"HTTP: {http_error}; Chromium: {browser_error}") from browser_error
+
+
+def _verify_official_evidence_set(
+    entry: dict[str, Any],
+    today: date,
+    errors: list[str],
+) -> tuple[bool, str, str | None] | None:
+    coverage_id = str(entry.get("coverage_id") or "")
+    urls = _OFFICIAL_EVIDENCE_SETS.get(coverage_id)
+    if not urls:
+        return None
+    payloads: list[str] = []
+    for evidence_url in urls:
+        try:
+            payloads.append(_fetch_official_payload(evidence_url))
+        except Exception as exc:  # pragma: no cover - rete live
+            errors.append(f"Set ufficiale {evidence_url}: {exc}")
+            return None
+    checked = _verify_fetched_payload(entry, today, "\n\n".join(payloads))
+    if checked[0]:
+        return True, "live", None
+    if checked[2]:
+        errors.append(f"Set ufficiale: {checked[2]}")
+    return None
+
+
 def _verify_official_alternates(
     entry: dict[str, Any],
     today: date,
@@ -141,37 +179,15 @@ def _verify_official_alternates(
     """Prova endpoint istituzionali equivalenti senza cambiare i gate documentali."""
     coverage_id = str(entry.get("coverage_id") or "")
     for alternate_url in _OFFICIAL_ALTERNATE_URLS.get(coverage_id, ()):
-        if _is_pdf_url(alternate_url):
-            try:
-                payload = pdf_evidence.fetch_pdf_text(alternate_url, max_pages=24, max_chars=120000)
-                checked = _verify_fetched_payload(entry, today, payload)
-                if checked[0]:
-                    return True, "live", None
-                if checked[2]:
-                    errors.append(f"Fonte ufficiale alternativa PDF: {checked[2]}")
-            except Exception as exc:  # pragma: no cover - dipende dalla rete live
-                errors.append(f"Fonte ufficiale alternativa PDF: {exc}")
-            continue
-
         try:
-            html = _fetch_browser_html(alternate_url, timeout=20, attempts=2)
-            checked = _verify_fetched_payload(entry, today, html)
+            payload = _fetch_official_payload(alternate_url)
+            checked = _verify_fetched_payload(entry, today, payload)
             if checked[0]:
                 return True, "live", None
             if checked[2]:
-                errors.append(f"Fonte ufficiale alternativa HTML: {checked[2]}")
+                errors.append(f"Fonte ufficiale alternativa {alternate_url}: {checked[2]}")
         except Exception as exc:  # pragma: no cover - dipende dalla rete live
-            errors.append(f"Fonte ufficiale alternativa HTML: {exc}")
-
-        try:
-            rendered = _fetch_playwright_text(alternate_url, timeout_ms=60_000)
-            checked = _verify_fetched_payload(entry, today, rendered)
-            if checked[0]:
-                return True, "live", None
-            if checked[2]:
-                errors.append(f"Fonte ufficiale alternativa Chromium: {checked[2]}")
-        except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
-            errors.append(f"Fonte ufficiale alternativa Chromium: {exc}")
+            errors.append(f"Fonte ufficiale alternativa {alternate_url}: {exc}")
     return None
 
 
@@ -186,7 +202,6 @@ def verify_entry_resilient(
     """Riconferma la stessa evidenza primaria con trasporti adatti al contenuto."""
     url = str(entry.get("url") or "")
 
-    # Fixture/backtest e modalità non-live: comportamento originale, senza sorprese.
     if not live or (detail_payloads and url in detail_payloads):
         return _ORIGINAL_VERIFY(
             entry,
@@ -199,9 +214,10 @@ def verify_entry_resilient(
     errors: list[str] = []
     coverage_id = str(entry.get("coverage_id") or "")
 
-    # Gli endpoint mappati sono già stati auditati come evidenze ufficiali
-    # equivalenti. Provarli per primi evita che un host primario guasto consumi
-    # minuti e faccia fallire il run, senza cambiare in alcun modo il gate.
+    evidence_set = _verify_official_evidence_set(entry, today, errors)
+    if evidence_set is not None:
+        return evidence_set
+
     if coverage_id in _OFFICIAL_ALTERNATE_URLS:
         alternate = _verify_official_alternates(entry, today, errors)
         if alternate is not None:
