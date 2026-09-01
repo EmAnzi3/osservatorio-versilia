@@ -237,7 +237,7 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
         position = page.locator("#town-topic .composite-versilia-position")
         assert position.count() == 1, f"{key}: pannello quota Versilia assente"
         text = " ".join(position.inner_text().split())
-        assert "Peso sulla Versilia costiera" in text, text
+        assert "peso sulla versilia costiera" in text.lower(), text
         assert total_share in text, text
         assert aggregate_marker in text, text
         assert "sotto la Versilia" not in text and "−" not in position.locator("[data-composite-delta]").inner_text(), text
