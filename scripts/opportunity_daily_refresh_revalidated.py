@@ -34,6 +34,7 @@ _OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
         "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/LIFE-2026-CET-PDA",
     ),
     "pcm-capitale-mare-2027": (
+        "https://www.anci.puglia.it/web/2026/07/15/capitale-italiana-del-mare-2027-aperto-il-bando-per-la-candidatura-dei-comuni-costieri-domande-entro-30-settembre-2026/",
         "https://www.ministroprotezionecivileemare.gov.it/it/notizie/mare-musumeci-al-via-selezione-capitale-del-mare-2027/",
         "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/2026/capitale-italiana-del-mare-2027-aperte-le-candidature-per-i-comuni-costieri/",
     ),
