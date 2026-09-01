@@ -224,6 +224,31 @@ def assert_demanio(page: Page, base: str, mobile: bool) -> None:
             assert_detail(page, key, mobile)
             assert_detail_headers(page, key, ("Dovuto totale", "Canone minimo"))
 
+    share_expectations = {
+        "maritimeConcessions": ("44,9%", "30,3%", "799"),
+        "maritimeConcessionFeesDue": ("40,9%", "31,2%", "6.524.121,74"),
+    }
+    for key, (total_share, tourist_share, aggregate_marker) in share_expectations.items():
+        page.goto(
+            urljoin(base, f"comuni/viareggio/?tema=ambiente&indicatore={key}"),
+            wait_until="networkidle",
+        )
+        page.wait_for_timeout(300)
+        position = page.locator("#town-topic .composite-versilia-position")
+        assert position.count() == 1, f"{key}: pannello quota Versilia assente"
+        text = " ".join(position.inner_text().split())
+        assert "Peso sulla Versilia costiera" in text, text
+        assert total_share in text, text
+        assert aggregate_marker in text, text
+        assert "sotto la Versilia" not in text and "−" not in position.locator("[data-composite-delta]").inner_text(), text
+        selector = page.locator("#town-topic select[data-composite-choice]")
+        assert selector.count() == 1
+        selector.select_option("part-1")
+        page.wait_for_timeout(220)
+        text = " ".join(position.inner_text().split())
+        assert tourist_share in text, text
+        assert "del totale dei quattro Comuni costieri" in text, text
+
     for key in DEMANIO_METRICS:
         page.goto(
             urljoin(base, f"comuni/massarosa/?tema=ambiente&indicatore={key}"),

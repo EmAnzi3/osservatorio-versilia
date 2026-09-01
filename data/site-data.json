@@ -27093,10 +27093,10 @@
         "compositeType": "securityMeasures",
         "selectorLabel": "Lettura",
         "comparisonReference": "aggregate",
-        "comparisonDifference": "absolute",
+        "comparisonDifference": "shareOfAggregate",
         "comparisonLabel": "Versilia costiera",
-        "comparisonOverline": "Rispetto alla Versilia costiera",
-        "comparisonNote": "Il riferimento è la somma dei quattro Comuni costieri; i tre Comuni non costieri sono n.a. e non entrano nell’aggregato."
+        "comparisonOverline": "Peso sulla Versilia costiera",
+        "comparisonNote": "Quota del valore comunale sul totale dei quattro Comuni costieri; i tre Comuni non costieri sono n.a. e non entrano nell’aggregato."
       },
       "sourceUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
       "rows": [
@@ -27965,10 +27965,10 @@
         "compositeType": "securityMeasures",
         "selectorLabel": "Lettura",
         "comparisonReference": "aggregate",
-        "comparisonDifference": "absolute",
+        "comparisonDifference": "shareOfAggregate",
         "comparisonLabel": "Versilia costiera",
-        "comparisonOverline": "Rispetto alla Versilia costiera",
-        "comparisonNote": "Il riferimento è la somma dei quattro Comuni costieri; i tre Comuni non costieri sono n.a. e non entrano nell’aggregato."
+        "comparisonOverline": "Peso sulla Versilia costiera",
+        "comparisonNote": "Quota del valore comunale sul totale dei quattro Comuni costieri; i tre Comuni non costieri sono n.a. e non entrano nell’aggregato."
       },
       "sourceUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
       "rows": [
