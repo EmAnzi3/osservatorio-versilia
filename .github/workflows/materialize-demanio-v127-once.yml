@@ -21,6 +21,16 @@ jobs:
           python-version: "3.12"
       - name: Materialize approved lot
         run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/materialize_demanio_marittimo_v127.py')
+          text = p.read_text(encoding='utf-8')
+          old = '''repl(CAT,"assert '2026.08.31-v1.26.0' in app5 and '175 indicatori complessivi' in app5 and '2026.08.30-v1.25.0' in app5","assert '2026.09.01-v1.27.0' in app5 and '177 indicatori complessivi' in app5 and '2026.08.31-v1.26.0' in app5")'''
+          new = '''repl(CAT,"'2026.08.31-v1.26.0' in app5 and '175 indicatori complessivi' in app5 and '2026.08.30-v1.25.0' in app5","'2026.09.01-v1.27.0' in app5 and '177 indicatori complessivi' in app5 and '2026.08.31-v1.26.0' in app5")'''
+          if old not in text:
+              raise SystemExit('Compatibility patch target not found')
+          p.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
           python scripts/materialize_demanio_marittimo_v127.py
           find . -type f -not -path './.git/*' -print0 | sort -z | xargs -0 sha256sum > /tmp/v127-before-second-run.sha256
           python scripts/materialize_demanio_marittimo_v127.py
@@ -42,4 +52,4 @@ jobs:
           git commit -m "Materialize v1.27.0 demanio marittimo"
           git push origin HEAD:staging/demanio-marittimo-v127
 
-# one-shot trigger
+# one-shot trigger v2
