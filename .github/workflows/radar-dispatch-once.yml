@@ -1,4 +1,4 @@
-name: Radar Opportunità · probe coverage diretta
+name: Radar Opportunità · probe coverage diretta v2
 
 on:
   push:
@@ -29,5 +29,5 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Probe verified coverage entries
+      - name: Probe verified coverage entries in parallel
         run: python scripts/probe_opportunity_verified_live.py
