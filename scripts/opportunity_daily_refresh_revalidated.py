@@ -5,8 +5,10 @@ Il Radar mantiene i gate esistenti. Questo wrapper interviene solo sul trasporto
 della verifica puntuale: i PDF vengono estratti come testo invece di essere
 decodificati come HTML e, per le pagine HTML che rifiutano o degradano il fetch
 bot, vengono tentati un fetch browser-like con retry e, come ultima risorsa, un
-browser Chromium reale. I required_terms restano obbligatori; se la fonte non
-li conferma, il coverage/continuity hold resta attivo.
+browser Chromium reale. Per fonti ufficiali note con endpoint primario instabile
+può essere usata una seconda pagina istituzionale equivalente. I required_terms
+restano obbligatori; se nessuna fonte ufficiale li conferma, il coverage/continuity
+hold resta attivo.
 """
 from __future__ import annotations
 
@@ -24,6 +26,15 @@ _BROWSER_UA = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/151.0 Safari/537.36"
 )
+
+# Seconda evidenza ufficiale, usata solo quando l'endpoint CINEA primario non
+# riesce a riconfermare il topic. Il Funding & Tenders Portal è il portale
+# istituzionale UE della stessa call e viene sottoposto agli stessi required_terms.
+_OFFICIAL_ALTERNATE_URLS: dict[str, tuple[str, ...]] = {
+    "life-2026-cet-pda": (
+        "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/LIFE-2026-CET-PDA",
+    ),
+}
 
 
 def _is_pdf_url(url: str) -> bool:
@@ -111,6 +122,26 @@ def _verify_fetched_payload(
         live=False,
         fallback_max_days=-1,
     )
+
+
+def _verify_official_alternates(
+    entry: dict[str, Any],
+    today: date,
+    errors: list[str],
+) -> tuple[bool, str, str | None] | None:
+    """Prova endpoint istituzionali equivalenti senza cambiare i gate documentali."""
+    coverage_id = str(entry.get("coverage_id") or "")
+    for alternate_url in _OFFICIAL_ALTERNATE_URLS.get(coverage_id, ()):
+        try:
+            rendered = _fetch_playwright_text(alternate_url, timeout_ms=60_000)
+            checked = _verify_fetched_payload(entry, today, rendered)
+            if checked[0]:
+                return True, "live", None
+            if checked[2]:
+                errors.append(f"Fonte ufficiale alternativa: {checked[2]}")
+        except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
+            errors.append(f"Fonte ufficiale alternativa: {exc}")
+    return None
 
 
 def verify_entry_resilient(
@@ -201,6 +232,12 @@ def verify_entry_resilient(
             errors.append(str(checked[2]))
     except Exception as exc:  # pragma: no cover - dipende dalla rete/browser live
         errors.append(f"Chromium fallback: {exc}")
+
+    # Per casi esplicitamente mappati, prova una seconda pagina ufficiale della
+    # stessa opportunità. È accettata solo se soddisfa gli stessi required_terms.
+    alternate = _verify_official_alternates(entry, today, errors)
+    if alternate is not None:
+        return alternate
 
     # Se la verifica robusta non riconferma la fonte, l'unico comportamento
     # permissivo resta il cached_recent originale entro la sua finestra prevista.
