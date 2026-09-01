@@ -40,12 +40,13 @@ jobs:
 
           payload = json.loads(Path('data/opportunity-verified-details-v03.json').read_text(encoding='utf-8'))
           entry = next(x for x in payload['entries'] if x.get('rule_id') == 'mic-jazz-2027')
+          print(f"Jazz verification source: {entry['url']}")
           text = revalidation.verified_detail_text_resilient(
               revalidation.daily.radar.radar,
               entry,
               None,
               True,
           )
-          assert text is not None, 'Jazz 2027 non riconfermato dalla fonte ufficiale'
+          assert text is not None, 'Jazz 2027 non riconfermato dal decreto ufficiale MiC'
           print('mic-jazz-2027: LIVE PASS')
           PY
