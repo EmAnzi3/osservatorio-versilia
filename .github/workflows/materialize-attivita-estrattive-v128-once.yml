@@ -6,7 +6,7 @@ on:
       - feat/v1.28.0-attivita-estrattive
     paths:
       - data/source-snapshots/attivita-estrattive-v128.bootstrap.b64
-      - scripts/attivita-estrattive-v128.bootstrap.b64
+      - scripts/attivita-estrattive-v128.bootstrap.part*
       - .github/workflows/materialize-attivita-estrattive-v128-once.yml
   workflow_dispatch:
 
@@ -40,8 +40,11 @@ jobs:
           import base64, gzip, json
           from pathlib import Path
 
-          source = Path('scripts/attivita-estrattive-v128.bootstrap.b64')
-          payload = json.loads(gzip.decompress(base64.b64decode(source.read_text(encoding='ascii'))).decode('utf-8'))
+          parts = sorted(Path('scripts').glob('attivita-estrattive-v128.bootstrap.part*'))
+          if [p.name for p in parts] != [f'attivita-estrattive-v128.bootstrap.part{i:02d}' for i in range(7)]:
+              raise SystemExit(f'Chunk bootstrap inattesi: {[p.name for p in parts]}')
+          encoded = ''.join(p.read_text(encoding='ascii') for p in parts)
+          payload = json.loads(gzip.decompress(base64.b64decode(encoded)).decode('utf-8'))
           expected = {
               'scripts/materialize_attivita_estrattive_v128.py',
               'scripts/test_attivita_estrattive_v128.py',
@@ -78,6 +81,7 @@ jobs:
           set -euo pipefail
           rm -f data/source-snapshots/attivita-estrattive-v128.bootstrap.b64
           rm -f scripts/attivita-estrattive-v128.bootstrap.b64
+          rm -f scripts/attivita-estrattive-v128.bootstrap.part*
           rm -f .github/workflows/materialize-attivita-estrattive-v128-once.yml
 
       - name: Commit materialized v1.28.0
