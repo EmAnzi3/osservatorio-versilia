@@ -2335,6 +2335,81 @@
       "frequencies": [
         "irregular"
       ]
+    },
+    "https://cave.regione.toscana.it/api/v1/cave_public": {
+      "url": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "contentType": "application/json",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractiveSites"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-rtcave-continuous"
+      ],
+      "frequencies": [
+        "continuous"
+      ]
+    },
+    "https://www.regione.toscana.it/piano-regionale-cave": {
+      "url": "https://www.regione.toscana.it/piano-regionale-cave",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/piano-regionale-cave",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractivePlanning"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-prc-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": {
+      "url": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractiveProduction"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-prc-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
     }
   },
   "metrics": {
@@ -3471,6 +3546,24 @@
       "publishedPeriod": "2026-08",
       "checkedAt": "2026-09-01T16:30:00+00:00",
       "observedLatestPeriod": "2026-08",
+      "status": "current"
+    },
+    "extractiveSites": {
+      "publishedPeriod": "2026-09",
+      "checkedAt": "2026-09-02T10:49:00+00:00",
+      "observedLatestPeriod": "2026-09",
+      "status": "current"
+    },
+    "extractiveProduction": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-09-02T10:49:00+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current"
+    },
+    "extractivePlanning": {
+      "publishedPeriod": "2026-09",
+      "checkedAt": "2026-09-02T10:49:00+00:00",
+      "observedLatestPeriod": "2026-09",
       "status": "current"
     }
   }

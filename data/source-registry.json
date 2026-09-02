@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 177,
-  "expectedInlineMetricCount": 173,
+  "expectedMetricCount": 180,
+  "expectedInlineMetricCount": 176,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -511,6 +511,24 @@
       "acquisitionMethod": "Download CSV/SHP MIT/SID, deduplica per idconc e fotografia comunale congelata nello snapshot della repository.",
       "licenseName": "CC BY",
       "licenseUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026"
+    },
+    "regione-toscana-rtcave-continuous": {
+      "publisher": "Regione Toscana — RTCave",
+      "frequency": "continuous",
+      "frequencyLabel": "Continuo / snapshot",
+      "expectedRelease": "La banca dati pubblica è aggiornata nel corso dell’anno; l’Osservatorio conserva snapshot versionati.",
+      "acquisitionMethod": "GET endpoint pubblico anonimo /api/v1/cave_public; validazione ID e categorie originali; nessuna trascrizione dai contatori UI.",
+      "licenseName": "Dato pubblico Regione Toscana; riuso documentato nello snapshot",
+      "licenseUrl": "https://cave.regione.toscana.it/"
+    },
+    "regione-toscana-prc-annual": {
+      "publisher": "Regione Toscana — Piano Regionale Cave",
+      "frequency": "annual",
+      "frequencyLabel": "Annuale / variante di piano",
+      "expectedRelease": "Monitoraggio annuale PRC e aggiornamenti/varianti del piano.",
+      "acquisitionMethod": "Monitoraggio PRC per produzione; geometrie ufficiali GeoScopio/PRC + Ambiti Amministrativi per superfici.",
+      "licenseName": "CC BY per i dataset geografici regionali",
+      "licenseUrl": "https://www.regione.toscana.it/piano-regionale-cave"
     }
   },
   "sourceProfileByUrl": {
@@ -591,7 +609,10 @@
     "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
     "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
     "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021",
-    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular"
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular",
+    "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
+    "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual"
   },
   "metricOverrides": {
     "lifeExpectancy": {
@@ -788,6 +809,15 @@
     },
     "maritimeConcessionFeesDue": {
       "profile": "mit-sid-demanio-irregular"
+    },
+    "extractiveSites": {
+      "profile": "regione-toscana-rtcave-continuous"
+    },
+    "extractiveProduction": {
+      "profile": "regione-toscana-prc-annual"
+    },
+    "extractivePlanning": {
+      "profile": "regione-toscana-prc-annual"
     }
   },
   "requestTimeoutSeconds": 20,
@@ -834,7 +864,10 @@
     "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": "regione-toscana-pab-annual",
     "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": "regione-toscana-reticolo-2025",
     "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": "regione-toscana-opere-idrauliche-2021",
-    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular"
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": "mit-sid-demanio-irregular",
+    "https://cave.regione.toscana.it/api/v1/cave_public": "regione-toscana-rtcave-continuous",
+    "https://www.regione.toscana.it/piano-regionale-cave": "regione-toscana-prc-annual",
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": "regione-toscana-prc-annual"
   },
   "sourceChangePolicies": {
     "https://regionetoscana.smartregion.toscana.it/mobility/artifacts/gtfs": {

@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260901-v127-demanio-marittimo';
+  const VERSION = '20260902-v128-attivita-estrattive';
   let dataPromise = null;
 
   function loadData() {

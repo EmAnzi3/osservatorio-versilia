@@ -87,6 +87,7 @@
       case 'years': return `${formatNumber(number, 1)} anni`;
       case 'kg': return `${formatNumber(number, 0)} kg`;
       case 'hectares': return `${formatNumber(number, 2)} ha`;
+      case 'cubicMetres': return `${formatNumber(number, 0)} m³`;
       case 'nights': return `${formatNumber(number, 2)} notti`;
       case 'people': return `${formatNumber(number, 0)} persone`;
       case 'studentsPerClass': return `${formatNumber(number, 1)} alunni/classe`;

@@ -723,6 +723,41 @@
     if(aggValue) aggValue.textContent=agg.formatted;
   }
 
+  function updateExtractiveTownPosition(metric,row,choice,position) {
+    if (!position || !['extractiveSites','extractivePlanning'].includes(metric?.meta?.key)) return;
+    const options=compositeSelectionOptions(metric,row);
+    const selected=options.find(option=>option.key===choice) || options[0];
+    const agg=compositeSelectionAggregate(metric,choice);
+    const selectedPart=selected?.index === undefined ? null : row.parts?.[selected.index];
+    const overline=position.querySelector('.overline');
+    const deltaEl=position.querySelector('[data-composite-delta]');
+    const noteEl=position.querySelector('p');
+    const aggLabel=position.querySelector('[data-composite-aggregate-label]');
+    const aggValue=position.querySelector('[data-composite-aggregate-value]');
+
+    if (metric.meta.key === 'extractivePlanning' && selectedPart?.key?.endsWith('_pct')) {
+      if(overline) overline.textContent='Quota territoriale Versilia';
+      if(deltaEl) deltaEl.innerHTML=`${html(agg.formatted)}<small>sul territorio complessivo dei sette Comuni</small>`;
+      if(noteEl) noteEl.textContent='Confronto diretto tra due quote territoriali: la percentuale comunale non viene divisa per la percentuale Versilia.';
+      if(aggLabel) aggLabel.textContent=`${row.town} · quota comunale`;
+      if(aggValue) aggValue.textContent=selected.formatted;
+      return;
+    }
+
+    const localRaw=selected?.value;
+    const totalRaw=agg?.value;
+    const local=localRaw === null || localRaw === undefined ? NaN : Number(localRaw);
+    const total=totalRaw === null || totalRaw === undefined ? NaN : Number(totalRaw);
+    const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local/total*100 : null;
+    if(overline) overline.textContent=metric.meta.comparisonOverline || 'Peso sulla Versilia';
+    if(deltaEl) deltaEl.innerHTML=share === null
+      ? `n.d.<small>${total === 0 ? 'totale Versilia pari a zero' : 'quota non disponibile'}</small>`
+      : `${html(number2.format(share))}%<small>del totale della lettura selezionata</small>`;
+    if(noteEl) noteEl.textContent=metric.meta.comparisonNote || 'Quota del valore comunale sul totale dei sette Comuni per la lettura selezionata.';
+    if(aggLabel) aggLabel.textContent=agg.label;
+    if(aggValue) aggValue.textContent=agg.formatted;
+  }
+
   function updateFiscalRecoveryTownPosition(metric,row,choice,position) {
     if (!position || metric?.meta?.key !== 'fiscalRecoveryActivity') return;
     const overline=position.querySelector('.overline');
@@ -843,6 +878,39 @@
     return `<details class="detail-disclosure coast-detail" open><summary><span>${html(title)}</span><small>Valori elementari e denominatori</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="aggregate-note">${html(note)}</p></details>`;
   }
 
+  function extractiveDetailMarkup(metric, rows, title) {
+    if (metric?.meta?.detailGroup !== 'extractive') return '';
+    const key=metric.meta.key;
+    const list=(rows||[]);
+    if (key === 'extractiveSites') {
+      if (list.length === 1) {
+        const row=list[0], d=row.extractiveDetail || {}, records=d.records || [];
+        const summary=`<div class="composite-town-detail"><div><span>Totale RTCave</span><b>${html(number0.format(d.recordCount||0))}</b><small>record distinti per codice_rt</small></div><div><span>Stati</span><b>${html((d.statusBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>valori originali RTCave</small></div><div><span>Tipologie</span><b>${html((d.typeBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>classificazione RTCave</small></div><div><span>Produzione</span><b>${html((d.productionBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>macro-classe produttiva</small></div></div>`;
+        const table=records.length ? `<div class="indicator-table-scroll extractive-records-scroll"><table class="indicator-values-table"><thead><tr><th>Codice RT</th><th>Cava</th><th>Località</th><th>Stato</th><th>Tipologia</th><th>Produzione</th><th>Comprensorio</th><th>Giacimento</th><th>Coordinate</th></tr></thead><tbody>${records.map(r=>`<tr><td>${html(r.codice_rt||'n.d.')}</td><th>${html(r.nome_cava||'n.d.')}</th><td>${html(r.localita||'n.d.')}</td><td>${html(r.stato||'n.d.')}</td><td>${html(r.tipologia||'n.d.')}</td><td>${html(r.tipo_produzione||'n.d.')}</td><td>${html(r.nome_comprensorio||'n.d.')}</td><td>${html(r.nome_giacimento||'n.d.')}</td><td>${html(`${r.lat??'n.d.'}, ${r.lon??'n.d.'}`)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="aggregate-note">Nessun record RTCave nello snapshot.</p>';
+        return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>Anagrafica pubblica RTCave</small></summary>${summary}${table}<p class="aggregate-note">Chiusa, Inattiva e SED non sono sinonimi. La classe produttiva RTCave non viene reinterpretata come litologia.</p></details>`;
+      }
+      return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>Stato, tipologia e classe produttiva</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th><th>Totale</th><th>Attivi</th><th>Inattivi</th><th>Sospesi</th><th>Scaduti</th><th>Chiusi</th><th>n.d.</th></tr></thead><tbody>${list.map(row=>{const p=Object.fromEntries((row.parts||[]).map(x=>[x.key,x.value]));return `<tr><th>${html(row.town)}</th><td>${html(number0.format(p.total||0))}</td><td>${html(number0.format(p.state_active||0))}</td><td>${html(number0.format(p.state_inactive||0))}</td><td>${html(number0.format(p.state_suspended||0))}</td><td>${html(number0.format(p.state_expired||0))}</td><td>${html(number0.format(p.state_closed||0))}</td><td>${html(number0.format(p.state_nd||0))}</td></tr>`}).join('')}</tbody></table></div><p class="aggregate-note">I dettagli comunali conservano tutti i campi pubblici dell’endpoint, compresi comprensorio, giacimento, coordinate e ID tecnici nello snapshot.</p></details>`;
+    }
+    if (key === 'extractiveProduction') {
+      const applicable=list.filter(r=>r.productionDetail);
+      if (!applicable.length) return `<aside class="benchmark-unavailable"><span class="overline">Disponibilità del dato</span><h3>Produzione comunale n.d.</h3><p>Il monitoraggio PRC non consente un raccordo comunale omogeneo per questo Comune; nessuno zero viene inferito.</p></aside>`;
+      const years=applicable[0].productionDetail.years||[];
+      return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>Volumi effettivamente estratti · m³</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th>${years.map(y=>`<th>${html(String(y))}</th>`).join('')}</tr></thead><tbody>${applicable.map(r=>`<tr><th>${html(r.town)}</th>${r.productionDetail.values.map(v=>`<td>${html(number0.format(v))}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="aggregate-note">Per Stazzema la serie conserva separatamente Bacino di Stazzema e Cardoso delle Apuane; l’OPS 2019–2038 resta un benchmark pianificatorio, non un volume autorizzato.</p></details>`;
+    }
+    if (key === 'extractivePlanning') {
+      return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>G, GP, ACC e patrimonio storico PRC</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th><th>G n.</th><th>G ha</th><th>G %</th><th>GP n.</th><th>GP ha</th><th>GP %</th><th>ACC n.</th><th>ACC ha</th><th>ACC %</th><th>MOS</th><th>pMOS</th><th>SED censiti</th></tr></thead><tbody>${list.map(row=>{const d=row.prcDetail||{};return `<tr><th>${html(row.town)}</th><td>${html(number0.format(d.g?.[0]||0))}</td><td>${html(number2.format(d.g?.[1]||0))}</td><td>${html(number3.format(d.g?.[2]||0))}%</td><td>${html(number0.format(d.gp?.[0]||0))}</td><td>${html(number2.format(d.gp?.[1]||0))}</td><td>${html(number3.format(d.gp?.[2]||0))}%</td><td>${html(number0.format(d.acc?.[0]||0))}</td><td>${html(number2.format(d.acc?.[1]||0))}</td><td>${html(number3.format(d.acc?.[2]||0))}%</td><td>${html(number0.format(d.mos||0))}</td><td>${html(number0.format(d.pmos||0))}</td><td>${html(number0.format(d.sed||0))}</td></tr>`}).join('')}</tbody></table></div><p class="aggregate-note">Giacimenti, Giacimenti Potenziali e ACC restano categorie distinte. I SED sono siti dismessi censiti dal PRC in una ricognizione non esaustiva.</p></details>`;
+    }
+    return '';
+  }
+
+  function extractiveCompareDetailMarkup(metric) {
+    return extractiveDetailMarkup(metric, metric.rows, 'Dettaglio attività estrattive');
+  }
+
+  function extractiveTownDetailMarkup(metric,row) {
+    return extractiveDetailMarkup(metric,[row],`Dettaglio · ${row.town}`);
+  }
+
   function coastCompareDetailMarkup(metric) {
     return coastDetailMarkup(metric, metric.rows, 'Dettaglio dei quattro Comuni costieri');
   }
@@ -887,6 +955,7 @@
 
     if (metric.meta.detailGroup === 'tpl') bars.insertAdjacentHTML('beforeend', tplCompareDetailMarkup(data));
     if (metric.meta.detailGroup === 'coast') bars.insertAdjacentHTML('beforeend', coastCompareDetailMarkup(metric));
+    if (metric.meta.detailGroup === 'extractive') bars.insertAdjacentHTML('beforeend', extractiveCompareDetailMarkup(metric));
 
     installAgePyramidDelegation(bars);
     if (metric.meta.detailGroup !== 'tpl') {
@@ -1137,6 +1206,7 @@
     container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');
     const historical = Boolean(row.series?.values?.length);
     const composite = Boolean(metric.meta.compositeType);
+    const extractiveProductionHistory = metricKey === 'extractiveProduction' && historical;
     const distribution = metric.meta.compositeType === 'distribution';
     const omi = metric.meta.compositeType === 'omi';
     const stock = metric.meta.compositeType === 'stock';
@@ -1152,8 +1222,8 @@
     const summary = distribution ? compositeSummary(metric,row) : (sexBreakdown ? (options.find(option=>option.key===defaultSexChoice) || options[0]) : (demographicBreakdown ? (options.find(option=>option.key===defaultDemographicChoice) || options[0]) : ((omi || stock || securityMeasures) ? options[0] : null)));
     const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (sexBreakdown ? compositeSelectionAggregate(metric,defaultSexChoice) : (demographicBreakdown ? compositeSelectionAggregate(metric,defaultDemographicChoice) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)))));
     const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;
-    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
-    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
+    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
+    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
     const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${demographicAgeOptionsMarkup(metric,metric.meta.defaultAge || '25-64')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
     const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
@@ -1175,8 +1245,9 @@
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         ${positionMarkup}</div>
       <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
-        ${composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>
+        ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>
       ${coastTownDetailMarkup(metric,row)}
+      ${extractiveTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${erpArrearsDetailMarkup(metric,row)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}
@@ -1189,6 +1260,7 @@
       updateFiscalRecoveryTownPosition(metric,row,initialChoice,initialPosition);
       updateAgricultureProfileTownPosition(metric,row,initialChoice,initialPosition);
       updateMaritimeTownPosition(metric,row,initialChoice,initialPosition);
+      updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);
     }
 
     const tablist = container.querySelector('[role="tablist"]');
@@ -1221,6 +1293,7 @@
         updateFiscalRecoveryTownPosition(metric,row,choice,position);
         updateAgricultureProfileTownPosition(metric,row,choice,position);
         updateMaritimeTownPosition(metric,row,choice,position);
+        updateExtractiveTownPosition(metric,row,choice,position);
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
       };
       select?.addEventListener('change',()=>applyChoice(select.value));

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contratto dati/metodo per Demanio marittimo v1.27.0."""
+"""Contratto dati/metodo per Demanio marittimo v1.27.0 e release successive."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -7,14 +7,16 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def load(p): return json.loads((ROOT/p).read_text(encoding="utf-8"))
 def rowmap(metric): return {r["town"]:r for r in metric["rows"]}
+def version_tuple(value):
+    return tuple(int(part) for part in str(value).lstrip("v").split(".")[:3])
 
 def main():
     site=load(Path("data/site-data.json"))
     snap=load(Path("data/source-snapshots/demanio-marittimo-v127.json"))
     reg=load(Path("data/source-registry.json"))
-    assert site["version"]=="v1.27.0" and site["updated"]=="1 settembre 2026"
-    assert len(site["metrics"])==177
-    assert reg["expectedMetricCount"]==177 and reg["expectedInlineMetricCount"]==173 and reg["expectedExternalMetricCount"]==4
+    assert version_tuple(site["version"]) >= (1,27,0)
+    assert len(site["metrics"]) >= 177
+    assert reg["expectedMetricCount"] >= 177 and reg["expectedInlineMetricCount"] >= 173 and reg["expectedExternalMetricCount"]==4
     keys=("maritimeConcessions","maritimeConcessionFeesDue")
     coast=next(s for s in site["themes"]["ambiente"]["sections"] if s["key"]=="costa-mare")
     assert coast["metrics"][-2:]==list(keys)
@@ -50,6 +52,6 @@ def main():
     assert "non un incasso" in site["metrics"][keys[1]]["meta"]["description"].lower()
     assert "stabilimento balneare" in site["metrics"][keys[0]]["method"]["caveat"].lower()
     assert not any(k in site["metrics"] for k in ("concessionedArea","concessionedCoastMetres","concessionedCoastShare","bathingEstablishments"))
-    print("Demanio marittimo v1.27.0: 2 card e gate metodologici verificati.")
+    print("Demanio marittimo v1.27.0+: 2 card e gate metodologici verificati.")
 
 if __name__=="__main__": main()

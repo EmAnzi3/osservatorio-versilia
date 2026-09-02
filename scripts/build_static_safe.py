@@ -17,8 +17,8 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260901-v127-demanio-marittimo"
-HISTORY_ASSET_VERSION = "20260901-v127-demanio-marittimo"
+UX_ASSET_VERSION = "20260902-v128-attivita-estrattive"
+HISTORY_ASSET_VERSION = "20260902-v128-attivita-estrattive"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"

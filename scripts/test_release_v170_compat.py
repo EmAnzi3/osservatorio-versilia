@@ -68,6 +68,10 @@ APPROVED_PARTIAL = {
     "libraryLoansPerResident": ("5/7", {"Massarosa", "Stazzema"}),
     "libraryActiveBorrowersPer100": ("5/7", {"Massarosa", "Stazzema"}),
     "libraryWeeklyOpeningHours": ("5/7", {"Massarosa", "Stazzema"}),
+    "extractiveProduction": (
+        "2/7",
+        {"Massarosa", "Viareggio", "Camaiore", "Pietrasanta", "Forte dei Marmi"},
+    ),
 }
 APPROVED_NOT_APPLICABLE = {
     "bathingWaterQuality",

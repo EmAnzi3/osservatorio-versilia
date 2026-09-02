@@ -102,6 +102,9 @@
     rigidDefenceProtectedCoast: ['costa protetta', 'opere rigide', 'difesa costiera'],
     maritimeConcessions: ['concessioni demaniali', 'demanio marittimo', 'balneari', 'turistico ricreative', 'sid'],
     maritimeConcessionFeesDue: ['canoni demaniali', 'canone dovuto', 'demanio marittimo', 'sid', 'balneari'],
+    extractiveSites: ['cave', 'cava', 'rtcave', 'attività estrattive', 'marmo', 'lapideo', 'siti estrattivi'],
+    extractiveProduction: ['produzione cave', 'volume estratto', 'marmo estratto', 'materiale estratto', 'prc'],
+    extractivePlanning: ['giacimenti', 'giacimenti potenziali', 'aree contigue di cava', 'acc', 'piano regionale cave', 'prc'],
     waterNetworkLosses: ['perdite idriche', 'rete idrica', 'acquedotto', 'acqua immessa'],
     drinkingWaterQuality: ['acqua potabile', 'qualità acqua', 'gaia', 'nitrati', 'durezza'],
     remediationProceedings: ['bonifiche', 'sisbon', 'siti contaminati', 'iter attivi', 'iter chiusi'],
@@ -200,6 +203,7 @@
       case 'eurPerResident': return `${number2.format(v)} €/ab`;
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
+      case 'cubicMetres': return `${number0.format(v)} m³`;
       case 'hectaresPerFarm': return `${number2.format(v)} ha/azienda`;
       case 'km': return `${number2.format(v)} km`;
       case 'kmIntervention': return `${number2.format(v)} km-intervento`;

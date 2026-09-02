@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260901-v127-demanio-marittimo';
+const VERSION = 'ov-pwa-20260902-v128-attivita-estrattive';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
