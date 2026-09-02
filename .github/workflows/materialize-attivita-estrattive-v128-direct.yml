@@ -1,0 +1,131 @@
+name: Materializza Attività estrattive v1.28 direct
+
+on:
+  push:
+    branches:
+      - feat/v1.28.0-attivita-estrattive
+    paths:
+      - scripts/materialize-attivita-estrattive-v128.direct.part*
+      - scripts/patch_attivita_estrattive_v128_release.py
+      - scripts/test_attivita_estrattive_v128.py
+      - scripts/test_attivita_estrattive_v128_browser.py
+      - .github/workflows/materialize-attivita-estrattive-v128-direct.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-attivita-estrattive-v128-direct
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v1.28.0-attivita-estrattive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Reconstruct direct materializer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, gzip
+          from pathlib import Path
+
+          parts = [Path(f'scripts/materialize-attivita-estrattive-v128.direct.part{i:02d}') for i in range(3)]
+          missing = [str(p) for p in parts if not p.exists()]
+          if missing:
+              raise SystemExit(f'Chunk mancanti: {missing}')
+          encoded = ''.join(p.read_text(encoding='ascii') for p in parts)
+          text = gzip.decompress(base64.b64decode(encoded)).decode('utf-8')
+
+          replacements = [
+              ("'compositeType':'extractiveSites'", "'compositeType':'securityMeasures'"),
+              ("'compositeType':'extractivePlanning'", "'compositeType':'securityMeasures'"),
+              ("'coverage':'Universo RTCave pubblico: 7 Comuni verificati; zero pubblicato solo quando il Comune non compare nell’universo completo dello snapshot.'", "'coverage':'7/7'"),
+              ("'coverage':'2 Comuni con serie comunale 2019–2025 verificata; 5 n.d. per mancata ricostruibilità comunale omogenea.'", "'coverage':'2/7'"),
+              ("'coverage':'7 Comuni verificati sul dataset regionale completo; gli zeri indicano assenza della categoria nel PRC vigente.'", "'coverage':'7/7'"),
+              ("'contentLength':666", "'contentLength':None"),
+              ("        'aggregate':None,\n        'normalizedAggregate':None,", "        'aggregate':{'value':None,'label':'Versilia · totale non pubblicato','note':'Il monitoraggio PRC non consente di dimostrare una produzione comunale omogenea per tutti i sette Comuni; la somma di Seravezza e Stazzema non viene presentata come totale Versilia.'},\n        'normalizedAggregate':None,"),
+              ("    patch_ui(); patch_release(); rebuild_app()\n    subprocess.run([sys.executable,str(FINAL)],cwd=ROOT,check=True)", "    patch_ui(); patch_release(); rebuild_app()\n    subprocess.run([sys.executable,str(ROOT/'scripts/patch_attivita_estrattive_v128_release.py')],cwd=ROOT,check=True)\n    subprocess.run([sys.executable,str(FINAL)],cwd=ROOT,check=True)"),
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Token materializzatore non trovato: {old[:100]}')
+              text = text.replace(old, new, 1)
+
+          out = Path('scripts/materialize_attivita_estrattive_v128.py')
+          out.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile \
+            scripts/materialize_attivita_estrattive_v128.py \
+            scripts/patch_attivita_estrattive_v128_release.py \
+            scripts/test_attivita_estrattive_v128.py \
+            scripts/test_attivita_estrattive_v128_browser.py
+
+      - name: Materialize v1.28.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/materialize_attivita_estrattive_v128.py
+
+      - name: Validate materialized catalog
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_attivita_estrattive_v128.py
+          python scripts/test_agricoltura_territorio_v120.py
+          python scripts/test_costa_mare_v123.py
+          node --check assets/app.js
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-monitor-state.json >/dev/null
+          python -m json.tool data/source-snapshots/attivita-estrattive-v128.json >/dev/null
+          python - <<'PY'
+          import json
+          site=json.load(open('data/site-data.json',encoding='utf-8'))
+          snap=json.load(open('data/source-snapshots/attivita-estrattive-v128.json',encoding='utf-8'))
+          assert site['version']=='v1.28.0'
+          assert len(site['metrics'])==180
+          assert snap['rtcave']['versiliaRecordCount']==90
+          assert len(snap['rtcave']['records'])==90
+          assert site['metrics']['extractiveProduction']['aggregate']['value'] is None
+          assert site['metrics']['extractiveSites']['meta']['compositeType']=='securityMeasures'
+          assert site['metrics']['extractivePlanning']['meta']['compositeType']=='securityMeasures'
+          PY
+
+      - name: Remove failed bootstraps and one-shot workflows
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f data/source-snapshots/attivita-estrattive-v128.bootstrap.b64
+          rm -f data/source-snapshots/attivita-estrattive-v128.bootstrap.part*
+          rm -f scripts/attivita-estrattive-v128.bootstrap.b64
+          rm -f scripts/attivita-estrattive-v128.bootstrap.part*
+          rm -f scripts/materialize-attivita-estrattive-v128.direct.part*
+          rm -f .github/workflows/materialize-attivita-estrattive-v128-once.yml
+          rm -f .github/workflows/materialize-attivita-estrattive-v128-direct.yml
+
+      - name: Commit actual v1.28.0 implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git diff --cached --quiet && { echo 'Nessuna modifica reale da committare'; exit 1; }
+          git commit -m "v1.28.0 – Attività estrattive"
+          git push origin HEAD:feat/v1.28.0-attivita-estrattive
