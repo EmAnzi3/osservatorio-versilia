@@ -13,6 +13,17 @@ def no_page_overflow(page: Page, label: str) -> None:
     assert overflow <= 2, f"{label}: overflow orizzontale pagina di {overflow}px"
 
 
+def wait_town_metric(page: Page, metric_key: str) -> None:
+    """Attende la selezione reale dell'indicatore nella scheda comunale.
+
+    Nelle schede comunali il titolo completo dell'indicatore non è sempre
+    renderizzato come testo visibile: il contratto stabile è il tab attivo
+    data-metric e il contenuto del pannello #town-topic.
+    """
+    page.locator(f'button[data-metric="{metric_key}"].active').first.wait_for()
+    page.locator("#town-topic").wait_for()
+
+
 def compare_sites(page: Page, base: str) -> None:
     page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractiveSites"), wait_until="networkidle")
     page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
@@ -34,8 +45,9 @@ def compare_sites(page: Page, base: str) -> None:
 
 def town_rtcave(page: Page, base: str) -> None:
     page.goto(urljoin(base, "comuni/massarosa/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
-    page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
+    wait_town_metric(page, "extractiveSites")
     detail = page.locator("#town-topic .extractive-detail:visible")
+    detail.wait_for()
     assert detail.count() == 1
     text = detail.inner_text()
     assert "Anagrafica pubblica RTCave" in text
@@ -47,8 +59,9 @@ def town_rtcave(page: Page, base: str) -> None:
     no_page_overflow(page, "RTCave Massarosa")
 
     page.goto(urljoin(base, "comuni/stazzema/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
-    page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
+    wait_town_metric(page, "extractiveSites")
     detail = page.locator("#town-topic .extractive-detail:visible")
+    detail.wait_for()
     text = detail.inner_text()
     assert "TOMBACCIO" in text
     assert "Piano di recupero" in text
@@ -61,6 +74,7 @@ def production(page: Page, base: str) -> None:
     page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractiveProduction"), wait_until="networkidle")
     page.get_by_text("Produzione estrattiva", exact=True).first.wait_for()
     detail = page.locator("#compare-bars .extractive-detail:visible")
+    detail.wait_for()
     assert detail.count() == 1
     text = detail.inner_text()
     assert "2019" in text and "2025" in text
@@ -69,13 +83,15 @@ def production(page: Page, base: str) -> None:
     no_page_overflow(page, "Produzione confronto")
 
     page.goto(urljoin(base, "comuni/seravezza/?tema=ambiente&indicatore=extractiveProduction"), wait_until="networkidle")
-    page.get_by_text("Produzione estrattiva", exact=True).first.wait_for()
+    wait_town_metric(page, "extractiveProduction")
     detail = page.locator("#town-topic .extractive-detail:visible")
+    detail.wait_for()
     assert "55.801" in detail.inner_text()
     assert page.locator("#town-topic .trend-chart").count() >= 1
     no_page_overflow(page, "Produzione Seravezza")
 
     page.goto(urljoin(base, "comuni/camaiore/?tema=ambiente&indicatore=extractiveProduction"), wait_until="networkidle")
+    wait_town_metric(page, "extractiveProduction")
     page.get_by_text("Produzione comunale n.d.", exact=True).wait_for()
     assert "n.d." in page.locator("#town-topic").inner_text().lower()
 
@@ -93,6 +109,7 @@ def planning(page: Page, base: str) -> None:
     selector.select_option("part-6")
     page.wait_for_timeout(180)
     detail = page.locator("#compare-bars .extractive-detail:visible")
+    detail.wait_for()
     text = detail.inner_text()
     assert "156,32" in text or "156.32" in text
     assert "400,17" in text or "400.17" in text
@@ -100,8 +117,10 @@ def planning(page: Page, base: str) -> None:
     no_page_overflow(page, "PRC confronto")
 
     page.goto(urljoin(base, "comuni/pietrasanta/?tema=ambiente&indicatore=extractivePlanning"), wait_until="networkidle")
-    page.get_by_text("Quadro estrattivo PRC", exact=True).first.wait_for()
-    text = page.locator("#town-topic .extractive-detail:visible").inner_text()
+    wait_town_metric(page, "extractivePlanning")
+    detail = page.locator("#town-topic .extractive-detail:visible")
+    detail.wait_for()
+    text = detail.inner_text()
     assert "11,39" in text or "11.39" in text
     assert "22" in text
     no_page_overflow(page, "PRC Pietrasanta")
