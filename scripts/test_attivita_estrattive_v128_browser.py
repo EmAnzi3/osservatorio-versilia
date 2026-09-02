@@ -58,16 +58,23 @@ def town_rtcave(page: Page, base: str) -> None:
     assert "Fuori Comprensorio" in text
     no_page_overflow(page, "RTCave Massarosa")
 
-    page.goto(urljoin(base, "comuni/stazzema/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
+    # Regressione segnalata: al primo caricamento Seravezza deve mostrare
+    # subito 44/90 = 48,89%, senza passare dal confronto generico con la media.
+    page.goto(urljoin(base, "comuni/seravezza/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
     wait_town_metric(page, "extractiveSites")
-    detail = page.locator("#town-topic .extractive-detail:visible")
-    detail.wait_for()
-    text = detail.inner_text()
     position = page.locator("#town-topic .composite-versilia-position")
     position.wait_for()
     position_text = position.inner_text()
     assert "Peso sulla Versilia" in position_text
     assert "48,89%" in position_text or "48.89%" in position_text
+    no_page_overflow(page, "RTCave Seravezza")
+
+    # Stazzema resta il caso di regressione per lista lunga, n.d. e scrolling interno.
+    page.goto(urljoin(base, "comuni/stazzema/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
+    wait_town_metric(page, "extractiveSites")
+    detail = page.locator("#town-topic .extractive-detail:visible")
+    detail.wait_for()
+    text = detail.inner_text()
     scroll = detail.locator(".extractive-records-scroll")
     assert scroll.count() == 1
     scroll_state = scroll.evaluate("(el) => ({scrollHeight: el.scrollHeight, clientHeight: el.clientHeight, overflowY: getComputedStyle(el).overflowY, left: el.getBoundingClientRect().left, parentLeft: el.closest('.extractive-detail').getBoundingClientRect().left})")
