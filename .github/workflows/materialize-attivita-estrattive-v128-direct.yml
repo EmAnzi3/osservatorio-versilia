@@ -9,6 +9,7 @@ on:
       - scripts/patch_attivita_estrattive_v128_release.py
       - scripts/test_attivita_estrattive_v128.py
       - scripts/test_attivita_estrattive_v128_browser.py
+      - scripts/test_demanio_marittimo_v127.py
       - .github/workflows/materialize-attivita-estrattive-v128-direct.yml
   workflow_dispatch:
 
