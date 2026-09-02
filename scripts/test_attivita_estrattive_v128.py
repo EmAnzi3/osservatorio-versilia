@@ -114,7 +114,9 @@ def main() -> None:
     assert any(r["nome_cava"] == "TOMBACCIO" and r["stato"] is None for r in stazzema_records)
 
     production = site["metrics"]["extractiveProduction"]
-    assert production["aggregate"] is None
+    assert production["aggregate"]["value"] is None
+    assert production["aggregate"]["label"] == "Versilia · totale non pubblicato"
+    assert "non viene presentata come totale Versilia" in production["aggregate"]["note"]
     prod_rows = {r["code"]: r for r in production["rows"]}
     assert prod_rows["046028"]["series"] == {"years": [2019, 2020, 2021, 2022, 2023, 2024, 2025], "values": [31151, 46093, 52048, 57199, 53518, 53194, 55801]}
     assert prod_rows["046030"]["series"]["values"] == [19894, 13619, 17804, 31658, 25328, 38372, 23651]

@@ -1,6 +1,6 @@
 {
-  "version": "v1.27.0",
-  "updated": "1 settembre 2026",
+  "version": "v1.28.0",
+  "updated": "2 settembre 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -566,7 +566,7 @@
       "number": "09",
       "label": "Ambiente",
       "question": "Quali pressioni insistono sul territorio?",
-      "description": "Ambiente, clima, costa, acqua, bonifiche, agricoltura, rifiuti e rischi del territorio.",
+      "description": "Ambiente, clima, costa, acqua, bonifiche, agricoltura, attività estrattive, rifiuti e rischi del territorio.",
       "metrics": [
         "landUse",
         "landUseChange",
@@ -601,6 +601,9 @@
         "cropProfile",
         "irrigatedAgriculturalArea",
         "organicAgriculturalAreaShare",
+        "extractiveSites",
+        "extractiveProduction",
+        "extractivePlanning",
         "recycling",
         "wastePerResident",
         "wasteServiceCost",
@@ -673,6 +676,16 @@
             "cropProfile",
             "irrigatedAgriculturalArea",
             "organicAgriculturalAreaShare"
+          ]
+        },
+        {
+          "key": "attivita-estrattive",
+          "label": "Attività estrattive",
+          "description": "Siti RTCave, produzione effettivamente estratta e quadro pianificatorio del Piano Regionale Cave, mantenendo distinti stato operativo, produzione e categorie territoriali.",
+          "metrics": [
+            "extractiveSites",
+            "extractiveProduction",
+            "extractivePlanning"
           ]
         },
         {
@@ -33549,6 +33562,4769 @@
         "formula": "Valore comunale pubblicato dalla Regione Toscana senza trasformazioni; serie ricomposta dai file annuali ufficiali.",
         "caveat": "La quota dipende anche dalla dimensione e dalla struttura agricola del Comune. Un valore basso nei territori poco agricoli non costituisce da solo una valutazione ambientale negativa.",
         "coverage": "7/7"
+      }
+    },
+    "extractiveSites": {
+      "meta": {
+        "key": "extractiveSites",
+        "theme": "ambiente",
+        "label": "Siti censiti in RTCave",
+        "shortLabel": "Siti RTCave",
+        "description": "Siti presenti nella banca dati pubblica RTCave alla data dello snapshot. La card mantiene separati stato, tipologia e classe produttiva e conserva l’anagrafica pubblica di ciascun record.",
+        "unit": "number",
+        "year": "2 settembre 2026",
+        "source": "Regione Toscana — RTCave",
+        "polarity": "neutral",
+        "detailGroup": "extractive",
+        "searchTerms": [
+          "cave",
+          "cava",
+          "rtcave",
+          "attività estrattive",
+          "marmo",
+          "lapideo",
+          "siti estrattivi",
+          "cave attive",
+          "cave chiuse"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/attivita-estrattive-v128.json",
+          "note": "Snapshot dell’endpoint pubblico anonimo RTCave. I valori null restano n.d.; Chiusa, Inattiva e SED non sono sinonimi."
+        },
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Lettura",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "shareOfAggregate",
+        "comparisonLabel": "Versilia",
+        "comparisonOverline": "Peso sulla Versilia",
+        "comparisonNote": "Quota del numero di record RTCave del Comune sul totale dei sette Comuni per la lettura selezionata."
+      },
+      "sourceUrl": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "sourceUrls": {
+        "rtcave": "https://cave.regione.toscana.it/api/v1/cave_public",
+        "publicMap": "https://cave.regione.toscana.it/"
+      },
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 1,
+          "formatted": "1",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 1,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 1,
+            "statusBreakdown": [
+              {
+                "label": "Inattiva",
+                "count": 1
+              }
+            ],
+            "typeBreakdown": [
+              {
+                "label": "Cava Ordinaria",
+                "count": 1
+              }
+            ],
+            "productionBreakdown": [
+              {
+                "label": "INDUSTRIALE",
+                "count": 1
+              }
+            ],
+            "comprensorioBreakdown": [
+              {
+                "label": "Fuori Comprensorio",
+                "count": 1
+              }
+            ],
+            "giacimentoBreakdown": [
+              {
+                "label": "Giacimento non specificato",
+                "count": 1
+              }
+            ],
+            "records": [
+              {
+                "cod_comprensorio": "00",
+                "cod_istat": "046018",
+                "codice_giacimento": "00",
+                "codice_rt": "09046018002",
+                "id_caratteristica": 1,
+                "id_cava": 115,
+                "id_comprensorio": 0,
+                "id_comune": 75,
+                "id_giacimento": 1,
+                "id_stato": 2,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 1,
+                "id_tipologia": 1,
+                "lat": 43.87272861755656,
+                "localita": "SULLA PIEVE",
+                "lon": 10.307950293585058,
+                "nome_cava": "SULLA PIEVE",
+                "nome_comprensorio": "Fuori Comprensorio",
+                "nome_comune": "Massarosa",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Inattiva",
+                "tipo_produzione": "INDUSTRIALE",
+                "tipologia": "Cava Ordinaria"
+              }
+            ]
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 0,
+            "statusBreakdown": [],
+            "typeBreakdown": [],
+            "productionBreakdown": [],
+            "comprensorioBreakdown": [],
+            "giacimentoBreakdown": [],
+            "records": []
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 0,
+            "statusBreakdown": [],
+            "typeBreakdown": [],
+            "productionBreakdown": [],
+            "comprensorioBreakdown": [],
+            "giacimentoBreakdown": [],
+            "records": []
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 2,
+          "formatted": "2",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 2,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 2,
+            "statusBreakdown": [
+              {
+                "label": "Chiusa",
+                "count": 2
+              }
+            ],
+            "typeBreakdown": [
+              {
+                "label": "Cava Ordinaria",
+                "count": 2
+              }
+            ],
+            "productionBreakdown": [
+              {
+                "label": "ORNAMENTALE",
+                "count": 2
+              }
+            ],
+            "comprensorioBreakdown": [
+              {
+                "label": "Bacino di Pietrasanta",
+                "count": 2
+              }
+            ],
+            "giacimentoBreakdown": [
+              {
+                "label": "Ceragiola - Solaio",
+                "count": 1
+              },
+              {
+                "label": "Giacimento non specificato",
+                "count": 1
+              }
+            ],
+            "records": [
+              {
+                "cod_comprensorio": "07",
+                "cod_istat": "046024",
+                "codice_giacimento": "09046024036001",
+                "codice_rt": "09046024001",
+                "id_caratteristica": 2,
+                "id_cava": 581,
+                "id_comprensorio": 7,
+                "id_comune": 6237,
+                "id_giacimento": 54,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.984806522579916,
+                "localita": "Castello",
+                "lon": 10.234341270308901,
+                "nome_cava": "CERAGIOLA",
+                "nome_comprensorio": "Bacino di Pietrasanta",
+                "nome_comune": "Pietrasanta",
+                "nome_giacimento": "Ceragiola - Solaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "07",
+                "cod_istat": "046024",
+                "codice_giacimento": "00",
+                "codice_rt": "09046024002",
+                "id_caratteristica": 2,
+                "id_cava": 580,
+                "id_comprensorio": 7,
+                "id_comune": 6237,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.979795588090276,
+                "localita": "Vitoio",
+                "lon": 10.241153498269886,
+                "nome_cava": "VITOIO",
+                "nome_comprensorio": "Bacino di Pietrasanta",
+                "nome_comune": "Pietrasanta",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              }
+            ]
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 44,
+          "formatted": "44",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 44
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 6
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 4
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 33
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 43
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 44
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 44,
+            "statusBreakdown": [
+              {
+                "label": "Chiusa",
+                "count": 33
+              },
+              {
+                "label": "Attiva",
+                "count": 6
+              },
+              {
+                "label": "Sospesa",
+                "count": 4
+              },
+              {
+                "label": "Scaduta",
+                "count": 1
+              }
+            ],
+            "typeBreakdown": [
+              {
+                "label": "Cava Ordinaria",
+                "count": 43
+              },
+              {
+                "label": "Opere di ripristino",
+                "count": 1
+              }
+            ],
+            "productionBreakdown": [
+              {
+                "label": "ORNAMENTALE",
+                "count": 44
+              }
+            ],
+            "comprensorioBreakdown": [
+              {
+                "label": "Bacino di Seravezza",
+                "count": 44
+              }
+            ],
+            "giacimentoBreakdown": [
+              {
+                "label": "Giacimento non specificato",
+                "count": 12
+              },
+              {
+                "label": "ACC Bacino Retro Altissimo",
+                "count": 8
+              },
+              {
+                "label": "ACC Bacino Tacca Bianca",
+                "count": 5
+              },
+              {
+                "label": "Bacino Trambiserra",
+                "count": 5
+              },
+              {
+                "label": "ACC Bacino Monte Altissimo Est",
+                "count": 4
+              },
+              {
+                "label": "ACC Bacino Monte Pelato",
+                "count": 4
+              },
+              {
+                "label": "ACC Bacino Canale delle Gobbie",
+                "count": 3
+              },
+              {
+                "label": "Bacino Monte Costa",
+                "count": 2
+              },
+              {
+                "label": "ACC Bacino Mossa",
+                "count": 1
+              }
+            ],
+            "records": [
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028037",
+                "id_caratteristica": 2,
+                "id_cava": 695,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04945574908429,
+                "localita": "Arni",
+                "lon": 10.241805758278026,
+                "nome_cava": "BORGHINO - FERRARI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028021",
+                "id_caratteristica": 2,
+                "id_cava": 126,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 3,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.050709096381084,
+                "localita": "ARNI BUCA",
+                "lon": 10.240793919376708,
+                "nome_cava": "BUCA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Sospesa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280450",
+                "codice_rt": "09046028014",
+                "id_caratteristica": 2,
+                "id_cava": 670,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 63,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05841148683566,
+                "localita": "Arni - Castellaccio",
+                "lon": 10.247624970798755,
+                "nome_cava": "CAMPO DELL'ORZO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Canale delle Gobbie",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028008",
+                "id_caratteristica": 2,
+                "id_cava": 641,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03196051508553,
+                "localita": "Giardino",
+                "lon": 10.245995073274276,
+                "nome_cava": "CAVETTE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028037001",
+                "codice_rt": "09046028001",
+                "id_caratteristica": 2,
+                "id_cava": 577,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 56,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.01203542008938,
+                "localita": "Trambiserra",
+                "lon": 10.212697105285164,
+                "nome_cava": "CAVONE CAVETTE CANALA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Trambiserra",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280440",
+                "codice_rt": "09046028023",
+                "id_caratteristica": 5,
+                "id_cava": 128,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 62,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03964984006414,
+                "localita": "ARNI CERVAIOLE",
+                "lon": 10.245218474041188,
+                "nome_cava": "CERVAIOLE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Altissimo Est",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280420",
+                "codice_rt": "09046028015",
+                "id_caratteristica": 2,
+                "id_cava": 681,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 60,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04703405608504,
+                "localita": "ARNI",
+                "lon": 10.233078170281225,
+                "nome_cava": "COLONNONI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Tacca Bianca",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280450",
+                "codice_rt": "09046028019",
+                "id_caratteristica": 2,
+                "id_cava": 125,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 63,
+                "id_stato": 3,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 4,
+                "lat": 44.05807755708296,
+                "localita": "ARNI CONCA CASTELLINA",
+                "lon": 10.250465019275659,
+                "nome_cava": "CONCA CASTELLINA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Canale delle Gobbie",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Sospesa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Opere di ripristino"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280440",
+                "codice_rt": "09046028013",
+                "id_caratteristica": 3,
+                "id_cava": 649,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 62,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.038458998085076,
+                "localita": "Cervaiole",
+                "lon": 10.243052587276273,
+                "nome_cava": "DEL SOLE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Altissimo Est",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028033",
+                "id_caratteristica": 2,
+                "id_cava": 692,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05742069708406,
+                "localita": "Fondone",
+                "lon": 10.234578378281888,
+                "nome_cava": "FALCONI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280440",
+                "codice_rt": "09046028012",
+                "id_caratteristica": 2,
+                "id_cava": 648,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 62,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.0430224730846,
+                "localita": "Falcovaia",
+                "lon": 10.245350565275825,
+                "nome_cava": "FALCOVAIA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Altissimo Est",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280420",
+                "codice_rt": "09046028017",
+                "id_caratteristica": 2,
+                "id_cava": 683,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 60,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04736780208485,
+                "localita": "ARNI",
+                "lon": 10.234771143280625,
+                "nome_cava": "FITTA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Tacca Bianca",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280420",
+                "codice_rt": "09046028027",
+                "id_caratteristica": 2,
+                "id_cava": 685,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 60,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.0475887660848,
+                "localita": "ARNI",
+                "lon": 10.235457416280353,
+                "nome_cava": "GALLERIA VIANI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Tacca Bianca",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280440",
+                "codice_rt": "09046028028",
+                "id_caratteristica": 2,
+                "id_cava": 686,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 62,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.033422311085424,
+                "localita": "ARNI",
+                "lon": 10.245668113274586,
+                "nome_cava": "GIARDINO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Altissimo Est",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028024",
+                "id_caratteristica": 4,
+                "id_cava": 129,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.051807707337616,
+                "localita": "ARNI GRANOLESA",
+                "lon": 10.239138746010472,
+                "nome_cava": "GRANOLESA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028003",
+                "id_caratteristica": 2,
+                "id_cava": 579,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.00876013508908,
+                "localita": "Fabbiano",
+                "lon": 10.221542781281297,
+                "nome_cava": "LA CAPPELLA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028009",
+                "id_caratteristica": 2,
+                "id_cava": 645,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.044080482084965,
+                "localita": "Falcovaia",
+                "lon": 10.23807968427886,
+                "nome_cava": "LA PIASTRA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280420",
+                "codice_rt": "09046028046",
+                "id_caratteristica": 4,
+                "id_cava": 130,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 60,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04687703399665,
+                "localita": "ARNI MACCHIETTA",
+                "lon": 10.233985889407887,
+                "nome_cava": "MACCHIETTA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Tacca Bianca",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028038001",
+                "codice_rt": "09046028025",
+                "id_caratteristica": 2,
+                "id_cava": 651,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 57,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99198320008965,
+                "localita": "Monte Costa",
+                "lon": 10.235260685273749,
+                "nome_cava": "MEDICEA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Monte Costa",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028032",
+                "id_caratteristica": 2,
+                "id_cava": 690,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.059548314084054,
+                "localita": "GOBBIE",
+                "lon": 10.231519584283413,
+                "nome_cava": "MISCHIO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280430",
+                "codice_rt": "09046028111",
+                "id_caratteristica": 2,
+                "id_cava": 135,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 61,
+                "id_stato": 3,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04447287943977,
+                "localita": "Falcovaia",
+                "lon": 10.23683183461742,
+                "nome_cava": "MOSSA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Mossa",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Sospesa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028039",
+                "id_caratteristica": 2,
+                "id_cava": 697,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.049634630084824,
+                "localita": "ARNI",
+                "lon": 10.23297057128168,
+                "nome_cava": "ONDA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280400",
+                "codice_rt": "09046028030",
+                "id_caratteristica": 3,
+                "id_cava": 688,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 58,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.06145013446812,
+                "localita": "GOBBIE",
+                "lon": 10.228869943654598,
+                "nome_cava": "PELATO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Pelato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028037001",
+                "codice_rt": "09046028022",
+                "id_caratteristica": 2,
+                "id_cava": 127,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 56,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.010967643878615,
+                "localita": "TRAMBISERRA",
+                "lon": 10.212547933233141,
+                "nome_cava": "PELLINI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Trambiserra",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028037001",
+                "codice_rt": "09046028020",
+                "id_caratteristica": 2,
+                "id_cava": 491,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 56,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.010705278615674,
+                "localita": "Trambiserra",
+                "lon": 10.212566595213865,
+                "nome_cava": "PELLIZZARI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Trambiserra",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028035",
+                "id_caratteristica": 2,
+                "id_cava": 691,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.055949707084146,
+                "localita": "Fondone",
+                "lon": 10.234784640281735,
+                "nome_cava": "PENNACCI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028100",
+                "id_caratteristica": 2,
+                "id_cava": 132,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05584537250523,
+                "localita": "Fondone",
+                "lon": 10.236918682774641,
+                "nome_cava": "PIASTRONE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028037001",
+                "codice_rt": "09046028002",
+                "id_caratteristica": 2,
+                "id_cava": 578,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 56,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.008234100089666,
+                "localita": "Trambiserra",
+                "lon": 10.213179728284564,
+                "nome_cava": "PITONE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Trambiserra",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028034",
+                "id_caratteristica": 2,
+                "id_cava": 693,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05462172308445,
+                "localita": "Fondone",
+                "lon": 10.231725147282775,
+                "nome_cava": "POGGIO DELLA NEVE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028036",
+                "id_caratteristica": 2,
+                "id_cava": 694,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.052668302084165,
+                "localita": "Fondone",
+                "lon": 10.238592478279765,
+                "nome_cava": "PORRACCI",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280410",
+                "codice_rt": "09046028038",
+                "id_caratteristica": 2,
+                "id_cava": 696,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 59,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.052141138084,
+                "localita": "ARNI",
+                "lon": 10.24145252627856,
+                "nome_cava": "RANA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Retro Altissimo",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280450",
+                "codice_rt": "09046028080",
+                "id_caratteristica": 2,
+                "id_cava": 131,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 63,
+                "id_stato": 3,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05834010834737,
+                "localita": "ARNI RIGO",
+                "lon": 10.248127847942994,
+                "nome_cava": "RIGO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Canale delle Gobbie",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Sospesa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028038001",
+                "codice_rt": "09046028102",
+                "id_caratteristica": 2,
+                "id_cava": 133,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 57,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99145982878602,
+                "localita": "GALLENA",
+                "lon": 10.237202030689227,
+                "nome_cava": "SBASSO-CONFINE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Monte Costa",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280420",
+                "codice_rt": "09046028016",
+                "id_caratteristica": 2,
+                "id_cava": 682,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 60,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04819654808485,
+                "localita": "ARNI",
+                "lon": 10.233731536281114,
+                "nome_cava": "TACCA BIANCA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Tacca Bianca",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028005",
+                "id_caratteristica": 2,
+                "id_cava": 642,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.033974093085384,
+                "localita": "Giardino",
+                "lon": 10.24433586727515,
+                "nome_cava": "TECCHIA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028026",
+                "id_caratteristica": 2,
+                "id_cava": 684,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04930937308484,
+                "localita": "ARNI",
+                "lon": 10.233730430281332,
+                "nome_cava": "TELA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280400",
+                "codice_rt": "09046028031",
+                "id_caratteristica": 3,
+                "id_cava": 689,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 58,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.06053263408416,
+                "localita": "GOBBIE",
+                "lon": 10.228793262284599,
+                "nome_cava": "TERRONE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Pelato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "09046028037001",
+                "codice_rt": "09046028110",
+                "id_caratteristica": 2,
+                "id_cava": 134,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 56,
+                "id_stato": 9,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.011185655637746,
+                "localita": "Trambiserra",
+                "lon": 10.213282572465797,
+                "nome_cava": "TRAMBISERRA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Bacino Trambiserra",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Scaduta",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028010",
+                "id_caratteristica": 2,
+                "id_cava": 646,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.04537750508488,
+                "localita": "Falcovaia",
+                "lon": 10.237616299279223,
+                "nome_cava": "VASAIONE",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280400",
+                "codice_rt": "09046028004",
+                "id_caratteristica": 2,
+                "id_cava": 583,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 58,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.06505044308359,
+                "localita": "Passo del Vestito",
+                "lon": 10.231038118284292,
+                "nome_cava": "VESTITO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Pelato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028011",
+                "id_caratteristica": 2,
+                "id_cava": 647,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.044925668084815,
+                "localita": "Falcovaia",
+                "lon": 10.23945489627848,
+                "nome_cava": "VINCARELLA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028006",
+                "id_caratteristica": 2,
+                "id_cava": 643,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.033721210085496,
+                "localita": "Giardino",
+                "lon": 10.243723028275422,
+                "nome_cava": "ZAMPOGNONE A",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "00",
+                "codice_rt": "09046028007",
+                "id_caratteristica": 2,
+                "id_cava": 644,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03316427108556,
+                "localita": "Giardino",
+                "lon": 10.24307390127562,
+                "nome_cava": "ZAMPOGNONE B",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046028",
+                "codice_giacimento": "090460280400",
+                "codice_rt": "09046028029",
+                "id_caratteristica": 3,
+                "id_cava": 687,
+                "id_comprensorio": 8,
+                "id_comune": 47,
+                "id_giacimento": 58,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.06291380808377,
+                "localita": "GOBBIE",
+                "lon": 10.231017083283998,
+                "nome_cava": "ZUCCO PELATO",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Seravezza",
+                "nome_giacimento": "ACC Bacino Monte Pelato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              }
+            ]
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0,
+          "formatted": "0",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 0,
+            "statusBreakdown": [],
+            "typeBreakdown": [],
+            "productionBreakdown": [],
+            "comprensorioBreakdown": [],
+            "giacimentoBreakdown": [],
+            "records": []
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 43,
+          "formatted": "43",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 43,
+          "parts": [
+            {
+              "key": "total",
+              "label": "Siti RTCave totali",
+              "selectorLabel": "Tutti",
+              "unit": "number",
+              "value": 43
+            },
+            {
+              "key": "state_active",
+              "label": "Siti attivi",
+              "selectorLabel": "Stato · Attivi",
+              "unit": "number",
+              "value": 9
+            },
+            {
+              "key": "state_inactive",
+              "label": "Siti inattivi",
+              "selectorLabel": "Stato · Inattivi",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "state_suspended",
+              "label": "Siti sospesi",
+              "selectorLabel": "Stato · Sospesi",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "state_expired",
+              "label": "Siti scaduti",
+              "selectorLabel": "Stato · Scaduti",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "state_restoration",
+              "label": "Siti in ripristino",
+              "selectorLabel": "Stato · Ripristino",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "state_closed",
+              "label": "Siti chiusi",
+              "selectorLabel": "Stato · Chiusi",
+              "unit": "number",
+              "value": 29
+            },
+            {
+              "key": "state_nd",
+              "label": "Stato non disponibile",
+              "selectorLabel": "Stato · n.d.",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "type_ordinary",
+              "label": "Cava ordinaria",
+              "selectorLabel": "Tipologia · Cava ordinaria",
+              "unit": "number",
+              "value": 36
+            },
+            {
+              "key": "type_restoreworks",
+              "label": "Opere di ripristino",
+              "selectorLabel": "Tipologia · Opere di ripristino",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "type_recovery",
+              "label": "Piano di recupero",
+              "selectorLabel": "Tipologia · Piano di recupero",
+              "unit": "number",
+              "value": 6
+            },
+            {
+              "key": "prod_ornamental",
+              "label": "Classe produttiva ornamentale",
+              "selectorLabel": "Produzione · Ornamentale",
+              "unit": "number",
+              "value": 42
+            },
+            {
+              "key": "prod_industrial",
+              "label": "Classe produttiva industriale",
+              "selectorLabel": "Produzione · Industriale",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "prod_construction",
+              "label": "Classe produttiva costruzione",
+              "selectorLabel": "Produzione · Costruzione",
+              "unit": "number",
+              "value": 1
+            }
+          ],
+          "extractiveDetail": {
+            "recordCount": 43,
+            "statusBreakdown": [
+              {
+                "label": "Chiusa",
+                "count": 29
+              },
+              {
+                "label": "Attiva",
+                "count": 9
+              },
+              {
+                "label": "Scaduta",
+                "count": 2
+              },
+              {
+                "label": "Inattiva",
+                "count": 1
+              },
+              {
+                "label": "Sospesa",
+                "count": 1
+              },
+              {
+                "label": "n.d.",
+                "count": 1
+              }
+            ],
+            "typeBreakdown": [
+              {
+                "label": "Cava Ordinaria",
+                "count": 36
+              },
+              {
+                "label": "Piano di recupero",
+                "count": 6
+              },
+              {
+                "label": "Opere di ripristino",
+                "count": 1
+              }
+            ],
+            "productionBreakdown": [
+              {
+                "label": "ORNAMENTALE",
+                "count": 42
+              },
+              {
+                "label": "COSTRUZIONE",
+                "count": 1
+              }
+            ],
+            "comprensorioBreakdown": [
+              {
+                "label": "Bacino di Stazzema",
+                "count": 27
+              },
+              {
+                "label": "Cardoso delle Apuane",
+                "count": 14
+              },
+              {
+                "label": "Bacino di Seravezza",
+                "count": 2
+              }
+            ],
+            "giacimentoBreakdown": [
+              {
+                "label": "Giacimento non specificato",
+                "count": 10
+              },
+              {
+                "label": "ACC Bacino Monte Macina",
+                "count": 6
+              },
+              {
+                "label": "ACC Ficaio",
+                "count": 6
+              },
+              {
+                "label": "ACC Cardoso Pruno",
+                "count": 4
+              },
+              {
+                "label": "ACC Bacino Monte Corchia",
+                "count": 3
+              },
+              {
+                "label": "Bacino Monte Costa - Cava Francia",
+                "count": 3
+              },
+              {
+                "label": "ACC Bacino Monte Mulina di Stazzema",
+                "count": 2
+              },
+              {
+                "label": "ACC La Penna",
+                "count": 2
+              },
+              {
+                "label": "ACC Bacino Borra Larga",
+                "count": 1
+              },
+              {
+                "label": "ACC Bacino Canale delle Gobbie",
+                "count": 1
+              },
+              {
+                "label": "ACC Buche Carpineto",
+                "count": 1
+              },
+              {
+                "label": "ACC Canale delle Fredde",
+                "count": 1
+              },
+              {
+                "label": "ACC La Ratta",
+                "count": 1
+              },
+              {
+                "label": "ACC La Risvolta",
+                "count": 1
+              },
+              {
+                "label": "ACC Tre Fiumi",
+                "count": 1
+              }
+            ],
+            "records": [
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300550",
+                "codice_rt": "09046030104",
+                "id_caratteristica": 2,
+                "id_cava": 440,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 73,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.98379948637385,
+                "localita": "ARNI",
+                "lon": 10.325897816750238,
+                "nome_cava": "ARNI",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Buche Carpineto",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030032",
+                "id_caratteristica": 2,
+                "id_cava": 140,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 44.00885955211619,
+                "localita": "CARDOSO",
+                "lon": 10.3162394029521,
+                "nome_cava": "BELVEDERE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300500",
+                "codice_rt": "09046030029",
+                "id_caratteristica": 5,
+                "id_cava": 138,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 68,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.02217722771797,
+                "localita": "LEVIGLIANI",
+                "lon": 10.300076631775584,
+                "nome_cava": "BORRA LARGA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Borra Larga",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030007",
+                "id_caratteristica": 2,
+                "id_cava": 584,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 2,
+                "id_tipologia": 1,
+                "lat": 44.069498143082164,
+                "localita": "Bettini",
+                "lon": 10.246958661278459,
+                "nome_cava": "BOZZO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "COSTRUZIONE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300540",
+                "codice_rt": "09046030043",
+                "id_caratteristica": 2,
+                "id_cava": 145,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 72,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.009684024513554,
+                "localita": "CARDOSO",
+                "lon": 10.31377520355517,
+                "nome_cava": "BUCINO - COL DAL TOVO",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Cardoso Pruno",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300560",
+                "codice_rt": "09046030006",
+                "id_caratteristica": 2,
+                "id_cava": 582,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 74,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.059936828082066,
+                "localita": "Campagrina",
+                "lon": 10.262016316271223,
+                "nome_cava": "CAVONE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Tre Fiumi",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300540",
+                "codice_rt": "09046030107",
+                "id_caratteristica": 2,
+                "id_cava": 438,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 72,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.00982509536548,
+                "localita": "CARDOSO COL DEL TOVO",
+                "lon": 10.311695066182445,
+                "nome_cava": "COL DAL TOVO",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Cardoso Pruno",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300540",
+                "codice_rt": "09046030034",
+                "id_caratteristica": 2,
+                "id_cava": 141,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 72,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 44.00984296051264,
+                "localita": "CARDOSO",
+                "lon": 10.311682985312846,
+                "nome_cava": "COL DAL TOVO A",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Cardoso Pruno",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300540",
+                "codice_rt": "09046030035",
+                "id_caratteristica": 2,
+                "id_cava": 142,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 72,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 44.009972141573414,
+                "localita": "CARDOSO",
+                "lon": 10.31227213768585,
+                "nome_cava": "COL DAL TOVO B",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Cardoso Pruno",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460280450",
+                "codice_rt": "09046030012",
+                "id_caratteristica": 2,
+                "id_cava": 677,
+                "id_comprensorio": 8,
+                "id_comune": 84,
+                "id_giacimento": 63,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 4,
+                "lat": 44.05873193708288,
+                "localita": "ARNI CONCA CASTELLINA",
+                "lon": 10.251051967275492,
+                "nome_cava": "CONCA CASTELLINA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Canale delle Gobbie",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Opere di ripristino"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030015",
+                "id_caratteristica": 2,
+                "id_cava": 410,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.07553941508223,
+                "localita": "ARNI",
+                "lon": 10.249330118461792,
+                "nome_cava": "FANIELLO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030044",
+                "id_caratteristica": 2,
+                "id_cava": 439,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 43.994648188240696,
+                "localita": "STAZZEMA - LOCALITA' FILUCCHIA",
+                "lon": 10.324393333363474,
+                "nome_cava": "FICAIO",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030103",
+                "id_caratteristica": 2,
+                "id_cava": 152,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99204448450936,
+                "localita": "Filucchia di Stazzema",
+                "lon": 10.32439166961144,
+                "nome_cava": "FILUCCHIA 1",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030102",
+                "id_caratteristica": 2,
+                "id_cava": 151,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99201750919768,
+                "localita": "STAZZEMA",
+                "lon": 10.324297452471063,
+                "nome_cava": "FILUCCHIA 2",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "09046030046001",
+                "codice_rt": "09046030026",
+                "id_caratteristica": 2,
+                "id_cava": 436,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 64,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.9908337581805,
+                "localita": "GALLENA",
+                "lon": 10.239733026964865,
+                "nome_cava": "FRANCIA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Bacino Monte Costa - Cava Francia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "09046030046001",
+                "codice_rt": "09046030051",
+                "id_caratteristica": 2,
+                "id_cava": 437,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 64,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 43.991406020679705,
+                "localita": "GALLENA",
+                "lon": 10.241628014914701,
+                "nome_cava": "GALLENA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Bacino Monte Costa - Cava Francia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "08",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030025",
+                "id_caratteristica": 2,
+                "id_cava": 458,
+                "id_comprensorio": 8,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.056761572470634,
+                "localita": "COL DI FAVILLA",
+                "lon": 10.300458479617317,
+                "nome_cava": "GUFONAGLIA",
+                "nome_comprensorio": "Bacino di Seravezza",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030008",
+                "id_caratteristica": 2,
+                "id_cava": 587,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.015145087083006,
+                "localita": "Tiglieta",
+                "lon": 10.308508900247118,
+                "nome_cava": "LA CREPATA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030003",
+                "id_caratteristica": 2,
+                "id_cava": 402,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 3,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.992071599362696,
+                "localita": "FILUCCHIA",
+                "lon": 10.325655451984295,
+                "nome_cava": "LA NOCE DEL CARDOSO",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Sospesa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030036",
+                "id_caratteristica": 2,
+                "id_cava": 143,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 2,
+                "lat": 44.00621140272057,
+                "localita": "CARDOSO",
+                "lon": 10.315070681703407,
+                "nome_cava": "LA PENNA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Piano di recupero"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300470",
+                "codice_rt": "09046030106",
+                "id_caratteristica": 2,
+                "id_cava": 153,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 65,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.976126630085616,
+                "localita": "POMEZZANA",
+                "lon": 10.32050200423753,
+                "nome_cava": "LA RATTA",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC La Ratta",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030040",
+                "id_caratteristica": 2,
+                "id_cava": 484,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.98476720469836,
+                "localita": "POMEZZANA",
+                "lon": 10.324984156383424,
+                "nome_cava": "LE BUCHE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030011",
+                "id_caratteristica": 2,
+                "id_cava": 590,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99643903108532,
+                "localita": "Mulina",
+                "lon": 10.297327846249306,
+                "nome_cava": "LE MULINA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030031",
+                "id_caratteristica": 2,
+                "id_cava": 139,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.0083314568857,
+                "localita": "CARDOSO",
+                "lon": 10.315342054328642,
+                "nome_cava": "LOPPIETO A",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030033",
+                "id_caratteristica": 2,
+                "id_cava": 450,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.00867724386932,
+                "localita": "CARDOSO",
+                "lon": 10.314850722605165,
+                "nome_cava": "LOPPIETO B EX FILIERA DEL CARDOSO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "09046030046001",
+                "codice_rt": "09046030005",
+                "id_caratteristica": 2,
+                "id_cava": 658,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 64,
+                "id_stato": 2,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.991902626182444,
+                "localita": "Monte Costa",
+                "lon": 10.238027264717056,
+                "nome_cava": "MEDICEA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Bacino Monte Costa - Cava Francia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Inattiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300490",
+                "codice_rt": "09046030041",
+                "id_caratteristica": 2,
+                "id_cava": 473,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 67,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.05827309985529,
+                "localita": "COL DI FAVILLA",
+                "lon": 10.305073455576679,
+                "nome_cava": "PENDIA TANA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Canale delle Fredde",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300480",
+                "codice_rt": "09046030028",
+                "id_caratteristica": 4,
+                "id_cava": 137,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 66,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03189148755065,
+                "localita": "LEVIGLIANI",
+                "lon": 10.294136710683707,
+                "nome_cava": "PIASTRAIO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Corchia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300520",
+                "codice_rt": "09046030010",
+                "id_caratteristica": 2,
+                "id_cava": 589,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 70,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99429353808528,
+                "localita": "Mulina",
+                "lon": 10.300061087248004,
+                "nome_cava": "PIASTRAIO MULINA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Mulina di Stazzema",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030049",
+                "id_caratteristica": 2,
+                "id_cava": 148,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 9,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.993161793128664,
+                "localita": "STAZZEMA",
+                "lon": 10.322601859691272,
+                "nome_cava": "PIASTRANERA",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Scaduta",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300570",
+                "codice_rt": "09046030038",
+                "id_caratteristica": 2,
+                "id_cava": 669,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 75,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.993416470042234,
+                "localita": "FILUCCHIA",
+                "lon": 10.322754986372288,
+                "nome_cava": "PIASTRANERA ALTA",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Ficaio",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300480",
+                "codice_rt": "09046030027",
+                "id_caratteristica": 4,
+                "id_cava": 136,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 66,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03091269430687,
+                "localita": "LEVIGLIANI",
+                "lon": 10.296548816221593,
+                "nome_cava": "PIASTRICCIONI",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Corchia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300530",
+                "codice_rt": "09046030046",
+                "id_caratteristica": 2,
+                "id_cava": 147,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 71,
+                "id_stato": 9,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.00635195479214,
+                "localita": "CARDOSO",
+                "lon": 10.321510281837742,
+                "nome_cava": "PIASTRONE B",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC La Penna",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Scaduta",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030105",
+                "id_caratteristica": 2,
+                "id_cava": 487,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.984714446199376,
+                "localita": "PONTESTAZZEMESE",
+                "lon": 10.326953131179337,
+                "nome_cava": "PONTESTAZZEMESE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300520",
+                "codice_rt": "09046030050",
+                "id_caratteristica": 2,
+                "id_cava": 149,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 70,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.993332413486215,
+                "localita": "MULINA",
+                "lon": 10.298972913444096,
+                "nome_cava": "RONDONE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Mulina di Stazzema",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300510",
+                "codice_rt": "09046030045",
+                "id_caratteristica": 2,
+                "id_cava": 146,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 69,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 43.99925190036974,
+                "localita": "ALLA RISVOLTA",
+                "lon": 10.289585641038766,
+                "nome_cava": "ROSSO RUBINO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC La Risvolta",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "92",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300530",
+                "codice_rt": "09046030101",
+                "id_caratteristica": 2,
+                "id_cava": 150,
+                "id_comprensorio": 92,
+                "id_comune": 84,
+                "id_giacimento": 71,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.00583405367548,
+                "localita": "CARDOSO",
+                "lon": 10.317058141008616,
+                "nome_cava": "SAMPIERA",
+                "nome_comprensorio": "Cardoso delle Apuane",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC La Penna",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030002",
+                "id_caratteristica": 2,
+                "id_cava": 401,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.076923841190386,
+                "localita": "SERRA DELLE VOLTE",
+                "lon": 10.246564981198748,
+                "nome_cava": "SERRA DELLE VOLTE",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300480",
+                "codice_rt": "09046030037",
+                "id_caratteristica": 4,
+                "id_cava": 144,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 66,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.03518550791615,
+                "localita": "LEVIGLIANI-MONTE CORCHIA",
+                "lon": 10.290127468121758,
+                "nome_cava": "TAVOLINI A E B",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Corchia",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "00",
+                "codice_rt": "09046030009",
+                "id_caratteristica": 2,
+                "id_cava": 588,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 1,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.01540444608299,
+                "localita": "Tiglieta",
+                "lon": 10.307910238247368,
+                "nome_cava": "TIGLIETA",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "Giacimento non specificato",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030001",
+                "id_caratteristica": 2,
+                "id_cava": 400,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": null,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.07479733108175,
+                "localita": "MONTE MACINA",
+                "lon": 10.246743807279174,
+                "nome_cava": "TOMBACCIO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": null,
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030108",
+                "id_caratteristica": 2,
+                "id_cava": 655,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": 12,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.074532742176416,
+                "localita": "Monte Macina",
+                "lon": 10.244405820107923,
+                "nome_cava": "TOMBACCIO NOCELLAIO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Chiusa",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              },
+              {
+                "cod_comprensorio": "09",
+                "cod_istat": "046030",
+                "codice_giacimento": "090460300580",
+                "codice_rt": "09046030109",
+                "id_caratteristica": 2,
+                "id_cava": 441,
+                "id_comprensorio": 9,
+                "id_comune": 84,
+                "id_giacimento": 76,
+                "id_stato": 1,
+                "id_tipo_prestito": null,
+                "id_tipo_prima_prod": 3,
+                "id_tipologia": 1,
+                "lat": 44.075403884202494,
+                "localita": "ARNI",
+                "lon": 10.245002167605243,
+                "nome_cava": "TOMBACCIO PRUNETTI - FANTASTICO",
+                "nome_comprensorio": "Bacino di Stazzema",
+                "nome_comune": "Stazzema",
+                "nome_giacimento": "ACC Bacino Monte Macina",
+                "nome_provincia": "Lucca",
+                "sigla_provincia": "LU",
+                "stato": "Attiva",
+                "tipo_produzione": "ORNAMENTALE",
+                "tipologia": "Cava Ordinaria"
+              }
+            ]
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 90,
+        "label": "Versilia · siti RTCave",
+        "parts": [
+          {
+            "key": "total",
+            "label": "Siti RTCave totali",
+            "selectorLabel": "Tutti",
+            "unit": "number",
+            "value": 90
+          },
+          {
+            "key": "state_active",
+            "label": "Siti attivi",
+            "selectorLabel": "Stato · Attivi",
+            "unit": "number",
+            "value": 15
+          },
+          {
+            "key": "state_inactive",
+            "label": "Siti inattivi",
+            "selectorLabel": "Stato · Inattivi",
+            "unit": "number",
+            "value": 2
+          },
+          {
+            "key": "state_suspended",
+            "label": "Siti sospesi",
+            "selectorLabel": "Stato · Sospesi",
+            "unit": "number",
+            "value": 5
+          },
+          {
+            "key": "state_expired",
+            "label": "Siti scaduti",
+            "selectorLabel": "Stato · Scaduti",
+            "unit": "number",
+            "value": 3
+          },
+          {
+            "key": "state_restoration",
+            "label": "Siti in ripristino",
+            "selectorLabel": "Stato · Ripristino",
+            "unit": "number",
+            "value": 0
+          },
+          {
+            "key": "state_closed",
+            "label": "Siti chiusi",
+            "selectorLabel": "Stato · Chiusi",
+            "unit": "number",
+            "value": 64
+          },
+          {
+            "key": "state_nd",
+            "label": "Stato non disponibile",
+            "selectorLabel": "Stato · n.d.",
+            "unit": "number",
+            "value": 1
+          },
+          {
+            "key": "type_ordinary",
+            "label": "Cava ordinaria",
+            "selectorLabel": "Tipologia · Cava ordinaria",
+            "unit": "number",
+            "value": 82
+          },
+          {
+            "key": "type_restoreworks",
+            "label": "Opere di ripristino",
+            "selectorLabel": "Tipologia · Opere di ripristino",
+            "unit": "number",
+            "value": 2
+          },
+          {
+            "key": "type_recovery",
+            "label": "Piano di recupero",
+            "selectorLabel": "Tipologia · Piano di recupero",
+            "unit": "number",
+            "value": 6
+          },
+          {
+            "key": "prod_ornamental",
+            "label": "Classe produttiva ornamentale",
+            "selectorLabel": "Produzione · Ornamentale",
+            "unit": "number",
+            "value": 88
+          },
+          {
+            "key": "prod_industrial",
+            "label": "Classe produttiva industriale",
+            "selectorLabel": "Produzione · Industriale",
+            "unit": "number",
+            "value": 1
+          },
+          {
+            "key": "prod_construction",
+            "label": "Classe produttiva costruzione",
+            "selectorLabel": "Produzione · Costruzione",
+            "unit": "number",
+            "value": 1
+          }
+        ],
+        "note": "Conteggio di record distinti per codice_rt nei sette Comuni; non equivale necessariamente al numero di cave fisiche indipendenti."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Snapshot dell’endpoint pubblico Regione Toscana RTCave",
+        "formula": "COUNT(DISTINCT codice_rt) per Comune. Selector di stato, tipologia e classe produttiva applicati ai valori originali del JSON; null mantenuti come n.d.",
+        "caveat": "codice_rt identifica univocamente il record RTCave, non necessariamente una cava fisica indipendente da record contigui o articolati. Chiusa non viene reinterpretata come dismessa; Ornamentale è una macro-classe produttiva RTCave, non una litologia.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/attivita-estrattive-v128.json"
+      }
+    },
+    "extractiveProduction": {
+      "meta": {
+        "key": "extractiveProduction",
+        "theme": "ambiente",
+        "label": "Produzione estrattiva",
+        "shortLabel": "Produzione estrattiva",
+        "description": "Volume effettivamente estratto comunicato con gli Obblighi Informativi e pubblicato dal monitoraggio PRC. La serie è mostrata solo dove il raccordo comprensorio→Comune è certo.",
+        "unit": "cubicMetres",
+        "year": "2025",
+        "source": "Regione Toscana — Monitoraggio Piano Regionale Cave",
+        "polarity": "neutral",
+        "detailGroup": "extractive",
+        "searchTerms": [
+          "produzione cave",
+          "volume estratto",
+          "marmo estratto",
+          "materiale estratto",
+          "prc",
+          "obblighi informativi"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/attivita-estrattive-v128.json",
+          "note": "Serie 2019–2025 verificata per Seravezza e Stazzema. Nessun totale Versilia pubblicato."
+        }
+      },
+      "sourceUrl": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "dataUnavailable": true,
+          "availabilityNote": "Produzione comunale non ricostruibile in modo omogeneo dal monitoraggio PRC; nessuno zero viene inferito."
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "dataUnavailable": true,
+          "availabilityNote": "Produzione comunale non ricostruibile in modo omogeneo dal monitoraggio PRC; nessuno zero viene inferito."
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "dataUnavailable": true,
+          "availabilityNote": "Produzione comunale non ricostruibile in modo omogeneo dal monitoraggio PRC; nessuno zero viene inferito."
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "dataUnavailable": true,
+          "availabilityNote": "Produzione comunale non ricostruibile in modo omogeneo dal monitoraggio PRC; nessuno zero viene inferito."
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 55801,
+          "formatted": "55.801",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              31151,
+              46093,
+              52048,
+              57199,
+              53518,
+              53194,
+              55801
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": null,
+          "productionDetail": {
+            "town": "Seravezza",
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              31151,
+              46093,
+              52048,
+              57199,
+              53518,
+              53194,
+              55801
+            ],
+            "components": [
+              {
+                "year": 2019,
+                "bacinoSeravezza": 31151
+              },
+              {
+                "year": 2020,
+                "bacinoSeravezza": 46093
+              },
+              {
+                "year": 2021,
+                "bacinoSeravezza": 52048
+              },
+              {
+                "year": 2022,
+                "bacinoSeravezza": 57199
+              },
+              {
+                "year": 2023,
+                "bacinoSeravezza": 53518
+              },
+              {
+                "year": 2024,
+                "bacinoSeravezza": 53194
+              },
+              {
+                "year": 2025,
+                "bacinoSeravezza": 55801
+              }
+            ],
+            "materials2025": [
+              {
+                "label": "Marmi per uso ornamentale",
+                "value": 55801,
+                "unit": "cubicMetres"
+              }
+            ],
+            "ops2019_2038": 1680487
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": null,
+          "formatted": "n.d.",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": null,
+          "dataUnavailable": true,
+          "availabilityNote": "Produzione comunale non ricostruibile in modo omogeneo dal monitoraggio PRC; nessuno zero viene inferito."
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 23651,
+          "formatted": "23.651",
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              19894,
+              13619,
+              17804,
+              31658,
+              25328,
+              38372,
+              23651
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": null,
+          "productionDetail": {
+            "town": "Stazzema",
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              19894,
+              13619,
+              17804,
+              31658,
+              25328,
+              38372,
+              23651
+            ],
+            "components": [
+              {
+                "year": 2019,
+                "bacinoStazzema": 12680,
+                "cardosoApuane": 7214,
+                "total": 19894
+              },
+              {
+                "year": 2020,
+                "bacinoStazzema": 8547,
+                "cardosoApuane": 5072,
+                "total": 13619
+              },
+              {
+                "year": 2021,
+                "bacinoStazzema": 11840,
+                "cardosoApuane": 5964,
+                "total": 17804
+              },
+              {
+                "year": 2022,
+                "bacinoStazzema": 25350,
+                "cardosoApuane": 6308,
+                "total": 31658
+              },
+              {
+                "year": 2023,
+                "bacinoStazzema": 17552,
+                "cardosoApuane": 7776,
+                "total": 25328
+              },
+              {
+                "year": 2024,
+                "bacinoStazzema": 33875,
+                "cardosoApuane": 4497,
+                "total": 38372
+              },
+              {
+                "year": 2025,
+                "bacinoStazzema": 21479,
+                "cardosoApuane": 2172,
+                "total": 23651
+              }
+            ],
+            "materials2025": [
+              {
+                "label": "Marmi per uso ornamentale",
+                "value": 21479,
+                "unit": "cubicMetres"
+              },
+              {
+                "label": "Metarenarie e quarziti per uso ornamentale",
+                "value": 2172,
+                "unit": "cubicMetres"
+              }
+            ],
+            "ops2019_2038": 1504871
+          }
+        }
+      ],
+      "aggregate": {
+        "value": null,
+        "label": "Versilia · totale non pubblicato",
+        "note": "Il monitoraggio PRC non consente di dimostrare una produzione comunale omogenea per tutti i sette Comuni; la somma di Seravezza e Stazzema non viene presentata come totale Versilia."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dati ufficiali Regione Toscana — Obblighi Informativi / monitoraggio PRC",
+        "formula": "Seravezza: comprensorio 8. Stazzema: somma dei comprensori 9 Bacino di Stazzema + 92 Cardoso delle Apuane, entrambi attribuiti dal PRC al Comune. I componenti elementari sono conservati nello snapshot.",
+        "caveat": "I valori sono produzione effettivamente estratta, non volume autorizzato né obiettivo di produzione sostenibile. Per gli altri cinque Comuni il dato resta n.d.; la presenza/assenza in RTCave non viene trasformata in produzione zero.",
+        "coverage": "2/7",
+        "snapshot": "data/source-snapshots/attivita-estrattive-v128.json"
+      }
+    },
+    "extractivePlanning": {
+      "meta": {
+        "key": "extractivePlanning",
+        "theme": "ambiente",
+        "label": "Quadro estrattivo PRC",
+        "shortLabel": "Quadro estrattivo PRC",
+        "description": "Superficie del territorio comunale ricadente nelle geometrie ufficiali del Piano Regionale Cave. Giacimenti, Giacimenti Potenziali e Aree Contigue di Cava restano categorie separate.",
+        "unit": "hectares",
+        "year": "PRC vigente · variante 2025",
+        "source": "Regione Toscana — Piano Regionale Cave / GeoScopio",
+        "polarity": "neutral",
+        "detailGroup": "extractive",
+        "searchTerms": [
+          "giacimenti",
+          "giacimenti potenziali",
+          "aree contigue di cava",
+          "acc",
+          "piano regionale cave",
+          "prc",
+          "marmo",
+          "cave"
+        ],
+        "sourceMeta": {
+          "snapshot": "data/source-snapshots/attivita-estrattive-v128.json",
+          "note": "Geometrie PRC EPSG:3003 intersecate con Ambiti Amministrativi Regione Toscana. MOS, pMOS e SED sono conservati nel dettaglio."
+        },
+        "compositeType": "securityMeasures",
+        "selectorLabel": "Lettura",
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "shareOfAggregate",
+        "comparisonLabel": "Versilia",
+        "comparisonOverline": "Peso sulla Versilia",
+        "comparisonNote": "Per la superficie il confronto usa l’intersezione geometrica col confine comunale; per il numero usa l’attribuzione comunale ufficiale PRC."
+      },
+      "sourceUrl": "https://www.regione.toscana.it/piano-regionale-cave",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 0.0,
+          "formatted": "0,00 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "prcDetail": {
+            "town": "Massarosa",
+            "municipalKm2": 68.56,
+            "g": [
+              0,
+              0.0,
+              0.0
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              0,
+              0.0,
+              0.0
+            ],
+            "mos": 0,
+            "pmos": 0,
+            "sed": 53
+          }
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 0.0,
+          "formatted": "0,00 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "prcDetail": {
+            "town": "Viareggio",
+            "municipalKm2": 32.42,
+            "g": [
+              0,
+              0.0,
+              0.0
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              0,
+              0.0,
+              0.0
+            ],
+            "mos": 0,
+            "pmos": 0,
+            "sed": 0
+          }
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 0.0,
+          "formatted": "0,00 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "prcDetail": {
+            "town": "Camaiore",
+            "municipalKm2": 84.69,
+            "g": [
+              0,
+              0.0,
+              0.0
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              0,
+              0.0,
+              0.0
+            ],
+            "mos": 2,
+            "pmos": 3,
+            "sed": 25
+          }
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 0.0,
+          "formatted": "0,00 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 11.39
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.271
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "prcDetail": {
+            "town": "Pietrasanta",
+            "municipalKm2": 41.99,
+            "g": [
+              0,
+              0.0,
+              0.0
+            ],
+            "gp": [
+              1,
+              11.39,
+              0.271
+            ],
+            "acc": [
+              0,
+              0.0,
+              0.0
+            ],
+            "mos": 0,
+            "pmos": 0,
+            "sed": 22
+          }
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 37.976,
+          "formatted": "37,98 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 37.976,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 37.976
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.965
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 2
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 156.322
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 3.971
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 7
+            }
+          ],
+          "prcDetail": {
+            "town": "Seravezza",
+            "municipalKm2": 39.36,
+            "g": [
+              2,
+              37.976,
+              0.965
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              7,
+              156.322,
+              3.971
+            ],
+            "mos": 1,
+            "pmos": 7,
+            "sed": 105
+          }
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.0,
+          "formatted": "0,00 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 0
+            }
+          ],
+          "prcDetail": {
+            "town": "Forte dei Marmi",
+            "municipalKm2": 9.14,
+            "g": [
+              0,
+              0.0,
+              0.0
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              0,
+              0.0,
+              0.0
+            ],
+            "mos": 0,
+            "pmos": 0,
+            "sed": 0
+          }
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 19.021,
+          "formatted": "19,02 ha",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 19.021,
+          "parts": [
+            {
+              "key": "g_ha",
+              "label": "Superficie Giacimenti PRC",
+              "selectorLabel": "Giacimenti · superficie",
+              "unit": "hectares",
+              "value": 19.021
+            },
+            {
+              "key": "g_pct",
+              "label": "Quota comunale Giacimenti PRC",
+              "selectorLabel": "Giacimenti · % territorio",
+              "unit": "percent",
+              "value": 0.236
+            },
+            {
+              "key": "g_n",
+              "label": "Numero Giacimenti PRC",
+              "selectorLabel": "Giacimenti · numero",
+              "unit": "number",
+              "value": 1
+            },
+            {
+              "key": "gp_ha",
+              "label": "Superficie Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · superficie",
+              "unit": "hectares",
+              "value": 0.0
+            },
+            {
+              "key": "gp_pct",
+              "label": "Quota comunale Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · % territorio",
+              "unit": "percent",
+              "value": 0.0
+            },
+            {
+              "key": "gp_n",
+              "label": "Numero Giacimenti Potenziali",
+              "selectorLabel": "Giacimenti potenziali · numero",
+              "unit": "number",
+              "value": 0
+            },
+            {
+              "key": "acc_ha",
+              "label": "Superficie Aree Contigue di Cava",
+              "selectorLabel": "ACC · superficie",
+              "unit": "hectares",
+              "value": 400.173
+            },
+            {
+              "key": "acc_pct",
+              "label": "Quota comunale Aree Contigue di Cava",
+              "selectorLabel": "ACC · % territorio",
+              "unit": "percent",
+              "value": 4.959
+            },
+            {
+              "key": "acc_n",
+              "label": "Numero Aree Contigue di Cava",
+              "selectorLabel": "ACC · numero",
+              "unit": "number",
+              "value": 12
+            }
+          ],
+          "prcDetail": {
+            "town": "Stazzema",
+            "municipalKm2": 80.7,
+            "g": [
+              1,
+              19.021,
+              0.236
+            ],
+            "gp": [
+              0,
+              0.0,
+              0.0
+            ],
+            "acc": [
+              12,
+              400.173,
+              4.959
+            ],
+            "mos": 4,
+            "pmos": 0,
+            "sed": 151
+          }
+        }
+      ],
+      "aggregate": {
+        "value": 56.997,
+        "label": "Versilia · quadro PRC",
+        "parts": [
+          {
+            "key": "g_ha",
+            "label": "Superficie Giacimenti PRC",
+            "selectorLabel": "Giacimenti · superficie",
+            "unit": "hectares",
+            "value": 56.997
+          },
+          {
+            "key": "g_pct",
+            "label": "Quota comunale Giacimenti PRC",
+            "selectorLabel": "Giacimenti · % territorio",
+            "unit": "percent",
+            "value": 0.16
+          },
+          {
+            "key": "g_n",
+            "label": "Numero Giacimenti PRC",
+            "selectorLabel": "Giacimenti · numero",
+            "unit": "number",
+            "value": 3
+          },
+          {
+            "key": "gp_ha",
+            "label": "Superficie Giacimenti Potenziali",
+            "selectorLabel": "Giacimenti potenziali · superficie",
+            "unit": "hectares",
+            "value": 11.39
+          },
+          {
+            "key": "gp_pct",
+            "label": "Quota comunale Giacimenti Potenziali",
+            "selectorLabel": "Giacimenti potenziali · % territorio",
+            "unit": "percent",
+            "value": 0.032
+          },
+          {
+            "key": "gp_n",
+            "label": "Numero Giacimenti Potenziali",
+            "selectorLabel": "Giacimenti potenziali · numero",
+            "unit": "number",
+            "value": 1
+          },
+          {
+            "key": "acc_ha",
+            "label": "Superficie Aree Contigue di Cava",
+            "selectorLabel": "ACC · superficie",
+            "unit": "hectares",
+            "value": 556.495
+          },
+          {
+            "key": "acc_pct",
+            "label": "Quota comunale Aree Contigue di Cava",
+            "selectorLabel": "ACC · % territorio",
+            "unit": "percent",
+            "value": 1.559
+          },
+          {
+            "key": "acc_n",
+            "label": "Numero Aree Contigue di Cava",
+            "selectorLabel": "ACC · numero",
+            "unit": "number",
+            "value": 19
+          }
+        ],
+        "note": "Aggregati geometrici separati per G, GP e ACC; non vengono sommati in un’unica superficie di cava."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione GIS su dati ufficiali Regione Toscana",
+        "formula": "Numero: attribuzione comunale ufficiale del PRC. Superficie: union per categoria e intersection con confini comunali ufficiali in EPSG:3003; quota = area intersecata / area comunale.",
+        "caveat": "Le geometrie descrivono il quadro pianificatorio PRC, non la superficie effettivamente escavata o autorizzata. G, GP e ACC non sono sommabili come se fossero la stessa categoria. SED è una ricognizione non esaustiva.",
+        "coverage": "7/7",
+        "snapshot": "data/source-snapshots/attivita-estrattive-v128.json"
       }
     },
     "wastePerResident": {
