@@ -37257,8 +37257,13 @@
         ],
         "sourceMeta": {
           "snapshot": "data/source-snapshots/attivita-estrattive-v128.json",
-          "note": "Serie 2019–2025 verificata per Seravezza e Stazzema. Nessun totale Versilia pubblicato."
-        }
+          "note": "Serie 2019–2025 verificata per Seravezza e Stazzema. L’aggregato è la somma aritmetica dei soli valori comunali pubblicati (copertura 2/7); gli altri cinque Comuni restano n.d."
+        },
+        "comparisonReference": "aggregate",
+        "comparisonDifference": "shareOfAggregate",
+        "comparisonLabel": "somma pubblicata",
+        "comparisonOverline": "Peso sulla produzione rilevata",
+        "comparisonNote": "Quota del Comune sulla somma dei valori comunali effettivamente pubblicati. Copertura 2/7: i cinque Comuni senza dato restano n.d. e non vengono trattati come zero."
       },
       "sourceUrl": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
       "rows": [
@@ -37519,14 +37524,35 @@
         }
       ],
       "aggregate": {
-        "value": null,
-        "label": "Versilia · totale non pubblicato",
-        "note": "Il monitoraggio PRC non consente di dimostrare una produzione comunale omogenea per tutti i sette Comuni; la somma di Seravezza e Stazzema non viene presentata come totale Versilia."
+        "value": 79452,
+        "label": "Versilia · somma valori comunali disponibili (2/7)",
+        "series": {
+          "years": [
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025
+          ],
+          "values": [
+            51045,
+            59712,
+            69852,
+            88857,
+            78846,
+            91566,
+            79452
+          ]
+        },
+        "coverage": "2/7",
+        "note": "Somma aritmetica dei valori pubblicati per Seravezza e Stazzema. I cinque Comuni senza dato restano n.d.: 79.452 m³ non implica produzione zero negli altri territori."
       },
       "normalizedAggregate": null,
       "method": {
         "type": "Dati ufficiali Regione Toscana — Obblighi Informativi / monitoraggio PRC",
-        "formula": "Seravezza: comprensorio 8. Stazzema: somma dei comprensori 9 Bacino di Stazzema + 92 Cardoso delle Apuane, entrambi attribuiti dal PRC al Comune. I componenti elementari sono conservati nello snapshot.",
+        "formula": "Seravezza: comprensorio 8. Stazzema: somma dei comprensori 9 Bacino di Stazzema + 92 Cardoso delle Apuane, entrambi attribuiti dal PRC al Comune. Aggregato visualizzato: somma aritmetica dei soli Comuni con dato pubblicato (2/7). I componenti elementari sono conservati nello snapshot.",
         "caveat": "I valori sono produzione effettivamente estratta, non volume autorizzato né obiettivo di produzione sostenibile. Per gli altri cinque Comuni il dato resta n.d.; la presenza/assenza in RTCave non viene trasformata in produzione zero.",
         "coverage": "2/7",
         "snapshot": "data/source-snapshots/attivita-estrattive-v128.json"
@@ -37564,7 +37590,7 @@
         "comparisonDifference": "shareOfAggregate",
         "comparisonLabel": "Versilia",
         "comparisonOverline": "Peso sulla Versilia",
-        "comparisonNote": "Per la superficie il confronto usa l’intersezione geometrica col confine comunale; per il numero usa l’attribuzione comunale ufficiale PRC."
+        "comparisonNote": "Per superfici e numeri il peso è calcolato sul totale della stessa categoria PRC. Per la % di territorio si confrontano direttamente quota comunale e quota territoriale Versilia, senza dividere una percentuale per l’altra."
       },
       "sourceUrl": "https://www.regione.toscana.it/piano-regionale-cave",
       "rows": [
@@ -37589,7 +37615,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37610,7 +37636,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37631,7 +37657,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37686,7 +37712,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37707,7 +37733,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37728,7 +37754,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37783,7 +37809,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37804,7 +37830,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37825,7 +37851,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37880,7 +37906,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37901,7 +37927,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.271
             },
             {
@@ -37922,7 +37948,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -37977,7 +38003,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.965
             },
             {
@@ -37998,7 +38024,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -38019,7 +38045,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 3.971
             },
             {
@@ -38074,7 +38100,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -38095,7 +38121,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -38116,7 +38142,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -38171,7 +38197,7 @@
               "key": "g_pct",
               "label": "Quota comunale Giacimenti PRC",
               "selectorLabel": "Giacimenti · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.236
             },
             {
@@ -38192,7 +38218,7 @@
               "key": "gp_pct",
               "label": "Quota comunale Giacimenti Potenziali",
               "selectorLabel": "Giacimenti potenziali · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 0.0
             },
             {
@@ -38213,7 +38239,7 @@
               "key": "acc_pct",
               "label": "Quota comunale Aree Contigue di Cava",
               "selectorLabel": "ACC · % territorio",
-              "unit": "percent",
+              "unit": "%",
               "value": 4.959
             },
             {
@@ -38263,7 +38289,7 @@
             "key": "g_pct",
             "label": "Quota comunale Giacimenti PRC",
             "selectorLabel": "Giacimenti · % territorio",
-            "unit": "percent",
+            "unit": "%",
             "value": 0.16
           },
           {
@@ -38284,7 +38310,7 @@
             "key": "gp_pct",
             "label": "Quota comunale Giacimenti Potenziali",
             "selectorLabel": "Giacimenti potenziali · % territorio",
-            "unit": "percent",
+            "unit": "%",
             "value": 0.032
           },
           {
@@ -38305,7 +38331,7 @@
             "key": "acc_pct",
             "label": "Quota comunale Aree Contigue di Cava",
             "selectorLabel": "ACC · % territorio",
-            "unit": "percent",
+            "unit": "%",
             "value": 1.559
           },
           {

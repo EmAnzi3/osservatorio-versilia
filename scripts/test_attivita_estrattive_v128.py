@@ -114,9 +114,11 @@ def main() -> None:
     assert any(r["nome_cava"] == "TOMBACCIO" and r["stato"] is None for r in stazzema_records)
 
     production = site["metrics"]["extractiveProduction"]
-    assert production["aggregate"]["value"] is None
-    assert production["aggregate"]["label"] == "Versilia · totale non pubblicato"
-    assert "non viene presentata come totale Versilia" in production["aggregate"]["note"]
+    assert production["aggregate"]["value"] == 79452
+    assert production["aggregate"]["label"] == "Versilia · somma valori comunali disponibili (2/7)"
+    assert production["aggregate"]["series"] == {"years": [2019, 2020, 2021, 2022, 2023, 2024, 2025], "values": [51045, 59712, 69852, 88857, 78846, 91566, 79452]}
+    assert production["aggregate"]["coverage"] == "2/7"
+    assert "non implica produzione zero" in production["aggregate"]["note"]
     prod_rows = {r["code"]: r for r in production["rows"]}
     assert prod_rows["046028"]["series"] == {"years": [2019, 2020, 2021, 2022, 2023, 2024, 2025], "values": [31151, 46093, 52048, 57199, 53518, 53194, 55801]}
     assert prod_rows["046030"]["series"]["values"] == [19894, 13619, 17804, 31658, 25328, 38372, 23651]
@@ -142,6 +144,7 @@ def main() -> None:
     assert plan_agg["g_n"] == 3 and plan_agg["g_ha"] == 56.997 and plan_agg["g_pct"] == 0.160
     assert plan_agg["gp_n"] == 1 and plan_agg["gp_ha"] == 11.390 and plan_agg["gp_pct"] == 0.032
     assert plan_agg["acc_n"] == 19 and plan_agg["acc_ha"] == 556.495 and plan_agg["acc_pct"] == 1.559
+    assert next(p for p in planning["aggregate"]["parts"] if p["key"] == "g_pct")["unit"] == "%"
 
     assert snapshot["rtcave"]["regionalRecordCount"] == 666
     assert snapshot["rtcave"]["regionalUniqueCodiceRt"] == 666

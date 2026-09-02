@@ -216,6 +216,8 @@ def build_sites_metric(site, selected):
 
 def build_production_metric(site):
     slugs=slug_map(site); town_by_code={t['code']:t for t in site['towns']}; rows=[]
+    aggregate_years=list(next(iter(PRODUCTION.values()))['years'])
+    aggregate_values=[sum(PRODUCTION[code]['values'][i] for code in PRODUCTION) for i in range(len(aggregate_years))]
     for code in [t['code'] for t in site['towns']]:
         info=PRODUCTION.get(code)
         if info:
@@ -229,15 +231,16 @@ def build_production_metric(site):
             'description':'Volume effettivamente estratto comunicato con gli Obblighi Informativi e pubblicato dal monitoraggio PRC. La serie è mostrata solo dove il raccordo comprensorio→Comune è certo.',
             'unit':'cubicMetres','year':'2025','source':'Regione Toscana — Monitoraggio Piano Regionale Cave','polarity':'neutral','detailGroup':'extractive',
             'searchTerms':['produzione cave','volume estratto','marmo estratto','materiale estratto','prc','obblighi informativi'],
-            'sourceMeta':{'snapshot':'data/source-snapshots/attivita-estrattive-v128.json','note':'Serie 2019–2025 verificata per Seravezza e Stazzema. Nessun totale Versilia pubblicato.'}
+            'sourceMeta':{'snapshot':'data/source-snapshots/attivita-estrattive-v128.json','note':'Serie 2019–2025 verificata per Seravezza e Stazzema. L’aggregato è la somma aritmetica dei soli valori comunali pubblicati (copertura 2/7); gli altri cinque Comuni restano n.d.'},
+            'comparisonReference':'aggregate','comparisonDifference':'shareOfAggregate','comparisonLabel':'somma pubblicata','comparisonOverline':'Peso sulla produzione rilevata','comparisonNote':'Quota del Comune sulla somma dei valori comunali effettivamente pubblicati. Copertura 2/7: i cinque Comuni senza dato restano n.d. e non vengono trattati come zero.'
         },
         'sourceUrl':PRC_MONITOR_URL,
         'rows':rows,
-        'aggregate':{'value':None,'label':'Versilia · totale non pubblicato','note':'Il monitoraggio PRC non consente di dimostrare una produzione comunale omogenea per tutti i sette Comuni; la somma di Seravezza e Stazzema non viene presentata come totale Versilia.'},
+        'aggregate':{'value':aggregate_values[-1],'label':'Versilia · somma valori comunali disponibili (2/7)','series':{'years':aggregate_years,'values':aggregate_values},'coverage':'2/7','note':'Somma aritmetica dei valori pubblicati per Seravezza e Stazzema. I cinque Comuni senza dato restano n.d.: 79.452 m³ non implica produzione zero negli altri territori.'},
         'normalizedAggregate':None,
         'method':{
             'type':'Dati ufficiali Regione Toscana — Obblighi Informativi / monitoraggio PRC',
-            'formula':'Seravezza: comprensorio 8. Stazzema: somma dei comprensori 9 Bacino di Stazzema + 92 Cardoso delle Apuane, entrambi attribuiti dal PRC al Comune. I componenti elementari sono conservati nello snapshot.',
+            'formula':'Seravezza: comprensorio 8. Stazzema: somma dei comprensori 9 Bacino di Stazzema + 92 Cardoso delle Apuane, entrambi attribuiti dal PRC al Comune. Aggregato visualizzato: somma aritmetica dei soli Comuni con dato pubblicato (2/7). I componenti elementari sono conservati nello snapshot.',
             'caveat':'I valori sono produzione effettivamente estratta, non volume autorizzato né obiettivo di produzione sostenibile. Per gli altri cinque Comuni il dato resta n.d.; la presenza/assenza in RTCave non viene trasformata in produzione zero.',
             'coverage':'2/7',
             'snapshot':'data/source-snapshots/attivita-estrattive-v128.json'
@@ -248,13 +251,13 @@ def build_production_metric(site):
 def prc_parts(info):
     return [
         {'key':'g_ha','label':'Superficie Giacimenti PRC','selectorLabel':'Giacimenti · superficie','unit':'hectares','value':info['g'][1]},
-        {'key':'g_pct','label':'Quota comunale Giacimenti PRC','selectorLabel':'Giacimenti · % territorio','unit':'percent','value':info['g'][2]},
+        {'key':'g_pct','label':'Quota comunale Giacimenti PRC','selectorLabel':'Giacimenti · % territorio','unit':'%','value':info['g'][2]},
         {'key':'g_n','label':'Numero Giacimenti PRC','selectorLabel':'Giacimenti · numero','unit':'number','value':info['g'][0]},
         {'key':'gp_ha','label':'Superficie Giacimenti Potenziali','selectorLabel':'Giacimenti potenziali · superficie','unit':'hectares','value':info['gp'][1]},
-        {'key':'gp_pct','label':'Quota comunale Giacimenti Potenziali','selectorLabel':'Giacimenti potenziali · % territorio','unit':'percent','value':info['gp'][2]},
+        {'key':'gp_pct','label':'Quota comunale Giacimenti Potenziali','selectorLabel':'Giacimenti potenziali · % territorio','unit':'%','value':info['gp'][2]},
         {'key':'gp_n','label':'Numero Giacimenti Potenziali','selectorLabel':'Giacimenti potenziali · numero','unit':'number','value':info['gp'][0]},
         {'key':'acc_ha','label':'Superficie Aree Contigue di Cava','selectorLabel':'ACC · superficie','unit':'hectares','value':info['acc'][1]},
-        {'key':'acc_pct','label':'Quota comunale Aree Contigue di Cava','selectorLabel':'ACC · % territorio','unit':'percent','value':info['acc'][2]},
+        {'key':'acc_pct','label':'Quota comunale Aree Contigue di Cava','selectorLabel':'ACC · % territorio','unit':'%','value':info['acc'][2]},
         {'key':'acc_n','label':'Numero Aree Contigue di Cava','selectorLabel':'ACC · numero','unit':'number','value':info['acc'][0]},
     ]
 
@@ -273,7 +276,7 @@ def build_prc_metric(site):
             'unit':'hectares','year':'PRC vigente · variante 2025','source':'Regione Toscana — Piano Regionale Cave / GeoScopio','polarity':'neutral','detailGroup':'extractive',
             'searchTerms':['giacimenti','giacimenti potenziali','aree contigue di cava','acc','piano regionale cave','prc','marmo','cave'],
             'sourceMeta':{'snapshot':'data/source-snapshots/attivita-estrattive-v128.json','note':'Geometrie PRC EPSG:3003 intersecate con Ambiti Amministrativi Regione Toscana. MOS, pMOS e SED sono conservati nel dettaglio.'},
-            'compositeType':'securityMeasures','selectorLabel':'Lettura','comparisonReference':'aggregate','comparisonDifference':'shareOfAggregate','comparisonLabel':'Versilia','comparisonOverline':'Peso sulla Versilia','comparisonNote':'Per la superficie il confronto usa l’intersezione geometrica col confine comunale; per il numero usa l’attribuzione comunale ufficiale PRC.'
+            'compositeType':'securityMeasures','selectorLabel':'Lettura','comparisonReference':'aggregate','comparisonDifference':'shareOfAggregate','comparisonLabel':'Versilia','comparisonOverline':'Peso sulla Versilia','comparisonNote':'Per superfici e numeri il peso è calcolato sul totale della stessa categoria PRC. Per la % di territorio si confrontano direttamente quota comunale e quota territoriale Versilia, senza dividere una percentuale per l’altra.'
         },
         'sourceUrl':PRC_URL,
         'rows':rows,

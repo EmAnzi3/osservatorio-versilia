@@ -232,8 +232,24 @@
     const selectedTown = safeStorageGet('ov-history-town') || '';
     const selected = selectedMetric(data);
     if (!selected) return;
+    if (selected.key === 'extractiveProduction') return;
     if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = target.querySelector(':scope > .ux-view-shell');
+    if (selected.key === 'extractiveProduction') {
+      if (existingShell) {
+        wireShell(existingShell, 'ov-compare-view', selectedTown, true);
+        return;
+      }
+      const rowsWithHistory=(selected.metric.rows || []).filter(row=>row.series?.years?.length >= 2);
+      const historyView={...selected.metric, rows:rowsWithHistory};
+      const series=toolkit.comparableSeries(historyView);
+      const currentMarkup=target.innerHTML;
+      const historyMarkup=renderHistoryMarkup(historyView,series,selectedTown);
+      const note='Serie 2019–2025 per i due Comuni con raccordo PRC→Comune certo. Gli altri cinque Comuni restano n.d. e non vengono trasformati in zero.';
+      target.innerHTML=toolkit.viewShellMarkup(currentMarkup,historyMarkup,Boolean(series),note);
+      wireShell(target.querySelector('.ux-view-shell'),'ov-compare-view',selectedTown,true);
+      return;
+    }
     if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
       if (existingShell) {
         wireShell(existingShell, 'ov-compare-view', selectedTown, true);

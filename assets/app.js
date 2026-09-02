@@ -1243,18 +1243,30 @@
 
   function updateExtractiveTownPosition(metric,row,choice,position) {
     if (!position || !['extractiveSites','extractivePlanning'].includes(metric?.meta?.key)) return;
-    const selected=compositeSelectionOptions(metric,row).find(option=>option.key===choice) || compositeSelectionOptions(metric,row)[0];
+    const options=compositeSelectionOptions(metric,row);
+    const selected=options.find(option=>option.key===choice) || options[0];
     const agg=compositeSelectionAggregate(metric,choice);
-    const localRaw=selected?.value;
-    const totalRaw=agg?.value;
-    const local=localRaw === null || localRaw === undefined ? NaN : Number(localRaw);
-    const total=totalRaw === null || totalRaw === undefined ? NaN : Number(totalRaw);
-    const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local/total*100 : null;
+    const selectedPart=selected?.index === undefined ? null : row.parts?.[selected.index];
     const overline=position.querySelector('.overline');
     const deltaEl=position.querySelector('[data-composite-delta]');
     const noteEl=position.querySelector('p');
     const aggLabel=position.querySelector('[data-composite-aggregate-label]');
     const aggValue=position.querySelector('[data-composite-aggregate-value]');
+
+    if (metric.meta.key === 'extractivePlanning' && selectedPart?.key?.endsWith('_pct')) {
+      if(overline) overline.textContent='Quota territoriale Versilia';
+      if(deltaEl) deltaEl.innerHTML=`${html(agg.formatted)}<small>sul territorio complessivo dei sette Comuni</small>`;
+      if(noteEl) noteEl.textContent='Confronto diretto tra due quote territoriali: la percentuale comunale non viene divisa per la percentuale Versilia.';
+      if(aggLabel) aggLabel.textContent=`${row.town} · quota comunale`;
+      if(aggValue) aggValue.textContent=selected.formatted;
+      return;
+    }
+
+    const localRaw=selected?.value;
+    const totalRaw=agg?.value;
+    const local=localRaw === null || localRaw === undefined ? NaN : Number(localRaw);
+    const total=totalRaw === null || totalRaw === undefined ? NaN : Number(totalRaw);
+    const share=Number.isFinite(local) && Number.isFinite(total) && total > 0 ? local/total*100 : null;
     if(overline) overline.textContent=metric.meta.comparisonOverline || 'Peso sulla Versilia';
     if(deltaEl) deltaEl.innerHTML=share === null
       ? `n.d.<small>${total === 0 ? 'totale Versilia pari a zero' : 'quota non disponibile'}</small>`
@@ -1392,7 +1404,7 @@
       if (list.length === 1) {
         const row=list[0], d=row.extractiveDetail || {}, records=d.records || [];
         const summary=`<div class="composite-town-detail"><div><span>Totale RTCave</span><b>${html(number0.format(d.recordCount||0))}</b><small>record distinti per codice_rt</small></div><div><span>Stati</span><b>${html((d.statusBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>valori originali RTCave</small></div><div><span>Tipologie</span><b>${html((d.typeBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>classificazione RTCave</small></div><div><span>Produzione</span><b>${html((d.productionBreakdown||[]).map(x=>`${x.label} ${x.count}`).join(' · ') || 'nessun sito')}</b><small>macro-classe produttiva</small></div></div>`;
-        const table=records.length ? `<div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Codice RT</th><th>Cava</th><th>Località</th><th>Stato</th><th>Tipologia</th><th>Produzione</th><th>Comprensorio</th><th>Giacimento</th><th>Coordinate</th></tr></thead><tbody>${records.map(r=>`<tr><td>${html(r.codice_rt||'n.d.')}</td><th>${html(r.nome_cava||'n.d.')}</th><td>${html(r.localita||'n.d.')}</td><td>${html(r.stato||'n.d.')}</td><td>${html(r.tipologia||'n.d.')}</td><td>${html(r.tipo_produzione||'n.d.')}</td><td>${html(r.nome_comprensorio||'n.d.')}</td><td>${html(r.nome_giacimento||'n.d.')}</td><td>${html(`${r.lat??'n.d.'}, ${r.lon??'n.d.'}`)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="aggregate-note">Nessun record RTCave nello snapshot.</p>';
+        const table=records.length ? `<div class="indicator-table-scroll extractive-records-scroll"><table class="indicator-values-table"><thead><tr><th>Codice RT</th><th>Cava</th><th>Località</th><th>Stato</th><th>Tipologia</th><th>Produzione</th><th>Comprensorio</th><th>Giacimento</th><th>Coordinate</th></tr></thead><tbody>${records.map(r=>`<tr><td>${html(r.codice_rt||'n.d.')}</td><th>${html(r.nome_cava||'n.d.')}</th><td>${html(r.localita||'n.d.')}</td><td>${html(r.stato||'n.d.')}</td><td>${html(r.tipologia||'n.d.')}</td><td>${html(r.tipo_produzione||'n.d.')}</td><td>${html(r.nome_comprensorio||'n.d.')}</td><td>${html(r.nome_giacimento||'n.d.')}</td><td>${html(`${r.lat??'n.d.'}, ${r.lon??'n.d.'}`)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="aggregate-note">Nessun record RTCave nello snapshot.</p>';
         return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>Anagrafica pubblica RTCave</small></summary>${summary}${table}<p class="aggregate-note">Chiusa, Inattiva e SED non sono sinonimi. La classe produttiva RTCave non viene reinterpretata come litologia.</p></details>`;
       }
       return `<details class="detail-disclosure extractive-detail" open><summary><span>${html(title)}</span><small>Stato, tipologia e classe produttiva</small></summary><div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th>Comune</th><th>Totale</th><th>Attivi</th><th>Inattivi</th><th>Sospesi</th><th>Scaduti</th><th>Chiusi</th><th>n.d.</th></tr></thead><tbody>${list.map(row=>{const p=Object.fromEntries((row.parts||[]).map(x=>[x.key,x.value]));return `<tr><th>${html(row.town)}</th><td>${html(number0.format(p.total||0))}</td><td>${html(number0.format(p.state_active||0))}</td><td>${html(number0.format(p.state_inactive||0))}</td><td>${html(number0.format(p.state_suspended||0))}</td><td>${html(number0.format(p.state_expired||0))}</td><td>${html(number0.format(p.state_closed||0))}</td><td>${html(number0.format(p.state_nd||0))}</td></tr>`}).join('')}</tbody></table></div><p class="aggregate-note">I dettagli comunali conservano tutti i campi pubblici dell’endpoint, compresi comprensorio, giacimento, coordinate e ID tecnici nello snapshot.</p></details>`;

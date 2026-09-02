@@ -63,6 +63,17 @@ def town_rtcave(page: Page, base: str) -> None:
     detail = page.locator("#town-topic .extractive-detail:visible")
     detail.wait_for()
     text = detail.inner_text()
+    position = page.locator("#town-topic .composite-versilia-position")
+    position.wait_for()
+    position_text = position.inner_text()
+    assert "Peso sulla Versilia" in position_text
+    assert "48,89%" in position_text or "48.89%" in position_text
+    scroll = detail.locator(".extractive-records-scroll")
+    assert scroll.count() == 1
+    scroll_state = scroll.evaluate("(el) => ({scrollHeight: el.scrollHeight, clientHeight: el.clientHeight, overflowY: getComputedStyle(el).overflowY, left: el.getBoundingClientRect().left, parentLeft: el.closest('.extractive-detail').getBoundingClientRect().left})")
+    assert scroll_state["scrollHeight"] > scroll_state["clientHeight"]
+    assert scroll_state["overflowY"] in ("auto", "scroll")
+    assert scroll_state["left"] - scroll_state["parentLeft"] >= 15
     assert "TOMBACCIO" in text
     assert "Piano di recupero" in text
     assert "COSTRUZIONE" in text
@@ -73,6 +84,7 @@ def town_rtcave(page: Page, base: str) -> None:
 def production(page: Page, base: str) -> None:
     page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractiveProduction"), wait_until="networkidle")
     page.get_by_text("Produzione estrattiva", exact=True).first.wait_for()
+    assert "79.452" in page.locator("#compare-definition").inner_text()
     detail = page.locator("#compare-bars .extractive-detail:visible")
     detail.wait_for()
     assert detail.count() == 1
@@ -87,6 +99,15 @@ def production(page: Page, base: str) -> None:
     detail = page.locator("#town-topic .extractive-detail:visible")
     detail.wait_for()
     assert "55.801" in detail.inner_text()
+    chart = page.locator("#town-topic .history-panel .trend-chart:visible")
+    chart.wait_for()
+    chart_text = chart.inner_text()
+    assert "2019" in chart_text and "2025" in chart_text
+    position = page.locator("#town-topic .versilia-position")
+    position.wait_for()
+    pos_text = position.inner_text()
+    assert "79.452" in pos_text
+    assert "n.d." not in pos_text.lower()
     table = detail.locator("table.indicator-values-table:visible")
     assert table.count() == 1
     table_text = table.inner_text()
@@ -120,6 +141,20 @@ def planning(page: Page, base: str) -> None:
     dom_text = detail.text_content() or ""
     assert "SED censiti" in dom_text
     no_page_overflow(page, "PRC confronto")
+
+    page.goto(urljoin(base, "comuni/seravezza/?tema=ambiente&indicatore=extractivePlanning"), wait_until="networkidle")
+    wait_town_metric(page, "extractivePlanning")
+    select = page.locator("#town-topic select[data-composite-choice]")
+    select.wait_for()
+    select.select_option("part-1")
+    page.wait_for_timeout(250)
+    position = page.locator("#town-topic .composite-versilia-position")
+    position_text = position.inner_text()
+    assert "Quota territoriale Versilia" in position_text
+    assert ("0,16%" in position_text or "0.16%" in position_text)
+    assert ("0,97%" in position_text or "0.97%" in position_text)
+    assert "603" not in position_text
+    no_page_overflow(page, "PRC quota territorio Seravezza")
 
     page.goto(urljoin(base, "comuni/pietrasanta/?tema=ambiente&indicatore=extractivePlanning"), wait_until="networkidle")
     wait_town_metric(page, "extractivePlanning")

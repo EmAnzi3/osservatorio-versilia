@@ -344,3 +344,54 @@
     display: none !important;
   }
 }
+
+
+/* Attività estrattive v1.28 · revisione draft */
+.extractive-detail {
+  overflow: hidden;
+}
+.extractive-detail > summary {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.extractive-detail > .composite-town-detail {
+  margin: 0 24px 22px;
+}
+.extractive-detail > .indicator-table-scroll {
+  width: calc(100% - 48px);
+  margin: 0 24px 22px;
+}
+.extractive-detail > .aggregate-note {
+  margin: 0 24px 24px;
+  line-height: 1.55;
+}
+.extractive-records-scroll {
+  max-height: 520px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.extractive-records-scroll .indicator-values-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+@media (max-width: 700px) {
+  .extractive-detail > summary {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .extractive-detail > .composite-town-detail,
+  .extractive-detail > .indicator-table-scroll {
+    width: calc(100% - 32px);
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .extractive-detail > .aggregate-note {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  .extractive-records-scroll {
+    max-height: 420px;
+  }
+}

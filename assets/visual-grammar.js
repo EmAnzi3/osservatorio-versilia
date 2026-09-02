@@ -127,6 +127,7 @@
     if (token === 'eurliter' || token === '€/l') return 'eurliter';
     if (token === 'eurperresident' || token === '€/ab' || token === '€/ab.') return 'eurperresident';
     if (token === 'hectares' || token === 'ha') return 'hectares';
+    if (token === 'cubicmetres' || token === 'm3' || token === 'm³') return 'cubic-metres';
     if (token === 'hectaresperfarm' || token === 'ha/azienda') return 'hectares-per-farm';
     return token;
   }
@@ -214,6 +215,7 @@
     if (kind === 'eurm2') return `${formatted} €/m²`;
     if (kind === 'rentm2') return `${formatted} €/m²/mese`;
     if (kind === 'hectares') return `${formatted} ha`;
+    if (kind === 'cubic-metres') return `${formatted} m³`;
     if (kind === 'hectares-per-farm') return `${formatted} ha/azienda`;
     return kind === 'count' ? formatted : (unit ? `${formatted} ${unit}` : formatted);
   }
@@ -313,19 +315,27 @@
     }
 
     const key = metricKey || metric?.meta?.key || '';
-    if (['maritimeConcessions','maritimeConcessionFeesDue'].includes(key) && metric?.meta?.comparisonDifference === 'shareOfAggregate') {
+    if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractiveProduction','extractivePlanning'].includes(key) && metric?.meta?.comparisonDifference === 'shareOfAggregate') {
       const total = finite(metric?.aggregate?.value);
       if (total === null || total <= 0) {
         return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: metric?.meta?.comparisonOverline, note: metric?.meta?.comparisonNote };
       }
       const share = local / total * 100;
       const formattedShare = number1.format(share);
+      const extractive = key.startsWith('extractive');
+      const direction = key === 'extractiveProduction'
+        ? 'della somma dei Comuni con dato'
+        : key === 'extractiveSites'
+          ? 'del totale dei record RTCave'
+          : key === 'extractivePlanning'
+            ? 'del totale della categoria PRC'
+            : 'del totale dei quattro Comuni costieri';
       return {
         headline: `${formattedShare}%`,
-        direction: 'del totale dei quattro Comuni costieri',
-        compact: `${formattedShare}% del totale costiero`,
-        overline: metric?.meta?.comparisonOverline || 'Peso sulla Versilia costiera',
-        note: metric?.meta?.comparisonNote || 'Quota del valore comunale sul totale dei quattro Comuni costieri.',
+        direction,
+        compact: `${formattedShare}% ${direction}`,
+        overline: metric?.meta?.comparisonOverline || (extractive ? 'Peso sulla Versilia' : 'Peso sulla Versilia costiera'),
+        note: metric?.meta?.comparisonNote || (extractive ? 'Quota del valore comunale sul totale della lettura selezionata.' : 'Quota del valore comunale sul totale dei quattro Comuni costieri.'),
       };
     }
     if (key === 'population') {
@@ -612,7 +622,7 @@
     const metric = data.metrics?.[metricKey];
     const row = townRow(metric, townName);
     if (!metric || !row) return;
-    if (['maritimeConcessions','maritimeConcessionFeesDue'].includes(metricKey)) return;
+    if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractivePlanning'].includes(metricKey)) return;
     if (['distribution','agricultureProfile'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
