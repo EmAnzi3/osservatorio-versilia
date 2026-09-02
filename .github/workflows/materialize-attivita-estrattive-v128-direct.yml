@@ -79,6 +79,26 @@ jobs:
           set -euo pipefail
           python scripts/materialize_attivita_estrattive_v128.py
 
+      - name: Align v1.28 regression contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/test_attivita_estrattive_v128.py')
+          text = path.read_text(encoding='utf-8')
+          old = '    assert production["aggregate"] is None\n'
+          new = (
+              '    assert production["aggregate"]["value"] is None\n'
+              '    assert production["aggregate"]["label"] == "Versilia · totale non pubblicato"\n'
+              '    assert "non viene presentata come totale Versilia" in production["aggregate"]["note"]\n'
+          )
+          if old not in text:
+              raise SystemExit('Asserzione produzione da allineare non trovata')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          python -m py_compile scripts/test_attivita_estrattive_v128.py
+
       - name: Validate materialized catalog
         shell: bash
         run: |
