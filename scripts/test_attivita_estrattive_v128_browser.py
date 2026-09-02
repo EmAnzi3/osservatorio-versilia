@@ -117,7 +117,8 @@ def planning(page: Page, base: str) -> None:
     text = detail.inner_text()
     assert "156,32" in text or "156.32" in text
     assert "400,17" in text or "400.17" in text
-    assert "SED censiti" in text
+    dom_text = detail.text_content() or ""
+    assert "SED censiti" in dom_text
     no_page_overflow(page, "PRC confronto")
 
     page.goto(urljoin(base, "comuni/pietrasanta/?tema=ambiente&indicatore=extractivePlanning"), wait_until="networkidle")
