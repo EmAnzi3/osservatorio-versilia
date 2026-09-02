@@ -1,0 +1,70 @@
+name: Corregge grafico storico produzione estrattiva v1.28
+
+on:
+  push:
+    branches: ["feat/v1.28.0-attivita-estrattive"]
+    paths:
+      - .github/workflows/fix-extractive-production-history-v128-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v1.28.0-attivita-estrattive
+          fetch-depth: 0
+
+      - name: Patch renderer storico produzione
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('assets/app.js')
+          text = path.read_text(encoding='utf-8')
+
+          old_defs = """    const historical = Boolean(row.series?.values?.length);\n    const composite = Boolean(metric.meta.compositeType);\n"""
+          new_defs = """    const historical = Boolean(row.series?.values?.length);\n    const composite = Boolean(metric.meta.compositeType);\n    const extractiveProductionHistory = metricKey === 'extractiveProduction' && historical;\n"""
+          if old_defs not in text:
+              raise SystemExit('Blocco definizioni storico/composite non trovato')
+          text = text.replace(old_defs, new_defs, 1)
+
+          old_titles = """    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');\n    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');\n"""
+          new_titles = """    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');\n    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');\n"""
+          if old_titles not in text:
+              raise SystemExit('Blocco titoli history-panel non trovato')
+          text = text.replace(old_titles, new_titles, 1)
+
+          old_render = """        ${composite ? `<div class=\"composite-fixed-detail\">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class=\"comparison-bars\">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`)}</section>\n"""
+          new_render = """        ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class=\"composite-fixed-detail\">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class=\"comparison-bars\">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>\n"""
+          if old_render not in text:
+              raise SystemExit('Renderer history-panel non trovato')
+          text = text.replace(old_render, new_render, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate patch
+        run: |
+          node --check assets/app.js
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_attivita_estrattive_v128.py
+
+      - name: Remove one-shot workflow and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/fix-extractive-production-history-v128-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo 'Nessuna modifica'; exit 1; }
+          git commit -m "fix: rende visibile lo storico della produzione estrattiva"
+          git push origin HEAD:feat/v1.28.0-attivita-estrattive
