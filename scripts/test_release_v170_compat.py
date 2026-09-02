@@ -75,6 +75,8 @@ APPROVED_NOT_APPLICABLE = {
     "blueFlagBeaches",
     "shorelineDynamics",
     "rigidDefenceProtectedCoast",
+    "maritimeConcessions",
+    "maritimeConcessionFeesDue",
 }
 COASTAL_TOWNS = {"Camaiore", "Forte dei Marmi", "Pietrasanta", "Viareggio"}
 NON_COASTAL_TOWNS = {"Massarosa", "Seravezza", "Stazzema"}

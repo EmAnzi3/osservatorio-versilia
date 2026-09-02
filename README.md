@@ -2,7 +2,7 @@
 
 Sito pubblico: **https://osservatorioversilia.it**
 
-Versione dati corrente: **v1.26.0** — 31 agosto 2026.
+Versione dati corrente: **v1.27.0** — 1 settembre 2026.
 
 Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub Pages a partire dalle risorse pubbliche del precedente ChatGPT Site.
 
@@ -10,7 +10,7 @@ Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub P
 
 - 7 schede comunali;
 - 11 aree tematiche;
-- 175 indicatori nel catalogo canonico: 171 con valori incorporati e 4 climatici con storici separati;
+- 177 indicatori nel catalogo canonico: 173 con valori incorporati e 4 climatici con storici separati;
 - confronti territoriali e riferimenti Versilia;
 - benchmark Toscana/Italia quando la comparabilità è metodologicamente corretta;
 - serie storiche nazionali, regionali e comunali;
@@ -38,8 +38,8 @@ Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltant
 - `index.html`: homepage;
 - `comuni/`: pagine dei sette Comuni;
 - `confronta/`: pagine degli undici temi;
-- `indicatori/`: 171 pagine canoniche generate in build, una per indicatore con dati incorporati;
-- `data/site-data.json`: catalogo canonico dei 175 indicatori, con dati incorporati per 171 e riferimenti ai file storici separati per i 4 climatici;
+- `indicatori/`: 173 pagine canoniche generate in build, una per indicatore con dati incorporati;
+- `data/site-data.json`: catalogo canonico dei 177 indicatori, con dati incorporati per 173 e riferimenti ai file storici separati per i 4 climatici;
 - `data/source-registry.json`: perimetro e regole del controllo mensile;
 - `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
 - `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
@@ -59,7 +59,7 @@ Regole, profili ed eccezioni ammesse sono documentati in `docs/coerenza-interfac
 
 ## Aggiornamento dei dati
 
-Il catalogo e i metadati dei 175 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
+Il catalogo e i metadati dei 177 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
 
 - definizione;
 - anno;
@@ -80,7 +80,7 @@ Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorn
 
 La procedura:
 
-- valida tutti i 175 indicatori canonici, la ripartizione fra 171 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
+- valida tutti i 177 indicatori canonici, la ripartizione fra 173 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
 - controlla metadati, formule, annualità e serie storiche;
 - verifica la raggiungibilità delle fonti;
 - rileva modifiche dei file ufficiali direttamente scaricabili;
@@ -95,7 +95,7 @@ La copertura e i criteri di ammissione delle serie comunali sono documentati in 
 
 ## Indicizzazione e Search Console
 
-La build genera una pagina autonoma per ciascuno dei 171 indicatori incorporati, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+La build genera una pagina autonoma per ciascuno dei 173 indicatori incorporati, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
 
 I quattro indicatori climatici esterni sono integrati nell'esperienza Ambiente e rimandano all'approfondimento storico dedicato, senza duplicare i dataset più pesanti dentro `site-data.json`.
 

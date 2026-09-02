@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const VERSION = '20260831-v126-bonifica-rischio';
+  const VERSION = '20260901-v127-demanio-marittimo';
   let dataPromise = null;
 
   function loadData() {

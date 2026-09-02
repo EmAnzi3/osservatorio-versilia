@@ -100,6 +100,8 @@
     blueFlagBeaches: ['bandiera blu', 'spiagge', 'mare', 'fee'],
     shorelineDynamics: ['erosione', 'avanzamento', 'litorale', 'costa'],
     rigidDefenceProtectedCoast: ['costa protetta', 'opere rigide', 'difesa costiera'],
+    maritimeConcessions: ['concessioni demaniali', 'demanio marittimo', 'balneari', 'turistico ricreative', 'sid'],
+    maritimeConcessionFeesDue: ['canoni demaniali', 'canone dovuto', 'demanio marittimo', 'sid', 'balneari'],
     waterNetworkLosses: ['perdite idriche', 'rete idrica', 'acquedotto', 'acqua immessa'],
     drinkingWaterQuality: ['acqua potabile', 'qualità acqua', 'gaia', 'nitrati', 'durezza'],
     remediationProceedings: ['bonifiche', 'sisbon', 'siti contaminati', 'iter attivi', 'iter chiusi'],
