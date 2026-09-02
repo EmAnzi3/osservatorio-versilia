@@ -1,0 +1,70 @@
+name: Applica correzioni revisione attività estrattive v1.28
+
+on:
+  push:
+    branches:
+      - feat/v1.28.0-attivita-estrattive
+    paths:
+      - scripts/fix_attivita_estrattive_v128_review.py
+      - .github/workflows/apply-attivita-estrattive-v128-review-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-attivita-estrattive-v128-review
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/v1.28.0-attivita-estrattive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply review fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/fix_attivita_estrattive_v128_review.py
+
+      - name: Validate source and data
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/materialize_attivita_estrattive_v128.py scripts/test_attivita_estrattive_v128.py scripts/test_attivita_estrattive_v128_browser.py
+          node --check assets/app.js
+          node --check assets/visual-grammar.js
+          node --check assets/ux-history.js
+          node --check assets/ux-history-core.js
+          python -m json.tool data/site-data.json >/dev/null
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_attivita_estrattive_v128.py
+
+      - name: Remove one-shot files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f scripts/fix_attivita_estrattive_v128_review.py
+          rm -f .github/workflows/apply-attivita-estrattive-v128-review-once.yml
+
+      - name: Commit review fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo 'Nessuna modifica da applicare'; exit 1; }
+          git commit -m "fix: corregge aggregati, storico e dettaglio cave v1.28"
+          git push origin HEAD:feat/v1.28.0-attivita-estrattive
