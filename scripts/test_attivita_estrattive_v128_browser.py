@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Smoke browser desktop/mobile del lotto Attività estrattive v1.28.0."""
+from __future__ import annotations
+
+import argparse
+from urllib.parse import urljoin
+
+from playwright.sync_api import Page, sync_playwright
+
+
+def no_page_overflow(page: Page, label: str) -> None:
+    overflow = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    assert overflow <= 2, f"{label}: overflow orizzontale pagina di {overflow}px"
+
+
+def compare_sites(page: Page, base: str) -> None:
+    page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractiveSites"), wait_until="networkidle")
+    page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
+    selector = page.locator("#compare-bars select[data-composite-component]:visible")
+    assert selector.count() == 1
+    assert selector.locator("option").count() == 14
+    labels = selector.locator("option").all_inner_texts()
+    assert labels[0] == "Tutti"
+    assert "Stato · Attivi" in labels
+    assert "Tipologia · Piano di recupero" in labels
+    assert "Produzione · Ornamentale" in labels
+    selector.select_option("part-1")
+    page.wait_for_timeout(180)
+    text = page.locator("#compare-bars").inner_text()
+    assert "Seravezza" in text and "Stazzema" in text
+    assert "Attivi" in text and "Chiusi" in text
+    no_page_overflow(page, "RTCave confronto")
+
+
+def town_rtcave(page: Page, base: str) -> None:
+    page.goto(urljoin(base, "comuni/massarosa/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
+    page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
+    detail = page.locator("#town-topic .extractive-detail:visible")
+    assert detail.count() == 1
+    text = detail.inner_text()
+    assert "Anagrafica pubblica RTCave" in text
+    assert "09046018002" in text
+    assert "SULLA PIEVE" in text
+    assert "Inattiva" in text
+    assert "INDUSTRIALE" in text
+    assert "Fuori Comprensorio" in text
+    no_page_overflow(page, "RTCave Massarosa")
+
+    page.goto(urljoin(base, "comuni/stazzema/?tema=ambiente&indicatore=extractiveSites"), wait_until="networkidle")
+    page.get_by_text("Siti censiti in RTCave", exact=True).first.wait_for()
+    detail = page.locator("#town-topic .extractive-detail:visible")
+    text = detail.inner_text()
+    assert "TOMBACCIO" in text
+    assert "Piano di recupero" in text
+    assert "COSTRUZIONE" in text
+    assert "n.d." in text
+    no_page_overflow(page, "RTCave Stazzema")
+
+
+def production(page: Page, base: str) -> None:
+    page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractiveProduction"), wait_until="networkidle")
+    page.get_by_text("Produzione estrattiva", exact=True).first.wait_for()
+    detail = page.locator("#compare-bars .extractive-detail:visible")
+    assert detail.count() == 1
+    text = detail.inner_text()
+    assert "2019" in text and "2025" in text
+    assert "Seravezza" in text and "Stazzema" in text
+    assert "55.801" in text and "23.651" in text
+    no_page_overflow(page, "Produzione confronto")
+
+    page.goto(urljoin(base, "comuni/seravezza/?tema=ambiente&indicatore=extractiveProduction"), wait_until="networkidle")
+    page.get_by_text("Produzione estrattiva", exact=True).first.wait_for()
+    detail = page.locator("#town-topic .extractive-detail:visible")
+    assert "55.801" in detail.inner_text()
+    assert page.locator("#town-topic .trend-chart").count() >= 1
+    no_page_overflow(page, "Produzione Seravezza")
+
+    page.goto(urljoin(base, "comuni/camaiore/?tema=ambiente&indicatore=extractiveProduction"), wait_until="networkidle")
+    page.get_by_text("Produzione comunale n.d.", exact=True).wait_for()
+    assert "n.d." in page.locator("#town-topic").inner_text().lower()
+
+
+def planning(page: Page, base: str) -> None:
+    page.goto(urljoin(base, "confronta/ambiente/?indicatore=extractivePlanning"), wait_until="networkidle")
+    page.get_by_text("Quadro estrattivo PRC", exact=True).first.wait_for()
+    selector = page.locator("#compare-bars select[data-composite-component]:visible")
+    assert selector.count() == 1
+    assert selector.locator("option").count() == 9
+    labels = selector.locator("option").all_inner_texts()
+    assert "Giacimenti · superficie" in labels
+    assert "Giacimenti potenziali · % territorio" in labels
+    assert "ACC · numero" in labels
+    selector.select_option("part-6")
+    page.wait_for_timeout(180)
+    detail = page.locator("#compare-bars .extractive-detail:visible")
+    text = detail.inner_text()
+    assert "156,32" in text or "156.32" in text
+    assert "400,17" in text or "400.17" in text
+    assert "SED censiti" in text
+    no_page_overflow(page, "PRC confronto")
+
+    page.goto(urljoin(base, "comuni/pietrasanta/?tema=ambiente&indicatore=extractivePlanning"), wait_until="networkidle")
+    page.get_by_text("Quadro estrattivo PRC", exact=True).first.wait_for()
+    text = page.locator("#town-topic .extractive-detail:visible").inner_text()
+    assert "11,39" in text or "11.39" in text
+    assert "22" in text
+    no_page_overflow(page, "PRC Pietrasanta")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base", required=True)
+    args = parser.parse_args()
+    base = args.base.rstrip("/") + "/"
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        for width, height, label in ((1366, 900, "desktop"), (390, 844, "mobile")):
+            page = browser.new_page(viewport={"width": width, "height": height})
+            compare_sites(page, base)
+            town_rtcave(page, base)
+            production(page, base)
+            planning(page, base)
+            page.close()
+            print(f"Attività estrattive browser {label}: OK")
+        browser.close()
+
+
+if __name__ == "__main__":
+    main()
