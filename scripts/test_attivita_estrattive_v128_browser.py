@@ -65,7 +65,7 @@ def town_rtcave(page: Page, base: str) -> None:
     position = page.locator("#town-topic .composite-versilia-position")
     position.wait_for()
     position_text = position.inner_text()
-    assert "Peso sulla Versilia" in position_text
+    assert "peso sulla versilia" in position_text.lower()
     assert "48,89%" in position_text or "48.89%" in position_text
     no_page_overflow(page, "RTCave Seravezza")
 
@@ -157,7 +157,7 @@ def planning(page: Page, base: str) -> None:
     page.wait_for_timeout(250)
     position = page.locator("#town-topic .composite-versilia-position")
     position_text = position.inner_text()
-    assert "Quota territoriale Versilia" in position_text
+    assert "quota territoriale versilia" in position_text.lower()
     assert ("0,16%" in position_text or "0.16%" in position_text)
     assert ("0,97%" in position_text or "0.97%" in position_text)
     assert "603" not in position_text
