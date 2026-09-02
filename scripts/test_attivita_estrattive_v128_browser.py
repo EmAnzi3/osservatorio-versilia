@@ -87,7 +87,7 @@ def production(page: Page, base: str) -> None:
     detail = page.locator("#town-topic .extractive-detail:visible")
     detail.wait_for()
     assert "55.801" in detail.inner_text()
-    table = page.locator("#town-topic .extractive-table:visible")
+    table = detail.locator("table.indicator-values-table:visible")
     assert table.count() == 1
     table_text = table.inner_text()
     assert "2019" in table_text and "2025" in table_text
