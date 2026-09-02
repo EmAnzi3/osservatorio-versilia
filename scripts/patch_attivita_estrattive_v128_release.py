@@ -6,7 +6,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APP03 = ROOT / "assets/app-parts/03.txt"
-APP = ROOT / "assets/app.js"
 CATALOG_TEST = ROOT / "scripts/test_catalog_release_v116.py"
 PAGES = ROOT / ".github/workflows/pages.yml"
 
@@ -107,18 +106,10 @@ def patch_pages_workflow() -> None:
     PAGES.write_text(text, encoding="utf-8")
 
 
-def rebuild_app() -> None:
-    parts = sorted((ROOT / "assets/app-parts").glob("*.txt"))
-    if not parts:
-        raise RuntimeError("assets/app-parts non trovato")
-    APP.write_text("".join(path.read_text(encoding="utf-8") for path in parts), encoding="utf-8")
-
-
 def main() -> None:
     patch_extractive_position()
     patch_catalog_regression()
     patch_pages_workflow()
-    rebuild_app()
     print("Patch release Attività estrattive v1.28 applicata: confronto comunale, test catalogo e CI aggiornati.")
 
 

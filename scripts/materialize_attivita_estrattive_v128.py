@@ -459,14 +459,6 @@ def patch_release():
     replace(BUILD_BRAND,hist_marker,hist_new,once=True,optional=True)
 
 
-def rebuild_app():
-    # app.js è concatenazione degli app-parts; evita di lasciare il sorgente principale indietro.
-    parts=sorted((ROOT/'assets/app-parts').glob('*.txt'))
-    if not parts: raise RuntimeError('assets/app-parts non trovato')
-    app=''.join(p.read_text(encoding='utf-8') for p in parts)
-    (ROOT/'assets/app.js').write_text(app,encoding='utf-8')
-
-
 def validate(site, selected):
     if site.get('version')!='v1.28.0' or len(site.get('metrics',{}))!=180: raise RuntimeError('Catalogo v1.28 non riconciliato')
     for k in KEYS:
@@ -490,7 +482,7 @@ def main():
     apply_site(site,selected); apply_registry(registry); apply_state(state,rtcave_meta,hashlib.sha256(raw).hexdigest())
     snapshot=build_snapshot(raw,all_rows,selected,rtcave_meta)
     save(SITE,site); save(REGISTRY,registry); save(STATE,state); save(SNAP,snapshot)
-    patch_ui(); patch_release(); rebuild_app()
+    patch_ui(); patch_release()
     subprocess.run([sys.executable,str(ROOT/'scripts/patch_attivita_estrattive_v128_release.py')],cwd=ROOT,check=True)
     subprocess.run([sys.executable,str(FINAL)],cwd=ROOT,check=True)
     validate(load(SITE),selected)

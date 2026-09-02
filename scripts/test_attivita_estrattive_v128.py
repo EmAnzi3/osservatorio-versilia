@@ -161,7 +161,10 @@ def main() -> None:
 
     app0 = (ROOT / "assets/app-parts/00.txt").read_text(encoding="utf-8")
     app3 = (ROOT / "assets/app-parts/03.txt").read_text(encoding="utf-8")
+    loader = (ROOT / "assets/app.js").read_text(encoding="utf-8")
     history = (ROOT / "assets/ux-history.js").read_text(encoding="utf-8")
+    materializer = (ROOT / "scripts/materialize_attivita_estrattive_v128.py").read_text(encoding="utf-8")
+    release_patch = (ROOT / "scripts/patch_attivita_estrattive_v128_release.py").read_text(encoding="utf-8")
     assert "case 'cubicMetres'" in app0
     assert "extractiveSites:" in app0 and "extractivePlanning:" in app0
     assert "function extractiveDetailMarkup" in app3
@@ -174,6 +177,10 @@ def main() -> None:
     assert "if (selected.key === 'extractiveProduction') return;" not in compare_history
     assert "if (selected.key === 'extractiveProduction') {" in compare_history
     assert "if (selected.key === 'extractiveProduction') return;" in town_history
+    assert "const loader = document.currentScript;" in loader
+    assert "const VERSION='20260902-v128-attivita-estrattive';" in loader
+    assert "def rebuild_app" not in materializer
+    assert "def rebuild_app" not in release_patch
 
     print("Attività estrattive v1.28 verificate: 3 card, 90/90 record RTCave completi, produzione e PRC riconciliati.")
 
