@@ -46,6 +46,15 @@ jobs:
       - name: Build local-style draft
         run: python scripts/build_static_brand.py
 
+      - name: Verify draft payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          test -f dist/data/site-data.json
+          test -f dist/assets/app-bundle.js
+          du -sh dist
+
       - name: Start local draft server
         shell: bash
         run: |
@@ -97,15 +106,19 @@ jobs:
           PY
 
       - name: Upload navigable draft
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-attivita-estrattive-v128-draft
           path: dist
+          if-no-files-found: error
           retention-days: 14
 
       - name: Upload review screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-attivita-estrattive-v128-screenshots
           path: reports/attivita-estrattive-v128-draft
+          if-no-files-found: warn
           retention-days: 14
