@@ -48,7 +48,12 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main --depth=1
-          git diff --unified=0 origin/main...HEAD -- 'assets/*.js' 'assets/**/*.js' > /tmp/lotto-a-js.diff || true
+          # app.js è rigenerato concatenando gli app-parts e può ripresentare
+          # righe già canoniche come se fossero nuove. Controlliamo quindi i
+          # moduli sorgente e gli altri JavaScript, escludendo solo il bundle.
+          git diff --unified=0 origin/main...HEAD -- \
+            'assets/*.js' 'assets/**/*.js' 'assets/app-parts/*.txt' \
+            ':(exclude)assets/app.js' > /tmp/lotto-a-js.diff || true
           added="$(grep '^+' /tmp/lotto-a-js.diff | grep -v '^+++' || true)"
           forbidden="$(printf '%s\n' "$added" | grep -Ei 'chart-tooltip|historyPointMarkup|wireHistoryTooltips' || true)"
           if [ -n "$forbidden" ]; then
