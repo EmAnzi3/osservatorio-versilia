@@ -161,11 +161,19 @@ def main() -> None:
 
     app0 = (ROOT / "assets/app-parts/00.txt").read_text(encoding="utf-8")
     app3 = (ROOT / "assets/app-parts/03.txt").read_text(encoding="utf-8")
+    history = (ROOT / "assets/ux-history.js").read_text(encoding="utf-8")
     assert "case 'cubicMetres'" in app0
     assert "extractiveSites:" in app0 and "extractivePlanning:" in app0
     assert "function extractiveDetailMarkup" in app3
     assert "extractiveTownDetailMarkup(metric,row)" in app3
     assert "detailGroup === 'extractive'" in app3
+    assert "const extractiveProductionHistory = metricKey === 'extractiveProduction' && historical;" in app3
+    assert "extractiveProductionHistory ? seriesChart(row.series" in app3
+    compare_history = history.split("function enhanceCompare(data)", 1)[1].split("function forceItalianGrouping", 1)[0]
+    town_history = history.split("function enhanceTown(data)", 1)[1].split("function enhance(data)", 1)[0]
+    assert "if (selected.key === 'extractiveProduction') return;" not in compare_history
+    assert "if (selected.key === 'extractiveProduction') {" in compare_history
+    assert "if (selected.key === 'extractiveProduction') return;" in town_history
 
     print("Attività estrattive v1.28 verificate: 3 card, 90/90 record RTCave completi, produzione e PRC riconciliati.")
 

@@ -99,6 +99,15 @@ def production(page: Page, base: str) -> None:
     assert "2019" in text and "2025" in text
     assert "Seravezza" in text and "Stazzema" in text
     assert "55.801" in text and "23.651" in text
+    history_button = page.locator('#compare-bars button[data-view-mode="history"]')
+    history_button.wait_for()
+    assert history_button.is_enabled()
+    history_button.click()
+    chart = page.locator('#compare-bars [data-view-pane="history"] .ux-history-chart:visible')
+    chart.wait_for()
+    chart_text = chart.inner_text()
+    assert "2019" in chart_text and "2025" in chart_text
+    assert "Seravezza" in chart_text and "Stazzema" in chart_text
     no_page_overflow(page, "Produzione confronto")
 
     page.goto(urljoin(base, "comuni/seravezza/?tema=ambiente&indicatore=extractiveProduction"), wait_until="networkidle")
@@ -114,7 +123,10 @@ def production(page: Page, base: str) -> None:
     position.wait_for()
     pos_text = position.inner_text()
     assert "79.452" in pos_text
-    assert "n.d." not in pos_text.lower()
+    aggregate_value = position.locator("div > b")
+    assert aggregate_value.count() == 1
+    assert "79.452" in aggregate_value.inner_text()
+    assert "n.d." not in aggregate_value.inner_text().lower()
     table = detail.locator("table.indicator-values-table:visible")
     assert table.count() == 1
     table_text = table.inner_text()
