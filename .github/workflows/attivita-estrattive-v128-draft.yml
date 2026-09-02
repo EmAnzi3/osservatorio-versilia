@@ -1,0 +1,111 @@
+name: Draft attività estrattive v1.28
+
+on:
+  push:
+    branches: ["feat/v1.28.0-attivita-estrattive"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "attivita-estrattive-v128-draft-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Validate v1.28 data contract
+        run: |
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_attivita_estrattive_v128.py
+          python scripts/test_agricoltura_territorio_v120.py
+          python scripts/test_costa_mare_v123.py
+          node --check assets/app.js
+          python -m json.tool data/site-data.json >/dev/null
+          python -m json.tool data/source-registry.json >/dev/null
+          python -m json.tool data/source-monitor-state.json >/dev/null
+          python -m json.tool data/source-snapshots/attivita-estrattive-v128.json >/dev/null
+
+      - name: Build local-style draft
+        run: python scripts/build_static_brand.py
+
+      - name: Start local draft server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-extractive-draft.log 2>&1 &
+          echo $! > /tmp/ov-extractive-draft.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-extractive-draft.log
+          exit 1
+
+      - name: Validate desktop and mobile interactions
+        run: python scripts/test_attivita_estrattive_v128_browser.py --base http://127.0.0.1:8123/
+
+      - name: Capture review screenshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports/attivita-estrattive-v128-draft
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          out = Path('reports/attivita-estrattive-v128-draft')
+          base = 'http://127.0.0.1:8123/'
+          views = [
+              ('confronto-rtcave', 'confronta/ambiente/?indicatore=extractiveSites'),
+              ('massarosa-rtcave', 'comuni/massarosa/?tema=ambiente&indicatore=extractiveSites'),
+              ('stazzema-rtcave', 'comuni/stazzema/?tema=ambiente&indicatore=extractiveSites'),
+              ('confronto-produzione', 'confronta/ambiente/?indicatore=extractiveProduction'),
+              ('seravezza-produzione', 'comuni/seravezza/?tema=ambiente&indicatore=extractiveProduction'),
+              ('confronto-prc', 'confronta/ambiente/?indicatore=extractivePlanning'),
+              ('pietrasanta-prc', 'comuni/pietrasanta/?tema=ambiente&indicatore=extractivePlanning'),
+          ]
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              for width, height, suffix in ((1440, 1000, 'desktop'), (390, 844, 'mobile')):
+                  page = browser.new_page(viewport={'width': width, 'height': height})
+                  for name, path in views:
+                      page.goto(base + path, wait_until='networkidle')
+                      page.wait_for_timeout(250)
+                      page.screenshot(path=str(out / f'{name}-{suffix}.png'), full_page=True)
+                  page.close()
+              browser.close()
+          PY
+
+      - name: Upload navigable draft
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-attivita-estrattive-v128-draft
+          path: dist
+          retention-days: 14
+
+      - name: Upload review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-attivita-estrattive-v128-screenshots
+          path: reports/attivita-estrattive-v128-draft
+          retention-days: 14
