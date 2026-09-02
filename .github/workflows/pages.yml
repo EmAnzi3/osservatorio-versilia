@@ -52,6 +52,7 @@ jobs:
           python scripts/test_agricoltura_territorio_v120.py
           python scripts/test_cultura_biblioteche_v121.py
           python scripts/test_costa_mare_v123.py
+          python scripts/test_attivita_estrattive_v128.py
           python scripts/test_ambiente_acqua_v124_ui.py
           python scripts/test_erp_arrears_v125.py
           python scripts/test_investimenti_versilia.py
@@ -69,6 +70,7 @@ jobs:
           python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null
           python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null
           python -m json.tool data/source-snapshots/costa-mare-v123.json > /dev/null
+          python -m json.tool data/source-snapshots/attivita-estrattive-v128.json > /dev/null
           python -m json.tool data/source-snapshots/erp-lucca-arrears-2020-2024.json > /dev/null
 
       - name: Build pre-rendered site
@@ -134,6 +136,9 @@ jobs:
 
       - name: Validate Costa e mare
         run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Attività estrattive
+        run: python scripts/test_attivita_estrattive_v128_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate Ambiente acqua e bonifiche
         run: python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8123/
@@ -280,6 +285,10 @@ jobs:
             scripts/test_agricoltura_territorio_v120.py \
             scripts/test_agricoltura_review_interactions_v120.py \
             scripts/materialize_costa_mare_v123.py \
+            scripts/materialize_attivita_estrattive_v128.py \
+            scripts/patch_attivita_estrattive_v128_release.py \
+            scripts/test_attivita_estrattive_v128.py \
+            scripts/test_attivita_estrattive_v128_browser.py \
             scripts/patch_investimenti_versilia.py \
             scripts/test_costa_mare_v123.py \
             scripts/test_costa_mare_v123_browser.py \
