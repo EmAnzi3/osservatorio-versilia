@@ -1,0 +1,66 @@
+name: Materialize Salute Finanziaria v1.29.0
+
+on:
+  push:
+    branches: ["feat/v1.29.0-salute-finanziaria"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "salute-finanziaria-v129-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout working branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize approved financial indicators
+        run: python scripts/apply_salute_finanziaria_v129.py
+
+      - name: Validate financial formulas and UI guards
+        run: python scripts/test_salute_finanziaria_v129.py
+
+      - name: Validate canonical catalog
+        run: |
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python scripts/test_composite_indicators.py
+
+      - name: Build static site and run regressions
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/test_static.py
+          python scripts/test_exports_v161.py
+          git diff --check
+
+      - name: Commit materialized canonical files
+        shell: bash
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/site-data.json data/source-registry.json assets/app-parts/03.txt README.md
+          if git diff --cached --quiet; then
+            echo "Canonical files already materialized."
+            exit 0
+          fi
+          git commit -m "Materializza salute finanziaria v1.29.0"
+          git push origin "HEAD:${BRANCH_NAME}"
