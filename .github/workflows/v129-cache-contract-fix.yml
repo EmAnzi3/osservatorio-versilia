@@ -40,6 +40,7 @@ jobs:
                   'assert len(site["metrics"]) == 180': 'assert len(site["metrics"]) == 181',
                   'assert registry["expectedMetricCount"] == 180': 'assert registry["expectedMetricCount"] == 181',
                   'assert registry["expectedInlineMetricCount"] == 176': 'assert registry["expectedInlineMetricCount"] == 177',
+                  "assert \"const VERSION='20260902-v128-attivita-estrattive';\" in loader": "assert \"const VERSION='20260903-v129-salute-finanziaria';\" in loader",
               },
               'assets/app.js': {
                   "const VERSION='20260902-v128-attivita-estrattive';": "const VERSION='20260903-v129-salute-finanziaria';",
