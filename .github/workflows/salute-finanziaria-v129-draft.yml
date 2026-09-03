@@ -3,8 +3,6 @@ name: Materialize Salute Finanziaria v1.29.0
 on:
   push:
     branches: ["feat/v1.29.0-salute-finanziaria"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -22,7 +20,7 @@ jobs:
       - name: Checkout working branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -52,7 +50,7 @@ jobs:
       - name: Commit materialized canonical files
         shell: bash
         env:
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
