@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Finalizza e valida il contratto del catalogo pubblico v1.28.0.
+"""Finalizza e valida il contratto del catalogo pubblico v1.29.0.
 
 Le trasformazioni tematiche restano nei rispettivi materializzatori. Questo
 passaggio assegna soltanto i metadati di release e impedisce la pubblicazione di
@@ -17,12 +17,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 
-VERSION = "v1.28.0"
-UPDATED = "2 settembre 2026"
+VERSION = "v1.29.0"
+UPDATED = "3 settembre 2026"
 EXPECTED_TOWNS = 7
 EXPECTED_THEMES = 11
-EXPECTED_METRICS = 180
-EXPECTED_INLINE = 176
+EXPECTED_METRICS = 181
+EXPECTED_INLINE = 177
 EXPECTED_EXTERNAL = 4
 
 def load(path: Path) -> dict:

@@ -1,6 +1,6 @@
 {
-  "version": "v1.28.0",
-  "updated": "2 settembre 2026",
+  "version": "v1.29.0",
+  "updated": "3 settembre 2026",
   "themes": {
     "demografia": {
       "key": "demografia",
@@ -736,7 +736,8 @@
         "municipalStaffTurnover",
         "municipalStaffAgeStructure",
         "municipalStaffTraining",
-        "municipalOnlineServicesAdvanced"
+        "municipalOnlineServicesAdvanced",
+        "financialDebtProfile"
       ],
       "sections": [
         {
@@ -758,7 +759,8 @@
             "currentCollectionCapacity",
             "currentPaymentCapacity",
             "availableAdministrationResultPerResident",
-            "rigidExpenditureShare"
+            "rigidExpenditureShare",
+            "financialDebtProfile"
           ]
         },
         {
@@ -62764,6 +62766,1001 @@
         "caveat": "Il valore è il campo operativo importo_lordo del WFS: non coincide con l’importo programmato approvato dell’Allegato A-1 e non rappresenta spesa pagata, liquidata o certificata.",
         "coverage": "7/7",
         "snapshot": "data/source-snapshots/bonifica-rischio-v126-status.json"
+      }
+    },
+    "financialDebtProfile": {
+      "meta": {
+        "key": "financialDebtProfile",
+        "theme": "bilanci",
+        "label": "Debito finanziario e costo degli interessi",
+        "shortLabel": "Debito e interessi",
+        "description": "Tre letture complementari del debito comunale: debiti da finanziamento per residente, peso degli interessi sulle entrate correnti e sostenibilità dei debiti finanziari secondo il Piano degli indicatori.",
+        "unit": "currencyPerResident",
+        "year": "2025",
+        "source": "RGS — OpenBDAP · Rendiconto",
+        "polarity": "neutral",
+        "compositeType": "financialProfile",
+        "selectorLabel": "Lettura",
+        "searchTerms": [
+          "debito",
+          "indebitamento",
+          "debiti finanziari",
+          "interessi passivi",
+          "sostenibilità debito",
+          "openbdap 6.1",
+          "openbdap 10.3",
+          "openbdap 10.4"
+        ]
+      },
+      "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 465.49354306154265,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              699.2541565265486,
+              478.80960212815177,
+              417.8357573686848,
+              477.01233011043394,
+              422.3508642654202,
+              454.1536839698148,
+              465.49354306154265
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 465.49354306154265,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 465.49354306154265,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  699.2541565265486,
+                  478.80960212815177,
+                  417.8357573686848,
+                  477.01233011043394,
+                  422.3508642654202,
+                  454.1536839698148,
+                  465.49354306154265
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 4.382324198197816,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1.9991328859992128,
+                  1.434366966969892,
+                  1.2931326948203477,
+                  1.1544977618157992,
+                  1.0885365980055393,
+                  0.8315250870077232,
+                  4.382324198197816
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 7.26,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  8.18,
+                  8.91,
+                  7.66,
+                  6.95,
+                  5.99,
+                  4.21,
+                  7.26
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ],
+          "contextNote": "Massarosa ha dichiarato il dissesto il 27/11/2019. Durante il periodo di dissesto la gestione OSL delle passività pregresse ha avuto un perimetro separato: il debito finanziario D1 del Rendiconto ordinario non rappresenta quindi l’intero insieme delle passività gestite dalla procedura."
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 500.2012974693985,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1488.3390003630243,
+              1421.0450416446324,
+              1316.9490187915299,
+              1236.0098899172742,
+              746.1022906881261,
+              563.2707126985433,
+              500.2012974693985
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 500.2012974693985,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 500.2012974693985,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1488.3390003630243,
+                  1421.0450416446324,
+                  1316.9490187915299,
+                  1236.0098899172742,
+                  746.1022906881261,
+                  563.2707126985433,
+                  500.2012974693985
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 1.087019203558058,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1.787757971286296,
+                  1.3741065587995678,
+                  1.431969192083421,
+                  0.7377532937025845,
+                  1.3179166388880659,
+                  1.6463078055001898,
+                  1.087019203558058
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 4.74,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  9.02,
+                  5.12,
+                  6.76,
+                  3.68,
+                  4.31,
+                  5.62,
+                  4.74
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 1641.9441885524,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1405.6490126302494,
+              1470.540669562185,
+              1478.3141242404206,
+              1431.1122912542032,
+              1430.7831691420695,
+              1557.267104883254,
+              1641.9441885524
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1641.9441885524,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 1641.9441885524,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1405.6490126302494,
+                  1470.540669562185,
+                  1478.3141242404206,
+                  1431.1122912542032,
+                  1430.7831691420695,
+                  1557.267104883254,
+                  1641.9441885524
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 3.5010976874737207,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  3.7427569832157337,
+                  3.4952011510873904,
+                  3.440297863785513,
+                  3.4534984567264955,
+                  3.460653081644188,
+                  3.4562836653214926,
+                  3.5010976874737207
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 10.99,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  11.0,
+                  6.0,
+                  10.0,
+                  10.0,
+                  9.64,
+                  10.82,
+                  10.99
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi_scale_normalized",
+                "pdi_scale_normalized",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 469.9414505562151,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              503.3387517878039,
+              380.44708309779537,
+              386.8828026469443,
+              320.5570072834475,
+              312.55272096978155,
+              304.2191886080393,
+              469.9414505562151
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 469.9414505562151,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 469.9414505562151,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  503.3387517878039,
+                  380.44708309779537,
+                  386.8828026469443,
+                  320.5570072834475,
+                  312.55272096978155,
+                  304.2191886080393,
+                  469.9414505562151
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 0.6114613265899463,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1.2198668828601484,
+                  1.0806684815431613,
+                  1.1709320705871682,
+                  0.9192676406907953,
+                  0.63896565191933,
+                  0.6203857479627913,
+                  0.6114613265899463
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 1.58,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  6.26,
+                  1.53,
+                  5.61,
+                  2.17,
+                  1.15,
+                  1.16,
+                  1.58
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 294.4239802923835,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              357.0197368625924,
+              358.37606074839516,
+              346.2994456833386,
+              332.7561393778635,
+              319.8843227107705,
+              306.2193003618818,
+              294.4239802923835
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 294.4239802923835,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 294.4239802923835,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  357.0197368625924,
+                  358.37606074839516,
+                  346.2994456833386,
+                  332.7561393778635,
+                  319.8843227107705,
+                  306.2193003618818,
+                  294.4239802923835
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 0.8990531302876372,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1.2094376070695567,
+                  1.1254932249474672,
+                  1.0724164001899483,
+                  0.8998094278976296,
+                  1.0806840682605732,
+                  0.9996178572584018,
+                  0.8990531302876372
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 1.98,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  3.14,
+                  1.26,
+                  2.55,
+                  2.14,
+                  2.37,
+                  2.11,
+                  1.98
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.0,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              20.175254332029066,
+              20.302927858247784,
+              9.731083552722737,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 0.0,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 0.0,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  20.175254332029066,
+                  20.302927858247784,
+                  9.731083552722737,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 0.0,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  0.03787652072878999,
+                  0.026148835062162926,
+                  0.010496904322027179,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 0.0,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  0.273416,
+                  0.03,
+                  0.26,
+                  0.22,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "provenanceSeries": [
+                "reconstructed_components",
+                "pdi",
+                "pdi",
+                "pdi",
+                "reconstructed_components",
+                "reconstructed_components",
+                "reconstructed_components"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 1881.7496438450898,
+          "formatted": null,
+          "series": {
+            "years": [
+              2019,
+              2020,
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "values": [
+              1799.5311511275663,
+              2001.3213184584179,
+              54.51356107660455,
+              14.99446366782007,
+              771.5803510601321,
+              48.759352394075094,
+              1881.7496438450898
+            ]
+          },
+          "normalized": null,
+          "benchmarkValue": 1881.7496438450898,
+          "parts": [
+            {
+              "key": "debtPerResident",
+              "label": "Debito finanziario pro capite",
+              "selectorLabel": "Debito finanziario pro capite",
+              "unit": "currencyPerResident",
+              "value": 1881.7496438450898,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  1799.5311511275663,
+                  2001.3213184584179,
+                  54.51356107660455,
+                  14.99446366782007,
+                  771.5803510601321,
+                  48.759352394075094,
+                  1881.7496438450898
+                ]
+              },
+              "provenance": "Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio."
+            },
+            {
+              "key": "interestShare",
+              "label": "Interessi sulle entrate correnti",
+              "selectorLabel": "Interessi sulle entrate correnti",
+              "unit": "percent2",
+              "value": 4.2792566604936235,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  5.730986668814591,
+                  6.037997218608662,
+                  5.493214999797823,
+                  4.9483642163277555,
+                  5.148084037011171,
+                  4.499656014102882,
+                  4.2792566604936235
+                ]
+              },
+              "provenance": "Indicatore 6.1 ricalcolato dagli impegni per interessi passivi e dagli accertamenti dei Titoli 1+2+3."
+            },
+            {
+              "key": "debtSustainability",
+              "label": "Sostenibilità dei debiti finanziari",
+              "selectorLabel": "Sostenibilità dei debiti finanziari",
+              "unit": "percent2",
+              "value": 8.34,
+              "series": {
+                "years": [
+                  2019,
+                  2020,
+                  2021,
+                  2022,
+                  2023,
+                  2024,
+                  2025
+                ],
+                "values": [
+                  10.45,
+                  7.1,
+                  9.77,
+                  9.97,
+                  8.3,
+                  6.93,
+                  8.34
+                ]
+              },
+              "provenanceSeries": [
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi",
+                "pdi"
+              ],
+              "provenance": "PDI 10.3; normalizzazioni e ricostruzioni sono congelate nello snapshot con provenienza annuale."
+            }
+          ]
+        }
+      ],
+      "aggregate": {
+        "value": 707.9067531993607,
+        "label": "Versilia · debito finanziario pro capite",
+        "note": "Gli aggregati non sono medie semplici dei sette valori comunali: il debito pro capite è il rapporto fra i debiti D1 e la popolazione complessivi; il 6.1 è il rapporto fra interessi ed entrate complessivi; il 10.3 è ponderato sulle entrate correnti comunali.",
+        "parts": [
+          {
+            "key": "debtPerResident",
+            "label": "Debito finanziario pro capite",
+            "selectorLabel": "Debito finanziario pro capite",
+            "unit": "currencyPerResident",
+            "value": 707.9067531993607,
+            "series": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025
+              ],
+              "values": [
+                1072.2533620393344,
+                1016.3396113096358,
+                935.0287991664335,
+                893.4543682082623,
+                711.673016717801,
+                656.6048281854858,
+                707.9067531993607
+              ]
+            },
+            "aggregation": "Σ debiti da finanziamento D1 / Σ popolazione al 1° gennaio"
+          },
+          {
+            "key": "interestShare",
+            "label": "Interessi sulle entrate correnti",
+            "selectorLabel": "Interessi sulle entrate correnti",
+            "unit": "percent2",
+            "value": 1.7018696805320639,
+            "series": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025
+              ],
+              "values": [
+                1.8611744966819241,
+                1.587571410316035,
+                1.5956415386340856,
+                1.1154605537952862,
+                1.3995446997744208,
+                1.4944160566084363,
+                1.7018696805320639
+              ]
+            },
+            "aggregation": "Σ interessi passivi / Σ entrate correnti × 100"
+          },
+          {
+            "key": "debtSustainability",
+            "label": "Sostenibilità dei debiti finanziari",
+            "selectorLabel": "Sostenibilità dei debiti finanziari",
+            "unit": "percent2",
+            "value": 4.8846112200118075,
+            "series": {
+              "years": [
+                2019,
+                2020,
+                2021,
+                2022,
+                2023,
+                2024,
+                2025
+              ],
+              "values": [
+                7.4368782889088525,
+                4.186731315552569,
+                6.228113927725719,
+                4.164631799567794,
+                4.184269820923141,
+                4.711395204911215,
+                4.8846112200118075
+              ]
+            },
+            "aggregation": "Media ponderata dei rapporti comunali 10.3 con peso pari alle entrate correnti; non è un indicatore OpenBDAP ufficiale della Versilia."
+          }
+        ]
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Elaborazione Osservatorio su dati ufficiali OpenBDAP",
+        "formula": "10.4: debiti da finanziamento D1 al 31/12 / popolazione residente al 1° gennaio; 6.1: impegni Macroaggregato 1.7 Interessi passivi / accertamenti Titoli 1+2+3 × 100; 10.3: indicatore ufficiale del Piano degli indicatori, con le sole normalizzazioni/ricostruzioni documentate nello snapshot.",
+        "caveat": "Il debito finanziario D1 non coincide con tutte le passività dell’ente: non comprende automaticamente debiti commerciali, debiti fuori bilancio o passività gestite in un perimetro straordinario. Per Massarosa il dissesto dichiarato nel 2019 e la gestione OSL delle passività pregresse introducono una discontinuità di perimetro nella lettura storica. Il 10.3 di Camaiore 2023–2024 è normalizzato dividendo per 100 per perdita sistematica del separatore decimale; Forte dei Marmi 2019 e 2023–2025 è ricostruito dai componenti ufficiali, con 2023–2025 pari a zero perché il numeratore è verificato nullo.",
+        "coverage": "7/7 · 2019–2025"
       }
     }
   },

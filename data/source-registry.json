@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "expectedMetricCount": 180,
-  "expectedInlineMetricCount": 176,
+  "expectedMetricCount": 181,
+  "expectedInlineMetricCount": 177,
   "expectedExternalMetricCount": 4,
   "expectedTowns": [
     {
@@ -818,6 +818,9 @@
     },
     "extractivePlanning": {
       "profile": "regione-toscana-prc-annual"
+    },
+    "financialDebtProfile": {
+      "profile": "openbdap-annual"
     }
   },
   "requestTimeoutSeconds": 20,
