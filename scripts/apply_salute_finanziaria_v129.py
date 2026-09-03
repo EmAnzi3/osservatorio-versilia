@@ -39,7 +39,7 @@ def town_meta(data: dict, town: str) -> dict:
 
 
 def population_series(bilanci: dict, town: str, years: list[int]) -> list[float]:
-    source = bilanci["towns"][town]["years"]
+    source = bilanci["raw"][town]["years"]
     values = []
     for year in years:
         value = source[str(year)].get("population_at_1_january")
@@ -103,8 +103,7 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
         debt_values = [debt_per_resident(debt, pop) for debt, pop in zip(debts, populations, strict=True)]
         interest_values = [ratio_percent(value, revenue) for value, revenue in zip(interests, revenues, strict=True)]
 
-        # Freeze: 6.1 is always recalculated from official components, never copied from PDI.
-        for index, year in enumerate(years):
+        for index, _year in enumerate(years):
             aggregate_debt[index] += debts[index]
             aggregate_population[index] += populations[index]
             aggregate_interest[index] += interests[index]
