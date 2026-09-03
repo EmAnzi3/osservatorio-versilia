@@ -1,6 +1,6 @@
 {
   "schemaVersion": "4.0",
-  "generatedAt": "2026-09-03T07:42:13+00:00",
+  "generatedAt": "2026-09-03T11:25:51+00:00",
   "referenceDate": "2026-09-03",
   "municipalities": [
     "Camaiore",
@@ -28,7 +28,7 @@
     "archive": 5,
     "continuityHold": 0,
     "duplicatesCollapsed": 7,
-    "discoveryReview": 142,
+    "discoveryReview": 133,
     "applicationOpen": 25,
     "rollingOpen": 2,
     "announcedUpcoming": 2,
@@ -214,8 +214,8 @@
       "discardedCount": 13,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-09-02",
-        "ageDays": 1,
+        "observedDate": "2026-09-03",
+        "ageDays": 0,
         "maxAgeDays": 45
       },
       "error": null,
@@ -253,7 +253,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:33:52+00:00",
+      "detected_at": "2026-09-03T11:16:32+00:00",
       "fingerprint": "616d2151dd2f1ff1a3f298964b05c7e4ae0bf4d6b5eb067e1b4670491daf5f95",
       "municipality_eligibility": {
         "Camaiore": {
@@ -457,7 +457,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:33:55+00:00",
+      "detected_at": "2026-09-03T11:16:35+00:00",
       "fingerprint": "85a2931c5ee60679a8c1b62a058c59f1af1e11e2c97fd294df74b74582b09508",
       "municipality_eligibility": {
         "Camaiore": {
@@ -566,7 +566,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:33:56+00:00",
+      "detected_at": "2026-09-03T11:16:37+00:00",
       "fingerprint": "c527f9da6d9004efdfe1b6c57e616d139865da8b659a9015f88922e7b2199073",
       "municipality_eligibility": {
         "Camaiore": {
@@ -767,7 +767,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:34:08+00:00",
+      "detected_at": "2026-09-03T11:16:51+00:00",
       "fingerprint": "7af7da5349575b73e2e20a9d4459f769682a72270d0fa7364d68b4df6fde56d1",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1246,7 +1246,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:41:09+00:00",
+      "detected_at": "2026-09-03T11:24:38+00:00",
       "fingerprint": "f495a66df90ea23fa198dfe7804b5313c61ff510d43941fbb89dde6bc3aae8af",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1446,7 +1446,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:40:28+00:00",
+      "detected_at": "2026-09-03T11:23:54+00:00",
       "fingerprint": "d292f9661c0ad594b68235e5c81ad00c82e9222bc8ec01b214b34a0d706a02a0",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1551,7 +1551,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:41:39+00:00",
+      "detected_at": "2026-09-03T11:25:13+00:00",
       "fingerprint": "93e219752c95b0b319e2b4272b3ac935108c5e8b771b934eb3bd678ee156d730",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1657,7 +1657,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:32:35+00:00",
+      "detected_at": "2026-09-03T11:15:08+00:00",
       "fingerprint": "35fcf629ad1c89c2dbabb1521b063ae333226b42fa3919b78253d5c8e20c3c2f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1858,7 +1858,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-09-03T07:40:57+00:00",
+      "detected_at": "2026-09-03T11:24:23+00:00",
       "fingerprint": "d17b122ec4fa2b9761e0b073ab6fb91536cdae671e3bc8cd58ac8e422f92bd97",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2243,7 +2243,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:32:32+00:00",
+      "detected_at": "2026-09-03T11:15:04+00:00",
       "fingerprint": "00b755c2877de98a35b2a453b01984d25f31463424ba7cb06c15b2027787688f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2346,7 +2346,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-09-03T07:32:37+00:00",
+      "detected_at": "2026-09-03T11:15:10+00:00",
       "fingerprint": "5c30d6ba375cb6bc880893d6b12e3d6dc53631edda47abacf9bd13c930a431bd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2451,7 +2451,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:41:07+00:00",
+      "detected_at": "2026-09-03T11:24:36+00:00",
       "fingerprint": "52537afb758f0958ecb29df56ad3697667599e77c1c9ac3311d962199ec10ce4",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2560,7 +2560,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:41:34+00:00",
+      "detected_at": "2026-09-03T11:25:07+00:00",
       "fingerprint": "14f431c160c5f2382754875e1304eba487fa3a68f28cbb6a9e0fb501346768a7",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3455,7 +3455,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:38:40+00:00",
+      "detected_at": "2026-09-03T11:21:38+00:00",
       "fingerprint": "c25be1fd8ef5b3446f6e55c7112ccee3e972a54ae365f4f1d93f07f9671c066c",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3546,7 +3546,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-03T07:38:36+00:00",
+      "detected_at": "2026-09-03T11:21:33+00:00",
       "fingerprint": "93f91999aa938515dd279e0c2316bf9d21b76be704d4c676bfbdbd34e1dfc7fd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3995,7 +3995,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 41,
+        "candidateCount": 31,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4202,7 +4202,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 1,
+        "candidateCount": 2,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -4821,7 +4821,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-09-02",
+        "observedDate": "2026-09-03",
         "publicCount": 6,
         "candidateCount": 23,
         "reviewCount": 4,
@@ -5482,7 +5482,19 @@
       "territory": "Area di cooperazione transfrontaliera",
       "title": "Navigazione",
       "url": "https://interreg-marittimo.eu/",
-      "summary": "Visualizza/chiudi menu mobile Chi siamo Programma Geografia Priorità Organismi Referenti territoriali Sinergie e complementarietà Contatti Link utili Bandi e opportunità Avvisi Ricerca Partner Calendario Avvisi Progetti Progetti finanziati Scopri i nostri progetti Comunicazioni ai beneficiari Toolkit Documenti Documenti di Programma Manuali Documenti di Progetto Regolamenti Europei Comunicazione Glossario Consultazioni Post 2027 Notizie Eventi Eventi di Programma Eventi di Progetto Meccanismo Multi-programma Introduzione Documenti e strumenti Aggiornamenti ed eventi Avvisi Mediterranean Peer L",
+      "summary": "Visualizza/chiudi menu mobile Chi siamo Programma Geografia Priorità Organismi Referenti territoriali Sinergie e complementarietà Contatti Link utili Bandi e opportunità Avvisi Ricerca Partner Calendario Avvisi Progetti Progetti finanziati Scopri i nostri progetti Comunicazioni ai beneficiari Toolkit Help Desk Comunicazione Documenti Documenti di Programma Manuali Documenti di Progetto Regolamenti Europei Comunicazione Glossario Consultazioni Post 2027 Notizie Eventi Eventi di Programma Eventi di Progetto Meccanismo Multi-programma Introduzione Documenti e strumenti Aggiornamenti ed eventi Avv",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "interreg-marittimo",
+      "source_label": "Interreg Italia-Francia Marittimo",
+      "publisher": "Programma Interreg Italia-Francia Marittimo 2021-2027",
+      "territory": "Area di cooperazione transfrontaliera",
+      "title": "Rendez-vous Express, ecco il nuovo help desk per la comunicazione dei progetti",
+      "url": "https://interreg-marittimo.eu/web/interreg21-27/-/rendez-vous-express-ecco-il-nuovo-help-desk-per-la-comunicazione-dei-progetti",
+      "summary": "03.09.2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5506,7 +5518,7 @@
       "territory": "Italia",
       "title": "Bandi e Avvisi",
       "url": "https://www.mase.gov.it/portale/bandi-e-avvisi",
-      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_kkii\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
+      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_hbid\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5636,6 +5648,18 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
+      "title": "ACQUISTO DI BIGLIETTI DI VIAGGIO PER IL RIMPATRIO DI CITTADINI EXTRACOMUNITARI SOTTOPOSTI A DECRETO DI ESPULSIONE",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/imperia/amministrazione-trasparente/bandi-gara-e-contratti/acquisto-biglietti-viaggio-rimpatrio-cittadini-extracomunitari-sottoposti-decreto-espulsione-0",
+      "summary": "Bandi di gara 3 Settembre 2026 Ultimo aggiornamento 3 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
       "title": "ACQUISTO DI BIGLIETTI DI VIAGGIO PER IL RIMPATRIO DI CITTADINI EXTRACOMUNITARI SOTTOPOSTI A DECRETO DI ESPULSIONE.",
       "url": "https://prefettura.interno.gov.it/it/prefetture/imperia/amministrazione-trasparente/bandi-gara-e-contratti/acquisto-biglietti-viaggio-rimpatrio-cittadini-extracomunitari-sottoposti-decreto-espulsione",
       "summary": "Bandi di gara 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
@@ -5648,21 +5672,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "AVVISO PUBBLICO PER INDIVIDUAZIONE DI DUE IMMOBILI DA ADIBIRE AD ALLOGGI",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/massa-carrara/comunicazioni/avviso-pubblico-individuazione-due-immobili-adibire-ad-alloggi",
-      "summary": "SERVIZIO DELLA CASERMA DEI CARABINIERI DI VILLAFRANCA IN LUN Comunicazione 1 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Affidamento del servizio di accoglienza di n.120 cittadini stranieri",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/taranto/comunicazioni/affidamento-servizio-accoglienza-n120-cittadini-stranieri-0",
-      "summary": "Comunicazione 31 Agosto 2026 Ultimo aggiornamento 2 Settembre 2026",
+      "title": "AVVISO PUBBLICO DI MANIFESTAZIONE D’INTERESSE PER L’INDIVIDUAZIONE DI UNO STABILE DA ADIBIRE A CASERMA DEI CARABINIERI NEL COMUNE DI PENNE (PE).",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/pescara/amministrazione-trasparente/bandi-gara-e-contratti/avviso-pubblico-manifestazione-dinteresse-lindividuazione-stabile-adibire-caserma-dei-carabinieri-nel-comune-penne-pe",
+      "summary": "Bandi di gara 3 Settembre 2026 Ultimo aggiornamento 3 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5675,18 +5687,6 @@
       "title": "Area certificati",
       "url": "https://dait.interno.gov.it/finanza-locale",
       "summary": "Sistema di trasmissione delle certificazioni degli enti locali (TBEL, altri certificati) Accedi all'area certificati",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Avviso procedura di Mobilità esterna",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/brescia/comunicazioni/avviso-procedura-mobilita-esterna",
-      "summary": "Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5710,18 +5710,6 @@
       "territory": "Italia",
       "title": "Avviso pubblico di ricerca immobile per Commissariato P.S. di Gaeta",
       "url": "https://prefettura.interno.gov.it/it/prefetture/latina/comunicazioni/avviso-pubblico-ricerca-immobile-commissariato-ps-gaeta",
-      "summary": "Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Avviso pubblico ricerca immobile alloggio di servizio Carabinieri Latina",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/latina/comunicazioni/avviso-pubblico-ricerca-immobile-alloggio-servizio-carabinieri-latina",
       "summary": "Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
@@ -5768,18 +5756,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Comunicato del 3 agosto 2026",
-      "url": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-3-agosto-2026",
-      "summary": "Fondo per la progettazione definitiva ed esecutiva relativa ad interventi di messa in sicurezza - Annualità 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "Comunicato del 6 agosto 2026",
       "url": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-6-agosto-2026",
       "summary": "Si comunica che è stato adottato il decreto del Direttore Centrale per la Finanza Locale, datato 21 luglio 2026, recante disposizioni attuative per l’erogazione, il monitoraggio, la rendicontazione e l’eventuale revoca delle risorse del Fondo istituito dall’articolo 1, commi 772, della legge 30 dicembre 2025, n.199.",
@@ -5795,30 +5771,6 @@
       "title": "Comunicato del 7 agosto 2026",
       "url": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-7-agosto-2026",
       "summary": "Si informa che ai sensi di quanto previsto dall’articolo 5, comma 3, del D.P.C.M. 1° maggio 2023, questa Direzione, sulla base dei dati forniti dall’Albo nazionale dei segretari comunali e provinciali, ha provveduto all’erogazione del contributo destinato a sostenere gli oneri dei segretari comunali ex articolo 1, comma 828, della legge 29 dicembre 2022, n.197, relativo all’annualità 2025.",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Concorso pubblico unico per esami a n. 20 posti di funzionario",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/bolzano/comunicazioni/concorso-pubblico-unico-esami-n-20-posti-funzionario",
-      "summary": "Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Controllo di vicinato anche nel Comune di Cergnago",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/pavia/notizie/controllo-vicinato-anche-nel-comune-cergnago",
-      "summary": "Firmato oggi il protocollo a Palazzo Malaspina Notizia 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5864,9 +5816,21 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Decreto 31 luglio 2026",
-      "url": "https://dait.interno.gov.it/finanza-locale/documentazione/decreto-31-luglio-2026-revisori",
-      "summary": "VI integrazione dell’Elenco dei revisori dei conti degli enti locali, in vigore dal 1° gennaio 2026.",
+      "title": "Decreto 3 settembre 2026 n.1",
+      "url": "https://dait.interno.gov.it/finanza-locale/documentazione/decreto-3-settembre-2026-altavalle",
+      "summary": "Decreto di assegnazione contributo a favore del Comune di Altavalle (TN) - Registrato presso la Corte dei Conti in data 23 aprile 2026, al n. 1554",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Elenco dei veicoli sequestrati presso depositeria - Aggiornamento",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/rovigo/comunicazioni/elenco-dei-veicoli-sequestrati-presso-depositeria-aggiornamento-95",
+      "summary": "Comunicazione 3 Settembre 2026 Ultimo aggiornamento 3 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5879,18 +5843,6 @@
       "title": "Elenco dei veicoli sottoposti a sequestro o fermo",
       "url": "https://prefettura.interno.gov.it/it/prefetture/cuneo/comunicazioni/elenco-dei-veicoli-sottoposti-sequestro-o-fermo-1",
       "summary": "Pubblicazione del 02 settembre 2026 Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Elenco prefettizio delle depositerie - Iscrizione per l'anno 2027",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lucca/comunicazioni/elenco-prefettizio-depositerie-iscrizione-lanno-2027",
-      "summary": "Avviso pubblico per l' iscrizione - Anno 2027 Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5924,18 +5876,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Firma protocollo Controllo di Vicinato - Comune di Cergnago",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/pavia/galleria-immagini/firma-protocollo-controllo-vicinato-comune-cergnago",
-      "summary": "Galleria immagini 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "I pareri",
       "url": "https://dait.interno.gov.it/finanza-locale",
       "summary": "Raccolta di pareri espressi da questo Dipartimento nelle materia di competenza del Dipartimento ed in particolare in materia di Enti locali. La raccolta contiene, per la specifica area tematica della Finanza locale, i pareri espressi in materia di Revisori dei conti degli enti locali. La raccolta",
@@ -5948,45 +5888,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Il Prefetto Campanaro saluta Comandante ed Ufficiali dei Carabinieri",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/potenza/comunicati-stampa/prefetto-campanaro-saluta-comandante-ed-ufficiali-dei-carabinieri",
-      "summary": "Il Prefetto Campanaro saluta Comandante ed Ufficiali Comunicato stampa 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "Incendio presso l’impianto di rifiuti di Airola (BN): aggiornamento",
       "url": "https://prefettura.interno.gov.it/it/prefetture/avellino/notizie/incendio-presso-limpianto-rifiuti-airola-bn-aggiornamento",
       "summary": "Comunicato stampa Notizia 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Iniziative promozione conoscenza tragedia foibe e esodo giuliano-dalmata",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/bergamo/comunicazioni/iniziative-promozione-conoscenza-tragedia-foibe-e-esodo-giuliano-dalmata",
-      "summary": "Legge 21 febbraio 2024. n. 16 Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Modalità di scelta dei Revisori degli Enti Locali",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/barletta-andria-trani/comunicazioni/modalita-scelta-dei-revisori-enti-locali-8",
-      "summary": "Estrazione dei revisori del Comune di Margherita di Savoia Comunicazione 1 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6070,7 +5974,7 @@
       "territory": "Italia",
       "title": "RISSA A POGGIBONSI: ESPULSO UN TUNISINO",
       "url": "https://prefettura.interno.gov.it/it/prefetture/siena/comunicati-stampa/rissa-poggibonsi-espulso-tunisino",
-      "summary": "PROSEGUONO I SERVIZI STRAORDINARI DI CONTROLLO Comunicato stampa 2 Settembre 2026",
+      "summary": "PROSEGUONO I SERVIZI STRAORDINARI DI CONTROLLO Comunicato stampa 2 Settembre 2026 Paginazione 1 2 3 4 5 6 7 8 9 … seguente › ultima »",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6080,21 +5984,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Sammelwettbewerb nach Prüfungen für Nr. 20 Stellen als höherer Beamter",
-      "url": "https://prefettura.interno.gov.it/de/prefetture/bolzano/comunicazioni/sammelwettbewerb-nach-pruefungen-fuer-nr-20-stellen-als-hoeherer-beamter",
-      "summary": "Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Seduta Estrazione Revisore Dei Conti",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/cosenza/comunicazioni/seduta-estrazione-revisore-dei-conti",
-      "summary": "COMUNI DI PIETRAPAOLA E CASALI DEL MANCO Comunicazione 2 Settembre 2026 Ultimo aggiornamento 2 Settembre 2026",
+      "title": "Seduta Estrazione Revisore dei Conti 2026 COMUNE DI GUARDIA P.",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/cosenza/comunicazioni/seduta-estrazione-revisore-dei-conti-2026-comune-guardia-p",
+      "summary": "Seduta Estrazione Revisore 2026 COMUNE DI GUARDIA P. Comunicazione 4 Settembre 2026 Ultimo aggiornamento 3 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6370,7 +6262,7 @@
       "territory": "Italia",
       "title": "Sezione Link Utili",
       "url": "https://avvisibandi.sport.governo.it/",
-      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"0b5fd26f-2af7-46da-b755-b17ce1612538\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
+      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"40a23786-a697-4858-aa4f-5d77c5e83e3c\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -7002,7 +6894,7 @@
       "status": "ok",
       "endpointCount": 2,
       "endpointOk": 2,
-      "candidateCount": 41,
+      "candidateCount": 31,
       "errors": [],
       "freshness": {
         "status": "discovery",
@@ -7123,7 +7015,7 @@
       "status": "ok",
       "endpointCount": 1,
       "endpointOk": 1,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "errors": [],
       "freshness": {
         "status": "discovery",
