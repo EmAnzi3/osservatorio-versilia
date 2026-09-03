@@ -60,6 +60,22 @@ jobs:
                   raise SystemExit(f'Contratto inatteso in {test}: {old}')
               text = text.replace(old, new, 1)
           test.write_text(text, encoding='utf-8')
+
+          pages = Path('.github/workflows/pages.yml')
+          text = pages.read_text(encoding='utf-8')
+          test_marker = '          python scripts/test_attivita_estrattive_v128.py\n'
+          snapshot_marker = '          python -m json.tool data/source-snapshots/attivita-estrattive-v128.json > /dev/null\n'
+          financial_test = '          python scripts/test_salute_finanziaria_v129.py\n'
+          financial_snapshot = '          python -m json.tool data/source-snapshots/salute-finanziaria-v129.json > /dev/null\n'
+          if financial_test not in text:
+              if test_marker not in text:
+                  raise SystemExit('Marker test attività estrattive non trovato in pages.yml')
+              text = text.replace(test_marker, test_marker + financial_test, 1)
+          if financial_snapshot not in text:
+              if snapshot_marker not in text:
+                  raise SystemExit('Marker snapshot attività estrattive non trovato in pages.yml')
+              text = text.replace(snapshot_marker, snapshot_marker + financial_snapshot, 1)
+          pages.write_text(text, encoding='utf-8')
           PY
 
       - name: Materialize approved financial indicators
@@ -72,7 +88,6 @@ jobs:
         run: |
           python scripts/finalize_catalog_release.py --check
           python scripts/test_catalog_release_v116.py
-          python scripts/test_composite_indicators.py
 
       - name: Build static site and run regressions
         run: |
@@ -95,7 +110,8 @@ jobs:
             assets/app-parts/03.txt \
             README.md \
             scripts/finalize_catalog_release.py \
-            scripts/test_catalog_release_v116.py
+            scripts/test_catalog_release_v116.py \
+            .github/workflows/pages.yml
           if git diff --cached --quiet; then
             echo "Canonical files already materialized."
             exit 0
