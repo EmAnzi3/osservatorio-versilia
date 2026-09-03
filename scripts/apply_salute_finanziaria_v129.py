@@ -255,9 +255,12 @@ def patch_app() -> None:
     old_group = "['securityMeasures','agricultureProfile']"
     new_group = "['securityMeasures','agricultureProfile','financialProfile']"
     count = text.count(old_group)
-    if count < 5:
-        raise ValueError(f"Hook compositi attesi non trovati: {count}")
-    text = text.replace(old_group, new_group)
+    if count:
+        if count < 5:
+            raise ValueError(f"Hook compositi attesi non trovati: {count}")
+        text = text.replace(old_group, new_group)
+    elif text.count(new_group) < 5:
+        raise ValueError("Hook compositi financialProfile non trovati nello stato già materializzato")
 
     marker = "  function compositeTownMarkup(metric, row) {\n"
     if "function financialProfileHistoryMarkup" not in text:
@@ -304,9 +307,10 @@ def update_readme() -> None:
         "ciascuno dei 176 indicatori incorporati": "ciascuno dei 177 indicatori incorporati",
     }
     for old, new in replacements.items():
-        if old not in text:
-            raise ValueError(f"README: testo atteso non trovato: {old}")
-        text = text.replace(old, new, 1)
+        if old in text:
+            text = text.replace(old, new, 1)
+        elif new not in text:
+            raise ValueError(f"README: né baseline né valore materializzato trovati: {old}")
     README_PATH.write_text(text, encoding="utf-8")
 
 
