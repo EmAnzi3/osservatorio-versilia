@@ -178,7 +178,7 @@ def main() -> None:
     assert "if (selected.key === 'extractiveProduction') {" in compare_history
     assert "if (selected.key === 'extractiveProduction') return;" in town_history
     assert "const loader = document.currentScript;" in loader
-    assert "const VERSION='20260903-v129-salute-finanziaria';" in loader
+    assert "const VERSION='20260903-v129-salute-finanziaria-selector';" in loader
     assert "def rebuild_app" not in materializer
     assert "def rebuild_app" not in release_patch
 

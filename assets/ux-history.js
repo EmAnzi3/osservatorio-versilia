@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260903-v129-salute-finanziaria';
+  const HOTFIX_VERSION = '20260903-v129-salute-finanziaria-selector';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -232,7 +232,7 @@
     const selectedTown = safeStorageGet('ov-history-town') || '';
     const selected = selectedMetric(data);
     if (!selected) return;
-    if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
+    if (['drinkingWaterQuality','remediationProceedings','financialProfile'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = target.querySelector(':scope > .ux-view-shell');
     if (selected.key === 'extractiveProduction') {
       if (existingShell) {
@@ -340,7 +340,7 @@
           if (unit === 'currency') formatted = `${number1.format(value)} €`;
           else if (unit === 'currency2') formatted = `${number1.format(value)} €`;
           else if (unit === 'eurliter') formatted = `${number3.format(value)} €/l`;
-          else if (unit === 'eurPerResident') formatted = `${number1.format(value)} €/ab`;
+          else if (unit === 'eurPerResident') formatted = `${number1.format(value)} €/ab.`;
           else if (unit === 'percent') formatted = `${percent1.format(value)}%`;
           else if (unit === 'per1000') formatted = `${number1.format(value)} ogni 1.000`;
           else if (unit === 'per100') formatted = `${number1.format(value)} ogni 100`;
@@ -432,7 +432,7 @@
     const selected = selectedMetric(data);
     if (!selected) return;
     if (selected.key === 'extractiveProduction') return;
-    if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
+    if (['drinkingWaterQuality','remediationProceedings','financialProfile'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = panel.querySelector('.ux-view-shell');
     if (LIBRARY_HISTORY_KEYS.has(selected.key)) {
       if (existingShell) {

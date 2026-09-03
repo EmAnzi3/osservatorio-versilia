@@ -61,7 +61,7 @@ def debt_per_resident(debt: float, population: float) -> float:
     return debt / population
 
 
-def part(key: str, label: str, selector: str, unit: str, values: list[float], **extra) -> dict:
+def part(key: str, label: str, selector: str, unit: str, values: list[float | None], **extra) -> dict:
     result = {
         "key": key,
         "label": label,
@@ -85,6 +85,7 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
     aggregate_interest = [0.0] * len(years)
     aggregate_revenue = [0.0] * len(years)
     sustainability_weighted_num = [0.0] * len(years)
+    sustainability_complete = [True] * len(years)
 
     for town in TOWN_ORDER:
         raw = snapshot["towns"][town]
@@ -95,8 +96,6 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
         sustainability = [None if v is None else float(v) for v in raw["debt_sustainability_10_3"]]
         provenance = raw["debt_sustainability_source"]
 
-        if any(v is None for v in sustainability):
-            raise ValueError(f"10.3 incompleto per {town}: {sustainability}")
         if len({len(populations), len(revenues), len(interests), len(debts), len(sustainability), len(provenance)}) != 1:
             raise ValueError(f"Lunghezze non coerenti per {town}")
 
@@ -108,14 +107,17 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
             aggregate_population[index] += populations[index]
             aggregate_interest[index] += interests[index]
             aggregate_revenue[index] += revenues[index]
-            sustainability_weighted_num[index] += sustainability[index] * revenues[index]
+            if sustainability[index] is None:
+                sustainability_complete[index] = False
+            else:
+                sustainability_weighted_num[index] += sustainability[index] * revenues[index]
 
         row_parts = [
             part(
                 "debtPerResident",
                 "Debito finanziario pro capite",
                 "Debito finanziario pro capite",
-                "currencyPerResident",
+                "eurPerResident",
                 debt_values,
                 provenance="Ricalcolato da D1 Debiti da finanziamento / popolazione residente al 1° gennaio.",
             ),
@@ -156,14 +158,17 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
 
     debt_aggregate = [debt_per_resident(d, p) for d, p in zip(aggregate_debt, aggregate_population, strict=True)]
     interest_aggregate = [ratio_percent(i, r) for i, r in zip(aggregate_interest, aggregate_revenue, strict=True)]
-    sustainability_aggregate = [n / r for n, r in zip(sustainability_weighted_num, aggregate_revenue, strict=True)]
+    sustainability_aggregate = [
+        n / r if complete and r > 0 else None
+        for n, r, complete in zip(sustainability_weighted_num, aggregate_revenue, sustainability_complete, strict=True)
+    ]
 
     aggregate_parts = [
         part(
             "debtPerResident",
             "Debito finanziario pro capite",
             "Debito finanziario pro capite",
-            "currencyPerResident",
+            "eurPerResident",
             debt_aggregate,
             aggregation="Σ debiti da finanziamento D1 / Σ popolazione al 1° gennaio",
         ),
@@ -181,7 +186,7 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
             "Sostenibilità dei debiti finanziari",
             "percent2",
             sustainability_aggregate,
-            aggregation="Media ponderata dei rapporti comunali 10.3 con peso pari alle entrate correnti; non è un indicatore OpenBDAP ufficiale della Versilia.",
+            aggregation="Σ numeratori 10.3 impliciti / Σ entrate correnti × 100; rapporto costruito sui denominatori ufficiali, non media aritmetica dei valori comunali. Non è un indicatore OpenBDAP ufficiale della Versilia.",
         ),
     ]
 
@@ -195,12 +200,38 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
                 "Tre letture complementari del debito comunale: debiti da finanziamento per residente, "
                 "peso degli interessi sulle entrate correnti e sostenibilità dei debiti finanziari secondo il Piano degli indicatori."
             ),
-            "unit": "currencyPerResident",
+            "unit": "eurPerResident",
             "year": "2025",
             "source": "RGS — OpenBDAP · Rendiconto",
             "polarity": "neutral",
             "compositeType": "financialProfile",
             "selectorLabel": "Lettura",
+            "financialReadings": [
+                {
+                    "key": "debtPerResident",
+                    "code": "10.4",
+                    "label": "Debito finanziario pro capite",
+                    "unitLabel": "€/ab.",
+                    "description": "Debiti da finanziamento D1 al 31 dicembre rapportati alla popolazione residente al 1° gennaio. Non rappresentano necessariamente l’intero perimetro delle passività dell’ente.",
+                    "formula": "Σ debiti da finanziamento D1 / Σ popolazione residente",
+                },
+                {
+                    "key": "interestShare",
+                    "code": "6.1",
+                    "label": "Interessi sulle entrate correnti",
+                    "unitLabel": "%",
+                    "description": "Peso degli impegni per interessi passivi sulle entrate correnti accertate nei Titoli 1, 2 e 3.",
+                    "formula": "Σ interessi passivi / Σ entrate correnti × 100",
+                },
+                {
+                    "key": "debtSustainability",
+                    "code": "10.3",
+                    "label": "Sostenibilità dei debiti finanziari",
+                    "unitLabel": "%",
+                    "description": "Indicatore 10.3 del Piano degli indicatori; le sole normalizzazioni e ricostruzioni ammesse sono documentate nello snapshot.",
+                    "formula": "Rapporto 10.3 ponderato sui denominatori ufficiali sottostanti; mai media aritmetica dei sette valori comunali",
+                },
+            ],
             "searchTerms": [
                 "debito", "indebitamento", "debiti finanziari", "interessi passivi",
                 "sostenibilità debito", "openbdap 6.1", "openbdap 10.3", "openbdap 10.4",
@@ -214,7 +245,7 @@ def build_metric(data: dict, bilanci: dict, snapshot: dict) -> dict:
             "note": (
                 "Gli aggregati non sono medie semplici dei sette valori comunali: il debito pro capite è il rapporto fra "
                 "i debiti D1 e la popolazione complessivi; il 6.1 è il rapporto fra interessi ed entrate complessivi; "
-                "il 10.3 è ponderato sulle entrate correnti comunali."
+                "il 10.3 è ricostruito come rapporto sui denominatori ufficiali sottostanti, equivalenti alla ponderazione sulle entrate correnti comunali."
             ),
             "parts": aggregate_parts,
         },

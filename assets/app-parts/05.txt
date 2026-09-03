@@ -59,14 +59,31 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     }
   }
 
-  function indicatorComparisonTable(data, metricKey) {
+  function indicatorComparisonTable(data, metricKey, financialChoice='part-0') {
     const metric = data.metrics[metricKey];
     const rows = [...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it'));
+    if (metric.meta.compositeType === 'financialProfile') return `<div class="indicator-composite-table financial-indicator-comparison"><div class="compare-chart-toolbar"><div><span class="overline">Confronto dei Comuni</span></div>${compositeCompareControls(metric,financialChoice,'value')}</div><div class="comparison-bars" data-composite-choice="${html(financialChoice)}">${compositeCompareBarRows(data,metricKey,financialChoice,'value')}</div></div>`;
     if (metric.meta.compositeType) return `<div class="indicator-composite-table">${compositeCompareMarkup(data, metricKey)}</div>`;
     return `<div class="indicator-table-scroll"><table class="indicator-values-table"><thead><tr><th scope="col">Comune</th><th scope="col">Valore · ${html(metric.meta.year)}</th><th scope="col">Apri il territorio</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${html(row.town)}</th><td>${html(formatValue(row.value, metric.meta.unit))}</td><td><a href="${route(`comuni/${row.slug}/?tema=${metric.meta.theme}&indicatore=${metricKey}`)}">Scheda comunale <span aria-hidden="true">→</span></a></td></tr>`).join('')}</tbody></table></div>`;
   }
 
-  function indicatorHistoryTable(metric) {
+  function financialProfileHistoryTable(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    const rows=[...metric.rows].sort((a,b)=>a.town.localeCompare(b.town,'it'));
+    const sources=[...rows.map(row=>({label:row.town,series:row.parts?.[selected.index]?.series})),{label:'Versilia',series:selected.part.series,aggregate:true}];
+    const years=[...new Set(sources.flatMap(source=>source.series?.years || []))].sort((a,b)=>Number(a)-Number(b));
+    if (!years.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile</strong></div>';
+    const body=sources.map(source=>{const values=new Map((source.series?.years || []).map((year,index)=>[String(year),source.series.values[index]]));return `<tr class="${source.aggregate?'financial-versilia-row':''}"><th scope="row">${html(source.label)}</th>${years.map(year=>`<td>${values.has(String(year)) ? html(formatValue(values.get(String(year)),selected.unit)) : 'n.d.'}</td>`).join('')}</tr>`;}).join('');
+    return `<div class="financial-history-intro"><span class="overline">Indicatore ${html(selected.code)}</span><h3>${html(selected.label)}</h3><p>${html(selected.part.aggregation || selected.formula)}</p></div><div class="indicator-table-scroll"><table class="indicator-history-table financial-history-table"><thead><tr><th scope="col">Territorio</th>${years.map(year=>`<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>`;
+  }
+
+  function financialProfileIndicatorAsideMarkup(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    return `<span>${html(`Versilia · ${selected.label}`)}</span><strong>${html(formatValue(selected.part.value,selected.unit))}</strong><p>${html(selected.part.aggregation || selected.formula)}</p>`;
+  }
+
+  function indicatorHistoryTable(metric,financialChoice='part-0') {
+    if (metric.meta.compositeType === 'financialProfile') return financialProfileHistoryTable(metric,financialChoice);
     const seriesFor = row => metric.meta.key === 'income' && row.longSeries?.years?.length ? row.longSeries : row.series;
     const historicalRows = metric.rows.filter(row => seriesFor(row)?.years?.length && seriesFor(row)?.values?.length);
     if (!historicalRows.length) {
@@ -87,6 +104,9 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     if (!theme) return renderNotFound();
     const policy = resolveSourcePolicy(pageMetric, metric, registry);
     const metricMonitorState = monitorState?.metrics?.[pageMetric];
+    const financialProfile = metric.meta.compositeType === 'financialProfile';
+    const initialFinancialChoice = 'part-0';
+    const initialFinancialReading = financialProfile ? financialProfileReading(metric,initialFinancialChoice) : null;
     const checkedAt = metricMonitorState?.checkedAt
       ? new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(metricMonitorState.checkedAt))
       : 'Controllo non ancora registrato';
@@ -96,17 +116,17 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
       : html(policy.licenseName || 'Condizioni indicate dalla fonte');
 
     app.innerHTML = `<main class="inner-page indicator-page" data-theme="${html(theme.key)}">
-      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="${route('')}">Home</a><span>›</span><a href="${route(`confronta/${theme.key}/`)}">${html(theme.label)}</a><span>›</span><strong>${html(metric.meta.label)}</strong></nav>
-      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · ${html(theme.label)}</span><h1>${html(metric.meta.label)}</h1><p>${html(metric.meta.description)}</p></div>
+      <nav class="breadcrumbs page-width" aria-label="Percorso"><a href="${route('')}">Home</a><span>›</span><a href="${route(`confronta/${theme.key}/`)}">${html(theme.label)}</a><span>›</span><strong data-financial-indicator-breadcrumb>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : metric.meta.label)}</strong></nav>
+      <section class="indicator-hero page-width"><div><span class="overline">Indicatore · ${html(theme.label)}</span><h1 data-financial-indicator-hero-title>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : metric.meta.label)}</h1><p data-financial-indicator-hero-description>${html(financialProfile ? initialFinancialReading.description : metric.meta.description)}</p></div>
         <dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Copertura</dt><dd>${html(metric.method?.coverage || '7/7')}</dd></div><div><dt>Serie storica</dt><dd>${historyCount ? `${historyCount}/7 comuni` : 'Non disponibile'}</dd></div></dl>
         <div class="indicator-hero-actions"><a class="button-link" href="${route(`confronta/${theme.key}/?indicatore=${pageMetric}`)}">Confronta i 7 comuni <span>→</span></a><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></section>
-      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title">Il dato nei sette comuni</h2></div><p>Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.</p></div>
-        <div class="indicator-current-layout">${indicatorComparisonTable(data, pageMetric)}<aside><span>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).label : metric.aggregate.label)}</span><strong>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).formatted : formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.meta.compositeType === 'distribution' ? (metric.aggregate.summaryNote || metric.aggregate.note) : metric.aggregate.note)}</p></aside></div></section>
-      <section class="indicator-benchmark page-width">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
-      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div>${indicatorHistoryTable(metric)}</section>
+      <section class="indicator-current page-width" aria-labelledby="indicator-current-title"><div class="section-heading"><div><span class="overline">Valori comunali</span><h2 id="indicator-current-title" data-financial-indicator-title>${html(financialProfile ? `${initialFinancialReading.code} · ${initialFinancialReading.label}` : 'Il dato nei sette comuni')}</h2></div><p data-financial-indicator-description>${html(financialProfile ? `${initialFinancialReading.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.` : 'Ordine alfabetico: nessuna graduatoria e nessun giudizio di merito.')}</p></div>
+        <div class="indicator-current-layout"><div data-financial-indicator-comparison>${indicatorComparisonTable(data, pageMetric, initialFinancialChoice)}</div><aside data-financial-indicator-aggregate>${financialProfile ? financialProfileIndicatorAsideMarkup(metric,initialFinancialChoice) : `<span>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).label : metric.aggregate.label)}</span><strong>${html(metric.meta.compositeType === 'distribution' ? compositeAggregateSummary(metric).formatted : formatValue(metric.aggregate.value, metric.meta.unit))}</strong><p>${html(metric.meta.compositeType === 'distribution' ? (metric.aggregate.summaryNote || metric.aggregate.note) : metric.aggregate.note)}</p>`}</aside></div></section>
+      <section class="indicator-benchmark page-width">${financialProfile ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>
+      <section class="indicator-history page-width" aria-labelledby="indicator-history-title"><div class="section-heading"><div><span class="overline">Andamento</span><h2 id="indicator-history-title">Serie storica comunale</h2></div><p>I valori compaiono soltanto quando la definizione resta omogenea nel tempo.</p></div><div data-financial-indicator-history>${indicatorHistoryTable(metric,initialFinancialChoice)}</div></section>
       <section class="indicator-method page-width" aria-labelledby="indicator-method-title"><div class="section-heading"><div><span class="overline">Trasparenza</span><h2 id="indicator-method-title">Fonte, aggiornamento e metodo</h2></div><p>Le informazioni necessarie per ricostruire e valutare il dato.</p></div>
         <div class="indicator-governance-grid"><dl><div><dt>Produttore</dt><dd>${html(policy.publisher || metric.meta.source)}</dd></div><div><dt>Fonte utilizzata</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Frequenza</dt><dd>${html(policy.frequencyLabel || 'Secondo la fonte')}</dd></div><div><dt>Prossimo aggiornamento atteso</dt><dd>${html(policy.expectedRelease || 'Secondo il calendario della fonte')}</dd></div><div><dt>Ultimo controllo della fonte</dt><dd>${html(checkedAt)}</dd></div><div><dt>Licenza o condizioni di riuso</dt><dd>${license}</dd></div></dl>
-          <div><h3>Acquisizione</h3><p>${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p>${methodDisclosure(metric)}</div></div>
+          <div><h3>Acquisizione</h3><p>${html(policy.acquisitionMethod || 'Verifica manuale della fonte ufficiale.')}</p><div data-financial-indicator-method>${financialProfile ? financialProfileMethodDisclosure(metric,initialFinancialChoice) : methodDisclosure(metric)}</div></div></div>
         <div class="data-actions indicator-data-actions"><button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div></section>
       <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${[...metric.rows].sort((a, b) => a.town.localeCompare(b.town, 'it')).map(row => `<a href="${route(`comuni/${row.slug}/?tema=${theme.key}&indicatore=${pageMetric}`)}"><span>${html(row.town)}</span><b>→</b></a>`).join('')}</div></section>
     </main>`;
@@ -114,6 +134,34 @@ incassi di cassa, valore delle opere monitorate e stato dei progetti PNRR censit
     document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     document.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, pageMetric));
     document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    if (financialProfile) {
+      const currentSection=document.querySelector('.indicator-current');
+      const applyFinancialChoice=choice=>{
+        const selected=financialProfileReading(metric,choice);
+        const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
+        const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
+        const historyHost=document.querySelector('[data-financial-indicator-history]');
+        const methodHost=document.querySelector('[data-financial-indicator-method]');
+        const titleHost=document.querySelector('[data-financial-indicator-title]');
+        const descriptionHost=document.querySelector('[data-financial-indicator-description]');
+        const heroTitleHost=document.querySelector('[data-financial-indicator-hero-title]');
+        const heroDescriptionHost=document.querySelector('[data-financial-indicator-hero-description]');
+        const breadcrumbHost=document.querySelector('[data-financial-indicator-breadcrumb]');
+        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,choice);
+        if(aggregateHost) aggregateHost.innerHTML=financialProfileIndicatorAsideMarkup(metric,choice);
+        if(historyHost) historyHost.innerHTML=financialProfileHistoryTable(metric,choice);
+        if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
+        if(titleHost) titleHost.textContent=`${selected.code} · ${selected.label}`;
+        if(descriptionHost) descriptionHost.textContent=`${selected.description} I Comuni sono ordinati per valore per facilitare il confronto: nessuna graduatoria e nessun giudizio di merito.`;
+        if(heroTitleHost) heroTitleHost.textContent=`${selected.code} · ${selected.label}`;
+        if(heroDescriptionHost) heroDescriptionHost.textContent=selected.description;
+        if(breadcrumbHost) breadcrumbHost.textContent=`${selected.code} · ${selected.label}`;
+      };
+      currentSection?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-composite-component]');
+        if(select&&currentSection.contains(select)) applyFinancialChoice(select.value);
+      });
+    }
   }
 
   function renderProject(data) {

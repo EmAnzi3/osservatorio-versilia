@@ -568,13 +568,54 @@
     }).join('')}</div>${incomeBandDetail}${versiliaPyramid}`;
   }
 
+  function financialProfileChoiceIndex(choice='part-0') {
+    return Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
+  }
+
+  function financialProfileReading(metric,choice='part-0') {
+    const index=typeof choice === 'number' ? choice : financialProfileChoiceIndex(choice);
+    const part=metric.aggregate?.parts?.[index] || {};
+    const definition=metric.meta.financialReadings?.[index] || {};
+    return { index,part,definition,label:definition.label || part.label || metric.meta.label,code:definition.code || '',description:definition.description || metric.meta.description,formula:definition.formula || part.aggregation || metric.method?.formula || '',unit:part.unit || metric.meta.unit };
+  }
+
+  function financialProfileMethodDisclosure(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    const caveat=selected.index === 0
+      ? 'Il valore D1 non coincide necessariamente con tutte le passività dell’ente. Per Massarosa la gestione OSL mantiene un perimetro separato per le passività pregresse.'
+      : selected.index === 2
+        ? 'Camaiore 2023–2024 è normalizzato dividendo per 100; Forte dei Marmi è ricostruito dai componenti quando possibile. Lo zero è usato solo con numeratore ufficiale verificato nullo.'
+        : 'Il valore è ricalcolato dai componenti ufficiali OpenBDAP e non dalla media dei rapporti comunali.';
+    return `<details class="method-disclosure financial-method-disclosure"><summary><span>Metodo e comparabilità · ${html(selected.code)}</span><small>Formula, unità e cautele</small></summary><div class="method-disclosure-body"><dl><div><dt>Lettura</dt><dd>${html(selected.label)}</dd></div><div><dt>Unità</dt><dd>${html(selected.definition.unitLabel || (selected.unit === 'eurPerResident' ? '€/ab.' : '%'))}</dd></div><div><dt>Formula</dt><dd>${html(selected.formula)}</dd></div><div><dt>Copertura</dt><dd>${html(metric.method?.coverage || '7/7')}</dd></div></dl><p><strong>Nota:</strong> ${html(caveat)}</p></div></details>`;
+  }
+
+  function financialProfileSeriesMarkup(series,unit,label) {
+    if (!series?.values?.length) return '<p class="aggregate-note">Storico non disponibile.</p>';
+    const complete=series.values.every(value=>value !== null && value !== undefined && Number.isFinite(Number(value)));
+    if (complete) return seriesChart(series,unit,label);
+    return `<div class="indicator-table-scroll financial-series-fallback"><table class="indicator-history-table"><thead><tr><th>Anno</th><th>Valore</th></tr></thead><tbody>${series.years.map((year,index)=>`<tr><th>${html(year)}</th><td>${html(formatValue(series.values[index],unit))}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  function financialProfileAggregateHistoryMarkup(metric,choice='part-0') {
+    const selected=financialProfileReading(metric,choice);
+    const part=selected.part;
+    const chart=financialProfileSeriesMarkup(part.series,selected.unit,`${selected.label} · Versilia`);
+    return `<section class="financial-aggregate-history"><div class="financial-section-heading"><span class="overline">Storico Versilia · ${html(selected.code)}</span><h3>${html(selected.label)}</h3><p>${html(part.aggregation || selected.formula)}</p></div>${chart}</section>`;
+  }
+
   function financialProfileHistoryMarkup(metric,row,index=0) {
-    const part=row.parts?.[index] || row.parts?.[0] || {};
-    const unit=part.unit || metric.meta.unit;
-    const chart=part.series?.values?.length ? seriesChart(part.series,unit,`${part.label || metric.meta.label} a ${row.town}`) : '<p class="aggregate-note">Storico non disponibile.</p>';
+    const selected=financialProfileReading(metric,index);
+    const part=row.parts?.[selected.index] || row.parts?.[0] || {};
+    const unit=part.unit || selected.unit;
+    const chart=financialProfileSeriesMarkup(part.series,unit,`${selected.label} a ${row.town}`);
     const provenance=part.provenance ? `<p class="aggregate-note"><b>Origine del dato:</b> ${html(part.provenance)}</p>` : '';
-    const context=row.contextNote ? `<p class="aggregate-note"><b>Nota di lettura:</b> ${html(row.contextNote)}</p>` : '';
+    const context=selected.index === 0 && row.contextNote ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${html(row.contextNote)}</p>` : '';
     return `${chart}${provenance}${context}`;
+  }
+
+  function financialProfileTownMarkup(metric,row,index=0) {
+    const selected=financialProfileReading(metric,index);
+    return `<div class="financial-profile-history" data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,selected.index)}</div>`;
   }
 
   function compositeTownMarkup(metric, row) {
@@ -582,7 +623,7 @@
     if (metric.meta.compositeType === 'remediationProceedings') return remediationTownMarkup(metric,row);
     const parts = row.parts || [];
     if (metric.meta.compositeType === 'financialProfile') {
-      return `<div class="composite-town-mobility">${parts.map((part,index)=>`<article class="${index===0?'balance':''}"><span>${html(part.label)}</span><strong>${html(formatMetricRowValue(row,part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div><div data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,0)}</div>`;
+      return `<div data-financial-profile-detail>${financialProfileTownMarkup(metric,row,0)}</div>`;
     }
     if (metric.meta.compositeType === 'sexBreakdown') return '';
     if (metric.meta.compositeType === 'demographicBreakdown') {
@@ -940,7 +981,7 @@
     const demographicPyramid = document.getElementById('compare-demographic-pyramid');
     const hasNormalized = metric.rows.some(r => r.normalized);
     const compositeType = metric.meta.compositeType || '';
-    const selectableComposite = ['stock','mobility','omi','securityMeasures','agricultureProfile','demographicBreakdown','sexBreakdown'].includes(compositeType);
+    const selectableComposite = ['stock','mobility','omi','securityMeasures','agricultureProfile','financialProfile','demographicBreakdown','sexBreakdown'].includes(compositeType);
     const specialComposite = ['drinkingWaterQuality','remediationProceedings'].includes(compositeType);
     const view = requestedView || compositeCompareDefaults(metric);
     const selectedAggregate = (selectableComposite || compositeType === 'remediationProceedings') ? compositeCompareAggregate(metric,view.choice,view.scale) : null;
@@ -953,14 +994,19 @@
     const chartScaleControls = controls;
     const summaryLabel = distributionSummary ? distributionSummary.label : aggregate.label;
     const summaryValue = distributionSummary ? distributionSummary.formatted : formatValue(aggregate.value,unit);
+    const financialReading = compositeType === 'financialProfile' ? financialProfileReading(metric,view.choice) : null;
     def.innerHTML = compositeType === 'drinkingWaterQuality'
       ? `<div class="indicator-definition water-quality-definition"><h2>${html(metric.meta.label)}</h2><p>${html(metric.meta.description)}</p><dl><div><dt>Periodo</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>Copertura</dt><dd>${html(number0.format(metric.aggregate?.value||0))} località GAIA · 7 Comuni</dd></div><div><dt>Parametri</dt><dd>${html(number0.format(metric.parameterDefinitions?.length||0))} per località</dd></div></dl><small class="aggregate-note">Nessuna media comunale delle concentrazioni e nessun indice sintetico.</small></div>`
+      : compositeType === 'financialProfile'
+      ? `<div class="indicator-definition financial-definition"><span class="overline">Indicatore ${html(financialReading.code)}</span><h2>${html(financialReading.label)}</h2><p>${html(financialReading.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note"><b>Aggregato Versilia:</b> ${html(financialReading.part.aggregation || financialReading.formula)}</small></div>`
       : `${definitionControls}<div class="indicator-definition"><h2>${html(normalized && metric.meta.normalized ? metric.meta.normalized.label : metric.meta.label)}</h2><p>${html(normalized && metric.meta.normalized ? metric.meta.normalized.description : metric.meta.description)}</p><dl><div><dt>Anno</dt><dd>${html(metric.meta.year)}</dd></div><div><dt>Fonte</dt><dd><a href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">${html(metric.meta.source)} ↗</a></dd></div><div><dt>${html(summaryLabel)}</dt><dd>${html(summaryValue)}</dd></div></dl><small class="aggregate-note">${html(aggregate.note || metric.aggregate?.note || '')}</small></div>`;
 
     if (selectableComposite) {
       const note = compositeType === 'omi' ? `<p class="composite-compare-note"><strong>Dettaglio OMI:</strong> il dettaglio delle singole sotto-aree è disponibile nelle schede dei comuni. Clicca una riga per aprire il territorio.</p>` : (compositeType === 'mobility' ? `<p class="composite-compare-note">Scegli la voce e l’unità direttamente dal grafico. “Ogni 1.000” rende più omogeneo il confronto tra comuni di dimensioni diverse.</p>` : '');
       const stockDetail = compositeType === 'stock' ? foreignOriginsCompareMarkup(metric) : '';
-      bars.innerHTML = `<div class="topic-bars selectable-topic-bars"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${note}${stockDetail}</div>`;
+      const financialHistory = compositeType === 'financialProfile' ? financialProfileAggregateHistoryMarkup(metric,view.choice) : '';
+      bars.innerHTML = `<div class="topic-bars selectable-topic-bars${compositeType === 'financialProfile' ? ' financial-topic-bars' : ''}"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${chartControls}</div><div class="comparison-bars" data-composite-choice="${html(view.choice)}" data-composite-scale="${html(view.scale)}">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div>${financialHistory}${note}${stockDetail}</div>`;
+      if (compositeType === 'financialProfile') installChartInteractions(bars);
     } else {
       bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;
     }
@@ -1074,7 +1120,8 @@
       ? { ...metric, meta:{ ...metric.meta, benchmark:metric.meta.benchmarksBySex[view.choice] } }
       : metric;
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || (metric.meta.compositeType && compositeType !== 'sexBreakdown')) ? '' : benchmarkMarkup(benchmarkMetric,aggregate,unit,null);
-    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${methodDisclosure(metric)}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+    const currentMethod = compositeType === 'financialProfile' ? financialProfileMethodDisclosure(metric,view.choice) : methodDisclosure(metric);
+    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
     tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
     tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
   }
@@ -1223,6 +1270,7 @@
     const omi = metric.meta.compositeType === 'omi';
     const stock = metric.meta.compositeType === 'stock';
     const securityMeasures = ['securityMeasures','agricultureProfile','financialProfile'].includes(metric.meta.compositeType);
+    const financialProfile = metric.meta.compositeType === 'financialProfile';
     const demographicBreakdown = metric.meta.compositeType === 'demographicBreakdown';
     const sexBreakdown = metric.meta.compositeType === 'sexBreakdown';
     const drinkingQuality = metric.meta.compositeType === 'drinkingWaterQuality';
@@ -1233,12 +1281,14 @@
     const defaultSexChoice = sexBreakdown ? (metric.meta.defaultSex || 'totale') : null;
     const summary = distribution ? compositeSummary(metric,row) : (sexBreakdown ? (options.find(option=>option.key===defaultSexChoice) || options[0]) : (demographicBreakdown ? (options.find(option=>option.key===defaultDemographicChoice) || options[0]) : ((omi || stock || securityMeasures) ? options[0] : null)));
     const aggregateSummary = distribution ? compositeAggregateSummary(metric) : (sexBreakdown ? compositeSelectionAggregate(metric,defaultSexChoice) : (demographicBreakdown ? compositeSelectionAggregate(metric,defaultDemographicChoice) : (omi ? compositeSelectionAggregate(metric,'sale') : (stock ? compositeSelectionAggregate(metric,'share') : (securityMeasures ? compositeSelectionAggregate(metric,'part-0') : null)))));
+    const initialFinancialReading = financialProfile ? financialProfileReading(metric,'part-0') : null;
     const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;
-    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
-    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
+    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : financialProfile ? `Indicatore ${initialFinancialReading.code}` : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');
+    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : financialProfile ? initialFinancialReading.label : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');
     const selector = demographicBreakdown ? `<div class="composite-read-selector demographic-town-selectors"><label><span>Fascia d’età</span><select data-demographic-town-age>${demographicAgeOptionsMarkup(metric,metric.meta.defaultAge || '25-64')}</select></label><label><span>Genere</span><select data-demographic-town-gender>${(metric.meta.genderOptions || []).map(option=>`<option value="${html(option.key)}" ${option.key === (metric.meta.defaultGender || 'total') ? 'selected' : ''}>${html(option.label)}</option>`).join('')}</select></label></div>` : (selectable ? `<label class="composite-read-selector"><span>${html(metric.meta.selectorLabel || 'Dato in evidenza')}</span><select data-composite-choice>${options.map((option,index)=>`<option value="${html(option.key)}" ${index===0?'selected':''}>${html(option.label)}</option>`).join('')}</select></label>` : '');
     const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
+    const primaryDescription = financialProfile ? initialFinancialReading.description : metric.meta.description;
     const positionMarkup = selectable
       ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
       : (drinkingQuality
@@ -1251,19 +1301,19 @@
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
-      <div class="town-metric-layout${drinkingQuality?' single-column':''}"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p>${html(metric.meta.description)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
+      <div class="town-metric-layout${drinkingQuality?' single-column':''}"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p data-composite-primary-description>${html(primaryDescription)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
         ${selector}
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         ${positionMarkup}</div>
-      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline">${html(panelOverline)}</span><h3>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>
       ${coastTownDetailMarkup(metric,row)}
       ${extractiveTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${erpArrearsDetailMarkup(metric,row)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}
-      ${methodDisclosure(metric)}
+      <div data-financial-profile-method>${financialProfile ? financialProfileMethodDisclosure(metric,'part-0') : methodDisclosure(metric)}</div>
       <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
 
     if (selectable) {
@@ -1307,9 +1357,18 @@
         updateMaritimeTownPosition(metric,row,choice,position);
         updateExtractiveTownPosition(metric,row,choice,position);
         if(metric.meta.compositeType === 'financialProfile') {
-          const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0);
-          const historyHost=container.querySelector('[data-financial-profile-history]');
-          if(historyHost) historyHost.innerHTML=financialProfileHistoryMarkup(metric,row,index);
+          const reading=financialProfileReading(metric,choice);
+          const detailHost=container.querySelector('[data-financial-profile-detail]');
+          if(detailHost) detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+          const descriptionHost=container.querySelector('[data-composite-primary-description]');
+          if(descriptionHost) descriptionHost.textContent=reading.description;
+          const overlineHost=container.querySelector('[data-financial-panel-overline]');
+          if(overlineHost) overlineHost.textContent=`Indicatore ${reading.code}`;
+          const panelTitleHost=container.querySelector('[data-financial-panel-title]');
+          if(panelTitleHost) panelTitleHost.textContent=reading.label;
+          const methodHost=container.querySelector('[data-financial-profile-method]');
+          if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
+          if(detailHost) installChartInteractions(detailHost);
         }
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
       };

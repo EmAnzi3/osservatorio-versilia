@@ -62775,12 +62775,38 @@
         "label": "Debito finanziario e costo degli interessi",
         "shortLabel": "Debito e interessi",
         "description": "Tre letture complementari del debito comunale: debiti da finanziamento per residente, peso degli interessi sulle entrate correnti e sostenibilità dei debiti finanziari secondo il Piano degli indicatori.",
-        "unit": "currencyPerResident",
+        "unit": "eurPerResident",
         "year": "2025",
         "source": "RGS — OpenBDAP · Rendiconto",
         "polarity": "neutral",
         "compositeType": "financialProfile",
         "selectorLabel": "Lettura",
+        "financialReadings": [
+          {
+            "key": "debtPerResident",
+            "code": "10.4",
+            "label": "Debito finanziario pro capite",
+            "unitLabel": "€/ab.",
+            "description": "Debiti da finanziamento D1 al 31 dicembre rapportati alla popolazione residente al 1° gennaio. Non rappresentano necessariamente l’intero perimetro delle passività dell’ente.",
+            "formula": "Σ debiti da finanziamento D1 / Σ popolazione residente"
+          },
+          {
+            "key": "interestShare",
+            "code": "6.1",
+            "label": "Interessi sulle entrate correnti",
+            "unitLabel": "%",
+            "description": "Peso degli impegni per interessi passivi sulle entrate correnti accertate nei Titoli 1, 2 e 3.",
+            "formula": "Σ interessi passivi / Σ entrate correnti × 100"
+          },
+          {
+            "key": "debtSustainability",
+            "code": "10.3",
+            "label": "Sostenibilità dei debiti finanziari",
+            "unitLabel": "%",
+            "description": "Indicatore 10.3 del Piano degli indicatori; le sole normalizzazioni e ricostruzioni ammesse sono documentate nello snapshot.",
+            "formula": "Rapporto 10.3 ponderato sui denominatori ufficiali sottostanti; mai media aritmetica dei sette valori comunali"
+          }
+        ],
         "searchTerms": [
           "debito",
           "indebitamento",
@@ -62827,7 +62853,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 465.49354306154265,
               "series": {
                 "years": [
@@ -62952,7 +62978,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 500.2012974693985,
               "series": {
                 "years": [
@@ -63076,7 +63102,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 1641.9441885524,
               "series": {
                 "years": [
@@ -63200,7 +63226,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 469.9414505562151,
               "series": {
                 "years": [
@@ -63324,7 +63350,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 294.4239802923835,
               "series": {
                 "years": [
@@ -63448,7 +63474,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 0.0,
               "series": {
                 "years": [
@@ -63572,7 +63598,7 @@
               "key": "debtPerResident",
               "label": "Debito finanziario pro capite",
               "selectorLabel": "Debito finanziario pro capite",
-              "unit": "currencyPerResident",
+              "unit": "eurPerResident",
               "value": 1881.7496438450898,
               "series": {
                 "years": [
@@ -63667,13 +63693,13 @@
       "aggregate": {
         "value": 707.9067531993607,
         "label": "Versilia · debito finanziario pro capite",
-        "note": "Gli aggregati non sono medie semplici dei sette valori comunali: il debito pro capite è il rapporto fra i debiti D1 e la popolazione complessivi; il 6.1 è il rapporto fra interessi ed entrate complessivi; il 10.3 è ponderato sulle entrate correnti comunali.",
+        "note": "Gli aggregati non sono medie semplici dei sette valori comunali: il debito pro capite è il rapporto fra i debiti D1 e la popolazione complessivi; il 6.1 è il rapporto fra interessi ed entrate complessivi; il 10.3 è ricostruito come rapporto sui denominatori ufficiali sottostanti, equivalenti alla ponderazione sulle entrate correnti comunali.",
         "parts": [
           {
             "key": "debtPerResident",
             "label": "Debito finanziario pro capite",
             "selectorLabel": "Debito finanziario pro capite",
-            "unit": "currencyPerResident",
+            "unit": "eurPerResident",
             "value": 707.9067531993607,
             "series": {
               "years": [
@@ -63751,7 +63777,7 @@
                 4.8846112200118075
               ]
             },
-            "aggregation": "Media ponderata dei rapporti comunali 10.3 con peso pari alle entrate correnti; non è un indicatore OpenBDAP ufficiale della Versilia."
+            "aggregation": "Σ numeratori 10.3 impliciti / Σ entrate correnti × 100; rapporto costruito sui denominatori ufficiali, non media aritmetica dei valori comunali. Non è un indicatore OpenBDAP ufficiale della Versilia."
           }
         ]
       },

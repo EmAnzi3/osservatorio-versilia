@@ -87,8 +87,15 @@ def main() -> None:
     require("details[open] summary i::before{content:\"−\"}" in CSS, "Accordion: icona meno nello stato aperto assente")
     require("padding:14px" in CSS and "padding:16px" in CSS, "Padding minimo dei nuovi componenti non verificabile")
     require("background:#fff" in CSS, "Le superfici operative dei nuovi componenti devono essere bianche")
-    require(HISTORY.count("['drinkingWaterQuality','remediationProceedings'].includes") >= 2,
-            "La UX storica generica deve ignorare entrambi i renderer descrittivi")
+    history_guards = [
+        line for line in HISTORY.splitlines()
+        if ".includes" in line and "selected.metric?.meta?.compositeType" in line
+    ]
+    require(
+        len(history_guards) >= 2
+        and all("'drinkingWaterQuality'" in line and "'remediationProceedings'" in line for line in history_guards),
+        "La UX storica generica deve ignorare entrambi i renderer descrittivi",
+    )
 
     print("Ambiente acqua e bonifiche v1.24 UI: PASS")
 
