@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260902-v128-attivita-estrattive';
+const VERSION = 'ov-pwa-20260903-v129-salute-finanziaria';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

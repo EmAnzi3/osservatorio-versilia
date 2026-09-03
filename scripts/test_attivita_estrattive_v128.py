@@ -54,11 +54,11 @@ def main() -> None:
     state = load(STATE)
     snapshot = load(SNAPSHOT)
 
-    assert site["version"] == "v1.28.0"
-    assert site["updated"] == "2 settembre 2026"
-    assert len(site["metrics"]) == 180
-    assert registry["expectedMetricCount"] == 180
-    assert registry["expectedInlineMetricCount"] == 176
+    assert site["version"] == "v1.29.0"
+    assert site["updated"] == "3 settembre 2026"
+    assert len(site["metrics"]) == 181
+    assert registry["expectedMetricCount"] == 181
+    assert registry["expectedInlineMetricCount"] == 177
     assert registry["expectedExternalMetricCount"] == 4
 
     section = next(s for s in site["themes"]["ambiente"]["sections"] if s["key"] == "attivita-estrattive")
@@ -178,7 +178,7 @@ def main() -> None:
     assert "if (selected.key === 'extractiveProduction') {" in compare_history
     assert "if (selected.key === 'extractiveProduction') return;" in town_history
     assert "const loader = document.currentScript;" in loader
-    assert "const VERSION='20260902-v128-attivita-estrattive';" in loader
+    assert "const VERSION='20260903-v129-salute-finanziaria';" in loader
     assert "def rebuild_app" not in materializer
     assert "def rebuild_app" not in release_patch
 

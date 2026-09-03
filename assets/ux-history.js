@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260902-v128-attivita-estrattive';
+  const HOTFIX_VERSION = '20260903-v129-salute-finanziaria';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
