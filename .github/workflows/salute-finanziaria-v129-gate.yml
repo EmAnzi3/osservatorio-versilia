@@ -1,0 +1,37 @@
+name: Salute finanziaria v1.29 · release gate
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "salute-finanziaria-v129-gate-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate financial formulas, aggregates and UI guards
+        run: python scripts/test_salute_finanziaria_v129.py
+
+      - name: Validate v1.29 canonical contract
+        run: |
+          python scripts/finalize_catalog_release.py --check
+          python scripts/test_catalog_release_v116.py
+          python -m json.tool data/site-data.json > /dev/null
+          python -m json.tool data/source-registry.json > /dev/null
+          python -m json.tool data/source-snapshots/salute-finanziaria-v129.json > /dev/null
+          git diff --check
