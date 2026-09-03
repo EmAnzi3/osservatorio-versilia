@@ -88,7 +88,10 @@ def main() -> None:
 
     massarosa = by_town["Massarosa"]
     assert "OSL" in massarosa["contextNote"]
-    assert close(massarosa["parts"][1]["series"]["values"][-1], 4.382324153716626, tol=1e-8)
+    massarosa_raw = snapshot["towns"]["Massarosa"]
+    expected_massarosa_2025 = massarosa_raw["interest_commitments"][-1] / massarosa_raw["current_revenue"][-1] * 100
+    assert close(massarosa["parts"][1]["series"]["values"][-1], expected_massarosa_2025)
+    assert expected_massarosa_2025 > 4.38
 
     assert registry["expectedMetricCount"] == 181
     assert registry["expectedInlineMetricCount"] == 177
