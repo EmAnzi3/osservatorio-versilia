@@ -47,7 +47,7 @@ def main() -> None:
         raw = snapshot["towns"][town]
         row = by_town[town]
         assert len(row["parts"]) == 3
-        pop = [float(bilanci["towns"][town]["years"][str(y)]["population_at_1_january"]) for y in YEARS]
+        pop = [float(bilanci["raw"][town]["years"][str(y)]["population_at_1_january"]) for y in YEARS]
         expected_debt = [d / p for d, p in zip(raw["debt_financing_d1"], pop, strict=True)]
         expected_interest = [i / r * 100 for i, r in zip(raw["interest_commitments"], raw["current_revenue"], strict=True)]
         expected_sustainability = raw["debt_sustainability_10_3"]
@@ -73,7 +73,7 @@ def main() -> None:
     aggregate = metric["aggregate"]["parts"]
     for idx, year in enumerate(YEARS):
         total_debt = sum(snapshot["towns"][t]["debt_financing_d1"][idx] for t in TOWNS)
-        total_pop = sum(float(bilanci["towns"][t]["years"][str(year)]["population_at_1_january"]) for t in TOWNS)
+        total_pop = sum(float(bilanci["raw"][t]["years"][str(year)]["population_at_1_january"]) for t in TOWNS)
         total_interest = sum(snapshot["towns"][t]["interest_commitments"][idx] for t in TOWNS)
         total_revenue = sum(snapshot["towns"][t]["current_revenue"][idx] for t in TOWNS)
         weighted_10_3 = sum(snapshot["towns"][t]["debt_sustainability_10_3"][idx] * snapshot["towns"][t]["current_revenue"][idx] for t in TOWNS) / total_revenue
@@ -81,7 +81,6 @@ def main() -> None:
         assert close(aggregate[1]["series"]["values"][idx], total_interest / total_revenue * 100)
         assert close(aggregate[2]["series"]["values"][idx], weighted_10_3)
 
-    # Regression guard: none of the three 2025 Versilia values may silently become a simple average.
     for part_index in range(3):
         simple = sum(float(by_town[t]["parts"][part_index]["value"]) for t in TOWNS) / len(TOWNS)
         weighted = float(aggregate[part_index]["value"])
@@ -97,7 +96,6 @@ def main() -> None:
     assert registry["metricOverrides"][METRIC_KEY]["profile"] == "openbdap-annual"
     assert "181 indicatori nel catalogo canonico: 177 con valori incorporati" in readme
 
-    # UI guard: selector, dynamic history and established padded composite cards are all used.
     assert "'financialProfile'" in app
     assert "data-financial-profile-history" in app
     assert "financialProfileHistoryMarkup" in app
