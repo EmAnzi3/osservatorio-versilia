@@ -33,6 +33,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
+          npm install --global lighthouse@12.8.2
 
       - name: Validate canonical catalog and snapshots
         run: |
