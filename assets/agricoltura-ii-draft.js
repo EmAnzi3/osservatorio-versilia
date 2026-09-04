@@ -18,6 +18,9 @@
 
   function mergeDraft(data, overlay) {
     if (!data?.metrics || !data?.themes?.[overlay.theme]) return data;
+    const additions = overlay.metricOrder || Object.keys(overlay.metrics || {});
+    if (additions.length && additions.every(key => data.metrics[key])) return data;
+
     Object.assign(data.metrics, overlay.metrics || {});
     const theme = data.themes[overlay.theme];
     const section = (theme.sections || []).find(item => item.key === overlay.section);
@@ -25,7 +28,6 @@
 
     section.label = overlay.sectionLabel || section.label;
     section.description = overlay.sectionDescription || section.description;
-    const additions = overlay.metricOrder || [];
     section.metrics = [...section.metrics.filter(key => !additions.includes(key)), ...additions];
     theme.metrics = theme.sections.flatMap(item => item.metrics || []);
     data.version = overlay.versionLabel || data.version;
