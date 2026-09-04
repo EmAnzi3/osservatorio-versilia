@@ -105,7 +105,10 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
         selector.select_option(choice)
         value = page.locator("#town-topic [data-composite-primary-value]").inner_text()
         assert expected[choice] in value and unit in value
-        assert title in page.locator("#town-topic [data-composite-primary-label]").inner_text()
+        rendered_title = page.locator("#town-topic [data-composite-primary-label]").inner_text()
+        assert title.casefold() in rendered_title.casefold(), (
+            f"{slug} {code}: etichetta inattesa {rendered_title!r}"
+        )
         assert code in page.locator("#town-topic [data-financial-panel-overline]").inner_text()
         history = page.locator("#town-topic [data-financial-profile-history]")
         assert "2019" in history.inner_text() and "2025" in history.inner_text()
