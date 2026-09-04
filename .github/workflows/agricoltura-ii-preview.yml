@@ -1,0 +1,74 @@
+name: Agricoltura II · preview artifact
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/agricoltura-ii-draft.json"
+      - "data/source-snapshots/istat-agricoltura-ii-2020.json"
+      - "assets/agricoltura-ii-draft.css"
+      - "assets/agricoltura-ii-draft.js"
+      - "scripts/test_agricoltura_ii_draft.py"
+      - "scripts/build_agricoltura_ii_preview.py"
+      - "scripts/test_agricoltura_ii_preview_browser.py"
+      - ".github/workflows/agricoltura-ii-preview.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Validate Agricoltura II data contract
+        run: |
+          python scripts/test_agricoltura_ii_draft.py
+          python -m json.tool data/agricoltura-ii-draft.json >/dev/null
+          python -m json.tool data/source-snapshots/istat-agricoltura-ii-2020.json >/dev/null
+          node --check assets/agricoltura-ii-draft.js
+          python -m py_compile scripts/build_agricoltura_ii_preview.py scripts/test_agricoltura_ii_preview_browser.py
+
+      - name: Build isolated 183-indicator preview
+        run: python scripts/build_agricoltura_ii_preview.py
+
+      - name: Ensure canonical sources were restored
+        run: git diff --exit-code -- data/site-data.json data/source-registry.json
+
+      - name: Start preview server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-agri2-http.log 2>&1 &
+          echo $! >/tmp/ov-agri2-http.pid
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-agri2-http.log
+          exit 1
+
+      - name: Validate Agricoltura II in browser
+        run: python scripts/test_agricoltura_ii_preview_browser.py --base http://127.0.0.1:8123/
+
+      - name: Upload Agricoltura II review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-agricoltura-ii-preview
+          path: dist
+          retention-days: 14
