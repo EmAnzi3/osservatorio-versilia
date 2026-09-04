@@ -46,7 +46,8 @@ jobs:
         run: python scripts/build_agricoltura_ii_preview.py
 
       - name: Ensure canonical sources were restored
-        run: git diff --exit-code -- data/site-data.json data/source-registry.json
+        run: |
+          git diff --exit-code -- data/site-data.json data/source-registry.json assets/app-parts/03.txt
 
       - name: Start preview server
         shell: bash
