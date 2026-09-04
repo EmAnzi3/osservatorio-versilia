@@ -10,6 +10,7 @@ finally block.
 from __future__ import annotations
 
 import json
+import re
 import runpy
 from pathlib import Path
 
@@ -18,6 +19,21 @@ SITE_DATA = ROOT / "data" / "site-data.json"
 OVERLAY = ROOT / "data" / "agricoltura-ii-draft.json"
 BASE_BUILD = ROOT / "scripts" / "build_static_brand_base.py"
 DIST = ROOT / "dist"
+
+# Contratto di revisione condiviso con i gate storici del repository.
+# Queste costanti devono restare letterali e sincronizzate con assets/app.js,
+# build_static_safe.py, ux-history.js e service-worker.js.
+APP_BUNDLE_ASSET_VERSION = "20260903-v129-salute-finanziaria-selector"
+PWA_JS_REVISION = "catalog-v129"
+
+
+def cache_bust_app_bundle(document: str) -> str:
+    """Mantiene esplicito il contratto canonico di cache-busting del bundle."""
+    return re.sub(
+        r'src="([^"?]*assets/app-bundle\.js)(?:\?[^\"]*)?"',
+        rf'src="\1?v={APP_BUNDLE_ASSET_VERSION}"',
+        document,
+    )
 
 
 def merge_agricoltura_ii(data: dict, overlay: dict) -> dict:
