@@ -59,8 +59,11 @@ def main() -> None:
     if (type === 'demographicBreakdown') {
 """
 
-    already = "['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','sexBreakdown']"
-    if text.count(already) == 2 and "Versilia (ARS)" in text:
+    # Le release successive possono aggiungere altri tipi compositi alla stessa
+    # allowlist. Il contratto v1.22 è già soddisfatto quando entrambi i rami
+    # sexBreakdown e il riferimento ufficiale ARS sono presenti, indipendentemente
+    # dagli elementi aggiunti in seguito.
+    if text.count("if (type === 'sexBreakdown')") >= 2 and "Versilia (ARS)" in text:
         print("visual grammar lifeExpectancy v1.22 already patched")
         return
 

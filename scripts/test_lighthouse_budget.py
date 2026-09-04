@@ -41,6 +41,8 @@ def chromium_path() -> str:
 def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
     npm = shutil.which("npm")
     require(npm is not None, "npm non disponibile: impossibile eseguire Lighthouse")
+    lighthouse = shutil.which("lighthouse")
+    timeout = int(os.environ.get("LIGHTHOUSE_TIMEOUT_SECONDS", "300"))
     output_dir.mkdir(parents=True, exist_ok=True)
 
     env = os.environ.copy()
@@ -49,13 +51,11 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
 
     for name, route in PAGES:
         report = output_dir / f"{name}.json"
+        launcher = [lighthouse] if lighthouse else [
+            npm, "exec", "--yes", f"--package=lighthouse@{LIGHTHOUSE_VERSION}", "--", "lighthouse"
+        ]
         command = [
-            npm,
-            "exec",
-            "--yes",
-            f"--package=lighthouse@{LIGHTHOUSE_VERSION}",
-            "--",
-            "lighthouse",
+            *launcher,
             urljoin(base, route),
             "--quiet",
             "--preset=desktop",
@@ -71,7 +71,7 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            timeout=120,
+            timeout=timeout,
             check=False,
         )
         require(

@@ -8,6 +8,7 @@
   function parseItalianNumber(text) {
     let value = String(text || '').trim().replace(/\u00a0/g, ' ');
     value = value.replace(/[^0-9,.-]/g, '');
+    value = value.replace(/[.,]+$/, '');
     if (!value) return Number.NaN;
 
     const commas = (value.match(/,/g) || []).length;
@@ -36,11 +37,15 @@
     const decimalMatch = text.match(/-?[0-9.]+,([0-9]+)/);
     let decimals = decimalMatch ? Math.min(decimalMatch[1].length, 2) : 0;
     let suffix = '';
+    let unitLabel = '';
 
     /* The original ChatGPT Sites chart deliberately abbreviates these
        long units on the ordinate and shows only one decimal place. */
     if (text.includes(' anni') || text.includes(' ogni ')) {
       decimals = 1;
+    } else if (text.includes('€/ab')) {
+      decimals = 2;
+      unitLabel = '€/ab.';
     } else if (text.includes('mln €')) {
       decimals = 1;
       suffix = ' mln €';
@@ -58,7 +63,7 @@
       suffix = ' ha';
     }
 
-    return { decimals, suffix };
+    return { decimals, suffix, unitLabel };
   }
 
   function formatAxisValue(value, sample) {
@@ -104,8 +109,19 @@
     const slope = covariance / variance;
     const intercept = meanValue - slope * meanY;
     const sample = points[0].sample;
+    const { unitLabel } = axisFormat(sample);
     const firstGridX = Math.min(...grids.map(line => Number(line.getAttribute('x1'))).filter(Number.isFinite));
-    const labelX = Number.isFinite(firstGridX) ? firstGridX - 8 : 44;
+    const labelX = Number.isFinite(firstGridX) ? firstGridX - (unitLabel ? 4 : 8) : 44;
+
+    if (unitLabel) {
+      const unit = document.createElementNS(SVG_NS, 'text');
+      unit.setAttribute('class', 'chart-label chart-y-unit');
+      unit.setAttribute('x', '4');
+      unit.setAttribute('y', '15');
+      unit.setAttribute('text-anchor', 'start');
+      unit.textContent = unitLabel;
+      svg.prepend(unit);
+    }
 
     grids.forEach(line => {
       const y = Number(line.getAttribute('y1'));

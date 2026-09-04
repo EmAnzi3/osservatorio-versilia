@@ -33,6 +33,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
+          npm install --global lighthouse@12.8.2
 
       - name: Validate canonical catalog and snapshots
         run: |
@@ -152,6 +153,9 @@ jobs:
 
       - name: Validate Investimenti e opere
         run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
+
+      - name: Validate Salute finanziaria v1.29
+        run: python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8123/
 
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
@@ -364,7 +368,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v125-morosita-erp-preview
+          name: osservatorio-versilia-v129-salute-finanziaria-preview
           path: dist
           retention-days: 14
 

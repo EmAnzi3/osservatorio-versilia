@@ -76,7 +76,7 @@
       case 'currency': return `${formatNumber(number, 0)} €`;
       case 'currency2': return `${formatNumber(number, 2)} €`;
       case 'eurliter': return `${formatNumber(number, 3)} €/l`;
-      case 'eurPerResident': return `${formatNumber(number, 2)} €/ab`;
+      case 'eurPerResident': return `${formatNumber(number, 2)} €/ab.`;
       case 'euro': return `${formatNumber(number, 0)} €`;
       case 'euroPerResident': return `${formatNumber(number, 0)} € / residente`;
       case 'millionEuro': return `${formatNumber(number, 1)} mln €`;

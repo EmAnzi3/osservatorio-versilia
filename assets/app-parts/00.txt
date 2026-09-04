@@ -200,7 +200,7 @@
       case 'eurm2': return `${number0.format(v)} €/m²`;
       case 'rentm2': return `${number1.format(v)} €/m²/mese`;
       case 'eurliter': return `${number3.format(v)} €/l`;
-      case 'eurPerResident': return `${number2.format(v)} €/ab`;
+      case 'eurPerResident': return `${number2.format(v)} €/ab.`;
       case 'kg': return `${number0.format(v)} kg`;
       case 'hectares': return `${number2.format(v)} ha`;
       case 'cubicMetres': return `${number0.format(v)} m³`;

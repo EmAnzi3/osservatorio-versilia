@@ -121,7 +121,7 @@
   function unitKind(unit) {
     const token = String(unit || '').trim().toLowerCase();
     if (token === 'number') return 'count';
-    if (token === 'percent' || token === '%') return 'percent';
+    if (token === 'percent' || token === 'percent2' || token === '%') return 'percent';
     if (token === 'percentagepoints' || token === 'percentage-points' || token === 'p.p.') return 'percentage-points';
     if (token === 'currency' || token === 'currency2' || token === 'eur' || token === '€') return 'currency';
     if (token === 'eurliter' || token === '€/l') return 'eurliter';
@@ -201,7 +201,7 @@
     const n = Number(value);
     const kind = unitKind(unit);
     if (kind === 'eurliter') return `${number3.format(n)} €/l`;
-    if (kind === 'eurperresident') return `${number2.format(n)} €/ab`;
+    if (kind === 'eurperresident') return `${number2.format(n)} €/ab.`;
     const formatted = kind === 'count' ? number0.format(n) : (Math.abs(n) >= 100 ? number0.format(n) : number1.format(n));
     if (kind === 'percent') return `${formatted}%`;
     if (kind === 'percentage-points') return `${formatted}%`;
@@ -414,7 +414,7 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','sexBreakdown'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','financialProfile','sexBreakdown'].includes(type)) return null;
     if (type === 'sexBreakdown') {
       const part = (row?.parts || []).find(item => item.key === choice) || row?.parts?.[0] || {};
       return { value: part.value, unit: part.unit || metric?.meta?.unit || 'years' };
@@ -424,7 +424,7 @@
       const part = (row?.parts || []).find(item => item.key === choice) || {};
       return { value: part.value, unit: part.unit || metric?.meta?.unit || 'percent' };
     }
-    if (type === 'securityMeasures' || type === 'agricultureProfile') {
+    if (type === 'securityMeasures' || type === 'agricultureProfile' || type === 'financialProfile') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
       const part = row?.parts?.[index] || {};
       return { value: part.value, unit: part.unit || metric?.meta?.unit || '' };
@@ -446,7 +446,7 @@
     const choice = container?.dataset?.compositeChoice || '';
     const scale = container?.dataset?.compositeScale || 'value';
     const type = metric?.meta?.compositeType;
-    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','sexBreakdown'].includes(type)) return null;
+    if (!choice || !['stock','omi','mobility','securityMeasures','demographicBreakdown','agricultureProfile','financialProfile','sexBreakdown'].includes(type)) return null;
     if (type === 'sexBreakdown') {
       const part = (metric.aggregate?.parts || []).find(item => item.key === choice) || metric.aggregate?.parts?.[0] || {};
       return { value: part.value, label:`Versilia (ARS) · ${part.label || ''}`, unit: part.unit || metric?.meta?.unit || 'years' };
@@ -461,7 +461,7 @@
       const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.value)).filter(value => value !== null);
       return { value: values.length ? values.reduce((sum,value)=>sum+value,0)/values.length : null, label:`Media semplice dei ${values.length} comuni · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
     }
-    if (type === 'securityMeasures') {
+    if (type === 'securityMeasures' || type === 'financialProfile') {
       const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
       const part = metric.aggregate?.parts?.[index] || {};
       return { value: part.value, label:`Versilia · ${part.label || metric.meta.label}`, unit:part.unit || metric?.meta?.unit || '' };
@@ -623,7 +623,7 @@
     const row = townRow(metric, townName);
     if (!metric || !row) return;
     if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractivePlanning'].includes(metricKey)) return;
-    if (['distribution','agricultureProfile'].includes(metric.meta?.compositeType)) return;
+    if (['distribution','agricultureProfile','financialProfile'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
     const overlineText = delta.overline || 'Rispetto alla media Versilia';

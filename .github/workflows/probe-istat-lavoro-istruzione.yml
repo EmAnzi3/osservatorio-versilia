@@ -39,7 +39,12 @@ jobs:
           python scripts/test_lavoro_istruzione_eta_genere.py
           node --check assets/visual-grammar.js
 
-      - name: Extract and reconcile the versioned ISTAT 2024 snapshot
+      - name: Validate versioned ISTAT 2024 snapshot
+        run: |
+          python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
+
+      - name: Probe and reconcile the live ISTAT API
+        if: github.event_name == 'workflow_dispatch'
         run: |
           python scripts/probe_istat_lavoro_istruzione_eta_genere.py
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
