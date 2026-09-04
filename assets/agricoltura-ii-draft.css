@@ -1,0 +1,21 @@
+/* Draft Agricoltura II: spazio interno deliberatamente più generoso per evitare testi a ridosso dei bordi. */
+.composite-town-mobility article {
+  box-sizing: border-box;
+  padding: clamp(1rem, 2vw, 1.35rem) clamp(1.15rem, 2.4vw, 1.6rem);
+}
+.compare-view-controls {
+  box-sizing: border-box;
+  padding-inline: clamp(.15rem, .7vw, .45rem);
+}
+.compare-choice-select select {
+  min-height: 44px;
+  padding: .68rem 2.35rem .68rem .9rem;
+}
+.method-disclosure-body,
+.detail-disclosure > p.aggregate-note {
+  box-sizing: border-box;
+  padding-inline: clamp(1rem, 2.2vw, 1.5rem);
+}
+@media (max-width: 700px) {
+  .composite-town-mobility article { padding: 1rem 1.1rem; }
+}
