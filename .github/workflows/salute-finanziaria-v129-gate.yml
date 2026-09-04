@@ -25,7 +25,9 @@ jobs:
           python-version: "3.12"
 
       - name: Validate financial formulas, aggregates and UI guards
-        run: python scripts/test_salute_finanziaria_v129.py
+        run: |
+          python scripts/test_salute_finanziaria_v129.py
+          python -m py_compile scripts/test_salute_finanziaria_v129_browser.py
 
       - name: Validate financial UI JavaScript
         run: |

@@ -153,6 +153,9 @@ jobs:
       - name: Validate Investimenti e opere
         run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
 
+      - name: Validate Salute finanziaria v1.29
+        run: python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8123/
+
       - name: Validate PNRR Toscana town experience
         run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
 
