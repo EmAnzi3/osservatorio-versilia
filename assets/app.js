@@ -6,7 +6,7 @@
   const partsRoot = new URL('./app-parts/', loader.src);
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
-  const VERSION='20260903-v129-salute-finanziaria-selector';
+  const VERSION='20260904-agri2-draft-v1';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
@@ -103,7 +103,8 @@
   const load = async () => {
     await Promise.all([
       loadStylesheet(new URL(`./fonts.css?v=${VERSION}`, loader.src).href),
-      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href)
+      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./agricoltura-ii-draft.css?v=${VERSION}`, loader.src).href)
     ]);
 
     if (document.fonts?.load) {
@@ -113,6 +114,8 @@
         document.fonts.load('500 1em "Geist Mono"')
       ]);
     }
+
+    await loadScript(new URL(`./agricoltura-ii-draft.js?v=${VERSION}`, loader.src).href);
 
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
