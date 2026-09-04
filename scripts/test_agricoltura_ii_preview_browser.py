@@ -10,6 +10,15 @@ def normalize(text: str) -> str:
     return " ".join((text or "").split())
 
 
+def assert_no_simple_mean_benchmark(text: str) -> None:
+    normalized = normalize(text)
+    lower = normalized.lower()
+    assert "Media comuni Versilia" not in normalized, normalized
+    assert "media semplice dei 7" not in lower, normalized
+    assert "media semplice dei sette" not in lower, normalized
+    assert "media semplice dei comuni" not in lower, normalized
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8123/")
@@ -41,8 +50,7 @@ def main() -> None:
         definition = normalize(page.locator("#compare-definition").inner_text())
         assert "Versilia · Aziende con conduttrice donna" in definition, definition
         assert any(value in definition for value in ("35,4%", "35,38%")), definition
-        assert "Media comuni Versilia" not in definition, definition
-        assert "media semplice" not in definition.lower(), definition
+        assert_no_simple_mean_benchmark(definition)
 
         # Card 2: stessa regola sul benchmark per l'informatizzazione (202/957).
         page.goto(
@@ -60,8 +68,7 @@ def main() -> None:
         definition = normalize(page.locator("#compare-definition").inner_text())
         assert "Versilia · Aziende informatizzate" in definition, definition
         assert any(value in definition for value in ("21,1%", "21,11%")), definition
-        assert "Media comuni Versilia" not in definition, definition
-        assert "media semplice" not in definition.lower(), definition
+        assert_no_simple_mean_benchmark(definition)
 
         # Scheda comunale: il selettore town usa data-composite-choice.
         # Il benchmark deve essere il rapporto Versilia, non la quota del Comune
