@@ -368,7 +368,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-v125-morosita-erp-preview
+          name: osservatorio-versilia-v129-salute-finanziaria-preview
           path: dist
           retention-days: 14
 
