@@ -1,0 +1,34 @@
+name: Agricoltura II · draft gate
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/agricoltura-ii-draft.json"
+      - "data/source-snapshots/istat-agricoltura-ii-2020.json"
+      - "assets/agricoltura-ii-draft.js"
+      - "assets/agricoltura-ii-draft.css"
+      - "assets/app.js"
+      - "scripts/test_agricoltura_ii_draft.py"
+      - ".github/workflows/agricoltura-ii-draft.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate frozen data and aggregates
+        run: |
+          python -m json.tool data/agricoltura-ii-draft.json > /dev/null
+          python -m json.tool data/source-snapshots/istat-agricoltura-ii-2020.json > /dev/null
+          python scripts/test_agricoltura_ii_draft.py
+      - name: Validate draft JavaScript
+        run: |
+          node --check assets/agricoltura-ii-draft.js
+          node --check assets/app.js
