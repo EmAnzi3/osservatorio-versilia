@@ -4,7 +4,9 @@
 Il catalogo e il registro fonti canonici restano a v1.29.0/181 indicatori.
 Durante questa build vengono temporaneamente materializzate le due metriche
 Agricoltura II, così il prerender e lo Stato dati vedono lo stesso catalogo
-183. I file sorgente sono ripristinati byte-per-byte nel finally.
+183. Anche il renderer viene esteso temporaneamente con un profilo dedicato
+ai rapporti tra somme, senza modificare il comportamento storico di
+``agricultureProfile``. Tutti i sorgenti sono ripristinati byte-per-byte.
 """
 from __future__ import annotations
 
@@ -16,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DATA = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
 OVERLAY = ROOT / "data" / "agricoltura-ii-draft.json"
+APP_PART = ROOT / "assets" / "app-parts" / "03.txt"
 DIST = ROOT / "dist"
 
 EXPECTED_KEYS = {
@@ -23,12 +26,27 @@ EXPECTED_KEYS = {
     "agriculturalDiversificationAndModernization",
 }
 
+SHARED_PROFILE_TYPES = "['securityMeasures','agricultureProfile','financialProfile']"
+PREVIEW_PROFILE_TYPES = "['securityMeasures','agricultureProfile','financialProfile','ratioProfile']"
+SELECTABLE_TYPES = "['stock','mobility','omi','securityMeasures','agricultureProfile','financialProfile','demographicBreakdown','sexBreakdown']"
+PREVIEW_SELECTABLE_TYPES = "['stock','mobility','omi','securityMeasures','agricultureProfile','financialProfile','ratioProfile','demographicBreakdown','sexBreakdown']"
+
 
 def merge_overlay(data: dict, overlay: dict) -> dict:
     before = len(data.get("metrics", {}))
     metrics = overlay.get("metrics", {})
     if set(metrics) != EXPECTED_KEYS:
         raise RuntimeError(f"Metriche Agricoltura II inattese: {sorted(metrics)}")
+
+    # ``agricultureProfile`` nel renderer storico è specializzato sul profilo
+    # colture e usa volutamente una media comunale / quota sul totale coltura.
+    # Agricoltura II richiede invece benchmark Σnumeratore/Σdenominatore.
+    # Il profilo dedicato viene usato soltanto nell'artifact di revisione.
+    for metric in metrics.values():
+        meta = metric.setdefault("meta", {})
+        if meta.get("compositeType") != "agricultureProfile":
+            raise RuntimeError("Composite type Agricoltura II inatteso nel draft sorgente")
+        meta["compositeType"] = "ratioProfile"
 
     data["metrics"].update(metrics)
     theme_key = overlay["theme"]
@@ -71,6 +89,24 @@ def patch_registry(registry: dict) -> dict:
     return registry
 
 
+def patch_preview_renderer(source: str) -> str:
+    shared_count = source.count(SHARED_PROFILE_TYPES)
+    selectable_count = source.count(SELECTABLE_TYPES)
+    if shared_count < 6:
+        raise RuntimeError(
+            f"Contratto renderer inatteso: trovati solo {shared_count} blocchi profilo condivisi"
+        )
+    if selectable_count != 1:
+        raise RuntimeError(
+            f"Contratto renderer inatteso: lista selectable trovata {selectable_count} volte"
+        )
+    patched = source.replace(SHARED_PROFILE_TYPES, PREVIEW_PROFILE_TYPES)
+    patched = patched.replace(SELECTABLE_TYPES, PREVIEW_SELECTABLE_TYPES)
+    if "ratioProfile" not in patched:
+        raise RuntimeError("ratioProfile non inserito nel renderer preview")
+    return patched
+
+
 def append_draft_css() -> None:
     css_source = ROOT / "assets" / "agricoltura-ii-draft.css"
     static_css = DIST / "assets" / "static.css"
@@ -90,6 +126,9 @@ def validate_preview() -> None:
         raise RuntimeError("Preview non materializzata a 183 indicatori")
     if not EXPECTED_KEYS.issubset(dist_data.get("metrics", {})):
         raise RuntimeError("Metriche Agricoltura II assenti da dist/data/site-data.json")
+    for key in EXPECTED_KEYS:
+        if dist_data["metrics"][key].get("meta", {}).get("compositeType") != "ratioProfile":
+            raise RuntimeError(f"{key}: ratioProfile non materializzato nella preview")
 
     home = (DIST / "index.html").read_text(encoding="utf-8")
     ambiente = (DIST / "confronta" / "ambiente" / "index.html").read_text(encoding="utf-8")
@@ -102,6 +141,10 @@ def validate_preview() -> None:
         if label not in ambiente:
             raise RuntimeError(f"Card Agricoltura II assente dal prerender: {label}")
 
+    bundle = (DIST / "assets" / "app-bundle.js").read_text(encoding="utf-8")
+    if "ratioProfile" not in bundle:
+        raise RuntimeError("Renderer ratioProfile assente dall'app-bundle preview")
+
     status = json.loads((DIST / "data" / "data-status.json").read_text(encoding="utf-8"))
     if int(status.get("metricCount", 0)) != 183:
         raise RuntimeError("Stato dati preview non allineato a 183 indicatori")
@@ -110,12 +153,16 @@ def validate_preview() -> None:
     if len(indicator_pages) != 179:
         raise RuntimeError(f"Schede indicatore preview: {len(indicator_pages)}, attese 179")
 
-    print("Agricoltura II preview verificata: 183 indicatori, 179 schede inline, Stato dati 183.")
+    print(
+        "Agricoltura II preview verificata: 183 indicatori, 179 schede inline, "
+        "Stato dati 183 e renderer ratioProfile."
+    )
 
 
 def main() -> None:
     original_site = SITE_DATA.read_bytes()
     original_registry = REGISTRY.read_bytes()
+    original_app_part = APP_PART.read_bytes()
     try:
         data = json.loads(original_site.decode("utf-8"))
         overlay = json.loads(OVERLAY.read_text(encoding="utf-8"))
@@ -127,6 +174,10 @@ def main() -> None:
         )
         REGISTRY.write_text(
             json.dumps(patch_registry(registry), ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        APP_PART.write_text(
+            patch_preview_renderer(original_app_part.decode("utf-8")),
             encoding="utf-8",
         )
 
@@ -141,6 +192,7 @@ def main() -> None:
     finally:
         SITE_DATA.write_bytes(original_site)
         REGISTRY.write_bytes(original_registry)
+        APP_PART.write_bytes(original_app_part)
 
 
 if __name__ == "__main__":
