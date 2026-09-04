@@ -103,7 +103,8 @@
   const load = async () => {
     await Promise.all([
       loadStylesheet(new URL(`./fonts.css?v=${VERSION}`, loader.src).href),
-      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href)
+      loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./agricoltura-ii-draft.css?v=${VERSION}`, loader.src).href)
     ]);
 
     if (document.fonts?.load) {
@@ -113,6 +114,8 @@
         document.fonts.load('500 1em "Geist Mono"')
       ]);
     }
+
+    await loadScript(new URL(`./agricoltura-ii-draft.js?v=${VERSION}`, loader.src).href);
 
     const parts = await Promise.all(
       Array.from({ length: 7 }, (_, index) => String(index).padStart(2, '0'))
