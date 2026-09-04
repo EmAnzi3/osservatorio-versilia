@@ -10,6 +10,7 @@ on:
       - "assets/agricoltura-ii-draft.js"
       - "scripts/test_agricoltura_ii_draft.py"
       - "scripts/build_agricoltura_ii_preview.py"
+      - "scripts/patch_agricoltura_ii_preview_runtime.py"
       - "scripts/test_agricoltura_ii_preview_browser.py"
       - ".github/workflows/agricoltura-ii-preview.yml"
 
@@ -40,10 +41,15 @@ jobs:
           python -m json.tool data/agricoltura-ii-draft.json >/dev/null
           python -m json.tool data/source-snapshots/istat-agricoltura-ii-2020.json >/dev/null
           node --check assets/agricoltura-ii-draft.js
-          python -m py_compile scripts/build_agricoltura_ii_preview.py scripts/test_agricoltura_ii_preview_browser.py
+          python -m py_compile \
+            scripts/build_agricoltura_ii_preview.py \
+            scripts/patch_agricoltura_ii_preview_runtime.py \
+            scripts/test_agricoltura_ii_preview_browser.py
 
       - name: Build isolated 183-indicator preview
-        run: python scripts/build_agricoltura_ii_preview.py
+        run: |
+          python scripts/build_agricoltura_ii_preview.py
+          python scripts/patch_agricoltura_ii_preview_runtime.py
 
       - name: Ensure canonical sources were restored
         run: |
