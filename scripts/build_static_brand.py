@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260824-ov4"
-APP_BUNDLE_ASSET_VERSION = "20260903-v129-salute-finanziaria-selector"
+APP_BUNDLE_ASSET_VERSION = "20260904-v130-agricoltura-ii"
 PWA_ASSET_VERSION = "20260824-pwa9"
 PWA_JS_REVISION = "catalog-v129"
 MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
@@ -25,6 +25,20 @@ PWA_ICONS = (
     "icon-512.png",
     "icon-maskable-512.png",
 )
+
+
+def materialize_agricoltura_ii_release_if_needed() -> None:
+    """Allinea il solo checkout del deploy main all'artifact Agricoltura II approvato."""
+    if not (
+        os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
+        and os.environ.get("GITHUB_EVENT_NAME") == "push"
+        and os.environ.get("GITHUB_REF") == "refs/heads/main"
+    ):
+        return
+    runpy.run_path(
+        str(ROOT / "scripts" / "materialize_agricoltura_ii_release.py"),
+        run_name="__main__",
+    )
 
 
 def decorative_mark() -> str:
@@ -229,6 +243,8 @@ def select_opportunity_public_payload() -> Path:
 
 
 if __name__ == "__main__":
+    materialize_agricoltura_ii_release_if_needed()
+
     # La build non materializza né riscrive data/opportunity-release.json: il baseline
     # resta canonico e immutabile; il daily verificato viene selezionato solo per dist.
     runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_public_shell.py"), run_name="__main__")
