@@ -1,0 +1,9 @@
+.economy-atlas-entry{margin-top:clamp(18px,3vw,30px);margin-bottom:clamp(24px,4vw,42px)}
+.economy-atlas-entry-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:clamp(20px,3vw,30px);border:1px solid rgba(173,98,71,.22);border-radius:20px;background:linear-gradient(135deg,rgba(243,227,218,.72),rgba(255,255,255,.94) 58%);box-shadow:0 14px 38px rgba(16,47,69,.06)}
+.economy-atlas-entry-card h2{margin:.25rem 0 .55rem;font-size:clamp(1.55rem,3vw,2.15rem);letter-spacing:-.035em;line-height:1.04}
+.economy-atlas-entry-card p{margin:0;max-width:780px;color:#516874;line-height:1.55}
+.economy-atlas-entry-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.economy-atlas-entry-facts span{display:inline-flex;padding:6px 9px;border-radius:999px;background:#fff;border:1px solid rgba(16,47,69,.11);font-size:.74rem;font-weight:700}
+.economy-atlas-entry-link{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:999px;padding:11px 16px;background:#102f45;color:#fff;text-decoration:none;font-weight:800;box-shadow:0 8px 20px rgba(16,47,69,.15)}
+.economy-atlas-entry-link:hover{transform:translateY(-1px)}
+@media(max-width:760px){.economy-atlas-entry-card{grid-template-columns:1fr}.economy-atlas-entry-link{justify-self:start}}
