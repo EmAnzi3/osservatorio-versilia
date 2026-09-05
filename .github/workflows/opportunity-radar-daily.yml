@@ -74,7 +74,7 @@ jobs:
           expected_date = datetime.now(timezone.utc).date().isoformat()
           assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'
-          assert p.get('dailyHardeningVersion') == '0.4.4-h3'
+          assert p.get('dailyHardeningVersion') == '0.4.4-h4'
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           assert (p.get('backtest') or {}).get('passed') is True
@@ -84,11 +84,12 @@ jobs:
           assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
 
           transport = p.get('transportAudit') or {}
-          assert transport.get('schemaVersion') == '1.0', transport
+          assert transport.get('schemaVersion') == '1.1', transport
           transport_summary = transport.get('summary') or {}
           assert int(transport_summary.get('configuredSources') or 0) > 0, transport_summary
           assert int(transport_summary.get('configuredEndpoints') or 0) > 0, transport_summary
           assert (p.get('counts') or {}).get('transportFallbacks') == int(transport_summary.get('fallbackSuccesses') or 0)
+          assert (p.get('counts') or {}).get('transportProxyFallbacks') == int(transport_summary.get('proxySuccesses') or 0)
           assert (p.get('counts') or {}).get('transportFailures') == int(transport_summary.get('endpointFailures') or 0)
 
           ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
@@ -104,6 +105,7 @@ jobs:
               f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
               f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date} · "
               f"fallback trasporto {transport_summary.get('fallbackSuccesses', 0)} · "
+              f"proxy discovery {transport_summary.get('proxySuccesses', 0)} · "
               f"fallimenti endpoint {transport_summary.get('endpointFailures', 0)} · "
               f"continuità riconciliata {(p.get('continuityReconciliation') or {}).get('reconciled', 0)}"
           )
@@ -159,10 +161,6 @@ jobs:
           fi
           git commit -m "Aggiorna Radar Opportunità $(date -u +%F)"
 
-          # La build pubblica modifica file tracciati che non appartengono allo
-          # snapshot giornaliero. Dopo aver committato l'unico file autorizzato,
-          # ripristiniamo il working tree così fetch/rebase possano operare in
-          # modo deterministico senza includere artefatti di build nel commit.
           git restore --worktree -- .
           if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
             echo "Working tree tracciato non pulito prima del rebase:"
