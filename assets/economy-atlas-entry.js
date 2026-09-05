@@ -12,7 +12,9 @@
     hero.insertAdjacentElement('afterend',section);
     return true;
   };
-  if(mount())return;
-  const observer=new MutationObserver(()=>{if(mount())observer.disconnect()});
-  observer.observe(document.getElementById('app')||document.documentElement,{childList:true,subtree:true});
+  const root=document.getElementById('app')||document.documentElement;
+  const observer=new MutationObserver(()=>mount());
+  observer.observe(root,{childList:true,subtree:true});
+  mount();
+  window.addEventListener('load',mount,{once:true});
 })();
