@@ -35,6 +35,27 @@ def _test_recent_success_gives_family_grace() -> None:
     assert uncovered == [], uncovered
     grace = result["coverageAudit"]["runtimeGraceFamilies"]
     assert grace and grace[0]["familyId"] == "maritime-coastal", grace
+    assert grace[0]["sources"][0]["graceReason"] == "recent_success", grace
+
+
+def _test_legacy_error_gets_bootstrap_failure_window() -> None:
+    original_previous = stable._PREVIOUS_HEALTH
+    try:
+        snapshot = {
+            "referenceDate": "2026-09-04",
+            "sourceCoverage": {
+                "rows": [{"source_id": "legacy-error", "runtimeStatus": "error"}]
+            },
+        }
+        stable._PREVIOUS_HEALTH = stable._seed_previous_health(snapshot)
+        state = stable._health_state("legacy-error", "error", date(2026, 9, 5))
+    finally:
+        stable._PREVIOUS_HEALTH = original_previous
+
+    assert state["lastSuccessfulFetch"] is None, state
+    assert state["consecutiveFailures"] == 2, state
+    assert state["effectiveStatus"] == "grace", state
+    assert state["graceReason"] == "consecutive_failure_window", state
 
 
 def _test_expired_grace_blocks_family() -> None:
@@ -106,6 +127,7 @@ def _test_pre_h5_snapshot_seeds_health() -> None:
 
 def main() -> int:
     _test_recent_success_gives_family_grace()
+    _test_legacy_error_gets_bootstrap_failure_window()
     _test_expired_grace_blocks_family()
     _test_success_resets_failure_counter()
     _test_pre_h5_snapshot_seeds_health()
