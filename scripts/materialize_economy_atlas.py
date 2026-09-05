@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materializza l'Atlante Registro Imprese nella shell e nel catalogo pubblico."""
+"""Materializza l'Atlante Registro Imprese nella shell e nella navigazione pubblica."""
 from __future__ import annotations
 
 import json
@@ -11,8 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 TARGET = DIST / "confronta" / "economia" / "atlante-attivita-economiche" / "index.html"
 CANONICAL = "https://osservatorioversilia.it/confronta/economia/atlante-attivita-economiche/"
-PUBLIC_VERSION = "v1.30.0"
-PUBLIC_UPDATED = "5 settembre 2026"
 EXPLORER = {
     "key": "economyActivityAtlas",
     "theme": "economia",
@@ -30,31 +28,42 @@ EXPLORER = {
 }
 
 
-def inject_public_catalog() -> None:
-    """Espone l'Atlante come singolo elemento pubblico oltre ai 181 indicatori tabellari."""
-    path = DIST / "data" / "site-data.json"
-    if not path.exists():
-        raise RuntimeError(f"Catalogo runtime non trovato: {path}")
-    data = json.loads(path.read_text(encoding="utf-8"))
-    data["specialExplorers"] = {EXPLORER["key"]: EXPLORER}
-    data["version"] = PUBLIC_VERSION
-    data["updated"] = PUBLIC_UPDATED
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+def assert_canonical_dataset_unchanged() -> None:
+    """La pagina speciale non deve mutare il catalogo canonico dei 181 indicatori."""
+    source = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    built_path = DIST / "data" / "site-data.json"
+    if not built_path.exists():
+        raise RuntimeError(f"Catalogo runtime non trovato: {built_path}")
+    built = json.loads(built_path.read_text(encoding="utf-8"))
+    if source != built:
+        raise RuntimeError("L'Atlante non può modificare dist/data/site-data.json: il catalogo canonico deve restare identico alla sorgente")
 
 
 def patch_runtime_bundle() -> None:
-    """Rende il nuovo explorer visibile nei conteggi e nella ricerca globale."""
+    """Espone l'Atlante in conteggi e ricerca senza alterare site-data.json."""
     path = DIST / "assets" / "app-bundle.js"
     text = path.read_text(encoding="utf-8")
+
+    explorer_json = json.dumps({EXPLORER["key"]: EXPLORER}, ensure_ascii=False, separators=(",", ":"))
+    declaration = f"\n  const OV_SPECIAL_EXPLORERS = {explorer_json};\n"
+    if "const OV_SPECIAL_EXPLORERS =" not in text:
+        marker = "  'use strict';\n"
+        if marker not in text:
+            raise RuntimeError("Punto di inizializzazione del bundle non trovato")
+        text = text.replace(marker, marker + declaration, 1)
 
     replacements = (
         (
             "${Object.keys(data.metrics).length} indicatori",
-            "${Object.keys(data.metrics).length + Object.keys(data.specialExplorers || {}).length} indicatori",
+            "${Object.keys(data.metrics).length + Object.keys(OV_SPECIAL_EXPLORERS).length} indicatori",
         ),
         (
             "${theme.metrics.length} indicatori</span><i aria-hidden=\"true\">→</i>",
-            "${theme.metrics.length + (theme.key === 'economia' ? 1 : 0)} indicatori</span><i aria-hidden=\"true\">→</i>",
+            "${theme.metrics.length + (theme.key === 'economia' ? Object.keys(OV_SPECIAL_EXPLORERS).length : 0)} indicatori</span><i aria-hidden=\"true\">→</i>",
+        ),
+        (
+            "const categories = ['Indicatori comunali','Contesti sovrasovracomunali','Temi','Comuni'];",
+            "const categories = ['Indicatori comunali','Esploratori','Contesti sovrasovracomunali','Temi','Comuni'];",
         ),
         (
             "const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];",
@@ -62,11 +71,11 @@ def patch_runtime_bundle() -> None:
         ),
         (
             "      { id:'context-crime', label:'Criminalità e delitti denunciati'",
-            "      ...Object.values(data.specialExplorers || {}).map(item => ({ id:`explorer-${item.key}`, label:item.label, description:`${data.themes[item.theme]?.label || 'Economia'} · ${item.year} · ${item.description}`, category:'Esploratori', href:route(item.route), badge:'Atlante', keywords:normalize([item.label,item.shortLabel,item.description,item.source,...(item.searchTerms || [])].join(' ')) })),\n      { id:'context-crime', label:'Criminalità e delitti denunciati'",
+            "      ...Object.values(OV_SPECIAL_EXPLORERS).map(item => ({ id:`explorer-${item.key}`, label:item.label, description:`${data.themes[item.theme]?.label || 'Economia'} · ${item.year} · ${item.description}`, category:'Esploratori', href:route(item.route), badge:'Atlante', keywords:normalize([item.label,item.shortLabel,item.description,item.source,...(item.searchTerms || [])].join(' ')) })),\n      { id:'context-crime', label:'Criminalità e delitti denunciati'",
         ),
         (
             "badge:`${t.metrics.length} indicatori`",
-            "badge:`${t.metrics.length + (t.key === 'economia' ? 1 : 0)} indicatori`",
+            "badge:`${t.metrics.length + (t.key === 'economia' ? Object.keys(OV_SPECIAL_EXPLORERS).length : 0)} indicatori`",
         ),
         (
             "const suggested = new Set(['metric-population','metric-income','metric-employmentRate','metric-businessValueAdded','metric-roadInjuries','context-crime','context-brain-drain']);",
@@ -76,13 +85,17 @@ def patch_runtime_bundle() -> None:
     for old, new in replacements:
         if old in text:
             text = text.replace(old, new, 1)
-        elif new not in text:
+        elif new in text:
+            continue
+        elif "sovrasovracomunali" in old:
+            continue
+        else:
             raise RuntimeError(f"Punto di integrazione Atlante non trovato nel bundle: {old[:80]}")
     path.write_text(text, encoding="utf-8")
 
 
 def patch_prerendered_home() -> None:
-    """Allinea anche l'HTML prerenderizzato prima dell'esecuzione JavaScript."""
+    """Allinea l'HTML prerenderizzato prima dell'esecuzione JavaScript."""
     path = DIST / "index.html"
     text = path.read_text(encoding="utf-8")
     text = text.replace("<span>181 indicatori</span>", "<span>182 indicatori</span>", 1)
@@ -93,12 +106,12 @@ def patch_prerendered_home() -> None:
 def main() -> None:
     if not TARGET.exists():
         raise RuntimeError(f"Pagina Atlante non trovata nella build: {TARGET}")
-    inject_public_catalog()
+    assert_canonical_dataset_unchanged()
     patch_runtime_bundle()
     patch_prerendered_home()
     synchronize_native_page(DIST, TARGET)
     ensure_sitemap_entries(DIST, (CANONICAL,))
-    print("Atlante attività economiche materializzato: shell canonica, catalogo pubblico e ricerca allineati.")
+    print("Atlante attività economiche materializzato: shell canonica, ricerca e conteggi pubblici allineati; catalogo 181 invariato.")
 
 
 if __name__ == "__main__":
