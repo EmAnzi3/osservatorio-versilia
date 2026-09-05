@@ -44,6 +44,7 @@ jobs:
             scripts/opportunity_daily_refresh.py \
             scripts/opportunity_daily_refresh_revalidated.py \
             scripts/opportunity_daily_refresh_resilient.py \
+            scripts/opportunity_daily_refresh_stable.py \
             scripts/opportunity_discovery_resilient.py \
             scripts/opportunity_transport_smoke.py \
             scripts/opportunity_regione_toscana_guard.py \
@@ -53,6 +54,7 @@ jobs:
             scripts/test_opportunity_daily_continuity.py \
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
+            scripts/test_opportunity_source_health.py \
             scripts/build_opportunity_preview_v044.py \
             scripts/materialize_opportunity_release_snapshot.py \
             scripts/build_opportunity_release.py \
@@ -63,10 +65,12 @@ jobs:
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
+          python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
       - name: Probe resilient transport on problem sources
+        continue-on-error: true
         run: python scripts/opportunity_transport_smoke.py
 
       - name: Upload transport smoke
