@@ -14,5 +14,7 @@
   "chunks": 10,
   "runtime_format": "compact-v2",
   "runtime_years": [2014, 2025],
-  "files": ["atlas-00.b64","atlas-01.b64","atlas-02.b64","atlas-03.b64","atlas-04.b64","atlas-05.b64","atlas-06.b64","atlas-07.b64","atlas-08.b64","atlas-09.b64"]
+  "files": ["atlas-00.b64","atlas-01.b64","atlas-02.b64","atlas-03.b64","atlas-04.b64","atlas-05.b64","atlas-06.b64","atlas-07.b64","atlas-08.b64","atlas-09.b64"],
+  "taxonomy": "ISTAT ATECO 2007 aggiornamento 2022",
+  "taxonomy_files": ["ateco-taxonomy-00.b64","ateco-taxonomy-01.b64","ateco-taxonomy-02.b64","ateco-taxonomy-03.b64","ateco-taxonomy-04.b64"]
 }
