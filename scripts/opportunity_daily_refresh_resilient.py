@@ -3,7 +3,7 @@
 
 Estende l'hardening h2 senza modificare classificatore o criteri di pubblicazione:
 - applica il trasporto resiliente anche a listing primari e canali discovery;
-- registra la diagnostica endpoint nel risultato del discovery;
+- registra la diagnostica endpoint nel risultato del discovery e nello snapshot;
 - rimuove dal runtime il vecchio feed PA Digitale stale, mantenuto nel catalogo
   come fonte degradata sostituita dalla pagina corrente;
 - corregge difensivamente l'endpoint SCU anche se il catalogo non fosse aggiornato;
@@ -83,9 +83,108 @@ def _assert_publishable_hardened(result: dict[str, Any]) -> None:
         )
 
 
+def _configured_endpoint_map() -> dict[str, list[str]]:
+    config, _ = _compose_runtime_hardened()
+    mapped: dict[str, list[str]] = {}
+    for source in config.get("sources") or []:
+        source_id = str(source.get("id") or "")
+        urls = [str(source.get("url") or "").strip()]
+        urls.extend(str(url).strip() for url in source.get("urls") or [])
+        mapped[source_id] = [url for url in urls if url]
+    for source in config.get("discoverySources") or []:
+        source_id = str(source.get("id") or "")
+        urls = [str(url).strip() for url in source.get("urls") or [] if str(url).strip()]
+        mapped[source_id] = urls
+    return mapped
+
+
+def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
+    runtime_by_id: dict[str, str] = {}
+    for row in result.get("sources") or []:
+        runtime_by_id[str(row.get("sourceId") or "")] = str(row.get("status") or "unknown")
+    for row in result.get("discoverySources") or []:
+        runtime_by_id[str(row.get("sourceId") or "")] = str(row.get("status") or "unknown")
+
+    rows: list[dict[str, Any]] = []
+    fallback_successes = 0
+    endpoint_failures = 0
+    redirected = 0
+
+    for source_id, urls in _configured_endpoint_map().items():
+        endpoints: list[dict[str, Any]] = []
+        for url in urls:
+            trace = discovery.FETCH_TRACE.get(url)
+            if trace is None:
+                endpoint = {
+                    "url": url,
+                    "status": "not_run",
+                    "transport": None,
+                    "fallbackUsed": False,
+                    "initialFailureClass": None,
+                    "failureClass": None,
+                    "resolvedUrl": None,
+                    "redirected": False,
+                    "errors": [],
+                }
+            else:
+                endpoint = dict(trace)
+                if endpoint.get("status") == "ok" and endpoint.get("transport") == "chromium":
+                    fallback_successes += 1
+                if endpoint.get("status") == "error":
+                    endpoint_failures += 1
+                if endpoint.get("redirected"):
+                    redirected += 1
+            endpoints.append(endpoint)
+
+        rows.append({
+            "sourceId": source_id,
+            "runtimeStatus": runtime_by_id.get(source_id, "not_run"),
+            "endpointCount": len(endpoints),
+            "endpointOk": sum(endpoint.get("status") == "ok" for endpoint in endpoints),
+            "fallbackSuccessCount": sum(
+                endpoint.get("status") == "ok" and endpoint.get("transport") == "chromium"
+                for endpoint in endpoints
+            ),
+            "failureClasses": sorted({
+                str(endpoint.get("failureClass"))
+                for endpoint in endpoints
+                if endpoint.get("failureClass")
+            }),
+            "endpoints": endpoints,
+        })
+
+    assigned_urls = {
+        endpoint["url"]
+        for row in rows
+        for endpoint in row.get("endpoints") or []
+    }
+    extra_fetches = [
+        dict(trace)
+        for url, trace in discovery.FETCH_TRACE.items()
+        if url not in assigned_urls
+    ]
+    return {
+        "schemaVersion": "1.0",
+        "summary": {
+            "configuredSources": len(rows),
+            "configuredEndpoints": sum(row.get("endpointCount", 0) for row in rows),
+            "fallbackSuccesses": fallback_successes,
+            "endpointFailures": endpoint_failures,
+            "redirectedEndpoints": redirected,
+            "extraFetches": len(extra_fetches),
+        },
+        "sources": rows,
+        "extraFetches": extra_fetches,
+    }
+
+
 def _prepare_public_hardened(result: dict[str, Any], today):
     result = _ORIGINAL_PREPARE(result, today)
     result["dailyHardeningVersion"] = "0.4.4-h3"
+    result["transportAudit"] = _build_transport_audit(result)
+    summary = result["transportAudit"]["summary"]
+    result.setdefault("counts", {})["transportFallbacks"] = int(summary.get("fallbackSuccesses") or 0)
+    result.setdefault("counts", {})["transportFailures"] = int(summary.get("endpointFailures") or 0)
     return result
 
 
@@ -94,6 +193,7 @@ def _probe_hardened(config: dict[str, Any], *, payloads: dict[str, str] | None =
 
 
 def main() -> int:
+    discovery.reset_trace()
     radar_module.probe_discovery_sources = _probe_hardened
     radar_module.v025.v022.fetch_resilient = discovery.fetch_resilient
     radar_module.v025.v022.v02.fetch_resilient = discovery.fetch_resilient
