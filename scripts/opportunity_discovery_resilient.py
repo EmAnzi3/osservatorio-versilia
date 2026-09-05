@@ -5,11 +5,17 @@ Il collector storico distingueva soltanto successo/errore e usava un fetch HTTP
 semplice. Questo modulo mantiene invariati parser e regole di ammissibilità ma
 rende il trasporto più adatto ai portali istituzionali: HTTP browser-like con
 retry, fallback Chromium selettivo e classificazione esplicita dei fallimenti.
+
+A differenza della riconferma di un bando già noto, il discovery deve preservare
+il DOM: il fallback Chromium restituisce quindi l'HTML renderizzato e l'URL
+finale, così titoli e link restano estraibili anche dopo redirect o rendering JS.
 """
 from __future__ import annotations
 
 import socket
+import time
 import urllib.error
+import urllib.request
 from typing import Any
 
 import opportunity_daily_refresh_revalidated as transport
@@ -57,15 +63,77 @@ def classify_fetch_error(exc: BaseException) -> str:
 
 
 def _browser_fallback_allowed(failure_class: str) -> bool:
+    # Un 404/410 è configuration drift e non va mascherato. Un DNS failure è
+    # indipendente dal client e Chromium non aggiunge copertura reale.
     return failure_class in {
         "http_403_waf",
         "http_429_rate_limit",
         "http_5xx",
         "timeout_client",
-        "dns_error",
         "network_error",
         "fetch_error",
     }
+
+
+def _fetch_browser_html_with_url(
+    url: str,
+    timeout: int = 30,
+    attempts: int = 2,
+) -> tuple[str, str]:
+    """HTTP browser-like con retry, preservando l'URL finale dopo redirect."""
+    last_error: Exception | None = None
+    for attempt in range(max(1, attempts)):
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": transport._BROWSER_UA,
+                "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
+                "Cache-Control": "no-cache",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                charset = response.headers.get_content_charset() or "utf-8"
+                return response.read().decode(charset, errors="replace"), response.geturl()
+        except Exception as exc:  # pragma: no cover - dipende dalla rete live
+            last_error = exc
+            if attempt + 1 < max(1, attempts):
+                time.sleep(1.0 + attempt)
+    assert last_error is not None
+    raise last_error
+
+
+def _fetch_playwright_html(url: str, timeout_ms: int = 45_000) -> tuple[str, str]:
+    """Rende la pagina con Chromium e restituisce DOM completo + URL finale."""
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent=transport._BROWSER_UA,
+            locale="it-IT",
+            ignore_https_errors=True,
+            extra_http_headers={
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.7",
+                "Cache-Control": "no-cache",
+            },
+        )
+        page = context.new_page()
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+            try:
+                page.wait_for_load_state("networkidle", timeout=8_000)
+            except PlaywrightTimeoutError:
+                pass
+            html = page.content()
+            if not html.strip():
+                raise RuntimeError("Chromium ha restituito un DOM vuoto")
+            return html, page.url
+        finally:
+            context.close()
+            browser.close()
 
 
 def fetch_with_diagnostics(
@@ -77,13 +145,17 @@ def fetch_with_diagnostics(
     http_attempts = max(2, int(attempts or 1))
     errors: list[str] = []
     try:
-        payload = transport._fetch_browser_html(url, timeout=timeout, attempts=http_attempts)
+        payload, resolved_url = _fetch_browser_html_with_url(
+            url, timeout=timeout, attempts=http_attempts
+        )
         return payload, {
             "status": "ok",
             "transport": "http_browser",
             "httpAttempts": http_attempts,
             "fallbackUsed": False,
             "initialFailureClass": None,
+            "resolvedUrl": resolved_url,
+            "redirected": resolved_url != url,
             "errors": [],
         }
     except Exception as http_error:  # pragma: no cover - dipende dalla rete live
@@ -92,18 +164,18 @@ def fetch_with_diagnostics(
 
     if _browser_fallback_allowed(failure_class):
         try:
-            payload = transport._fetch_playwright_text(
+            payload, resolved_url = _fetch_playwright_html(
                 url,
                 timeout_ms=max(20_000, min(45_000, timeout * 1000)),
             )
-            if not str(payload or "").strip():
-                raise RuntimeError("Chromium ha restituito un payload vuoto")
             return payload, {
                 "status": "ok",
                 "transport": "chromium",
                 "httpAttempts": http_attempts,
                 "fallbackUsed": True,
                 "initialFailureClass": failure_class,
+                "resolvedUrl": resolved_url,
+                "redirected": resolved_url != url,
                 "errors": errors,
             }
         except Exception as browser_error:  # pragma: no cover - dipende dalla rete/browser live
@@ -116,6 +188,8 @@ def fetch_with_diagnostics(
                 "fallbackUsed": True,
                 "initialFailureClass": failure_class,
                 "failureClass": browser_class if browser_class != "fetch_error" else failure_class,
+                "resolvedUrl": None,
+                "redirected": False,
                 "errors": errors,
             }
             raise DiscoveryFetchError("; ".join(errors), diagnostics) from browser_error
@@ -127,6 +201,8 @@ def fetch_with_diagnostics(
         "fallbackUsed": False,
         "initialFailureClass": failure_class,
         "failureClass": failure_class,
+        "resolvedUrl": None,
+        "redirected": False,
         "errors": errors,
     }
     raise DiscoveryFetchError("; ".join(errors), diagnostics)
@@ -166,6 +242,8 @@ def probe_discovery_sources(
                         "httpAttempts": 0,
                         "fallbackUsed": False,
                         "initialFailureClass": None,
+                        "resolvedUrl": url,
+                        "redirected": False,
                         "errors": [],
                     }
                 else:
@@ -176,7 +254,8 @@ def probe_discovery_sources(
                     )
                 endpoint_ok += 1
                 endpoint_results.append({"url": url, **diagnostics})
-                source_candidates.extend(radar_module.discovery_candidates(source, payload, url))
+                page_url = str(diagnostics.get("resolvedUrl") or url)
+                source_candidates.extend(radar_module.discovery_candidates(source, payload, page_url))
             except Exception as exc:  # pragma: no cover - dipende dalla rete live
                 diagnostics = dict(getattr(exc, "diagnostics", {}) or {})
                 failure_class = str(diagnostics.get("failureClass") or classify_fetch_error(exc))
@@ -188,6 +267,8 @@ def probe_discovery_sources(
                     "fallbackUsed": bool(diagnostics.get("fallbackUsed")),
                     "initialFailureClass": diagnostics.get("initialFailureClass"),
                     "failureClass": failure_class,
+                    "resolvedUrl": diagnostics.get("resolvedUrl"),
+                    "redirected": bool(diagnostics.get("redirected")),
                     "errors": diagnostics.get("errors") or [str(exc)],
                 })
 
