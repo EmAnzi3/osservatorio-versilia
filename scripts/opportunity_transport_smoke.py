@@ -5,6 +5,11 @@ Il probe serve alla PR/diagnostica: non pubblica opportunità e non modifica dat
 Un recupero tramite reader proxy è esplicitamente ``degraded``: dimostra che il
 canale discovery resta leggibile, ma non equivale a una connessione diretta alla
 fonte ufficiale e non può essere usato come verifica per la pubblicazione.
+
+Nella quality gate il probe è bloccante se anche una sola fonte critica resta
+``error`` o ``not_configured``. Una fonte ``degraded`` è accettata soltanto perché
+il reader mantiene il discovery e la successiva promozione richiede comunque una
+verifica diretta della fonte primaria.
 """
 from __future__ import annotations
 
@@ -148,7 +153,7 @@ def main() -> int:
             f"cause {classes}"
         )
     print("SUMMARY", json.dumps(report["summary"], ensure_ascii=False, sort_keys=True))
-    return 0
+    return 1 if report["summary"]["error"] or report["summary"]["notConfigured"] else 0
 
 
 if __name__ == "__main__":
