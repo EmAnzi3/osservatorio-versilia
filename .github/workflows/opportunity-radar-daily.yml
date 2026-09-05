@@ -43,6 +43,7 @@ jobs:
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
+          python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -50,7 +51,7 @@ jobs:
         run: python scripts/materialize_opportunity_release_snapshot.py
 
       - name: Scan live sources and build daily snapshot
-        run: python scripts/opportunity_daily_refresh_resilient.py
+        run: python scripts/opportunity_daily_refresh_stable.py
 
       - name: Upload continuity diagnostic
         if: always()
@@ -74,7 +75,8 @@ jobs:
           expected_date = datetime.now(timezone.utc).date().isoformat()
           assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'
-          assert p.get('dailyHardeningVersion') == '0.4.4-h4'
+          assert p.get('dailyHardeningVersion') == '0.4.4-h5'
+          assert p.get('sourceHealthGraceDays') == 2
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           assert (p.get('backtest') or {}).get('passed') is True
@@ -84,10 +86,11 @@ jobs:
           assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
 
           transport = p.get('transportAudit') or {}
-          assert transport.get('schemaVersion') == '1.1', transport
+          assert transport.get('schemaVersion') == '1.2', transport
           transport_summary = transport.get('summary') or {}
           assert int(transport_summary.get('configuredSources') or 0) > 0, transport_summary
           assert int(transport_summary.get('configuredEndpoints') or 0) > 0, transport_summary
+          assert int(transport_summary.get('sourceHealthGraceDays') or 0) == 2, transport_summary
           assert (p.get('counts') or {}).get('transportFallbacks') == int(transport_summary.get('fallbackSuccesses') or 0)
           assert (p.get('counts') or {}).get('transportProxyFallbacks') == int(transport_summary.get('proxySuccesses') or 0)
           assert (p.get('counts') or {}).get('transportFailures') == int(transport_summary.get('endpointFailures') or 0)
@@ -105,7 +108,8 @@ jobs:
               f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
               f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date} · "
               f"fallback trasporto {transport_summary.get('fallbackSuccesses', 0)} · "
-              f"proxy discovery {transport_summary.get('proxySuccesses', 0)} · "
+              f"fonti in grace {transport_summary.get('sourcesInGrace', 0)} · "
+              f"fonti unhealthy {transport_summary.get('unhealthySources', 0)} · "
               f"fallimenti endpoint {transport_summary.get('endpointFailures', 0)} · "
               f"continuità riconciliata {(p.get('continuityReconciliation') or {}).get('reconciled', 0)}"
           )
