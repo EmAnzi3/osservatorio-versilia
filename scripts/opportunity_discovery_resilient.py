@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """Trasporto resiliente e diagnostica strutturata per il discovery del Radar.
 
-Il collector storico distingueva soltanto successo/errore e usava un fetch HTTP
-semplice. Questo modulo mantiene invariati parser e regole di ammissibilità ma
-rende il trasporto più adatto ai portali istituzionali: HTTP browser-like con
-retry, fallback Chromium selettivo e classificazione esplicita dei fallimenti.
+Ordine di trasporto:
+1. HTTP browser-like con retry;
+2. Chromium locale, preservando il DOM renderizzato;
+3. Jina Reader esclusivamente come fallback di discovery.
 
-A differenza della riconferma di un bando già noto, il discovery deve preservare
-il DOM: il fallback Chromium restituisce quindi l'HTML renderizzato e l'URL
-finale, così titoli e link restano estraibili anche dopo redirect o rendering JS.
-Ogni fetch live registra inoltre una traccia strutturata che il refresh h3
-incorpora nello snapshot giornaliero.
+Il terzo livello non costituisce mai verifica della fonte e non può promuovere
+un'opportunità: serve soltanto a mantenere visibile una pagina ufficiale quando
+il runner GitHub non riesce a raggiungerla direttamente. Le sorgenti recuperate
+tramite reader restano quindi runtime ``degraded`` e ogni candidato deve essere
+ricondotto alla fonte primaria prima di entrare nell'output pubblico.
 """
 from __future__ import annotations
 
+import html
+import re
 import socket
 import time
 import urllib.error
@@ -24,6 +26,11 @@ import opportunity_daily_refresh_revalidated as transport
 
 
 FETCH_TRACE: dict[str, dict[str, Any]] = {}
+_READER_BASE = "https://r.jina.ai/"
+_GENERIC_LINK_LABELS = {
+    "scopri", "scopri tutto", "leggi", "leggi tutto", "approfondisci",
+    "continua", "vai", "azioni", "dettagli", "more", "read more",
+}
 
 
 class DiscoveryFetchError(RuntimeError):
@@ -76,8 +83,19 @@ def classify_fetch_error(exc: BaseException) -> str:
 
 
 def _browser_fallback_allowed(failure_class: str) -> bool:
-    # Un 404/410 è configuration drift e non va mascherato. Un DNS failure è
-    # indipendente dal client e Chromium non aggiunge copertura reale.
+    # 404/410 = configuration drift: non va mascherato. DNS = possibile typo o
+    # dominio ritirato: non viene delegato a un proxy esterno.
+    return failure_class in {
+        "http_403_waf",
+        "http_429_rate_limit",
+        "http_5xx",
+        "timeout_client",
+        "network_error",
+        "fetch_error",
+    }
+
+
+def _reader_fallback_allowed(failure_class: str) -> bool:
     return failure_class in {
         "http_403_waf",
         "http_429_rate_limit",
@@ -140,13 +158,89 @@ def _fetch_playwright_html(url: str, timeout_ms: int = 45_000) -> tuple[str, str
                 page.wait_for_load_state("networkidle", timeout=8_000)
             except PlaywrightTimeoutError:
                 pass
-            html = page.content()
-            if not html.strip():
+            rendered = page.content()
+            if not rendered.strip():
                 raise RuntimeError("Chromium ha restituito un DOM vuoto")
-            return html, page.url
+            return rendered, page.url
         finally:
             context.close()
             browser.close()
+
+
+def _fetch_reader_markdown(url: str, timeout: int = 35) -> str:
+    """Recupera il contenuto tramite Jina Reader senza attribuirgli autorità."""
+    request = urllib.request.Request(
+        _READER_BASE + url,
+        headers={
+            "User-Agent": transport._BROWSER_UA,
+            "Accept": "text/plain,text/markdown;q=0.9,*/*;q=0.8",
+            "X-Engine": "cf-browser-rendering",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=max(15, min(45, timeout))) as response:
+        charset = response.headers.get_content_charset() or "utf-8"
+        return response.read().decode(charset, errors="replace")
+
+
+def _strip_markdown(text: str) -> str:
+    text = re.sub(r"!\[([^\]]*)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"[*_`>#]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _markdown_to_discovery_html(markdown: str, page_url: str) -> str:
+    """Converte heading/link Markdown in card HTML consumabili dal parser storico.
+
+    I Reader spesso espongono CTA generiche ("SCOPRI TUTTO") subito dopo il
+    titolo: in quel caso il link viene associato all'heading precedente.
+    """
+    lines = [line.rstrip() for line in markdown.splitlines()]
+    cards: list[str] = []
+    recent_heading: str | None = None
+    recent_heading_at = -99
+    link_re = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+|/[^)\s]+)\)")
+
+    for index, line in enumerate(lines):
+        heading = re.match(r"^\s*#{1,6}\s+(.+?)\s*$", line)
+        if heading:
+            recent_heading = _strip_markdown(heading.group(1))
+            recent_heading_at = index
+
+        for match in link_re.finditer(line):
+            label = _strip_markdown(match.group(1))
+            href = match.group(2).strip()
+            title = label
+            if (
+                label.casefold().strip(" .:–—-") in _GENERIC_LINK_LABELS
+                and recent_heading
+                and index - recent_heading_at <= 5
+            ):
+                title = recent_heading
+            if len(title) < 7:
+                continue
+            before = lines[max(0, index - 3):index]
+            after = lines[index + 1:min(len(lines), index + 4)]
+            context = _strip_markdown(" ".join([*before, line, *after]))
+            cards.append(
+                "<h3><a href=\"{}\">{}</a></h3><p>{}</p>".format(
+                    html.escape(href, quote=True),
+                    html.escape(title),
+                    html.escape(context[:1200]),
+                )
+            )
+
+    if not cards:
+        visible = _strip_markdown(markdown)
+        if visible:
+            # Nessuna identità inventata: il fallback testuale produce soltanto
+            # l'eventuale segnale generico già previsto dal collector v0.3.
+            cards.append(
+                "<h3>Aggiornamenti dalla fonte ufficiale</h3><p>{}</p>".format(
+                    html.escape(visible[:5000])
+                )
+            )
+    return "<html><body>" + "".join(cards) + "</body></html>"
 
 
 def fetch_with_diagnostics(
@@ -157,6 +251,8 @@ def fetch_with_diagnostics(
     """Scarica una pagina e restituisce anche il percorso di trasporto seguito."""
     http_attempts = max(2, int(attempts or 1))
     errors: list[str] = []
+    failure_class = "fetch_error"
+
     try:
         payload, resolved_url = _fetch_browser_html_with_url(
             url, timeout=timeout, attempts=http_attempts
@@ -166,7 +262,9 @@ def fetch_with_diagnostics(
             "transport": "http_browser",
             "httpAttempts": http_attempts,
             "fallbackUsed": False,
+            "proxyUsed": False,
             "initialFailureClass": None,
+            "browserFailureClass": None,
             "failureClass": None,
             "resolvedUrl": resolved_url,
             "redirected": resolved_url != url,
@@ -174,10 +272,11 @@ def fetch_with_diagnostics(
         }
         _record_trace(url, diagnostics)
         return payload, diagnostics
-    except Exception as http_error:  # pragma: no cover - dipende dalla rete live
+    except Exception as http_error:  # pragma: no cover - rete live
         failure_class = classify_fetch_error(http_error)
         errors.append(f"HTTP [{failure_class}]: {http_error}")
 
+    browser_failure_class: str | None = None
     if _browser_fallback_allowed(failure_class):
         try:
             payload, resolved_url = _fetch_playwright_html(
@@ -189,7 +288,9 @@ def fetch_with_diagnostics(
                 "transport": "chromium",
                 "httpAttempts": http_attempts,
                 "fallbackUsed": True,
+                "proxyUsed": False,
                 "initialFailureClass": failure_class,
+                "browserFailureClass": None,
                 "failureClass": None,
                 "resolvedUrl": resolved_url,
                 "redirected": resolved_url != url,
@@ -197,29 +298,59 @@ def fetch_with_diagnostics(
             }
             _record_trace(url, diagnostics)
             return payload, diagnostics
-        except Exception as browser_error:  # pragma: no cover - dipende dalla rete/browser live
-            browser_class = classify_fetch_error(browser_error)
-            errors.append(f"Chromium [{browser_class}]: {browser_error}")
+        except Exception as browser_error:  # pragma: no cover - rete/browser live
+            browser_failure_class = classify_fetch_error(browser_error)
+            errors.append(f"Chromium [{browser_failure_class}]: {browser_error}")
+
+    if _reader_fallback_allowed(failure_class):
+        try:
+            markdown = _fetch_reader_markdown(url, timeout=max(20, timeout))
+            payload = _markdown_to_discovery_html(markdown, url)
+            if not payload.strip():
+                raise RuntimeError("Reader ha restituito contenuto vuoto")
+            diagnostics = {
+                "status": "ok",
+                "transport": "reader_proxy",
+                "httpAttempts": http_attempts,
+                "fallbackUsed": True,
+                "proxyUsed": True,
+                "initialFailureClass": failure_class,
+                "browserFailureClass": browser_failure_class,
+                "failureClass": None,
+                "resolvedUrl": url,
+                "redirected": False,
+                "errors": errors,
+            }
+            _record_trace(url, diagnostics)
+            return payload, diagnostics
+        except Exception as reader_error:  # pragma: no cover - rete live
+            reader_class = classify_fetch_error(reader_error)
+            errors.append(f"Reader [{reader_class}]: {reader_error}")
+            final_class = reader_class if reader_class != "fetch_error" else (browser_failure_class or failure_class)
             diagnostics = {
                 "status": "error",
                 "transport": "failed",
                 "httpAttempts": http_attempts,
                 "fallbackUsed": True,
+                "proxyUsed": True,
                 "initialFailureClass": failure_class,
-                "failureClass": browser_class if browser_class != "fetch_error" else failure_class,
+                "browserFailureClass": browser_failure_class,
+                "failureClass": final_class,
                 "resolvedUrl": None,
                 "redirected": False,
                 "errors": errors,
             }
             _record_trace(url, diagnostics)
-            raise DiscoveryFetchError("; ".join(errors), diagnostics) from browser_error
+            raise DiscoveryFetchError("; ".join(errors), diagnostics) from reader_error
 
     diagnostics = {
         "status": "error",
         "transport": "failed",
         "httpAttempts": http_attempts,
         "fallbackUsed": False,
+        "proxyUsed": False,
         "initialFailureClass": failure_class,
+        "browserFailureClass": browser_failure_class,
         "failureClass": failure_class,
         "resolvedUrl": None,
         "redirected": False,
@@ -241,7 +372,7 @@ def probe_discovery_sources(
     *,
     payloads: dict[str, str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Versione resiliente del probe v0.3, con diagnostica endpoint per endpoint."""
+    """Probe v0.3 resiliente, con diagnostica endpoint e proxy trasparente."""
     payloads = payloads or {}
     queue: list[dict[str, Any]] = []
     states: list[dict[str, Any]] = []
@@ -258,14 +389,10 @@ def probe_discovery_sources(
                 if url in payloads:
                     payload = payloads[url]
                     diagnostics = {
-                        "status": "ok",
-                        "transport": "fixture",
-                        "httpAttempts": 0,
-                        "fallbackUsed": False,
-                        "initialFailureClass": None,
-                        "failureClass": None,
-                        "resolvedUrl": url,
-                        "redirected": False,
+                        "status": "ok", "transport": "fixture", "httpAttempts": 0,
+                        "fallbackUsed": False, "proxyUsed": False,
+                        "initialFailureClass": None, "browserFailureClass": None,
+                        "failureClass": None, "resolvedUrl": url, "redirected": False,
                         "errors": [],
                     }
                 else:
@@ -278,17 +405,19 @@ def probe_discovery_sources(
                 endpoint_results.append({"url": url, **diagnostics})
                 page_url = str(diagnostics.get("resolvedUrl") or url)
                 source_candidates.extend(radar_module.discovery_candidates(source, payload, page_url))
-            except Exception as exc:  # pragma: no cover - dipende dalla rete live
+            except Exception as exc:  # pragma: no cover - rete live
                 diagnostics = dict(getattr(exc, "diagnostics", {}) or {})
-                failure_class = str(diagnostics.get("failureClass") or classify_fetch_error(exc))
-                endpoint_errors.append(f"{url} [{failure_class}]: {exc}")
+                failure = str(diagnostics.get("failureClass") or classify_fetch_error(exc))
+                endpoint_errors.append(f"{url} [{failure}]: {exc}")
                 endpoint_results.append({
                     "url": url,
                     "status": "error",
                     "transport": diagnostics.get("transport") or "failed",
                     "fallbackUsed": bool(diagnostics.get("fallbackUsed")),
+                    "proxyUsed": bool(diagnostics.get("proxyUsed")),
                     "initialFailureClass": diagnostics.get("initialFailureClass"),
-                    "failureClass": failure_class,
+                    "browserFailureClass": diagnostics.get("browserFailureClass"),
+                    "failureClass": failure,
                     "resolvedUrl": diagnostics.get("resolvedUrl"),
                     "redirected": bool(diagnostics.get("redirected")),
                     "errors": diagnostics.get("errors") or [str(exc)],
@@ -304,7 +433,11 @@ def probe_discovery_sources(
         source_candidates = list(unique.values())[:50]
         queue.extend(source_candidates)
 
-        if endpoint_ok == len(urls) and urls:
+        proxy_successes = sum(
+            row.get("status") == "ok" and row.get("transport") == "reader_proxy"
+            for row in endpoint_results
+        )
+        if endpoint_ok == len(urls) and urls and not proxy_successes:
             runtime = "ok"
         elif endpoint_ok:
             runtime = "degraded"
@@ -317,9 +450,10 @@ def probe_discovery_sources(
             "endpointCount": len(urls),
             "endpointOk": endpoint_ok,
             "fallbackSuccessCount": sum(
-                row.get("status") == "ok" and row.get("transport") == "chromium"
+                row.get("status") == "ok" and row.get("transport") in {"chromium", "reader_proxy"}
                 for row in endpoint_results
             ),
+            "proxySuccessCount": proxy_successes,
             "failureClasses": sorted({
                 str(row.get("failureClass"))
                 for row in endpoint_results
