@@ -36,7 +36,7 @@ def validate() -> None:
         raise RuntimeError("Economia deve contenere 32 indicatori")
     if registry.get("expectedMetricCount") != 184 or registry.get("expectedInlineMetricCount") != 179:
         raise RuntimeError("Source registry non allineato a 184/179")
-    production = next(section for section in data["themes"]["economia"]["sections"] if section["key"] == "production")
+    production = next(section for section in data["themes"]["economia"]["sections"] if section["key"] == "produzione")
     if production["metrics"].count(METRIC_KEY) != 1:
         raise RuntimeError("Atlante non inserito una sola volta in Struttura del sistema produttivo")
     for path in (APP_00, APP_02, APP_04, BUILD_STATIC):

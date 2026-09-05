@@ -1,39 +1,3 @@
-["value"] for row in rows)
-    return {
-        "meta": {
-            "theme": "economia",
-            "label": "Atlante delle attività economiche",
-            "shortLabel": "Atlante attività economiche",
-            "description": "Esplora 1.228 codici ATECO: unità locali attive, specializzazione, peso regionale, artigianato e storico 2014–2025 nei sette Comuni della Versilia.",
-            "unit": "number",
-            "year": "2025",
-            "source": SOURCE_LABEL,
-            "detailRoute": CANONICAL_ROUTE,
-            "searchTerms": [
-                "ateco", "attività economiche", "imprese", "unità locali", "ul attive",
-                "specializzazione", "registro imprese", "infocamere", "nautica", "marmo",
-                "stabilimenti balneari", "ristorazione", "immobiliare", "gallerie d'arte",
-            ],
-        },
-        "sourceUrl": SOURCE_URL,
-        "polarity": "neutral",
-        "dataStorage": {"type": "special-route", "path": "data/economy-atlas/metadata.json"},
-        "rows": rows,
-        "aggregate": {
-            "label": "Versilia",
-            "value": aggregate_value,
-            "note": "Unità locali attive ricostruite senza doppio conteggio dai codici terminali disponibili, anno 2025.",
-        },
-        "normalizedAggregate": None,
-        "method": {
-            "type": "Dato ufficiale / esploratore gerarchico",
-            "formula": "Valori diretti quando disponibili; per i nodi gerarchici la composizione somma i discendenti terminali senza duplicare i livelli padre.",
-            "coverage": "7/7 Comuni · 1.228 codici",
-            "caveat": "0 indica un valore osservato pari a zero; n.d. indica dato non restituito o non disponibile. Gli addetti restano negli indicatori Istat ASIA.",
-        },
-    }
-
-
 def patch_catalog() -> None:
     data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
     _, payload = load_atlas_payload()
@@ -44,9 +8,9 @@ def patch_catalog() -> None:
     if METRIC_KEY not in theme["metrics"]:
         theme["metrics"].append(METRIC_KEY)
     sections = theme.get("sections", [])
-    production = next((section for section in sections if section.get("key") == "production"), None)
+    production = next((section for section in sections if section.get("key") == "produzione"), None)
     if not production:
-        raise RuntimeError("Sezione Economia 'production' non trovata")
+        raise RuntimeError("Sezione Economia 'produzione' non trovata")
     if METRIC_KEY not in production["metrics"]:
         production["metrics"].append(METRIC_KEY)
     data["version"] = RELEASE_VERSION
@@ -96,4 +60,38 @@ def patch_renderer() -> None:
       <div class="metric-group-buttons">${section.metrics.map(key => {
         const metric = data.metrics[key]; const meta = metric.meta; const label = labelCounts[meta.shortLabel] > 1 ? meta.label : meta.shortLabel;
         if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${indicatorHref(metric)}"><span>${html(label)}</span><small>Atlante interattivo <b>→</b></small></a>`;
-        return
+        return `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(label)}</button>`;
+      }).join('')}</div>
+    </section>`).join('')}</div>`;
+  }
+
+  function groupedIndicatorCards(data, town, themeKey, activeKey) {
+    const theme = data.themes[themeKey];
+    return themeSections(theme).map(section => `<section class="indicator-group" data-section="${html(section.key)}">
+      <div class="indicator-group-heading"><div><span class="overline">Sezione</span><h4>${html(section.label)}</h4></div><p>${html(section.description || '')}</p></div>
+      <div class="indicator-card-grid">${section.metrics.map(key => {
+        const metric = data.metrics[key];
+        if (metric.dataStorage?.type === 'special-route') return `<a class="indicator-card special-route-card" href="#atlante-attivita-economiche"><span class="indicator-card-kicker">Atlante interattivo</span><h5>${html(metric.meta.label)}</h5><p>${html(metric.meta.description)}</p><span class="text-link">Esplora nel profilo <b>↓</b></span></a>`;
+        return indicatorCard(data, town, themeKey, key, activeKey);
+      }).join('')}</div>
+    </section>`).join('');
+  }
+'''
+        text = _replace_regex(text, pattern, replacement, "controlli e card Atlante")
+    APP_02.write_text(text, encoding="utf-8")
+
+    text = APP_04.read_text(encoding="utf-8")
+    if "economy-atlas-deep-dive" not in text:
+        pattern = r"    if \(themeKey === 'economia'\) \{.*?\n    \}\n    if \(themeKey === 'mobilita'\) \{"
+        replacement = r'''    if (themeKey === 'economia') {
+      const e = detail.economy;
+      const atlasMetric = data.metrics.economyActivityAtlas;
+      return `<section class="topic-deep-dive economy-atlas-deep-dive" id="atlante-attivita-economiche"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Struttura economica</h3></div><p>Fasce di reddito e Atlante ATECO in un'unica lettura comunale. Gli addetti Istat ASIA restano negli indicatori dedicati, separati dai dati del Registro Imprese.</p></div>
+        <div class="deep-facts-grid"><article class="deep-fact"><span>Dichiaranti</span><strong>${number0.format(town.taxpayers)}</strong><small>Anno ${html(e.incomeYear)}</small></article></div>
+        <details class="detail-disclosure"><summary><span>Mostra le fasce di reddito</span><small>Distribuzione dei dichiaranti</small></summary><div><h4>Dichiaranti per fascia di reddito</h4><ul class="deep-list deep-list--income">${e.incomeBands.map(b => `<li><span>${html(b.label)}</span><span class="deep-list-value"><strong>${number0.format(b.people)}</strong><small>dichiaranti</small></span></li>`).join('')}</ul></div></details>
+        <div class="atlas-native-heading"><div><span class="overline">Economia · Registro Imprese</span><h4>${html(atlasMetric.meta.label)}</h4><p>${html(atlasMetric.meta.description)}</p></div><a class="text-link" href="${indicatorHref(atlasMetric)}">Apri a tutta pagina <b>→</b></a></div>
+        <ov-economy-atlas town="${normalize(town.name).replaceAll(' ', '-')}" embedded></ov-economy-atlas></section>`;
+    }
+    if (themeKey === 'mobilita') {'''
+        text = _replace_regex(text, pattern, replacement, "deep dive Economia")
+    APP_04.write_text(text, encoding="utf-8")
