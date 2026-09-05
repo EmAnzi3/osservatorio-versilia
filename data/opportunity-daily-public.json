@@ -1,7 +1,7 @@
 {
   "schemaVersion": "4.0",
-  "generatedAt": "2026-09-04T11:29:25+00:00",
-  "referenceDate": "2026-09-04",
+  "generatedAt": "2026-09-05T07:41:27+00:00",
+  "referenceDate": "2026-09-05",
   "municipalities": [
     "Camaiore",
     "Forte dei Marmi",
@@ -12,24 +12,24 @@
     "Viareggio"
   ],
   "counts": {
-    "candidates": 117,
-    "public": 29,
-    "eligible": 6,
+    "candidates": 116,
+    "public": 28,
+    "eligible": 5,
     "conditional": 8,
     "reviewInternal": 40,
-    "discardedNonMunicipal": 50,
+    "discardedNonMunicipal": 51,
     "staleSources": 1,
-    "preQualityOperational": 22,
-    "qualityPassed": 20,
+    "preQualityOperational": 20,
+    "qualityPassed": 18,
     "qualityHeld": 2,
     "humanReviewMatched": 24,
     "humanReviewPromoted": 5,
     "humanReviewSuppressed": 19,
-    "archive": 5,
+    "archive": 6,
     "continuityHold": 0,
-    "duplicatesCollapsed": 7,
-    "discoveryReview": 142,
-    "applicationOpen": 25,
+    "duplicatesCollapsed": 6,
+    "discoveryReview": 144,
+    "applicationOpen": 24,
     "rollingOpen": 2,
     "announcedUpcoming": 2,
     "coverageHold": 0,
@@ -40,31 +40,31 @@
   },
   "municipalitySummary": {
     "Camaiore": {
-      "eligible": 5,
+      "eligible": 4,
       "conditional": 9
     },
     "Forte dei Marmi": {
-      "eligible": 5,
+      "eligible": 4,
       "conditional": 7
     },
     "Massarosa": {
-      "eligible": 5,
+      "eligible": 4,
       "conditional": 8
     },
     "Pietrasanta": {
-      "eligible": 5,
+      "eligible": 4,
       "conditional": 8
     },
     "Seravezza": {
-      "eligible": 6,
+      "eligible": 5,
       "conditional": 8
     },
     "Stazzema": {
-      "eligible": 6,
+      "eligible": 5,
       "conditional": 8
     },
     "Viareggio": {
-      "eligible": 5,
+      "eligible": 4,
       "conditional": 8
     }
   },
@@ -75,15 +75,15 @@
       "candidateCount": 39,
       "publicCount": 3,
       "reviewCount": 3,
-      "discardedCount": 26,
+      "discardedCount": 27,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-09-04",
-        "ageDays": 0,
+        "observedDate": "2026-09-03",
+        "ageDays": 2,
         "maxAgeDays": 45
       },
       "error": null,
-      "preQualityPublicCount": 10,
+      "preQualityPublicCount": 9,
       "qualityHoldCount": 0
     },
     {
@@ -95,8 +95,8 @@
       "discardedCount": 3,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-08-14",
-        "ageDays": 21,
+        "observedDate": "2026-07-30",
+        "ageDays": 37,
         "maxAgeDays": 45
       },
       "error": null,
@@ -106,18 +106,18 @@
     {
       "sourceId": "regione-toscana-fse",
       "status": "ok",
-      "candidateCount": 10,
-      "publicCount": 1,
+      "candidateCount": 9,
+      "publicCount": 0,
       "reviewCount": 0,
       "discardedCount": 9,
       "freshness": {
         "status": "current",
-        "observedDate": "2026-09-04",
-        "ageDays": 0,
+        "observedDate": "2026-09-03",
+        "ageDays": 2,
         "maxAgeDays": 45
       },
       "error": null,
-      "preQualityPublicCount": 1,
+      "preQualityPublicCount": 0,
       "qualityHoldCount": 0
     },
     {
@@ -130,7 +130,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-16",
-        "ageDays": 80,
+        "ageDays": 81,
         "maxAgeDays": 120
       },
       "error": null,
@@ -147,7 +147,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-06-08",
-        "ageDays": 88,
+        "ageDays": 89,
         "maxAgeDays": 120
       },
       "error": null,
@@ -164,7 +164,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-08-12",
-        "ageDays": 23,
+        "ageDays": 24,
         "maxAgeDays": 120
       },
       "error": null,
@@ -181,7 +181,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-09-01",
-        "ageDays": 3,
+        "ageDays": 4,
         "maxAgeDays": 120
       },
       "error": null,
@@ -198,7 +198,7 @@
       "freshness": {
         "status": "stale",
         "observedDate": "2026-01-30",
-        "ageDays": 217,
+        "ageDays": 218,
         "maxAgeDays": 45
       },
       "error": null,
@@ -215,7 +215,7 @@
       "freshness": {
         "status": "current",
         "observedDate": "2026-09-04",
-        "ageDays": 0,
+        "ageDays": 1,
         "maxAgeDays": 45
       },
       "error": null,
@@ -224,112 +224,6 @@
     }
   ],
   "opportunities": [
-    {
-      "id": "opp-489fb79e190286",
-      "source_id": "regione-toscana-fse",
-      "source_name": "Regione Toscana — PR FSE+ 2021-2027",
-      "publisher": "Regione Toscana · PR FSE+ 2021-2027",
-      "title": "Contributi ai Comuni per i servizi educativi della prima infanzia, bando \"Nidi di qualità\" 2026-2027",
-      "url": "https://www.regione.toscana.it/it/-/contributi-ai-comuni-per-i-servizi-educativi-della-prima-infanzia-bando-nidi-di-qualit%C3%A0-2026-2027",
-      "summary": "Pr Fse 2021-2027, priorità 2 \"Istruzione e formazione\", azione 2.f.12. Richieste di adesione via pec entro il 4 settembre 2026. Pubblicato il 09.07.2026 Stato: Aperto Scadenza presentazione domande 04.09.2026",
-      "status": "open",
-      "opens_at": null,
-      "deadline_at": "2026-09-04",
-      "published_at": "2026-07-09",
-      "beneficiary_text": "Contributi ai Comuni per i servizi educativi della prima infanzia, bando \"Nidi di qualità\" 2026-2027. Pr Fse 2021-2027, priorità 2 \"Istruzione e formazione\", azione 2.f.12. Richieste di adesione via pec entro il 4 settembre 2026. Pubblicato il 09.07.2026 Stato: Aperto Scadenza presentazione domande 04.09.2026",
-      "municipalities": [
-        "Camaiore",
-        "Forte dei Marmi",
-        "Massarosa",
-        "Pietrasanta",
-        "Seravezza",
-        "Stazzema",
-        "Viareggio"
-      ],
-      "eligibility": "eligible",
-      "eligibility_reason": "Ammissibilità calcolata separatamente per ciascun Comune.",
-      "themes": [],
-      "funding_total_eur": null,
-      "max_contribution_eur": null,
-      "cofunding_text": null,
-      "priority": "medium",
-      "detected_at": "2026-09-04T11:19:36+00:00",
-      "fingerprint": "616d2151dd2f1ff1a3f298964b05c7e4ae0bf4d6b5eb067e1b4670491daf5f95",
-      "municipality_eligibility": {
-        "Camaiore": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Forte dei Marmi": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Massarosa": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Pietrasanta": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Seravezza": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Stazzema": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        },
-        "Viareggio": {
-          "status": "eligible",
-          "reason": "Il testo della fonte indica esplicitamente Comuni o enti locali tra i destinatari."
-        }
-      },
-      "applicant_eligibility": "eligible",
-      "rule_id": "rt-nidi-qualita-2026",
-      "applicant_type": "comune",
-      "municipality_role": "direct_applicant",
-      "final_beneficiaries": "bambini e bambine e famiglie utenti dei servizi educativi",
-      "partnership_required": false,
-      "project_requirements": null,
-      "geographic_scope": "Toscana",
-      "geographic_eligibility": "eligible",
-      "territorial_relevance": "direct",
-      "eligibility_evidence": {
-        "rule_id": "rt-nidi-qualita-2026",
-        "text": null,
-        "source_url": "https://www.regione.toscana.it/it/-/contributi-ai-comuni-per-i-servizi-educativi-della-prima-infanzia-bando-nidi-di-qualit%C3%A0-2026-2027"
-      },
-      "actionable_for_municipality": true,
-      "decision_class": null,
-      "exclusion_code": null,
-      "opportunity_type": "funding",
-      "lifecycle_stage": "application_open",
-      "deadline_evidence": null,
-      "territorial_evidence_url": null,
-      "quality_gate": {
-        "status": "pass",
-        "missing": [],
-        "reasons": []
-      },
-      "presentation": {
-        "source_label": "PR Toscana FSE+ 2021-2027",
-        "source_mark": "FSE+",
-        "source_class": "fse",
-        "category": "istruzione",
-        "description": "Contributi ai Comuni per sostenere i servizi educativi della prima infanzia e migliorare qualità e accessibilità dei nidi.",
-        "condition_label": null,
-        "source_favicon": "https://www.regione.toscana.it/favicon.ico"
-      },
-      "deadline_time": null,
-      "access_mode": "direct",
-      "also_seen_in": [
-        "regione-toscana-fse",
-        "regione-toscana"
-      ],
-      "dedupe_key": "title:contributi ai comuni per i servizi educativi della prima infanzia bando nidi di qualita 2026 2027|deadline:2026-09-04",
-      "is_new": false
-    },
     {
       "id": "opp-88690b4c017a0c",
       "source_id": "mic-spettacolo",
@@ -406,7 +300,7 @@
         "source_url": "https://cultura.gov.it/comunicato/bando-per-la-promozione-della-musica-jazz-anno-2027-avviso-pubblico-e-apertura-dei-termini-di-presentazione-delle-domande"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "presentation": {
         "source_label": "Ministero della Cultura · DG Spettacolo",
         "source_mark": "MiC",
@@ -457,7 +351,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:19:39+00:00",
+      "detected_at": "2026-09-05T07:34:04+00:00",
       "fingerprint": "85a2931c5ee60679a8c1b62a058c59f1af1e11e2c97fd294df74b74582b09508",
       "municipality_eligibility": {
         "Camaiore": {
@@ -566,7 +460,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:19:41+00:00",
+      "detected_at": "2026-09-05T07:34:05+00:00",
       "fingerprint": "c527f9da6d9004efdfe1b6c57e616d139865da8b659a9015f88922e7b2199073",
       "municipality_eligibility": {
         "Camaiore": {
@@ -730,7 +624,7 @@
         "condition_label": "Impegno assunzionale e delega ATS"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -767,7 +661,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:19:56+00:00",
+      "detected_at": "2026-09-05T07:34:15+00:00",
       "fingerprint": "7af7da5349575b73e2e20a9d4459f769682a72270d0fa7364d68b4df6fde56d1",
       "municipality_eligibility": {
         "Camaiore": {
@@ -931,7 +825,7 @@
         "condition_label": "Pipeline di investimenti e progetto LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": false
@@ -1024,7 +918,7 @@
         "condition_label": "Comunità energetiche e partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": false
@@ -1117,7 +1011,7 @@
         "condition_label": "Progetto/partenariato LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": false
@@ -1210,7 +1104,7 @@
         "condition_label": "Città/progetto dimostrativo LIFE"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": false
@@ -1246,7 +1140,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:28:24+00:00",
+      "detected_at": "2026-09-05T07:40:45+00:00",
       "fingerprint": "f495a66df90ea23fa198dfe7804b5313c61ff510d43941fbb89dde6bc3aae8af",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1412,7 +1306,7 @@
         "condition_label": "Partenariato transnazionale"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -1446,7 +1340,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:27:38+00:00",
+      "detected_at": "2026-09-05T07:40:12+00:00",
       "fingerprint": "d292f9661c0ad594b68235e5c81ad00c82e9222bc8ec01b214b34a0d706a02a0",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1551,7 +1445,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:26:58+00:00",
+      "detected_at": "2026-09-05T07:39:42+00:00",
       "fingerprint": "93e219752c95b0b319e2b4272b3ac935108c5e8b771b934eb3bd678ee156d730",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1657,7 +1551,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:18:10+00:00",
+      "detected_at": "2026-09-05T07:32:49+00:00",
       "fingerprint": "35fcf629ad1c89c2dbabb1521b063ae333226b42fa3919b78253d5c8e20c3c2f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -1821,7 +1715,7 @@
         "condition_label": "Soglia demografica"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -1858,7 +1752,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-09-04T11:28:09+00:00",
+      "detected_at": "2026-09-05T07:40:34+00:00",
       "fingerprint": "d17b122ec4fa2b9761e0b073ab6fb91536cdae671e3bc8cd58ac8e422f92bd97",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2023,7 +1917,7 @@
         "condition_label": "Progetto territoriale"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -2116,7 +2010,7 @@
         "condition_label": "Comune costiero"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -2209,7 +2103,7 @@
         "condition_label": "Partenariato richiesto"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -2243,7 +2137,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:18:07+00:00",
+      "detected_at": "2026-09-05T07:32:47+00:00",
       "fingerprint": "00b755c2877de98a35b2a453b01984d25f31463424ba7cb06c15b2027787688f",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2346,7 +2240,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "high",
-      "detected_at": "2026-09-04T11:18:12+00:00",
+      "detected_at": "2026-09-05T07:32:51+00:00",
       "fingerprint": "5c30d6ba375cb6bc880893d6b12e3d6dc53631edda47abacf9bd13c930a431bd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2451,7 +2345,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:28:22+00:00",
+      "detected_at": "2026-09-05T07:40:43+00:00",
       "fingerprint": "52537afb758f0958ecb29df56ad3697667599e77c1c9ac3311d962199ec10ce4",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2560,7 +2454,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:28:52+00:00",
+      "detected_at": "2026-09-05T07:41:04+00:00",
       "fingerprint": "14f431c160c5f2382754875e1304eba487fa3a68f28cbb6a9e0fb501346768a7",
       "municipality_eligibility": {
         "Camaiore": {
@@ -2725,7 +2619,7 @@
         "condition_label": "Titolo di esclusività e requisiti evento"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "first_seen_at": "2026-08-24",
       "is_new": false
@@ -2818,7 +2712,7 @@
         "condition_label": "Misura a sportello"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -2911,7 +2805,7 @@
         "condition_label": "DEGURBA e partenariato europeo"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -3004,7 +2898,7 @@
         "condition_label": "SECAP / piano energia-clima"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -3097,7 +2991,7 @@
         "condition_label": "In attesa del bando"
       },
       "verified_direct": true,
-      "verified_at": "2026-09-04",
+      "verified_at": "2026-09-05",
       "verification_status": "live",
       "is_new": false,
       "first_seen_at": "2026-08-25"
@@ -3455,7 +3349,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:25:19+00:00",
+      "detected_at": "2026-09-05T07:38:20+00:00",
       "fingerprint": "c25be1fd8ef5b3446f6e55c7112ccee3e972a54ae365f4f1d93f07f9671c066c",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3546,7 +3440,7 @@
       "max_contribution_eur": null,
       "cofunding_text": null,
       "priority": "medium",
-      "detected_at": "2026-09-04T11:25:15+00:00",
+      "detected_at": "2026-09-05T07:38:17+00:00",
       "fingerprint": "93f91999aa938515dd279e0c2316bf9d21b76be704d4c676bfbdbd34e1dfc7fd",
       "municipality_eligibility": {
         "Camaiore": {
@@ -3638,7 +3532,7 @@
     "lifecycleSuppressed": 1
   },
   "ruleStats": {
-    "matched": 43,
+    "matched": 41,
     "promoted_from_review": 12,
     "role_suppressed": 19,
     "geography_suppressed": 1,
@@ -3650,6 +3544,21 @@
     "lifecycleSuppressed": 1
   },
   "archive": [
+    {
+      "id": "opp-489fb79e190286",
+      "title": "Contributi ai Comuni per i servizi educativi della prima infanzia, bando \"Nidi di qualità\" 2026-2027",
+      "source_id": "regione-toscana-fse",
+      "source_label": "PR Toscana FSE+ 2021-2027",
+      "source_mark": "FSE+",
+      "source_class": "fse",
+      "url": "https://www.regione.toscana.it/it/-/contributi-ai-comuni-per-i-servizi-educativi-della-prima-infanzia-bando-nidi-di-qualit%C3%A0-2026-2027",
+      "deadline_at": "2026-09-04",
+      "deadline_time": null,
+      "closed_at": "2026-09-05",
+      "archive_reason": "deadline_passed",
+      "identity_key": "rule:rt-nidi-qualita-2026",
+      "source_favicon": "https://www.regione.toscana.it/favicon.ico"
+    },
     {
       "id": "opp-5d9fc1cd9a537e",
       "title": "Cultura nei piccoli comuni — Edizione 1",
@@ -3740,7 +3649,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-09-04",
+        "observedDate": "2026-09-03",
         "publicCount": 3,
         "candidateCount": 39,
         "reviewCount": 3,
@@ -3763,7 +3672,7 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-08-14",
+        "observedDate": "2026-07-30",
         "publicCount": 0,
         "candidateCount": 4,
         "reviewCount": 1,
@@ -3786,14 +3695,14 @@
         "historicalReplay": true,
         "runtimeStatus": "ok",
         "freshness": "current",
-        "observedDate": "2026-09-04",
-        "publicCount": 1,
-        "candidateCount": 10,
+        "observedDate": "2026-09-03",
+        "publicCount": 0,
+        "candidateCount": 9,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
         "note": "Canale dedicato ai bandi FSE+. Le regole riusano la famiglia documentale Regione Toscana.",
-        "verifiedOutputCount": 1
+        "verifiedOutputCount": 0
       },
       {
         "source_id": "fondazione-cr-lucca",
@@ -3995,7 +3904,7 @@
         "freshness": "discovery",
         "observedDate": null,
         "publicCount": 0,
-        "candidateCount": 40,
+        "candidateCount": 42,
         "reviewCount": 0,
         "qualityHoldCount": 0,
         "replacementNeeded": false,
@@ -5240,10 +5149,10 @@
     ]
   },
   "deduplication": {
-    "inputRecords": 20,
-    "outputRecords": 14,
-    "duplicateGroups": 7,
-    "recordsCollapsed": 7
+    "inputRecords": 18,
+    "outputRecords": 13,
+    "duplicateGroups": 6,
+    "recordsCollapsed": 6
   },
   "hardeningVersion": "0.2.5",
   "discoveryQueue": [
@@ -5518,7 +5427,7 @@
       "territory": "Italia",
       "title": "Bandi e Avvisi",
       "url": "https://www.mase.gov.it/portale/bandi-e-avvisi",
-      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_qfqt\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
+      "summary": "Titolo: document.getElementById(\"_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_qpjy_orvr\").addEventListener(\"keydown\", function (event) { if (event.key === \"Enter\") { event.preventDefault(); document.getElementById(\"edit-submit-ricerca\").click(); } }); Stato: - Qualsiasi - Aperto Chiuso Annullato Direzioni: - Qualsiasi - Direzione generale delle politiche per l’innovazione, il personale e la partecipazione (IPP) Direzione generale per lo sviluppo sostenibile, per il danno ambientale e per i rapporti con l'Unione europea e gli organismi internazionali (SVI) Direzio",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5648,33 +5557,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "\"Giornata degli internati italiani nei campi di concentramento\"",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/giornata-internati-italiani-nei-campi-concentramento",
-      "summary": "Consegna di due medaglie d’onore ai familiari di internati Comunicato stampa 20 Settembre 2025",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "1° TROFEO COMUNE DI POGGIO A CAIANO domenica 05 luglio 2026",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/1deg-trofeo-comune-poggio-caiano-domenica-05-luglio-2026",
-      "summary": "Ordinanza di sospensione della circolazione Comunicazione 1 Luglio 2026 Ultimo aggiornamento 4 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "82° COPPA GIULIO BURCI domenica 05 luglio 2026",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/82deg-coppa-giulio-burci-domenica-05-luglio-2026",
-      "summary": "Ordinanza di sospensione della circolazione Comunicazione 2 Luglio 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "AFFIDAMENTO DEL SERVIZIO FACCHINAGGIO ORDINARIO SCARTO ATTI D’ARCHIVIO",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/vibo-valentia/comunicazioni/affidamento-servizio-facchinaggio-ordinario-scarto-atti-darchivio",
+      "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5708,18 +5593,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Avviso pubblico - manifestazione di interesse - in data 4/6/2026",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/pesaro-urbino/comunicazioni/avviso-pubblico-manifestazione-interesse-data-462026",
-      "summary": "Prot.N.49525 del 04/09/2026-AVVISO PUBBLICO Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "Banche dati degli enti locali",
       "url": "https://dait.interno.gov.it/finanza-locale",
       "summary": "Banche dati finanziarie e territoriali degli enti locali Consulta le banche dati Presidi Territoriali",
@@ -5732,33 +5605,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Censimento 2025 - Formazione degli operatori",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/censimento-2025-formazione-operatori",
-      "summary": "Comunicato stampa 26 Settembre 2025",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Comitato Consultivo Provinciale INAIL 2026 - 2030",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/comitato-consultivo-provinciale-inail-2026-2030",
-      "summary": "Comunicazione 20 Luglio 2026 Ultimo aggiornamento 4 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Comitato provinciale ordine e sicurezza: città di Lodi",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/comitato-provinciale-ordine-e-sicurezza-citta-lodi",
-      "summary": "Comunicato stampa 9 Settembre 2025",
+      "title": "Comitato Provinciale O.P.S. 04/09/2026 - Focus sul comune di Campobasso",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/campobasso/notizie/comitato-provinciale-ops-04092026-focus-sul-comune-campobasso",
+      "summary": "Notizia 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5795,6 +5644,18 @@
       "title": "Comunicato del 7 agosto 2026",
       "url": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-7-agosto-2026",
       "summary": "Erogazione del contributo destinato a sostenere gli oneri dei segretari comunali ex articolo 1, comma 828, della legge 29 dicembre 2022, n.197, relativo all’annualità 2025.",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Controlli straordinari in Terra dei Fuochi",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/caserta/comunicati-stampa/controlli-straordinari-terra-dei-fuochi",
+      "summary": "Comunicato stampa 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5864,18 +5725,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Elenco Veicoli Sottoposti a Fermo o Sequestro Amministrativo",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/messina/comunicazioni/elenco-veicoli-sottoposti-fermo-o-sequestro-amministrativo-3",
-      "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "Elenco dei veicoli sequestrati presso depositeria - Aggiornamento",
       "url": "https://prefettura.interno.gov.it/it/prefetture/rovigo/comunicazioni/elenco-dei-veicoli-sequestrati-presso-depositeria-aggiornamento-96",
       "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
@@ -5900,9 +5749,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Firmato in Prefettura il Protocollo per il Progetto Vita Lodi",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/firmato-prefettura-protocollo-progetto-vita-lodi",
-      "summary": "Forze dell’ordine a supporto dell’emergenza sanitaria Comunicato stampa 19 Novembre 2025",
+      "title": "Estrazione Revisore dei Conti - Comune di DRAPIA ESITI",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/vibo-valentia/comunicazioni/estrazione-revisore-dei-conti-comune-drapia-esiti",
+      "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5912,9 +5761,45 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "G.F. San Lorenzo - Cipressa del 6 settembre 2026",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/savona/comunicazioni/gf-san-lorenzo-cipressa-6-settembre-2026",
-      "summary": "Sospensione temporanea della circolazione Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "Estrazione Revisore dei Conti - Comune di SAN CALOGERO ESITI",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/vibo-valentia/comunicazioni/estrazione-revisore-dei-conti-comune-san-calogero-esiti",
+      "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Estrazione nominativi dei Revisori dei Conti Comune di Fiumicino (RM)",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/roma/comunicazioni/estrazione-nominativi-dei-revisori-dei-conti-comune-fiumicino-rm",
+      "summary": "Comunicazione data avvio procedura di estrazione Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Festa della Repubblica – 2 giugno 2025",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/festa-repubblica-2-giugno-2025",
+      "summary": "Comunicato stampa 4 Giugno 2025",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Gara ciclistica “2° MEMORIAL FRANCO PILONE”",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/asti/comunicazioni/gara-ciclistica-2deg-memorial-franco-pilone",
+      "summary": "Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5936,18 +5821,6 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Giorno dell’Unità Nazionale e Giornata delle Forze Armate",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/giorno-dellunita-nazionale-e-giornata-forze-armate",
-      "summary": "Comunicato stampa 4 Novembre 2025",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
       "title": "I pareri",
       "url": "https://dait.interno.gov.it/finanza-locale",
       "summary": "Raccolta di pareri espressi da questo Dipartimento nelle materia di competenza del Dipartimento ed in particolare in materia di Enti locali. La raccolta contiene, per la specifica area tematica della Finanza locale, i pareri espressi in materia di Revisori dei conti degli enti locali. La raccolta",
@@ -5960,9 +5833,21 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Il Ministro dell'Interno a Lodi per il trentennale della Prefettura",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/ministro-dellinterno-lodi-trentennale-prefettura",
-      "summary": "Alla cerimonia i per il trentennale della Prefettura Comunicato stampa 14 Novembre 2025",
+      "title": "In Prefettura, il giuramento dei Viceprefetti aggiunti di nuova nomina",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/prefettura-giuramento-dei-viceprefetti-aggiunti-nuova-nomina",
+      "summary": "Comunicato stampa 28 Maggio 2025",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Incendio sviluppatosi il 29 agosto 2026 a Lequile. AGGIORNAMENTO",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lecce/notizie/incendio-sviluppatosi-29-agosto-2026-lequile-aggiornamento-0",
+      "summary": "Incendio nel territorio del Comune di Lequile propagatosi all'impianto di gestione rifiuti Notizia 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5974,7 +5859,7 @@
       "territory": "Italia",
       "title": "Incontro del Comitato Ordine e Sicurezza per Scafati e Sarno",
       "url": "https://prefettura.interno.gov.it/it/prefetture/salerno/comunicati-stampa/incontro-comitato-ordine-e-sicurezza-scafati-e-sarno",
-      "summary": "Comunicato stampa 4 Settembre 2026",
+      "summary": "Comunicato stampa 4 Settembre 2026 Paginazione 1 2 3 4 5 6 7 8 9 … seguente › ultima »",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -5984,9 +5869,33 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Ordinanza di sospensione circolazione 6° Memorial Maurizio Bresci 13/06",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/ordinanza-sospensione-circolazione-6deg-memorial-maurizio-bresci-1306",
-      "summary": "Ordinanza di sospensione circolazione 6° Memorial Bresci Comunicazione 11 Giugno 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "Nomina Revisore economico finanziario di Beura Cardezza",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/verbano-cusio-ossola/comunicazioni/nomina-revisore-economico-finanziario-beura-cardezza",
+      "summary": "Nomina Revisore economico finanziario di Beura Cardezza Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Nomina Revisore economico finanziario di Formazza",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/verbano-cusio-ossola/comunicazioni/nomina-revisore-economico-finanziario-formazza",
+      "summary": "Nomina Revisore economico finanziario di Formazza Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Nuovi strumenti per la sicurezza degli operatori sanitari nell’ospedale",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/nuovi-strumenti-sicurezza-operatori-sanitari-nellospedale",
+      "summary": "Comunicato stampa 26 Maggio 2025",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6008,33 +5917,33 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
+      "title": "Partita di calcio Formia - Cassino 1934 divieto vendita biglietti",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/latina/comunicati-stampa/partita-calcio-formia-cassino-1934-divieto-vendita-biglietti",
+      "summary": "Comunicato stampa 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Percorso di legalità sul fenomeno degli atti intimidatori",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/percorso-legalita-sul-fenomeno-atti-intimidatori",
+      "summary": "Comunicato stampa 27 Maggio 2025",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
       "title": "Prefetture - Ministero dell'Interno",
       "url": "https://prefettura.interno.gov.it/it/search",
       "summary": "Piazza del Viminale, 1 - 00184 Roma Viminale informa Social media Sito web Privacy Responsabili e informative legali Responsabile della pubblicazione Responsabile transizione al digitale Accessibilità Meccanismo di feedback accessibilità Dichiarazione di accessibilità Note legali Privacy & Cookie Social media policy Usabilità Footer menu bottom A Intranet Archivio storico nazionale Archivio storico Comunica con noi Sedi e contatti Posta elettronica certificata Urp delle Prefetture - U.T.G. Numeri utili Servizi e informazioni Servizi on line Informazioni utili Accesso ai dati e altri diritti e ",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Presentata l’applicazione WebAPP, “Lodi per tutti”",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/presentata-lapplicazione-webapp-lodi-tutti",
-      "summary": "Progetto “Lovit 2.0- Lodi verso l’integrazione territoriale” Comunicato stampa 23 Ottobre 2025",
-      "discovery_only": true,
-      "status": "internal_review",
-      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
-    },
-    {
-      "source_id": "ministero-interno",
-      "source_label": "Ministero dell'Interno · Finanza locale",
-      "publisher": "Ministero dell'Interno",
-      "territory": "Italia",
-      "title": "Procedura di mobilità per l’assunzione in Prefettura",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/mantova/comunicati-stampa/procedura-mobilita-lassunzione-prefettura",
-      "summary": "Comunicato stampa 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6056,9 +5965,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Protocollo per prevenire atti illegali vicino agli esercizi commerciali",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/protocollo-prevenire-atti-illegali-vicino-esercizi-commerciali",
-      "summary": "Comunicato stampa 3 Novembre 2025",
+      "title": "Progetto “CIC Polesine” e \"Patti Digitali di Comunità\"",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/rovigo/notizie/progetto-cic-polesine-e-patti-digitali-comunita",
+      "summary": "Prefettura, Ufficio Scolastico e ULSS 5 insieme per la prevenzione del disagio giovanile Notizia 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6080,9 +5989,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Ritrovata la persona scomparsa da tre giorni",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/ritrovata-persona-scomparsa-tre-giorni",
-      "summary": "Comunicato stampa 15 Ottobre 2025",
+      "title": "Seminario “La statistica ufficiale a supporto della policy locale”",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/seminario-statistica-ufficiale-supporto-policy-locale",
+      "summary": "Comunicato stampa 1 Luglio 2025",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6092,9 +6001,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Servizio Prenotazioni - Restituzione Patente e Uffici Area IV",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/servizio-prenotazioni-restituzione-patente-e-uffici-area-iv",
-      "summary": "Attivazione Prenotazione on line Patenti e Area IV Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "Sospensione circolazione gara podistica 24/09/2023 -8^ Corri & salsiccia",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/sospensione-circolazione-gara-podistica-24092023-8-corri-salsiccia",
+      "summary": "Ordinanza di sospensione e la tabella di marcia Comunicazione 22 Settembre 2023 Ultimo aggiornamento 4 Settembre 2026",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6104,9 +6013,9 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Sospensione circolazione Memorial V Paolo Salimbeni - II Cesare Mannori",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/sospensione-circolazione-memorial-v-paolo-salimbeni-ii-cesare-mannori",
-      "summary": "Sospensione circolazione domenica 14 giugno 2026 Comunicazione 11 Giugno 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "Sottoscritto Protocollo antimafia per turismo e ristorazione",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/sottoscritto-protocollo-antimafia-turismo-e-ristorazione",
+      "summary": "Comunicato stampa 27 Giugno 2025",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6116,9 +6025,33 @@
       "source_label": "Ministero dell'Interno · Finanza locale",
       "publisher": "Ministero dell'Interno",
       "territory": "Italia",
-      "title": "Sospensione della circolazione gara ciclistica 70° GIRO DEL MONTALBANO",
-      "url": "https://prefettura.interno.gov.it/it/prefetture/prato/comunicazioni/sospensione-circolazione-gara-ciclistica-70deg-giro-montalbano",
-      "summary": "ordinanza di sospensione della circolazione 30 maggio 2026 Comunicazione 27 Maggio 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "title": "Sottoscritto il contratto per la nuova caserma a Lodi Vecchio",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/sottoscritto-contratto-nuova-caserma-lodi-vecchio",
+      "summary": "Comunicato stampa 27 Maggio 2025",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "Verbale Estrazione 2026 Revisore Dei Conti Comune Guardia Piemontese",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/cosenza/comunicazioni/verbale-estrazione-2026-revisore-dei-conti-comune-guardia-piemontese",
+      "summary": "Verbale 2^ estrazione 2026 (per dimissioni) Comunicazione 4 Settembre 2026 Ultimo aggiornamento 4 Settembre 2026",
+      "discovery_only": true,
+      "status": "internal_review",
+      "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
+    },
+    {
+      "source_id": "ministero-interno",
+      "source_label": "Ministero dell'Interno · Finanza locale",
+      "publisher": "Ministero dell'Interno",
+      "territory": "Italia",
+      "title": "“Le note e i colori” di e con Michele D’Andrea",
+      "url": "https://prefettura.interno.gov.it/it/prefetture/lodi/comunicati-stampa/note-e-i-colori-e-michele-dandrea",
+      "summary": "Comunicato stampa 6 Giugno 2025",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6154,7 +6087,7 @@
       "territory": "Italia",
       "title": "Bando per la preselezione dei siti italiani da candidarsi al Marchio del patrimonio europeo nell’ambito della selezione 2027",
       "url": "https://cultura.gov.it/comunicato/bando-per-la-preselezione-dei-siti-italiani-da-candidarsi-al-marchio-del-patrimonio-europeo-nellambito-della-selezione-2027",
-      "summary": "19 giugno 2026 In allegato il bando completo in formato PDF e relativi allegati. Continua a leggere Avviso Avviso",
+      "summary": "19 giugno 2026 In allegato il bando completo in formato PDF e relativi allegati. Continua a leggere ‹ 1 2 3 4 5 6 7 8 9 10 ... 265 266 › Sede centrale MiC Via del Collegio Romano, 27 00186 Roma Centralino: (+39) 06.6723.1 URP - Ufficio Relazioni con il Pubblico Amministrazione trasparente I dati personali pubblicati sono riutilizzabili solo alle condizioni previste dalla direttiva comunitaria 2003/98/CE e dal d.lgs. 36/2006 Seguici su: Facebook Twitter Instagram Youtube TikTok Podcast Iscriviti alla newsletter Dichiarazione di accessibilità Privacy policy Note legali Mappa del sito Modulistica",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -6370,7 +6303,7 @@
       "territory": "Italia",
       "title": "Sezione Link Utili",
       "url": "https://avvisibandi.sport.governo.it/",
-      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"3906b601-8139-4ec9-b924-f9bc35cf13f8\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
+      "summary": "Amministrazione trasparente Dichiarazione di accessibilità Note legali Privacy Policy Social Media Policy {\"props\":{\"serverNonce\":\"8188c4d6-5d12-434d-8d16-4030ade9440e\",\"__N_SSG\":true,\"pageProps\":{\"notices\":[{\"_id\":\"696fa4cd7ab13ae68a3df7c5\",\"title\":\"Avviso per la selezione di interventi infrastrutturali destinati agli ORATORI delle aree urbane più fragili\",\"description\":\"\\u003cb\\u003eAvviso per la selezione di progetti destinati agli oratori delle aree urbane più fragili\\u003c/b\\u003e\\n\\n\\u003cp\\u003e\\n A seguito della firma del Protocollo d'intesa tra il Ministro per lo Sport e i Giovani,\\n ",
       "discovery_only": true,
       "status": "internal_review",
       "reason": "Segnalazione emersa da un canale di discovery: prima dell'output pubblico serve la fonte ufficiale del bando e la verifica documentale di richiedente, ruolo e geografia."
@@ -7002,7 +6935,7 @@
       "status": "ok",
       "endpointCount": 2,
       "endpointOk": 2,
-      "candidateCount": 40,
+      "candidateCount": 42,
       "errors": [],
       "freshness": {
         "status": "discovery",
@@ -7556,7 +7489,7 @@
           "evidence_url": "https://urbact.eu/news/apply-urbact-call-action-networks",
           "evidence_class": "official_historical",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7568,7 +7501,7 @@
           "evidence_url": "https://www.urban-initiative.eu/capacity-building/city-to-city-exchanges/call",
           "evidence_class": "official_rolling",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 12,
+          "ageDays": 13,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7580,7 +7513,7 @@
           "evidence_url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/get-ready-eucfs-8th-call-opens-october-2026-08-17_en",
           "evidence_class": "official_upcoming",
           "evidence_verified_at": "2026-08-23",
-          "ageDays": 12,
+          "ageDays": 13,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7592,7 +7525,7 @@
           "evidence_url": "https://erasmus-plus.ec.europa.eu/document/call-for-proposals-2026-for-the-erasmus-programme",
           "evidence_class": "official_programme_call",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7604,7 +7537,7 @@
           "evidence_url": "https://cinea.ec.europa.eu/funding-opportunities/calls-proposals/2026-cef-transport-calls-proposals_en",
           "evidence_class": "official_current",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7616,7 +7549,7 @@
           "evidence_url": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/horizon-europe-work-programmes_en",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7628,7 +7561,7 @@
           "evidence_url": "https://digital-strategy.ec.europa.eu/en/activities/get-funding-digital",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7640,7 +7573,7 @@
           "evidence_url": "https://www.interregeurope.eu/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7652,7 +7585,7 @@
           "evidence_url": "https://www.affariregionali.it/it/aree-tematiche/montagna/",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7664,7 +7597,7 @@
           "evidence_url": "https://www.protezionecivile.gov.it/it/normativa/decreto-cd-n-1149-del-3-aprile-2026/",
           "evidence_class": "official_upstream",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7676,7 +7609,7 @@
           "evidence_url": "https://www.masaf.gov.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/11795",
           "evidence_class": "official_programme_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7688,7 +7621,7 @@
           "evidence_url": "https://www.regione.toscana.it/sviluppo-rurale-2023-2027/bandi-aperti",
           "evidence_class": "official_current_portfolio",
           "evidence_verified_at": "2026-08-22",
-          "ageDays": 13,
+          "ageDays": 14,
           "configured": true,
           "familyInContract": true,
           "fresh": true
@@ -7706,7 +7639,7 @@
         {
           "source_id": "pcm-sport",
           "family": "sport-social-infrastructure",
-          "ageDays": 11,
+          "ageDays": 12,
           "configured": true,
           "familyInContract": true,
           "fresh": true,
@@ -7715,7 +7648,7 @@
         {
           "source_id": "cinea-life",
           "family": "energy-climate-environment",
-          "ageDays": 11,
+          "ageDays": 12,
           "configured": true,
           "familyInContract": true,
           "fresh": true,
@@ -7725,7 +7658,7 @@
     }
   },
   "lifecycleSummary": {
-    "application_open": 25,
+    "application_open": 24,
     "rolling_open": 2,
     "announced_upcoming": 2
   },
@@ -7817,7 +7750,7 @@
         "url": "https://www.regione.toscana.it/it/-/mercati-rionali-contributi-ai-comuni-per-ammodernamento-ampliamento-e-riqualificazione",
         "summary": "Presentazione di progetti di ammodernamento, riqualificazione e ampliamento delle aree mercatali insediate su aree pubbliche o private, in disponibilità del Comune. Contributi in conto capitale fino al 80% del massimale d'investimento. Domande solo online sul sito di Sviluppo Toscana entro le ore 12 del 15 settembre 2026 Pubblicato il 02.09.2026 Pubblicato su BURT il 25.06.2026 Stato: Aperto Scadenza presentazione domande 15.09.2026 12:00",
         "published_at": "2026-09-02",
-        "age_days": 2,
+        "age_days": 3,
         "deadline_at": "2026-09-15",
         "account_state": "review"
       }
