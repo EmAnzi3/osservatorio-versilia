@@ -16,6 +16,24 @@
     }
   ],
   "sourceOverrides": {
+    "anci-nazionale": {
+      "urls": [
+        "https://www.anci.it/feed/",
+        "https://sistemacomunidigitali.anci.it/feed/"
+      ],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["bando", "avviso", "contribut", "finanzi", "incentiv", "opportunit", "fondo"],
+      "municipalTerms": ["comun", "enti locali", "sindaci", "amministrazioni", "città"]
+    },
+    "mim-enti-locali": {
+      "urls": [
+        "https://pnrr.istruzione.it/feed/",
+        "https://www.mim.gov.it/web/guest/comunicati"
+      ],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": ["avviso", "enti locali", "scuole", "asili", "nido", "mense", "edilizia scolastica", "sicurezza", "finanzi", "PNRR"],
+      "municipalTerms": ["enti locali", "comun", "proprietari", "beneficiari", "territoriali"]
+    },
     "pcm-sport": {
       "urls": [
         "https://avvisibandi.sport.governo.it/",
@@ -64,6 +82,12 @@
       "historicalReplay": true,
       "favicon": "https://www.regione.toscana.it/favicon.ico",
       "note": "Secondo endpoint primario Regione Toscana: completa bandi-aperti con la lista generale bandi-tutti. Le regole documentali riusano la famiglia regione-toscana tramite ruleSourceId."
+    },
+    "anci-nazionale": {
+      "note": "Discovery ANCI acquisito tramite feed ufficiali WordPress per evitare i timeout delle pagine HTML sui runner GitHub; ogni segnalazione resta interna finché non viene verificata sulla fonte primaria."
+    },
+    "mim-enti-locali": {
+      "note": "Presidio MIM su feed ufficiale FUTURA/PNRR e comunicati ministeriali; il collector filtra edilizia e servizi scolastici con ruolo di enti locali e richiede verifica primaria prima della pubblicazione."
     },
     "pcm-sport": {
       "label": "PCM · Dipartimento per lo Sport",
