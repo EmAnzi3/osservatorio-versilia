@@ -2,8 +2,9 @@
 """Probe live non distruttivo delle fonti che hanno mostrato falsi offline.
 
 Il probe serve alla PR/diagnostica: non pubblica opportunità e non modifica dati.
-Fallimenti di rete restano nel report ma non rendono flaky la CI; i gate runtime
-veri restano nel refresh giornaliero h3.
+Un recupero tramite reader proxy è esplicitamente ``degraded``: dimostra che il
+canale discovery resta leggibile, ma non equivale a una connessione diretta alla
+fonte ufficiale e non può essere usato come verifica per la pubblicazione.
 """
 from __future__ import annotations
 
@@ -11,7 +12,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-import opportunity_daily_refresh_resilient as h3
+import opportunity_daily_refresh_resilient as h4
 import opportunity_discovery_resilient as transport
 
 
@@ -54,13 +55,12 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
             "endpointCount": 0,
             "endpointOk": 0,
             "fallbackSuccessCount": 0,
+            "proxySuccessCount": 0,
             "failureClasses": ["not_configured"],
             "endpoints": [],
         }
 
     endpoints: list[dict[str, Any]] = []
-    # Per il smoke testiamo tutti gli endpoint dei target; sono pochi e questa
-    # diagnostica viene eseguita soltanto in PR/manuale, non nel ciclo utente.
     for url in _urls(source):
         try:
             _, diagnostics = transport.fetch_with_diagnostics(
@@ -76,7 +76,9 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
                 "status": "error",
                 "transport": diagnostics.get("transport") or "failed",
                 "fallbackUsed": bool(diagnostics.get("fallbackUsed")),
+                "proxyUsed": bool(diagnostics.get("proxyUsed")),
                 "initialFailureClass": diagnostics.get("initialFailureClass"),
+                "browserFailureClass": diagnostics.get("browserFailureClass"),
                 "failureClass": diagnostics.get("failureClass") or transport.classify_fetch_error(exc),
                 "resolvedUrl": diagnostics.get("resolvedUrl"),
                 "redirected": bool(diagnostics.get("redirected")),
@@ -84,7 +86,11 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
             })
 
     ok = sum(row.get("status") == "ok" for row in endpoints)
-    if endpoints and ok == len(endpoints):
+    proxy = sum(
+        row.get("status") == "ok" and row.get("transport") == "reader_proxy"
+        for row in endpoints
+    )
+    if endpoints and ok == len(endpoints) and not proxy:
         status = "ok"
     elif ok:
         status = "degraded"
@@ -97,9 +103,10 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
         "endpointCount": len(endpoints),
         "endpointOk": ok,
         "fallbackSuccessCount": sum(
-            row.get("status") == "ok" and row.get("transport") == "chromium"
+            row.get("status") == "ok" and row.get("transport") in {"chromium", "reader_proxy"}
             for row in endpoints
         ),
+        "proxySuccessCount": proxy,
         "failureClasses": sorted({
             str(row.get("failureClass"))
             for row in endpoints
@@ -110,13 +117,13 @@ def _probe_source(source_id: str, source: dict[str, Any] | None) -> dict[str, An
 
 
 def main() -> int:
-    config, _ = h3._compose_runtime_hardened()
+    config, _ = h4._compose_runtime_hardened()
     sources = _source_map(config)
     transport.reset_trace()
     rows = [_probe_source(source_id, sources.get(source_id)) for source_id in TARGET_SOURCE_IDS]
 
     report = {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "targetSourceIds": list(TARGET_SOURCE_IDS),
         "summary": {
             "targets": len(rows),
@@ -125,6 +132,7 @@ def main() -> int:
             "error": sum(row["status"] == "error" for row in rows),
             "notConfigured": sum(row["status"] == "not_configured" for row in rows),
             "fallbackSuccesses": sum(int(row["fallbackSuccessCount"]) for row in rows),
+            "proxySuccesses": sum(int(row["proxySuccessCount"]) for row in rows),
         },
         "sources": rows,
     }
@@ -136,7 +144,8 @@ def main() -> int:
         print(
             f"{row['sourceId']}: {row['status']} · "
             f"endpoint {row['endpointOk']}/{row['endpointCount']} · "
-            f"fallback {row['fallbackSuccessCount']} · cause {classes}"
+            f"fallback {row['fallbackSuccessCount']} · proxy {row['proxySuccessCount']} · "
+            f"cause {classes}"
         )
     print("SUMMARY", json.dumps(report["summary"], ensure_ascii=False, sort_keys=True))
     return 0
