@@ -29,7 +29,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le politiche giovanili e il Servizio civile universale",
       "territory": "Italia",
       "family": "youth-civic-service",
-      "urls": ["https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/servizio-civile/avvisi-di-presentazione-programmi-e-progetti/"],
+      "urls": ["https://www.politichegiovanili.gov.it/servizio-civile/bandi-e-avvisi-di-servizio-civile/avvisi-di-presentazione-programmi-e-progetti/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["avviso", "programmi", "progetti", "servizio civile", "finanzi"],
       "municipalTerms": ["enti", "comun", "albo", "territorial"]
