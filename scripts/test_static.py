@@ -139,9 +139,7 @@ def browser_assertions() -> None:
         mobile_page.goto(base, wait_until="networkidle")
         mobile_page.wait_for_selector(".global-search-trigger")
         hero_facts = mobile_page.locator(".hero-facts").inner_text()
-        public_catalog = json.loads((DIST / "data" / "site-data.json").read_text(encoding="utf-8"))
-        atlas_page = DIST / "confronta" / "economia" / "atlante-attivita-economiche" / "index.html"
-        expected_indicator_count = len(public_catalog["metrics"]) + (1 if atlas_page.is_file() else 0)
+        expected_indicator_count = len(json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))["metrics"])
         assert f"{expected_indicator_count} INDICATORI" in hero_facts, (
             f"Conteggio complessivo degli indicatori errato in home: attesi {expected_indicator_count}, trovato {hero_facts!r}"
         )

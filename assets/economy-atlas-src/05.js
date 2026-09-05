@@ -1,3 +1,20 @@
+','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
+function renderCrumbs(){
+  let parts=[`<button class="crumb ${!state.sec?'current':''}" data-root="1">Tutte le attività</button>`];
+  if(state.sec){for(const n of ancestors(state.sec,state.d)){parts.push('<span class="sep">›</span>');parts.push(`<button class="crumb ${n.d===state.d?'current':''}" data-sec="${n.sec}" data-d="${n.d}" title="${escapeHtml(n.label)}">${n.d?displayCode(n.d):n.sec}</button>`);}}
+  $('#crumbs').innerHTML=parts.join('');$('#crumbs').querySelectorAll('button').forEach(b=>b.onclick=()=>b.dataset.root?clearAll():selectNode(b.dataset.sec,b.dataset.d,false));
+  let n=currentNode(),st=$('#status');if(n&&n.hasData){st.className='node-status direct';st.textContent='Valore disponibile'}else{st.className='node-status nav';st.textContent=state.sec?'Continua a esplorare':'Navigazione ATECO'}
+}
+function arcPath(cx,cy,r,a0,a1){let x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),large=(a1-a0)>Math.PI?1:0;return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`}
+function renderDonut(){
+  const mode=state.leftMode||'composition';
+  root.querySelector('#modeComposition')?.classList.toggle('active',mode==='composition');
+  root.querySelector('#modeNavigation')?.classList.toggle('active',mode==='navigation');
+  let kids=childNodes(state.sec,state.d),svg=$('#donut'),center=$('#donutCenter');svg.innerHTML='';
+  if(mode==='navigation'){
+    if(!kids.length){svg.innerHTML='<circle cx="160" cy="160" r="118" fill="none" stroke="#e4e9e7" stroke-width="36"/><circle cx="160" cy="160" r="112" fill="none" stroke="#ad6247" stroke-width="2" stroke-dasharray="3 6"/>';center.innerHTML=`<strong>${state.d?displayCode(state.d):state.sec||'—'}</strong><span>massima granularità<br>disponibile</span>`;$('#children').innerHTML='<div class="empty">Non ci sono livelli successivi nel set di codici disponibile.</div>';return;}
+    const gap=Math.min(.025,0.42/kids.length),step=Math.PI*2/kids.length,r=116;
+    kids.forEach((n,i)=>{let a0=-Math.PI/2+i*step+gap,a1=-Math.PI/2+(i+1)*step-gap;let p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',arcPath(160,160,r,a0,a1));p.setAttribute('fill','none');p.setAttribute('stroke',PALETTE[i%PALETTE.length]);p.setAttribute('stroke-width','42');p.setAttribute('class','slice');p.setAttribute('tabindex','0');p.innerHTML=`<title>${n.d?displayCode(n.d):n.sec} · ${n.label||''}</title>`;p.onclick=()=>selectNode(n.sec,n.d);p.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.sec,n.d)}};svg.appendChild(p)});
     let here=currentNode();center.innerHTML=state.sec?`<strong>${state.d?displayCode(state.d):state.sec}</strong><span>${escapeHtml(here?.label||'')}<br><b>${kids.length}</b> voci successive</span>`:`<strong>${kids.length}</strong><span>sezioni navigabili<br>su ${DATA.c.length.toLocaleString('it-IT')} codici</span>`;
     $('#children').innerHTML=kids.map(n=>`<button class="child" data-sec="${n.sec}" data-d="${n.d}"><code>${n.d?displayCode(n.d):n.sec}</code><span>${escapeHtml(n.label||'')}</span></button>`).join('');
     $('#children').querySelectorAll('.child').forEach(b=>b.onclick=()=>selectNode(b.dataset.sec,b.dataset.d));
@@ -47,52 +64,4 @@ function sumNullable(values){
 function emptyAggregate(){return{vers:years.map(()=>null),region:years.map(()=>null),towns:towns.map(()=>years.map(()=>null)),art:towns.map(()=>null)};}
 function aggregateNode(sec,d=''){
   const k=key(sec,d); if(aggregateCache.has(k)) return aggregateCache.get(k);
-  const kids=childNodes(sec,d);
-  let result;
-  if(kids.length){
-    const childAggs=kids.map(ch=>aggregateNode(ch.sec,ch.d));
-    result={
-      vers: years.map((_,yi)=>sumNullable(childAggs.map(a=>a.vers[yi]))),
-      region: years.map((_,yi)=>sumNullable(childAggs.map(a=>a.region[yi]))),
-      towns: towns.map((t,ti)=>years.map((_,yi)=>sumNullable(childAggs.map(a=>a.towns[ti][yi])))),
-      art: towns.map((t,ti)=>sumNullable(childAggs.map(a=>a.art[ti])))
-    };
-  } else {
-    const row=exact.get(k);
-    if(!row){result=emptyAggregate();}
-    else {
-      const townsSeries=towns.map(t=>row[3+t.i][0].slice());
-      result={
-        vers: years.map((_,yi)=>sumNullable(townsSeries.map(series=>series[yi]))),
-        region: row[1].slice(),
-        towns: townsSeries,
-        art: towns.map(t=>row[3+t.i][1])
-      };
-    }
-  }
-  aggregateCache.set(k,result);
-  return result;
-}
-function compositionChildren(){
-  const kids=state.sec?childNodes(state.sec,state.d):sections.map(([s])=>ensure(s,''));
-  return kids.map(n=>{const agg=aggregateNode(n.sec,n.d);return {node:n,value:agg.vers[latest]};});
-}
-function compositionTotalForCurrent(){
-  if(!state.sec){const items=compositionChildren();return sumNullable(items.map(x=>x.value));}
-  return aggregateNode(state.sec,state.d).vers[latest];
-}
-function derivedMet(n,townIdx,yi=latest){
-  const agg=aggregateNode(n.sec,n.d),a=agg.towns[townIdx][yi],art=yi===latest?agg.art[townIdx]:null,ra=agg.region[yi],tt=DATA.tt[townIdx][yi],rt=DATA.rt[yi];
-  const lq=(a===null||ra===null||!ra||!tt||!rt)?null:(a/tt)/(ra/rt);
-  const weight=(a===null||ra===null||!ra)?null:a/ra*100;
-  const share=(a===null||art===null)?null:(a===0?(art===0?0:null):art/a*100);
-  return{a,art,ra,lq,weight,share};
-}
-
-function renderCurrentDerived(n){
-  let ms=towns.map(t=>({t,m:derivedMet(n,t.i)})),vals=ms.map(x=>metricValue(x.m)).filter(v=>v!==null),max=Math.max(1,...vals),auto=ms.filter(x=>x.m.a!==null).sort((a,b)=>(b.m.a??-1)-(a.m.a??-1))[0]?.t.slug||towns[0].slug;
-  if(!state.detailTown||!towns.some(t=>t.slug===state.detailTown))state.detailTown=auto;
-  let detail=ms.find(x=>x.t.slug===state.detailTown)||ms[0],dm=detail.m,total=compositionTotalForCurrent();
-  return `<div class="selected-title"><code>${n.d?`${n.sec} · ${displayCode(n.d)}`:`Sezione ${n.sec}`}</code><h3>${escapeHtml(n.label||'Dicitura non disponibile')}</h3><p>${fmt(total)} UL attive in Versilia · anno 2025</p>${hierarchyContext(n)}</div>
-  <div class="metric-row"><span>Metrica del confronto</span><div class="mini-switch"><button data-metric="active" class="${state.metric==='active'?'active':''}">UL attive</button><button data-metric="lq" class="${state.metric==='lq'?'active':''}">Specializzazione</button><button data-metric="weight" class="${state.metric==='weight'?'active':''}">Peso Toscana</button></div></div>
-  <div class="lollipops">${ms.map(x=>{let v=metricValue(x.m),cl=v===null?'nd':v===0?'zero':'',pct=v===null||v===0?0:(v/max*100);return `<div class="lrow clickable ${cl} ${x.t.slug===state.detailTown?'selected':''}" data-town="${x.t.slug}" title="${escapeHtml(x.t.name)} · ${metricUnit()}: ${metricFmt(v)}"><div class="lname">${escapeHtml(x.t.name)}</div><div class="track"><span class="stem" style="--pct:${pct}%"></span><span class="dot" style="--pct:${pct}%"></span></div><div class="lvalue">${metricFmt(v)}<small>${metricUnit()}</small></div></div>`}).join('')}</div>
+  cons

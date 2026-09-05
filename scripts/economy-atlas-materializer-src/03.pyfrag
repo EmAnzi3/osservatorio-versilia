@@ -1,0 +1,68 @@
+:center;justify-content:space-between;gap:12px;text-decoration:none;border:1px solid color-mix(in srgb,var(--theme-accent,#ad6247) 35%,#d9dfdd);border-radius:10px;padding:10px 12px;background:#fff;color:inherit}}\n.metric-route-link:hover{{border-color:var(--theme-accent,#ad6247);background:#faf6f2}}\n.metric-route-link small{{font-size:.72rem;color:#667780;white-space:nowrap}}\n.special-route-card{{text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:flex-start;min-width:0}}\n.special-route-card h5{{margin:.35rem 0 .55rem;font-size:1rem}}\n.special-route-card p{{margin:0 0 .8rem;color:#61717b;line-height:1.45}}\n.indicator-card-kicker{{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#ad6247}}\n.economy-atlas-deep-dive{{scroll-margin-top:110px}}\n.atlas-native-heading{{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:32px 0 14px;padding-top:24px;border-top:1px solid rgba(16,47,69,.14)}}\n.atlas-native-heading h4{{margin:.3rem 0 .4rem;font-size:clamp(1.35rem,2.2vw,1.85rem)}}\n.atlas-native-heading p{{max-width:760px;margin:0;color:#61717b;line-height:1.5}}\nov-economy-atlas{{display:block;min-width:0}}\n@media(max-width:700px){{.atlas-native-heading{{align-items:flex-start;flex-direction:column;gap:10px}}.metric-route-link{{align-items:flex-start;flex-direction:column;gap:4px}}}}\n'''
+    STATIC_CSS.write_text(text, encoding="utf-8")
+
+
+
+def materialize_runtime() -> None:
+    parts = sorted(ATLAS_SOURCE_DIR.glob("[0-9][0-9].js"))
+    if not parts:
+        raise RuntimeError("Sorgenti runtime Atlante mancanti")
+    runtime = "".join(path.read_text(encoding="utf-8") for path in parts)
+    ATLAS_RUNTIME.write_text(runtime, encoding="utf-8")
+
+
+def validate_runtime() -> None:
+    if not ATLAS_RUNTIME.exists():
+        raise RuntimeError("Runtime Atlante mancante")
+    runtime = ATLAS_RUNTIME.read_text(encoding="utf-8")
+    forbidden = ("MutationObserver", "fetch('https://", 'fetch("https://', "economy-atlas-parts")
+    for token in forbidden:
+        if token in runtime:
+            raise RuntimeError(f"Runtime Atlante contiene dipendenza vietata: {token}")
+    if "customElements.define('ov-economy-atlas'" not in runtime:
+        raise RuntimeError("Custom element Atlante non definito")
+    subprocess.run(["node", "--check", str(ATLAS_RUNTIME)], check=True)
+
+
+def validate() -> None:
+    data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    metric = data.get("metrics", {}).get(METRIC_KEY)
+    if not metric:
+        raise RuntimeError("Metrica Atlante non materializzata")
+    if len(data["metrics"]) != 184:
+        raise RuntimeError(f"Catalogo release: attesi 184 indicatori, trovati {len(data['metrics'])}")
+    if len(data["themes"]["economia"]["metrics"]) != 32:
+        raise RuntimeError("Economia deve contenere 32 indicatori")
+    if registry.get("expectedMetricCount") != 184 or registry.get("expectedInlineMetricCount") != 179:
+        raise RuntimeError("Source registry non allineato a 184/179")
+    production = next(section for section in data["themes"]["economia"]["sections"] if section["key"] == "production")
+    if production["metrics"].count(METRIC_KEY) != 1:
+        raise RuntimeError("Atlante non inserito una sola volta in Struttura del sistema produttivo")
+    for path in (APP_00, APP_02, APP_04, BUILD_STATIC):
+        text = path.read_text(encoding="utf-8")
+        if path == BUILD_STATIC and ("ateco-detail.js" in text or "ateco-detail.css" in text):
+            raise RuntimeError("Vecchio dettaglio ATECO ancora caricato dalla build")
+    if "e.topSectors.map" in APP_04.read_text(encoding="utf-8"):
+        raise RuntimeError("Vecchio dettaglio ATECO per addetti ancora visibile in Economia")
+
+
+def hide_expected_workspace_changes() -> None:
+    subprocess.run(["git", "update-index", "--assume-unchanged", *MATERIALIZED_PATHS], cwd=ROOT, check=True)
+
+
+def main() -> None:
+    ensure_release_baseline()
+    patch_catalog()
+    patch_renderer()
+    patch_loader_and_build()
+    patch_integration_css()
+    materialize_runtime()
+    validate_runtime()
+    validate()
+    hide_expected_workspace_changes()
+    print("Economia II release workspace: v1.31.0, 184 indicatori, Economia 32, Atlante ATECO nativo materializzato.")
+
+
+if __name__ == "__main__":
+    main()

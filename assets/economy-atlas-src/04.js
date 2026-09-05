@@ -1,3 +1,31 @@
+vengono idratate dalla tassonomia ufficiale; in assenza di rete
+// NON si eredita mai la descrizione della sezione, per evitare etichette false/generiche.
+Object.assign(LABELS,{
+  'L 68':'Attività immobiliari',
+  'L 681':'Compravendita di beni immobili effettuata su beni propri',
+  'L 6810':'Compravendita di beni immobili effettuata su beni propri',
+  'L 68100':'Compravendita di beni immobili effettuata su beni propri',
+  'L 682':'Affitto e gestione di immobili di proprietà o in leasing',
+  'L 6820':'Affitto e gestione di immobili di proprietà o in leasing',
+  'L 68200':'Affitto e gestione di immobili di proprietà o in leasing',
+  'L 682001':'Locazione immobiliare di beni propri o in leasing (affitto)',
+  'L 682002':'Affitto di aziende',
+  'L 683':'Attività immobiliari per conto terzi',
+  'L 6831':'Attività di mediazione immobiliare',
+  'L 68310':'Attività di mediazione immobiliare',
+  'L 683100':'Attività di mediazione immobiliare',
+  'L 6832':'Gestione di immobili per conto terzi',
+  'L 68320':'Amministrazione di condomini e gestione di beni immobili per conto terzi',
+  'L 683200':'Amministrazione di condomini e gestione di beni immobili per conto terzi'
+});
+const LEVELS={0:'Sezione',2:'Divisione',3:'Gruppo',4:'Classe',5:'Categoria',6:'Sottocategoria'};
+const PALETTE=['#ad6247','#145b78','#5f8b78','#c89b3c','#6f6690','#3e7180','#b65358','#6b7b4d','#9a6b18','#587489','#8c5e76','#477b69'];
+const towns=DATA.t.map((x,i)=>({slug:x[0],name:x[1],i}));
+const years=DATA.y; const latest=years.length-1;
+const exact=new Map();
+DATA.c.forEach(r=>exact.set(r[0],r));
+const sections=Object.entries(DATA.s);
+const nodes=new Map();
 function displayCode(d){if(!d)return'';if(d.length===2)return d;if(d.length===3)return d.slice(0,2)+'.'+d.slice(2);if(d.length===4)return d.slice(0,2)+'.'+d.slice(2);if(d.length===5)return d.slice(0,2)+'.'+d.slice(2,4)+'.'+d.slice(4);return d.slice(0,2)+'.'+d.slice(2,4)+'.'+d.slice(4)}
 function key(sec,d=''){return d?sec+' '+d:sec}
 function nodeLabel(sec,d=''){return LABELS[key(sec,d)]||(d?'':(LABELS[sec]||''))}
@@ -5,7 +33,7 @@ function ensure(sec,d=''){let k=key(sec,d);if(!nodes.has(k))nodes.set(k,{key:k,s
 sections.forEach(([s])=>ensure(s,''));
 DATA.c.forEach(r=>{let m=r[0].match(/^([A-Z])\s+(\d+)$/);if(!m)return;let [_,s,d]=m;ensure(s,'');for(let L of [2,3,4,5,6])if(d.length>=L)ensure(s,d.slice(0,L));});
 function childNodes(sec,d=''){
-  if(!sec)return sections.map(([s])=>ensure(s,'')).filter(n=>[...nodes.values()].some(x=>x.sec===s&&x.d));
+  if(!sec)return sections.map(([s])=>ensure(s,'')).filter(n=>[...nodes.values()].some(x=>x.sec===n.sec&&x.d));
   const next={0:2,2:3,3:4,4:5,5:6}[d.length]; if(!next)return[];
   const seen=new Map(); for(const n of nodes.values()){if(n.sec!==sec||n.d.length!==next)continue;if(d&& !n.d.startsWith(d))continue;seen.set(n.d,n)}
   return [...seen.values()].sort((a,b)=>a.d.localeCompare(b.d,'it',{numeric:true}));
@@ -13,6 +41,7 @@ function childNodes(sec,d=''){
 function ancestors(sec,d){let arr=[];if(!sec)return arr;arr.push(ensure(sec,''));for(let L of [2,3,4,5,6])if(d.length>=L)arr.push(ensure(sec,d.slice(0,L)));return arr}
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’']/g,' ').replace(/\s+/g,' ').trim()}
 const aliases={nautica:['C 3012','C 3315'],marmo:['B 0811','C 23701','C 23702'],balneari:['R 93292'],'stabilimenti balneari':['R 93292'],'gallerie d arte':['G 477831'],'galleria d arte':['G 477831']};
+
 const taxonomyState={status:'loaded',source:'ISTAT ATECO 2007–2022',missing:[],resolved:0,total:0,error:''};
 function applyEmbeddedTaxonomy(){
   let resolved=0;
@@ -30,8 +59,8 @@ function setTaxonomyAudit(){return;}
 function taxonomyReady(){return taxonomyState.status==='loaded'&&!taxonomyState.missing.length}
 function rawToPretty(raw){let m=raw.match(/^([A-Z])\s+(\d+)$/);return m?m[1]+' · '+displayCode(m[2]):raw}
 function fmt(v,d=0){if(v===null||v===undefined||Number.isNaN(v))return'n.d.';return new Intl.NumberFormat('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v)}
-const state={sec:'',d:'',tab:'current',metric:'active',detailTown:'',visible:new Set(towns.map(t=>t.slug)),leftMode:'composition'};
-const $=s=>document.querySelector(s);
+const initialTown=root.host?.getAttribute('town')||'';const initialTownMeta=towns.find(t=>t.slug===initialTown)||null;const state={sec:'',d:'',tab:'current',metric:'active',detailTown:initialTown,visible:new Set(initialTown?[initialTown]:towns.map(t=>t.slug)),leftMode:'composition'};
+const $=s=>root.querySelector(s);
 function currentNode(){if(!state.sec)return null;return ensure(state.sec,state.d)}
 function descendSingleton(sec,d=''){
   let cur=d,guard=0;
@@ -43,8 +72,8 @@ function descendSingleton(sec,d=''){
   return cur;
 }
 function taxonomyReady(){return taxonomyState.status==='loaded'&&!taxonomyState.missing.length}
-function selectNode(sec,d='',autoAdvance=true){state.sec=sec;state.d=autoAdvance&&sec?descendSingleton(sec,d):d;state.detailTown='';renderAll()}
-function clearAll(){state.sec='';state.d='';state.tab='current';state.metric='active';state.detailTown='';$('#search').value='';$('#results').hidden=true;renderAll()}
+function selectNode(sec,d='',autoAdvance=true){state.sec=sec;state.d=autoAdvance&&sec?descendSingleton(sec,d):d;state.detailTown=initialTown||'';renderAll()}
+function clearAll(){state.sec='';state.d='';state.tab='current';state.metric='active';state.detailTown=initialTown||'';$('#search').value='';$('#results').hidden=true;renderAll()}
 function renderSelectors(){
   const taxonomyLocked=false;
   const defs=[['Sezione',0],['Divisione',2],['Gruppo',3],['Classe',4],['Categoria',5],['Sottocategoria',6]];let out='';
@@ -68,20 +97,4 @@ function renderSelectors(){
     state.detailTown='';renderAll();
   });
 }
-function escapeHtml(s){return String(s??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
-function renderCrumbs(){
-  let parts=[`<button class="crumb ${!state.sec?'current':''}" data-root="1">Tutte le attività</button>`];
-  if(state.sec){for(const n of ancestors(state.sec,state.d)){parts.push('<span class="sep">›</span>');parts.push(`<button class="crumb ${n.d===state.d?'current':''}" data-sec="${n.sec}" data-d="${n.d}" title="${escapeHtml(n.label)}">${n.d?displayCode(n.d):n.sec}</button>`);}}
-  $('#crumbs').innerHTML=parts.join('');$('#crumbs').querySelectorAll('button').forEach(b=>b.onclick=()=>b.dataset.root?clearAll():selectNode(b.dataset.sec,b.dataset.d,false));
-  // Il breadcrumb resta descrittivo: nessun badge tecnico nella UI pubblica.
-}
-function arcPath(cx,cy,r,a0,a1){let x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),large=(a1-a0)>Math.PI?1:0;return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`}
-function renderDonut(){
-  const mode=state.leftMode||'composition';
-  document.querySelector('#modeComposition')?.classList.toggle('active',mode==='composition');
-  document.querySelector('#modeNavigation')?.classList.toggle('active',mode==='navigation');
-  let kids=childNodes(state.sec,state.d),svg=$('#donut'),center=$('#donutCenter');svg.innerHTML='';
-  if(mode==='navigation'){
-    if(!kids.length){svg.innerHTML='<circle cx="160" cy="160" r="118" fill="none" stroke="#e4e9e7" stroke-width="36"/><circle cx="160" cy="160" r="112" fill="none" stroke="#ad6247" stroke-width="2" stroke-dasharray="3 6"/>';center.innerHTML=`<strong>${state.d?displayCode(state.d):state.sec||'—'}</strong><span>massima granularità<br>disponibile</span>`;$('#children').innerHTML='<div class="empty">Non ci sono livelli successivi nel set di codici disponibile.</div>';return;}
-    const gap=Math.min(.025,0.42/kids.length),step=Math.PI*2/kids.length,r=116;
-    kids.forEach((n,i)=>{let a0=-Math.PI/2+i*step+gap,a1=-Math.PI/2+(i+1)*step-gap;let p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',arcPath(160,160,r,a0,a1));p.setAttribute('fill','none');p.setAttribute('stroke',PALETTE[i%PALETTE.length]);p.setAttribute('stroke-width','42');p.setAttribute('class','slice');p.setAttribute('tabindex','0');p.innerHTML=`<title>${n.d?displayCode(n.d):n.sec} · ${n.label||''}</title>`;p.onclick=()=>selectNode(n.sec,n.d);p.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.sec,n.d)}};svg.appendChild(p)});
+function escapeHtml(s){return String(s??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;

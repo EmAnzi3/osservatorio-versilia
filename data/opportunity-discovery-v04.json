@@ -7,7 +7,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Conferenza Stato-Città",
       "territory": "Italia",
       "family": "national-crosscutting",
-      "urls": ["https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/"],
+      "urls": ["https://www.statocitta.it/home/notizie-e-comunicati/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["bando", "avviso", "contribut", "finanzi", "fondo", "incentiv", "candidatur", "call"],
       "municipalTerms": ["comun", "enti locali", "amministrazioni locali", "città", "municipal"]
@@ -124,7 +124,7 @@
     }
   ],
   "coverageRegistry": {
-    "pcm-stato-citta": {"label":"Conferenza Stato-Città","monitoringStatus":"active","role":"discovery","priority":100,"family":"national-crosscutting","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.statocitta.pcm.gov.it/favicon.ico","note":"Canale trasversale di discovery. Una segnalazione entra nell'output solo dopo risoluzione verso la fonte primaria."},
+    "pcm-stato-citta": {"label":"Conferenza Stato-Città","monitoringStatus":"active","role":"discovery","priority":100,"family":"national-crosscutting","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.statocitta.it/favicon.ico","note":"Canale trasversale di discovery. Una segnalazione entra nell'output solo dopo risoluzione verso la fonte primaria."},
     "mic-dgcc": {"label":"MiC · Creatività Contemporanea","monitoringStatus":"active","role":"discovery","priority":105,"family":"culture","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://creativitacontemporanea.cultura.gov.it/favicon.ico","note":"Integra la copertura MiC oltre la sola DG Spettacolo."},
     "pcm-politiche-mare": {"label":"PCM · Politiche del mare","monitoringStatus":"active","role":"discovery","priority":110,"family":"maritime-coastal","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.dipartimentopolitichemare.gov.it/favicon.ico","note":"Bandi e procedure rivolti anche ai Comuni costieri."},
     "pcm-sport": {"label":"PCM · Dipartimento per lo Sport","monitoringStatus":"active","role":"discovery","priority":100,"family":"sport-social-infrastructure","listingDiscovery":true,"detailEnrichment":false,"pdfFallback":false,"archiveContinuity":false,"historicalReplay":true,"favicon":"https://www.sport.governo.it/favicon.ico","note":"Include Sport e Periferie e altre procedure con possibile ruolo comunale."},

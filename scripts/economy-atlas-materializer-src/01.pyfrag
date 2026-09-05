@@ -1,0 +1,99 @@
+["value"] for row in rows)
+    return {
+        "meta": {
+            "theme": "economia",
+            "label": "Atlante delle attività economiche",
+            "shortLabel": "Atlante attività economiche",
+            "description": "Esplora 1.228 codici ATECO: unità locali attive, specializzazione, peso regionale, artigianato e storico 2014–2025 nei sette Comuni della Versilia.",
+            "unit": "number",
+            "year": "2025",
+            "source": SOURCE_LABEL,
+            "detailRoute": CANONICAL_ROUTE,
+            "searchTerms": [
+                "ateco", "attività economiche", "imprese", "unità locali", "ul attive",
+                "specializzazione", "registro imprese", "infocamere", "nautica", "marmo",
+                "stabilimenti balneari", "ristorazione", "immobiliare", "gallerie d'arte",
+            ],
+        },
+        "sourceUrl": SOURCE_URL,
+        "polarity": "neutral",
+        "dataStorage": {"type": "special-route", "path": "data/economy-atlas/metadata.json"},
+        "rows": rows,
+        "aggregate": {
+            "label": "Versilia",
+            "value": aggregate_value,
+            "note": "Unità locali attive ricostruite senza doppio conteggio dai codici terminali disponibili, anno 2025.",
+        },
+        "normalizedAggregate": None,
+        "method": {
+            "type": "Dato ufficiale / esploratore gerarchico",
+            "formula": "Valori diretti quando disponibili; per i nodi gerarchici la composizione somma i discendenti terminali senza duplicare i livelli padre.",
+            "coverage": "7/7 Comuni · 1.228 codici",
+            "caveat": "0 indica un valore osservato pari a zero; n.d. indica dato non restituito o non disponibile. Gli addetti restano negli indicatori Istat ASIA.",
+        },
+    }
+
+
+def patch_catalog() -> None:
+    data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    _, payload = load_atlas_payload()
+    metrics = data.setdefault("metrics", {})
+    if METRIC_KEY not in metrics:
+        metrics[METRIC_KEY] = make_metric(data, payload)
+    theme = data["themes"]["economia"]
+    if METRIC_KEY not in theme["metrics"]:
+        theme["metrics"].append(METRIC_KEY)
+    sections = theme.get("sections", [])
+    production = next((section for section in sections if section.get("key") == "production"), None)
+    if not production:
+        raise RuntimeError("Sezione Economia 'production' non trovata")
+    if METRIC_KEY not in production["metrics"]:
+        production["metrics"].append(METRIC_KEY)
+    data["version"] = RELEASE_VERSION
+    if "updated" in data:
+        data["updated"] = RELEASE_UPDATED
+    SITE_DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    registry["expectedMetricCount"] = len(metrics)
+    registry["expectedExternalMetricCount"] = 4
+    registry["expectedInlineMetricCount"] = 179
+    registry.setdefault("sourceProfiles", {})["regione-toscana-infocamere-annual"] = {
+        "publisher": "Regione Toscana — Ufficio regionale di Statistica / InfoCamere",
+        "frequency": "annual",
+        "frequencyLabel": "Annuale",
+        "expectedRelease": "Dopo il consolidamento dei dati al 31 dicembre",
+        "acquisitionMethod": "Banca dati Imprese Toscana su Registro Imprese InfoCamere; selezione comunale per attività economica e unità locali attive, con snapshot e controlli di coerenza conservati nella repository.",
+        "licenseName": "Condizioni indicate dalla fonte ufficiale",
+        "licenseUrl": SOURCE_URL,
+    }
+    registry.setdefault("sourceProfileByUrl", {})[SOURCE_URL] = "regione-toscana-infocamere-annual"
+    registry.setdefault("metricOverrides", {})[METRIC_KEY] = {"profile": "regione-toscana-infocamere-annual"}
+    REGISTRY.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def patch_renderer() -> None:
+    text = APP_00.read_text(encoding="utf-8")
+    old = "  const indicatorSlug = (metric) => normalize(metric?.meta?.label).replaceAll(' ', '-');\n  const indicatorHref = (metric) => route(`indicatori/${indicatorSlug(metric)}/`);"
+    new = "  const indicatorSlug = (metric) => normalize(metric?.meta?.label).replaceAll(' ', '-');\n  const indicatorHref = (metric) => {\n    const detailRoute = String(metric?.meta?.detailRoute || '').replace(/^\\/+/, '');\n    if (metric?.dataStorage?.type === 'special-route' && detailRoute) return route(detailRoute);\n    return route(`indicatori/${indicatorSlug(metric)}/`);\n  };"
+    if "dataStorage?.type === 'special-route'" not in text:
+        text = _replace_exact(text, old, new, "indicatorHref")
+    APP_00.write_text(text, encoding="utf-8")
+
+    text = APP_02.read_text(encoding="utf-8")
+    if "metric-route-link" not in text:
+        pattern = r"  function metricControls\(data, themeKey, metricKey, compact = true\) \{.*?\n  \}\n\n  function groupedIndicatorCards\(data, town, themeKey, activeKey\) \{.*?\n  \}\n"
+        replacement = r'''  function metricControls(data, themeKey, metricKey, compact = true) {
+    const theme = data.themes[themeKey];
+    const groups = themeSections(theme);
+    const labelCounts = theme.metrics.reduce((counts, key) => {
+      const label = data.metrics[key].meta.shortLabel;
+      counts[label] = (counts[label] || 0) + 1;
+      return counts;
+    }, {});
+    return `<div class="metric-switch metric-catalog ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatori di ${html(theme.label)}">${groups.map(section => `<section class="metric-group" data-section="${html(section.key)}">
+      <div class="metric-group-heading"><strong>${html(section.label)}</strong>${compact && section.description ? `<span>${html(section.description)}</span>` : ''}</div>
+      <div class="metric-group-buttons">${section.metrics.map(key => {
+        const metric = data.metrics[key]; const meta = metric.meta; const label = labelCounts[meta.shortLabel] > 1 ? meta.label : meta.shortLabel;
+        if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${indicatorHref(metric)}"><span>${html(label)}</span><small>Atlante interattivo <b>→</b></small></a>`;
+        return

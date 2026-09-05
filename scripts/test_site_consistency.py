@@ -25,7 +25,6 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://osservatorioversilia.it/"
 SPECIAL_PUBLIC_PAGES = {
     Path("confronta/meteo-clima/index.html"),
-    Path("confronta/economia/atlante-attivita-economiche/index.html"),
     Path("pnrr/index.html"),
     Path("stato-dati/index.html"),
     Path("opportunita/index.html"),

@@ -256,7 +256,6 @@ if __name__ == "__main__":
     from site_chrome import synchronize_native_page
 
     synchronize_native_page(DIST, DIST / "confronta" / "meteo-clima" / "index.html")
-    runpy.run_path(str(ROOT / "scripts" / "materialize_economy_atlas.py"), run_name="__main__")
 
     from build_opportunity_release import build as build_opportunity_release
 
