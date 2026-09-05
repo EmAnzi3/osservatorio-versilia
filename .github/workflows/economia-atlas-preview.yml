@@ -10,6 +10,7 @@ on:
       - "scripts/economy-atlas-materializer-src/**"
       - "scripts/economy-atlas-test-src/**"
       - "scripts/materialize_economy_atlas_release.py"
+      - "scripts/prepare_economy_atlas_build.py"
       - "scripts/test_economy_atlas_browser.py"
       - ".github/workflows/economia-atlas-preview.yml"
   workflow_dispatch:
@@ -35,13 +36,16 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
+      - name: Prepare static builder
+        run: python scripts/prepare_economy_atlas_build.py
+
       - name: Materialize Economia Atlas release workspace
         run: python scripts/materialize_economy_atlas_release.py
 
       - name: Validate Atlas sources
         run: |
           node --check assets/economy-atlas.js
-          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/test_economy_atlas_browser.py
+          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/prepare_economy_atlas_build.py scripts/test_economy_atlas_browser.py
 
       - name: Build review artifact
         run: python scripts/build_static_brand.py
