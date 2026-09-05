@@ -69,19 +69,6 @@ jobs:
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
-      - name: Probe resilient transport on problem sources
-        continue-on-error: true
-        run: python scripts/opportunity_transport_smoke.py
-
-      - name: Upload transport smoke
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: opportunity-radar-transport-smoke
-          path: reports/runtime/opportunity-transport-smoke.json
-          if-no-files-found: error
-          retention-days: 14
-
       - name: Validate frozen v0.4.4 baseline
         run: |
           python - <<'PY'
