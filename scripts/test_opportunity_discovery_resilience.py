@@ -26,6 +26,7 @@ def _test_403_uses_chromium_dom() -> None:
 
         discovery._fetch_browser_html_with_url = blocked
         discovery._fetch_playwright_html = rendered
+        discovery.reset_trace()
         payload, diagnostics = discovery.fetch_with_diagnostics(
             "https://example.test/waf", timeout=5, attempts=1
         )
@@ -39,6 +40,10 @@ def _test_403_uses_chromium_dom() -> None:
     assert diagnostics["initialFailureClass"] == "http_403_waf"
     assert diagnostics["resolvedUrl"] == "https://example.test/avvisi/"
     assert diagnostics["redirected"] is True
+    trace = discovery.FETCH_TRACE["https://example.test/waf"]
+    assert trace["status"] == "ok", trace
+    assert trace["transport"] == "chromium", trace
+    assert trace["initialFailureClass"] == "http_403_waf", trace
     assert calls == ["https://example.test/waf"]
 
 
@@ -177,6 +182,7 @@ def _test_probe_uses_resolved_url_for_relative_links() -> None:
                 "httpAttempts": 2,
                 "fallbackUsed": True,
                 "initialFailureClass": "http_403_waf",
+                "failureClass": None,
                 "resolvedUrl": "https://example.test/avvisi/",
                 "redirected": True,
                 "errors": [],
@@ -207,6 +213,43 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     assert "/servizio-civile/bandi-e-avvisi-di-servizio-civile/" in scu["urls"][0]
 
 
+def _test_transport_audit_exposes_endpoint_health() -> None:
+    config, _ = daily_h3._compose_runtime_hardened()
+    source = next(
+        row for row in config.get("sources") or []
+        if str(row.get("url") or "").strip()
+    )
+    source_id = str(source["id"])
+    url = str(source["url"])
+
+    discovery.reset_trace()
+    discovery.FETCH_TRACE[url] = {
+        "url": url,
+        "status": "ok",
+        "transport": "chromium",
+        "httpAttempts": 2,
+        "fallbackUsed": True,
+        "initialFailureClass": "http_403_waf",
+        "failureClass": None,
+        "resolvedUrl": url,
+        "redirected": False,
+        "errors": ["HTTP [http_403_waf]: 403 Forbidden"],
+    }
+    audit = daily_h3._build_transport_audit({
+        "sources": [{"sourceId": source_id, "status": "ok"}],
+        "discoverySources": [],
+    })
+
+    assert audit["schemaVersion"] == "1.0", audit
+    matching = next(row for row in audit["sources"] if row["sourceId"] == source_id)
+    assert matching["endpointOk"] == 1, matching
+    assert matching["fallbackSuccessCount"] == 1, matching
+    assert matching["endpoints"][0]["initialFailureClass"] == "http_403_waf", matching
+    assert audit["summary"]["fallbackSuccesses"] >= 1, audit["summary"]
+    assert audit["summary"]["configuredSources"] > 0, audit["summary"]
+    assert audit["summary"]["configuredEndpoints"] > 0, audit["summary"]
+
+
 def main() -> int:
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
@@ -215,6 +258,7 @@ def main() -> int:
     _test_probe_exposes_endpoint_diagnostics()
     _test_probe_uses_resolved_url_for_relative_links()
     _test_runtime_compose_replaces_stale_sources()
+    _test_transport_audit_exposes_endpoint_health()
     print("Discovery resiliente Radar: PASS")
     return 0
 
