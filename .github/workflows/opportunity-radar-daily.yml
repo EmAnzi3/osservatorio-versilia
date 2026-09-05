@@ -82,6 +82,15 @@ jobs:
           assert not ((p.get('coverageAudit') or {}).get('runtimeUncoveredFamilies') or [])
           assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
           assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
+
+          transport = p.get('transportAudit') or {}
+          assert transport.get('schemaVersion') == '1.0', transport
+          transport_summary = transport.get('summary') or {}
+          assert int(transport_summary.get('configuredSources') or 0) > 0, transport_summary
+          assert int(transport_summary.get('configuredEndpoints') or 0) > 0, transport_summary
+          assert (p.get('counts') or {}).get('transportFallbacks') == int(transport_summary.get('fallbackSuccesses') or 0)
+          assert (p.get('counts') or {}).get('transportFailures') == int(transport_summary.get('endpointFailures') or 0)
+
           ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
           required = {
               'pcm-sport-eventi-2026',
@@ -94,6 +103,8 @@ jobs:
           print(
               f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
               f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date} · "
+              f"fallback trasporto {transport_summary.get('fallbackSuccesses', 0)} · "
+              f"fallimenti endpoint {transport_summary.get('endpointFailures', 0)} · "
               f"continuità riconciliata {(p.get('continuityReconciliation') or {}).get('reconciled', 0)}"
           )
           PY
