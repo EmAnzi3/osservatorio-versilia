@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Refresh giornaliero h3: discovery resiliente e gate runtime obbligatori.
+"""Refresh giornaliero h4: discovery resiliente e gate runtime obbligatori.
 
-Estende l'hardening h2 senza modificare classificatore o criteri di pubblicazione:
-- applica il trasporto resiliente anche a listing primari e canali discovery;
-- registra la diagnostica endpoint nel risultato del discovery e nello snapshot;
-- rimuove dal runtime il vecchio feed PA Digitale stale, mantenuto nel catalogo
-  come fonte degradata sostituita dalla pagina corrente;
-- corregge difensivamente l'endpoint SCU anche se il catalogo non fosse aggiornato;
+Estende l'hardening h3 senza modificare classificatore o criteri di pubblicazione:
+- applica il trasporto resiliente a listing primari e canali discovery;
+- consente un reader proxy solo come ultimo fallback di discovery, marcandolo
+  sempre come copertura degradata e mai come verifica/promozione;
+- registra la diagnostica endpoint nel risultato e nello snapshot;
+- rimuove dal runtime il vecchio feed PA Digitale stale;
+- corregge difensivamente l'endpoint SCU;
 - blocca la pubblicazione quando una famiglia obbligatoria è realmente priva di
   qualsiasi endpoint eseguito con successo nel run.
 """
@@ -38,9 +39,6 @@ _SCU_CURRENT_URL = (
 def _compose_runtime_hardened() -> tuple[dict[str, Any], dict[str, Any]]:
     config, coverage = _ORIGINAL_COMPOSE()
 
-    # Il vecchio dataset GitHub di PA Digitale resta documentato nel registry
-    # come degraded/replacementNeeded, ma non viene più interrogato come fonte
-    # primaria corrente: il presidio attivo è pa-digitale-current.
     config["sources"] = [
         source for source in config.get("sources") or []
         if str(source.get("id") or "") != "pa-digitale-2026"
@@ -62,9 +60,6 @@ def _runtime_uncovered_families(result: dict[str, Any]) -> list[str]:
     for family in contract.get("requiredFamilies") or []:
         source_ids = [str(value) for value in family.get("sourceIds") or []]
         states = [str((by_id.get(source_id) or {}).get("runtimeStatus") or "not_run") for source_id in source_ids]
-        # degraded significa almeno un endpoint raggiunto: la famiglia non è
-        # completa, ma non è totalmente cieca. Error/not_run su tutti è invece
-        # una perdita reale di copertura e deve fermare il publish giornaliero.
         if not any(state in {"ok", "degraded"} for state in states):
             uncovered.append(str(family.get("id") or ""))
     return sorted(filter(None, uncovered))
@@ -107,6 +102,7 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
 
     rows: list[dict[str, Any]] = []
     fallback_successes = 0
+    proxy_successes = 0
     endpoint_failures = 0
     redirected = 0
 
@@ -120,7 +116,9 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
                     "status": "not_run",
                     "transport": None,
                     "fallbackUsed": False,
+                    "proxyUsed": False,
                     "initialFailureClass": None,
+                    "browserFailureClass": None,
                     "failureClass": None,
                     "resolvedUrl": None,
                     "redirected": False,
@@ -128,8 +126,10 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
                 }
             else:
                 endpoint = dict(trace)
-                if endpoint.get("status") == "ok" and endpoint.get("transport") == "chromium":
+                if endpoint.get("status") == "ok" and endpoint.get("transport") in {"chromium", "reader_proxy"}:
                     fallback_successes += 1
+                if endpoint.get("status") == "ok" and endpoint.get("transport") == "reader_proxy":
+                    proxy_successes += 1
                 if endpoint.get("status") == "error":
                     endpoint_failures += 1
                 if endpoint.get("redirected"):
@@ -142,7 +142,11 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
             "endpointCount": len(endpoints),
             "endpointOk": sum(endpoint.get("status") == "ok" for endpoint in endpoints),
             "fallbackSuccessCount": sum(
-                endpoint.get("status") == "ok" and endpoint.get("transport") == "chromium"
+                endpoint.get("status") == "ok" and endpoint.get("transport") in {"chromium", "reader_proxy"}
+                for endpoint in endpoints
+            ),
+            "proxySuccessCount": sum(
+                endpoint.get("status") == "ok" and endpoint.get("transport") == "reader_proxy"
                 for endpoint in endpoints
             ),
             "failureClasses": sorted({
@@ -164,11 +168,12 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
         if url not in assigned_urls
     ]
     return {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "summary": {
             "configuredSources": len(rows),
             "configuredEndpoints": sum(row.get("endpointCount", 0) for row in rows),
             "fallbackSuccesses": fallback_successes,
+            "proxySuccesses": proxy_successes,
             "endpointFailures": endpoint_failures,
             "redirectedEndpoints": redirected,
             "extraFetches": len(extra_fetches),
@@ -180,10 +185,11 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
 
 def _prepare_public_hardened(result: dict[str, Any], today):
     result = _ORIGINAL_PREPARE(result, today)
-    result["dailyHardeningVersion"] = "0.4.4-h3"
+    result["dailyHardeningVersion"] = "0.4.4-h4"
     result["transportAudit"] = _build_transport_audit(result)
     summary = result["transportAudit"]["summary"]
     result.setdefault("counts", {})["transportFallbacks"] = int(summary.get("fallbackSuccesses") or 0)
+    result.setdefault("counts", {})["transportProxyFallbacks"] = int(summary.get("proxySuccesses") or 0)
     result.setdefault("counts", {})["transportFailures"] = int(summary.get("endpointFailures") or 0)
     return result
 
