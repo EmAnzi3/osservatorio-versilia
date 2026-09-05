@@ -54,7 +54,7 @@ def patch_runtime_bundle() -> None:
         ),
         (
             "${theme.metrics.length} indicatori</span><i aria-hidden=\"true\">→</i>",
-            "${theme.metrics.length + (theme.key === 'economia' ? Object.keys(data.specialExplorers || {}).length : 0)} indicatori</span><i aria-hidden=\"true\">→</i>",
+            "${theme.metrics.length + (theme.key === 'economia' ? 1 : 0)} indicatori</span><i aria-hidden=\"true\">→</i>",
         ),
         (
             "const categories = ['Indicatori comunali','Contesti sovracomunali','Temi','Comuni'];",
@@ -66,7 +66,7 @@ def patch_runtime_bundle() -> None:
         ),
         (
             "badge:`${t.metrics.length} indicatori`",
-            "badge:`${t.metrics.length + (t.key === 'economia' ? Object.keys(data.specialExplorers || {}).length : 0)} indicatori`",
+            "badge:`${t.metrics.length + (t.key === 'economia' ? 1 : 0)} indicatori`",
         ),
         (
             "const suggested = new Set(['metric-population','metric-income','metric-employmentRate','metric-businessValueAdded','metric-roadInjuries','context-crime','context-brain-drain']);",
