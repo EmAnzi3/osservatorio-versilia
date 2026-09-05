@@ -20,6 +20,7 @@ TARGET_SOURCE_IDS = (
     "gse",
     "pcm-stato-citta",
     "pcm-politiche-mare",
+    "pcm-pari-opportunita",
     "pcm-politiche-giovanili-scu",
     "mim-enti-locali",
     "funzione-pubblica",
