@@ -7,6 +7,7 @@
   globalThis.__OV_SCRIPT_URL__ = loader.src;
 
   const VERSION='20260903-v129-salute-finanziaria-selector';
+  const ATLAS_VERSION='20260904-v130-economia-atlas-draft';
   const PINNED_COMMIT = 'c68e0ffc4b0f29a98eb4eb128625607374176479';
   const CDN_ROOT = `https://cdn.jsdelivr.net/gh/EmAnzi3/osservatorio-versilia@${PINNED_COMMIT}/`;
   const RAW_ROOT = `https://raw.githubusercontent.com/EmAnzi3/osservatorio-versilia/${PINNED_COMMIT}/`;
@@ -103,7 +104,8 @@
     await Promise.all([
       loadStylesheet(new URL(`./fonts.css?v=${VERSION}`, loader.src).href),
       loadStylesheet(new URL(`./fidelity.css?v=${VERSION}`, loader.src).href),
-      loadStylesheet(new URL(`./agricoltura-ii-draft.css?v=${VERSION}`, loader.src).href)
+      loadStylesheet(new URL(`./agricoltura-ii-draft.css?v=${VERSION}`, loader.src).href),
+      loadStylesheet(new URL(`./economy-atlas.css?v=${ATLAS_VERSION}`, loader.src).href)
     ]);
 
     if (document.fonts?.load) {
@@ -128,6 +130,7 @@
     const moduleUrl = URL.createObjectURL(new Blob([parts.join('')], { type: 'text/javascript' }));
     try {
       await import(moduleUrl);
+      await loadScript(new URL(`./economy-atlas.js?v=${ATLAS_VERSION}`, loader.src).href);
       document.querySelectorAll('img').forEach(repairImage);
       await loadScript(new URL(`./fidelity.js?v=${VERSION}`, loader.src).href);
     } finally {
