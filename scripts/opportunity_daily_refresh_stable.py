@@ -6,9 +6,10 @@ sinonimo di disponibilità della fonte. Questo wrapper mantiene intatto il
 collector h4 e aggiunge una memoria di salute per fonte:
 
 - un successo corrente azzera i fallimenti consecutivi;
-- un timeout/403 isolato usa l'ultimo successo recente come grace tecnica;
-- una famiglia obbligatoria blocca il publish solo quando non ha né una fonte
-  raggiunta nel run né un successo recente entro la finestra di grace;
+- un timeout/403 isolato usa l'ultimo successo recente o una breve finestra di
+  fallimenti consecutivi come grace tecnica;
+- una famiglia obbligatoria blocca il publish solo dopo una perdita persistente
+  di copertura, non per un singolo runner o durante la migrazione pre-h5;
 - lo snapshot conserva lastSuccessfulFetch, consecutiveFailures ed effectiveStatus.
 
 La grace riguarda soltanto la copertura del discovery. Non promuove bandi, non
@@ -26,6 +27,7 @@ import opportunity_daily_refresh_resilient as h4
 
 
 SOURCE_HEALTH_GRACE_DAYS = 2
+SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES = 2
 _PREVIOUS_HEALTH: dict[str, dict[str, Any]] = {}
 _RUN_DATE: date | None = None
 
@@ -74,7 +76,13 @@ def _load_previous_snapshot(path: Path) -> dict[str, Any]:
 
 
 def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    """Ricostruisce la memoria anche dagli snapshot pre-h5."""
+    """Ricostruisce la memoria anche dagli snapshot pre-h5.
+
+    Per uno snapshot legacy che conosce soltanto ``runtimeStatus=error`` non
+    fingiamo un successo passato: inizializziamo un singolo fallimento noto. Il
+    primo run h5 può così osservare il secondo fallimento senza bloccare subito;
+    dal terzo fallimento consecutivo la sorgente esce dalla grace.
+    """
     reference = str(snapshot.get("referenceDate") or "")
     seeded: dict[str, dict[str, Any]] = {}
 
@@ -86,9 +94,12 @@ def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]
         runtime = str(row.get("runtimeStatus") or "unknown")
         if not last_success and runtime in {"ok", "degraded"} and reference:
             last_success = reference
+        persisted_failures = row.get("consecutiveFailures")
+        if persisted_failures is None:
+            persisted_failures = 0 if runtime in {"ok", "degraded"} else 1
         seeded[source_id] = {
             "lastSuccessfulFetch": last_success,
-            "consecutiveFailures": int(row.get("consecutiveFailures") or 0),
+            "consecutiveFailures": int(persisted_failures or 0),
             "effectiveStatus": row.get("effectiveStatus") or runtime,
         }
 
@@ -114,18 +125,24 @@ def _health_state(source_id: str, current_status: str, today: date) -> dict[str,
             "consecutiveFailures": 0,
             "effectiveStatus": current_status,
             "graceUsed": False,
+            "graceReason": None,
             "lastSuccessAgeDays": 0,
         }
 
     last_success_text = str(previous.get("lastSuccessfulFetch") or "")
     last_success = _safe_date(last_success_text)
     age_days = (today - last_success).days if last_success else None
-    in_grace = age_days is not None and 0 <= age_days <= SOURCE_HEALTH_GRACE_DAYS
+    failures = int(previous.get("consecutiveFailures") or 0) + 1
+    recent_success = age_days is not None and 0 <= age_days <= SOURCE_HEALTH_GRACE_DAYS
+    failure_window = failures <= SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
+    in_grace = recent_success or failure_window
+    grace_reason = "recent_success" if recent_success else "consecutive_failure_window" if failure_window else None
     return {
         "lastSuccessfulFetch": last_success_text or None,
-        "consecutiveFailures": int(previous.get("consecutiveFailures") or 0) + 1,
+        "consecutiveFailures": failures,
         "effectiveStatus": "grace" if in_grace else "error",
         "graceUsed": in_grace,
+        "graceReason": grace_reason,
         "lastSuccessAgeDays": age_days,
     }
 
@@ -154,17 +171,23 @@ def _runtime_uncovered_families_stable(result: dict[str, Any]) -> list[str]:
         if any(state in {"ok", "degraded"} for state in current_states.values()):
             continue
 
-        grace_sources: list[str] = []
+        grace_sources: list[dict[str, Any]] = []
         for source_id, current_status in current_states.items():
             state = _health_state(source_id, current_status, today)
             if state["effectiveStatus"] == "grace":
-                grace_sources.append(source_id)
+                grace_sources.append({
+                    "sourceId": source_id,
+                    "consecutiveFailures": state["consecutiveFailures"],
+                    "lastSuccessfulFetch": state["lastSuccessfulFetch"],
+                    "graceReason": state["graceReason"],
+                })
 
         if grace_sources:
             grace_families.append({
                 "familyId": family_id,
-                "sourceIds": grace_sources,
+                "sources": grace_sources,
                 "graceDays": SOURCE_HEALTH_GRACE_DAYS,
+                "maxConsecutiveFailures": SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES,
             })
         elif family_id:
             uncovered.append(family_id)
@@ -172,6 +195,7 @@ def _runtime_uncovered_families_stable(result: dict[str, Any]) -> list[str]:
     audit = result.setdefault("coverageAudit", {})
     audit["runtimeGraceFamilies"] = grace_families
     audit["sourceHealthGraceDays"] = SOURCE_HEALTH_GRACE_DAYS
+    audit["sourceHealthMaxConsecutiveFailures"] = SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
     return sorted(uncovered)
 
 
@@ -195,6 +219,7 @@ def _build_transport_audit_stable(result: dict[str, Any]) -> dict[str, Any]:
     summary["sourcesInGrace"] = in_grace
     summary["unhealthySources"] = unhealthy
     summary["sourceHealthGraceDays"] = SOURCE_HEALTH_GRACE_DAYS
+    summary["sourceHealthMaxConsecutiveFailures"] = SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
     audit["schemaVersion"] = "1.2"
     return audit
 
@@ -203,6 +228,7 @@ def _prepare_public_stable(result: dict[str, Any], today: date) -> dict[str, Any
     result = _BASE_PREPARE(result, today)
     result["dailyHardeningVersion"] = "0.4.4-h5"
     result["sourceHealthGraceDays"] = SOURCE_HEALTH_GRACE_DAYS
+    result["sourceHealthMaxConsecutiveFailures"] = SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
     return result
 
 
