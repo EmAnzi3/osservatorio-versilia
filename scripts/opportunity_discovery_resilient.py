@@ -9,6 +9,8 @@ retry, fallback Chromium selettivo e classificazione esplicita dei fallimenti.
 A differenza della riconferma di un bando già noto, il discovery deve preservare
 il DOM: il fallback Chromium restituisce quindi l'HTML renderizzato e l'URL
 finale, così titoli e link restano estraibili anche dopo redirect o rendering JS.
+Ogni fetch live registra inoltre una traccia strutturata che il refresh h3
+incorpora nello snapshot giornaliero.
 """
 from __future__ import annotations
 
@@ -21,12 +23,23 @@ from typing import Any
 import opportunity_daily_refresh_revalidated as transport
 
 
+FETCH_TRACE: dict[str, dict[str, Any]] = {}
+
+
 class DiscoveryFetchError(RuntimeError):
     """Errore di trasporto con diagnostica serializzabile nel risultato Radar."""
 
     def __init__(self, message: str, diagnostics: dict[str, Any]):
         super().__init__(message)
         self.diagnostics = diagnostics
+
+
+def reset_trace() -> None:
+    FETCH_TRACE.clear()
+
+
+def _record_trace(url: str, diagnostics: dict[str, Any]) -> None:
+    FETCH_TRACE[url] = {"url": url, **diagnostics}
 
 
 def classify_fetch_error(exc: BaseException) -> str:
@@ -148,16 +161,19 @@ def fetch_with_diagnostics(
         payload, resolved_url = _fetch_browser_html_with_url(
             url, timeout=timeout, attempts=http_attempts
         )
-        return payload, {
+        diagnostics = {
             "status": "ok",
             "transport": "http_browser",
             "httpAttempts": http_attempts,
             "fallbackUsed": False,
             "initialFailureClass": None,
+            "failureClass": None,
             "resolvedUrl": resolved_url,
             "redirected": resolved_url != url,
             "errors": [],
         }
+        _record_trace(url, diagnostics)
+        return payload, diagnostics
     except Exception as http_error:  # pragma: no cover - dipende dalla rete live
         failure_class = classify_fetch_error(http_error)
         errors.append(f"HTTP [{failure_class}]: {http_error}")
@@ -168,16 +184,19 @@ def fetch_with_diagnostics(
                 url,
                 timeout_ms=max(20_000, min(45_000, timeout * 1000)),
             )
-            return payload, {
+            diagnostics = {
                 "status": "ok",
                 "transport": "chromium",
                 "httpAttempts": http_attempts,
                 "fallbackUsed": True,
                 "initialFailureClass": failure_class,
+                "failureClass": None,
                 "resolvedUrl": resolved_url,
                 "redirected": resolved_url != url,
                 "errors": errors,
             }
+            _record_trace(url, diagnostics)
+            return payload, diagnostics
         except Exception as browser_error:  # pragma: no cover - dipende dalla rete/browser live
             browser_class = classify_fetch_error(browser_error)
             errors.append(f"Chromium [{browser_class}]: {browser_error}")
@@ -192,6 +211,7 @@ def fetch_with_diagnostics(
                 "redirected": False,
                 "errors": errors,
             }
+            _record_trace(url, diagnostics)
             raise DiscoveryFetchError("; ".join(errors), diagnostics) from browser_error
 
     diagnostics = {
@@ -205,6 +225,7 @@ def fetch_with_diagnostics(
         "redirected": False,
         "errors": errors,
     }
+    _record_trace(url, diagnostics)
     raise DiscoveryFetchError("; ".join(errors), diagnostics)
 
 
@@ -242,6 +263,7 @@ def probe_discovery_sources(
                         "httpAttempts": 0,
                         "fallbackUsed": False,
                         "initialFailureClass": None,
+                        "failureClass": None,
                         "resolvedUrl": url,
                         "redirected": False,
                         "errors": [],
