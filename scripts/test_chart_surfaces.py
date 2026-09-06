@@ -116,6 +116,23 @@ def assert_surface(page: Page, selector: str, label: str, *, visible: bool = Tru
     require(px(style["radius"]) >= 10, f"{label}: raggio del pannello insufficiente: {style}")
 
 
+def assert_atlas_surface(page: Page, selector: str, label: str) -> None:
+    """Valida i pannelli dell'Atlante dentro lo shadow DOM nativo."""
+    locator = page.locator(selector).first
+    require(locator.count() == 1, f"{label}: pannello Atlante mancante ({selector})")
+    require(locator.is_visible(), f"{label}: pannello Atlante non visibile")
+    style = surface_style(locator)
+    require(
+        style["background"] == "rgb(255, 255, 255)",
+        f"{label}: sfondo Atlante inatteso: {style}",
+    )
+    require(
+        style["borderStyle"] != "none" and px(style["borderWidth"]) >= 1,
+        f"{label}: bordo del pannello Atlante assente: {style}",
+    )
+    require(px(style["radius"]) >= 10, f"{label}: raggio del pannello Atlante insufficiente: {style}")
+
+
 def verify_stylesheet_is_global() -> None:
     pages = [path for path in DIST.rglob("*.html") if path.name != "offline.html"]
     require(pages, "Build priva di pagine HTML")
@@ -190,21 +207,22 @@ def verify_history_variants(page: Page, base: str) -> None:
 
 
 def verify_economy_specials(page: Page, base: str) -> None:
-    page.goto(base + "confronta/economia/?indicatore=localUnits", wait_until="networkidle")
-    page.wait_for_selector(".ateco-panel")
-    assert_surface(page, ".ateco-panel", "Economia · confronto ATECO")
+    # Il vecchio drill-down .ateco-panel è stato sostituito dalla route canonica
+    # dell'Atlante: il gate deve validare la superficie nuova, non pretendere DOM legacy.
+    page.goto(base + "confronta/economia/atlante-attivita-economiche/", wait_until="networkidle")
+    atlas_surface = "ov-economy-atlas .search-card"
+    page.wait_for_selector(atlas_surface)
+    assert_atlas_surface(page, atlas_surface, "Economia · Atlante attività economiche")
+    require(page.locator(".ateco-panel").count() == 0, "Economia · pannello ATECO legacy ancora presente")
 
+    # Nei profili comunali l'Atlante è incorporato mantenendo il contesto del Comune.
     page.goto(base + "comuni/massarosa/?tema=economia&indicatore=localUnits", wait_until="networkidle")
-    page.wait_for_selector(".ateco-town-detail")
-    assert_surface(page, ".ateco-town-detail", "Massarosa · dettaglio ATECO")
-
-    disclosure = page.locator(".topic-deep-dive .detail-disclosure").first
-    if disclosure.count() == 1:
-        summary = disclosure.locator(":scope > summary")
-        if disclosure.get_attribute("open") is None:
-            summary.click()
-        page.wait_for_selector(".topic-deep-dive .deep-bar-list", state="visible")
-        assert_surface(page, ".topic-deep-dive .deep-bar-list", "Massarosa · barre struttura economica")
+    page.wait_for_selector(atlas_surface)
+    host = page.locator("ov-economy-atlas").first
+    require(host.get_attribute("town") == "massarosa", "Massarosa · contesto Atlante non preservato")
+    require(host.get_attribute("embedded") is not None, "Massarosa · Atlante non incorporato")
+    assert_atlas_surface(page, atlas_surface, "Massarosa · Atlante attività economiche")
+    require(page.locator(".ateco-town-detail").count() == 0, "Massarosa · dettaglio ATECO legacy ancora presente")
 
 
 def main() -> None:
@@ -232,7 +250,7 @@ def main() -> None:
         context.close()
         browser.close()
 
-    print("Superfici grafiche verificate: home, 11 temi, 7 comuni, storico a due punti/linee e pannelli ATECO.")
+    print("Superfici grafiche verificate: home, 11 temi, 7 comuni, storico a due punti/linee e Atlante Economia.")
 
 
 if __name__ == "__main__":
