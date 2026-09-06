@@ -2,10 +2,12 @@
 """Aggiunge export CSV e stampa/PDF alla pagina canonica dell'Atlante Economia."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / "assets" / "economy-atlas.js"
+REGISTRY = ROOT / "data" / "source-registry.json"
 MARKER = "/* ov-atlas-export-actions */"
 TAIL = "renderAll();\n\n    }\n  }\n  if(!customElements.get('ov-economy-atlas'))"
 
@@ -66,16 +68,25 @@ function ensureAtlasExportActions(){
 '''
 
 
+def normalize_registry_counts() -> None:
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    total = int(registry["expectedMetricCount"])
+    external = int(registry["expectedExternalMetricCount"])
+    registry["expectedInlineMetricCount"] = total - external
+    REGISTRY.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> None:
+    normalize_registry_counts()
     text = RUNTIME.read_text(encoding="utf-8")
     if MARKER in text:
-        print("Azioni export Atlante già presenti.")
+        print("Azioni export Atlante già presenti; conteggi registry normalizzati.")
         return
     if text.count(TAIL) != 1:
         raise RuntimeError(f"Tail Atlante inattesa: {text.count(TAIL)} occorrenze")
     text = text.replace(TAIL, EXPORT_JS + "\nrenderAll();\nensureAtlasExportActions();\n\n    }\n  }\n  if(!customElements.get('ov-economy-atlas'))", 1)
     RUNTIME.write_text(text, encoding="utf-8")
-    print("Atlante: azioni standard Scarica CSV e Stampa / PDF materializzate.")
+    print("Atlante: azioni standard Scarica CSV e Stampa / PDF materializzate; registry inline normalizzato.")
 
 
 if __name__ == "__main__":
