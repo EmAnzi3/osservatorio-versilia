@@ -12,6 +12,7 @@ on:
       - "scripts/materialize_economy_atlas_release.py"
       - "scripts/refine_economy_atlas_release.py"
       - "scripts/refine_economy_atlas_tooltips.py"
+      - "scripts/refine_economy_atlas_exports.py"
       - "scripts/prepare_economy_atlas_build.py"
       - "scripts/test_economy_atlas_browser.py"
       - "scripts/run_economy_atlas_browser_contract.py"
@@ -51,10 +52,13 @@ jobs:
       - name: Align Atlas tooltips with OV
         run: python scripts/refine_economy_atlas_tooltips.py
 
+      - name: Add Atlas export actions
+        run: python scripts/refine_economy_atlas_exports.py
+
       - name: Validate Atlas sources
         run: |
           node --check assets/economy-atlas.js
-          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/refine_economy_atlas_release.py scripts/refine_economy_atlas_tooltips.py scripts/prepare_economy_atlas_build.py scripts/test_economy_atlas_browser.py scripts/run_economy_atlas_browser_contract.py
+          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/refine_economy_atlas_release.py scripts/refine_economy_atlas_tooltips.py scripts/refine_economy_atlas_exports.py scripts/prepare_economy_atlas_build.py scripts/test_economy_atlas_browser.py scripts/run_economy_atlas_browser_contract.py
 
       - name: Build review artifact
         run: python scripts/build_static_brand.py
