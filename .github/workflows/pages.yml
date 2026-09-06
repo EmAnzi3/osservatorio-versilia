@@ -17,7 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  quick:
+    name: quick
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,350 +28,51 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
 
-      - name: Install browser tooling
+      - name: Install quick build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Run quick preflight
+        run: python scripts/preflight.py --quick
+
+      - name: Upload verified preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-preview
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+
+  full:
+    name: full
+    needs: quick
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      - name: Install full test dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
           npm install --global lighthouse@12.8.2
 
-      - name: Validate canonical catalog and snapshots
-        run: |
-          python scripts/finalize_catalog_release.py --check
-          python scripts/test_catalog_release_v116.py
-          python scripts/test_costi_fiscalita_redditi_draft.py
-          python scripts/test_demography_lotto_a_materialized.py
-          python scripts/test_demography_lotto_a_v5.py
-          python scripts/test_demography_rcs_lotto_a.py
-          python scripts/test_income_lotto_a_v2.py
-          python scripts/test_fiscal_lotto_b.py
-          python scripts/test_pnrr_toscana_draft.py
-          python scripts/test_pnrr_toscana_review.py
-          python scripts/test_amministrazione_lotto_a.py
-          python scripts/test_lavoro_istruzione_eta_genere.py
-          python scripts/test_mobilita_tpl_v119.py
-          python scripts/test_agricoltura_territorio_v120.py
-          python scripts/test_cultura_biblioteche_v121.py
-          python scripts/test_costa_mare_v123.py
-          python scripts/test_attivita_estrattive_v128.py
-          python scripts/test_ambiente_acqua_v124_ui.py
-          python scripts/test_erp_arrears_v125.py
-          python scripts/test_investimenti_versilia.py
-          node --check assets/visual-grammar.js
-          python -m json.tool data/site-data.json > /dev/null
-          python -m json.tool data/source-registry.json > /dev/null
-          python -m json.tool data/source-monitor-state.json > /dev/null
-          python -m json.tool data/source-snapshots/istat-demography-lotto-a-2026-08.json > /dev/null
-          python -m json.tool data/source-snapshots/istat-rcs-demography-2025.json > /dev/null
-          python -m json.tool data/source-snapshots/mef-income-lotto-a-2024.json > /dev/null
-          python -m json.tool data/source-snapshots/fiscal-lotto-b-2025.json > /dev/null
-          python -m json.tool data/source-snapshots/rgs-amministrazione-2024.json > /dev/null
-          python -m json.tool data/source-snapshots/rgs-formazione-2024.json > /dev/null
-          python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
-          python -m json.tool data/source-snapshots/mobilita-tpl-2026-08-26.json > /dev/null
-          python -m json.tool data/source-snapshots/istat-agricoltura-territorio-2020.json > /dev/null
-          python -m json.tool data/source-snapshots/costa-mare-v123.json > /dev/null
-          python -m json.tool data/source-snapshots/attivita-estrattive-v128.json > /dev/null
-          python -m json.tool data/source-snapshots/erp-lucca-arrears-2020-2024.json > /dev/null
-
-      - name: Build pre-rendered site
-        run: python scripts/build_static_brand.py
-
-      - name: Ensure build does not rewrite canonical sources
-        run: git diff --exit-code -- . ':(exclude)dist'
-
-      - name: Materialize public data status
-        run: |
-          python scripts/build_data_status.py
-          python scripts/inject_data_status_runtime.py
-
-      - name: Build PNRR Toscana deep dive
-        run: |
-          node --check assets/pnrr-town-detail.js
-          python scripts/build_pnrr_toscana_deep_dive.py
-          python scripts/inject_pnrr_town_experience.py
-          python scripts/test_pnrr_toscana_draft.py
-          python scripts/test_pnrr_toscana_review.py
-
-      - name: Start local release server
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/preview_dist.py --port 8123 --directory dist >/tmp/ov-release-http.log 2>&1 &
-          echo $! > /tmp/ov-release-http.pid
-          for attempt in {1..20}; do
-            if curl --fail --silent http://127.0.0.1:8123/ >/dev/null; then
-              exit 0
-            fi
-            sleep 0.5
-          done
-          cat /tmp/ov-release-http.log
-          exit 1
-
-      - name: Validate Demography Lotto A v2 in browser
-        run: python scripts/test_demography_lotto_a_browser_v2.py --base http://127.0.0.1:8123/
-
-      - name: Validate Income Lotto A in browser
-        run: python scripts/test_income_lotto_a_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Fiscalità Lotto B in browser
-        run: python scripts/test_fiscal_lotto_b_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Amministrazione Lotto A in browser
-        run: python scripts/test_amministrazione_lotto_a_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Lavoro e Istruzione per età e genere
-        run: |
-          python scripts/test_lavoro_istruzione_eta_genere_browser.py --base http://127.0.0.1:8123/
-          python scripts/test_lavoro_istruzione_versilia_pyramid_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Mobilità TPL
-        run: |
-          mkdir -p reports/mobilita-v119-browser
-          python scripts/test_mobilita_tpl_v119_browser.py \
-            --base http://127.0.0.1:8123/ \
-            --screenshots-dir reports/mobilita-v119-browser
-
-      - name: Validate Agricoltura e territorio interactions
-        run: python scripts/test_agricoltura_review_interactions_v120.py
-
-      - name: Validate Costa e mare
-        run: python scripts/test_costa_mare_v123_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Attività estrattive
-        run: python scripts/test_attivita_estrattive_v128_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Ambiente acqua e bonifiche
-        run: python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Morosità ERP
-        run: |
-          mkdir -p reports/erp-arrears-v125-browser
-          python scripts/test_erp_arrears_v125_browser.py \
-            --base http://127.0.0.1:8123/ \
-            --screenshots-dir reports/erp-arrears-v125-browser
-
-      - name: Validate Investimenti e opere
-        run: python scripts/test_investimenti_versilia_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate Salute finanziaria v1.29
-        run: python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate PNRR Toscana town experience
-        run: python scripts/test_pnrr_toscana_town_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate income and inflation history in browser
-        run: python scripts/check_income_inflation_history_browser.py --base http://127.0.0.1:8123/
-
-      - name: Validate public data status
-        run: |
-          node --check assets/data-status.js
-          python scripts/test_data_status.py
-          python scripts/test_data_status_browser.py --base http://127.0.0.1:8123/
-
-      - name: Run regression tests
-        run: python scripts/test_static.py
-
-      - name: Run launch foundation checks
-        run: python scripts/test_launch_foundations.py
-
-      - name: Run indicator page and SEO checks
-        run: python scripts/test_indicator_pages.py
-
-      - name: Run composite indicator checks
-        run: python scripts/test_composite_indicators.py
-
-      - name: Run brand identity checks
-        run: python scripts/test_brand_identity.py
-
-      - name: Run PWA checks
-        run: |
-          node --check assets/pwa.js
-          node --check service-worker.js
-          python scripts/test_pwa.py
-
-      - name: Run visual grammar checks
-        run: |
-          node --check assets/visual-grammar.js
-          python scripts/test_visual_grammar.py
-
-      - name: Run chart surface checks
-        run: python scripts/test_chart_surfaces.py
-
-      - name: Run release compatibility checks
-        run: |
-          python scripts/test_release_v170_compat.py
-          python scripts/test_history_v180.py
-
-      - name: Run source-link checks
-        run: python scripts/test_source_links_v160.py
-
-      - name: Run SIOPE history checks
-        run: python scripts/test_siope_history_v160.py
-
-      - name: Run accordion and history checks
-        run: python scripts/test_ux_experiment.py
-
-      - name: Run mobile interaction checks
-        run: |
-          node --check assets/ux-accordion.js
-          node --check assets/ux-history.js
-          node --check assets/ux-history-core.js
-          python scripts/test_mobile_interactions.py
-          python scripts/test_accordion_tools_persistence.py
-
-      - name: Run export checks
-        run: python scripts/test_exports_v161.py
-
-      - name: Run ASIA, ATECO and AGCOM tests
-        run: |
-          python scripts/test_agid_indicators.py
-          python scripts/test_agid_refresh_idempotent.py
-          python scripts/test_ateco_agcom_audit.py
-          python scripts/test_agcom_primary_percentages.py
-          python -m py_compile \
-            scripts/update_agid_indicators_resilient.py \
-            scripts/restore_partial_agcom_metrics.py \
-            scripts/enrich_ateco_agcom_audit.py \
-            scripts/audit_agcom_primary.py \
-            scripts/apply_agcom_primary_percentages.py \
-            scripts/apply_agcom_absolute_policy.py \
-            scripts/monthly_data_check_coverage.py \
-            scripts/monthly_data_check.py \
-            scripts/monthly_data_check_status.py \
-            scripts/data_status_model.py \
-            scripts/pnrr_toscana_audit.py \
-            scripts/pnrr_toscana_forensic.py \
-            scripts/pnrr_toscana_snapshot_runner.py \
-            scripts/materialize_pnrr_toscana_draft.py \
-            scripts/patch_pnrr_toscana_review.py \
-            scripts/build_pnrr_toscana_deep_dive.py \
-            scripts/inject_pnrr_town_experience.py \
-            scripts/test_pnrr_toscana_audit.py \
-            scripts/test_pnrr_status_integration.py \
-            scripts/test_pnrr_toscana_draft.py \
-            scripts/test_pnrr_toscana_review.py \
-            scripts/test_pnrr_toscana_town_browser.py \
-            scripts/build_data_status.py \
-            scripts/inject_data_status_runtime.py \
-            scripts/materialize_demography_lotto_a_v5.py \
-            scripts/materialize_demography_rcs_lotto_a.py \
-            scripts/patch_demography_lotto_a_frontend_v2.py \
-            scripts/test_demography_lotto_a_v5.py \
-            scripts/test_demography_rcs_lotto_a.py \
-            scripts/test_demography_lotto_a_browser_v2.py \
-            scripts/materialize_income_lotto_a.py \
-            scripts/materialize_income_lotto_a_v2.py \
-            scripts/patch_income_lotto_a_frontend.py \
-            scripts/patch_income_lotto_a_regressions.py \
-            scripts/test_income_lotto_a_materialized.py \
-            scripts/test_income_lotto_a_v2.py \
-            scripts/test_income_lotto_a_browser.py \
-            scripts/materialize_fiscal_lotto_b.py \
-            scripts/patch_fiscal_lotto_b_frontend.py \
-            scripts/test_fiscal_lotto_b.py \
-            scripts/test_fiscal_lotto_b_browser.py \
-            scripts/materialize_amministrazione_lotto_a.py \
-            scripts/materialize_amministrazione_lotto_a_v2.py \
-            scripts/test_amministrazione_lotto_a.py \
-            scripts/test_amministrazione_lotto_a_browser.py \
-            scripts/materialize_lavoro_istruzione_eta_genere.py \
-            scripts/patch_lavoro_istruzione_eta_genere_frontend.py \
-            scripts/refine_lavoro_istruzione_eta_genere_ui.py \
-            scripts/patch_lavoro_istruzione_mobile_containment.py \
-            scripts/patch_lavoro_istruzione_versilia_pyramid.py \
-            scripts/test_lavoro_istruzione_eta_genere.py \
-            scripts/test_lavoro_istruzione_eta_genere_browser.py \
-            scripts/test_lavoro_istruzione_versilia_pyramid_browser.py \
-            scripts/materialize_mobilita_tpl_v119.py \
-            scripts/test_mobilita_tpl_v119.py \
-            scripts/materialize_agricoltura_territorio_v120.py \
-            scripts/test_agricoltura_territorio_v120.py \
-            scripts/test_agricoltura_review_interactions_v120.py \
-            scripts/materialize_costa_mare_v123.py \
-            scripts/materialize_attivita_estrattive_v128.py \
-            scripts/patch_attivita_estrattive_v128_release.py \
-            scripts/test_attivita_estrattive_v128.py \
-            scripts/test_attivita_estrattive_v128_browser.py \
-            scripts/patch_investimenti_versilia.py \
-            scripts/test_costa_mare_v123.py \
-            scripts/test_costa_mare_v123_browser.py \
-            scripts/test_ambiente_acqua_v124_browser.py \
-            scripts/test_investimenti_versilia.py \
-            scripts/test_investimenti_versilia_browser.py \
-            scripts/test_mobilita_tpl_v119_browser.py \
-            scripts/test_percorsi_mobile_list_contract.py \
-            scripts/materialize_erp_arrears_v125.py \
-            scripts/test_erp_arrears_v125.py \
-            scripts/test_erp_arrears_v125_browser.py \
-            scripts/finalize_catalog_release.py \
-            scripts/test_catalog_release_v116.py
-
-      - name: Verify municipal crests
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import mimetypes
-          crests = [
-              'massarosa.png', 'viareggio.svg', 'camaiore.svg',
-              'pietrasanta.svg', 'seravezza.png', 'forte-dei-marmi.svg',
-              'stazzema.webp'
-          ]
-          for crest in crests:
-              path = Path('dist/crests') / crest
-              assert path.exists() and path.stat().st_size > 0, f'Stemma mancante: {crest}'
-          for crest in ['viareggio.svg', 'camaiore.svg', 'pietrasanta.svg', 'forte-dei-marmi.svg']:
-              assert mimetypes.guess_type(crest)[0] == 'image/svg+xml'
-          print('Stemmi verificati: 7/7')
-          PY
-
-      - name: Run monthly monitor checks
-        run: |
-          python scripts/test_monthly_data_check.py
-          python scripts/test_pnrr_toscana_audit.py
-          python scripts/test_pnrr_status_integration.py
-          mkdir -p /tmp/monthly-data-check
-          python scripts/monthly_data_check_status.py \
-            --mode offline \
-            --report-md /tmp/monthly-data-check/report.md \
-            --report-json /tmp/monthly-data-check/report.json \
-            --next-state /tmp/monthly-data-check/state.json
-          python - <<'PY'
-          import json
-          site = json.load(open('data/site-data.json', encoding='utf-8'))
-          state = json.load(open('/tmp/monthly-data-check/state.json', encoding='utf-8'))
-          assert state['schemaVersion'] == 2
-          assert len(state['metrics']) == len(site['metrics'])
-          PY
-
-      - name: Include Percorsi Versilia
-        run: python scripts/copy_percorsi_dist.py
-
-      - name: Validate Percorsi Versilia
-        run: |
-          node --check percorsi/app.js
-          node --check percorsi/data-loader.js
-          node --check dist/assets/app-bundle.js
-          python scripts/test_percorsi_draft.py
-          python scripts/test_accordion_no_overlap.py
-          python scripts/test_percorsi_refinements.py
-          python scripts/test_percorsi_mobile_list_contract.py --base http://127.0.0.1:8123/
-
-      - name: Enforce site-wide consistency contract
-        run: |
-          python -m py_compile scripts/site_chrome.py scripts/preview_dist.py scripts/test_site_chrome.py scripts/test_site_consistency.py scripts/test_site_chrome_browser.py
-          python scripts/test_site_chrome.py
-          python scripts/test_site_consistency.py
-          python scripts/test_site_chrome_browser.py --base http://127.0.0.1:8123/
-
-      - name: Upload draft preview
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: osservatorio-versilia-v129-salute-finanziaria-preview
-          path: dist
-          retention-days: 14
+      - name: Run full preflight
+        run: python scripts/preflight.py --full
 
       - name: Upload static site for deployment
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
@@ -380,7 +82,10 @@ jobs:
 
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    needs: test
+    needs: full
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Regression checks for public launch metadata, identity and social presence."""
 
+import contextlib
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import os
+import socket
+import threading
 
 from build_static_safe import UX_ASSET_VERSION
 
@@ -18,6 +22,31 @@ SOCIAL_PROFILES = (
     "https://www.linkedin.com/company/osservatorioversilia",
     "https://x.com/OssVersilia",
 )
+
+
+class QuietHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *_args: object) -> None:
+        return
+
+
+@contextlib.contextmanager
+def local_server():
+    old_cwd = Path.cwd()
+    os.chdir(DIST)
+    try:
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        httpd = ThreadingHTTPServer(("127.0.0.1", port), QuietHandler)
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{port}/"
+        finally:
+            httpd.shutdown()
+            thread.join(timeout=5)
+    finally:
+        os.chdir(old_cwd)
 
 
 def read(relative: str) -> str:
@@ -42,10 +71,10 @@ def is_noindex(text: str) -> bool:
     return 'name="robots" content="noindex' in text.lower()
 
 
-def browser_social_checks() -> None:
+def browser_social_checks_at(base: str) -> None:
     from playwright.sync_api import sync_playwright
 
-    base = os.environ.get("OV_TEST_BASE", "http://127.0.0.1:8123/").rstrip("/") + "/"
+    base = base.rstrip("/") + "/"
     cases = (
         ("", "home", ".home-hero"),
         ("progetto/", "project", ".editorial-page"),
@@ -74,8 +103,6 @@ def browser_social_checks() -> None:
             else:
                 assert page.locator('[data-social-placement="home"], [data-social-placement="project"]').count() == 0, "Callout editoriale presente su pagina interna"
 
-            # Lascia il tempo a eventuali rerender post-fetch: l'enhancer deve
-            # rimanere idempotente e i riferimenti non devono sparire/duplicarsi.
             page.wait_for_timeout(250)
             assert page.locator('[data-social-placement="footer"]').count() == 1, f"Footer social instabile in {relative or 'home'}"
 
@@ -94,6 +121,15 @@ def browser_social_checks() -> None:
         browser.close()
 
 
+def browser_social_checks() -> None:
+    configured_base = os.environ.get("OV_TEST_BASE")
+    if configured_base:
+        browser_social_checks_at(configured_base)
+        return
+    with local_server() as base:
+        browser_social_checks_at(base)
+
+
 def main() -> None:
     html_files = list(DIST.rglob("*.html"))
     assert html_files, "Nessuna pagina HTML nella build"
@@ -110,9 +146,6 @@ def main() -> None:
             noindex_pages += 1
             continue
 
-        # Bozze e utility noindex non sono superfici social canoniche: possono
-        # avere metadata parziali, ma non devono far fallire il contratto delle
-        # pagine indicizzabili/pubblicabili.
         if is_noindex(text):
             noindex_pages += 1
             continue

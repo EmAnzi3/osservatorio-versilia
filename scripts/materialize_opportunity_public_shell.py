@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Materializza il Radar come elemento pubblico della shell canonica."""
 from __future__ import annotations
-import os
+
+import json
 import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MARK = "opportunity-public-release-v1"
+ATLAS_METRIC_KEY = "economyActivityAtlas"
+ATLAS_BUILD_MARKER = "assets/economy-atlas.js"
+ATLAS_TOOLTIP_MARKER = "/* ov-site-tooltip-contract */"
+ATLAS_EXPORT_MARKER = "/* ov-atlas-export-actions */"
 
 
 def replace_once(path: Path, old: str, new: str, label: str) -> None:
@@ -19,14 +24,52 @@ def replace_once(path: Path, old: str, new: str, label: str) -> None:
     path.write_text(text.replace(old, new, 1), encoding="utf-8")
 
 
-def materialize_economia_atlas_release_if_needed() -> None:
-    """Materializza v1.31.0 nel checkout effimero usato dal deploy Pages di main."""
-    if not (
-        os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
-        and os.environ.get("GITHUB_EVENT_NAME") in {"push", "workflow_dispatch"}
-        and os.environ.get("GITHUB_REF") == "refs/heads/main"
+def economia_atlas_release_ready() -> bool:
+    """Riconosce il workspace Atlante completo, evitando doppie materializzazioni."""
+    site_data = ROOT / "data" / "site-data.json"
+    runtime = ROOT / "assets" / "economy-atlas.js"
+    builder = ROOT / "scripts" / "build_static.py"
+    controls = ROOT / "assets" / "app-parts" / "02.txt"
+    accordion = ROOT / "assets" / "ux-accordion.js"
+
+    if not site_data.exists() or not runtime.exists():
+        return False
+
+    data = json.loads(site_data.read_text(encoding="utf-8"))
+    if ATLAS_METRIC_KEY not in data.get("metrics", {}):
+        return False
+    sections = data.get("themes", {}).get("economia", {}).get("sections", [])
+    if not any(
+        section.get("key") == "atlante"
+        and ATLAS_METRIC_KEY in section.get("metrics", [])
+        for section in sections
     ):
+        return False
+
+    runtime_text = runtime.read_text(encoding="utf-8")
+    if ATLAS_TOOLTIP_MARKER not in runtime_text or ATLAS_EXPORT_MARKER not in runtime_text:
+        return False
+    if ATLAS_BUILD_MARKER not in builder.read_text(encoding="utf-8"):
+        return False
+    if "?comune=${encodeURIComponent(contextTown)}" not in controls.read_text(encoding="utf-8"):
+        return False
+    if "button, a.metric-route-link" not in accordion.read_text(encoding="utf-8"):
+        return False
+    return True
+
+
+def materialize_economia_atlas_release_if_needed() -> None:
+    """Porta ogni build pubblica allo stesso workspace v1.31.0 già validato dall'Atlas Preview."""
+    if economia_atlas_release_ready():
+        print("Economia Atlas release già materializzata nel workspace di build.")
         return
+
+    site_data = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
+    runtime = ROOT / "assets" / "economy-atlas.js"
+    if ATLAS_METRIC_KEY in site_data.get("metrics", {}) or runtime.exists():
+        raise RuntimeError(
+            "Workspace Economia Atlas parzialmente materializzato: usare un checkout pulito prima della build."
+        )
 
     for script in (
         "prepare_economy_atlas_build.py",
@@ -36,6 +79,9 @@ def materialize_economia_atlas_release_if_needed() -> None:
         "refine_economy_atlas_exports.py",
     ):
         runpy.run_path(str(ROOT / "scripts" / script), run_name="__main__")
+
+    if not economia_atlas_release_ready():
+        raise RuntimeError("Economia Atlas non completamente materializzata prima della build.")
 
 
 def main() -> None:
