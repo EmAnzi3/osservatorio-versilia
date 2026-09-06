@@ -33,8 +33,10 @@ def main() -> None:
         and metric["dataStorage"].get("type") == "special-route"
     }
     expected_special = len(special_routes)
+    expected_static = expected_inline - expected_special
 
-    assert expected_inline + expected_external + expected_special == expected_count
+    assert expected_inline + expected_external == expected_count
+    assert expected_static >= 0
     assert public["metricCount"] == expected_count
     assert sum(public["counts"].values()) == expected_count
     assert set(public["counts"]) == {
@@ -112,7 +114,7 @@ def main() -> None:
         project = (dist / "progetto" / "index.html").read_text(encoding="utf-8")
         assert "data-status-project-link" in project
         indicators = list((dist / "indicatori").glob("*/index.html"))
-        assert len(indicators) == expected_inline
+        assert len(indicators) == expected_static
         for path in indicators:
             text = path.read_text(encoding="utf-8")
             assert 'data-data-status-row="period"' in text, path
@@ -123,8 +125,8 @@ def main() -> None:
 
     print(
         f"Data status tests passed: {expected_count} indicators "
-        f"({expected_inline} inline + {expected_external} external + {expected_special} special-route), "
-        "static metadata, climate full years only."
+        f"({expected_inline} incorporated = {expected_static} static + {expected_special} special-route; "
+        f"{expected_external} external), static metadata, climate full years only."
     )
 
 
