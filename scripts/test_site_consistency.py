@@ -57,8 +57,13 @@ def expected_pages() -> set[Path]:
     pages.update(
         Path("indicatori") / slugify(metric["meta"]["label"]) / "index.html"
         for metric in data["metrics"].values()
-        if metric.get("dataStorage", {}).get("type") != "external-climate"
+        if metric.get("dataStorage", {}).get("type") not in {"external-climate", "special-route"}
     )
+    for key, metric in data["metrics"].items():
+        if metric.get("dataStorage", {}).get("type") == "special-route":
+            detail_route = str(metric.get("meta", {}).get("detailRoute") or "").strip("/")
+            assert detail_route, f"Route dedicata mancante: {key}"
+            pages.add(Path(detail_route) / "index.html")
     return pages
 
 
