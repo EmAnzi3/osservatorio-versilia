@@ -13,6 +13,14 @@ on:
       - ".github/workflows/welfare-draft.yml"
   push:
     branches: ["main"]
+    paths:
+      - "scripts/probe_welfare_sources.py"
+      - "scripts/materialize_welfare_prima_infanzia_draft.py"
+      - "scripts/promote_welfare_release.py"
+      - "scripts/test_welfare_prima_infanzia_draft.py"
+      - "scripts/test_welfare_release_browser.py"
+      - "data/source-snapshots/welfare-prima-infanzia-2026-08.json"
+      - ".github/workflows/welfare-draft.yml"
   workflow_dispatch:
 
 permissions:
