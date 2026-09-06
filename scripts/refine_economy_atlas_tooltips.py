@@ -27,7 +27,7 @@ def main() -> None:
 
 /* ov-site-tooltip-contract */
 const atlasTooltipStyle=document.createElement('style');
-atlasTooltipStyle.textContent=`.ov-site-tooltip{position:fixed;z-index:10000;pointer-events:none;min-width:132px;max-width:230px;padding:8px 12px;border-radius:8px;background:var(--ink);color:#fff;box-shadow:0 6px 9px rgba(16,47,69,.18);font-family:var(--sans);line-height:1.25}.ov-site-tooltip[hidden]{display:none!important}.ov-site-tooltip .chart-tooltip-year{display:block;opacity:.75;font-size:9px;font-weight:600}.ov-site-tooltip .chart-tooltip-value{display:block;margin-top:3px;font-size:11px;font-weight:800}.lrow[data-atlas-tooltip]{position:relative;outline:none}.lrow[data-atlas-tooltip]:focus-visible{box-shadow:0 0 0 2px var(--blue)}.trenddot[data-atlas-tooltip]:focus,.slice[data-atlas-tooltip]:focus{outline:none}`;
+atlasTooltipStyle.textContent=`.ov-site-tooltip{position:fixed;z-index:10000;pointer-events:none;min-width:132px;max-width:230px;padding:8px 12px;border-radius:8px;background:var(--ink);color:#fff;box-shadow:0 6px 9px rgba(16,47,69,.18);font-family:var(--font-geist-sans,Geist,Inter,ui-sans-serif,system-ui);line-height:1.25}.ov-site-tooltip[hidden]{display:none!important}.ov-site-tooltip .chart-tooltip-year{display:block;opacity:.75;font-size:9px;font-weight:600}.ov-site-tooltip .chart-tooltip-value{display:block;margin-top:3px;font-size:11px;font-weight:800}.lrow[data-atlas-tooltip]{position:relative;outline:none}.lrow[data-atlas-tooltip]:focus-visible{box-shadow:0 0 0 2px var(--blue)}.trenddot[data-atlas-tooltip]:focus,.slice[data-atlas-tooltip]:focus{outline:none}`;
 root.prepend(atlasTooltipStyle);
 function ensureAtlasTooltip(){let tip=root.querySelector('.ov-site-tooltip');if(!tip){tip=document.createElement('div');tip.className='ov-site-tooltip';tip.hidden=true;tip.innerHTML='<span class="chart-tooltip-year"></span><strong class="chart-tooltip-value"></strong>';root.appendChild(tip)}return tip}
 function hideAtlasTooltip(){const tip=root.querySelector('.ov-site-tooltip');if(tip)tip.hidden=true}
@@ -76,7 +76,7 @@ const LABELS='''
     if "<title>" in text:
         raise RuntimeError("Tooltip SVG nativi ancora presenti nell'Atlante")
     RUNTIME.write_text(text, encoding="utf-8")
-    print("Tooltip Atlante allineati al contratto OV: navy, 8px, 9/11px, hover e focus.")
+    print("Tooltip Atlante allineati al contratto OV: navy, Geist, 8px, 9/11px, hover e focus.")
 
 
 if __name__ == "__main__":
