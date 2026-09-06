@@ -6,6 +6,7 @@ on:
     types: [completed]
 
 permissions:
+  actions: read
   statuses: write
 
 jobs:
@@ -17,21 +18,33 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
           RUN_URL: ${{ github.event.workflow_run.html_url }}
-          STATE: ${{ github.event.workflow_run.conclusion == 'success' && 'success' || 'failure' }}
-          DESCRIPTION: "${{ github.event.workflow_run.conclusion == 'success' && 'GitHub Pages pubblicato' || format('GitHub Pages non pubblicato: {0}', github.event.workflow_run.conclusion) }}"
         run: |
           set -euo pipefail
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100" \
+            > /tmp/ov-pages-jobs.json
+
           payload=$(python - <<'PY'
-          import json, os
+          import json
+          import os
+
+          jobs = json.load(open("/tmp/ov-pages-jobs.json", encoding="utf-8")).get("jobs", [])
+          deploy = next((job for job in jobs if job.get("name") == "deploy"), None)
+          conclusion = deploy.get("conclusion") if deploy else "missing"
+          published = conclusion == "success"
+          description = "GitHub Pages pubblicato" if published else f"GitHub Pages non pubblicato: deploy {conclusion}"
           print(json.dumps({
-              "state": os.environ["STATE"],
+              "state": "success" if published else "failure",
               "context": "ov-pages-live",
-              "description": os.environ["DESCRIPTION"][:140],
+              "description": description[:140],
               "target_url": os.environ["RUN_URL"],
           }))
           PY
           )
+
           curl --fail-with-body -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
