@@ -13,6 +13,7 @@ root.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))$('#resul
 applyEmbeddedTaxonomy();
 
 // Territorial context: Versilia or one municipality, selectable from every standalone Atlas view.
+fmt = function(v,d=0){if(v===null||v===undefined||Number.isNaN(v))return'n.d.';return new Intl.NumberFormat('it-IT',{useGrouping:'always',minimumFractionDigits:d,maximumFractionDigits:d}).format(v)};
 const requestedTerritory = initialTown || new URLSearchParams(location.search).get('comune') || '';
 const requestedTerritoryMeta = towns.find(t => t.slug === requestedTerritory) || null;
 state.territory = requestedTerritoryMeta?.slug || '';
