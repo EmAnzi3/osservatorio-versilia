@@ -48,6 +48,77 @@ jobs:
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
+      - name: Seed refresh from latest accepted or pending snapshot
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BRANCH="automation/opportunity-radar-daily"
+          SNAPSHOT="data/opportunity-daily-public.json"
+
+          cp "$SNAPSHOT" /tmp/opportunity-daily-main.json
+          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
+
+          OPEN_PR="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
+          git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
+
+          if git show "refs/remotes/origin/$BRANCH:$SNAPSHOT" > /tmp/opportunity-daily-pending.json 2>/dev/null; then
+            export OPEN_PR
+            python - <<'PY'
+          import json
+          import os
+          import shutil
+          from datetime import date
+          from pathlib import Path
+
+          main_path = Path('/tmp/opportunity-daily-main.json')
+          pending_path = Path('/tmp/opportunity-daily-pending.json')
+          target_path = Path('data/opportunity-daily-public.json')
+          previous_path = Path('/tmp/opportunity-daily-previous.json')
+
+          main = json.loads(main_path.read_text(encoding='utf-8'))
+          pending = json.loads(pending_path.read_text(encoding='utf-8'))
+
+          def parsed_date(payload):
+              try:
+                  return date.fromisoformat(str(payload.get('referenceDate') or ''))
+              except ValueError:
+                  return None
+
+          def pending_is_valid(payload):
+              return (
+                  payload.get('releaseVersion') == '0.4.4'
+                  and payload.get('dailyHardeningVersion') == '0.4.4-h5'
+                  and not payload.get('continuityHold')
+                  and not payload.get('coverageHold')
+                  and (payload.get('coverageAudit') or {}).get('status') == 'pass'
+              )
+
+          main_date = parsed_date(main)
+          pending_date = parsed_date(pending)
+          open_pr = bool(os.environ.get('OPEN_PR'))
+          use_pending = (
+              pending_is_valid(pending)
+              and pending_date is not None
+              and (
+                  main_date is None
+                  or pending_date > main_date
+                  or (pending_date == main_date and open_pr)
+              )
+          )
+
+          source = pending_path if use_pending else main_path
+          shutil.copyfile(source, target_path)
+          shutil.copyfile(source, previous_path)
+          selected = pending if use_pending else main
+          label = 'pending automation snapshot' if use_pending else 'main snapshot'
+          print(f"Baseline refresh: {label} · {selected.get('referenceDate')}")
+          PY
+          else
+            echo "Nessuno snapshot pendente sul branch di automazione: uso main."
+          fi
+
       - name: Materialize verified baseline
         run: python scripts/materialize_opportunity_release_snapshot.py
 
@@ -154,6 +225,8 @@ jobs:
       - name: Commit verified daily snapshot to automation branch
         id: commit
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           BRANCH="automation/opportunity-radar-daily"
@@ -177,6 +250,16 @@ jobs:
 
           git fetch origin main
           git rebase origin/main
+
+          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
+          if [ -n "$PR_NUMBER" ]; then
+            IS_DRAFT="$(gh pr view "$PR_NUMBER" --json isDraft --jq '.isDraft')"
+            if [ "$IS_DRAFT" != "true" ]; then
+              echo "PR #${PR_NUMBER} riutilizzata: ritorno a draft prima di aggiornare il branch."
+              gh pr ready "$PR_NUMBER" --undo
+            fi
+          fi
+
           git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
           git push --force-with-lease origin HEAD:"$BRANCH"
           echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -217,6 +300,10 @@ jobs:
               --title "$TITLE" \
               --body-file /tmp/opportunity-radar-pr.md
           else
+            IS_DRAFT="$(gh pr view "$PR_NUMBER" --json isDraft --jq '.isDraft')"
+            if [ "$IS_DRAFT" != "true" ]; then
+              gh pr ready "$PR_NUMBER" --undo
+            fi
             gh pr edit "$PR_NUMBER" \
               --title "$TITLE" \
               --body-file /tmp/opportunity-radar-pr.md
@@ -235,12 +322,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if git show HEAD^:data/opportunity-daily-public.json > /tmp/opportunity-daily-previous.json 2>/dev/null; then
-            echo "Confronto con lo snapshot giornaliero precedente."
-          else
-            cp data/opportunity-release.json /tmp/opportunity-daily-previous.json
-            echo "Primo refresh: confronto con la baseline congelata."
-          fi
+          test -s /tmp/opportunity-daily-previous.json
+          echo "Confronto con l'ultima baseline effettiva usata dal refresh."
 
           python scripts/opportunity_issue_notification.py \
             --previous /tmp/opportunity-daily-previous.json \
