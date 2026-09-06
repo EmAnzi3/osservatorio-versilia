@@ -141,7 +141,10 @@ def main() -> None:
     status_path = DIST / "data" / "data-status.json"
     payload = json.loads(status_path.read_text(encoding="utf-8"))
     metrics = payload.get("metrics") or []
-    inline_metrics = [item for item in metrics if not item.get("isExternalClimate")]
+    inline_metrics = [
+        item for item in metrics
+        if not item.get("isExternalClimate") and not item.get("isSpecialRoute")
+    ]
     expected_inline = len(inline_metrics)
     by_slug = {slugify(str(item["label"])): item for item in metrics}
     injected = 0
