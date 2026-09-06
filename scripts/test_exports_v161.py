@@ -64,10 +64,22 @@ def static_assertions() -> None:
         require("assets/export-v161.css?v=" in text,
                 f"Stili di stampa non inclusi in {page}")
 
+    atlas_runtime = DIST / "assets" / "economy-atlas.js"
+    require(atlas_runtime.exists(), "Runtime Atlante Economia mancante")
+    atlas_text = atlas_runtime.read_text(encoding="utf-8")
+    require("data-actions atlas-export-actions" in atlas_text,
+            "Atlante: azioni export non allineate al componente data-actions")
+    require("data-download" in atlas_text and "data-print" in atlas_text,
+            "Atlante: attributi standard export mancanti")
+    require("atlasDownloadCsv"><svg" not in atlas_text,
+            "Atlante: icona custom residua nel bottone CSV")
+    require("atlasPrint"><svg" not in atlas_text,
+            "Atlante: icona custom residua nel bottone Stampa/PDF")
 
-def download_csv(page: Page, path: str) -> list[list[str]]:
+
+def download_csv(page: Page, path: str, selector: str = "[data-download]") -> list[list[str]]:
     with page.expect_download() as download_info:
-        page.locator("[data-download]").click()
+        page.locator(selector).click()
     download = download_info.value
     target = Path(path)
     download.save_as(target)
@@ -144,6 +156,35 @@ def main() -> None:
         require({row[5] for row in normalized[1:]} == {"decimal"},
                 "CSV rapportato: unità inattesa")
 
+        page.goto(base + "confronta/economia/atlante-attivita-economiche/", wait_until="networkidle")
+        page.wait_for_function(
+            "() => !!document.querySelector('ov-economy-atlas')?.shadowRoot?.querySelector('.atlas-export-actions')",
+            timeout=20000,
+        )
+        atlas = page.locator("ov-economy-atlas")
+        actions = atlas.locator(".data-actions.atlas-export-actions")
+        require(actions.count() == 1, "Atlante: barra azioni standard assente o duplicata")
+        buttons = actions.locator("button")
+        require(buttons.count() == 2, "Atlante: attesi due semplici bottoni di export")
+        require(buttons.all_inner_texts() == ["Scarica CSV", "Stampa / PDF"],
+                "Atlante: etichette dei bottoni export inattese")
+        require(actions.locator("svg").count() == 0, "Atlante: i bottoni export non devono avere icone custom")
+        button_style = buttons.first.evaluate(
+            "el => ({radius:getComputedStyle(el).borderRadius,size:getComputedStyle(el).fontSize,"
+            "paddingTop:getComputedStyle(el).paddingTop,paddingLeft:getComputedStyle(el).paddingLeft})"
+        )
+        require(button_style == {
+            "radius": "9px", "size": "10px", "paddingTop": "9px", "paddingLeft": "11px"
+        }, f"Atlante: stile bottoni non allineato alle altre pagine: {button_style}")
+        atlas_csv = download_csv(page, str(temp / "atlante.csv"), "ov-economy-atlas [data-download]")
+        require(atlas_csv[0] == [
+            "Territorio", "Codice ATECO", "Livello", "Descrizione", "Anno",
+            "UL attive", "UL artigiane (2025)", "Fonte",
+        ], "Atlante CSV: intestazione inattesa")
+        require(len(atlas_csv) > 1000, "Atlante CSV: esportazione anormalmente ridotta")
+        require({row[0] for row in atlas_csv[1:]} == {"Versilia"},
+                "Atlante CSV: territorio iniziale inatteso")
+
         pdf_cases = (
             ("confronta/bilanci/?indicatore=currentRevenueAccruedPerResident", "bilanci.pdf", "Andamento 2019–2025"),
             ("confronta/economia/?indicatore=income", "economia.pdf", "2011–2024"),
@@ -161,7 +202,7 @@ def main() -> None:
 
         browser.close()
 
-    print("Export v1.6.1 validati: CSV storico completo e PDF A4 in due pagine.")
+    print("Export validati: CSV/PDF standard e Atlante con azioni coerenti alle altre pagine.")
 
 
 if __name__ == "__main__":
