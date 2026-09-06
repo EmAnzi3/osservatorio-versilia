@@ -227,8 +227,9 @@ def verify_economy_specials(page: Page, base: str) -> None:
     assert_atlas_surface(host, "Economia · Atlante attività economiche")
     require(page.locator(".ateco-panel").count() == 0, "Economia · pannello ATECO legacy ancora presente")
 
-    # Nei profili comunali l'Atlante è incorporato mantenendo il contesto del Comune.
-    page.goto(base + "comuni/massarosa/?tema=economia&indicatore=localUnits", wait_until="networkidle")
+    # Il contratto Atlas comunale è attivato dalla vista Economia, come nel gate browser
+    # dedicato: localUnits è un indicatore ordinario e non deve essere usato come trigger.
+    page.goto(base + "comuni/massarosa/?tema=economia", wait_until="networkidle")
     host = wait_atlas(page)
     require(host.get_attribute("town") == "massarosa", "Massarosa · contesto Atlante non preservato")
     require(host.get_attribute("embedded") is not None, "Massarosa · Atlante non incorporato")
