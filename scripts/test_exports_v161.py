@@ -71,10 +71,10 @@ def static_assertions() -> None:
             "Atlante: azioni export non allineate al componente data-actions")
     require("data-download" in atlas_text and "data-print" in atlas_text,
             "Atlante: attributi standard export mancanti")
-    require("atlasDownloadCsv"><svg" not in atlas_text,
-            "Atlante: icona custom residua nel bottone CSV")
-    require("atlasPrint"><svg" not in atlas_text,
-            "Atlante: icona custom residua nel bottone Stampa/PDF")
+    require('id="atlasDownloadCsv" data-download>Scarica CSV</button>' in atlas_text,
+            "Atlante: bottone CSV non standard")
+    require('id="atlasPrint" data-print>Stampa / PDF</button>' in atlas_text,
+            "Atlante: bottone Stampa/PDF non standard")
 
 
 def download_csv(page: Page, path: str, selector: str = "[data-download]") -> list[list[str]]:
