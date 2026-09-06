@@ -25,8 +25,16 @@ def main() -> None:
     expected_count = int(registry["expectedMetricCount"])
     expected_inline = int(registry["expectedInlineMetricCount"])
     expected_external = int(registry["expectedExternalMetricCount"])
+    special_routes = {
+        key: metric
+        for key, metric in data["metrics"].items()
+        if isinstance(metric, dict)
+        and isinstance(metric.get("dataStorage"), dict)
+        and metric["dataStorage"].get("type") == "special-route"
+    }
+    expected_special = len(special_routes)
 
-    assert expected_inline + expected_external == expected_count
+    assert expected_inline + expected_external + expected_special == expected_count
     assert public["metricCount"] == expected_count
     assert sum(public["counts"].values()) == expected_count
     assert set(public["counts"]) == {
@@ -96,6 +104,10 @@ def main() -> None:
         assert "rilevazione → validazione → pubblicazione" in page
         assert "Prossimo aggiornamento atteso" not in page
         assert page.count('href="../confronta/meteo-clima/"') == expected_external
+        for metric in special_routes.values():
+            detail_route = str(metric.get("meta", {}).get("detailRoute") or "").lstrip("/")
+            assert detail_route, "Route dedicata mancante per una metrica special-route"
+            assert page.count(f'href="../{detail_route}"') == 1
         assert f"Dettaglio dei {expected_count} indicatori" in page
         project = (dist / "progetto" / "index.html").read_text(encoding="utf-8")
         assert "data-status-project-link" in project
@@ -111,7 +123,8 @@ def main() -> None:
 
     print(
         f"Data status tests passed: {expected_count} indicators "
-        f"({expected_inline} inline + {expected_external} external), static metadata, climate full years only."
+        f"({expected_inline} inline + {expected_external} external + {expected_special} special-route), "
+        "static metadata, climate full years only."
     )
 
 
