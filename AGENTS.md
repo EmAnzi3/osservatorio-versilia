@@ -31,7 +31,7 @@ Queste regole valgono per qualunque agente o sessione che modifica il repository
 
 ## Preflight
 
-- `--quick`: contratto sorgente, catalogo/dati, sintassi, build, materializzazione delle pagine speciali e coerenza strutturale. Non installa né richiede Chromium.
+- `--quick`: contratto sorgente, catalogo/dati, sintassi, build, materializzazione delle pagine speciali e coerenza strutturale. Non esegue la regressione browser completa, ma la build prerender richiede Chromium.
 - `--full`: esegue `quick` e aggiunge regressioni statiche estese e browser.
 - `--full --skip-quick`: riservato alla CI quando il job `quick` è già verde e `dist/` viene ripristinato dal relativo artifact.
 
