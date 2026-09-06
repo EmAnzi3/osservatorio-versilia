@@ -36,20 +36,29 @@ def test_standalone(page, base: str, width: int):
     _original_standalone(page, base, width)
     if width != 1440:
         return
+
+    # Il contratto base termina su un nodo ATECO profondo. Ricarichiamo la
+    # vista root prima di testare i tooltip del donut: il test deve verificare
+    # il componente, non dipendere dallo stato lasciato dal test precedente.
+    page.goto(base + contract.ATLAS_ROUTE, wait_until="networkidle")
+    contract.wait_atlas(page)
     host = page.locator("ov-economy-atlas")
-    assert host.locator("#donut .slice title").count() == 0
     first_slice = host.locator("#donut .slice[data-atlas-tooltip]").first
+    first_slice.wait_for(state="visible", timeout=5000)
+    assert host.locator("#donut .slice title").count() == 0
     first_slice.hover()
     assert_tooltip_style(host)
 
     contract.choose_code(page, "68.31")
     lrow = host.locator("#analysis .lrow[data-atlas-tooltip]").first
-    assert lrow.count() == 1 and lrow.get_attribute("title") is None
+    lrow.wait_for(state="visible", timeout=5000)
+    assert lrow.get_attribute("title") is None
     lrow.hover()
     assert_tooltip_style(host)
 
     host.locator("#tabHistory").click()
     dot = host.locator("#analysis .trenddot[data-atlas-tooltip]").first
+    dot.wait_for(state="visible", timeout=5000)
     dot.hover()
     assert_tooltip_style(host)
     assert host.locator("#analysis .trenddot title").count() == 0
