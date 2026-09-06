@@ -227,14 +227,25 @@ def verify_economy_specials(page: Page, base: str) -> None:
     assert_atlas_surface(host, "Economia · Atlante attività economiche")
     require(page.locator(".ateco-panel").count() == 0, "Economia · pannello ATECO legacy ancora presente")
 
-    # Il contratto Atlas comunale è attivato dalla vista Economia, come nel gate browser
-    # dedicato: localUnits è un indicatore ordinario e non deve essere usato come trigger.
+    # La UX approvata espone l'Atlante come sezione autonoma del catalogo:
+    # il collegamento comunale deve aprire la route canonica nel territorio scelto.
     page.goto(base + "comuni/massarosa/?tema=economia", wait_until="networkidle")
-    host = wait_atlas(page)
-    require(host.get_attribute("town") == "massarosa", "Massarosa · contesto Atlante non preservato")
-    require(host.get_attribute("embedded") is not None, "Massarosa · Atlante non incorporato")
-    assert_atlas_surface(host, "Massarosa · Atlante attività economiche")
+    group = page.locator('.metric-group[data-section="atlante"]')
+    group.locator('.metric-group-heading').click()
+    link = group.locator('a.metric-route-link')
+    require(
+        (link.get_attribute('href') or '').endswith(
+            '/confronta/economia/atlante-attivita-economiche/?comune=massarosa'
+        ),
+        "Massarosa · collegamento canonico Atlante assente o privo del territorio",
+    )
     require(page.locator(".ateco-town-detail").count() == 0, "Massarosa · dettaglio ATECO legacy ancora presente")
+    link.click()
+    page.wait_for_url('**/confronta/economia/atlante-attivita-economiche/?comune=massarosa')
+    host = wait_atlas(page)
+    require(host.locator('#territory').input_value() == 'massarosa', "Massarosa · contesto Atlante non preservato")
+    require('Massarosa' in host.locator('.hero h1').inner_text(), "Massarosa · titolo Atlante incoerente")
+    assert_atlas_surface(host, "Massarosa · Atlante attività economiche")
 
 
 def main() -> None:

@@ -31,7 +31,7 @@ def materialize_agricoltura_ii_release_if_needed() -> None:
     """Allinea il solo checkout del deploy main all'artifact Agricoltura II approvato."""
     if not (
         os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
-        and os.environ.get("GITHUB_EVENT_NAME") == "push"
+        and os.environ.get("GITHUB_EVENT_NAME") in {"push", "workflow_dispatch"}
         and os.environ.get("GITHUB_REF") == "refs/heads/main"
     ):
         return

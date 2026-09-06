@@ -23,7 +23,7 @@ def materialize_economia_atlas_release_if_needed() -> None:
     """Materializza v1.31.0 nel checkout effimero usato dal deploy Pages di main."""
     if not (
         os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
-        and os.environ.get("GITHUB_EVENT_NAME") == "push"
+        and os.environ.get("GITHUB_EVENT_NAME") in {"push", "workflow_dispatch"}
         and os.environ.get("GITHUB_REF") == "refs/heads/main"
     ):
         return
