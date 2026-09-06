@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
   pull-requests: write
   issues: write
 
@@ -220,6 +221,12 @@ jobs:
               --title "$TITLE" \
               --body-file /tmp/opportunity-radar-pr.md
           fi
+
+      - name: Run quick and full gates on the automation branch
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref "${{ steps.commit.outputs.branch }}"
 
       - name: Notify owner about new opportunities
         if: steps.commit.outputs.changed == 'true'
