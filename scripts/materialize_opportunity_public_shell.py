@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Materializza il Radar come elemento pubblico della shell canonica."""
 from __future__ import annotations
+import os
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,6 +17,25 @@ def replace_once(path: Path, old: str, new: str, label: str) -> None:
     if count != 1:
         raise RuntimeError(f"{label}: punto di aggancio non univoco ({count}) in {path}")
     path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
+def materialize_economia_atlas_release_if_needed() -> None:
+    """Materializza v1.31.0 nel checkout effimero usato dal deploy Pages di main."""
+    if not (
+        os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
+        and os.environ.get("GITHUB_EVENT_NAME") == "push"
+        and os.environ.get("GITHUB_REF") == "refs/heads/main"
+    ):
+        return
+
+    for script in (
+        "prepare_economy_atlas_build.py",
+        "materialize_economy_atlas_release.py",
+        "refine_economy_atlas_release.py",
+        "refine_economy_atlas_tooltips.py",
+        "refine_economy_atlas_exports.py",
+    ):
+        runpy.run_path(str(ROOT / "scripts" / script), run_name="__main__")
 
 
 def main() -> None:
@@ -78,6 +99,8 @@ def main() -> None:
 @media (max-width:380px){.site-brand-copy{display:none}.site-header-inner{width:min(100% - 20px,1240px)}}
 '''
         css.write_text(text, encoding="utf-8")
+
+    materialize_economia_atlas_release_if_needed()
     print("Shell pubblica Opportunità materializzata.")
 
 
