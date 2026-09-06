@@ -11,8 +11,10 @@ on:
       - "scripts/economy-atlas-test-src/**"
       - "scripts/materialize_economy_atlas_release.py"
       - "scripts/refine_economy_atlas_release.py"
+      - "scripts/refine_economy_atlas_tooltips.py"
       - "scripts/prepare_economy_atlas_build.py"
       - "scripts/test_economy_atlas_browser.py"
+      - "scripts/run_economy_atlas_browser_contract.py"
       - ".github/workflows/economia-atlas-preview.yml"
   workflow_dispatch:
 
@@ -46,10 +48,13 @@ jobs:
       - name: Refine Atlas territory UX
         run: python scripts/refine_economy_atlas_release.py
 
+      - name: Align Atlas tooltips with OV
+        run: python scripts/refine_economy_atlas_tooltips.py
+
       - name: Validate Atlas sources
         run: |
           node --check assets/economy-atlas.js
-          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/refine_economy_atlas_release.py scripts/prepare_economy_atlas_build.py scripts/test_economy_atlas_browser.py
+          python -m py_compile scripts/materialize_economy_atlas_release.py scripts/refine_economy_atlas_release.py scripts/refine_economy_atlas_tooltips.py scripts/prepare_economy_atlas_build.py scripts/test_economy_atlas_browser.py scripts/run_economy_atlas_browser_contract.py
 
       - name: Build review artifact
         run: python scripts/build_static_brand.py
@@ -57,7 +62,7 @@ jobs:
       - name: Validate Atlas in browser
         run: |
           mkdir -p reports/economia-atlas-browser
-          python scripts/test_economy_atlas_browser.py \
+          python scripts/run_economy_atlas_browser_contract.py \
             --directory dist \
             --screenshots-dir reports/economia-atlas-browser
 
