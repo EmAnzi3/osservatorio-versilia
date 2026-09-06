@@ -116,10 +116,23 @@ def assert_surface(page: Page, selector: str, label: str, *, visible: bool = Tru
     require(px(style["radius"]) >= 10, f"{label}: raggio del pannello insufficiente: {style}")
 
 
-def assert_atlas_surface(page: Page, selector: str, label: str) -> None:
-    """Valida i pannelli dell'Atlante dentro lo shadow DOM nativo."""
-    locator = page.locator(selector).first
-    require(locator.count() == 1, f"{label}: pannello Atlante mancante ({selector})")
+def wait_atlas(page: Page) -> Locator:
+    """Attende il rendering reale del custom element, non il solo host HTML."""
+    page.wait_for_selector("ov-economy-atlas")
+    page.wait_for_function(
+        """() => {
+          const host = document.querySelector('ov-economy-atlas');
+          return !!host?.shadowRoot?.querySelector('.search-card');
+        }""",
+        timeout=20000,
+    )
+    return page.locator("ov-economy-atlas").first
+
+
+def assert_atlas_surface(host: Locator, label: str) -> None:
+    """Valida il pannello Atlante dopo il readiness gate dello shadow DOM."""
+    locator = host.locator(".search-card").first
+    require(locator.count() == 1, f"{label}: pannello Atlante mancante")
     require(locator.is_visible(), f"{label}: pannello Atlante non visibile")
     style = surface_style(locator)
     require(
@@ -208,20 +221,18 @@ def verify_history_variants(page: Page, base: str) -> None:
 
 def verify_economy_specials(page: Page, base: str) -> None:
     # Il vecchio drill-down .ateco-panel è stato sostituito dalla route canonica
-    # dell'Atlante: il gate deve validare la superficie nuova, non pretendere DOM legacy.
+    # dell'Atlante. Il readiness gate è lo stesso già usato dal contratto browser Atlante.
     page.goto(base + "confronta/economia/atlante-attivita-economiche/", wait_until="networkidle")
-    atlas_surface = "ov-economy-atlas .search-card"
-    page.wait_for_selector(atlas_surface)
-    assert_atlas_surface(page, atlas_surface, "Economia · Atlante attività economiche")
+    host = wait_atlas(page)
+    assert_atlas_surface(host, "Economia · Atlante attività economiche")
     require(page.locator(".ateco-panel").count() == 0, "Economia · pannello ATECO legacy ancora presente")
 
     # Nei profili comunali l'Atlante è incorporato mantenendo il contesto del Comune.
     page.goto(base + "comuni/massarosa/?tema=economia&indicatore=localUnits", wait_until="networkidle")
-    page.wait_for_selector(atlas_surface)
-    host = page.locator("ov-economy-atlas").first
+    host = wait_atlas(page)
     require(host.get_attribute("town") == "massarosa", "Massarosa · contesto Atlante non preservato")
     require(host.get_attribute("embedded") is not None, "Massarosa · Atlante non incorporato")
-    assert_atlas_surface(page, atlas_surface, "Massarosa · Atlante attività economiche")
+    assert_atlas_surface(host, "Massarosa · Atlante attività economiche")
     require(page.locator(".ateco-town-detail").count() == 0, "Massarosa · dettaglio ATECO legacy ancora presente")
 
 
