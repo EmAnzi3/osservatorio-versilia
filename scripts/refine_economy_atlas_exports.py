@@ -52,13 +52,13 @@ function ensureAtlasExportActions(){
   if(root.querySelector('.atlas-export-actions'))return;
   const explorer=root.querySelector('.explorer');if(!explorer)return;
   const style=document.createElement('style');
-  style.id='atlas-export-style';
-  style.textContent=`.atlas-export-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:0 0 18px}.atlas-export-actions button{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:750 12px/1 var(--sans);cursor:pointer;box-shadow:0 3px 10px rgba(16,47,69,.04)}.atlas-export-actions button:hover{border-color:var(--blue);color:var(--blue)}.atlas-export-actions button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.atlas-export-actions svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}@media(max-width:680px){.atlas-export-actions{justify-content:flex-start}.atlas-export-actions button{flex:1;justify-content:center}}@media print{.atlas-export-actions{display:none!important}}`;
+  style.id='atlas-data-actions-style';
+  style.textContent=`.data-actions{flex-wrap:wrap;gap:7px;margin-top:18px;display:flex}.data-actions button{color:var(--blue);background:#fffaf194;border:1px solid #c4d1d1;border-radius:9px;align-items:center;gap:7px;padding:9px 11px;font-size:10px;font-weight:750;display:inline-flex;cursor:pointer}.data-actions button:hover,.data-actions button:focus-visible{border-color:var(--blue);background:var(--blue-soft)}.atlas-export-actions{margin:0 0 18px}@media print{.data-actions{display:none!important}}`;
   root.prepend(style);
   const bar=document.createElement('div');
-  bar.className='atlas-export-actions';
+  bar.className='data-actions atlas-export-actions';
   bar.setAttribute('aria-label','Azioni Atlante');
-  bar.innerHTML=`<button type="button" id="atlasDownloadCsv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg><span>Scarica CSV</span></button><button type="button" id="atlasPrint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5"/><path d="M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg><span>Stampa / PDF</span></button>`;
+  bar.innerHTML=`<button type="button" id="atlasDownloadCsv" data-download>Scarica CSV</button><button type="button" id="atlasPrint" data-print>Stampa / PDF</button>`;
   explorer.insertAdjacentElement('beforebegin',bar);
   bar.querySelector('#atlasDownloadCsv').onclick=downloadAtlasCsv;
   bar.querySelector('#atlasPrint').onclick=()=>window.print();
@@ -75,7 +75,7 @@ def main() -> None:
         raise RuntimeError(f"Tail Atlante inattesa: {text.count(TAIL)} occorrenze")
     text = text.replace(TAIL, EXPORT_JS + "\nrenderAll();\nensureAtlasExportActions();\n\n    }\n  }\n  if(!customElements.get('ov-economy-atlas'))", 1)
     RUNTIME.write_text(text, encoding="utf-8")
-    print("Atlante: Scarica CSV e Stampa / PDF materializzati.")
+    print("Atlante: azioni standard Scarica CSV e Stampa / PDF materializzate.")
 
 
 if __name__ == "__main__":
