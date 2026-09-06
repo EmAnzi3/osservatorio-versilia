@@ -70,10 +70,20 @@ def static_checks() -> None:
         for key, metric in data["metrics"].items()
         if metric.get("dataStorage", {}).get("type") == "external-climate"
     }
-    inline = {key: metric for key, metric in data["metrics"].items() if key not in external}
+    special = {
+        key: metric
+        for key, metric in data["metrics"].items()
+        if metric.get("dataStorage", {}).get("type") == "special-route"
+    }
+    inline = {
+        key: metric
+        for key, metric in data["metrics"].items()
+        if key not in external and key not in special
+    }
     assert len(data["metrics"]) == registry["expectedMetricCount"]
     assert len(inline) == registry["expectedInlineMetricCount"]
     assert len(external) == registry["expectedExternalMetricCount"]
+    assert len(inline) + len(external) + len(special) == len(data["metrics"])
     assert set(external) == {
         "climateTemperatureTrend50y",
         "climatePrecipitationTrend50y",
@@ -111,6 +121,19 @@ def static_checks() -> None:
 
     assert len(paths) == len(set(paths)) == len(inline), "Slug indicatore duplicato"
 
+    expected_special_urls: set[str] = set()
+    for metric_key, metric in special.items():
+        detail_route = str(metric.get("meta", {}).get("detailRoute") or "").strip("/")
+        assert detail_route, f"Route dedicata mancante: {metric_key}"
+        path = DIST / detail_route / "index.html"
+        assert path.exists(), f"Pagina special-route mancante: {metric_key}"
+        document = path.read_text(encoding="utf-8")
+        canonical = f"{PUBLIC_BASE}{detail_route}/"
+        expected_special_urls.add(canonical)
+        assert f'<link rel="canonical" href="{canonical}">' in document
+        legacy_indicator = DIST / "indicatori" / slugify(metric["meta"]["label"]) / "index.html"
+        assert not legacy_indicator.exists(), f"Special-route duplicata come scheda indicatore: {metric_key}"
+
     sitemap = ET.parse(DIST / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/sitemap/0.9"}
     urls = sitemap.findall("s:url", namespace)
@@ -122,6 +145,7 @@ def static_checks() -> None:
         f"Sitemap indicatori non allineata: attesi {len(expected_indicator_urls)}, "
         f"trovati {len(sitemap_indicator_urls)}"
     )
+    assert expected_special_urls <= set(locations), "Special-route mancanti dalla sitemap"
 
 
 def browser_checks() -> None:
@@ -180,10 +204,15 @@ def main() -> None:
         metric.get("dataStorage", {}).get("type") == "external-climate"
         for metric in data["metrics"].values()
     )
-    inline_count = len(data["metrics"]) - external_count
+    special_count = sum(
+        metric.get("dataStorage", {}).get("type") == "special-route"
+        for metric in data["metrics"].values()
+    )
+    inline_count = len(data["metrics"]) - external_count - special_count
     print(
         f"Catalogo verificato: {len(data['metrics'])} indicatori canonici, "
-        f"{external_count} storici climatici separati e {inline_count} URL autonome."
+        f"{external_count} storici climatici separati, {special_count} route dedicate "
+        f"e {inline_count} schede indicatore autonome."
     )
 
 
