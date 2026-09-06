@@ -160,14 +160,8 @@ def main():
     expected_count = int(registry["expectedMetricCount"])
     expected_inline = int(registry["expectedInlineMetricCount"])
     expected_external = int(registry["expectedExternalMetricCount"])
-    special_routes = sum(
-        1 for metric in metrics.values()
-        if isinstance(metric, dict)
-        and isinstance(metric.get("dataStorage"), dict)
-        and metric["dataStorage"].get("type") == "special-route"
-    )
     assert len(metrics) == expected_count
-    assert expected_inline + expected_external + special_routes == expected_count
+    assert expected_inline + expected_external == expected_count
     pop = rows(metrics["population"])
     funding = rows(metrics["pnrrFunding"])
     concluded = rows(metrics["pnrrConcluded"])
