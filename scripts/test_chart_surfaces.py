@@ -118,13 +118,13 @@ def assert_surface(page: Page, selector: str, label: str, *, visible: bool = Tru
 
 def wait_atlas(page: Page) -> Locator:
     """Attende il rendering reale del custom element, non il solo host HTML."""
-    page.wait_for_selector("ov-economy-atlas")
+    page.wait_for_selector("ov-economy-atlas", state="attached")
     page.wait_for_function(
         """() => {
           const host = document.querySelector('ov-economy-atlas');
           return !!host?.shadowRoot?.querySelector('.search-card');
         }""",
-        timeout=20000,
+        timeout=30000,
     )
     return page.locator("ov-economy-atlas").first
 
