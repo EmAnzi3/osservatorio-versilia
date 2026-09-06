@@ -51,6 +51,9 @@ def metric_slug(metric: dict[str, Any]) -> str:
 
 
 def metric_href(metric: dict[str, Any]) -> str:
+    detail_route = str(metric.get("detailRoute") or "").lstrip("/")
+    if metric.get("isSpecialRoute") and detail_route:
+        return f"../{detail_route}"
     if metric.get("isExternalClimate"):
         return "../confronta/meteo-clima/"
     return f"../indicatori/{metric_slug(metric)}/"
@@ -96,6 +99,22 @@ def patch_status_runtime() -> None:
             return
         raise SystemExit("Punto di integrazione runtime stato dati non trovato")
     path.write_text(text.replace(marker, replacement, 1), encoding="utf-8")
+
+
+def enrich_special_routes(status: dict[str, Any], data: dict[str, Any]) -> None:
+    """Propaga al modello di stato le metriche che hanno una route dedicata."""
+    source_metrics = data.get("metrics") if isinstance(data.get("metrics"), dict) else {}
+    for row in status.get("metrics") or []:
+        source = source_metrics.get(row.get("key"))
+        source = source if isinstance(source, dict) else {}
+        storage = source.get("dataStorage")
+        storage = storage if isinstance(storage, dict) else {}
+        meta = source.get("meta")
+        meta = meta if isinstance(meta, dict) else {}
+        is_special = storage.get("type") == "special-route"
+        row["isSpecialRoute"] = is_special
+        if is_special:
+            row["detailRoute"] = str(meta.get("detailRoute") or storage.get("detailRoute") or "")
 
 
 def build_page(status: dict[str, Any]) -> str:
@@ -254,7 +273,10 @@ def indicator_status_block(metric: dict[str, Any]) -> str:
 
 def inject_indicator_status(status: dict[str, Any]) -> None:
     by_slug = {metric_slug(metric): metric for metric in status["metrics"]}
-    expected_static = sum(1 for metric in status["metrics"] if not metric.get("isExternalClimate"))
+    expected_static = sum(
+        1 for metric in status["metrics"]
+        if not metric.get("isExternalClimate") and not metric.get("isSpecialRoute")
+    )
     found = 0
     for path in (DIST / "indicatori").glob("*/index.html"):
         metric = by_slug.get(path.parent.name)
@@ -324,6 +346,7 @@ def main() -> None:
     registry = load(ROOT / "data" / "source-registry.json")
     state = load(ROOT / "data" / "source-monitor-state.json")
     status = build_public_status(data, registry, state)
+    enrich_special_routes(status, data)
     expected_count = int(registry["expectedMetricCount"])
     if status["metricCount"] != expected_count:
         raise SystemExit(f"Attesi {expected_count} indicatori, trovati {status['metricCount']}")
