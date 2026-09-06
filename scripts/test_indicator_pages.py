@@ -81,7 +81,7 @@ def static_checks() -> None:
         if key not in external and key not in special
     }
     assert len(data["metrics"]) == registry["expectedMetricCount"]
-    assert len(inline) == registry["expectedInlineMetricCount"]
+    assert len(inline) + len(special) == registry["expectedInlineMetricCount"]
     assert len(external) == registry["expectedExternalMetricCount"]
     assert len(inline) + len(external) + len(special) == len(data["metrics"])
     assert set(external) == {
