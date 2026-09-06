@@ -71,14 +71,8 @@ jobs:
           python -m playwright install --with-deps chromium
           npm install --global lighthouse@12.8.2
 
-      - name: Restore quick build
-        uses: actions/download-artifact@v4
-        with:
-          name: osservatorio-versilia-preview
-          path: dist/
-
       - name: Run full preflight
-        run: python scripts/preflight.py --full --skip-quick
+        run: python scripts/preflight.py --full
 
       - name: Upload static site for deployment
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
