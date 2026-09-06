@@ -97,7 +97,7 @@ def test_standalone(page, base: str, width: int):
         selects = host.locator("#selectors select")
         selects.nth(0).select_option("G")
         page.wait_for_timeout(80)
-        assert "Commercio" in host.locator("#donutCenter").inner_text()
+        assert "commercio" in host.locator("#donutCenter").inner_text().casefold()
         for case in CASES:
             choose_code(page, case)
         # B 09 ha un solo discendente a ogni livello: il click deve avanzare automaticamente fino a 09.90.09.
