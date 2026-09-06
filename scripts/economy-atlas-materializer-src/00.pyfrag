@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Materializza Economia II · Atlante nel checkout effimero della release.
+
+Il catalogo sorgente rimane il baseline canonico. Durante la build si applicano
+prima gli overlay già pubblicati (Agricoltura II, se mancanti) e poi l'Atlante.
+Le modifiche sono marcate assume-unchanged perché il gate di build continui a
+rilevare riscritture non previste.
+"""
+from __future__ import annotations
+
+import base64
+import gzip
+import json
+import re
+import runpy
+import subprocess
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SITE_DATA = ROOT / "data" / "site-data.json"
+REGISTRY = ROOT / "data" / "source-registry.json"
+ATLAS_DIR = ROOT / "data" / "economy-atlas"
+METADATA = ATLAS_DIR / "metadata.json"
+APP_00 = ROOT / "assets" / "app-parts" / "00.txt"
+APP_02 = ROOT / "assets" / "app-parts" / "02.txt"
+APP_04 = ROOT / "assets" / "app-parts" / "04.txt"
+APP_LOADER = ROOT / "assets" / "app.js"
+STATIC_CSS = ROOT / "assets" / "static.css"
+BUILD_STATIC = ROOT / "scripts" / "build_static.py"
+ATLAS_RUNTIME = ROOT / "assets" / "economy-atlas.js"
+ATLAS_SOURCE_DIR = ROOT / "assets" / "economy-atlas-src"
+
+METRIC_KEY = "economyActivityAtlas"
+RELEASE_VERSION = "v1.31.0"
+RELEASE_UPDATED = "6 settembre 2026"
+CANONICAL_ROUTE = "confronta/economia/atlante-attivita-economiche/"
+SOURCE_URL = "https://www.regione.toscana.it/-/banca-dati-imprese-toscana"
+SOURCE_LABEL = "Regione Toscana — Banca dati Imprese / Registro Imprese InfoCamere"
+
+MATERIALIZED_PATHS = (
+    "data/site-data.json",
+    "data/source-registry.json",
+    "assets/app-parts/00.txt",
+    "assets/app-parts/02.txt",
+    "assets/app-parts/04.txt",
+    "assets/app.js",
+    "assets/static.css",
+    "scripts/build_static.py",
+)
+
+
+def _replace_exact(text: str, old: str, new: str, label: str, expected: int = 1) -> str:
+    count = text.count(old)
+    if count != expected:
+        raise RuntimeError(f"Patch Atlante {label}: attese {expected} occorrenze, trovate {count}")
+    return text.replace(old, new, expected)
+
+
+def _replace_regex(text: str, pattern: str, replacement: str, label: str) -> str:
+    updated, count = re.subn(pattern, replacement, text, count=1, flags=re.DOTALL)
+    if count != 1:
+        raise RuntimeError(f"Patch Atlante {label}: pattern non trovato o ambiguo ({count})")
+    return updated
+
+
+def ensure_release_baseline() -> None:
+    data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    metrics = data.get("metrics", {})
+    if METRIC_KEY in metrics:
+        return
+    agriculture_keys = {
+        "agriculturalRenewalAndLeadership",
+        "agriculturalDiversificationAndModernization",
+    }
+    if agriculture_keys.issubset(metrics):
+        if len(metrics) != 183:
+            raise RuntimeError(f"Baseline release inatteso prima dell'Atlante: {len(metrics)} indicatori")
+        return
+    if len(metrics) != 181:
+        raise RuntimeError(f"Catalogo base inatteso prima di Agricoltura II: {len(metrics)} indicatori")
+    runpy.run_path(str(ROOT / "scripts" / "materialize_agricoltura_ii_release.py"), run_name="__main__")
+    data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    if len(data.get("metrics", {})) != 183 or not agriculture_keys.issubset(data.get("metrics", {})):
+        raise RuntimeError("Agricoltura II non ha prodotto il baseline pubblico 183")
+
+
+def load_atlas_payload() -> tuple[dict, dict]:
+    metadata = json.loads(METADATA.read_text(encoding="utf-8"))
+    if metadata.get("codes") != 1228:
+        raise RuntimeError(f"Numero codici Atlante inatteso: {metadata.get('codes')}")
+    if metadata.get("classification") != "Ateco2007":
+        raise RuntimeError(f"Classificazione Atlante inattesa: {metadata.get('classification')}")
+    if metadata.get("runtime_years") != [2014, 2025]:
+        raise RuntimeError(f"Finestra runtime inattesa: {metadata.get('runtime_years')}")
+    pieces = []
+    for name in metadata.get("files", []):
+        path = ATLAS_DIR / name
+        if not path.exists():
+            raise RuntimeError(f"Chunk Atlante mancante: {name}")
+        pieces.append(path.read_text(encoding="utf-8").strip())
+    payload = json.loads(gzip.decompress(base64.b64decode("".join(pieces))).decode("utf-8"))
+    if payload.get("v") != 2 or len(payload.get("c", [])) != 1228:
+        raise RuntimeError("Payload Atlante compatto non coerente con metadata")
+    if payload.get("y", [None])[0] != 2014 or payload.get("y", [None])[-1] != 2025:
+        raise RuntimeError(f"Serie runtime Atlante inattesa: {payload.get('y', [])[:1]}–{payload.get('y', [])[-1:]}")
+    return metadata, payload
+
+
+def latest_town_totals(payload: dict) -> dict[str, int]:
+    rows = payload["c"]
+    keys = [row[0] for row in rows]
+    leaves = []
+    for row in rows:
+        key = row[0]
+        prefix = key + ""
+        has_child = any(other.startswith(prefix) and len(other) > len(prefix) and other[:1] == key[:1] for other in keys)
+        if not has_child:
+            leaves.append(row)
+    latest = len(payload["y"]) - 1
+    totals = {}
+    for town_index, (slug, name) in enumerate(payload["t"]):
+        total = 0
+        seen = False
+        for row in leaves:
+            value = row[3 + town_index][0][latest]
+            if value is None:
+                continue
+            total += int(value)
+            seen = True
+        if not seen:
+            raise RuntimeError(f"Nessuna UL aggregabile per {name}")
+        totals[slug] = total
+    return totals
+
+
+def make_metric(data: dict, payload: dict) -> dict:
+    totals = latest_town_totals(payload)
+    towns_by_slug = {
+        re.sub(r"[^a-z0-9]+", "-", town["name"].lower()).strip("-"): town
+        for town in data.get("towns", [])
+    }
+    rows = []
+    for slug, name in payload["t"]:
+        site_town = towns_by_slug.get(slug)
+        if not site_town:
+            raise RuntimeError(f"Comune Atlante non presente nel catalogo: {name}")
+        value = totals[slug]
+        rows.append({
+            "town": name,
+            "code": site_town["code"],
+            "slug": slug,
+            "value": value,
+            "formatted": f"{value:,}".replace(",", "."),
+            "normalized": None,
+            "benchmarkValue": None,
+        })
+    aggregate_value = sum(row

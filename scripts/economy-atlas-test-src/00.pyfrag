@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Browser contract for Economia II · Atlante ATECO."""
+from __future__ import annotations
+
+import argparse
+import contextlib
+import os
+import socket
+import threading
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+TOWNS = {
+    "camaiore": "Camaiore",
+    "forte-dei-marmi": "Forte dei Marmi",
+    "massarosa": "Massarosa",
+    "pietrasanta": "Pietrasanta",
+    "seravezza": "Seravezza",
+    "stazzema": "Stazzema",
+    "viareggio": "Viareggio",
+}
+CASES = ("30", "301", "56.1", "68.1", "68.2", "68.3", "68.31", "56.10.11")
+
+
+class Quiet(SimpleHTTPRequestHandler):
+    def log_message(self, *_args: object) -> None:
+        return
+
+
+@contextlib.contextmanager
+def server(directory: Path):
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    old = os.getcwd()
+    os.chdir(directory)
+    httpd = ThreadingHTTPServer(("127.0.0.1", port), Quiet)
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{port}/"
+    finally:
+        httpd.shutdown(); thread.join(timeout=5); os.chdir(old)
+
+
+def wait_atlas(page):
+    page.wait_for_function("""() => {
+      const el = document.querySelector('ov-economy-atlas');
+      return !!el?.shadowRoot?.querySelector('#search');
+    }""", timeout=20000)
+
+
+def assert_no_overflow(page):
+    page_overflow = page.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    host_overflow = page.eval_on_selector(
+        "ov-economy-atlas",
+        "el => Math.max(0, el.shadowRoot.querySelector('.explorer').scrollWidth - el.getBoundingClientRect().width)",
+    )
+    assert page_overflow <= 1, f"Overflow pagina: {page_overflow}px"
+    assert host_overflow <= 1, f"Overflow Atlante: {host_overflow}px"
+
+
+def choose_code(page, query: str):
+    host = page.locator("ov-economy-atlas")
+    search = host.locator("#search")
+    search.fill(query)
+    results = host.locator("#results .result")
+    results.first.wait_for(state="visible", timeout=5000)
+    target = None
+    needle = query.replace(".", "")
+    count = results.count()
+    for index in range(count):
+        code = results.nth(index).locator(".result-code").inner_text().replace(".", "").replace(" ", "")
+        if code.endswith(needle.replace(" ", "")):
+            target = results.nth(index)
+            break
+    (target or results.first).click()
+    page.wait_for_timeout(80)
+    title = host.locator("#analysis .selected-title code").first.inner_text()
+    assert needle in title.replace(".", "").replace(" ", ""), (query, title)
+
+
+def test_standalone(page, base: str, width: int):
+    page.set_viewport_size({"width": width, "height": 980})
+    page.goto(base + "confronta/economia/atlante-attivita-economiche/", wait_until="networkidle")
+    wait_atlas(page)
+    assert page.locator('link[rel="canonical"]').get_attribute("href") == "https://osservatorioversilia.it/confronta/economia/atlante-attivita-economiche/"
+    assert page.locator("ov-economy-atlas").count() == 1
+    assert not page.locator('script[src*="ateco-detail"],link[href*="ateco-detail"]').count()
+    assert_no_overflow(page)
+
+    host = page.locator("ov-economy-atlas")
+    if width == 1440:
+        # Sezione G via selettore e casi gerarchici richiesti.
+        selects = host.locator("#selectors select")
+        selects.nth(0).select_option("G")
+        page.wait_for_timeout(80)
+        assert "commercio" in host.locator("#donutCenter").inner_text().casefold()
+        for case in CASES:
+            choose_code(page, case)
+        # B 09 ha un solo discendente a ogni livello: il click deve avanzare automaticamente fino a 09.90.09.
+        choose_code(page, "09")
+        singleton_title = host.locator("#analysis .selected-title code").first.inner_text()

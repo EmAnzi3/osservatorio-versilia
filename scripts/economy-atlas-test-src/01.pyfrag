@@ -1,0 +1,85 @@
+        assert "09.90.09" in singleton_title, singleton_title
+        host.locator("#modeNavigation").click()
+        host.locator("#tabHistory").click()
+        assert host.locator("#analysis .history-chart").count() == 1
+        host.locator("#tabCurrent").click()
+        host.locator("#modeComposition").click()
+        assert host.locator("#analysis .kpis").count() == 1
+    assert_no_overflow(page)
+
+
+def test_towns(page, base: str):
+    page.set_viewport_size({"width": 390, "height": 980})
+    for slug, name in TOWNS.items():
+        page.goto(base + f"comuni/{slug}/?tema=economia", wait_until="networkidle")
+        wait_atlas(page)
+        host = page.locator("ov-economy-atlas")
+        assert host.get_attribute("town") == slug
+        assert page.locator("text=Principali settori per addetti").count() == 0
+        atlas_link = page.locator('.metric-group[data-section="produzione"] .metric-route-link')
+        assert atlas_link.count() == 1
+        assert atlas_link.get_attribute("href").endswith("/confronta/economia/atlante-attivita-economiche/")
+        choose_code(page, "68.31")
+        heading = host.locator("#analysisHeading").inner_text()
+        assert name in heading, (name, heading)
+        page.wait_for_timeout(120)
+        assert host.get_attribute("town") == slug
+        assert_no_overflow(page)
+
+
+def test_catalog_and_search(page, base: str):
+    page.set_viewport_size({"width": 1440, "height": 980})
+    page.goto(base, wait_until="networkidle")
+    assert "184 indicatori" in page.locator("body").inner_text().casefold()
+    economy_card = page.locator('[data-theme="economia"]')
+    assert "32 indicatori" in economy_card.inner_text().casefold()
+    page.locator(".global-search-trigger").click()
+    search = page.locator(".search-overlay input")
+    search.fill("atlante attività economiche")
+    result = page.locator('.search-results a[href*="atlante-attivita-economiche"]').first
+    result.wait_for(state="visible", timeout=5000)
+    assert "atlante delle attività economiche" in result.inner_text().casefold()
+
+    page.goto(base + "confronta/economia/", wait_until="networkidle")
+    links = page.locator('.metric-group[data-section="produzione"] .metric-route-link')
+    assert links.count() >= 1
+    link = links.first
+    assert "atlante" in link.inner_text().casefold()
+    assert link.get_attribute("href").endswith("/confronta/economia/atlante-attivita-economiche/")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--directory", default="dist")
+    parser.add_argument("--screenshots-dir", default="reports/economia-atlas-browser")
+    args = parser.parse_args()
+    directory = Path(args.directory).resolve()
+    screenshots = Path(args.screenshots_dir).resolve()
+    screenshots.mkdir(parents=True, exist_ok=True)
+
+    with server(directory) as base, sync_playwright() as pw:
+        launch_kwargs = {"headless": True}
+        if os.environ.get("OV_CHROMIUM_EXECUTABLE"):
+            launch_kwargs["executable_path"] = os.environ["OV_CHROMIUM_EXECUTABLE"]
+        browser = pw.chromium.launch(**launch_kwargs)
+        page = browser.new_page()
+        console_errors = []
+        page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+        for width in (1440, 1024, 390):
+            test_standalone(page, base, width)
+        test_towns(page, base)
+        test_catalog_and_search(page, base)
+        page.goto(base + "confronta/economia/atlante-attivita-economiche/", wait_until="networkidle")
+        wait_atlas(page)
+        page.set_viewport_size({"width": 1440, "height": 1000})
+        page.screenshot(path=str(screenshots / "atlante-desktop.png"), full_page=True)
+        page.set_viewport_size({"width": 390, "height": 1000})
+        page.screenshot(path=str(screenshots / "atlante-mobile.png"), full_page=True)
+        browser.close()
+        blocking = [item for item in console_errors if "favicon" not in item.lower()]
+        assert not blocking, f"Console errors: {blocking[:5]}"
+    print("Atlante browser: 1440/1024/390, 7 Comuni, ricerca, gerarchia e overflow OK")
+
+
+if __name__ == "__main__":
+    main()

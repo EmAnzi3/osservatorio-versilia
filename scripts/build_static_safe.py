@@ -43,6 +43,9 @@ if "bilanci" not in build.THEME_SLUGS:
     build.THEME_SLUGS.insert(2, "bilanci")
 if "confronta/bilanci/" not in build.ROUTES:
     build.ROUTES.insert(build.ROUTES.index("progetto/"), "confronta/bilanci/")
+ATLAS_ROUTE = "confronta/economia/atlante-attivita-economiche/"
+if ATLAS_ROUTE not in build.ROUTES:
+    build.ROUTES.insert(build.ROUTES.index("progetto/"), ATLAS_ROUTE)
 
 SEARCH_ICON = (
     '<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" '

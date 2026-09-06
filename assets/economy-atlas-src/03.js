@@ -1,0 +1,35 @@
+ot = this.attachShadow({mode:'open'});
+      root.innerHTML = `<style>:host{display:block}.atlas-loading{font:600 14px/1.4 system-ui;padding:28px 0;color:#61717b}</style><div class="atlas-loading" role="status">Caricamento Atlante…</div>`;
+      try { await ensureAtlasData(); }
+      catch(error){ console.error(error); root.innerHTML=`<div role="alert" style="padding:24px 0;font:600 14px/1.5 system-ui;color:#8b2f2f">Atlante temporaneamente non disponibile.</div>`; return; }
+      root.innerHTML = `<style>${STYLE}
+        :host{display:block;--paper:#f4eee2;--surface:#fff;--ink:#102f45;--muted:#61717b;--blue:#145b78;--blue-soft:#e4eff2;--theme:#ad6247;--theme-soft:#f3e3da;--line:#d5dddb;--sage:#5f8b78;--gold:#c89b3c;--shadow:0 20px 60px rgba(16,47,69,.08);--radius:18px;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+        .site-header,.breadcrumbs{display:none!important}
+        .page{width:100%;}
+        .hero{padding-top:24px;}
+        :host([embedded]) .hero{display:none!important}
+        :host([embedded]) .explorer{padding-top:0}
+        :host([mode="town"]) .hero{grid-template-columns:64px 1fr;padding:28px 0 32px;}
+        :host([mode="town"]) .hero-symbol{width:56px;height:56px;border-radius:16px 16px 16px 6px;font-size:15px}
+        :host([mode="town"]) h1{font-size:clamp(32px,5vw,54px);line-height:.96}
+        :host([mode="town"]) .hero p{font-size:14px;}
+      </style><div class="page">${HERO}${EXPLORER}</div>`;
+      const townSlug=this.getAttribute('town')||'';
+      if(townSlug){
+        this.setAttribute('mode','town');
+        const townName={'camaiore':'Camaiore','forte-dei-marmi':'Forte dei Marmi','massarosa':'Massarosa','pietrasanta':'Pietrasanta','seravezza':'Seravezza','stazzema':'Stazzema','viareggio':'Viareggio'}[townSlug]||townSlug;
+        const title=root.querySelector('.hero h1');
+        if(title) title.textContent=`Atlante delle attività economiche · ${townName}`;
+        const intro=root.querySelector('.hero p');
+        if(intro) intro.textContent=`Esplora le attività economiche di ${townName} dalla Sezione alla massima granularità disponibile, mantenendo il confronto con gli altri Comuni della Versilia e con la Toscana.`;
+        const over=root.querySelector('.hero .overline');
+        if(over) over.textContent=`Economia · ${townName} · Registro Imprese`;
+      }
+      this._init(root);
+    }
+    _init(root) {
+
+
+const LABELS={"A":"Agricoltura, silvicoltura e pesca","B":"Estrazione di minerali da cave e miniere","C":"Attività manifatturiere","D":"Fornitura di energia elettrica, gas, vapore e aria condizionata","E":"Fornitura di acqua; reti fognarie, gestione rifiuti e risanamento","F":"Costruzioni","G":"Commercio all'ingrosso e al dettaglio; riparazione di autoveicoli e motocicli","H":"Trasporto e magazzinaggio","I":"Servizi di alloggio e ristorazione","J":"Servizi di informazione e comunicazione","K":"Attività finanziarie e assicurative","L":"Attività immobiliari","M":"Attività professionali, scientifiche e tecniche","N":"Noleggio, agenzie di viaggio, servizi di supporto alle imprese","O":"Amministrazione pubblica e difesa","P":"Istruzione","Q":"Sanità e assistenza sociale","R":"Attività artistiche, sportive, di intrattenimento e divertimento","S":"Altre attività di servizi","T":"Attività di famiglie e convivenze come datori di lavoro","U":"Organizzazioni ed organismi extraterritoriali","C 30":"Fabbricazione di altri mezzi di trasporto","C 301":"Costruzione di navi e imbarcazioni","C 3011":"Costruzione di navi e di strutture galleggianti","C 3012":"Costruzione di imbarcazioni da diporto e sportive","C 33":"Riparazione, manutenzione ed installazione di macchine ed apparecchiature","C 331":"Riparazione e manutenzione di prodotti in metallo, macchine ed apparecchiature","C 3315":"Riparazione e manutenzione di navi e imbarcazioni","C 23":"Fabbricazione di altri prodotti della lavorazione di minerali non metalliferi","C 237":"Taglio, modellatura e finitura di pietre","C 2370":"Taglio, modellatura e finitura di pietre","C 23701":"Segagione e lavorazione delle pietre e del marmo","C 23702":"Lavorazione artistica del marmo e di altre pietre affini, lavori in mosaico","B 08":"Altre attività di estrazione di minerali da cave e miniere","B 081":"Estrazione di pietra, sabbia e argilla","B 0811":"Estrazione di pietre ornamentali e da costruzione, calcare, gesso, creta e ardesia","R 93":"Attività sportive, di intrattenimento e di divertimento","R 932":"Attività ricreative e di divertimento","R 9329":"Altre attività ricreative e di divertimento","R 93292":"Gestione di stabilimenti balneari: marittimi, lacuali e fluviali","G 47":"Commercio al dettaglio, escluso quello di autoveicoli e motocicli","G 477":"Commercio al dettaglio di altri prodotti in esercizi specializzati","G 4778":"Commercio al dettaglio di altri prodotti in esercizi specializzati","G 47783":"Commercio al dettaglio di oggetti d'arte, culto e decorazione","G 477831":"Commercio al dettaglio di oggetti d'arte, incluse le gallerie d'arte","A 01":"Coltivazioni agricole e produzione di prodotti animali, caccia e servizi connessi","A 02":"Silvicoltura ed utilizzo di aree forestali","A 03":"Pesca e acquacoltura","B 05":"Estrazione di carbone","B 06":"Estrazione di petrolio greggio e gas naturale","B 07":"Estrazione di minerali metalliferi","B 09":"Servizi di supporto all’estrazione","C 10":"Industrie alimentari","C 11":"Industria delle bevande","C 13":"Industrie tessili","C 14":"Confezione di articoli di abbigliamento","C 16":"Industria del legno e dei prodotti in legno","C 18":"Stampa e riproduzione di supporti registrati","C 20":"Fabbricazione di prodotti chimici","C 21":"Fabbricazione di prodotti farmaceutici","C 22":"Fabbricazione di articoli in gomma e materie plastiche","C 24":"Metallurgia","C 25":"Fabbricazione di prodotti in metallo","C 26":"Fabbricazione di computer, prodotti di elettronica e ottica","C 27":"Fabbricazione di apparecchiature elettriche","C 28":"Fabbricazione di macchinari ed apparecchiature nca","C 29":"Fabbricazione di autoveicoli, rimorchi e semirimorchi","C 31":"Fabbricazione di mobili","C 32":"Altre industrie manifatturiere","F 41":"Costruzione di edifici","F 42":"Ingegneria civile","F 43":"Lavori di costruzione specializzati","G 45":"Commercio e riparazione di autoveicoli e motocicli","G 46":"Commercio all'ingrosso","I 55":"Alloggio","I 56":"Attività dei servizi di ristorazione","L 68":"Attività immobiliari","M 69":"Attività legali e contabilità","M 71":"Attività degli studi di architettura e ingegneria","N 77":"Attività di noleggio e leasing operativo","N 79":"Agenzie di viaggio e tour operator","Q 86":"Assistenza sanitaria","R 90":"Attività creative, artistiche e di intrattenimento","S 96":"Altre attività di servizi per la persona"};
+// Etichette locali minime per il primo rendering; la tassonomia completa viene caricata dalla fonte ufficiale ISTAT.
+// Le altre etichette 
