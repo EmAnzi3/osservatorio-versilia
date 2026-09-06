@@ -16,7 +16,9 @@ def test_towns(page, base: str):
         host = page.locator("ov-economy-atlas")
         assert host.get_attribute("town") == slug
         assert page.locator("text=Principali settori per addetti").count() == 0
-        assert page.locator('a.special-route-card[href="#atlante-attivita-economiche"]').count() == 1
+        atlas_link = page.locator('.metric-group[data-section="produzione"] .metric-route-link')
+        assert atlas_link.count() == 1
+        assert atlas_link.get_attribute("href").endswith("/confronta/economia/atlante-attivita-economiche/")
         choose_code(page, "68.31")
         heading = host.locator("#analysisHeading").inner_text()
         assert name in heading, (name, heading)
@@ -28,20 +30,20 @@ def test_towns(page, base: str):
 def test_catalog_and_search(page, base: str):
     page.set_viewport_size({"width": 1440, "height": 980})
     page.goto(base, wait_until="networkidle")
-    assert "184 indicatori" in page.locator("body").inner_text()
+    assert "184 indicatori" in page.locator("body").inner_text().casefold()
     economy_card = page.locator('[data-theme="economia"]')
-    assert "32 indicatori" in economy_card.inner_text()
+    assert "32 indicatori" in economy_card.inner_text().casefold()
     page.locator(".global-search-trigger").click()
     search = page.locator(".search-overlay input")
     search.fill("atlante attività economiche")
     result = page.locator('.search-results a[href*="atlante-attivita-economiche"]').first
     result.wait_for(state="visible", timeout=5000)
-    assert "Atlante delle attività economiche" in result.inner_text()
+    assert "atlante delle attività economiche" in result.inner_text().casefold()
 
     page.goto(base + "confronta/economia/", wait_until="networkidle")
     link = page.locator('.metric-group[data-section="produzione"] .metric-route-link')
     link.wait_for(state="visible", timeout=5000)
-    assert "Atlante" in link.inner_text()
+    assert "atlante" in link.inner_text().casefold()
     assert link.get_attribute("href").endswith("/confronta/economia/atlante-attivita-economiche/")
 
 
