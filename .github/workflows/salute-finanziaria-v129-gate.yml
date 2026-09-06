@@ -3,6 +3,21 @@ name: Salute finanziaria v1.29 · release gate
 on:
   pull_request:
     branches: ["main"]
+    paths:
+      - "assets/app-parts/**"
+      - "assets/app.js"
+      - "assets/fidelity.js"
+      - "assets/visual-grammar.js"
+      - "assets/ux-history.js"
+      - "assets/ux-history-core.js"
+      - "data/site-data.json"
+      - "data/source-registry.json"
+      - "data/source-snapshots/salute-finanziaria-v129.json"
+      - "scripts/test_salute_finanziaria_v129.py"
+      - "scripts/test_salute_finanziaria_v129_browser.py"
+      - "scripts/finalize_catalog_release.py"
+      - "scripts/test_catalog_release_v116.py"
+      - ".github/workflows/salute-finanziaria-v129-gate.yml"
   workflow_dispatch:
 
 permissions:
