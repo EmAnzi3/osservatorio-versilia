@@ -28,13 +28,21 @@ PWA_ICONS = (
 
 
 def materialize_agricoltura_ii_release_if_needed() -> None:
-    """Allinea il solo checkout del deploy main all'artifact Agricoltura II approvato."""
-    if not (
-        os.environ.get("GITHUB_WORKFLOW") == "Deploy GitHub Pages"
-        and os.environ.get("GITHUB_EVENT_NAME") in {"push", "workflow_dispatch"}
-        and os.environ.get("GITHUB_REF") == "refs/heads/main"
-    ):
+    """Allinea build Pages e build locali all'ultimo artifact release approvato."""
+    workflow = os.environ.get("GITHUB_WORKFLOW")
+    force_release = os.environ.get("OV_RELEASE_BUILD") == "1"
+
+    # build_static_brand.py è il builder di produzione: il preflight locale e
+    # il workflow Pages devono produrre lo stesso dist/. Gli altri workflow CI
+    # conservano il proprio baseline salvo opt-in esplicito.
+    if not force_release and workflow and workflow != "Deploy GitHub Pages":
         return
+
+    site_path = ROOT / "data" / "site-data.json"
+    site = json.loads(site_path.read_text(encoding="utf-8"))
+    if site.get("release_version") != "1.29.0":
+        return
+
     runpy.run_path(
         str(ROOT / "scripts" / "materialize_agricoltura_ii_release.py"),
         run_name="__main__",
@@ -43,7 +51,7 @@ def materialize_agricoltura_ii_release_if_needed() -> None:
 
 def decorative_mark() -> str:
     svg = (ROOT / "assets" / "brand-mark.svg").read_text(encoding="utf-8").strip()
-    svg = re.sub(r"\s+role=\"img\"\s+aria-labelledby=\"[^\"]+\"", "", svg, count=1)
+    svg = re.sub(r'\s+role="img"\s+aria-labelledby="[^"]+"', "", svg, count=1)
     svg = re.sub(r"\s*<title[^>]*>.*?</title>\s*", "", svg, flags=re.DOTALL)
     svg = re.sub(r"\s*<desc[^>]*>.*?</desc>\s*", "", svg, flags=re.DOTALL)
     svg = svg.replace(
