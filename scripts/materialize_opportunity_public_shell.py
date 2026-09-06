@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARK = "opportunity-public-release-v1"
 ATLAS_METRIC_KEY = "economyActivityAtlas"
-ATLAS_BUILD_MARKER = '<script src="../../../../assets/economy-atlas.js"></script>'
+ATLAS_BUILD_MARKER = "assets/economy-atlas.js"
 ATLAS_TOOLTIP_MARKER = "/* ov-site-tooltip-contract */"
 ATLAS_EXPORT_MARKER = "/* ov-atlas-export-actions */"
 
