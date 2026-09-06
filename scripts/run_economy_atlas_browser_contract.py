@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Esegue il contratto browser v1.31 aggiungendo territorio persistente e tooltip OV."""
+"""Esegue il contratto browser v1.31 aggiungendo territorio, tooltip OV ed export."""
 from __future__ import annotations
 
 import importlib.util
@@ -32,17 +32,38 @@ def assert_tooltip_style(host):
     }, styles
 
 
+def assert_csv_download(page, host, territory_slug: str, territory_name: str):
+    button = host.locator("#atlasDownloadCsv")
+    assert button.is_visible()
+    with page.expect_download(timeout=10000) as info:
+        button.click()
+    download = info.value
+    assert download.suggested_filename == f"atlante-attivita-economiche-{territory_slug}-2014-2025.csv"
+    path = download.path()
+    assert path is not None
+    text = Path(path).read_text(encoding="utf-8-sig")
+    assert text.startswith("Territorio;Codice ATECO;Livello;Descrizione;Anno;UL attive;UL artigiane (2025);Fonte")
+    assert f"{territory_name};A;Sezione;" in text
+    assert "Regione Toscana / Registro Imprese InfoCamere" in text
+
+
 def test_standalone(page, base: str, width: int):
     _original_standalone(page, base, width)
     if width != 1440:
         return
 
     # Il contratto base termina su un nodo ATECO profondo. Ricarichiamo la
-    # vista root prima di testare i tooltip del donut: il test deve verificare
-    # il componente, non dipendere dallo stato lasciato dal test precedente.
+    # vista root per verificare export e tooltip su una pagina pulita.
     page.goto(base + contract.ATLAS_ROUTE, wait_until="networkidle")
     contract.wait_atlas(page)
     host = page.locator("ov-economy-atlas")
+
+    assert host.locator(".atlas-export-actions button").count() == 2
+    assert_csv_download(page, host, "versilia", "Versilia")
+    page.evaluate("window.__atlasPrintCalled=false; window.print=()=>{window.__atlasPrintCalled=true}")
+    host.locator("#atlasPrint").click()
+    assert page.evaluate("window.__atlasPrintCalled") is True
+
     first_slice = host.locator("#donut .slice[data-atlas-tooltip]").first
     first_slice.wait_for(state="visible", timeout=5000)
     assert host.locator("#donut .slice title").count() == 0
@@ -76,6 +97,7 @@ def test_territory(page, base: str):
     assert "Viareggio" in center and "7.809" in center, center
     assert "Viareggio" in host.locator(".hero h1").inner_text()
     assert "Viareggio" in host.locator(".quick-title").inner_text()
+    assert_csv_download(page, host, "viareggio", "Viareggio")
 
     contract.choose_code(page, "68.31")
     assert "Viareggio" in host.locator("#analysisHeading").inner_text()
