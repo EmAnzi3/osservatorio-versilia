@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write
-  actions: write
+  pull-requests: write
   issues: write
 
 concurrency:
@@ -150,13 +150,15 @@ jobs:
           path: reports/runtime/opportunity-daily-summary.md
           retention-days: 14
 
-      - name: Commit verified daily snapshot
+      - name: Commit verified daily snapshot to automation branch
         id: commit
         shell: bash
         run: |
           set -euo pipefail
+          BRANCH="automation/opportunity-radar-daily"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
           git add data/opportunity-daily-public.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -174,14 +176,50 @@ jobs:
 
           git fetch origin main
           git rebase origin/main
-          git push origin HEAD:main
+          git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
+          git push --force-with-lease origin HEAD:"$BRANCH"
           echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: Publish updated Radar through Pages
+      - name: Create or update Radar review pull request
         if: steps.commit.outputs.changed == 'true'
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run pages.yml --ref main
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          set -euo pipefail
+          REFERENCE_DATE="$(python - <<'PY'
+          import json
+          print(json.load(open('data/opportunity-daily-public.json', encoding='utf-8'))['referenceDate'])
+          PY
+          )"
+          TITLE="Aggiorna Radar Opportunità ${REFERENCE_DATE}"
+          cat > /tmp/opportunity-radar-pr.md <<EOF
+          ## Radar Opportunità · refresh giornaliero
+
+          Snapshot verificato del **${REFERENCE_DATE}** prodotto dal workflow giornaliero.
+
+          - la pipeline ha superato i contratti Radar, il controllo di continuità, la copertura fonti e il browser test;
+          - lo snapshot è proposto tramite branch di automazione, **mai con push diretto su \`main\`**;
+          - la pubblicazione resta subordinata ai gate \`quick\` + \`full\` e al merge della PR secondo il ruleset di \`main\`.
+
+          Nessun dato viene pubblicato automaticamente da questo workflow.
+          EOF
+
+          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
+          if [ -z "$PR_NUMBER" ]; then
+            gh pr create \
+              --draft \
+              --base main \
+              --head "$BRANCH" \
+              --title "$TITLE" \
+              --body-file /tmp/opportunity-radar-pr.md
+          else
+            gh pr edit "$PR_NUMBER" \
+              --title "$TITLE" \
+              --body-file /tmp/opportunity-radar-pr.md
+          fi
 
       - name: Notify owner about new opportunities
         if: steps.commit.outputs.changed == 'true'
