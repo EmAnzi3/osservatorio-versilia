@@ -253,4 +253,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from opportunity_daily_refresh_audit_fixed import main as audit_fixed_main
+
+    raise SystemExit(audit_fixed_main())

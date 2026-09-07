@@ -5,6 +5,7 @@ import copy
 from datetime import date
 
 import opportunity_regione_toscana_guard as guard
+import test_opportunity_audit_gap_fixes as audit_fixes
 
 TODAY = date(2026, 8, 25)
 
@@ -44,6 +45,42 @@ def test_accounted_public_is_not_duplicated() -> None:
     assert result["discoveryQueue"] == []
 
 
+def test_cross_source_market_identity_is_reconciled() -> None:
+    candidate = {
+        "title": "Mercati rionali: contributi ai Comuni per ammodernamento, ampliamento e riqualificazione",
+        "url": "https://www.regione.toscana.it/it/-/mercati-rionali-contributi-ai-comuni-per-ammodernamento-ampliamento-e-riqualificazione",
+        "summary": "Comuni della Regione Toscana",
+        "published_at": "2026-08-23",
+        "age_days": 2,
+        "deadline_at": "2026-09-15",
+    }
+    result = {
+        "opportunities": [
+            {
+                "title": "Avviso Mercati Rionali",
+                "url": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+                "deadline_at": "2026-09-15",
+                "rule_id": "st-mercati-rionali-2026",
+            }
+        ],
+        "reviewQueue": [
+            {
+                "title": candidate["title"],
+                "url": candidate["url"],
+                "deadline_at": candidate["deadline_at"],
+            }
+        ],
+        "discoveryQueue": [],
+        "coverageHold": [],
+        "counts": {},
+    }
+    guard.apply(result, TODAY, candidates=[copy.deepcopy(candidate)])
+    assert result["regionalCompleteness"]["status"] == "pass"
+    assert result["regionalCompleteness"]["safetyNetAdded"] == 0
+    assert result["regionalCompleteness"]["unresolved"] == []
+    assert result["counts"]["regionalUnresolved"] == 0
+
+
 def test_missing_recent_candidate_enters_discovery() -> None:
     result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
     guard.apply(result, TODAY, candidates=[_candidate(age_days=2)])
@@ -80,10 +117,12 @@ def test_existing_review_becomes_overdue_without_duplicate_discovery() -> None:
 def main() -> int:
     test_audience_detection()
     test_accounted_public_is_not_duplicated()
+    test_cross_source_market_identity_is_reconciled()
     test_missing_recent_candidate_enters_discovery()
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
-    print("Regione Toscana guard: 5 test PASS")
+    assert audit_fixes.main() == 0
+    print("Regione Toscana guard: 6 test PASS + audit gap contracts PASS")
     return 0
 
 
