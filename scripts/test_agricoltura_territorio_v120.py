@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 import math
+import subprocess
+import sys
 from pathlib import Path
 
 from finalize_catalog_release import EXPECTED_EXTERNAL, EXPECTED_INLINE, EXPECTED_METRICS, VERSION
@@ -123,6 +125,11 @@ finalizer = (ROOT / "scripts/finalize_catalog_release.py").read_text(encoding="u
 assert f'VERSION = "{VERSION}"' in finalizer
 assert f"EXPECTED_METRICS = {EXPECTED_METRICS}" in finalizer
 assert f"EXPECTED_INLINE = {EXPECTED_INLINE}" in finalizer
+
+subprocess.run(
+    [sys.executable, str(ROOT / "scripts" / "test_agricoltura_ii_draft.py")],
+    check=True,
+)
 
 print(
     f"Agricoltura e territorio v1.20.0 verificata nel catalogo {VERSION}: "
