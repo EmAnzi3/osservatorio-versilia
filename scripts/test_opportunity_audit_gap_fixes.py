@@ -73,6 +73,78 @@ def test_c4t_injection_is_conditional_and_deterministic() -> None:
     )
 
 
+def _all_verified_detail_fixtures() -> dict[str, str]:
+    paths = (
+        "opportunity-verified-v04.json",
+        "opportunity-verified-v04-extra.json",
+        "opportunity-verified-v042.json",
+        "opportunity-verified-v043.json",
+        "opportunity-verified-v044.json",
+    )
+    detail_payloads: dict[str, str] = {}
+    for name in paths:
+        payload = fixed.core._load(ROOT / "data" / name)
+        for entry in payload.get("entries") or []:
+            url = str(entry.get("url") or "")
+            terms = [str(term) for term in entry.get("required_terms") or []]
+            if url:
+                detail_payloads[url] = "<html><body>" + " | ".join(terms) + "</body></html>"
+    for entry in fixed._load_fixes().get("verifiedEntries") or []:
+        url = str(entry.get("url") or "")
+        terms = [str(term) for term in entry.get("required_terms") or []]
+        if url:
+            detail_payloads[url] = "<html><body>" + " | ".join(terms) + "</body></html>"
+    return detail_payloads
+
+
+def test_overlay_reaches_real_v044_run_and_recomputes_counts() -> None:
+    """Blind test sul percorso del motore, non solo sulla funzione di injection."""
+    config, _ = fixed._compose_with_audit_fixes()
+    payloads = {
+        str(source.get("id") or ""): (
+            "[]" if source.get("type") == "padigitale_json" else "<html><body></body></html>"
+        )
+        for source in config.get("sources") or []
+    }
+    discovery_payloads = {
+        str(url): "<html><body></body></html>"
+        for source in config.get("discoverySources") or []
+        for url in source.get("urls") or []
+    }
+    detail_payloads = _all_verified_detail_fixtures()
+
+    original_compose = fixed.core.compose_runtime_payloads
+    original_core_inject = fixed.core.inject_verified_v04
+    original_radar_inject = getattr(fixed.radar_module, "inject_verified_v04", None)
+    fixed.core.compose_runtime_payloads = fixed._compose_with_audit_fixes
+    fixed.core.inject_verified_v04 = fixed._inject_with_audit_fixes
+    if original_radar_inject is not None:
+        fixed.radar_module.inject_verified_v04 = fixed._inject_with_audit_fixes
+    try:
+        result = fixed.radar_module.run_v04(
+            date(2026, 9, 7),
+            payloads=payloads,
+            detail_payloads=detail_payloads,
+            discovery_payloads=discovery_payloads,
+        )
+    finally:
+        fixed.core.compose_runtime_payloads = original_compose
+        fixed.core.inject_verified_v04 = original_core_inject
+        if original_radar_inject is not None:
+            fixed.radar_module.inject_verified_v04 = original_radar_inject
+
+    by_id = {
+        str(item.get("coverage_id") or ""): item
+        for item in result.get("opportunities") or []
+        if item.get("coverage_id")
+    }
+    assert C4T_ID in by_id, sorted(by_id)
+    assert CERV_ID in by_id, sorted(by_id)
+    assert by_id[C4T_ID].get("eligibility") == "conditional"
+    assert (result.get("counts") or {}).get("public") == len(result.get("opportunities") or [])
+    assert (result.get("coverageAudit") or {}).get("status") == "pass", result.get("coverageAudit")
+
+
 def test_cerv_regression_contract_is_already_active() -> None:
     sentinels = fixed.core._load(ROOT / "data" / "opportunity-coverage-sentinels-v042.json")
     current = {
@@ -114,6 +186,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 def main() -> int:
     test_c4t_source_and_verified_seed()
     test_c4t_injection_is_conditional_and_deterministic()
+    test_overlay_reaches_real_v044_run_and_recomputes_counts()
     test_cerv_regression_contract_is_already_active()
     test_mercati_rionali_cross_source_contract()
     print("Audit gap fixes: C4T + CERV + Mercati rionali PASS")
