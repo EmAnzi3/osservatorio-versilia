@@ -1,17 +1,6 @@
 name: Data audit Lotto A - Redditi
 
 on:
-  pull_request:
-    branches: ["main"]
-    paths:
-      - "docs/data-audit-lotto-a-redditi.md"
-      - "scripts/probe_mef_income_lotto_a.py"
-      - "scripts/test_mef_income_lotto_a_probe.py"
-      - "scripts/materialize_income_lotto_a*.py"
-      - "scripts/patch_income_lotto_a*.py"
-      - "scripts/test_income_lotto_a*.py"
-      - "data/source-snapshots/mef-income-lotto-a-2024.json"
-      - ".github/workflows/data-audit-lotto-a-redditi.yml"
   workflow_dispatch:
 
 permissions:
