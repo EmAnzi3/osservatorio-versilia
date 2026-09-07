@@ -1,16 +1,6 @@
 name: Probe ISTAT lavoro istruzione eta genere
 
 on:
-  pull_request:
-    branches: ["main"]
-    paths:
-      - "scripts/probe_istat_lavoro_istruzione_eta_genere.py"
-      - "scripts/materialize_lavoro_istruzione_eta_genere.py"
-      - "scripts/test_lavoro_istruzione_eta_genere*.py"
-      - "data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json"
-      - "assets/visual-grammar.js"
-      - "assets/visual-grammar.css"
-      - ".github/workflows/probe-istat-lavoro-istruzione.yml"
   workflow_dispatch:
 
 permissions:
@@ -44,7 +34,6 @@ jobs:
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
 
       - name: Probe and reconcile the live ISTAT API
-        if: github.event_name == 'workflow_dispatch'
         run: |
           python scripts/probe_istat_lavoro_istruzione_eta_genere.py
           python -m json.tool data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json > /dev/null
@@ -80,7 +69,6 @@ jobs:
           python scripts/test_lavoro_istruzione_versilia_pyramid_browser.py --base http://127.0.0.1:8123/
 
       - name: Upload focused preview
-        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: lavoro-istruzione-eta-genere-preview
