@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0",
+  "fixVersion": "2026-09-07",
+  "auditFindings": {
+    "cerv-town-twinning": {
+      "status": "resolved_existing_sentinel",
+      "coverage_id": "eu-cerv-town-twinning-2026",
+      "note": "La call è già pubblicata e protetta dalla sentinella corrente c09 della v0.4.2."
+    },
+    "mercati-rionali": {
+      "status": "cross_source_reconciliation",
+      "canonical_rule_id": "st-mercati-rionali-2026",
+      "note": "Regione Toscana e Sviluppo Toscana devono essere contabilizzate come la stessa misura canonica."
+    },
+    "c4t-groundwork": {
+      "status": "verified_conditional_seed",
+      "coverage_id": "eu-c4t-groundwork-2026",
+      "note": "Nuovo presidio UE per assistenza tecnica C4T su investimenti di coesione PO2."
+    }
+  },
+  "discoverySources": [
+    {
+      "id": "eu-c4t-groundwork",
+      "label": "UE · C4T GROUNDWORK",
+      "publisher": "Commissione europea · Cohesion for Transitions",
+      "territory": "Unione europea",
+      "family": "energy-climate-environment",
+      "urls": [
+        "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/c4t-groundwork-call-open-technical-assistance-2026-07-03_en",
+        "https://eu-mayors.ec.europa.eu/en/calls"
+      ],
+      "fetchTimeoutSeconds": 18,
+      "includeTerms": [
+        "C4T", "GROUNDWORK", "technical assistance", "Cohesion Policy", "PO2",
+        "green transition", "11 September 2026"
+      ],
+      "municipalTerms": [
+        "local authorities", "public authorities", "local practitioners", "cities",
+        "municipal", "regional and local"
+      ]
+    }
+  ],
+  "coverageRegistry": {
+    "eu-c4t-groundwork": {
+      "label": "UE · C4T GROUNDWORK",
+      "monitoringStatus": "active",
+      "role": "discovery",
+      "priority": 112,
+      "family": "energy-climate-environment",
+      "listingDiscovery": true,
+      "detailEnrichment": false,
+      "pdfFallback": true,
+      "archiveContinuity": true,
+      "historicalReplay": true,
+      "favicon": "",
+      "note": "Presidio dedicato a C4T GROUNDWORK e assistenza tecnica per investimenti di coesione PO2; la pubblicazione richiede verifica primaria del ruolo dell'autorità locale."
+    }
+  },
+  "verifiedEntries": [
+    {
+      "coverage_id": "eu-c4t-groundwork-2026",
+      "source_id": "eu-c4t-groundwork",
+      "source_label": "UE · C4T GROUNDWORK",
+      "publisher": "Commissione europea · Cohesion for Transitions",
+      "title": "C4T GROUNDWORK — assistenza tecnica per investimenti di coesione PO2",
+      "url": "https://managenergy.ec.europa.eu/managenergy-discover/managenergy-news/c4t-groundwork-call-open-technical-assistance-2026-07-03_en",
+      "required_terms": ["C4T GROUNDWORK", "11 September 2026", "local"],
+      "evidence_verified_at": "2026-09-07",
+      "allow_recent_evidence_fallback": true,
+      "published_at": "2026-07-03",
+      "first_seen_at": "2026-09-07",
+      "lifecycle_stage": "application_open",
+      "deadline_at": "2026-09-11",
+      "eligibility": "conditional",
+      "applicant_type": "Autorità pubblica coinvolta nell'attuazione di investimenti FESR/Fondo di coesione collegati al Policy Objective 2 (PO2)",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Amministrazioni pubbliche e territori che attuano investimenti di transizione verde sostenuti dalla politica di coesione",
+      "geographic_scope": "Unione europea · investimenti della politica di coesione nell'ambito PO2",
+      "project_requirements": "Il Comune può candidarsi solo se ha un ruolo effettivo nell'attuazione di investimenti della politica di coesione riconducibili al PO2. La call offre assistenza tecnica, non un contributo finanziario diretto; il nesso con programma e investimento va verificato caso per caso.",
+      "category": "energia",
+      "description": "Assistenza tecnica della Commissione europea per preparare e attuare investimenti di transizione verde della politica di coesione sotto il PO2.",
+      "condition_label": "Ruolo attuativo su investimenti PO2",
+      "municipality_status_overrides": {
+        "Camaiore": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Forte dei Marmi": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Massarosa": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Pietrasanta": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Seravezza": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Stazzema": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."},
+        "Viareggio": {"status":"conditional","reason":"Ammissibile solo se il Comune è coinvolto nell'attuazione di uno o più investimenti FESR/Fondo di coesione riconducibili al PO2."}
+      },
+      "presentation": {
+        "source_mark": "C4T",
+        "source_class": "eu",
+        "category": "energia",
+        "source_label": "UE · C4T GROUNDWORK",
+        "description": "Assistenza tecnica UE per investimenti verdi della politica di coesione PO2.",
+        "condition_label": "Ruolo attuativo su investimenti PO2"
+      }
+    }
+  ]
+}
