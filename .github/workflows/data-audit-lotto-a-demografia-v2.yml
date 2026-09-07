@@ -1,19 +1,6 @@
 name: Data audit Lotto A - Demografia v2
 
 on:
-  pull_request:
-    branches: ["main"]
-    paths:
-      - "scripts/probe_istat_rcs_demography.py"
-      - "scripts/materialize_demography_lotto_a_v5.py"
-      - "scripts/materialize_demography_rcs_lotto_a.py"
-      - "scripts/patch_demography_lotto_a_frontend_v2.py"
-      - "scripts/test_demography_lotto_a_v5.py"
-      - "scripts/test_demography_rcs_lotto_a.py"
-      - "scripts/test_demography_lotto_a_browser_v2.py"
-      - "data/source-snapshots/istat-demography-lotto-a-2026-08.json"
-      - "data/source-snapshots/istat-rcs-demography-2025.json"
-      - ".github/workflows/data-audit-lotto-a-demografia-v2.yml"
   workflow_dispatch:
 
 permissions:

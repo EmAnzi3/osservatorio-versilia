@@ -1,14 +1,6 @@
 name: Audit PNRR Toscana
 
 on:
-  pull_request:
-    paths:
-      - "scripts/pnrr_toscana_audit.py"
-      - "scripts/pnrr_toscana_forensic.py"
-      - "scripts/pnrr_toscana_snapshot_runner.py"
-      - "scripts/test_pnrr_toscana_audit.py"
-      - ".github/workflows/pnrr-toscana-audit.yml"
-      - "data/site-data.json"
   workflow_dispatch:
 
 permissions:
