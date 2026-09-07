@@ -5,7 +5,7 @@ Queste regole valgono per qualunque agente o sessione che modifica il repository
 ## Flusso obbligatorio
 
 1. Non fare push diretto su `main`. Lavora sempre su un branch dedicato e passa da pull request.
-2. Durante lo sviluppo mantieni la PR in **draft**. Il check remoto `quick` deve restare verde; non usarlo per provare ipotesi.
+2. Per modifiche tecniche **non visibili nell'interfaccia** (CI, test, manutenzione) la PR può essere aperta direttamente **Ready**: il flusso canonico deve eseguire `quick` e poi `full` nello stesso run. Per modifiche UI, rendering o interazioni mantieni invece la PR in **draft** finché preview e verifiche browser locali non sono concluse.
 3. Prima di qualunque push esegui localmente:
 
    ```bash
@@ -23,16 +23,18 @@ Queste regole valgono per qualunque agente o sessione che modifica il repository
 
 ## Contratti da preservare
 
-- `data/site-data.json` è la fonte canonica per catalogo e `detailRoute` delle pagine speciali: non duplicare inventari di route se il dato può essere derivato da lì.
-- Non aggirare o indebolire `scripts/test_site_consistency.py`, i gate di shell/route o i test browser per far passare una modifica.
+- `data/site-data.json` resta la fonte canonica del catalogo: indicatori, appartenenza ai temi e `detailRoute` si derivano da lì e non vanno ricopiati in manifest paralleli.
+- `ci/content-contract.json` dichiara le **regole** dell'architettura pubblica: famiglie di pagine, storage ammessi, eccezioni di shell e risoluzione delle visualizzazioni. Una nuova famiglia strutturale richiede l'aggiornamento esplicito del contratto, non una scorciatoia nel builder.
+- `ci/workflow-contract.json` è l'inventario canonico dei workflow Actions e dei check di ingresso. Un nuovo workflow, un workflow ritirato o una modifica ai check `quick`/`full` deve aggiornare il contratto nello stesso commit.
+- `scripts/test_site_consistency.py` applica i contratti dichiarativi prima delle verifiche di shell, metadata, route e link. Non aggirarlo o indebolirlo per far passare una modifica.
 - Le modifiche UI devono mantenere header/footer, ricerca, Stato dati, colori tematici, tooltip e selettori coerenti con il resto del sito.
 - Testi e controlli non devono uscire dai rispettivi contenitori, né su desktop né su mobile.
 - Le modifiche funzionali devono essere verificate nel browser locale quando interessano interazioni o rendering.
 
 ## Preflight
 
-- `--quick`: contratto sorgente, catalogo/dati, sintassi, build, materializzazione delle pagine speciali e coerenza strutturale. Non esegue la regressione browser completa, ma la build prerender richiede Chromium.
+- `--quick`: contratto architetturale e sorgente, catalogo/dati, sintassi, build, materializzazione delle pagine speciali e coerenza strutturale. Non esegue la regressione browser completa, ma la build prerender richiede Chromium.
 - `--full`: esegue `quick` e aggiunge regressioni statiche estese e browser.
-- `--full --skip-quick`: riservato alla CI quando il job `quick` è già verde e `dist/` viene ripristinato dal relativo artifact.
+- `--full --skip-quick`: riservato alla CI quando il job `quick` è già verde e il job `full` prepara un `dist/` coerente per i controlli full-only.
 
-Non introdurre nuovi test o workflow release-specifici se lo stesso contratto può essere espresso nel preflight generale o in un gate con `paths` strettamente pertinenti.
+Non introdurre nuovi test o workflow release-specifici se lo stesso contratto può essere espresso nel preflight generale o in un gate con `paths` strettamente pertinenti. Non duplicare inventari di indicatori o route che possono essere derivati dalle fonti canoniche.

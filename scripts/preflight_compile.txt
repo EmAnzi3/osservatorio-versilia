@@ -76,3 +76,7 @@ scripts/test_erp_arrears_v125.py
 scripts/test_erp_arrears_v125_browser.py
 scripts/finalize_catalog_release.py
 scripts/test_catalog_release_v116.py
+scripts/content_contract.py
+scripts/workflow_contract.py
+scripts/site_consistency_impl.py
+scripts/test_architecture_contract.py
