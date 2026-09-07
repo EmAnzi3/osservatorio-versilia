@@ -42,6 +42,19 @@ _AUDIENCE_MARKERS = (
     "possono presentare istanza",
 )
 
+# Identità documentali note che possono arrivare da URL e titoli differenti.
+# La riconciliazione è volutamente stretta: non è un fuzzy-dedup generico e non
+# può promuovere un candidato; serve soltanto a riconoscere che una scheda già
+# pubblica copre la stessa misura osservata dal safety net regionale.
+_CROSS_SOURCE_IDENTITIES = (
+    {
+        "id": "rt-mercati-rionali-2026",
+        "title_terms": ("mercati rionali",),
+        "deadline_at": "2026-09-15",
+        "rule_ids": ("st-mercati-rionali-2026",),
+    },
+)
+
 
 def _fold(value: Any) -> str:
     return radar.v025.fold(value)
@@ -92,9 +105,24 @@ def _stable_key(url: str, title: str) -> str:
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:14]
 
 
+def _cross_source_identity(item: dict[str, Any]) -> str | None:
+    title = _fold(item.get("title"))
+    rule_id = str(item.get("rule_id") or "")
+    deadline = str(item.get("deadline_at") or "")
+    for identity in _CROSS_SOURCE_IDENTITIES:
+        if rule_id and rule_id in set(identity.get("rule_ids") or ()):
+            return str(identity.get("id") or "") or None
+        terms = tuple(str(term) for term in identity.get("title_terms") or ())
+        expected_deadline = str(identity.get("deadline_at") or "")
+        if terms and all(_fold(term) in title for term in terms) and deadline == expected_deadline:
+            return str(identity.get("id") or "") or None
+    return None
+
+
 def _account_state(result: dict[str, Any], candidate: dict[str, Any]) -> str | None:
     wanted_url = radar.v025.normalized_url(candidate.get("url"))
     wanted_title = _fold(candidate.get("title"))
+    wanted_identity = _cross_source_identity(candidate)
     fields = (
         ("opportunities", "public"),
         ("qualityHold", "quality_hold"),
@@ -105,6 +133,8 @@ def _account_state(result: dict[str, Any], candidate: dict[str, Any]) -> str | N
     )
     for field, state in fields:
         for item in result.get(field) or []:
+            if wanted_identity and _cross_source_identity(item) == wanted_identity:
+                return state
             item_url = radar.v025.normalized_url(item.get("url"))
             if wanted_url and item_url and wanted_url == item_url:
                 return state
