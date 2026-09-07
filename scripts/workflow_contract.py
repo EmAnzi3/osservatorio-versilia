@@ -61,7 +61,8 @@ def validate_workflow_contract() -> dict[str, Any]:
     reporter = reporter_path.read_text(encoding="utf-8")
     assert canonical["liveStatusContext"] in reporter, "Context live status non dichiarato nel reporter"
     assert 'job.get("name") == "deploy"' in reporter, "Reporter non verifica il vero job deploy"
-    assert 'job.get("conclusion") == "success"' in reporter, "Reporter non verifica il successo del deploy"
+    assert 'deploy.get("conclusion")' in reporter, "Reporter non legge la conclusione del deploy"
+    assert 'published = conclusion == "success"' in reporter, "Reporter non vincola il live status al successo del deploy"
 
     by_category = Counter(entry["category"] for entry in entries if entry["status"] == "active")
     return {"workflows": len(actual), "categories": dict(sorted(by_category.items()))}
