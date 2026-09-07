@@ -1,0 +1,243 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-07",
+  "wave": 2,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "purpose": "Ampliare il corpus di controllo UE prima dell'hardening, cercando opportunita per forma e canale indipendente anziche soltanto attraverso le source gia configurate.",
+  "saturationRule": {
+    "requiredConsecutiveIndependentSweepsWithZeroNewCurrentActionable": 2,
+    "currentState": "not_met",
+    "reason": "La Wave 2 ha trovato ulteriori opportunita correnti assenti dal corpus Wave 1."
+  },
+  "findings": [
+    {
+      "id": "eu-digital-connectivity-awards-2026",
+      "title": "European Digital Connectivity Awards 2026",
+      "officialUrl": "https://digital-strategy.ec.europa.eu/en/news/apply-european-digital-connectivity-awards-2026-9-september",
+      "publishedOrOpenedAt": "2026-06-26",
+      "deadlineAt": "2026-09-09",
+      "municipalityRole": "conditional_project_applicant",
+      "radarStatus": "absent",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "conditions": ["progetto di connettivita gia avanzato", "impatto tangibile", "progetto pubblico/locale ammesso"]
+    },
+    {
+      "id": "eu-beactive-sport-awards-2026",
+      "title": "#BeActive EU Sport Awards 2026",
+      "officialUrl": "https://sport.ec.europa.eu/fr/node/1094",
+      "publishedOrOpenedAt": "2026-06-25",
+      "opensAt": "2026-06-30",
+      "deadlineAt": "2026-09-17T17:00:00+02:00",
+      "municipalityRole": "organisation_eligibility_to_resolve",
+      "radarStatus": "absent",
+      "auditClass": "current_scope_review_high",
+      "severity": "high",
+      "note": "Prima di classificare come falso negativo definitivo va risolto il ruolo del Comune sul regolamento completo."
+    },
+    {
+      "id": "eu-ecosr-2027",
+      "title": "European Capitals of Small Retail 2027",
+      "officialUrl": "https://single-market-economy.ec.europa.eu/single-market/services/retail/european-capitals-small-retail-ecosr/how-apply_en",
+      "publishedOrOpenedAt": "2026-05-11",
+      "deadlineAt": "2026-10-09T12:00:00+01:00",
+      "municipalityRole": "direct_city_applicant",
+      "radarStatus": "absent",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "conditions": ["citta >= 5000 abitanti", "candidatura della city administration", "endorsement del Sindaco o massimo rappresentante"]
+    },
+    {
+      "id": "eu-sundanse-open-call-2-2026",
+      "title": "SUNDANSE Open Call 2 - Freshwater Ecosystems",
+      "officialUrl": "https://sundanseproject.eu/sundanse-open-call-2/",
+      "publishedOrOpenedAt": "2026-07-08",
+      "deadlineAt": "2026-09-30T17:00:00+01:00",
+      "municipalityRole": "direct_local_authority_applicant",
+      "radarStatus": "absent",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "conditions": ["Italia esplicitamente eleggibile", "sfida locale pertinente a sedimenti/fiumi/acque", "autorita locale o regionale / public body analogo"]
+    },
+    {
+      "id": "eu-ceah-ta-call-2-2026",
+      "title": "Citizen Energy Advisory Hub - Technical Assistance Call 2",
+      "officialUrl": "https://citizens-energy.ec.europa.eu/receive-support/ceah-technical-assistance-call-proposals_en",
+      "publishedOrOpenedAt": "2026-09-01",
+      "deadlineAt": "2026-10-02T23:59:00+02:00",
+      "municipalityRole": "conditional_direct_local_public_authority",
+      "radarStatus": "absent",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "conditions": ["autorita pubbliche locali esplicitamente eleggibili", "implementare/pianificare/supportare un progetto citizen energy", "nessun doppio supporto per lo stesso aspetto"]
+    },
+    {
+      "id": "interreg-next-med-call3-tourism-2026",
+      "title": "Interreg NEXT MED - 3rd Call - Sustainable Tourism Capitalisation",
+      "officialUrl": "https://www.regione.sardegna.it/atti-bandi-archivi/atti-amministrativi/bandi/178290330373360",
+      "publishedOrOpenedAt": "2026-07-01",
+      "deadlineAt": "2026-10-29T13:00:00+01:00",
+      "municipalityRole": "conditional_partner_or_lead",
+      "radarStatus": "absent",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "conditions": ["autorita locali ammissibili", "partenariato transnazionale", "capitalizzazione/trasferimento di output MMM"]
+    },
+    {
+      "id": "amif-integration-local-level-2026",
+      "title": "AMIF Specific Action - Integration at Local Level",
+      "officialUrl": "https://home-affairs.ec.europa.eu/news/integration-local-level-eur-77-million-under-amif-specific-action-2026-05-21_en",
+      "publishedOrOpenedAt": "2026-05-21",
+      "deadlineAt": "2026-10-02",
+      "municipalityRole": "beneficiary_via_national_managing_authority",
+      "radarStatus": "absent",
+      "auditClass": "indirect_route_gap",
+      "severity": "high",
+      "conditions": ["citta e Comuni tra i beneficiari eleggibili", "domanda UE presentata dalla Managing Authority nazionale", "serve ricostruire la procedura italiana di selezione/manifestazione di interesse"]
+    },
+    {
+      "id": "trunsport-open-call-1-2026",
+      "title": "TRUNSPORT Open Call 1",
+      "officialUrl": "https://trunsport.eu/open-calls/",
+      "publishedOrOpenedAt": "2026-07-30",
+      "deadlineAt": "2026-10-30",
+      "municipalityRole": "public_body_scope_review",
+      "radarStatus": "absent",
+      "auditClass": "current_scope_review_high",
+      "severity": "high",
+      "conditions": ["enti pubblici indicati tra i destinatari da fonti istituzionali italiane", "progetto cybersecurity nel settore trasporti", "verifica finale sul Guide for Applicants primario ancora necessaria"]
+    },
+    {
+      "id": "smart-cities-marketplace-matchmaking",
+      "title": "Smart Cities Marketplace - Matchmaking Services",
+      "officialUrl": "https://smart-cities-marketplace.ec.europa.eu/matchmaking/call-for-application",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": null,
+      "municipalityRole": "direct_city_or_city_consortium",
+      "radarStatus": "absent",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "conditions": ["citta o consorzio con almeno una citta", "progetto in UE/Horizon eligible country", "idea/progetto con localizzazione, beneficiari e stakeholder identificati"]
+    },
+    {
+      "id": "eib-adapt-rolling",
+      "title": "EIB ADAPT - Climate Adaptation Investment Advisory Platform",
+      "officialUrl": "https://advisory.eib.org/about/adapt",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": null,
+      "municipalityRole": "direct_advisory_request",
+      "radarStatus": "absent",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "conditions": ["citta e autorita locali esplicitamente nel target", "richiesta advisory valutata caso per caso", "investimento di adattamento climatico"]
+    },
+    {
+      "id": "eib-circular-city-centre-c3",
+      "title": "EIB Circular City Centre - C3",
+      "officialUrl": "https://advisory.eib.org/about/circular-city-centre.htm",
+      "publishedOrOpenedAt": null,
+      "deadlineAt": null,
+      "municipalityRole": "direct_city_advisory",
+      "radarStatus": "absent",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "conditions": ["advisory gratuito", "CCA per strategie/pipeline/progetti circolari", "CPA per promotori pubblici di progetti maturi tipicamente >20 milioni EUR"]
+    }
+  ],
+  "promotionAndScopeReviews": [
+    {
+      "id": "life-2026-non-cet-matrix",
+      "title": "LIFE 2026 - call non-CET",
+      "officialUrl": "https://cinea.ec.europa.eu/life-calls-proposals-2026_en",
+      "radarStatus": "coverage_incomplete_to_audit",
+      "auditClass": "promotion_scope_matrix_required",
+      "severity": "critical",
+      "deadlineAt": "2026-09-22T17:00:00+02:00",
+      "topicsToResolve": [
+        "LIFE-2026-CLIMA-SAP-CCM",
+        "LIFE-2026-SAP-CLIMA-GOV",
+        "LIFE-2026-SAP-ENV-ENVIRONMENT",
+        "LIFE-2026-SAP-NAT-NATURE",
+        "LIFE-2026-SAP-NAT-GOV",
+        "LIFE-2026-PLP-NAT-ENV",
+        "LIFE-2026-TA-PP-CLIMA-SIP"
+      ],
+      "note": "LIFE ammette in generale persone giuridiche pubbliche UE; ogni topic va comunque risolto individualmente prima della promozione."
+    },
+    {
+      "id": "eit-neb-2027-cycle",
+      "title": "Connect NEB & Co-create NEB 2027 Open Call",
+      "officialUrl": "https://www.eit.europa.eu/our-activities/opportunities/connect-neb-co-create-neb",
+      "opensAt": "2026-07-15",
+      "deadlineAt": "2026-09-30T17:00:00+01:00",
+      "radarStatus": "existing_neb_card_requires_cycle_revalidation",
+      "auditClass": "cycle_version_revalidation",
+      "severity": "high"
+    },
+    {
+      "id": "eit-umx-cutoff2-2026",
+      "title": "Urban Mobility Explained (UMX) Open Call - 2nd cut-off",
+      "officialUrl": "https://www.eiturbanmobility.eu/call-for-proposals/urban-mobility-explained-umx-open-call-2/",
+      "deadlineAt": "2026-09-29T17:00:00+02:00",
+      "radarStatus": "absent",
+      "auditClass": "scope_review",
+      "severity": "medium",
+      "note": "La call e per legal entities e formazione professionale sull'urban mobility; risolvere se il Comune sia applicant operativo utile o principalmente destinatario/partner."
+    },
+    {
+      "id": "horizon-mission-adaptation-2026-topics",
+      "title": "Horizon Europe - Mission Adaptation to Climate Change 2026",
+      "officialUrl": "https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/adaptation-climate-change_en",
+      "deadlineAt": "2026-09-23",
+      "radarStatus": "generic_horizon_source_not_sufficient",
+      "auditClass": "topic_matrix_required",
+      "severity": "critical",
+      "note": "La Mission si rivolge anche ad autorita regionali/locali; enumerare i singoli topic e risolvere ruolo/geografia/partenariato."
+    }
+  ],
+  "historicalOrCalendarSentinels": [
+    {
+      "id": "access-city-award-2027",
+      "title": "Access City Award 2027",
+      "officialUrl": "https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/access-city-award-aca_en",
+      "opensAt": "2026-06-18",
+      "deadlineAt": "2026-09-04T12:00:00+02:00",
+      "eligibility": "EU cities >50000 inhabitants",
+      "auditClass": "runtime_miss_if_any_versilia_city_meets_population_rule",
+      "severity": "high"
+    },
+    {
+      "id": "european-green-capital-green-leaf-calendar",
+      "title": "European Green Capital / Green Leaf annual competition",
+      "officialUrl": "https://environment.ec.europa.eu/topics/urban-environment/european-green-capital-award/applying-awards_en",
+      "deadlineAt": "2026-04-01",
+      "auditClass": "annual_calendar_sentinel_outside_120d"
+    },
+    {
+      "id": "eu-capitals-inclusion-diversity-next",
+      "title": "European Capitals of Inclusion and Diversity - 5th edition",
+      "officialUrl": "https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/combatting-discrimination/tackling-discrimination/diversity-and-inclusion-initiatives/european-capitals-inclusion-and-diversity-award_en",
+      "opensAt": "autumn_2026",
+      "deadlineAt": null,
+      "auditClass": "announced_upcoming_calendar_sentinel"
+    }
+  ],
+  "independentOracles": [
+    "https://commission.europa.eu/funding-and-tenders/how-apply/eligibility-who-can-get-funding/funding-opportunities-public-bodies_en",
+    "https://www.eit.europa.eu/our-activities/opportunities",
+    "https://advisory.eib.org/",
+    "https://smart-cities-marketplace.ec.europa.eu/matchmaking/call-for-application"
+  ],
+  "nextSweeps": [
+    "Commission DG-by-DG and city-facing apply directories",
+    "EIT all current calls with municipality/public-body eligibility",
+    "LIFE 2026 complete topic matrix",
+    "Horizon Missions 2026 topic matrix",
+    "Interreg programmes relevant to Toscana plus geographic negative controls",
+    "EU-funded project cascade/open calls and associated-regions calls",
+    "current Radar internal_review promotion audit",
+    "municipality-level applicability matrix for all seven Versilia municipalities",
+    "after EU saturation repeat same method for Italy, Toscana, foundations and local networks"
+  ]
+}
