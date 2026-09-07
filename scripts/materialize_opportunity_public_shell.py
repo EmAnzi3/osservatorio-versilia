@@ -84,6 +84,27 @@ def materialize_economia_atlas_release_if_needed() -> None:
         raise RuntimeError("Economia Atlas non completamente materializzata prima della build.")
 
 
+def declarative_site_contract_ready() -> bool:
+    """Usa il contratto dichiarativo quando è presente, senza patchare il gate di coerenza."""
+    contract_path = ROOT / "ci" / "content-contract.json"
+    consistency = ROOT / "scripts" / "test_site_consistency.py"
+    if not contract_path.exists() or not consistency.exists():
+        return False
+
+    wrapper = consistency.read_text(encoding="utf-8")
+    if "from content_contract import" not in wrapper:
+        return False
+
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    pages = contract.get("pages", {})
+    route = "opportunita/index.html"
+    if route not in set(pages.get("standalone", [])):
+        raise RuntimeError("Contratto dichiarativo: route Opportunità standalone assente")
+    if route not in set(pages.get("builderTraceExceptions", [])):
+        raise RuntimeError("Contratto dichiarativo: eccezione builder Opportunità assente")
+    return True
+
+
 def main() -> None:
     core = ROOT / "assets/app-parts/00.txt"
     replace_once(core,
@@ -123,10 +144,11 @@ def main() -> None:
         '<a href="../stato-dati/" data-data-status-nav="footer">Stato dei dati</a><a href="../opportunita/">Opportunità</a><a href="../progetto/#metodo">Metodo</a>',
         "fixture footer")
 
-    c = ROOT / "scripts/test_site_consistency.py"
-    replace_once(c, '    Path("stato-dati/index.html"),\n    Path("percorsi/index.html"),', '    Path("stato-dati/index.html"),\n    Path("opportunita/index.html"),\n    Path("percorsi/index.html"),', "inventario")
-    replace_once(c, '        ("Comuni", BASE_URL + "#comuni"),\n        ("Il progetto", BASE_URL + "progetto/"),', '        ("Comuni", BASE_URL + "#comuni"),\n        ("Opportunità", BASE_URL + "opportunita/"),\n        ("Il progetto", BASE_URL + "progetto/"),', "header consistency")
-    replace_once(c, '            ("Stato dei dati", BASE_URL + "stato-dati/"),\n            ("Metodo", BASE_URL + "progetto/#metodo"),', '            ("Stato dei dati", BASE_URL + "stato-dati/"),\n            ("Opportunità", BASE_URL + "opportunita/"),\n            ("Metodo", BASE_URL + "progetto/#metodo"),', "footer consistency")
+    if not declarative_site_contract_ready():
+        c = ROOT / "scripts/test_site_consistency.py"
+        replace_once(c, '    Path("stato-dati/index.html"),\n    Path("percorsi/index.html"),', '    Path("stato-dati/index.html"),\n    Path("opportunita/index.html"),\n    Path("percorsi/index.html"),', "inventario")
+        replace_once(c, '        ("Comuni", BASE_URL + "#comuni"),\n        ("Il progetto", BASE_URL + "progetto/"),', '        ("Comuni", BASE_URL + "#comuni"),\n        ("Opportunità", BASE_URL + "opportunita/"),\n        ("Il progetto", BASE_URL + "progetto/"),', "header consistency")
+        replace_once(c, '            ("Stato dei dati", BASE_URL + "stato-dati/"),\n            ("Metodo", BASE_URL + "progetto/#metodo"),', '            ("Stato dei dati", BASE_URL + "stato-dati/"),\n            ("Opportunità", BASE_URL + "opportunita/"),\n            ("Metodo", BASE_URL + "progetto/#metodo"),', "footer consistency")
 
     b = ROOT / "scripts/test_site_chrome_browser.py"
     replace_once(b, '    "pnrr/",\n    "percorsi/",', '    "pnrr/",\n    "opportunita/",\n    "percorsi/",', "browser route")
