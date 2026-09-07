@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "canonical": {
+    "pagesWorkflow": ".github/workflows/pages.yml",
+    "liveStatusWorkflow": ".github/workflows/pages-live-status.yml",
+    "requiredPullRequestChecks": [
+      "quick",
+      "full"
+    ],
+    "commands": {
+      "quick": "python scripts/preflight.py --quick",
+      "full": "python scripts/preflight.py --full --skip-quick",
+      "buildSmoke": "python scripts/test_site_consistency.py"
+    },
+    "liveStatusContext": "ov-pages-live"
+  },
+  "workflows": [
+    {"path": ".github/workflows/pages.yml", "category": "canonical", "status": "active"},
+    {"path": ".github/workflows/pages-live-status.yml", "category": "canonical", "status": "active"},
+    {"path": ".github/workflows/monthly-data-refresh.yml", "category": "automation", "status": "active"},
+    {"path": ".github/workflows/opportunity-radar-daily.yml", "category": "automation", "status": "active"},
+    {"path": ".github/workflows/refresh-agid-indicators.yml", "category": "automation", "status": "active"},
+    {"path": ".github/workflows/social-calendar.yml", "category": "automation", "status": "active"},
+    {"path": ".github/workflows/costi-fiscalita-sources.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/data-audit-fiscal-lotto-b.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/data-audit-lotto-a-demografia-v2.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/data-audit-lotto-a-redditi.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/data-audit-lotto-a.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/pnrr-toscana-audit.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/sir-validation.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/validate-school.yml", "category": "data-audit", "status": "active"},
+    {"path": ".github/workflows/meteo-poc.yml", "category": "probe", "status": "active"},
+    {"path": ".github/workflows/probe-istat-lavoro-istruzione.yml", "category": "probe", "status": "active"},
+    {"path": ".github/workflows/climate-minmax-extend.yml", "category": "probe", "status": "active"},
+    {"path": ".github/workflows/climate-interaction.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/costa-mare-v123.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/cultura-v121-gate.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/economia-atlas-preview.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/meteo-clima-page.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/opportunity-radar-v044-ci.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/salute-finanziaria-v129-gate.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/salute-life-expectancy-v122.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/social-kit.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/welfare-draft.yml", "category": "specialized-gate", "status": "active"}
+  ]
+}
