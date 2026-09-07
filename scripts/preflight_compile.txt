@@ -55,6 +55,8 @@ scripts/materialize_mobilita_tpl_v119.py
 scripts/test_mobilita_tpl_v119.py
 scripts/materialize_agricoltura_territorio_v120.py
 scripts/test_agricoltura_territorio_v120.py
+scripts/test_agricoltura_ii_draft.py
+scripts/test_agricoltura_ii_preview_browser.py
 scripts/test_agricoltura_review_interactions_v120.py
 scripts/materialize_costa_mare_v123.py
 scripts/materialize_attivita_estrattive_v128.py

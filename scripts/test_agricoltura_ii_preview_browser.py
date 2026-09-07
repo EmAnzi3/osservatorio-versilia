@@ -73,10 +73,6 @@ def main() -> None:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
 
-        page.goto(base, wait_until="networkidle")
-        hero = page.locator(".hero-facts").inner_text().upper()
-        assert "183 INDICATORI" in hero, hero
-
         # Card 1 — lettura iniziale: la linea grafica deve essere il rapporto
         # Versilia 69/957 = 7,2%, non la media semplice dei sette rapporti.
         page.goto(

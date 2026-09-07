@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import subprocess
+import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -63,11 +65,21 @@ def main() -> None:
             assert aggregate == "24,37 ha", f"Totale Vite Versilia atteso 24,37 ha, trovato {aggregate}"
 
             browser.close()
+
+        subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "test_agricoltura_ii_preview_browser.py"),
+                "--base",
+                f"{base}/",
+            ],
+            check=True,
+        )
     finally:
         server.shutdown()
         server.server_close()
 
-    print("OK: switch assoluto/rapportato e quota comunale colture sul totale Versilia verificati in browser.")
+    print("OK: switch assoluto/rapportato, quota comunale colture e regressioni Agricoltura II verificate in browser.")
 
 
 if __name__ == "__main__":
