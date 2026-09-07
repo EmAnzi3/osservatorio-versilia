@@ -5,6 +5,7 @@ import copy
 from datetime import date
 
 import opportunity_regione_toscana_guard as guard
+import test_opportunity_audit_gap_fixes as audit_fixes
 
 TODAY = date(2026, 8, 25)
 
@@ -120,7 +121,8 @@ def main() -> int:
     test_missing_recent_candidate_enters_discovery()
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
-    print("Regione Toscana guard: 6 test PASS")
+    assert audit_fixes.main() == 0
+    print("Regione Toscana guard: 6 test PASS + audit gap contracts PASS")
     return 0
 
 
