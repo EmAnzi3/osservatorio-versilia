@@ -1,8 +1,6 @@
 name: Audit sorgenti costi fiscalità redditi
 
 on:
-  push:
-    branches: ["agent/costi-fiscalita-redditi"]
   workflow_dispatch:
 
 permissions:
