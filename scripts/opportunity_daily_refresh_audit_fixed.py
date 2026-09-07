@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Refresh giornaliero h6: chiusura dei gap emersi dall'audit indipendente.
+"""Overlay giornaliero sui gap emersi dall'audit indipendente.
 
-Estende h5 senza modificare il classificatore storico:
+Estende h5 senza modificare il classificatore storico né la versione del gate
+trasporto:
 - aggiunge il presidio C4T GROUNDWORK come canale UE dedicato;
 - inietta la call 2026 solo dopo verifica primaria, con ammissibilità comunale
   condizionata al ruolo effettivo nell'attuazione di investimenti PO2;
@@ -25,7 +26,7 @@ import opportunity_daily_refresh_stable as stable
 ROOT = Path(__file__).resolve().parents[1]
 FIXES_PATH = ROOT / "data" / "opportunity-audit-fixes-v1.json"
 FIX_VERSION = "2026-09-07"
-DAILY_HARDENING_VERSION = "0.4.4-h6"
+DAILY_HARDENING_VERSION = "0.4.4-h5"
 
 h4 = stable.h4
 core = h4.core
@@ -160,7 +161,7 @@ def _inject_with_audit_fixes(
     return resolved
 
 
-def _prepare_public_h6(result: dict[str, Any], today: date) -> dict[str, Any]:
+def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
     result["dailyHardeningVersion"] = DAILY_HARDENING_VERSION
     result["auditGapFixVersion"] = FIX_VERSION
@@ -178,7 +179,7 @@ def main() -> int:
     core.inject_verified_v04 = _inject_with_audit_fixes
     if _BASE_RADAR_INJECT is not None:
         radar_module.inject_verified_v04 = _inject_with_audit_fixes
-    stable._prepare_public_stable = _prepare_public_h6
+    stable._prepare_public_stable = _prepare_public_audit_fixed
     try:
         return stable.main()
     finally:
