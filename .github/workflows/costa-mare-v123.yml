@@ -4,11 +4,18 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - "assets/**"
-      - "data/**"
-      - "docs/**"
-      - "scripts/**"
-      - "service-worker.js"
+      - "assets/visual-grammar.js"
+      - "data/site-data.json"
+      - "data/source-registry.json"
+      - "data/source-monitor-state.json"
+      - "data/source-snapshots/costa-mare-v123.json"
+      - "scripts/materialize_costa_mare_v123.py"
+      - "scripts/patch_investimenti_versilia.py"
+      - "scripts/finalize_catalog_release.py"
+      - "scripts/test_costa_mare_v123.py"
+      - "scripts/test_investimenti_versilia.py"
+      - "scripts/test_costa_mare_v123_browser.py"
+      - "scripts/test_investimenti_versilia_browser.py"
       - ".github/workflows/costa-mare-v123.yml"
   workflow_dispatch:
 
