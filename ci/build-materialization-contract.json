@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "entrypoint": "scripts/build_static_brand.py",
+  "implementation": "scripts/build_static_brand_impl.py",
+  "publicMaterializers": [
+    "scripts/materialize_agricoltura_ii_release.py",
+    "scripts/materialize_opportunity_public_shell.py",
+    "scripts/materialize_percorsi_touch_release.py",
+    "scripts/prepare_economy_atlas_build.py",
+    "scripts/materialize_economy_atlas_release.py",
+    "scripts/refine_economy_atlas_release.py",
+    "scripts/refine_economy_atlas_tooltips.py",
+    "scripts/refine_economy_atlas_exports.py"
+  ],
+  "trackedMutationAllowlist": [
+    "data/site-data.json",
+    "data/source-registry.json",
+    "assets/app-parts/00.txt",
+    "assets/app-parts/02.txt",
+    "assets/app-parts/03.txt",
+    "assets/app-parts/04.txt",
+    "assets/app.js",
+    "assets/static.css",
+    "assets/visual-grammar.js",
+    "assets/ux-history.js",
+    "assets/ux-accordion.js",
+    "scripts/build_static.py"
+  ],
+  "ephemeralGeneratedPaths": [
+    "assets/economy-atlas.js"
+  ],
+  "forbiddenMutationPrefixes": [
+    ".github/",
+    "ci/",
+    "scripts/test_"
+  ],
+  "forbiddenMutationPaths": [
+    "AGENTS.md",
+    "scripts/site_chrome.py",
+    "scripts/preflight.py",
+    "scripts/content_contract.py",
+    "scripts/workflow_contract.py"
+  ]
+}

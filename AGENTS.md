@@ -26,6 +26,7 @@ Queste regole valgono per qualunque agente o sessione che modifica il repository
 - `data/site-data.json` resta la fonte canonica del catalogo: indicatori, appartenenza ai temi e `detailRoute` si derivano da lì e non vanno ricopiati in manifest paralleli.
 - `ci/content-contract.json` dichiara le **regole** dell'architettura pubblica: famiglie di pagine, storage ammessi, eccezioni di shell e risoluzione delle visualizzazioni. Una nuova famiglia strutturale richiede l'aggiornamento esplicito del contratto, non una scorciatoia nel builder.
 - `ci/workflow-contract.json` è l'inventario canonico dei workflow Actions e dei check di ingresso. Un nuovo workflow, un workflow ritirato o una modifica ai check `quick`/`full` deve aggiornare il contratto nello stesso commit.
+- `ci/build-materialization-contract.json` dichiara l'unico perimetro di sorgenti che la build pubblica può modificare temporaneamente. Il wrapper di build deve ripristinare byte per byte il checkout e rimuovere eventuali flag Git `assume-unchanged`; una nuova mutazione richiede un aggiornamento esplicito del contratto.
 - `scripts/test_site_consistency.py` applica i contratti dichiarativi prima delle verifiche di shell, metadata, route e link. Non aggirarlo o indebolirlo per far passare una modifica.
 - Le modifiche UI devono mantenere header/footer, ricerca, Stato dati, colori tematici, tooltip e selettori coerenti con il resto del sito.
 - Testi e controlli non devono uscire dai rispettivi contenitori, né su desktop né su mobile.
