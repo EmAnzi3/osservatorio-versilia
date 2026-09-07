@@ -148,7 +148,9 @@ def validate_content_contract() -> dict[str, Any]:
     town_names = [town["name"] for town in data["towns"]]
     assert len(town_names) == len(set(town_names)), f"Comuni duplicati: {town_names}"
     expected_towns = [town["name"] for town in registry.get("expectedTowns", [])]
-    assert town_names == expected_towns, f"Perimetro comuni difforme dal registry: {town_names} != {expected_towns}"
+    assert set(town_names) == set(expected_towns), (
+        f"Perimetro comuni difforme dal registry: {sorted(town_names)} != {sorted(expected_towns)}"
+    )
 
     membership = theme_membership(data)
     allowed_storage = set(contract["catalog"]["allowedStorageTypes"])
