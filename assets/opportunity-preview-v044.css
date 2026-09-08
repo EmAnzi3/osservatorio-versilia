@@ -17,20 +17,65 @@
   align-self: center;
 }
 
-.op-new-badge {
+.op-new-badge,
+.op-relevance {
   display: inline-flex;
   align-items: center;
   width: fit-content;
   padding: .32rem .64rem;
-  border: 1px solid rgba(181, 92, 24, .28);
   border-radius: 999px;
-  background: rgba(181, 92, 24, .12);
-  color: #7a3d12;
   font-size: .72rem;
   font-weight: 900;
   line-height: 1;
   letter-spacing: .04em;
   text-transform: uppercase;
+}
+
+.op-new-badge {
+  border: 1px solid rgba(181, 92, 24, .28);
+  background: rgba(181, 92, 24, .12);
+  color: #7a3d12;
+}
+
+.op-relevance {
+  margin: 0 0 .7rem;
+  border: 1px solid rgba(15, 54, 84, .20);
+  background: rgba(15, 54, 84, .07);
+  color: #0f3654;
+}
+
+.op-relevance-partner,
+.op-access-partner {
+  border-color: rgba(91, 65, 129, .26);
+  background: rgba(91, 65, 129, .10);
+  color: #51366f;
+}
+
+.op-relevance-support_finance,
+.op-access-support {
+  border-color: rgba(35, 104, 82, .26);
+  background: rgba(35, 104, 82, .10);
+  color: #205e4c;
+}
+
+.op-relevance-routed,
+.op-access-routed {
+  border-color: rgba(151, 94, 32, .26);
+  background: rgba(151, 94, 32, .10);
+  color: #7c4c19;
+}
+
+.op-partnership-section {
+  border-top: 1px solid rgba(15, 54, 84, .12);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.op-partnership-section .section-heading p {
+  max-width: 58rem;
+}
+
+.op-stat-partner strong {
+  font-variant-numeric: tabular-nums;
 }
 
 .op-preview-controls {
