@@ -47,6 +47,7 @@ jobs:
             scripts/opportunity_daily_refresh_stable.py \
             scripts/opportunity_daily_refresh_audit_fixed.py \
             scripts/opportunity_audit_corpus_promotions.py \
+            scripts/opportunity_matrix_promotions.py \
             scripts/opportunity_municipal_relevance.py \
             scripts/opportunity_discovery_resilient.py \
             scripts/opportunity_transport_smoke.py \
@@ -103,10 +104,12 @@ jobs:
           counts = p.get('counts') or {}
           assert counts.get('new') == sum(bool(x.get('is_new')) for x in opportunities)
           replay = p.get('auditCorpusPromotion') or {}
-          assert int(replay.get('added') or 0) >= 75, replay
+          assert int(replay.get('currentOrRollingAdded') or 0) >= 89, replay
+          assert int(replay.get('municipalCurrentOrRollingAdded') or 0) >= 52, replay
+          assert int(replay.get('partnershipCurrentOrRollingAdded') or 0) >= 37, replay
           municipal = p.get('municipalRelevance') or {}
-          assert int(municipal.get('headlineCurrentOrRolling') or 0) >= 70, municipal
-          assert int(municipal.get('partnershipCurrentOrRolling') or 0) >= 30, municipal
+          assert int(municipal.get('headlineCurrentOrRolling') or 0) >= 77, municipal
+          assert int(municipal.get('partnershipCurrentOrRolling') or 0) >= 39, municipal
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           backtest = p.get('backtest') or {}
