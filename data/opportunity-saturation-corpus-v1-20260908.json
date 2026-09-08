@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0",
+  "frozenAt": "2026-09-08",
+  "corpusId": "opportunity-saturation-v1",
+  "purpose": "Provide a finite, reproducible perimeter for the two consecutive clean full-corpus sweeps required before Radar Opportunity discovery hardening can begin.",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "municipalities": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "gate": {
+    "requiredConsecutiveIndependentCleanSweeps": 2,
+    "counterAtFreeze": 0,
+    "firstGateCountingWave": 19,
+    "rule": "A sweep is clean when a complete pass over the frozen oracle set and included opportunity classes produces zero new current actionable gaps relative to the reference snapshot plus the documented audit corpus through Wave 18.",
+    "scopeExpansionRule": "A newly discovered opportunity family outside this frozen corpus may be logged as out_of_corpus_candidate_for_v2, but does not reset the v1 clean-sweep counter unless the corpus is explicitly revised and versioned before the sweep."
+  },
+  "currentActionableGapContract": {
+    "allRequired": [
+      "official primary evidence establishes an open or rolling lifecycle on the audit date",
+      "at least one of the seven municipalities is formally eligible as applicant, borrower, requester, required beneficiary, required public procurer, or concrete conditional consortium/partner participant",
+      "there is a concrete operational benefit: funding, subsidised finance, asset transfer, technical assistance, capacity building, expert support, project access, award/label, investor/project matchmaking, replicator/FSTP support or innovation-procurement participation",
+      "the opportunity has a documented application/request/submission/consortium route rather than only thematic relevance",
+      "canonical snapshot, municipality_eligibility, coverage rules and internal_review are checked before absence is asserted",
+      "the case is not already documented as a known current gap in Waves 1-18"
+    ],
+    "promotionGapCounts": true,
+    "rollingStructuralGapCounts": true,
+    "nationalRouteCountsWhenMunicipalityCanOriginateOrReceiveSupport": true,
+    "upcomingDoesNotCountUntilOpen": true,
+    "historicalDoesNotCount": true
+  },
+  "includedOpportunityClasses": [
+    "direct_grant_or_contribution",
+    "subsidised_loan_or_direct_public_finance_product",
+    "named_multilateral_or_eu_financing_route_with_explicit_local_authority_access",
+    "technical_assistance_or_project_preparation",
+    "capacity_building_peer_learning_or_expert_support_with_application_or_request_route",
+    "award_label_competition_with_municipal_application",
+    "cascade_FSTP_replicator_associated_region_support",
+    "innovation_procurement_PCP_PPI_when_municipal_public_procurer_role_is_documented",
+    "formal_project_or_investor_matchmaking_submission_route",
+    "asset_transfer_or_other_non_cash_support_with_formal_municipal_request",
+    "rolling_support_service",
+    "national_or_shared_management_route_where_municipality_is_explicit_beneficiary_or_request_originator",
+    "conditional_consortium_partner_when_a_real_municipal beneficiary/procurer/demo role is documented"
+  ],
+  "excludedFromV1Gate": [
+    "general network membership with no discrete support/application benefit",
+    "knowledge platforms or newsletters without an operational request route",
+    "consultations, surveys, questionnaires and policy feedback exercises",
+    "events, webinars, conferences and training attendance without a structured funded/support programme",
+    "supplier-side public procurement and commercial tenders",
+    "generic financial institution capability pages without an explicit municipal borrower/request route",
+    "mere stakeholder/end-user mentions without a beneficiary, procurer, applicant or concrete partner route",
+    "predetermined beneficiary lists that exclude all seven municipalities",
+    "geographically ineligible programmes",
+    "closed calls and pre-launch historical misses for purposes of the clean counter",
+    "announced future calls before their actual opening date",
+    "new opportunity families or new oracle families introduced after this freeze unless corpus v2 is explicitly approved"
+  ],
+  "frozenOracles": {
+    "eu_institutional": [
+      {"id":"eu-funding-tenders","scope":"European Commission Funding & Tenders current calls/topics relevant to public bodies and local authorities"},
+      {"id":"cinea","scope":"CINEA calls and named support services: LIFE, Missions, CEF, Green Assist"},
+      {"id":"eismea","scope":"EISMEA calls including I3 and Single Market/public-sector relevant actions"},
+      {"id":"eacea","scope":"Erasmus+, CERV, European Solidarity Corps and related action-level calls"},
+      {"id":"eit","scope":"EIT umbrella opportunities plus EIT Urban Mobility and EIT Culture & Creativity"},
+      {"id":"eui","scope":"European Urban Initiative calls, permanent capacity-building and peer-learning routes"},
+      {"id":"urbact","scope":"URBACT current city network/capacity-building calls"},
+      {"id":"interreg-euro-med","scope":"Interreg Euro-MED current calls and project-level support routes"},
+      {"id":"interreg-next-med","scope":"Interreg NEXT MED current calls"},
+      {"id":"interreg-italy-croatia","scope":"Current calls as geographic/programme control"},
+      {"id":"mission-adaptation","scope":"Mission Adaptation / MIP4Adapt technical assistance, Hotline, Community and expert support"},
+      {"id":"mission-ocean","scope":"Mission Ocean calls, community support and Associated Regions directory"},
+      {"id":"netzerocities","scope":"Mission-minded city support and city-facing calls"},
+      {"id":"covenant-mayors","scope":"EU Covenant of Mayors calls and direct municipal support"},
+      {"id":"smart-cities-marketplace","scope":"matchmaking and project support"},
+      {"id":"eib-advisory","scope":"ELENA, ADAPT, Circular City Centre, JASPERS and InvestEU Advisory Hub"},
+      {"id":"investeu-portal","scope":"formal project submission/investor matching"},
+      {"id":"eeef","scope":"European Energy Efficiency Fund direct financing and Technical Assistance Facility"},
+      {"id":"ceb","scope":"Council of Europe Development Bank local/regional authority financing route"},
+      {"id":"commission-awards-labels","scope":"known Commission city/local-authority awards, labels and competitions already represented in Waves 1-18"}
+    ],
+    "eu_project_and_cascade": [
+      {"id":"sundanse","scope":"SUNDANSE open calls"},
+      {"id":"space4cities","scope":"replicator-city calls"},
+      {"id":"ldt4ssc","scope":"local digital-twin open calls"},
+      {"id":"ds4sscc","scope":"smart-community data-space calls"},
+      {"id":"trunsport","scope":"transport/cybersecurity FSTP open calls"},
+      {"id":"smart-era","scope":"rural-region replicator calls and geographic controls"},
+      {"id":"co-waters","scope":"Coalition and Blue Climathon support routes"},
+      {"id":"iriscc","scope":"transnational access calls for climate-risk research infrastructures"},
+      {"id":"mission-ocean-associated-regions","scope":"official Associated Regions directory and currently open downstream calls"},
+      {"id":"invasive-alien-species-fund","scope":"European Invasive Alien Species Rapid-Response Fund lifecycle"}
+    ],
+    "italy": [
+      {"id":"interno-dait","scope":"Ministero dell'Interno / DAIT local-authority contributions and notices"},
+      {"id":"interno-fnasilo-sai","scope":"SAI project notices for local authorities"},
+      {"id":"interno-fami","scope":"FAMI routes including AMIF national-selection watch"},
+      {"id":"pcm-funzione-pubblica-inpa","scope":"Funzione Pubblica, InPA and PA Digitale municipality/PA opportunities"},
+      {"id":"pcm-famiglia","scope":"Department for Family municipal funding windows"},
+      {"id":"pcm-sport","scope":"Department for Sport municipal programmes"},
+      {"id":"pcm-giovani-scu","scope":"Universal Civil Service programmes/projects and youth-related municipal routes"},
+      {"id":"pcm-politiche-mare","scope":"Capitale italiana del mare and other direct municipality routes"},
+      {"id":"mic-general","scope":"Ministry of Culture national calls relevant to territorial authorities"},
+      {"id":"mic-cinema","scope":"DG Cinema and Audiovisual"},
+      {"id":"mic-spettacolo","scope":"DG Spettacolo including jazz, carnivals, bands/choirs"},
+      {"id":"mic-creativita","scope":"DG Creatività Contemporanea and municipal cultural programmes"},
+      {"id":"mit","scope":"MIT local-authority infrastructure/transport calls"},
+      {"id":"mase","scope":"MASE direct local-authority programmes and energy/environment routes"},
+      {"id":"mim","scope":"MIM local-authority education/infrastructure routes where municipalities are applicants/beneficiaries"},
+      {"id":"infratel","scope":"SINFI and named municipal technical-support programmes"},
+      {"id":"icsc","scope":"Istituto per il Credito Sportivo e Culturale municipal finance products"},
+      {"id":"cdp","scope":"Cassa Depositi e Prestiti current municipal finance/application windows"},
+      {"id":"agenzia-demanio","scope":"formal free-transfer/asset routes for territorial entities"},
+      {"id":"ministero-turismo","scope":"national tourism calls with municipal applicant/nomination route"},
+      {"id":"pelagos","scope":"MASE/Pelagos municipal partnership calls"}
+    ],
+    "tuscany_and_local": [
+      {"id":"regione-toscana-open","scope":"Regione Toscana open calls"},
+      {"id":"regione-toscana-all","scope":"Regione Toscana all calls/lifecycle cross-check"},
+      {"id":"pr-fesr-toscana","scope":"PR FESR current calls"},
+      {"id":"pr-fse-toscana","scope":"PR FSE+ current calls"},
+      {"id":"sviluppo-toscana","scope":"current managed calls"},
+      {"id":"anci-toscana","scope":"secondary discovery oracle; primary source required before a gap is confirmed"},
+      {"id":"fondazione-cr-lucca","scope":"current territorial calls already within Radar source perimeter where public bodies/municipalities may participate"}
+    ]
+  },
+  "canonicalComparisonOrder": [
+    "reference snapshot opportunity title/code/URL",
+    "municipality_eligibility",
+    "coverage rules / coverage_id / rule_id",
+    "internal_review / auditReview / discovery fragments",
+    "known findings and corrections from Waves 1-18",
+    "only then assign new gap status"
+  ],
+  "independenceRequirement": {
+    "wave19": "oracle-first sweep using programme/source directories; prior waves consulted only after candidate collection",
+    "wave20": "different ordering and query strategy, starting from opportunity classes/lifecycles and municipality roles rather than source names",
+    "sameFrozenCorpusRequired": true
+  },
+  "corpusRevisionPolicy": "Any change to oracle membership or included/excluded classes requires a new corpus version. The v1 gate is evaluated only against this file."
+}
