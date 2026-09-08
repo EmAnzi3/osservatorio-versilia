@@ -14,17 +14,38 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = date(2026, 9, 8)
 
 
+def _print_diagnostics(items: list[dict]) -> None:
+    by_class: dict[str, list[str]] = {}
+    for item in items:
+        cls = relevance.classify_item(item)
+        by_class.setdefault(cls, []).append(f"{item.get('coverage_id')} :: {item.get('title')}")
+    print("AUDIT REPLAY DIAGNOSTIC START")
+    for cls in sorted(by_class):
+        print(f"[{cls}] {len(by_class[cls])}")
+        for title in sorted(by_class[cls]):
+            print("  -", title)
+    print("AUDIT REPLAY DIAGNOSTIC END")
+
+
 def main() -> int:
     baseline = json.loads((ROOT / "data" / "opportunity-daily-public.json").read_text(encoding="utf-8"))
+    before_ids = {str(x.get("coverage_id") or x.get("id") or "") for x in baseline.get("opportunities") or []}
     before = relevance.summarize(list(baseline.get("opportunities") or []))
     result = promotions.apply_audit_corpus_promotions(copy.deepcopy(baseline), REFERENCE)
+    added_items = [
+        item for item in result.get("opportunities") or []
+        if str(item.get("coverage_id") or item.get("id") or "") not in before_ids
+        and item.get("audit_promotion_version") == promotions.PROMOTION_VERSION
+    ]
+    _print_diagnostics(added_items)
     relevance.apply_to_payload(result, drop_review=True)
     after = result["municipalRelevance"]
     replay = result["auditCorpusPromotion"]
 
-    # Il corpus finale aveva certificato 52 nuove opportunità comunali correnti/
-    # rolling e 37 partnership. Il replay può deduplicare contro schede già
-    # pubbliche, ma non deve perdere intere famiglie del corpus.
+    # La matrice finale certifica 52 nuove opportunità comunali correnti/rolling
+    # e 37 partnership. Il replay deve avvicinarsi a quel corpus e può ridursi
+    # solo per deduplica/lifecycle, non perché una matrice multi-topic sia stata
+    # collassata in una singola scheda.
     assert replay["municipalCurrentOrRollingAdded"] >= 45, replay
     assert replay["partnershipCurrentOrRollingAdded"] >= 30, replay
     assert replay["added"] >= 75, replay
