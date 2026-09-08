@@ -81,7 +81,7 @@ def _synthetic_contract() -> None:
     new_card = preview_v044._card_with_new_badge(new_item)
     assert 'class="op-new-badge"' in new_card
     assert 'class="op-lifecycle op-lifecycle-open"' in new_card
-    assert 'class="op-relevance op-relevance-DIRECT"' in new_card
+    assert f'class="op-relevance op-relevance-{relevance.DIRECT}"' in new_card
 
 
 def _real_snapshot_contract() -> dict:
