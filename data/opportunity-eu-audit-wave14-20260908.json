@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 14,
+  "sweepType": "independent_full_corpus",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWave14Write": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "8b2e54796b24d9f22779e3327cef4393c700b803",
+    "base": "main",
+    "commitCount": 28,
+    "changedFileCount": 26
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForCleanSweepGate": true,
+    "reason": "Wave 14 is an independent full-corpus sweep and found five new current actionable or rolling structural opportunities absent from the reference snapshot and prior audit corpus: Tirocini InPA 2026, Dottorati InPA 2026, MiC Progetti speciali Cinema e Audiovisivo 2026, ICSC Sport Missione Comune 2026, and CINEA Green Assist. Any one of these resets the clean-sweep counter; therefore the gate remains 0/2."
+  },
+  "method": {
+    "seedPolicy": "External institutional oracles were searched first. Previous audit waves and the Radar snapshot were used after candidates surfaced, for canonical cross-check, deduplication, lifecycle classification and municipality-fit review.",
+    "canonicalCrossCheck": "Title/code search alone was not treated as proof of absence. Candidates were checked against the complete reference snapshot, municipality_eligibility where present, coverage rules, internal_review evidence available in the snapshot, and Waves 1-13.",
+    "municipalities": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ],
+    "oracleFamilies": {
+      "eu": [
+        "European Commission / Funding & Tenders and city-facing programme directories",
+        "CINEA including LIFE and named InvestEU/LIFE advisory services",
+        "EISMEA and Single Market Programme call directories",
+        "EACEA / Erasmus+ / CERV programme channels",
+        "EIT opportunity directories",
+        "European Urban Initiative",
+        "URBACT",
+        "Interreg and Interreg project open-call oracles",
+        "Mission Adaptation / Mission Ocean / Cities Mission platforms",
+        "Covenant of Mayors / Smart Cities / EIB advisory families",
+        "awards, labels and competitions",
+        "innovation procurement / PCP / PPI",
+        "cascade / FSTP / replicator / associated-region calls",
+        "rolling technical assistance and capacity-building services"
+      ],
+      "italy": [
+        "Dipartimento della Funzione Pubblica / InPA",
+        "Ministero dell'Interno / DAIT and FAMI",
+        "Presidenza del Consiglio and Departments",
+        "Ministero della Cultura including DG Cinema e Audiovisivo",
+        "Ministero delle Infrastrutture e dei Trasporti",
+        "Ministero dell'Ambiente e della Sicurezza Energetica",
+        "Ministero dell'Istruzione e del Merito",
+        "Dipartimento per lo Sport",
+        "Infratel",
+        "CDP / ICSC public-finance products for local authorities"
+      ],
+      "tuscany": [
+        "Regione Toscana open/all calls directories",
+        "PR FESR",
+        "PR FSE+",
+        "Sviluppo Toscana",
+        "ANCI Toscana as discovery oracle",
+        "regional lifecycle and municipality-scope controls"
+      ]
+    }
+  },
+  "newCurrentActionableFindings": [
+    {
+      "id": "dfp-tirocini-inpa-2026",
+      "title": "Dipartimento della Funzione Pubblica · Tirocini InPA 2026",
+      "publishedAt": "2026-08-05",
+      "deadlineAt": "2026-09-20",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_false_negative",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 32,
+      "municipalityRole": "direct_public_administration_applicant_subject_to_university_agreement_and_project_requirements",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_public_administrations_under_article_1_paragraph_2_d_lgs_165_2001",
+      "funding": "Publicly financed programme supporting 190 curricular internships. The 2026 notice provides EUR 3,800 per internship in total support (EUR 3,600 trainee allowance plus EUR 200 to the university), subject to notice conditions.",
+      "eligibilityEvidence": "The official InPA/DFP notice is addressed to public administrations under Article 1(2) of Legislative Decree 165/2001. Municipalities fall within that public-administration perimeter. Participating administrations must submit qualifying projects and operate through the required university agreement.",
+      "rootCauseFamily": "national_central_pa_capacity_building_source_gap",
+      "officialSources": [
+        "https://www.inpa.gov.it/dipartimento-della-funzione-pubblica-della-presidenza-del-consiglio-dei-ministri-avvisi-rivolti-alle-pubbliche-amministrazioni-di-cui-allart-1-comma-2-d-lgs-165-2001/",
+        "https://www.funzionepubblica.pcm.gov.it/it/il-dipartimento/notizie-del-dipartimento/al-via-la-terza-edizione-delliniziativa-tirocini-inpa-e-dottorati-inpa/"
+      ]
+    },
+    {
+      "id": "dfp-dottorati-inpa-2026",
+      "title": "Dipartimento della Funzione Pubblica · Dottorati InPA 2026",
+      "publishedAt": "2026-08-05",
+      "deadlineAt": "2026-09-20",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_false_negative",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 32,
+      "municipalityRole": "direct_public_administration_applicant_subject_to_accredited_university_protocol_and_project_requirements",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_public_administrations_under_article_1_paragraph_2_d_lgs_165_2001",
+      "funding": "Publicly financed programme supporting 13 high-training/research apprenticeship contracts leading to a PhD. The official 2026 notice provides a gross annual amount of EUR 30,000 per contract for three years, subject to notice conditions.",
+      "eligibilityEvidence": "The official InPA/DFP notice is addressed to public administrations under Article 1(2) of Legislative Decree 165/2001. The administration must submit a qualifying project and establish the required protocol with an accredited university.",
+      "evidenceCaveat": "The attached Dottorati notice contains an apparent year typo in one deadline reference ('20 September 2025'). The authoritative 2026 DFP/InPA web pages and the 2026 lifecycle consistently state that applications are due by 20 September 2026.",
+      "rootCauseFamily": "national_central_pa_capacity_building_source_gap",
+      "officialSources": [
+        "https://www.inpa.gov.it/dipartimento-della-funzione-pubblica-della-presidenza-del-consiglio-dei-ministri-avvisi-rivolti-alle-pubbliche-amministrazioni-di-cui-allart-1-comma-2-d-lgs-165-2001/",
+        "https://www.funzionepubblica.pcm.gov.it/it/il-dipartimento/notizie-del-dipartimento/al-via-la-terza-edizione-delliniziativa-tirocini-inpa-e-dottorati-inpa/"
+      ]
+    },
+    {
+      "id": "mic-cinema-progetti-speciali-2026",
+      "title": "MiC · Progetti speciali per il cinema e l'audiovisivo 2026",
+      "publishedAt": "2026-07-24",
+      "opensAt": "2026-07-31T12:00:00+02:00",
+      "deadlineAt": "2026-09-14T23:59:59+02:00",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": 45,
+      "municipalityRole": "direct_public_entity_applicant_when_proposing_a_qualifying_high_relevance_cinema_or_audiovisual_project",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_are_formally_within_the_public_entity_applicant_class_but_concrete_actionability_requires_a_qualifying_project",
+      "funding": "Non-repayable contribution. The 2026 call has a EUR 4 million allocation; the contribution may cover up to 80% of eligible costs within the annual-call rules.",
+      "eligibilityEvidence": "The official DG Cinema page lists public entities among beneficiaries and requires annual or multiannual initiatives/projects of particular national or international relevance and strong cultural, social and/or economic vocation in cinema and audiovisual.",
+      "rootCauseFamily": "sectoral_ministry_subdirectorate_source_gap",
+      "officialSources": [
+        "https://cinema.cultura.gov.it/cosa-facciamo/sostegni-economici/linee-di-sostegno/promozione/progetti-speciali/",
+        "https://cinema.cultura.gov.it/avvisi/proroga-per-la-presentazione-delle-domande-afferenti-al-bando-per-la-concessione-di-contributi-a-progetti-speciali-per-il-cinema-e-laudiovisivo-anno-2026/",
+        "https://cinema.cultura.gov.it/comunicazione/bandi-aperti-e-prossime-scadenze/"
+      ]
+    },
+    {
+      "id": "icsc-sport-missione-comune-2026",
+      "title": "ICSC · Sport Missione Comune 2026",
+      "publishedAt": "2026-03-09",
+      "deadlineAt": "2026-09-30",
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "detectionLagDaysAtReferenceSnapshot": 182,
+      "municipalityRole": "direct_local_authority_borrower_and_interest_subsidy_beneficiary",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_municipalities_subject_to_eligible_project_and_financing_requirements",
+      "funding": "More than EUR 250 million in fixed-rate loan capacity plus EUR 42 million of interest-contribution resources. Eligible loans can receive full interest-rate abatement for the subsidised period, subject to the initiative rules.",
+      "eligibilityEvidence": "The initiative is expressly addressed to municipalities and other territorial authorities and finances public sports-facility construction, expansion, renovation, energy-efficiency, completion/compliance, school-sport facilities, relevant acquisitions and cycle paths. Applications require the documentation specified by ICSC, including the favourable CONI opinion where required.",
+      "rootCauseFamily": "public_finance_product_family_source_gap",
+      "officialSources": [
+        "https://www.creditosportivo.it/sport-missione-comune-2026/",
+        "https://www.creditosportivo.it/cliente-enti-territoriali/",
+        "https://www.creditosportivo.it/fondi-speciali-bandi-sport-2026/"
+      ]
+    },
+    {
+      "id": "cinea-green-assist-project-advisory",
+      "title": "CINEA · Green Assist Project Advisory",
+      "publishedAt": null,
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "detectionLagDaysAtReferenceSnapshot": null,
+      "municipalityRole": "direct_public_project_promoter_requesting_free_green_investment_advisory",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_public_bodies_project_promoters_subject_to_a_qualifying_green_investment_request",
+      "funding": "No cash grant. Free project advisory financed under the EU advisory framework; requests are normally submitted through the InvestEU Central Entry Point.",
+      "eligibilityEvidence": "CINEA states that both public and private bodies may benefit. Green Assist normally focuses on a plausible investment programme of at least EUR 2.5 million, while smaller investments can be considered where replicable. The named Green Assist service is distinct from a generic InvestEU Advisory Hub reference because it has its own eligibility logic and delivery proposition.",
+      "rootCauseFamily": "rolling_technical_assistance_named_service_gap",
+      "officialSources": [
+        "https://cinea.ec.europa.eu/green-assist-project-advisory_en",
+        "https://cinea.ec.europa.eu/system/files/2023-10/GREEN%20ASSIST%20-%20FAQ%20experts-%2028Sept%20Clean.pdf"
+      ]
+    }
+  ],
+  "auditCorrections": [
+    {
+      "id": "rt-celebrazioni-storiche-2026-wave14-candidate-correction",
+      "title": "Regione Toscana · Sostegno a progetti dedicati a San Francesco, Collodi e Alluvione di Firenze",
+      "initialWave14Candidate": "possible_current_false_negative",
+      "correctedAuditClass": "captured",
+      "reason": "A repository title search returned no useful match, but direct inspection of the complete reference snapshot found the canonical public opportunity opp-aad71fb1d25308 with rule rt-celebrazioni-2026, direct-applicant role, current deadline and municipality eligibility. It is therefore not a Wave 14 gap.",
+      "methodLesson": "Full snapshot and canonical-rule inspection overrides title-only repository search."
+    }
+  ],
+  "knownRediscoveries": [
+    {
+      "id": "space4cities-replicator-cities-2026",
+      "auditClass": "known_current_gap_not_new",
+      "note": "Rediscovered independently; already documented in prior waves."
+    },
+    {
+      "id": "eui-permanent-peer-reviewers",
+      "auditClass": "known_rolling_structural_gap_not_new",
+      "note": "Rediscovered independently; already Wave 12."
+    },
+    {
+      "id": "mip4adapt-citizen-engagement-hotline",
+      "auditClass": "known_rolling_structural_gap_not_new",
+      "note": "Already Wave 13."
+    },
+    {
+      "id": "rt-mercati-rionali-2026",
+      "auditClass": "captured",
+      "note": "Current direct municipal grant already represented canonically; internal fragments are not a promotion gap."
+    },
+    {
+      "id": "rt-amianto-2026",
+      "auditClass": "captured",
+      "note": "Current direct local-authority grant already represented canonically."
+    },
+    {
+      "id": "rt-toscana-diffusa-servizi-2026",
+      "auditClass": "captured_with_correct_partial_territory_condition",
+      "note": "Canonical mapping already handles Camaiore TD* and the eligible Seravezza/Stazzema scope."
+    }
+  ],
+  "scopeAndUpcomingControls": [
+    {
+      "id": "interreg-euromed-etu-open-call-1",
+      "auditClass": "scope_review_participation_solution_showcase",
+      "municipalityRole": "public_authority_may_submit_a_tested_solution",
+      "funding": "No direct cash grant established. Benefits include inclusion in the ETU portfolio, visibility, networking and possible replication/scaling.",
+      "note": "Current but lower-signal than grant/TA opportunities; do not auto-promote without a documented municipal solution suitable for transfer."
+    },
+    {
+      "id": "interreg-euromed-etu-open-call-2",
+      "auditClass": "announced_upcoming",
+      "opensAt": "2026-10",
+      "municipalityRole": "future_local_or_regional_public_authority_testing_or_adapting_solution",
+      "note": "Future sentinel; not current on 8 September."
+    },
+    {
+      "id": "servizio-civile-universale-2026-entity-route",
+      "auditClass": "scope_review_conditional_existing_accreditation",
+      "municipalityRole": "municipal_route_depends_on_SCU_register_accreditation_or_network_arrangement",
+      "note": "Do not treat all seven municipalities as direct current applicants without resolving accreditation/project route."
+    },
+    {
+      "id": "rt-bando-parcheggi-2026",
+      "auditClass": "announced_upcoming",
+      "opensAt": "2026-09-14",
+      "deadlineAt": "2026-11-30",
+      "note": "The Regione Toscana directory labels it open, but the actual application window begins 14 September. It is not a current actionable gap on 8 September."
+    },
+    {
+      "id": "rt-housing-asset-expression-of-interest-2026",
+      "auditClass": "scope_review_prospective_planning_eoi",
+      "deadlineAt": "2026-11-30",
+      "funding": "No funding commitment established by the exploratory EOI.",
+      "note": "Municipal/public-entity participation is possible, but the EOI is exploratory and non-binding rather than a grant."
+    }
+  ],
+  "negativeAndLifecycleControls": [
+    {
+      "id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "auditClass": "lifecycle_reopening_control_no_confirmed_new_versilia_opportunity",
+      "note": "Wave 13 correction confirmed: six of seven municipalities were already admitted; no new Stazzema actionable route was established."
+    },
+    {
+      "id": "cdp-rinegoziazione-mutui-2026",
+      "auditClass": "historical_closed_control",
+      "note": "A real municipal measure whose 2026 accession window ended in April; not current on 8 September."
+    },
+    {
+      "id": "mim-arredi-didattici-nidi-infanzia-2026",
+      "auditClass": "historical_closed_control",
+      "note": "The national programme calendar may show the measure as published, but the exact application page states that applications closed on 3 March 2026."
+    },
+    {
+      "id": "mase-cse-2025-september-2026-lifecycle",
+      "auditClass": "implementation_lifecycle_not_new_application",
+      "note": "The September 2026 date concerns execution/accreditation for already awarded CSE 2025 projects, not a new municipal application window."
+    },
+    {
+      "id": "rt-biotrituratori-2026-2027",
+      "auditClass": "correctly_excluded_geography_and_applicant",
+      "note": "The current support targets qualifying citizens/landowners in specified areas; it is not a municipal applicant opportunity and the seven Versilia municipalities are not in the identified territorial list."
+    },
+    {
+      "id": "green-assist-sme-special-call-2026",
+      "auditClass": "closed_special_route_control",
+      "note": "A separate 2026 Green Assist SME route closed in June. It must not be confused with the broader rolling Project Advisory route via the InvestEU Central Entry Point."
+    },
+    {
+      "id": "fami-amif-integration-local-level-italy-route",
+      "auditClass": "national_route_watch",
+      "note": "The FAMI portal still did not surface an official Italian selection mechanism clearly mapping to AMIF/2026/SA/2.4.2. Other current FAMI calls, including Prefecture-focused actions, are not substitutes for that route."
+    },
+    {
+      "id": "sport-e-periferie-2026",
+      "auditClass": "historical_current_year_control_already_known",
+      "note": "Municipality-only national call, but the application window closed in June and the case is already documented by Wave 12 historical replay."
+    }
+  ],
+  "implementationChanges": [],
+  "waveConclusion": "Wave 14 is not clean. Five new current actionable or rolling structural gaps were confirmed after canonical snapshot and prior-wave cross-check. The saturation counter remains 0/2. The discovery engine/config remains frozen. The next sweep can only move the gate to 1/2 if it is again full-corpus, independent and finds no new current actionable gap; a second consecutive clean full-corpus sweep would then be required to reach 2/2 and unlock hardening."
+}
