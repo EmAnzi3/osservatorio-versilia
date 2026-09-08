@@ -37,7 +37,7 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Validate v0.4.4 contracts and blind-test hardening
+      - name: Validate v0.4.4 contracts and audit replay
         run: |
           python -m py_compile \
             scripts/run_opportunity_radar_v044.py \
@@ -46,6 +46,7 @@ jobs:
             scripts/opportunity_daily_refresh_resilient.py \
             scripts/opportunity_daily_refresh_stable.py \
             scripts/opportunity_daily_refresh_audit_fixed.py \
+            scripts/opportunity_audit_corpus_promotions.py \
             scripts/opportunity_municipal_relevance.py \
             scripts/opportunity_discovery_resilient.py \
             scripts/opportunity_transport_smoke.py \
@@ -58,6 +59,7 @@ jobs:
             scripts/test_opportunity_discovery_resilience.py \
             scripts/test_opportunity_source_health.py \
             scripts/test_opportunity_municipal_relevance.py \
+            scripts/test_opportunity_audit_corpus_promotions.py \
             scripts/build_opportunity_preview_v044.py \
             scripts/materialize_opportunity_release_snapshot.py \
             scripts/build_opportunity_release.py \
@@ -70,6 +72,7 @@ jobs:
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_municipal_relevance.py
+          python scripts/test_opportunity_audit_corpus_promotions.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -84,7 +87,7 @@ jobs:
           print('Baseline v0.4.4 verificato: 30 opportunità · 5 nuove')
           PY
 
-      - name: Materialize current public snapshot
+      - name: Materialize current public snapshot with audit corpus
         run: |
           python scripts/materialize_opportunity_release_snapshot.py
           python - <<'PY'
@@ -94,11 +97,16 @@ jobs:
           p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
           assert p['releaseVersion'] == '0.4.4'
           reference = date.fromisoformat(str(p.get('referenceDate') or ''))
-          assert reference >= date(2026, 8, 24), reference
+          assert reference >= date(2026, 9, 8), reference
           opportunities = p.get('opportunities')
           assert isinstance(opportunities, list) and opportunities
           counts = p.get('counts') or {}
           assert counts.get('new') == sum(bool(x.get('is_new')) for x in opportunities)
+          replay = p.get('auditCorpusPromotion') or {}
+          assert int(replay.get('added') or 0) >= 75, replay
+          municipal = p.get('municipalRelevance') or {}
+          assert int(municipal.get('headlineCurrentOrRolling') or 0) >= 70, municipal
+          assert int(municipal.get('partnershipCurrentOrRolling') or 0) >= 30, municipal
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           backtest = p.get('backtest') or {}
@@ -111,8 +119,12 @@ jobs:
           if regional:
               assert regional.get('status') in {'pass', 'degraded'}, regional
           print(
-              f"Snapshot pubblico verificato: {len(opportunities)} opportunità · "
-              f"{counts.get('new', 0)} nuove · riferimento {p.get('referenceDate')}"
+              f"Snapshot pubblico verificato: {len(opportunities)} schede · "
+              f"headline current/rolling {municipal.get('headlineCurrentOrRolling', 0)} · "
+              f"headline upcoming {municipal.get('headlineUpcoming', 0)} · "
+              f"partnership current/rolling {municipal.get('partnershipCurrentOrRolling', 0)} · "
+              f"partnership upcoming {municipal.get('partnershipUpcoming', 0)} · "
+              f"replay audit +{replay.get('added', 0)} · riferimento {p.get('referenceDate')}"
           )
           PY
 
@@ -120,13 +132,16 @@ jobs:
         run: |
           python scripts/build_static_brand.py
           python - <<'PY'
+          import json
           from pathlib import Path
           html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
+          payload = json.load(open('data/opportunity-release.json', encoding='utf-8'))
           needle = 'opportunity-preview-v04.js?v=20260908-relevance1'
           assert needle in html, 'JS Radar non versionato: rischio cache client obsoleta'
           assert 'data-municipal-headline=' in html
           assert 'data-partnership=' in html
-          print('Cache busting e distinzione Radar verificati:', needle)
+          assert html.count('data-opportunity-card') == len(payload.get('opportunities') or [])
+          print('Build pubblica allineata al replay audit:', len(payload.get('opportunities') or []), 'schede')
           PY
 
       - name: Start local server
