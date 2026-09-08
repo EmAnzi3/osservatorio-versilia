@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 19,
+  "sweepType": "frozen_corpus_v1_oracle_first",
+  "fullCorpusIndependentSweep": true,
+  "corpus": "data/opportunity-saturation-corpus-v1-20260908.json",
+  "status": "clean_sweep_1_of_2",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWrite": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "a69addd52fe4b91c42fb148ded9f5d6f3668eb3d",
+    "base": "main",
+    "commitCount": 40,
+    "changedFileCount": 38
+  },
+  "saturation": {
+    "requiredConsecutiveIndependentCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 1,
+    "thisSweepClean": true,
+    "countsForFrozenV1Gate": true,
+    "counterAfterWave": "1/2",
+    "reason": "A complete oracle-first pass over the frozen corpus v1 produced zero new current actionable gaps after canonical snapshot, municipality eligibility, coverage-rule, internal-review and Waves 1-18 cross-checks."
+  },
+  "method": {
+    "independence": "Candidates were collected from the frozen source/programme oracles first; prior waves were consulted only after candidate collection for deduplication and classification.",
+    "scopeExpansionProhibited": true,
+    "newFamiliesOutsideCorpusPolicy": "log_as_out_of_corpus_candidate_for_v2_without_resetting_v1_counter",
+    "canonicalComparisonOrder": [
+      "reference snapshot opportunity/title/code/URL",
+      "municipality_eligibility",
+      "coverage rules / coverage_id / rule_id",
+      "internal_review / auditReview / discovery fragments",
+      "known findings and corrections from Waves 1-18"
+    ]
+  },
+  "newCurrentActionableFindings": [],
+  "importantControls": [
+    {
+      "id": "fcrl-progettare-futuro-opere-pubbliche-2026",
+      "auditClass": "captured",
+      "canonicalId": "opp-9cba2129173b22",
+      "ruleId": "fcrl-opere-pubbliche-2026",
+      "deadlineAt": "2026-09-11",
+      "note": "Rediscovered from the frozen Fondazione CR Lucca oracle; full snapshot inspection confirmed the canonical open opportunity for local public administrations in Lucca province."
+    },
+    {
+      "id": "cerv-2026-ge",
+      "auditClass": "closed_control",
+      "deadlineAt": "2026-04-28",
+      "note": "Not current on the audit date."
+    },
+    {
+      "id": "cerv-2026-citizens-rem",
+      "auditClass": "lifecycle_conflict_no_confirmed_current_open_gap",
+      "countsAsCurrentActionableGap": false,
+      "note": "Older Commission indicative planning still showed a June-October window, while updated CERV contact-point information places publication/opening in October 2026 and the complete current Funding & Tenders call documentation was not established as published/open on 8 September. Under the v1 contract, an indicative calendar alone is insufficient to assert a current actionable gap."
+    },
+    {
+      "id": "pppa-2026-netzero-ai4permitting",
+      "auditClass": "historical_closed_control",
+      "deadlineAt": "2026-06-09",
+      "note": "EISMEA confirms the call targeted local permitting authorities but is closed; not a current gap."
+    },
+    {
+      "id": "i3-2026-inv1-inv2a",
+      "auditClass": "known_current_conditional_partner_family",
+      "deadlineAt": "2026-11-12",
+      "note": "Current public-authority participation route already documented in Waves 1-18; not new."
+    },
+    {
+      "id": "agenzia-demanio-piano-citta",
+      "auditClass": "outside_actionability_contract_no_open_request_route",
+      "countsAsCurrentActionableGap": false,
+      "note": "The programme is a structured institutional planning/collaboration process, but no standard open municipal application/request window was established. It therefore does not meet all v1 current-actionable requirements."
+    },
+    {
+      "id": "rt-current-open-directory",
+      "auditClass": "no_new_municipal_gap_after_canonical_crosscheck",
+      "note": "Current municipal-facing items surfaced by the Regione Toscana directory were either already canonical/known (e.g. Mercati rionali, Nidi gratis, Sistemi museali) or outside municipal eligibility."
+    },
+    {
+      "id": "icsc-2026",
+      "auditClass": "known_current_gap_family",
+      "note": "Sport Missione Comune and Cultura Missione Comune remain current and already documented in the audit corpus; no additional distinct current ICSC municipal initiative was established."
+    }
+  ],
+  "outOfCorpusCandidatesForV2": [
+    {
+      "id": "sbep-rolling-access-marine-maritime-research-infrastructures",
+      "auditClass": "out_of_corpus_candidate_for_v2",
+      "gateEffect": "none",
+      "note": "Surfaced through an Atlantic/Sustainable Blue Economy Partnership oracle that is not part of frozen corpus v1. Retain for later v2 consideration; do not alter the v1 denominator mid-sweep."
+    },
+    {
+      "id": "sbep-regional-portfolios-call-for-interest",
+      "auditClass": "out_of_corpus_candidate_for_v2",
+      "gateEffect": "none",
+      "note": "Same corpus-v1 scope rule as above; role/actionability must be audited only if corpus v2 is opened."
+    }
+  ],
+  "oracleCoverageConclusion": "Frozen EU institutional, EU project/cascade, Italy and Tuscany/local oracle groups were all exercised in the source-first pass. No candidate meeting every v1 current-actionable condition remained new after canonical and prior-audit cross-check.",
+  "waveConclusion": "Wave 19 is the first clean full-corpus independent sweep under frozen corpus v1. Saturation counter advances to 1/2. Implementation remains frozen until a materially independent Wave 20 on the exact same corpus also returns zero new current actionable gaps.",
+  "nextStep": "Run Wave 20 using the frozen v1 corpus but a different search ordering: opportunity class/lifecycle/municipal role first, then map candidates back to frozen oracles and canonical evidence.",
+  "implementationChanges": []
+}
