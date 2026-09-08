@@ -125,6 +125,11 @@ def _apply_public_audit_replay(data: dict) -> dict:
     audit_promotions.apply_complete_promotions(data, today)
     radar_v044.core._recompute_v04_counts(data)
     relevance.apply_to_payload(data, drop_review=True)
+    # Il replay viene applicato dopo il normale calcolo dei contatori v0.4.4.
+    # Riallineiamo esplicitamente il numero di badge "Nuova" alle schede reali.
+    data.setdefault("counts", {})["new"] = sum(
+        bool(item.get("is_new")) for item in data.get("opportunities") or []
+    )
     replay = data.get("auditCorpusPromotion") or {}
     if int(replay.get("added") or 0) > 0:
         # La build è stata aggiornata dal replay audit in data odierna: la data
