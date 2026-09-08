@@ -262,9 +262,12 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from datetime import date
           from pathlib import Path
+
           p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
-          expected_date = '2026-09-09'
+          expected = date(2026, 9, 9)
+          expected_date = expected.isoformat()
           assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'
           assert p.get('dailyHardeningVersion') == '0.4.4-h5'
@@ -276,18 +279,57 @@ jobs:
           assert not ((p.get('coverageAudit') or {}).get('runtimeUncoveredFamilies') or [])
           assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
           assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
+
+          opportunities = list(p.get('opportunities') or [])
+          assert opportunities
+          expired = []
+          for item in opportunities:
+              if str(item.get('lifecycle_stage') or 'application_open') != 'application_open':
+                  continue
+              deadline_text = str(item.get('deadline_at') or '')
+              if not deadline_text:
+                  continue
+              try:
+                  deadline = date.fromisoformat(deadline_text)
+              except ValueError:
+                  continue
+              if deadline < expected:
+                  expired.append((item.get('title'), deadline_text))
+          assert not expired, expired
+
           transport = p.get('transportAudit') or {}
           assert transport.get('schemaVersion') == '1.2', transport
           summary = transport.get('summary') or {}
           assert int(summary.get('configuredSources') or 0) > 0
           assert int(summary.get('configuredEndpoints') or 0) > 0
           assert int(summary.get('sourceHealthGraceDays') or 0) == 2
+
           replay = p.get('auditCorpusPromotion') or {}
-          assert int(replay.get('municipalCurrentOrRollingAdded') or 0) >= 52, replay
-          assert int(replay.get('partnershipCurrentOrRollingAdded') or 0) >= 37, replay
+          replay_current = int(replay.get('currentOrRollingAdded') or 0)
+          replay_municipal = int(replay.get('municipalCurrentOrRollingAdded') or 0)
+          replay_partnership = int(replay.get('partnershipCurrentOrRollingAdded') or 0)
+          replay_municipal_upcoming = int(replay.get('municipalUpcomingAdded') or 0)
+          replay_partnership_upcoming = int(replay.get('partnershipUpcomingAdded') or 0)
+          replay_added = int(replay.get('added') or 0)
+          matrix_target = int(replay.get('matrixCurrentTarget') or 0)
+          assert matrix_target == 89, replay
+          assert replay_current == replay_municipal + replay_partnership, replay
+          assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
+          assert 0 < replay_current <= matrix_target, replay
+
           municipal = p.get('municipalRelevance') or {}
-          assert int(municipal.get('headlineCurrentOrRolling') or 0) >= 77, municipal
-          assert int(municipal.get('partnershipCurrentOrRolling') or 0) >= 39, municipal
+          headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
+          headline_upcoming = int(municipal.get('headlineUpcoming') or 0)
+          headline_total = int(municipal.get('headlineTotal') or 0)
+          partnership_current = int(municipal.get('partnershipCurrentOrRolling') or 0)
+          partnership_upcoming = int(municipal.get('partnershipUpcoming') or 0)
+          partnership_total = int(municipal.get('partnershipTotal') or 0)
+          review_excluded = int(municipal.get('reviewExcluded') or 0)
+          assert headline_total == headline_current + headline_upcoming, municipal
+          assert partnership_total == partnership_current + partnership_upcoming, municipal
+          assert len(opportunities) == headline_total + partnership_total + review_excluded, municipal
+          assert headline_current > 0 and partnership_current > 0, municipal
+
           required = {
               'pcm-sport-eventi-2026',
               'life-2026-cet-heatcoolplan',
@@ -295,12 +337,13 @@ jobs:
               'life-2026-cet-enercom',
               'life-2026-cet-empower',
           }
-          ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
+          ids = {x.get('coverage_id') for x in opportunities}
           assert required <= ids, sorted(required - ids)
           print(
-              'Dry-run daily validato:', len(p.get('opportunities') or []), 'schede ·',
-              municipal.get('headlineCurrentOrRolling', 0), 'comunali current/rolling ·',
-              municipal.get('partnershipCurrentOrRolling', 0), 'partnership current/rolling ·',
+              'Dry-run daily validato:', len(opportunities), 'schede ·',
+              headline_current, 'comunali current/rolling ·',
+              partnership_current, 'partnership current/rolling ·',
+              'replay', replay_current, '/', matrix_target, 'current/rolling ·',
               'fallback', summary.get('fallbackSuccesses', 0), '· grace', summary.get('sourcesInGrace', 0),
           )
           PY
@@ -313,9 +356,11 @@ jobs:
           from pathlib import Path
           payload = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
           html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
-          assert '09/09/2026' in html
+          year, month, day = str(payload.get('referenceDate') or '').split('-')
+          displayed = f'{day}/{month}/{year}'
+          assert displayed in html, displayed
           assert html.count('data-opportunity-card') == len(payload.get('opportunities') or [])
-          print('Build dry-run collegata allo snapshot 09/09/2026:', len(payload.get('opportunities') or []), 'schede')
+          print('Build dry-run collegata allo snapshot', displayed + ':', len(payload.get('opportunities') or []), 'schede')
           PY
 
       - name: Start dry-run local server
