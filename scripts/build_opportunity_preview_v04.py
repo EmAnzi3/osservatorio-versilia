@@ -160,6 +160,9 @@ def render_page(payload: dict[str, Any]) -> str:
     base.old.ROLE_LABELS["direct_or_partner"] = "Candidatura diretta (ove ammessa) o partner"
     try:
         page = base.render_page(payload)
+        # Le sezioni separate devono conservare l'intera catena v0.3 -> v0.4 -> v0.4.4:
+        # favicon, icone meta, lifecycle, relevance e badge Nuova.
+        opportunity_sections = _opportunity_sections(payload, base.augment_card)
     finally:
         base.BASE_CARD = previous
 
@@ -190,7 +193,7 @@ def render_page(payload: dict[str, Any]) -> str:
     )
     page = re.sub(
         r'<section class="method-detail page-width" aria-label="Elenco opportunità">.*?</section>',
-        _opportunity_sections(payload, card_renderer),
+        opportunity_sections,
         page,
         count=1,
         flags=re.S,
