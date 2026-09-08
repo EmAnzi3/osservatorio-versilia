@@ -9,7 +9,9 @@ trasporto:
 - conserva CERV Town Twinning nel circuito già protetto dalle sentinelle v0.4.2;
 - usa la riconciliazione cross-source del safety net Regione Toscana per evitare
   che Mercati rionali resti unresolved quando la stessa misura è già pubblica
-  da Sviluppo Toscana.
+  da Sviluppo Toscana;
+- classifica ogni scheda pubblica per rilevanza comunale e separa il conteggio
+  principale dalle opportunità di sola partnership/consorzio.
 
 L'overlay è deliberatamente separato dai dataset storici v0.4.x: rende il fix
 reversibile e testabile senza riscrivere le baseline congelate.
@@ -21,6 +23,7 @@ from pathlib import Path
 from typing import Any
 
 import opportunity_daily_refresh_stable as stable
+import opportunity_municipal_relevance as relevance
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,6 +126,8 @@ def _inject_fix_entries(
                 if str(current.get("coverage_id") or "") == coverage_id or (norm_url and current_norm == norm_url):
                     current.setdefault("coverage_id", coverage_id)
                     current.setdefault("first_seen_at", item["first_seen_at"])
+                    if entry.get("municipal_relevance_class"):
+                        current["municipal_relevance_class"] = entry["municipal_relevance_class"]
                     break
             continue
 
@@ -163,8 +168,10 @@ def _inject_with_audit_fixes(
 
 def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
+    relevance.apply_to_payload(result, drop_review=True)
     result["dailyHardeningVersion"] = DAILY_HARDENING_VERSION
     result["auditGapFixVersion"] = FIX_VERSION
+    result["municipalRelevanceVersion"] = relevance.SCHEMA_VERSION
     return result
 
 
