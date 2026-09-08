@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import build_opportunity_preview_v04 as preview
+import build_opportunity_preview_v044 as preview_v044
 import opportunity_municipal_relevance as relevance
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +74,14 @@ def _synthetic_contract() -> None:
     assert "Da escludere" not in html
     assert html.count("data-opportunity-card") == 5
     assert html.index('data-op-list="municipal"') < html.index('data-op-list="partner"')
+
+    new_item = _item("Nuova diretta", relevance.DIRECT)
+    new_item["is_new"] = True
+    new_item["first_seen_at"] = "2026-09-08"
+    new_card = preview_v044._card_with_new_badge(new_item)
+    assert 'class="op-new-badge"' in new_card
+    assert 'class="op-lifecycle op-lifecycle-open"' in new_card
+    assert 'class="op-relevance op-relevance-DIRECT"' in new_card
 
 
 def _real_snapshot_contract() -> dict:
