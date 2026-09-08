@@ -1,0 +1,83 @@
+/* Affluenza al voto — draft v3. Solo adattamenti di layout: grafici/tooltip riusano i componenti canonici. */
+.turnout-page{padding-bottom:96px}
+.turnout-page .indicator-hero{border-bottom-color:var(--line)}
+.turnout-page .indicator-hero dd{max-width:240px}
+.turnout-page .indicator-current,.turnout-page .indicator-history,.turnout-page .indicator-method{scroll-margin-top:90px}
+.turnout-dashboard{padding:0;gap:58px;grid-template-columns:minmax(280px,.62fr) minmax(500px,1.38fr)}
+.turnout-dashboard .topic-controls{align-self:start}
+.turnout-family-tabs{margin-top:0}
+.turnout-event-field{display:grid;gap:7px;margin-top:18px}
+.turnout-event-field>span{color:var(--muted);font-size:10px;font-weight:760;text-transform:uppercase;letter-spacing:.06em}
+.turnout-event-field select{width:100%;min-width:0;background:#fff;color:var(--ink);border:1px solid #cbd7d8;border-radius:10px;padding:11px 34px 11px 12px;font-size:11px;font-weight:650}
+.turnout-event-field select:focus{outline:3px solid #145b781f;border-color:var(--blue)}
+.turnout-dashboard .indicator-definition{margin-top:28px}
+.turnout-dashboard .topic-bars{margin:0}
+.turnout-event-question{margin:0 0 20px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--theme-soft) 64%,var(--surface));color:var(--muted);font-size:11px;line-height:1.5}
+.turnout-event-question strong{display:block;margin-bottom:5px;color:var(--ink);font-size:12px}
+.turnout-comparison .comparison-row{grid-template-columns:minmax(100px,1.1fr) minmax(150px,3fr) minmax(62px,auto)}
+.turnout-comparison .bar-town{grid-column:1}
+.turnout-comparison .bar-track{grid-column:2}
+.turnout-comparison .bar-row>strong{grid-column:3}
+.turnout-comparison .comparison-axis{grid-template-columns:1fr 1fr 1fr;margin-left:0}
+.turnout-comparison .comparison-reference{background:var(--ink)}
+.turnout-comparison .comparison-dot{border-color:var(--theme-color)}
+.turnout-comparison .comparison-stem{background:color-mix(in srgb,var(--theme-color) 56%,transparent)}
+.turnout-comparison .comparison-row:hover{background:var(--theme-soft)}
+.turnout-sex-detail{margin-top:26px}
+.turnout-sex-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
+.turnout-sex-values>div{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.turnout-sex-values dt{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.turnout-sex-values dd{margin:7px 0 0;font-family:var(--font-geist-mono);font-size:18px;font-weight:720}
+.turnout-history-toolbar{display:flex;justify-content:space-between;align-items:end;gap:24px;margin:0 0 16px}
+.turnout-town-tabs{margin:0}
+.turnout-history-chart{min-width:760px}
+.turnout-history-chart svg{display:block;width:100%;height:auto}
+.turnout-history-chart .chart-line{stroke:var(--theme-color);stroke-width:3;fill:none}
+.turnout-history-chart .chart-dot{fill:var(--surface);stroke:var(--theme-color);stroke-width:2.5}
+.turnout-history-chart .chart-grid{stroke:var(--line)}
+.turnout-history-chart .chart-label{fill:var(--muted);font-family:var(--font-geist-mono),monospace;font-size:10px}
+.turnout-versilia-line{stroke:var(--ink)!important;stroke-width:2.5!important;stroke-dasharray:6 6;opacity:.72}
+.turnout-versilia-dot{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.turnout-chart-legend{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 14px;color:var(--muted);font-size:9px;font-weight:700}
+.turnout-chart-legend span{display:inline-flex;align-items:center;gap:7px}
+.turnout-chart-legend i{display:inline-block;width:20px;height:0;border-top:3px solid var(--theme-color)}
+.turnout-chart-legend i.ref{border-top:2px dashed var(--ink)}
+.turnout-history-note{display:block;margin-top:13px}
+.turnout-municipal-history{margin-top:0}
+.turnout-municipal-latest{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0 0 22px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.turnout-municipal-latest>div{min-width:0;padding:14px 16px;background:var(--surface)}
+.turnout-municipal-latest>div+div{border-left:1px solid var(--line)}
+.turnout-municipal-latest dt{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.turnout-municipal-latest dd{margin:7px 0 0;color:var(--ink);font-family:var(--font-geist-mono);font-size:15px;font-weight:740}
+.turnout-municipal-history-table{margin-top:24px}
+.turnout-municipal-history-table td:nth-child(n+2){font-family:var(--font-geist-mono),monospace}
+.turnout-municipal-note{display:block;margin-top:14px}
+.turnout-latest-all{margin-top:18px}
+.turnout-province-list{display:grid;gap:10px}
+.turnout-province-list .detail-disclosure{margin-top:0}
+.turnout-province-table{width:100%;border-collapse:collapse;font-size:11px}
+.turnout-province-table th,.turnout-province-table td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.turnout-province-table th{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.turnout-province-table td:last-child{white-space:nowrap;font-family:var(--font-geist-mono);font-weight:700;text-align:right}
+.turnout-method-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.turnout-method-source-links .source-pill{display:inline-flex;align-items:center}
+.turnout-page .topic-town-links{padding-top:72px}
+@media(max-width:1000px){
+  .turnout-dashboard{grid-template-columns:1fr;gap:34px}
+  .turnout-family-tabs{flex-direction:row!important;overflow-x:auto;flex-wrap:nowrap!important;padding-bottom:6px}
+  .turnout-family-tabs button{flex:0 0 auto;text-align:center!important}
+}
+@media(max-width:700px){
+  .turnout-page{padding-bottom:64px}
+  .turnout-dashboard .topic-bars{padding:20px 14px}
+  .turnout-comparison .comparison-row{grid-template-columns:minmax(82px,1fr) minmax(80px,1.5fr) auto;gap:7px}
+  .turnout-comparison .bar-town{font-size:11px}
+  .turnout-sex-values{grid-template-columns:1fr}
+  .turnout-history-toolbar{align-items:flex-start;flex-direction:column;gap:12px}
+  .turnout-town-tabs{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:6px}
+  .turnout-town-tabs button{flex:0 0 auto}
+  .turnout-municipal-latest{grid-template-columns:1fr 1fr}
+  .turnout-municipal-latest>div:nth-child(3){border-left:0;border-top:1px solid var(--line)}
+  .turnout-municipal-latest>div:nth-child(4){border-top:1px solid var(--line)}
+  .turnout-province-table th,.turnout-province-table td{padding:11px 14px}
+}
