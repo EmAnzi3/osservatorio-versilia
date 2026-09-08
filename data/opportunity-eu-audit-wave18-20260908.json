@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 18,
+  "sweepType": "independent_full_corpus_pre_freeze",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWrite": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "4b9792f4c03292852936999228238fac855c4075",
+    "base": "main",
+    "commitCount": 36,
+    "changedFileCount": 34
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForLegacyOpenEndedGate": true,
+    "reason": "Wave 18 found a new current structural financing route with an explicit municipal borrower path: Council of Europe Development Bank financing. Under the open-ended pre-freeze methodology this is a new actionable structural gap and therefore the counter remains 0/2."
+  },
+  "newCurrentActionableFindings": [
+    {
+      "id": "ceb-local-authority-financing",
+      "title": "Council of Europe Development Bank · financing for local/regional authorities",
+      "publishedAt": null,
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_local_authority_borrower_subject_to_project_and_credit_appraisal",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_are_formally_within_the_local_authority_borrower_class; concrete actionability requires a socially eligible investment programme, adequate borrower capacity and successful CEB appraisal",
+      "funding": "Medium/long-term CEB financing through instruments including Project Loans, Programme Loans, European Co-finance Facility, Public Sector Financing Facility and Cross-Sectoral Loans; terms depend on the project and borrower.",
+      "eligibilityEvidence": "The official CEB access page explicitly lists local/regional authorities among potential borrowers. Loan applications are prepared jointly by CEB and the borrower, undergo financial/technical/social appraisal and, after approval, are implemented through a Framework Loan Agreement. Italian municipalities have used the route directly: Genoa received a EUR 50 million Public Sector Financing Facility for resilience and municipal investments, and Reggio Emilia a EUR 25 million facility for social housing and urban regeneration.",
+      "rootCauseFamily": "multilateral_development_bank_municipal_financing_route_gap",
+      "officialSources": [
+        "https://coebank.org/en/project-financing/how-access-ceb-financing/",
+        "https://coebank.org/en/project-financing/projects-approved-administrative-council/building-resilience-genoa-rrf-co-financing-facility/",
+        "https://coebank.org/en/project-financing/projects-approved-administrative-council/social-and-affordable-housing-and-urban-regeneration-reggio-emilia/"
+      ]
+    }
+  ],
+  "historicalReplayFindings": [
+    {
+      "id": "pa-digitale-suap-sue-july-2026",
+      "title": "PA Digitale 2026 · SUAP/SUE interoperability notices · July 2026",
+      "publishedAt": "2026-07-01",
+      "deadlineAt": "2026-07-27",
+      "radarStatus": "no_current_reference_snapshot_record_established",
+      "auditClass": "historical_pre_launch_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_applicant_for_eligible_SUAP_SUE_platform_update_route",
+      "funding": "Approximately EUR 33 million in additional PNRR resources across six notices for the technological update and interoperability of SUAP/SUE platforms.",
+      "eligibilityEvidence": "The Department of Public Administration announced six PA Digitale 2026 notices, five for SUAP and one for SUE, explicitly addressed also to municipalities, individually or in associated form. The application window closed before the public Radar operational date and therefore is replay evidence, not a current runtime false negative on 8 September 2026.",
+      "officialSource": "https://www.funzionepubblica.gov.it/it/il-dipartimento/notizie-del-dipartimento/digitalizzazione-suap-e-sue-ulteriori-33-milioni-di-risorse-pnrr-per-l-aggiornamento-delle-piattaforme-tecnologiche/"
+    }
+  ],
+  "controls": [
+    {
+      "id": "ceb-generic-bank-page-control",
+      "auditClass": "positive_structural_control",
+      "note": "CEB is counted because the official source provides a documented municipal borrower route and application/appraisal lifecycle, not merely because a financial institution could theoretically lend to a municipality. This distinction is carried into the frozen corpus v1."
+    },
+    {
+      "id": "wave18-scope-expansion-stop",
+      "auditClass": "methodological_control",
+      "note": "Wave 18 is the final sweep under the open-ended scope-expansion method. Subsequent gate-counting sweeps use a frozen corpus v1 with fixed oracle families and an explicit actionability contract, so newly imagined opportunity categories cannot reset the counter without a separate corpus-version decision."
+    }
+  ],
+  "waveConclusion": "Wave 18 is dirty because CEB municipal financing is a real rolling structural opportunity with a documented direct borrower route and Italian municipal precedents. The counter remains 0/2 under the legacy open-ended methodology. Wave 18 closes that methodology: the next step is to freeze corpus v1 and evaluate only new gaps inside that fixed perimeter.",
+  "implementationChanges": []
+}
