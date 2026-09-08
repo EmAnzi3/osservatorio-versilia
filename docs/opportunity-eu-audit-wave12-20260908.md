@@ -11,244 +11,287 @@
 
 Lo sweep full-corpus indipendente **non è pulito**.
 
-La ricerca non è partita dall'elenco dei gap delle Wave precedenti. Sono stati interrogati prima oracle istituzionali separati — Commissione/programmi/missioni, CINEA/EISMEA/EACEA, EIT, EUI, Covenant, Interreg, cascade/FSTP, canali nazionali e Regione Toscana — e soltanto dopo l'emersione di un candidato sono stati consultati lo snapshot Radar e le Wave precedenti per deduplicare e classificare.
+La ricerca non è partita dall'elenco dei gap delle Wave precedenti. Sono stati interrogati prima oracle istituzionali separati — Commissione e missioni, CINEA/EISMEA/EACEA, EIT Urban Mobility, EIT Culture & Creativity, European Urban Initiative, Covenant, Interreg, cascade/FSTP, Ministeri e agenzie nazionali, MiC/DG Spettacolo, Dipartimento per lo Sport e Regione Toscana — e soltanto dopo l'emersione di ciascun candidato sono stati consultati lo snapshot Radar e le Wave precedenti per deduplicare e classificare.
 
-Sono emerse **due nuove opportunità correnti azionabili**, assenti sia dallo snapshot di riferimento sia dal corpus di audit precedente:
+Il passaggio ha trovato **quattro nuove opportunità correnti azionabili** assenti dal corpus precedente e dallo snapshot:
 
 1. **EIT Urban Mobility · RIS Education Open Call 2027**;
-2. **European Urban Initiative · Permanent Call for peer reviewers**.
+2. **European Urban Initiative · Permanent Call for peer reviewers**;
+3. **EIT Culture & Creativity · NEB Academy | Skills Infrastructure**;
+4. **EIT Culture & Creativity · Delegate Cities & Regions Network**.
 
-È inoltre emersa una **riapertura corrente della misura Toscana Nidi gratis per i Comuni**, pubblicata lo stesso giorno dello snapshot. La registriamo come problema di lifecycle/reopening, ma senza attribuirla retroattivamente a un miss del motore perché non è stata accertata l'ora di pubblicazione rispetto alla generazione dello snapshot.
+È inoltre emersa la **riapertura corrente di Nidi gratis 2026-2027 per i Comuni**, pubblicata il 7 settembre: è un finding lifecycle reale, ma non viene imputato retroattivamente come miss dello snapshot perché l'ora di pubblicazione non è nota.
+
+Sono state inoltre trovate due opportunità comunali **già annunciate ma non ancora aperte l'8 settembre** — Fondo Carnevali Storici 2026 e Festival, Cori e Bande 2026 — e un grave replay storico: **Sport e Periferie 2026**.
 
 Di conseguenza il gate resta **0/2**.
 
 ---
 
-## 1. Nuovo falso negativo · EIT Urban Mobility · RIS Education Open Call 2027
+## 1. EIT Urban Mobility · RIS Education Open Call 2027
 
-Fonte ufficiale EIT:
+Fonti ufficiali:
 
-https://www.eit.europa.eu/our-activities/opportunities/ris-education-open-call-2027
-
-Fonte EIT Urban Mobility:
-
-https://www.eiturbanmobility.eu/call-for-proposals/ris-education-open-call-2027/
+- https://www.eit.europa.eu/our-activities/opportunities/ris-education-open-call-2027
+- https://www.eiturbanmobility.eu/call-for-proposals/ris-education-open-call-2027/
+- https://www.eiturbanmobility.eu/our-community/our-ris-hubs/
 
 La call è aperta dal **1 giugno 2026** e chiude **8 settembre 2026 alle 17:00 CEST**.
 
-Caratteristiche:
+Caratteristiche principali:
 
-- budget EIT indicativo complessivo: circa **2,6 milioni di euro**;
+- budget indicativo complessivo circa **2,6 milioni di euro**;
 - `RISE1` e `RISE2`: fino a **300.000 euro per progetto**;
 - `RISE3`: fino a 180.000 euro;
 - `RISE4`: fino a 140.000 euro;
 - `RISE5`: fino a 70.000 euro;
-- sono ammesse proposte multi-beneficiario e mono-beneficiario;
-- fra i soggetti che possono candidarsi la call cita esplicitamente le **cities**;
-- per la route mono-beneficiario il soggetto deve provenire da un Paese RIS;
-- l'Italia è esplicitamente tra i Paesi ammissibili EIT RIS nel 2026.
+- ammesse proposte mono-beneficiario e multi-beneficiario;
+- fra i soggetti ammissibili la call cita esplicitamente le **cities**;
+- l'Italia è un Paese EIT RIS ammissibile nel 2026;
+- serve esperienza dimostrabile nel capacity building su mobilità urbana e/o innovazione/imprenditorialità.
 
-Fonte RIS:
-
-https://www.eiturbanmobility.eu/our-community/our-ris-hubs/
-
-Il fatto che le città siano formalmente ammesse non significa promozione indiscriminata dei sette Comuni: il candidato deve dimostrare esperienza precedente e competenze nel capacity building su mobilità urbana e/o innovazione e imprenditorialità.
-
-**Stato Radar:** assente dallo snapshot di riferimento.  
+**Stato Radar:** assente.  
 **Classificazione:** `current_conditional_beneficiary_false_negative`.  
 **Severità:** `critical`.  
 **Root cause:** `EIT_action_level_source_gap`.
 
-Questo finding è particolarmente significativo perché non deriva da una famiglia già in chiusura nelle Wave 9–11: è emerso da un nuovo oracle EIT durante lo sweep full-corpus.
+Non va propagata automaticamente a tutti i sette Comuni: la capacità tecnica richiesta resta una condizione sostanziale.
 
 ---
 
-## 2. Nuovo rolling structural gap · EUI Permanent Call for peer reviewers
+## 2. European Urban Initiative · Permanent Call for peer reviewers
 
 Fonte ufficiale:
 
 https://www.urban-initiative.eu/capacity-building/peer-reviews/ongoing-call-peer-reviews
 
-La **Permanent Call for peer reviewers** è aperta dal **19 novembre 2025** e resta **continuamente aperta**.
-
-Il ruolo è distinto da quello di `city under review` già auditato nelle call periodiche EUI:
+La call permanente è aperta dal **19 novembre 2025** e resta **continuamente aperta**.
 
 - il peer reviewer si candida come individuo;
 - può rappresentare **qualsiasi urban authority dell'UE**;
-- deve avere esperienza pertinente nella progettazione e attuazione di strategie integrate e place-based;
-- la candidatura richiede l'endorsement dell'autorità urbana rappresentata;
-- l'attività è capacity building / benchmarking / peer learning, non un normale contributo cash comunale.
+- deve avere esperienza nella progettazione/attuazione di strategie integrate e place-based;
+- serve l'endorsement dell'autorità urbana rappresentata;
+- l'attività è capacity building, benchmarking e peer learning, non un contributo cash;
+- il programma Peer Review è finanziato da EUI.
 
-Lo snapshot non contiene una scheda corrispondente alla call permanente.
+È distinta dalle call periodiche per la `city under review`, che hanno requisiti Article 11.
 
+**Stato Radar:** assente.  
 **Classificazione:** `rolling_structural_gap`.  
 **Severità:** `high`.  
-**Municipality role:** `individual_municipal_representative_endorsed_by_any_EU_urban_authority`.  
 **Root cause:** `rolling_capacity_building_opportunity_gap`.
-
-La distinzione lifecycle è essenziale: la call autunnale 2026 per le città sotto revisione apre solo il 1 ottobre, ma la call permanente per peer reviewers è già aperta oggi.
 
 ---
 
-## 3. Regione Toscana · Nidi gratis · riapertura candidature dei Comuni
+## 3. EIT Culture & Creativity · NEB Academy | Skills Infrastructure
+
+Fonte ufficiale:
+
+https://eit-culture-creativity.eu/your-opportunities/calls-funding/neb-academy-skills-infrastructure
+
+La call è aperta dal **9 giugno 2026** e, dopo proroga, chiude **11 settembre 2026 alle 17:00 CEST**.
+
+Elementi decisivi:
+
+- budget complessivo **3,5 milioni di euro**;
+- fino a **600.000 euro per progetto**;
+- indicativamente 5-6 grant;
+- rimborso fino al 100% dei costi eleggibili entro il massimale;
+- consorzio di **3-8 partecipanti indipendenti**, in almeno due Paesi ammissibili;
+- il consorzio **deve comprendere almeno un'autorità pubblica/public body/municipality/regional or local authority**;
+- deve inoltre comprendere almeno un education provider e almeno un soggetto privato del lived-environment ecosystem;
+- le municipalità sono esplicitamente elencate tra gli applicant ammissibili.
+
+Questo è un caso più forte del semplice `conditional_partner`: la presenza di almeno un soggetto pubblico della classe che comprende i Comuni è requisito di composizione del consorzio.
+
+**Stato Radar:** assente.  
+**Classificazione:** `current_required_public_authority_false_negative`.  
+**Severità:** `critical`.  
+**Root cause:** `EIT_Culture_Creativity_source_family_gap`.
+
+---
+
+## 4. EIT Culture & Creativity · Delegate Cities & Regions Network
+
+Fonti ufficiali:
+
+- https://eit-culture-creativity.eu/your-opportunities/expression-interest/delegate-cities-regions-network
+- https://eit-culture-creativity.eu/your-opportunities/expression-interest?page=1
+
+L'Expression of Interest è indicata come aperta dal **21 maggio 2025 al 31 dicembre 2026**.
+
+La rete è esplicitamente rivolta a rappresentanti dei livelli di governo locale e regionale e nasce come piattaforma stabile per peer learning, innovazione e implementazione di policy nei settori culturali e creativi.
+
+Non è un grant: è una **opportunità di partecipazione istituzionale e policy network**.
+
+**Stato Radar:** assente.  
+**Classificazione:** `current_participation_opportunity`.  
+**Severità:** `medium`.  
+**Root cause:** `non_grant_network_participation_gap`.
+
+Il finding rafforza una conclusione già emersa in altre Wave: il Radar non può limitarsi a `funding + deadline`, ma deve presidiare anche network, label, peer learning e supporto tecnico quando sono direttamente azionabili da un ente locale.
+
+---
+
+## 5. Regione Toscana · Nidi gratis 2026-2027 · riapertura candidature Comuni
 
 Fonte ufficiale:
 
 https://www.regione.toscana.it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni
 
-La Regione Toscana ha pubblicato il **7 settembre 2026** la riapertura delle candidature comunali alla misura Nidi gratis 2026-2027:
+La Regione ha pubblicato il **7 settembre 2026** la riapertura della partecipazione comunale:
 
-- nuovi Comuni non ancora candidati: richiesta delle credenziali entro **25 settembre 2026**;
-- Comuni già candidati: invio della documentazione necessaria via PEC entro **6 ottobre 2026**.
+- nuovi Comuni non ancora candidati: richiesta credenziali entro **25 settembre 2026**;
+- Comuni già ammessi: trasmissione della documentazione entro **6 ottobre 2026**.
 
-Lo snapshot Radar del 7 settembre contiene come controllo soltanto il bando `Nidi gratis` rivolto alle **famiglie**, classificato non operativo per il Comune. Non contiene la nuova finestra comunale.
+Lo snapshot Radar contiene il bando rivolto alle famiglie come controllo non operativo per il Comune, ma non la nuova finestra comunale.
 
-Tuttavia lo snapshot è stato generato il **7 settembre alle 09:35 UTC** e la pagina regionale espone soltanto la data, non l'ora di pubblicazione. Non è quindi metodologicamente corretto dichiarare che questa riapertura fosse necessariamente disponibile prima dello snapshot.
+Lo snapshot è stato generato il 7 settembre alle **09:35 UTC** e la pagina regionale riporta la data, non l'ora. Non si può quindi dimostrare che la riapertura fosse già pubblica al momento dello snapshot.
 
 **Classificazione:** `current_reopened_window_gap_timing_unresolved`.  
 **Severità:** `high`.  
-**Root cause da presidiare:** `lifecycle_reopening_watch`.
+**Root cause:** `lifecycle_reopening_watch`.
 
-Questo caso dimostra comunque che il Radar deve riconoscere non soltanto `open → closed`, ma anche **riaperture e nuove finestre della stessa misura**.
-
----
-
-## 4. Mission Adaptation 2026 · chiusura indipendente della matrice residua
-
-Fonte ufficiale Mission Adaptation:
-
-https://research-and-innovation.ec.europa.eu/funding/funding-opportunities/funding-programmes-and-open-calls/horizon-europe/eu-missions-horizon-europe/adaptation-climate-change_en
-
-La call apre il 4 febbraio e chiude il **23 settembre 2026**. Lo sweep indipendente ha verificato anche i topic non già chiusi puntualmente dalle Wave precedenti.
-
-### CLIMA-01 · National Adaptation Hubs
-
-`HORIZON-MISS-2026-01-CLIMA-01`
-
-Il topic costruisce hub nazionali che collegano livello nazionale, regioni e attori locali e può usare Financial Support to Third Parties. Non è corretto trasformarlo in una scheda di candidatura diretta generica per ciascun Comune.
-
-**Classificazione:** `cascade_prospective_gap_national_hub_watch`.
-
-### CLIMA-02 · Facilitating implementation of actionable solutions
-
-`HORIZON-MISS-2026-01-CLIMA-02`
-
-Le autorità regionali e locali sono il target principale delle soluzioni, ma il Work Programme specifica che **non sono attese nel consorzio principale**.
-
-**Classificazione:** `end_user_no_auto_promotion`.
-
-### CLIMA-03 · Climate services
-
-`HORIZON-MISS-2026-01-CLIMA-03`
-
-Possibile ruolo di end-user/stakeholder, ma nessun requisito comunale come beneficiario stabilito.
-
-**Classificazione:** `end_user_scope_no_auto_promotion`.
-
-### CLIMA-04 · DRM + climate adaptation
-
-`HORIZON-MISS-2026-01-CLIMA-04`
-
-Le autorità regionali/locali sono destinatari delle linee guida, raccomandazioni e capacità di resilienza sviluppate dal progetto. Nessun requisito universale di Comune beneficiario.
-
-**Classificazione:** `end_user_policy_target_no_auto_promotion`.
-
-### CLIMA-05 e CLIMA-07
-
-Entrambi sono stati riscoperti dall'oracle indipendente ma erano già nel corpus:
-
-- `CLIMA-05`: già `current_topic_level_promotion_gap`;
-- `CLIMA-07`: già `cascade_prospective_gap` per future sovvenzioni FSTP alle amministrazioni locali/regionali.
-
-Sono quindi controlli positivi di rediscovery, non finding nuovi.
-
-### CLIMA-06
-
-La resilienza di vie navigabili interne e infrastrutture correlate non è automaticamente applicabile ai sette Comuni senza un asset/ruolo pertinente.
-
-**Classificazione:** `correctly_not_auto_promoted_for_versilia`.
+Il caso non viene contato tra i quattro miss definitivi dello snapshot, ma deve entrare nell'hardening del lifecycle.
 
 ---
 
-## 5. CEF Energy · CB RES status 2026
-
-Fonte CINEA:
-
-https://cinea.ec.europa.eu/news-events/news/cef-energy-6th-call-cross-border-renewable-energy-projects-obtain-status-launched-2026-06-29_en
-
-La sesta e ultima call 2021-2027 per ottenere lo status **Cross-Border Renewable Energy Project** è aperta fino al **6 ottobre 2026**.
-
-Lo status è prerequisito per poter concorrere successivamente al finanziamento CEF Energy per studi e lavori. Tuttavia la candidatura riguarda promotori di veri progetti FER transfrontalieri con requisiti e cooperazione internazionale specifici.
-
-**Classificazione:** `scope_review_conditional_project_promoter`.
-
-Non va quindi aggiunta indiscriminatamente ai sette Comuni.
-
----
-
-## 6. Controlli che NON generano nuovi gap correnti
-
-### EIT Citizens on the Move 2026
-
-Opportunità pertinente anche a civil servants delle città e con supporto RIS, ma i due round 2026 si sono chiusi il **13 maggio** e l'**8 luglio**.
-
-**Classificazione:** `historical_current_year_sentinel`.
-
-### I3 Capacity Building 2026 · CAP2b
-
-L'oracle EISMEA l'ha fatto emergere indipendentemente, ma la call è chiusa dal **19 marzo 2026**.
-
-**Classificazione:** `historical_prelaunch_sentinel`.
-
-### Covenant Peer Review Programme 2026
-
-Destinato a Covenant Coordinators/Supporters e chiuso a maggio 2026, non a tutti i Comuni firmatari in modo generico.
-
-**Classificazione:** `historical_closed_and_scope_limited`.
-
-### Interreg Italia-Croazia · 4th Call
-
-Call corrente, ma la Provincia di Lucca/Toscana non rientra nell'area italiana ammissibile.
-
-**Classificazione:** `correctly_excluded_geography`.
-
-### TRUNSPORT, SUNDANSE, SPACE4Cities, I3 INV1/INV2a, IUCN Rapid-Response Fund
-
-Sono stati tutti riscoperti attraverso oracle indipendenti ma risultano già documentati nelle Wave precedenti. Servono quindi come **positive controls** sulla qualità dello sweep, non come nuovi finding.
-
-### Mission Ocean downstream community assistance
-
-La procedura a monte è già nota. Il contractor dovrà selezionare almeno 50 comunità tra regioni, città, autorità fluviali/idriche e autorità portuali. La futura EOI per le comunità resta `downstream_EOI_expected` e non è stata trovata come pubblicata al momento dello sweep.
-
----
-
-## 7. Sentinelle future
+## 6. Opportunità annunciate e imminenti
 
 ### Fondo Carnevali Storici 2026
 
-La finestra prevista è **15 settembre – 15 ottobre 2026**. Non è ancora aperta l'8 settembre. L'eleggibilità include enti che organizzano carnevali storici qualificati; per Viareggio occorre distinguere Comune e Fondazione Carnevale di Viareggio come soggetto organizzatore/candidato.
+Fonte:
 
-**Classificazione:** `announced_upcoming_conditional_affiliated_entity`.
+https://spettacolo.cultura.gov.it/carnevali-storici/
 
-### CERV Remembrance 2026
+Finestra: **15 settembre 2026 ore 10:00 – 15 ottobre 2026 ore 16:00**.
 
-Il calendario è stato spostato rispetto alle precedenti indicazioni. La call non è trattata come runtime miss corrente all'8 settembre.
+Le regole ammettono Comuni, Fondazioni e Associazioni con requisiti specifici: personalità giuridica, assenza di scopo di lucro, almeno cinque anni di operatività, finalità statutaria coerente, almeno **25 edizioni documentate** e ruolo effettivo di organizzatore del carnevale.
+
+Per la Versilia il controllo storico è molto forte:
+
+- **Comune di Pietrasanta** compare fra gli organismi valutati e finanziati nel ciclo 2025;
+- per Viareggio il beneficiario 2025 è invece **Fondazione Carnevale di Viareggio**, quindi non va attribuita automaticamente al Comune.
+
+**Classificazione:** `announced_upcoming`.  
+**Municipality role:** `direct_municipality_applicant_when_it_is_the_qualifying_carnival_organiser`.  
+**Severità:** `high`.
+
+### Festival, Cori e Bande 2026
+
+Fonte:
+
+https://spettacolo.cultura.gov.it/bando-festival-cori-e-bande-anno-2026-d-m-4-aprile-2025-n-110-recante-criteri-e-modalita-di-accesso-al-fondo-di-cui-allarticolo-1-comma-605-della-legge-30-dicembre-2024/
+
+Finestra: **15 settembre 2026 ore 10:00 – 15 ottobre 2026 ore 16:00**.
+
+Fra le categorie ammesse figurano i **raggruppamenti temporanei di almeno quattro enti pubblici territoriali**. Un singolo Comune non è sufficiente; il raggruppamento deve essere costituito al momento della domanda.
+
+**Classificazione:** `announced_upcoming`.  
+**Municipality role:** `conditional_lead_or_partner_in_temporary_grouping_of_at_least_four_local_public_authorities`.  
+**Severità:** `high`.
+
+### EIT Culture & Creativity · Cities & Regions 2026
+
+Il piano call 2026 EIT Culture & Creativity prevede nel **Q3 2026** una call `Cities & Regions`:
+
+- budget stimato **1,7 milioni di euro**;
+- fino a **180.000 euro**;
+- fino a circa 10 progetti.
+
+Al momento del presente sweep non è stata trovata la call attiva completa con requisiti definitivi.
 
 **Classificazione:** `announced_upcoming_calendar_sentinel`.
 
 ---
 
+## 7. Replay storico · Sport e Periferie 2026
+
+Fonti ufficiali:
+
+- https://www.sport.governo.it/it/bandi-e-avvisi/sport-e-periferie/2026/pubblicato-il-nuovo-avviso-sport-e-periferie-anno-2026/
+- https://www.sport.governo.it/it/bandi-e-avvisi/sport-e-periferie/2026/faq-avviso-sport-e-periferie-2026/
+
+La misura è stata pubblicata il **14 maggio 2026** e la finestra di candidatura è stata **4 giugno – 25 giugno 2026**.
+
+Dotazione: **100 milioni di euro**.
+
+Massimali:
+
+- Comuni >50.000 abitanti: 1,5 milioni;
+- >15.000 e <=50.000: 1 milione;
+- <=15.000: 800.000 euro.
+
+I beneficiari erano **solo Comuni**: quelli sopra 5.000 abitanti direttamente; quelli <=5.000 potevano raggiungere la soglia tramite accordo con enti locali confinanti.
+
+Non emerge un record esatto nel repository.
+
+**Classificazione:** `historical_pre_launch_gap`.  
+**Severità:** `critical`.
+
+Non è un gap corrente all'8 settembre, ma è una sentinella storica molto forte perché cade pienamente nella finestra retrospettiva dell'audit e riguarda direttamente i Comuni.
+
+---
+
+## 8. Mission Adaptation e altri controlli del full-corpus
+
+Lo sweep ha verificato anche i topic `HORIZON-MISS-2026-01-CLIMA-01` ... `07`:
+
+- `CLIMA-01`: `cascade_prospective_gap_national_hub_watch`;
+- `CLIMA-02`: `end_user_no_auto_promotion`;
+- `CLIMA-03`: `end_user_scope_no_auto_promotion`;
+- `CLIMA-04`: `end_user_policy_target_no_auto_promotion`;
+- `CLIMA-05`: già noto `current_topic_level_promotion_gap`;
+- `CLIMA-06`: non auto-promuovibile per i sette Comuni senza asset/ruolo pertinente;
+- `CLIMA-07`: già noto `cascade_prospective_gap`.
+
+`CEF Energy · CB RES status 2026` resta `scope_review_conditional_project_promoter`: una municipalità è pertinente solo se promotrice di un vero progetto FER transfrontaliero ammissibile.
+
+Sono stati inoltre riscoperti indipendentemente TRUNSPORT, SUNDANSE, SPACE4Cities, I3 INV1/INV2a, IUCN Rapid-Response Fund e la future Mission Ocean community assistance: sono controlli positivi della qualità dello sweep e non finding nuovi.
+
+---
+
+## 9. Controlli negativi
+
+### Oratori delle aree urbane più fragili 2026
+
+Call corrente, ma i richiedenti ammessi sono soggetti ecclesiastici/religiosi individuati dall'avviso, non i Comuni.
+
+**Classificazione:** `correctly_excluded_eligibility`.
+
+### Interreg Italia-Croazia · 4th Call
+
+Lucca/Toscana non rientra nell'area italiana ammissibile.
+
+**Classificazione:** `correctly_excluded_geography`.
+
+### Altri controlli chiusi
+
+- EIT Citizens on the Move 2026: round chiusi;
+- I3 Capacity Building 2026: chiusa il 19 marzo;
+- Covenant Peer Review Programme 2026: chiuso e non genericamente rivolto a tutti i Comuni.
+
+---
+
 ## Conclusione
 
-La prima vera passata full-corpus indipendente **fallisce il clean gate** perché individua due opportunità correnti realmente nuove:
+La prima vera passata **full-corpus indipendente** fallisce nettamente il clean gate.
 
-- `eit-urban-mobility-ris-education-2027`;
-- `eui-permanent-peer-reviewers`.
+Nuovi gap correnti definitivi: **4**.
 
-La riapertura Nidi gratis aggiunge un terzo finding lifecycle, con cautela temporale.
+1. `eit-urban-mobility-ris-education-2027`;
+2. `eui-permanent-peer-reviewers`;
+3. `eit-cc-neb-academy-skills-infrastructure-2026`;
+4. `eit-cc-delegate-cities-regions-network`.
+
+Finding lifecycle corrente aggiuntivo: **Nidi gratis · riapertura Comuni**.
+
+In più sono emersi due nuovi upcoming municipalmente rilevanti e un replay storico critico (`Sport e Periferie 2026`).
 
 **Gate dopo Wave 12: `0/2`.**
 
-L'hardening del motore resta congelato. Il prossimo sweep indipendente dovrà partire da oracle diversi o da percorsi diversi dentro gli stessi ecosistemi, non dalla checklist di Wave 12. Soltanto un passaggio full-corpus senza nuovi current actionable gap potrà portare il contatore a `1/2`.
+La Wave 12 dimostra che il corpus non è ancora saturo: in particolare **EIT Culture & Creativity**, opportunità rolling/non-grant e finestre di riapertura non erano ancora presidiate abbastanza.
+
+L'hardening del motore resta congelato. Il prossimo sweep deve essere nuovamente full-corpus e indipendente, ma deve partire da percorsi/oracle differenti da quelli usati qui. Soltanto un passaggio con **zero nuovi current actionable gap** potrà portare il contatore a `1/2`.
 
 Nessun file del motore, configurazione discovery o output pubblico è stato modificato in questa Wave.
