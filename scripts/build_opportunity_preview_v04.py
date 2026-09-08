@@ -45,7 +45,11 @@ def lifecycle_card(item: dict[str, Any]) -> str:
     relevance_badge = (
         f'<span class="op-relevance op-relevance-{esc(relevance)}">{esc(relevance_label)}</span>'
     )
-    text = text.replace('<div class="op-card-heading">', f'{relevance_badge}<div class="op-card-heading">', 1)
+    text = text.replace(
+        '<div class="op-card-heading">',
+        f'{badge}{relevance_badge}<div class="op-card-heading">',
+        1,
+    )
     if relevance == municipal_relevance.PARTNER:
         text = re.sub(
             r'<span class="op-access[^\"]*">.*?</span>',
