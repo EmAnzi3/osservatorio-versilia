@@ -7,7 +7,7 @@ Estende l'hardening h3 senza modificare classificatore o criteri di pubblicazion
   sempre come copertura degradata e mai come verifica/promozione;
 - registra la diagnostica endpoint nel risultato e nello snapshot;
 - rimuove dal runtime il vecchio feed PA Digitale stale;
-- corregge difensivamente l'endpoint SCU;
+- usa rotte ufficiali ridondanti su host distinti per Politiche del mare e SCU;
 - blocca la pubblicazione quando una famiglia obbligatoria è realmente priva di
   qualsiasi endpoint eseguito con successo nel run.
 """
@@ -30,9 +30,23 @@ _ORIGINAL_ASSERT = daily._assert_publishable
 _ORIGINAL_PREPARE = daily._prepare_public
 _ORIGINAL_COMPOSE = core.compose_runtime_payloads
 
-_SCU_CURRENT_URL = (
-    "https://www.politichegiovanili.gov.it/servizio-civile/"
-    "bandi-e-avvisi-di-servizio-civile/avvisi-di-presentazione-programmi-e-progetti/"
+_PRESIDENZA_SOVVENZIONI_URL = (
+    "https://presidenza.governo.it/AmministrazioneTrasparente/"
+    "Sovvenzioni/CriteriModalita/"
+)
+
+# I due portali dipartimentali hanno mostrato timeout/WAF intermittenti dai
+# runner GitHub. Manteniamo una pagina istituzionale corrente come canale
+# principale e una seconda via ufficiale, su host Presidenza distinto, che
+# consente al discovery di continuare senza trasformare un blocco del frontend
+# dipartimentale in perdita completa della famiglia.
+_MARE_OFFICIAL_URLS = (
+    "https://www.dipartimentopolitichemare.gov.it/it/",
+    _PRESIDENZA_SOVVENZIONI_URL,
+)
+_SCU_OFFICIAL_URLS = (
+    "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/",
+    _PRESIDENZA_SOVVENZIONI_URL,
 )
 
 
@@ -45,8 +59,13 @@ def _compose_runtime_hardened() -> tuple[dict[str, Any], dict[str, Any]]:
     ]
 
     for source in config.get("discoverySources") or []:
-        if str(source.get("id") or "") == "pcm-politiche-giovanili-scu":
-            source["urls"] = [_SCU_CURRENT_URL]
+        source_id = str(source.get("id") or "")
+        if source_id == "pcm-politiche-mare":
+            source["urls"] = list(_MARE_OFFICIAL_URLS)
+            source["fetchTimeoutSeconds"] = 12
+        elif source_id == "pcm-politiche-giovanili-scu":
+            source["urls"] = list(_SCU_OFFICIAL_URLS)
+            source["fetchTimeoutSeconds"] = 12
     return config, coverage
 
 

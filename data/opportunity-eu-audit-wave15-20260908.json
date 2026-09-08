@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 15,
+  "sweepType": "independent_full_corpus",
+  "fullCorpusIndependentSweep": true,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "prBaselineBeforeWave15Write": {
+    "pr": 161,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headBranch": "audit/opportunity-eu-120d-20260907",
+    "headSha": "1d620542c4bf84eb354205fa1350585dbb8b6d8c",
+    "base": "main",
+    "commitCount": 30,
+    "changedFileCount": 28
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForCleanSweepGate": true,
+    "reason": "Wave 15 is an independent full-corpus sweep and found two new current structural opportunities absent from the reference snapshot and Waves 1-14: the Agenzia del Demanio free transfer of eligible State-owned properties to territorial entities under Article 15-bis of Decree-Law 13/2023, and the EU Mission Adaptation Community / Roster of Experts support route. Either finding is sufficient to keep the gate at 0/2."
+  },
+  "method": {
+    "seedPolicy": "External institutional and programme oracles were searched first. Prior audit waves and the full Radar snapshot were consulted only after candidates emerged, to classify, deduplicate and verify municipality applicability.",
+    "canonicalCrossCheck": "Absence from title/code search was never treated as sufficient proof of a gap. The full snapshot, canonical records, municipality_eligibility, auditReview/internal_review evidence and Waves 1-14 were checked before promotion to finding status.",
+    "municipalities": [
+      "Camaiore",
+      "Forte dei Marmi",
+      "Massarosa",
+      "Pietrasanta",
+      "Seravezza",
+      "Stazzema",
+      "Viareggio"
+    ],
+    "oracleFamilies": {
+      "eu": [
+        "European Commission programme and city-facing directories",
+        "CINEA / EISMEA / EACEA / EIT",
+        "Mission Adaptation / Mission Ocean / Cities Mission",
+        "EUI / URBACT / Interreg",
+        "Covenant / Smart Cities / EIB advisory",
+        "awards, labels, procurement and cascade/FSTP families",
+        "rolling support, expert matchmaking and peer-learning services"
+      ],
+      "italy": [
+        "Agenzia del Demanio",
+        "Ministero dell'Interno / DAIT / Stato-Citta",
+        "PCM departments including Family and Universal Civil Service",
+        "MASE / Pelagos",
+        "Ministero del Turismo",
+        "MIT / CEF national route",
+        "MiC and public-finance/local-authority instruments"
+      ],
+      "tuscany": [
+        "Regione Toscana open/all calls",
+        "PR FESR / PR FSE+",
+        "Sviluppo Toscana",
+        "ANCI Toscana",
+        "regional lifecycle and canonical-rule controls"
+      ]
+    }
+  },
+  "newCurrentActionableFindings": [
+    {
+      "id": "agenzia-demanio-free-transfer-15bis-2026",
+      "title": "Agenzia del Demanio · Trasferimento gratuito di immobili dello Stato agli Enti territoriali · art. 15-bis D.L. 13/2023",
+      "publishedAt": null,
+      "deadlineAt": "2026-12-31",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_requester_for_free_state_asset_transfer",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_as_Comuni; concrete actionability requires an eligible State asset and a qualifying institutional/social redevelopment project",
+      "funding": "No cash grant. Eligible State-owned property may be transferred into the ownership of the territorial entity free of charge.",
+      "eligibilityEvidence": "The Agenzia del Demanio expressly describes the mechanism as an opportunity for territorial entities. Regions, Municipalities, Provinces and Metropolitan Cities may request the free transfer of qualifying historical-artistic State property or available State assets managed by the Agency, where the asset is linked to institutional or social redevelopment projects financed or submitted for financing wholly or partly through PNRR, PNC or PNIEC resources. Requests must be motivated and sent by certified email to the competent territorial office by 31 December 2026. Statutory exclusions apply.",
+      "rootCauseFamily": "state_property_transfer_instrument_gap",
+      "officialSource": "https://www.agenziademanio.it/it/in-evidenza/trasferimentoimmobiliEETT/"
+    },
+    {
+      "id": "mip4adapt-mission-community-roster-experts",
+      "title": "EU Mission Adaptation · Mission Community / Roster of Experts support route",
+      "publishedAt": "2026-06-15",
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_local_authority_community_member_requesting_expert_connection_or_using_structured_capacity_building",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_can_join_the_Mission_Community_as_local_authorities_or_climate_resilience_organisations; usefulness depends on a concrete adaptation need",
+      "funding": "No cash grant. Non-cash expert matchmaking, capacity building, working groups, networking and project-alliance support.",
+      "eligibilityEvidence": "The official Mission Adaptation Portal states that the online Mission Community is open to any organisation committed to developing climate resilience. Members can request a connection with a member of the Roster of Experts and benefit from working groups, matchmaking, capacity-building activities and partnership building. The 15 June Roster announcement states that, once launched, Regional and Local Authorities and other Mission Community members can submit a short support request and MIP4Adapt facilitates introductions to relevant experts. The current Mission Community page presents the expert-connection route as an available member benefit.",
+      "lifecycleCaveat": "The Roster announcement described the initial launch only as September 2026, without an exact date. No precise detection-lag calculation is therefore asserted. Current operational status is supported by the Mission Community page, which now states that members may request a connection with a Roster member.",
+      "distinctionFromKnownFinding": "This is separate from the Wave 13 Citizen Engagement Hotline: the Hotline provides specialised engagement coaching to all European regional/local authorities, while the Mission Community / Roster route provides broader expert matching and structured community capacity-building.",
+      "rootCauseFamily": "Mission_Adaptation_community_and_expert_matchmaking_gap",
+      "officialSources": [
+        "https://mission-adaptation-portal.ec.europa.eu/news-events/news/eu-mission-adaptation-launches-call-experts-join-new-roster-experts-2026-06-15_en",
+        "https://mission-adaptation-portal.ec.europa.eu/mission-community_en"
+      ]
+    }
+  ],
+  "historicalReplayFindings": [
+    {
+      "id": "mase-pelagos-2026-2028",
+      "title": "MASE / Accordo Pelagos · Bando Carta di Partenariato 2026-2028",
+      "deadlineAt": "2026-08-18T23:59:00+02:00",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "historical_pre_launch_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_applicant_if_Pelagos_Partnership_Charter_membership_is_valid",
+      "funding": "Project funding for municipalities adhering to the Pelagos Partnership Charter for protection of marine mammals and their habitat; the official call material governs amounts and eligible costs.",
+      "eligibilityEvidence": "The call admitted municipalities in good standing with the Pelagos Partnership Charter, as well as new municipal adherents that had obtained the required favourable DG TBM opinion. The application deadline was 18 August 2026, before the public Radar operational date.",
+      "versiliaApplicability": {
+        "Viareggio": "confirmed_positive_control: Comune di Vecchiano approved a 17 August 2026 joint candidacy with Comune di Viareggio for the WISPO Viareggio/Vecchiano project",
+        "Pietrasanta": "membership renewal activity was identified, but final MASE approval at the call deadline was not established in this sweep; do not assert eligibility",
+        "other_five": "not established in this sweep"
+      },
+      "officialSources": [
+        "https://pelagos-sanctuary.org/it/bando-per-il-finanziamento-di-progetti-nellambito-della-carta-di-partenariato-dellaccordo-pelagos-2026-2028/",
+        "https://www.statocitta.pcm.gov.it/home/notizie-e-comunicati/2026/bando-pelagos-2026-2028-aperte-le-candidature-dei-comuni/",
+        "https://www.halleyegov.it/c050037/zf/index.php/atti-amministrativi/delibere/dettaglio/atto/G5WpVd0TEUT0-A"
+      ]
+    },
+    {
+      "id": "pcm-famiglia-attivita-socio-educative-minori-2026",
+      "title": "PCM · Fondo attività socio-educative a favore dei minori 2026 / centri estivi",
+      "opensAt": "2026-05-08",
+      "deadlineAt": "2026-05-28",
+      "radarStatus": "2026_opportunity_absent; snapshot contains only an old 2022 discovery fragment for the centri-estivi family",
+      "auditClass": "historical_pre_launch_gap",
+      "severity": "high",
+      "municipalityRole": "direct_municipality_manifestation_of_interest",
+      "funding": "EUR 60 million annually from 2026 for municipal initiatives supporting summer centres, territorial socio-educational services and educational/recreational centres for minors.",
+      "eligibilityEvidence": "The 2026 official notice was addressed to Italian municipalities, excluding those in the autonomous provinces of Trento and Bolzano. Municipalities had to express interest on the dedicated platform by 28 May 2026; activities are implemented from 1 June to 31 December 2026.",
+      "formalApplicabilityToSevenMunicipalities": "all_seven_were_within_the_national_municipality_geographic_perimeter_during_the_application_window",
+      "officialSources": [
+        "https://famiglia.governo.it/it/politiche-e-attivita/comunicazione/notizie/avviso-finanziamento-ai-comuni-per-attivita-socio-educative-a-favore-dei-minori-annualita-2026/",
+        "https://www.famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/fondo-per-le-attivita-socio-educative-a-favore-dei-minori-anno-2026/introduzione/"
+      ]
+    },
+    {
+      "id": "ministero-turismo-best-tourism-villages-2026",
+      "title": "Ministero del Turismo / UN Tourism · Best Tourism Villages 2026",
+      "publishedAt": "2026-05-11",
+      "deadlineAt": "2026-05-25",
+      "radarStatus": "absent_from_reference_snapshot_and_prior_audit_corpus",
+      "auditClass": "historical_scope_review",
+      "severity": "medium",
+      "municipalityRole": "municipality_interest_routed_via_region_then_national_nomination",
+      "eligibilityEvidence": "The Italian route was open to municipalities, villages or destinations below 15,000 inhabitants with qualifying sustainability, heritage and local-tourism profiles. Municipalities first expressed interest through their Region; selected Italian candidates then supplied English application material to the Ministry. The route closed before Radar launch.",
+      "versiliaApplicability": "At least Stazzema is already known from official prior audit evidence to be below 5,000 inhabitants, hence below the 15,000 demographic threshold; the qualitative village/destination criteria and the other municipalities were not revalidated here, so this remains a scope-review historical control rather than a definitive municipal miss.",
+      "officialSource": "https://www.ministeroturismo.gov.it/un-tourism-al-via-la-6a-edizione-di-best-tourism-villages/"
+    }
+  ],
+  "capturedAndScopeControls": [
+    {
+      "id": "rt-buoni-scuola-2026",
+      "auditClass": "captured",
+      "canonicalId": "opp-f167a60a4b3c05",
+      "ruleId": "rt-buoni-scuola-2026",
+      "note": "External oracle rediscovery initially looked missing; full snapshot inspection confirmed the current canonical opportunity with 25 September deadline and Comune/Unione as proposer."
+    },
+    {
+      "id": "rt-emergenza-abitativa-2026",
+      "auditClass": "captured",
+      "canonicalId": "opp-c83615a316d655",
+      "ruleId": "rt-emergenza-abitativa-2026",
+      "note": "Current municipal property/housing manifestation of interest already has a canonical direct-applicant record."
+    },
+    {
+      "id": "scu-programmi-progetti-2026",
+      "auditClass": "scope_review_conditional_accreditation_route",
+      "radarStatus": "already_present_in_snapshot_auditReview_internal_scope",
+      "countsAsCurrentActionableGap": false,
+      "note": "The 2026 Universal Civil Service window is current, but only entities registered/accredited in the SCU register may submit programmes/projects. The snapshot already holds the case for audit review; no current accreditation of one of the seven municipalities was established here."
+    },
+    {
+      "id": "cef-transport-2026",
+      "auditClass": "scope_review_project_promoter_control",
+      "radarStatus": "already_present_in_snapshot_auditReview",
+      "countsAsCurrentActionableGap": false,
+      "note": "Public bodies can participate only with a qualifying CEF/TEN-T project and the required national support/route. The snapshot already contains a scope-review record; no new seven-municipality direct opportunity was established."
+    },
+    {
+      "id": "rt-parcheggi-2026",
+      "auditClass": "announced_upcoming",
+      "countsAsCurrentActionableGap": false,
+      "note": "The regional page may display an open-status label, but the actual application window starts 14 September 2026. On 8 September it is an upcoming lifecycle control, not a current false negative."
+    },
+    {
+      "id": "mase-zero-emission-cities-2026",
+      "auditClass": "correctly_excluded_eligibility",
+      "countsAsCurrentActionableGap": false,
+      "note": "The national support route is limited to the nine Italian Mission Label cities; none of the seven Versilia municipalities is in that beneficiary group."
+    },
+    {
+      "id": "rt-reuse-circular-economy-ets-control",
+      "auditClass": "correctly_excluded_eligibility",
+      "countsAsCurrentActionableGap": false,
+      "note": "The current regional call reviewed under the reuse/circular-economy family is directed to qualifying Third Sector entities rather than municipalities."
+    }
+  ],
+  "auditCorrections": [
+    {
+      "id": "rt-buoni-scuola-wave15-candidate-correction",
+      "initialWave15Candidate": "possible_current_false_negative",
+      "correctedAuditClass": "captured",
+      "reason": "The full reference snapshot contains canonical opportunity opp-f167a60a4b3c05 and rule rt-buoni-scuola-2026. This overrides title-only absence impressions."
+    }
+  ],
+  "waveConclusion": "Wave 15 is a valid independent full-corpus sweep but is not clean. Two new current structural gaps were established: the Agenzia del Demanio free-transfer mechanism for territorial entities and the Mission Adaptation Community / Roster of Experts support route. Historical replay also found Pelagos 2026-2028 and the 2026 municipal socio-educational/centri-estivi funding window; Best Tourism Villages is retained as a historical scope review. The clean-sweep counter remains 0/2 and implementation remains frozen.",
+  "nextStep": "Run a fresh independent full-corpus sweep from a materially different oracle ordering and discovery seed. Because Wave 15 is dirty, the next clean sweep would only move the counter to 1/2; a second consecutive clean sweep would still be required before hardening can begin.",
+  "implementationChanges": []
+}

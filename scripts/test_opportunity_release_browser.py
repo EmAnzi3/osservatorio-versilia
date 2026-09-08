@@ -9,6 +9,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 from build_static_brand import select_opportunity_public_payload
+import opportunity_municipal_relevance as relevance
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
@@ -28,6 +29,9 @@ def verify_release(base: str) -> None:
     payload_path = select_opportunity_public_payload()
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
     total_expected = len(payload.get("opportunities") or [])
+    relevance_expected = relevance.summarize(list(payload.get("opportunities") or []))
+    headline_expected = int(relevance_expected["headlineTotal"])
+    partner_expected = int(relevance_expected["partnershipTotal"])
     new_expected = sum(bool(item.get("is_new")) for item in payload.get("opportunities") or [])
     y, m, d = payload["referenceDate"].split("-")
     date_expected = f"{d}/{m}/{y}"
@@ -55,8 +59,19 @@ def verify_release(base: str) -> None:
             robots = page.locator('meta[name="robots"]')
             assert robots.count() == 0 or 'noindex' not in (robots.first.get_attribute('content') or '').lower()
             total = int(root.get_attribute('data-total-opportunities') or 0)
+            headline = int(root.get_attribute('data-municipal-headline') or -1)
+            partnerships = int(root.get_attribute('data-partnership') or -1)
             cards = page.locator('[data-opportunity-card]')
             assert total == total_expected == cards.count(), (total, total_expected, cards.count())
+            assert headline == headline_expected, (headline, headline_expected)
+            assert partnerships == partner_expected, (partnerships, partner_expected)
+            assert headline + partnerships == total_expected
+            assert page.locator('[data-op-list="municipal"]').count() == 1
+            assert page.locator('[data-opportunity-card][data-relevance="review_exclude"]').count() == 0
+            if partner_expected:
+                assert page.locator('[data-op-list="partner"]').count() == 1
+                assert page.locator('[data-opportunity-card][data-relevance="partner"]').count() == partner_expected
+
             body = page.locator('body').inner_text()
             assert date_expected in body and 'Radar v0.4.4' in body
             assert 'Eventi sportivi di rilevanza nazionale e internazionale 2026' in body
@@ -77,7 +92,8 @@ def verify_release(base: str) -> None:
 
             novelty = page.locator('[data-op-new]')
             sorter = page.locator('[data-op-sort]')
-            assert novelty.count() == 1 and sorter.count() == 1
+            relevance_filter = page.locator('[data-op-relevance]')
+            assert novelty.count() == 1 and sorter.count() == 1 and relevance_filter.count() == 1
             novelty.select_option('new')
             page.wait_for_timeout(120)
             visible_new = page.locator('[data-opportunity-card]:not([hidden])')
@@ -86,11 +102,26 @@ def verify_release(base: str) -> None:
 
             sorter.select_option('recent')
             page.wait_for_timeout(120)
-            seen = visible_new.evaluate_all('els=>els.map(e=>e.dataset.firstSeen)')
-            assert seen == sorted(seen, reverse=True), seen
+            seen_by_list = page.locator('[data-op-list]').evaluate_all(
+                "lists=>lists.map(list=>Array.from(list.querySelectorAll('[data-opportunity-card]:not([hidden])')).map(e=>e.dataset.firstSeen||''))"
+            )
+            for seen in seen_by_list:
+                assert seen == sorted(seen, reverse=True), seen
             page.locator('[data-op-reset]').click()
-            assert novelty.input_value() == '' and sorter.input_value() == 'deadline'
+            assert novelty.input_value() == '' and sorter.input_value() == 'deadline' and relevance_filter.input_value() == ''
             assert page.locator('[data-opportunity-card]:not([hidden])').count() == total_expected
+
+            relevance_filter.select_option('municipal')
+            page.wait_for_timeout(120)
+            assert page.locator('[data-opportunity-card]:not([hidden])').count() == headline_expected
+            assert page.locator('[data-opportunity-card][data-relevance="partner"]:not([hidden])').count() == 0
+            page.locator('[data-op-reset]').click()
+            if partner_expected:
+                relevance_filter.select_option('partner')
+                page.wait_for_timeout(120)
+                assert page.locator('[data-opportunity-card]:not([hidden])').count() == partner_expected
+                assert page.locator('[data-opportunity-card][data-relevance="partner"]:not([hidden])').count() == partner_expected
+                page.locator('[data-op-reset]').click()
 
             source = page.locator('[data-op-source]')
             assert source.count() == 1 and source.locator('option').count() >= 40
@@ -121,8 +152,8 @@ def verify_release(base: str) -> None:
     sitemap = (ROOT / 'dist/sitemap.xml').read_text(encoding='utf-8')
     assert sitemap.count('https://osservatorioversilia.it/opportunita/') == 1
     print(
-        f'Radar pubblico browser OK: {total_expected} opportunità · {new_expected} nuove · '
-        f'{date_expected} · filtro/ordina · header/home/footer · 1440/1024/390.'
+        f'Radar pubblico browser OK: {headline_expected} comunali · {partner_expected} partnership · '
+        f'{total_expected} schede · {new_expected} nuove · {date_expected} · 1440/1024/390.'
     )
 
 

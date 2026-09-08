@@ -288,12 +288,23 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     primary_ids = {str(source.get("id") or "") for source in config.get("sources") or []}
     assert "pa-digitale-2026" not in primary_ids
 
-    scu = next(
-        source for source in config.get("discoverySources") or []
-        if str(source.get("id") or "") == "pcm-politiche-giovanili-scu"
-    )
-    assert scu["urls"] == [daily_h4._SCU_CURRENT_URL]
-    assert "/servizio-civile/bandi-e-avvisi-di-servizio-civile/" in scu["urls"][0]
+    discovery_by_id = {
+        str(source.get("id") or ""): source
+        for source in config.get("discoverySources") or []
+    }
+    mare = discovery_by_id["pcm-politiche-mare"]
+    scu = discovery_by_id["pcm-politiche-giovanili-scu"]
+
+    assert mare["urls"] == list(daily_h4._MARE_OFFICIAL_URLS), mare
+    assert scu["urls"] == list(daily_h4._SCU_OFFICIAL_URLS), scu
+    assert mare["fetchTimeoutSeconds"] == 12
+    assert scu["fetchTimeoutSeconds"] == 12
+    assert mare["urls"][0] == "https://www.dipartimentopolitichemare.gov.it/it/"
+    assert scu["urls"][0].endswith("/comunicazione/avvisi-e-bandi/")
+    assert any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in mare["urls"])
+    assert any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in scu["urls"])
+    assert len(set(mare["urls"])) == len(mare["urls"])
+    assert len(set(scu["urls"])) == len(scu["urls"])
 
 
 def _test_transport_audit_exposes_endpoint_health() -> None:

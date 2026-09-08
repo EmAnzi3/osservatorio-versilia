@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: opportunity-radar-v044-${{ github.ref }}
@@ -37,7 +38,7 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Validate v0.4.4 contracts and blind-test hardening
+      - name: Validate v0.4.4 contracts and audit replay
         run: |
           python -m py_compile \
             scripts/run_opportunity_radar_v044.py \
@@ -45,6 +46,10 @@ jobs:
             scripts/opportunity_daily_refresh_revalidated.py \
             scripts/opportunity_daily_refresh_resilient.py \
             scripts/opportunity_daily_refresh_stable.py \
+            scripts/opportunity_daily_refresh_audit_fixed.py \
+            scripts/opportunity_audit_corpus_promotions.py \
+            scripts/opportunity_matrix_promotions.py \
+            scripts/opportunity_municipal_relevance.py \
             scripts/opportunity_discovery_resilient.py \
             scripts/opportunity_transport_smoke.py \
             scripts/opportunity_regione_toscana_guard.py \
@@ -55,6 +60,8 @@ jobs:
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
             scripts/test_opportunity_source_health.py \
+            scripts/test_opportunity_municipal_relevance.py \
+            scripts/test_opportunity_audit_corpus_promotions.py \
             scripts/build_opportunity_preview_v044.py \
             scripts/materialize_opportunity_release_snapshot.py \
             scripts/build_opportunity_release.py \
@@ -66,6 +73,8 @@ jobs:
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
+          python scripts/test_opportunity_municipal_relevance.py
+          python scripts/test_opportunity_audit_corpus_promotions.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -80,7 +89,7 @@ jobs:
           print('Baseline v0.4.4 verificato: 30 opportunità · 5 nuove')
           PY
 
-      - name: Materialize current public snapshot
+      - name: Materialize current public snapshot with audit corpus
         run: |
           python scripts/materialize_opportunity_release_snapshot.py
           python - <<'PY'
@@ -90,11 +99,18 @@ jobs:
           p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
           assert p['releaseVersion'] == '0.4.4'
           reference = date.fromisoformat(str(p.get('referenceDate') or ''))
-          assert reference >= date(2026, 8, 24), reference
+          assert reference >= date(2026, 9, 8), reference
           opportunities = p.get('opportunities')
           assert isinstance(opportunities, list) and opportunities
           counts = p.get('counts') or {}
           assert counts.get('new') == sum(bool(x.get('is_new')) for x in opportunities)
+          replay = p.get('auditCorpusPromotion') or {}
+          assert int(replay.get('currentOrRollingAdded') or 0) >= 89, replay
+          assert int(replay.get('municipalCurrentOrRollingAdded') or 0) >= 52, replay
+          assert int(replay.get('partnershipCurrentOrRollingAdded') or 0) >= 37, replay
+          municipal = p.get('municipalRelevance') or {}
+          assert int(municipal.get('headlineCurrentOrRolling') or 0) >= 77, municipal
+          assert int(municipal.get('partnershipCurrentOrRolling') or 0) >= 39, municipal
           assert not p.get('continuityHold')
           assert not p.get('coverageHold')
           backtest = p.get('backtest') or {}
@@ -107,8 +123,12 @@ jobs:
           if regional:
               assert regional.get('status') in {'pass', 'degraded'}, regional
           print(
-              f"Snapshot pubblico verificato: {len(opportunities)} opportunità · "
-              f"{counts.get('new', 0)} nuove · riferimento {p.get('referenceDate')}"
+              f"Snapshot pubblico verificato: {len(opportunities)} schede · "
+              f"headline current/rolling {municipal.get('headlineCurrentOrRolling', 0)} · "
+              f"headline upcoming {municipal.get('headlineUpcoming', 0)} · "
+              f"partnership current/rolling {municipal.get('partnershipCurrentOrRolling', 0)} · "
+              f"partnership upcoming {municipal.get('partnershipUpcoming', 0)} · "
+              f"replay audit +{replay.get('added', 0)} · riferimento {p.get('referenceDate')}"
           )
           PY
 
@@ -116,11 +136,16 @@ jobs:
         run: |
           python scripts/build_static_brand.py
           python - <<'PY'
+          import json
           from pathlib import Path
           html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
-          needle = 'opportunity-preview-v04.js?v=20260824-filter2'
-          assert needle in html, 'JS Radar non versionato: rischio cache client obsoleta'
-          print('Cache busting Radar verificato:', needle)
+          payload = json.load(open('data/opportunity-release.json', encoding='utf-8'))
+          needle = 'opportunity-preview-v04.js?v=20260908-relevance1'
+          assert needle in html, 'JS Radar non versionato: rischio cache client obsoleto'
+          assert 'data-municipal-headline=' in html
+          assert 'data-partnership=' in html
+          assert html.count('data-opportunity-card') == len(payload.get('opportunities') or [])
+          print('Build pubblica allineata al replay audit:', len(payload.get('opportunities') or []), 'schede')
           PY
 
       - name: Start local server
@@ -145,4 +170,224 @@ jobs:
         with:
           name: radar-opportunita-v044-preview
           path: dist
+          retention-days: 7
+
+  daily-production-dry-run:
+    name: daily production dry-run · 2026-09-09
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install production dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Seed dry-run from latest accepted or pending snapshot
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BRANCH="automation/opportunity-radar-daily"
+          SNAPSHOT="data/opportunity-daily-public.json"
+          cp "$SNAPSHOT" /tmp/opportunity-daily-main.json
+          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
+          OPEN_PR="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
+          git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
+          if git show "refs/remotes/origin/$BRANCH:$SNAPSHOT" > /tmp/opportunity-daily-pending.json 2>/dev/null; then
+            export OPEN_PR
+            python - <<'PY'
+          import json
+          import os
+          import shutil
+          from datetime import date
+          from pathlib import Path
+          main_path = Path('/tmp/opportunity-daily-main.json')
+          pending_path = Path('/tmp/opportunity-daily-pending.json')
+          target_path = Path('data/opportunity-daily-public.json')
+          previous_path = Path('/tmp/opportunity-daily-previous.json')
+          main = json.loads(main_path.read_text(encoding='utf-8'))
+          pending = json.loads(pending_path.read_text(encoding='utf-8'))
+          def parsed_date(payload):
+              try:
+                  return date.fromisoformat(str(payload.get('referenceDate') or ''))
+              except ValueError:
+                  return None
+          def pending_is_valid(payload):
+              return (
+                  payload.get('releaseVersion') == '0.4.4'
+                  and payload.get('dailyHardeningVersion') == '0.4.4-h5'
+                  and not payload.get('continuityHold')
+                  and not payload.get('coverageHold')
+                  and (payload.get('coverageAudit') or {}).get('status') == 'pass'
+              )
+          main_date = parsed_date(main)
+          pending_date = parsed_date(pending)
+          open_pr = bool(os.environ.get('OPEN_PR'))
+          use_pending = (
+              pending_is_valid(pending)
+              and pending_date is not None
+              and (main_date is None or pending_date > main_date or (pending_date == main_date and open_pr))
+          )
+          source = pending_path if use_pending else main_path
+          shutil.copyfile(source, target_path)
+          shutil.copyfile(source, previous_path)
+          selected = pending if use_pending else main
+          print('Dry-run baseline:', 'pending automation snapshot' if use_pending else 'main snapshot', selected.get('referenceDate'))
+          PY
+          else
+            echo "Nessuno snapshot pendente sul branch di automazione: uso main."
+          fi
+
+      - name: Materialize verified baseline
+        run: python scripts/materialize_opportunity_release_snapshot.py
+
+      - name: Run tomorrow live discovery through production entrypoint
+        run: python scripts/opportunity_daily_refresh_stable.py --date 2026-09-09
+
+      - name: Validate tomorrow daily snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import date
+          from pathlib import Path
+
+          p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+          expected = date(2026, 9, 9)
+          expected_date = expected.isoformat()
+          assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
+          assert p.get('releaseVersion') == '0.4.4'
+          assert p.get('dailyHardeningVersion') == '0.4.4-h5'
+          assert p.get('sourceHealthGraceDays') == 2
+          assert not p.get('continuityHold')
+          assert not p.get('coverageHold')
+          assert (p.get('backtest') or {}).get('passed') is True
+          assert (p.get('coverageAudit') or {}).get('status') == 'pass'
+          assert not ((p.get('coverageAudit') or {}).get('runtimeUncoveredFamilies') or [])
+          assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
+          assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
+
+          opportunities = list(p.get('opportunities') or [])
+          assert opportunities
+          expired = []
+          for item in opportunities:
+              if str(item.get('lifecycle_stage') or 'application_open') != 'application_open':
+                  continue
+              deadline_text = str(item.get('deadline_at') or '')
+              if not deadline_text:
+                  continue
+              try:
+                  deadline = date.fromisoformat(deadline_text)
+              except ValueError:
+                  continue
+              if deadline < expected:
+                  expired.append((item.get('title'), deadline_text))
+          assert not expired, expired
+
+          transport = p.get('transportAudit') or {}
+          assert transport.get('schemaVersion') == '1.2', transport
+          summary = transport.get('summary') or {}
+          assert int(summary.get('configuredSources') or 0) > 0
+          assert int(summary.get('configuredEndpoints') or 0) > 0
+          assert int(summary.get('sourceHealthGraceDays') or 0) == 2
+
+          replay = p.get('auditCorpusPromotion') or {}
+          replay_current = int(replay.get('currentOrRollingAdded') or 0)
+          replay_municipal = int(replay.get('municipalCurrentOrRollingAdded') or 0)
+          replay_partnership = int(replay.get('partnershipCurrentOrRollingAdded') or 0)
+          replay_municipal_upcoming = int(replay.get('municipalUpcomingAdded') or 0)
+          replay_partnership_upcoming = int(replay.get('partnershipUpcomingAdded') or 0)
+          replay_added = int(replay.get('added') or 0)
+          matrix_target = int(replay.get('matrixCurrentTarget') or 0)
+          assert matrix_target == 89, replay
+          assert replay_current == replay_municipal + replay_partnership, replay
+          assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
+          assert 0 < replay_current <= matrix_target, replay
+
+          municipal = p.get('municipalRelevance') or {}
+          headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
+          headline_upcoming = int(municipal.get('headlineUpcoming') or 0)
+          headline_total = int(municipal.get('headlineTotal') or 0)
+          partnership_current = int(municipal.get('partnershipCurrentOrRolling') or 0)
+          partnership_upcoming = int(municipal.get('partnershipUpcoming') or 0)
+          partnership_total = int(municipal.get('partnershipTotal') or 0)
+          review_excluded = int(municipal.get('reviewExcluded') or 0)
+          assert headline_total == headline_current + headline_upcoming, municipal
+          assert partnership_total == partnership_current + partnership_upcoming, municipal
+          assert len(opportunities) == headline_total + partnership_total + review_excluded, municipal
+          assert headline_current > 0 and partnership_current > 0, municipal
+
+          required = {
+              'pcm-sport-eventi-2026',
+              'life-2026-cet-heatcoolplan',
+              'life-2026-cet-pda',
+              'life-2026-cet-enercom',
+              'life-2026-cet-empower',
+          }
+          ids = {x.get('coverage_id') for x in opportunities}
+          assert required <= ids, sorted(required - ids)
+          print(
+              'Dry-run daily validato:', len(opportunities), 'schede ·',
+              headline_current, 'comunali current/rolling ·',
+              partnership_current, 'partnership current/rolling ·',
+              'replay', replay_current, '/', matrix_target, 'current/rolling ·',
+              'fallback', summary.get('fallbackSuccesses', 0), '· grace', summary.get('sourcesInGrace', 0),
+          )
+          PY
+
+      - name: Build tomorrow public Radar
+        run: |
+          python scripts/build_static_brand.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+          html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
+          year, month, day = str(payload.get('referenceDate') or '').split('-')
+          displayed = f'{day}/{month}/{year}'
+          assert displayed in html, displayed
+          assert html.count('data-opportunity-card') == len(payload.get('opportunities') or [])
+          print('Build dry-run collegata allo snapshot', displayed + ':', len(payload.get('opportunities') or []), 'schede')
+          PY
+
+      - name: Start dry-run local server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8124 --directory dist >/tmp/ov-radar-daily-dryrun.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8124/ >/dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/ov-radar-daily-dryrun.log
+          exit 1
+
+      - name: Browser QA tomorrow dry-run
+        run: python scripts/test_opportunity_release_browser.py --base http://127.0.0.1:8124/
+
+      - name: Upload dry-run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radar-opportunita-daily-dryrun-20260909
+          path: |
+            data/opportunity-daily-public.json
+            reports/runtime/opportunity-daily-summary.md
+            reports/runtime/opportunity-continuity-hold.json
+          if-no-files-found: ignore
           retention-days: 7

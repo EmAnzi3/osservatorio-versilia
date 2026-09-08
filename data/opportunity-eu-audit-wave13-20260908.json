@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 13,
+  "sweepType": "post_wave12_evidence_correction_and_oracle_addendum",
+  "fullCorpusIndependentSweep": false,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "thisSweepClean": false,
+    "countsForCleanSweepGate": false,
+    "reason": "Wave 13 is an evidence correction/addendum rather than a new independent sweep. It corrects two Wave 12 interpretations and records one additional current rolling support gap discovered by a post-Wave-12 Mission Adaptation oracle."
+  },
+  "corrections": [
+    {
+      "id": "eit-urban-mobility-ris-education-2027-deadline",
+      "correctsWave": 12,
+      "field": "deadlineAt",
+      "oldValue": "2026-09-08T17:00:00+02:00",
+      "newValue": "2026-09-16T17:00:00+02:00",
+      "reason": "The detailed official EIT Urban Mobility call page states 16 September 2026 at 17:00 CEST. A general EIT opportunity-directory entry displayed 8 September; the detailed call page is treated as the authoritative source for the call deadline.",
+      "officialSources": [
+        "https://www.eiturbanmobility.eu/call-for-proposals/ris-education-open-call-2027/",
+        "https://www.eit.europa.eu/our-activities/opportunities/ris-education-open-call-2027"
+      ]
+    },
+    {
+      "id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "correctsWave": 12,
+      "oldAuditClass": "current_reopened_window_gap_timing_unresolved",
+      "newAuditClass": "lifecycle_reopening_control_no_confirmed_new_versilia_opportunity",
+      "countsAsCurrentActionableGap": false,
+      "reason": "The reopening is real and current, but six of the seven Versilia municipalities were already present in the official 2026 admitted list: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza and Viareggio. Stazzema was not found in the retrieved list and no evidence was established that it currently operates an eligible 0-3 service that would make the reopened municipal window actionable for the seven-municipality perimeter.",
+      "officialSource": "https://www.regione.toscana.it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni"
+    }
+  ],
+  "newCurrentFindings": [
+    {
+      "id": "mip4adapt-citizen-engagement-hotline",
+      "title": "EU Mission Adaptation / MIP4Adapt · Citizen Engagement Hotline",
+      "publishedAt": "2026-06-17",
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot_and_repo_search",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_local_authority_on_demand_support_request",
+      "funding": "Non-cash technical and capacity-building support through personalised coaching and a multilingual pool of citizen-engagement specialists.",
+      "eligibilityEvidence": "The Mission Adaptation Portal states that the Citizen Engagement Hotline is available to all European Regional and Local Authorities. Support is requested through the MIP4Adapt Helpdesk and is distinct from the separate Technical Assistance programme whose current call is closed and has narrower eligibility conditions.",
+      "rootCauseFamily": "Mission_Adaptation_rolling_support_gap",
+      "officialSources": [
+        "https://mission-adaptation-portal.ec.europa.eu/news-events/news/citizen-engagement-hotline-now-available-all-regional-and-local-authorities-2026-06-17_en",
+        "https://mission-adaptation-portal.ec.europa.eu/mission-knowledge-and-data/mission-support/mip4adapt-technical-assistance_en"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "mic-fondo-carnevali-storici-2026-viareggio",
+      "auditClass": "conditional_nonmunicipal_local_control",
+      "note": "The 2026 rules allow municipalities, foundations and associations, but the applicant must be the qualifying carnival organiser. For Viareggio, the organiser is Fondazione Carnevale di Viareggio; the opportunity must therefore not be assigned directly to Comune di Viareggio solely because the event is local."
+    },
+    {
+      "id": "cef-energy-cbres-status-2026",
+      "auditClass": "scope_review_project_promoter_control",
+      "note": "The sixth CEF Energy Cross-Border Renewable Energy status call is current, but eligibility depends on a qualifying cross-border renewable-energy project, a project promoter and cooperation between Member States. No direct seven-municipality opportunity was established in this audit."
+    }
+  ],
+  "wave12StatusAfterCorrection": {
+    "fullCorpusIndependentSweep": true,
+    "clean": false,
+    "gateEffect": "reset_to_0_of_2",
+    "reason": "Even after removing Nidi gratis from the actionable-gap count and correcting the RIS Education deadline, Wave 12 still contains four definitive new current opportunities absent from the prior corpus. The additional MIP4Adapt finding further confirms that saturation has not been reached."
+  },
+  "implementationChanges": []
+}

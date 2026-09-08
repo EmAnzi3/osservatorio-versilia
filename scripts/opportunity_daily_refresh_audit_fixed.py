@@ -3,16 +3,12 @@
 
 Estende h5 senza modificare il classificatore storico né la versione del gate
 trasporto:
-- aggiunge il presidio C4T GROUNDWORK come canale UE dedicato;
-- inietta la call 2026 solo dopo verifica primaria, con ammissibilità comunale
-  condizionata al ruolo effettivo nell'attuazione di investimenti PO2;
-- conserva CERV Town Twinning nel circuito già protetto dalle sentinelle v0.4.2;
-- usa la riconciliazione cross-source del safety net Regione Toscana per evitare
-  che Mercati rionali resti unresolved quando la stessa misura è già pubblica
-  da Sviluppo Toscana.
-
-L'overlay è deliberatamente separato dai dataset storici v0.4.x: rende il fix
-reversibile e testabile senza riscrivere le baseline congelate.
+- mantiene i fix puntuali C4T/CERV/Toscana già verificati;
+- promuove nel Radar pubblico il replay completo della matrice municipale finale,
+  limitandosi a opportunità correnti, rolling o upcoming realmente azionabili;
+- scarta storici, captured, scope-review ed esclusioni;
+- classifica ogni scheda pubblica per rilevanza comunale e separa il conteggio
+  principale dalle opportunità di partnership/consorzio.
 """
 from __future__ import annotations
 
@@ -20,7 +16,9 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
+import opportunity_municipal_relevance as relevance
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +34,7 @@ _BASE_COMPOSE = h4._ORIGINAL_COMPOSE
 _BASE_INJECT = core.inject_verified_v04
 _BASE_RADAR_INJECT = getattr(radar_module, "inject_verified_v04", None)
 _BASE_PREPARE_STABLE = stable._prepare_public_stable
+_BASE_RENDER_REPORT = h4.daily._render_report
 
 
 def _load_fixes() -> dict[str, Any]:
@@ -123,6 +122,8 @@ def _inject_fix_entries(
                 if str(current.get("coverage_id") or "") == coverage_id or (norm_url and current_norm == norm_url):
                     current.setdefault("coverage_id", coverage_id)
                     current.setdefault("first_seen_at", item["first_seen_at"])
+                    if entry.get("municipal_relevance_class"):
+                        current["municipal_relevance_class"] = entry["municipal_relevance_class"]
                     break
             continue
 
@@ -163,9 +164,34 @@ def _inject_with_audit_fixes(
 
 def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
+    audit_promotions.apply_complete_promotions(result, today)
+    # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
+    # prima i contatori legacy e poi il contratto comunale/partnership.
+    if hasattr(core, "_recompute_v04_counts"):
+        core._recompute_v04_counts(result)
+    relevance.apply_to_payload(result, drop_review=True)
     result["dailyHardeningVersion"] = DAILY_HARDENING_VERSION
     result["auditGapFixVersion"] = FIX_VERSION
+    result["auditCorpusPromotionVersion"] = audit_promotions.PROMOTION_VERSION
+    result["municipalRelevanceVersion"] = relevance.SCHEMA_VERSION
     return result
+
+
+def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, Any]]) -> str:
+    text = _BASE_RENDER_REPORT(result, new_items)
+    counts = result.get("counts") or {}
+    public = int(counts.get("public") or len(result.get("opportunities") or []))
+    headline = int(counts.get("municipalHeadlineCurrentOrRolling") or 0)
+    upcoming = int(counts.get("municipalHeadlineUpcoming") or 0)
+    partners = int(counts.get("partnershipCurrentOrRolling") or 0)
+    partner_upcoming = int(counts.get("partnershipUpcoming") or 0)
+    old = f"Opportunità correnti: **{public}** · evidenziate come nuove: **{counts.get('new', 0)}**."
+    new = (
+        f"Opportunità comunali correnti/a sportello: **{headline}** · in arrivo: **{upcoming}** · "
+        f"partnership correnti/a sportello: **{partners}** · partnership in arrivo: **{partner_upcoming}** · "
+        f"evidenziate come nuove: **{counts.get('new', 0)}**."
+    )
+    return text.replace(old, new, 1)
 
 
 def main() -> int:
@@ -174,12 +200,14 @@ def main() -> int:
     original_core_inject = core.inject_verified_v04
     original_radar_inject = getattr(radar_module, "inject_verified_v04", None)
     original_prepare = stable._prepare_public_stable
+    original_report = h4.daily._render_report
 
     h4._ORIGINAL_COMPOSE = _compose_with_audit_fixes
     core.inject_verified_v04 = _inject_with_audit_fixes
     if _BASE_RADAR_INJECT is not None:
         radar_module.inject_verified_v04 = _inject_with_audit_fixes
     stable._prepare_public_stable = _prepare_public_audit_fixed
+    h4.daily._render_report = _render_report_relevance
     try:
         return stable.main()
     finally:
@@ -189,6 +217,7 @@ def main() -> int:
         if original_radar_inject is not None:
             radar_module.inject_verified_v04 = original_radar_inject
         stable._prepare_public_stable = original_prepare
+        h4.daily._render_report = original_report
 
 
 if __name__ == "__main__":
