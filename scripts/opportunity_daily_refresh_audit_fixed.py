@@ -4,11 +4,11 @@
 Estende h5 senza modificare il classificatore storico né la versione del gate
 trasporto:
 - mantiene i fix puntuali C4T/CERV/Toscana già verificati;
-- promuove nel Radar pubblico il corpus v1 delle Wave audit, limitandosi a
-  opportunità correnti, rolling o upcoming realmente azionabili per i Comuni;
+- promuove nel Radar pubblico il replay completo della matrice municipale finale,
+  limitandosi a opportunità correnti, rolling o upcoming realmente azionabili;
 - scarta storici, captured, scope-review ed esclusioni;
 - classifica ogni scheda pubblica per rilevanza comunale e separa il conteggio
-  principale dalle opportunità di sola partnership/consorzio.
+  principale dalle opportunità di partnership/consorzio.
 """
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-import opportunity_audit_corpus_promotions as audit_promotions
+import opportunity_matrix_promotions as audit_promotions
 import opportunity_daily_refresh_stable as stable
 import opportunity_municipal_relevance as relevance
 
@@ -164,7 +164,7 @@ def _inject_with_audit_fixes(
 
 def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
-    audit_promotions.apply_audit_corpus_promotions(result, today)
+    audit_promotions.apply_complete_promotions(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
     if hasattr(core, "_recompute_v04_counts"):
