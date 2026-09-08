@@ -45,6 +45,8 @@ jobs:
             scripts/opportunity_daily_refresh_revalidated.py \
             scripts/opportunity_daily_refresh_resilient.py \
             scripts/opportunity_daily_refresh_stable.py \
+            scripts/opportunity_daily_refresh_audit_fixed.py \
+            scripts/opportunity_municipal_relevance.py \
             scripts/opportunity_discovery_resilient.py \
             scripts/opportunity_transport_smoke.py \
             scripts/opportunity_regione_toscana_guard.py \
@@ -55,6 +57,7 @@ jobs:
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
             scripts/test_opportunity_source_health.py \
+            scripts/test_opportunity_municipal_relevance.py \
             scripts/build_opportunity_preview_v044.py \
             scripts/materialize_opportunity_release_snapshot.py \
             scripts/build_opportunity_release.py \
@@ -66,6 +69,7 @@ jobs:
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
+          python scripts/test_opportunity_municipal_relevance.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -118,9 +122,11 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           html = Path('dist/opportunita/index.html').read_text(encoding='utf-8')
-          needle = 'opportunity-preview-v04.js?v=20260824-filter2'
+          needle = 'opportunity-preview-v04.js?v=20260908-relevance1'
           assert needle in html, 'JS Radar non versionato: rischio cache client obsoleta'
-          print('Cache busting Radar verificato:', needle)
+          assert 'data-municipal-headline=' in html
+          assert 'data-partnership=' in html
+          print('Cache busting e distinzione Radar verificati:', needle)
           PY
 
       - name: Start local server
