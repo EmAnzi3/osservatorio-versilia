@@ -10,12 +10,13 @@ from pathlib import Path
 from typing import Any
 
 import build_opportunity_preview_v03 as base
+import opportunity_municipal_relevance as municipal_relevance
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA = ROOT / "reports" / "runtime" / "opportunities-v04.json"
 DEFAULT_DIST = ROOT / "dist"
 TARGET_ROUTE = "opportunita-preview"
-OPPORTUNITY_UI_ASSET_VERSION = "20260824-filter2"
+OPPORTUNITY_UI_ASSET_VERSION = "20260908-relevance1"
 
 _ORIGINAL_BASE_CARD = base.BASE_CARD
 LIFECYCLE = {
@@ -33,13 +34,42 @@ def lifecycle_card(item: dict[str, Any]) -> str:
     text = _ORIGINAL_BASE_CARD(item)
     stage = str(item.get("lifecycle_stage") or "application_open")
     label, css = LIFECYCLE.get(stage, (stage, "neutral"))
+    relevance = municipal_relevance.annotate_item(item)
+    relevance_label = municipal_relevance.LABELS[relevance]
     text = text.replace(
         '<article class="op-card"',
-        f'<article class="op-card" data-lifecycle="{esc(stage)}"',
+        f'<article class="op-card" data-lifecycle="{esc(stage)}" data-relevance="{esc(relevance)}"',
         1,
     )
     badge = f'<span class="op-lifecycle op-lifecycle-{css}">{esc(label)}</span>'
-    text = text.replace('<div class="op-card-heading">', f'<div class="op-card-heading">{badge}', 1)
+    relevance_badge = (
+        f'<span class="op-relevance op-relevance-{esc(relevance)}">{esc(relevance_label)}</span>'
+    )
+    text = text.replace('<div class="op-card-heading">', f'{relevance_badge}<div class="op-card-heading">', 1)
+    if relevance == municipal_relevance.PARTNER:
+        text = re.sub(
+            r'<span class="op-access[^\"]*">.*?</span>',
+            '<span class="op-access op-access-partner">Partnership / consorzio</span>',
+            text,
+            count=1,
+            flags=re.S,
+        )
+    elif relevance == municipal_relevance.SUPPORT_FINANCE:
+        text = re.sub(
+            r'<span class="op-access[^\"]*">.*?</span>',
+            '<span class="op-access op-access-support">Supporto / finanza</span>',
+            text,
+            count=1,
+            flags=re.S,
+        )
+    elif relevance == municipal_relevance.ROUTED:
+        text = re.sub(
+            r'<span class="op-access[^\"]*">.*?</span>',
+            '<span class="op-access op-access-routed">Route nazionale</span>',
+            text,
+            count=1,
+            flags=re.S,
+        )
     if stage == "rolling_open":
         text = text.replace(
             '<div class="op-deadline"><dt>Scadenza</dt><dd>Non rilevata</dd></div>',
@@ -57,6 +87,7 @@ def lifecycle_card(item: dict[str, Any]) -> str:
 
 def _overview(payload: dict[str, Any]) -> str:
     opportunities = list(payload.get("opportunities") or [])
+    municipal, partners = municipal_relevance.visible_partitions(opportunities)
     archive = list(payload.get("archive") or [])
     coverage = payload.get("sourceCoverage") or {}
     summary = coverage.get("summary") or {}
@@ -65,10 +96,9 @@ def _overview(payload: dict[str, Any]) -> str:
     gap = independent.get("knownGapClosure") or {}
     prospective = independent.get("prospective") or {}
     holdouts = independent.get("holdouts") or {}
-    stages = payload.get("lifecycleSummary") or {}
-    opened = int(stages.get("application_open") or sum(str(x.get("lifecycle_stage") or "application_open") == "application_open" for x in opportunities))
-    rolling = int(stages.get("rolling_open") or sum(str(x.get("lifecycle_stage")) == "rolling_open" for x in opportunities))
-    upcoming = int(stages.get("announced_upcoming") or sum(str(x.get("lifecycle_stage")) == "announced_upcoming" for x in opportunities))
+    opened = sum(str(x.get("lifecycle_stage") or "application_open") == "application_open" for x in municipal)
+    rolling = sum(str(x.get("lifecycle_stage")) == "rolling_open" for x in municipal)
+    upcoming = sum(str(x.get("lifecycle_stage")) == "announced_upcoming" for x in municipal)
     monitored = int(summary.get("configured") or len(coverage.get("rows") or []))
     required_families = int(audit.get("requiredFamilies") or 0)
     covered_families = max(0, required_families - len(audit.get("missingFamilies") or []))
@@ -81,7 +111,7 @@ def _overview(payload: dict[str, Any]) -> str:
     rate = prospective.get("captureRate")
     rate_text = "in raccolta" if rate is None else f"{float(rate):.1%}"
     icons = base.ICONS
-    return f'''<section class="method-detail page-width op-overview" aria-label="Quadro operativo"><div class="op-overview-shell"><div class="op-overview-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Aperte, misure a sportello e procedure annunciate. La copertura è verificata anche con fonti di controllo che non alimentano il radar.</p></div><div class="op-overview-grid op-overview-grid-v04"><article class="op-stat op-stat-open"><span class="op-stat-icon">{icons['briefcase']}</span><div><small>Aperte</small><strong>{opened}</strong><span>Finestra di candidatura attiva</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['calendar']}</span><div><small>A sportello</small><strong>{rolling}</strong><span>Misure senza singola scadenza</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['radar']}</span><div><small>In arrivo</small><strong>{upcoming}</strong><span>Procedure annunciate ufficialmente</span></div></article><article class="op-stat op-stat-sources"><span class="op-stat-icon">{icons['radar']}</span><div><small>Rete di raccolta</small><strong>{monitored}</strong><span>{required_families} famiglie · {holdout_count} fonti di controllo separate</span></div></article><article class="op-stat op-stat-towns"><span class="op-stat-icon">{icons['map']}</span><div><small>Famiglie presidiate</small><strong>{covered_families}/{required_families}</strong><span>Il dato non equivale alla completezza del web</span></div></article><article class="op-stat op-stat-archive"><span class="op-stat-icon">{icons['archive']}</span><div><small>In archivio</small><strong>{len(archive)}</strong><span>Opportunità chiuse con fonte ufficiale</span></div></article></div><div class="op-audit-summary"><strong>Audit indipendente</strong><span>{closed}/{gap_total} buchi baseline chiusi · capture rate prospettico: {rate_text} ({sample}/{minimum}) · fonti di controllo raggiungibili: {holdout_healthy}/{holdout_count}</span></div></div></section>'''
+    return f'''<section class="method-detail page-width op-overview" aria-label="Quadro operativo"><div class="op-overview-shell"><div class="op-overview-heading"><div><span class="section-number">01</span><h2>Quadro operativo</h2></div><p>Il totale principale comprende solo opportunità con accesso, supporto o candidatura comunale documentati. Le partnership sono conteggiate a parte.</p></div><div class="op-overview-grid op-overview-grid-v04"><article class="op-stat op-stat-open"><span class="op-stat-icon">{icons['briefcase']}</span><div><small>Aperte</small><strong>{opened}</strong><span>Opportunità comunali con candidatura attiva</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['calendar']}</span><div><small>A sportello</small><strong>{rolling}</strong><span>Supporti e misure comunali senza scadenza unica</span></div></article><article class="op-stat"><span class="op-stat-icon">{icons['radar']}</span><div><small>In arrivo</small><strong>{upcoming}</strong><span>Procedure comunali annunciate ufficialmente</span></div></article><article class="op-stat op-stat-partner"><span class="op-stat-icon">{icons['building']}</span><div><small>Partnership / consorzi</small><strong>{len(partners)}</strong><span>Ruolo comunale documentato, fuori dal totale principale</span></div></article><article class="op-stat op-stat-sources"><span class="op-stat-icon">{icons['radar']}</span><div><small>Rete di raccolta</small><strong>{monitored}</strong><span>{required_families} famiglie · {holdout_count} fonti di controllo separate</span></div></article><article class="op-stat op-stat-towns"><span class="op-stat-icon">{icons['map']}</span><div><small>Famiglie presidiate</small><strong>{covered_families}/{required_families}</strong><span>Il dato non equivale alla completezza del web</span></div></article><article class="op-stat op-stat-archive"><span class="op-stat-icon">{icons['archive']}</span><div><small>In archivio</small><strong>{len(archive)}</strong><span>Opportunità chiuse con fonte ufficiale</span></div></article></div><div class="op-audit-summary"><strong>Audit indipendente</strong><span>{closed}/{gap_total} buchi baseline chiusi · capture rate prospettico: {rate_text} ({sample}/{minimum}) · fonti di controllo raggiungibili: {holdout_healthy}/{holdout_count}</span></div></div></section>'''
 
 
 def _recent_controls(payload: dict[str, Any]) -> str:
@@ -100,15 +130,37 @@ def _recent_controls(payload: dict[str, Any]) -> str:
     )
 
 
+def _opportunity_sections(payload: dict[str, Any], card_renderer) -> str:
+    opportunities = list(payload.get("opportunities") or [])
+    municipal, partners = municipal_relevance.visible_partitions(opportunities)
+    municipal_cards = "\n".join(card_renderer(item) for item in municipal)
+    partner_cards = "\n".join(card_renderer(item) for item in partners)
+    partner_section = ""
+    if partners:
+        partner_section = f'''\n    <section class="method-detail page-width op-partnership-section" aria-label="Partnership e consorzi">
+      <div class="section-heading"><div><span class="section-number">04</span><h2>Partnership e consorzi</h2></div><p>Opportunità in cui il Comune ha un ruolo documentato di partner, beneficiario, procurer o sito dimostrativo. Non sono sommate al totale comunale principale.</p></div>
+      <div class="op-preview-list" data-op-list="partner">{partner_cards}</div>
+      <div class="op-preview-empty" data-op-empty-for="partner" hidden>Nessuna partnership corrisponde ai filtri selezionati.</div>
+    </section>'''
+    return f'''<section class="method-detail page-width" aria-label="Elenco opportunità">
+      <div class="section-heading"><div><span class="section-number">03</span><h2>Opportunità comunali</h2></div><p>Candidature dirette o condizionate, supporto/finanza e route nazionali con ruolo comunale documentato.</p></div>
+      <div class="op-preview-list" data-op-list="municipal">{municipal_cards}</div>
+      <div class="op-preview-empty" data-op-empty-for="municipal" hidden>Nessuna opportunità comunale corrisponde ai filtri selezionati.</div>
+    </section>{partner_section}'''
+
+
 def render_page(payload: dict[str, Any]) -> str:
     previous = base.BASE_CARD
-    base.BASE_CARD = lifecycle_card
+    card_renderer = lifecycle_card
+    base.BASE_CARD = card_renderer
     base.old.ROLE_LABELS["direct_or_partner"] = "Candidatura diretta (ove ammessa) o partner"
     try:
         page = base.render_page(payload)
     finally:
         base.BASE_CARD = previous
 
+    opportunities = list(payload.get("opportunities") or [])
+    municipal, partners = municipal_relevance.visible_partitions(opportunities)
     page = page.replace("v0.3", "v0.4.2")
     page = page.replace(
         '<link rel="stylesheet" href="../assets/opportunity-preview-v03.css">',
@@ -133,6 +185,18 @@ def render_page(payload: dict[str, Any]) -> str:
         flags=re.S,
     )
     page = re.sub(
+        r'<section class="method-detail page-width" aria-label="Elenco opportunità">.*?</section>',
+        _opportunity_sections(payload, card_renderer),
+        page,
+        count=1,
+        flags=re.S,
+    )
+    page = page.replace(
+        '<span class="section-number">04</span><h2>Archivio</h2>',
+        '<span class="section-number">05</span><h2>Archivio</h2>',
+        1,
+    )
+    page = re.sub(
         r'\s*<div class="op-source-shortcuts".*?</div>\s*(?=<div class="op-preview-controls">)',
         "\n      ",
         page,
@@ -147,19 +211,44 @@ def render_page(payload: dict[str, Any]) -> str:
         '<option value="announced_upcoming">In arrivo</option>'
         '</select></label>'
     )
-    page = page.replace('<label>Modalità<select data-op-access>', lifecycle_filter + '<label>Modalità<select data-op-access>', 1)
+    relevance_filter = (
+        '<label>Ruolo<select data-op-relevance>'
+        '<option value="">Tutti i ruoli pubblici</option>'
+        '<option value="municipal">Opportunità comunali</option>'
+        '<option value="partner">Partnership / consorzi</option>'
+        '</select></label>'
+    )
+    page = page.replace(
+        '<label>Modalità<select data-op-access>',
+        lifecycle_filter + relevance_filter + '<label>Modalità<select data-op-access>',
+        1,
+    )
     recent_controls = _recent_controls(payload)
     if recent_controls:
-        page = page.replace('<label class="op-search-field">Cerca<input type="search"', recent_controls + '<label class="op-search-field">Cerca<input type="search"', 1)
+        page = page.replace(
+            '<label class="op-search-field">Cerca<input type="search"',
+            recent_controls + '<label class="op-search-field">Cerca<input type="search"',
+            1,
+        )
     page = page.replace(
         'Filtra per Comune, fonte o modalità di partecipazione.',
-        'Filtra per Comune, stato, modalità, fonte o ricerca libera.',
+        'Filtra per Comune, stato, ruolo, modalità, fonte o ricerca libera.',
         1,
     )
     page = page.replace(
         'Bandi e linee di finanziamento con un <strong>ruolo operativo documentato</strong> per almeno un Comune della Versilia.',
-        'Bandi, avvisi, incentivi e opportunità operative con un <strong>ruolo documentato</strong> per almeno un Comune della Versilia.',
+        'Bandi, avvisi, incentivi e opportunità operative con un <strong>ruolo documentato</strong> per almeno un Comune della Versilia. Le partnership sono mostrate separatamente.',
         1,
+    )
+    page = re.sub(
+        r'<main class="editorial-page op-preview-main" data-opportunity-preview(?: data-total-opportunities="\d+")?>',
+        (
+            '<main class="editorial-page op-preview-main" data-opportunity-preview '
+            f'data-total-opportunities="{len(municipal) + len(partners)}" '
+            f'data-municipal-headline="{len(municipal)}" data-partnership="{len(partners)}">'
+        ),
+        page,
+        count=1,
     )
     return page
 
