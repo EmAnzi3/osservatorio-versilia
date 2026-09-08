@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 9,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "axisSweepClean": true,
+    "qualifiesForSaturationCounter": false,
+    "reason": "The municipality-applicability/internal-review/national-route axis produced no new current actionable gap, but it is not a complete saturation sweep because known unresolved audit families remain open (NEB Facility, residual LIFE CET, Horizon Cluster 5/6, I3 and cascade/downstream calls)."
+  },
+  "auditCorrections": [
+    {
+      "id": "pcm-famiglia-crescere-piccoli-comuni-2026",
+      "previousWave": 8,
+      "previousAuditClass": "captured_with_eligibility_overbreadth",
+      "correctedAuditClass": "captured_with_correct_municipality_filter",
+      "reason": "Wave 8 incorrectly treated the top-level municipalities array as an eligibility result. The canonical record already evaluates municipality_eligibility separately: Stazzema is eligible; Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza and Viareggio are not eligible because they exceed 5,000 inhabitants.",
+      "rootCauseCorrection": "no_municipality_scope_fanout_bug_established",
+      "officialSource": "https://famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/avviso-crescere-nei-piccoli-comuni-2026-stanziati-50-milioni-di-euro-per-le-famiglie/"
+    },
+    {
+      "id": "pcm-capitale-italiana-del-mare-2027",
+      "previousWave": 8,
+      "previousAuditClass": "captured_with_eligibility_overbreadth",
+      "correctedAuditClass": "captured_with_correct_municipality_filter",
+      "reason": "Wave 8 again misread the top-level municipalities array. The canonical municipality_eligibility map correctly marks Camaiore, Forte dei Marmi, Pietrasanta and Viareggio eligible and Massarosa, Seravezza and Stazzema not eligible because they are not coastal municipalities.",
+      "rootCauseCorrection": "no_municipality_scope_fanout_bug_established",
+      "officialSource": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/"
+    }
+  ],
+  "municipalityPrecisionControls": [
+    {
+      "id": "rt-toscana-diffusa-servizi-2026",
+      "auditClass": "captured_with_correct_partial_territory_condition",
+      "verifiedMunicipalities": {
+        "Camaiore": "eligible_only_for_interventions_in_the_mountain_portion_TD_star",
+        "Forte dei Marmi": "not_eligible",
+        "Massarosa": "not_eligible",
+        "Pietrasanta": "not_eligible",
+        "Seravezza": "eligible_TD",
+        "Stazzema": "eligible_TD",
+        "Viareggio": "not_eligible"
+      },
+      "note": "The canonical rule already states that for TD* municipalities the intervention must fall within the mountain portion of the municipal territory."
+    },
+    {
+      "id": "gse-conto-termico-3-2026",
+      "auditClass": "captured_with_correct_demographic_condition",
+      "note": "All seven municipalities can access the measure as public administrations where the intervention is eligible. The enhanced up-to-100% regime linked to the <=15,000 population threshold is correctly distinguished for Forte dei Marmi, Seravezza and Stazzema; the other municipalities remain under ordinary rules."
+    },
+    {
+      "id": "rt-sistemi-museali-2026",
+      "auditClass": "captured",
+      "deadlineAt": "2026-09-25T23:59:00+02:00",
+      "note": "Current and already represented in the canonical Radar output with the relevant museum-system participation condition."
+    },
+    {
+      "id": "rt-toscanaincontemporanea-2026",
+      "auditClass": "captured",
+      "deadlineAt": "2026-09-23T12:00:00+02:00",
+      "note": "Current and already present in the reference snapshot; no new gap."
+    },
+    {
+      "id": "st-mercati-rionali-2026",
+      "auditClass": "captured_internal_review_duplicate_noise",
+      "deadlineAt": "2026-09-15T12:00:00+02:00",
+      "note": "The canonical public record and rule are already present. ANCI Toscana preliminary fragments remaining in internal_review are duplicate discovery noise, not a promotion gap."
+    },
+    {
+      "id": "rt-amianto-2026",
+      "auditClass": "captured_internal_review_duplicate_noise",
+      "deadlineAt": "2026-09-30T16:00:00+02:00",
+      "note": "The canonical public record is already present and correctly identifies Tuscany local authorities as applicants. The old ANCI 'bando in arrivo' fragment is duplicate queue noise."
+    },
+    {
+      "id": "pcm-sport-eventi-2026",
+      "auditClass": "captured_internal_review_duplicate_noise",
+      "deadlineAt": "2026-12-01T23:59:00+01:00",
+      "note": "The public canonical record already models municipalities as conditional direct applicants when they hold the required exclusivity title for the event. Generic PCM Sport fragments in internal_review are noise."
+    }
+  ],
+  "nationalRouteAndLifecycleControls": [
+    {
+      "id": "spiagge-sicure-2026",
+      "auditClass": "correctly_excluded_geography",
+      "radarStatus": "absent_from_reference_snapshot",
+      "municipalityRole": "predetermined_beneficiary_only",
+      "funding": "EUR 25,000 per selected municipality; EUR 1.5 million total for 60 municipalities",
+      "verifiedVersiliaEligibility": "none_of_the_seven_municipalities",
+      "eligibilityEvidence": "The 2026 beneficiary list contains only two Tuscan municipalities: Magliano in Toscana and Montignoso. None of Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema or Viareggio is on the predetermined list.",
+      "officialSource": "https://www.interno.gov.it/it/amministrazione-trasparente/disposizioni-generali/atti-generali/atti-amministrativi-generali/circolari/circolare-24-giugno-2026-prevenzione-e-contrasto-dellabusivismo-commerciale-e-vendita-prodotti-contraffatti-spiagge-sicure-estate-2026-finanziamento"
+    },
+    {
+      "id": "amif-2026-integration-at-local-level",
+      "auditClass": "national_route_watch",
+      "radarStatus": "Italian_selection_mechanism_unresolved",
+      "deadlineAt": "2026-10-02",
+      "municipalityRole": "eligible_city_or_municipality_via_national_managing_authority_selection",
+      "funding": "EUR 77 million Specific Action; EUR 0.8-7.5 million per project; up to 90% EU co-financing",
+      "note": "The Commission confirms municipal eligibility and requires Member-State Managing Authority selection. As of 8 September 2026, no matching AMIF/2026/SA/2.4.2 Italian selection mechanism was found in either official FAMI access channel (public calls or other/ad-hoc implementation modalities). This does not prove that Italy has no route; the route remains unresolved and must be watched.",
+      "officialSources": [
+        "https://home-affairs.ec.europa.eu/news/integration-local-level-eur-77-million-under-amif-specific-action-2026-05-21_en",
+        "https://fami.dlci.interno.gov.it/avvisi-pubblici/",
+        "https://fami.dlci.interno.gov.it/altre-modalita/"
+      ]
+    },
+    {
+      "id": "dait-contributo-progettazione-annualita-2026",
+      "auditClass": "historical_pre_launch_gap",
+      "applicationWindow": {
+        "opensAt": "2025-11-24",
+        "deadlineAt": "2026-01-15T23:59:00+01:00"
+      },
+      "municipalityRole": "direct_local_authority_applicant_during_original_window",
+      "note": "The application opportunity was real but closed before the 120-day audit window. The current snapshot only discovered the 24 August 2026 assignment notice. Keep as a historical replay/annual sentinel rather than a current false negative.",
+      "officialSource": "https://dait.interno.gov.it/finanza-locale/notizie/comunicato-del-24-agosto-2026"
+    },
+    {
+      "id": "mic-dgcc-ri-generare-con-creativita-2026",
+      "auditClass": "scope_review_low_value_participation",
+      "deadlineAt": "2026-10-30",
+      "municipalityRole": "local_authority_may_submit_experience_or_contribution",
+      "funding": "none_confirmed",
+      "note": "Current city-facing participation/knowledge-gathering opportunity, including a local-authority track, but not a grant, technical-assistance programme or award. Retain as a scope control rather than automatic Radar promotion."
+    }
+  ],
+  "internalReviewConclusion": {
+    "reviewInternalCount": 40,
+    "finding": "A significant share of internal_review is duplicate discovery noise, navigation/index content, historical material or fragments of opportunities that already have canonical public records. Promotion-gap auditing must always deduplicate against canonical opportunities before classifying a held record as missed.",
+    "methodCorrection": "canonical_opportunity_crosscheck_required_before_promotion_gap_classification"
+  },
+  "newCurrentActionableFindings": [],
+  "waveConclusion": "No new current actionable gap was established on the municipality-applicability/internal-review/national-route axis. Two Wave 8 municipality-fanout findings are retracted. Spiagge Sicure is correctly excluded for the seven municipalities, AMIF remains an unresolved national-route watch, and the DAIT design-contribution case is historical. The audit nevertheless remains open and implementation remains frozen because other known families have not yet completed saturation sweeps.",
+  "next": [
+    "complete the full 9-topic NEB Facility 2026 matrix and classify municipality roles",
+    "close residual LIFE CET topics including ENERPOV, POLICY, RENEWHC, BETTERRENO and OSS",
+    "finish Horizon Cluster 5 and 6 strong municipal-role topics, especially CIRCBIO-04 and ZEROPOLLUTION-03",
+    "deepen I3 DG REGIO/EISMEA applicant/partner eligibility and Tuscany S3 fit",
+    "continue cascade/FSTP/associated-regions/replicator and Mission Ocean downstream EOI checks",
+    "after those axes are closed, run a complete independent saturation sweep eligible to start the 0/2 -> 1/2 counter"
+  ]
+}
