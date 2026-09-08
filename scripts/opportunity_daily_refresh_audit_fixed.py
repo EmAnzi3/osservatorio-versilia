@@ -39,6 +39,7 @@ _BASE_COMPOSE = h4._ORIGINAL_COMPOSE
 _BASE_INJECT = core.inject_verified_v04
 _BASE_RADAR_INJECT = getattr(radar_module, "inject_verified_v04", None)
 _BASE_PREPARE_STABLE = stable._prepare_public_stable
+_BASE_RENDER_REPORT = h4.daily._render_report
 
 
 def _load_fixes() -> dict[str, Any]:
@@ -175,18 +176,37 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     return result
 
 
+def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, Any]]) -> str:
+    text = _BASE_RENDER_REPORT(result, new_items)
+    counts = result.get("counts") or {}
+    public = int(counts.get("public") or len(result.get("opportunities") or []))
+    headline = int(counts.get("municipalHeadlineCurrentOrRolling") or 0)
+    upcoming = int(counts.get("municipalHeadlineUpcoming") or 0)
+    partners = int(counts.get("partnershipCurrentOrRolling") or 0)
+    partner_upcoming = int(counts.get("partnershipUpcoming") or 0)
+    old = f"Opportunità correnti: **{public}** · evidenziate come nuove: **{counts.get('new', 0)}**."
+    new = (
+        f"Opportunità comunali correnti/a sportello: **{headline}** · in arrivo: **{upcoming}** · "
+        f"partnership correnti/a sportello: **{partners}** · partnership in arrivo: **{partner_upcoming}** · "
+        f"evidenziate come nuove: **{counts.get('new', 0)}**."
+    )
+    return text.replace(old, new, 1)
+
+
 def main() -> int:
     original_h4_compose = h4._ORIGINAL_COMPOSE
     original_core_compose = core.compose_runtime_payloads
     original_core_inject = core.inject_verified_v04
     original_radar_inject = getattr(radar_module, "inject_verified_v04", None)
     original_prepare = stable._prepare_public_stable
+    original_report = h4.daily._render_report
 
     h4._ORIGINAL_COMPOSE = _compose_with_audit_fixes
     core.inject_verified_v04 = _inject_with_audit_fixes
     if _BASE_RADAR_INJECT is not None:
         radar_module.inject_verified_v04 = _inject_with_audit_fixes
     stable._prepare_public_stable = _prepare_public_audit_fixed
+    h4.daily._render_report = _render_report_relevance
     try:
         return stable.main()
     finally:
@@ -196,6 +216,7 @@ def main() -> int:
         if original_radar_inject is not None:
             radar_module.inject_verified_v04 = original_radar_inject
         stable._prepare_public_stable = original_prepare
+        h4.daily._render_report = original_report
 
 
 if __name__ == "__main__":
