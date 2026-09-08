@@ -92,8 +92,21 @@ def _real_snapshot_contract() -> dict:
     return summary
 
 
+def _audit_fix_contract() -> None:
+    payload = json.loads((ROOT / "data" / "opportunity-audit-fixes-v1.json").read_text(encoding="utf-8"))
+    entries = list(payload.get("verifiedEntries") or [])
+    assert entries
+    invalid = [
+        entry.get("coverage_id")
+        for entry in entries
+        if str(entry.get("municipal_relevance_class") or "") not in relevance.VALID_CLASSES
+    ]
+    assert not invalid, f"Verified audit entries senza municipal_relevance_class valida: {invalid}"
+
+
 def main() -> int:
     _synthetic_contract()
+    _audit_fix_contract()
     real = _real_snapshot_contract()
     print(
         "Rilevanza comunale OK: sintetico headline=4 · partnership=1 · review esclusa=1; "
