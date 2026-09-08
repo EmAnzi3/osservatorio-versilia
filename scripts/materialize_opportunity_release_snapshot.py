@@ -2,18 +2,21 @@
 """Ricostruisce lo snapshot pubblico verificato del Radar Opportunità v0.4.4.
 
 La release base v0.4.3 resta immutabile e riproducibile. Sopra di essa vengono
-applicate le opportunità Sport/LIFE v0.4.4; quando esiste uno snapshot prodotto
-dalla routine giornaliera e supera i gate minimi, quello diventa la sorgente
-pubblica della build.
+applicate le opportunità Sport/LIFE v0.4.4, l'eventuale snapshot giornaliero e,
+infine, il corpus audit v1 già verificato. In questo modo la build pubblica non
+resta ferma al vecchio conteggio mentre il refresh giornaliero recepisce il nuovo
+corpus.
 """
 from __future__ import annotations
 
 import base64
 import json
 import zlib
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
+import opportunity_audit_corpus_promotions as audit_promotions
+import opportunity_municipal_relevance as relevance
 import run_opportunity_radar_v044 as radar_v044
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -117,6 +120,21 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
     return True
 
 
+def _apply_public_audit_replay(data: dict) -> dict:
+    today = date.today()
+    audit_promotions.apply_audit_corpus_promotions(data, today)
+    radar_v044.core._recompute_v04_counts(data)
+    relevance.apply_to_payload(data, drop_review=True)
+    replay = data.get("auditCorpusPromotion") or {}
+    if int(replay.get("added") or 0) > 0:
+        # La build è stata aggiornata dal replay audit in data odierna: la data
+        # pubblica deve dirlo, anche se il file daily persistente è del giorno prima.
+        data["referenceDate"] = today.isoformat()
+        data["generatedAt"] = datetime.now(timezone.utc).isoformat()
+    data["auditCorpusPromotionVersion"] = audit_promotions.PROMOTION_VERSION
+    return data
+
+
 def main() -> None:
     baseline = _merge_v044(_decode_base())
     data = baseline
@@ -130,13 +148,21 @@ def main() -> None:
             data = candidate
             source = "snapshot giornaliero verificato"
 
+    data = _apply_public_audit_replay(data)
     TARGET.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     total = len(data.get("opportunities") or [])
     monitored = len(((data.get("sourceCoverage") or {}).get("rows") or []))
     new_count = int((data.get("counts") or {}).get("new") or 0)
+    municipal = data.get("municipalRelevance") or {}
+    replay = data.get("auditCorpusPromotion") or {}
     print(
-        f"Snapshot Radar pubblico: {total} opportunità · {new_count} nuove · "
-        f"{monitored} fonti · riferimento {data.get('referenceDate')} · v0.4.4 · {source}"
+        f"Snapshot Radar pubblico: {total} schede · "
+        f"{municipal.get('headlineCurrentOrRolling', 0)} comunali current/rolling + "
+        f"{municipal.get('headlineUpcoming', 0)} comunali upcoming · "
+        f"{municipal.get('partnershipCurrentOrRolling', 0)} partnership current/rolling + "
+        f"{municipal.get('partnershipUpcoming', 0)} partnership upcoming · "
+        f"{new_count} nuove · {monitored} fonti · riferimento {data.get('referenceDate')} · "
+        f"replay audit +{replay.get('added', 0)} · v0.4.4 · {source}"
     )
 
 
