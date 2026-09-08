@@ -29,6 +29,13 @@ def _item(title: str, relevance_class: str, *, stage: str = "application_open") 
         "geographic_scope": "Italia",
         "final_beneficiaries": "Comunità locale",
         "project_requirements": "Requisiti del test",
+        "presentation": {
+            "source_label": "Fonte test",
+            "source_mark": "FT",
+            "source_class": "test",
+            "source_favicon": "../assets/source-favicons/test.png",
+            "category": "test",
+        },
         "municipality_eligibility": {
             "Camaiore": {"status": "conditional", "reason": "Caso sintetico"},
         },
@@ -70,6 +77,7 @@ def _synthetic_contract() -> None:
     assert 'data-op-list="municipal"' in html
     assert 'data-op-list="partner"' in html
     assert 'data-relevance="partner"' in html
+    assert 'class="op-source-favicon"' in html
     assert "Partnership e consorzi" in html
     assert "Da escludere" not in html
     assert html.count("data-opportunity-card") == 5
