@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 8,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "referenceSnapshot": {
+    "path": "data/opportunity-daily-public.json",
+    "generatedAt": "2026-09-07T09:35:26+00:00",
+    "publicCount": 29,
+    "reviewInternalCount": 40
+  },
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Wave 8 finds new current actionable gaps across Horizon Cluster 3, national technical/financial support and promotion-after-discovery, plus municipality-level eligibility overbreadth in already captured opportunities."
+  },
+  "currentFindings": [
+    {
+      "id": "horizon-cl3-2026-01-infra-01",
+      "title": "HORIZON-CL3-2026-01-INFRA-01 · Tools and processes to support stress tests of critical infrastructure",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "high",
+      "municipalityRole": "municipal_civil_protection_authority_can_serve_as_required_practitioner_beneficiary_when_proposal_focus_matches",
+      "funding": "Horizon Europe Innovation Action; EUR 9.67 million topic budget; around EUR 4.835 million per project",
+      "eligibilityEvidence": "At least three relevant practitioners must participate as beneficiaries; eligible practitioner portfolios explicitly include civil protection authorities. Under the Italian Civil Protection Code, mayors are territorial civil-protection authorities and municipalities perform civil-protection functions.",
+      "officialSources": [
+        "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-6-civil-security-for-society_horizon-2026-2027_en.pdf",
+        "https://www.protezionecivile.gov.it/it/normativa/decreto-legislativo-n1-del-2-gennaio-2018-codice-della-protezione-civile/"
+      ]
+    },
+    {
+      "id": "horizon-cl3-2026-01-infra-02",
+      "title": "HORIZON-CL3-2026-01-INFRA-02 · Security challenges of the green transition in urban and peri-urban areas",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "previousAuditClass": "scope_review",
+      "severity": "high",
+      "municipalityRole": "municipal_civil_protection_authority_can_serve_as_required_practitioner_beneficiary_when_proposal_focus_matches",
+      "funding": "Horizon Europe Research and Innovation Action; EUR 4 million topic budget; around EUR 4 million per project",
+      "eligibilityEvidence": "At least three relevant practitioners must participate as beneficiaries; portfolios explicitly include civil protection authorities and safety/security first responders. This upgrades the Wave 7 scope review.",
+      "officialSources": [
+        "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-6-civil-security-for-society_horizon-2026-2027_en.pdf",
+        "https://www.protezionecivile.gov.it/it/normativa/decreto-legislativo-n1-del-2-gennaio-2018-codice-della-protezione-civile/"
+      ]
+    },
+    {
+      "id": "horizon-cl3-2026-01-infra-03",
+      "title": "HORIZON-CL3-2026-01-INFRA-03 · Targeted innovative capabilities for the resilience of critical entities to natural and human-induced disasters, including hybrid scenarios",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_exact_topic",
+      "auditClass": "current_conditional_beneficiary_false_negative",
+      "severity": "high",
+      "municipalityRole": "municipal_civil_protection_authority_can_serve_as_required_practitioner_beneficiary_when_proposal_focus_matches",
+      "funding": "Horizon Europe Innovation Action; EUR 9 million topic budget; around EUR 4.5 million per project",
+      "eligibilityEvidence": "At least three relevant practitioners must participate as beneficiaries; portfolios explicitly include civil protection authorities, first-responder organisations and authorities managing NaTech events.",
+      "officialSources": [
+        "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-6-civil-security-for-society_horizon-2026-2027_en.pdf",
+        "https://www.protezionecivile.gov.it/it/normativa/decreto-legislativo-n1-del-2-gennaio-2018-codice-della-protezione-civile/"
+      ]
+    },
+    {
+      "id": "mic-european-heritage-label-2027",
+      "title": "Marchio del patrimonio europeo · preselezione italiana 2027",
+      "publishedAt": "2026-06-23",
+      "deadlineAt": "2026-11-04",
+      "radarStatus": "internal_review_not_public",
+      "auditClass": "promotion_gap",
+      "severity": "high",
+      "municipalityRole": "conditional_site_proponent_or_managing_authority_for_an_eligible_site",
+      "funding": "Recognition / European Heritage Label; no direct monetary grant confirmed in the official call notice",
+      "eligibilityEvidence": "The Italian preselection is current; the application model distinguishes the proposing organisation and the site managing authority. A municipality can therefore be relevant where it proposes or manages an eligible site. Sant'Anna di Stazzema is already among Italian labelled sites, so that specific site is not a new candidate.",
+      "officialSources": [
+        "https://cultura.gov.it/comunicato/29136",
+        "https://marchiopatrimonio.cultura.gov.it/"
+      ]
+    },
+    {
+      "id": "sinfi-supporto-comuni-2026",
+      "title": "SINFI 2026 · Supporto ai Comuni fino a 50.000 abitanti",
+      "opensAt": "2026-06-08",
+      "deadlineAt": null,
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "rolling_structural_gap",
+      "severity": "high",
+      "municipalityRole": "direct_request_for_free_technical_support",
+      "funding": "No cash grant to the municipality; free Infratel technical service funded with public resources, managed FIFO until resources are exhausted",
+      "eligibilityEvidence": "Municipalities up to 50,000 inhabitants can request free surveying, mapping, digitisation and SINFI data-loading support through the dedicated platform service.",
+      "officialSource": "https://www.infratelitalia.it/archivio-news/notizie/progetto-sinfi-2026-i-comuni-fino-50000-abitanti-infratel-italia-apre"
+    },
+    {
+      "id": "icsc-cultura-missione-comune-2026",
+      "title": "Cultura Missione Comune 2026",
+      "deadlineAt": "2026-09-30",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_false_negative",
+      "severity": "critical",
+      "municipalityRole": "direct_local_authority_borrower",
+      "funding": "EUR 50 million facility for fixed-rate loans with full interest-rate subsidy; up to EUR 2m for municipalities <=5,000 inhabitants and EUR 4m for municipalities with 5,000-100,000 inhabitants",
+      "eligibilityEvidence": "The initiative is expressly addressed to local authorities, provinces and regions and finances public cultural heritage interventions, acquisitions, co-financing, digitisation and eligible cost increases.",
+      "officialSource": "https://www.creditosportivo.it/cliente-enti-territoriali/"
+    }
+  ],
+  "municipalityPrecisionFindings": [
+    {
+      "id": "pcm-famiglia-crescere-piccoli-comuni-2026",
+      "title": "Crescere nei piccoli comuni 2026",
+      "radarStatus": "captured_public_but_municipality_mapping_overbroad",
+      "auditClass": "captured_with_eligibility_overbreadth",
+      "severity": "critical",
+      "officialEligibility": "Municipalities with population up to 5,000 inhabitants; the official exhaustive Annex 1 is based on population at 1 January 2025.",
+      "radarMunicipalitiesShown": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "verifiedEligibleMunicipalities": [
+        "Stazzema"
+      ],
+      "eligibilityEvidence": "Official Annex 1 contains Stazzema (population 2,892) and contains none of the other six Versilia municipalities.",
+      "rootCauseFamily": "municipality_scope_fanout_without_condition_evaluation",
+      "officialSources": [
+        "https://famiglia.governo.it/it/politiche-e-attivita/finanziamenti-avvisi-e-bandi/avvisi-e-bandi/avviso-crescere-nei-piccoli-comuni-2026-stanziati-50-milioni-di-euro-per-le-famiglie/",
+        "https://famiglia.governo.it/media/pfzlra1b/allegato-1-avviso-piccoli-comuni.pdf"
+      ]
+    },
+    {
+      "id": "pcm-capitale-italiana-del-mare-2027",
+      "title": "Capitale italiana del mare 2027",
+      "radarStatus": "captured_public_but_municipality_mapping_overbroad",
+      "auditClass": "captured_with_eligibility_overbreadth",
+      "severity": "high",
+      "officialEligibility": "All Italian coastal municipalities",
+      "radarMunicipalitiesShown": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Massarosa",
+        "Pietrasanta",
+        "Seravezza",
+        "Stazzema",
+        "Viareggio"
+      ],
+      "verifiedEligibleMunicipalities": [
+        "Camaiore",
+        "Forte dei Marmi",
+        "Pietrasanta",
+        "Viareggio"
+      ],
+      "rootCauseFamily": "municipality_scope_fanout_without_condition_evaluation",
+      "officialSource": "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/capitale-italiana-del-mare/procedura-di-selezione-anno-2027/"
+    }
+  ],
+  "internalReviewControls": [
+    {
+      "id": "toscana-ccn-2026",
+      "title": "Valorizzazione Centri Commerciali Naturali 2026",
+      "auditClass": "correctly_excluded_eligibility",
+      "note": "Current and discovered internally, but applicants are CCN management bodies mainly constituted by commerce businesses, not municipalities.",
+      "officialSource": "https://www.sviluppo.toscana.it/bando/bando-centri-commerciali-naturali-2026/"
+    },
+    {
+      "id": "pcm-fondo-socio-educativo-minori-2026",
+      "auditClass": "historical_or_allocated_lifecycle_control",
+      "note": "Municipal funding is real, but the 2026 beneficiary list was already determined/published; this is not a current open application gap on 8 September."
+    },
+    {
+      "id": "eu-eucf-call-8-2026-internal-fragment",
+      "auditClass": "captured",
+      "note": "The official upcoming EUCF 8th call is already public in the Radar; the internal-review fragment is queue noise, not a promotion gap."
+    },
+    {
+      "id": "digital-europe-cyber-11-family",
+      "auditClass": "scope_review",
+      "note": "Current Digital Europe cybersecurity calls require topic-specific security/NIS2 eligibility. The seven municipalities must not be auto-promoted without evidence that they are eligible entities for the specific topic."
+    }
+  ],
+  "cluster3Controls": [
+    {
+      "id": "horizon-cl3-2026-01-drs-03",
+      "auditClass": "correctly_not_auto_promoted_municipality",
+      "note": "Mandatory beneficiaries are first-responder organisations and medical-emergency authorities; a municipality is not automatically one of those organisations."
+    },
+    {
+      "id": "horizon-cl3-2026-01-drs-04",
+      "auditClass": "correctly_not_auto_promoted_municipality",
+      "note": "The topic accepts first responders or authorities in charge of disaster risk, but the Work Programme footnote defines the latter as public bodies operating at national level. Local authorities are relevant uptake stakeholders, not automatically the required beneficiary."
+    },
+    {
+      "id": "horizon-cl3-2026-01-ssri-04",
+      "auditClass": "scope_review",
+      "note": "The mandatory practitioner beneficiaries are first-responder organisations; municipal relevance does not by itself establish the municipality as such an organisation."
+    },
+    {
+      "id": "cluster3-fct-bm-2026-negative-control",
+      "auditClass": "negative_control_no_new_direct_municipal_gap",
+      "note": "The residual FCT and Border Management topics reviewed in this pass focus on Police Authorities, Border/Coast Guard, Customs or other specialised practitioners; no new direct seven-municipality opportunity was established."
+    }
+  ],
+  "routeAndLifecycleControls": [
+    {
+      "id": "amif-2026-integration-at-local-level",
+      "auditClass": "national_route_watch",
+      "radarStatus": "Italian_selection_mechanism_unresolved",
+      "municipalityRole": "eligible_city_or_municipality_via_national_managing_authority_selection",
+      "funding": "EUR 77 million Specific Action; EUR 0.8-7.5 million per project; up to 90% EU co-financing",
+      "deadlineAt": "2026-10-02",
+      "note": "The Commission confirms eligibility and the Managing-Authority route. This sweep still did not confirm a dedicated Italian official selection notice mapping this Specific Action; unrelated Italian EUR 77 million social-service transfers must not be confused with it.",
+      "officialSource": "https://home-affairs.ec.europa.eu/news/integration-local-level-eur-77-million-under-amif-specific-action-2026-05-21_en"
+    },
+    {
+      "id": "spiagge-sicure-2026",
+      "auditClass": "scope_review_predetermined_beneficiary_list",
+      "radarStatus": "absent_from_reference_snapshot",
+      "note": "The programme is current but limited to 60 pre-identified coastal municipalities. The official beneficiary list must be matched to the seven municipalities before assigning false-negative status.",
+      "officialSource": "https://www.interno.gov.it/it/amministrazione-trasparente/disposizioni-generali/atti-generali/atti-amministrativi-generali/circolari/circolare-24-giugno-2026-prevenzione-e-contrasto-dellabusivismo-commerciale-e-vendita-prodotti-contraffatti-spiagge-sicure-estate-2026-finanziamento"
+    }
+  ],
+  "internalReviewConclusion": {
+    "reviewInternalCount": 40,
+    "finding": "Most reviewed records examined in this pass are page fragments, menu/index pages, historical items or duplicates of canonical records already public. The European Heritage Label 2027 is a genuine current promotion gap and must be separated from queue noise."
+  },
+  "rootCauseFamilies": [
+    "topic_level_discovery_gap",
+    "promotion_after_discovery_gap",
+    "rolling_technical_support_source_gap",
+    "financial_instrument_source_gap",
+    "municipality_scope_fanout_without_condition_evaluation",
+    "internal_review_queue_noise"
+  ],
+  "next": [
+    "complete a systematic seven-municipality applicability matrix for current public opportunities, prioritising population, coastal, territorial and programme-specific conditions",
+    "resolve the official Spiagge Sicure 2026 beneficiary list against the seven municipalities",
+    "continue the Italian AMIF Managing Authority route watch",
+    "re-run the internal_review audit after canonical deduplication",
+    "only after these precision and route checks run a new independent saturation sweep",
+    "only a sweep with no new current actionable gap may advance the saturation counter to 1/2"
+  ]
+}
