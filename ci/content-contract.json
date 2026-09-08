@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "canonicalSources": {
+    "catalog": "data/site-data.json",
+    "sourceRegistry": "data/source-registry.json"
+  },
+  "catalog": {
+    "allowedStorageTypes": [
+      "inline",
+      "external-climate",
+      "special-route"
+    ],
+    "externalStorageTypes": [
+      "external-climate"
+    ],
+    "metricMembership": "exactly-one-theme",
+    "sectionMetricReferencesMustBeUnique": true
+  },
+  "pages": {
+    "static": [
+      "index.html",
+      "404.html",
+      "offline.html",
+      "progetto/index.html",
+      "segnala/index.html"
+    ],
+    "standalone": [
+      "confronta/meteo-clima/index.html",
+      "pnrr/index.html",
+      "stato-dati/index.html",
+      "opportunita/index.html",
+      "percorsi/index.html",
+      "percorsi/metodo.html"
+    ],
+    "builderTraceExceptions": [
+      "confronta/meteo-clima/index.html",
+      "confronta/economia/atlante-attivita-economiche/index.html",
+      "pnrr/index.html",
+      "stato-dati/index.html",
+      "opportunita/index.html",
+      "percorsi/index.html",
+      "percorsi/metodo.html"
+    ],
+    "noShell": [
+      "offline.html"
+    ],
+    "noFooter": [
+      "percorsi/index.html"
+    ],
+    "derivedFamilies": [
+      "town",
+      "theme",
+      "standard-indicator",
+      "special-route"
+    ]
+  },
+  "visualizations": {
+    "resolutionOrder": [
+      "special-route",
+      "external-climate",
+      "composite",
+      "history",
+      "simple"
+    ],
+    "frontendGlobs": [
+      "assets/app-parts/*.txt",
+      "assets/visual-grammar.js"
+    ]
+  }
+}

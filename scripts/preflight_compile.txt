@@ -55,6 +55,8 @@ scripts/materialize_mobilita_tpl_v119.py
 scripts/test_mobilita_tpl_v119.py
 scripts/materialize_agricoltura_territorio_v120.py
 scripts/test_agricoltura_territorio_v120.py
+scripts/test_agricoltura_ii_draft.py
+scripts/test_agricoltura_ii_preview_browser.py
 scripts/test_agricoltura_review_interactions_v120.py
 scripts/materialize_costa_mare_v123.py
 scripts/materialize_attivita_estrattive_v128.py
@@ -74,3 +76,15 @@ scripts/test_erp_arrears_v125.py
 scripts/test_erp_arrears_v125_browser.py
 scripts/finalize_catalog_release.py
 scripts/test_catalog_release_v116.py
+scripts/content_contract.py
+scripts/workflow_contract.py
+scripts/site_consistency_impl.py
+scripts/test_architecture_contract.py
+scripts/build_static_brand.py
+scripts/build_static_brand_impl.py
+scripts/ephemeral_build_workspace.py
+scripts/public_build_snapshot.py
+scripts/test_static_impl.py
+scripts/test_indicator_pages_impl.py
+scripts/test_composite_indicators_impl.py
+scripts/test_release_v170_compat_impl.py
