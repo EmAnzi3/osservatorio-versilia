@@ -3,9 +3,9 @@
 
 La release base v0.4.3 resta immutabile e riproducibile. Sopra di essa vengono
 applicate le opportunità Sport/LIFE v0.4.4, l'eventuale snapshot giornaliero e,
-infine, il corpus audit v1 già verificato. In questo modo la build pubblica non
-resta ferma al vecchio conteggio mentre il refresh giornaliero recepisce il nuovo
-corpus.
+infine, il replay completo della matrice municipale finale. In questo modo la
+build pubblica non resta ferma al vecchio conteggio mentre il refresh giornaliero
+recepisce tutte le opportunità verificate dall'audit.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ import zlib
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-import opportunity_audit_corpus_promotions as audit_promotions
+import opportunity_matrix_promotions as audit_promotions
 import opportunity_municipal_relevance as relevance
 import run_opportunity_radar_v044 as radar_v044
 
@@ -122,7 +122,7 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
 
 def _apply_public_audit_replay(data: dict) -> dict:
     today = date.today()
-    audit_promotions.apply_audit_corpus_promotions(data, today)
+    audit_promotions.apply_complete_promotions(data, today)
     radar_v044.core._recompute_v04_counts(data)
     relevance.apply_to_payload(data, drop_review=True)
     replay = data.get("auditCorpusPromotion") or {}
