@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "auditDate": "2026-09-08",
+  "wave": 5,
+  "status": "open_not_saturated",
+  "implementationFrozen": true,
+  "saturation": {
+    "requiredConsecutiveCleanSweeps": 2,
+    "currentConsecutiveCleanSweeps": 0,
+    "reason": "Lo sweep successivo alla Wave 4 ha trovato nuovi current false negative Horizon Cluster 3 con ruolo locale obbligatorio."
+  },
+  "currentFindings": [
+    {
+      "id": "horizon-cl3-2026-01-drs-01",
+      "title": "HORIZON-CL3-2026-01-DRS-01 · Designing new ways of risk awareness and enhanced disaster preparedness",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_required_local_authority_false_negative",
+      "severity": "critical",
+      "municipalityRole": "required_local_or_regional_authority_representative",
+      "eligibilityEvidence": "Minimum consortium conditions include at least one organisation representing local or regional authorities, together with disaster-risk and civil-society actors."
+    },
+    {
+      "id": "horizon-cl3-2026-01-drs-02",
+      "title": "HORIZON-CL3-2026-01-DRS-02 · Multi-hazard approach and cumulative/cascading impacts",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_required_local_authority_false_negative",
+      "severity": "critical",
+      "municipalityRole": "required_local_or_regional_disaster_response_authority",
+      "eligibilityEvidence": "Minimum consortium conditions require two representatives of local or regional authorities in charge of disaster response, plus two disaster-risk/crisis-communication authorities across at least three eligible countries."
+    },
+    {
+      "id": "horizon-cl3-2026-01-drs-05",
+      "title": "HORIZON-CL3-2026-01-DRS-05 · Climate security and civil preparedness",
+      "opensAt": "2026-05-06",
+      "deadlineAt": "2026-11-05T17:00:00+01:00",
+      "radarStatus": "absent_from_reference_snapshot",
+      "auditClass": "current_local_regional_scope_promotion_gap",
+      "severity": "high",
+      "municipalityRole": "conditional_local_or_regional_risk_management_partner",
+      "note": "The topic explicitly prioritises local/regional risk-management and climate-adaptation work, but a mandatory municipal beneficiary role was not established in this sweep."
+    }
+  ],
+  "replayAndScopeControls": [
+    {
+      "id": "horizon-cl6-2026-01-circbio-01-two-stage",
+      "title": "HORIZON-CL6-2026-01-CIRCBIO-01-two-stage · Circular systemic solutions through living labs in cities and regions",
+      "auditClass": "historical_prelaunch_or_invited_second_stage_control",
+      "municipalityRole": "target_local_or_regional_public_authority",
+      "firstStageDeadline": "2026-04-16",
+      "secondStageDeadline": "2026-09-23",
+      "note": "The topic strongly targets local/regional public authorities and requires at least two demonstration and three replication living labs. However, new applicants cannot enter at second stage; the first stage closed before the public Radar launch. Preserve as replay/sentinel rather than current false negative."
+    }
+  ],
+  "positiveOrNegativeControls": [
+    {
+      "id": "eu4health-2026-generic-sweep",
+      "auditClass": "no_new_municipal_current_case_confirmed_in_this_sweep",
+      "note": "Current EU4Health pages reviewed were dominated by health-sector tenders and specialised health-network actions; no new direct municipal opportunity was promoted without role evidence."
+    },
+    {
+      "id": "mission-ocean-associated-regions-directory",
+      "auditClass": "directory_control",
+      "note": "Commission directory confirms associated-regions calls are a recurring editorial family. Current items reviewed were closed; retain the directory as an oracle for future cascade sweeps."
+    }
+  ],
+  "next": [
+    "complete Cluster 3 topic scan for any additional mandatory local/regional roles",
+    "scan Cluster 6 two-stage and single-stage calls distinguishing current-entry from invited-only second stages",
+    "scan EU4Health and DG SANTE for local-authority roles beyond health-sector procurement",
+    "scan UCPM/DG ECHO current and forthcoming calls",
+    "scan replicator/cascade/associated-regions directories for currently open municipal calls",
+    "only after no-new-current-actionable result start clean-sweep counter at 1/2"
+  ]
+}
