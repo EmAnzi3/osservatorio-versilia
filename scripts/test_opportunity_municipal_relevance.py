@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import copy
+import json
+from pathlib import Path
 
 import build_opportunity_preview_v04 as preview
 import opportunity_municipal_relevance as relevance
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _item(title: str, relevance_class: str, *, stage: str = "application_open") -> dict:
@@ -30,7 +34,7 @@ def _item(title: str, relevance_class: str, *, stage: str = "application_open") 
     }
 
 
-def main() -> int:
+def _synthetic_contract() -> None:
     payload = {
         "referenceDate": "2026-09-08",
         "opportunities": [
@@ -68,12 +72,36 @@ def main() -> int:
     assert "Partnership e consorzi" in html
     assert "Da escludere" not in html
     assert html.count("data-opportunity-card") == 5
+    assert html.index('data-op-list="municipal"') < html.index('data-op-list="partner"')
 
-    municipal_pos = html.index('data-op-list="municipal"')
-    partner_pos = html.index('data-op-list="partner"')
-    assert municipal_pos < partner_pos
 
-    print("Rilevanza comunale OK: headline=4 · partnership=1 · review esclusa=1")
+def _real_snapshot_contract() -> dict:
+    path = ROOT / "data" / "opportunity-daily-public.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    original = list(payload.get("opportunities") or [])
+    classified = relevance.apply_to_payload(copy.deepcopy(payload), drop_review=True)
+    summary = classified["municipalRelevance"]
+    visible = list(classified.get("opportunities") or [])
+    excluded = list(classified.get("municipalRelevanceReview") or [])
+
+    assert not excluded, [item.get("title") for item in excluded]
+    assert len(visible) == len(original), (len(visible), len(original))
+    assert summary["headlineTotal"] + summary["partnershipTotal"] == len(original), summary
+    assert summary["headlineCurrentOrRolling"] + summary["headlineUpcoming"] == summary["headlineTotal"]
+    assert summary["partnershipCurrentOrRolling"] + summary["partnershipUpcoming"] == summary["partnershipTotal"]
+    return summary
+
+
+def main() -> int:
+    _synthetic_contract()
+    real = _real_snapshot_contract()
+    print(
+        "Rilevanza comunale OK: sintetico headline=4 · partnership=1 · review esclusa=1; "
+        f"snapshot headline={real['headlineTotal']} "
+        f"({real['headlineCurrentOrRolling']} correnti/rolling + {real['headlineUpcoming']} upcoming) · "
+        f"partnership={real['partnershipTotal']} "
+        f"({real['partnershipCurrentOrRolling']} correnti/rolling + {real['partnershipUpcoming']} upcoming)."
+    )
     return 0
 
 
