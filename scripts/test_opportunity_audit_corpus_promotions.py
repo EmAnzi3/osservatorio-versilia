@@ -7,7 +7,7 @@ import json
 from datetime import date
 from pathlib import Path
 
-import opportunity_audit_corpus_promotions as promotions
+import opportunity_matrix_promotions as promotions
 import opportunity_municipal_relevance as relevance
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,7 +31,7 @@ def main() -> int:
     baseline = json.loads((ROOT / "data" / "opportunity-daily-public.json").read_text(encoding="utf-8"))
     before_ids = {str(x.get("coverage_id") or x.get("id") or "") for x in baseline.get("opportunities") or []}
     before = relevance.summarize(list(baseline.get("opportunities") or []))
-    result = promotions.apply_audit_corpus_promotions(copy.deepcopy(baseline), REFERENCE)
+    result = promotions.apply_complete_promotions(copy.deepcopy(baseline), REFERENCE)
     added_items = [
         item for item in result.get("opportunities") or []
         if str(item.get("coverage_id") or item.get("id") or "") not in before_ids
@@ -43,12 +43,12 @@ def main() -> int:
     replay = result["auditCorpusPromotion"]
 
     # La matrice finale certifica 52 nuove opportunità comunali correnti/rolling
-    # e 37 partnership. Il replay deve avvicinarsi a quel corpus e può ridursi
-    # solo per deduplica/lifecycle, non perché una matrice multi-topic sia stata
-    # collassata in una singola scheda.
-    assert replay["municipalCurrentOrRollingAdded"] >= 45, replay
-    assert replay["partnershipCurrentOrRollingAdded"] >= 30, replay
-    assert replay["added"] >= 75, replay
+    # e 37 partnership rispetto allo snapshot del 7 settembre. Il gate non
+    # consente di pubblicare una preview che ne perda anche solo un intero gruppo.
+    assert replay["municipalCurrentOrRollingAdded"] >= 52, replay
+    assert replay["partnershipCurrentOrRollingAdded"] >= 37, replay
+    assert replay["currentOrRollingAdded"] >= promotions.MATRIX_CURRENT_TARGET, replay
+    assert replay["added"] >= promotions.MATRIX_CURRENT_TARGET, replay
     assert after["headlineCurrentOrRolling"] > before["headlineCurrentOrRolling"], (before, after)
     assert after["partnershipCurrentOrRolling"] > before["partnershipCurrentOrRolling"], (before, after)
     assert not result.get("municipalRelevanceReview"), [
@@ -56,7 +56,7 @@ def main() -> int:
     ]
 
     print(
-        "Replay audit corpus: "
+        "Replay audit corpus completo: "
         f"scoperte={replay['discovered']} · aggiunte={replay['added']} · "
         f"nuove comunali current/rolling={replay['municipalCurrentOrRollingAdded']} · "
         f"nuove comunali upcoming={replay['municipalUpcomingAdded']} · "
