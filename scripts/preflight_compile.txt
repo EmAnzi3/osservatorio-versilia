@@ -83,3 +83,8 @@ scripts/test_architecture_contract.py
 scripts/build_static_brand.py
 scripts/build_static_brand_impl.py
 scripts/ephemeral_build_workspace.py
+scripts/public_build_snapshot.py
+scripts/test_static_impl.py
+scripts/test_indicator_pages_impl.py
+scripts/test_composite_indicators_impl.py
+scripts/test_release_v170_compat_impl.py

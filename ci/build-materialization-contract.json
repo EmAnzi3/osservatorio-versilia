@@ -12,6 +12,10 @@
     "scripts/refine_economy_atlas_tooltips.py",
     "scripts/refine_economy_atlas_exports.py"
   ],
+  "publicSnapshotFiles": [
+    "data/site-data.json",
+    "data/source-registry.json"
+  ],
   "trackedMutationAllowlist": [
     "data/site-data.json",
     "data/source-registry.json",
