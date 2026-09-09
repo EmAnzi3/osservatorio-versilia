@@ -33,6 +33,7 @@ radar_module = h4.daily.radar
 _BASE_COMPOSE = h4._ORIGINAL_COMPOSE
 _BASE_INJECT = core.inject_verified_v04
 _BASE_RADAR_INJECT = getattr(radar_module, "inject_verified_v04", None)
+_BASE_RUN_V04 = radar_module.run_v04
 _BASE_PREPARE_STABLE = stable._prepare_public_stable
 _BASE_RENDER_REPORT = h4.daily._render_report
 
@@ -162,9 +163,26 @@ def _inject_with_audit_fixes(
     return resolved
 
 
+def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]:
+    """Porta il replay deterministico dentro l'output prima del gate continuità.
+
+    Se lo snapshot precedente contiene già le schede della matrice, il motore live
+    non deve interpretarle come scomparse solo perché vengono aggiunte dall'overlay
+    audit dopo il collector. Rendendole presenti prima della riconciliazione finale
+    il gate continua a bloccare soltanto vere sparizioni.
+    """
+    result = _BASE_RUN_V04(today, **kwargs)
+    audit_promotions.apply_complete_promotions(result, today)
+    if hasattr(core, "_recompute_v04_counts"):
+        core._recompute_v04_counts(result)
+    relevance.apply_to_payload(result, drop_review=True)
+    return result
+
+
 def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
-    audit_promotions.apply_complete_promotions(result, today)
+    if result.get("auditCorpusPromotionVersion") != audit_promotions.PROMOTION_VERSION:
+        audit_promotions.apply_complete_promotions(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
     if hasattr(core, "_recompute_v04_counts"):
@@ -199,6 +217,7 @@ def main() -> int:
     original_core_compose = core.compose_runtime_payloads
     original_core_inject = core.inject_verified_v04
     original_radar_inject = getattr(radar_module, "inject_verified_v04", None)
+    original_radar_run = radar_module.run_v04
     original_prepare = stable._prepare_public_stable
     original_report = h4.daily._render_report
 
@@ -206,6 +225,7 @@ def main() -> int:
     core.inject_verified_v04 = _inject_with_audit_fixes
     if _BASE_RADAR_INJECT is not None:
         radar_module.inject_verified_v04 = _inject_with_audit_fixes
+    radar_module.run_v04 = _run_v04_with_audit_promotions
     stable._prepare_public_stable = _prepare_public_audit_fixed
     h4.daily._render_report = _render_report_relevance
     try:
@@ -216,6 +236,7 @@ def main() -> int:
         core.inject_verified_v04 = original_core_inject
         if original_radar_inject is not None:
             radar_module.inject_verified_v04 = original_radar_inject
+        radar_module.run_v04 = original_radar_run
         stable._prepare_public_stable = original_prepare
         h4.daily._render_report = original_report
 
