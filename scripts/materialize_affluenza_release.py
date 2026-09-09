@@ -78,7 +78,7 @@ def make_metric() -> dict:
         "method": {
             "type": "Archivio delle consultazioni elettorali",
             "formula": "Affluenza = votanti / elettori × 100.",
-            "coverage": "Sette Comuni; profondità storica secondo disponibilità ufficiale digitale.",
+            "coverage": "7/7 Comuni; profondità storica secondo disponibilità ufficiale digitale.",
         },
         "dataStorage": {"type": "special-route", "detailRoute": CANONICAL_ROUTE},
     }
