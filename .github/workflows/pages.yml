@@ -41,7 +41,9 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Run quick preflight
-        run: python scripts/preflight.py --quick
+        run: |
+          python scripts/preflight.py --quick
+          python scripts/test_affluenza_release.py
 
       - name: Upload verified preview
         uses: actions/upload-artifact@v4
@@ -153,6 +155,7 @@ jobs:
           python scripts/inject_pnrr_town_experience.py
           python scripts/copy_percorsi_dist.py
           node --check dist/assets/app-bundle.js
+          python scripts/test_affluenza_release.py
           python scripts/test_site_consistency.py
 
       - name: Upload static site for deployment
