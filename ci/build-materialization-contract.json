@@ -4,6 +4,7 @@
   "implementation": "scripts/build_static_brand_impl.py",
   "publicMaterializers": [
     "scripts/materialize_agricoltura_ii_release.py",
+    "scripts/materialize_opportunity_release_snapshot.py",
     "scripts/materialize_opportunity_public_shell.py",
     "scripts/materialize_affluenza_release.py",
     "scripts/materialize_percorsi_touch_release.py",
@@ -20,6 +21,7 @@
   "trackedMutationAllowlist": [
     "data/site-data.json",
     "data/source-registry.json",
+    "data/opportunity-release.json",
     "assets/app-parts/00.txt",
     "assets/app-parts/02.txt",
     "assets/app-parts/03.txt",
