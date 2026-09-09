@@ -12,13 +12,10 @@ APP_02 = ROOT / "assets" / "app-parts" / "02.txt"
 BUILD_STATIC = ROOT / "scripts" / "build_static.py"
 
 METRIC_KEY = "voterTurnout"
-RELEASE_VERSION = "v1.32.0"
-RELEASE_NUMBER = "1.32.0"
-RELEASE_UPDATED = "9 settembre 2026"
 CANONICAL_ROUTE = "confronta/comunita/affluenza/"
 SOURCE_URL = "https://elezionistorico.interno.gov.it/eligendo/opendata.php"
 SOURCE_LABEL = "Ministero dell'Interno — DAIT / Eligendo"
-
+VERSILIA = 62.932571147581285
 LATEST = (
     ("Camaiore", "046005", "camaiore", 62.602431680451275),
     ("Forte dei Marmi", "046013", "forte-dei-marmi", 65.53630667158129),
@@ -28,23 +25,9 @@ LATEST = (
     ("Stazzema", "046030", "stazzema", 56.64423885618166),
     ("Viareggio", "046033", "viareggio", 63.2455207395893),
 )
-VERSILIA = 62.932571147581285
 
 
 def make_metric() -> dict:
-    rows = [
-        {
-            "town": name,
-            "code": code,
-            "slug": slug,
-            "value": value,
-            "formatted": f"{value:.1f}%".replace(".", ","),
-            "normalized": value,
-            "benchmarkValue": VERSILIA,
-            "year": 2026,
-        }
-        for name, code, slug, value in LATEST
-    ]
     return {
         "meta": {
             "key": METRIC_KEY,
@@ -62,10 +45,7 @@ def make_metric() -> dict:
             "freshness": "Ultima consultazione ufficiale disponibile",
             "polarity": "neutral",
             "context": "Partecipazione civica",
-            "keywords": [
-                "affluenza", "elezioni", "votazioni", "referendum", "partecipazione civica",
-                "politiche", "europee", "regionali", "comunali"
-            ],
+            "keywords": ["affluenza", "elezioni", "votazioni", "referendum", "partecipazione civica", "politiche", "europee", "regionali", "comunali"],
             "sortable": False,
             "periodType": "irregular",
             "detailGroup": "comunita",
@@ -77,7 +57,19 @@ def make_metric() -> dict:
             },
         },
         "sourceUrl": SOURCE_URL,
-        "rows": rows,
+        "rows": [
+            {
+                "town": name,
+                "code": code,
+                "slug": slug,
+                "value": value,
+                "formatted": f"{value:.1f}%".replace(".", ","),
+                "normalized": value,
+                "benchmarkValue": VERSILIA,
+                "year": 2026,
+            }
+            for name, code, slug, value in LATEST
+        ],
         "aggregate": {
             "value": VERSILIA,
             "label": "Versilia · referendum costituzionale 22–23 marzo 2026",
@@ -88,18 +80,14 @@ def make_metric() -> dict:
             "formula": "Affluenza = votanti / elettori × 100.",
             "coverage": "Sette Comuni; profondità storica secondo disponibilità ufficiale digitale.",
         },
-        "dataStorage": {
-            "type": "special-route",
-            "detailRoute": CANONICAL_ROUTE,
-        },
+        "dataStorage": {"type": "special-route", "detailRoute": CANONICAL_ROUTE},
     }
 
 
 def patch_catalog() -> None:
     data = json.loads(SITE_DATA.read_text(encoding="utf-8"))
     metrics = data.setdefault("metrics", {})
-    if METRIC_KEY not in metrics:
-        metrics[METRIC_KEY] = make_metric()
+    metrics.setdefault(METRIC_KEY, make_metric())
 
     theme = data.get("themes", {}).get("comunita")
     if not theme:
@@ -124,17 +112,22 @@ def patch_catalog() -> None:
     if atlas:
         atlas.setdefault("meta", {}).setdefault("detailLabel", "Atlante interattivo")
 
-    data["version"] = RELEASE_VERSION
-    data["release_version"] = RELEASE_NUMBER
+    data["version"] = "v1.32.0"
+    data["release_version"] = "1.32.0"
     if "updated" in data:
-        data["updated"] = RELEASE_UPDATED
+        data["updated"] = "9 settembre 2026"
     SITE_DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    external = sum(
+        m.get("dataStorage", {}).get("type") == "external-climate"
+        for m in metrics.values()
+    )
+    # Nel registry storico "inline" significa incorporato nella release pubblica:
+    # comprende anche le metriche special-route, ma non le quattro climatiche esterne.
     registry["expectedMetricCount"] = len(metrics)
-    storage_types = [m.get("dataStorage", {}).get("type", "inline") for m in metrics.values()]
-    registry["expectedExternalMetricCount"] = sum(t == "external-climate" for t in storage_types)
-    registry["expectedInlineMetricCount"] = sum(t == "inline" for t in storage_types)
+    registry["expectedExternalMetricCount"] = external
+    registry["expectedInlineMetricCount"] = len(metrics) - external
     profile = "dait-eligendo-irregular"
     registry.setdefault("sourceProfiles", {})[profile] = {
         "publisher": "Ministero dell'Interno — DAIT / Eligendo",
@@ -154,7 +147,6 @@ def patch_catalog() -> None:
 
 
 def patch_special_route_labels() -> None:
-    """Rende generiche le etichette special-route dopo il refine dell'Atlante."""
     text = APP_02.read_text(encoding="utf-8")
     old_controls = '''if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${specialHref(metric)}"><span>Apri l'Atlante</span><small>Esplorazione ATECO <b>→</b></small></a>`;'''
     new_controls = '''if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${specialHref(metric)}"><span>${html(meta.detailLabel || meta.label)}</span><small>Apri approfondimento <b>→</b></small></a>`;'''
@@ -179,16 +171,17 @@ def patch_builder_routes() -> None:
     if route_line not in text:
         atlas_line = '    "confronta/economia/atlante-attivita-economiche/",\n'
         if atlas_line not in text:
-            raise RuntimeError("Route Atlante non trovata: Affluenza deve essere materializzata dopo la shell pubblica")
+            raise RuntimeError("Route Atlante non trovata prima della materializzazione Affluenza")
         text = text.replace(atlas_line, atlas_line + route_line, 1)
     BUILD_STATIC.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
-    page = ROOT / "confronta" / "comunita" / "affluenza" / "index.html"
-    runtime = ROOT / "assets" / "affluenza-v3.js"
-    payload = ROOT / "data" / "affluenza" / "archive-00.b64"
-    for path in (page, runtime, payload):
+    for path in (
+        ROOT / "confronta" / "comunita" / "affluenza" / "index.html",
+        ROOT / "assets" / "affluenza-v3.js",
+        ROOT / "data" / "affluenza" / "archive-00.b64",
+    ):
         if not path.exists() or path.stat().st_size == 0:
             raise RuntimeError(f"Asset Affluenza mancante: {path.relative_to(ROOT)}")
     patch_catalog()
