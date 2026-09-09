@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import urllib.error
+from urllib.parse import urlsplit
 
 import opportunity_daily_refresh_resilient as daily_h4
 import opportunity_discovery_resilient as discovery
@@ -299,12 +300,14 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     assert scu["urls"] == list(daily_h4._SCU_OFFICIAL_URLS), scu
     assert mare["fetchTimeoutSeconds"] == 12
     assert scu["fetchTimeoutSeconds"] == 12
-    assert mare["urls"][0] == "https://www.dipartimentopolitichemare.gov.it/it/"
-    assert scu["urls"][0].endswith("/comunicazione/avvisi-e-bandi/")
-    assert any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in mare["urls"])
-    assert any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in scu["urls"])
-    assert len(set(mare["urls"])) == len(mare["urls"])
-    assert len(set(scu["urls"])) == len(scu["urls"])
+    assert mare["urls"][0].endswith("/it/bandi-e-avvisi/")
+    assert "gazzettaufficiale.it" in mare["urls"][1]
+    assert "/avvisi-di-presentazione-programmi-e-progetti/" in scu["urls"][0]
+    assert "scelgoilserviziocivile.gov.it/leggi-il-bando/" in scu["urls"][1]
+    assert len({urlsplit(url).hostname for url in mare["urls"]}) == len(mare["urls"])
+    assert len({urlsplit(url).hostname for url in scu["urls"]}) == len(scu["urls"])
+    assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in mare["urls"])
+    assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in scu["urls"])
 
 
 def _test_transport_audit_exposes_endpoint_health() -> None:

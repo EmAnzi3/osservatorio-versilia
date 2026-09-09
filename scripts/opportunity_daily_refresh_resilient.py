@@ -30,23 +30,17 @@ _ORIGINAL_ASSERT = daily._assert_publishable
 _ORIGINAL_PREPARE = daily._prepare_public
 _ORIGINAL_COMPOSE = core.compose_runtime_payloads
 
-_PRESIDENZA_SOVVENZIONI_URL = (
-    "https://presidenza.governo.it/AmministrazioneTrasparente/"
-    "Sovvenzioni/CriteriModalita/"
-)
-
-# I due portali dipartimentali hanno mostrato timeout/WAF intermittenti dai
-# runner GitHub. Manteniamo una pagina istituzionale corrente come canale
-# principale e una seconda via ufficiale, su host Presidenza distinto, che
-# consente al discovery di continuare senza trasformare un blocco del frontend
-# dipartimentale in perdita completa della famiglia.
+# Queste due famiglie hanno mostrato failure persistenti dai runner GitHub.
+# La ridondanza deve quindi essere realmente indipendente: non condividiamo più
+# lo stesso fallback generico della Presidenza. Ogni coppia usa due host
+# istituzionali distinti e pagine specifiche della famiglia monitorata.
 _MARE_OFFICIAL_URLS = (
-    "https://www.dipartimentopolitichemare.gov.it/it/",
-    _PRESIDENZA_SOVVENZIONI_URL,
+    "https://www.dipartimentopolitichemare.gov.it/it/bandi-e-avvisi/",
+    "https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.codiceRedazionale=26A03679&atto.dataPubblicazioneGazzetta=2026-07-23&elenco30giorni=false",
 )
 _SCU_OFFICIAL_URLS = (
-    "https://www.politichegiovanili.gov.it/comunicazione/avvisi-e-bandi/",
-    _PRESIDENZA_SOVVENZIONI_URL,
+    "https://www.politichegiovanili.gov.it/servizio-civile/bandi-e-avvisi-di-servizio-civile/avvisi-di-presentazione-programmi-e-progetti/",
+    "https://www.scelgoilserviziocivile.gov.it/leggi-il-bando/",
 )
 
 
