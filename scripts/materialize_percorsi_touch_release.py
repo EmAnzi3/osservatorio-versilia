@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Abilita pan e pinch Leaflet sui dispositivi touch e aggiorna il relativo gate."""
 from __future__ import annotations
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +18,11 @@ def replace_once(path: Path, old: str, new: str, label: str) -> None:
 
 
 def main() -> None:
+    # La shell Opportunità, eseguita immediatamente prima nella build pubblica,
+    # ha già materializzato l'Atlante e il supporto special-route. Affluenza si
+    # innesta qui prima del prerender, nello stesso workspace transazionale.
+    runpy.run_path(str(ROOT / "scripts" / "materialize_affluenza_release.py"), run_name="__main__")
+
     guard = ROOT / "percorsi/mobile-scroll-guard.js"
     replace_once(guard,
         '''    if (mobile) {

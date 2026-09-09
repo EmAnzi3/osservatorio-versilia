@@ -70,6 +70,8 @@ scripts/test_ambiente_acqua_v124_browser.py
 scripts/test_investimenti_versilia.py
 scripts/test_investimenti_versilia_browser.py
 scripts/test_mobilita_tpl_v119_browser.py
+scripts/materialize_affluenza_release.py
+scripts/test_affluenza_release.py
 scripts/test_percorsi_mobile_list_contract.py
 scripts/materialize_erp_arrears_v125.py
 scripts/test_erp_arrears_v125.py
