@@ -35,6 +35,7 @@
     "builderTraceExceptions": [
       "confronta/meteo-clima/index.html",
       "confronta/economia/atlante-attivita-economiche/index.html",
+      "confronta/comunita/affluenza/index.html",
       "pnrr/index.html",
       "stato-dati/index.html",
       "opportunita/index.html",
