@@ -5,6 +5,7 @@
   "publicMaterializers": [
     "scripts/materialize_agricoltura_ii_release.py",
     "scripts/materialize_opportunity_public_shell.py",
+    "scripts/materialize_affluenza_release.py",
     "scripts/materialize_percorsi_touch_release.py",
     "scripts/prepare_economy_atlas_build.py",
     "scripts/materialize_economy_atlas_release.py",
