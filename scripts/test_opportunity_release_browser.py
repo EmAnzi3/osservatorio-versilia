@@ -3,13 +3,10 @@
 from __future__ import annotations
 
 import argparse
-import json
+import re
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
-
-from build_static_brand import select_opportunity_public_payload
-import opportunity_municipal_relevance as relevance
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_NAV = ["Temi", "Comuni", "Opportunità", "Il progetto", "Stato dati", "Segnala"]
@@ -25,16 +22,31 @@ def labels(page):
     return [" ".join(x.split()) for x in page.locator('header nav[aria-label="Navigazione principale"] a').all_inner_texts()]
 
 
+def _built_int_attr(document: str, name: str) -> int:
+    match = re.search(rf'\b{name}="(\d+)"', document)
+    if not match:
+        raise AssertionError(f"Attributo build Radar assente: {name}")
+    return int(match.group(1))
+
+
 def verify_release(base: str) -> None:
-    payload_path = select_opportunity_public_payload()
-    payload = json.loads(payload_path.read_text(encoding="utf-8"))
-    total_expected = len(payload.get("opportunities") or [])
-    relevance_expected = relevance.summarize(list(payload.get("opportunities") or []))
-    headline_expected = int(relevance_expected["headlineTotal"])
-    partner_expected = int(relevance_expected["partnershipTotal"])
-    new_expected = sum(bool(item.get("is_new")) for item in payload.get("opportunities") or [])
-    y, m, d = payload["referenceDate"].split("-")
-    date_expected = f"{d}/{m}/{y}"
+    # La build Radar è transazionale: il payload completo viene materializzato nello
+    # workspace effimero e i file canonici vengono poi ripristinati. Il gate browser
+    # deve quindi validare il dist appena costruito, non rileggere il payload sorgente
+    # ormai ripristinato alla baseline persistente.
+    built = (ROOT / "dist" / "opportunita" / "index.html").read_text(encoding="utf-8")
+    total_expected = _built_int_attr(built, "data-total-opportunities")
+    headline_expected = _built_int_attr(built, "data-municipal-headline")
+    partner_expected = _built_int_attr(built, "data-partnership")
+    new_expected = built.count('class="op-new-badge"')
+    date_match = re.search(
+        r'Dati verificati al</span>\s*<strong>(\d{2}/\d{2}/\d{4})</strong>',
+        built,
+    )
+    if not date_match:
+        raise AssertionError("Data Radar pubblica assente nella build")
+    date_expected = date_match.group(1)
+
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True)
         for width, height in ((1440, 1000), (1024, 768), (390, 844)):
