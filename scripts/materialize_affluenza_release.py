@@ -154,30 +154,22 @@ def patch_catalog() -> None:
 
 
 def patch_special_route_labels() -> None:
+    """Rende generiche le etichette special-route dopo il refine dell'Atlante."""
     text = APP_02.read_text(encoding="utf-8")
-    replacements = (
-        (
-            '<small>Atlante interattivo <b>→</b></small>',
-            "<small>${html(meta.detailLabel || 'Apri approfondimento')} <b>→</b></small>",
-        ),
-        (
-            'href="#atlante-attivita-economiche"',
-            'href="${indicatorHref(metric)}"',
-        ),
-        (
-            '<span class="indicator-card-kicker">Atlante interattivo</span>',
-            "<span class=\"indicator-card-kicker\">${html(metric.meta.detailLabel || 'Approfondimento')}</span>",
-        ),
-        (
-            '<span class="text-link">Esplora nel profilo <b>↓</b></span>',
-            "<span class=\"text-link\">${html(metric.meta.detailLabel || 'Apri approfondimento')} <b>→</b></span>",
-        ),
-    )
-    for old, new in replacements:
-        if old in text:
-            text = text.replace(old, new)
-    if "meta.detailLabel || 'Apri approfondimento'" not in text:
+    old_controls = '''if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${specialHref(metric)}"><span>Apri l'Atlante</span><small>Esplorazione ATECO <b>→</b></small></a>`;'''
+    new_controls = '''if (metric.dataStorage?.type === 'special-route') return `<a class="metric-route-link" href="${specialHref(metric)}"><span>${html(meta.detailLabel || meta.label)}</span><small>Apri approfondimento <b>→</b></small></a>`;'''
+    if old_controls in text:
+        text = text.replace(old_controls, new_controls, 1)
+
+    old_card = '''if (metric.dataStorage?.type === 'special-route') return `<a class="indicator-card special-route-card" href="${indicatorHref(metric)}?comune=${encodeURIComponent(townSlug)}"><span class="indicator-card-kicker">Atlante interattivo</span><h5>${html(metric.meta.label)}</h5><p>${html(metric.meta.description)}</p><span class="text-link">Esplora ${html(town.name)} <b>→</b></span></a>`;'''
+    new_card = '''if (metric.dataStorage?.type === 'special-route') return `<a class="indicator-card special-route-card" href="${indicatorHref(metric)}?comune=${encodeURIComponent(townSlug)}"><span class="indicator-card-kicker">${html(metric.meta.detailLabel || 'Approfondimento')}</span><h5>${html(metric.meta.label)}</h5><p>${html(metric.meta.description)}</p><span class="text-link">Apri ${html(town.name)} <b>→</b></span></a>`;'''
+    if old_card in text:
+        text = text.replace(old_card, new_card, 1)
+
+    if "meta.detailLabel || meta.label" not in text or "metric.meta.detailLabel || 'Approfondimento'" not in text:
         raise RuntimeError("Renderer special-route non reso generico")
+    if "Apri l'Atlante" in text or "Esplorazione ATECO" in text:
+        raise RuntimeError("Renderer special-route conserva etichette Atlante hardcoded")
     APP_02.write_text(text, encoding="utf-8")
 
 
