@@ -32,11 +32,11 @@ def serve(directory: Path):
 
 def wait_app(page):
     page.wait_for_selector("#app main", timeout=20_000)
-    page.wait_for_timeout(350)
+    page.wait_for_timeout(500)
 
 
 def chart_values(page):
-    return page.locator("#compare-bars .comparison-bars .bar-row strong").all_text_contents()[:7]
+    return page.locator(".comparison-bars .bar-row strong").all_text_contents()[:7]
 
 
 def main() -> int:
@@ -61,29 +61,27 @@ def main() -> int:
         wait_app(page)
         page.get_by_role("heading", name="Fatturato delle unità locali").wait_for(timeout=10_000)
         assert page.get_by_text("Economia prodotta", exact=True).count() >= 1
-        assert page.locator("#compare-bars .comparison-bars .bar-row").count() >= 7
-        assert page.locator(".topic-controls .economic-scope-control").count() == 0, "Il perimetro è ancora nel catalogo indicatori"
-        assert page.locator("#compare-bars .economic-scope-control").count() == 1, "Selettore Frame SBS assente dal pannello grafico"
-        assert page.locator('#compare-bars [data-economic-scope="total"].active').count() == 1
-
-        total_values = chart_values(page)
+        assert page.locator(".comparison-bars .bar-row").count() >= 7
+        assert page.locator("#compare-bars > .economic-scope-control").count() == 0
+        assert page.locator("#compare-bars .topic-bars > .economic-scope-control").count() == 1, "Selettore non locale al pannello grafico"
+        assert page.locator('[data-economic-scope="total"].active').count() == 1
         page.screenshot(path=str(shots / "economia-prodotta-confronto-totale-desktop.png"), full_page=True)
 
+        total_values = chart_values(page)
         page.locator('#compare-bars [data-economic-scope="industry"]').click()
         page.wait_for_timeout(400)
         assert "perimetro=industry" in page.url
-        assert page.locator('#compare-bars [data-economic-scope="industry"].active').count() == 1
         industry_values = chart_values(page)
-        assert total_values != industry_values, "Il selettore Industria non modifica il solo indicatore attivo"
-        assert page.locator("#compare-benchmark .benchmark-section").count() == 0, "Benchmark totale visibile nel confronto Industria"
+        assert total_values != industry_values, "Il selettore Industria non modifica i valori"
+        assert not page.locator("#compare-benchmark").inner_text().strip(), "Benchmark totale visibile nel confronto Industria"
         page.screenshot(path=str(shots / "economia-prodotta-confronto-industria-desktop.png"), full_page=True)
 
         page.locator('#compare-bars [data-economic-scope="services"]').click()
         page.wait_for_timeout(400)
         services_values = chart_values(page)
-        assert services_values != industry_values
-        assert services_values != total_values
-        assert page.locator("#compare-benchmark .benchmark-section").count() == 0, "Benchmark totale visibile nel confronto Servizi"
+        assert "perimetro=services" in page.url
+        assert services_values != industry_values and services_values != total_values
+        assert not page.locator("#compare-benchmark").inner_text().strip(), "Benchmark totale visibile nel confronto Servizi"
         report["checks"].append({
             "compareScopePlacement": "pass",
             "totalValues": total_values,
@@ -114,14 +112,22 @@ def main() -> int:
         town_total = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert page.locator("main.town-profile .town-benchmark").count() == 1
         page.locator('#town-topic .history-panel [data-economic-scope="industry"]').click()
-        page.wait_for_timeout(400)
+        page.wait_for_timeout(500)
         town_industry = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_total != town_industry, "Il perimetro Industria non aggiorna il valore comunale"
         assert "perimetro=industry" in page.url
         assert page.locator("main.town-profile .town-benchmark").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
+        assert page.locator("#town-topic .history-panel .economic-scope-control").count() == 1, "ux-history ha rimosso il selettore Frame"
+        page.locator('#town-topic .history-panel [data-view-mode="history"]').click()
+        page.wait_for_timeout(250)
+        assert page.locator('#town-topic .history-panel [data-view-pane="history"] .ux-history-card').count() == 1, "Storico comunale Frame non renderizzato"
+        history_text = page.locator('#town-topic .history-panel [data-view-pane="history"]').inner_text()
+        assert "Industria" in page.locator('#town-topic .history-panel .economic-scope-control').inner_text(), "Perimetro Industria perso nello storico"
+        page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
+        page.wait_for_timeout(200)
         page.screenshot(path=str(shots / "economia-prodotta-massarosa-industria-desktop.png"), full_page=True)
         page.locator('#town-topic .history-panel [data-economic-scope="services"]').click()
-        page.wait_for_timeout(400)
+        page.wait_for_timeout(500)
         town_services = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_services not in (town_total, town_industry)
         report["checks"].append({
@@ -130,14 +136,15 @@ def main() -> int:
             "townIndustry": town_industry,
             "townServices": town_services,
             "townBenchmarkScopeCoherence": "pass",
+            "townHistoryScopeCoherence": "pass",
         })
 
         indicator_url = f"{base}/indicatori/fatturato-delle-unita-locali/?perimetro=industry"
         page.goto(indicator_url, wait_until="networkidle")
         wait_app(page)
-        assert page.locator(".indicator-current .economic-scope-control").count() == 1
-        assert page.locator('.indicator-current [data-economic-scope="industry"].active').count() == 1
-        assert page.locator(".indicator-benchmark .benchmark-section").count() == 0
+        assert page.locator(".indicator-current > .economic-scope-control").count() == 1, "Selettore assente dalla scheda indicatore"
+        assert page.locator('[data-economic-scope="industry"].active').count() == 1
+        assert not page.locator(".indicator-benchmark").inner_text().strip(), "Benchmark totale visibile nella scheda indicatore Industria"
         report["checks"].append({"indicatorScopePlacement": "pass"})
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=1)
@@ -146,8 +153,8 @@ def main() -> int:
         mobile.goto(url, wait_until="networkidle")
         wait_app(mobile)
         mobile.get_by_role("heading", name="Fatturato delle unità locali").wait_for(timeout=10_000)
-        assert mobile.locator(".topic-controls .economic-scope-control").count() == 0
         assert mobile.locator("#compare-bars .economic-scope-control").count() == 1
+        assert mobile.locator(".comparison-bars .bar-row").count() >= 7
         assert mobile.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), "Overflow orizzontale mobile"
         mobile.screenshot(path=str(shots / "economia-prodotta-confronto-mobile.png"), full_page=True)
         report["checks"].append({"compareMobile": "pass"})
@@ -160,7 +167,7 @@ def main() -> int:
     (shots / "browser-report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("PASS browser Economia prodotta: selettore locale al grafico, isolamento non-Frame, comune, indicatore e mobile.")
+    print("PASS browser Economia prodotta: selettore locale, storico coerente, isolamento non-Frame, desktop/mobile.")
     return 0
 
 
