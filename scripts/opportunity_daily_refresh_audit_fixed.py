@@ -10,7 +10,7 @@ trasporto:
 - classifica ogni scheda pubblica per rilevanza comunale e separa il conteggio
   principale dalle opportunità di partnership/consorzio;
 - persiste una diagnostica completa prima di qualsiasi blocco publishability,
-  inclusi coverageHold e regionalCompleteness, non soltanto le famiglie runtime.
+  inclusi coverageHold, regionalCompleteness, famiglie runtime e backtest.
 """
 from __future__ import annotations
 
