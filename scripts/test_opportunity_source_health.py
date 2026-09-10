@@ -326,6 +326,178 @@ def _test_blocked_critical_families_persist_failure_diagnostic() -> None:
     assert by_id["pcm-politiche-giovanili-scu"]["effectiveStatus"] == "error", by_id
 
 
+_DETAIL_URL = "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/"
+_DETAIL_RULE_ID = "st-mercati-rionali-2026"
+
+
+def _detail_fixture() -> tuple[dict, dict, dict]:
+    rule = {
+        "id": _DETAIL_RULE_ID,
+        "source_id": "sviluppo-toscana",
+        "title_pattern": "^Avviso Mercati Rionali$",
+        "evidence_url": _DETAIL_URL,
+        "deadline_override": "2026-09-15",
+        "actionable": True,
+    }
+    old = {
+        "id": "fixture-mercati-rionali",
+        "rule_id": _DETAIL_RULE_ID,
+        "source_id": "sviluppo-toscana",
+        "title": "Avviso Mercati Rionali",
+        "url": _DETAIL_URL,
+        "deadline_at": "2026-09-15",
+        "lifecycle_stage": "application_open",
+        "quality_gate": {"status": "pass"},
+        "verified_direct": True,
+        "verified_at": "2026-09-09",
+    }
+    result = {
+        "opportunities": [],
+        "continuityHold": [
+            {
+                "kind": "existing_opportunity",
+                "identity_key": "rule:" + _DETAIL_RULE_ID,
+                "rule_id": _DETAIL_RULE_ID,
+                "source_id": "sviluppo-toscana",
+                "title": "Avviso Mercati Rionali",
+                "url": _DETAIL_URL,
+                "deadline_at": "2026-09-15",
+                "reason": "missing_from_scan",
+            }
+        ],
+        "sourceCoverage": {
+            "rows": [{"source_id": "sviluppo-toscana", "runtimeStatus": "ok"}]
+        },
+        "counts": {},
+    }
+    previous = {"opportunities": [old]}
+    return rule, result, previous
+
+
+def _direct_detail_diagnostics() -> dict:
+    return {
+        "status": "ok",
+        "transport": "http_browser",
+        "fallbackUsed": False,
+        "proxyUsed": False,
+        "initialFailureClass": None,
+        "browserFailureClass": None,
+        "failureClass": None,
+        "resolvedUrl": _DETAIL_URL,
+        "redirected": False,
+        "errors": [],
+    }
+
+
+def _test_live_open_detail_restores_listing_false_negative() -> None:
+    rule, result, previous = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    original_reconcile = stable.h4.daily._reconcile_final_continuity
+    original_recompute = stable.h4.daily._recompute_after_continuity_restore
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        stable._fetch_continuity_detail = lambda _url: (
+            "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+            "Scadenza presentazione domanda 15 settembre 2026. Presenta domanda.</p></body></html>",
+            _direct_detail_diagnostics(),
+        )
+        stable.h4.daily._reconcile_final_continuity = lambda payload: payload.update(
+            {"continuityHold": [], "continuityReconciliation": {"remaining": 0}}
+        )
+        stable.h4.daily._recompute_after_continuity_restore = lambda _payload: None
+        restored = stable._revalidate_unresolved_continuity_details(
+            result,
+            previous,
+            date(2026, 9, 10),
+        )
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+        stable.h4.daily._reconcile_final_continuity = original_reconcile
+        stable.h4.daily._recompute_after_continuity_restore = original_recompute
+
+    assert len(restored) == 1, restored
+    assert result["continuityHold"] == [], result
+    restored_item = restored[0]
+    assert restored_item["verification_status"] == "live_detail_revalidated", restored_item
+    assert restored_item["verified_at"] == "2026-09-10", restored_item
+    assert restored_item["continuity_revalidation"]["transport"] == "http_browser", restored_item
+
+
+def _test_closed_or_404_detail_keeps_continuity_hold() -> None:
+    rule, _, _ = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        scenarios = [
+            (
+                "closed",
+                "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Chiuso. "
+                "Scadenza 15 settembre 2026.</p></body></html>",
+                _direct_detail_diagnostics(),
+            ),
+            (
+                "404",
+                None,
+                {
+                    "status": "error",
+                    "transport": "failed",
+                    "fallbackUsed": False,
+                    "proxyUsed": False,
+                    "initialFailureClass": "endpoint_missing",
+                    "browserFailureClass": None,
+                    "failureClass": "endpoint_missing",
+                    "resolvedUrl": None,
+                    "redirected": False,
+                    "errors": ["HTTP [endpoint_missing]: 404"],
+                },
+            ),
+        ]
+        for label, payload, diagnostics in scenarios:
+            _, result, previous = _detail_fixture()
+            stable._fetch_continuity_detail = lambda _url, p=payload, d=diagnostics: (p, d)
+            restored = stable._revalidate_unresolved_continuity_details(
+                result,
+                previous,
+                date(2026, 9, 10),
+            )
+            assert restored == [], (label, restored)
+            assert len(result["continuityHold"]) == 1, (label, result)
+            assert result["continuityHold"][0]["reason"] == "missing_from_scan", (label, result)
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+
+
+def _test_reader_proxy_detail_cannot_clear_continuity_hold() -> None:
+    rule, result, previous = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        diagnostics = _direct_detail_diagnostics()
+        diagnostics.update({"transport": "reader_proxy", "proxyUsed": True, "fallbackUsed": True})
+        stable._fetch_continuity_detail = lambda _url: (
+            "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+            "Scadenza presentazione domanda 15 settembre 2026. Presenta domanda.</p></body></html>",
+            diagnostics,
+        )
+        restored = stable._revalidate_unresolved_continuity_details(
+            result,
+            previous,
+            date(2026, 9, 10),
+        )
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+
+    assert restored == [], restored
+    assert len(result["continuityHold"]) == 1, result
+    assert result["continuityHold"][0]["reason"] == "missing_from_scan", result
+
+
 def main() -> int:
     _test_recent_success_gives_family_grace()
     _test_legacy_error_gets_bootstrap_failure_window()
@@ -335,7 +507,10 @@ def main() -> int:
     _test_critical_sources_use_independent_official_hosts()
     _test_secondary_endpoint_keeps_critical_families_covered()
     _test_blocked_critical_families_persist_failure_diagnostic()
-    print("Salute persistente fonti Radar: PASS")
+    _test_live_open_detail_restores_listing_false_negative()
+    _test_closed_or_404_detail_keeps_continuity_hold()
+    _test_reader_proxy_detail_cannot_clear_continuity_hold()
+    print("Salute persistente fonti e continuity detail Radar: PASS")
     return 0
 
 
