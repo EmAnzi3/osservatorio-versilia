@@ -48,7 +48,6 @@ jobs:
 
       - name: Validate data materialization
         run: |
-          python scripts/materialize_fragilita_release.py
           python scripts/materialize_economia_prodotta_release.py
           python scripts/test_economia_prodotta_release.py
           git checkout -- data/site-data.json data/source-registry.json assets/app-parts/03.txt assets/app-parts/06.txt
