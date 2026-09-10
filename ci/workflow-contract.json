@@ -36,6 +36,7 @@
     {"path": ".github/workflows/costa-mare-v123.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/cultura-v121-gate.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/economia-atlas-preview.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/economia-prodotta-preview.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/meteo-clima-page.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/opportunity-radar-v044-ci.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/salute-finanziaria-v129-gate.yml", "category": "specialized-gate", "status": "active"},
