@@ -90,3 +90,6 @@ scripts/test_static_impl.py
 scripts/test_indicator_pages_impl.py
 scripts/test_composite_indicators_impl.py
 scripts/test_release_v170_compat_impl.py
+scripts/materialize_fragilita_release.py
+scripts/test_fragilita_release.py
+scripts/patch_fragilita_runtime.py

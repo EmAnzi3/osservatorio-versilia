@@ -70,6 +70,7 @@ CANONICAL_TESTS = (
     ("ambiente/acqua", "scripts/test_ambiente_acqua_v124_ui.py"),
     ("ERP", "scripts/test_erp_arrears_v125.py"),
     ("investimenti", "scripts/test_investimenti_versilia.py"),
+    ("fragilità v1.33.0", "scripts/test_fragilita_release.py"),
 )
 
 COMPILE_MANIFEST = "scripts/preflight_compile.txt"
@@ -247,7 +248,7 @@ def quick(*, plan: bool = False) -> None:
     run_python("inject data status runtime", "scripts/inject_data_status_runtime.py", plan=plan)
 
     run_python("build PNRR deep dive", "scripts/build_pnrr_toscana_deep_dive.py", plan=plan)
-    run_python("inject PNRR town experience", "scripts/inject_pnrr_town_experience.py", plan=plan)
+    run_python("Inject PNRR town experience", "scripts/inject_pnrr_town_experience.py", plan=plan)
     run_python("PNRR draft contract", "scripts/test_pnrr_toscana_draft.py", plan=plan)
     run_python("PNRR review contract", "scripts/test_pnrr_toscana_review.py", plan=plan)
 
