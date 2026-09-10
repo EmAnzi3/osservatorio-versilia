@@ -10,7 +10,9 @@ collector h4 e aggiunge una memoria di salute per fonte:
   fallimenti consecutivi come grace tecnica;
 - una famiglia obbligatoria blocca il publish solo dopo una perdita persistente
   di copertura, non per un singolo runner o durante la migrazione pre-h5;
-- lo snapshot conserva lastSuccessfulFetch, consecutiveFailures ed effectiveStatus.
+- lo snapshot conserva lastSuccessfulFetch, consecutiveFailures ed effectiveStatus;
+- se il gate blocca una famiglia obbligatoria, persiste una diagnostica completa
+  prima dell'eccezione, così il run fallito resta investigabile.
 
 La grace riguarda soltanto la copertura del discovery. Non promuove bandi, non
 sostituisce la verifica primaria e non modifica i criteri di ammissibilità.
@@ -28,6 +30,7 @@ import opportunity_daily_refresh_resilient as h4
 
 SOURCE_HEALTH_GRACE_DAYS = 2
 SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES = 2
+PUBLISHABILITY_DIAGNOSTIC_PATH = Path("reports/runtime/opportunity-publishability-diagnostic.json")
 _PREVIOUS_HEALTH: dict[str, dict[str, Any]] = {}
 _RUN_DATE: date | None = None
 
@@ -153,6 +156,22 @@ def _today_for_result(result: dict[str, Any]) -> date:
     return _safe_date(result.get("referenceDate")) or date.today()
 
 
+def _write_publishability_diagnostic(result: dict[str, Any], uncovered: list[str]) -> None:
+    """Persiste la salute endpoint prima che il gate interrompa il refresh."""
+    payload = {
+        "schemaVersion": "1.0",
+        "referenceDate": _today_for_result(result).isoformat(),
+        "runtimeUncoveredFamilies": list(uncovered),
+        "coverageAudit": dict(result.get("coverageAudit") or {}),
+        "transportAudit": _build_transport_audit_stable(result),
+    }
+    PUBLISHABILITY_DIAGNOSTIC_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PUBLISHABILITY_DIAGNOSTIC_PATH.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
 def _runtime_uncovered_families_stable(result: dict[str, Any]) -> list[str]:
     contract = h4.core._load(h4.core.CONTRACT_V04)
     rows = list((result.get("sourceCoverage") or {}).get("rows") or [])
@@ -196,7 +215,11 @@ def _runtime_uncovered_families_stable(result: dict[str, Any]) -> list[str]:
     audit["runtimeGraceFamilies"] = grace_families
     audit["sourceHealthGraceDays"] = SOURCE_HEALTH_GRACE_DAYS
     audit["sourceHealthMaxConsecutiveFailures"] = SOURCE_HEALTH_MAX_CONSECUTIVE_FAILURES
-    return sorted(uncovered)
+
+    uncovered = sorted(uncovered)
+    if uncovered:
+        _write_publishability_diagnostic(result, uncovered)
+    return uncovered
 
 
 def _build_transport_audit_stable(result: dict[str, Any]) -> dict[str, Any]:
