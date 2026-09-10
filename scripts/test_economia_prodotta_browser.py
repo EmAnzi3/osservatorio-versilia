@@ -68,6 +68,7 @@ def main() -> int:
         assert page.locator('[data-economic-scope="industry"].active').count() == 1
         industry_values = page.locator(".comparison-bars .bar-row strong").all_text_contents()[:7]
         assert total_values != industry_values, "Il selettore Industria non modifica i valori"
+        assert page.locator("#compare-benchmark").is_hidden(), "Benchmark totale visibile nel confronto Industria"
         report["checks"].append({"compareDesktop": "pass", "totalValues": total_values, "industryValues": industry_values})
         page.screenshot(path=str(shots / "economia-prodotta-confronto-desktop.png"), full_page=True)
 
@@ -77,6 +78,7 @@ def main() -> int:
         assert page.locator('[data-economic-scope="services"].active').count() == 1
         services_values = page.locator(".comparison-bars .bar-row strong").all_text_contents()[:7]
         assert services_values != industry_values
+        assert page.locator("#compare-benchmark").is_hidden(), "Benchmark totale visibile nel confronto Servizi"
         report["checks"].append({"servicesScope": "pass", "servicesValues": services_values})
 
         town_url = f"{base}/comuni/massarosa/?tema=economia&indicatore=labourProductivity"
@@ -85,11 +87,20 @@ def main() -> int:
         page.get_by_role("heading", name="Massarosa", exact=True).wait_for(timeout=10_000)
         assert page.get_by_text("Economia prodotta", exact=True).count() >= 1
         assert page.locator(".economic-scope-control").count() == 1
+        town_benchmark = page.locator("main.town-profile .town-benchmark")
+        assert town_benchmark.count() == 1
+        assert town_benchmark.is_visible(), "Benchmark comunale totale non visibile nel perimetro Totale"
         page.locator('[data-economic-scope="industry"]').click()
         page.wait_for_timeout(350)
         assert "perimetro=industry" in page.url
+        assert town_benchmark.is_hidden(), "Benchmark totale visibile nella scheda comunale Industria"
         page.screenshot(path=str(shots / "economia-prodotta-massarosa-desktop.png"), full_page=True)
-        report["checks"].append({"townDesktop": "pass"})
+        page.locator('[data-economic-scope="total"]').click()
+        page.wait_for_timeout(350)
+        town_benchmark = page.locator("main.town-profile .town-benchmark")
+        assert town_benchmark.is_visible(), "Benchmark comunale non ripristinato tornando a Totale"
+        assert "perimetro=" not in page.url
+        report["checks"].append({"townDesktop": "pass", "townBenchmarkScopeCoherence": "pass"})
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=1)
         mobile.on("console", lambda msg: report["consoleErrors"].append(f"mobile: {msg.text}") if msg.type == "error" else None)
@@ -99,6 +110,7 @@ def main() -> int:
         mobile.get_by_role("heading", name="Fatturato delle unità locali").wait_for(timeout=10_000)
         assert mobile.locator(".economic-scope-control").count() == 1
         assert mobile.locator(".comparison-bars .bar-row").count() >= 7
+        assert mobile.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1"), "Overflow orizzontale mobile"
         mobile.screenshot(path=str(shots / "economia-prodotta-confronto-mobile.png"), full_page=True)
         report["checks"].append({"compareMobile": "pass"})
         mobile.close()
@@ -111,7 +123,7 @@ def main() -> int:
     (shots / "browser-report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("PASS browser Economia prodotta: desktop, mobile, comune e 3 perimetri.")
+    print("PASS browser Economia prodotta: desktop, mobile, comune, benchmark e 3 perimetri.")
     return 0
 
 
