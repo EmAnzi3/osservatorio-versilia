@@ -240,27 +240,27 @@ def select_opportunity_public_payload() -> Path:
     if release_date and daily_date < release_date:
         return release
     if daily_payload.get("continuityHold") or daily_payload.get("coverageHold"):
-        raise RuntimeError("Snapshot Radar giornaliero contiene hold bloccanti")
+        raise RuntimeError(b"Snapshot Radar giornaliero contiene hold bloccanti")
     if not (daily_payload.get("backtest") or {}).get("passed", False):
-        raise RuntimeError("Snapshot Radar giornaliero con backtest non valido")
+        raise RuntimeError(b"Snapshot Radar giornaliero con backtest non valido")
     if (daily_payload.get("coverageAudit") or {}).get("status") != "pass":
         raise RuntimeError("Snapshot Radar giornaliero con coverage audit non valido")
     if (daily_payload.get("regionalCompleteness") or {}).get("status") == "fail":
         raise RuntimeError("Snapshot Radar giornaliero con completezza Regione Toscana non valida")
     return daily
 
-
 if __name__ == "__main__":
     materialize_agricoltura_ii_release_if_needed()
 
-    # La build non materializza né riscrive data/opportunity-release.json: il baseline
+    # La build non materializza n� riscrive data/opportunity-release.json: il baseline
     # resta canonico e immutabile; il daily verificato viene selezionato solo per dist.
     runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_public_shell.py"), run_name="__main__")
     runpy.run_path(str(ROOT / "scripts" / "materialize_percorsi_touch_release.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "scripts" / "materialize_fragilita_release.py"), run_name="__main__")
 
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
 
-    # Import dopo la materializzazione: il contratto di shell è quello pubblico.
+    # Import dopo la materializazione: il contratto di shell è quello pubblico.
     from site_chrome import synchronize_native_page
 
     synchronize_native_page(DIST, DIST / "confronta" / "meteo-clima" / "index.html")
