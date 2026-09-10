@@ -194,6 +194,7 @@ def _diagnostic_gate_summary(result: dict[str, Any]) -> dict[str, Any]:
         "backtestPassed": bool(backtest.get("passed", False)),
         "coverageAuditStatus": audit.get("status"),
         "regionalCompletenessStatus": regional.get("status"),
+        "runtimeUncoveredFamilyCount": len(audit.get("runtimeUncoveredFamilies") or []),
         "opportunityCount": len(result.get("opportunities") or []),
     }
 
@@ -203,6 +204,7 @@ def _write_full_publishability_diagnostic(
     uncovered: list[str],
     *,
     error: BaseException | str | None = None,
+    runtime_evaluation: dict[str, Any] | None = None,
 ) -> None:
     """Scrive lo stato sufficiente a spiegare ogni blocco del publishability gate."""
     try:
@@ -214,16 +216,18 @@ def _write_full_publishability_diagnostic(
         }
 
     payload = {
-        "schemaVersion": "1.1",
+        "schemaVersion": "1.2",
         "referenceDate": stable._today_for_result(result).isoformat(),
         "error": str(error) if error is not None else None,
         "gateSummary": _diagnostic_gate_summary(result),
         "runtimeUncoveredFamilies": list(uncovered),
+        "runtimeCoverageEvaluation": runtime_evaluation or {"evaluated": True, "error": None},
         "continuityHold": list(result.get("continuityHold") or []),
         "coverageHold": list(result.get("coverageHold") or []),
         "regionalCompleteness": dict(result.get("regionalCompleteness") or {}),
         "coverageAudit": dict(result.get("coverageAudit") or {}),
         "sourceCoverage": dict(result.get("sourceCoverage") or {}),
+        "backtest": dict(result.get("backtest") or {}),
         "transportAudit": transport,
     }
     path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
@@ -241,13 +245,38 @@ def _write_full_publishability_diagnostic(
     )
 
 
+def _evaluate_runtime_coverage_for_diagnostic(
+    result: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    """Valuta h5 anche se un gate base ha già fallito, senza scrivere due artifact."""
+    original_writer = stable._write_publishability_diagnostic
+    try:
+        stable._write_publishability_diagnostic = lambda _result, _uncovered: None
+        uncovered = list(stable._runtime_uncovered_families_stable(result))
+        result.setdefault("coverageAudit", {})["runtimeUncoveredFamilies"] = uncovered
+        return uncovered, {"evaluated": True, "error": None}
+    except Exception as exc:  # diagnostica best-effort, non mascherare il gate originario
+        existing = list((result.get("coverageAudit") or {}).get("runtimeUncoveredFamilies") or [])
+        return existing, {
+            "evaluated": False,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+    finally:
+        stable._write_publishability_diagnostic = original_writer
+
+
 def _assert_base_with_full_diagnostic(result: dict[str, Any]) -> None:
     """Intercetta i gate base che altrimenti terminano prima della diagnostica h5."""
     try:
         _BASE_PUBLISH_ASSERT(result)
     except Exception as exc:
-        uncovered = list((result.get("coverageAudit") or {}).get("runtimeUncoveredFamilies") or [])
-        _write_full_publishability_diagnostic(result, uncovered, error=exc)
+        uncovered, runtime_evaluation = _evaluate_runtime_coverage_for_diagnostic(result)
+        _write_full_publishability_diagnostic(
+            result,
+            uncovered,
+            error=exc,
+            runtime_evaluation=runtime_evaluation,
+        )
         raise
 
 
