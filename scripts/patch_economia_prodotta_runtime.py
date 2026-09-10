@@ -213,8 +213,8 @@ def patch_compare_and_town() -> None:
     )
     source = replace_once(
         source,
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
         "benchmark comunale omogeneo",
     )
     source = replace_once(
@@ -252,8 +252,8 @@ def patch_indicator() -> None:
     )
     source = replace_once(
         source,
-        """      <section class="indicator-benchmark page-width">${(financialProfile || hydroRisk) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
-        """      <section class="indicator-benchmark page-width">${(financialProfile || hydroRisk || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+        """      <section class="indicator-benchmark page-width">${financialProfile ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+        """      <section class="indicator-benchmark page-width">${(financialProfile || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
         "benchmark scheda indicatore",
     )
     source = replace_once(
