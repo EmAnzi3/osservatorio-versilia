@@ -125,6 +125,7 @@ def main():
     if not SNAPSHOT.exists():raise RuntimeError('Manifest Economia prodotta v1.34.0 mancante')
     s=load_snapshot();validate(s)
     runpy.run_path(str(ROOT/'scripts/patch_economia_prodotta_runtime.py'),run_name='__main__')
+    runpy.run_path(str(ROOT/'scripts/patch_economia_prodotta_history.py'),run_name='__main__')
     data=json.loads(SITE_DATA.read_text(encoding='utf-8')); metrics=data.setdefault('metrics',{})
     for k in ('businessValueAdded','labourProductivity'):
         if k not in metrics:raise RuntimeError(f'Indicatore esistente atteso non trovato: {k}')
