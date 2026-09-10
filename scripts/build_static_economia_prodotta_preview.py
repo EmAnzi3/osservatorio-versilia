@@ -7,7 +7,7 @@ visiva dell'artifact, evitando di rendere merge-ready una UI non ancora approvat
 
 Il builder corrente di main contiene byte legacy non UTF-8 ma viene eseguito
 correttamente dal workflow Pages. La patch di preview opera quindi sui byte grezzi:
-conserva esattamente il contenuto baseline e inserisce soltanto righe ASCII.
+conserva esattamente il contenuto baseline e inserisce soltanto una riga ASCII.
 """
 from __future__ import annotations
 
@@ -19,12 +19,8 @@ IMPL = ROOT / "scripts" / "build_static_brand_impl.py"
 ENTRY = ROOT / "scripts" / "build_static_brand.py"
 
 NEEDLE = b'    runpy.run_path(str(ROOT / "scripts" / "materialize_fragilita_release.py"), run_name="__main__")\n'
-INJECTION = (
-    NEEDLE
-    + b'    runpy.run_path(str(ROOT / "scripts" / "materialize_economia_prodotta_release.py"), run_name="__main__")\n'
-    + b'    runpy.run_path(str(ROOT / "scripts" / "patch_economia_prodotta_history.py"), run_name="__main__")\n'
-)
-MARKER = b"patch_economia_prodotta_history.py"
+INJECTION = NEEDLE + b'    runpy.run_path(str(ROOT / "scripts" / "materialize_economia_prodotta_release.py"), run_name="__main__")\n'
+MARKER = b"materialize_economia_prodotta_release.py"
 
 
 def main() -> None:
