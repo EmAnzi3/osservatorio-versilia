@@ -211,12 +211,20 @@ def patch_compare_and_town() -> None:
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>""",
         "selettore dentro lo storico comunale",
     )
-    source = replace_once(
-        source,
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
-        "benchmark comunale omogeneo",
+    town_benchmark_variants = (
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        ),
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        ),
     )
+    matched = [(old, new) for old, new in town_benchmark_variants if old in source]
+    if len(matched) != 1:
+        raise RuntimeError(f"benchmark comunale omogeneo: attesa 1 variante, trovate {len(matched)}")
+    source = source.replace(matched[0][0], matched[0][1], 1)
     source = replace_once(
         source,
         "    const tablist = container.querySelector('[role=\"tablist\"]');\n    installTablist(tablist, onMetricSelect);",
@@ -250,12 +258,20 @@ def patch_indicator() -> None:
         <div class="indicator-current-layout">""",
         "selettore nella scheda indicatore",
     )
-    source = replace_once(
-        source,
-        """      <section class="indicator-benchmark page-width">${financialProfile ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
-        """      <section class="indicator-benchmark page-width">${(financialProfile || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
-        "benchmark scheda indicatore",
+    indicator_benchmark_variants = (
+        (
+            """      <section class="indicator-benchmark page-width">${financialProfile ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+            """      <section class="indicator-benchmark page-width">${(financialProfile || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+        ),
+        (
+            """      <section class="indicator-benchmark page-width">${(financialProfile || hydroRisk) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+            """      <section class="indicator-benchmark page-width">${(financialProfile || hydroRisk || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, null)}</section>""",
+        ),
     )
+    matched = [(old, new) for old, new in indicator_benchmark_variants if old in source]
+    if len(matched) != 1:
+        raise RuntimeError(f"benchmark scheda indicatore: attesa 1 variante, trovate {len(matched)}")
+    source = source.replace(matched[0][0], matched[0][1], 1)
     source = replace_once(
         source,
         "    document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));",
