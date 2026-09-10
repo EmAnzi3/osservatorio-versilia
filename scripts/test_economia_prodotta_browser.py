@@ -82,7 +82,7 @@ def main() -> int:
         town_url = f"{base}/comuni/massarosa/?tema=economia&indicatore=labourProductivity"
         page.goto(town_url, wait_until="networkidle")
         wait_app(page)
-        page.get_by_role("heading", name="Massarosa").wait_for(timeout=10_000)
+        page.get_by_role("heading", name="Massarosa", exact=True).wait_for(timeout=10_000)
         assert page.get_by_text("Economia prodotta", exact=True).count() >= 1
         assert page.locator(".economic-scope-control").count() == 1
         page.locator('[data-economic-scope="industry"]').click()
