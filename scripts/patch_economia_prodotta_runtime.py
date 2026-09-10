@@ -178,12 +178,12 @@ def main() -> None:
         "hydration scope prima del render",
     )
 
-    anchor = "      else if (pageType === 'feedback') renderFeedback(data);"
+    anchor = "      if (['compare', 'town'].includes(pageType)) installEnvironmentClimateCoherence(data);"
     source = replace_once(
         source,
         anchor,
         anchor + "\n      observeEconomicScopeControl(data, sourceRegistry, monitorState);",
-        "installazione observer scope",
+        "installazione observer scope dopo dispatch canonico",
     )
 
     TARGET.write_text(source, encoding="utf-8")
