@@ -10,6 +10,12 @@ ECONOMIA_PRODOTTA_KEYS = (
     "turnoverPerPersonEmployed", "valueAddedTurnoverShare",
     "averageGrossRemunerationPerEmployee", "labourCost", "grossOperatingMargin",
 )
+ADDITIVE_KEYS = (
+    "businessTurnover",
+    "businessValueAdded",
+    "labourCost",
+    "grossOperatingMargin",
+)
 NEW_KEYS = tuple(k for k in ECONOMIA_PRODOTTA_KEYS if k not in {"businessValueAdded", "labourProductivity"})
 
 CONFIG = {

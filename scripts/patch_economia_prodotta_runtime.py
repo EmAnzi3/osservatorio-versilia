@@ -192,6 +192,39 @@ def patch_visual_grammar() -> None:
         "    const metric = metricForEconomicScope(data.metrics?.[metricKey]);\n    if (!metric) return;\n\n    const normalized = normalizedFor(container);",
         "scope grammatica visiva",
     )
+    source = replace_once(
+        source,
+        """    const key = metricKey || metric?.meta?.key || '';
+    if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractiveProduction','extractivePlanning'].includes(key) && metric?.meta?.comparisonDifference === 'shareOfAggregate') {""",
+        """    const key = metricKey || metric?.meta?.key || '';
+    if (metric?.meta?.economicScopeSelector && metric?.meta?.comparisonDifference === 'shareOfAggregate') {
+      const total = finite(metric?.aggregate?.value);
+      if (total === null || total <= 0) {
+        return { headline: 'n.d.', direction: 'quota non disponibile', compact: 'quota non disponibile', overline: metric?.meta?.comparisonOverline, note: metric?.meta?.comparisonNote };
+      }
+      const share = local / total * 100;
+      const formattedShare = number1.format(share);
+      return {
+        headline: `${formattedShare}%`,
+        direction: 'del totale Versilia',
+        compact: `${formattedShare}% del totale Versilia`,
+        overline: metric?.meta?.comparisonOverline || 'Peso sulla Versilia',
+        note: metric?.meta?.comparisonNote || 'Quota del valore comunale sul totale dei sette Comuni nello stesso perimetro Frame SBS.',
+      };
+    }
+    if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractiveProduction','extractivePlanning'].includes(key) && metric?.meta?.comparisonDifference === 'shareOfAggregate') {""",
+        "quota Frame sul totale Versilia",
+    )
+    source = replace_once(
+        source,
+        """    const metricKey = metricKeyFor(panel);
+    const metric = data.metrics?.[metricKey];
+    const row = townRow(metric, townName);""",
+        """    const metricKey = metricKeyFor(panel);
+    const metric = metricForEconomicScope(data.metrics?.[metricKey]);
+    const row = townRow(metric, townName);""",
+        "scope grammatica nel riepilogo comunale",
+    )
     VISUAL_TARGET.write_text(source, encoding="utf-8")
 
 

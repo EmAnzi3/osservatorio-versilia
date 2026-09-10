@@ -6,6 +6,8 @@ import json
 import math
 from pathlib import Path
 
+from economia_prodotta_config import ADDITIVE_KEYS
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "data" / "site-data.json"
 REGISTRY = ROOT / "data" / "source-registry.json"
@@ -78,6 +80,16 @@ def main() -> int:
         assert all(set(row["economicScopes"]) == {"total", "industry", "services"} for row in metric["rows"])
         assert set(metric["aggregate"]["economicScopes"]) == {"total", "industry", "services"}
         assert metric["method"]["coverage"] == "7/7"
+
+    for key in ADDITIVE_KEYS:
+        metric = metrics[key]
+        assert metric["meta"]["comparisonDifference"] == "shareOfAggregate"
+        assert metric["meta"]["comparisonOverline"] == "Peso sulla Versilia"
+        for scope in ("total", "industry", "services"):
+            total = metric["aggregate"]["economicScopes"][scope]["value"]
+            shares = [row["economicScopes"][scope]["value"] / total * 100 for row in metric["rows"]]
+            assert all(0 <= share <= 100 for share in shares)
+            assert close(sum(shares), 100)
 
     assert len(metrics["businessTurnover"]["rows"][0]["economicScopes"]["total"]["series"]["years"]) == 9
     assert len(metrics["labourCost"]["rows"][0]["economicScopes"]["total"]["series"]["years"]) == 3

@@ -217,6 +217,28 @@ def main() -> int:
             "townRankAndVersiliaScopeCoherence": "pass",
         })
 
+        additive_shares = {}
+        for metric_key in ("businessValueAdded", "grossOperatingMargin"):
+            metric = site_data["metrics"][metric_key]
+            page.goto(f"{base}/comuni/viareggio/?tema=economia&indicatore={metric_key}&perimetro=services", wait_until="networkidle")
+            wait_app(page)
+            panel = page.locator("#town-topic .versilia-position")
+            local = next(row for row in metric["rows"] if row["town"] == "Viareggio")["economicScopes"]["services"]["value"]
+            total = metric["aggregate"]["economicScopes"]["services"]["value"]
+            expected = f"{local / total * 100:.1f}".replace(".", ",") + "%"
+            assert panel.locator(".overline").text_content().strip() == "Peso sulla Versilia"
+            assert panel.locator(":scope > strong").inner_text().splitlines()[0] == expected
+            assert "del totale Versilia" in panel.locator(":scope > strong").inner_text()
+            assert "media" not in panel.locator(":scope > p").inner_text().lower()
+            assert "−" not in panel.locator(":scope > strong").inner_text()
+            additive_shares[metric_key] = expected
+        report["checks"].append({
+            "townAdditiveShareOfVersilia": "pass",
+            "scope": "services",
+            "town": "Viareggio",
+            "values": additive_shares,
+        })
+
         indicator_url = f"{base}/indicatori/fatturato-delle-unita-locali/?perimetro=industry"
         page.goto(indicator_url, wait_until="networkidle")
         wait_app(page)

@@ -3,7 +3,7 @@
 from __future__ import annotations
 import json, runpy
 from pathlib import Path
-from economia_prodotta_config import CONFIG, ECONOMIA_PRODOTTA_KEYS, NEW_KEYS, SCOPES, SOURCE_LABEL, SOURCE_URL, TOWN_ORDER
+from economia_prodotta_config import ADDITIVE_KEYS, CONFIG, ECONOMIA_PRODOTTA_KEYS, NEW_KEYS, SCOPES, SOURCE_LABEL, SOURCE_URL, TOWN_ORDER
 
 ROOT=Path(__file__).resolve().parents[1]
 SITE_DATA=ROOT/'data/site-data.json'; REGISTRY=ROOT/'data/source-registry.json'
@@ -81,6 +81,20 @@ def variants(s,key):
 def metric(s,key,old=None):
     c=CONFIG[key]; rows,aggs=variants(s,key); meta=dict((old or {}).get('meta',{})); existing_terms=meta.get('searchTerms') or []
     meta.update({'key':key,'theme':'economia','label':c['label'],'shortLabel':c['short'],'description':c['description'],'unit':c['unit'],'year':'2023','source':SOURCE_LABEL,'polarity':'neutral','comparisonReference':'aggregate','economicScopeSelector':True,'economicScopeLabel':'Perimetro Frame SBS','searchTerms':sorted(set(existing_terms+c['searchTerms']))})
+    if key in ADDITIVE_KEYS:
+        meta.update({
+            'comparisonDifference':'shareOfAggregate',
+            'comparisonLabel':'totale Versilia',
+            'comparisonOverline':'Peso sulla Versilia',
+            'comparisonNote':'Quota del valore comunale sul totale dei sette Comuni nello stesso perimetro Frame SBS.',
+        })
+    else:
+        meta.pop('comparisonDifference',None)
+        meta.update({
+            'comparisonLabel':'valore Versilia',
+            'comparisonOverline':'Rispetto al valore Versilia',
+            'comparisonNote':'Scostamento rispetto al rapporto o alla media calcolata sugli aggregati dei sette Comuni nello stesso perimetro Frame SBS; non alla media semplice dei valori comunali.',
+        })
     agg=dict((old or {}).get('aggregate',{})); agg.update({'value':aggs['total']['value'],'label':'Versilia · Totale','note':'Aggregato dei sette Comuni sullo stesso perimetro Frame SBS; rapporti e medie sono ricalcolati dai valori elementari, non dalla media semplice dei Comuni.','economicScopes':aggs})
     if old:
         by={r['town']:r for r in rows}; oldby={r.get('town'):r for r in old.get('rows',[])}
