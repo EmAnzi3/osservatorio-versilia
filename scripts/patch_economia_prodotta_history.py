@@ -50,8 +50,9 @@ def main() -> None:
       const aggregateVariant = original.aggregate?.economicScopes?.[scope] || original.aggregate?.economicScopes?.total;
       if (aggregateVariant && metric.aggregate) {
         metric.aggregate.value = aggregateVariant.value;
+        metric.aggregate.formatted = aggregateVariant.formatted;
         metric.aggregate.label = `Versilia · ${aggregateVariant.label || scope}`;
-        metric.aggregate.series = aggregateVariant.series || metric.aggregate.series;
+        metric.aggregate.series = aggregateVariant.series || null;
       }
     }
     return { key, metric };

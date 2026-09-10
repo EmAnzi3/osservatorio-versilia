@@ -15,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 COMPARE_TARGET = ROOT / "assets" / "app-parts" / "03.txt"
 INDICATOR_TARGET = ROOT / "assets" / "app-parts" / "05.txt"
 RUNTIME_TARGET = ROOT / "assets" / "app-parts" / "06.txt"
+VISUAL_TARGET = ROOT / "assets" / "visual-grammar.js"
 MARKER = "/* OV ECONOMIA PRODOTTA SCOPE v1.34.0 */"
+VISUAL_MARKER = "/* OV ECONOMIA PRODOTTA VISUAL SCOPE v1.34.0 */"
 
 INSERT = r'''
   /* OV ECONOMIA PRODOTTA SCOPE v1.34.0 */
@@ -31,24 +33,39 @@ INSERT = r'''
     return Boolean(metric?.meta?.economicScopeSelector && metric?.rows?.some(row => row.economicScopes));
   }
 
-  function applyEconomicScope(metric, requestedScope = economicScopeFromLocation()) {
-    if (!isEconomicScopeMetric(metric)) return 'total';
+  function scopedEconomicMetric(metric, requestedScope = economicScopeFromLocation()) {
+    if (!isEconomicScopeMetric(metric)) return { metric, scope: 'total' };
     const scope = ECONOMIC_SCOPE_KEYS.includes(requestedScope) ? requestedScope : 'total';
-    metric.rows.forEach(row => {
+    const rows = metric.rows.map(row => {
       const variant = row.economicScopes?.[scope] || row.economicScopes?.total;
-      if (!variant) return;
-      row.value = variant.value;
-      row.formatted = variant.formatted || formatValue(variant.value, metric.meta.unit);
-      row.series = variant.series || null;
-      row.benchmarkValue = variant.value;
+      if (!variant) return { ...row };
+      return {
+        ...row,
+        value: variant.value,
+        formatted: variant.formatted || formatValue(variant.value, metric.meta.unit),
+        series: variant.series || null,
+        benchmarkValue: variant.value,
+      };
     });
     const aggregateVariant = metric.aggregate?.economicScopes?.[scope] || metric.aggregate?.economicScopes?.total;
-    if (aggregateVariant) {
-      metric.aggregate.value = aggregateVariant.value;
-      metric.aggregate.label = `Versilia · ${aggregateVariant.label || scope}`;
-    }
-    metric.meta.activeEconomicScope = scope;
-    return scope;
+    const aggregate = metric.aggregate ? {
+      ...metric.aggregate,
+      ...(aggregateVariant ? {
+        value: aggregateVariant.value,
+        formatted: aggregateVariant.formatted,
+        series: aggregateVariant.series || null,
+        label: `Versilia · ${aggregateVariant.label || scope}`,
+      } : {}),
+    } : metric.aggregate;
+    return {
+      scope,
+      metric: {
+        ...metric,
+        meta: { ...metric.meta, activeEconomicScope: scope },
+        rows,
+        aggregate,
+      },
+    };
   }
 
   function clearEconomicScopeParam() {
@@ -58,12 +75,18 @@ INSERT = r'''
     history.replaceState(history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }
 
-  function economicScopeForMetric(metric) {
-    if (!isEconomicScopeMetric(metric)) {
+  function economicScopeData(data, metricKey, requestedScope = economicScopeFromLocation()) {
+    const original = data.metrics?.[metricKey];
+    if (!isEconomicScopeMetric(original)) {
       clearEconomicScopeParam();
-      return 'total';
+      return { data, metric: original, scope: 'total' };
     }
-    return applyEconomicScope(metric, economicScopeFromLocation());
+    const scoped = scopedEconomicMetric(original, requestedScope);
+    return {
+      scope: scoped.scope,
+      metric: scoped.metric,
+      data: { ...data, metrics: { ...data.metrics, [metricKey]: scoped.metric } },
+    };
   }
 
   function setEconomicScopeParam(scope) {
@@ -78,13 +101,15 @@ INSERT = r'''
   function economicScopeControlMarkup(scope) {
     return `<div class="compare-chart-toolbar economic-scope-control">
       <div><span class="overline">Perimetro Frame SBS</span><small>Stesso indicatore, dettaglio per macrosettore</small></div>
-      <div class="scale-switch economic-scope-switch" role="tablist" aria-label="Perimetro Frame SBS">
+      <label class="compare-choice-select economic-scope-select"><span>Perimetro</span>
+        <select data-economic-scope aria-label="Perimetro Frame SBS">
         ${[
           ['total', 'Totale'],
           ['industry', 'Industria'],
           ['services', 'Servizi']
-        ].map(([key, label]) => `<button type="button" role="tab" data-economic-scope="${key}" class="${key === scope ? 'active' : ''}" aria-selected="${key === scope}" tabindex="${key === scope ? '0' : '-1'}">${label}</button>`).join('')}
-      </div>
+        ].map(([key, label]) => `<option value="${key}" ${key === scope ? 'selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </label>
     </div>`;
   }
 
@@ -135,13 +160,48 @@ def patch_runtime_helpers() -> None:
     RUNTIME_TARGET.write_text(source, encoding="utf-8")
 
 
+def patch_visual_grammar() -> None:
+    source = VISUAL_TARGET.read_text(encoding="utf-8")
+    if VISUAL_MARKER in source:
+        return
+    helper = r'''
+  /* OV ECONOMIA PRODOTTA VISUAL SCOPE v1.34.0 */
+  function metricForEconomicScope(metric) {
+    if (!metric?.meta?.economicScopeSelector || !metric.rows?.some(row => row.economicScopes)) return metric;
+    const requested = new URLSearchParams(location.search).get('perimetro') || 'total';
+    const scope = ['total','industry','services'].includes(requested) ? requested : 'total';
+    const aggregateVariant = metric.aggregate?.economicScopes?.[scope] || metric.aggregate?.economicScopes?.total;
+    return {
+      ...metric,
+      meta: { ...metric.meta, activeEconomicScope: scope },
+      rows: metric.rows.map(row => {
+        const variant = row.economicScopes?.[scope] || row.economicScopes?.total;
+        return variant ? { ...row, value: variant.value, formatted: variant.formatted || row.formatted, series: variant.series || null, benchmarkValue: variant.value } : { ...row };
+      }),
+      aggregate: metric.aggregate ? {
+        ...metric.aggregate,
+        ...(aggregateVariant ? { value: aggregateVariant.value, formatted: aggregateVariant.formatted, series: aggregateVariant.series || null, label: `Versilia · ${aggregateVariant.label || scope}` } : {}),
+      } : metric.aggregate,
+    };
+  }
+'''
+    source = replace_once(source, "  function enhanceComparison(container) {", helper + "\n  function enhanceComparison(container) {", "helper scope grammatica visiva")
+    source = replace_once(
+        source,
+        "    const metric = data.metrics?.[metricKey];\n    if (!metric) return;\n\n    const normalized = normalizedFor(container);",
+        "    const metric = metricForEconomicScope(data.metrics?.[metricKey]);\n    if (!metric) return;\n\n    const normalized = normalizedFor(container);",
+        "scope grammatica visiva",
+    )
+    VISUAL_TARGET.write_text(source, encoding="utf-8")
+
+
 def patch_compare_and_town() -> None:
     source = COMPARE_TARGET.read_text(encoding="utf-8")
 
     source = replace_once(
         source,
         "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const metric = data.metrics[metricKey];",
-        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const metric = data.metrics[metricKey];\n    const economicScope = economicScopeForMetric(metric);",
+        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
         "scope locale nel confronto",
     )
     source = replace_once(
@@ -168,15 +228,15 @@ def patch_compare_and_town() -> None:
     }
 
     if (isEconomicScopeMetric(metric)) {
-      const baseClick = bars.onclick;
-      bars.onclick = event => {
-        const scopeButton = event.target.closest('button[data-economic-scope]');
-        if (scopeButton && bars.contains(scopeButton)) {
-          setEconomicScopeParam(scopeButton.dataset.economicScope);
+      const baseChange = bars.onchange;
+      bars.onchange = event => {
+        const scopeSelect = event.target.closest('select[data-economic-scope]');
+        if (scopeSelect && bars.contains(scopeSelect)) {
+          setEconomicScopeParam(scopeSelect.value);
           renderCompareMetric(data,themeKey,metricKey,normalized,view);
           return;
         }
-        if (typeof baseClick === 'function') baseClick.call(bars,event);
+        if (typeof baseChange === 'function') baseChange.call(bars,event);
       };
     }
 
@@ -199,7 +259,7 @@ def patch_compare_and_town() -> None:
     source = replace_once(
         source,
         "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const metric = data.metrics[metricKey];\n    const row = metric.rows.find(r => r.code === town.code);",
-        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const metric = data.metrics[metricKey];\n    const economicScope = economicScopeForMetric(metric);\n    const row = metric.rows.find(r => r.code === town.code);",
+        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;\n    const row = metric.rows.find(r => r.code === town.code);",
         "scope locale nella scheda comunale",
     )
     source = replace_once(
@@ -230,8 +290,8 @@ def patch_compare_and_town() -> None:
         "    const tablist = container.querySelector('[role=\"tablist\"]');\n    installTablist(tablist, onMetricSelect);",
         """    const tablist = container.querySelector('[role="tablist"]');
     installTablist(tablist, onMetricSelect);
-    container.querySelectorAll('button[data-economic-scope]').forEach(button => button.addEventListener('click', () => {
-      setEconomicScopeParam(button.dataset.economicScope);
+    container.querySelectorAll('select[data-economic-scope]').forEach(select => select.addEventListener('change', () => {
+      setEconomicScopeParam(select.value);
       renderTownMetric(data,town,themeKey,metricKey,onMetricSelect);
     }));
     syncEconomicScopeLinks(data, metricKey, economicScope);""",
@@ -246,7 +306,7 @@ def patch_indicator() -> None:
     source = replace_once(
         source,
         "  function renderIndicator(data, registry, monitorState) {\n    const metric = data.metrics[pageMetric];\n    if (!metric) return renderNotFound();",
-        "  function renderIndicator(data, registry, monitorState) {\n    const metric = data.metrics[pageMetric];\n    if (!metric) return renderNotFound();\n    const economicScope = economicScopeForMetric(metric);",
+        "  function renderIndicator(data, registry, monitorState) {\n    if (!data.metrics[pageMetric]) return renderNotFound();\n    const economicContext = economicScopeData(data, pageMetric);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
         "scope nella scheda indicatore",
     )
     source = replace_once(
@@ -275,8 +335,8 @@ def patch_indicator() -> None:
     source = replace_once(
         source,
         "    document.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));",
-        """    document.querySelectorAll('.indicator-current button[data-economic-scope]').forEach(button => button.addEventListener('click', () => {
-      setEconomicScopeParam(button.dataset.economicScope);
+        """    document.querySelectorAll('.indicator-current select[data-economic-scope]').forEach(select => select.addEventListener('change', () => {
+      setEconomicScopeParam(select.value);
       renderIndicator(data, registry, monitorState);
     }));
     syncEconomicScopeLinks(data, pageMetric, economicScope);
@@ -288,6 +348,7 @@ def patch_indicator() -> None:
 
 def main() -> None:
     patch_runtime_helpers()
+    patch_visual_grammar()
     patch_compare_and_town()
     patch_indicator()
     print("Selettore Frame SBS reso locale alla visualizzazione canonica (confronto, comune, indicatore).")
