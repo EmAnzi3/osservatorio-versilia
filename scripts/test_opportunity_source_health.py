@@ -7,6 +7,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.parse import urlsplit
 
+import opportunity_daily_refresh_audit_fixed as audit_fixed
 import opportunity_daily_refresh_stable as stable
 
 
@@ -326,6 +327,101 @@ def _test_blocked_critical_families_persist_failure_diagnostic() -> None:
     assert by_id["pcm-politiche-giovanili-scu"]["effectiveStatus"] == "error", by_id
 
 
+def _test_base_failure_diagnostic_evaluates_runtime_and_persists_backtest() -> None:
+    original_load = stable.h4.core._load
+    original_previous = stable._PREVIOUS_HEALTH
+    original_date = stable._RUN_DATE
+    original_path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
+    original_base_build = stable._BASE_BUILD_AUDIT
+    original_base_assert = audit_fixed._BASE_PUBLISH_ASSERT
+    try:
+        stable.h4.core._load = lambda _path: {
+            "requiredFamilies": [
+                {"id": "maritime-coastal", "sourceIds": ["pcm-politiche-mare"]},
+            ]
+        }
+        stable._PREVIOUS_HEALTH = {
+            "pcm-politiche-mare": {
+                "lastSuccessfulFetch": "2026-09-01",
+                "consecutiveFailures": 2,
+                "effectiveStatus": "error",
+            }
+        }
+        stable._RUN_DATE = date(2026, 9, 10)
+        stable._BASE_BUILD_AUDIT = lambda _result: {
+            "schemaVersion": "1.1",
+            "summary": {"configuredSources": 1, "configuredEndpoints": 2},
+            "sources": [
+                {
+                    "sourceId": "pcm-politiche-mare",
+                    "runtimeStatus": "error",
+                    "endpointCount": 2,
+                    "endpointOk": 0,
+                    "endpoints": [],
+                }
+            ],
+            "extraFetches": [],
+        }
+
+        def fail_base(_result: dict) -> None:
+            raise RuntimeError(
+                "Snapshot giornaliero non pubblicabile: coverageHold=1, regionalCompleteness=fail"
+            )
+
+        audit_fixed._BASE_PUBLISH_ASSERT = fail_base
+        with TemporaryDirectory() as tmp:
+            diagnostic_path = Path(tmp) / "opportunity-publishability-diagnostic.json"
+            stable.PUBLISHABILITY_DIAGNOSTIC_PATH = diagnostic_path
+            backtest = {
+                "passed": False,
+                "precision": 0.82,
+                "recall": 0.74,
+                "thresholds": {"precision": 0.9, "recall": 0.8},
+                "confusion": {"tp": 82, "fp": 18, "fn": 29, "tn": 71},
+                "unresolved": [{"id": "fixture-backtest-row", "reason": "scope-review"}],
+            }
+            result = {
+                "opportunities": [],
+                "continuityHold": [],
+                "coverageHold": [{"coverage_id": "fixture-regional-gap"}],
+                "regionalCompleteness": {
+                    "status": "fail",
+                    "missing": [{"id": "fixture-regional-gap"}],
+                },
+                "coverageAudit": {"status": "fail"},
+                "sourceCoverage": {
+                    "rows": [
+                        {"source_id": "pcm-politiche-mare", "runtimeStatus": "error"},
+                    ]
+                },
+                "backtest": backtest,
+            }
+            try:
+                audit_fixed._assert_base_with_full_diagnostic(result)
+            except RuntimeError as exc:
+                message = str(exc)
+            else:
+                raise AssertionError("Il gate base simulato deve restare bloccante")
+
+            assert diagnostic_path.exists(), diagnostic_path
+            diagnostic = json.loads(diagnostic_path.read_text(encoding="utf-8"))
+    finally:
+        stable.h4.core._load = original_load
+        stable._PREVIOUS_HEALTH = original_previous
+        stable._RUN_DATE = original_date
+        stable.PUBLISHABILITY_DIAGNOSTIC_PATH = original_path
+        stable._BASE_BUILD_AUDIT = original_base_build
+        audit_fixed._BASE_PUBLISH_ASSERT = original_base_assert
+
+    assert "coverageHold=1" in message, message
+    assert diagnostic["runtimeCoverageEvaluation"] == {"evaluated": True, "error": None}, diagnostic
+    assert diagnostic["runtimeUncoveredFamilies"] == ["maritime-coastal"], diagnostic
+    assert result["coverageAudit"]["runtimeUncoveredFamilies"] == ["maritime-coastal"], result
+    assert diagnostic["gateSummary"]["runtimeUncoveredFamilyCount"] == 1, diagnostic
+    assert diagnostic["backtest"] == backtest, diagnostic
+    assert diagnostic["gateSummary"]["backtestPassed"] is False, diagnostic
+
+
 _DETAIL_URL = "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/"
 _DETAIL_RULE_ID = "st-mercati-rionali-2026"
 
@@ -507,6 +603,7 @@ def main() -> int:
     _test_critical_sources_use_independent_official_hosts()
     _test_secondary_endpoint_keeps_critical_families_covered()
     _test_blocked_critical_families_persist_failure_diagnostic()
+    _test_base_failure_diagnostic_evaluates_runtime_and_persists_backtest()
     _test_live_open_detail_restores_listing_false_negative()
     _test_closed_or_404_detail_keeps_continuity_hold()
     _test_reader_proxy_detail_cannot_clear_continuity_hold()

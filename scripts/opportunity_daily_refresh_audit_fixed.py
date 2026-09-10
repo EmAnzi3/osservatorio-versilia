@@ -8,10 +8,13 @@ trasporto:
   limitandosi a opportunità correnti, rolling o upcoming realmente azionabili;
 - scarta storici, captured, scope-review ed esclusioni;
 - classifica ogni scheda pubblica per rilevanza comunale e separa il conteggio
-  principale dalle opportunità di partnership/consorzio.
+  principale dalle opportunità di partnership/consorzio;
+- persiste una diagnostica completa prima di qualsiasi blocco publishability,
+  inclusi coverageHold, regionalCompleteness, famiglie runtime e backtest.
 """
 from __future__ import annotations
 
+import json
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -36,6 +39,8 @@ _BASE_RADAR_INJECT = getattr(radar_module, "inject_verified_v04", None)
 _BASE_RUN_V04 = radar_module.run_v04
 _BASE_PREPARE_STABLE = stable._prepare_public_stable
 _BASE_RENDER_REPORT = h4.daily._render_report
+_BASE_PUBLISH_ASSERT = h4._ORIGINAL_ASSERT
+_BASE_STABLE_DIAGNOSTIC = stable._write_publishability_diagnostic
 
 
 def _load_fixes() -> dict[str, Any]:
@@ -179,6 +184,102 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     return result
 
 
+def _diagnostic_gate_summary(result: dict[str, Any]) -> dict[str, Any]:
+    backtest = result.get("backtest") or {}
+    audit = result.get("coverageAudit") or {}
+    regional = result.get("regionalCompleteness") or {}
+    return {
+        "continuityHoldCount": len(result.get("continuityHold") or []),
+        "coverageHoldCount": len(result.get("coverageHold") or []),
+        "backtestPassed": bool(backtest.get("passed", False)),
+        "coverageAuditStatus": audit.get("status"),
+        "regionalCompletenessStatus": regional.get("status"),
+        "runtimeUncoveredFamilyCount": len(audit.get("runtimeUncoveredFamilies") or []),
+        "opportunityCount": len(result.get("opportunities") or []),
+    }
+
+
+def _write_full_publishability_diagnostic(
+    result: dict[str, Any],
+    uncovered: list[str],
+    *,
+    error: BaseException | str | None = None,
+    runtime_evaluation: dict[str, Any] | None = None,
+) -> None:
+    """Scrive lo stato sufficiente a spiegare ogni blocco del publishability gate."""
+    try:
+        transport = stable._build_transport_audit_stable(result)
+    except Exception as transport_error:  # diagnostica best-effort, mai mascherare il gate reale
+        transport = {
+            "schemaVersion": "diagnostic-error",
+            "error": f"{type(transport_error).__name__}: {transport_error}",
+        }
+
+    payload = {
+        "schemaVersion": "1.2",
+        "referenceDate": stable._today_for_result(result).isoformat(),
+        "error": str(error) if error is not None else None,
+        "gateSummary": _diagnostic_gate_summary(result),
+        "runtimeUncoveredFamilies": list(uncovered),
+        "runtimeCoverageEvaluation": runtime_evaluation or {"evaluated": True, "error": None},
+        "continuityHold": list(result.get("continuityHold") or []),
+        "coverageHold": list(result.get("coverageHold") or []),
+        "regionalCompleteness": dict(result.get("regionalCompleteness") or {}),
+        "coverageAudit": dict(result.get("coverageAudit") or {}),
+        "sourceCoverage": dict(result.get("sourceCoverage") or {}),
+        "backtest": dict(result.get("backtest") or {}),
+        "transportAudit": transport,
+    }
+    path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        "PUBLISHABILITY DIAGNOSTIC: "
+        f"{path} · continuityHold={payload['gateSummary']['continuityHoldCount']} · "
+        f"coverageHold={payload['gateSummary']['coverageHoldCount']} · "
+        f"regionalCompleteness={payload['gateSummary']['regionalCompletenessStatus']} · "
+        f"runtimeUncoveredFamilies={len(payload['runtimeUncoveredFamilies'])}"
+    )
+
+
+def _evaluate_runtime_coverage_for_diagnostic(
+    result: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    """Valuta h5 anche se un gate base ha già fallito, senza scrivere due artifact."""
+    original_writer = stable._write_publishability_diagnostic
+    try:
+        stable._write_publishability_diagnostic = lambda _result, _uncovered: None
+        uncovered = list(stable._runtime_uncovered_families_stable(result))
+        result.setdefault("coverageAudit", {})["runtimeUncoveredFamilies"] = uncovered
+        return uncovered, {"evaluated": True, "error": None}
+    except Exception as exc:  # diagnostica best-effort, non mascherare il gate originario
+        existing = list((result.get("coverageAudit") or {}).get("runtimeUncoveredFamilies") or [])
+        return existing, {
+            "evaluated": False,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+    finally:
+        stable._write_publishability_diagnostic = original_writer
+
+
+def _assert_base_with_full_diagnostic(result: dict[str, Any]) -> None:
+    """Intercetta i gate base che altrimenti terminano prima della diagnostica h5."""
+    try:
+        _BASE_PUBLISH_ASSERT(result)
+    except Exception as exc:
+        uncovered, runtime_evaluation = _evaluate_runtime_coverage_for_diagnostic(result)
+        _write_full_publishability_diagnostic(
+            result,
+            uncovered,
+            error=exc,
+            runtime_evaluation=runtime_evaluation,
+        )
+        raise
+
+
 def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str, Any]:
     result = _BASE_PREPARE_STABLE(result, today)
     if result.get("auditCorpusPromotionVersion") != audit_promotions.PROMOTION_VERSION:
@@ -214,6 +315,8 @@ def _render_report_relevance(result: dict[str, Any], new_items: list[dict[str, A
 
 def main() -> int:
     original_h4_compose = h4._ORIGINAL_COMPOSE
+    original_h4_assert = h4._ORIGINAL_ASSERT
+    original_stable_diagnostic = stable._write_publishability_diagnostic
     original_core_compose = core.compose_runtime_payloads
     original_core_inject = core.inject_verified_v04
     original_radar_inject = getattr(radar_module, "inject_verified_v04", None)
@@ -222,6 +325,8 @@ def main() -> int:
     original_report = h4.daily._render_report
 
     h4._ORIGINAL_COMPOSE = _compose_with_audit_fixes
+    h4._ORIGINAL_ASSERT = _assert_base_with_full_diagnostic
+    stable._write_publishability_diagnostic = _write_full_publishability_diagnostic
     core.inject_verified_v04 = _inject_with_audit_fixes
     if _BASE_RADAR_INJECT is not None:
         radar_module.inject_verified_v04 = _inject_with_audit_fixes
@@ -232,6 +337,8 @@ def main() -> int:
         return stable.main()
     finally:
         h4._ORIGINAL_COMPOSE = original_h4_compose
+        h4._ORIGINAL_ASSERT = original_h4_assert
+        stable._write_publishability_diagnostic = original_stable_diagnostic
         core.compose_runtime_payloads = original_core_compose
         core.inject_verified_v04 = original_core_inject
         if original_radar_inject is not None:
