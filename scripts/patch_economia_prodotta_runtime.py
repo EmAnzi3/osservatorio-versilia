@@ -130,6 +130,8 @@ INSERT = r'''
 
     const benchmark = document.getElementById('compare-benchmark');
     if (benchmark && pageType === 'compare') benchmark.hidden = scope !== 'total';
+    const townBenchmark = document.querySelector('#app main.town-profile .town-benchmark');
+    if (townBenchmark && pageType === 'town') townBenchmark.hidden = scope !== 'total';
 
     preserveEconomicScopeLinks(scope);
   }
