@@ -8,6 +8,7 @@ on:
       - "scripts/economia_prodotta_config.py"
       - "scripts/materialize_economia_prodotta_release.py"
       - "scripts/patch_economia_prodotta_runtime.py"
+      - "scripts/patch_economia_prodotta_history.py"
       - "scripts/build_static_economia_prodotta_preview.py"
       - "scripts/test_economia_prodotta_release.py"
       - "scripts/test_economia_prodotta_browser.py"
@@ -42,6 +43,7 @@ jobs:
             scripts/economia_prodotta_config.py \
             scripts/materialize_economia_prodotta_release.py \
             scripts/patch_economia_prodotta_runtime.py \
+            scripts/patch_economia_prodotta_history.py \
             scripts/build_static_economia_prodotta_preview.py \
             scripts/test_economia_prodotta_release.py \
             scripts/test_economia_prodotta_browser.py
@@ -50,7 +52,7 @@ jobs:
         run: |
           python scripts/materialize_economia_prodotta_release.py
           python scripts/test_economia_prodotta_release.py
-          git checkout -- data/site-data.json data/source-registry.json assets/app-parts/03.txt assets/app-parts/05.txt assets/app-parts/06.txt
+          git checkout -- data/site-data.json data/source-registry.json assets/app-parts/03.txt assets/app-parts/05.txt assets/app-parts/06.txt assets/ux-history.js
 
       - name: Build review artifact from current main architecture
         run: python scripts/build_static_economia_prodotta_preview.py
