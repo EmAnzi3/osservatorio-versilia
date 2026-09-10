@@ -22,9 +22,9 @@ NEEDLE = b'    runpy.run_path(str(ROOT / "scripts" / "materialize_fragilita_rele
 INJECTION = (
     NEEDLE
     + b'    runpy.run_path(str(ROOT / "scripts" / "materialize_economia_prodotta_release.py"), run_name="__main__")\n'
-    + b'    runpy.run_path(str(ROOT / "scripts" / "patch_economia_prodotta_history_scope.py"), run_name="__main__")\n'
+    + b'    runpy.run_path(str(ROOT / "scripts" / "patch_economia_prodotta_history.py"), run_name="__main__")\n'
 )
-MARKER = b"patch_economia_prodotta_history_scope.py"
+MARKER = b"patch_economia_prodotta_history.py"
 
 
 def main() -> None:
