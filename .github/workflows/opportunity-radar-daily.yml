@@ -134,6 +134,15 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Upload publishability diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-publishability-diagnostic
+          path: reports/runtime/opportunity-publishability-diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Validate daily snapshot and freshness
         run: |
           python -m json.tool data/opportunity-daily-public.json > /dev/null

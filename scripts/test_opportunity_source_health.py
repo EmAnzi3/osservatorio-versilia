@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 from datetime import date
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from urllib.parse import urlsplit
 
 import opportunity_daily_refresh_stable as stable
@@ -63,6 +66,8 @@ def _test_expired_grace_blocks_family() -> None:
     original_load = stable.h4.core._load
     original_previous = stable._PREVIOUS_HEALTH
     original_date = stable._RUN_DATE
+    original_path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
+    original_base_build = stable._BASE_BUILD_AUDIT
     try:
         stable.h4.core._load = lambda _path: {
             "requiredFamilies": [{"id": "maritime-coastal", "sourceIds": ["pcm-mare"]}]
@@ -75,15 +80,26 @@ def _test_expired_grace_blocks_family() -> None:
             }
         }
         stable._RUN_DATE = date(2026, 9, 5)
-        result = {
-            "sourceCoverage": {"rows": [{"source_id": "pcm-mare", "runtimeStatus": "error"}]},
-            "coverageAudit": {},
+        stable._BASE_BUILD_AUDIT = lambda _result: {
+            "schemaVersion": "1.1",
+            "summary": {},
+            "sources": [{"sourceId": "pcm-mare", "runtimeStatus": "error", "endpoints": []}],
+            "extraFetches": [],
         }
-        uncovered = stable._runtime_uncovered_families_stable(result)
+        with TemporaryDirectory() as tmp:
+            stable.PUBLISHABILITY_DIAGNOSTIC_PATH = Path(tmp) / "publishability.json"
+            result = {
+                "sourceCoverage": {"rows": [{"source_id": "pcm-mare", "runtimeStatus": "error"}]},
+                "coverageAudit": {},
+            }
+            uncovered = stable._runtime_uncovered_families_stable(result)
+            assert stable.PUBLISHABILITY_DIAGNOSTIC_PATH.exists()
     finally:
         stable.h4.core._load = original_load
         stable._PREVIOUS_HEALTH = original_previous
         stable._RUN_DATE = original_date
+        stable.PUBLISHABILITY_DIAGNOSTIC_PATH = original_path
+        stable._BASE_BUILD_AUDIT = original_base_build
 
     assert uncovered == ["maritime-coastal"], uncovered
     assert result["coverageAudit"]["runtimeGraceFamilies"] == []
@@ -219,6 +235,269 @@ def _test_secondary_endpoint_keeps_critical_families_covered() -> None:
     assert "youth-civic-service" not in uncovered, uncovered
 
 
+def _test_blocked_critical_families_persist_failure_diagnostic() -> None:
+    original_load = stable.h4.core._load
+    original_previous = stable._PREVIOUS_HEALTH
+    original_date = stable._RUN_DATE
+    original_path = stable.PUBLISHABILITY_DIAGNOSTIC_PATH
+    original_base_build = stable._BASE_BUILD_AUDIT
+    original_assert = stable.h4._ORIGINAL_ASSERT
+    original_runtime = stable.h4._runtime_uncovered_families
+    try:
+        stable.h4.core._load = lambda _path: {
+            "requiredFamilies": [
+                {"id": "maritime-coastal", "sourceIds": ["pcm-politiche-mare"]},
+                {"id": "youth-civic-service", "sourceIds": ["pcm-politiche-giovanili-scu"]},
+            ]
+        }
+        stable._PREVIOUS_HEALTH = {
+            "pcm-politiche-mare": {
+                "lastSuccessfulFetch": "2026-09-01",
+                "consecutiveFailures": 2,
+                "effectiveStatus": "grace",
+            },
+            "pcm-politiche-giovanili-scu": {
+                "lastSuccessfulFetch": "2026-09-01",
+                "consecutiveFailures": 2,
+                "effectiveStatus": "grace",
+            },
+        }
+        stable._RUN_DATE = date(2026, 9, 10)
+        stable._BASE_BUILD_AUDIT = lambda _result: {
+            "schemaVersion": "1.1",
+            "summary": {"configuredSources": 2, "configuredEndpoints": 4},
+            "sources": [
+                {
+                    "sourceId": "pcm-politiche-mare",
+                    "runtimeStatus": "error",
+                    "endpointCount": 2,
+                    "endpointOk": 0,
+                    "endpoints": [],
+                },
+                {
+                    "sourceId": "pcm-politiche-giovanili-scu",
+                    "runtimeStatus": "error",
+                    "endpointCount": 2,
+                    "endpointOk": 0,
+                    "endpoints": [],
+                },
+            ],
+            "extraFetches": [],
+        }
+        stable.h4._ORIGINAL_ASSERT = lambda _result: None
+        stable.h4._runtime_uncovered_families = stable._runtime_uncovered_families_stable
+
+        with TemporaryDirectory() as tmp:
+            diagnostic_path = Path(tmp) / "opportunity-publishability-diagnostic.json"
+            stable.PUBLISHABILITY_DIAGNOSTIC_PATH = diagnostic_path
+            result = {
+                "sourceCoverage": {
+                    "rows": [
+                        {"source_id": "pcm-politiche-mare", "runtimeStatus": "error"},
+                        {"source_id": "pcm-politiche-giovanili-scu", "runtimeStatus": "error"},
+                    ]
+                },
+                "coverageAudit": {},
+            }
+            try:
+                stable.h4._assert_publishable_hardened(result)
+            except RuntimeError as exc:
+                message = str(exc)
+            else:
+                raise AssertionError("Il gate deve bloccare due famiglie obbligatorie fuori grace")
+
+            assert diagnostic_path.exists(), diagnostic_path
+            diagnostic = json.loads(diagnostic_path.read_text(encoding="utf-8"))
+    finally:
+        stable.h4.core._load = original_load
+        stable._PREVIOUS_HEALTH = original_previous
+        stable._RUN_DATE = original_date
+        stable.PUBLISHABILITY_DIAGNOSTIC_PATH = original_path
+        stable._BASE_BUILD_AUDIT = original_base_build
+        stable.h4._ORIGINAL_ASSERT = original_assert
+        stable.h4._runtime_uncovered_families = original_runtime
+
+    assert "maritime-coastal" in message, message
+    assert "youth-civic-service" in message, message
+    assert diagnostic["runtimeUncoveredFamilies"] == ["maritime-coastal", "youth-civic-service"], diagnostic
+    assert diagnostic["transportAudit"]["schemaVersion"] == "1.2", diagnostic
+    by_id = {row["sourceId"]: row for row in diagnostic["transportAudit"]["sources"]}
+    assert by_id["pcm-politiche-mare"]["effectiveStatus"] == "error", by_id
+    assert by_id["pcm-politiche-giovanili-scu"]["effectiveStatus"] == "error", by_id
+
+
+_DETAIL_URL = "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/"
+_DETAIL_RULE_ID = "st-mercati-rionali-2026"
+
+
+def _detail_fixture() -> tuple[dict, dict, dict]:
+    rule = {
+        "id": _DETAIL_RULE_ID,
+        "source_id": "sviluppo-toscana",
+        "title_pattern": "^Avviso Mercati Rionali$",
+        "evidence_url": _DETAIL_URL,
+        "deadline_override": "2026-09-15",
+        "actionable": True,
+    }
+    old = {
+        "id": "fixture-mercati-rionali",
+        "rule_id": _DETAIL_RULE_ID,
+        "source_id": "sviluppo-toscana",
+        "title": "Avviso Mercati Rionali",
+        "url": _DETAIL_URL,
+        "deadline_at": "2026-09-15",
+        "lifecycle_stage": "application_open",
+        "quality_gate": {"status": "pass"},
+        "verified_direct": True,
+        "verified_at": "2026-09-09",
+    }
+    result = {
+        "opportunities": [],
+        "continuityHold": [
+            {
+                "kind": "existing_opportunity",
+                "identity_key": "rule:" + _DETAIL_RULE_ID,
+                "rule_id": _DETAIL_RULE_ID,
+                "source_id": "sviluppo-toscana",
+                "title": "Avviso Mercati Rionali",
+                "url": _DETAIL_URL,
+                "deadline_at": "2026-09-15",
+                "reason": "missing_from_scan",
+            }
+        ],
+        "sourceCoverage": {
+            "rows": [{"source_id": "sviluppo-toscana", "runtimeStatus": "ok"}]
+        },
+        "counts": {},
+    }
+    previous = {"opportunities": [old]}
+    return rule, result, previous
+
+
+def _direct_detail_diagnostics() -> dict:
+    return {
+        "status": "ok",
+        "transport": "http_browser",
+        "fallbackUsed": False,
+        "proxyUsed": False,
+        "initialFailureClass": None,
+        "browserFailureClass": None,
+        "failureClass": None,
+        "resolvedUrl": _DETAIL_URL,
+        "redirected": False,
+        "errors": [],
+    }
+
+
+def _test_live_open_detail_restores_listing_false_negative() -> None:
+    rule, result, previous = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    original_reconcile = stable.h4.daily._reconcile_final_continuity
+    original_recompute = stable.h4.daily._recompute_after_continuity_restore
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        stable._fetch_continuity_detail = lambda _url: (
+            "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+            "Scadenza presentazione domanda 15 settembre 2026. Presenta domanda.</p></body></html>",
+            _direct_detail_diagnostics(),
+        )
+        stable.h4.daily._reconcile_final_continuity = lambda payload: payload.update(
+            {"continuityHold": [], "continuityReconciliation": {"remaining": 0}}
+        )
+        stable.h4.daily._recompute_after_continuity_restore = lambda _payload: None
+        restored = stable._revalidate_unresolved_continuity_details(
+            result,
+            previous,
+            date(2026, 9, 10),
+        )
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+        stable.h4.daily._reconcile_final_continuity = original_reconcile
+        stable.h4.daily._recompute_after_continuity_restore = original_recompute
+
+    assert len(restored) == 1, restored
+    assert result["continuityHold"] == [], result
+    restored_item = restored[0]
+    assert restored_item["verification_status"] == "live_detail_revalidated", restored_item
+    assert restored_item["verified_at"] == "2026-09-10", restored_item
+    assert restored_item["continuity_revalidation"]["transport"] == "http_browser", restored_item
+
+
+def _test_closed_or_404_detail_keeps_continuity_hold() -> None:
+    rule, _, _ = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        scenarios = [
+            (
+                "closed",
+                "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Chiuso. "
+                "Scadenza 15 settembre 2026.</p></body></html>",
+                _direct_detail_diagnostics(),
+            ),
+            (
+                "404",
+                None,
+                {
+                    "status": "error",
+                    "transport": "failed",
+                    "fallbackUsed": False,
+                    "proxyUsed": False,
+                    "initialFailureClass": "endpoint_missing",
+                    "browserFailureClass": None,
+                    "failureClass": "endpoint_missing",
+                    "resolvedUrl": None,
+                    "redirected": False,
+                    "errors": ["HTTP [endpoint_missing]: 404"],
+                },
+            ),
+        ]
+        for label, payload, diagnostics in scenarios:
+            _, result, previous = _detail_fixture()
+            stable._fetch_continuity_detail = lambda _url, p=payload, d=diagnostics: (p, d)
+            restored = stable._revalidate_unresolved_continuity_details(
+                result,
+                previous,
+                date(2026, 9, 10),
+            )
+            assert restored == [], (label, restored)
+            assert len(result["continuityHold"]) == 1, (label, result)
+            assert result["continuityHold"][0]["reason"] == "missing_from_scan", (label, result)
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+
+
+def _test_reader_proxy_detail_cannot_clear_continuity_hold() -> None:
+    rule, result, previous = _detail_fixture()
+    original_rules = stable.h4.radar_module.load_rules
+    original_fetch = stable._fetch_continuity_detail
+    try:
+        stable.h4.radar_module.load_rules = lambda: ([rule], {}, {})
+        diagnostics = _direct_detail_diagnostics()
+        diagnostics.update({"transport": "reader_proxy", "proxyUsed": True, "fallbackUsed": True})
+        stable._fetch_continuity_detail = lambda _url: (
+            "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+            "Scadenza presentazione domanda 15 settembre 2026. Presenta domanda.</p></body></html>",
+            diagnostics,
+        )
+        restored = stable._revalidate_unresolved_continuity_details(
+            result,
+            previous,
+            date(2026, 9, 10),
+        )
+    finally:
+        stable.h4.radar_module.load_rules = original_rules
+        stable._fetch_continuity_detail = original_fetch
+
+    assert restored == [], restored
+    assert len(result["continuityHold"]) == 1, result
+    assert result["continuityHold"][0]["reason"] == "missing_from_scan", result
+
+
 def main() -> int:
     _test_recent_success_gives_family_grace()
     _test_legacy_error_gets_bootstrap_failure_window()
@@ -227,7 +506,11 @@ def main() -> int:
     _test_pre_h5_snapshot_seeds_health()
     _test_critical_sources_use_independent_official_hosts()
     _test_secondary_endpoint_keeps_critical_families_covered()
-    print("Salute persistente fonti Radar: PASS")
+    _test_blocked_critical_families_persist_failure_diagnostic()
+    _test_live_open_detail_restores_listing_false_negative()
+    _test_closed_or_404_detail_keeps_continuity_hold()
+    _test_reader_proxy_detail_cannot_clear_continuity_hold()
+    print("Salute persistente fonti e continuity detail Radar: PASS")
     return 0
 
 
