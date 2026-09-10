@@ -1,0 +1,78 @@
+name: Economia prodotta Preview
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/source-snapshots/economia-prodotta-frame-sbs-v134*.json"
+      - "scripts/economia_prodotta_config.py"
+      - "scripts/materialize_economia_prodotta_release.py"
+      - "scripts/patch_economia_prodotta_runtime.py"
+      - "scripts/patch_economia_prodotta_history.py"
+      - "scripts/build_static_economia_prodotta_preview.py"
+      - "scripts/test_economia_prodotta_release.py"
+      - "scripts/test_economia_prodotta_browser.py"
+      - ".github/workflows/economia-prodotta-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Compile release sources
+        run: |
+          python -m py_compile \
+            scripts/economia_prodotta_config.py \
+            scripts/materialize_economia_prodotta_release.py \
+            scripts/patch_economia_prodotta_runtime.py \
+            scripts/patch_economia_prodotta_history.py \
+            scripts/build_static_economia_prodotta_preview.py \
+            scripts/test_economia_prodotta_release.py \
+            scripts/test_economia_prodotta_browser.py
+
+      - name: Validate data materialization
+        run: |
+          python scripts/materialize_economia_prodotta_release.py
+          python scripts/test_economia_prodotta_release.py
+          git checkout -- data/site-data.json data/source-registry.json assets/app-parts/03.txt assets/app-parts/05.txt assets/app-parts/06.txt assets/ux-history.js assets/visual-grammar.js
+
+      - name: Build review artifact from current main architecture
+        run: python scripts/build_static_economia_prodotta_preview.py
+
+      - name: Validate Economia prodotta in browser
+        run: |
+          mkdir -p reports/economia-prodotta-browser
+          python scripts/test_economia_prodotta_browser.py \
+            --directory dist \
+            --screenshots-dir reports/economia-prodotta-browser
+
+      - name: Package review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: economia-prodotta-preview-v1.34.0
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            dist/
+            reports/economia-prodotta-data-gate.json
+            reports/economia-prodotta-browser/
+            data/source-snapshots/economia-prodotta-frame-sbs-v134*.json
