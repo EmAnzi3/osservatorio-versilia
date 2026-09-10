@@ -135,7 +135,10 @@ INSERT = r'''
   }
 
   function observeEconomicScopeControl(data, sourceRegistry, monitorState) {
-    if (!app || app.dataset.economicScopeObserver === '1') return;
+    if (!app) return;
+    const metric = data.metrics?.[activeEconomicMetricKey(data)];
+    if (!isEconomicScopeMetric(metric)) return;
+    if (app.dataset.economicScopeObserver === '1') return;
     app.dataset.economicScopeObserver = '1';
     let pending = false;
     const sync = () => {
