@@ -9,6 +9,7 @@
     "scripts/materialize_affluenza_release.py",
     "scripts/materialize_percorsi_touch_release.py",
     "scripts/materialize_fragilita_release.py",
+    "scripts/materialize_economia_prodotta_release.py",
     "scripts/prepare_economy_atlas_build.py",
     "scripts/materialize_economy_atlas_release.py",
     "scripts/refine_economy_atlas_release.py",
