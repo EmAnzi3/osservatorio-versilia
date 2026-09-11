@@ -25,6 +25,7 @@ compatibili, ma sposta la decisione su invarianti condivisi e testabili.
 | #41 (10/09): continuity + coverage + regional | Sviluppo Toscana non ripropone `Avviso Mercati Rionali`; la misura regionale equivalente resta classificata su un canale diverso | No: la misura era aperta e documentata | identità cross-source deterministica | mancava la riconferma live del dettaglio canonico |
 | #42 (10/09): coverage + regional dopo continuity recuperata | la riconferma live rimette la misura nell'output, ma il safety-net Regione era già stato valutato sulla fotografia precedente | No | dettaglio canonico live; alias `st-mercati-rionali-2026` | `coverageHold` regionale obsoleto non ricalcolato |
 | #43 (10/09) e #44 (11/09): stesso blocco con diagnostica completa | identico difetto d'ordine del run #42; la nuova diagnostica lo rende visibile ma non lo risolve | No | artifact completo PR #173 | decisione finale composta da stati temporalmente incoerenti |
+| Quality gate 11/09: Jazz 2027 ancora aperto dopo la scadenza del 10/09 | Il gate assumeva `application_open` per le schede legacy senza lifecycle, la funzione di expiry no; la materializzazione non applicava la transizione temporale agli snapshot già accettati | Sì per la scheda, non per il resto del corpus | Il refresh archiviava già entry scadute con lifecycle esplicito | Uniformare il default legacy e archiviare gli scaduti anche in materializzazione |
 
 ## Invarianti della pipeline stabilizzata
 

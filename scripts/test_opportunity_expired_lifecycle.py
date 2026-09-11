@@ -5,6 +5,7 @@ import unittest
 from datetime import date
 
 import opportunity_daily_refresh_revalidated as hardened
+import materialize_opportunity_release_snapshot as materialize
 
 
 class ExpiredLifecycleTest(unittest.TestCase):
@@ -29,6 +30,36 @@ class ExpiredLifecycleTest(unittest.TestCase):
             hardened._ORIGINAL_VERIFY = original
 
         self.assertEqual(result, (True, "expired_deadline", None))
+
+    def test_missing_legacy_lifecycle_uses_application_open_default(self) -> None:
+        entry = {
+            "deadline_at": "2026-09-10",
+            "url": "https://example.invalid/legacy-expired",
+        }
+        self.assertTrue(hardened.daily.radar.core._is_expired_application(entry, date(2026, 9, 11)))
+
+    def test_materializer_archives_expired_items_from_accepted_snapshot(self) -> None:
+        payload = {
+            "opportunities": [
+                {
+                    "id": "expired",
+                    "title": "Expired",
+                    "deadline_at": "2026-09-10",
+                    "url": "https://example.invalid/expired",
+                },
+                {
+                    "id": "current",
+                    "title": "Current",
+                    "lifecycle_stage": "application_open",
+                    "deadline_at": "2026-09-12",
+                    "url": "https://example.invalid/current",
+                },
+            ],
+            "archive": [],
+        }
+        materialize._archive_expired_opportunities(payload, date(2026, 9, 11))
+        self.assertEqual([x["id"] for x in payload["opportunities"]], ["current"])
+        self.assertEqual([x["id"] for x in payload["archive"]], ["expired"])
 
     def test_current_application_still_uses_strict_verification(self) -> None:
         entry = {
