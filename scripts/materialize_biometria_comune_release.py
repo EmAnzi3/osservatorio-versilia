@@ -92,6 +92,10 @@ def _surface_metric(site: dict, snapshot: dict, identities: dict[str, dict]) -> 
             "source": "Istat — Principali statistiche geografiche sui comuni",
             "polarity": "neutral",
             "comparisonReference": "aggregate",
+            "comparisonDifference": "shareOfAggregate",
+            "comparisonOverline": "Quota sulla Versilia",
+            "comparisonDirection": "della superficie dei 7 Comuni",
+            "comparisonNote": "Quota della superficie comunale sul totale della superficie dei sette Comuni.",
             "searchTerms": ["superficie", "territorio", "km²", "estensione comunale"],
         },
         "sourceUrl": ISTAT_URL,
@@ -211,7 +215,7 @@ def _altitude_metric(site: dict, snapshot: dict, identities: dict[str, dict]) ->
             "description": "Quota percentuale della superficie comunale nelle otto fasce altimetriche Istat, dal livello 0–299 m a oltre 2.500 m.",
             "unit": "percent",
             "year": "31 dicembre 2021",
-            "source": "Istat — Fasce altimetriche dei Comuni",
+            "source": "Istat — Altimetria e fasce altimetriche dei Comuni",
             "polarity": "neutral",
             "compositeType": "distribution",
             "summaryLabel": "Territorio da 300 m in su",
@@ -232,7 +236,7 @@ def _altitude_metric(site: dict, snapshot: dict, identities: dict[str, dict]) ->
         "method": {
             "type": "Dato territoriale ufficiale + aggregazione Osservatorio",
             "formula": "Comune: quota di superficie in ciascuna fascia. Versilia: Σ(superficie comunale × quota fascia) / Σ superficie.",
-            "caveat": "Le percentuali comunali possono totalizzare 99,9% o 100,1% per arrotondamento della fonte. Le quote minima/media/massima restano fuori dalla UI finché non è verificato il file canonico Istat Altimetria 2021.",
+            "caveat": "Quota minima, media e massima dal file canonico Istat Altimetria 2021; distribuzione percentuale dal file canonico Istat Fasce altimetriche 2021.",
             "coverage": "7/7",
         },
     }
@@ -290,7 +294,7 @@ def patch_catalog(snapshot: dict) -> None:
         "frequency": "irregular",
         "frequencyLabel": "Secondo gli aggiornamenti delle statistiche geografiche comunali Istat",
         "expectedRelease": "Secondo la fonte",
-        "acquisitionMethod": "Statistiche geografiche comunali Istat: superficie e distribuzione della superficie per fascia altimetrica; densità derivata dalla popolazione canonica del sito.",
+        "acquisitionMethod": "Statistiche geografiche comunali Istat: superficie, quota minima/media/massima e distribuzione per fascia altimetrica; densità derivata dalla popolazione canonica del sito.",
         "licenseName": "Condizioni di riuso Istat",
         "licenseUrl": ISTAT_URL,
     }
