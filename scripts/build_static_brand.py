@@ -11,7 +11,9 @@ from ephemeral_build_workspace import public_build_workspace
 ROOT = Path(__file__).resolve().parents[1]
 IMPLEMENTATION = ROOT / "scripts" / "build_static_brand_impl.py"
 OPPORTUNITY_MATERIALIZER = ROOT / "scripts" / "materialize_opportunity_release_snapshot.py"
+FRAGILITA_MATERIALIZER = (ROOT / "scripts" / "materialize_fragilita_release.py").resolve()
 FRAGILITA_RUNTIME_PATCH = (ROOT / "scripts" / "patch_fragilita_runtime.py").resolve()
+ECONOMIA_PRODOTTA_MATERIALIZER = ROOT / "scripts" / "materialize_economia_prodotta_release.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -24,6 +26,10 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
     exactly the reviewed R3 expressions before prerendering.
     """
     path = Path(path_name).resolve()
+    if path == FRAGILITA_MATERIALIZER:
+        result = _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
+        _ORIGINAL_RUN_PATH(str(ECONOMIA_PRODOTTA_MATERIALIZER), run_name="__main__")
+        return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
 
