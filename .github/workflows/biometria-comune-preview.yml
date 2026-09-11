@@ -53,6 +53,14 @@ jobs:
       - name: Audit canonical Istat altitude file
         run: python scripts/acquire_biometria_altimetria_istat.py
 
+      - name: Package Istat altitude audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: biometria-istat-altimetria-audit
+          if-no-files-found: error
+          retention-days: 7
+          path: reports/biometria-comune-browser/istat-altimetria-raw-rows.json
+
       - name: Validate source and architecture contract
         run: python scripts/test_biometria_comune_release.py
 
