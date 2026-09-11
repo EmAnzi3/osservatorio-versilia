@@ -30,6 +30,7 @@ def load_materializer():
 
 def main() -> None:
     snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
+    assert snapshot["status"] == "verified-istat-2021-xlsx"
     assert list(snapshot["municipalities"]) == MUNICIPALITY_ORDER
     for town, row in snapshot["municipalities"].items():
         bands = row["altitudeBandsPct"]
@@ -39,20 +40,36 @@ def main() -> None:
         assert abs(sum(values) - 100) <= BAND_SUM_TOLERANCE + 1e-9, (town, sum(values))
         assert round(sum(values[:2]), 1) == row["below600Pct"], town
         assert round(sum(values[1:]), 1) == row["from300Pct"], town
-        assert row["altitudeMinM"] is None and row["altitudeMeanM"] is None and row["altitudeMaxM"] is None
-        assert row["altitudeStatus"] == "pending-istat-2021-xlsx"
+        altitude_values = (row["altitudeMinM"], row["altitudeMeanM"], row["altitudeMaxM"])
+        assert all(isinstance(value, (int, float)) for value in altitude_values), town
+        assert altitude_values[0] <= altitude_values[1] <= altitude_values[2], town
+        assert row["altitudeStatus"] == "verified-istat-2021-xlsx"
+
+    # Controlli puntuali sul record oggetto della revisione manuale.
+    massarosa = snapshot["municipalities"]["Massarosa"]
+    assert abs(massarosa["surfaceKm2"] - 68.2455922649) < 1e-9
+    assert massarosa["altitudeMinM"] == -8
+    assert abs(massarosa["altitudeMeanM"] - 62.603001736041) < 1e-9
+    assert massarosa["altitudeMaxM"] == 461
+    assert massarosa["from300Pct"] == 4.0
 
     site = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
     module = load_materializer()
     metrics = module.build_metrics(site, snapshot)
     assert tuple(metrics) == NEW_METRIC_KEYS
-    assert metrics["municipalSurface"]["meta"]["theme"] == "ambiente"
+    surface = metrics["municipalSurface"]
+    assert surface["meta"]["theme"] == "ambiente"
+    massarosa_surface = next(row for row in surface["rows"] if row["town"] == "Massarosa")
+    expected_share = massarosa_surface["value"] / surface["aggregate"]["value"] * 100
+    assert round(expected_share, 1) == 19.1
+
     assert metrics["populationDensity"]["meta"]["unit"] == "peoplePerSquareKm"
     altitude = metrics["altitudeProfile"]
     assert altitude["meta"]["compositeType"] == "distribution"
     assert altitude["meta"]["summaryLabel"] == "Territorio da 300 m in su"
     assert all(len(row["parts"]) == 8 for row in altitude["rows"])
-    assert all(row["altitudeStats"]["minM"] is None for row in altitude["rows"])
+    assert all(row["altitudeStats"]["status"] == "verified-istat-2021-xlsx" for row in altitude["rows"])
+    assert all(row["altitudeStats"]["minM"] is not None for row in altitude["rows"])
 
     population = {row["town"]: float(row["value"]) for row in site["metrics"]["population"]["rows"]}
     for row in metrics["populationDensity"]["rows"]:
@@ -76,10 +93,12 @@ def main() -> None:
 
     runtime = (ROOT / "scripts" / "patch_biometria_runtime.py").read_text(encoding="utf-8")
     assert "squareKm" in runtime and "peoplePerSquareKm" in runtime
+    assert "SHARE-OF-AGGREGATE" in runtime
+    assert "ALTITUDE-STATS" in runtime
     assert not (ROOT / "assets" / "biometria-v135.css").exists()
     assert not (ROOT / "assets" / "biometria-v135.js").exists()
     assert not (ROOT / "confronta" / "ambiente" / "biometria").exists()
-    print("Biometria v1.35.0: dati 7/7, aggregazioni e architettura canonica OK")
+    print("Biometria v1.35.0: dati Istat 2021 7/7, quote altimetriche, quota Versilia e architettura canonica OK")
 
 
 if __name__ == "__main__":
