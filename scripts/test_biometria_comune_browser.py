@@ -73,11 +73,16 @@ def main() -> int:
             assert label in detail
         page.screenshot(path=str(shots / "massarosa-profilo-altimetrico-desktop.png"), full_page=True)
 
-        page.locator('[data-indicator="municipalSurface"]').click()
-        page.wait_for_timeout(350)
+        # Le metriche v1.35 usano le route canoniche della scheda comunale. Qui le
+        # verifichiamo tramite deep link, senza dipendere dal markup interno dei card
+        # switcher (che appartiene al renderer condiviso e non alla feature Biometria).
+        surface_url = f"{base}/comuni/massarosa/?tema=ambiente&indicatore=municipalSurface"
+        page.goto(surface_url, wait_until="networkidle")
+        wait_app(page)
         assert "68,59 km²" in page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        page.locator('[data-indicator="populationDensity"]').click()
-        page.wait_for_timeout(350)
+        density_url = f"{base}/comuni/massarosa/?tema=ambiente&indicatore=populationDensity"
+        page.goto(density_url, wait_until="networkidle")
+        wait_app(page)
         assert "ab./km²" in page.locator("#town-topic .town-metric-primary > strong").inner_text()
         report["checks"].append({"townCanonicalShell": "pass", "townAltitudeBands": 8, "townUnits": "pass"})
 
