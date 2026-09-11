@@ -32,20 +32,20 @@ def patch_share_of_aggregate() -> None:
         return
     needle = "    if (key === 'population') {"
     replacement = """    /* OV BIOMETRIA SHARE-OF-AGGREGATE v1.35.0 */
-    if (metric?.meta?.comparisonDifference === 'shareOfAggregate') {
+    if (metric?.meta?.comparisonDifference === 'shareOfAggregate' || key === 'municipalSurface') {
       const total = finite(metric?.aggregate?.value);
       if (total === null || total <= 0) {
         return { headline:'n.d.', direction:'quota non disponibile', compact:'quota non disponibile', overline:metric?.meta?.comparisonOverline, note:metric?.meta?.comparisonNote };
       }
       const share = local / total * 100;
       const formattedShare = number1.format(share);
-      const direction = metric?.meta?.comparisonDirection || 'del totale Versilia';
+      const direction = metric?.meta?.comparisonDirection || 'della superficie dei 7 Comuni';
       return {
         headline: `${formattedShare}%`,
         direction,
         compact: `${formattedShare}% ${direction}`,
         overline: metric?.meta?.comparisonOverline || 'Quota sulla Versilia',
-        note: metric?.meta?.comparisonNote || 'Quota del valore comunale sul totale dei sette Comuni.',
+        note: metric?.meta?.comparisonNote || 'Quota della superficie comunale sul totale della superficie dei sette Comuni.',
       };
     }
     if (key === 'population') {"""
