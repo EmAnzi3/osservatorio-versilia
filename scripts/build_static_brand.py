@@ -42,8 +42,8 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
             'b=replace_once(b,"((omi || stock || securityMeasures) ? options[0] : null)"',
         ),
         (
-            '\",\"securityMeasures ? compositeSelectionAggregate(metric,\\\'part-0\\\') : (hydroRisk ? compositeSelectionAggregate(metric,metric.meta.defaultScenario) : null)\",\\\'town aggregate summary\\\')',
-            '\",\"(securityMeasures ? compositeSelectionAggregate(metric,\\\'part-0\\\') : (hydroRisk ? compositeSelectionAggregate(metric,metric.meta.defaultScenario) : null))\",\\\'town aggregate summary\\\')',
+            '","securityMeasures ? compositeSelectionAggregate(metric,\'part-0\') : (hydroRisk ? compositeSelectionAggregate(metric,metric.meta.defaultScenario) : null)",\'town aggregate summary\')',
+            '","(securityMeasures ? compositeSelectionAggregate(metric,\'part-0\') : (hydroRisk ? compositeSelectionAggregate(metric,metric.meta.defaultScenario) : null))",\'town aggregate summary\')',
         ),
     )
     for old, new in fixes:
