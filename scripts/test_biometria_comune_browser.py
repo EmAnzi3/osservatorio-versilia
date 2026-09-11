@@ -67,7 +67,12 @@ def main() -> int:
         assert page.get_by_text("Profilo fisico del territorio", exact=True).count() >= 1
         assert page.locator("#town-topic .composite-stack .composite-segment").count() == 8
         primary = page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        assert "11,4%" in primary, primary
+        assert "4,0%" in primary, primary
+        topic_text = page.locator("#town-topic").inner_text()
+        for label in ("Quota minima", "Quota media", "Quota massima"):
+            assert label in topic_text, topic_text
+        for value in ("-8 m", "63 m", "461 m"):
+            assert value in topic_text, topic_text
         detail = page.locator("#town-topic .composite-town-detail").first.inner_text()
         for label in ("0–299 m", "300–599 m", "600–899 m", "900–1.199 m"):
             assert label in detail
@@ -79,12 +84,24 @@ def main() -> int:
         surface_url = f"{base}/comuni/massarosa/?tema=ambiente&indicatore=municipalSurface"
         page.goto(surface_url, wait_until="networkidle")
         wait_app(page)
-        assert "68,59 km²" in page.locator("#town-topic .town-metric-primary > strong").inner_text()
+        assert "68,25 km²" in page.locator("#town-topic .town-metric-primary > strong").inner_text()
+        surface_text = page.locator("#town-topic").inner_text()
+        assert "19,1%" in surface_text, surface_text
+        assert "della superficie dei 7 Comuni" in surface_text, surface_text
+        assert "−80,8%" not in surface_text and "-80,8%" not in surface_text, surface_text
+        page.screenshot(path=str(shots / "massarosa-superficie-desktop.png"), full_page=True)
+
         density_url = f"{base}/comuni/massarosa/?tema=ambiente&indicatore=populationDensity"
         page.goto(density_url, wait_until="networkidle")
         wait_app(page)
         assert "ab./km²" in page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        report["checks"].append({"townCanonicalShell": "pass", "townAltitudeBands": 8, "townUnits": "pass"})
+        report["checks"].append({
+            "townCanonicalShell": "pass",
+            "townAltitudeBands": 8,
+            "townAltitudeStats": "pass",
+            "surfaceShareOfVersilia": "pass",
+            "townUnits": "pass",
+        })
 
         compare_url = f"{base}/confronta/ambiente/?indicatore=altitudeProfile"
         page.goto(compare_url, wait_until="networkidle")
@@ -105,6 +122,7 @@ def main() -> int:
         assert mobile.locator("body").evaluate("el => el.scrollWidth <= window.innerWidth + 1")
         assert mobile.locator("#site-header-mount").inner_text().strip()
         assert mobile.locator("#site-footer-mount").inner_text().strip()
+        assert "Quota minima" in mobile.locator("#town-topic").inner_text()
         mobile.screenshot(path=str(shots / "massarosa-profilo-altimetrico-mobile.png"), full_page=True)
         report["checks"].append({"mobileNoOverflow": "pass"})
         mobile.close()
@@ -113,7 +131,7 @@ def main() -> int:
     if report["consoleErrors"] or report["pageErrors"]:
         raise RuntimeError(json.dumps(report, ensure_ascii=False, indent=2))
     (shots / "browser-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("PASS browser Biometria: shell main, renderer canonici, desktop/mobile, nessun overflow.")
+    print("PASS browser Biometria: quota Versilia, quote altimetriche, shell main, desktop/mobile.")
     return 0
 
 
