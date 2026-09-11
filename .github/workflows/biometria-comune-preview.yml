@@ -1,0 +1,73 @@
+name: Biometria del comune Preview
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/source-snapshots/biometria-comune-v135.json"
+      - "scripts/biometria_comune_config.py"
+      - "scripts/materialize_biometria_comune_release.py"
+      - "scripts/patch_biometria_runtime.py"
+      - "scripts/build_static_biometria_comune_preview.py"
+      - "scripts/test_biometria_comune_release.py"
+      - "scripts/test_biometria_comune_browser.py"
+      - "ci/workflow-contract.json"
+      - ".github/workflows/biometria-comune-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Compile feature sources
+        run: |
+          python -m py_compile \
+            scripts/biometria_comune_config.py \
+            scripts/materialize_biometria_comune_release.py \
+            scripts/patch_biometria_runtime.py \
+            scripts/build_static_biometria_comune_preview.py \
+            scripts/test_biometria_comune_release.py \
+            scripts/test_biometria_comune_browser.py
+
+      - name: Validate source and architecture contract
+        run: python scripts/test_biometria_comune_release.py
+
+      - name: Build review artifact from current main architecture
+        run: python scripts/build_static_biometria_comune_preview.py
+
+      - name: Validate Biometria in browser
+        run: |
+          mkdir -p reports/biometria-comune-browser
+          python scripts/test_biometria_comune_browser.py \
+            --directory dist \
+            --screenshots-dir reports/biometria-comune-browser
+
+      - name: Package review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: biometria-comune-preview-v1.35.0
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            dist/
+            reports/biometria-comune-browser/
+            data/source-snapshots/biometria-comune-v135.json
