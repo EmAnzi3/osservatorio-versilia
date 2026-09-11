@@ -120,9 +120,21 @@ def _daily_is_publishable(candidate: dict, baseline: dict) -> bool:
     return True
 
 
+def _archive_expired_opportunities(data: dict, today: date) -> None:
+    """Applica la transizione temporale anche a snapshot già accettati."""
+    active = []
+    for item in data.get("opportunities") or []:
+        if radar_v044.core._is_expired_application(item, today):
+            radar_v044.core._append_archive(data, item)
+        else:
+            active.append(item)
+    data["opportunities"] = active
+
+
 def _apply_public_audit_replay(data: dict) -> dict:
     today = date.today()
     audit_promotions.apply_complete_promotions(data, today)
+    _archive_expired_opportunities(data, today)
     radar_v044.core._recompute_v04_counts(data)
     relevance.apply_to_payload(data, drop_review=True)
     # Il replay viene applicato dopo il normale calcolo dei contatori v0.4.4.

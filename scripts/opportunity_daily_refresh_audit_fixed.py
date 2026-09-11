@@ -270,7 +270,17 @@ def _assert_base_with_full_diagnostic(result: dict[str, Any]) -> None:
     try:
         _BASE_PUBLISH_ASSERT(result)
     except Exception as exc:
-        uncovered, runtime_evaluation = _evaluate_runtime_coverage_for_diagnostic(result)
+        audit = result.get("coverageAudit") or {}
+        if "runtimeUncoveredFamilies" in audit:
+            uncovered = list(audit.get("runtimeUncoveredFamilies") or [])
+            runtime_evaluation = {
+                "evaluated": True,
+                "error": None,
+                "source": "final_publishability_evaluation",
+            }
+        else:
+            # Compatibility for direct callers that bypass the h4 final gate.
+            uncovered, runtime_evaluation = _evaluate_runtime_coverage_for_diagnostic(result)
         _write_full_publishability_diagnostic(
             result,
             uncovered,

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import date
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -141,6 +142,53 @@ def _test_pre_h5_snapshot_seeds_health() -> None:
     assert seeded["healthy"]["consecutiveFailures"] == 0, seeded
     assert seeded["broken"]["lastSuccessfulFetch"] is None, seeded
     assert seeded["broken"]["consecutiveFailures"] == 1, seeded
+
+
+def _test_failed_run_health_overrides_accepted_snapshot() -> None:
+    original_env = os.environ.get(stable.SOURCE_HEALTH_SEED_ENV)
+    accepted = {
+        "referenceDate": "2026-09-09",
+        "transportAudit": {
+            "sources": [{
+                "sourceId": "pcm-politiche-mare",
+                "runtimeStatus": "ok",
+                "lastSuccessfulFetch": "2026-09-09",
+                "consecutiveFailures": 0,
+            }]
+        },
+    }
+    failed = {
+        "referenceDate": "2026-09-10",
+        "transportAudit": {
+            "sources": [{
+                "sourceId": "pcm-politiche-mare",
+                "runtimeStatus": "error",
+                "lastSuccessfulFetch": "2026-09-09",
+                "consecutiveFailures": 1,
+                "effectiveStatus": "grace",
+            }]
+        },
+    }
+    try:
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "diagnostic.json"
+            path.write_text(json.dumps(failed), encoding="utf-8")
+            os.environ[stable.SOURCE_HEALTH_SEED_ENV] = str(path)
+            seeded = stable._seed_health_with_failed_run(accepted)
+            accepted_after_success = json.loads(json.dumps(accepted))
+            accepted_after_success["referenceDate"] = "2026-09-11"
+            accepted_after_success["transportAudit"]["sources"][0]["lastSuccessfulFetch"] = "2026-09-11"
+            stale_ignored = stable._seed_health_with_failed_run(accepted_after_success)
+    finally:
+        if original_env is None:
+            os.environ.pop(stable.SOURCE_HEALTH_SEED_ENV, None)
+        else:
+            os.environ[stable.SOURCE_HEALTH_SEED_ENV] = original_env
+
+    assert seeded["pcm-politiche-mare"]["consecutiveFailures"] == 1, seeded
+    assert seeded["pcm-politiche-mare"]["effectiveStatus"] == "grace", seeded
+    assert stale_ignored["pcm-politiche-mare"]["consecutiveFailures"] == 0, stale_ignored
+    assert stale_ignored["pcm-politiche-mare"]["lastSuccessfulFetch"] == "2026-09-11", stale_ignored
 
 
 def _test_critical_sources_use_independent_official_hosts() -> None:
@@ -594,12 +642,35 @@ def _test_reader_proxy_detail_cannot_clear_continuity_hold() -> None:
     assert result["continuityHold"][0]["reason"] == "missing_from_scan", result
 
 
+def _test_same_host_canonical_redirect_is_verification_grade() -> None:
+    rule, _, previous = _detail_fixture()
+    old = previous["opportunities"][0]
+    diagnostics = _direct_detail_diagnostics()
+    diagnostics.update({
+        "resolvedUrl": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali-2026/",
+        "redirected": True,
+    })
+    payload = (
+        "<html><body><h1>Avviso Mercati Rionali</h1><p>Stato: Aperto. "
+        "Scadenza presentazione domanda 15 settembre 2026. Presenta domanda.</p></body></html>"
+    )
+    assert stable._detail_evidence_valid(
+        rule,
+        old,
+        payload,
+        diagnostics,
+        date(2026, 9, 10),
+        _DETAIL_URL,
+    )
+
+
 def main() -> int:
     _test_recent_success_gives_family_grace()
     _test_legacy_error_gets_bootstrap_failure_window()
     _test_expired_grace_blocks_family()
     _test_success_resets_failure_counter()
     _test_pre_h5_snapshot_seeds_health()
+    _test_failed_run_health_overrides_accepted_snapshot()
     _test_critical_sources_use_independent_official_hosts()
     _test_secondary_endpoint_keeps_critical_families_covered()
     _test_blocked_critical_families_persist_failure_diagnostic()
@@ -607,6 +678,7 @@ def main() -> int:
     _test_live_open_detail_restores_listing_false_negative()
     _test_closed_or_404_detail_keeps_continuity_hold()
     _test_reader_proxy_detail_cannot_clear_continuity_hold()
+    _test_same_host_canonical_redirect_is_verification_grade()
     print("Salute persistente fonti e continuity detail Radar: PASS")
     return 0
 

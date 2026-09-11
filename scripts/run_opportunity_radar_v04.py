@@ -197,7 +197,9 @@ def build_seed_item(entry: dict[str, Any], today: date, verification_status: str
 
 
 def _is_expired_application(entry: dict[str, Any], today: date) -> bool:
-    if str(entry.get("lifecycle_stage")) != "application_open":
+    # Le schede storiche precedenti all'introduzione esplicita del lifecycle
+    # sono application_open per contratto (lo stesso default usato dai gate).
+    if str(entry.get("lifecycle_stage") or "application_open") != "application_open":
         return False
     deadline = entry.get("deadline_at")
     if not deadline:

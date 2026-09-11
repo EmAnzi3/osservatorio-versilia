@@ -79,12 +79,19 @@ def _runtime_uncovered_families(result: dict[str, Any]) -> list[str]:
 
 
 def _assert_publishable_hardened(result: dict[str, Any]) -> None:
-    _ORIGINAL_ASSERT(result)
+    # Runtime coverage is another input to the *same* final publishability
+    # decision.  Evaluate it first so base blockers cannot prevent collection
+    # of the complete gate state and its diagnostic.
     uncovered = _runtime_uncovered_families(result)
     audit = result.setdefault("coverageAudit", {})
     audit["runtimeUncoveredFamilies"] = uncovered
     if uncovered:
         audit["status"] = "fail"
+    _ORIGINAL_ASSERT(result)
+    # Defensive compatibility for legacy/custom assert hooks.  The canonical
+    # base assert above already raises from coverageAudit=fail; this branch is
+    # reached only when a caller replaced it with a permissive test/adapter.
+    if uncovered:
         raise RuntimeError(
             "Snapshot giornaliero non pubblicabile: famiglie obbligatorie senza copertura runtime="
             + ", ".join(uncovered)

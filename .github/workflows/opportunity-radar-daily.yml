@@ -3,7 +3,22 @@ name: Radar Opportunità · refresh giornaliero
 on:
   schedule:
     - cron: "15 6 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/opportunity-radar-daily.yml"
+      - "scripts/opportunity_*.py"
+      - "scripts/test_opportunity_*.py"
+      - "data/opportunity-*.json"
+      - "requirements-ci.txt"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Esegue scan e gate senza aggiornare branch, PR o notifiche"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -13,17 +28,18 @@ permissions:
 
 concurrency:
   group: opportunity-radar-daily
-  cancel-in-progress: false
+  # I run produttivi restano seriali e non cancellabili; sulle PR conta solo
+  # l'ultimo commit, evitando code di scan live ormai obsoleti.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout main
+      - name: Checkout workflow ref
         uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -45,6 +61,8 @@ jobs:
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
+          python scripts/test_opportunity_publishability_matrix.py
+          python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -121,6 +139,47 @@ jobs:
 
       - name: Materialize verified baseline
         run: python scripts/materialize_opportunity_release_snapshot.py
+
+      - name: Seed source health from latest failed run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          previous_run_id="$(
+            gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/opportunity-radar-daily.yml/runs?per_page=20" \
+              --jq ".workflow_runs | map(select(.id != ${GITHUB_RUN_ID} and .head_branch == \"main\")) | first | .id // empty"
+          )"
+          if [ -z "$previous_run_id" ]; then
+            echo "Nessun run precedente: salute fonti inizializzata dallo snapshot accettato."
+            exit 0
+          fi
+          previous_conclusion="$(
+            gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${previous_run_id}" --jq '.conclusion // empty'
+          )"
+          if [ "$previous_conclusion" != "failure" ]; then
+            echo "Il run precedente ${previous_run_id} non è fallito: salute fonti inizializzata dallo snapshot accettato."
+            exit 0
+          fi
+          artifact_id="$(
+            gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${previous_run_id}/artifacts?per_page=100" \
+              --jq '.artifacts | map(select(.name == "opportunity-radar-publishability-diagnostic")) | last | .id // empty'
+          )"
+          if [ -z "$artifact_id" ]; then
+            echo "Il run fallito ${previous_run_id} non ha diagnostica: uso lo snapshot accettato."
+            exit 0
+          fi
+          seed_dir="/tmp/opportunity-source-health-seed"
+          mkdir -p "$seed_dir"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > "$seed_dir/artifact.zip"
+          unzip -q -o "$seed_dir/artifact.zip" -d "$seed_dir"
+          seed_path="$seed_dir/opportunity-publishability-diagnostic.json"
+          if [ ! -s "$seed_path" ]; then
+            echo "Artifact diagnostico ${artifact_id} privo del JSON atteso: uso lo snapshot accettato."
+            exit 0
+          fi
+          echo "OPPORTUNITY_SOURCE_HEALTH_SEED=$seed_path" >> "$GITHUB_ENV"
+          echo "Salute fonti ereditata dall'artifact diagnostico ${artifact_id}."
 
       - name: Scan live sources and build daily snapshot
         run: python scripts/opportunity_daily_refresh_stable.py
@@ -233,6 +292,7 @@ jobs:
 
       - name: Commit verified daily snapshot to automation branch
         id: commit
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}

@@ -218,10 +218,16 @@ def _restore_recent_verified_continuity(
     return restored
 
 
-def _assert_publishable(result: dict[str, Any]) -> None:
+def _publishability_problems(result: dict[str, Any]) -> list[str]:
+    """Return every final blocker without short-circuiting on the first gate.
+
+    This function must only be called after discovery, all deterministic
+    injections, continuity recovery and regional reconciliation have finished.
+    Keeping the evaluation pure makes it possible to persist one coherent
+    diagnostic and to regression-test simultaneous failures.
+    """
     problems: list[str] = []
     if result.get("continuityHold"):
-        _write_continuity_diagnostic(result)
         problems.append(f"continuityHold={len(result.get('continuityHold') or [])}")
     if result.get("coverageHold"):
         problems.append(f"coverageHold={len(result.get('coverageHold') or [])}")
@@ -236,6 +242,13 @@ def _assert_publishable(result: dict[str, Any]) -> None:
         problems.append("regionalCompleteness=fail")
     if not result.get("opportunities"):
         problems.append("opportunities=0")
+    return problems
+
+
+def _assert_publishable(result: dict[str, Any]) -> None:
+    problems = _publishability_problems(result)
+    if result.get("continuityHold"):
+        _write_continuity_diagnostic(result)
     if problems:
         raise RuntimeError("Snapshot giornaliero non pubblicabile: " + ", ".join(problems))
 
@@ -359,9 +372,12 @@ def main() -> int:
     today = date.fromisoformat(args.date)
     previous_path, previous = _previous_snapshot(args.daily, args.baseline)
     result = radar.run_v04(today, previous_path=previous_path)
+    # Every recovery/injection must finish before a completeness gate observes
+    # the result.  In particular, the regional safety net must see an item
+    # restored from its canonical detail page, not the earlier partial scan.
     result = _reconcile_final_continuity(result)
-    result = regione_guard.apply(result, today)
     _restore_recent_verified_continuity(result, previous, today)
+    result = regione_guard.apply(result, today)
     _assert_publishable(result)
     new_items = _annotate_first_seen(result, previous, today)
     result = _prepare_public(result, today)

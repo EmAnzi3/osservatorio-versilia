@@ -60,6 +60,8 @@ jobs:
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
             scripts/test_opportunity_source_health.py \
+            scripts/test_opportunity_publishability_matrix.py \
+            scripts/test_opportunity_expired_lifecycle.py \
             scripts/test_opportunity_municipal_relevance.py \
             scripts/test_opportunity_audit_corpus_promotions.py \
             scripts/build_opportunity_preview_v044.py \
@@ -73,6 +75,8 @@ jobs:
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
           python scripts/test_opportunity_source_health.py
+          python scripts/test_opportunity_publishability_matrix.py
+          python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_municipal_relevance.py
           python scripts/test_opportunity_audit_corpus_promotions.py
           python scripts/test_opportunity_radar_v044.py
