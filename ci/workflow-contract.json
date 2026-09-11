@@ -32,6 +32,7 @@
     {"path": ".github/workflows/meteo-poc.yml", "category": "probe", "status": "active"},
     {"path": ".github/workflows/probe-istat-lavoro-istruzione.yml", "category": "probe", "status": "active"},
     {"path": ".github/workflows/climate-minmax-extend.yml", "category": "probe", "status": "active"},
+    {"path": ".github/workflows/biometria-comune-preview.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/climate-interaction.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/costa-mare-v123.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/cultura-v121-gate.yml", "category": "specialized-gate", "status": "active"},
