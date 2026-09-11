@@ -183,6 +183,15 @@ def _test_dns_error_does_not_hide_configuration_drift() -> None:
     assert reader_called is False
 
 
+def _test_exhausted_transport_is_source_scoped_network_error() -> None:
+    error = discovery.DiscoveryFetchError(
+        "HTTP timeout; Chromium timeout; Reader 403",
+        {"failureClass": "http_403_waf"},
+    )
+    assert isinstance(error, urllib.error.URLError)
+    assert error.diagnostics["failureClass"] == "http_403_waf"
+
+
 def _test_probe_exposes_endpoint_diagnostics() -> None:
     radar = daily_h4.radar_module
     config = {
@@ -352,6 +361,7 @@ def main() -> int:
     _test_timeout_uses_reader_after_chromium_failure()
     _test_missing_endpoint_does_not_hide_configuration_drift()
     _test_dns_error_does_not_hide_configuration_drift()
+    _test_exhausted_transport_is_source_scoped_network_error()
     _test_probe_exposes_endpoint_diagnostics()
     _test_probe_marks_reader_as_degraded()
     _test_probe_uses_resolved_url_for_relative_links()

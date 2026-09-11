@@ -31,7 +31,9 @@ _GENERIC_LINK_LABELS = {
 }
 
 
-class DiscoveryFetchError(RuntimeError):
+class DiscoveryFetchError(urllib.error.URLError):
+    """Errore di trasporto confinabile alla singola fonte dal collector."""
+
     def __init__(self, message: str, diagnostics: dict[str, Any]):
         super().__init__(message)
         self.diagnostics = diagnostics

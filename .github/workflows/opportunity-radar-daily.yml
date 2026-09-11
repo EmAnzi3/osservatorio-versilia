@@ -28,7 +28,9 @@ permissions:
 
 concurrency:
   group: opportunity-radar-daily
-  cancel-in-progress: false
+  # I run produttivi restano seriali e non cancellabili; sulle PR conta solo
+  # l'ultimo commit, evitando code di scan live ormai obsoleti.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   refresh:
