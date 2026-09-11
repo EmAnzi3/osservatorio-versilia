@@ -23,6 +23,7 @@ sostituisce la verifica primaria e non modifica i criteri di ammissibilità.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from datetime import date
@@ -39,6 +40,7 @@ CONTINUITY_DETAIL_HTTP_TIMEOUT_SECONDS = 8
 CONTINUITY_DETAIL_BROWSER_TIMEOUT_MS = 15_000
 CONTINUITY_DETAIL_MAX_ATTEMPTS = 3
 PUBLISHABILITY_DIAGNOSTIC_PATH = Path("reports/runtime/opportunity-publishability-diagnostic.json")
+SOURCE_HEALTH_SEED_ENV = "OPPORTUNITY_SOURCE_HEALTH_SEED"
 _PREVIOUS_HEALTH: dict[str, dict[str, Any]] = {}
 _RUN_DATE: date | None = None
 
@@ -123,6 +125,28 @@ def _load_previous_snapshot(path: Path) -> dict[str, Any]:
     except (OSError, json.JSONDecodeError):
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _seed_health_with_failed_run(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Overlay the latest failed-run health on the accepted snapshot.
+
+    Failed runs cannot update the public snapshot.  Without this separate seed,
+    their consecutive failure counter would restart forever from the last green
+    run, silently turning a two-run grace into an unlimited grace.
+    """
+    seeded = _seed_previous_health(snapshot)
+    raw = str(os.environ.get(SOURCE_HEALTH_SEED_ENV) or "").strip()
+    if not raw:
+        return seeded
+    failed = _load_previous_snapshot(Path(raw))
+    if not failed:
+        return seeded
+    accepted_date = _safe_date(snapshot.get("referenceDate"))
+    failed_date = _safe_date(failed.get("referenceDate"))
+    if accepted_date and failed_date and failed_date < accepted_date:
+        return seeded
+    seeded.update(_seed_previous_health(failed))
+    return seeded
 
 
 def _seed_previous_health(snapshot: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -598,7 +622,7 @@ def main() -> int:
     global _PREVIOUS_HEALTH, _RUN_DATE
     _RUN_DATE = _run_date_from_argv()
     previous = _load_previous_snapshot(_daily_path_from_argv())
-    _PREVIOUS_HEALTH = _seed_previous_health(previous)
+    _PREVIOUS_HEALTH = _seed_health_with_failed_run(previous)
 
     original_runtime = h4._runtime_uncovered_families
     original_build = h4._build_transport_audit

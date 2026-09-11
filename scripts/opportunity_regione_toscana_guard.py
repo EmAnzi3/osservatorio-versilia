@@ -23,6 +23,8 @@ base = radar.base
 LISTING_URL = "https://www.regione.toscana.it/it/bandi-tutti?delta=60&sortBy=desc&start=1"
 RECENT_WINDOW_DAYS = 21
 REVIEW_GRACE_DAYS = 7
+_GATE_ORIGIN = "regional_completeness"
+_HOLD_PREFIX = "rt-completeness-"
 
 _MUNICIPAL_AUDIENCE_TERMS = (
     "enti locali",
@@ -232,7 +234,13 @@ def apply(
     fetcher: Callable[[str], str] | None = None,
     candidates: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """Aggiunge accounting/discovery e coverage hold per gap regionali maturi."""
+    """Aggiunge accounting/discovery e coverage hold per gap regionali maturi.
+
+    The operation is intentionally idempotent: a final reconciliation may run
+    it again after continuity or canonical-detail recovery.  Entries generated
+    by an earlier partial view are removed and rebuilt, while holds from every
+    other quality gate are preserved byte-for-byte.
+    """
     errors: list[str] = []
     if candidates is None:
         candidates, errors = scan_recent_municipal_candidates(
@@ -244,7 +252,17 @@ def apply(
         )
 
     queue = result.setdefault("discoveryQueue", [])
+    queue[:] = [
+        item for item in queue
+        if str(item.get("source_id") or "") != "regione-toscana-safety-net"
+        and str(item.get("gate_origin") or "") != _GATE_ORIGIN
+    ]
     holds = result.setdefault("coverageHold", [])
+    holds[:] = [
+        item for item in holds
+        if not str(item.get("coverage_id") or "").startswith(_HOLD_PREFIX)
+        and str(item.get("gate_origin") or "") != _GATE_ORIGIN
+    ]
     added = 0
     unresolved: list[dict[str, Any]] = []
     overdue: list[dict[str, Any]] = []
@@ -265,6 +283,7 @@ def apply(
                     "deadline_at": candidate.get("deadline_at"),
                     "discovery_only": True,
                     "status": "internal_review",
+                    "gate_origin": _GATE_ORIGIN,
                     "reason": (
                         "Safety net Regione Toscana: la fonte primaria indica esplicitamente un possibile "
                         "ruolo di Enti locali/Comuni, ma il candidato non era contabilizzato dal flusso principale."
@@ -282,7 +301,7 @@ def apply(
         age_days = candidate.get("age_days")
         if isinstance(age_days, int) and age_days > REVIEW_GRACE_DAYS:
             overdue.append(row)
-            hold_id = "rt-completeness-" + _stable_key(str(candidate.get("url") or ""), str(candidate.get("title") or ""))
+            hold_id = _HOLD_PREFIX + _stable_key(str(candidate.get("url") or ""), str(candidate.get("title") or ""))
             if not any(str(item.get("coverage_id") or "") == hold_id for item in holds):
                 holds.append(
                     {
@@ -290,6 +309,7 @@ def apply(
                         "title": candidate.get("title"),
                         "source_id": "regione-toscana",
                         "url": candidate.get("url"),
+                        "gate_origin": _GATE_ORIGIN,
                         "reason": (
                             "Bando regionale recente con ruolo comunale esplicito ancora non risolto dopo "
                             f"{REVIEW_GRACE_DAYS} giorni: qualificare o escludere documentalmente prima della pubblicazione."

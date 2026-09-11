@@ -114,6 +114,43 @@ def test_existing_review_becomes_overdue_without_duplicate_discovery() -> None:
     assert len(result["coverageHold"]) == 1
 
 
+def test_final_reconciliation_removes_stale_regional_hold() -> None:
+    """Replay of runs 42-44: detail recovery must invalidate the old hold."""
+    candidate = {
+        "title": "Mercati rionali: contributi ai Comuni",
+        "url": "https://www.regione.toscana.it/it/-/mercati-rionali-contributi-ai-comuni-per-ammodernamento-ampliamento-e-riqualificazione",
+        "summary": "Comuni della Regione Toscana",
+        "published_at": "2026-09-02",
+        "age_days": guard.REVIEW_GRACE_DAYS + 2,
+        "deadline_at": "2026-09-15",
+    }
+    external_hold = {"coverage_id": "other-quality-gate", "reason": "must survive"}
+    result = {
+        "opportunities": [],
+        "reviewQueue": [copy.deepcopy(candidate)],
+        "discoveryQueue": [],
+        "coverageHold": [external_hold],
+        "counts": {},
+    }
+    guard.apply(result, date(2026, 9, 11), candidates=[copy.deepcopy(candidate)])
+    assert result["regionalCompleteness"]["status"] == "fail"
+    assert len(result["coverageHold"]) == 2
+
+    result["opportunities"].append({
+        "title": "Avviso Mercati Rionali",
+        "url": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+        "deadline_at": "2026-09-15",
+        "rule_id": "st-mercati-rionali-2026",
+        "verification_status": "live_detail_revalidated",
+    })
+    guard.apply(result, date(2026, 9, 11), candidates=[copy.deepcopy(candidate)])
+
+    assert result["regionalCompleteness"]["status"] == "pass", result
+    assert result["regionalCompleteness"]["unresolved"] == []
+    assert result["regionalCompleteness"]["overdue"] == []
+    assert result["coverageHold"] == [external_hold]
+
+
 def main() -> int:
     test_audience_detection()
     test_accounted_public_is_not_duplicated()
@@ -121,8 +158,9 @@ def main() -> int:
     test_missing_recent_candidate_enters_discovery()
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
+    test_final_reconciliation_removes_stale_regional_hold()
     assert audit_fixes.main() == 0
-    print("Regione Toscana guard: 6 test PASS + audit gap contracts PASS")
+    print("Regione Toscana guard: 7 test PASS + audit gap contracts PASS")
     return 0
 
 
