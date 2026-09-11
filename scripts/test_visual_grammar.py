@@ -239,6 +239,7 @@ def browser_checks() -> None:
         assert page.locator(".chart-point").evaluate_all("els => els.every(el => el.tabIndex === 0)")
 
         page.goto(base + "confronta/economia/?indicatore=businessValueAdded", wait_until="networkidle")
+        page.locator('[data-view-mode="current"]').click()
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert_reading_scale(page, "Funzionale")
         scale_text = page.locator(".reading-scale").inner_text().lower()
