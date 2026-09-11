@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Scarica il file canonico Istat Altimetria 2021 e isola le righe dei 7 Comuni OV.
+"""Audita i due XLSX canonici Istat 2021 usati dalla Biometria comunale.
 
-Utility di audit: non modifica i dati pubblicati. Serve a chiudere il gate su quota minima,
-media e massima con la fonte canonica indicata da Istat.
+Scarica Altimetria e Fasce altimetriche, quindi isola intestazioni e righe dei sette
+Comuni dell'Osservatorio. Non modifica i dati pubblicati.
 """
 from __future__ import annotations
 
@@ -14,7 +14,10 @@ from pathlib import Path
 import requests
 from openpyxl import load_workbook
 
-URL = "https://www.istat.it/wp-content/uploads/2026/02/Altimetria_Comuni-al-31_12_2021.xlsx"
+SOURCES = {
+    "altimetria": "https://www.istat.it/wp-content/uploads/2026/02/Altimetria_Comuni-al-31_12_2021.xlsx",
+    "fasceAltimetriche": "https://www.istat.it/wp-content/uploads/2026/02/Fasce-altimetriche-Comuni-al-31_12_2021.xlsx",
+}
 TOWNS = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
 
 
@@ -22,15 +25,10 @@ def norm(value: object) -> str:
     return " ".join(str(value or "").strip().split()).casefold()
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="reports/biometria-comune-browser/istat-altimetria-raw-rows.json")
-    args = parser.parse_args()
-
-    response = requests.get(URL, timeout=60)
+def audit_workbook(url: str) -> dict:
+    response = requests.get(url, timeout=60)
     response.raise_for_status()
     workbook = load_workbook(BytesIO(response.content), data_only=True, read_only=True)
-
     wanted = {norm(name): name for name in TOWNS}
     matches: list[dict] = []
     sheet_heads: dict[str, list[list[object]]] = {}
@@ -45,22 +43,31 @@ def main() -> None:
             if hit:
                 matches.append({"sheet": ws.title, "row": row_index, "towns": hit, "values": values})
         sheet_heads[ws.title] = head
-
     missing = sorted(set(TOWNS) - {town for match in matches for town in match["towns"]})
-    payload = {
-        "source": URL,
+    return {
+        "source": url,
         "bytes": len(response.content),
         "sheets": workbook.sheetnames,
         "sheetHeads": sheet_heads,
         "matches": matches,
         "missing": missing,
     }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="reports/biometria-comune-browser/istat-altimetria-raw-rows.json")
+    args = parser.parse_args()
+
+    payload = {key: audit_workbook(url) for key, url in SOURCES.items()}
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
     print(json.dumps(payload, ensure_ascii=False, indent=2, default=str))
+
+    missing = {key: value["missing"] for key, value in payload.items() if value["missing"]}
     if missing:
-        raise SystemExit(f"Comuni non trovati nel file Istat: {', '.join(missing)}")
+        raise SystemExit(f"Comuni non trovati nei file Istat: {missing}")
 
 
 if __name__ == "__main__":
