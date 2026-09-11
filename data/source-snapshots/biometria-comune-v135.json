@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "release": "v1.35.0",
-  "status": "draft-data-gate",
+  "status": "verified-istat-2021-xlsx",
   "scope": "Biometria del comune / Carta d’identità fisica",
   "referenceDate": "2021-12-31",
   "source": {
@@ -12,7 +12,7 @@
     "published": "2026-04-15",
     "pageUpdated": "2026-07-02",
     "dem": "NASADEM_HGTv001",
-    "altitudeStatsGate": "Quota minima/media/massima non viene pubblicata finché il file Altimetria canonico non è verificato nel gate dati."
+    "altitudeStatsGate": "Chiuso: quota minima, media e massima verificate sul file canonico Istat Altimetria al 31 dicembre 2021."
   },
   "bands": [
     {"id":"0_299","label":"0–299 m","minM":0,"maxM":299},
@@ -26,17 +26,18 @@
   ],
   "municipalityOrder": ["Camaiore","Forte dei Marmi","Massarosa","Pietrasanta","Seravezza","Stazzema","Viareggio"],
   "municipalities": {
-    "Camaiore": {"surfaceKm2":84.47,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":57.0,"300_599":21.1,"600_899":19.2,"900_1199":2.6,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":78.1,"from300Pct":42.9},
-    "Forte dei Marmi": {"surfaceKm2":8.98,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":100.0,"300_599":0,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":0.0},
-    "Massarosa": {"surfaceKm2":68.59,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":88.6,"300_599":11.4,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":11.4},
-    "Pietrasanta": {"surfaceKm2":41.82,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":86.9,"300_599":13.1,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":13.1},
-    "Seravezza": {"surfaceKm2":39.54,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":32.1,"300_599":26.2,"600_899":19.4,"900_1199":20.4,"1200_1499":1.8,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":58.3,"from300Pct":67.8},
-    "Stazzema": {"surfaceKm2":81.33,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":3.4,"300_599":14.0,"600_899":17.8,"900_1199":31.2,"1200_1499":27.1,"1500_1999":6.5,"2000_2499":0,"2500_plus":0},"below600Pct":17.4,"from300Pct":96.6},
-    "Viareggio": {"surfaceKm2":31.88,"altitudeMinM":null,"altitudeMeanM":null,"altitudeMaxM":null,"altitudeStatus":"pending-istat-2021-xlsx","altitudeBandsPct":{"0_299":100.0,"300_599":0,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":0.0}
+    "Camaiore": {"surfaceKm2":84.6916646245,"altitudeMinM":-5,"altitudeMeanM":283.256624803002,"altitudeMaxM":1187,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":62.0361,"300_599":23.1885,"600_899":11.1745,"900_1199":3.6009,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":85.2,"from300Pct":38.0},
+    "Forte dei Marmi": {"surfaceKm2":9.18671486427,"altitudeMinM":-5,"altitudeMeanM":3.43602605375458,"altitudeMaxM":13,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":100.0,"300_599":0,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":0.0},
+    "Massarosa": {"surfaceKm2":68.2455922649,"altitudeMinM":-8,"altitudeMeanM":62.603001736041,"altitudeMaxM":461,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":96.0388,"300_599":3.9612,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":4.0},
+    "Pietrasanta": {"surfaceKm2":42.2685463205,"altitudeMinM":-6,"altitudeMeanM":105.019245473328,"altitudeMaxM":726,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":86.2203,"300_599":12.8774,"600_899":0.9022,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":99.1,"from300Pct":13.8},
+    "Seravezza": {"surfaceKm2":39.4677282042,"altitudeMinM":-3,"altitudeMeanM":546.584067560508,"altitudeMaxM":1553,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":31.6164,"300_599":26.0337,"600_899":20.1453,"900_1199":16.4260,"1200_1499":5.6358,"1500_1999":0.1428,"2000_2499":0,"2500_plus":0},"below600Pct":57.7,"from300Pct":68.4},
+    "Stazzema": {"surfaceKm2":80.639757592,"altitudeMinM":73,"altitudeMeanM":784.096788486609,"altitudeMaxM":1860,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":5.8841,"300_599":24.2606,"600_899":33.5819,"900_1199":27.0372,"1200_1499":8.0119,"1500_1999":1.2243,"2000_2499":0,"2500_plus":0},"below600Pct":30.1,"from300Pct":94.1},
+    "Viareggio": {"surfaceKm2":32.7261333045,"altitudeMinM":-5,"altitudeMeanM":2.44748310490747,"altitudeMaxM":21,"altitudeStatus":"verified-istat-2021-xlsx","altitudeBandsPct":{"0_299":100.0,"300_599":0,"600_899":0,"900_1199":0,"1200_1499":0,"1500_1999":0,"2000_2499":0,"2500_plus":0},"below600Pct":100.0,"from300Pct":0.0}
   },
   "notes": [
-    "Le percentuali possono totalizzare 99,9% o 100,1% per arrotondamento della fonte.",
-    "from300Pct è la somma delle fasce da 300 m in su; below600Pct è la somma delle prime due fasce.",
+    "Superficie e quote minima/media/massima derivano dal file canonico Istat Altimetria al 31 dicembre 2021.",
+    "Le percentuali delle otto fasce altimetriche derivano dal file canonico Istat Fasce altimetriche al 31 dicembre 2021; sono conservate a quattro decimali.",
+    "from300Pct è la somma delle fasce da 300 m in su; below600Pct è la somma delle prime due fasce, arrotondate a un decimale per la sintesi UI.",
     "La densità non è duplicata nello snapshot: viene derivata in build dalla metrica population canonica del sito."
   ]
 }
