@@ -6,6 +6,7 @@ on:
     paths:
       - "data/source-snapshots/biometria-comune-v135.json"
       - "scripts/biometria_comune_config.py"
+      - "scripts/acquire_biometria_altimetria_istat.py"
       - "scripts/materialize_biometria_comune_release.py"
       - "scripts/patch_biometria_runtime.py"
       - "scripts/build_static_biometria_comune_preview.py"
@@ -35,17 +36,22 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
+          python -m pip install openpyxl==3.1.5
           python -m playwright install --with-deps chromium
 
       - name: Compile feature sources
         run: |
           python -m py_compile \
             scripts/biometria_comune_config.py \
+            scripts/acquire_biometria_altimetria_istat.py \
             scripts/materialize_biometria_comune_release.py \
             scripts/patch_biometria_runtime.py \
             scripts/build_static_biometria_comune_preview.py \
             scripts/test_biometria_comune_release.py \
             scripts/test_biometria_comune_browser.py
+
+      - name: Audit canonical Istat altitude file
+        run: python scripts/acquire_biometria_altimetria_istat.py
 
       - name: Validate source and architecture contract
         run: python scripts/test_biometria_comune_release.py
