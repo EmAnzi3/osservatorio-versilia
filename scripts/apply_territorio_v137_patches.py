@@ -106,46 +106,6 @@ s = once(
 )
 brand.write_text(s, encoding="utf-8")
 
-qa = Path(".github/workflows/territorio-v137-runtime-qa.yml")
-qa.write_text('''name: Territorio v1.37 canonical QA
-
-on:
-  push:
-    branches:
-      - draft/territorio-indicatori-v137
-    paths:
-      - scripts/build_static_brand.py
-      - scripts/materialize_territorio_v137.py
-      - scripts/patch_territorio_v137_runtime.py
-      - data/source-snapshots/territorio-v137-official.json
-      - .github/workflows/territorio-v137-runtime-qa.yml
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  canonical-build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Compile v1.37 Python
-        run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py
-      - name: Run canonical static build
-        run: python scripts/build_static_brand.py
-      - name: Assert canonical dist contract
-        run: python scripts/verify_territorio_v137_dist.py
-      - name: Assert final runtime tokens
-        run: |
-          grep -R -q "territoryProfileTypes" dist/assets
-          grep -R -q "sqm_per_resident" dist/assets
-          grep -R -q "km_per_km2" dist/assets
-''', encoding="utf-8")
-
 verify = Path("scripts/verify_territorio_v137_dist.py")
 verify.write_text('''#!/usr/bin/env python3
 import json
@@ -187,16 +147,4 @@ print("road-versilia-km", road["aggregate"]["value"])
 print("reticulum-managed-versilia-km", parts["managed"]["value"])
 ''', encoding="utf-8")
 
-for obsolete in (
-    ".github/workflows/territorio-v137-source-inventory.yml",
-    ".github/workflows/territorio-v137-source-structure.yml",
-    "scripts/inspect_territorio_v137_sources.py",
-    "scripts/inspect_territorio_v137_structure.py",
-    ".github/workflows/territorio-v137-integrate.yml",
-    "scripts/apply_territorio_v137_patches.py",
-):
-    p = Path(obsolete)
-    if p.exists():
-        p.unlink()
-
-print("v1.37 canonical integration patches prepared")
+print("v1.37 code patches prepared")
