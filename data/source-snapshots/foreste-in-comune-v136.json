@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "release": "v1.36.0",
+  "scope": "Copertura forestale comunale — Foreste in Comune 2026 / Carta Forestale d'Italia / SINFor",
+  "publication": "giugno 2026",
+  "reference": {
+    "forestMapNominalYear": 2020,
+    "forestMapUpdatedThrough": 2024,
+    "definition": "Definizione unica nazionale di bosco ai sensi del TUFF, utilizzata dal rapporto come base omogenea nazionale a fini statistici.",
+    "method": "Elaborazione GIS di banche dati esistenti: SINFor, Carta Forestale d'Italia, sistemi cartografici regionali e altre banche dati istituzionali.",
+    "indexDefinition": "Indice di Boscosità = superficie forestale / superficie territoriale del Comune × 100."
+  },
+  "sources": {
+    "report": {
+      "publisher": "PEFC Italia",
+      "title": "Foreste in Comune — Indagine socioeconomica sul patrimonio forestale dei comuni italiani",
+      "partners": ["UNCEM", "Legambiente", "Consorzio Caire", "SINFor / CREA-FL"],
+      "publication": "giugno 2026",
+      "page": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+      "canonicalFile": "Rapporto_PEFC1_web.pdf",
+      "sha256": "c2daa55351c58cfc8a4294c53fc3f14a4e3a62ca8c9210cac27e431d35d6826b"
+    },
+    "municipalData": {
+      "publisher": "PEFC Italia / UNCEM",
+      "canonicalFile": "Foreste-in-Comune-TUTTI-I-DATI-dei-Comuni-giu2026.xlsx",
+      "sha256": "0484e7fd183b32f238cd58e0fdd1febe9f8a8e57a660d44a07e760ceb99ebf5d",
+      "columns": ["AREA_COM.(HA)", "SUP.FOR.COM.(HA)", "IND.BOS.(%)"]
+    }
+  },
+  "municipalities": {
+    "Camaiore": {"istatCode": "046005", "municipalityAreaHa": 8469.16646245, "forestAreaHa": 4552.534, "forestCoverPct": 53.754},
+    "Forte dei Marmi": {"istatCode": "046013", "municipalityAreaHa": 918.671486427, "forestAreaHa": 23.576, "forestCoverPct": 2.566},
+    "Massarosa": {"istatCode": "046018", "municipalityAreaHa": 6824.55922649, "forestAreaHa": 1513.583, "forestCoverPct": 22.178},
+    "Pietrasanta": {"istatCode": "046024", "municipalityAreaHa": 4226.85463205, "forestAreaHa": 1177.275, "forestCoverPct": 27.852},
+    "Seravezza": {"istatCode": "046028", "municipalityAreaHa": 3946.77282042, "forestAreaHa": 2902.367, "forestCoverPct": 73.538},
+    "Stazzema": {"istatCode": "046030", "municipalityAreaHa": 8063.9757592, "forestAreaHa": 6934.268, "forestCoverPct": 85.991},
+    "Viareggio": {"istatCode": "046033", "municipalityAreaHa": 3272.61333045, "forestAreaHa": 580.067, "forestCoverPct": 17.725}
+  }
+}
