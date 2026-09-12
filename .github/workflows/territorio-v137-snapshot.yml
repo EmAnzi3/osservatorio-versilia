@@ -1,0 +1,63 @@
+name: Territorio v1.37 official snapshot
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - scripts/generate_territorio_v137_snapshot.py
+      - .github/workflows/territorio-v137-snapshot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-official-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GIS dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install geopandas pyogrio shapely openpyxl
+      - name: Compile generator
+        run: python -m py_compile scripts/generate_territorio_v137_snapshot.py
+      - name: Generate official 7/7 snapshot
+        run: python scripts/generate_territorio_v137_snapshot.py
+      - name: Validate snapshot shape
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('data/source-snapshots/territorio-v137-official.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          towns = ['Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio']
+          assert d['schemaVersion'] == 1 and d['release'] == 'v1.37.0'
+          assert d['municipalityOrder'] == towns
+          for block in ('landUse','landUseChange','protectedNaturalAreas','reticulum','roadNetworkProfile'):
+              assert list(d[block]['municipalities']) == towns, block
+          print('snapshot-bytes', p.stat().st_size)
+          print('roads-km', d['roadNetworkProfile']['versilia']['graphKm'])
+          print('reticulum-full-km', d['reticulum']['versilia']['fullNetworkKm'])
+          print('reticulum-managed-km', d['reticulum']['versilia']['managedNetworkKm'])
+          print('protected-union-ha', d['protectedNaturalAreas']['versilia']['totalUnionHa'])
+          PY
+      - name: Commit generated snapshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source-snapshots/territorio-v137-official.json
+          if git diff --cached --quiet; then
+            echo 'Snapshot unchanged.'
+          else
+            git commit -m 'data(territorio): materialize official v1.37 snapshot'
+            git push origin HEAD:draft/territorio-indicatori-v137
+          fi
