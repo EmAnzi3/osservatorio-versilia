@@ -75,13 +75,18 @@ jobs:
                               component.select_option(values[-1])
                               page.wait_for_timeout(250)
 
-                      protected_unit = page.locator('select[data-protected-unit]').first
-                      has_protected_unit = protected_unit.count() > 0
+                      scale_buttons = page.locator('button[data-composite-scale]')
+                      protected_scales = []
+                      if scale_buttons.count():
+                          protected_scales = scale_buttons.evaluate_all('(els)=>els.map(e=>e.dataset.compositeScale)')
                       if slug == 'territorio-in-aree-naturali-protette':
-                          if not has_protected_unit:
-                              raise RuntimeError('protectedNaturalAreas: selettore unita percent/ha assente')
-                          protected_unit.select_option('hectares')
+                          if not {'percent','hectares'}.issubset(set(protected_scales)):
+                              raise RuntimeError(f'protectedNaturalAreas: toggle percent/ha incompleto: {protected_scales}')
+                          page.locator('button[data-composite-scale="hectares"]').first.click()
                           page.wait_for_timeout(250)
+                          active = page.locator('button[data-composite-scale="hectares"].active')
+                          if not active.count():
+                              raise RuntimeError('protectedNaturalAreas: toggle ha non attivo dopo click')
 
                       body = page.locator('body').inner_text()
                       if 'NaN' in body or 'undefined' in body.lower():
@@ -98,7 +103,7 @@ jobs:
                           'title': page.title(),
                           'h1': page.locator('h1').first.text_content() if page.locator('h1').count() else '',
                           'componentOptions': component_options,
-                          'hasProtectedUnit': has_protected_unit,
+                          'protectedScales': protected_scales,
                           'screenshot': screenshot.name,
                       })
                       page.close()
