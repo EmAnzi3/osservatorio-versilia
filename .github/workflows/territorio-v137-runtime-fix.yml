@@ -1,4 +1,4 @@
-name: Territorio v1.37 harden runtime formatter
+name: Territorio v1.37 correct km formatter cardinality
 
 on:
   push:
@@ -22,62 +22,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Harden formatter patch after full legacy chain
+      - name: Set exact formatter cardinalities
         run: |
           python - <<'PY'
           from pathlib import Path
-
           p = Path('scripts/patch_territorio_v137_runtime.py')
           s = p.read_text(encoding='utf-8')
-
-          helper_old = '''def replace_once(text: str, old: str, new: str, label: str) -> str:
-              count = text.count(old)
-              if count != 1:
-                  raise RuntimeError(f"v1.37 runtime: {label}: attesa 1 occorrenza, trovate {count}")
-              return text.replace(old, new, 1)
-          '''
-          helper_new = helper_old + '''\n\ndef replace_exact_count(text: str, old: str, new: str, expected: int, label: str) -> str:
-              count = text.count(old)
-              if count != expected:
-                  raise RuntimeError(f"v1.37 runtime: {label}: attese {expected} occorrenze, trovate {count}")
-              return text.replace(old, new)
-          '''
-          if 'def replace_exact_count(' not in s:
-              if s.count(helper_old) != 1:
-                  raise SystemExit(f'helper replace_once atteso 1, trovato {s.count(helper_old)}')
-              s = s.replace(helper_old, helper_new, 1)
-
-          hectares_old = '''    app00 = replace_once(
-                  app00,
-                  "      case 'hectares': return `${number2.format(v)} ha`;\\n",
-                  "      case 'hectares': return `${number2.format(v)} ha`;\\n"
-                  "      case 'sqm_per_resident': return `${number1.format(v)} m²/residente`;\\n",
-                  "formatter m2/residente",
-              )
-          '''
-          hectares_new = '''    app00 = replace_exact_count(
-                  app00,
-                  "      case 'hectares': return `${number2.format(v)} ha`;\\n",
-                  "      case 'hectares': return `${number2.format(v)} ha`;\\n"
-                  "      case 'sqm_per_resident': return `${number1.format(v)} m²/residente`;\\n",
-                  2,
-                  "formatter m2/residente",
-              )
-          '''
-          if hectares_old in s:
-              s = s.replace(hectares_old, hectares_new, 1)
-          elif hectares_new not in s:
-              raise SystemExit('blocco formatter hectares non riconosciuto')
-
-          km_old = '''    app00 = replace_once(
-                  app00,
-                  "      case 'km': return `${number2.format(v)} km`;\\n",
-                  "      case 'km': return `${number2.format(v)} km`;\\n"
-                  "      case 'km_per_km2': return `${number2.format(v)} km/km²`;\\n",
-                  "formatter densita lineare",
-              )
-          '''
-          km_new = '''    app00 = replace_exact_count(
+          old = '''    app00 = replace_exact_count(
                   app00,
                   "      case 'km': return `${number2.format(v)} km`;\\n",
                   "      case 'km': return `${number2.format(v)} km`;\\n"
@@ -86,19 +37,25 @@ jobs:
                   "formatter densita lineare",
               )
           '''
-          if km_old in s:
-              s = s.replace(km_old, km_new, 1)
-          elif km_new not in s:
-              raise SystemExit('blocco formatter km non riconosciuto')
-
-          p.write_text(s, encoding='utf-8')
+          new = '''    app00 = replace_exact_count(
+                  app00,
+                  "      case 'km': return `${number2.format(v)} km`;\\n",
+                  "      case 'km': return `${number2.format(v)} km`;\\n"
+                  "      case 'km_per_km2': return `${number2.format(v)} km/km²`;\\n",
+                  1,
+                  "formatter densita lineare",
+              )
+          '''
+          if s.count(old) != 1:
+              raise SystemExit(f'blocco km 2→1 atteso 1, trovato {s.count(old)}')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
           PY
       - name: Compile runtime patch
         run: python -m py_compile scripts/patch_territorio_v137_runtime.py
-      - name: Commit formatter hardening
+      - name: Commit formatter cardinality
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add scripts/patch_territorio_v137_runtime.py
-          git commit -m 'fix(territorio): support duplicated canonical formatters'
+          git commit -m 'fix(territorio): set formatter cardinalities 2/1'
           git push origin HEAD:draft/territorio-indicatori-v137
