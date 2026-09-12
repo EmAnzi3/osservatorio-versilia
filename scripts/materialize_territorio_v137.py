@@ -356,27 +356,38 @@ def make_reticulum(snapshot: dict, ids: dict[str, dict]) -> dict:
 
 def make_roads(snapshot: dict, ids: dict[str, dict]) -> dict:
     block = snapshot["roadNetworkProfile"]
+
+    def parts(item: dict) -> list[dict]:
+        admin = item["administrativeClassKm"]
+        pavement = item["pavementKm"]
+        return [
+            {"key": "length", "label": "Lunghezza del grafo", "value": float(item["graphKm"]), "unit": "km"},
+            {"key": "density", "label": "Densità del grafo", "value": float(item["graphDensity"]), "unit": "km_per_km2"},
+            {"key": "adminMunicipal", "label": "Strade comunali", "value": float(admin["municipal"]), "unit": "km"},
+            {"key": "adminProvincial", "label": "Strade provinciali", "value": float(admin["provincial"]), "unit": "km"},
+            {"key": "adminRegional", "label": "Strade regionali", "value": float(admin["regional"]), "unit": "km"},
+            {"key": "adminState", "label": "Strade statali", "value": float(admin["state"]), "unit": "km"},
+            {"key": "adminPrivate", "label": "Strade private", "value": float(admin["private"]), "unit": "km"},
+            {"key": "paved", "label": "Elementi pavimentati", "value": float(pavement["paved"]), "unit": "km"},
+            {"key": "unpaved", "label": "Elementi non pavimentati", "value": float(pavement["unpaved"]), "unit": "km"},
+            {"key": "pavementUnclassified", "label": "Pavimentazione non classificata", "value": float(pavement["unclassified"]), "unit": "km"},
+        ]
+
     rows = []
     for town in TOWNS:
         item = block["municipalities"][town]
         rows.append({
             **identity(ids[town]), "value": float(item["graphKm"]), "formatted": fmt(float(item["graphKm"]), 1, " km"),
-            "parts": [
-                {"key": "length", "label": "Lunghezza del grafo", "value": float(item["graphKm"]), "unit": "km"},
-                {"key": "density", "label": "Densita' del grafo", "value": float(item["graphDensity"]), "unit": "km_per_km2"},
-            ],
+            "parts": parts(item),
             "municipalAreaKm2": float(item["municipalAreaKm2"]), "series": None, "normalized": None, "benchmarkValue": None,
         })
     versilia = block["versilia"]
     return {
-        "meta": {"key": "roadNetworkProfile", "theme": "ambiente", "label": "Grafo viario Iter.Net", "shortLabel": "Grafo viario", "description": "Lunghezza degli elementi stradali del grafo Iter.Net della Regione Toscana e densita' rispetto alla superficie territoriale.", "unit": "km", "year": "2022", "source": "Regione Toscana — Iter.Net 4.48", "polarity": "neutral", "compositeType": "roadNetworkProfile", "defaultView": "length", "searchTerms": ["strade", "grafo viario", "Iter.Net", "rete stradale", "densita' stradale"]},
+        "meta": {"key": "roadNetworkProfile", "theme": "ambiente", "label": "Grafo viario Iter.Net", "shortLabel": "Grafo viario", "description": "Lunghezza e densità degli elementi stradali Iter.Net, con dettaglio per classe amministrativa e pavimentazione.", "unit": "km", "year": "2022", "source": "Regione Toscana — Iter.Net 4.48", "polarity": "neutral", "compositeType": "roadNetworkProfile", "defaultView": "length", "selectorLabel": "Lettura", "searchTerms": ["strade", "grafo viario", "Iter.Net", "rete stradale", "densità stradale", "strade comunali", "strade provinciali", "strade regionali", "strade statali", "pavimentazione"]},
         "sourceUrl": snapshot["sources"]["regioneIterNet"]["page"], "rows": rows,
-        "aggregate": {"value": float(versilia["graphKm"]), "label": "Versilia · grafo viario Iter.Net", "note": "Lunghezza ricalcolata sul perimetro dissolto dei sette Comuni; la densita' usa la superficie della stessa unione.", "parts": [
-            {"key": "length", "label": "Lunghezza del grafo", "value": float(versilia["graphKm"]), "unit": "km"},
-            {"key": "density", "label": "Densita' del grafo", "value": float(versilia["graphDensity"]), "unit": "km_per_km2"},
-        ]},
+        "aggregate": {"value": float(versilia["graphKm"]), "label": "Versilia · grafo viario Iter.Net", "note": "Lunghezze ricalcolate sul perimetro dissolto dei sette Comuni; i dettagli amministrativi e di pavimentazione derivano dagli attributi degli elementi Iter.Net.", "parts": parts(versilia)},
         "normalizedAggregate": None,
-        "method": {"type": "Elaborazione GIS su grafo Iter.Net 4.48", "formula": "Lunghezza degli elementi stradali dopo clip; densita' = km grafo / km². Versilia su unione dissolta.", "caveat": "Iter.Net rappresenta gli assi degli elementi stradali e puo' distinguere le carreggiate; il valore non va interpretato come chilometri di strade univoche al centrolinea.", "coverage": "7/7"},
+        "method": {"type": "Elaborazione GIS su grafo Iter.Net 4.48", "formula": "Lunghezza degli elementi stradali dopo clip; densità = km grafo / km². Le classi amministrative usano classe_amm; la pavimentazione usa tip_pavim. Versilia su unione dissolta.", "caveat": "Iter.Net rappresenta gli assi degli elementi stradali e può distinguere le carreggiate; i valori sono chilometri di elementi del grafo, non chilometri di strade univoche al centrolinea.", "coverage": "7/7"},
     }
 
 

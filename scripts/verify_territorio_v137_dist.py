@@ -22,6 +22,20 @@ if d.get("version") != "v1.37.0":
 road = metrics["roadNetworkProfile"]
 if abs(float(road["aggregate"]["value"]) - 2029.655081) > 1e-6:
     raise SystemExit("roadNetworkProfile: aggregato km inatteso")
+road_expected = ["length", "density", "adminMunicipal", "adminProvincial", "adminRegional", "adminState", "adminPrivate", "paved", "unpaved", "pavementUnclassified"]
+road_parts = {p["key"]: p for p in road["aggregate"]["parts"]}
+if list(road_parts) != road_expected:
+    raise SystemExit(f"roadNetworkProfile: letture inattese {list(road_parts)}")
+admin_sum = sum(float(road_parts[k]["value"]) for k in ["adminMunicipal", "adminProvincial", "adminRegional", "adminState", "adminPrivate"])
+if abs(admin_sum - float(road_parts["length"]["value"])) > 1e-5:
+    raise SystemExit(f"roadNetworkProfile: classi amministrative non chiudono sul totale: {admin_sum}")
+pavement_sum = sum(float(road_parts[k]["value"]) for k in ["paved", "unpaved", "pavementUnclassified"])
+if abs(pavement_sum - float(road_parts["length"]["value"])) > 1e-5:
+    raise SystemExit(f"roadNetworkProfile: pavimentazione non chiude sul totale: {pavement_sum}")
+for row in road["rows"]:
+    keys=[p["key"] for p in row["parts"]]
+    if keys != road_expected:
+        raise SystemExit(f"roadNetworkProfile: letture incomplete per {row['town']}")
 hydro = metrics["managedReticulumLength"]
 hydro_parts = {x["key"]: x for x in hydro["aggregate"]["parts"]}
 if abs(float(hydro_parts["managed"]["value"]) - 745.041751) > 1e-6:

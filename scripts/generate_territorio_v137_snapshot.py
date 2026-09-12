@@ -288,7 +288,7 @@ def load_roads(outer_zip: Path, work: Path):
     candidates = [p for p in inner.rglob("*.shp") if p.name.lower() == "elem_strad.shp"]
     if not candidates:
         raise RuntimeError("Iter.Net: elem_strad.shp non trovato")
-    frame = gpd.read_file(candidates[0], engine="pyogrio", columns=[])
+    frame = gpd.read_file(candidates[0], engine="pyogrio", columns=["classe_amm", "tip_pavim"])
     if frame.crs is None:
         raise RuntimeError("Iter.Net: CRS assente")
     frame = frame.to_crs(3003)
@@ -304,6 +304,30 @@ def clipped_line_km(frame: gpd.GeoDataFrame, polygon) -> float:
         return 0.0
     lengths = subset.geometry.intersection(polygon).length
     return float(lengths.sum() / 1000)
+
+
+ROAD_ADMIN_CLASSES = {
+    "municipal": "Strada Comunale",
+    "provincial": "Strada Provinciale",
+    "regional": "Strada Regionale",
+    "state": "Strada Statale",
+    "private": "Strada Privata",
+}
+ROAD_PAVEMENT_CLASSES = {
+    "paved": "pavimentata",
+    "unpaved": "non pavimentata",
+    "unclassified": "-",
+}
+
+def clipped_category_km(frame: gpd.GeoDataFrame, polygon, column: str, value: str) -> float:
+    selected = frame[frame[column].astype(str).str.strip() == value]
+    return clipped_line_km(selected, polygon)
+
+def road_breakdown(frame: gpd.GeoDataFrame, polygon) -> dict:
+    return {
+        "administrativeClassKm": {key: round(clipped_category_km(frame, polygon, "classe_amm", label), 6) for key, label in ROAD_ADMIN_CLASSES.items()},
+        "pavementKm": {key: round(clipped_category_km(frame, polygon, "tip_pavim", label), 6) for key, label in ROAD_PAVEMENT_CLASSES.items()},
+    }
 
 
 def build_reticulum(full, managed, town_geoms, versilia_geom, areas_km2):
@@ -340,13 +364,19 @@ def build_roads(frame, town_geoms, versilia_geom, areas_km2):
             "municipalAreaKm2": round(areas_km2[town], 6),
             "graphKm": round(km, 6),
             "graphDensity": round(km / areas_km2[town], 6),
+            **road_breakdown(frame, town_geoms[town]),
         }
     area = versilia_geom.area / 1_000_000
     km = clipped_line_km(frame, versilia_geom)
     return {
         "referenceLabel": "Iter.Net 4.48 · giugno 2022",
         "municipalities": municipalities,
-        "versilia": {"unionAreaKm2": round(area, 6), "graphKm": round(km, 6), "graphDensity": round(km / area, 6)},
+        "versilia": {
+            "unionAreaKm2": round(area, 6),
+            "graphKm": round(km, 6),
+            "graphDensity": round(km / area, 6),
+            **road_breakdown(frame, versilia_geom),
+        },
     }
 
 

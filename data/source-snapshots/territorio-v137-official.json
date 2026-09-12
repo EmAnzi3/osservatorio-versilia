@@ -1333,43 +1333,139 @@
       "Camaiore": {
         "municipalAreaKm2": 84.817881,
         "graphKm": 480.95586,
-        "graphDensity": 5.670454
+        "graphDensity": 5.670454,
+        "administrativeClassKm": {
+          "municipal": 425.23749,
+          "provincial": 19.639895,
+          "regional": 3.155223,
+          "state": 10.413793,
+          "private": 22.509459
+        },
+        "pavementKm": {
+          "paved": 475.290999,
+          "unpaved": 5.519912,
+          "unclassified": 0.144949
+        }
       },
       "Forte dei Marmi": {
         "municipalAreaKm2": 9.255013,
         "graphKm": 139.0381,
-        "graphDensity": 15.023005
+        "graphDensity": 15.023005,
+        "administrativeClassKm": {
+          "municipal": 131.628986,
+          "provincial": 2.536438,
+          "regional": 0.0,
+          "state": 4.872676,
+          "private": 0.0
+        },
+        "pavementKm": {
+          "paved": 138.37265,
+          "unpaved": 0.426455,
+          "unclassified": 0.238995
+        }
       },
       "Massarosa": {
         "municipalAreaKm2": 67.910451,
         "graphKm": 313.923233,
-        "graphDensity": 4.622606
+        "graphDensity": 4.622606,
+        "administrativeClassKm": {
+          "municipal": 258.255865,
+          "provincial": 9.039223,
+          "regional": 15.108455,
+          "state": 27.882542,
+          "private": 3.637148
+        },
+        "pavementKm": {
+          "paved": 313.045615,
+          "unpaved": 0.877618,
+          "unclassified": 0.0
+        }
       },
       "Pietrasanta": {
         "municipalAreaKm2": 42.22817,
         "graphKm": 411.13055,
-        "graphDensity": 9.735931
+        "graphDensity": 9.735931,
+        "administrativeClassKm": {
+          "municipal": 383.630925,
+          "provincial": 3.864267,
+          "regional": 0.0,
+          "state": 20.848506,
+          "private": 2.786851
+        },
+        "pavementKm": {
+          "paved": 407.840671,
+          "unpaved": 3.064411,
+          "unclassified": 0.225468
+        }
       },
       "Seravezza": {
         "municipalAreaKm2": 39.520172,
         "graphKm": 153.945273,
-        "graphDensity": 3.895359
+        "graphDensity": 3.895359,
+        "administrativeClassKm": {
+          "municipal": 132.312936,
+          "provincial": 15.798446,
+          "regional": 0.0,
+          "state": 5.101915,
+          "private": 0.731976
+        },
+        "pavementKm": {
+          "paved": 152.944568,
+          "unpaved": 1.000705,
+          "unclassified": 0.0
+        }
       },
       "Stazzema": {
         "municipalAreaKm2": 80.26531,
         "graphKm": 120.352216,
-        "graphDensity": 1.49943
+        "graphDensity": 1.49943,
+        "administrativeClassKm": {
+          "municipal": 94.193736,
+          "provincial": 26.15848,
+          "regional": 0.0,
+          "state": 0.0,
+          "private": 0.0
+        },
+        "pavementKm": {
+          "paved": 116.612686,
+          "unpaved": 2.659124,
+          "unclassified": 1.080406
+        }
       },
       "Viareggio": {
         "municipalAreaKm2": 32.753597,
         "graphKm": 410.309849,
-        "graphDensity": 12.527169
+        "graphDensity": 12.527169,
+        "administrativeClassKm": {
+          "municipal": 362.518993,
+          "provincial": 0.041747,
+          "regional": 0.0,
+          "state": 46.267078,
+          "private": 1.48203
+        },
+        "pavementKm": {
+          "paved": 379.456067,
+          "unpaved": 29.45527,
+          "unclassified": 1.398512
+        }
       }
     },
     "versilia": {
       "unionAreaKm2": 356.750593,
       "graphKm": 2029.655081,
-      "graphDensity": 5.689283
+      "graphDensity": 5.689283,
+      "administrativeClassKm": {
+        "municipal": 1787.778932,
+        "provincial": 77.078496,
+        "regional": 18.263678,
+        "state": 115.386511,
+        "private": 31.147464
+      },
+      "pavementKm": {
+        "paved": 1983.563256,
+        "unpaved": 43.003495,
+        "unclassified": 3.08833
+      }
     }
   }
 }
