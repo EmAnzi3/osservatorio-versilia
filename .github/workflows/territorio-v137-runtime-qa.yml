@@ -28,7 +28,29 @@ jobs:
       - name: Compile v1.37 Python
         run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py scripts/verify_territorio_v137_dist.py
       - name: Run canonical static build
-        run: python scripts/build_static_brand.py
+        id: canonical
+        continue-on-error: true
+        run: |
+          mkdir -p tmp
+          set +e
+          python scripts/build_static_brand.py > tmp/territorio-v137-canonical-build.log 2>&1
+          status=$?
+          cat tmp/territorio-v137-canonical-build.log
+          echo "$status" > tmp/territorio-v137-canonical-build.status
+          exit $status
+      - name: Upload canonical build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: territorio-v137-canonical-build-diagnostics
+          path: |
+            tmp/territorio-v137-canonical-build.log
+            tmp/territorio-v137-canonical-build.status
+          if-no-files-found: error
+          retention-days: 7
+      - name: Fail if canonical build failed
+        if: steps.canonical.outcome != 'success'
+        run: exit 1
       - name: Assert canonical dist contract
         run: python scripts/verify_territorio_v137_dist.py
       - name: Assert final runtime tokens
