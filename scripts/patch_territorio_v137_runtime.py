@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP00 = ROOT / "assets" / "app-parts" / "00.txt"
 APP03 = ROOT / "assets" / "app-parts" / "03.txt"
 APP05 = ROOT / "assets" / "app-parts" / "05.txt"
+VISUAL_GRAMMAR = ROOT / "assets" / "visual-grammar.js"
 SENTINEL = "territoryProfileTypes"
 
 
@@ -70,10 +71,11 @@ def main() -> None:
     app00 = APP00.read_text(encoding="utf-8")
     app03 = APP03.read_text(encoding="utf-8")
     app05 = APP05.read_text(encoding="utf-8")
+    visual = VISUAL_GRAMMAR.read_text(encoding="utf-8")
 
     if SENTINEL in app03:
-        required = ("sqm_per_resident", "km_per_km2", "territoryProfileHistoryTable")
-        if not all(token in app00 + app03 + app05 for token in required):
+        required = ("sqm_per_resident", "km_per_km2", "territoryProfileHistoryChart", "data-metric-key", "sqm-per-resident")
+        if not all(token in app00 + app03 + app05 + visual for token in required):
             raise RuntimeError("v1.37 runtime: patch parzialmente applicata")
         print("Renderer territorio v1.37 gia' applicato.")
         return
@@ -165,19 +167,20 @@ def main() -> None:
     app03 = patch_function(app03, "renderTownMetric", town_render)
 
     def indicator_comparison(b: str) -> str:
-        addition = "    if (isTerritoryProfileType(metric)) { const view=arguments[4] || {choice:financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice,scale:metric.meta.compositeType==='protectedAreasProfile'?'percent':'value'}; return `<div class=\"indicator-composite-table territory-indicator-comparison\"><div class=\"compare-chart-toolbar\">${compositeCompareControls(metric,view.choice,view.scale)}</div><div class=\"comparison-bars\" data-composite-choice=\"${html(view.choice)}\" data-composite-scale=\"${html(view.scale)}\">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div></div>`; }\n"
+        addition = "    if (isTerritoryProfileType(metric)) { const view=arguments[4] || {choice:financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice,scale:metric.meta.compositeType==='protectedAreasProfile'?'percent':'value'}; return `<div class=\"indicator-composite-table territory-indicator-comparison\"><div class=\"compare-chart-toolbar\">${compositeCompareControls(metric,view.choice,view.scale)}</div><div class=\"comparison-bars\" data-metric-key=\"${html(metricKey)}\" data-composite-choice=\"${html(view.choice)}\" data-composite-scale=\"${html(view.scale)}\">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div></div>`; }\n"
         return insert_after_line(b, "const rows = [...metric.rows]", addition, "confronto scheda territorio")
     app05 = patch_function(app05, "indicatorComparisonTable", indicator_comparison)
 
     history_helpers = """
-  function territoryProfileHistoryTable(metric,choice) {
+  function territoryProfileHistoryChart(metric,choice,territory='__versilia') {
     const part0=metric.rows?.[0]?.parts?.find(part=>part.key===choice) || metric.rows?.[0]?.parts?.[0] || {};
     const unit=part0.unit || metric.meta.unit;
-    const rows=[...metric.rows].sort((a,b)=>a.town.localeCompare(b.town,'it'));
-    const sources=rows.map(row=>({label:row.town,series:row.seriesByView?.[choice]})).filter(source=>source.series?.years?.length);
-    if (!sources.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile per questa lettura</strong></div>';
-    const years=[...new Set(sources.flatMap(source=>source.series.years))].sort((a,b)=>Number(a)-Number(b));
-    return `<div class="indicator-table-scroll"><table class="indicator-history-table territory-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year=>`<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${sources.map(source=>{const values=new Map(source.series.years.map((year,index)=>[String(year),source.series.values[index]]));return `<tr><th scope="row">${html(source.label)}</th>${years.map(year=>`<td>${values.has(String(year))?html(formatValue(values.get(String(year)),unit)):'—'}</td>`).join('')}</tr>`;}).join('')}</tbody></table></div>`;
+    const options=[{key:'__versilia',label:'Versilia',source:metric.aggregate},...(metric.rows||[]).map(row=>({key:String(row.code||row.slug||row.town),label:row.town,source:row}))];
+    const selected=options.find(item=>item.key===String(territory)) || options[0];
+    const series=selected.source?.seriesByView?.[choice];
+    if (!series?.years?.length) return '<div class="indicator-history-empty"><strong>Serie storica non disponibile per questa lettura</strong></div>';
+    const label=part0.label || metric.meta.label;
+    return `<div class="territory-history-chart-shell"><div class="land-cover-controls territory-history-controls"><label><span>Territorio</span><select data-territory-history-town>${options.map(item=>`<option value="${html(item.key)}" ${item.key===selected.key?'selected':''}>${html(item.label)}</option>`).join('')}</select></label></div>${seriesChart(series,unit,`${metric.meta.label} · ${label} · ${selected.label}`)}</div>`;
   }
 
   function territoryProfileIndicatorAsideMarkup(metric,choice,scale='value') {
@@ -188,7 +191,7 @@ def main() -> None:
 """
     app05 = replace_once(app05, "  function financialProfileHistoryTable(metric,choice='part-0') {\n", history_helpers + "  function financialProfileHistoryTable(metric,choice='part-0') {\n", "helper storico scheda territorio")
 
-    app05 = patch_function(app05, "indicatorHistoryTable", lambda b: insert_after_line(b, "financialProfileHistoryTable(metric,financialChoice)", "    if (isTerritoryProfileType(metric)) { const choice=financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice; return territoryProfileHistoryTable(metric,choice); }\n", "storico scheda territorio"))
+    app05 = patch_function(app05, "indicatorHistoryTable", lambda b: insert_after_line(b, "financialProfileHistoryTable(metric,financialChoice)", "    if (isTerritoryProfileType(metric)) { const choice=financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice; return territoryProfileHistoryChart(metric,choice); }\n", "storico scheda territorio"))
 
     def indicator_render(b: str) -> str:
         b = insert_after_line(b, "const hydroRisk = metric.meta.compositeType === 'hydroRisk';", "    const territoryProfile = isTerritoryProfileType(metric);\n", "flag scheda territorio")
@@ -209,7 +212,7 @@ def main() -> None:
         const historyHost=document.querySelector('[data-financial-indicator-history]');
         if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,territoryView.choice,initialHydroView,territoryView);
         if(aggregateHost) aggregateHost.innerHTML=territoryProfileIndicatorAsideMarkup(metric,territoryView.choice,territoryView.scale);
-        if(historyHost) historyHost.innerHTML=territoryProfileHistoryTable(metric,territoryView.choice);
+        if(historyHost) historyHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice);
       };
       currentSection?.addEventListener('change',event=>{
         const select=event.target.closest('select[data-composite-component]');
@@ -219,14 +222,38 @@ def main() -> None:
         const button=event.target.closest('button[data-composite-scale]');
         if(button&&currentSection.contains(button)){ territoryView={...territoryView,scale:button.dataset.compositeScale}; renderTerritory(); }
       });
+      const territoryHistoryHost=document.querySelector('[data-financial-indicator-history]');
+      territoryHistoryHost?.addEventListener('change',event=>{
+        const select=event.target.closest('select[data-territory-history-town]');
+        if(select&&territoryHistoryHost.contains(select)) territoryHistoryHost.innerHTML=territoryProfileHistoryChart(metric,territoryView.choice,select.value);
+      });
     }
 """
         return insert_after_line(b, "document.querySelector('[data-print]')", events, "eventi scheda territorio")
     app05 = patch_function(app05, "renderIndicator", indicator_render)
 
+    # Estende la visual grammar canonica ai nuovi profili territoriali: in questo
+    # modo confronti generali e pagine indicatore usano la stessa grammatica
+    # lollipop/dotplot, compresa la scala firmata per i valori netti negativi.
+    visual = patch_function(visual, "metricKeyFor", lambda b: insert_after_line(b, "function metricKeyFor(root)", "    const direct = root?.dataset?.metricKey;\n    if (direct) return direct;\n", "metric key diretto territorio"))
+    visual = patch_function(visual, "unitKind", lambda b: insert_after_line(b, "const token = String(unit || '').trim().toLowerCase();", "    if (token === 'sqm_per_resident') return 'sqm-per-resident';\n    if (token === 'km_per_km2') return 'km-per-km2';\n", "unita visual grammar territorio"))
+    visual = patch_function(visual, "formatAxis", lambda b: insert_after_line(b, "if (kind === 'hectares-per-farm') return `${formatted} ha/azienda`;", "    if (kind === 'sqm-per-resident') return `${formatted} m²/residente`;\n    if (kind === 'km-per-km2') return `${formatted} km/km²`;\n", "formatter visual grammar territorio"))
+
+    def visual_selection(b: str) -> str:
+        addition = "    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile'].includes(type)) { const part=(row?.parts || []).find(item=>item.key===choice) || row?.parts?.[0] || {}; const hectares=type==='protectedAreasProfile' && scale==='hectares'; return {value:hectares?part.ha:part.value,unit:hectares?'hectares':(part.unit || metric?.meta?.unit || '')}; }\n"
+        return insert_after_line(b, "const type = metric?.meta?.compositeType;", addition, "selezione visual grammar territorio")
+    visual = patch_function(visual, "compositeSelectionFor", visual_selection)
+
+    def visual_aggregate(b: str) -> str:
+        addition = "    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile'].includes(type)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice) || metric.aggregate?.parts?.[0] || {}; const hectares=type==='protectedAreasProfile' && scale==='hectares'; return {value:hectares?part.ha:part.value,label:`Versilia · ${part.label || metric.meta.label}`,unit:hectares?'hectares':(part.unit || metric?.meta?.unit || '')}; }\n"
+        return insert_after_line(b, "const type = metric?.meta?.compositeType;", addition, "aggregato visual grammar territorio")
+    visual = patch_function(visual, "compositeAggregateFor", visual_aggregate)
+    visual = patch_function(visual, "enhanceTownPosition", lambda b: insert_after_line(b, "const metric = data.metrics?.[metricKey];", "    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile'].includes(metric?.meta?.compositeType)) return;\n", "town position territorio"))
+
     APP00.write_text(app00, encoding="utf-8")
     APP03.write_text(app03, encoding="utf-8")
     APP05.write_text(app05, encoding="utf-8")
+    VISUAL_GRAMMAR.write_text(visual, encoding="utf-8")
     print("Renderer territorio v1.37 applicato ai renderer canonici post-v1.36.")
 
 
