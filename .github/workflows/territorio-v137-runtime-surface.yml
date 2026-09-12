@@ -32,9 +32,11 @@ jobs:
               (out / name).write_text(src.read_text(encoding='utf-8'), encoding='utf-8')
           print('Post-legacy runtime surface catturata prima della patch v1.37.')
           PY
-      - name: Replay full canonical build
+      - name: Replay canonical chain through runtime capture
+        continue-on-error: true
         run: python scripts/build_static_brand.py
       - name: Upload post-legacy runtime surface
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: territorio-v137-runtime-surface
