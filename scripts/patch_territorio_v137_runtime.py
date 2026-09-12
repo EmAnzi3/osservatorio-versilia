@@ -148,10 +148,10 @@ def main() -> None:
 
     app03 = replace_once(
         app03,
-        "    const securityMeasures = ['securityMeasures','agricultureProfile','financialProfile'].includes(metric.meta.compositeType);\n",
-        "    const securityMeasures = ['securityMeasures','agricultureProfile','financialProfile'].includes(metric.meta.compositeType);\n"
+        "    const hydroRisk = metric.meta.compositeType === 'hydroRisk';\n",
+        "    const hydroRisk = metric.meta.compositeType === 'hydroRisk';\n"
         "    const territoryProfile = isTerritoryProfileType(metric);\n",
-        "flag profilo territorio comunale",
+        "flag profilo territorio comunale post-fragilita",
     )
     app03 = replace_once(
         app03,
