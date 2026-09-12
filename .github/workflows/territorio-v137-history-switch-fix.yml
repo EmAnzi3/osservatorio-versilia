@@ -1,0 +1,58 @@
+name: Territorio v1.37 history switch fix
+
+on:
+  push:
+    branches: ["draft/territorio-indicatori-v137"]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fix history module syntax and strengthen verifier
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          runtime = Path('scripts/patch_territorio_v137_runtime.py')
+          text = runtime.read_text(encoding='utf-8')
+          old = r"panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\\n"
+          new = r"panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\n"
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif new not in text:
+              raise SystemExit('target tooltip newline patch not found')
+          runtime.write_text(text, encoding='utf-8')
+
+          verifier = Path('scripts/verify_territorio_v137_dist.py')
+          text = verifier.read_text(encoding='utf-8')
+          if 'import subprocess\n' not in text:
+              text = text.replace('import json\n', 'import json\nimport subprocess\n', 1)
+          marker = 'print("canonical-dist-metrics", len(metrics))\n'
+          check = '''for js_path in (\n    Path("dist/assets/app-bundle.js"),\n    Path("dist/assets/ux-history-core.js"),\n    Path("dist/assets/ux-history.js"),\n):\n    result = subprocess.run(["node", "--check", str(js_path)], capture_output=True, text=True)\n    if result.returncode != 0:\n        raise SystemExit(f"JavaScript non valido: {js_path}\\n{result.stderr}")\nprint("javascript-syntax", "ok")\n'''
+          if 'print("javascript-syntax", "ok")' not in text:
+              if marker not in text:
+                  raise SystemExit('verifier insertion marker missing')
+              text = text.replace(marker, check + marker, 1)
+          verifier.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git config user.name "EmAnzi3"
+          git config user.email "emanueleanzilotti@hotmail.com"
+          git add scripts/patch_territorio_v137_runtime.py scripts/verify_territorio_v137_dist.py
+          git commit -m "fix(territorio): restore history view switch"
+          git push origin HEAD:draft/territorio-indicatori-v137
