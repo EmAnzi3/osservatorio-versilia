@@ -1,4 +1,4 @@
-name: Territorio v1.37 Iter.Net road attributes audit
+name: Territorio v1.37 Iter.Net boundary diagnostic
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -22,43 +22,259 @@ jobs:
           python-version: '3.12'
       - name: Install GIS stack
         run: python -m pip install geopandas pyogrio shapely
-      - name: Inspect official Iter.Net attributes
+      - name: Compare Iter.Net allocation across official municipal geometries
         run: |
           mkdir -p reports/territorio-v137-road-audit
           python - <<'PY'
           from pathlib import Path
-          import json, urllib.request, zipfile
-          import geopandas as gpd
+          import json
+          import shutil
+          import urllib.request
+          import zipfile
 
-          out=Path('reports/territorio-v137-road-audit')
-          outer=Path('/tmp/iternet.zip')
-          url='https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip'
-          urllib.request.urlretrieve(url, outer)
-          outer_dir=Path('/tmp/iternet-outer'); outer_dir.mkdir(exist_ok=True)
-          with zipfile.ZipFile(outer) as z: z.extractall(outer_dir)
-          inner_zip=next(outer_dir.rglob('*.zip'))
-          inner_dir=Path('/tmp/iternet-inner'); inner_dir.mkdir(exist_ok=True)
-          with zipfile.ZipFile(inner_zip) as z: z.extractall(inner_dir)
-          shp=next(p for p in inner_dir.rglob('elem_strad.shp'))
-          wanted=['tipo_ele','clstecfun','classe_amm','tip_pavim','sede_ele','oneway','primaria','tipostrada','cod_istat','comune']
-          frame=gpd.read_file(shp, engine='pyogrio', columns=wanted)
-          result={'featureCount':len(frame),'fields':{}}
-          for col in wanted[:-2]:
-              s=frame[col].fillna('<NULL>').astype(str).str.strip().replace('', '<BLANK>')
-              counts=s.value_counts(dropna=False)
-              result['fields'][col]=[{'value':str(k),'count':int(v)} for k,v in counts.head(100).items()]
-          subset=frame[frame['cod_istat'].astype(str).str.zfill(6).isin(['046005','046013','046018','046024','046028','046030','046033'])].copy()
-          result['versiliaByCodIstatRows']=int(len(subset))
-          result['versiliaFields']={}
-          for col in wanted[:-2]:
-              s=subset[col].fillna('<NULL>').astype(str).str.strip().replace('', '<BLANK>')
-              result['versiliaFields'][col]=[{'value':str(k),'count':int(v)} for k,v in s.value_counts(dropna=False).head(100).items()]
-          (out/'iternet-road-attributes.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-          print(json.dumps(result,ensure_ascii=False,indent=2))
+          import geopandas as gpd
+          from shapely.ops import unary_union
+
+          OUT = Path('reports/territorio-v137-road-audit')
+          WORK = Path('/tmp/territorio-v137-boundary-diagnostic')
+          WORK.mkdir(parents=True, exist_ok=True)
+          UA = {'User-Agent': 'OsservatorioVersilia-v137-boundary-diagnostic/1.0'}
+          TOWNS = {
+              'Camaiore': '046005',
+              'Forte dei Marmi': '046013',
+              'Massarosa': '046018',
+              'Pietrasanta': '046024',
+              'Seravezza': '046028',
+              'Stazzema': '046030',
+              'Viareggio': '046033',
+          }
+          OLD = {
+              'Camaiore': 443.220097,
+              'Forte dei Marmi': 84.759517,
+              'Massarosa': 341.835576,
+              'Pietrasanta': 304.546621,
+              'Seravezza': 184.836205,
+              'Stazzema': 265.811675,
+              'Viareggio': 404.645390,
+          }
+          CURRENT = {
+              'Camaiore': 480.955860,
+              'Forte dei Marmi': 139.038100,
+              'Massarosa': 313.923233,
+              'Pietrasanta': 411.130550,
+              'Seravezza': 153.945273,
+              'Stazzema': 120.352216,
+              'Viareggio': 410.309849,
+          }
+          URLS = {
+              'roads': 'https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip',
+              'generalized2026': 'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip',
+              'nonGeneralized2026': 'https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/2026/Limiti01012026.zip',
+          }
+          ADMIN = {
+              'municipal': 'Strada Comunale',
+              'provincial': 'Strada Provinciale',
+              'regional': 'Strada Regionale',
+              'state': 'Strada Statale',
+              'private': 'Strada Privata',
+          }
+          PAVEMENT = {
+              'paved': 'pavimentata',
+              'unpaved': 'non pavimentata',
+              'unclassified': '-',
+          }
+
+          def download(url, dest):
+              req = urllib.request.Request(url, headers=UA)
+              with urllib.request.urlopen(req, timeout=900) as response, dest.open('wb') as fh:
+                  shutil.copyfileobj(response, fh, length=1024 * 1024)
+              return dest.stat().st_size
+
+          def extract(src, dst):
+              dst.mkdir(parents=True, exist_ok=True)
+              with zipfile.ZipFile(src) as archive:
+                  archive.extractall(dst)
+
+          def normalize_code(value):
+              if value is None:
+                  return ''
+              text = str(value).strip()
+              if text.endswith('.0'):
+                  text = text[:-2]
+              digits = ''.join(ch for ch in text if ch.isdigit())
+              return digits.zfill(6) if digits else ''
+
+          def safe_geom(geom):
+              if geom is None or geom.is_empty:
+                  return geom
+              if not geom.is_valid:
+                  try:
+                      geom = geom.make_valid()
+                  except AttributeError:
+                      geom = geom.buffer(0)
+              return geom
+
+          def load_boundaries(zip_path, label):
+              folder = WORK / label
+              extract(zip_path, folder)
+              preferred = 'Com01012026_g_WGS84.shp' if label == 'generalized2026' else 'Com01012026_WGS84.shp'
+              candidates = list(folder.rglob(preferred)) or list(folder.rglob('Com*.shp'))
+              if not candidates:
+                  raise RuntimeError(f'{label}: municipal shapefile not found')
+              frame = gpd.read_file(candidates[0], engine='pyogrio')
+              code_field = next((c for c in ('PRO_COM_T', 'PRO_COM', 'PRO_COM_T_', 'COD_PROCOM') if c in frame.columns), None)
+              if not code_field:
+                  raise RuntimeError(f'{label}: municipality code field not found: {list(frame.columns)}')
+              frame = frame.copy()
+              frame['_code'] = frame[code_field].map(normalize_code)
+              wanted = set(TOWNS.values())
+              frame = frame[frame['_code'].isin(wanted)].copy().to_crs(3003)
+              if set(frame['_code']) != wanted:
+                  raise RuntimeError(f'{label}: found {sorted(set(frame["_code"]))}')
+              geoms = {}
+              for town, code in TOWNS.items():
+                  geoms[town] = safe_geom(unary_union(list(frame.loc[frame['_code'] == code, 'geometry'])))
+              union = safe_geom(unary_union(list(geoms.values())))
+              return geoms, union, candidates[0].name, str(frame.crs), code_field
+
+          def clipped_line_km(frame, polygon):
+              minx, miny, maxx, maxy = polygon.bounds
+              subset = frame.cx[minx:maxx, miny:maxy]
+              if subset.empty:
+                  return 0.0
+              return float(subset.geometry.intersection(polygon).length.sum() / 1000.0)
+
+          def cat_km(frame, polygon, column, label):
+              selected = frame[frame[column].astype(str).str.strip() == label]
+              return clipped_line_km(selected, polygon)
+
+          def boundary_stats(label, geoms, union):
+              municipalities = {}
+              for town, geom in geoms.items():
+                  graph = clipped_line_km(roads, geom)
+                  admin = {key: cat_km(roads, geom, 'classe_amm', value) for key, value in ADMIN.items()}
+                  pavement = {key: cat_km(roads, geom, 'tip_pavim', value) for key, value in PAVEMENT.items()}
+                  municipalities[town] = {
+                      'areaKm2': geom.area / 1_000_000.0,
+                      'graphKm': graph,
+                      'administrativeClassKm': admin,
+                      'administrativeClosureKm': sum(admin.values()) - graph,
+                      'pavementKm': pavement,
+                      'pavementClosureKm': sum(pavement.values()) - graph,
+                  }
+              graph_union = clipped_line_km(roads, union)
+              admin_union = {key: cat_km(roads, union, 'classe_amm', value) for key, value in ADMIN.items()}
+              pavement_union = {key: cat_km(roads, union, 'tip_pavim', value) for key, value in PAVEMENT.items()}
+              vector = {town: municipalities[town]['graphKm'] for town in TOWNS}
+              return {
+                  'municipalities': municipalities,
+                  'versilia': {
+                      'unionAreaKm2': union.area / 1_000_000.0,
+                      'graphKm': graph_union,
+                      'sumMunicipalGraphKm': sum(vector.values()),
+                      'municipalMinusUnionKm': sum(vector.values()) - graph_union,
+                      'administrativeClassKm': admin_union,
+                      'administrativeClosureKm': sum(admin_union.values()) - graph_union,
+                      'pavementKm': pavement_union,
+                      'pavementClosureKm': sum(pavement_union.values()) - graph_union,
+                  },
+                  'distanceToOld': {
+                      'sumAbsKm': sum(abs(vector[t] - OLD[t]) for t in TOWNS),
+                      'maxAbsKm': max(abs(vector[t] - OLD[t]) for t in TOWNS),
+                  },
+                  'distanceToCurrent': {
+                      'sumAbsKm': sum(abs(vector[t] - CURRENT[t]) for t in TOWNS),
+                      'maxAbsKm': max(abs(vector[t] - CURRENT[t]) for t in TOWNS),
+                  },
+              }
+
+          downloads = {}
+          paths = {}
+          for key, url in URLS.items():
+              path = WORK / f'{key}.zip'
+              downloads[key] = {'url': url, 'bytes': download(url, path)}
+              paths[key] = path
+
+          outer = WORK / 'roads-outer'
+          extract(paths['roads'], outer)
+          inner_zips = list(outer.rglob('*.zip'))
+          if not inner_zips:
+              raise RuntimeError('Iter.Net inner archive not found')
+          inner = WORK / 'roads-inner'
+          extract(inner_zips[0], inner)
+          shp = next((p for p in inner.rglob('*.shp') if p.name.lower() == 'elem_strad.shp'), None)
+          if not shp:
+              raise RuntimeError('Iter.Net elem_strad.shp not found')
+          road_columns = ['classe_amm', 'tip_pavim', 'cod_istat', 'comune']
+          roads = gpd.read_file(shp, engine='pyogrio', columns=road_columns)
+          source_crs = str(roads.crs)
+          roads = roads.to_crs(3003)
+          roads['_code'] = roads['cod_istat'].map(normalize_code)
+          if len(roads) != 405341:
+              raise RuntimeError(f'Unexpected Iter.Net feature count: {len(roads)}')
+
+          result = {
+              'downloads': downloads,
+              'roads': {
+                  'featureCount': len(roads),
+                  'sourceCrs': source_crs,
+                  'analysisCrs': str(roads.crs),
+                  'shapefile': shp.name,
+              },
+              'expectedVectors': {'old': OLD, 'current': CURRENT},
+              'boundarySets': {},
+              'nativeCodIstat': {},
+              'geometryComparison': {},
+          }
+
+          loaded = {}
+          for label in ('generalized2026', 'nonGeneralized2026'):
+              geoms, union, filename, crs, code_field = load_boundaries(paths[label], label)
+              loaded[label] = (geoms, union)
+              stats = boundary_stats(label, geoms, union)
+              stats['source'] = {'filename': filename, 'analysisCrs': crs, 'codeField': code_field}
+              result['boundarySets'][label] = stats
+
+          gen_geoms, gen_union = loaded['generalized2026']
+          raw_geoms, raw_union = loaded['nonGeneralized2026']
+          result['geometryComparison']['versiliaSymmetricDifferenceKm2'] = gen_union.symmetric_difference(raw_union).area / 1_000_000.0
+          result['geometryComparison']['municipalSymmetricDifferenceKm2'] = {
+              town: gen_geoms[town].symmetric_difference(raw_geoms[town]).area / 1_000_000.0
+              for town in TOWNS
+          }
+
+          for town, code in TOWNS.items():
+              subset = roads[roads['_code'] == code]
+              names = subset['comune'].fillna('<NULL>').astype(str).str.strip().value_counts().head(10)
+              result['nativeCodIstat'][town] = {
+                  'code': code,
+                  'featureCount': int(len(subset)),
+                  'graphKm': float(subset.geometry.length.sum() / 1000.0),
+                  'comuneValues': [{'value': str(k), 'count': int(v)} for k, v in names.items()],
+              }
+          result['nativeCodIstat']['versilia'] = {
+              'graphKm': sum(result['nativeCodIstat'][town]['graphKm'] for town in TOWNS),
+              'featureCount': sum(result['nativeCodIstat'][town]['featureCount'] for town in TOWNS),
+          }
+
+          rounded = json.loads(json.dumps(result))
+          def round_floats(obj):
+              if isinstance(obj, dict):
+                  return {k: round_floats(v) for k, v in obj.items()}
+              if isinstance(obj, list):
+                  return [round_floats(v) for v in obj]
+              if isinstance(obj, float):
+                  return round(obj, 6)
+              return obj
+          rounded = round_floats(rounded)
+          (OUT / 'iternet-boundary-diagnostic.json').write_text(
+              json.dumps(rounded, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(rounded, ensure_ascii=False, indent=2))
           PY
-      - name: Upload audit artifact
+      - name: Upload diagnostic artifact
         uses: actions/upload-artifact@v4
         with:
-          name: territorio-v137-road-attributes-audit
+          name: territorio-v137-road-boundary-diagnostic
           path: reports/territorio-v137-road-audit/
           retention-days: 7
