@@ -1,0 +1,42 @@
+name: Territorio v1.37 runtime QA
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - scripts/patch_territorio_v137_runtime.py
+      - scripts/materialize_territorio_v137.py
+      - .github/workflows/territorio-v137-runtime-qa.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile v1.37 Python
+        run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py
+      - name: Apply canonical fragilita runtime patch
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, 'scripts')
+          import build_static_brand as b
+          b._run_path_with_fragilita_r3_fix(str(b.FRAGILITA_RUNTIME_PATCH), run_name='__main__')
+          PY
+      - name: Apply v1.37 runtime patch
+        run: python scripts/patch_territorio_v137_runtime.py
+      - name: Assert v1.37 renderer contract
+        run: |
+          grep -q "territoryProfileTypes" assets/app-parts/03.txt
+          grep -q "territoryProfileHistoryTable" assets/app-parts/05.txt
+          grep -q "sqm_per_resident" assets/app-parts/00.txt
+          grep -q "km_per_km2" assets/app-parts/00.txt
