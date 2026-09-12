@@ -248,7 +248,6 @@ def main() -> None:
         addition = "    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile'].includes(type)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice) || metric.aggregate?.parts?.[0] || {}; const hectares=type==='protectedAreasProfile' && scale==='hectares'; return {value:hectares?part.ha:part.value,label:`Versilia · ${part.label || metric.meta.label}`,unit:hectares?'hectares':(part.unit || metric?.meta?.unit || '')}; }\n"
         return insert_after_line(b, "const type = metric?.meta?.compositeType;", addition, "aggregato visual grammar territorio")
     visual = patch_function(visual, "compositeAggregateFor", visual_aggregate)
-    visual = patch_function(visual, "enhanceTownPosition", lambda b: insert_after_line(b, "const metric = data.metrics?.[metricKey];", "    if (['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile'].includes(metric?.meta?.compositeType)) return;\n", "town position territorio"))
 
     APP00.write_text(app00, encoding="utf-8")
     APP03.write_text(app03, encoding="utf-8")
