@@ -1,6 +1,6 @@
 name: Territorio v1.37 canonical QA
 # Gate canonico v1.37: build completa + contratto dist.
-# Rerun dopo ancoraggi semantici del pannello comunale.
+# Usa lo stesso tooling browser delle preview canoniche.
 
 on:
   push:
@@ -21,12 +21,17 @@ permissions:
 jobs:
   canonical-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install browser tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
       - name: Compile v1.37 Python
         run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py scripts/verify_territorio_v137_dist.py
       - name: Run canonical static build
@@ -60,3 +65,10 @@ jobs:
           grep -R -q "territoryProfileTypes" dist/assets
           grep -R -q "sqm_per_resident" dist/assets
           grep -R -q "km_per_km2" dist/assets
+      - name: Upload canonical dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: territorio-v137-canonical-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
