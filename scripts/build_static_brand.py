@@ -17,7 +17,7 @@ ECONOMIA_PRODOTTA_MATERIALIZER = ROOT / "scripts" / "materialize_economia_prodot
 BIOMETRIA_MATERIALIZER = ROOT / "scripts" / "materialize_biometria_comune_release.py"
 TERRITORIO_UCS_MATERIALIZER = ROOT / "scripts" / "materialize_territorio_ucs_release.py"
 FORESTE_COMUNE_MATERIALIZER = ROOT / "scripts" / "materialize_foreste_comune_release.py"
-TERRITORIO_UCS_REFINER = ROOT / "scripts" / "refine_territorio_ucs_release.py"
+TERRITORIO_UCS_REFINER = ROOT / "scripts" / "refine_territorio_ucs_release_v2.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 

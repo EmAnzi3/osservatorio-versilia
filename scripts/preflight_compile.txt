@@ -99,3 +99,4 @@ scripts/patch_territorio_ucs_runtime.py
 scripts/foreste_comune_config.py
 scripts/materialize_foreste_comune_release.py
 scripts/refine_territorio_ucs_release.py
+scripts/refine_territorio_ucs_release_v2.py
