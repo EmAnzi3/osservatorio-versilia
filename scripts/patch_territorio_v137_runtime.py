@@ -55,7 +55,7 @@ def main() -> None:
         "      case 'km': return `${number2.format(v)} km`;\n",
         "      case 'km': return `${number2.format(v)} km`;\n"
         "      case 'km_per_km2': return `${number2.format(v)} km/km²`;\n",
-        2,
+        1,
         "formatter densita lineare",
     )
 
