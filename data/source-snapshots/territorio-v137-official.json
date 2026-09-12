@@ -1,0 +1,1375 @@
+{
+  "schemaVersion": 1,
+  "release": "v1.37.0",
+  "verifiedAt": "2026-09-12T16:15:06+00:00",
+  "municipalityOrder": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "sources": {
+    "ispraSoil": {
+      "publisher": "ISPRA",
+      "page": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "reference": "Consumo di suolo, dinamiche territoriali e servizi ecosistemici · edizione 2025 · dati comunali 2006–2024",
+      "acquisition": {
+        "url": "https://groupware.sinanet.isprambiente.it/uso-copertura-e-consumo-di-suolo/library/consumo-di-suolo/indicatori/consumo_suolo_2025_com_prov_reg_naz_v1.1/download/en/1/consumo_suolo_2025_Com_Prov_Reg_Naz_v1.1.xlsx",
+        "sizeBytes": 63751197,
+        "sha256": "5cf250383dbb32cfe18d0a6f7181762f5564307b641b14b66aaade0ccb12e23d"
+      }
+    },
+    "regioneProtectedAreas": {
+      "publisher": "Regione Toscana",
+      "page": "https://www.regione.toscana.it/-/il-sistema-delle-aree-naturali-protette",
+      "reference": "Archivi geografici ufficiali aree protette, Natura 2000 e Ramsar",
+      "layers": {
+        "parksNational": {
+          "typeName": "rt_arprot.idparnaz.rt.poly",
+          "sizeBytes": 1180906,
+          "sha256": "5b71b066afa1ab95fc44cafc025b6ff15d62a5b2648a6ab377a16bef0398ad16"
+        },
+        "reservesNational": {
+          "typeName": "rt_arprot.idrisnatstat.rt.poly",
+          "sizeBytes": 223408,
+          "sha256": "40250ab8ff5bc97d5571810ed1ed84af4bb040c0b6bcaa71fd081e8c5e7af12d"
+        },
+        "parksRegional": {
+          "typeName": "rt_arprot.idparreg.rt.poly",
+          "sizeBytes": 1505014,
+          "sha256": "ef6dceea4c62557da59da50ecd24cc832dfcdcedea34ce9d0a67708671ba8c17"
+        },
+        "parksProvincial": {
+          "typeName": "rt_arprot.idparprov.rt.poly",
+          "sizeBytes": 164991,
+          "sha256": "b24ab8696f8754c115557deee831e67ce3b1f6bd9af6cd259a137dd04ddd5024"
+        },
+        "reservesRegional": {
+          "typeName": "rt_arprot.idrisnatreg.rt.poly",
+          "sizeBytes": 981395,
+          "sha256": "89e11cebae4a6175fd9456fab1786314f65f48f8030c2ffc6bf079c18b0f4d0d"
+        },
+        "anpil": {
+          "typeName": "rt_arprot.idanpil.rt.poly",
+          "sizeBytes": 1046113,
+          "sha256": "02ad0f4531b3571fc03f197712c42b8167b4966f63e89636cdfc7a38ed49e6d1"
+        },
+        "zsc": {
+          "typeName": "rt_arprot.idnat2000_sic.rt.poly",
+          "sizeBytes": 3031306,
+          "sha256": "fb68c78da5b6e9fd434e5c6cb9915c413191971145f7726f728af0d098d10f06"
+        },
+        "zps": {
+          "typeName": "rt_arprot.idnat2000_zps.rt.poly",
+          "sizeBytes": 1108760,
+          "sha256": "0fd9a886ce417437da9a961128e37babde536296513347aa0e7ff1f52986110f"
+        },
+        "zscZps": {
+          "typeName": "rt_arprot.idnat2000_sic_zps.rt.poly",
+          "sizeBytes": 1606499,
+          "sha256": "12dbb5dd974f9c0dabf1000f1968c77768418f9f3ba6302ccb42d83324e10f3a"
+        },
+        "ramsar": {
+          "typeName": "rt_arprot.idramsar.rt.poly",
+          "sizeBytes": 211466,
+          "sha256": "044aea1ff6ce727c096f656a8e81d3866f01f81c15ac1fcc27cdf83619363529"
+        }
+      }
+    },
+    "regioneHydrography": {
+      "publisher": "Regione Toscana",
+      "page": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "reference": "Reticolo idrografico e di gestione · DCRT 24/2025",
+      "sourceLayer": "reticoloDCR242025.shp",
+      "acquisition": {
+        "url": "https://www.regione.toscana.it/documents/d/guest/infrastruttura_rev25-zip",
+        "sizeBytes": 48706934,
+        "sha256": "68d6bb2986c056e1c041009a21e3b9eb89de81d02830d412354c5770d7d9b122"
+      }
+    },
+    "regioneIterNet": {
+      "publisher": "Regione Toscana",
+      "page": "https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/",
+      "reference": "Iter.Net 4.48 · giugno 2022",
+      "sourceLayer": "elem_strad.shp",
+      "acquisition": {
+        "url": "https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip",
+        "sizeBytes": 460484895,
+        "sha256": "1720f9271a1e294b1801cfe34b007781bde0f3a0390ddfee1c25f14c42321a17"
+      }
+    }
+  },
+  "measurementBoundary": {
+    "publisher": "Istat",
+    "reference": "Confini amministrativi al 1 gennaio 2026 · generalizzati",
+    "sourceLayer": "Com01012026_g_WGS84.shp",
+    "acquisition": {
+      "url": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip",
+      "sizeBytes": 10450609,
+      "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6"
+    },
+    "crs": "EPSG:3003",
+    "istatCodes": {
+      "Camaiore": "046005",
+      "Forte dei Marmi": "046013",
+      "Massarosa": "046018",
+      "Pietrasanta": "046024",
+      "Seravezza": "046028",
+      "Stazzema": "046030",
+      "Viareggio": "046033"
+    }
+  },
+  "landUse": {
+    "years": [
+      2006,
+      2012,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "municipalities": {
+      "Camaiore": {
+        "municipalAreaHa": 8452.04,
+        "rows": {
+          "2006": {
+            "consumedHa": 1183.27,
+            "consumedPct": 14.0,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 1194.27,
+            "consumedPct": 14.13,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 1195.63,
+            "consumedPct": 14.146,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 1195.75,
+            "consumedPct": 14.147,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 1195.89,
+            "consumedPct": 14.149,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 1196.73,
+            "consumedPct": 14.159,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 1197.77,
+            "consumedPct": 14.171,
+            "sqmPerResident": 378.203347,
+            "population": 31670
+          },
+          "2020": {
+            "consumedHa": 1197.81,
+            "consumedPct": 14.172,
+            "sqmPerResident": 379.738769,
+            "population": 31543
+          },
+          "2021": {
+            "consumedHa": 1197.95,
+            "consumedPct": 14.174,
+            "sqmPerResident": 377.176411,
+            "population": 31761
+          },
+          "2022": {
+            "consumedHa": 1199.26,
+            "consumedPct": 14.189,
+            "sqmPerResident": 376.876905,
+            "population": 31821
+          },
+          "2023": {
+            "consumedHa": 1199.59,
+            "consumedPct": 14.193,
+            "sqmPerResident": 375.882058,
+            "population": 31914
+          },
+          "2024": {
+            "consumedHa": 1200.59,
+            "consumedPct": 14.205,
+            "sqmPerResident": 376.785714,
+            "population": 31864
+          }
+        }
+      },
+      "Forte dei Marmi": {
+        "municipalAreaHa": 916.91,
+        "rows": {
+          "2006": {
+            "consumedHa": 414.3,
+            "consumedPct": 45.184,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 418.42,
+            "consumedPct": 45.634,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 419.69,
+            "consumedPct": 45.772,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 419.7,
+            "consumedPct": 45.773,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 422.78,
+            "consumedPct": 46.109,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 423.48,
+            "consumedPct": 46.186,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 424.87,
+            "consumedPct": 46.337,
+            "sqmPerResident": 593.725545,
+            "population": 7156
+          },
+          "2020": {
+            "consumedHa": 422.57,
+            "consumedPct": 46.086,
+            "sqmPerResident": 594.248348,
+            "population": 7111
+          },
+          "2021": {
+            "consumedHa": 422.93,
+            "consumedPct": 46.126,
+            "sqmPerResident": 586.019122,
+            "population": 7217
+          },
+          "2022": {
+            "consumedHa": 423.33,
+            "consumedPct": 46.169,
+            "sqmPerResident": 609.722022,
+            "population": 6943
+          },
+          "2023": {
+            "consumedHa": 423.14,
+            "consumedPct": 46.148,
+            "sqmPerResident": 615.118477,
+            "population": 6879
+          },
+          "2024": {
+            "consumedHa": 423.3,
+            "consumedPct": 46.166,
+            "sqmPerResident": 624.61266,
+            "population": 6777
+          }
+        }
+      },
+      "Massarosa": {
+        "municipalAreaHa": 6810.82,
+        "rows": {
+          "2006": {
+            "consumedHa": 894.09,
+            "consumedPct": 13.127,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 894.87,
+            "consumedPct": 13.139,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 897.1,
+            "consumedPct": 13.172,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 897.96,
+            "consumedPct": 13.184,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 898.5,
+            "consumedPct": 13.192,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 899.23,
+            "consumedPct": 13.203,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 902.58,
+            "consumedPct": 13.252,
+            "sqmPerResident": 416.012168,
+            "population": 21696
+          },
+          "2020": {
+            "consumedHa": 904.9,
+            "consumedPct": 13.286,
+            "sqmPerResident": 418.64446,
+            "population": 21615
+          },
+          "2021": {
+            "consumedHa": 908.74,
+            "consumedPct": 13.343,
+            "sqmPerResident": 413.985695,
+            "population": 21951
+          },
+          "2022": {
+            "consumedHa": 910.33,
+            "consumedPct": 13.366,
+            "sqmPerResident": 417.142464,
+            "population": 21823
+          },
+          "2023": {
+            "consumedHa": 910.69,
+            "consumedPct": 13.371,
+            "sqmPerResident": 417.326551,
+            "population": 21822
+          },
+          "2024": {
+            "consumedHa": 910.69,
+            "consumedPct": 13.371,
+            "sqmPerResident": 416.505831,
+            "population": 21865
+          }
+        }
+      },
+      "Pietrasanta": {
+        "municipalAreaHa": 4218.7,
+        "rows": {
+          "2006": {
+            "consumedHa": 1021.06,
+            "consumedPct": 24.203,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 1035.79,
+            "consumedPct": 24.552,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 1035.89,
+            "consumedPct": 24.555,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 1036.34,
+            "consumedPct": 24.565,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 1036.43,
+            "consumedPct": 24.568,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 1037.2,
+            "consumedPct": 24.586,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 1038.08,
+            "consumedPct": 24.607,
+            "sqmPerResident": 449.911152,
+            "population": 23073
+          },
+          "2020": {
+            "consumedHa": 1040.14,
+            "consumedPct": 24.655,
+            "sqmPerResident": 452.293777,
+            "population": 22997
+          },
+          "2021": {
+            "consumedHa": 1040.57,
+            "consumedPct": 24.666,
+            "sqmPerResident": 450.054063,
+            "population": 23121
+          },
+          "2022": {
+            "consumedHa": 1043.4,
+            "consumedPct": 24.733,
+            "sqmPerResident": 452.354114,
+            "population": 23066
+          },
+          "2023": {
+            "consumedHa": 1043.71,
+            "consumedPct": 24.74,
+            "sqmPerResident": 455.11272,
+            "population": 22933
+          },
+          "2024": {
+            "consumedHa": 1043.94,
+            "consumedPct": 24.746,
+            "sqmPerResident": 458.109531,
+            "population": 22788
+          }
+        }
+      },
+      "Seravezza": {
+        "municipalAreaHa": 3938.75,
+        "rows": {
+          "2006": {
+            "consumedHa": 480.66,
+            "consumedPct": 12.203,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 481.33,
+            "consumedPct": 12.22,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 483.94,
+            "consumedPct": 12.287,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 484.6,
+            "consumedPct": 12.303,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 480.72,
+            "consumedPct": 12.205,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 480.87,
+            "consumedPct": 12.209,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 481.33,
+            "consumedPct": 12.22,
+            "sqmPerResident": 374.721682,
+            "population": 12845
+          },
+          "2020": {
+            "consumedHa": 478.91,
+            "consumedPct": 12.159,
+            "sqmPerResident": 374.909973,
+            "population": 12774
+          },
+          "2021": {
+            "consumedHa": 479.75,
+            "consumedPct": 12.18,
+            "sqmPerResident": 382.088245,
+            "population": 12556
+          },
+          "2022": {
+            "consumedHa": 481.32,
+            "consumedPct": 12.22,
+            "sqmPerResident": 386.882083,
+            "population": 12441
+          },
+          "2023": {
+            "consumedHa": 481.99,
+            "consumedPct": 12.237,
+            "sqmPerResident": 388.858411,
+            "population": 12395
+          },
+          "2024": {
+            "consumedHa": 482.14,
+            "consumedPct": 12.241,
+            "sqmPerResident": 387.728187,
+            "population": 12435
+          }
+        }
+      },
+      "Stazzema": {
+        "municipalAreaHa": 8048.26,
+        "rows": {
+          "2006": {
+            "consumedHa": 243.41,
+            "consumedPct": 3.024,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 243.49,
+            "consumedPct": 3.025,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 243.49,
+            "consumedPct": 3.025,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 243.96,
+            "consumedPct": 3.031,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 243.96,
+            "consumedPct": 3.031,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 821.305958,
+            "population": 2971
+          },
+          "2020": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 824.915483,
+            "population": 2958
+          },
+          "2021": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 841.994479,
+            "population": 2898
+          },
+          "2022": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 844.32526,
+            "population": 2890
+          },
+          "2023": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 848.140424,
+            "population": 2877
+          },
+          "2024": {
+            "consumedHa": 244.01,
+            "consumedPct": 3.032,
+            "sqmPerResident": 840.544265,
+            "population": 2903
+          }
+        }
+      },
+      "Viareggio": {
+        "municipalAreaHa": 3266.07,
+        "rows": {
+          "2006": {
+            "consumedHa": 1239.96,
+            "consumedPct": 37.965,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2012": {
+            "consumedHa": 1248.74,
+            "consumedPct": 38.234,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2015": {
+            "consumedHa": 1249.23,
+            "consumedPct": 38.249,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2016": {
+            "consumedHa": 1249.23,
+            "consumedPct": 38.249,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2017": {
+            "consumedHa": 1249.29,
+            "consumedPct": 38.251,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2018": {
+            "consumedHa": 1252.77,
+            "consumedPct": 38.357,
+            "sqmPerResident": null,
+            "population": null
+          },
+          "2019": {
+            "consumedHa": 1253.55,
+            "consumedPct": 38.381,
+            "sqmPerResident": 206.849609,
+            "population": 60602
+          },
+          "2020": {
+            "consumedHa": 1253.7,
+            "consumedPct": 38.386,
+            "sqmPerResident": 207.182047,
+            "population": 60512
+          },
+          "2021": {
+            "consumedHa": 1254.12,
+            "consumedPct": 38.398,
+            "sqmPerResident": 204.750943,
+            "population": 61251
+          },
+          "2022": {
+            "consumedHa": 1254.88,
+            "consumedPct": 38.422,
+            "sqmPerResident": 205.566385,
+            "population": 61045
+          },
+          "2023": {
+            "consumedHa": 1256.94,
+            "consumedPct": 38.485,
+            "sqmPerResident": 206.427985,
+            "population": 60890
+          },
+          "2024": {
+            "consumedHa": 1257.43,
+            "consumedPct": 38.5,
+            "sqmPerResident": 206.967328,
+            "population": 60755
+          }
+        }
+      }
+    },
+    "versilia": {
+      "rows": {
+        "2006": {
+          "consumedHa": 5476.75,
+          "consumedPct": 15.361885,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2012": {
+          "consumedHa": 5516.91,
+          "consumedPct": 15.474531,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2015": {
+          "consumedHa": 5524.97,
+          "consumedPct": 15.497138,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2016": {
+          "consumedHa": 5527.54,
+          "consumedPct": 15.504347,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2017": {
+          "consumedHa": 5527.57,
+          "consumedPct": 15.504431,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2018": {
+          "consumedHa": 5534.29,
+          "consumedPct": 15.52328,
+          "sqmPerResident": null,
+          "population": null
+        },
+        "2019": {
+          "consumedHa": 5542.19,
+          "consumedPct": 15.545439,
+          "sqmPerResident": 346.358733,
+          "population": 160013
+        },
+        "2020": {
+          "consumedHa": 5542.04,
+          "consumedPct": 15.545018,
+          "sqmPerResident": 347.44154,
+          "population": 159510
+        },
+        "2021": {
+          "consumedHa": 5548.07,
+          "consumedPct": 15.561932,
+          "sqmPerResident": 345.125813,
+          "population": 160755
+        },
+        "2022": {
+          "consumedHa": 5556.53,
+          "consumedPct": 15.585662,
+          "sqmPerResident": 347.220191,
+          "population": 160029
+        },
+        "2023": {
+          "consumedHa": 5560.07,
+          "consumedPct": 15.595591,
+          "sqmPerResident": 348.13537,
+          "population": 159710
+        },
+        "2024": {
+          "consumedHa": 5562.1,
+          "consumedPct": 15.601285,
+          "sqmPerResident": 348.968235,
+          "population": 159387
+        }
+      }
+    }
+  },
+  "landUseChange": {
+    "years": [
+      2012,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "municipalities": {
+      "Camaiore": {
+        "rows": {
+          "2012": {
+            "grossHa": 11.0,
+            "netHa": 11.0
+          },
+          "2015": {
+            "grossHa": 1.36,
+            "netHa": 1.36
+          },
+          "2016": {
+            "grossHa": 0.12,
+            "netHa": 0.12
+          },
+          "2017": {
+            "grossHa": 0.14,
+            "netHa": 0.14
+          },
+          "2018": {
+            "grossHa": 0.84,
+            "netHa": 0.84
+          },
+          "2019": {
+            "grossHa": 1.04,
+            "netHa": 1.04
+          },
+          "2020": {
+            "grossHa": 0.04,
+            "netHa": 0.04
+          },
+          "2021": {
+            "grossHa": 0.14,
+            "netHa": 0.14
+          },
+          "2022": {
+            "grossHa": 1.31,
+            "netHa": 1.31
+          },
+          "2023": {
+            "grossHa": 0.33,
+            "netHa": 0.33
+          },
+          "2024": {
+            "grossHa": 1.1,
+            "netHa": 1.1
+          }
+        }
+      },
+      "Forte dei Marmi": {
+        "rows": {
+          "2012": {
+            "grossHa": 4.12,
+            "netHa": 4.12
+          },
+          "2015": {
+            "grossHa": 1.27,
+            "netHa": 1.27
+          },
+          "2016": {
+            "grossHa": 0.01,
+            "netHa": 0.01
+          },
+          "2017": {
+            "grossHa": 3.08,
+            "netHa": 3.08
+          },
+          "2018": {
+            "grossHa": 0.7,
+            "netHa": 0.7
+          },
+          "2019": {
+            "grossHa": 1.39,
+            "netHa": 1.39
+          },
+          "2020": {
+            "grossHa": 0.2,
+            "netHa": -2.3
+          },
+          "2021": {
+            "grossHa": 0.76,
+            "netHa": 0.36
+          },
+          "2022": {
+            "grossHa": 0.55,
+            "netHa": 0.4
+          },
+          "2023": {
+            "grossHa": 0.15,
+            "netHa": -0.19
+          },
+          "2024": {
+            "grossHa": 0.19,
+            "netHa": 0.14
+          }
+        }
+      },
+      "Massarosa": {
+        "rows": {
+          "2012": {
+            "grossHa": 1.23,
+            "netHa": 0.78
+          },
+          "2015": {
+            "grossHa": 8.98,
+            "netHa": 2.23
+          },
+          "2016": {
+            "grossHa": 0.86,
+            "netHa": 0.86
+          },
+          "2017": {
+            "grossHa": 0.54,
+            "netHa": 0.54
+          },
+          "2018": {
+            "grossHa": 0.73,
+            "netHa": 0.73
+          },
+          "2019": {
+            "grossHa": 3.35,
+            "netHa": 3.35
+          },
+          "2020": {
+            "grossHa": 2.32,
+            "netHa": 2.32
+          },
+          "2021": {
+            "grossHa": 3.84,
+            "netHa": 3.84
+          },
+          "2022": {
+            "grossHa": 1.59,
+            "netHa": 1.59
+          },
+          "2023": {
+            "grossHa": 0.36,
+            "netHa": 0.36
+          },
+          "2024": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          }
+        }
+      },
+      "Pietrasanta": {
+        "rows": {
+          "2012": {
+            "grossHa": 14.73,
+            "netHa": 14.73
+          },
+          "2015": {
+            "grossHa": 0.1,
+            "netHa": 0.1
+          },
+          "2016": {
+            "grossHa": 0.45,
+            "netHa": 0.45
+          },
+          "2017": {
+            "grossHa": 0.09,
+            "netHa": 0.09
+          },
+          "2018": {
+            "grossHa": 0.77,
+            "netHa": 0.77
+          },
+          "2019": {
+            "grossHa": 0.88,
+            "netHa": 0.88
+          },
+          "2020": {
+            "grossHa": 2.06,
+            "netHa": 2.06
+          },
+          "2021": {
+            "grossHa": 0.58,
+            "netHa": 0.43
+          },
+          "2022": {
+            "grossHa": 2.83,
+            "netHa": 2.83
+          },
+          "2023": {
+            "grossHa": 0.41,
+            "netHa": 0.31
+          },
+          "2024": {
+            "grossHa": 0.29,
+            "netHa": 0.29
+          }
+        }
+      },
+      "Seravezza": {
+        "rows": {
+          "2012": {
+            "grossHa": 0.67,
+            "netHa": 0.67
+          },
+          "2015": {
+            "grossHa": 2.61,
+            "netHa": 2.61
+          },
+          "2016": {
+            "grossHa": 0.66,
+            "netHa": 0.66
+          },
+          "2017": {
+            "grossHa": 0.0,
+            "netHa": -3.88
+          },
+          "2018": {
+            "grossHa": 0.15,
+            "netHa": 0.15
+          },
+          "2019": {
+            "grossHa": 0.46,
+            "netHa": 0.46
+          },
+          "2020": {
+            "grossHa": 0.03,
+            "netHa": -2.42
+          },
+          "2021": {
+            "grossHa": 0.84,
+            "netHa": 0.84
+          },
+          "2022": {
+            "grossHa": 1.57,
+            "netHa": 1.57
+          },
+          "2023": {
+            "grossHa": 0.67,
+            "netHa": 0.67
+          },
+          "2024": {
+            "grossHa": 0.15,
+            "netHa": 0.15
+          }
+        }
+      },
+      "Stazzema": {
+        "rows": {
+          "2012": {
+            "grossHa": 0.08,
+            "netHa": 0.08
+          },
+          "2015": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2016": {
+            "grossHa": 0.47,
+            "netHa": 0.47
+          },
+          "2017": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2018": {
+            "grossHa": 0.05,
+            "netHa": 0.05
+          },
+          "2019": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2020": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2021": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2022": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2023": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2024": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          }
+        }
+      },
+      "Viareggio": {
+        "rows": {
+          "2012": {
+            "grossHa": 8.78,
+            "netHa": 8.78
+          },
+          "2015": {
+            "grossHa": 0.49,
+            "netHa": 0.49
+          },
+          "2016": {
+            "grossHa": 0.0,
+            "netHa": 0.0
+          },
+          "2017": {
+            "grossHa": 0.06,
+            "netHa": 0.06
+          },
+          "2018": {
+            "grossHa": 3.48,
+            "netHa": 3.48
+          },
+          "2019": {
+            "grossHa": 1.11,
+            "netHa": 0.78
+          },
+          "2020": {
+            "grossHa": 0.15,
+            "netHa": 0.15
+          },
+          "2021": {
+            "grossHa": 0.42,
+            "netHa": 0.42
+          },
+          "2022": {
+            "grossHa": 1.11,
+            "netHa": 0.76
+          },
+          "2023": {
+            "grossHa": 2.06,
+            "netHa": 2.06
+          },
+          "2024": {
+            "grossHa": 0.56,
+            "netHa": 0.56
+          }
+        }
+      }
+    },
+    "versilia": {
+      "rows": {
+        "2012": {
+          "grossHa": 40.61,
+          "netHa": 40.16
+        },
+        "2015": {
+          "grossHa": 14.81,
+          "netHa": 8.06
+        },
+        "2016": {
+          "grossHa": 2.57,
+          "netHa": 2.57
+        },
+        "2017": {
+          "grossHa": 3.91,
+          "netHa": 0.03
+        },
+        "2018": {
+          "grossHa": 6.72,
+          "netHa": 6.72
+        },
+        "2019": {
+          "grossHa": 8.23,
+          "netHa": 7.9
+        },
+        "2020": {
+          "grossHa": 4.8,
+          "netHa": -0.15
+        },
+        "2021": {
+          "grossHa": 6.58,
+          "netHa": 6.03
+        },
+        "2022": {
+          "grossHa": 8.96,
+          "netHa": 8.46
+        },
+        "2023": {
+          "grossHa": 3.98,
+          "netHa": 3.54
+        },
+        "2024": {
+          "grossHa": 2.29,
+          "netHa": 2.24
+        }
+      }
+    }
+  },
+  "protectedNaturalAreas": {
+    "referenceLabel": "archivi geografici ufficiali Regione Toscana · consultati 12 settembre 2026",
+    "categoryOrder": [
+      "parksReserves",
+      "anpil",
+      "natura2000",
+      "zsc",
+      "zps",
+      "ramsar"
+    ],
+    "categoryLabels": {
+      "parksReserves": "Parchi e riserve",
+      "anpil": "ANPIL (regime transitorio)",
+      "natura2000": "Rete Natura 2000",
+      "zsc": "ZSC",
+      "zps": "ZPS",
+      "ramsar": "Zone Ramsar"
+    },
+    "municipalities": {
+      "Camaiore": {
+        "municipalAreaHa": 8481.788129,
+        "totalUnionHa": 2437.267928,
+        "categoriesHa": {
+          "parksReserves": 2437.267928,
+          "anpil": 0.0,
+          "natura2000": 910.647655,
+          "zsc": 53.678761,
+          "zps": 886.184101,
+          "ramsar": 0.0
+        }
+      },
+      "Forte dei Marmi": {
+        "municipalAreaHa": 925.501256,
+        "totalUnionHa": 4.976994,
+        "categoriesHa": {
+          "parksReserves": 0.0,
+          "anpil": 4.976994,
+          "natura2000": 0.0,
+          "zsc": 0.0,
+          "zps": 0.0,
+          "ramsar": 0.0
+        }
+      },
+      "Massarosa": {
+        "municipalAreaHa": 6791.045102,
+        "totalUnionHa": 2269.048072,
+        "categoriesHa": {
+          "parksReserves": 2266.619294,
+          "anpil": 0.0,
+          "natura2000": 1568.073761,
+          "zsc": 1568.073761,
+          "zps": 1568.073761,
+          "ramsar": 1621.820966
+        }
+      },
+      "Pietrasanta": {
+        "municipalAreaHa": 4222.817031,
+        "totalUnionHa": 88.106278,
+        "categoriesHa": {
+          "parksReserves": 32.506783,
+          "anpil": 55.598807,
+          "natura2000": 55.599493,
+          "zsc": 0.0,
+          "zps": 55.599493,
+          "ramsar": 0.0
+        }
+      },
+      "Seravezza": {
+        "municipalAreaHa": 3952.01718,
+        "totalUnionHa": 3017.770599,
+        "categoriesHa": {
+          "parksReserves": 2979.308619,
+          "anpil": 0.0,
+          "natura2000": 1853.221299,
+          "zsc": 1644.458826,
+          "zps": 1053.994633,
+          "ramsar": 0.0
+        }
+      },
+      "Stazzema": {
+        "municipalAreaHa": 8026.530963,
+        "totalUnionHa": 8020.193966,
+        "categoriesHa": {
+          "parksReserves": 8020.193966,
+          "anpil": 0.0,
+          "natura2000": 4501.383058,
+          "zsc": 4245.077861,
+          "zps": 3371.282035,
+          "ramsar": 0.0
+        }
+      },
+      "Viareggio": {
+        "municipalAreaHa": 3275.359664,
+        "totalUnionHa": 1303.035971,
+        "categoriesHa": {
+          "parksReserves": 1280.98641,
+          "anpil": 0.0,
+          "natura2000": 750.727778,
+          "zsc": 750.727778,
+          "zps": 750.727778,
+          "ramsar": 786.329095
+        }
+      }
+    },
+    "versilia": {
+      "municipalAreaHa": 35675.059325,
+      "totalUnionHa": 17140.399808,
+      "categoriesHa": {
+        "parksReserves": 17016.883001,
+        "anpil": 60.5758,
+        "natura2000": 9639.653045,
+        "zsc": 8262.016987,
+        "zps": 7685.861801,
+        "ramsar": 2408.150061
+      }
+    },
+    "definitionNote": "Il totale e' l'unione geometrica di parchi/riserve, ANPIL, Natura 2000 e Ramsar; le sovrapposizioni sono conteggiate una sola volta. Le ANPIL sono mantenute come categoria distinta in regime transitorio."
+  },
+  "reticulum": {
+    "referenceLabel": "DCRT 24/2025 · confini Istat 1 gennaio 2026",
+    "municipalities": {
+      "Camaiore": {
+        "municipalAreaKm2": 84.817881,
+        "fullNetworkKm": 315.932266,
+        "managedNetworkKm": 204.809871,
+        "fullNetworkDensity": 3.724831
+      },
+      "Forte dei Marmi": {
+        "municipalAreaKm2": 9.255013,
+        "fullNetworkKm": 11.894496,
+        "managedNetworkKm": 11.609746,
+        "fullNetworkDensity": 1.285195
+      },
+      "Massarosa": {
+        "municipalAreaKm2": 67.910451,
+        "fullNetworkKm": 245.761627,
+        "managedNetworkKm": 192.01491,
+        "fullNetworkDensity": 3.618907
+      },
+      "Pietrasanta": {
+        "municipalAreaKm2": 42.22817,
+        "fullNetworkKm": 127.916492,
+        "managedNetworkKm": 99.736904,
+        "fullNetworkDensity": 3.029174
+      },
+      "Seravezza": {
+        "municipalAreaKm2": 39.520172,
+        "fullNetworkKm": 130.65877,
+        "managedNetworkKm": 49.446972,
+        "fullNetworkDensity": 3.306129
+      },
+      "Stazzema": {
+        "municipalAreaKm2": 80.26531,
+        "fullNetworkKm": 293.038677,
+        "managedNetworkKm": 130.315069,
+        "fullNetworkDensity": 3.650876
+      },
+      "Viareggio": {
+        "municipalAreaKm2": 32.753597,
+        "fullNetworkKm": 75.058846,
+        "managedNetworkKm": 57.108279,
+        "fullNetworkDensity": 2.291621
+      }
+    },
+    "versilia": {
+      "unionAreaKm2": 356.750593,
+      "fullNetworkKm": 1200.261175,
+      "managedNetworkKm": 745.041751,
+      "fullNetworkDensity": 3.364427
+    }
+  },
+  "roadNetworkProfile": {
+    "referenceLabel": "Iter.Net 4.48 · giugno 2022",
+    "municipalities": {
+      "Camaiore": {
+        "municipalAreaKm2": 84.817881,
+        "graphKm": 480.95586,
+        "graphDensity": 5.670454
+      },
+      "Forte dei Marmi": {
+        "municipalAreaKm2": 9.255013,
+        "graphKm": 139.0381,
+        "graphDensity": 15.023005
+      },
+      "Massarosa": {
+        "municipalAreaKm2": 67.910451,
+        "graphKm": 313.923233,
+        "graphDensity": 4.622606
+      },
+      "Pietrasanta": {
+        "municipalAreaKm2": 42.22817,
+        "graphKm": 411.13055,
+        "graphDensity": 9.735931
+      },
+      "Seravezza": {
+        "municipalAreaKm2": 39.520172,
+        "graphKm": 153.945273,
+        "graphDensity": 3.895359
+      },
+      "Stazzema": {
+        "municipalAreaKm2": 80.26531,
+        "graphKm": 120.352216,
+        "graphDensity": 1.49943
+      },
+      "Viareggio": {
+        "municipalAreaKm2": 32.753597,
+        "graphKm": 410.309849,
+        "graphDensity": 12.527169
+      }
+    },
+    "versilia": {
+      "unionAreaKm2": 356.750593,
+      "graphKm": 2029.655081,
+      "graphDensity": 5.689283
+    }
+  }
+}
