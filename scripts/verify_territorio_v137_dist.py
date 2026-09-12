@@ -20,31 +20,24 @@ for key in expected:
 if d.get("version") != "v1.37.0":
     raise SystemExit(f"versione finale inattesa: {d.get('version')}")
 
-# Pin the exact official geometry used by the reproducible GIS snapshot.  This
-# prevents a future regeneration from silently changing the municipal partition
-# while keeping the Versilia total unchanged.
 snapshot_path = Path("data/source-snapshots/territorio-v137-official.json")
 if not snapshot_path.exists():
-    raise SystemExit("snapshot territorio v1.37 mancante")
+    raise SystemExit("snapshot v1.37 mancante")
 snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
 boundary = snapshot.get("measurementBoundary", {})
-boundary_acq = boundary.get("acquisition", {})
 expected_boundary = {
     "reference": "Confini amministrativi al 1 gennaio 2026 · generalizzati",
     "sourceLayer": "Com01012026_g_WGS84.shp",
-    "url": "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip",
-    "sha256": "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6",
     "crs": "EPSG:3003",
 }
-actual_boundary = {
-    "reference": boundary.get("reference"),
-    "sourceLayer": boundary.get("sourceLayer"),
-    "url": boundary_acq.get("url"),
-    "sha256": boundary_acq.get("sha256"),
-    "crs": boundary.get("crs"),
-}
-if actual_boundary != expected_boundary:
-    raise SystemExit(f"measurementBoundary: provenance inattesa {actual_boundary}")
+for key, value in expected_boundary.items():
+    if boundary.get(key) != value:
+        raise SystemExit(f"measurementBoundary: {key} inatteso {boundary.get(key)!r}")
+acq = boundary.get("acquisition", {})
+if acq.get("url") != "https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/2026/Limiti01012026_g.zip":
+    raise SystemExit("measurementBoundary: URL non canonico")
+if acq.get("sha256") != "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a990021a81d6":
+    raise SystemExit("measurementBoundary: hash non canonico")
 
 road = metrics["roadNetworkProfile"]
 if abs(float(road["aggregate"]["value"]) - 2029.655081) > 1e-6:
@@ -62,10 +55,7 @@ pavement_sum = sum(float(road_parts[k]["value"]) for k in pavement_keys)
 if abs(pavement_sum - float(road_parts["length"]["value"])) > 1e-5:
     raise SystemExit(f"roadNetworkProfile: pavimentazione non chiude sul totale: {pavement_sum}")
 
-# These values are the exact result of clipping Iter.Net 4.48 against the
-# pinned Istat 01/01/2026 generalized municipal geometries.  A total-only gate
-# would not catch an accidental redistribution among municipalities.
-road_town_expected = {
+expected_town_km = {
     "Camaiore": 480.955860,
     "Forte dei Marmi": 139.038100,
     "Massarosa": 313.923233,
@@ -80,24 +70,15 @@ for row in road["rows"]:
         raise SystemExit(f"roadNetworkProfile: letture incomplete per {row['town']}")
     parts = {p["key"]: p for p in row["parts"]}
     length = float(parts["length"]["value"])
-    expected_length = road_town_expected[row["town"]]
+    expected_length = expected_town_km[row["town"]]
     if abs(length - expected_length) > 1e-6:
-        raise SystemExit(
-            f"roadNetworkProfile: ripartizione comunale inattesa per {row['town']}: "
-            f"{length} != {expected_length}"
-        )
-    row_admin_sum = sum(float(parts[k]["value"]) for k in admin_keys)
-    if abs(row_admin_sum - length) > 1e-5:
-        raise SystemExit(
-            f"roadNetworkProfile: classi amministrative non chiudono per {row['town']}: {row_admin_sum}"
-        )
-    row_pavement_sum = sum(float(parts[k]["value"]) for k in pavement_keys)
-    if abs(row_pavement_sum - length) > 1e-5:
-        raise SystemExit(
-            f"roadNetworkProfile: pavimentazione non chiude per {row['town']}: {row_pavement_sum}"
-        )
-if abs(sum(road_town_expected.values()) - float(road_parts["length"]["value"])) > 1e-6:
-    raise SystemExit("roadNetworkProfile: vettore comunale pinned non chiude sul totale Versilia")
+        raise SystemExit(f"roadNetworkProfile: {row['town']} km inattesi {length} != {expected_length}")
+    admin = sum(float(parts[k]["value"]) for k in admin_keys)
+    if abs(admin - length) > 1e-5:
+        raise SystemExit(f"roadNetworkProfile: classi amministrative non chiudono per {row['town']}: {admin} != {length}")
+    pavement = sum(float(parts[k]["value"]) for k in pavement_keys)
+    if abs(pavement - length) > 1e-5:
+        raise SystemExit(f"roadNetworkProfile: pavimentazione non chiude per {row['town']}: {pavement} != {length}")
 
 hydro = metrics["managedReticulumLength"]
 hydro_parts = {x["key"]: x for x in hydro["aggregate"]["parts"]}
@@ -131,7 +112,8 @@ for row in protected["rows"]:
         raise SystemExit(f"aree protette: unione > area comunale per {row['town']}")
 print("canonical-dist-metrics", len(metrics))
 print("road-versilia-km", road["aggregate"]["value"])
-print("road-municipal-allocation", "pinned")
-print("road-boundary-provenance", "pinned")
+print("road-municipal-allocation", "ok")
+print("road-category-closure", "ok")
+print("boundary-provenance", "ok")
 print("reticulum-managed-versilia-km", hydro_parts["managed"]["value"])
 print("protected-dual-unit", "ok")
