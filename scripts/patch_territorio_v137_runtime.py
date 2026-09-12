@@ -22,6 +22,13 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
     return text.replace(old, new, 1)
 
 
+def replace_exact_count(text: str, old: str, new: str, expected: int, label: str) -> str:
+    count = text.count(old)
+    if count != expected:
+        raise RuntimeError(f"v1.37 runtime: {label}: attese {expected} occorrenze, trovate {count}")
+    return text.replace(old, new)
+
+
 def main() -> None:
     app00 = APP00.read_text(encoding="utf-8")
     app03 = APP03.read_text(encoding="utf-8")
@@ -35,18 +42,20 @@ def main() -> None:
         return
 
     # Unita' specifiche. Ettari e km riusano rispettivamente 'hectares' e 'km'.
-    app00 = replace_once(
+    app00 = replace_exact_count(
         app00,
         "      case 'hectares': return `${number2.format(v)} ha`;\n",
         "      case 'hectares': return `${number2.format(v)} ha`;\n"
         "      case 'sqm_per_resident': return `${number1.format(v)} m²/residente`;\n",
+        2,
         "formatter m2/residente",
     )
-    app00 = replace_once(
+    app00 = replace_exact_count(
         app00,
         "      case 'km': return `${number2.format(v)} km`;\n",
         "      case 'km': return `${number2.format(v)} km`;\n"
         "      case 'km_per_km2': return `${number2.format(v)} km/km²`;\n",
+        2,
         "formatter densita lineare",
     )
 
