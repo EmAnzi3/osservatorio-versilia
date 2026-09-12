@@ -1,0 +1,64 @@
+name: Territorio v1.37 Iter.Net road attributes audit
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - .github/workflows/territorio-v137-road-attributes-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install GIS stack
+        run: python -m pip install geopandas pyogrio shapely
+      - name: Inspect official Iter.Net attributes
+        run: |
+          mkdir -p reports/territorio-v137-road-audit
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request, zipfile
+          import geopandas as gpd
+
+          out=Path('reports/territorio-v137-road-audit')
+          outer=Path('/tmp/iternet.zip')
+          url='https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip'
+          urllib.request.urlretrieve(url, outer)
+          outer_dir=Path('/tmp/iternet-outer'); outer_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(outer) as z: z.extractall(outer_dir)
+          inner_zip=next(outer_dir.rglob('*.zip'))
+          inner_dir=Path('/tmp/iternet-inner'); inner_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(inner_zip) as z: z.extractall(inner_dir)
+          shp=next(p for p in inner_dir.rglob('elem_strad.shp'))
+          wanted=['tipo_ele','clstecfun','classe_amm','tip_pavim','sede_ele','oneway','primaria','tipostrada','cod_istat','comune']
+          frame=gpd.read_file(shp, engine='pyogrio', columns=wanted)
+          result={'featureCount':len(frame),'fields':{}}
+          for col in wanted[:-2]:
+              s=frame[col].fillna('<NULL>').astype(str).str.strip().replace('', '<BLANK>')
+              counts=s.value_counts(dropna=False)
+              result['fields'][col]=[{'value':str(k),'count':int(v)} for k,v in counts.head(100).items()]
+          subset=frame[frame['cod_istat'].astype(str).str.zfill(6).isin(['046005','046013','046018','046024','046028','046030','046033'])].copy()
+          result['versiliaByCodIstatRows']=int(len(subset))
+          result['versiliaFields']={}
+          for col in wanted[:-2]:
+              s=subset[col].fillna('<NULL>').astype(str).str.strip().replace('', '<BLANK>')
+              result['versiliaFields'][col]=[{'value':str(k),'count':int(v)} for k,v in s.value_counts(dropna=False).head(100).items()]
+          (out/'iternet-road-attributes.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: territorio-v137-road-attributes-audit
+          path: reports/territorio-v137-road-audit/
+          retention-days: 7
