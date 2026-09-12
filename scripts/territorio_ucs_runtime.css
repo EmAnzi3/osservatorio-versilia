@@ -1,0 +1,42 @@
+/* OV TERRITORIO UCS UI v1.36.0 */
+.territorial-classification-grid,.territorial-classification-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.territorial-classification-grid article,.territorial-classification-summary article,.land-cover-series-summary article,.land-cover-aggregate-reading,.land-cover-transformation{border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff;padding:14px}
+.territorial-classification-grid article span,.territorial-classification-summary article span,.land-cover-series-summary span,.land-cover-transformation span,.land-cover-aggregate-reading span{display:block;font-size:.78rem;font-weight:700;letter-spacing:.02em;color:var(--muted,#59655e)}
+.territorial-classification-grid article strong,.territorial-classification-summary article strong,.land-cover-series-summary strong,.land-cover-transformation strong,.land-cover-aggregate-reading strong{display:block;margin-top:5px;font-size:1.35rem;line-height:1.15}
+.territorial-classification-grid article small,.territorial-classification-summary article small,.land-cover-series-summary small,.land-cover-transformation small,.land-cover-aggregate-reading small{display:block;margin-top:5px;color:var(--muted,#667169);line-height:1.35}
+.territorial-classification-list{margin-top:16px;border:1px solid var(--line,#d8ded8);border-radius:14px;overflow:hidden;background:#fff}
+.territorial-classification-head,.territorial-classification-list>a{display:grid;grid-template-columns:minmax(150px,1.25fr) .7fr .8fr minmax(170px,1.3fr);gap:10px;align-items:center;padding:11px 14px}
+.territorial-classification-head{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:var(--surface-soft,#f5f6f2)}
+.territorial-classification-list>a{color:inherit;text-decoration:none;border-top:1px solid var(--line,#e1e5df)}
+.territorial-classification-list>a:hover{background:var(--surface-soft,#f7f8f4)}
+.territorial-classification-list>a span:last-child small{display:block;margin-top:2px;color:var(--muted,#667169)}
+.land-cover-shell{display:grid;gap:18px}
+.land-cover-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px;border:1px solid var(--line,#d8ded8);border-radius:14px;background:#fff}
+.land-cover-controls label{display:grid;gap:6px;min-width:150px;flex:1 1 180px}
+.land-cover-controls label:first-child{flex:2 1 260px}
+.land-cover-controls label span{font-size:.76rem;font-weight:800;color:var(--muted,#59655e);text-transform:uppercase;letter-spacing:.04em}
+.land-cover-controls select{width:100%;min-height:42px;border:1px solid var(--line-strong,#bcc5bd);border-radius:10px;background:#fff;color:inherit;padding:8px 34px 8px 10px;font:inherit}
+.land-cover-chart-host{min-width:0}
+.land-cover-trend{display:grid;gap:8px}
+.land-cover-trend-head,.land-cover-trend-row{display:grid;grid-template-columns:64px minmax(120px,1fr) 110px;gap:10px;align-items:center}
+.land-cover-trend-head{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted,#667169)}
+.land-cover-trend-row strong{font-variant-numeric:tabular-nums}
+.land-cover-trend-row>b{text-align:right;font-variant-numeric:tabular-nums}
+.land-cover-trend-track{height:14px;border-radius:999px;background:var(--surface-soft,#eef1ec);overflow:hidden}
+.land-cover-trend-track i{display:block;height:100%;border-radius:inherit;background:currentColor;opacity:.72}
+.land-cover-series-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.land-cover-composition,.land-cover-transform-compare{border-top:1px solid var(--line,#d8ded8);padding-top:16px}
+.land-cover-subheading h4{margin:.2rem 0 .8rem}
+.land-cover-aggregate-reading{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.land-cover-aggregate-reading span{margin-right:auto}
+.land-cover-aggregate-reading strong{margin:0}
+.land-cover-transformation strong{font-size:1.7rem}
+.land-cover-caveat{margin-top:8px}
+@media (max-width:760px){
+  .territorial-classification-grid,.territorial-classification-summary,.land-cover-series-summary{grid-template-columns:1fr}
+  .territorial-classification-head{display:none}
+  .territorial-classification-list>a{grid-template-columns:1fr 1fr;padding:12px}
+  .territorial-classification-list>a strong{grid-column:1/-1}
+  .land-cover-controls{display:grid;grid-template-columns:1fr}
+  .land-cover-controls label,.land-cover-controls label:first-child{min-width:0;width:100%}
+}
