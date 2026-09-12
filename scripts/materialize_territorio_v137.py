@@ -107,10 +107,14 @@ def validate_snapshot(snapshot: dict) -> None:
             row = rows[str(year)]
             consumed_ha = nonnegative(row.get("consumedHa"), f"{town}.{year}.consumedHa")
             pct = nonnegative(row.get("consumedPct"), f"{town}.{year}.consumedPct")
-            sqm = nonnegative(row.get("sqmPerResident"), f"{town}.{year}.sqmPerResident")
             close(pct, consumed_ha / area_ha * 100, f"{town}.{year}.consumedPct", abs_tol=0.03)
-            if sqm <= 0:
-                raise RuntimeError(f"v1.37: m2/residente non valido: {town} {year}")
+            sqm_raw = row.get("sqmPerResident")
+            if year >= 2019:
+                sqm = nonnegative(sqm_raw, f"{town}.{year}.sqmPerResident")
+                if sqm <= 0:
+                    raise RuntimeError(f"v1.37: m2/residente non valido: {town} {year}")
+            elif sqm_raw is not None:
+                raise RuntimeError(f"v1.37: m2/residente inatteso prima del 2019: {town} {year}")
 
     changes = snapshot.get("landUseChange", {})
     change_years = changes.get("years")
@@ -199,6 +203,7 @@ def validate_snapshot(snapshot: dict) -> None:
 def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
     block = snapshot["landUse"]
     years = block["years"]
+    sqm_years = [year for year in years if year >= 2019]
     rows = []
     for town in TOWNS:
         item = block["municipalities"][town]
@@ -215,7 +220,7 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             "seriesByView": {
                 "percent": {"years": years, "values": [float(item["rows"][str(y)]["consumedPct"]) for y in years]},
                 "hectares": {"years": years, "values": [float(item["rows"][str(y)]["consumedHa"]) for y in years]},
-                "sqmPerResident": {"years": years, "values": [float(item["rows"][str(y)]["sqmPerResident"]) for y in years]},
+                "sqmPerResident": {"years": sqm_years, "values": [float(item["rows"][str(y)]["sqmPerResident"]) for y in sqm_years]},
             },
             "municipalAreaHa": float(item["municipalAreaHa"]),
             "series": None,
@@ -243,11 +248,11 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             "seriesByView": {
                 "percent": {"years": years, "values": [float(block["versilia"]["rows"][str(y)]["consumedPct"]) for y in years]},
                 "hectares": {"years": years, "values": [float(block["versilia"]["rows"][str(y)]["consumedHa"]) for y in years]},
-                "sqmPerResident": {"years": years, "values": [float(block["versilia"]["rows"][str(y)]["sqmPerResident"]) for y in years]},
+                "sqmPerResident": {"years": sqm_years, "values": [float(block["versilia"]["rows"][str(y)]["sqmPerResident"]) for y in sqm_years]},
             },
         },
         "normalizedAggregate": None,
-        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": "Sono riportate solo le annualita' ufficiali disponibili; nessuna interpolazione.", "coverage": "7/7"},
+        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": "Stock e quota seguono le annualita' ISPRA 2006, 2012 e 2015–2024. Il dato m²/residente è mostrato nel periodo 2019–2024, sovrapposto alla serie demografica canonica disponibile; nessuna interpolazione.", "coverage": "7/7"},
     }
 
 
