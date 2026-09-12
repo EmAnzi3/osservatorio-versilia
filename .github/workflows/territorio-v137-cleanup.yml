@@ -1,0 +1,47 @@
+name: Territorio v1.37 cleanup temporary diagnostics
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - .github/workflows/territorio-v137-cleanup.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - name: Remove temporary audit and repair helpers
+        run: |
+          git rm \
+            .github/workflows/territorio-v137-finalize.yml \
+            .github/workflows/territorio-v137-integrate.yml \
+            .github/workflows/territorio-v137-materializer-fix.yml \
+            .github/workflows/territorio-v137-runtime-fix.yml \
+            .github/workflows/territorio-v137-runtime-qa.yml \
+            .github/workflows/territorio-v137-runtime-surface.yml \
+            .github/workflows/territorio-v137-snapshot.yml \
+            .github/workflows/territorio-v137-source-inventory.yml \
+            .github/workflows/territorio-v137-source-structure.yml \
+            .github/workflows/territorio-v137-visual-qa.yml \
+            scripts/apply_territorio_v137_patches.py \
+            scripts/apply_territorio_v137_runtime_post_fragilita.py \
+            scripts/finalize_territorio_v137.py \
+            scripts/finalize_territorio_v137_current.py \
+            scripts/inspect_territorio_v137_sources.py \
+            scripts/inspect_territorio_v137_structure.py \
+            scripts/repair_territorio_v137_finalizer.py \
+            .github/workflows/territorio-v137-cleanup.yml
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore(territorio): remove temporary v1.37 diagnostics'
+          git push origin HEAD:draft/territorio-indicatori-v137
