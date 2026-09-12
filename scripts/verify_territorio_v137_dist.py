@@ -40,6 +40,14 @@ if acq.get("sha256") != "b011a590656c3a3ebc297fba80726a376aa843b6f164641cf6a4a99
     raise SystemExit("measurementBoundary: hash non canonico")
 
 road = metrics["roadNetworkProfile"]
+if road.get("meta", {}).get("theme") != "mobilita":
+    raise SystemExit("roadNetworkProfile: tema deve essere mobilita")
+mobility_sections = d.get("themes", {}).get("mobilita", {}).get("sections", [])
+environment_sections = d.get("themes", {}).get("ambiente", {}).get("sections", [])
+mobility_hits = [(s.get("key"), s.get("metrics", []).count("roadNetworkProfile")) for s in mobility_sections if "roadNetworkProfile" in s.get("metrics", [])]
+environment_hits = [s.get("key") for s in environment_sections if "roadNetworkProfile" in s.get("metrics", [])]
+if mobility_hits != [("veicoli", 1)] or environment_hits:
+    raise SystemExit(f"roadNetworkProfile: collocazione tematica inattesa mobilita={mobility_hits} ambiente={environment_hits}")
 if abs(float(road["aggregate"]["value"]) - 2029.655081) > 1e-6:
     raise SystemExit("roadNetworkProfile: aggregato km inatteso")
 road_expected = ["length", "density", "adminMunicipal", "adminProvincial", "adminRegional", "adminState", "adminPrivate", "paved", "unpaved", "pavementUnclassified"]
@@ -92,6 +100,15 @@ for row in land["rows"]:
     parts = {p["key"]: p for p in row["parts"]}
     if parts["hectares"].get("unit") != "hectares":
         raise SystemExit(f"landUse: unità ettari non canonica per {row['town']}")
+for metric_key, view_key in (("landUse", "percent"), ("landUseChange", "net")):
+    metric = metrics[metric_key]
+    reference_years = metric["rows"][0].get("seriesByView", {}).get(view_key, {}).get("years", [])
+    if len(reference_years) < 2:
+        raise SystemExit(f"{metric_key}: storico collettivo insufficiente")
+    for row in metric["rows"]:
+        series = row.get("seriesByView", {}).get(view_key, {})
+        if series.get("years") != reference_years or len(series.get("values", [])) != len(reference_years):
+            raise SystemExit(f"{metric_key}: storico non omogeneo per {row['town']}")
 change = metrics["landUseChange"]
 for row in change["rows"]:
     if any(p.get("unit") != "hectares" for p in row["parts"]):
@@ -110,6 +127,17 @@ for row in protected["rows"]:
     total = next(p for p in row["parts"] if p["key"] == "total")
     if float(total["ha"]) > float(row["municipalAreaHa"]) + 1e-5:
         raise SystemExit(f"aree protette: unione > area comunale per {row['town']}")
+bundle = Path("dist/assets/app-bundle.js").read_text(encoding="utf-8")
+ux_history = Path("dist/assets/ux-history.js").read_text(encoding="utf-8")
+ux_core = Path("dist/assets/ux-history-core.js").read_text(encoding="utf-8")
+for token in ("updateTerritoryProfileTownPosition", "Quota sul totale Versilia"):
+    if token not in bundle:
+        raise SystemExit(f"runtime territorio: token mancante nel bundle: {token}")
+for token in ("TERRITORY_PROFILE_HISTORY_TYPES", "row.seriesByView?.[selected]"):
+    if token not in ux_history:
+        raise SystemExit(f"storico collettivo territorio: token mancante: {token}")
+if "wireHistoryTooltips" not in ux_core:
+    raise SystemExit("tooltip territorio: helper canonico non esportato")
 print("canonical-dist-metrics", len(metrics))
 print("road-versilia-km", road["aggregate"]["value"])
 print("road-municipal-allocation", "ok")

@@ -383,7 +383,7 @@ def make_roads(snapshot: dict, ids: dict[str, dict]) -> dict:
         })
     versilia = block["versilia"]
     return {
-        "meta": {"key": "roadNetworkProfile", "theme": "ambiente", "label": "Grafo viario Iter.Net", "shortLabel": "Grafo viario", "description": "Lunghezza e densità degli elementi stradali Iter.Net, con dettaglio per classe amministrativa e pavimentazione.", "unit": "km", "year": "2022", "source": "Regione Toscana — Iter.Net 4.48", "polarity": "neutral", "compositeType": "roadNetworkProfile", "defaultView": "length", "selectorLabel": "Lettura", "searchTerms": ["strade", "grafo viario", "Iter.Net", "rete stradale", "densità stradale", "strade comunali", "strade provinciali", "strade regionali", "strade statali", "pavimentazione"]},
+        "meta": {"key": "roadNetworkProfile", "theme": "mobilita", "label": "Grafo viario Iter.Net", "shortLabel": "Grafo viario", "description": "Lunghezza e densità degli elementi stradali Iter.Net, con dettaglio per classe amministrativa e pavimentazione.", "unit": "km", "year": "2022", "source": "Regione Toscana — Iter.Net 4.48", "polarity": "neutral", "compositeType": "roadNetworkProfile", "defaultView": "length", "selectorLabel": "Lettura", "searchTerms": ["strade", "grafo viario", "Iter.Net", "rete stradale", "densità stradale", "strade comunali", "strade provinciali", "strade regionali", "strade statali", "pavimentazione"]},
         "sourceUrl": snapshot["sources"]["regioneIterNet"]["page"], "rows": rows,
         "aggregate": {"value": float(versilia["graphKm"]), "label": "Versilia · grafo viario Iter.Net", "note": "Lunghezze ricalcolate sul perimetro dissolto dei sette Comuni; i dettagli amministrativi e di pavimentazione derivano dagli attributi degli elementi Iter.Net.", "parts": parts(versilia)},
         "normalizedAggregate": None,
@@ -392,18 +392,26 @@ def make_roads(snapshot: dict, ids: dict[str, dict]) -> dict:
 
 
 def install_road_metric(site: dict) -> None:
-    environment = site.get("themes", {}).get("ambiente")
-    if not environment:
-        raise RuntimeError("v1.37: tema Ambiente assente.")
-    sections = environment.get("sections", [])
-    profile = next((s for s in sections if s.get("key") == "profilo-territoriale"), None)
-    if not profile:
-        raise RuntimeError("v1.37: sezione profilo-territoriale assente.")
-    metrics = [key for key in profile.get("metrics", []) if key != "roadNetworkProfile"]
-    anchor = metrics.index("statisticalCoastlineLength") + 1 if "statisticalCoastlineLength" in metrics else len(metrics)
-    metrics.insert(anchor, "roadNetworkProfile")
-    profile["metrics"] = metrics
-    environment["metrics"] = [key for section in sections for key in section.get("metrics", [])]
+    themes = site.get("themes", {})
+    mobility = themes.get("mobilita")
+    if not mobility:
+        raise RuntimeError("v1.37: tema Mobilità e infrastrutture assente.")
+
+    # Il grafo viario deve comparire una sola volta, esclusivamente sotto
+    # Mobilità e infrastrutture, nella sezione già dedicata alle infrastrutture.
+    for theme in themes.values():
+        for section in theme.get("sections", []):
+            section["metrics"] = [key for key in section.get("metrics", []) if key != "roadNetworkProfile"]
+        theme["metrics"] = [key for section in theme.get("sections", []) for key in section.get("metrics", [])]
+
+    sections = mobility.get("sections", [])
+    infrastructure = next((s for s in sections if s.get("key") == "veicoli"), None)
+    if not infrastructure:
+        raise RuntimeError("v1.37: sezione veicoli/infrastrutture assente nel tema Mobilità.")
+    metrics = list(infrastructure.get("metrics", []))
+    metrics.append("roadNetworkProfile")
+    infrastructure["metrics"] = metrics
+    mobility["metrics"] = [key for section in sections for key in section.get("metrics", [])]
 
 
 def patch_registry(registry: dict, snapshot: dict, metric_count: int, external_count: int) -> None:
@@ -482,7 +490,7 @@ def main() -> None:
     external = sum(m.get("dataStorage", {}).get("type") == "external-climate" for m in metrics.values())
     patch_registry(registry, snapshot, len(metrics), external)
     REGISTRY.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("v1.37.0 materializzata: 203 indicatori; 4 metriche territoriali migliorate + roadNetworkProfile.")
+    print("v1.37.0 materializzata: 203 indicatori; 4 metriche territoriali migliorate + roadNetworkProfile in Mobilità e infrastrutture.")
 
 
 if __name__ == "__main__":

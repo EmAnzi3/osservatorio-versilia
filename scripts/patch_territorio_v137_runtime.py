@@ -14,6 +14,8 @@ APP00 = ROOT / "assets" / "app-parts" / "00.txt"
 APP03 = ROOT / "assets" / "app-parts" / "03.txt"
 APP05 = ROOT / "assets" / "app-parts" / "05.txt"
 VISUAL_GRAMMAR = ROOT / "assets" / "visual-grammar.js"
+UX_HISTORY_CORE = ROOT / "assets" / "ux-history-core.js"
+UX_HISTORY = ROOT / "assets" / "ux-history.js"
 SENTINEL = "territoryProfileTypes"
 
 
@@ -72,10 +74,12 @@ def main() -> None:
     app03 = APP03.read_text(encoding="utf-8")
     app05 = APP05.read_text(encoding="utf-8")
     visual = VISUAL_GRAMMAR.read_text(encoding="utf-8")
+    ux_core = UX_HISTORY_CORE.read_text(encoding="utf-8")
+    ux_history = UX_HISTORY.read_text(encoding="utf-8")
 
     if SENTINEL in app03:
-        required = ("sqm_per_resident", "km_per_km2", "territoryProfileHistoryChart", "data-metric-key", "sqm-per-resident")
-        if not all(token in app00 + app03 + app05 + visual for token in required):
+        required = ("sqm_per_resident", "km_per_km2", "territoryProfileHistoryChart", "data-metric-key", "sqm-per-resident", "updateTerritoryProfileTownPosition", "TERRITORY_PROFILE_HISTORY_TYPES", "wireHistoryTooltips")
+        if not all(token in app00 + app03 + app05 + visual + ux_core + ux_history for token in required):
             raise RuntimeError("v1.37 runtime: patch parzialmente applicata")
         print("Renderer territorio v1.37 gia' applicato.")
         return
@@ -126,6 +130,42 @@ def main() -> None:
     app03 = patch_function(app03, "compositeSelectionAggregate", lambda b: insert_after_line(b, "function compositeSelectionAggregate(metric, choice)", "    if (isTerritoryProfileType(metric)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice)||metric.aggregate?.parts?.[0]||{}; const unit=part.unit||metric.meta.unit; return {label:`Versilia · ${part.label || metric.meta.label}`,value:part.value,unit,formatted:formatValue(part.value,unit)}; }\n", "aggregato selettore territorio"))
     app03 = patch_function(app03, "compositeSelectionRank", lambda b: insert_after_line(b, "const values = metric.rows.map(r => {", "      if (isTerritoryProfileType(metric)) { const part=(r.parts || []).find(item=>item.key===choice); return {code:r.code,value:part?.value===null||part?.value===undefined?NaN:Number(part.value)}; }\n", "rank territorio"))
 
+    position_helper = """
+  function updateTerritoryProfileTownPosition(metric,row,choice,position) {
+    if (!position || !isTerritoryProfileType(metric)) return;
+    const selected=compositeSelectionOptions(metric,row).find(option=>option.key===choice) || compositeSelectionOptions(metric,row)[0];
+    const agg=compositeSelectionAggregate(metric,choice);
+    const local=Number(selected?.value);
+    const total=Number(agg?.value);
+    const unit=selected?.unit || metric.meta.unit;
+    const overline=position.querySelector('.overline');
+    const deltaEl=position.querySelector('[data-composite-delta]');
+    const noteEl=position.querySelector('p');
+    const aggLabel=position.querySelector('[data-composite-aggregate-label]');
+    const aggValue=position.querySelector('[data-composite-aggregate-value]');
+    const additive=['hectares','km'].includes(unit);
+    if (additive) {
+      const share=Number.isFinite(local) && Number.isFinite(total) && total !== 0 ? local/total*100 : null;
+      if(overline) overline.textContent='Quota sul totale Versilia';
+      if(deltaEl) deltaEl.innerHTML=share === null
+        ? `n.d.<small>${total === 0 ? 'totale Versilia pari a zero' : 'quota non disponibile'}</small>`
+        : `${html(number1.format(share))}%<small>del totale Versilia</small>`;
+      if(noteEl) noteEl.textContent='Quota del valore comunale sul totale dei sette Comuni per la lettura selezionata.';
+    } else {
+      const diff=Number.isFinite(local) && Number.isFinite(total) ? local-total : null;
+      if(overline) overline.textContent='Scostamento dal valore Versilia';
+      if(deltaEl) deltaEl.innerHTML=diff === null
+        ? 'n.d.<small>confronto non disponibile</small>'
+        : `${html(formatValue(diff,unit))}<small>rispetto al valore Versilia</small>`;
+      if(noteEl) noteEl.textContent='Per quote, densità e valori pro capite è mostrata la differenza rispetto al valore aggregato Versilia; non è un giudizio di qualità.';
+    }
+    if(aggLabel) aggLabel.textContent=agg.label;
+    if(aggValue) aggValue.textContent=agg.formatted;
+  }
+
+"""
+    app03 = replace_once(app03, "  function updateAgricultureProfileTownPosition(metric,row,choice,position) {\n", position_helper + "  function updateAgricultureProfileTownPosition(metric,row,choice,position) {\n", "confronto comunale territorio")
+
     def compare_render(b: str) -> str:
         b = edit_line_once(b, "const selectableComposite =", lambda line: line.replace(".includes(compositeType);", ".includes(compositeType) || isTerritoryProfileType(compositeType);", 1), "selectable compare territorio")
         def note_edit(line: str) -> str:
@@ -163,6 +203,8 @@ def main() -> None:
         b = edit_line_once(b, "const selector = demographicBreakdown ?", lambda line: line.replace("${index===0?'selected':''}", "${option.key===(territoryProfile?defaultTerritoryChoice:options[0]?.key)?'selected':''}", 1), "selettore territorio comunale")
         b = edit_line_once(b, "townBenchmarkMarkup(metric, row, town)", lambda line: line.replace("metricKey.startsWith('slowMobility') || demographicBreakdown", "metricKey.startsWith('slowMobility') || territoryProfile || demographicBreakdown", 1), "benchmark territorio comunale")
         b = edit_line_once(b, "const initialChoice=options[0]?.key || 'summary';", lambda line: line.replace("const initialChoice=options[0]?.key || 'summary';", "const initialChoice=territoryProfile ? defaultTerritoryChoice : (options[0]?.key || 'summary');", 1), "choice territorio comunale")
+        b = insert_after_line(b, "updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);", "      updateTerritoryProfileTownPosition(metric,row,initialChoice,initialPosition);\n", "confronto iniziale territorio comunale")
+        b = insert_after_line(b, "updateExtractiveTownPosition(metric,row,choice,position);", "        updateTerritoryProfileTownPosition(metric,row,choice,position);\n", "confronto dinamico territorio comunale")
         return b
     app03 = patch_function(app03, "renderTownMetric", town_render)
 
@@ -249,11 +291,65 @@ def main() -> None:
         return insert_after_line(b, "const type = metric?.meta?.compositeType;", addition, "aggregato visual grammar territorio")
     visual = patch_function(visual, "compositeAggregateFor", visual_aggregate)
 
+    # Collega seriesByView al layer storico generale e riutilizza i tooltip
+    # canonici anche dopo i rerender del wrapper storico.
+    ux_core = replace_once(
+        ux_core,
+        "    wireViewShell,\n    escapeHtml\n",
+        "    wireViewShell,\n    wireHistoryTooltips,\n    formatValue,\n    escapeHtml\n",
+        "export tooltip/storico territorio",
+    )
+
+    ux_helper = """
+  const TERRITORY_PROFILE_HISTORY_TYPES = new Set(['soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile']);
+  function isTerritoryProfileHistoryMetric(metric) {
+    return TERRITORY_PROFILE_HISTORY_TYPES.has(metric?.meta?.compositeType);
+  }
+
+"""
+    ux_history = replace_once(ux_history, "  const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);\n", "  const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);\n" + ux_helper, "helper storico collettivo territorio")
+
+    def ux_composite_choice(b: str) -> str:
+        b = edit_line_once(b, "includes(metric?.meta?.compositeType)) return metric;", lambda line: line.replace("'sexBreakdown']", "'sexBreakdown','soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile']", 1), "abilita choice storico territorio")
+        territory_case = """    if (isTerritoryProfileHistoryMetric(metric)) {
+    const selected=(choice && choice !== 'summary') ? choice : (metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key);
+    const template=(metric.aggregate?.parts || metric.rows?.[0]?.parts || []).find(part=>part.key===selected) || metric.aggregate?.parts?.[0] || metric.rows?.[0]?.parts?.[0] || {};
+    const unit=template.unit || metric.meta.unit;
+    clone.meta.unit=unit;
+    clone.meta.label=template.label ? `${metric.meta.label} · ${template.label}` : metric.meta.label;
+    clone.rows=metric.rows.map(row=>{
+      const part=(row.parts || []).find(item=>item.key===selected) || row.parts?.[0] || {};
+      const value=part.value === null || part.value === undefined || part.value === '' ? undefined : Number(part.value);
+      return { ...row, value, formatted:Number.isFinite(value)?toolkit.formatValue(value,unit):'n.d.', series:row.seriesByView?.[selected] || null };
+    });
+    const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
+    clone.aggregate={ ...metric.aggregate, value:aggregatePart.value, label:`Versilia · ${aggregatePart.label || metric.meta.label}`, series:metric.aggregate?.seriesByView?.[selected] || null };
+    return clone;
+  }
+"""
+        return insert_after_line(b, "const clone = { ...metric", territory_case, "choice seriesByView territorio")
+    ux_history = patch_function(ux_history, "compositeChoiceMetric", ux_composite_choice)
+
+    ux_history = patch_function(ux_history, "refreshTownCompositeCurrent", lambda b: edit_line_once(b, "includes(metric?.meta?.compositeType)) return;", lambda line: line.replace("'sexBreakdown']", "'sexBreakdown','soilStockProfile','soilChangeProfile','protectedAreasProfile','hydroNetworkProfile','roadNetworkProfile']", 1), "refresh corrente territorio"))
+
+    def ux_enhance_compare(b: str) -> str:
+        return edit_line_once(b, "const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown'", lambda line: line.replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico compare territorio")
+    ux_history = patch_function(ux_history, "enhanceCompare", ux_enhance_compare)
+
+    def ux_enhance_town(b: str) -> str:
+        b = edit_line_once(b, "const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown'", lambda line: line.replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico town territorio")
+        return insert_after_line(b, "wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);", "    panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\\n", "tooltip fixed detail territorio")
+    ux_history = patch_function(ux_history, "enhanceTown", ux_enhance_town)
+
+    ux_history = replace_once(ux_history, "      if (metric.meta?.compositeType === 'sexBreakdown') {\n", "      if (metric.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(metric)) {\n", "aggiorna storico town al cambio lettura territorio")
+
     APP00.write_text(app00, encoding="utf-8")
     APP03.write_text(app03, encoding="utf-8")
     APP05.write_text(app05, encoding="utf-8")
     VISUAL_GRAMMAR.write_text(visual, encoding="utf-8")
-    print("Renderer territorio v1.37 applicato ai renderer canonici post-v1.36.")
+    UX_HISTORY_CORE.write_text(ux_core, encoding="utf-8")
+    UX_HISTORY.write_text(ux_history, encoding="utf-8")
+    print("Renderer territorio v1.37 applicato: quote comunali, storico collettivo e tooltip canonici.")
 
 
 if __name__ == "__main__":
