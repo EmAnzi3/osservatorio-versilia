@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import subprocess
 from pathlib import Path
 
 p = Path("dist/data/site-data.json")
@@ -138,6 +139,15 @@ for token in ("TERRITORY_PROFILE_HISTORY_TYPES", "row.seriesByView?.[selected]")
         raise SystemExit(f"storico collettivo territorio: token mancante: {token}")
 if "wireHistoryTooltips" not in ux_core:
     raise SystemExit("tooltip territorio: helper canonico non esportato")
+for js_path in (
+    Path("dist/assets/app-bundle.js"),
+    Path("dist/assets/ux-history-core.js"),
+    Path("dist/assets/ux-history.js"),
+):
+    result = subprocess.run(["node", "--check", str(js_path)], capture_output=True, text=True)
+    if result.returncode != 0:
+        raise SystemExit(f"JavaScript non valido: {js_path}\n{result.stderr}")
+print("javascript-syntax", "ok")
 print("canonical-dist-metrics", len(metrics))
 print("road-versilia-km", road["aggregate"]["value"])
 print("road-municipal-allocation", "ok")

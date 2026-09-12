@@ -338,7 +338,7 @@ def main() -> None:
 
     def ux_enhance_town(b: str) -> str:
         b = edit_line_once(b, "const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown'", lambda line: line.replace("selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null", "(selected.metric?.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(selected.metric)) ? currentCompositeChoice() : null", 1), "choice storico town territorio")
-        return insert_after_line(b, "wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);", "    panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\\n", "tooltip fixed detail territorio")
+        return insert_after_line(b, "wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);", "    panel.querySelectorAll('.composite-fixed-detail .trend-chart').forEach(chart=>toolkit.wireHistoryTooltips?.(chart));\n", "tooltip fixed detail territorio")
     ux_history = patch_function(ux_history, "enhanceTown", ux_enhance_town)
 
     ux_history = replace_once(ux_history, "      if (metric.meta?.compositeType === 'sexBreakdown') {\n", "      if (metric.meta?.compositeType === 'sexBreakdown' || isTerritoryProfileHistoryMetric(metric)) {\n", "aggiorna storico town al cambio lettura territorio")
