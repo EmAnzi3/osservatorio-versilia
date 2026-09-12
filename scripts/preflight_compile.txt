@@ -93,3 +93,6 @@ scripts/test_release_v170_compat_impl.py
 scripts/materialize_fragilita_release.py
 scripts/test_fragilita_release.py
 scripts/patch_fragilita_runtime.py
+scripts/territorio_ucs_config.py
+scripts/materialize_territorio_ucs_release.py
+scripts/patch_territorio_ucs_runtime.py
