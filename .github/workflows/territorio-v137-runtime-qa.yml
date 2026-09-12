@@ -16,7 +16,7 @@ permissions:
 jobs:
   runtime-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,13 +24,17 @@ jobs:
           python-version: '3.12'
       - name: Compile v1.37 Python
         run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py
-      - name: Apply canonical fragilita runtime patch
+      - name: Replay canonical territory chain through v1.36
         run: |
           python - <<'PY'
-          import sys
+          import runpy, sys
           sys.path.insert(0, 'scripts')
           import build_static_brand as b
-          b._run_path_with_fragilita_r3_fix(str(b.FRAGILITA_RUNTIME_PATCH), run_name='__main__')
+          runpy.run_path = b._run_path_with_fragilita_r3_fix
+          try:
+              b._ORIGINAL_RUN_PATH(str(b.FRAGILITA_MATERIALIZER), run_name='__main__')
+          finally:
+              runpy.run_path = b._ORIGINAL_RUN_PATH
           PY
       - name: Apply v1.37 runtime patch
         run: python scripts/patch_territorio_v137_runtime.py
