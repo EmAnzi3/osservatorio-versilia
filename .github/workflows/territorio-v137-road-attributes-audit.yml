@@ -1,4 +1,4 @@
-name: Territorio v1.37 Iter.Net boundary diagnostic
+name: Territorio v1.37 final QA
 
 on:
   push:
@@ -12,145 +12,180 @@ permissions:
   contents: read
 
 jobs:
-  audit:
+  final-qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install GIS stack
-        run: python -m pip install geopandas pyogrio shapely
-      - name: Fingerprint Istat municipal boundaries against Iter.Net
+      - name: Install canonical CI and browser stack
         run: |
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Canonical build and numerical contract
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/verify_territorio_v137_dist.py
+      - name: Browser QA and screenshots
+        run: |
+          mkdir -p reports/territorio-v137-road-enrichment
+          python -m http.server 8765 --directory dist >/tmp/v137-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          python scripts/territorio_v137_road_enrichment_qa.py
           python - <<'PY'
           from pathlib import Path
-          import json, shutil, urllib.request, zipfile
-          import geopandas as gpd
-          from shapely.ops import unary_union
+          import json
+          import re
+          from playwright.sync_api import sync_playwright
 
-          WORK = Path('/tmp/territorio-v137-boundary-fingerprint')
-          WORK.mkdir(parents=True, exist_ok=True)
-          UA = {'User-Agent': 'OsservatorioVersilia-v137-boundary-fingerprint/1.0'}
-          TOWNS = {
-              'Camaiore': '046005', 'Forte dei Marmi': '046013',
-              'Massarosa': '046018', 'Pietrasanta': '046024',
-              'Seravezza': '046028', 'Stazzema': '046030', 'Viareggio': '046033'
-          }
-          OLD = {
-              'Camaiore': 443.220097, 'Forte dei Marmi': 84.759517,
-              'Massarosa': 341.835576, 'Pietrasanta': 304.546621,
-              'Seravezza': 184.836205, 'Stazzema': 265.811675,
-              'Viareggio': 404.645390
-          }
-          CURRENT = {
-              'Camaiore': 480.955860, 'Forte dei Marmi': 139.038100,
-              'Massarosa': 313.923233, 'Pietrasanta': 411.130550,
-              'Seravezza': 153.945273, 'Stazzema': 120.352216,
-              'Viareggio': 410.309849
-          }
-          SOURCES = {}
-          for year in (2026, 2025, 2024, 2023):
-              SOURCES[f'g{year}'] = f'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/{year}/Limiti0101{year}_g.zip'
-              SOURCES[f'n{year}'] = f'https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/{year}/Limiti0101{year}.zip'
-          ROADS_URL = 'https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip'
+          BASE = 'http://127.0.0.1:8765'
+          OUT = Path('reports/territorio-v137-road-enrichment')
+          results = []
 
-          def download(url, dest):
-              req = urllib.request.Request(url, headers=UA)
-              try:
-                  with urllib.request.urlopen(req, timeout=900) as response, dest.open('wb') as fh:
-                      shutil.copyfileobj(response, fh, length=1024 * 1024)
-                  return True, dest.stat().st_size
-              except Exception as exc:
-                  return False, repr(exc)
+          def attach_errors(page):
+              errors = []
+              page.on('console', lambda m: errors.append(f'console:{m.type}:{m.text}') if m.type == 'error' else None)
+              page.on('pageerror', lambda exc: errors.append(f'pageerror:{exc}'))
+              return errors
 
-          def extract(src, dst):
-              dst.mkdir(parents=True, exist_ok=True)
-              with zipfile.ZipFile(src) as z: z.extractall(dst)
+          def assert_no_bad_text(page, label):
+              text = page.locator('body').inner_text()
+              if 'NaN' in text or 'undefined' in text.lower():
+                  raise RuntimeError(f'{label}: NaN/undefined visibile')
 
-          def norm(v):
-              if v is None: return ''
-              s = str(v).strip()
-              if s.endswith('.0'): s = s[:-2]
-              d = ''.join(c for c in s if c.isdigit())
-              return d.zfill(6) if d else ''
+          def assert_no_horizontal_overflow(page, label):
+              overflow = page.evaluate('() => ({sw: document.documentElement.scrollWidth, iw: window.innerWidth})')
+              if overflow['sw'] > overflow['iw'] + 2:
+                  raise RuntimeError(f"{label}: overflow orizzontale {overflow['sw']} > {overflow['iw']}")
 
-          def clean(g):
-              if g is None or g.is_empty: return g
-              if not g.is_valid:
-                  try: g = g.make_valid()
-                  except AttributeError: g = g.buffer(0)
-              return g
+          def assert_lollipop(page, label):
+              comp = page.locator('.indicator-current .comparison-bars').first
+              comp.wait_for(state='visible')
+              page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)", arg=comp.element_handle())
+              if comp.locator('.comparison-dot').count() < 1 or comp.locator('.comparison-stem').count() < 1:
+                  raise RuntimeError(f'{label}: lollipop/dotplot incompleto')
+              return comp.get_attribute('data-viz')
 
-          def clip_km(frame, poly):
-              minx, miny, maxx, maxy = poly.bounds
-              sub = frame.cx[minx:maxx, miny:maxy]
-              return float(sub.geometry.intersection(poly).length.sum() / 1000.0) if not sub.empty else 0.0
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
 
-          roads_zip = WORK / 'roads.zip'
-          ok, detail = download(ROADS_URL, roads_zip)
-          if not ok: raise RuntimeError(detail)
-          outer = WORK / 'roads_outer'; extract(roads_zip, outer)
-          inner_zip = next(iter(outer.rglob('*.zip')))
-          inner = WORK / 'roads_inner'; extract(inner_zip, inner)
-          shp = next(p for p in inner.rglob('*.shp') if p.name.lower() == 'elem_strad.shp')
-          roads = gpd.read_file(shp, engine='pyogrio', columns=[]).to_crs(3003)
-          if len(roads) != 405341: raise RuntimeError(f'Unexpected Iter.Net count {len(roads)}')
+              # Preserve the already-approved visual grammar and true line histories.
+              slugs = ['suolo-consumato', 'consumo-di-suolo-annuale', 'territorio-in-aree-naturali-protette', 'reticolo-idrografico', 'grafo-viario-iter-net']
+              historical = {'suolo-consumato', 'consumo-di-suolo-annuale'}
+              for mode, viewport in [('desktop', {'width': 1440, 'height': 1100}), ('mobile', {'width': 390, 'height': 844})]:
+                  context = browser.new_context(viewport=viewport)
+                  for slug in slugs:
+                      page = context.new_page()
+                      errors = attach_errors(page)
+                      response = page.goto(f'{BASE}/indicatori/{slug}/', wait_until='networkidle')
+                      if not response or response.status != 200:
+                          raise RuntimeError(f'{slug}/{mode}: HTTP {response.status if response else None}')
+                      viz = assert_lollipop(page, f'{slug}/{mode}')
+                      if slug in historical:
+                          history = page.locator('[data-financial-indicator-history]').first
+                          if not history.count():
+                              raise RuntimeError(f'{slug}/{mode}: storico assente')
+                          if history.locator('.territory-history-table').count():
+                              raise RuntimeError(f'{slug}/{mode}: tabella storica residua')
+                          history.locator('.trend-chart').first.wait_for(state='visible')
+                          select = history.locator('select[data-territory-history-town]').first
+                          opts = select.locator('option').all_text_contents()
+                          if len(opts) != 8 or opts[0].strip() != 'Versilia':
+                              raise RuntimeError(f'{slug}/{mode}: selettore storico errato {opts}')
+                          values = select.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
+                          select.select_option(values[1])
+                          page.wait_for_timeout(250)
+                          history.locator('.trend-chart').first.wait_for(state='visible')
+                      assert_no_bad_text(page, f'{slug}/{mode}')
+                      if errors:
+                          raise RuntimeError(f'{slug}/{mode}: errori browser {errors}')
+                      results.append({'page': slug, 'mode': mode, 'viz': viz, 'historyLine': slug in historical})
+                      page.close()
+                  context.close()
 
-          result = {'iterNetFeatures': len(roads), 'sources': {}}
-          for label, url in SOURCES.items():
-              z = WORK / f'{label}.zip'
-              ok, detail = download(url, z)
-              if not ok:
-                  result['sources'][label] = {'url': url, 'downloadError': detail}
-                  continue
-              folder = WORK / label; extract(z, folder)
-              candidates = list(folder.rglob('Com*.shp'))
-              if not candidates:
-                  result['sources'][label] = {'url': url, 'error': 'No Com*.shp'}
-                  continue
-              municipal = gpd.read_file(candidates[0], engine='pyogrio')
-              code_field = next((c for c in ('PRO_COM_T','PRO_COM','COD_PROCOM') if c in municipal.columns), None)
-              if not code_field:
-                  result['sources'][label] = {'url': url, 'error': f'No code field: {list(municipal.columns)}'}
-                  continue
-              municipal = municipal.copy(); municipal['_code'] = municipal[code_field].map(norm)
-              municipal = municipal[municipal['_code'].isin(TOWNS.values())].to_crs(3003)
-              geoms = {
-                  town: clean(unary_union(list(municipal.loc[municipal['_code'] == code, 'geometry'])))
-                  for town, code in TOWNS.items()
-              }
-              if any(g is None or g.is_empty for g in geoms.values()):
-                  result['sources'][label] = {'url': url, 'error': 'Missing municipality geometry'}
-                  continue
-              union = clean(unary_union(list(geoms.values())))
-              vector = {town: clip_km(roads, geom) for town, geom in geoms.items()}
-              result['sources'][label] = {
-                  'url': url,
-                  'file': candidates[0].name,
-                  'areaKm2': union.area / 1e6,
-                  'graphKm': clip_km(roads, union),
-                  'municipalGraphKm': vector,
-                  'sumMunicipalKm': sum(vector.values()),
-                  'distanceOldSumAbsKm': sum(abs(vector[t]-OLD[t]) for t in TOWNS),
-                  'distanceOldMaxAbsKm': max(abs(vector[t]-OLD[t]) for t in TOWNS),
-                  'distanceCurrentSumAbsKm': sum(abs(vector[t]-CURRENT[t]) for t in TOWNS),
-                  'distanceCurrentMaxAbsKm': max(abs(vector[t]-CURRENT[t]) for t in TOWNS),
-              }
+              # Road page: all ten readings must remain usable and numeric in both viewports.
+              expected_labels = [
+                  'Lunghezza del grafo', 'Densità del grafo', 'Strade comunali',
+                  'Strade provinciali', 'Strade regionali', 'Strade statali',
+                  'Strade private', 'Elementi pavimentati', 'Elementi non pavimentati',
+                  'Pavimentazione non classificata',
+              ]
+              for mode, viewport in [('desktop', {'width': 1440, 'height': 1100}), ('mobile', {'width': 390, 'height': 844})]:
+                  page = browser.new_page(viewport=viewport)
+                  errors = attach_errors(page)
+                  response = page.goto(f'{BASE}/indicatori/grafo-viario-iter-net/', wait_until='networkidle')
+                  if not response or response.status != 200:
+                      raise RuntimeError(f'road/{mode}: HTTP {response.status if response else None}')
+                  select = page.locator('.indicator-current select[data-composite-component]').first
+                  select.wait_for(state='visible')
+                  labels = [x.strip() for x in select.locator('option').all_text_contents()]
+                  if labels != expected_labels:
+                      raise RuntimeError(f'road/{mode}: 10 letture inattese {labels}')
+                  box = select.bounding_box()
+                  if not box or box['x'] < 0 or box['x'] + box['width'] > viewport['width'] + 1:
+                      raise RuntimeError(f'road/{mode}: selettore fuori viewport {box}')
+                  values = select.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
+                  reading_results = []
+                  for value in values:
+                      select.select_option(value)
+                      page.wait_for_timeout(220)
+                      comparison = page.locator('.indicator-current .comparison-bars').first
+                      viz = assert_lollipop(page, f'road/{mode}/{value}')
+                      rows = comparison.locator('.bar-row[aria-label]')
+                      if rows.count() != 7:
+                          raise RuntimeError(f'road/{mode}/{value}: righe {rows.count()}/7')
+                      aria = [x or '' for x in rows.evaluate_all('(els)=>els.map(e=>e.getAttribute("aria-label"))')]
+                      if not all(re.search(r'\d', label) for label in aria):
+                          raise RuntimeError(f'road/{mode}/{value}: valori non numerici {aria}')
+                      reading_results.append({'value': value, 'viz': viz, 'rows': rows.count()})
+                  assert_no_bad_text(page, f'road/{mode}')
+                  assert_no_horizontal_overflow(page, f'road/{mode}')
+                  if errors:
+                      raise RuntimeError(f'road/{mode}: errori browser {errors}')
+                  page.screenshot(path=str(OUT / f'grafo-viario-iter-net-final-{mode}.png'), full_page=True)
+                  results.append({'page': 'grafo-viario-iter-net-final', 'mode': mode, 'readings': reading_results})
+                  page.close()
 
-          def rounded(x):
-              if isinstance(x, dict): return {k: rounded(v) for k,v in x.items()}
-              if isinstance(x, list): return [rounded(v) for v in x]
-              if isinstance(x, float): return round(x, 6)
-              return x
-          result = rounded(result)
-          print(json.dumps(result, ensure_ascii=False, indent=2))
-          Path('reports').mkdir(exist_ok=True)
-          Path('reports/territorio-v137-boundary-fingerprint.json').write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+              # Municipal details: Massarosa plus a second municipality, with mobile Massarosa too.
+              for town_slug, town_name, viewport, suffix in [
+                  ('massarosa', 'Massarosa', {'width': 1440, 'height': 1200}, 'desktop'),
+                  ('camaiore', 'Camaiore', {'width': 1440, 'height': 1200}, 'desktop'),
+                  ('massarosa', 'Massarosa', {'width': 390, 'height': 844}, 'mobile'),
+              ]:
+                  page = browser.new_page(viewport=viewport)
+                  errors = attach_errors(page)
+                  response = page.goto(f'{BASE}/comuni/{town_slug}/?tema=ambiente&indicatore=roadNetworkProfile', wait_until='networkidle')
+                  if not response or response.status != 200:
+                      raise RuntimeError(f'{town_name}/{suffix}: HTTP {response.status if response else None}')
+                  panel = page.locator('#town-topic').first
+                  panel.wait_for(state='visible')
+                  body = panel.inner_text()
+                  required = ['Grafo viario', 'Strade comunali', 'Strade provinciali', 'Strade regionali', 'Strade statali', 'Strade private', 'Elementi pavimentati', 'Elementi non pavimentati']
+                  missing = [label for label in required if label not in body]
+                  if missing or not re.search(r'\d', body):
+                      raise RuntimeError(f'{town_name}/{suffix}: dettaglio incompleto {missing}')
+                  assert_no_bad_text(page, f'{town_name}/{suffix}')
+                  if suffix == 'mobile':
+                      assert_no_horizontal_overflow(page, f'{town_name}/{suffix}')
+                  if errors:
+                      raise RuntimeError(f'{town_name}/{suffix}: errori browser {errors}')
+                  page.screenshot(path=str(OUT / f'{town_slug}-grafo-viario-final-{suffix}.png'), full_page=True)
+                  results.append({'page': town_slug, 'mode': suffix, 'roadDetail': 'ok'})
+                  page.close()
+
+              browser.close()
+
+          (OUT / 'final-qa.json').write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(results, ensure_ascii=False, indent=2))
           PY
-      - uses: actions/upload-artifact@v4
+      - name: Upload final QA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: territorio-v137-boundary-fingerprint
-          path: reports/territorio-v137-boundary-fingerprint.json
+          name: territorio-v137-final-qa
+          path: reports/territorio-v137-road-enrichment/
+          if-no-files-found: error
           retention-days: 7
