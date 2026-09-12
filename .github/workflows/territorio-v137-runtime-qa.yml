@@ -1,6 +1,6 @@
 name: Territorio v1.37 canonical QA
 # Gate canonico v1.37: build completa + contratto dist.
-# Rerun con cardinalita formatter verificata: hectares 2, km 1.
+# Rerun dopo ancoraggi semantici del pannello comunale.
 
 on:
   push:
