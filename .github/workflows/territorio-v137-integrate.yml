@@ -1,0 +1,199 @@
+name: Territorio v1.37 integrate canonical pipeline
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - .github/workflows/territorio-v137-integrate.yml
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch materializer and canonical entry point
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def once(text, old, new, label):
+              n=text.count(old)
+              if n != 1:
+                  raise SystemExit(f'{label}: attesa 1 occorrenza, trovate {n}')
+              return text.replace(old,new,1)
+
+          p=Path('scripts/materialize_territorio_v137.py')
+          s=p.read_text(encoding='utf-8')
+          s=once(s,
+          '''            sqm = nonnegative(row.get("sqmPerResident"), f"{town}.{year}.sqmPerResident")
+            close(pct, consumed_ha / area_ha * 100, f"{town}.{year}.consumedPct", abs_tol=0.03)
+            if sqm <= 0:
+                raise RuntimeError(f"v1.37: m2/residente non valido: {town} {year}")
+''',
+          '''            close(pct, consumed_ha / area_ha * 100, f"{town}.{year}.consumedPct", abs_tol=0.03)
+            sqm_raw = row.get("sqmPerResident")
+            if year >= 2019:
+                sqm = nonnegative(sqm_raw, f"{town}.{year}.sqmPerResident")
+                if sqm <= 0:
+                    raise RuntimeError(f"v1.37: m2/residente non valido: {town} {year}")
+            elif sqm_raw is not None:
+                raise RuntimeError(f"v1.37: m2/residente inatteso prima del 2019: {town} {year}")
+''','validator sqm')
+          s=once(s,
+          '''    years = block["years"]
+    rows = []
+''',
+          '''    years = block["years"]
+    sqm_years = [year for year in years if year >= 2019]
+    rows = []
+''','sqm years')
+          s=once(s,
+          '''                "sqmPerResident": {"years": years, "values": [float(item["rows"][str(y)]["sqmPerResident"]) for y in years]},
+''',
+          '''                "sqmPerResident": {"years": sqm_years, "values": [float(item["rows"][str(y)]["sqmPerResident"]) for y in sqm_years]},
+''','town sqm series')
+          s=once(s,
+          '''                "sqmPerResident": {"years": years, "values": [float(block["versilia"]["rows"][str(y)]["sqmPerResident"]) for y in years]},
+''',
+          '''                "sqmPerResident": {"years": sqm_years, "values": [float(block["versilia"]["rows"][str(y)]["sqmPerResident"]) for y in sqm_years]},
+''','versilia sqm series')
+          s=once(s,
+          '''        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": "Sono riportate solo le annualita' ufficiali disponibili; nessuna interpolazione.", "coverage": "7/7"},
+''',
+          '''        "method": {"type": "Dato ufficiale ISPRA", "formula": "Stock: ha; quota: ha consumati / ha territoriali × 100; pro capite: m² consumati / residenti.", "caveat": "Stock e quota seguono le annualita' ISPRA 2006, 2012 e 2015–2024. Il dato m²/residente è mostrato nel periodo 2019–2024, sovrapposto alla serie demografica canonica disponibile; nessuna interpolazione.", "coverage": "7/7"},
+''','method caveat')
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('scripts/build_static_brand.py')
+          s=p.read_text(encoding='utf-8')
+          s=once(s,
+          '''TERRITORIO_UCS_REFINER = ROOT / "scripts" / "refine_territorio_ucs_release_v2.py"
+''',
+          '''TERRITORIO_UCS_REFINER = ROOT / "scripts" / "refine_territorio_ucs_release_v2.py"
+TERRITORIO_V137_MATERIALIZER = ROOT / "scripts" / "materialize_territorio_v137.py"
+TERRITORIO_V137_RUNTIME_PATCH = ROOT / "scripts" / "patch_territorio_v137_runtime.py"
+''','canonical constants')
+          s=once(s,
+          '''        _ORIGINAL_RUN_PATH(str(TERRITORIO_UCS_REFINER), run_name="__main__")
+        return result
+''',
+          '''        _ORIGINAL_RUN_PATH(str(TERRITORIO_UCS_REFINER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_MATERIALIZER), run_name="__main__")
+        return result
+''','canonical materializer hook')
+          s=once(s,
+          '''    exec(compile(source, str(path), "exec"), globals_dict)
+    return globals_dict
+''',
+          '''    exec(compile(source, str(path), "exec"), globals_dict)
+    _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_RUNTIME_PATCH), run_name="__main__")
+    return globals_dict
+''','canonical runtime hook')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Replace runtime QA with canonical build gate
+        run: |
+          cat > .github/workflows/territorio-v137-runtime-qa.yml <<'YAML'
+          name: Territorio v1.37 canonical QA
+
+          on:
+            push:
+              branches:
+                - draft/territorio-indicatori-v137
+              paths:
+                - scripts/build_static_brand.py
+                - scripts/materialize_territorio_v137.py
+                - scripts/patch_territorio_v137_runtime.py
+                - data/source-snapshots/territorio-v137-official.json
+                - .github/workflows/territorio-v137-runtime-qa.yml
+            workflow_dispatch:
+
+          permissions:
+            contents: read
+
+          jobs:
+            canonical-build:
+              runs-on: ubuntu-latest
+              timeout-minutes: 25
+              steps:
+                - uses: actions/checkout@v4
+                - uses: actions/setup-python@v5
+                  with:
+                    python-version: '3.12'
+                - name: Compile v1.37 Python
+                  run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py
+                - name: Run canonical static build
+                  run: python scripts/build_static_brand.py
+                - name: Assert canonical dist contract
+                  run: |
+                    python - <<'PY'
+                    import json
+                    from pathlib import Path
+                    p=Path('dist/data/site-data.json')
+                    if not p.exists():
+                        raise SystemExit('dist/data/site-data.json mancante')
+                    d=json.loads(p.read_text(encoding='utf-8'))
+                    metrics=d.get('metrics',{})
+                    if len(metrics) != 203:
+                        raise SystemExit(f'catalogo finale {len(metrics)}, attesi 203')
+                    expected={'landUse','landUseChange','protectedNaturalAreas','managedReticulumLength','roadNetworkProfile'}
+                    if not expected.issubset(metrics):
+                        raise SystemExit(f'metriche v1.37 mancanti: {sorted(expected-set(metrics))}')
+                    towns=['Camaiore','Forte dei Marmi','Massarosa','Pietrasanta','Seravezza','Stazzema','Viareggio']
+                    for key in expected:
+                        rows=metrics[key].get('rows',[])
+                        if [r.get('town') for r in rows] != towns:
+                            raise SystemExit(f'{key}: copertura/ordine non 7/7')
+                    if d.get('version') != 'v1.37.0':
+                        raise SystemExit(f"versione finale inattesa: {d.get('version')}")
+                    road=metrics['roadNetworkProfile']
+                    if road['meta'].get('compositeType') != 'roadNetworkProfile':
+                        raise SystemExit('roadNetworkProfile: compositeType inatteso')
+                    if abs(float(road['aggregate']['value'])-2029.655081) > 1e-6:
+                        raise SystemExit('roadNetworkProfile: aggregato km inatteso')
+                    hydro=metrics['managedReticulumLength']
+                    parts={x['key']:x for x in hydro['aggregate']['parts']}
+                    if abs(float(parts['managed']['value'])-745.041751) > 1e-6:
+                        raise SystemExit('reticolo gestito: regressione aggregato')
+                    land=metrics['landUse']
+                    cam=next(r for r in land['rows'] if r['town']=='Camaiore')
+                    sq=cam['seriesByView']['sqmPerResident']
+                    if sq['years'] != [2019,2020,2021,2022,2023,2024]:
+                        raise SystemExit(f"landUse: anni pro capite inattesi {sq['years']}")
+                    print('canonical-dist-metrics',len(metrics))
+                    print('road-versilia-km',road['aggregate']['value'])
+                    print('reticulum-managed-versilia-km',parts['managed']['value'])
+                    PY
+                - name: Assert final runtime tokens
+                  run: |
+                    grep -R -q "territoryProfileTypes" dist/assets
+                    grep -R -q "sqm_per_resident" dist/assets
+                    grep -R -q "km_per_km2" dist/assets
+          YAML
+      - name: Remove superseded diagnostics
+        run: |
+          rm -f .github/workflows/territorio-v137-source-inventory.yml
+          rm -f .github/workflows/territorio-v137-source-structure.yml
+          rm -f scripts/inspect_territorio_v137_sources.py
+          rm -f scripts/inspect_territorio_v137_structure.py
+          rm -f .github/workflows/territorio-v137-integrate.yml
+      - name: Compile patched Python
+        run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py
+      - name: Commit canonical integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat(territorio): integrate v1.37 into canonical build'
+          git push origin HEAD:draft/territorio-indicatori-v137
