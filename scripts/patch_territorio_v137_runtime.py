@@ -189,14 +189,14 @@ def main() -> None:
     )
     app03 = replace_once(
         app03,
-        "    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : financialProfile ? `Indicatore ${initialFinancialReading.code}` : hydroRisk ? 'Matrice ufficiale ISPRA' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');\n",
-        "    const panelOverline = drinkingQuality ? 'Dati analitici GAIA' : remediation ? 'Dettaglio dei procedimenti' : extractiveProductionHistory ? 'Andamento storico' : financialProfile ? `Indicatore ${initialFinancialReading.code}` : territoryProfile ? 'Letture territoriali' : hydroRisk ? 'Matrice ufficiale ISPRA' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo' : sexBreakdown ? 'Totale, Maschi e Femmine' : securityMeasures ? 'Letture del fenomeno' : omi ? 'Mercato immobiliare OMI' : stock ? 'Cittadinanza dei residenti' : 'Distribuzione completa') : (historical ? 'Andamento storico' : 'Confronto territoriale');\n",
+        ": hydroRisk ? 'Matrice ufficiale ISPRA' : composite ?",
+        ": territoryProfile ? 'Letture territoriali' : hydroRisk ? 'Matrice ufficiale ISPRA' : composite ?",
         "overline territorio comunale",
     )
     app03 = replace_once(
         app03,
-        "    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : financialProfile ? initialFinancialReading.label : hydroRisk ? `Territorio e residenti · ${html(metric.meta.year)}` : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');\n",
-        "    const panelTitle = drinkingQuality ? 'Valori per località e parametro' : remediation ? 'Iter attivi e chiusi' : extractiveProductionHistory ? 'Evoluzione della produzione estrattiva' : financialProfile ? initialFinancialReading.label : territoryProfile ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : hydroRisk ? `Territorio e residenti · ${html(metric.meta.year)}` : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label) : sexBreakdown ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : securityMeasures ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : omi ? `Quotazioni e zone OMI · ${metric.meta.year}` : stock ? `Residenti stranieri · ${metric.meta.year}` : `Composizione · ${metric.meta.year}`) : (historical ? 'Evoluzione nel tempo' : 'Confronto tra i comuni');\n",
+        ": hydroRisk ? `Territorio e residenti · ${html(metric.meta.year)}` : composite ?",
+        ": territoryProfile ? `${html(metric.meta.label)} · ${html(metric.meta.year)}` : hydroRisk ? `Territorio e residenti · ${html(metric.meta.year)}` : composite ?",
         "titolo pannello territorio comunale",
     )
     app03 = replace_once(
