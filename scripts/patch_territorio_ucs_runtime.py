@@ -106,7 +106,8 @@ def patch_renderer() -> None:
         "    const remediation = metric.meta.compositeType === 'remediationProceedings';",
         """    const remediation = metric.meta.compositeType === 'remediationProceedings';
     const territorialClassification = metric.meta.compositeType === 'territorialClassification';
-    const landCoverProfile = metric.meta.compositeType === 'landCoverProfile';""",
+    const landCoverProfile = metric.meta.compositeType === 'landCoverProfile';
+    const coastlineShareMetric = metric.meta.key === 'statisticalCoastlineLength';""",
         "flag town custom",
     )
     source = replace_once(
@@ -134,9 +135,11 @@ def patch_renderer() -> None:
         """      : (drinkingQuality
         ? ''""",
         """      : territorialClassification
-        ? `<aside class="versilia-position classification-overview"><span class="overline">Versilia · conteggi</span><strong>${html(String(metric.aggregate?.classificationCounts?.coastalZone??'n.d.'))}/7<small>Comuni in zona costiera</small></strong><p>DEGURBA è una classificazione territoriale, non un punteggio: non viene calcolata alcuna media.</p><div><span>DEGURBA</span><b>${html(String(metric.aggregate?.classificationCounts?.degurba2??0))} classe 2 · ${html(String(metric.aggregate?.classificationCounts?.degurba3??0))} classe 3</b></div></aside>`
+        ? `<aside class="versilia-position classification-overview"><span class="overline">Versilia · conteggi</span><strong>${html(String(metric.aggregate?.classificationCounts?.coastalZone??'n.d.'))}/7</strong><small class="classification-overview-label">Comuni in zona costiera</small><p>DEGURBA è una classificazione territoriale, non un punteggio: non viene calcolata alcuna media.</p><div class="classification-overview-counts"><span>DEGURBA</span><b>${html(String(metric.aggregate?.classificationCounts?.degurba2??0))} Comuni in classe 2</b><b>${html(String(metric.aggregate?.classificationCounts?.degurba3??0))} Comune in classe 3</b></div></aside>`
       : landCoverProfile
         ? `<aside class="versilia-position land-cover-overview"><span class="overline">Serie UCS</span><strong>${html(String(metric.landCoverYears?.length||0))}<small>annualità omogenee</small></strong><p>Il confronto cambia con copertura, anno e unità selezionati nel grafico; non viene fissata una graduatoria unica.</p><div><span>Periodo</span><b>2007–2019</b></div></aside>`
+      : coastlineShareMetric
+        ? `<aside class="versilia-position coastline-share-overview"><span class="overline">Quota della linea litoranea Versilia</span><strong>${row.notApplicable ? 'n.a.' : `${html(number1.format(Number(row.value)/Number(metric.aggregate?.value)*100))}%`}</strong><small>${row.notApplicable ? 'Comune non litoraneo' : 'della linea litoranea statistica dei quattro Comuni costieri'}</small><p>È la quota del Comune sul totale Versilia, non uno scostamento dalla media.</p><div><span>Totale Versilia</span><b>${html(formatMetricRowValue(metric.aggregate,metric.aggregate?.value,metric.meta.unit))}</b></div></aside>`
       : (drinkingQuality
         ? ''""",
         "posizione town custom",
@@ -144,7 +147,7 @@ def patch_renderer() -> None:
     source = replace_once(
         source,
         "['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')",
-        "['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')",
+        "metric.meta.key === 'statisticalCoastlineLength' || ['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')",
         "benchmark town custom",
     )
     source = replace_once(
