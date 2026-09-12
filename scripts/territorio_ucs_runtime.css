@@ -26,6 +26,8 @@
 .land-cover-series-heading{display:grid;gap:3px;margin-bottom:10px}
 .land-cover-series-heading strong{font-size:1rem}
 .land-cover-series-heading small{color:var(--muted,#667169);line-height:1.4}
+.land-cover-chart-content .trend-chart{box-sizing:border-box;padding-left:18px;padding-right:8px;overflow:visible}
+.land-cover-chart-content .trend-chart svg{overflow:visible}
 .land-cover-series-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
 .land-cover-composition,.land-cover-transform-compare{border-top:1px solid var(--line,#d8ded8);padding-top:16px}
 .land-cover-subheading h4{margin:.2rem 0 .8rem}
@@ -38,7 +40,14 @@
 .land-cover-compare-axis{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-top:-8px;padding:0 0 2px;color:var(--muted,#667169);font-size:.72rem;font-weight:700}
 .land-cover-compare-axis span:nth-child(2){text-align:center;text-transform:uppercase;letter-spacing:.04em}
 .land-cover-compare-list .bar-fill{min-width:0}
-.classification-overview strong small,.land-cover-overview strong small{display:block;margin-top:5px;font-size:.76rem;font-weight:650}
+.classification-overview,.coastline-share-overview{display:grid;align-content:start;gap:9px}
+.classification-overview>strong,.coastline-share-overview>strong{margin:0;line-height:1}
+.classification-overview-label,.coastline-share-overview>small{display:block;margin:0;color:var(--muted,#667169);font-size:.76rem;font-weight:650;line-height:1.35}
+.classification-overview>p,.coastline-share-overview>p{margin:0;color:var(--muted,#667169);line-height:1.45}
+.classification-overview-counts{display:grid;gap:3px;min-width:0}
+.classification-overview-counts span{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+.classification-overview-counts b{display:block;line-height:1.25;white-space:normal}
+.land-cover-overview strong small{display:block;margin-top:5px;font-size:.76rem;font-weight:650}
 @media (max-width:760px){
   .territorial-classification-grid,.territorial-classification-summary,.land-cover-series-summary,.degurba-class-grid{grid-template-columns:1fr}
   .territorial-classification-head{display:none}
@@ -47,4 +56,5 @@
   .land-cover-controls{display:grid;grid-template-columns:1fr}
   .land-cover-controls label,.land-cover-controls label:first-child{min-width:0;width:100%}
   .land-cover-compare-axis{font-size:.68rem}
+  .land-cover-chart-content .trend-chart{padding-left:12px;padding-right:4px}
 }
