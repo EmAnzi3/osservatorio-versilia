@@ -1,6 +1,6 @@
 name: Territorio v1.37 canonical QA
 # Gate canonico v1.37: build completa + contratto dist.
-# Usa lo stesso tooling browser delle preview canoniche.
+# Gate finale dopo finalizzazione aree protette e contratti numerici.
 
 on:
   push:
@@ -65,6 +65,8 @@ jobs:
           grep -R -q "territoryProfileTypes" dist/assets
           grep -R -q "sqm_per_resident" dist/assets
           grep -R -q "km_per_km2" dist/assets
+          grep -R -q "data-composite-scale=\"hectares\"" dist/assets
+          grep -R -q "initialTerritoryView" dist/assets
       - name: Upload canonical dist
         uses: actions/upload-artifact@v4
         with:
