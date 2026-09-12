@@ -1,0 +1,43 @@
+name: Territorio v1.37 capture post-legacy runtime surface
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - .github/workflows/territorio-v137-runtime-surface.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Replace v1.37 runtime patch with read-only surface dumper
+        run: |
+          cat > scripts/patch_territorio_v137_runtime.py <<'PY'
+          from pathlib import Path
+          ROOT = Path(__file__).resolve().parents[1]
+          out = ROOT / 'tmp' / 'territorio-v137-runtime-surface'
+          out.mkdir(parents=True, exist_ok=True)
+          for name in ('00.txt','03.txt','05.txt'):
+              src = ROOT / 'assets' / 'app-parts' / name
+              (out / name).write_text(src.read_text(encoding='utf-8'), encoding='utf-8')
+          print('Post-legacy runtime surface catturata prima della patch v1.37.')
+          PY
+      - name: Replay full canonical build
+        run: python scripts/build_static_brand.py
+      - name: Upload post-legacy runtime surface
+        uses: actions/upload-artifact@v4
+        with:
+          name: territorio-v137-runtime-surface
+          path: tmp/territorio-v137-runtime-surface
+          if-no-files-found: error
+          retention-days: 7
