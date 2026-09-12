@@ -99,12 +99,10 @@ def patch_renderer() -> None:
     )
     source = replace_once(
         source,
-        """    const remediation = metric.meta.compositeType === 'remediationProceedings';
-    const selectable = distribution || omi || stock || securityMeasures || demographicBreakdown || sexBreakdown;""",
+        "    const remediation = metric.meta.compositeType === 'remediationProceedings';",
         """    const remediation = metric.meta.compositeType === 'remediationProceedings';
     const territorialClassification = metric.meta.compositeType === 'territorialClassification';
-    const landCoverProfile = metric.meta.compositeType === 'landCoverProfile';
-    const selectable = distribution || omi || stock || securityMeasures || demographicBreakdown || sexBreakdown;""",
+    const landCoverProfile = metric.meta.compositeType === 'landCoverProfile';""",
         "flag town custom",
     )
     source = replace_once(
@@ -139,8 +137,8 @@ def patch_renderer() -> None:
     )
     source = replace_once(
         source,
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
         "benchmark town custom",
     )
     source = replace_once(
