@@ -102,6 +102,8 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from playwright.sync_api import sync_playwright
+          import re
+
           expected=['Lunghezza del grafo','Densità del grafo','Strade comunali','Strade provinciali','Strade regionali','Strade statali','Strade private','Elementi pavimentati','Elementi non pavimentati','Pavimentazione non classificata']
           out=Path('reports/territorio-v137-road-enrichment')
           with sync_playwright() as p:
@@ -119,14 +121,30 @@ jobs:
                   values=select.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
                   for value in values:
                       select.select_option(value)
-                      page.wait_for_timeout(150)
+                      page.wait_for_timeout(180)
                       comparison=page.locator('.indicator-current .comparison-bars').first
                       page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)",arg=comparison.element_handle())
-                      visible=page.locator('.indicator-current .bar-value').all_text_contents()
-                      if not any(v.strip() and v.strip()!='—' for v in visible): raise RuntimeError(f'{mode}/{value}: nessun valore visibile')
+                      rows=comparison.locator('.bar-row[aria-label]')
+                      if rows.count()!=7: raise RuntimeError(f'{mode}/{value}: righe con valore {rows.count()}/7')
+                      row_labels=[x or '' for x in rows.evaluate_all('(els)=>els.map(e=>e.getAttribute("aria-label"))')]
+                      if not all(re.search(r'\d',label) for label in row_labels): raise RuntimeError(f'{mode}/{value}: aria-label senza numeri {row_labels}')
+                      if comparison.locator('.comparison-dot').count()<1 or comparison.locator('.comparison-stem').count()<1:
+                          raise RuntimeError(f'{mode}/{value}: lollipop incompleto')
                   if errors: raise RuntimeError(f'{mode}: browser errors {errors}')
                   page.screenshot(path=str(out/f'grafo-viario-iter-net-{mode}.png'),full_page=True)
                   page.close()
+
+              town=browser.new_page(viewport={'width':1440,'height':1200})
+              response=town.goto('http://127.0.0.1:8765/comuni/massarosa/',wait_until='networkidle')
+              if not response or response.status!=200: raise RuntimeError('Massarosa: HTTP')
+              button=town.locator('button[data-indicator="roadNetworkProfile"]').first
+              button.scroll_into_view_if_needed(); button.click(); town.wait_for_timeout(300)
+              panel=town.locator('#town-topic').first
+              body=panel.inner_text()
+              for label in ['Strade comunali','Strade provinciali','Strade regionali','Strade statali','Strade private','Elementi pavimentati','Elementi non pavimentati']:
+                  if label not in body: raise RuntimeError(f'Massarosa: dato stradale non visibile: {label}')
+              town.screenshot(path=str(out/'massarosa-grafo-viario-desktop.png'),full_page=True)
+              town.close()
               browser.close()
           PY
       - name: Commit enriched production files
