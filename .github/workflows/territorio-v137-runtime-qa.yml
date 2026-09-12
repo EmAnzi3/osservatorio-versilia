@@ -1,12 +1,15 @@
-name: Territorio v1.37 runtime QA
+name: Territorio v1.37 canonical QA
 
 on:
   push:
     branches:
       - draft/territorio-indicatori-v137
     paths:
-      - scripts/patch_territorio_v137_runtime.py
+      - scripts/build_static_brand.py
       - scripts/materialize_territorio_v137.py
+      - scripts/patch_territorio_v137_runtime.py
+      - scripts/verify_territorio_v137_dist.py
+      - data/source-snapshots/territorio-v137-official.json
       - .github/workflows/territorio-v137-runtime-qa.yml
   workflow_dispatch:
 
@@ -14,33 +17,22 @@ permissions:
   contents: read
 
 jobs:
-  runtime-contract:
+  canonical-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Compile v1.37 Python
-        run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py
-      - name: Replay canonical territory chain through v1.36
+        run: python -m py_compile scripts/materialize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/build_static_brand.py scripts/verify_territorio_v137_dist.py
+      - name: Run canonical static build
+        run: python scripts/build_static_brand.py
+      - name: Assert canonical dist contract
+        run: python scripts/verify_territorio_v137_dist.py
+      - name: Assert final runtime tokens
         run: |
-          python - <<'PY'
-          import runpy, sys
-          sys.path.insert(0, 'scripts')
-          import build_static_brand as b
-          runpy.run_path = b._run_path_with_fragilita_r3_fix
-          try:
-              b._ORIGINAL_RUN_PATH(str(b.FRAGILITA_MATERIALIZER), run_name='__main__')
-          finally:
-              runpy.run_path = b._ORIGINAL_RUN_PATH
-          PY
-      - name: Apply v1.37 runtime patch
-        run: python scripts/patch_territorio_v137_runtime.py
-      - name: Assert v1.37 renderer contract
-        run: |
-          grep -q "territoryProfileTypes" assets/app-parts/03.txt
-          grep -q "territoryProfileHistoryTable" assets/app-parts/05.txt
-          grep -q "sqm_per_resident" assets/app-parts/00.txt
-          grep -q "km_per_km2" assets/app-parts/00.txt
+          grep -R -q "territoryProfileTypes" dist/assets
+          grep -R -q "sqm_per_resident" dist/assets
+          grep -R -q "km_per_km2" dist/assets
