@@ -22,8 +22,32 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Align runtime patch
-        run: python scripts/apply_territorio_v137_runtime_post_fragilita.py
+      - name: Align town flag to post-fragilita renderer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/patch_territorio_v137_runtime.py')
+          s=p.read_text(encoding='utf-8')
+          old='''    app03 = replace_once(
+                  app03,
+                  "    const securityMeasures = ['securityMeasures','agricultureProfile','financialProfile'].includes(metric.meta.compositeType);\\n",
+                  "    const securityMeasures = ['securityMeasures','agricultureProfile','financialProfile'].includes(metric.meta.compositeType);\\n"
+                  "    const territoryProfile = isTerritoryProfileType(metric);\\n",
+                  "flag profilo territorio comunale",
+              )
+          '''
+          new='''    app03 = replace_once(
+                  app03,
+                  "    const hydroRisk = metric.meta.compositeType === 'hydroRisk';\\n",
+                  "    const hydroRisk = metric.meta.compositeType === 'hydroRisk';\\n"
+                  "    const territoryProfile = isTerritoryProfileType(metric);\\n",
+                  "flag profilo territorio comunale post-fragilita",
+              )
+          '''
+          if s.count(old) != 1:
+              raise SystemExit(f'blocco flag atteso 1, trovato {s.count(old)}')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
       - name: Compile runtime patch
         run: python -m py_compile scripts/patch_territorio_v137_runtime.py
       - name: Commit runtime alignment
@@ -31,5 +55,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add scripts/patch_territorio_v137_runtime.py
-          git commit -m 'fix(territorio): align v1.37 runtime after fragilita'
+          git commit -m 'fix(territorio): anchor town profile after hydroRisk'
           git push origin HEAD:draft/territorio-indicatori-v137
