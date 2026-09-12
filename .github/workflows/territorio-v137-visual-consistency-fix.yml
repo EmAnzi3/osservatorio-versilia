@@ -1,0 +1,37 @@
+name: Territorio v1.37 visual consistency fix
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - scripts/fix_territorio_v137_visual_consistency.py
+      - .github/workflows/territorio-v137-visual-consistency-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply fix
+        run: python scripts/fix_territorio_v137_visual_consistency.py
+      - name: Compile runtime patch
+        run: python -m py_compile scripts/patch_territorio_v137_runtime.py
+      - name: Commit patched runtime
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/patch_territorio_v137_runtime.py
+          git diff --cached --exit-code && exit 1 || true
+          git commit -m "fix(territorio): restore lollipop comparisons and charted history"
+          git push origin HEAD:draft/territorio-indicatori-v137
