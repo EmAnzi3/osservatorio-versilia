@@ -40,6 +40,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(FORESTE_COMUNE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(TERRITORIO_UCS_REFINER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_RUNTIME_PATCH), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
@@ -70,7 +71,6 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         "__spec__": None,
     }
     exec(compile(source, str(path), "exec"), globals_dict)
-    _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_RUNTIME_PATCH), run_name="__main__")
     return globals_dict
 
 
