@@ -5,6 +5,59 @@ from __future__ import annotations
 import refine_territorio_ucs_release as base
 
 
+COUNT_LAYOUT_MARKER = "/* OV TERRITORIAL COUNT OVERLAP FIX v1.36.0 */"
+COUNT_LAYOUT_CSS = r'''/* OV TERRITORIAL COUNT OVERLAP FIX v1.36.0 */
+/*
+ * La grammatica condivisa assegna a .versilia-position > div una griglia a due
+ * colonne. Il box categoriale DEGURBA non è un benchmark numerico: deve avere
+ * etichette e valori in flusso verticale, senza collisioni anche nei pannelli
+ * comunali stretti.
+ */
+.versilia-position > .classification-overview-counts{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:4px!important;
+  min-width:0!important;
+  margin-top:4px!important;
+  padding-top:12px!important;
+}
+.versilia-position > .classification-overview-counts > span{
+  display:block!important;
+  min-width:0!important;
+  margin:0!important;
+  color:var(--muted,#667169)!important;
+  font-size:.72rem!important;
+  font-weight:720!important;
+  line-height:1.35!important;
+  text-transform:uppercase!important;
+  letter-spacing:.04em!important;
+}
+.versilia-position > .classification-overview-counts > span:not(:first-child){
+  margin-top:10px!important;
+}
+.versilia-position > .classification-overview-counts > b{
+  display:block!important;
+  position:static!important;
+  min-width:0!important;
+  margin:0!important;
+  color:var(--ink)!important;
+  font-family:var(--font-geist-mono),monospace!important;
+  font-size:20px!important;
+  font-weight:820!important;
+  letter-spacing:-.035em!important;
+  line-height:1.25!important;
+  text-align:left!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+@media(max-width:760px){
+  .versilia-position > .classification-overview-counts > b{font-size:18px!important}
+}
+'''
+
+
 def insert_after_in_block(source: str, start_marker: str, end_marker: str, needle: str, insertion: str, label: str) -> str:
     start = source.find(start_marker)
     end = source.find(end_marker, start + len(start_marker))
@@ -120,12 +173,20 @@ def robust_patch_visual_grammar() -> None:
     base.VISUAL_GRAMMAR.write_text(source, encoding="utf-8")
 
 
+def patch_count_layout_css() -> None:
+    source = base.CSS.read_text(encoding="utf-8")
+    if COUNT_LAYOUT_MARKER in source:
+        return
+    base.CSS.write_text(source.rstrip() + "\n\n" + COUNT_LAYOUT_CSS.strip() + "\n", encoding="utf-8")
+
+
 def main() -> None:
     base.patch_renderer()
     robust_patch_visual_grammar()
     base.patch_css()
+    patch_count_layout_css()
     base.validate_final_state()
-    print("v1.36 refine v2: lollipop canonici UCS/foreste, costa a quota Versilia, DEGURBA robusto, 202 metriche.")
+    print("v1.36 refine v2: lollipop canonici UCS/foreste, costa a quota Versilia, DEGURBA senza sovrapposizioni, 202 metriche.")
 
 
 if __name__ == "__main__":
