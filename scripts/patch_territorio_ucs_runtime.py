@@ -6,12 +6,16 @@ ROOT = Path(__file__).resolve().parents[1]
 FORMATTER = ROOT / "assets/app-parts/00.txt"
 RENDERER = ROOT / "assets/app-parts/03.txt"
 CSS = ROOT / "assets/static.css"
+UX_HISTORY = ROOT / "assets/ux-history.js"
+VISUAL_GRAMMAR = ROOT / "assets/visual-grammar.js"
 HELPERS = ROOT / "scripts/territorio_ucs_runtime_helpers.js"
 CSS_PAYLOAD = ROOT / "scripts/territorio_ucs_runtime.css"
 
 UNITS_MARKER = "/* OV TERRITORIO UCS UNITS v1.36.0 */"
 JS_MARKER = "/* OV TERRITORIO UCS RUNTIME v1.36.0 */"
 CSS_MARKER = "/* OV TERRITORIO UCS UI v1.36.0 */"
+UX_HISTORY_MARKER = "/* OV TERRITORIO UCS UX-HISTORY BYPASS v1.36.0 */"
+VISUAL_GRAMMAR_MARKER = "/* OV TERRITORIO UCS VISUAL-GRAMMAR BYPASS v1.36.0 */"
 
 
 def replace_once(source: str, needle: str, replacement: str, label: str) -> str:
@@ -130,10 +134,12 @@ def patch_renderer() -> None:
         """      : (drinkingQuality
         ? ''""",
         """      : territorialClassification
-        ? `<aside class="versilia-position classification-overview"><span class="overline">Versilia · conteggi</span><strong>${html(String(metric.aggregate?.classificationCounts?.coastalZone??'n.d.'))}/7<small>Comuni in zona costiera</small></strong><p>Le classi territoriali sono categoriali: non viene calcolata alcuna media DEGURBA.</p><div><span>DEGURBA</span><b>${html(String(metric.aggregate?.classificationCounts?.degurba2??0))} classe 2 · ${html(String(metric.aggregate?.classificationCounts?.degurba3??0))} classe 3</b></div></aside>`
+        ? `<aside class="versilia-position classification-overview"><span class="overline">Versilia · conteggi</span><strong>${html(String(metric.aggregate?.classificationCounts?.coastalZone??'n.d.'))}/7<small>Comuni in zona costiera</small></strong><p>DEGURBA è una classificazione territoriale, non un punteggio: non viene calcolata alcuna media.</p><div><span>DEGURBA</span><b>${html(String(metric.aggregate?.classificationCounts?.degurba2??0))} classe 2 · ${html(String(metric.aggregate?.classificationCounts?.degurba3??0))} classe 3</b></div></aside>`
+      : landCoverProfile
+        ? `<aside class="versilia-position land-cover-overview"><span class="overline">Serie UCS</span><strong>${html(String(metric.landCoverYears?.length||0))}<small>annualità omogenee</small></strong><p>Il confronto cambia con copertura, anno e unità selezionati nel grafico; non viene fissata una graduatoria unica.</p><div><span>Periodo</span><b>2007–2019</b></div></aside>`
       : (drinkingQuality
         ? ''""",
-        "posizione town classificazione",
+        "posizione town custom",
     )
     source = replace_once(
         source,
@@ -151,7 +157,10 @@ def patch_renderer() -> None:
       const unitSelect=root?.querySelector('[data-land-cover-town-unit]');
       const chartHost=root?.querySelector('[data-land-cover-town-chart]');
       const applyLandCover=()=>{
-        if(chartHost) chartHost.innerHTML=landCoverChartMarkup(metric,row,categorySelect?.value||'artificialized',unitSelect?.value||'percent',row.town);
+        if(chartHost) {
+          chartHost.innerHTML=landCoverChartMarkup(metric,row,categorySelect?.value||'artificialized',unitSelect?.value||'percent',row.town);
+          installChartInteractions(chartHost);
+        }
       };
       categorySelect?.addEventListener('change',applyLandCover);
       unitSelect?.addEventListener('change',applyLandCover);
@@ -173,6 +182,37 @@ def patch_renderer() -> None:
     RENDERER.write_text(source, encoding="utf-8")
 
 
+def patch_auxiliary_runtime() -> None:
+    history = UX_HISTORY.read_text(encoding="utf-8")
+    if UX_HISTORY_MARKER not in history:
+        needle = "if (['drinkingWaterQuality','remediationProceedings','financialProfile','hydroRisk'].includes(selected.metric?.meta?.compositeType)) return;"
+        if history.count(needle) != 2:
+            raise RuntimeError(f"v1.36 runtime: bypass ux-history non patchabile ({history.count(needle)} occorrenze).")
+        replacement = UX_HISTORY_MARKER + "\n    if (['drinkingWaterQuality','remediationProceedings','financialProfile','hydroRisk','territorialClassification','landCoverProfile'].includes(selected.metric?.meta?.compositeType)) return;"
+        history = history.replace(needle, replacement)
+        UX_HISTORY.write_text(history, encoding="utf-8")
+
+    grammar = VISUAL_GRAMMAR.read_text(encoding="utf-8")
+    if VISUAL_GRAMMAR_MARKER not in grammar:
+        grammar = replace_once(
+            grammar,
+            """  function enhanceComparison(container) {
+    if (!data || !container?.isConnected) return;""",
+            """  function enhanceComparison(container) {
+    if (!data || !container?.isConnected) return;
+    /* OV TERRITORIO UCS VISUAL-GRAMMAR BYPASS v1.36.0 */
+    if (container.closest('[data-land-cover-compare-shell]')) return;""",
+            "visual grammar compare UCS",
+        )
+        grammar = replace_once(
+            grammar,
+            "if (['distribution','agricultureProfile','ratioProfile','financialProfile','hydroRisk'].includes(metric.meta?.compositeType) || metric.meta?.ordinalScale) return;",
+            "if (['distribution','agricultureProfile','ratioProfile','financialProfile','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta?.compositeType) || metric.meta?.ordinalScale) return;",
+            "visual grammar town UCS",
+        )
+        VISUAL_GRAMMAR.write_text(grammar, encoding="utf-8")
+
+
 def patch_css() -> None:
     source = CSS.read_text(encoding="utf-8")
     if CSS_MARKER in source:
@@ -186,8 +226,9 @@ def patch_css() -> None:
 def main() -> None:
     patch_units()
     patch_renderer()
+    patch_auxiliary_runtime()
     patch_css()
-    print("v1.36: renderer territoriali/UCS e selettori interni al box grafico abilitati.")
+    print("v1.36: renderer territoriali/UCS, storico a linee e selettori interni al box grafico abilitati.")
 
 
 if __name__ == "__main__":
