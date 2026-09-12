@@ -2,8 +2,7 @@ name: Territorio v1.37 visual contract QA
 
 on:
   push:
-    branches:
-      - draft/territorio-indicatori-v137
+    branches: [draft/territorio-indicatori-v137]
     paths:
       - scripts/patch_territorio_v137_runtime.py
       - .github/workflows/territorio-v137-visual-contract-qa.yml
@@ -42,95 +41,63 @@ jobs:
 
           base='http://127.0.0.1:8765'
           out=Path('reports/territorio-v137-contract')
-          slugs=[
-              'suolo-consumato',
-              'consumo-di-suolo-annuale',
-              'territorio-in-aree-naturali-protette',
-              'reticolo-idrografico',
-              'grafo-viario-iter-net',
-          ]
+          slugs=['suolo-consumato','consumo-di-suolo-annuale','territorio-in-aree-naturali-protette','reticolo-idrografico','grafo-viario-iter-net']
           historical={'suolo-consumato','consumo-di-suolo-annuale'}
           results=[]
-
-          def assert_clean(page, slug, mode, errors):
-              body=page.locator('body').inner_text()
-              if 'NaN' in body or 'undefined' in body.lower():
-                  raise RuntimeError(f'{slug}/{mode}: NaN/undefined visibile')
-              if errors:
-                  raise RuntimeError(f'{slug}/{mode}: errori browser: {errors}')
 
           with sync_playwright() as p:
               browser=p.chromium.launch(headless=True)
               for mode,viewport in [('desktop',{'width':1440,'height':1100}),('mobile',{'width':390,'height':844})]:
                   context=browser.new_context(viewport=viewport)
                   for slug in slugs:
-                      page=context.new_page()
-                      errors=[]
-                      page.on('console', lambda msg, errors=errors: errors.append(f'console:{msg.type}:{msg.text}') if msg.type=='error' else None)
-                      page.on('pageerror', lambda exc, errors=errors: errors.append(f'pageerror:{exc}'))
+                      page=context.new_page(); errors=[]
+                      page.on('console',lambda m,e=errors:e.append(f'console:{m.type}:{m.text}') if m.type=='error' else None)
+                      page.on('pageerror',lambda exc,e=errors:e.append(f'pageerror:{exc}'))
                       response=page.goto(f'{base}/indicatori/{slug}/',wait_until='networkidle')
-                      if not response or response.status != 200:
-                          raise RuntimeError(f'{slug}/{mode}: HTTP {response.status if response else None}')
+                      if not response or response.status!=200: raise RuntimeError(f'{slug}/{mode}: HTTP {response.status if response else None}')
 
-                      comparison=page.locator('.indicator-current .comparison-bars').first
-                      comparison.wait_for(state='visible')
-                      page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)", arg=comparison.element_handle())
-                      viz=comparison.get_attribute('data-viz')
-                      if viz not in {'lollipop','percent-dotplot','signed-dotplot'}:
-                          raise RuntimeError(f'{slug}/{mode}: confronto non lollipop/dotplot: {viz}')
-                      if comparison.locator('.comparison-dot').count() < 1 or comparison.locator('.comparison-stem').count() < 1:
-                          raise RuntimeError(f'{slug}/{mode}: elementi lollipop mancanti')
+                      def assert_lollipop(label):
+                          comp=page.locator('.indicator-current .comparison-bars').first
+                          comp.wait_for(state='visible')
+                          page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)",arg=comp.element_handle())
+                          viz=comp.get_attribute('data-viz')
+                          if comp.locator('.comparison-dot').count()<1 or comp.locator('.comparison-stem').count()<1:
+                              raise RuntimeError(f'{slug}/{mode}/{label}: elementi lollipop mancanti')
+                          return viz
 
+                      viz=assert_lollipop('default')
                       component=page.locator('.indicator-current select[data-composite-component]').first
                       if component.count():
                           values=component.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
                           if len(values)>1:
-                              component.select_option(values[-1])
-                              page.wait_for_timeout(350)
-                              comparison=page.locator('.indicator-current .comparison-bars').first
-                              page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)", arg=comparison.element_handle())
-                              if comparison.locator('.comparison-dot').count() < 1:
-                                  raise RuntimeError(f'{slug}/{mode}: lollipop perso dopo cambio lettura')
+                              component.select_option(values[-1]); page.wait_for_timeout(350); assert_lollipop('view-change')
 
                       if slug=='territorio-in-aree-naturali-protette':
                           ha=page.locator('.indicator-current button[data-composite-scale="hectares"]').first
-                          if not ha.count():
-                              raise RuntimeError(f'{slug}/{mode}: toggle ha assente')
-                          ha.click()
-                          page.wait_for_timeout(350)
-                          comparison=page.locator('.indicator-current .comparison-bars').first
-                          page.wait_for_function("el => ['lollipop','percent-dotplot','signed-dotplot'].includes(el.dataset.viz)", arg=comparison.element_handle())
-                          if comparison.locator('.comparison-dot').count() < 1:
-                              raise RuntimeError(f'{slug}/{mode}: lollipop perso in ettari')
+                          if not ha.count(): raise RuntimeError(f'{slug}/{mode}: toggle ha assente')
+                          ha.click(); page.wait_for_timeout(350); assert_lollipop('hectares')
 
                       if slug in historical:
                           history=page.locator('[data-financial-indicator-history]').first
-                          if not history.count():
-                              raise RuntimeError(f'{slug}/{mode}: contenitore storico assente')
-                          if history.locator('.territory-history-table').count():
-                              raise RuntimeError(f'{slug}/{mode}: tabella storica residua')
-                          chart=history.locator('.trend-chart').first
-                          chart.wait_for(state='visible')
-                          town_select=history.locator('select[data-territory-history-town]').first
-                          if not town_select.count():
-                              raise RuntimeError(f'{slug}/{mode}: selettore Versilia/Comune assente')
-                          options=town_select.locator('option').all_text_contents()
-                          if len(options)!=8 or options[0].strip()!='Versilia':
-                              raise RuntimeError(f'{slug}/{mode}: storico atteso Versilia + 7 comuni, trovato {options}')
-                          values=town_select.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
-                          town_select.select_option(values[1])
-                          page.wait_for_timeout(300)
-                          if not history.locator('.trend-chart').count():
-                              raise RuntimeError(f'{slug}/{mode}: grafico storico perso dopo cambio comune')
+                          if not history.count(): raise RuntimeError(f'{slug}/{mode}: storico assente')
+                          if history.locator('.territory-history-table').count(): raise RuntimeError(f'{slug}/{mode}: tabella storica residua')
+                          history.locator('.trend-chart').first.wait_for(state='visible')
+                          select=history.locator('select[data-territory-history-town]').first
+                          if not select.count(): raise RuntimeError(f'{slug}/{mode}: selettore storico assente')
+                          opts=select.locator('option').all_text_contents()
+                          if len(opts)!=8 or opts[0].strip()!='Versilia': raise RuntimeError(f'{slug}/{mode}: opzioni storico errate: {opts}')
+                          vals=select.locator('option').evaluate_all('(els)=>els.map(e=>e.value)')
+                          select.select_option(vals[1]); page.wait_for_timeout(300)
+                          history.locator('.trend-chart').first.wait_for(state='visible')
 
-                      assert_clean(page,slug,mode,errors)
-                      screenshot=out/f'{slug}-{mode}.png'
-                      page.screenshot(path=str(screenshot),full_page=True)
-                      results.append({'slug':slug,'mode':mode,'viz':viz,'historyChart':slug in historical,'screenshot':screenshot.name})
+                      body=page.locator('body').inner_text()
+                      if 'NaN' in body or 'undefined' in body.lower(): raise RuntimeError(f'{slug}/{mode}: NaN/undefined visibile')
+                      if errors: raise RuntimeError(f'{slug}/{mode}: errori browser: {errors}')
+                      shot=out/f'{slug}-{mode}.png'; page.screenshot(path=str(shot),full_page=True)
+                      results.append({'slug':slug,'mode':mode,'viz':viz,'historyChart':slug in historical,'screenshot':shot.name})
                       page.close()
                   context.close()
               browser.close()
-
           (out/'visual-contract.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
           print(json.dumps(results,ensure_ascii=False,indent=2))
           PY
