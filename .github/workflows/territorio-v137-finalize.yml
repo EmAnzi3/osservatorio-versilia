@@ -6,6 +6,7 @@ on:
       - draft/territorio-indicatori-v137
     paths:
       - .github/workflows/territorio-v137-finalize.yml
+      - scripts/repair_territorio_v137_finalizer.py
 
 permissions:
   contents: write
@@ -22,6 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Repair verifier writer
+        run: python scripts/repair_territorio_v137_finalizer.py
       - name: Apply deterministic finalizer
         run: python scripts/finalize_territorio_v137.py
       - name: Compile finalized Python
@@ -30,6 +33,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/patch_territorio_v137_runtime.py scripts/materialize_territorio_v137.py scripts/verify_territorio_v137_dist.py
+          git add scripts/finalize_territorio_v137.py scripts/patch_territorio_v137_runtime.py scripts/materialize_territorio_v137.py scripts/verify_territorio_v137_dist.py
           git commit -m 'fix(territorio): finalize protected-area views and contracts'
           git push origin HEAD:draft/territorio-indicatori-v137
