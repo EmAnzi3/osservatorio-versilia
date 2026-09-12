@@ -24,6 +24,7 @@ OUT = Path("tmp/territorio-v137-structure.json")
 TOWNS = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
 UA = {"User-Agent": "OsservatorioVersilia-v137-structure-audit/1.0"}
 ISPRA = "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/consumo_di_suolo_estratto_dati_2025_anni_2006_2024.xlsx"
+ISPRA_FULL = "https://groupware.sinanet.isprambiente.it/uso-copertura-e-consumo-di-suolo/library/consumo-di-suolo/indicatori/consumo_suolo_2025_com_prov_reg_naz_v1.1/download/en/1/consumo_suolo_2025_Com_Prov_Reg_Naz_v1.1.xlsx"
 RETICULUM = "https://www.regione.toscana.it/documents/d/guest/infrastruttura_rev25-zip"
 ROADS = "https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/iternet.zip"
 WFS_BASE = "https://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms"
@@ -69,9 +70,30 @@ def ispra_structure(raw: bytes) -> dict:
     for row in ws.iter_rows(min_row=2, values_only=True):
         if row[1] in TOWNS and row[3] == "Lucca":
             selected.append({str(headers[i]): json_value(row[i]) for i in range(len(headers))})
-    if [row["Nome_Comune"] for row in selected] != TOWNS:
-        selected = sorted(selected, key=lambda row: TOWNS.index(row["Nome_Comune"]))
+    selected = sorted(selected, key=lambda row: TOWNS.index(row["Nome_Comune"]))
     return {"headers": headers, "selectedRows": selected, "selectedCount": len(selected)}
+
+
+def ispra_full_structure(path: Path) -> dict:
+    wb = load_workbook(path, read_only=True, data_only=True)
+    result = {"bytes": path.stat().st_size, "sheets": {}}
+    for ws in wb.worksheets:
+        preview = []
+        matches = []
+        for index, row in enumerate(ws.iter_rows(values_only=True), start=1):
+            values = [json_value(value) for value in row]
+            if index <= 12:
+                preview.append(values)
+            strings = {str(value).strip() for value in row if value is not None}
+            if strings & set(TOWNS):
+                matches.append({"row": index, "values": values})
+        result["sheets"][ws.title] = {
+            "maxRow": ws.max_row,
+            "maxColumn": ws.max_column,
+            "preview": preview,
+            "townMatches": matches,
+        }
+    return result
 
 
 def vector_info(path: str) -> dict:
@@ -102,7 +124,7 @@ def reticulum_structure(zip_path: Path, work: Path) -> dict:
     frame = gpd.read_file(shp, engine="pyogrio")
     info["COMPLR79"] = unique_preview(frame, "COMPLR79")
     info["RETGESLR79"] = unique_preview(frame, "RETGESLR79")
-    info["managedFilterCount"] = int(((frame.get("COMPLR79").astype(str) == "Toscana Nord") & (frame.get("RETGESLR79").astype(str) == "SI")).sum()) if {"COMPLR79", "RETGESLR79"}.issubset(frame.columns) else None
+    info["managedFilterCount"] = int(((frame["COMPLR79"].astype(str) == "Toscana Nord") & (frame["RETGESLR79"].astype(str) == "SI")).sum()) if {"COMPLR79", "RETGESLR79"}.issubset(frame.columns) else None
     return info
 
 
@@ -140,7 +162,7 @@ def roads_structure(outer_zip: Path, work: Path) -> dict:
     for name in likely[:30]:
         try:
             infos[name] = vector_info(f"/vsizip/{inner_path.resolve()}/{name}")
-        except Exception as exc:  # diagnostics: preserve exact failure
+        except Exception as exc:
             infos[name] = {"error": repr(exc)}
     return {
         "outerBytes": outer_zip.stat().st_size,
@@ -155,15 +177,18 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="territorio-v137-structure-") as tmp:
         work = Path(tmp)
         ispra_path = work / "ispra.xlsx"
+        ispra_full_path = work / "ispra-full.xlsx"
         reticulum_path = work / "reticulum.zip"
         roads_path = work / "iternet.zip"
 
         download(ISPRA, ispra_path)
+        download(ISPRA_FULL, ispra_full_path)
         download(RETICULUM, reticulum_path)
         download(ROADS, roads_path)
 
         payload = {
             "ispra": ispra_structure(ispra_path.read_bytes()),
+            "ispraFull": ispra_full_structure(ispra_full_path),
             "reticulum": reticulum_structure(reticulum_path, work),
             "protected": protected_structure(work),
             "roads": roads_structure(roads_path, work),
