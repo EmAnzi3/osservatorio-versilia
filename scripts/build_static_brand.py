@@ -15,6 +15,9 @@ FRAGILITA_MATERIALIZER = (ROOT / "scripts" / "materialize_fragilita_release.py")
 FRAGILITA_RUNTIME_PATCH = (ROOT / "scripts" / "patch_fragilita_runtime.py").resolve()
 ECONOMIA_PRODOTTA_MATERIALIZER = ROOT / "scripts" / "materialize_economia_prodotta_release.py"
 BIOMETRIA_MATERIALIZER = ROOT / "scripts" / "materialize_biometria_comune_release.py"
+TERRITORIO_UCS_MATERIALIZER = ROOT / "scripts" / "materialize_territorio_ucs_release.py"
+FORESTE_COMUNE_MATERIALIZER = ROOT / "scripts" / "materialize_foreste_comune_release.py"
+TERRITORIO_UCS_REFINER = ROOT / "scripts" / "refine_territorio_ucs_release_v2.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -31,6 +34,9 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         result = _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
         _ORIGINAL_RUN_PATH(str(ECONOMIA_PRODOTTA_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(BIOMETRIA_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(TERRITORIO_UCS_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(FORESTE_COMUNE_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(TERRITORIO_UCS_REFINER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
