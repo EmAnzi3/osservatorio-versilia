@@ -137,8 +137,8 @@ def patch_renderer() -> None:
     )
     source = replace_once(
         source,
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
-        """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        "['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')",
+        "['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')",
         "benchmark town custom",
     )
     source = replace_once(
