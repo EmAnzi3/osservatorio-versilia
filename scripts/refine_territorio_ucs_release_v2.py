@@ -180,11 +180,31 @@ def patch_count_layout_css() -> None:
     base.CSS.write_text(source.rstrip() + "\n\n" + COUNT_LAYOUT_CSS.strip() + "\n", encoding="utf-8")
 
 
+def normalize_territorial_coverage() -> None:
+    """Dichiara 7/7 righe rappresentate senza trasformare i tre n.a. in dati."""
+    site = base.json.loads(base.SITE_DATA.read_text(encoding="utf-8"))
+    metric = site.get("metrics", {}).get("statisticalCoastlineLength")
+    if not metric:
+        raise RuntimeError("v1.36 refine v2: statisticalCoastlineLength assente.")
+    rows = metric.get("rows", [])
+    applicable = [row for row in rows if not row.get("notApplicable", False)]
+    not_applicable = [row for row in rows if row.get("notApplicable") is True]
+    if len(rows) != 7 or len(applicable) != 4 or len(not_applicable) != 3:
+        raise RuntimeError("v1.36 refine v2: perimetro linea litoranea inatteso.")
+    if any(row.get("value") is not None or row.get("formatted") != "n.a." for row in not_applicable):
+        raise RuntimeError("v1.36 refine v2: i Comuni non litoranei devono restare n.a.")
+    metric.setdefault("method", {})["coverage"] = (
+        "7/7 Comuni rappresentati; 4/4 Comuni litoranei con valore; 3/7 n.a."
+    )
+    base.SITE_DATA.write_text(base.json.dumps(site, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     base.patch_renderer()
     robust_patch_visual_grammar()
     base.patch_css()
     patch_count_layout_css()
+    normalize_territorial_coverage()
     base.validate_final_state()
     print("v1.36 refine v2: lollipop canonici UCS/foreste, costa a quota Versilia, DEGURBA senza sovrapposizioni, 202 metriche.")
 
