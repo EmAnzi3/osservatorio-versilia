@@ -1,0 +1,45 @@
+name: Territorio v1.37 normalize hectare units
+
+on:
+  push:
+    branches:
+      - draft/territorio-indicatori-v137
+    paths:
+      - .github/workflows/territorio-v137-materializer-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft/territorio-indicatori-v137
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Normalize v1.37 hectare units
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/materialize_territorio_v137.py')
+          s=p.read_text(encoding='utf-8')
+          old='"unit": "ha"'
+          count=s.count(old)
+          if count != 7:
+              raise SystemExit(f'unità ha: attese 7 occorrenze, trovate {count}')
+          s=s.replace(old,'"unit": "hectares"')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Compile materializer
+        run: python -m py_compile scripts/materialize_territorio_v137.py
+      - name: Commit unit normalization
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/materialize_territorio_v137.py
+          git commit -m 'fix(territorio): use canonical hectare unit'
+          git push origin HEAD:draft/territorio-indicatori-v137
