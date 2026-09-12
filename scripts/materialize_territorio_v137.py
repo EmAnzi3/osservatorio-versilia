@@ -310,19 +310,19 @@ def make_protected(snapshot: dict, ids: dict[str, dict]) -> dict:
     for town in TOWNS:
         item = block["municipalities"][town]
         pct = float(item["totalUnionHa"]) / float(item["municipalAreaHa"]) * 100
-        parts = [{"key": "total", "label": "Totale protetto (unione)", "value": pct, "unit": "percent", "ha": float(item["totalUnionHa"])}]
+        parts = [{"key": "total", "label": "Totale tutele considerate (unione)", "value": pct, "unit": "percent", "ha": float(item["totalUnionHa"])}]
         parts += [{"key": key, "label": labels[key], "value": float(item["categoriesHa"][key]) / float(item["municipalAreaHa"]) * 100, "unit": "percent", "ha": float(item["categoriesHa"][key])} for key in categories]
         rows.append({**identity(ids[town]), "value": pct, "formatted": fmt(pct, 1, "%"), "parts": parts, "municipalAreaHa": float(item["municipalAreaHa"]), "series": None, "normalized": None, "benchmarkValue": None})
     versilia = block["versilia"]
     pct = float(versilia["totalUnionHa"]) / float(versilia["municipalAreaHa"]) * 100
-    parts = [{"key": "total", "label": "Totale protetto (unione)", "value": pct, "unit": "percent", "ha": float(versilia["totalUnionHa"])}]
+    parts = [{"key": "total", "label": "Totale tutele considerate (unione)", "value": pct, "unit": "percent", "ha": float(versilia["totalUnionHa"])}]
     parts += [{"key": key, "label": labels[key], "value": float(versilia["categoriesHa"][key]) / float(versilia["municipalAreaHa"]) * 100, "unit": "percent", "ha": float(versilia["categoriesHa"][key])} for key in categories]
     return {
-        "meta": {"key": "protectedNaturalAreas", "theme": "ambiente", "label": "Territorio in aree naturali protette", "shortLabel": "Aree protette", "description": "Superficie ricadente nelle aree protette e nei siti Natura 2000 della Regione Toscana. Il totale e' l'unione geometrica delle tutele e non la somma delle categorie sovrapposte.", "unit": "percent", "year": block["referenceLabel"], "source": "Regione Toscana — Aree protette / Natura 2000 / Ramsar", "polarity": "neutral", "compositeType": "protectedAreasProfile", "defaultView": "total", "searchTerms": ["aree protette", "parchi", "riserve", "ANPIL", "Natura 2000", "ZSC", "ZPS", "Ramsar"]},
+        "meta": {"key": "protectedNaturalAreas", "theme": "ambiente", "label": "Territorio in aree naturali protette", "shortLabel": "Aree protette", "description": "Superficie interessata dalle tutele naturalistiche considerate nei layer ufficiali regionali. Il totale e' l'unione geometrica delle tutele considerate e non la somma delle categorie sovrapposte.", "unit": "percent", "year": block["referenceLabel"], "source": "Regione Toscana — Aree protette / Natura 2000 / Ramsar", "polarity": "neutral", "compositeType": "protectedAreasProfile", "defaultView": "total", "selectorLabel": "Tutela", "searchTerms": ["aree protette", "parchi", "riserve", "ANPIL", "Natura 2000", "ZSC", "ZPS", "Ramsar"]},
         "sourceUrl": snapshot["sources"]["regioneProtectedAreas"]["page"], "categoryDefinitions": [{"key": key, "label": labels[key]} for key in categories], "rows": rows,
-        "aggregate": {"value": pct, "label": "Versilia · territorio protetto", "note": "Totale su geometrie dissolte: le sovrapposizioni tra categorie sono conteggiate una sola volta.", "parts": parts},
+        "aggregate": {"value": pct, "label": "Versilia · tutele considerate", "note": "Totale delle tutele considerate su geometrie dissolte: le sovrapposizioni tra categorie sono conteggiate una sola volta.", "parts": parts},
         "normalizedAggregate": None,
-        "method": {"type": "Elaborazione GIS su perimetri ufficiali Regione Toscana", "formula": "Totale = area(unione geometrica delle tutele ∩ Comune). Quota = totale / superficie comunale × 100.", "caveat": "Le categorie possono sovrapporsi e non vanno sommate. I riferimenti temporali dei layer restano distinti e sono documentati nello snapshot.", "coverage": "7/7"},
+        "method": {"type": "Elaborazione GIS su perimetri ufficiali Regione Toscana", "formula": "Totale considerato = area(unione geometrica delle tutele considerate ∩ Comune). Quota = totale / superficie comunale × 100.", "caveat": "Le categorie possono sovrapporsi e non vanno sommate. Le ANPIL sono mostrate separatamente come livello storico/transitorio: dopo la L.R. Toscana 30/2015 non vanno equiparate automaticamente al sistema regionale vigente delle aree protette, in attesa delle verifiche e riclassificazioni previste. I riferimenti temporali dei layer restano distinti e sono documentati nello snapshot.", "coverage": "7/7"},
     }
 
 

@@ -105,16 +105,16 @@ def main() -> None:
 """
     app03 = replace_once(app03, "  function compositeCompareDefaults(metric) {\n", helper + "  function compositeCompareDefaults(metric) {\n", "helper profili territorio")
 
-    app03 = patch_function(app03, "compositeCompareDefaults", lambda b: insert_after_line(b, "function compositeCompareDefaults(metric)", "    if (isTerritoryProfileType(metric)) return { choice:metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key || '', scale:'value' };\n", "default territorio"))
-    app03 = patch_function(app03, "compositeCompareSelection", lambda b: insert_after_line(b, "function compositeCompareSelection(metric, row, choice", "    if (isTerritoryProfileType(metric)) { const part=(row.parts || []).find(item=>item.key===choice) || row.parts?.[0] || {}; return {value:part.value,unit:part.unit || metric.meta.unit,part}; }\n", "selezione territorio"))
-    app03 = patch_function(app03, "compositeCompareAggregate", lambda b: insert_after_line(b, "function compositeCompareAggregate(metric, choice", "    if (isTerritoryProfileType(metric)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice) || metric.aggregate?.parts?.[0] || {}; return {value:part.value,unit:part.unit || metric.meta.unit,label:`Versilia · ${part.label || metric.meta.label}`,note:metric.aggregate?.note}; }\n", "aggregato territorio"))
-    app03 = patch_function(app03, "compositeCompareControls", lambda b: insert_after_line(b, "function compositeCompareControls(metric, choice", "    if (isTerritoryProfileType(metric)) { const parts=metric.rows?.[0]?.parts || []; return `<div class=\"compare-view-controls territory-profile-controls\"><label class=\"compare-choice-select\"><span>${html(metric.meta.selectorLabel || 'Lettura')}</span><select data-composite-component>${parts.map(part=>`<option value=\"${html(part.key)}\" ${part.key===choice?'selected':''}>${html(part.selectorLabel || part.label)}</option>`).join('')}</select></label></div>`; }\n", "controlli territorio"))
+    app03 = patch_function(app03, "compositeCompareDefaults", lambda b: insert_after_line(b, "function compositeCompareDefaults(metric)", "    if (isTerritoryProfileType(metric)) return { choice:metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key || '', scale:metric.meta.compositeType === 'protectedAreasProfile' ? 'percent' : 'value' };\n", "default territorio"))
+    app03 = patch_function(app03, "compositeCompareSelection", lambda b: insert_after_line(b, "function compositeCompareSelection(metric, row, choice", "    if (isTerritoryProfileType(metric)) { const part=(row.parts || []).find(item=>item.key===choice) || row.parts?.[0] || {}; const hectares=metric.meta.compositeType === 'protectedAreasProfile' && scale === 'hectares'; return {value:hectares?part.ha:part.value,unit:hectares?'hectares':(part.unit || metric.meta.unit),part}; }\n", "selezione territorio"))
+    app03 = patch_function(app03, "compositeCompareAggregate", lambda b: insert_after_line(b, "function compositeCompareAggregate(metric, choice", "    if (isTerritoryProfileType(metric)) { const part=(metric.aggregate?.parts || []).find(item=>item.key===choice) || metric.aggregate?.parts?.[0] || {}; const hectares=metric.meta.compositeType === 'protectedAreasProfile' && scale === 'hectares'; return {value:hectares?part.ha:part.value,unit:hectares?'hectares':(part.unit || metric.meta.unit),label:`Versilia · ${part.label || metric.meta.label}`,note:metric.aggregate?.note}; }\n", "aggregato territorio"))
+    app03 = patch_function(app03, "compositeCompareControls", lambda b: insert_after_line(b, "function compositeCompareControls(metric, choice", "    if (isTerritoryProfileType(metric)) { const parts=metric.rows?.[0]?.parts || []; const unitControls=metric.meta.compositeType === 'protectedAreasProfile' ? `<div><span class=\"compare-view-label\">Unità</span><div class=\"scale-switch compact\" role=\"group\" aria-label=\"Unità aree protette\"><button type=\"button\" data-composite-scale=\"percent\" class=\"${scale==='percent'?'active':''}\">%</button><button type=\"button\" data-composite-scale=\"hectares\" class=\"${scale==='hectares'?'active':''}\">ha</button></div></div>` : ''; return `<div class=\"compare-view-controls territory-profile-controls\"><label class=\"compare-choice-select\"><span>${html(metric.meta.selectorLabel || 'Lettura')}</span><select data-composite-component>${parts.map(part=>`<option value=\"${html(part.key)}\" ${part.key===choice?'selected':''}>${html(part.selectorLabel || part.label)}</option>`).join('')}</select></label>${unitControls}</div>`; }\n", "controlli territorio"))
 
     def town_markup(b: str) -> str:
         addition = (
             "    if (isTerritoryProfileType(metric)) {\n"
             "      const histories=parts.filter(part=>row.seriesByView?.[part.key]?.years?.length).map(part=>`<details class=\"detail-disclosure territory-profile-history\" ${part.key===(metric.meta.defaultView||parts[0]?.key)?'open':''}><summary><span>${html(part.label)}</span><small>Serie ufficiale</small></summary><div>${seriesChart(row.seriesByView[part.key],part.unit || metric.meta.unit,`${metric.meta.label} · ${part.label} · ${row.town}`)}</div></details>`).join('');\n"
-            "      return `<div class=\"composite-town-mobility territory-profile-town\">${parts.map(part=>`<article class=\"${part.key===(metric.meta.defaultView||parts[0]?.key)?'balance':''}\"><span>${html(part.label)}</span><strong>${html(formatMetricRowValue(row,part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.year)}</small></article>`).join('')}</div>${histories}`;\n"
+            "      return `<div class=\"composite-town-mobility territory-profile-town\">${parts.map(part=>`<article class=\"${part.key===(metric.meta.defaultView||parts[0]?.key)?'balance':''}\"><span>${html(part.label)}</span><strong>${html(formatMetricRowValue(row,part.value,part.unit || metric.meta.unit))}</strong><small>${html(metric.meta.compositeType==='protectedAreasProfile'&&part.ha!==undefined?formatValue(part.ha,'hectares'):metric.meta.year)}</small></article>`).join('')}</div>${histories}`;\n"
             "    }\n"
         )
         return insert_after_line(b, "const parts = row.parts || [];", addition, "dettaglio comunale territorio")
@@ -165,7 +165,7 @@ def main() -> None:
     app03 = patch_function(app03, "renderTownMetric", town_render)
 
     def indicator_comparison(b: str) -> str:
-        addition = "    if (isTerritoryProfileType(metric)) { const choice=financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice; return `<div class=\"indicator-composite-table territory-indicator-comparison\"><div class=\"compare-chart-toolbar\">${compositeCompareControls(metric,choice,'value')}</div><div class=\"comparison-bars\" data-composite-choice=\"${html(choice)}\">${compositeCompareBarRows(data,metricKey,choice,'value')}</div></div>`; }\n"
+        addition = "    if (isTerritoryProfileType(metric)) { const view=arguments[4] || {choice:financialChoice==='part-0'?(metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key):financialChoice,scale:metric.meta.compositeType==='protectedAreasProfile'?'percent':'value'}; return `<div class=\"indicator-composite-table territory-indicator-comparison\"><div class=\"compare-chart-toolbar\">${compositeCompareControls(metric,view.choice,view.scale)}</div><div class=\"comparison-bars\" data-composite-choice=\"${html(view.choice)}\" data-composite-scale=\"${html(view.scale)}\">${compositeCompareBarRows(data,metricKey,view.choice,view.scale)}</div></div>`; }\n"
         return insert_after_line(b, "const rows = [...metric.rows]", addition, "confronto scheda territorio")
     app05 = patch_function(app05, "indicatorComparisonTable", indicator_comparison)
 
@@ -180,8 +180,8 @@ def main() -> None:
     return `<div class="indicator-table-scroll"><table class="indicator-history-table territory-history-table"><thead><tr><th scope="col">Comune</th>${years.map(year=>`<th scope="col">${html(year)}</th>`).join('')}</tr></thead><tbody>${sources.map(source=>{const values=new Map(source.series.years.map((year,index)=>[String(year),source.series.values[index]]));return `<tr><th scope="row">${html(source.label)}</th>${years.map(year=>`<td>${values.has(String(year))?html(formatValue(values.get(String(year)),unit)):'—'}</td>`).join('')}</tr>`;}).join('')}</tbody></table></div>`;
   }
 
-  function territoryProfileIndicatorAsideMarkup(metric,choice) {
-    const selected=compositeCompareAggregate(metric,choice,'value');
+  function territoryProfileIndicatorAsideMarkup(metric,choice,scale='value') {
+    const selected=compositeCompareAggregate(metric,choice,scale);
     return `<span>${html(selected.label)}</span><strong>${html(formatValue(selected.value,selected.unit))}</strong><p>${html(selected.note || metric.aggregate?.note || '')}</p>`;
   }
 
@@ -192,27 +192,32 @@ def main() -> None:
 
     def indicator_render(b: str) -> str:
         b = insert_after_line(b, "const hydroRisk = metric.meta.compositeType === 'hydroRisk';", "    const territoryProfile = isTerritoryProfileType(metric);\n", "flag scheda territorio")
-        b = insert_after_line(b, "const initialHydroAggregate =", "    const initialTerritoryChoice = territoryProfile ? (metric.meta.defaultView || metric.rows?.[0]?.parts?.[0]?.key) : null;\n", "default scheda territorio")
+        b = insert_after_line(b, "const initialHydroAggregate =", "    const initialTerritoryView = territoryProfile ? compositeCompareDefaults(metric) : null;\n    const initialTerritoryChoice = initialTerritoryView?.choice || null;\n", "default scheda territorio")
         b = edit_line_once(b, "const historyCount =", lambda line: line.replace("const historyCount = metric.rows.filter(row => row.series?.years?.length).length;", "const historyCount = territoryProfile ? metric.rows.filter(row => Object.values(row.seriesByView || {}).some(series=>series?.years?.length)).length : metric.rows.filter(row => row.series?.years?.length).length;", 1), "history count territorio")
         def layout_edit(line: str) -> str:
-            line = line.replace("indicatorComparisonTable(data, pageMetric, initialFinancialChoice, initialHydroView)", "indicatorComparisonTable(data, pageMetric, territoryProfile ? initialTerritoryChoice : initialFinancialChoice, initialHydroView)", 1)
-            return line.replace(": hydroRisk ? `<span>${html(initialHydroAggregate.label)}", ": territoryProfile ? territoryProfileIndicatorAsideMarkup(metric,initialTerritoryChoice) : hydroRisk ? `<span>${html(initialHydroAggregate.label)}", 1)
+            line = line.replace("indicatorComparisonTable(data, pageMetric, initialFinancialChoice, initialHydroView)", "indicatorComparisonTable(data, pageMetric, territoryProfile ? initialTerritoryChoice : initialFinancialChoice, initialHydroView, initialTerritoryView)", 1)
+            return line.replace(": hydroRisk ? `<span>${html(initialHydroAggregate.label)}", ": territoryProfile ? territoryProfileIndicatorAsideMarkup(metric,initialTerritoryChoice,initialTerritoryView?.scale || 'value') : hydroRisk ? `<span>${html(initialHydroAggregate.label)}", 1)
         b = edit_line_once(b, "indicator-current-layout", layout_edit, "layout scheda territorio")
         b = edit_line_once(b, "indicator-benchmark page-width", lambda line: line.replace("(financialProfile || hydroRisk ||", "(financialProfile || territoryProfile || hydroRisk ||", 1), "benchmark scheda territorio")
         b = edit_line_once(b, "indicator-history page-width", lambda line: line.replace("indicatorHistoryTable(metric,initialFinancialChoice)", "indicatorHistoryTable(metric,territoryProfile ? initialTerritoryChoice : initialFinancialChoice)", 1), "storico iniziale territorio")
         events = """    if (territoryProfile) {
       const currentSection=document.querySelector('.indicator-current');
-      const applyTerritoryChoice=choice=>{
+      let territoryView={...initialTerritoryView};
+      const renderTerritory=()=>{
         const comparisonHost=document.querySelector('[data-financial-indicator-comparison]');
         const aggregateHost=document.querySelector('[data-financial-indicator-aggregate]');
         const historyHost=document.querySelector('[data-financial-indicator-history]');
-        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,choice,initialHydroView);
-        if(aggregateHost) aggregateHost.innerHTML=territoryProfileIndicatorAsideMarkup(metric,choice);
-        if(historyHost) historyHost.innerHTML=territoryProfileHistoryTable(metric,choice);
+        if(comparisonHost) comparisonHost.innerHTML=indicatorComparisonTable(data,pageMetric,territoryView.choice,initialHydroView,territoryView);
+        if(aggregateHost) aggregateHost.innerHTML=territoryProfileIndicatorAsideMarkup(metric,territoryView.choice,territoryView.scale);
+        if(historyHost) historyHost.innerHTML=territoryProfileHistoryTable(metric,territoryView.choice);
       };
       currentSection?.addEventListener('change',event=>{
         const select=event.target.closest('select[data-composite-component]');
-        if(select&&currentSection.contains(select)) applyTerritoryChoice(select.value);
+        if(select&&currentSection.contains(select)){ territoryView={...territoryView,choice:select.value}; renderTerritory(); }
+      });
+      currentSection?.addEventListener('click',event=>{
+        const button=event.target.closest('button[data-composite-scale]');
+        if(button&&currentSection.contains(button)){ territoryView={...territoryView,scale:button.dataset.compositeScale}; renderTerritory(); }
       });
     }
 """

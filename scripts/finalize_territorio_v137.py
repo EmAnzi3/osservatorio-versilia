@@ -163,7 +163,7 @@ if len(metrics) != 203:
     raise SystemExit(f"catalogo finale {len(metrics)}, attesi 203")
 expected = {"landUse", "landUseChange", "protectedNaturalAreas", "managedReticulumLength", "roadNetworkProfile"}
 if not expected.issubset(metrics):
-    raise SystemExit(f"metriche v1.37 mancanti: {sorted(expected - set(metrics))}
+    raise SystemExit(f"metriche v1.37 mancanti: {sorted(expected - set(metrics))}")
 towns = ["Camaiore", "Forte dei Marmi", "Massarosa", "Pietrasanta", "Seravezza", "Stazzema", "Viareggio"]
 for key in expected:
     rows = metrics[key].get("rows", [])
