@@ -214,7 +214,7 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             "formatted": fmt(float(latest["consumedPct"]), 2, "%"),
             "parts": [
                 {"key": "percent", "label": "% territorio", "value": float(latest["consumedPct"]), "unit": "percent"},
-                {"key": "hectares", "label": "Suolo consumato", "value": float(latest["consumedHa"]), "unit": "ha"},
+                {"key": "hectares", "label": "Suolo consumato", "value": float(latest["consumedHa"]), "unit": "hectares"},
                 {"key": "sqmPerResident", "label": "Per residente", "value": float(latest["sqmPerResident"]), "unit": "sqm_per_resident"},
             ],
             "seriesByView": {
@@ -242,7 +242,7 @@ def make_land_use(snapshot: dict, ids: dict[str, dict]) -> dict:
             "note": "Quota Versilia = Σ suolo consumato / Σ superficie territoriale; il valore per residente usa Σ m² consumati / Σ residenti.",
             "parts": [
                 {"key": "percent", "label": "% territorio", "value": float(latest["consumedPct"]), "unit": "percent"},
-                {"key": "hectares", "label": "Suolo consumato", "value": float(latest["consumedHa"]), "unit": "ha"},
+                {"key": "hectares", "label": "Suolo consumato", "value": float(latest["consumedHa"]), "unit": "hectares"},
                 {"key": "sqmPerResident", "label": "Per residente", "value": float(latest["sqmPerResident"]), "unit": "sqm_per_resident"},
             ],
             "seriesByView": {
@@ -266,8 +266,8 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
         rows.append({
             **identity(ids[town]), "value": float(latest["netHa"]), "formatted": fmt(float(latest["netHa"]), 2, " ha"),
             "parts": [
-                {"key": "gross", "label": "Consumo lordo", "value": float(latest["grossHa"]), "unit": "ha"},
-                {"key": "net", "label": "Consumo netto", "value": float(latest["netHa"]), "unit": "ha"},
+                {"key": "gross", "label": "Consumo lordo", "value": float(latest["grossHa"]), "unit": "hectares"},
+                {"key": "net", "label": "Consumo netto", "value": float(latest["netHa"]), "unit": "hectares"},
             ],
             "seriesByView": {
                 "gross": {"years": years, "values": [float(item["rows"][str(y)]["grossHa"]) for y in years]},
@@ -280,7 +280,7 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
         "meta": {
             "key": "landUseChange", "theme": "ambiente", "label": "Consumo di suolo annuale", "shortLabel": "Consumo annuale",
             "description": "Variazione annuale ISPRA distinta tra consumo di suolo lordo e netto. Il netto può essere negativo per ripristini o riclassificazioni.",
-            "unit": "ha", "year": "2012, 2015–2024", "source": "ISPRA — Consumo di suolo",
+            "unit": "hectares", "year": "2012, 2015–2024", "source": "ISPRA — Consumo di suolo",
             "polarity": "neutral", "compositeType": "soilChangeProfile", "defaultView": "net",
             "searchTerms": ["consumo di suolo lordo", "consumo di suolo netto", "ISPRA", "variazione annuale"],
         },
@@ -289,8 +289,8 @@ def make_land_use_change(snapshot: dict, ids: dict[str, dict]) -> dict:
             "value": float(latest["netHa"]), "label": "Versilia · consumo netto 2024",
             "note": "Aggregato Versilia ottenuto sommando gli ettari dei sette Comuni per la stessa annualita' e la stessa definizione ISPRA.",
             "parts": [
-                {"key": "gross", "label": "Consumo lordo", "value": float(latest["grossHa"]), "unit": "ha"},
-                {"key": "net", "label": "Consumo netto", "value": float(latest["netHa"]), "unit": "ha"},
+                {"key": "gross", "label": "Consumo lordo", "value": float(latest["grossHa"]), "unit": "hectares"},
+                {"key": "net", "label": "Consumo netto", "value": float(latest["netHa"]), "unit": "hectares"},
             ],
             "seriesByView": {
                 "gross": {"years": years, "values": [float(block["versilia"]["rows"][str(y)]["grossHa"]) for y in years]},
