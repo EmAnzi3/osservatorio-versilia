@@ -99,8 +99,9 @@ def main():
         pos=page.locator('#town-topic .versilia-position')
         assert pos.count()==1
         ptext=pos.inner_text()
+        overline=(pos.locator('.overline').text_content() or '').strip()
         assert 'Toscana' in ptext and 'Italia' in ptext
-        assert 'media Versilia' not in ptext and 'Scostamento dalla Toscana' in ptext
+        assert 'media versilia' not in ptext.lower() and overline=='Scostamento dalla Toscana'
         page.screenshot(path=str(shots/'invalsi-massarosa-desktop.png'),full_page=True)
         report['checks'].append({'townBenchmarks':'pass'})
 
