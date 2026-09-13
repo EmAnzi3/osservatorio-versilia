@@ -55,10 +55,8 @@ def assert_compare(page: Page, base: str) -> None:
         legend = page.locator("#compare-bars .comparison-legend:visible")
         assert legend.count() == 1
         legend_text = legend.inner_text()
-        if key == "publicWorks":
+        if key in {"publicWorks", "pnrrFunding"}:
             assert "Valore pro capite Versilia" in legend_text
-        elif key == "pnrrFunding":
-            assert "Versilia · risorse PNRR per residente" in legend_text
         else:
             assert "Versilia · 74 su 101" in legend_text
 
@@ -91,14 +89,14 @@ def assert_towns(page: Page, base: str) -> None:
         page,
         base,
         "publicWorks",
-        ("Rispetto al valore Versilia", "0,0 €", "in linea", "Valore pro capite Versilia", "1.409"),
+        ("Rispetto al valore pro capite Versilia", "0,0 €", "in linea", "Valore pro capite Versilia", "1.409"),
         ("−47", "+47", "2.659"),
     )
     assert_town_position(
         page,
         base,
         "pnrrFunding",
-        ("Rispetto al valore Versilia", "+42,4 €", "Versilia · risorse PNRR per residente", "231"),
+        ("Rispetto al valore pro capite Versilia", "+42,4 €", "Valore pro capite Versilia", "231"),
         ("−10", "+10", "306"),
     )
     assert_town_position(

@@ -1,0 +1,184 @@
+name: Bilanci v1.39 source gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/bilanci-v139-gate.yml'
+      - 'docs/audit-bilanci-v139.md'
+      - 'scripts/probe_bilanci_v139_sources.py'
+      - 'scripts/gate_bilanci_v139_sources.py'
+      - 'scripts/probe_bilanci_v139_cash.py'
+      - 'scripts/probe_bilanci_v139_fcde_reconciliation.py'
+      - 'scripts/materialize_bilanci_v139.py'
+      - 'scripts/materialize_bilanci_v139_review.py'
+      - 'scripts/apply_bilanci_v139.py'
+      - 'scripts/test_bilanci_v139.py'
+      - 'scripts/test_bilanci_v139_browser.py'
+      - 'scripts/build_bilanci_snapshot.py'
+      - 'scripts/apply_salute_finanziaria_v129.py'
+      - 'data/source-snapshots/bilanci-v1.6.0.json'
+      - 'data/source-snapshots/salute-finanziaria-v129.json'
+      - 'data/source-snapshots/siope-history-v1.6.0.json'
+      - 'data/source-snapshots/bilanci-v139.json'
+      - 'data/site-data.json'
+      - 'data/source-registry.json'
+      - 'assets/app-parts/**'
+      - 'scripts/build_static_brand.py'
+      - 'scripts/preflight.py'
+      - 'scripts/preflight_compile.txt'
+      - 'ci/workflow-contract.json'
+      - 'ci/build-materialization-contract.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install source-audit dependency
+        run: python -m pip install --disable-pip-version-check requests
+
+      - name: Compile v1.39 source gates
+        run: >-
+          python -m py_compile
+          scripts/probe_bilanci_v139_sources.py
+          scripts/gate_bilanci_v139_sources.py
+          scripts/probe_bilanci_v139_cash.py
+          scripts/probe_bilanci_v139_fcde_reconciliation.py
+          scripts/materialize_bilanci_v139.py
+          scripts/materialize_bilanci_v139_review.py
+          scripts/apply_bilanci_v139.py
+          scripts/test_bilanci_v139.py
+          scripts/test_bilanci_v139_browser.py
+
+      - name: Gate year-end cash fund 7/7
+        run: python scripts/probe_bilanci_v139_cash.py
+
+      - name: Inspect FCDE reconciliation fields
+        run: python scripts/probe_bilanci_v139_fcde_reconciliation.py
+
+      - name: Gate accepted OpenBDAP scope
+        run: python scripts/gate_bilanci_v139_sources.py --output reports/bilanci-v139-source-gate.json
+
+      - name: Validate frozen v1.39 snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('data/source-snapshots/bilanci-v139.json')
+          s = json.loads(p.read_text(encoding='utf-8'))
+          expected = {
+              'fcdePerResident', 'yearEndCashFundPerResident',
+              'generalAdministrationMissionExpenditurePerResident',
+              'territorialPlanningMissionExpenditurePerResident',
+              'civilProtectionMissionExpenditurePerResident',
+              'economicDevelopmentMissionExpenditurePerResident',
+          }
+          assert s['version'] == 'bilanci-v139'
+          assert set(s['series']) == expected
+          assert set(s['coverage']) == expected
+          for key in expected:
+              assert s['series'][key]['year'] == '2025'
+              assert set(s['series'][key]['towns']) == {
+                  'Massarosa','Viareggio','Camaiore','Pietrasanta',
+                  'Seravezza','Forte dei Marmi','Stazzema'
+              }
+              assert 2025 in s['coverage'][key]['included_years']
+          print('Bilanci v1.39 frozen snapshot: OK')
+          PY
+
+      - name: Upload source gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilanci-v139-source-gate
+          path: reports/bilanci-v139-source-gate.json
+          if-no-files-found: warn
+
+  canonical-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      - name: Install canonical dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Canonical quick gate
+        run: python scripts/preflight.py --quick
+
+      - name: Verify build is non-mutating
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/bilanci-v139-source-gate.json'
+
+  preview:
+    needs: [source-audit, canonical-contract]
+    if: ${{ needs.source-audit.result == 'success' && needs.canonical-contract.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      - name: Install preview dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Build and verify complete v1.39 preview
+        run: python scripts/preflight.py --quick
+
+      - name: Browser QA Bilanci v1.39 desktop and mobile
+        run: |
+          mkdir -p reports/bilanci-v139-browser
+          python scripts/test_bilanci_v139_browser.py \
+            --directory dist \
+            --screenshots-dir reports/bilanci-v139-browser
+
+      - name: Upload Bilanci v1.39 preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-bilanci-v139-preview
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Bilanci v1.39 browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilanci-v139-browser-evidence
+          path: |
+            reports/bilanci-v139-browser/
+            reports/bilanci-v139-browser-report.json
+          if-no-files-found: warn
+          retention-days: 14
