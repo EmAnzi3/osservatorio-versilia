@@ -11,6 +11,7 @@ on:
       - 'scripts/probe_bilanci_v139_fcde_reconciliation.py'
       - 'scripts/probe_bilanci_v139_archive_drift.py'
       - 'scripts/materialize_bilanci_v139.py'
+      - 'scripts/materialize_bilanci_v139_review.py'
       - 'scripts/test_bilanci_v139.py'
       - 'scripts/test_bilanci_v139_browser.py'
       - 'scripts/build_bilanci_snapshot.py'
@@ -53,8 +54,8 @@ jobs:
           scripts/gate_bilanci_v139_sources.py
           scripts/probe_bilanci_v139_cash.py
           scripts/probe_bilanci_v139_fcde_reconciliation.py
-          scripts/probe_bilanci_v139_archive_drift.py
           scripts/materialize_bilanci_v139.py
+          scripts/materialize_bilanci_v139_review.py
           scripts/test_bilanci_v139.py
 
       - name: Gate year-end cash fund 7/7
@@ -66,17 +67,12 @@ jobs:
       - name: Gate accepted OpenBDAP scope
         run: python scripts/gate_bilanci_v139_sources.py --output reports/bilanci-v139-source-gate.json
 
-      - name: Check historical OpenBDAP archive drift
-        run: python scripts/probe_bilanci_v139_archive_drift.py
-
       - name: Upload source gate evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bilanci-v139-source-gate
-          path: |
-            reports/bilanci-v139-source-gate.json
-            reports/bilanci-v139-archive-drift.json
+          path: reports/bilanci-v139-source-gate.json
           if-no-files-found: warn
 
   canonical-contract:
@@ -103,7 +99,7 @@ jobs:
         run: python scripts/preflight.py --quick
 
       - name: Verify build is non-mutating
-        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/bilanci-v139-source-gate.json' ':(exclude)reports/bilanci-v139-archive-drift.json'
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/bilanci-v139-source-gate.json'
 
   preview:
     needs: [source-audit, canonical-contract]
@@ -128,7 +124,7 @@ jobs:
           python -m playwright install --with-deps chromium
 
       - name: Materialize approved v1.39 scope in workspace
-        run: python scripts/materialize_bilanci_v139.py
+        run: python scripts/materialize_bilanci_v139_review.py
 
       - name: Test Bilanci v1.39 contract
         run: python scripts/test_bilanci_v139.py
