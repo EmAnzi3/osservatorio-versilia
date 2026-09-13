@@ -18,7 +18,8 @@
     "scripts/materialize_economy_atlas_release.py",
     "scripts/refine_economy_atlas_release.py",
     "scripts/refine_economy_atlas_tooltips.py",
-    "scripts/refine_economy_atlas_exports.py"
+    "scripts/refine_economy_atlas_exports.py",
+    "scripts/apply_bilanci_v139.py"
   ],
   "publicSnapshotFiles": [
     "data/site-data.json",
