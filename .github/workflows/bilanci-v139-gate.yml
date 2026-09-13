@@ -9,6 +9,7 @@ on:
       - 'scripts/gate_bilanci_v139_sources.py'
       - 'scripts/probe_bilanci_v139_cash.py'
       - 'scripts/probe_bilanci_v139_fcde_reconciliation.py'
+      - 'scripts/probe_bilanci_v139_archive_drift.py'
       - 'scripts/materialize_bilanci_v139.py'
       - 'scripts/test_bilanci_v139.py'
       - 'scripts/test_bilanci_v139_browser.py'
@@ -52,6 +53,7 @@ jobs:
           scripts/gate_bilanci_v139_sources.py
           scripts/probe_bilanci_v139_cash.py
           scripts/probe_bilanci_v139_fcde_reconciliation.py
+          scripts/probe_bilanci_v139_archive_drift.py
           scripts/materialize_bilanci_v139.py
           scripts/test_bilanci_v139.py
 
@@ -64,12 +66,17 @@ jobs:
       - name: Gate accepted OpenBDAP scope
         run: python scripts/gate_bilanci_v139_sources.py --output reports/bilanci-v139-source-gate.json
 
+      - name: Check historical OpenBDAP archive drift
+        run: python scripts/probe_bilanci_v139_archive_drift.py
+
       - name: Upload source gate evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bilanci-v139-source-gate
-          path: reports/bilanci-v139-source-gate.json
+          path: |
+            reports/bilanci-v139-source-gate.json
+            reports/bilanci-v139-archive-drift.json
           if-no-files-found: warn
 
   canonical-contract:
@@ -96,7 +103,7 @@ jobs:
         run: python scripts/preflight.py --quick
 
       - name: Verify build is non-mutating
-        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/bilanci-v139-source-gate.json'
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/bilanci-v139-source-gate.json' ':(exclude)reports/bilanci-v139-archive-drift.json'
 
   preview:
     needs: [source-audit, canonical-contract]
