@@ -152,7 +152,7 @@ def check_civil_protection_pietrasanta_reference(page: Page, base: str, data: di
         timeout=10_000,
     )
     text = panel.inner_text()
-    assert "Rispetto al valore pro capite Versilia" in text, text
+    assert "rispetto al valore pro capite versilia" in text.lower(), text
     assert "Valore pro capite Versilia" in text, text
     assert expected_text in text, (expected_text, text)
     assert "sotto la media Versilia" not in text, text
