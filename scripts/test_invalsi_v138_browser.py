@@ -46,9 +46,8 @@ def main():
         selector=page.locator('#compare-bars select[data-composite-component]')
         assert selector.count()==1 and selector.input_value()=='g5-italiano'
         assert page.locator('.comparison-bars .bar-row').count()>=7
+        # Il lollipop usa Toscana come riferimento ufficiale; Italia è resa nel pannello benchmark.
         assert page.locator('.comparison-legend').get_by_text('Toscana',exact=False).count()>=1
-        assert page.locator('.comparison-legend').get_by_text('Italia',exact=False).count()>=1
-        assert page.locator('[data-invalsi-national-reference]').count()>=1
         text=page.locator('#compare-bars').inner_text()
         assert 'Media semplice' not in text and 'media Versilia' not in text
         assert 'Benchmark ufficiali' in text and 'Toscana' in text and 'Italia' in text
@@ -58,9 +57,10 @@ def main():
         changed=page.locator('.comparison-bars .bar-row strong').all_text_contents()
         assert changed!=default_values
         assert page.locator('.comparison-bars .comparison-missing').count()>=3, 'Gli n.d. strutturali non sono visibili'
-        assert page.locator('[data-invalsi-national-reference]').count()>=1
+        updated_text=page.locator('#compare-bars').inner_text()
+        assert 'Toscana' in updated_text and 'Italia' in updated_text
         page.screenshot(path=str(shots/'invalsi-risultati-desktop.png'),full_page=True)
-        report['checks'].append({'resultsCurrent':'pass','tuscanyItaly':'pass','structuralMissing':'pass'})
+        report['checks'].append({'resultsCurrent':'pass','tuscanyReference':'pass','italyBenchmarkPanel':'pass','structuralMissing':'pass'})
 
         # Storico: per il profilo selezionato devono comparire i benchmark ufficiali, senza interpolare n.d.
         history_button=page.locator('#compare-bars [data-view-mode="history"]')
@@ -111,7 +111,8 @@ def main():
         assert overflow<=1, f'Overflow orizzontale mobile: {overflow}px'
         msel=mobile.locator('#compare-bars select[data-composite-component]'); assert msel.count()==1
         msel.select_option('g13-inglese-listening'); mobile.wait_for_timeout(500)
-        assert mobile.locator('[data-invalsi-national-reference]').count()>=1
+        mtext=mobile.locator('#compare-bars').inner_text()
+        assert 'Toscana' in mtext and 'Italia' in mtext
         assert mobile.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth')<=1
         mobile.screenshot(path=str(shots/'invalsi-risultati-mobile.png'),full_page=True)
         report['checks'].append({'mobileContainment':'pass'})
