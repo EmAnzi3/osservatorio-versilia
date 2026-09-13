@@ -56,23 +56,29 @@ def main():
             assert all(x is not None for x in v['italy']['values'])
             assert_no_pandemic_invention(v)
             if v['grade']==13: assert v['years'][0]=='2018-19'
-    # Un n.d. strutturale noto deve restare null, non zero.
     g8=next(v for v in snap['results']['views'] if v['key']=='g8-italiano')
     assert g8['municipalities']['Forte dei Marmi']['values'][-1] is None
     assert g8['municipalities']['Stazzema']['values'][-1] is None
 
-    # Esegue il materializzatore in file temporanei: nessuna mutazione del repo.
+    # Il repo conserva la baseline sorgente pre-materializzazioni; il canonical build
+    # porta 181→203 con le release precedenti e poi INVALSI applica il contratto 203→207.
+    # Qui isoliamo il solo materializzatore INVALSI e verifichiamo quindi un incremento +4.
     mat=load_module('invalsi_materializer',ROOT/'scripts/materialize_invalsi_v138.py')
+    assert mat.EXPECTED_BEFORE==203 and mat.EXPECTED_AFTER==207
+    baseline=json.loads((ROOT/'data/site-data.json').read_text())
+    baseline_count=len(baseline['metrics'])
     with tempfile.TemporaryDirectory() as td:
         td=Path(td); site=td/'site-data.json'; reg=td/'source-registry.json'; ss=td/'snapshot.json'
         shutil.copy2(ROOT/'data/site-data.json',site); shutil.copy2(ROOT/'data/source-registry.json',reg); ss.write_bytes(raw)
-        mat.SITE_DATA=site; mat.REGISTRY=reg; mat.SNAPSHOT=ss; mat.main()
+        mat.SITE_DATA=site; mat.REGISTRY=reg; mat.SNAPSHOT=ss
+        mat.EXPECTED_BEFORE=baseline_count; mat.EXPECTED_AFTER=baseline_count+4
+        mat.main()
         out=json.loads(site.read_text()); registry=json.loads(reg.read_text())
-    assert len(out['metrics'])==207 and out['version']=='v1.38.0'
+    assert len(out['metrics'])==baseline_count+4 and out['version']=='v1.38.0'
     assert set(KEYS).issubset(out['metrics'])
     section=next(s for s in out['themes']['istruzione']['sections'] if s['key']=='invalsi')
     assert section['metrics']==KEYS
-    assert registry['expectedMetricCount']==207
+    assert registry['expectedMetricCount']==baseline_count+4
     for key in KEYS:
         m=out['metrics'][key]
         assert m['meta']['compositeType']=='invalsiProfile'
@@ -82,10 +88,9 @@ def main():
         assert 'nessuna media' in m['method']['formula'].lower()
         assert 'Versilia' not in m['aggregate']['label']
         assert 'Versilia' not in m['nationalBenchmark']['label']
-    rendered=out['metrics']['invalsiResults']
-    forte=next(r for r in rendered['rows'] if r['town']=='Forte dei Marmi')
+    forte=next(r for r in out['metrics']['invalsiResults']['rows'] if r['town']=='Forte dei Marmi')
     assert next(p for p in forte['parts'] if p['key']=='g8-italiano')['value'] is None
-    print('INVALSI v1.38 gate OK: snapshot, coperture, benchmark, n.d. e materializzazione 203→207 verificati.')
+    print(f'INVALSI v1.38 gate OK: snapshot, coperture, benchmark, n.d. e materializzazione isolata +4; contratto pipeline {203}→{207}.')
 
 
 if __name__=='__main__': main()
