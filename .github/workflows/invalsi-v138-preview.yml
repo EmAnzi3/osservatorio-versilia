@@ -51,7 +51,9 @@ jobs:
       - name: Validate INVALSI source gate
         run: python scripts/test_invalsi_v138.py
 
-      - name: Canonical build
+      - name: Canonical v1.38 regression build
+        env:
+          OV_BUILD_RELEASE_CEILING: v1.38.0
         run: |
           python scripts/build_static_brand.py
           node --check dist/assets/app-bundle.js
