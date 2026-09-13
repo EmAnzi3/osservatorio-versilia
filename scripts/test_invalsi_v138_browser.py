@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Browser QA desktop/mobile per INVALSI v1.38.0."""
+"""Browser regression desktop/mobile per le superfici INVALSI introdotte in v1.38.0.
+
+Il gate sorgenti resta rigorosamente ancorato alla v1.38; questo test browser
+verifica invece che quelle superfici continuino a funzionare nella release
+pubblica corrente, anche dopo l'aggiunta di indicatori successivi.
+"""
 from __future__ import annotations
 
 import argparse
@@ -9,6 +14,14 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+
+
+REQUIRED_METRICS = {
+    "invalsiResults",
+    "invalsiCompetence",
+    "invalsiImplicitDispersion",
+    "invalsiAcademicExcellence",
+}
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -28,11 +41,20 @@ def wait_app(page):
     page.wait_for_selector('#app main',timeout=20_000); page.wait_for_timeout(700)
 
 
+def release_tuple(value: str) -> tuple[int, int, int]:
+    parts = str(value).strip().removeprefix('v').split('.')
+    if len(parts) < 3:
+        raise AssertionError(f'Release non valida: {value}')
+    return tuple(int(part) for part in parts[:3])
+
+
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--directory',default='dist'); ap.add_argument('--screenshots-dir',default='reports/invalsi-browser'); args=ap.parse_args()
     directory=Path(args.directory).resolve(); shots=Path(args.screenshots_dir).resolve(); shots.mkdir(parents=True,exist_ok=True)
     data=json.loads((directory/'data/site-data.json').read_text())
-    assert data['version']=='v1.38.0' and len(data['metrics'])==207
+    assert release_tuple(data['version']) >= (1, 38, 0), data['version']
+    assert len(data['metrics']) >= 207, len(data['metrics'])
+    assert REQUIRED_METRICS <= set(data['metrics']), REQUIRED_METRICS - set(data['metrics'])
     report={'checks':[],'consoleErrors':[],'pageErrors':[]}
 
     with serve(directory) as base, sync_playwright() as p:
