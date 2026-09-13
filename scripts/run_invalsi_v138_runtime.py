@@ -11,6 +11,21 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 PATCH=ROOT/'scripts'/'patch_invalsi_v138_runtime.py'
+APP03=ROOT/'assets/app-parts/03.txt'
+
+
+def patch_invalsi_town_first_render() -> None:
+    """Rende Toscana/Italia corretti già nel markup iniziale della scheda comune."""
+    a03=APP03.read_text(encoding='utf-8')
+    marker="metric.meta.compositeType==='invalsiProfile'?'Scostamento dalla Toscana':'Rispetto alla Versilia'"
+    if marker in a03:
+        return
+    old='<span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p>'
+    new='<span class="overline">${metric.meta.compositeType===\'invalsiProfile\'?\'Scostamento dalla Toscana\':\'Rispetto alla Versilia\'}</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${metric.meta.compositeType===\'invalsiProfile\'?\'rispetto alla Toscana\':html(summaryDelta.direction)}</small></strong><p>${metric.meta.compositeType===\'invalsiProfile\'?`Italia: ${html(formatValue(invalsiPart(metric.nationalBenchmark,defaultTerritoryChoice).value,invalsiPart(metric.nationalBenchmark,defaultTerritoryChoice).unit||summary.unit))}. Il Comune identifica il plesso, non la residenza dello studente.`:\'Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.\'}</p>'
+    count=a03.count(old)
+    if count!=1:
+        raise RuntimeError(f'v1.38 runner: markup comunale generico inatteso ({count})')
+    APP03.write_text(a03.replace(old,new,1),encoding='utf-8')
 
 
 def main():
@@ -54,6 +69,7 @@ def main():
         source=source.replace(old,new,1)
     env={'__name__':'__main__','__file__':str(PATCH),'__cached__':None,'__doc__':None,'__loader__':None,'__package__':'','__spec__':None}
     exec(compile(source,str(PATCH),'exec'),env)
+    patch_invalsi_town_first_render()
 
 
 if __name__=='__main__': main()
