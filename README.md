@@ -1,106 +1,110 @@
 # Osservatorio Versilia
 
+**Dati pubblici, confrontabili e verificabili per i sette Comuni della Versilia.**
+
 Sito pubblico: **https://osservatorioversilia.it**
 
-Versione dati corrente: **v1.29.0** — 3 settembre 2026.
+Release corrente: **v1.39.0** — aggiornata **13 settembre 2026**.
 
-Versione statica e autonoma dell'Osservatorio Versilia, ricostruita per GitHub Pages a partire dalle risorse pubbliche del precedente ChatGPT Site.
+Osservatorio Versilia è un progetto indipendente che raccoglie dati territoriali da fonti pubbliche, li rende confrontabili tra i Comuni e pubblica insieme ai valori anche fonte, annualità, metodo e stato dei dati. Il repository contiene il sito pubblico, i dataset incorporati, gli snapshot delle fonti, i materializzatori, gli audit e i test usati per produrre la versione pubblicata.
 
-## Contenuto
+## Stato del progetto
 
-- 7 schede comunali;
-- 11 aree tematiche;
-- 181 indicatori nel catalogo canonico: 177 con valori incorporati e 4 climatici con storici separati;
-- confronti territoriali e riferimenti Versilia;
-- benchmark Toscana/Italia quando la comparabilità è metodologicamente corretta;
-- serie storiche nazionali, regionali e comunali;
-- sottosezioni tematiche e dettagli analitici espandibili;
-- navigazione contestuale tra temi e tra Comuni;
-- ricerca globale;
-- esportazione CSV e stampa/PDF;
-- pagina del progetto e modulo `mailto:` per le segnalazioni.
+- **7 Comuni**: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema e Viareggio;
+- **11 aree tematiche**;
+- **213 indicatori canonici**;
+- **209 indicatori incorporati**: 207 con scheda autonoma e 2 con route dedicate;
+- **4 indicatori climatici esterni**, integrati nell'esperienza del sito con storici separati;
+- confronti territoriali, profili comunali, serie storiche e benchmark Versilia;
+- benchmark Toscana/Italia quando la comparabilità metodologica è adeguata;
+- esportazione CSV e stampa/PDF nelle viste che la supportano;
+- approfondimenti dedicati, tra cui PNRR, Atlante economico/ATECO, Opportunità e Percorsi;
+- Stato dati, metodologia, fonti e segnalazioni accessibili dal sito pubblico.
 
-La ricerca mobile usa un pannello a piena altezza con `100dvh`, pulsante di chiusura sempre visibile, supporto a `Escape` e chiusura tramite tasto Indietro del browser.
+### Novità della v1.39.0
 
-## Pubblicazione
+La release **Bilanci: liquidità, accantonamenti e missioni** porta il catalogo a 213 indicatori e aggiunge:
 
-Il sito è pubblicato con GitHub Pages tramite GitHub Actions e usa come dominio canonico **https://osservatorioversilia.it**.
+- FCDE per residente;
+- fondo di cassa a fine esercizio per residente;
+- spesa impegnata per residente per Missione 01 — Servizi istituzionali, generali e di gestione;
+- Missione 08 — Assetto del territorio ed edilizia abitativa;
+- Missione 11 — Soccorso civile;
+- Missione 14 — Sviluppo economico e competitività.
 
-1. Il repository mantiene il codice e i dati del sito.
-2. In **Settings → Pages**, la sorgente è **GitHub Actions**.
-3. Il workflow `.github/workflows/pages.yml` pubblica automaticamente il sito a ogni aggiornamento del ramo `main`, esclusivamente dopo build e test riusciti.
-4. Canonical, JSON-LD, Open Graph, sitemap e `robots.txt` vengono generati usando il dominio ufficiale.
+La stessa release uniforma inoltre il riferimento territoriale degli indicatori **pro capite**: quando esiste un vero aggregato territoriale, grafici e scostamenti comunali usano il **Valore pro capite Versilia**, non la media aritmetica dei valori dei sette Comuni.
 
-Il sito usa collegamenti relativi; l'indirizzo `emanzi3.github.io` resta soltanto l'infrastruttura tecnica sottostante di GitHub Pages e non è l'URL pubblico da indicizzare o condividere.
+## Metodo e qualità dei dati
 
-## Struttura
+Il registro canonico usato dal frontend è `data/site-data.json`. Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot e dalle formule conservati nel repository.
 
-- `index.html`: homepage;
-- `comuni/`: pagine dei sette Comuni;
-- `confronta/`: pagine degli undici temi;
-- `indicatori/`: 177 pagine canoniche generate in build, una per indicatore con dati incorporati;
-- `data/site-data.json`: catalogo canonico dei 181 indicatori, con dati incorporati per 177 e riferimenti ai file storici separati per i 4 climatici;
-- `data/source-registry.json`: perimetro e regole del controllo mensile;
-- `data/source-monitor-state.json`: baseline approvata delle fonti monitorate;
-- `data/source-snapshots/`: conteggi grezzi, serie comunali, formule, file originali e impronte delle fonti;
-- `assets/app.js`: logica di caricamento per lo sviluppo;
-- `assets/app-parts/`: moduli sorgente dell'applicazione;
-- `assets/original.css`: base visuale storica;
-- `assets/visual-grammar.css` e `assets/visual-grammar.js`: grammatica corrente dei confronti, riferimenti Versilia e scala di lettura;
-- `assets/static.css`, `assets/fidelity.css` e `assets/fidelity.js`: adattamenti statici, responsive e integrazioni runtime;
-- `assets/meteo-clima.css` e `assets/meteo-clima.js`: pagina editoriale Meteo e clima in bozza;
-- `progetto/` e `segnala/`: pagine informative.
+Principi di pubblicazione:
 
-## Coerenza dell'interfaccia
+- la copertura ordinaria è **7/7 Comuni**;
+- un valore ufficialmente assente, vuoto o non validabile resta **`n.d.`** e non viene trasformato in zero;
+- uno zero è pubblicato come tale solo quando la fonte lo riporta esplicitamente;
+- non vengono introdotte stime o interpolazioni per colmare dati comunali mancanti, salvo una metodologia esplicita e documentata;
+- per gli indicatori pro capite con aggregato territoriale reale, il riferimento Versilia è calcolato come **somma dei numeratori / somma della popolazione**, non come media semplice dei sette valori pro capite;
+- benchmark regionali e nazionali vengono mostrati solo quando definizione, periodo e unità sono confrontabili;
+- ogni indicatore deve dichiarare almeno definizione, annualità, unità, fonte e URL della fonte.
 
-Header, footer e navigazione globale hanno una fonte canonica in `assets/app-parts/00.txt`. Le pagine speciali riusano la stessa shell tramite `scripts/site_chrome.py`; il gate finale `scripts/test_site_consistency.py` controlla tutte le pagine prodotte, i link interni, i metadata e la sitemap dopo la materializzazione di Stato dati, PNRR e Percorsi.
+Gli snapshot leggibili in `data/source-snapshots/` conservano, secondo il tipo di indicatore, valori ufficiali, perimetro territoriale, formule, serie, file originali o impronte delle fonti e motivazioni delle eventuali esclusioni.
 
-Regole, profili ed eccezioni ammesse sono documentati in `docs/coerenza-interfaccia.md`. Una nuova pagina non classificata o una navigazione incompleta fanno fallire la pull request.
+## Cosa pubblica il sito
 
-## Aggiornamento dei dati
+- `index.html` — homepage e accesso ai contenuti;
+- `confronta/` — confronti per tema e indicatore;
+- `comuni/` — profili dei sette Comuni;
+- `indicatori/` — 207 schede indicatore autonome generate dalla build;
+- `stato-dati/` — stato, annualità e copertura dei dati;
+- `progetto/` — finalità e metodo del progetto;
+- `segnala/` — canale per segnalazioni e correzioni;
+- pagine e route dedicate per gli approfondimenti che richiedono una visualizzazione specifica.
 
-Il catalogo e i metadati dei 181 indicatori sono centralizzati in `data/site-data.json`. Gli storici climatici più pesanti restano nei file dedicati richiamati da `dataStorage`. Per aggiornamenti strutturali conviene modificare o rigenerare questi dati mantenendo per ogni indicatore:
+La ricerca globale è disponibile anche tramite `/` e `Ctrl/Cmd+K`. Il sito include supporto tecnico PWA/offline e strumenti di accessibilità per contrasto, dimensione del testo e riduzione del movimento.
 
-- definizione;
-- anno;
-- unità;
-- fonte e URL;
-- valori comunali;
-- formula degli indicatori derivati;
-- eventuale serie storica;
-- eventuali benchmark Toscana/Italia.
+## Struttura del repository
 
-Gli indicatori elaborati dall'Osservatorio devono essere ricostruibili dagli snapshot leggibili conservati in `data/source-snapshots/`. Gli snapshot riportano il perimetro territoriale, i conteggi o valori ufficiali utilizzati, le formule, le serie e i candidati esclusi.
+- `data/site-data.json` — catalogo canonico e metadati del frontend;
+- `data/source-snapshots/` — snapshot, dati grezzi e basi di audit versionate;
+- `scripts/` — materializzatori, builder, audit e test;
+- `assets/` — sorgenti e runtime dell'interfaccia;
+- `docs/` — metodologia e documentazione dei singoli lotti o processi;
+- `ci/build-materialization-contract.json` — contratto delle mutazioni ammesse durante la build;
+- `ci/workflow-contract.json` — inventario dei workflow CI riconosciuti;
+- `scripts/preflight_compile.txt` — inventario dei file Python sottoposti al controllo canonico.
 
-La copertura standard è **7/7 Comuni**. Un indicatore può essere pubblicato con copertura **6/7** soltanto quando un unico Comune presenta un dato ufficiale mancante o non validabile; il valore resta `n.d.` e non viene stimato o ricostruito. Coperture inferiori richiedono un'eccezione esplicita, documentata nello snapshot e nei test: nella v1.20.0 l'unico caso è la sottodimensione “Olive da tavola” del Profilo colture, pubblicata 4/7 con gli altri tre Comuni indicati come `n.d.`. Nella v1.21.0 il lotto Cultura e biblioteche usa inoltre il 2024 con copertura 5/7: Massarosa e Stazzema restano `n.d.` e le serie degli altri Comuni proseguono senza stime.
+Header, footer e navigazione globale sono trattati come componenti condivisi. I gate di coerenza verificano le pagine prodotte, i link interni, i metadata, la sitemap e le principali regressioni responsive/browser.
 
-### Controllo mensile automatico
+## Build e validazione
 
-Il workflow `.github/workflows/monthly-data-refresh.yml` viene eseguito il giorno 5 di ogni mese e può essere avviato manualmente da GitHub Actions.
+I comandi canonici sono:
 
-La procedura:
+```bash
+python scripts/preflight.py --quick
+python scripts/preflight.py --full
+```
 
-- valida tutti i 181 indicatori canonici, la ripartizione fra 177 valori incorporati e 4 storici climatici separati e la coerenza della copertura dichiarata;
-- controlla metadati, formule, annualità e serie storiche;
-- verifica la raggiungibilità delle fonti;
-- rileva modifiche dei file ufficiali direttamente scaricabili;
-- pubblica un rapporto nell'issue annuale `Registro controlli dati <anno>` menzionando `@EmAnzi3`;
-- apre una PR in bozza quando deve essere registrata una nuova baseline o quando una fonte cambia.
+La build statica principale è prodotta da:
 
-Il controllo non modifica automaticamente i dati e non effettua merge. La procedura completa è descritta in `docs/aggiornamento-mensile-dati.md`.
+```bash
+python scripts/build_static_brand.py
+```
 
-Il registro assegna inoltre a ogni indicatore un profilo fonte esplicito: produttore, frequenza, finestra attesa di pubblicazione, metodo di acquisizione e condizioni di riuso. Il controllo mensile fallisce se un indicatore resta senza profilo.
+L'output pubblico viene generato in `dist/`. La pipeline verifica inoltre che la build non lasci mutazioni non dichiarate nei file sorgente.
 
-La copertura e i criteri di ammissione delle serie comunali sono documentati in `docs/copertura-serie-storiche.md`.
+## CI e pubblicazione
 
-## Indicizzazione e Search Console
+Il workflow `.github/workflows/pages.yml` gestisce il percorso canonico di verifica e pubblicazione. Le pull request verso `main` passano dai gate `quick` e `full`; dopo il merge su `main`, GitHub Pages costruisce e pubblica il sito sul dominio canonico **https://osservatorioversilia.it**.
 
-La build genera una pagina autonoma per ciascuno dei 177 indicatori incorporati, con URL canonica, confronto comunale in ordine alfabetico, serie storica quando disponibile, fonte, metodo, dati strutturati `Dataset` e breadcrumb. Le URL sono incluse nella sitemap con `lastmod`.
+I workflow specializzati sono registrati in `ci/workflow-contract.json`: un nuovo workflow non dichiarato o una violazione del contratto di build fa fallire il preflight.
 
-I quattro indicatori climatici esterni sono integrati nell'esperienza Ambiente e rimandano all'approfondimento storico dedicato, senza duplicare i dataset più pesanti dentro `site-data.json`.
+Il controllo periodico delle fonti è separato dalla pubblicazione: può rilevare cambiamenti, registrare una nuova baseline o aprire una PR di revisione, ma non modifica né pubblica automaticamente dati senza passare dai gate del repository.
 
-La configurazione operativa di Google Search Console e i controlli successivi al rilascio sono descritti in `docs/search-console.md`.
+## Indicizzazione
+
+Le schede indicatore autonome includono URL canonica, fonte, metodo, dati strutturati e breadcrumb; la build aggiorna sitemap e metadata per il dominio ufficiale. I quattro indicatori climatici esterni restano collegati agli approfondimenti storici dedicati senza duplicare nel catalogo principale dataset più pesanti.
 
 ## Licenze e attribuzioni
 
-Testi, elaborazioni e visualizzazioni originali seguono quanto dichiarato nella pagina **Il progetto**. Dati, stemmi, fotografia e materiali di terzi conservano le condizioni d'uso e le licenze dei rispettivi titolari. Per usi ufficiali va sempre consultata la fonte originaria.
+Testi, elaborazioni e visualizzazioni originali seguono quanto dichiarato nella pagina **Il progetto**. Dati, stemmi, fotografie e materiali di terzi conservano le condizioni d'uso e le licenze dei rispettivi titolari. Per usi ufficiali va sempre consultata la fonte originaria.
