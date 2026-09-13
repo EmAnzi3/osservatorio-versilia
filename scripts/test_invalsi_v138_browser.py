@@ -49,7 +49,8 @@ def main():
         # Il lollipop usa Toscana come riferimento ufficiale; Italia è resa nel pannello benchmark.
         assert page.locator('.comparison-legend').get_by_text('Toscana',exact=False).count()>=1
         text=page.locator('#compare-bars').inner_text()
-        assert 'Media semplice' not in text and 'media Versilia' not in text
+        assert 'Media semplice' not in text and 'Versilia ·' not in text
+        assert 'nessuna media Versilia' in text
         assert 'Benchmark ufficiali' in text and 'Toscana' in text and 'Italia' in text
         default_values=page.locator('.comparison-bars .bar-row strong').all_text_contents()
         selector.select_option('g8-italiano'); page.wait_for_timeout(700)
