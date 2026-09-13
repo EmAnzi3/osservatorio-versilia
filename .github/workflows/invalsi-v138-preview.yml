@@ -1,6 +1,19 @@
 name: INVALSI v1.38 Preview
 
 on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "data/source-snapshots/invalsi-v138-b64/**"
+      - "scripts/materialize_invalsi_v138.py"
+      - "scripts/materialize_invalsi_v138_payload.py"
+      - "scripts/patch_invalsi_v138_runtime.py"
+      - "scripts/run_invalsi_v138_runtime.py"
+      - "scripts/test_invalsi_v138.py"
+      - "scripts/test_invalsi_v138_browser.py"
+      - "scripts/build_static_brand.py"
+      - "scripts/preflight_compile.txt"
+      - ".github/workflows/invalsi-v138-preview.yml"
   workflow_dispatch:
 
 permissions:
