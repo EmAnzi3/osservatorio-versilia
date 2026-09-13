@@ -9,9 +9,9 @@ on:
       - 'scripts/gate_bilanci_v139_sources.py'
       - 'scripts/probe_bilanci_v139_cash.py'
       - 'scripts/probe_bilanci_v139_fcde_reconciliation.py'
-      - 'scripts/probe_bilanci_v139_archive_drift.py'
       - 'scripts/materialize_bilanci_v139.py'
       - 'scripts/materialize_bilanci_v139_review.py'
+      - 'scripts/apply_bilanci_v139.py'
       - 'scripts/test_bilanci_v139.py'
       - 'scripts/test_bilanci_v139_browser.py'
       - 'scripts/build_bilanci_snapshot.py'
@@ -26,6 +26,7 @@ on:
       - 'scripts/build_static_brand.py'
       - 'scripts/preflight.py'
       - 'ci/workflow-contract.json'
+      - 'ci/build-materialization-contract.json'
   workflow_dispatch:
 
 permissions:
@@ -56,6 +57,7 @@ jobs:
           scripts/probe_bilanci_v139_fcde_reconciliation.py
           scripts/materialize_bilanci_v139.py
           scripts/materialize_bilanci_v139_review.py
+          scripts/apply_bilanci_v139.py
           scripts/test_bilanci_v139.py
 
       - name: Gate year-end cash fund 7/7
@@ -66,6 +68,33 @@ jobs:
 
       - name: Gate accepted OpenBDAP scope
         run: python scripts/gate_bilanci_v139_sources.py --output reports/bilanci-v139-source-gate.json
+
+      - name: Validate frozen v1.39 snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('data/source-snapshots/bilanci-v139.json')
+          s = json.loads(p.read_text(encoding='utf-8'))
+          expected = {
+              'fcdePerResident', 'yearEndCashFundPerResident',
+              'generalAdministrationMissionExpenditurePerResident',
+              'territorialPlanningMissionExpenditurePerResident',
+              'civilProtectionMissionExpenditurePerResident',
+              'economicDevelopmentMissionExpenditurePerResident',
+          }
+          assert s['version'] == 'bilanci-v139'
+          assert set(s['series']) == expected
+          assert set(s['coverage']) == expected
+          for key in expected:
+              assert s['series'][key]['year'] == '2025'
+              assert set(s['series'][key]['towns']) == {
+                  'Massarosa','Viareggio','Camaiore','Pietrasanta',
+                  'Seravezza','Forte dei Marmi','Stazzema'
+              }
+              assert 2025 in s['coverage'][key]['included_years']
+          print('Bilanci v1.39 frozen snapshot: OK')
+          PY
 
       - name: Upload source gate evidence
         if: always()
@@ -105,7 +134,7 @@ jobs:
     needs: [source-audit, canonical-contract]
     if: ${{ needs.source-audit.result == 'success' && needs.canonical-contract.result == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -123,24 +152,10 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Materialize approved v1.39 scope in workspace
-        run: python scripts/materialize_bilanci_v139_review.py
-
-      - name: Test Bilanci v1.39 contract
-        run: python scripts/test_bilanci_v139.py
-
-      - name: Upload Bilanci v1.39 generated snapshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: bilanci-v139-generated-evidence
-          path: data/source-snapshots/bilanci-v139.json
-          if-no-files-found: error
-          retention-days: 90
-
-      - name: Build preview
+      - name: Build v1.39 preview from frozen snapshot
         run: python scripts/build_static_brand.py
 
-      - name: Run site consistency on materialized preview
+      - name: Run site consistency
         run: python scripts/test_site_consistency.py
 
       - name: Upload Bilanci v1.39 preview
