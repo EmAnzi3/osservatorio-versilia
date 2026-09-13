@@ -106,3 +106,6 @@ scripts/patch_invalsi_v138_runtime.py
 scripts/run_invalsi_v138_runtime.py
 scripts/test_invalsi_v138.py
 scripts/test_invalsi_v138_browser.py
+scripts/apply_bilanci_v139.py
+scripts/test_bilanci_v139.py
+scripts/test_bilanci_v139_browser.py
