@@ -205,8 +205,8 @@ def main() -> None:
         raise RuntimeError("Bilanci v1.39 ha modificato la serie legacy Turismo e sviluppo")
 
     data["version"] = "v1.39.0"
-    data["release_version"] = "v1.39.0"
-    data["updated"] = "2026-09-13"
+    data["release_version"] = "1.39.0"
+    data["updated"] = "13 settembre 2026"
     registry["expectedMetricCount"] = len(data["metrics"])
     registry["expectedExternalMetricCount"] = int(registry.get("expectedExternalMetricCount", 4))
     registry["expectedInlineMetricCount"] = registry["expectedMetricCount"] - registry["expectedExternalMetricCount"]
