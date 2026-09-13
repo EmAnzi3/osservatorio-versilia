@@ -1,8 +1,6 @@
 name: INVALSI v1.38 Preview
 
 on:
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -15,56 +13,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Determine INVALSI applicability
-        id: scope
-        shell: bash
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          set -euo pipefail
-          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            echo "Manual dispatch: eseguo la regressione INVALSI completa."
-            exit 0
-          fi
-
-          git diff --name-only "$BASE_SHA" "$HEAD_SHA" > /tmp/invalsi-changed-files.txt
-
-          echo "File modificati nella PR:"
-          cat /tmp/invalsi-changed-files.txt
-
-          if grep -Eq '^(data/source-snapshots/invalsi-v138-b64/|scripts/(materialize_invalsi_v138\.py|materialize_invalsi_v138_payload\.py|patch_invalsi_v138_runtime\.py|run_invalsi_v138_runtime\.py|test_invalsi_v138\.py|test_invalsi_v138_browser\.py)$)' /tmp/invalsi-changed-files.txt; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            echo "Modifiche INVALSI rilevate: eseguo la regressione completa."
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Nessuna modifica INVALSI: check non applicabile, nessuna build/browser v1.38."
-          fi
-
-      - name: INVALSI not applicable
-        if: ${{ steps.scope.outputs.run != 'true' }}
-        run: echo "INVALSI v1.38 non coinvolto da questa PR: check verde senza eseguire regressioni fuori perimetro."
 
       - name: Set up Python
-        if: ${{ steps.scope.outputs.run == 'true' }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install browser tooling
-        if: ${{ steps.scope.outputs.run == 'true' }}
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
       - name: Compile v1.38 sources
-        if: ${{ steps.scope.outputs.run == 'true' }}
         run: |
           python -m py_compile \
             scripts/materialize_invalsi_v138.py \
@@ -75,18 +36,15 @@ jobs:
             scripts/test_invalsi_v138_browser.py
 
       - name: Validate INVALSI source gate
-        if: ${{ steps.scope.outputs.run == 'true' }}
         run: python scripts/test_invalsi_v138.py
 
       - name: Canonical current-release build
-        if: ${{ steps.scope.outputs.run == 'true' }}
         run: |
           python scripts/build_static_brand.py
           node --check dist/assets/app-bundle.js
           git diff --exit-code -- . ':(exclude)dist'
 
       - name: Browser QA desktop and mobile
-        if: ${{ steps.scope.outputs.run == 'true' }}
         run: |
           mkdir -p reports/invalsi-browser
           python scripts/test_invalsi_v138_browser.py \
@@ -94,7 +52,7 @@ jobs:
             --screenshots-dir reports/invalsi-browser
 
       - name: Package review artifact
-        if: ${{ steps.scope.outputs.run == 'true' }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: invalsi-preview-v1.38.0
