@@ -103,5 +103,6 @@ scripts/refine_territorio_ucs_release_v2.py
 scripts/materialize_invalsi_v138.py
 scripts/materialize_invalsi_v138_payload.py
 scripts/patch_invalsi_v138_runtime.py
+scripts/run_invalsi_v138_runtime.py
 scripts/test_invalsi_v138.py
 scripts/test_invalsi_v138_browser.py
