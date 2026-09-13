@@ -2,7 +2,6 @@
 """Transactional entry point for the production static build."""
 from __future__ import annotations
 
-import os
 import runpy
 from pathlib import Path
 
@@ -25,25 +24,8 @@ INVALSI_V138_PAYLOAD = ROOT / "scripts" / "materialize_invalsi_v138_payload.py"
 INVALSI_V138_RUNTIME_RUNNER = ROOT / "scripts" / "run_invalsi_v138_runtime.py"
 BILANCI_V139_MATERIALIZER = ROOT / "scripts" / "apply_bilanci_v139.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
-RELEASE_CEILING_ENV = "OV_BUILD_RELEASE_CEILING"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
-
-
-def _include_bilanci_v139() -> bool:
-    """Return whether the production chain should include the v1.39 overlay.
-
-    The only supported ceiling is v1.38.0 and exists solely so the dedicated
-    INVALSI regression workflow can still build and browser-test the exact v1.38
-    surface. Normal/production builds leave the variable unset and always include
-    v1.39. Unknown values fail closed.
-    """
-    ceiling = (os.environ.get(RELEASE_CEILING_ENV) or "").strip()
-    if not ceiling:
-        return True
-    if ceiling == "v1.38.0":
-        return False
-    raise RuntimeError(f"{RELEASE_CEILING_ENV} non supportato: {ceiling}")
 
 
 def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
@@ -65,13 +47,10 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_RUNTIME_PATCH), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(INVALSI_V138_PAYLOAD), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(INVALSI_V138_RUNTIME_RUNNER), run_name="__main__")
-        if _include_bilanci_v139():
-            # v1.39 è un overlay esclusivamente locale: la snapshot OpenBDAP è già
-            # versionata e viene applicata soltanto dopo che la catena v1.38 è completa.
-            _ORIGINAL_RUN_PATH(str(BILANCI_V139_MATERIALIZER), run_name="__main__")
-            _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
-        else:
-            print("Build limitata esplicitamente a v1.38.0 per regression QA INVALSI.")
+        # v1.39 è un overlay esclusivamente locale: la snapshot OpenBDAP è già
+        # versionata e viene applicata soltanto dopo che la catena v1.38 è completa.
+        _ORIGINAL_RUN_PATH(str(BILANCI_V139_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
