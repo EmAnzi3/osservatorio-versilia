@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 PATCH=ROOT/'scripts'/'patch_invalsi_v138_runtime.py'
 APP03=ROOT/'assets/app-parts/03.txt'
+UXCSS=ROOT/'assets/ux-experiment.css'
 
 
 def patch_invalsi_town_first_render() -> None:
@@ -26,6 +27,45 @@ def patch_invalsi_town_first_render() -> None:
     if count!=1:
         raise RuntimeError(f'v1.38 runner: markup comunale generico inatteso ({count})')
     APP03.write_text(a03.replace(old,new,1),encoding='utf-8')
+
+
+def patch_invalsi_history_benchmark_styles() -> None:
+    """Distingue solo nello storico INVALSI i benchmark Toscana e Italia."""
+    css=UXCSS.read_text(encoding='utf-8')
+    marker='/* INVALSI benchmark history styles v1.38 */'
+    if marker in css:
+        return
+    addition=r'''
+
+/* INVALSI benchmark history styles v1.38 */
+.ux-history-chart .ux-series-group[data-history-town="toscana"] .ux-series-line {
+  stroke-dasharray: 10 5;
+  stroke-width: 3;
+  opacity: .9;
+}
+
+.ux-history-chart .ux-series-group[data-history-town="italia"] .ux-series-line {
+  stroke-dasharray: 2 5;
+  stroke-width: 3;
+  opacity: .9;
+}
+
+.ux-history-legend button[data-history-select="toscana"]::before,
+.ux-history-legend button[data-history-select="italia"]::before {
+  width: 20px;
+  height: 2px;
+  border-radius: 0;
+}
+
+.ux-history-legend button[data-history-select="toscana"]::before {
+  background: repeating-linear-gradient(90deg, var(--series-color) 0 8px, transparent 8px 12px);
+}
+
+.ux-history-legend button[data-history-select="italia"]::before {
+  background: repeating-linear-gradient(90deg, var(--series-color) 0 2px, transparent 2px 6px);
+}
+'''
+    UXCSS.write_text(css+addition,encoding='utf-8')
 
 
 def main():
@@ -70,6 +110,7 @@ def main():
     env={'__name__':'__main__','__file__':str(PATCH),'__cached__':None,'__doc__':None,'__loader__':None,'__package__':'','__spec__':None}
     exec(compile(source,str(PATCH),'exec'),env)
     patch_invalsi_town_first_render()
+    patch_invalsi_history_benchmark_styles()
 
 
 if __name__=='__main__': main()
