@@ -350,8 +350,8 @@ def main() -> None:
     )
 
     data["version"] = "v1.39.0"
-    data["release_version"] = "v1.39.0"
-    data["updated"] = "2026-09-13"
+    data["release_version"] = "1.39.0"
+    data["updated"] = "13 settembre 2026"
 
     legacy_after = json.dumps(data["metrics"][legacy_key], ensure_ascii=False, sort_keys=True)
     if legacy_before != legacy_after:
