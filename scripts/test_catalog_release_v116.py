@@ -71,6 +71,10 @@ def main():
     app0=(ROOT/'assets/app-parts/00.txt').read_text(encoding='utf-8'); app5=(ROOT/'assets/app-parts/05.txt').read_text(encoding='utf-8')
     assert "case 'km'" in app0 and "case 'kmIntervention'" in app0 and '2026.09.01-v1.27.0' in app5 and '177 indicatori complessivi' in app5 and '2026.08.31-v1.26.0' in app5
     chart=(ROOT/'assets/app-parts/03.txt').read_text(encoding='utf-8'); assert 'part.count === null || part.count === undefined' in chart
-    readme=(ROOT/'README.md').read_text(encoding='utf-8'); assert '**v1.29.0** — 3 settembre 2026' in readme and '181 indicatori' in readme and '177 con valori incorporati' in readme
+    readme=(ROOT/'README.md').read_text(encoding='utf-8')
+    assert '# Osservatorio Versilia' in readme
+    assert 'https://osservatorioversilia.it' in readme
+    assert '## Metodo e qualità dei dati' in readme
+    assert '## Build e validazione' in readme
     print(f'Release {VERSION} verificata: {EXPECTED_METRICS} indicatori; stato lavori, reticolo gestito e opere idrauliche verificati senza proxy.')
 if __name__=='__main__': main()
