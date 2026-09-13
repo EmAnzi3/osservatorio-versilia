@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser QA desktop/mobile per i sei indicatori Bilanci v1.39.0."""
+"""Browser QA desktop/mobile per Bilanci v1.39.0 e benchmark pro capite globale."""
 from __future__ import annotations
 
 import argparse
@@ -34,6 +34,12 @@ METRICS = (
         "Sviluppo economico",
         2019,
     ),
+)
+
+PER_CAPITA_UI_SENTINELS = (
+    ("educationMissionExpenditurePerResident", "bilanci"),
+    ("wastePerResident", "ambiente"),
+    ("civilProtectionMissionExpenditurePerResident", "bilanci"),
 )
 
 
@@ -110,6 +116,49 @@ def check_town(page: Page, base: str, key: str, short_label: str) -> None:
     no_overflow(page, f"Massarosa {key}")
 
 
+def check_per_capita_compare_reference(page: Page, base: str, key: str, theme: str) -> None:
+    page.goto(f"{base}/confronta/{theme}/?indicatore={key}", wait_until="networkidle")
+    wait_app(page)
+    page.wait_for_function(
+        "document.querySelector('.comparison-legend')?.textContent?.includes('Valore pro capite Versilia')",
+        timeout=10_000,
+    )
+    legend = page.locator(".comparison-legend").first.inner_text()
+    assert "Valore pro capite Versilia" in legend, (key, legend)
+    assert "Media semplice" not in legend, (key, legend)
+    definition = page.locator("#compare-definition").inner_text()
+    assert "Valore pro capite Versilia" in definition, (key, definition)
+    first_row = page.locator("#compare-bars .bar-row").first
+    aria = first_row.get_attribute("aria-label") or ""
+    assert "Valore pro capite Versilia:" in aria, (key, aria)
+
+
+def check_civil_protection_pietrasanta_reference(page: Page, base: str, data: dict) -> None:
+    key = "civilProtectionMissionExpenditurePerResident"
+    metric = data["metrics"][key]
+    row = next(item for item in metric["rows"] if item["town"] == "Pietrasanta")
+    expected = ((float(row["value"]) / float(metric["aggregate"]["value"])) - 1) * 100
+    expected_text = f"{expected:+.1f}%".replace(".", ",").replace("-", "−")
+
+    page.goto(
+        f"{base}/comuni/pietrasanta/?tema=bilanci&indicatore={key}",
+        wait_until="networkidle",
+    )
+    wait_app(page)
+    page.get_by_role("heading", name="Pietrasanta", exact=True).wait_for(timeout=10_000)
+    panel = page.locator(".versilia-position")
+    page.wait_for_function(
+        "document.querySelector('.versilia-position .overline')?.textContent?.includes('valore pro capite Versilia')",
+        timeout=10_000,
+    )
+    text = panel.inner_text()
+    assert "Rispetto al valore pro capite Versilia" in text, text
+    assert "Valore pro capite Versilia" in text, text
+    assert expected_text in text, (expected_text, text)
+    assert "sotto la media Versilia" not in text, text
+    assert "non la media semplice" in text.lower(), text
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--directory", default="dist")
@@ -156,14 +205,28 @@ def main() -> int:
             check_town(desktop, base, key, short_label)
             report["checks"].append({key: "town-pass"})
 
+        for key, theme in PER_CAPITA_UI_SENTINELS:
+            check_per_capita_compare_reference(desktop, base, key, theme)
+            report["checks"].append({key: "per-capita-reference-pass"})
+        check_civil_protection_pietrasanta_reference(desktop, base, data)
+        report["checks"].append({"civilProtectionPietrasanta": "weighted-reference-pass"})
+
         for key, filename in (
             ("fcdePerResident", "bilanci-fcde-desktop.png"),
             ("yearEndCashFundPerResident", "bilanci-cassa-desktop.png"),
             ("economicDevelopmentMissionExpenditurePerResident", "bilanci-m14-desktop.png"),
+            ("civilProtectionMissionExpenditurePerResident", "bilanci-m11-reference-desktop.png"),
         ):
             desktop.goto(f"{base}/confronta/bilanci/?indicatore={key}", wait_until="networkidle")
             wait_app(desktop)
             desktop.screenshot(path=str(screenshots / filename), full_page=True)
+
+        desktop.goto(
+            f"{base}/comuni/pietrasanta/?tema=bilanci&indicatore=civilProtectionMissionExpenditurePerResident",
+            wait_until="networkidle",
+        )
+        wait_app(desktop)
+        desktop.screenshot(path=str(screenshots / "bilanci-m11-pietrasanta-reference-desktop.png"), full_page=True)
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844})
         mobile.on(
@@ -173,8 +236,9 @@ def main() -> int:
         mobile.on("pageerror", lambda exc: report["pageErrors"].append(f"mobile: {exc}"))
         for key, label, _short_label, first_year in METRICS:
             check_compare(mobile, base, key, label, first_year)
+        check_per_capita_compare_reference(mobile, base, "civilProtectionMissionExpenditurePerResident", "bilanci")
         mobile.screenshot(path=str(screenshots / "bilanci-missioni-mobile.png"), full_page=True)
-        report["checks"].append({"mobile": "six-metrics-pass"})
+        report["checks"].append({"mobile": "six-metrics-and-reference-pass"})
         browser.close()
 
     errors.extend(report["pageErrors"])
