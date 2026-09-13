@@ -32,6 +32,11 @@ def main():
             '    vg=patch(vg,\'compositeAggregateFor\',lambda b:b.replace("label:`Versilia · ${part.label || metric.meta.label}`","label:type===\'invalsiProfile\'?`${metric.aggregate?.label||\'Toscana\'} · ${part.label||metric.meta.label}`:`Versilia · ${part.label||metric.meta.label}`",1))\n',
         ),
         (
+            'town visual grammar exclusion',
+            '    vg=all_(vg,"\'roadNetworkProfile\'].includes(type)","\'roadNetworkProfile\',\'invalsiProfile\'].includes(type)",\'visual profile\')\n',
+            '    vg=all_(vg,"\'roadNetworkProfile\'].includes(type)","\'roadNetworkProfile\',\'invalsiProfile\'].includes(type)",\'visual profile\')\n    vg=once(vg,"[\'distribution\',\'agricultureProfile\',\'ratioProfile\',\'financialProfile\',\'hydroRisk\',\'territorialClassification\',\'landCoverProfile\'].includes(metric.meta?.compositeType)","[\'distribution\',\'agricultureProfile\',\'ratioProfile\',\'financialProfile\',\'hydroRisk\',\'territorialClassification\',\'landCoverProfile\',\'invalsiProfile\'].includes(metric.meta?.compositeType)",\'town visual grammar exclusion\')\n',
+        ),
+        (
             'single visual reference',
             "    vg=patch(vg,'enhanceComparison',compare_vg)\n",
             "    # Toscana resta il riferimento grafico del lollipop; Italia è resa nel pannello benchmark/storico.\n",
