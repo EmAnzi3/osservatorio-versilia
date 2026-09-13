@@ -25,6 +25,7 @@ on:
       - 'assets/app-parts/**'
       - 'scripts/build_static_brand.py'
       - 'scripts/preflight.py'
+      - 'scripts/preflight_compile.txt'
       - 'ci/workflow-contract.json'
       - 'ci/build-materialization-contract.json'
   workflow_dispatch:
@@ -59,6 +60,7 @@ jobs:
           scripts/materialize_bilanci_v139_review.py
           scripts/apply_bilanci_v139.py
           scripts/test_bilanci_v139.py
+          scripts/test_bilanci_v139_browser.py
 
       - name: Gate year-end cash fund 7/7
         run: python scripts/probe_bilanci_v139_cash.py
@@ -134,7 +136,7 @@ jobs:
     needs: [source-audit, canonical-contract]
     if: ${{ needs.source-audit.result == 'success' && needs.canonical-contract.result == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -152,11 +154,15 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Build v1.39 preview from frozen snapshot
-        run: python scripts/build_static_brand.py
+      - name: Build and verify complete v1.39 preview
+        run: python scripts/preflight.py --quick
 
-      - name: Run site consistency
-        run: python scripts/test_site_consistency.py
+      - name: Browser QA Bilanci v1.39 desktop and mobile
+        run: |
+          mkdir -p reports/bilanci-v139-browser
+          python scripts/test_bilanci_v139_browser.py \
+            --directory dist \
+            --screenshots-dir reports/bilanci-v139-browser
 
       - name: Upload Bilanci v1.39 preview
         uses: actions/upload-artifact@v4
@@ -164,4 +170,15 @@ jobs:
           name: osservatorio-versilia-bilanci-v139-preview
           path: dist/
           if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload Bilanci v1.39 browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bilanci-v139-browser-evidence
+          path: |
+            reports/bilanci-v139-browser/
+            reports/bilanci-v139-browser-report.json
+          if-no-files-found: warn
           retention-days: 14
