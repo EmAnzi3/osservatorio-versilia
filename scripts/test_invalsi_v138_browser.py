@@ -46,7 +46,6 @@ def main():
         selector=page.locator('#compare-bars select[data-composite-component]')
         assert selector.count()==1 and selector.input_value()=='g5-italiano'
         assert page.locator('.comparison-bars .bar-row').count()>=7
-        # Il lollipop usa Toscana come riferimento ufficiale; Italia è resa nel pannello benchmark.
         assert page.locator('.comparison-legend').get_by_text('Toscana',exact=False).count()>=1
         text=page.locator('#compare-bars').inner_text()
         assert 'Media semplice' not in text and 'Versilia ·' not in text
@@ -63,7 +62,6 @@ def main():
         page.screenshot(path=str(shots/'invalsi-risultati-desktop.png'),full_page=True)
         report['checks'].append({'resultsCurrent':'pass','tuscanyReference':'pass','italyBenchmarkPanel':'pass','structuralMissing':'pass'})
 
-        # Storico: per il profilo selezionato devono comparire i benchmark ufficiali, senza interpolare n.d.
         history_button=page.locator('#compare-bars [data-view-mode="history"]')
         if history_button.count():
             history_button.click(); page.wait_for_timeout(500)
@@ -72,10 +70,17 @@ def main():
             htext=hist.inner_text()
             assert 'Toscana' in htext and 'Italia' in htext
             assert 'Versilia' not in htext
+            tuscany_line=hist.locator('.ux-series-group[data-history-town="toscana"] .ux-series-line')
+            italy_line=hist.locator('.ux-series-group[data-history-town="italia"] .ux-series-line')
+            assert tuscany_line.count()==1 and italy_line.count()==1
+            tuscany_dash=tuscany_line.evaluate("el => getComputedStyle(el).strokeDasharray")
+            italy_dash=italy_line.evaluate("el => getComputedStyle(el).strokeDasharray")
+            assert tuscany_dash and italy_dash and tuscany_dash!='none' and italy_dash!='none' and tuscany_dash!=italy_dash, (tuscany_dash,italy_dash)
+            assert hist.locator('.ux-history-legend button[data-history-select="toscana"]').count()==1
+            assert hist.locator('.ux-history-legend button[data-history-select="italia"]').count()==1
             page.screenshot(path=str(shots/'invalsi-risultati-storico-desktop.png'),full_page=True)
-            report['checks'].append({'resultsHistory':'pass'})
+            report['checks'].append({'resultsHistory':'pass','benchmarkDashStyles':'pass'})
 
-        # Livelli/traguardi: stack INVALSI/QCER e benchmark nello stesso componente.
         page.goto(f'{base}/confronta/istruzione/?indicatore=invalsiCompetence',wait_until='networkidle'); wait_app(page)
         comp=page.locator('#compare-bars select[data-composite-component]')
         assert comp.count()==1 and comp.input_value()=='g5-inglese-reading'
@@ -85,7 +90,6 @@ def main():
         page.screenshot(path=str(shots/'invalsi-livelli-desktop.png'),full_page=True)
         report['checks'].append({'competenceLevels':'pass'})
 
-        # Dispersione/eccellenza disponibili come indicatori distinti.
         for key,label in [('invalsiImplicitDispersion','Dispersione scolastica implicita'),('invalsiAcademicExcellence','Eccellenza accademica')]:
             page.goto(f'{base}/confronta/istruzione/?indicatore={key}',wait_until='networkidle'); wait_app(page)
             assert page.get_by_text(label,exact=True).count()>=1
@@ -93,7 +97,6 @@ def main():
             assert 'Italia' in page.locator('#compare-bars').inner_text()
         report['checks'].append({'dispersionExcellence':'pass'})
 
-        # Scheda comunale: non deve mai comparire una posizione rispetto alla Versilia.
         page.goto(f'{base}/comuni/massarosa/?tema=istruzione&indicatore=invalsiResults',wait_until='networkidle'); wait_app(page)
         page.get_by_role('heading',name='Massarosa',exact=True).wait_for(timeout=10_000)
         pos=page.locator('#town-topic .versilia-position')
