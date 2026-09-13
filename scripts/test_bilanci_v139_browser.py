@@ -13,22 +13,25 @@ from playwright.sync_api import Page, sync_playwright
 
 
 METRICS = (
-    ("fcdePerResident", "Fondo crediti di dubbia esigibilità per residente", 2019),
-    ("yearEndCashFundPerResident", "Fondo di cassa al 31 dicembre per residente", 2019),
+    ("fcdePerResident", "Fondo crediti di dubbia esigibilità per residente", "FCDE", 2019),
+    ("yearEndCashFundPerResident", "Fondo di cassa al 31 dicembre per residente", "Fondo cassa finale", 2019),
     (
         "generalAdministrationMissionExpenditurePerResident",
         "Spesa impegnata per servizi istituzionali e generali per residente",
+        "Servizi generali",
         2019,
     ),
     (
         "territorialPlanningMissionExpenditurePerResident",
         "Spesa impegnata per assetto del territorio ed edilizia abitativa per residente",
+        "Assetto territorio",
         2019,
     ),
-    ("civilProtectionMissionExpenditurePerResident", "Spesa impegnata per soccorso civile per residente", 2021),
+    ("civilProtectionMissionExpenditurePerResident", "Spesa impegnata per soccorso civile per residente", "Soccorso civile", 2021),
     (
         "economicDevelopmentMissionExpenditurePerResident",
         "Spesa impegnata per sviluppo economico e competitività per residente",
+        "Sviluppo economico",
         2019,
     ),
 )
@@ -87,7 +90,7 @@ def check_compare(page: Page, base: str, key: str, label: str, first_year: int) 
     no_overflow(page, f"confronto {key}")
 
 
-def check_town(page: Page, base: str, key: str, label: str) -> None:
+def check_town(page: Page, base: str, key: str, short_label: str) -> None:
     page.goto(
         f"{base}/comuni/massarosa/?tema=bilanci&indicatore={key}",
         wait_until="networkidle",
@@ -96,9 +99,13 @@ def check_town(page: Page, base: str, key: str, label: str) -> None:
     page.get_by_role("heading", name="Massarosa", exact=True).wait_for(timeout=10_000)
     town = page.locator("#town-topic")
     assert town.count() == 1
+    active = town.locator(f'.metric-catalog [data-metric="{key}"]')
+    assert active.count() == 1, f"{key}: controllo indicatore assente nella scheda Massarosa"
+    assert active.get_attribute("aria-selected") == "true", f"{key}: indicatore non attivo nella scheda Massarosa"
+    assert short_label in active.inner_text(), f"{key}: short label inattesa nella scheda Massarosa"
     text = town.inner_text()
-    assert label in text, f"{key}: etichetta assente nella scheda Massarosa"
     assert "2025" in text, f"{key}: anno 2025 assente nella scheda Massarosa"
+    assert "Fonte originale" in text, f"{key}: fonte originale assente nella scheda Massarosa"
     assert "NaN" not in text and "undefined" not in text, f"{key}: valore tecnico nella scheda Massarosa"
     no_overflow(page, f"Massarosa {key}")
 
@@ -115,8 +122,10 @@ def main() -> int:
     data = json.loads((directory / "data/site-data.json").read_text(encoding="utf-8"))
     assert data["version"] == "v1.39.0", data["version"]
     assert len(data["metrics"]) == 213, len(data["metrics"])
-    for key, _label, first_year in METRICS:
+    for key, label, short_label, first_year in METRICS:
         metric = data["metrics"][key]
+        assert metric["meta"]["label"] == label
+        assert metric["meta"]["shortLabel"] == short_label
         assert metric["meta"]["year"] == "2025"
         assert len(metric["rows"]) == 7
         assert metric["rows"][0]["series"]["years"][0] == first_year
@@ -133,11 +142,11 @@ def main() -> int:
         )
         desktop.on("pageerror", lambda exc: report["pageErrors"].append(str(exc)))
 
-        for key, label, first_year in METRICS:
+        for key, label, _short_label, first_year in METRICS:
             check_compare(desktop, base, key, label, first_year)
             report["checks"].append({key: "compare-pass"})
-        for key, label, _first_year in (METRICS[0], METRICS[1], METRICS[-1]):
-            check_town(desktop, base, key, label)
+        for key, _label, short_label, _first_year in (METRICS[0], METRICS[1], METRICS[-1]):
+            check_town(desktop, base, key, short_label)
             report["checks"].append({key: "town-pass"})
 
         for key, filename in (
@@ -155,7 +164,7 @@ def main() -> int:
             lambda msg: report["consoleErrors"].append(f"mobile: {msg.text}") if msg.type == "error" else None,
         )
         mobile.on("pageerror", lambda exc: report["pageErrors"].append(f"mobile: {exc}"))
-        for key, label, first_year in METRICS:
+        for key, label, _short_label, first_year in METRICS:
             check_compare(mobile, base, key, label, first_year)
         mobile.screenshot(path=str(screenshots / "bilanci-missioni-mobile.png"), full_page=True)
         report["checks"].append({"mobile": "six-metrics-pass"})
