@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Esegue la patch runtime INVALSI adattando solo gli hook noti della v1.37.
+"""Esegue la patch runtime INVALSI sugli hook reali della pipeline v1.37.
 
-La v1.37 genera alcuni rami profile con etichette testualmente duplicate nella
-stessa funzione. Per quei soli tre hook usiamo la prima occorrenza del ramo
-profile; tutti gli altri matcher della patch v1.38 restano fail-closed.
+La v1.37 genera alcuni rami profile con etichette duplicate. Inoltre il renderer
+visuale condiviso viene già riscritto dalle release precedenti: per v1.38 il
+lollipop mantiene Toscana come unico riferimento grafico; Italia resta nel
+pannello benchmark e nello storico. Gli altri matcher restano fail-closed.
 """
 from __future__ import annotations
 from pathlib import Path
@@ -29,6 +30,16 @@ def main():
             'visual Toscana',
             '    vg=patch(vg,\'compositeAggregateFor\',lambda b:once(b,"label:`Versilia · ${part.label || metric.meta.label}`","label:type===\'invalsiProfile\'?`${metric.aggregate?.label||\'Toscana\'} · ${part.label||metric.meta.label}`:`Versilia · ${part.label||metric.meta.label}`",\'visual Toscana\'))\n',
             '    vg=patch(vg,\'compositeAggregateFor\',lambda b:b.replace("label:`Versilia · ${part.label || metric.meta.label}`","label:type===\'invalsiProfile\'?`${metric.aggregate?.label||\'Toscana\'} · ${part.label||metric.meta.label}`:`Versilia · ${part.label||metric.meta.label}`",1))\n',
+        ),
+        (
+            'single visual reference',
+            "    vg=patch(vg,'enhanceComparison',compare_vg)\n",
+            "    # Toscana resta il riferimento grafico del lollipop; Italia è resa nel pannello benchmark/storico.\n",
+        ),
+        (
+            'idempotence sentinel',
+            "        for token in ('invalsiProfile','invalsi_score','nationalBenchmark','data-invalsi-national-reference'):\n",
+            "        for token in ('invalsiProfile','invalsi_score','nationalBenchmark','invalsi-benchmark-detail'):\n",
         ),
     )
     for label,old,new in replacements:
