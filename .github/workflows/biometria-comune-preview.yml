@@ -12,7 +12,6 @@ on:
       - "scripts/build_static_biometria_comune_preview.py"
       - "scripts/test_biometria_comune_release.py"
       - "scripts/test_biometria_comune_browser.py"
-      - ".github/workflows/biometria-comune-preview.yml"
   workflow_dispatch:
 
 permissions:
