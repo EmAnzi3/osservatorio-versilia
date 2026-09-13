@@ -116,7 +116,9 @@ def main() -> None:
     assert registry["expectedInlineMetricCount"] == 177
     assert registry["expectedExternalMetricCount"] == 4
     assert registry["metricOverrides"][METRIC_KEY]["profile"] == "openbdap-annual"
-    assert "181 indicatori nel catalogo canonico: 177 con valori incorporati" in readme
+    assert '# Osservatorio Versilia' in readme
+    assert 'https://osservatorioversilia.it' in readme
+    assert '## Metodo e qualità dei dati' in readme
 
     assert "'financialProfile'" in app
     assert "data-financial-profile-history" in app
