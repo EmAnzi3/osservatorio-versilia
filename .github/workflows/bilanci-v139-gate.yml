@@ -8,6 +8,7 @@ on:
       - 'scripts/probe_bilanci_v139_sources.py'
       - 'scripts/gate_bilanci_v139_sources.py'
       - 'scripts/probe_bilanci_v139_cash.py'
+      - 'scripts/probe_bilanci_v139_fcde_reconciliation.py'
       - 'scripts/materialize_bilanci_v139.py'
       - 'scripts/test_bilanci_v139.py'
       - 'scripts/test_bilanci_v139_browser.py'
@@ -50,9 +51,13 @@ jobs:
           scripts/probe_bilanci_v139_sources.py
           scripts/gate_bilanci_v139_sources.py
           scripts/probe_bilanci_v139_cash.py
+          scripts/probe_bilanci_v139_fcde_reconciliation.py
 
       - name: Gate year-end cash fund 7/7
         run: python scripts/probe_bilanci_v139_cash.py
+
+      - name: Inspect FCDE reconciliation fields
+        run: python scripts/probe_bilanci_v139_fcde_reconciliation.py
 
       - name: Gate accepted OpenBDAP scope
         run: python scripts/gate_bilanci_v139_sources.py --output reports/bilanci-v139-source-gate.json
