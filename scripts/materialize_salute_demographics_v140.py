@@ -28,8 +28,10 @@ AGE_LABELS = {
 }
 
 # ARS publishes life expectancy in ``misura_grezza``; its standardized field is
-# a structural zero. The other reviewed health indicators use the standardized
-# measure already reconciled against the Observatory's published town values.
+# a structural zero. For MaCro age strata the standardized field is likewise a
+# structural zero: the meaningful source-published age-specific rate is
+# ``misura_grezza``. The total rows of the other reviewed indicators keep the
+# standardized measure already reconciled against the Observatory catalogue.
 RAW_MEASURE_KEYS = {"lifeExpectancy"}
 
 
@@ -54,7 +56,13 @@ def norm_geo_code(value) -> str:
 
 def selected_value(source_indicator: dict, row: dict) -> tuple[float | None, str]:
     key = source_indicator["key"]
-    if key in RAW_MEASURE_KEYS:
+    age = norm(row.get("strato1"))
+    # Life expectancy has no meaningful standardized measure in the ARS export.
+    # MaCro age-specific strata also expose standardized=0 structurally; using it
+    # would turn real rates into false zeroes. For those strata use the published
+    # crude/age-specific rate, while the all-ages row remains standardized.
+    use_raw = key in RAW_MEASURE_KEYS or bool(age and age != "totale")
+    if use_raw:
         raw = row.get("raw")
         return (float(raw), "raw") if raw is not None else (None, "missing")
     standardized = row.get("standardized")
@@ -83,6 +91,14 @@ def make_part(source_indicator: dict, source: dict, unit: str, has_age: bool) ->
     if den in (None, 0, 0.0) and num in (None, 0, 0.0):
         den = None
         num = None
+    ci_low = source.get("ci95Low")
+    ci_high = source.get("ci95High")
+    # When the selected rate is the crude age-specific measure, the ARS liminf /
+    # limsup columns in these exports are structural zeroes tied to the absent
+    # standardized measure. Do not publish 0–0 as a confidence interval.
+    if measurement == "raw" and ci_low in (None, 0, 0.0) and ci_high in (None, 0, 0.0):
+        ci_low = None
+        ci_high = None
     base = {
         "value": value,
         "unit": unit,
@@ -91,8 +107,8 @@ def make_part(source_indicator: dict, source: dict, unit: str, has_age: bool) ->
         "standardized": source.get("standardized"),
         "numerator": num,
         "denominator": den,
-        "ci95Low": source.get("ci95Low"),
-        "ci95High": source.get("ci95High"),
+        "ci95Low": ci_low,
+        "ci95High": ci_high,
     }
     if has_age:
         return {
@@ -230,7 +246,12 @@ def main() -> int:
             meta["defaultSex"] = "totale"
             meta["selectorLabel"] = "Sesso"
 
-        measurement_field = "misura_grezza" if key in RAW_MEASURE_KEYS else "misura_standardizzata"
+        if key in RAW_MEASURE_KEYS:
+            measurement_field = "misura_grezza"
+        elif has_age:
+            measurement_field = "misura_standardizzata (Totale); misura_grezza (fasce d’età)"
+        else:
+            measurement_field = "misura_standardizzata"
         meta["demographicSource"] = {
             "publisher": "ARS Toscana",
             "indicatorId": source_indicator["indicatorId"],
@@ -238,8 +259,10 @@ def main() -> int:
             "snapshot": "data/source-snapshots/ars-salute-demographics-v140.json",
             "measurement": measurement_field,
             "measurementRule": (
-                "misura_grezza per speranza di vita; misura_standardizzata per gli altri "
-                "indicatori, coerente con il valore Totale già pubblicato"
+                "Speranza di vita: misura_grezza. Indicatori con fasce d’età: "
+                "misura_standardizzata per Totale e misura_grezza per le fasce, perché "
+                "ARS espone misura_standardizzata=0 strutturalmente nelle righe age-specifiche. "
+                "Altri indicatori: misura_standardizzata, coerente con il valore Totale pubblicato."
             ),
         }
 
