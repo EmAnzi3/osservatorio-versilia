@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,22 @@ DEFAULT_DAILY = ROOT / "data" / "opportunity-daily-public.json"
 DEFAULT_REPORT = ROOT / "reports" / "runtime" / "opportunity-daily-summary.md"
 DEFAULT_CONTINUITY_DIAGNOSTIC = ROOT / "reports" / "runtime" / "opportunity-continuity-hold.json"
 CONTINUITY_VERIFIED_GRACE_DAYS = 2
+PUBLIC_TEXT_FIELDS = (
+    "title",
+    "summary",
+    "beneficiary_text",
+    "eligibility_reason",
+    "project_requirements",
+)
+CONTENT_CONTAMINATION_PATTERNS = (
+    re.compile(r"\bfunction\s+[A-Za-z_$][\w$]*\s*\(", re.IGNORECASE),
+    re.compile(r"\bdocument\.getElementById\s*\(", re.IGNORECASE),
+    re.compile(r"\b(?:document\.)?querySelector(?:All)?\s*\(", re.IGNORECASE),
+    re.compile(r"\bariaPagination\b", re.IGNORECASE),
+    re.compile(r"\bElementi\s+Per\s+pagina\b", re.IGNORECASE),
+    re.compile(r"<\s*script\b", re.IGNORECASE),
+    re.compile(r"\bjavascript\s*:", re.IGNORECASE),
+)
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -41,6 +58,72 @@ def _identity(item: dict[str, Any]) -> str:
     if url:
         return "url:" + url
     return "id:" + str(item.get("id") or "")
+
+
+def _contamination_offset(value: Any) -> int | None:
+    text = str(value or "")
+    offsets = [match.start() for pattern in CONTENT_CONTAMINATION_PATTERNS if (match := pattern.search(text))]
+    return min(offsets) if offsets else None
+
+
+def _sanitize_public_content(
+    result: dict[str, Any],
+    previous: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Impedisce a JavaScript/menu del portale di finire nelle schede pubbliche.
+
+    Se la stessa identita aveva gia un testo verificato e pulito, un'estrazione
+    contaminata non puo sovrascriverlo. Per identita nuove conserviamo solo il
+    prefisso precedente al primo marcatore di codice. Il controllo finale rende
+    impossibile scrivere uno snapshot che contenga ancora i marker noti.
+    """
+    previous_by_identity = {
+        _identity(item): item
+        for item in previous.get("opportunities") or []
+        if _identity(item) not in {"coverage:", "url:", "id:"}
+    }
+    repaired: list[dict[str, Any]] = []
+    for item in result.get("opportunities") or []:
+        old = previous_by_identity.get(_identity(item)) or {}
+        changed_fields: list[dict[str, str]] = []
+        for field in PUBLIC_TEXT_FIELDS:
+            raw = str(item.get(field) or "")
+            offset = _contamination_offset(raw)
+            if offset is None:
+                continue
+            old_value = str(old.get(field) or "").strip()
+            if old_value and _contamination_offset(old_value) is None:
+                clean = old_value
+                strategy = "previous_verified_value"
+            else:
+                clean = " ".join(raw[:offset].split()).strip(" .;:-")
+                strategy = "clean_prefix"
+            item[field] = clean
+            changed_fields.append({"field": field, "strategy": strategy})
+        if changed_fields:
+            repaired.append({
+                "identity": _identity(item),
+                "title": str(item.get("title") or "Senza titolo"),
+                "fields": changed_fields,
+            })
+
+    residue = []
+    for item in result.get("opportunities") or []:
+        for field in PUBLIC_TEXT_FIELDS:
+            if _contamination_offset(item.get(field)) is not None:
+                residue.append({"identity": _identity(item), "field": field})
+    if residue:
+        raise RuntimeError(f"Contaminazione HTML/JS residua nelle schede pubbliche: {residue}")
+
+    result["contentSanitization"] = {
+        "schemaVersion": 1,
+        "repairedCount": len(repaired),
+        "rows": repaired,
+    }
+    result.setdefault("counts", {})["contentSanitized"] = len(repaired)
+    if repaired:
+        print(f"CONTENT SANITIZATION: {len(repaired)} schede ripulite prima dei gate finali")
+    return repaired
 
 
 def _previous_snapshot(daily: Path, baseline: Path) -> tuple[Path, dict[str, Any]]:
@@ -378,6 +461,7 @@ def main() -> int:
     result = _reconcile_final_continuity(result)
     _restore_recent_verified_continuity(result, previous, today)
     result = regione_guard.apply(result, today)
+    _sanitize_public_content(result, previous)
     _assert_publishable(result)
     new_items = _annotate_first_seen(result, previous, today)
     result = _prepare_public(result, today)
