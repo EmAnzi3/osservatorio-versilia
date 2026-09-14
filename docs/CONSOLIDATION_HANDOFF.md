@@ -8,12 +8,12 @@ Non è un diario storico: deve restare breve, concreto e aggiornato. La cronolog
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A0 — Governance del programma e handoff`
-- **Step attivo:** `A0.3/A0.4`
+- **Step attivo:** `A0.5`
 - **Stato:** `IN_PROGRESS`
 - **Baseline main di avvio:** `f7c132eb5262ff2fcf028bfb3c5fecb339c95e2f`
 - **Catalogo dichiarato dalla baseline:** 225 indicatori
 - **Branch corrente:** `chore/consolidation-roadmap`
-- **PR corrente:** da aprire
+- **PR corrente:** `#188` — draft
 
 ## Completato in questa fase
 
@@ -21,6 +21,8 @@ Non è un diario storico: deve restare breve, concreto e aggiornato. La cronolog
 - Definito questo handoff persistente per il passaggio tra chat/sessioni.
 - Confermato che `data/site-data.json` resta il catalogo canonico: il consolidamento non deve introdurre un inventario parallelo.
 - Registrata come problema strutturale da risolvere in `A1` la possibile divergenza tra conteggi/versioni/stato mostrati da README, sito, Stato dati e output materializzati.
+- Aggiornato `AGENTS.md`: ogni sessione di consolidamento deve leggere roadmap + handoff e aggiornare l'handoff nella stessa PR che avanza gli step.
+- Aperta la PR `#188` per fondare il tracking persistente.
 
 ## Decisioni vincolanti
 
@@ -33,15 +35,15 @@ Non è un diario storico: deve restare breve, concreto e aggiornato. La cronolog
 
 ## Prossima azione esatta
 
-1. Aggiornare `AGENTS.md` con la regola di lettura/aggiornamento roadmap + handoff per il programma di consolidamento.
-2. Aprire la PR di fondazione del tracking.
-3. Registrare qui il numero della PR e portare `A0.3/A0.4` a completati.
-4. Dopo approvazione e merge, avviare `A1.1`: audit completo del percorso `site-data.json` → materializzatori → catalogo effettivamente pubblicato.
+1. Verificare lo stato CI della PR `#188` e l'assenza di regressioni.
+2. Mantenere la PR in draft finché le verifiche previste non sono soddisfatte.
+3. Dopo approvazione esplicita del proprietario, chiudere `A0.5` con merge della PR e portare `A0` a `DONE`.
+4. Creare un nuovo branch dedicato e avviare `A1.1`: audit completo del percorso `site-data.json` → materializzatori → catalogo effettivamente pubblicato.
 
 ## Verifiche
 
-- Modifiche previste in questa PR: solo documentazione/regole operative, nessuna UI e nessun dato pubblico.
-- Il preflight locale non è stato ancora eseguito nella sessione corrente.
+- Modifiche della PR `#188`: solo documentazione/regole operative, nessuna UI e nessun dato pubblico.
+- Il preflight locale non è stato eseguito perché il container della sessione non riesce a risolvere `github.com`; la PR è quindi mantenuta in draft e la limitazione è dichiarata nella descrizione della PR.
 
 ## Per ripartire in una nuova chat
 
