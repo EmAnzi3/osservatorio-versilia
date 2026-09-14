@@ -44,6 +44,7 @@
     {"path": ".github/workflows/opportunity-radar-v044-ci.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/salute-finanziaria-v129-gate.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/salute-life-expectancy-v122.yml", "category": "specialized-gate", "status": "active"},
+    {"path": ".github/workflows/salute-v140-gate.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/social-kit.yml", "category": "specialized-gate", "status": "active"},
     {"path": ".github/workflows/welfare-draft.yml", "category": "specialized-gate", "status": "active"}
   ]

@@ -1,0 +1,262 @@
+name: Salute v1.40 gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/salute-v140-gate.yml'
+      - 'scripts/materialize_salute_v140.py'
+      - 'scripts/patch_salute_v140_runtime.py'
+      - 'scripts/patch_salute_v140_runtime_core.py'
+      - 'scripts/audit_salute_v140_dimensions.py'
+      - 'scripts/audit_salute_existing_dimensions.py'
+      - 'scripts/probe_salute_existing_ars.py'
+      - 'scripts/build_salute_demographics_snapshot_v140.py'
+      - 'scripts/test_salute_v140.py'
+      - 'scripts/test_salute_v140_town_browser.py'
+      - 'data/source-snapshots/ars-salute-11-v140.json'
+      - 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  salute-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile Salute v1.40 core
+        run: >-
+          python -m py_compile
+          scripts/materialize_salute_v140.py
+          scripts/patch_salute_v140_runtime.py
+          scripts/patch_salute_v140_runtime_core.py
+          scripts/test_salute_v140.py
+          scripts/test_salute_v140_town_browser.py
+      - name: Validate frozen source snapshots
+        run: python scripts/materialize_salute_v140.py --snapshot-only
+      - name: Run Salute v1.40 regression gate
+        run: python scripts/test_salute_v140.py
+
+  salute-enrichment-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile optional Salute enrichment audits
+        run: >-
+          python -m py_compile
+          scripts/audit_salute_v140_dimensions.py
+          scripts/audit_salute_existing_dimensions.py
+          scripts/probe_salute_existing_ars.py
+          scripts/build_salute_demographics_snapshot_v140.py
+      - name: Optional audit — raw ARS sex, age and external geographies
+        continue-on-error: true
+        run: python scripts/audit_salute_v140_dimensions.py
+      - name: Optional audit — demographic dimensions of existing Salute indicators
+        continue-on-error: true
+        run: python scripts/audit_salute_existing_dimensions.py
+      - name: Optional audit — reconcile existing Salute metrics with candidate ARS exports
+        continue-on-error: true
+        run: python scripts/probe_salute_existing_ars.py
+      - name: Optional audit — build reviewed-period Salute demographic source snapshot
+        continue-on-error: true
+        run: python scripts/build_salute_demographics_snapshot_v140.py
+      - name: Upload optional Salute enrichment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salute-v140-source-dimensions
+          path: |
+            reports/salute-v140-source-dimensions.json
+            reports/salute-existing-dimensions.json
+            reports/salute-existing-ars-reconciliation.json
+            reports/ars-salute-demographics-v140.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  canonical-quick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install canonical dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Canonical quick gate
+        run: python scripts/preflight.py --quick
+      - name: Verify build is non-mutating
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json' ':(exclude)reports/salute-existing-dimensions.json' ':(exclude)reports/salute-existing-ars-reconciliation.json' ':(exclude)reports/ars-salute-demographics-v140.json'
+
+  canonical-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install full dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+          npm install --global lighthouse@12.8.2
+      - name: Canonical full preflight
+        run: python scripts/preflight.py --full
+
+  preview:
+    needs: [salute-contract, canonical-quick, canonical-full]
+    if: ${{ needs.salute-contract.result == 'success' && needs.canonical-quick.result == 'success' && needs.canonical-full.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install preview dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Build Salute v1.40 preview
+        run: python scripts/preflight.py --quick
+      - name: Assert v1.40 / 225 indicators in preview
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          dist = Path('dist')
+          data = json.loads((dist / 'data/site-data.json').read_text(encoding='utf-8'))
+          registry = json.loads((dist / 'data/source-registry.json').read_text(encoding='utf-8'))
+          assert data['version'] == 'v1.40.0', data['version']
+          assert data['release_version'] == '1.40.0', data['release_version']
+          assert len(data['metrics']) == 225, len(data['metrics'])
+
+          external = sum(
+              isinstance(metric, dict)
+              and (metric.get('dataStorage') or {}).get('type') == 'external-climate'
+              for metric in data['metrics'].values()
+          )
+          assert external == 4, external
+          assert len(data['metrics']) - external == 221
+          assert (
+              registry['expectedMetricCount'],
+              registry['expectedInlineMetricCount'],
+              registry['expectedExternalMetricCount'],
+          ) == (225, 221, 4)
+
+          expected = {
+              'mortalityCancer','mortalityCirculatory','mortalityRespiratory',
+              'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence',
+              'heartFailurePrevalence','priorStrokePrevalence','permanentRsaAssisted',
+              'specialistVisits7Psr','diagnosticImagingServices','accreditedRsaCount'
+          }
+          missing = expected - set(data['metrics'])
+          assert not missing, sorted(missing)
+          assert expected <= set(data['themes']['salute']['metrics'])
+
+          for key in expected - {'accreditedRsaCount'}:
+              metric = data['metrics'][key]
+              assert len(metric['rows']) == 7, key
+              assert len({row['town'] for row in metric['rows']}) == 7, key
+              assert metric['aggregate']['label'] == 'Valore ARS Versilia', key
+              assert metric['meta']['comparisonReference'] == 'aggregate', key
+              assert metric['meta']['comparisonOverline'] == 'Rispetto al valore ARS Versilia', key
+              assert 'non è una media' in metric['aggregate']['note'], key
+
+          rsa = data['metrics']['accreditedRsaCount']
+          assert rsa['meta']['label'] == 'RSA accreditate presenti nel Comune'
+          assert rsa['meta']['comparisonDifference'] == 'shareOfAggregate'
+          assert {row['town']: row['value'] for row in rsa['rows']} == {
+              'Camaiore': 5,
+              'Forte dei Marmi': 0,
+              'Massarosa': 0,
+              'Pietrasanta': 2,
+              'Seravezza': 2,
+              'Stazzema': 0,
+              'Viareggio': 4,
+          }
+          assert rsa['aggregate']['value'] == 13
+          assert data['metrics']['hospitals']['meta']['comparisonDifference'] == 'shareOfAggregate'
+
+          def text(relative):
+              return (dist / relative).read_text(encoding='utf-8')
+
+          homepage = text('index.html')
+          assert '225 indicatori' in homepage
+          assert 'Aggiornato 14 settembre 2026' in homepage
+
+          salute = text('confronta/salute/index.html')
+          for label in (
+              'Mortalità per tumori',
+              'Prevalenza ipertensione',
+              'Accessi per visite specialistiche',
+              'RSA accreditate presenti nel Comune',
+          ):
+              assert label in salute, label
+
+          for page in (
+              'indicatori/mortalita-per-tumori/index.html',
+              'indicatori/prevalenza-ipertensione/index.html',
+              'indicatori/accessi-per-visite-specialistiche-7-specialita-psr/index.html',
+              'indicatori/rsa-accreditate-presenti-nel-comune/index.html',
+          ):
+              assert (dist / page).is_file(), page
+
+          town = text('comuni/massarosa/index.html')
+          assert 'Mortalità per tumori' in town
+          assert 'RSA accreditate presenti nel Comune' in town
+          assert 'Dettagli sanitari aggiuntivi' not in town
+
+          status = text('stato-dati/index.html')
+          assert '225 indicatori' in status
+          assert 'Mortalità per tumori' in status
+          assert 'RSA accreditate presenti nel Comune' in status
+
+          print('Salute v1.40 artifact contract: 225 = 221 incorporati + 4 esterni; town comparison contract OK')
+          PY
+      - name: Browser QA Salute v1.40 town pages
+        run: |
+          mkdir -p reports/salute-v140-town-browser
+          python scripts/test_salute_v140_town_browser.py \
+            --directory dist \
+            --screenshots-dir reports/salute-v140-town-browser
+      - name: Upload Salute v1.40 preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: osservatorio-versilia-salute-v140-preview
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload Salute town browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salute-v140-town-browser-evidence
+          path: |
+            reports/salute-v140-town-browser/
+            reports/salute-v140-town-browser-report.json
+          if-no-files-found: warn
+          retention-days: 14
