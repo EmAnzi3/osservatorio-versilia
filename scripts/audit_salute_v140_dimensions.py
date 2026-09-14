@@ -4,7 +4,8 @@
 This does not materialize extra data. It records what the live ARS exports expose
 for the seven municipalities / Zona Versilia and whether the same export contains
 Tuscany or Italy geographies. A changed whole-file SHA is recorded but only becomes
-blocking when the exact total-sex slice frozen in v1.40 has changed.
+blocking when a cell belonging to the exact frozen v1.40 publication slice changes.
+Additional periods in the live export are evidence, not release drift.
 """
 from __future__ import annotations
 
@@ -82,14 +83,15 @@ def main() -> int:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     frozen = json.loads(FROZEN.read_text(encoding="utf-8"))
     report = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "release": "v1.40.0",
         "scope": "live raw ARS exports for the 11 v1.40 indicators",
         "note": (
             "Presence in the raw export does not by itself authorize publication: "
             "sex/age selectors and Tuscany/Italy benchmarks require homogeneous measure, "
             "period and standardization checks before materialization. Whole-export SHA drift "
-            "is informational when the exact frozen publication slice is unchanged."
+            "and additional live periods are informational when every frozen publication cell "
+            "is still present and unchanged."
         ),
         "indicators": {},
     }
@@ -119,16 +121,18 @@ def main() -> int:
 
         live_slice = selected_total_rows(rows, iid, spec)
         frozen_slice = frozen_total_rows(frozen["indicators"][str(iid)])
-        slice_matches = live_slice == frozen_slice
-        if not slice_matches:
-            changed_slices.append(iid)
-        missing_from_live = sorted(f"{geo}|{period}" for geo, period in set(frozen_slice) - set(live_slice))
-        new_in_live = sorted(f"{geo}|{period}" for geo, period in set(live_slice) - set(frozen_slice))
+        frozen_keys = set(frozen_slice)
+        live_keys = set(live_slice)
+        missing_from_live = sorted(f"{geo}|{period}" for geo, period in frozen_keys - live_keys)
+        new_in_live = sorted(f"{geo}|{period}" for geo, period in live_keys - frozen_keys)
         changed_cells = sorted(
             f"{geo}|{period}"
-            for geo, period in set(frozen_slice) & set(live_slice)
+            for geo, period in frozen_keys & live_keys
             if frozen_slice[(geo, period)] != live_slice[(geo, period)]
         )
+        slice_matches = not missing_from_live and not changed_cells
+        if not slice_matches:
+            changed_slices.append(iid)
 
         sexes = unique(row.get("sesso") for row in target_rows)
         strata1 = unique(row.get("strato1") for row in target_rows)
@@ -145,7 +149,7 @@ def main() -> int:
             "wholeExportShaMatchesFrozen": sha == expected_sha,
             "publishedSliceMatchesFrozen": slice_matches,
             "publishedSliceMissingCells": missing_from_live,
-            "publishedSliceNewCells": new_in_live,
+            "additionalLiveCellsOutsideFrozenSlice": new_in_live,
             "publishedSliceChangedCells": changed_cells,
             "targetRowCount": len(target_rows),
             "sexValues": sexes,
@@ -167,7 +171,8 @@ def main() -> int:
             f"strato1={strata1 or ['<vuoto>']} strato2={strata2 or ['<vuoto>']} "
             f"Toscana={bool(tuscany)} Italia={bool(italy)} "
             f"sha={'same' if sha == expected_sha else 'drift'} "
-            f"published-slice={'same' if slice_matches else 'CHANGED'}"
+            f"published-slice={'same' if slice_matches else 'CHANGED'} "
+            f"extra-live-cells={len(new_in_live)}"
         )
 
     report["publishedSliceGate"] = {
