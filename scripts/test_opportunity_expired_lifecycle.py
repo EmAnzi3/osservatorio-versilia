@@ -5,6 +5,7 @@ import unittest
 from datetime import date
 
 import opportunity_daily_refresh_revalidated as hardened
+import opportunity_daily_refresh_audit_fixed as audit_fixed
 import materialize_opportunity_release_snapshot as materialize
 
 
@@ -60,6 +61,32 @@ class ExpiredLifecycleTest(unittest.TestCase):
         materialize._archive_expired_opportunities(payload, date(2026, 9, 11))
         self.assertEqual([x["id"] for x in payload["opportunities"]], ["current"])
         self.assertEqual([x["id"] for x in payload["archive"]], ["expired"])
+
+    def test_audit_overlay_archives_expired_promotions(self) -> None:
+        payload = {
+            "opportunities": [
+                {
+                    "id": "matrix-expired",
+                    "title": "Expired matrix promotion",
+                    "lifecycle_stage": "application_open",
+                    "deadline_at": "2026-09-11",
+                    "url": "https://example.invalid/matrix-expired",
+                },
+                {
+                    "id": "matrix-current",
+                    "title": "Current matrix promotion",
+                    "lifecycle_stage": "application_open",
+                    "deadline_at": "2026-09-30",
+                    "url": "https://example.invalid/matrix-current",
+                },
+            ],
+            "archive": [],
+        }
+
+        audit_fixed._archive_expired_opportunities(payload, date(2026, 9, 14))
+
+        self.assertEqual([x["id"] for x in payload["opportunities"]], ["matrix-current"])
+        self.assertEqual([x["id"] for x in payload["archive"]], ["matrix-expired"])
 
     def test_current_application_still_uses_strict_verification(self) -> None:
         entry = {

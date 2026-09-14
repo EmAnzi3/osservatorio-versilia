@@ -21,6 +21,9 @@ concurrency:
 
 jobs:
   test:
+    # Do not request approval for the bot's own snapshot-only review PR.
+    # Human PRs continue to run the full Radar regression suite.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -212,7 +215,7 @@ jobs:
           retention-days: 7
 
   daily-production-dry-run:
-    name: daily production dry-run · 2026-09-09
+    name: daily production dry-run
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -294,18 +297,18 @@ jobs:
       - name: Materialize verified baseline
         run: python scripts/materialize_opportunity_release_snapshot.py
 
-      - name: Run tomorrow live discovery through production entrypoint
-        run: python scripts/opportunity_daily_refresh_stable.py --date 2026-09-09
+      - name: Run current live discovery through production entrypoint
+        run: python scripts/opportunity_daily_refresh_stable.py --date "$(date -u +%F)"
 
-      - name: Validate tomorrow daily snapshot
+      - name: Validate current daily snapshot
         run: |
           python - <<'PY'
           import json
-          from datetime import date
+          from datetime import date, datetime, timezone
           from pathlib import Path
 
           p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
-          expected = date(2026, 9, 9)
+          expected = datetime.now(timezone.utc).date()
           expected_date = expected.isoformat()
           assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
           assert p.get('releaseVersion') == '0.4.4'

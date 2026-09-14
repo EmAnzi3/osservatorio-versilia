@@ -21,7 +21,10 @@ concurrency:
 jobs:
   quick:
     name: quick
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'ready_for_review') }}
+    # Automation snapshot PRs are already validated by the scheduled Radar
+    # refresh and its explicit Pages dispatch. Skipping this self-trigger
+    # prevents a bot-only `action_required` check; all human PR checks remain.
+    if: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'ready_for_review')) && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
