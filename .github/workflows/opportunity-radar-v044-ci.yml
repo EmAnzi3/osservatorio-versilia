@@ -60,6 +60,7 @@ jobs:
             scripts/opportunity_run_report.py \
             scripts/test_opportunity_regione_toscana_guard.py \
             scripts/test_opportunity_issue_notification.py \
+            scripts/test_opportunity_content_sanitization.py \
             scripts/test_opportunity_run_report.py \
             scripts/test_opportunity_daily_continuity.py \
             scripts/test_opportunity_primary_revalidation.py \
@@ -76,6 +77,7 @@ jobs:
             scripts/test_opportunity_release_browser.py
           python scripts/test_opportunity_regione_toscana_guard.py
           python scripts/test_opportunity_issue_notification.py
+          python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
