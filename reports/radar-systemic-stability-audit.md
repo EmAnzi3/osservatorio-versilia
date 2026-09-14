@@ -58,6 +58,23 @@ compatibili, ma sposta la decisione su invarianti condivisi e testabili.
 Reader proxy, pagine mirror non ufficiali e similarità fuzzy non eliminano
 nessuno di questi blocker.
 
+## Contratto di osservabilità del run (14/09/2026)
+
+Ogni refresh operativo deve lasciare una sola evidenza leggibile e completa,
+anche quando il run fallisce. Il rapporto confronta la baseline effettivamente
+usata con lo snapshot candidato tramite identità deterministiche e distingue:
+
+- nuove opportunità;
+- modifiche operative campo per campo, ignorando timestamp e badge volatili;
+- opportunità archiviate;
+- sparizioni non spiegate da un'archiviazione.
+
+Lo stesso artifact contiene HTML, Markdown, JSON, log dello scan e diagnostiche
+dei gate. Il Markdown viene scritto anche nel Job Summary e nel corpo della PR
+automatica. Il commit dello snapshot è ammesso soltanto dopo il successo di
+scan, validazione, build/browser e generazione del rapporto; il controllo finale
+elenca simultaneamente tutti gli stadi incompleti.
+
 ## Copertura di regressione
 
 La suite giornaliera copre: listing false-negative con dettaglio aperto, dettaglio
