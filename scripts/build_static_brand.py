@@ -25,7 +25,8 @@ INVALSI_V138_RUNTIME_RUNNER = ROOT / "scripts" / "run_invalsi_v138_runtime.py"
 BILANCI_V139_MATERIALIZER = ROOT / "scripts" / "apply_bilanci_v139.py"
 SALUTE_V140_MATERIALIZER = ROOT / "scripts" / "materialize_salute_v140.py"
 SALUTE_V140_DEMOGRAPHICS_MATERIALIZER = ROOT / "scripts" / "materialize_salute_demographics_v140.py"
-SALUTE_V140_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_runtime.py"
+SALUTE_V140_RUNTIME_CORE = ROOT / "scripts" / "patch_salute_v140_runtime_core.py"
+SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_demographics_runtime.py"
 PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_reference_contract.py"
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
@@ -67,7 +68,11 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         # la catena prima del runtime patch e del prerender statico.
         demographic_ns = _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_MATERIALIZER))
         demographic_ns["main"]()
-        _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_PATCH), run_name="__main__")
+        # Manteniamo separati il contratto runtime stabile v1.40 e l'arricchimento
+        # demografico opzionale: il secondo usa anchor strutturali e non dipende dal
+        # testo esatto lasciato dalle release precedenti.
+        _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_CORE), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
