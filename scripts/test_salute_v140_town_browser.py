@@ -56,6 +56,15 @@ def expected_share(metric: dict, town: str) -> str:
     return f"{value:.1f}%".replace(".", ",")
 
 
+def italian_decimal(value: float, decimals: int = 2) -> str:
+    text = f"{float(value):,.{decimals}f}"
+    return text.replace(",", "§").replace(".", ",").replace("§", ".")
+
+
+def part_by_key(container: dict, choice: str) -> dict:
+    return next(part for part in container.get("parts", []) if part.get("key") == choice)
+
+
 def assert_no_footer_overlap(page: Page) -> None:
     overlap = page.evaluate(
         """() => {
@@ -109,6 +118,26 @@ def assert_tuscany_visible(page: Page) -> str:
     assert "Toscana" in text, text
     assert panel.locator("[data-composite-tuscany-value]").count() == 1, text
     return text
+
+
+def assert_demographic_benchmark(panel, metric: dict, choice: str, label: str) -> None:
+    """Validate the selected ARS slice against data, not against a stale static label."""
+    panel_text = panel.inner_text()
+    overline = panel.locator(".overline").inner_text().casefold()
+    assert "rispetto al valore ars versilia" in overline, panel_text
+
+    aggregate_label = panel.locator("[data-composite-aggregate-label]").inner_text()
+    tuscany_label = panel.locator("[data-composite-tuscany-label]").inner_text()
+    assert aggregate_label.casefold() == f"Versilia · {label}".casefold(), aggregate_label
+    assert tuscany_label.casefold() == f"Toscana · {label}".casefold(), tuscany_label
+
+    aggregate_part = part_by_key(metric["aggregate"], choice)
+    tuscany_part = part_by_key(metric["tuscany"], choice)
+    aggregate_value = panel.locator("[data-composite-aggregate-value]").inner_text()
+    tuscany_value = panel.locator("[data-composite-tuscany-value]").inner_text()
+    assert italian_decimal(aggregate_part["value"]) in aggregate_value, (aggregate_part, aggregate_value)
+    assert italian_decimal(tuscany_part["value"]) in tuscany_value, (tuscany_part, tuscany_value)
+    assert "0,00 ogni 1.000" not in panel_text, panel_text
 
 
 def main() -> int:
@@ -174,10 +203,13 @@ def main() -> int:
         age_select.select_option("65-84")
         gender_select.select_option("femmine")
         page.wait_for_timeout(200)
-        panel_text = page.locator("#town-topic .versilia-position").inner_text()
-        assert "Toscana · 65–84 anni · Femmine" in panel_text, panel_text
-        assert "Valore ARS Versilia" in panel_text, panel_text
-        assert "0,00 ogni 1.000" not in panel_text, panel_text
+        panel = page.locator("#town-topic .versilia-position")
+        assert_demographic_benchmark(
+            panel,
+            data["metrics"][key],
+            "65-84|femmine",
+            "65–84 anni · Femmine",
+        )
         assert_no_footer_overlap(page)
         page.screenshot(path=str(screenshots / "viareggio-ipertensione-65-84-femmine.png"), full_page=True)
         report["checks"].append({key: "age-sex-Tuscany-selection-pass"})
