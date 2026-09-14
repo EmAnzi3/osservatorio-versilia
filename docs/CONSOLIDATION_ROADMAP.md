@@ -38,8 +38,8 @@ Scopo: rendere il lavoro multi-sessione ripetibile e trasferibile senza dipender
 
 - [x] **A0.1** Definire roadmap con ID e stati stabili.
 - [x] **A0.2** Introdurre handoff operativo breve e aggiornabile.
-- [ ] **A0.3** Rendere obbligatoria la lettura di roadmap/handoff per le sessioni di consolidamento tramite `AGENTS.md`.
-- [ ] **A0.4** Aprire PR di fondazione e registrarla nell'handoff.
+- [x] **A0.3** Rendere obbligatoria la lettura di roadmap/handoff per le sessioni di consolidamento tramite `AGENTS.md`.
+- [x] **A0.4** Aprire PR di fondazione e registrarla nell'handoff.
 - [ ] **A0.5** Merge solo dopo approvazione esplicita del proprietario.
 
 **Definition of done:** una nuova sessione può capire in pochi minuti cosa è stato completato, cosa è in corso, cosa resta da fare e quale sia la prossima azione esatta.
