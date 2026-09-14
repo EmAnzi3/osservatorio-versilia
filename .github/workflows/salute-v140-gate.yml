@@ -23,22 +23,18 @@ permissions:
 jobs:
   salute-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compile Salute v1.40
+      - name: Compile Salute v1.40 core
         run: >-
           python -m py_compile
           scripts/materialize_salute_v140.py
           scripts/patch_salute_v140_runtime.py
           scripts/patch_salute_v140_runtime_core.py
-          scripts/audit_salute_v140_dimensions.py
-          scripts/audit_salute_existing_dimensions.py
-          scripts/probe_salute_existing_ars.py
-          scripts/build_salute_demographics_snapshot_v140.py
           scripts/test_salute_v140.py
           scripts/test_salute_v140_town_browser.py
       - name: Validate frozen source snapshots
@@ -46,9 +42,22 @@ jobs:
       - name: Run Salute v1.40 regression gate
         run: python scripts/test_salute_v140.py
 
-      # Arricchimenti: sesso, età e benchmark esterni sono un plus. Non devono
-      # rendere non pubblicabile la tranche se la fonte remota è indisponibile o
-      # se una slice non è perfettamente riconciliabile con il dato principale.
+  salute-enrichment-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile optional Salute enrichment audits
+        run: >-
+          python -m py_compile
+          scripts/audit_salute_v140_dimensions.py
+          scripts/audit_salute_existing_dimensions.py
+          scripts/probe_salute_existing_ars.py
+          scripts/build_salute_demographics_snapshot_v140.py
       - name: Optional audit — raw ARS sex, age and external geographies
         continue-on-error: true
         run: python scripts/audit_salute_v140_dimensions.py
