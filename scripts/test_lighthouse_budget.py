@@ -41,11 +41,7 @@ def require(condition: bool, message: str) -> None:
 
 
 def chromium_paths() -> list[str]:
-    """Restituisce browser Chromium/Chrome utilizzabili, privilegiando Chrome di sistema.
-
-    Lighthouse e Playwright non devono essere accoppiati a una sola build Chromium:
-    in CI un timeout CDP può dipendere dalla coppia Lighthouse/Chrome, non dal sito.
-    """
+    """Restituisce browser Chromium/Chrome utilizzabili, privilegiando Chrome di sistema."""
     candidates: list[str] = []
 
     explicit = os.environ.get("LIGHTHOUSE_CHROME_PATH")
@@ -81,6 +77,30 @@ def chromium_paths() -> list[str]:
     return unique
 
 
+def lighthouse_launcher(npm: str) -> list[str]:
+    """Usa la versione Lighthouse dichiarata, senza dipendere da un globale obsoleto."""
+    lighthouse = shutil.which("lighthouse")
+    if lighthouse:
+        probe = subprocess.run(
+            [lighthouse, "--version"],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+            timeout=30,
+        )
+        if probe.returncode == 0 and probe.stdout.strip() == LIGHTHOUSE_VERSION:
+            return [lighthouse]
+    return [
+        npm,
+        "exec",
+        "--yes",
+        f"--package=lighthouse@{LIGHTHOUSE_VERSION}",
+        "--",
+        "lighthouse",
+    ]
+
+
 def _is_transient_lighthouse_failure(output: str) -> bool:
     return any(marker in output for marker in TRANSIENT_LIGHTHOUSE_ERRORS)
 
@@ -88,7 +108,7 @@ def _is_transient_lighthouse_failure(output: str) -> bool:
 def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
     npm = shutil.which("npm")
     require(npm is not None, "npm non disponibile: impossibile eseguire Lighthouse")
-    lighthouse = shutil.which("lighthouse")
+    launcher = lighthouse_launcher(npm)
     timeout = int(os.environ.get("LIGHTHOUSE_TIMEOUT_SECONDS", "300"))
     max_attempts = max(1, int(os.environ.get("LIGHTHOUSE_MAX_ATTEMPTS", "3")))
     retry_delay = max(0.0, float(os.environ.get("LIGHTHOUSE_RETRY_DELAY_SECONDS", "2")))
@@ -100,9 +120,6 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
 
     for name, route in PAGES:
         report = output_dir / f"{name}.json"
-        launcher = [lighthouse] if lighthouse else [
-            npm, "exec", "--yes", f"--package=lighthouse@{LIGHTHOUSE_VERSION}", "--", "lighthouse"
-        ]
         command = [
             *launcher,
             urljoin(base, route),
