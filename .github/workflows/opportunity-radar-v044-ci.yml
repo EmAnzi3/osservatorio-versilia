@@ -304,7 +304,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from datetime import datetime, timezone
+          from datetime import date, datetime, timezone
           from pathlib import Path
 
           p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
