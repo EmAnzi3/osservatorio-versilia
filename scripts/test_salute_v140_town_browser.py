@@ -35,7 +35,7 @@ def wait_town(page: Page, metric_key: str) -> None:
     page.wait_for_function(
         """key => {
           const active = document.querySelector('#town-topic [data-metric].active, #town-topic [data-metric][aria-selected="true"]');
-          return active?.dataset?.metric === key && document.querySelector('.versilia-position');
+          return active?.dataset?.metric === key && document.querySelector('#town-topic .versilia-position');
         }""",
         arg=metric_key,
         timeout=20_000,
@@ -59,8 +59,9 @@ def expected_share(metric: dict, town: str) -> str:
 def assert_no_footer_overlap(page: Page) -> None:
     overlap = page.evaluate(
         """() => {
-          const label = document.querySelector('.versilia-position > div span');
-          const value = document.querySelector('.versilia-position > div b');
+          const position = document.querySelector('#town-topic .versilia-position');
+          const label = position?.querySelector(':scope > div span');
+          const value = position?.querySelector(':scope > div b');
           if (!label || !value) return true;
           const a = label.getBoundingClientRect();
           const b = value.getBoundingClientRect();
@@ -163,8 +164,12 @@ def main() -> int:
         assert [option.get_attribute("value") for option in age_select.locator("option").all()] == ["totale", "16-44", "45-64", "65-84", "85+"]
         assert {option.get_attribute("value") for option in gender_select.locator("option").all()} == {"totale", "maschi", "femmine"}
         table_text = page.locator("#town-topic .health-demographic-table").inner_text()
+        table_folded = table_text.casefold()
         for label in ("16–44 anni", "45–64 anni", "65–84 anni", "85+ anni", "Totale", "Maschi", "Femmine"):
-            assert label in table_text, (label, table_text)
+            assert label.casefold() in table_folded, (label, table_text)
+        # Structural standardized zeroes from the ARS export must never be rendered
+        # as actual age-specific rates: the materializer uses misura_grezza here.
+        assert "0,00 ogni 1.000" not in table_text, table_text
         assert_tuscany_visible(page)
         age_select.select_option("65-84")
         gender_select.select_option("femmine")
@@ -172,6 +177,7 @@ def main() -> int:
         panel_text = page.locator("#town-topic .versilia-position").inner_text()
         assert "Toscana · 65–84 anni · Femmine" in panel_text, panel_text
         assert "Valore ARS Versilia" in panel_text, panel_text
+        assert "0,00 ogni 1.000" not in panel_text, panel_text
         assert_no_footer_overlap(page)
         page.screenshot(path=str(screenshots / "viareggio-ipertensione-65-84-femmine.png"), full_page=True)
         report["checks"].append({key: "age-sex-Tuscany-selection-pass"})
@@ -182,6 +188,7 @@ def main() -> int:
         assert page.get_by_text("Dettaglio per fascia d’età e sesso", exact=True).count() == 1
         town_age_select(page)
         town_gender_select(page)
+        assert "0,00 ogni 1.000" not in page.locator("#town-topic .health-demographic-table").inner_text()
         assert_tuscany_visible(page)
         page.screenshot(path=str(screenshots / "viareggio-diabete-demografia.png"), full_page=True)
         report["checks"].append({key: "legacy-age-sex-Tuscany-pass"})
