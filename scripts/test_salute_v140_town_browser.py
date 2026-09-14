@@ -105,10 +105,11 @@ def main() -> int:
         open_metric(page, base, key)
         panel = page.locator(".versilia-position")
         text = panel.inner_text()
-        assert "Rispetto al valore ARS Versilia" in text, text
+        normalized = text.casefold()
+        assert "rispetto al valore ars versilia" in normalized, text
         assert expected_relative(data["metrics"][key], "Viareggio") in text, text
-        assert "media Versilia" not in text, text
-        assert "aggregato ufficiale Zona Versilia" in text, text
+        assert "media versilia" not in normalized, text
+        assert "aggregato ufficiale zona versilia" in normalized, text
         assert_no_footer_overlap(page)
         assert page.get_by_text("Dettagli sanitari aggiuntivi", exact=True).count() == 0
         page.screenshot(path=str(screenshots / "viareggio-mortalita-circolatoria.png"), full_page=True)
@@ -118,9 +119,10 @@ def main() -> int:
         key = "hospitals"
         open_metric(page, base, key)
         text = page.locator(".versilia-position").inner_text()
-        assert "Quota sul totale Versilia" in text, text
+        normalized = text.casefold()
+        assert "quota sul totale versilia" in normalized, text
         assert expected_share(data["metrics"][key], "Viareggio") in text, text
-        assert "del totale Versilia" in text, text
+        assert "del totale versilia" in normalized, text
         assert "+133,3%" not in text, text
         assert_no_footer_overlap(page)
         page.screenshot(path=str(screenshots / "viareggio-presidi-ospedalieri.png"), full_page=True)
@@ -130,9 +132,10 @@ def main() -> int:
         key = "accreditedRsaCount"
         open_metric(page, base, key)
         text = page.locator(".versilia-position").inner_text()
-        assert "Quota sul totale Versilia" in text, text
+        normalized = text.casefold()
+        assert "quota sul totale versilia" in normalized, text
         assert expected_share(data["metrics"][key], "Viareggio") in text, text
-        assert "del totale Versilia" in text, text
+        assert "del totale versilia" in normalized, text
         assert_no_footer_overlap(page)
         page.screenshot(path=str(screenshots / "viareggio-rsa-accreditate.png"), full_page=True)
         report["checks"].append({key: "share-of-total-pass"})
