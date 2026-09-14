@@ -8,6 +8,7 @@ on:
       - 'scripts/materialize_salute_demographics_v140.py'
       - 'scripts/patch_salute_v140_runtime.py'
       - 'scripts/patch_salute_v140_runtime_core.py'
+      - 'scripts/patch_salute_v140_demographics_runtime.py'
       - 'scripts/audit_salute_v140_dimensions.py'
       - 'scripts/audit_salute_existing_dimensions.py'
       - 'scripts/probe_salute_existing_ars.py'
@@ -57,6 +58,7 @@ jobs:
         run: >-
           python -m py_compile
           scripts/materialize_salute_demographics_v140.py
+          scripts/patch_salute_v140_demographics_runtime.py
           scripts/test_salute_demographics_v140.py
       - name: Run demographic enrichment contract
         run: python scripts/test_salute_demographics_v140.py
