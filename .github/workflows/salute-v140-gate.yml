@@ -4,12 +4,8 @@ on:
   pull_request:
     paths:
       - '.github/workflows/salute-v140-gate.yml'
-      - 'ci/build-materialization-contract.json'
-      - 'ci/workflow-contract.json'
-      - 'scripts/build_static_brand.py'
       - 'scripts/materialize_salute_v140.py'
       - 'scripts/test_salute_v140.py'
-      - 'scripts/preflight_compile.txt'
       - 'data/source-snapshots/ars-salute-11-v140.json'
       - 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
   workflow_dispatch:
