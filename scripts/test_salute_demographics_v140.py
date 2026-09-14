@@ -68,6 +68,34 @@ def assert_close(left, right, tolerance=0.051) -> None:
     assert abs(float(left) - float(right)) <= tolerance, (left, right)
 
 
+def assert_age_specific_raw(parts: list[dict], key: str, scope: str) -> None:
+    """Guard against ARS structural standardized=0 leaking into age strata."""
+    age_parts = [part for part in parts if part.get("ageKey") not in (None, "totale")]
+    assert len(age_parts) == 12, (key, scope, len(age_parts))
+    for part in age_parts:
+        assert part["measurement"] == "raw", (key, scope, part["key"], part["measurement"])
+        assert part["value"] is not None, (key, scope, part["key"])
+        num = part.get("numerator")
+        den = part.get("denominator")
+        assert num is not None and den not in (None, 0), (key, scope, part["key"], num, den)
+        expected = float(num) / float(den) * 1000.0
+        assert abs(float(part["value"]) - expected) <= 0.011, (
+            key,
+            scope,
+            part["key"],
+            part["value"],
+            expected,
+        )
+        assert not (float(part["value"]) == 0.0 and float(num) > 0), (key, scope, part["key"])
+        assert part.get("ci95Low") is None and part.get("ci95High") is None, (
+            key,
+            scope,
+            part["key"],
+            part.get("ci95Low"),
+            part.get("ci95High"),
+        )
+
+
 def main() -> int:
     snapshot = load(SNAPSHOT)
     assert snapshot["release"] == "v1.40.0"
@@ -84,6 +112,15 @@ def main() -> int:
         assert set(item["sexValues"]) == set(SEX_KEYS), key
         if key in AGE_METRICS:
             assert set(item["strato1Values"]) == set(AGE_KEYS), key
+            # In the official ARS export the standardized field of non-total age
+            # strata is structural zero while the crude field carries the actual
+            # age-specific rate. Keep this source fact explicit in the contract.
+            age_source_rows = [
+                row for row in rows if str(row.get("strato1") or "").casefold() not in ("", "totale")
+            ]
+            assert age_source_rows, key
+            assert all(float(row.get("standardized") or 0) == 0.0 for row in age_source_rows), key
+            assert any(float(row.get("raw") or 0) > 0 for row in age_source_rows), key
         else:
             assert item["strato1Values"] == [], (key, item["strato1Values"])
 
@@ -139,6 +176,7 @@ def main() -> int:
             if has_age:
                 assert [item["key"] for item in meta["ageOptions"]] == AGE_KEYS, key
                 assert [item["key"] for item in meta["genderOptions"]] == SEX_KEYS, key
+                assert "misura_grezza (fasce d’età)" in meta["demographicSource"]["measurement"], key
                 expected_parts = 15
             else:
                 assert [item["key"] for item in meta["sexOptions"]] == SEX_KEYS, key
@@ -149,6 +187,9 @@ def main() -> int:
                 assert len(row["parts"]) == expected_parts, (key, row["town"], len(row["parts"]))
                 default = next(part for part in row["parts"] if part["key"] == part_key(has_age))
                 assert_close(row["value"], default["value"])
+                if has_age:
+                    assert default["measurement"] == "standardized", (key, row["town"])
+                    assert_age_specific_raw(row["parts"], key, row["town"])
 
             assert metric["aggregate"]["value"] == baseline_values[key]["aggregate"], key
             assert len(metric["aggregate"]["parts"]) == expected_parts, key
@@ -157,6 +198,10 @@ def main() -> int:
                 part for part in metric["aggregate"]["parts"] if part["key"] == part_key(has_age)
             )
             assert_close(metric["aggregate"]["value"], aggregate_default["value"])
+            if has_age:
+                assert aggregate_default["measurement"] == "standardized", key
+                assert_age_specific_raw(metric["aggregate"]["parts"], key, "Versilia 202M")
+                assert_age_specific_raw(metric["tuscany"]["parts"], key, "Toscana")
 
         life = data["metrics"]["lifeExpectancy"]
         life_total = next(part for part in life["rows"][0]["parts"] if part["key"] == "totale")
@@ -166,7 +211,7 @@ def main() -> int:
 
     print(
         "Salute demographics v1.40: 17 metriche riconciliate, sesso/età dove disponibili, "
-        "Toscana omogenea, Italia non inferita, catalogo invariato"
+        "fasce MaCro su misura grezza ARS, Toscana omogenea, Italia non inferita, catalogo invariato"
     )
     return 0
 
