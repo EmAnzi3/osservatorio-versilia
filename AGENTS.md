@@ -2,6 +2,16 @@
 
 Queste regole valgono per qualunque agente o sessione che modifica il repository.
 
+## Programma di consolidamento
+
+Per qualunque attività che rientra nel programma di consolidamento del prodotto dati:
+
+1. leggere, nell'ordine, `AGENTS.md`, `docs/CONSOLIDATION_ROADMAP.md` e `docs/CONSOLIDATION_HANDOFF.md` prima di modificare il repository;
+2. verificare che branch, PR e step indicati nell'handoff siano ancora attuali;
+3. lavorare sullo step identificato nella roadmap senza saltare i gate dichiarati;
+4. aggiornare `docs/CONSOLIDATION_HANDOFF.md` nella stessa PR ogni volta che viene avanzato uno step della roadmap;
+5. mantenere l'handoff breve: la cronologia è affidata a Git e alle pull request, non a un diario duplicato.
+
 ## Flusso obbligatorio
 
 1. Non fare push diretto su `main`. Lavora sempre su un branch dedicato e passa da pull request.
