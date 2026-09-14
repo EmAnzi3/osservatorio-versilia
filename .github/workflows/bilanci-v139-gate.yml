@@ -20,14 +20,6 @@ on:
       - 'data/source-snapshots/salute-finanziaria-v129.json'
       - 'data/source-snapshots/siope-history-v1.6.0.json'
       - 'data/source-snapshots/bilanci-v139.json'
-      - 'data/site-data.json'
-      - 'data/source-registry.json'
-      - 'assets/app-parts/**'
-      - 'scripts/build_static_brand.py'
-      - 'scripts/preflight.py'
-      - 'scripts/preflight_compile.txt'
-      - 'ci/workflow-contract.json'
-      - 'ci/build-materialization-contract.json'
   workflow_dispatch:
 
 permissions:
