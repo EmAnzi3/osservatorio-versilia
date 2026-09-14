@@ -24,7 +24,8 @@ INVALSI_V138_PAYLOAD = ROOT / "scripts" / "materialize_invalsi_v138_payload.py"
 INVALSI_V138_RUNTIME_RUNNER = ROOT / "scripts" / "run_invalsi_v138_runtime.py"
 BILANCI_V139_MATERIALIZER = ROOT / "scripts" / "apply_bilanci_v139.py"
 SALUTE_V140_MATERIALIZER = ROOT / "scripts" / "materialize_salute_v140.py"
-SALUTE_V140_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_runtime_core.py"
+SALUTE_V140_DEMOGRAPHICS_MATERIALIZER = ROOT / "scripts" / "materialize_salute_demographics_v140.py"
+SALUTE_V140_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_runtime.py"
 PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_reference_contract.py"
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
@@ -61,6 +62,9 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
         # v1.40 è l'ultimo overlay della catena pubblica e porta il catalogo a 225.
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_MATERIALIZER), run_name="__main__")
+        # L'arricchimento non crea nuovi indicatori: aggiunge soltanto dimensioni
+        # ARS già riconciliate (sesso, fasce d'età e benchmark Toscana).
+        _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_PATCH), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
