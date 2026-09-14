@@ -8,6 +8,7 @@ on:
       - 'scripts/patch_salute_v140_runtime.py'
       - 'scripts/audit_salute_v140_dimensions.py'
       - 'scripts/audit_salute_existing_dimensions.py'
+      - 'scripts/probe_salute_existing_ars.py'
       - 'scripts/test_salute_v140.py'
       - 'scripts/test_salute_v140_town_browser.py'
       - 'data/source-snapshots/ars-salute-11-v140.json'
@@ -20,7 +21,7 @@ permissions:
 jobs:
   salute-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,6 +34,7 @@ jobs:
           scripts/patch_salute_v140_runtime.py
           scripts/audit_salute_v140_dimensions.py
           scripts/audit_salute_existing_dimensions.py
+          scripts/probe_salute_existing_ars.py
           scripts/test_salute_v140.py
           scripts/test_salute_v140_town_browser.py
       - name: Validate frozen source snapshots
@@ -43,6 +45,8 @@ jobs:
         run: python scripts/audit_salute_v140_dimensions.py
       - name: Audit demographic dimensions of existing Salute indicators
         run: python scripts/audit_salute_existing_dimensions.py
+      - name: Reconcile existing Salute metrics with candidate ARS exports
+        run: python scripts/probe_salute_existing_ars.py
       - name: Upload Salute source-dimension evidence
         uses: actions/upload-artifact@v4
         with:
@@ -50,6 +54,7 @@ jobs:
           path: |
             reports/salute-v140-source-dimensions.json
             reports/salute-existing-dimensions.json
+            reports/salute-existing-ars-reconciliation.json
           if-no-files-found: error
           retention-days: 14
 
@@ -71,7 +76,7 @@ jobs:
       - name: Canonical quick gate
         run: python scripts/preflight.py --quick
       - name: Verify build is non-mutating
-        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json' ':(exclude)reports/salute-existing-dimensions.json'
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json' ':(exclude)reports/salute-existing-dimensions.json' ':(exclude)reports/salute-existing-ars-reconciliation.json'
 
   canonical-full:
     runs-on: ubuntu-latest
