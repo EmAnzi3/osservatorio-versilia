@@ -21,6 +21,7 @@
     "scripts/refine_economy_atlas_exports.py",
     "scripts/apply_bilanci_v139.py",
     "scripts/materialize_salute_v140.py",
+    "scripts/patch_salute_v140_runtime.py",
     "scripts/apply_per_capita_reference_contract.py"
   ],
   "publicSnapshotFiles": [
@@ -39,6 +40,7 @@
     "assets/app.js",
     "assets/static.css",
     "assets/visual-grammar.js",
+    "assets/visual-grammar.css",
     "assets/ux-history.js",
     "assets/ux-accordion.js",
     "scripts/build_static.py",
