@@ -7,6 +7,7 @@ on:
       - 'scripts/materialize_salute_v140.py'
       - 'scripts/patch_salute_v140_runtime.py'
       - 'scripts/audit_salute_v140_dimensions.py'
+      - 'scripts/audit_salute_existing_dimensions.py'
       - 'scripts/test_salute_v140.py'
       - 'scripts/test_salute_v140_town_browser.py'
       - 'data/source-snapshots/ars-salute-11-v140.json'
@@ -19,7 +20,7 @@ permissions:
 jobs:
   salute-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,6 +32,7 @@ jobs:
           scripts/materialize_salute_v140.py
           scripts/patch_salute_v140_runtime.py
           scripts/audit_salute_v140_dimensions.py
+          scripts/audit_salute_existing_dimensions.py
           scripts/test_salute_v140.py
           scripts/test_salute_v140_town_browser.py
       - name: Validate frozen source snapshots
@@ -39,11 +41,15 @@ jobs:
         run: python scripts/test_salute_v140.py
       - name: Audit raw ARS sex, age and external-geography dimensions
         run: python scripts/audit_salute_v140_dimensions.py
+      - name: Audit demographic dimensions of existing Salute indicators
+        run: python scripts/audit_salute_existing_dimensions.py
       - name: Upload Salute source-dimension evidence
         uses: actions/upload-artifact@v4
         with:
           name: salute-v140-source-dimensions
-          path: reports/salute-v140-source-dimensions.json
+          path: |
+            reports/salute-v140-source-dimensions.json
+            reports/salute-existing-dimensions.json
           if-no-files-found: error
           retention-days: 14
 
@@ -65,7 +71,7 @@ jobs:
       - name: Canonical quick gate
         run: python scripts/preflight.py --quick
       - name: Verify build is non-mutating
-        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json'
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json' ':(exclude)reports/salute-existing-dimensions.json'
 
   canonical-full:
     runs-on: ubuntu-latest
