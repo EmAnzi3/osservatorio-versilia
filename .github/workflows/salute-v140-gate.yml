@@ -1,0 +1,53 @@
+name: Salute v1.40 gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/salute-v140-gate.yml'
+      - 'ci/build-materialization-contract.json'
+      - 'ci/workflow-contract.json'
+      - 'scripts/materialize_salute_v140.py'
+      - 'scripts/test_salute_v140.py'
+      - 'scripts/preflight_compile.txt'
+      - 'data/source-snapshots/ars-salute-11-v140.json'
+      - 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  salute-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile Salute v1.40
+        run: python -m py_compile scripts/materialize_salute_v140.py scripts/test_salute_v140.py
+      - name: Validate frozen source snapshots
+        run: python scripts/materialize_salute_v140.py --snapshot-only
+      - name: Run Salute v1.40 regression gate
+        run: python scripts/test_salute_v140.py
+
+  canonical-quick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install canonical dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Canonical quick gate
+        run: python scripts/preflight.py --quick
+      - name: Verify build is non-mutating
+        run: git diff --exit-code -- . ':(exclude)dist'
