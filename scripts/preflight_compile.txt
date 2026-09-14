@@ -108,8 +108,11 @@ scripts/test_invalsi_v138.py
 scripts/test_invalsi_v138_browser.py
 scripts/apply_bilanci_v139.py
 scripts/materialize_salute_v140.py
+scripts/patch_salute_v140_runtime.py
+scripts/audit_salute_v140_dimensions.py
 scripts/apply_per_capita_reference_contract.py
 scripts/patch_per_capita_reference_runtime.py
 scripts/test_bilanci_v139.py
 scripts/test_bilanci_v139_browser.py
 scripts/test_salute_v140.py
+scripts/test_salute_v140_town_browser.py
