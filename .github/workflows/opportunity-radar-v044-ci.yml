@@ -21,6 +21,9 @@ concurrency:
 
 jobs:
   test:
+    # Do not request approval for the bot's own snapshot-only review PR.
+    # Human PRs continue to run the full Radar regression suite.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:

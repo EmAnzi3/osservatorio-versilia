@@ -34,6 +34,13 @@ concurrency:
 
 jobs:
   refresh:
+    # The daily bot opens a review PR containing only its verified snapshot.
+    # GitHub requires an approval before running pull_request workflows started
+    # by github-actions[bot], which otherwise leaves a false red
+    # `action_required` check. The scheduled refresh and the explicit Pages
+    # gate have already validated that snapshot; keep this job for every human
+    # PR (including Radar code/data changes) and skip only the bot self-check.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
