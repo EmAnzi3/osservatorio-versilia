@@ -15,11 +15,12 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open('data/site-data.json',encoding='utf-8'))
-          out={'version':d.get('version'),'theme':d['themes']['salute'],'metrics':{k:v for k,v in d['metrics'].items() if v.get('meta',{}).get('theme')=='salute'}}
+          keys=['mortalityAll','chronicTotal','elderlyHomeCare','pharmaciesPer1000']
+          out={'theme':d['themes']['salute'],'metrics':{k:d['metrics'][k] for k in keys}}
           open('tmp-salute-schema.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
           PY
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add tmp-salute-schema.json
-          git commit -m 'chore: persist temporary salute schema'
+          git commit -m 'chore: narrow temporary salute schema'
           git push
