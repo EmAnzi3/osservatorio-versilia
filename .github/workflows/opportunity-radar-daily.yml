@@ -70,6 +70,7 @@ jobs:
           python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_publishability_matrix.py
           python scripts/test_opportunity_expired_lifecycle.py
+          python scripts/test_opportunity_run_report.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
@@ -189,7 +190,14 @@ jobs:
           echo "Salute fonti ereditata dall'artifact diagnostico ${artifact_id}."
 
       - name: Scan live sources and build daily snapshot
-        run: python scripts/opportunity_daily_refresh_stable.py
+        id: live_scan
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p reports/runtime
+          python scripts/opportunity_daily_refresh_stable.py 2>&1 \
+            | tee reports/runtime/opportunity-live-scan.log
 
       - name: Upload continuity diagnostic
         if: always()
@@ -198,7 +206,7 @@ jobs:
           name: opportunity-radar-continuity-diagnostic
           path: reports/runtime/opportunity-continuity-hold.json
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 30
 
       - name: Upload publishability diagnostic
         if: always()
@@ -207,9 +215,12 @@ jobs:
           name: opportunity-radar-publishability-diagnostic
           path: reports/runtime/opportunity-publishability-diagnostic.json
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 30
 
       - name: Validate daily snapshot and freshness
+        id: validate_snapshot
+        if: ${{ steps.live_scan.outcome == 'success' }}
+        continue-on-error: true
         run: |
           python -m json.tool data/opportunity-daily-public.json > /dev/null
           python - <<'PY'
@@ -263,6 +274,9 @@ jobs:
           PY
 
       - name: Build and validate the public Radar before committing
+        id: validate_build
+        if: ${{ steps.live_scan.outcome == 'success' && steps.validate_snapshot.outcome == 'success' }}
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -290,12 +304,65 @@ jobs:
           cat /tmp/ov-radar-daily.log
           exit 1
 
-      - name: Upload refresh report
+      - name: Generate readable run report
+        id: run_report
+        if: always()
+        shell: bash
+        run: |
+          python scripts/opportunity_run_report.py \
+            --previous /tmp/opportunity-daily-previous.json \
+            --current data/opportunity-daily-public.json \
+            --diagnostic reports/runtime/opportunity-publishability-diagnostic.json \
+            --scan-status "${{ steps.live_scan.outcome }}" \
+            --validation-status "${{ steps.validate_snapshot.outcome }}" \
+            --build-status "${{ steps.validate_build.outcome }}"
+          cat reports/runtime/opportunity-run-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload complete run evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: opportunity-radar-daily-report
-          path: reports/runtime/opportunity-daily-summary.md
-          retention-days: 14
+          path: |
+            reports/runtime/opportunity-run-report.html
+            reports/runtime/opportunity-run-report.json
+            reports/runtime/opportunity-run-report.md
+            reports/runtime/opportunity-daily-summary.md
+            reports/runtime/opportunity-live-scan.log
+            reports/runtime/opportunity-continuity-hold.json
+            reports/runtime/opportunity-publishability-diagnostic.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Enforce complete green run
+        if: always()
+        env:
+          SCAN_STATUS: ${{ steps.live_scan.outcome }}
+          VALIDATION_STATUS: ${{ steps.validate_snapshot.outcome }}
+          BUILD_STATUS: ${{ steps.validate_build.outcome }}
+          REPORT_STATUS: ${{ steps.run_report.outcome }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+
+          sys.path.insert(0, 'scripts')
+          from opportunity_run_report import incomplete_run_stages
+
+          statuses = {
+              'scan': os.environ.get('SCAN_STATUS'),
+              'validation': os.environ.get('VALIDATION_STATUS'),
+              'build': os.environ.get('BUILD_STATUS'),
+              'report': os.environ.get('REPORT_STATUS'),
+          }
+          failed = incomplete_run_stages(statuses)
+          if failed:
+              raise SystemExit(
+                  'Run Radar non pubblicabile: '
+                  + ', '.join(f'{name}={status}' for name, status in failed.items())
+              )
+          print('Contratto del run Radar: scan, snapshot, build/browser e report PASS.')
+          PY
 
       - name: Commit verified daily snapshot to automation branch
         id: commit
@@ -355,10 +422,10 @@ jobs:
           PY
           )"
           TITLE="Aggiorna Radar Opportunità ${REFERENCE_DATE}"
-          cat > /tmp/opportunity-radar-pr.md <<EOF
-          ## Radar Opportunità · refresh giornaliero
+          cp reports/runtime/opportunity-run-report.md /tmp/opportunity-radar-pr.md
+          cat >> /tmp/opportunity-radar-pr.md <<EOF
 
-          Snapshot verificato del **${REFERENCE_DATE}** prodotto dal workflow giornaliero.
+          ## Pubblicazione
 
           - la pipeline ha superato i contratti Radar, il controllo di continuità, la copertura fonti e il browser test;
           - lo snapshot è proposto tramite branch di automazione, **mai con push diretto su \`main\`**;
