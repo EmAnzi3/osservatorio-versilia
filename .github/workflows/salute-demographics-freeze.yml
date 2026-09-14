@@ -1,0 +1,62 @@
+name: Freeze Salute demographic snapshot
+
+on:
+  push:
+    branches:
+      - codex/salute-demographic-enrichment
+    paths:
+      - '.github/workflows/salute-demographics-freeze.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/salute-demographic-enrichment
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build ARS demographic snapshot from official exports
+        run: python scripts/build_salute_demographics_snapshot_v140.py
+      - name: Freeze candidate snapshot
+        run: cp reports/ars-salute-demographics-v140.json data/source-snapshots/ars-salute-demographics-v140.json
+      - name: Validate against all currently published Salute values
+        run: |
+          python scripts/materialize_salute_v140.py
+          python scripts/materialize_salute_demographics_v140.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          assert len(data['metrics']) == 225, len(data['metrics'])
+          expected={
+            'lifeExpectancy','mortalityAll','mortalityCancer','mortalityCirculatory','mortalityRespiratory',
+            'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence','heartFailurePrevalence',
+            'priorStrokePrevalence','diabetes','dementia','permanentRsaAssisted','emergencyAccess',
+            'specialistVisits7Psr','diagnosticImagingServices','elderlyHomeCare'
+          }
+          enriched={k for k,v in data['metrics'].items() if (v.get('meta') or {}).get('demographicSource')}
+          assert expected <= enriched, sorted(expected-enriched)
+          assert 'chronicTotal' not in enriched
+          assert 'hospitalizedAll' not in enriched
+          for key in expected:
+            metric=data['metrics'][key]
+            assert metric.get('tuscany',{}).get('parts'), key
+            assert metric['meta']['benchmark']['tuscany'] is not None, key
+            assert metric['meta']['benchmark']['italy'] is None, key
+          print('Snapshot demographic reconciliation: 17/17 metriche, catalogo invariato a 225')
+          PY
+      - name: Commit only the reviewed source snapshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/source-snapshots/ars-salute-demographics-v140.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data(salute): freeze ARS demographic enrichment snapshot'
+          git push origin HEAD:codex/salute-demographic-enrichment
