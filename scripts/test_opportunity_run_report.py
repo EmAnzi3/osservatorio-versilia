@@ -100,6 +100,7 @@ def main() -> int:
     assert report["added"][0]["title"] == "Bando nuovo"
     assert report["archived"][0]["title"] == "Bando scaduto"
     assert report["removed"][0]["title"] == "Bando scomparso"
+    assert report["sourceHealth"]["contentSanitized"] == 0
 
     markdown = render_markdown(report)
     page = render_html(report)
@@ -129,7 +130,7 @@ def main() -> int:
     failed_markdown = render_markdown(failed)
     assert "FAIL" in failed_markdown
     assert "coverageHold=1" in failed_markdown
-    assert "non e conclusivo" in failed_markdown
+    assert "non è conclusivo" in failed_markdown
 
     duplicate_titles_old = _snapshot([
         _item("Titolo duplicato", "", url="https://example.test/a"),
