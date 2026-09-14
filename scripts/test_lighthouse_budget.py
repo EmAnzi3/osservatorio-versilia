@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import subprocess
+import time
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -24,6 +25,14 @@ THRESHOLDS = {
     "best-practices": 0.90,
     "seo": 0.90,
 }
+TRANSIENT_LIGHTHOUSE_ERRORS = (
+    "Waiting for DevTools protocol response has exceeded the allotted time",
+    "Network.getResponseBody",
+    "TargetClosedError",
+    "Target page, context or browser has been closed",
+    "ECONNRESET",
+    "Connection reset by peer",
+)
 
 
 def require(condition: bool, message: str) -> None:
@@ -38,11 +47,17 @@ def chromium_path() -> str:
     return path
 
 
+def _is_transient_lighthouse_failure(output: str) -> bool:
+    return any(marker in output for marker in TRANSIENT_LIGHTHOUSE_ERRORS)
+
+
 def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
     npm = shutil.which("npm")
     require(npm is not None, "npm non disponibile: impossibile eseguire Lighthouse")
     lighthouse = shutil.which("lighthouse")
     timeout = int(os.environ.get("LIGHTHOUSE_TIMEOUT_SECONDS", "300"))
+    max_attempts = max(1, int(os.environ.get("LIGHTHOUSE_MAX_ATTEMPTS", "3")))
+    retry_delay = max(0.0, float(os.environ.get("LIGHTHOUSE_RETRY_DELAY_SECONDS", "2")))
     output_dir.mkdir(parents=True, exist_ok=True)
 
     env = os.environ.copy()
@@ -65,18 +80,49 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
             f"--output-path={report}",
             "--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage",
         ]
-        completed = subprocess.run(
-            command,
-            env=env,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=timeout,
-            check=False,
-        )
+
+        last_exit: int | str = "n/a"
+        last_output = ""
+        succeeded = False
+        for attempt in range(1, max_attempts + 1):
+            report.unlink(missing_ok=True)
+            try:
+                completed = subprocess.run(
+                    command,
+                    env=env,
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    timeout=timeout,
+                    check=False,
+                )
+                last_exit = completed.returncode
+                last_output = completed.stdout or ""
+                if completed.returncode == 0 and report.exists():
+                    succeeded = True
+                    break
+                transient = _is_transient_lighthouse_failure(last_output)
+            except subprocess.TimeoutExpired as exc:
+                last_exit = "timeout"
+                payload = exc.stdout or ""
+                if isinstance(payload, bytes):
+                    payload = payload.decode("utf-8", errors="replace")
+                last_output = str(payload)
+                transient = True
+
+            if not transient or attempt >= max_attempts:
+                break
+            print(
+                f"Lighthouse transient failure su {route or '/'}: "
+                f"tentativo {attempt}/{max_attempts}; nuovo tentativo tra {retry_delay:g}s."
+            )
+            if retry_delay:
+                time.sleep(retry_delay)
+
         require(
-            completed.returncode == 0 and report.exists(),
-            f"Lighthouse fallito su {route or '/'} (exit {completed.returncode}):\n{completed.stdout[-4000:]}",
+            succeeded,
+            f"Lighthouse fallito su {route or '/'} dopo {max_attempts if _is_transient_lighthouse_failure(last_output) or last_exit == 'timeout' else 1} tentativo/i "
+            f"(exit {last_exit}):\n{last_output[-4000:]}",
         )
         reports.append(report)
 
