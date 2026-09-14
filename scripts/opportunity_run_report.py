@@ -37,8 +37,8 @@ FIELD_LABELS = {
     "opens_at": "Apertura",
     "status": "Stato",
     "lifecycle_stage": "Ciclo di vita",
-    "eligibility": "Ammissibilita",
-    "access_mode": "Modalita di accesso",
+    "eligibility": "Ammissibilità",
+    "access_mode": "Modalità di accesso",
     "municipality_role": "Ruolo del Comune",
     "partnership_required": "Partenariato richiesto",
     "source_id": "Fonte",
@@ -174,7 +174,7 @@ def _display(value: Any) -> str:
     if value is None or value == "":
         return "—"
     if value is True:
-        return "Si"
+        return "Sì"
     if value is False:
         return "No"
     if isinstance(value, list):
@@ -240,7 +240,7 @@ def _gate_summary(
         summary = diagnostic.get("gateSummary") or {}
         return [
             {
-                "name": "Continuita",
+                "name": "Continuità",
                 "status": "pass" if int(summary.get("continuityHoldCount") or 0) == 0 else "fail",
                 "detail": f"{int(summary.get('continuityHoldCount') or 0)} in hold",
             },
@@ -271,7 +271,7 @@ def _gate_summary(
     backtest = current.get("backtest") or {}
     gates = [
         {
-            "name": "Continuita",
+            "name": "Continuità",
             "status": "pass" if not current.get("continuityHold") and int(continuity.get("remaining") or 0) == 0 else "fail",
             "detail": f"{continuity.get('reconciled', 0)} riconciliate; {continuity.get('remaining', 0)} irrisolte",
         },
@@ -404,6 +404,7 @@ def build_report(
             "endpointFailures": int(transport_summary.get("endpointFailures") or 0),
             "sourcesInGrace": int(transport_summary.get("sourcesInGrace") or 0),
             "unhealthySources": int(transport_summary.get("unhealthySources") or 0),
+            "contentSanitized": int((current.get("contentSanitization") or {}).get("repairedCount") or 0),
             "attention": sorted(source_rows, key=lambda row: str(row.get("sourceId") or "")),
         },
         "diagnostic": diagnostic or {},
@@ -431,11 +432,20 @@ def _markdown_link(item: dict[str, Any]) -> str:
     return f"[{title}]({url})" if url else title
 
 
+def _short(value: Any, limit: int = 280) -> str:
+    text = re.sub(r"\s+", " ", str(value or "")).strip()
+    return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
+
+
+def _markdown_cell(value: Any, limit: int = 280) -> str:
+    return _short(value, limit).replace("|", "\\|")
+
+
 def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
     counts = report["counts"]
     health = report["sourceHealth"]
     lines = [
-        "# Radar Opportunita · rapporto del run",
+        "# Radar Opportunità · rapporto del run",
         "",
         f"**Esito: {_status_label(report['overallStatus'])}** · data dati **{report.get('referenceDate') or 'n.d.'}** · fingerprint `{report['fingerprint']}`",
         "",
@@ -448,7 +458,7 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
     if not report.get("comparisonAvailable"):
         lines.extend([
             "",
-            "> Il confronto dei contenuti non e conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
+            "> Il confronto dei contenuti non è conclusivo: la scansione non ha prodotto uno snapshot validabile. I conteggi delle variazioni rappresentano il file rimasto nel workspace, non nuove decisioni del Radar.",
         ])
     if report.get("failureReasons"):
         lines.extend(["", "## Motivo del blocco", ""])
@@ -466,7 +476,8 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         (
             f"Fonti configurate **{health['configuredSources']}** · endpoint **{health['configuredEndpoints']}** · "
             f"fallback riusciti **{health['fallbackSuccesses']}** · failure endpoint **{health['endpointFailures']}** · "
-            f"fonti in grace **{health['sourcesInGrace']}** · unhealthy **{health['unhealthySources']}**."
+            f"fonti in grace **{health['sourcesInGrace']}** · unhealthy **{health['unhealthySources']}** · "
+            f"schede ripulite da contaminazioni HTML/JS **{health['contentSanitized']}**."
         ),
     ])
     if health["attention"]:
@@ -474,14 +485,14 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         for source in health["attention"]:
             lines.append(
                 f"| `{source['sourceId']}` | {source['runtimeStatus']} | {source['effectiveStatus']} | "
-                f"{'Si' if source['graceUsed'] else 'No'} | {source['consecutiveFailures']} | "
+                f"{'Sì' if source['graceUsed'] else 'No'} | {source['consecutiveFailures']} | "
                 f"{', '.join(source['failureClasses']) or '—'} |"
             )
 
     sections = (
         ("Nuove opportunita", "added"),
         ("Record modificati", "modified"),
-        ("Opportunita archiviate", "archived"),
+        ("Opportunità archiviate", "archived"),
         ("Record rimossi senza archiviazione", "removed"),
     )
     for title, key in sections:
@@ -490,16 +501,16 @@ def render_markdown(report: dict[str, Any], *, detail_limit: int = 25) -> str:
         if not items:
             lines.append("Nessun record.")
             continue
-        lines.extend(["| Fonte | Scadenza | Opportunita | Dettaglio |", "|---|---|---|---|"])
+        lines.extend(["| Fonte | Scadenza | Opportunità | Dettaglio |", "|---|---|---|---|"])
         for item in items[:detail_limit]:
             detail = "—"
             if key == "modified":
                 detail = "<br>".join(
-                    f"**{change['label']}:** {change['before']} -> {change['after']}"
+                    f"**{change['label']}:** {_markdown_cell(change['before'])} → {_markdown_cell(change['after'])}"
                     for change in item["changes"]
                 )
             lines.append(
-                f"| {item['source']} | {item['deadline'] or '—'} | {_markdown_link(item)} | {detail} |"
+                f"| {_markdown_cell(item['source'])} | {item['deadline'] or '—'} | {_markdown_link(item)} | {detail} |"
             )
         if len(items) > detail_limit:
             lines.append(f"\n_Altri {len(items) - detail_limit} record sono disponibili nel report HTML/JSON._")
@@ -520,7 +531,7 @@ def _html_table(title: str, items: list[dict[str, Any]], *, modified: bool = Fal
         if modified:
             detail = "<ul>" + "".join(
                 "<li><strong>" + html.escape(change["label"]) + ":</strong> "
-                + html.escape(change["before"]) + " -> " + html.escape(change["after"]) + "</li>"
+                + html.escape(_short(change["before"])) + " → " + html.escape(_short(change["after"])) + "</li>"
                 for change in item.get("changes") or []
             ) + "</ul>"
         rows.append(
@@ -531,7 +542,7 @@ def _html_table(title: str, items: list[dict[str, Any]], *, modified: bool = Fal
     body = "".join(rows) if rows else '<tr><td colspan="4">Nessun record.</td></tr>'
     return (
         f"<section><h2>{html.escape(title)} ({len(items)})</h2>"
-        "<table><thead><tr><th>Fonte</th><th>Scadenza</th><th>Opportunita</th><th>Dettaglio</th></tr></thead>"
+        "<table><thead><tr><th>Fonte</th><th>Scadenza</th><th>Opportunità</th><th>Dettaglio</th></tr></thead>"
         f"<tbody>{body}</tbody></table></section>"
     )
 
@@ -551,7 +562,7 @@ def render_html(report: dict[str, Any]) -> str:
         "<tr><td><code>" + html.escape(str(row.get("sourceId") or "")) + "</code></td><td>"
         + html.escape(str(row.get("runtimeStatus") or "")) + "</td><td>"
         + html.escape(str(row.get("effectiveStatus") or "")) + "</td><td>"
-        + ("Si" if row.get("graceUsed") else "No") + "</td><td>"
+        + ("Sì" if row.get("graceUsed") else "No") + "</td><td>"
         + html.escape(str(row.get("consecutiveFailures") or 0)) + "</td><td>"
         + html.escape(", ".join(row.get("failureClasses") or []) or "—") + "</td></tr>"
         for row in health["attention"]
@@ -569,20 +580,20 @@ def render_html(report: dict[str, Any]) -> str:
         ) + "</ul></section>"
     return f"""<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Radar Opportunita - rapporto del run</title>
+<title>Radar Opportunità - rapporto del run</title>
 <style>
 body{{font-family:Arial,sans-serif;color:#111827;background:#f3f6f8;line-height:1.45;margin:0;padding:24px}}main{{max-width:1500px;margin:auto}}h1{{margin-bottom:4px}}.small{{color:#6b7280;font-size:13px}}.status{{display:inline-block;border-radius:999px;padding:7px 12px;font-weight:800}}.ok{{background:#dcfce7;color:#166534}}.warn{{background:#fef3c7;color:#92400e}}.fail{{background:#fee2e2;color:#991b1b}}.cards{{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin:18px 0 24px}}.card,section{{border:1px solid #d1d5db;border-radius:14px;background:white}}.card{{padding:14px}}.card strong{{display:block;font-size:28px}}section{{padding:18px;margin-bottom:20px;overflow-x:auto}}table{{border-collapse:collapse;width:100%;margin:12px 0 8px;font-size:13px}}th,td{{border-bottom:1px solid #e5e7eb;padding:8px;vertical-align:top}}th{{background:#f9fafb;text-align:left;position:sticky;top:0}}a{{color:#0f766e;font-weight:700;text-decoration:none}}ul{{margin:0;padding-left:18px}}@media(max-width:800px){{body{{padding:12px}}.cards{{grid-template-columns:repeat(2,minmax(130px,1fr))}}}}
 </style></head><body><main>
-<h1>Radar Opportunita - rapporto del run</h1><p class="small">Generato {generated} · dati {html.escape(str(report.get('referenceDate') or 'n.d.'))} · fingerprint {html.escape(report['fingerprint'])}</p>
+<h1>Radar Opportunità - rapporto del run</h1><p class="small">Generato {generated} · dati {html.escape(str(report.get('referenceDate') or 'n.d.'))} · fingerprint {html.escape(report['fingerprint'])}</p>
 <p><span class="status {status_class}">{html.escape(_status_label(report['overallStatus']))}</span></p>
 <div class="cards"><div class="card"><strong>{counts['added']}</strong>Nuove</div><div class="card"><strong>{counts['modified']}</strong>Modificate</div><div class="card"><strong>{counts['archived']}</strong>Archiviate</div><div class="card"><strong>{counts['removed']}</strong>Rimosse</div><div class="card"><strong>{counts['current']}</strong>Correnti</div></div>
 <section><h2>Riepilogo</h2><p>Record precedenti: <strong>{counts['previous']}</strong> -> record correnti: <strong>{counts['current']}</strong><br>Record invariati: <strong>{counts['unchanged']}</strong></p></section>
 {comparison_warning}{failure_reasons}
 <section><h2>Fasi e gate</h2><table><thead><tr><th>Controllo</th><th>Esito</th><th>Dettaglio</th></tr></thead><tbody>{phase_rows}{gate_rows}</tbody></table></section>
-<section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table></section>
+<section><h2>Salute fonti</h2><p>Fonti <strong>{health['configuredSources']}</strong> · endpoint <strong>{health['configuredEndpoints']}</strong> · fallback riusciti <strong>{health['fallbackSuccesses']}</strong> · failure endpoint <strong>{health['endpointFailures']}</strong> · in grace <strong>{health['sourcesInGrace']}</strong> · unhealthy <strong>{health['unhealthySources']}</strong> · schede ripulite da contaminazioni HTML/JS <strong>{health['contentSanitized']}</strong>.</p><table><thead><tr><th>Fonte</th><th>Runtime</th><th>Effettivo</th><th>Grace</th><th>Failure consecutivi</th><th>Classi errore</th></tr></thead><tbody>{source_rows}</tbody></table></section>
 {_html_table('Nuove opportunita', report['added'])}
 {_html_table('Record modificati', report['modified'], modified=True)}
-{_html_table('Opportunita archiviate', report['archived'])}
+{_html_table('Opportunità archiviate', report['archived'])}
 {_html_table('Record rimossi senza archiviazione', report['removed'])}
 </main></body></html>"""
 
