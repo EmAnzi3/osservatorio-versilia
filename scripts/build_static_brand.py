@@ -23,9 +23,11 @@ TERRITORIO_V137_RUNTIME_PATCH = ROOT / "scripts" / "patch_territorio_v137_runtim
 INVALSI_V138_PAYLOAD = ROOT / "scripts" / "materialize_invalsi_v138_payload.py"
 INVALSI_V138_RUNTIME_RUNNER = ROOT / "scripts" / "run_invalsi_v138_runtime.py"
 BILANCI_V139_MATERIALIZER = ROOT / "scripts" / "apply_bilanci_v139.py"
+SALUTE_V140_MATERIALIZER = ROOT / "scripts" / "materialize_salute_v140.py"
 PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_reference_contract.py"
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
+SALUTE_V140_TEST = ROOT / "scripts" / "test_salute_v140.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -52,11 +54,15 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         # v1.39 è un overlay esclusivamente locale: la snapshot OpenBDAP è già
         # versionata e viene applicata soltanto dopo che la catena v1.38 è completa.
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_MATERIALIZER), run_name="__main__")
+        # v1.40 estende Salute dopo la baseline v1.39 e prima dei contratti
+        # trasversali applicati all'intero catalogo materializzato.
+        _ORIGINAL_RUN_PATH(str(SALUTE_V140_MATERIALIZER), run_name="__main__")
         # Il benchmark pro capite è un contratto trasversale: vale per tutti gli
         # indicatori eleggibili, legacy e nuovi, non per la sola tranche v1.39.
         _ORIGINAL_RUN_PATH(str(PER_CAPITA_REFERENCE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(PER_CAPITA_REFERENCE_RUNTIME_PATCH), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(SALUTE_V140_TEST), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
