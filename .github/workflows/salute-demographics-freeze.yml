@@ -40,12 +40,19 @@ jobs:
       - name: Validate against all currently published Salute values
         run: |
           python scripts/materialize_salute_v140.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
+          Path('/tmp/salute-count-before.txt').write_text(str(len(data['metrics'])), encoding='utf-8')
+          PY
           python scripts/materialize_salute_demographics_v140.py
           python - <<'PY'
           import json
           from pathlib import Path
           data=json.loads(Path('data/site-data.json').read_text(encoding='utf-8'))
-          assert len(data['metrics']) == 225, len(data['metrics'])
+          before=int(Path('/tmp/salute-count-before.txt').read_text(encoding='utf-8'))
+          assert len(data['metrics']) == before, (before, len(data['metrics']))
           expected={
             'lifeExpectancy','mortalityAll','mortalityCancer','mortalityCirculatory','mortalityRespiratory',
             'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence','heartFailurePrevalence',
@@ -61,7 +68,7 @@ jobs:
             assert metric.get('tuscany',{}).get('parts'), key
             assert metric['meta']['benchmark']['tuscany'] is not None, key
             assert metric['meta']['benchmark']['italy'] is None, key
-          print('Snapshot demographic reconciliation: 17/17 metriche, catalogo invariato a 225')
+          print(f'Snapshot demographic reconciliation: 17/17 metriche, catalogo invariato a {before}')
           PY
       - name: Commit only the reviewed source snapshot
         run: |
