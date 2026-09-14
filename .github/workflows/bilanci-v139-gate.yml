@@ -14,6 +14,7 @@ on:
       - 'scripts/apply_bilanci_v139.py'
       - 'scripts/test_bilanci_v139.py'
       - 'scripts/test_bilanci_v139_browser.py'
+      - 'scripts/test_bilanci_v139_contract_browser.py'
       - 'scripts/build_bilanci_snapshot.py'
       - 'scripts/apply_salute_finanziaria_v129.py'
       - 'data/source-snapshots/bilanci-v1.6.0.json'
@@ -53,6 +54,7 @@ jobs:
           scripts/apply_bilanci_v139.py
           scripts/test_bilanci_v139.py
           scripts/test_bilanci_v139_browser.py
+          scripts/test_bilanci_v139_contract_browser.py
 
       - name: Gate year-end cash fund 7/7
         run: python scripts/probe_bilanci_v139_cash.py
@@ -146,13 +148,13 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Build and verify complete v1.39 preview
+      - name: Build current preview with Bilanci v1.39 contract
         run: python scripts/preflight.py --quick
 
-      - name: Browser QA Bilanci v1.39 desktop and mobile
+      - name: Browser QA Bilanci v1.39 contract on current release
         run: |
           mkdir -p reports/bilanci-v139-browser
-          python scripts/test_bilanci_v139_browser.py \
+          python scripts/test_bilanci_v139_contract_browser.py \
             --directory dist \
             --screenshots-dir reports/bilanci-v139-browser
 
