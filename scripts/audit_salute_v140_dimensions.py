@@ -138,8 +138,8 @@ def main() -> int:
         strata1 = unique(row.get("strato1") for row in target_rows)
         strata2 = unique(row.get("strato2") for row in target_rows)
         periods = unique(row.get("anno") for row in target_rows)
-        tuscany = geography_rows(rows, "Toscana")
-        italy = geography_rows(rows, "Italia")
+        tuscany = geography_rows(rows, "REGIONE TOSCANA")
+        italy = geography_rows(rows, "ITALIA")
 
         report["indicators"][str(iid)] = {
             "key": spec["key"],
