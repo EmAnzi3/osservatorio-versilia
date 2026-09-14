@@ -115,29 +115,81 @@ def patch_visual_grammar() -> None:
         ": (metric?.meta?.comparisonShareDirection || 'del totale Versilia');",
         "share direction fallback",
     )
+
+    per_capita_tail = """    const territorialPerCapitaReference = comparisonLabel === 'valore pro capite Versilia';
+    if (aggregate === 0) {
+      const diff = local - aggregate;
+      return {
+        headline: formatAxis(diff, metric.meta.unit),
+        direction: diff === 0
+          ? 'in linea'
+          : territorialPerCapitaReference
+            ? (diff > 0 ? 'sopra il valore pro capite Versilia' : 'sotto il valore pro capite Versilia')
+            : (diff > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia'),
+        compact: territorialPerCapitaReference ? 'confronto con il valore pro capite Versilia' : 'confronto con Versilia',
+        overline,
+        note,
+      };
+    }
+
+    const relative = ((local / aggregate) - 1) * 100;
+    if (Math.abs(relative) < 0.05) return {
+      headline: '0,0%',
+      direction: 'in linea',
+      compact: territorialPerCapitaReference ? 'in linea con il valore pro capite Versilia' : 'in linea con la media Versilia',
+      overline,
+      note,
+    };
+    const sign = relative > 0 ? '+' : '−';
+    const abs = number1.format(Math.abs(relative));
+    return {
+      headline: `${sign}${abs}%`,
+      direction: territorialPerCapitaReference
+        ? (relative > 0 ? 'sopra il valore pro capite Versilia' : 'sotto il valore pro capite Versilia')
+        : (relative > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia'),
+      compact: territorialPerCapitaReference
+        ? `${sign}${abs}% vs valore pro capite Versilia`
+        : `${sign}${abs}% vs media Versilia`,
+      overline,
+      note,
+    };
+"""
+    generalized_tail = """    const directionReference = metric?.meta?.comparisonDirectionLabel
+      || (/^(valore|riferimento|totale)\b/i.test(comparisonLabel) ? `il ${comparisonLabel}` : `la ${comparisonLabel}`);
+    if (aggregate === 0) {
+      const diff = local - aggregate;
+      return {
+        headline: formatAxis(diff, metric.meta.unit),
+        direction: diff === 0 ? 'in linea' : diff > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,
+        compact: `confronto con ${comparisonLabel}`,
+        overline,
+        note,
+      };
+    }
+
+    const relative = ((local / aggregate) - 1) * 100;
+    if (Math.abs(relative) < 0.05) return {
+      headline: '0,0%',
+      direction: 'in linea',
+      compact: `in linea con ${comparisonLabel}`,
+      overline,
+      note,
+    };
+    const sign = relative > 0 ? '+' : '−';
+    const abs = number1.format(Math.abs(relative));
+    return {
+      headline: `${sign}${abs}%`,
+      direction: relative > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,
+      compact: `${sign}${abs}% vs ${comparisonLabel}`,
+      overline,
+      note,
+    };
+"""
     source = replace_once(
         source,
-        "    if (aggregate === 0) {",
-        "    const directionReference = metric?.meta?.comparisonDirectionLabel || `la ${comparisonLabel}`;\n    if (aggregate === 0) {",
-        "comparison direction reference",
-    )
-    source = replace_once(
-        source,
-        "        direction: diff === 0 ? 'in linea' : diff > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',\n        compact: 'confronto con Versilia',\n      };",
-        "        direction: diff === 0 ? 'in linea' : diff > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,\n        compact: `confronto con ${comparisonLabel}`,\n        overline,\n        note,\n      };",
-        "zero-reference comparison copy",
-    )
-    source = replace_once(
-        source,
-        "    if (Math.abs(relative) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: 'in linea con la media Versilia' };",
-        "    if (Math.abs(relative) < 0.05) return { headline: '0,0%', direction: 'in linea', compact: `in linea con ${comparisonLabel}`, overline, note };",
-        "relative in-line copy",
-    )
-    source = replace_once(
-        source,
-        "      direction: relative > 0 ? 'sopra la media Versilia' : 'sotto la media Versilia',\n      compact: `${sign}${abs}% vs media Versilia`,\n    };",
-        "      direction: relative > 0 ? `sopra ${directionReference}` : `sotto ${directionReference}`,\n      compact: `${sign}${abs}% vs ${comparisonLabel}`,\n      overline,\n      note,\n    };",
-        "relative comparison copy",
+        per_capita_tail,
+        generalized_tail,
+        "relative comparison contract after per-capita runtime",
     )
     VISUAL_GRAMMAR.write_text(source, encoding="utf-8")
 
