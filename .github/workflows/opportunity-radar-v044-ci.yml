@@ -57,8 +57,10 @@ jobs:
             scripts/opportunity_transport_smoke.py \
             scripts/opportunity_regione_toscana_guard.py \
             scripts/opportunity_issue_notification.py \
+            scripts/opportunity_run_report.py \
             scripts/test_opportunity_regione_toscana_guard.py \
             scripts/test_opportunity_issue_notification.py \
+            scripts/test_opportunity_run_report.py \
             scripts/test_opportunity_daily_continuity.py \
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
@@ -74,6 +76,7 @@ jobs:
             scripts/test_opportunity_release_browser.py
           python scripts/test_opportunity_regione_toscana_guard.py
           python scripts/test_opportunity_issue_notification.py
+          python scripts/test_opportunity_run_report.py
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
