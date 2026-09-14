@@ -2,25 +2,24 @@ name: tmp-salute-inspect
 on:
   push:
     branches: [codex/salute-12-indicatori]
-  workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   inspect:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect salute schema
+      - name: Persist salute schema
         run: |
           python - <<'PY'
           import json
           d=json.load(open('data/site-data.json',encoding='utf-8'))
-          print('VERSION', d.get('version'), 'METRICS', len(d.get('metrics',{})))
-          print('SALUTE_THEME')
-          print(json.dumps(d['themes']['salute'], ensure_ascii=False, indent=2))
-          print('SALUTE_METRICS')
-          for k,v in d['metrics'].items():
-              if v.get('meta',{}).get('theme')=='salute':
-                  print('KEY',k)
-                  print(json.dumps(v, ensure_ascii=False, indent=2)[:12000])
+          out={'version':d.get('version'),'theme':d['themes']['salute'],'metrics':{k:v for k,v in d['metrics'].items() if v.get('meta',{}).get('theme')=='salute'}}
+          open('tmp-salute-schema.json','w',encoding='utf-8').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
           PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add tmp-salute-schema.json
+          git commit -m 'chore: persist temporary salute schema'
+          git push
