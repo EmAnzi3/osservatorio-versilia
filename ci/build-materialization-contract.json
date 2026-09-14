@@ -21,7 +21,10 @@
     "scripts/refine_economy_atlas_exports.py",
     "scripts/apply_bilanci_v139.py",
     "scripts/materialize_salute_v140.py",
+    "scripts/materialize_salute_demographics_v140.py",
     "scripts/patch_salute_v140_runtime.py",
+    "scripts/patch_salute_v140_runtime_core.py",
+    "scripts/patch_salute_v140_demographics_runtime.py",
     "scripts/apply_per_capita_reference_contract.py"
   ],
   "publicSnapshotFiles": [

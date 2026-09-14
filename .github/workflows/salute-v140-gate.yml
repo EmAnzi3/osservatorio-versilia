@@ -5,15 +5,19 @@ on:
     paths:
       - '.github/workflows/salute-v140-gate.yml'
       - 'scripts/materialize_salute_v140.py'
+      - 'scripts/materialize_salute_demographics_v140.py'
       - 'scripts/patch_salute_v140_runtime.py'
       - 'scripts/patch_salute_v140_runtime_core.py'
+      - 'scripts/patch_salute_v140_demographics_runtime.py'
       - 'scripts/audit_salute_v140_dimensions.py'
       - 'scripts/audit_salute_existing_dimensions.py'
       - 'scripts/probe_salute_existing_ars.py'
       - 'scripts/build_salute_demographics_snapshot_v140.py'
       - 'scripts/test_salute_v140.py'
+      - 'scripts/test_salute_demographics_v140.py'
       - 'scripts/test_salute_v140_town_browser.py'
       - 'data/source-snapshots/ars-salute-11-v140.json'
+      - 'data/source-snapshots/ars-salute-demographics-v140.json'
       - 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
   workflow_dispatch:
 
@@ -37,10 +41,27 @@ jobs:
           scripts/patch_salute_v140_runtime_core.py
           scripts/test_salute_v140.py
           scripts/test_salute_v140_town_browser.py
-      - name: Validate frozen source snapshots
+      - name: Validate frozen core source snapshots
         run: python scripts/materialize_salute_v140.py --snapshot-only
-      - name: Run Salute v1.40 regression gate
+      - name: Run Salute v1.40 core regression gate
         run: python scripts/test_salute_v140.py
+
+  salute-demographics-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile frozen demographic enrichment
+        run: >-
+          python -m py_compile
+          scripts/materialize_salute_demographics_v140.py
+          scripts/patch_salute_v140_demographics_runtime.py
+          scripts/test_salute_demographics_v140.py
+      - name: Run demographic enrichment contract
+        run: python scripts/test_salute_demographics_v140.py
 
   salute-enrichment-audit:
     runs-on: ubuntu-latest
@@ -51,7 +72,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compile optional Salute enrichment audits
+      - name: Compile optional Salute source-drift audits
         run: >-
           python -m py_compile
           scripts/audit_salute_v140_dimensions.py
@@ -67,7 +88,7 @@ jobs:
       - name: Optional audit — reconcile existing Salute metrics with candidate ARS exports
         continue-on-error: true
         run: python scripts/probe_salute_existing_ars.py
-      - name: Optional audit — build reviewed-period Salute demographic source snapshot
+      - name: Optional audit — rebuild current-period demographic evidence
         continue-on-error: true
         run: python scripts/build_salute_demographics_snapshot_v140.py
       - name: Upload optional Salute enrichment evidence
@@ -123,8 +144,8 @@ jobs:
         run: python scripts/preflight.py --full
 
   preview:
-    needs: [salute-contract, canonical-quick, canonical-full]
-    if: ${{ needs.salute-contract.result == 'success' && needs.canonical-quick.result == 'success' && needs.canonical-full.result == 'success' }}
+    needs: [salute-contract, salute-demographics-contract, canonical-quick, canonical-full]
+    if: ${{ needs.salute-contract.result == 'success' && needs.salute-demographics-contract.result == 'success' && needs.canonical-quick.result == 'success' && needs.canonical-full.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -139,9 +160,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
-      - name: Build Salute v1.40 preview
+      - name: Build Salute v1.40 enriched preview
         run: python scripts/preflight.py --quick
-      - name: Assert v1.40 / 225 indicators in preview
+      - name: Assert v1.40 core + demographic enrichment in preview
         run: |
           python - <<'PY'
           import json
@@ -167,17 +188,17 @@ jobs:
               registry['expectedExternalMetricCount'],
           ) == (225, 221, 4)
 
-          expected = {
+          expected_core = {
               'mortalityCancer','mortalityCirculatory','mortalityRespiratory',
               'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence',
               'heartFailurePrevalence','priorStrokePrevalence','permanentRsaAssisted',
               'specialistVisits7Psr','diagnosticImagingServices','accreditedRsaCount'
           }
-          missing = expected - set(data['metrics'])
+          missing = expected_core - set(data['metrics'])
           assert not missing, sorted(missing)
-          assert expected <= set(data['themes']['salute']['metrics'])
+          assert expected_core <= set(data['themes']['salute']['metrics'])
 
-          for key in expected - {'accreditedRsaCount'}:
+          for key in expected_core - {'accreditedRsaCount'}:
               metric = data['metrics'][key]
               assert len(metric['rows']) == 7, key
               assert len({row['town'] for row in metric['rows']}) == 7, key
@@ -200,6 +221,46 @@ jobs:
           }
           assert rsa['aggregate']['value'] == 13
           assert data['metrics']['hospitals']['meta']['comparisonDifference'] == 'shareOfAggregate'
+
+          demographic = {
+              'lifeExpectancy','mortalityAll','mortalityCancer','mortalityCirculatory','mortalityRespiratory',
+              'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence','heartFailurePrevalence',
+              'priorStrokePrevalence','diabetes','dementia','permanentRsaAssisted','emergencyAccess',
+              'specialistVisits7Psr','diagnosticImagingServices','elderlyHomeCare'
+          }
+          age_metrics = {
+              'hypertensionPrevalence','copdPrevalence','ischemicHeartDiseasePrevalence',
+              'heartFailurePrevalence','priorStrokePrevalence','diabetes','dementia'
+          }
+          enriched = {
+              key for key, metric in data['metrics'].items()
+              if (metric.get('meta') or {}).get('demographicSource')
+          }
+          assert enriched == demographic, sorted(enriched ^ demographic)
+          assert 'chronicTotal' not in enriched and 'hospitalizedAll' not in enriched
+
+          for key in demographic:
+              metric = data['metrics'][key]
+              has_age = key in age_metrics
+              expected_parts = 15 if has_age else 3
+              assert metric['meta']['compositeType'] == ('demographicBreakdown' if has_age else 'sexBreakdown'), key
+              assert metric['meta']['demographicSource']['publisher'] == 'ARS Toscana', key
+              assert metric['meta']['benchmark']['tuscany'] is not None, key
+              assert metric['meta']['benchmark']['italy'] is None, key
+              assert metric['tuscany']['source'] == 'ARS Toscana', key
+              assert len(metric['aggregate']['parts']) == expected_parts, key
+              assert len(metric['tuscany']['parts']) == expected_parts, key
+              for row in metric['rows']:
+                  assert len(row['parts']) == expected_parts, (key, row['town'])
+                  default_key = 'totale|totale' if has_age else 'totale'
+                  default = next(part for part in row['parts'] if part['key'] == default_key)
+                  assert abs(float(row['value']) - float(default['value'])) <= 0.051, (key, row['town'])
+
+          life = data['metrics']['lifeExpectancy']
+          life_default = next(part for part in life['rows'][0]['parts'] if part['key'] == 'totale')
+          assert life_default['measurement'] == 'raw'
+          assert life_default['value'] > 70
+          assert life_default.get('series', {}).get('values'), 'life expectancy sex history must survive enrichment'
 
           def text(relative):
               return (dist / relative).read_text(encoding='utf-8')
@@ -235,7 +296,7 @@ jobs:
           assert 'Mortalità per tumori' in status
           assert 'RSA accreditate presenti nel Comune' in status
 
-          print('Salute v1.40 artifact contract: 225 = 221 incorporati + 4 esterni; town comparison contract OK')
+          print('Salute v1.40 artifact contract: 225 invariati; 17 metriche ARS arricchite; Toscana sì, Italia non inferita')
           PY
       - name: Browser QA Salute v1.40 town pages
         run: |
@@ -243,10 +304,10 @@ jobs:
           python scripts/test_salute_v140_town_browser.py \
             --directory dist \
             --screenshots-dir reports/salute-v140-town-browser
-      - name: Upload Salute v1.40 preview
+      - name: Upload Salute v1.40 enriched preview
         uses: actions/upload-artifact@v4
         with:
-          name: osservatorio-versilia-salute-v140-preview
+          name: osservatorio-versilia-salute-v140-enriched-preview
           path: dist/
           if-no-files-found: error
           retention-days: 14
@@ -254,7 +315,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: salute-v140-town-browser-evidence
+          name: salute-v140-enriched-browser-evidence
           path: |
             reports/salute-v140-town-browser/
             reports/salute-v140-town-browser-report.json

@@ -6,12 +6,13 @@ import json
 import os
 import shutil
 import subprocess
+import time
 from pathlib import Path
 from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
-LIGHTHOUSE_VERSION = "12.8.2"
+LIGHTHOUSE_VERSION = "13.4.1"
 PAGES = (
     ("home", ""),
     ("tema-demografia", "confronta/demografia/?indicatore=population"),
@@ -24,6 +25,14 @@ THRESHOLDS = {
     "best-practices": 0.90,
     "seo": 0.90,
 }
+TRANSIENT_LIGHTHOUSE_ERRORS = (
+    "Waiting for DevTools protocol response has exceeded the allotted time",
+    "Network.getResponseBody",
+    "TargetClosedError",
+    "Target page, context or browser has been closed",
+    "ECONNRESET",
+    "Connection reset by peer",
+)
 
 
 def require(condition: bool, message: str) -> None:
@@ -31,29 +40,86 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def chromium_path() -> str:
+def chromium_paths() -> list[str]:
+    """Restituisce browser Chromium/Chrome utilizzabili, privilegiando Chrome di sistema."""
+    candidates: list[str] = []
+
+    explicit = os.environ.get("LIGHTHOUSE_CHROME_PATH")
+    if explicit:
+        candidates.append(explicit)
+
+    for executable in (
+        "google-chrome-stable",
+        "google-chrome",
+        "chromium",
+        "chromium-browser",
+    ):
+        resolved = shutil.which(executable)
+        if resolved:
+            candidates.append(resolved)
+
     with sync_playwright() as playwright:
-        path = playwright.chromium.executable_path
-    require(Path(path).exists(), f"Chromium Playwright non trovato: {path}")
-    return path
+        candidates.append(playwright.chromium.executable_path)
+
+    unique: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        try:
+            resolved = str(Path(candidate).resolve())
+        except OSError:
+            resolved = candidate
+        if resolved in seen or not Path(resolved).exists():
+            continue
+        seen.add(resolved)
+        unique.append(resolved)
+
+    require(unique, "Nessun Chrome/Chromium disponibile per Lighthouse")
+    return unique
+
+
+def lighthouse_launcher(npm: str) -> list[str]:
+    """Usa la versione Lighthouse dichiarata, senza dipendere da un globale obsoleto."""
+    lighthouse = shutil.which("lighthouse")
+    if lighthouse:
+        probe = subprocess.run(
+            [lighthouse, "--version"],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+            timeout=30,
+        )
+        if probe.returncode == 0 and probe.stdout.strip() == LIGHTHOUSE_VERSION:
+            return [lighthouse]
+    return [
+        npm,
+        "exec",
+        "--yes",
+        f"--package=lighthouse@{LIGHTHOUSE_VERSION}",
+        "--",
+        "lighthouse",
+    ]
+
+
+def _is_transient_lighthouse_failure(output: str) -> bool:
+    return any(marker in output for marker in TRANSIENT_LIGHTHOUSE_ERRORS)
 
 
 def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
     npm = shutil.which("npm")
     require(npm is not None, "npm non disponibile: impossibile eseguire Lighthouse")
-    lighthouse = shutil.which("lighthouse")
+    launcher = lighthouse_launcher(npm)
     timeout = int(os.environ.get("LIGHTHOUSE_TIMEOUT_SECONDS", "300"))
+    max_attempts = max(1, int(os.environ.get("LIGHTHOUSE_MAX_ATTEMPTS", "3")))
+    retry_delay = max(0.0, float(os.environ.get("LIGHTHOUSE_RETRY_DELAY_SECONDS", "2")))
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    env = os.environ.copy()
-    env["CHROME_PATH"] = chromium_path()
+    browsers = chromium_paths()
+    base_env = os.environ.copy()
     reports: list[Path] = []
 
     for name, route in PAGES:
         report = output_dir / f"{name}.json"
-        launcher = [lighthouse] if lighthouse else [
-            npm, "exec", "--yes", f"--package=lighthouse@{LIGHTHOUSE_VERSION}", "--", "lighthouse"
-        ]
         command = [
             *launcher,
             urljoin(base, route),
@@ -61,22 +127,60 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
             "--preset=desktop",
             "--throttling-method=provided",
             "--only-categories=performance,accessibility,best-practices,seo",
+            "--disable-storage-reset",
             "--output=json",
             f"--output-path={report}",
-            "--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage",
+            "--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage --disable-background-networking",
         ]
-        completed = subprocess.run(
-            command,
-            env=env,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=timeout,
-            check=False,
-        )
+
+        last_exit: int | str = "n/a"
+        last_output = ""
+        succeeded = False
+        attempts_used = 0
+        for attempt in range(1, max_attempts + 1):
+            attempts_used = attempt
+            report.unlink(missing_ok=True)
+            browser = browsers[(attempt - 1) % len(browsers)]
+            env = base_env.copy()
+            env["CHROME_PATH"] = browser
+            try:
+                completed = subprocess.run(
+                    command,
+                    env=env,
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    timeout=timeout,
+                    check=False,
+                )
+                last_exit = completed.returncode
+                last_output = completed.stdout or ""
+                if completed.returncode == 0 and report.exists():
+                    succeeded = True
+                    break
+                transient = _is_transient_lighthouse_failure(last_output)
+            except subprocess.TimeoutExpired as exc:
+                last_exit = "timeout"
+                payload = exc.stdout or ""
+                if isinstance(payload, bytes):
+                    payload = payload.decode("utf-8", errors="replace")
+                last_output = str(payload)
+                transient = True
+
+            if not transient or attempt >= max_attempts:
+                break
+            next_browser = browsers[attempt % len(browsers)]
+            print(
+                f"Lighthouse transient failure su {route or '/'} con {Path(browser).name}: "
+                f"tentativo {attempt}/{max_attempts}; prossimo browser {Path(next_browser).name} tra {retry_delay:g}s."
+            )
+            if retry_delay:
+                time.sleep(retry_delay)
+
         require(
-            completed.returncode == 0 and report.exists(),
-            f"Lighthouse fallito su {route or '/'} (exit {completed.returncode}):\n{completed.stdout[-4000:]}",
+            succeeded,
+            f"Lighthouse fallito su {route or '/'} dopo {attempts_used} tentativo/i "
+            f"(exit {last_exit}):\n{last_output[-4000:]}",
         )
         reports.append(report)
 
