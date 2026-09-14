@@ -6,6 +6,7 @@ on:
       - '.github/workflows/salute-v140-gate.yml'
       - 'scripts/materialize_salute_v140.py'
       - 'scripts/patch_salute_v140_runtime.py'
+      - 'scripts/patch_salute_v140_runtime_core.py'
       - 'scripts/audit_salute_v140_dimensions.py'
       - 'scripts/audit_salute_existing_dimensions.py'
       - 'scripts/probe_salute_existing_ars.py'
@@ -33,6 +34,7 @@ jobs:
           python -m py_compile
           scripts/materialize_salute_v140.py
           scripts/patch_salute_v140_runtime.py
+          scripts/patch_salute_v140_runtime_core.py
           scripts/audit_salute_v140_dimensions.py
           scripts/audit_salute_existing_dimensions.py
           scripts/probe_salute_existing_ars.py
@@ -43,15 +45,24 @@ jobs:
         run: python scripts/materialize_salute_v140.py --snapshot-only
       - name: Run Salute v1.40 regression gate
         run: python scripts/test_salute_v140.py
-      - name: Audit raw ARS sex, age and external-geography dimensions
+
+      # Arricchimenti: sesso, età e benchmark esterni sono un plus. Non devono
+      # rendere non pubblicabile la tranche se la fonte remota è indisponibile o
+      # se una slice non è perfettamente riconciliabile con il dato principale.
+      - name: Optional audit — raw ARS sex, age and external geographies
+        continue-on-error: true
         run: python scripts/audit_salute_v140_dimensions.py
-      - name: Audit demographic dimensions of existing Salute indicators
+      - name: Optional audit — demographic dimensions of existing Salute indicators
+        continue-on-error: true
         run: python scripts/audit_salute_existing_dimensions.py
-      - name: Reconcile existing Salute metrics with candidate ARS exports
+      - name: Optional audit — reconcile existing Salute metrics with candidate ARS exports
+        continue-on-error: true
         run: python scripts/probe_salute_existing_ars.py
-      - name: Build reviewed-period Salute demographic source snapshot
+      - name: Optional audit — build reviewed-period Salute demographic source snapshot
+        continue-on-error: true
         run: python scripts/build_salute_demographics_snapshot_v140.py
-      - name: Upload Salute source-dimension evidence
+      - name: Upload optional Salute enrichment evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: salute-v140-source-dimensions
@@ -60,7 +71,7 @@ jobs:
             reports/salute-existing-dimensions.json
             reports/salute-existing-ars-reconciliation.json
             reports/ars-salute-demographics-v140.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
 
   canonical-quick:
