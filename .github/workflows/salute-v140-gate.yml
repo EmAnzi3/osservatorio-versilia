@@ -5,7 +5,10 @@ on:
     paths:
       - '.github/workflows/salute-v140-gate.yml'
       - 'scripts/materialize_salute_v140.py'
+      - 'scripts/patch_salute_v140_runtime.py'
+      - 'scripts/audit_salute_v140_dimensions.py'
       - 'scripts/test_salute_v140.py'
+      - 'scripts/test_salute_v140_town_browser.py'
       - 'data/source-snapshots/ars-salute-11-v140.json'
       - 'data/source-snapshots/regione-toscana-rsa-accreditate-2025-v140.json'
   workflow_dispatch:
@@ -16,18 +19,33 @@ permissions:
 jobs:
   salute-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Compile Salute v1.40
-        run: python -m py_compile scripts/materialize_salute_v140.py scripts/test_salute_v140.py
+        run: >-
+          python -m py_compile
+          scripts/materialize_salute_v140.py
+          scripts/patch_salute_v140_runtime.py
+          scripts/audit_salute_v140_dimensions.py
+          scripts/test_salute_v140.py
+          scripts/test_salute_v140_town_browser.py
       - name: Validate frozen source snapshots
         run: python scripts/materialize_salute_v140.py --snapshot-only
       - name: Run Salute v1.40 regression gate
         run: python scripts/test_salute_v140.py
+      - name: Audit raw ARS sex, age and external-geography dimensions
+        run: python scripts/audit_salute_v140_dimensions.py
+      - name: Upload Salute source-dimension evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: salute-v140-source-dimensions
+          path: reports/salute-v140-source-dimensions.json
+          if-no-files-found: error
+          retention-days: 14
 
   canonical-quick:
     runs-on: ubuntu-latest
@@ -47,7 +65,7 @@ jobs:
       - name: Canonical quick gate
         run: python scripts/preflight.py --quick
       - name: Verify build is non-mutating
-        run: git diff --exit-code -- . ':(exclude)dist'
+        run: git diff --exit-code -- . ':(exclude)dist' ':(exclude)reports/salute-v140-source-dimensions.json'
 
   canonical-full:
     runs-on: ubuntu-latest
@@ -128,10 +146,13 @@ jobs:
               assert len(metric['rows']) == 7, key
               assert len({row['town'] for row in metric['rows']}) == 7, key
               assert metric['aggregate']['label'] == 'Valore ARS Versilia', key
+              assert metric['meta']['comparisonReference'] == 'aggregate', key
+              assert metric['meta']['comparisonOverline'] == 'Rispetto al valore ARS Versilia', key
               assert 'non è una media' in metric['aggregate']['note'], key
 
           rsa = data['metrics']['accreditedRsaCount']
           assert rsa['meta']['label'] == 'RSA accreditate presenti nel Comune'
+          assert rsa['meta']['comparisonDifference'] == 'shareOfAggregate'
           assert {row['town']: row['value'] for row in rsa['rows']} == {
               'Camaiore': 5,
               'Forte dei Marmi': 0,
@@ -142,6 +163,7 @@ jobs:
               'Viareggio': 4,
           }
           assert rsa['aggregate']['value'] == 13
+          assert data['metrics']['hospitals']['meta']['comparisonDifference'] == 'shareOfAggregate'
 
           def text(relative):
               return (dist / relative).read_text(encoding='utf-8')
@@ -170,18 +192,35 @@ jobs:
           town = text('comuni/massarosa/index.html')
           assert 'Mortalità per tumori' in town
           assert 'RSA accreditate presenti nel Comune' in town
+          assert 'Dettagli sanitari aggiuntivi' not in town
 
           status = text('stato-dati/index.html')
           assert '225 indicatori' in status
           assert 'Mortalità per tumori' in status
           assert 'RSA accreditate presenti nel Comune' in status
 
-          print('Salute v1.40 artifact contract: 225 = 221 incorporati + 4 esterni; 12 metriche e pagine OK')
+          print('Salute v1.40 artifact contract: 225 = 221 incorporati + 4 esterni; town comparison contract OK')
           PY
+      - name: Browser QA Salute v1.40 town pages
+        run: |
+          mkdir -p reports/salute-v140-town-browser
+          python scripts/test_salute_v140_town_browser.py \
+            --directory dist \
+            --screenshots-dir reports/salute-v140-town-browser
       - name: Upload Salute v1.40 preview
         uses: actions/upload-artifact@v4
         with:
           name: osservatorio-versilia-salute-v140-preview
           path: dist/
           if-no-files-found: error
+          retention-days: 14
+      - name: Upload Salute town browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salute-v140-town-browser-evidence
+          path: |
+            reports/salute-v140-town-browser/
+            reports/salute-v140-town-browser-report.json
+          if-no-files-found: warn
           retention-days: 14
