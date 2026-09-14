@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""Apply the optional Salute demographic UI overlay after the stable v1.40 core runtime.
+"""Apply the Salute demographic UI overlay after the stable v1.40 core runtime.
 
-This patch intentionally targets structural anchors instead of the full literal
-markup emitted by previous release overlays. It therefore composes with the
-v1.33-v1.40 runtime chain without depending on the exact wording of the base
-Versilia comparison panel.
+The patch composes with all previous release overlays by using small stable
+structural anchors. It never replaces the whole Versilia comparison card.
 """
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,13 +17,6 @@ def replace_once(source: str, old: str, new: str, label: str) -> str:
     if count != 1:
         raise RuntimeError(f"Salute demographic runtime patch non univoca ({label}): {count}")
     return source.replace(old, new, 1)
-
-
-def regex_once(source: str, pattern: re.Pattern[str], replacement: str, label: str) -> str:
-    updated, count = pattern.subn(replacement, source, count=1)
-    if count != 1:
-        raise RuntimeError(f"Salute demographic runtime patch non univoca ({label}): {count}")
-    return updated
 
 
 def main() -> None:
@@ -65,6 +55,27 @@ def main() -> None:
     return {label:`Toscana · ${part.label||metric.meta.label}`,value:part.value,unit,formatted:part.value===null||part.value===undefined?'n.d.':formatValue(part.value,unit)};
   }
 
+  function updateHealthDemographicPosition(position,metric,choice) {
+    if(!position||metric?.meta?.theme!=='salute'||!metric?.meta?.demographicSource) return;
+    position.dataset.compositeSelection=choice;
+    const overline=position.querySelector('.overline');
+    const note=position.querySelector('p');
+    if(overline) overline.textContent='Rispetto al valore ARS Versilia';
+    if(note) note.textContent='Confronto con l’aggregato ufficiale Zona Versilia della stessa fascia d’età e dello stesso sesso; non è una media dei Comuni.';
+    const tuscany=compositeTuscanySelection(metric,choice);
+    let host=position.querySelector('.health-tuscany-reference');
+    if(tuscany&&!host) {
+      host=document.createElement('div');
+      host.className='health-tuscany-reference';
+      host.innerHTML='<span data-composite-tuscany-label></span><b data-composite-tuscany-value></b>';
+      position.appendChild(host);
+    }
+    const label=host?.querySelector('[data-composite-tuscany-label]');
+    const value=host?.querySelector('[data-composite-tuscany-value]');
+    if(tuscany&&label) label.textContent=tuscany.label;
+    if(tuscany&&value) value.textContent=tuscany.formatted;
+  }
+
 '''
     source = replace_once(
         source,
@@ -83,35 +94,23 @@ def main() -> None:
     source = replace_once(
         source,
         "    const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;",
-        "    const initialCompositeChoice=sexBreakdown?defaultSexChoice:(demographicBreakdown?defaultDemographicChoice:(options[0]?.key||'summary'));\n    const initialTuscany=selectable&&themeKey==='salute'?compositeTuscanySelection(metric,initialCompositeChoice):null;\n    const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;",
-        "initial Tuscany selection",
+        "    const initialCompositeChoice=sexBreakdown?defaultSexChoice:(demographicBreakdown?defaultDemographicChoice:(options[0]?.key||'summary'));\n    const summaryDelta = selectable ? (row.notApplicable ? { headline:'n.a.', direction:'Comune non costiero' } : compositeDeltaText(summary.value,aggregateSummary.value,summary.unit)) : null;",
+        "initial demographic selection",
     )
 
-    position_pattern = re.compile(
-        r'    const positionMarkup = selectable\n'
-        r'      \? `<aside class="versilia-position composite-versilia-position"[^`]*?</aside>`\n'
+    source = replace_once(
+        source,
+        "      updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);",
+        "      updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);\n      updateHealthDemographicPosition(initialPosition,metric,initialCompositeChoice);",
+        "initial health benchmark",
     )
-    new_position = """    const positionMarkup = selectable
-      ? `<aside class=\"versilia-position composite-versilia-position\" data-composite-selection=\"${html(initialCompositeChoice)}\"><span class=\"overline\">${themeKey==='salute'&&metric.meta.demographicSource?'Rispetto al valore ARS Versilia':'Rispetto alla Versilia'}</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>${themeKey==='salute'&&metric.meta.demographicSource?'Confronto con l’aggregato ufficiale Zona Versilia della stessa fascia d’età e dello stesso sesso; non è una media dei Comuni.':'Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.'}</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div>${initialTuscany?`<div class=\"health-tuscany-reference\"><span data-composite-tuscany-label>${html(initialTuscany.label)}</span><b data-composite-tuscany-value>${html(initialTuscany.formatted)}</b></div>`:''}</aside>`
-"""
-    source = regex_once(source, position_pattern, new_position, "health town benchmark panel")
 
-    apply_pattern = re.compile(
-        r"(      const applyChoice=\(choice\)=>\{.*?"
-        r"          if\(aggLabel\) aggLabel\.textContent=agg\.label;\n"
-        r"          if\(aggValue\) aggValue\.textContent=agg\.formatted;\n)"
-        r"(        \}\n        updateFiscalRecoveryTownPosition)",
-        flags=re.DOTALL,
+    source = replace_once(
+        source,
+        "        updateExtractiveTownPosition(metric,row,choice,position);",
+        "        updateExtractiveTownPosition(metric,row,choice,position);\n        updateHealthDemographicPosition(position,metric,choice);",
+        "dynamic health benchmark",
     )
-    apply_extra = """          const tuscany=themeKey==='salute'?compositeTuscanySelection(metric,choice):null;
-          const tuscanyLabel=position.querySelector('[data-composite-tuscany-label]');
-          const tuscanyValue=position.querySelector('[data-composite-tuscany-value]');
-          if(tuscany&&tuscanyLabel) tuscanyLabel.textContent=tuscany.label;
-          if(tuscany&&tuscanyValue) tuscanyValue.textContent=tuscany.formatted;
-"""
-    source, count = apply_pattern.subn(lambda match: match.group(1) + apply_extra + match.group(2), source, count=1)
-    if count != 1:
-        raise RuntimeError(f"Salute demographic runtime patch non univoca (dynamic Tuscany benchmark): {count}")
 
     APP_PART_03.write_text(source, encoding="utf-8")
     print("Salute demographic runtime: sesso, fasce d'eta', Versilia ARS e Toscana allineati")
