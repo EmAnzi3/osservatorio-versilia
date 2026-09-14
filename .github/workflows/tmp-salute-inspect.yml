@@ -1,0 +1,26 @@
+name: tmp-salute-inspect
+on:
+  push:
+    branches: [codex/salute-12-indicatori]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect salute schema
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/site-data.json',encoding='utf-8'))
+          print('VERSION', d.get('version'), 'METRICS', len(d.get('metrics',{})))
+          print('SALUTE_THEME')
+          print(json.dumps(d['themes']['salute'], ensure_ascii=False, indent=2))
+          print('SALUTE_METRICS')
+          for k,v in d['metrics'].items():
+              if v.get('meta',{}).get('theme')=='salute':
+                  print('KEY',k)
+                  print(json.dumps(v, ensure_ascii=False, indent=2)[:12000])
+          PY
