@@ -62,9 +62,11 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
         # v1.40 è l'ultimo overlay della catena pubblica e porta il catalogo a 225.
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_MATERIALIZER), run_name="__main__")
-        # L'arricchimento non crea nuovi indicatori: aggiunge soltanto dimensioni
-        # ARS già riconciliate (sesso, fasce d'età e benchmark Toscana).
-        _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_MATERIALIZER), run_name="__main__")
+        # Il materializzatore demografico espone main() e come CLI termina con
+        # SystemExit(0). Nel builder lo carichiamo come modulo per non interrompere
+        # la catena prima del runtime patch e del prerender statico.
+        demographic_ns = _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_MATERIALIZER))
+        demographic_ns["main"]()
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_PATCH), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
