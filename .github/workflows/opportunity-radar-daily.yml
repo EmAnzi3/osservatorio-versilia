@@ -70,6 +70,7 @@ jobs:
           python scripts/test_opportunity_source_health.py
           python scripts/test_opportunity_publishability_matrix.py
           python scripts/test_opportunity_expired_lifecycle.py
+          python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
