@@ -12,7 +12,7 @@ from urllib.parse import urljoin
 
 from playwright.sync_api import sync_playwright
 
-LIGHTHOUSE_VERSION = "12.8.2"
+LIGHTHOUSE_VERSION = "13.4.1"
 PAGES = (
     ("home", ""),
     ("tema-demografia", "confronta/demografia/?indicatore=population"),
@@ -40,11 +40,45 @@ def require(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def chromium_path() -> str:
+def chromium_paths() -> list[str]:
+    """Restituisce browser Chromium/Chrome utilizzabili, privilegiando Chrome di sistema.
+
+    Lighthouse e Playwright non devono essere accoppiati a una sola build Chromium:
+    in CI un timeout CDP può dipendere dalla coppia Lighthouse/Chrome, non dal sito.
+    """
+    candidates: list[str] = []
+
+    explicit = os.environ.get("LIGHTHOUSE_CHROME_PATH")
+    if explicit:
+        candidates.append(explicit)
+
+    for executable in (
+        "google-chrome-stable",
+        "google-chrome",
+        "chromium",
+        "chromium-browser",
+    ):
+        resolved = shutil.which(executable)
+        if resolved:
+            candidates.append(resolved)
+
     with sync_playwright() as playwright:
-        path = playwright.chromium.executable_path
-    require(Path(path).exists(), f"Chromium Playwright non trovato: {path}")
-    return path
+        candidates.append(playwright.chromium.executable_path)
+
+    unique: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        try:
+            resolved = str(Path(candidate).resolve())
+        except OSError:
+            resolved = candidate
+        if resolved in seen or not Path(resolved).exists():
+            continue
+        seen.add(resolved)
+        unique.append(resolved)
+
+    require(unique, "Nessun Chrome/Chromium disponibile per Lighthouse")
+    return unique
 
 
 def _is_transient_lighthouse_failure(output: str) -> bool:
@@ -60,8 +94,8 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
     retry_delay = max(0.0, float(os.environ.get("LIGHTHOUSE_RETRY_DELAY_SECONDS", "2")))
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    env = os.environ.copy()
-    env["CHROME_PATH"] = chromium_path()
+    browsers = chromium_paths()
+    base_env = os.environ.copy()
     reports: list[Path] = []
 
     for name, route in PAGES:
@@ -76,16 +110,22 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
             "--preset=desktop",
             "--throttling-method=provided",
             "--only-categories=performance,accessibility,best-practices,seo",
+            "--disable-storage-reset",
             "--output=json",
             f"--output-path={report}",
-            "--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage",
+            "--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage --disable-background-networking",
         ]
 
         last_exit: int | str = "n/a"
         last_output = ""
         succeeded = False
+        attempts_used = 0
         for attempt in range(1, max_attempts + 1):
+            attempts_used = attempt
             report.unlink(missing_ok=True)
+            browser = browsers[(attempt - 1) % len(browsers)]
+            env = base_env.copy()
+            env["CHROME_PATH"] = browser
             try:
                 completed = subprocess.run(
                     command,
@@ -112,16 +152,17 @@ def run_lighthouse(base: str, output_dir: Path) -> list[Path]:
 
             if not transient or attempt >= max_attempts:
                 break
+            next_browser = browsers[attempt % len(browsers)]
             print(
-                f"Lighthouse transient failure su {route or '/'}: "
-                f"tentativo {attempt}/{max_attempts}; nuovo tentativo tra {retry_delay:g}s."
+                f"Lighthouse transient failure su {route or '/'} con {Path(browser).name}: "
+                f"tentativo {attempt}/{max_attempts}; prossimo browser {Path(next_browser).name} tra {retry_delay:g}s."
             )
             if retry_delay:
                 time.sleep(retry_delay)
 
         require(
             succeeded,
-            f"Lighthouse fallito su {route or '/'} dopo {max_attempts if _is_transient_lighthouse_failure(last_output) or last_exit == 'timeout' else 1} tentativo/i "
+            f"Lighthouse fallito su {route or '/'} dopo {attempts_used} tentativo/i "
             f"(exit {last_exit}):\n{last_output[-4000:]}",
         )
         reports.append(report)
