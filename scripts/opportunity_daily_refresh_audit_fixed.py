@@ -178,10 +178,22 @@ def _run_v04_with_audit_promotions(today: date, **kwargs: Any) -> dict[str, Any]
     """
     result = _BASE_RUN_V04(today, **kwargs)
     audit_promotions.apply_complete_promotions(result, today)
+    _archive_expired_opportunities(result, today)
     if hasattr(core, "_recompute_v04_counts"):
         core._recompute_v04_counts(result)
     relevance.apply_to_payload(result, drop_review=True)
     return result
+
+
+def _archive_expired_opportunities(result: dict[str, Any], today: date) -> None:
+    """Archivia anche le schede aggiunte dagli overlay successivi al motore base."""
+    active = []
+    for item in result.get("opportunities") or []:
+        if core._is_expired_application(item, today):
+            core._append_archive(result, item)
+        else:
+            active.append(item)
+    result["opportunities"] = active
 
 
 def _diagnostic_gate_summary(result: dict[str, Any]) -> dict[str, Any]:
@@ -294,6 +306,7 @@ def _prepare_public_audit_fixed(result: dict[str, Any], today: date) -> dict[str
     result = _BASE_PREPARE_STABLE(result, today)
     if result.get("auditCorpusPromotionVersion") != audit_promotions.PROMOTION_VERSION:
         audit_promotions.apply_complete_promotions(result, today)
+    _archive_expired_opportunities(result, today)
     # Il replay aggiunge schede dopo il normale classificatore h5: riallineiamo
     # prima i contatori legacy e poi il contratto comunale/partnership.
     if hasattr(core, "_recompute_v04_counts"):
