@@ -28,7 +28,11 @@ def _load(path: Path) -> dict[str, Any]:
 def _direct_build_script_refs() -> set[str]:
     refs: set[str] = set()
     for relative in ("scripts/build_static_brand.py", "scripts/build_static_brand_impl.py"):
-        text = (ROOT / relative).read_text(encoding="utf-8")
+        # Some historical builder blobs are not clean UTF-8 in Git even though
+        # the checkout is executable. The lineage scanner only needs ASCII path
+        # expressions, so preserve every byte via surrogateescape instead of
+        # imposing a new encoding contract on legacy source files.
+        text = (ROOT / relative).read_bytes().decode("utf-8", errors="surrogateescape")
         for name in re.findall(r'ROOT\s*/\s*"scripts"\s*/\s*"([^\"]+\.py)"', text):
             base = Path(name).name
             if base.startswith(("materialize_", "apply_", "patch_", "refine_", "prepare_")) or base in {
