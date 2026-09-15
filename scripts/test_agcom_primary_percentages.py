@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import math
 import sys
 from pathlib import Path
@@ -9,6 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+import apply_agcom_absolute_policy as absolute_policy  # noqa: E402
 import apply_agcom_primary_percentages as module  # noqa: E402
 
 TOWNS = [
@@ -71,6 +73,26 @@ def test_apply_primary_percentages():
     assert snapshot["agcomPrimarySource"]["role"].startswith("Fonte primaria")
 
 
+def test_absolute_source_policy_alignment():
+    data = {
+        "metrics": {
+            key: {"sourceUrl": "https://geo.agcom.it/reportistica/ai/index.html"}
+            for key in absolute_policy.restore.PARTIAL_KEYS
+        }
+    }
+    absolute_policy._align_absolute_sources(data)
+    for key in absolute_policy.restore.PARTIAL_KEYS:
+        assert data["metrics"][key]["sourceUrl"] == absolute_policy.primary.AI_READY_PAGE
+
+    registry_path = SCRIPT_DIR.parent / "data" / "source-registry.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    assert (
+        registry["sourceProfileByUrl"][absolute_policy.primary.AI_READY_PAGE]
+        == "agcom-quarterly"
+    )
+
+
 if __name__ == "__main__":
     test_apply_primary_percentages()
-    print("OK: test percentuali FTTH primarie AGCOM")
+    test_absolute_source_policy_alignment()
+    print("OK: test percentuali FTTH primarie AGCOM e policy fonte")
