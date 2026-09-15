@@ -48,7 +48,7 @@ Scopo: rendere il lavoro multi-sessione ripetibile e trasferibile senza dipender
 
 ## A1 — Data Governance Foundation
 
-**Stato:** `IN_PROGRESS`
+**Stato:** `DONE`
 
 Scopo: eliminare le molteplici “verità” sullo stato del progetto senza duplicare il catalogo canonico.
 
@@ -63,7 +63,7 @@ Scopo: eliminare le molteplici “verità” sullo stato del progetto senza dupl
 
 Nota A1.3: in questo workstream “monitorati” significa che ogni ID pubblicato risolve una policy fonte strutturalmente valida. Freschezza, ultimo controllo riuscito e copertura operativa del monitor sono responsabilità di `A2`.
 
-Nota chiusura A1: l'implementazione `A1.4`–`A1.8` è nella PR draft `#193`. Il workstream resta `IN_PROGRESS` fino a Quick/Full verdi, approvazione esplicita e merge della PR, secondo il criterio generale di chiusura.
+Nota chiusura A1: la PR `#193` è stata mergiata su `main` dopo Quick e Full GitHub verdi. Il deploy Pages post-merge `#3219` e il successivo controllo live-status sono verdi. La release pubblica è governata sul perimetro di 225 indicatori.
 
 **Definition of done:** non è possibile pubblicare o materializzare un indicatore senza che documentazione, Stato dati e controlli di copertura ne conoscano lo stesso ID.
 
@@ -71,17 +71,23 @@ Nota chiusura A1: l'implementazione `A1.4`–`A1.8` è nella PR draft `#193`. Il
 
 ## A2 — Full Coverage Source Monitor
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: avere prova periodica che tutti gli indicatori pubblicati siano controllati per aggiornamenti delle rispettive fonti.
 
-- [ ] **A2.1** Audit della copertura reale dell'attuale source registry/monitor rispetto al catalogo effettivamente pubblicato.
-- [ ] **A2.2** Eliminare conteggi attesi hard-coded quando derivabili dal catalogo canonico.
-- [ ] **A2.3** Separare controllo leggero frequente e controllo profondo periodico.
+- [x] **A2.1** Audit della copertura reale dell'attuale source registry/monitor rispetto al catalogo effettivamente pubblicato.
+- [x] **A2.2** Eliminare conteggi attesi hard-coded quando derivabili dal catalogo canonico.
+- [x] **A2.3** Separare controllo leggero frequente e controllo profondo periodico.
 - [ ] **A2.4** Definire per ogni fonte frequenza attesa, modalità di rilevazione cambiamenti e ultimo controllo riuscito.
 - [ ] **A2.5** Produrre report leggibile con almeno: coperti/totali, aggiornamenti disponibili, nuove release, fonti irraggiungibili, cambi di schema, dati invariati.
 - [ ] **A2.6** Rendere evidente l'esito tramite GitHub Actions/issue o altro canale già coerente con l'architettura della repo.
 - [ ] **A2.7** Fallire chiaramente se esistono indicatori pubblicati privi di monitoraggio applicabile.
+
+Nota A2.1: l'audit è documentato in `docs/A2_SOURCE_MONITOR_AUDIT.md`. Il workflow mensile usava il catalogo sorgente e un registry con conteggi attesi `181/177/4`, mentre l'Effective Public Catalog contiene 225 indicatori.
+
+Nota A2.2: `materialize_source_monitor_snapshot.py` riusa la stessa catena di materializzazione della release e si arresta prima del prerender. Il monitor opera così sul catalogo pubblico derivato: la verifica GitHub ha restituito `225` indicatori, `122` fonti, `0` errori strutturali. Nessuna nuova costante `225` è stata introdotta come fonte di verità.
+
+Nota A2.3: il controllo profondo resta mensile e conserva hash/verifiche semantiche; `source-monitor-light.yml` introduce un controllo frequente read-only sullo stesso perimetro pubblico, senza hash dei contenuti né verifiche semantiche PNRR/MIMIT. Il workflow light non modifica baseline, issue o PR e produce un artifact diagnostico separato.
 
 **Definition of done:** ogni indicatore pubblicato ha una strategia di monitoraggio verificabile oppure un'eccezione esplicita; ogni run produce un responso comprensibile.
 

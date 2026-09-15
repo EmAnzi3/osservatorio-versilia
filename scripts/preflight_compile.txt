@@ -15,3 +15,9 @@ scripts/test_salute_v140_town_browser.py
 scripts/public_readme_status.py
 scripts/public_data_lineage.py
 scripts/public_data_governance.py
+scripts/materialize_source_monitor_snapshot.py
+scripts/test_source_monitor_public_partial.py
+scripts/source_monitor_runner.py
+scripts/test_source_monitor_depth.py
+scripts/source_monitor_strategy.py
+scripts/test_source_monitor_strategy.py

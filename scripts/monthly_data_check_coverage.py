@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Estensione del monitor che valida coperture dichiarate 6/7 o 7/7."""
+"""Estensione del monitor per coperture parziali ed eccezioni pubbliche dichiarate."""
 from __future__ import annotations
 
 import copy
@@ -281,21 +281,30 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
             if not isinstance(rows, list) or not isinstance(method, dict):
                 continue
 
+            meta = metric.get("meta")
+            allows_partial_history = (
+                isinstance(meta, dict) and meta.get("allowPartialHistory") is True
+            )
             coverage_text = str(method.get("coverage", "")).strip()
             match = COVERAGE_RE.fullmatch(coverage_text)
-            if not match:
+            if not match and not allows_partial_history:
                 continue
-            declared_available, declared_total = map(int, match.groups())
-            partial_coverage = declared_available < declared_total
-            if expected_total and declared_total != expected_total:
-                findings.append(
-                    base.finding(
-                        "error",
-                        "coverage_denominator",
-                        f"Copertura dichiarata {coverage_text}, ma i Comuni attesi sono {expected_total}.",
-                        metric_key,
+
+            partial_coverage = allows_partial_history
+            declared_available = None
+            declared_total = None
+            if match:
+                declared_available, declared_total = map(int, match.groups())
+                partial_coverage = partial_coverage or declared_available < declared_total
+                if expected_total and declared_total != expected_total:
+                    findings.append(
+                        base.finding(
+                            "error",
+                            "coverage_denominator",
+                            f"Copertura dichiarata {coverage_text}, ma i Comuni attesi sono {expected_total}.",
+                            metric_key,
+                        )
                     )
-                )
 
             missing_rows = [
                 row for row in rows
@@ -305,7 +314,11 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                 row for row in rows
                 if isinstance(row, dict) and row.get("value") is not None
             ])
-            if available != declared_available:
+            if (
+                declared_available is not None
+                and declared_total is not None
+                and available != declared_available
+            ):
                 findings.append(
                     base.finding(
                         "error",
@@ -321,8 +334,9 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                         _strip_partial_series_nulls(row)
 
             for row in missing_rows:
-                # Il frontend formatta i valori null come n.d.; il campo `formatted`
-                # non è obbligatorio per una riga dichiaratamente fuori copertura.
+                # I dataset che dichiarano esplicitamente storia/coprertura parziale
+                # possono avere n.d. ufficiali. La copia di validazione li neutralizza
+                # senza alterare lo snapshot monitorato né inventare valori pubblici.
                 if not partial_coverage and row.get("formatted") != "n.d.":
                     findings.append(
                         base.finding(
@@ -332,8 +346,6 @@ def validate_dataset(data: dict[str, Any], registry: dict[str, Any]):
                             metric_key,
                         )
                     )
-                # Lo zero è usato soltanto nella copia temporanea di validazione
-                # richiesta dal controllore base e non viene mai scritto nei dati.
                 row["value"] = 0
 
     base_findings, source_map, stats = ORIGINAL_VALIDATE(prepared, registry)
