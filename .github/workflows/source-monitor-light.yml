@@ -92,6 +92,15 @@ jobs:
             --report-json "reports/runtime/source-monitor-light-${{ steps.prepare.outputs.run_stamp }}.json" \
             --next-state "reports/runtime/source-monitor-light-state.next.json"
 
+      - name: Publish monitor summary
+        if: always() && steps.monitor.outputs.report_md != ''
+        env:
+          REPORT_MD: ${{ steps.monitor.outputs.report_md }}
+        run: |
+          if [[ -f "$REPORT_MD" ]]; then
+            cat "$REPORT_MD" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Upload light report
         if: always()
         uses: actions/upload-artifact@v4

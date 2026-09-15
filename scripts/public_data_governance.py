@@ -9,11 +9,13 @@ from typing import Any
 from public_build_snapshot import (
     DIST,
     effective_public_catalog,
+    public_registry_path,
     validate_public_governance,
     validate_public_snapshot,
 )
 from public_data_lineage import validate_lineage, write_lineage
 from public_readme_status import release_summary, validate_readme
+from source_monitor_strategy import build_strategy
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -66,10 +68,38 @@ def validate_release_surfaces() -> dict[str, Any]:
     return summary
 
 
+def validate_source_monitor_coverage() -> dict[str, int]:
+    payload = build_strategy(
+        effective_public_catalog(),
+        _load(public_registry_path()),
+        {},
+        {},
+    )
+    summary = payload.get("summary")
+    if not isinstance(summary, dict):
+        raise RuntimeError("Riepilogo strategia Source Monitor assente")
+    public_metrics = int(summary.get("publicMetricCount") or 0)
+    covered_metrics = int(summary.get("metricsWithStrategy") or 0)
+    missing_metrics = int(summary.get("metricsWithoutStrategy") or 0)
+    sources = int(summary.get("sourceCount") or 0)
+    if not public_metrics or covered_metrics != public_metrics or missing_metrics:
+        raise RuntimeError(
+            "Copertura Source Monitor incompleta: "
+            f"{covered_metrics}/{public_metrics}, mancanti={missing_metrics}"
+        )
+    return {
+        "public_metrics": public_metrics,
+        "covered_metrics": covered_metrics,
+        "missing_metrics": missing_metrics,
+        "sources": sources,
+    }
+
+
 def finalize_public_data_governance() -> dict[str, Any]:
     validate_public_snapshot()
     align_status_metadata()
     governance = validate_public_governance()
+    monitor = validate_source_monitor_coverage()
     lineage = write_lineage()
     validate_lineage()
     summary = validate_readme()
@@ -83,6 +113,11 @@ def finalize_public_data_governance() -> dict[str, Any]:
         f"{governance['source_policies']} policy fonte."
     )
     print(
+        "Copertura Source Monitor verificata: "
+        f"{monitor['covered_metrics']}/{monitor['public_metrics']} indicatori · "
+        f"{monitor['sources']} fonti · {monitor['missing_metrics']} senza strategia."
+    )
+    print(
         f"Lineage pubblica derivata: {lineage['metricCount']} indicatori · "
         f"{len(lineage['materializationChain'])} passaggi dichiarati."
     )
@@ -92,7 +127,12 @@ def finalize_public_data_governance() -> dict[str, Any]:
         f"{governance['public_metrics']}/{governance['status_metrics']}/{governance['source_policies']}."
     )
     print("PUBLIC DATA GOVERNANCE: GREEN")
-    return {"summary": summary, "governance": governance, "lineage": lineage}
+    return {
+        "summary": summary,
+        "governance": governance,
+        "monitor": monitor,
+        "lineage": lineage,
+    }
 
 
 if __name__ == "__main__":

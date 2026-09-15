@@ -22,6 +22,8 @@ on:
       - "scripts/monthly_data_check.py"
       - "scripts/monthly_data_check_coverage.py"
       - "scripts/monthly_data_check_status.py"
+      - "scripts/source_monitor_runner.py"
+      - "scripts/source_monitor_strategy.py"
       - "scripts/materialize_source_monitor_snapshot.py"
       - "scripts/build_static_brand.py"
       - "scripts/build_static_brand_impl.py"
@@ -30,6 +32,8 @@ on:
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
       - "scripts/test_source_monitor_public_partial.py"
+      - "scripts/test_source_monitor_depth.py"
+      - "scripts/test_source_monitor_strategy.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - "scripts/test_pnrr_status_integration.py"
       - "scripts/restore_partial_agcom_metrics.py"
@@ -77,13 +81,19 @@ jobs:
         run: |
           python scripts/test_monthly_data_check.py
           python scripts/test_source_monitor_public_partial.py
+          python scripts/test_source_monitor_depth.py
+          python scripts/test_source_monitor_strategy.py
           python scripts/test_pnrr_toscana_audit.py
           python scripts/test_pnrr_status_integration.py
           python -m py_compile \
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
+            scripts/source_monitor_runner.py \
+            scripts/source_monitor_strategy.py \
             scripts/materialize_source_monitor_snapshot.py \
             scripts/test_source_monitor_public_partial.py \
+            scripts/test_source_monitor_depth.py \
+            scripts/test_source_monitor_strategy.py \
             scripts/data_status_model.py \
             scripts/pnrr_toscana_audit.py \
             scripts/test_pnrr_toscana_audit.py \
@@ -117,13 +127,24 @@ jobs:
       - name: Validate dataset and check sources
         id: monitor
         run: |
-          python scripts/monthly_data_check_status.py \
+          python scripts/source_monitor_runner.py \
+            --depth deep \
             --mode "${{ steps.prepare.outputs.mode }}" \
             --data "$MONITOR_PUBLIC_DIR/site-data.json" \
             --registry "$MONITOR_PUBLIC_DIR/source-registry.json" \
+            --state data/source-monitor-state.json \
             --report-md "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.md" \
             --report-json "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.json" \
             --next-state "reports/runtime/source-monitor-state.next.json"
+
+      - name: Publish monitor summary
+        if: always() && steps.monitor.outputs.report_md != ''
+        env:
+          REPORT_MD: ${{ steps.monitor.outputs.report_md }}
+        run: |
+          if [[ -f "$REPORT_MD" ]]; then
+            cat "$REPORT_MD" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload complete report
         if: always()

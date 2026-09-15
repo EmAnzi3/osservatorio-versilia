@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regressione A2.3: separazione tra controllo light e deep."""
+"""Regressione A2.3/A2.5: light/deep e riepilogo operativo."""
 from __future__ import annotations
 
 import json
@@ -59,7 +59,60 @@ def test_output_annotation() -> None:
         assert "senza hash" in markdown
 
 
+def test_operational_summary() -> None:
+    report = {
+        "findings": [
+            {"level": "error", "code": "series_shape"},
+            {"level": "warning", "code": "other_warning"},
+        ],
+        "sources": {
+            "https://example.test/a": {"ok": True},
+            "https://example.test/b": {"ok": False},
+            "https://example.test/c": {"ok": True},
+        },
+        "changes": {
+            "added": [{"url": "https://example.test/a"}],
+            "removed": [],
+            "content": [],
+            "redirect": [],
+            "metadata": [],
+            "unreachable": [{"url": "https://example.test/b"}],
+        },
+    }
+    next_state = {
+        "metrics": {
+            "alpha": {"status": "source_checked"},
+            "beta": {"status": "release_detected"},
+            "gamma": {"status": "verification_required"},
+            "delta": {"status": "update_expected"},
+        }
+    }
+    strategy = {
+        "summary": {
+            "metricsWithStrategy": 4,
+            "publicMetricCount": 4,
+            "sourceCount": 3,
+            "sourcesWithKnownSuccessfulCheck": 2,
+        },
+        "sources": {
+            "https://example.test/a": {},
+            "https://example.test/b": {},
+            "https://example.test/c": {},
+        },
+    }
+    summary = runner.build_operational_summary(report, next_state, strategy)
+    assert summary["coveredMetrics"] == 4
+    assert summary["publicMetrics"] == 4
+    assert summary["newReleases"] == 1
+    assert summary["updatesExpected"] == 1
+    assert summary["verificationRequired"] == 1
+    assert summary["unreachableSources"] == 1
+    assert summary["schemaOrStructureChanges"] == 1
+    assert summary["unchangedSources"] == 1
+
+
 if __name__ == "__main__":
     test_runtime_switch()
     test_output_annotation()
-    print("Source monitor light/deep regression passed.")
+    test_operational_summary()
+    print("Source monitor light/deep/report regression passed.")
