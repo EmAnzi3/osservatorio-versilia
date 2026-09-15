@@ -25,8 +25,8 @@ def load_build_materialization_contract() -> dict:
 
 def validate_build_materialization_contract() -> dict[str, int]:
     contract = load_build_materialization_contract()
-    if contract.get("schemaVersion") != 1:
-        raise RuntimeError("Schema build-materialization-contract non supportato")
+    if contract.get("schemaVersion") != 2:
+        raise RuntimeError("Schema build-materialization-contract non supportato (atteso 2)")
 
     entrypoint = str(contract.get("entrypoint") or "")
     implementation = str(contract.get("implementation") or "")
