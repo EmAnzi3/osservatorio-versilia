@@ -15,3 +15,4 @@ scripts/test_salute_v140_town_browser.py
 scripts/public_readme_status.py
 scripts/public_data_lineage.py
 scripts/public_data_governance.py
+scripts/materialize_source_monitor_snapshot.py

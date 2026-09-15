@@ -22,6 +22,9 @@ on:
       - "scripts/monthly_data_check.py"
       - "scripts/monthly_data_check_coverage.py"
       - "scripts/monthly_data_check_status.py"
+      - "scripts/materialize_source_monitor_snapshot.py"
+      - "scripts/build_static_brand.py"
+      - "scripts/build_static_brand_impl.py"
       - "scripts/data_status_model.py"
       - "scripts/pnrr_toscana_audit.py"
       - "scripts/source_policy.py"
@@ -29,6 +32,7 @@ on:
       - "scripts/test_pnrr_toscana_audit.py"
       - "scripts/test_pnrr_status_integration.py"
       - "scripts/restore_partial_agcom_metrics.py"
+      - "ci/build-materialization-contract.json"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
       - "data/site-data.json"
@@ -50,6 +54,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PYTHONUNBUFFERED: "1"
       MONITOR_RUN_TRIGGER: ${{ github.event_name }}
+      MONITOR_PUBLIC_DIR: /tmp/ov-source-monitor-public
 
     steps:
       - name: Checkout
@@ -75,10 +80,17 @@ jobs:
           python -m py_compile \
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
+            scripts/materialize_source_monitor_snapshot.py \
             scripts/data_status_model.py \
             scripts/pnrr_toscana_audit.py \
             scripts/test_pnrr_toscana_audit.py \
             scripts/test_pnrr_status_integration.py
+
+      - name: Materialize effective public catalog for monitor
+        run: |
+          rm -rf "$MONITOR_PUBLIC_DIR"
+          python scripts/materialize_source_monitor_snapshot.py \
+            --output-dir "$MONITOR_PUBLIC_DIR"
 
       - name: Prepare check
         id: prepare
@@ -104,6 +116,8 @@ jobs:
         run: |
           python scripts/monthly_data_check_status.py \
             --mode "${{ steps.prepare.outputs.mode }}" \
+            --data "$MONITOR_PUBLIC_DIR/site-data.json" \
+            --registry "$MONITOR_PUBLIC_DIR/source-registry.json" \
             --report-md "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.md" \
             --report-json "reports/runtime/data-check-${{ steps.prepare.outputs.run_stamp }}.json" \
             --next-state "reports/runtime/source-monitor-state.next.json"
