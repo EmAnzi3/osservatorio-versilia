@@ -73,6 +73,27 @@ def test_c4t_injection_is_conditional_and_deterministic() -> None:
     )
 
 
+def test_expired_audit_entry_is_archived_without_live_probe() -> None:
+    original_verify = fixed.core.verify_entry
+
+    def unexpected_verify(*args, **kwargs):
+        raise AssertionError("una candidatura scaduta non deve essere verificata live")
+
+    fixed.core.verify_entry = unexpected_verify
+    result = {"opportunities": [], "archive": [], "coverageHold": []}
+    try:
+        resolved = fixed._inject_fix_entries(result, date(2026, 9, 15), live=True)
+    finally:
+        fixed.core.verify_entry = original_verify
+
+    assert C4T_ID in resolved
+    assert result["opportunities"] == []
+    assert result["coverageHold"] == []
+    archived = {str(item.get("coverage_id") or ""): item for item in result["archive"]}
+    assert C4T_ID in archived
+    assert archived[C4T_ID].get("deadline_at") == "2026-09-11"
+
+
 def _all_verified_detail_fixtures() -> dict[str, str]:
     paths = (
         "opportunity-verified-v04.json",
@@ -186,6 +207,7 @@ def test_mercati_rionali_cross_source_contract() -> None:
 def main() -> int:
     test_c4t_source_and_verified_seed()
     test_c4t_injection_is_conditional_and_deterministic()
+    test_expired_audit_entry_is_archived_without_live_probe()
     test_overlay_reaches_real_v044_run_and_recomputes_counts()
     test_cerv_regression_contract_is_already_active()
     test_mercati_rionali_cross_source_contract()

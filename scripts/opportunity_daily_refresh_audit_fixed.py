@@ -97,6 +97,19 @@ def _inject_fix_entries(
 
     for entry in payload.get("verifiedEntries") or []:
         coverage_id = str(entry.get("coverage_id") or "")
+        # Una candidatura gia scaduta non deve dipendere dalla raggiungibilita
+        # odierna del dettaglio.  Verificarla prima del filtro temporale puo
+        # trasformare un endpoint storico indisponibile in un coverage hold
+        # sul run corrente, pur non essendoci piu nulla da pubblicare.
+        if core._is_expired_application(entry, today):
+            item = core.build_seed_item(entry, today, "historical_evidence")
+            item["first_seen_at"] = str(entry.get("first_seen_at") or today.isoformat())
+            item["verified_at"] = str(entry.get("evidence_verified_at") or "")
+            item["verified_direct"] = False
+            core._append_archive(result, item)
+            resolved.add(coverage_id)
+            continue
+
         ok, verification_status, error = core.verify_entry(
             entry,
             today,
@@ -117,9 +130,6 @@ def _inject_fix_entries(
         item = core.build_seed_item(entry, today, verification_status)
         item["first_seen_at"] = str(entry.get("first_seen_at") or today.isoformat())
         resolved.add(coverage_id)
-        if core._is_expired_application(entry, today):
-            core._append_archive(result, item)
-            continue
 
         norm_url = core.radar.v025.normalized_url(str(item.get("url") or ""))
         if coverage_id in existing_coverage or (norm_url and norm_url in existing_urls):
