@@ -32,7 +32,7 @@ Il principio guida è:
 
 ## A0 — Governance del programma e handoff
 
-**Stato:** `IN_PROGRESS`
+**Stato:** `DONE`
 
 Scopo: rendere il lavoro multi-sessione ripetibile e trasferibile senza dipendere dalla memoria della chat.
 
@@ -40,7 +40,7 @@ Scopo: rendere il lavoro multi-sessione ripetibile e trasferibile senza dipender
 - [x] **A0.2** Introdurre handoff operativo breve e aggiornabile.
 - [x] **A0.3** Rendere obbligatoria la lettura di roadmap/handoff per le sessioni di consolidamento tramite `AGENTS.md`.
 - [x] **A0.4** Aprire PR di fondazione e registrarla nell'handoff.
-- [ ] **A0.5** Merge solo dopo approvazione esplicita del proprietario.
+- [x] **A0.5** Merge solo dopo approvazione esplicita del proprietario.
 
 **Definition of done:** una nuova sessione può capire in pochi minuti cosa è stato completato, cosa è in corso, cosa resta da fare e quale sia la prossima azione esatta.
 
@@ -48,18 +48,20 @@ Scopo: rendere il lavoro multi-sessione ripetibile e trasferibile senza dipender
 
 ## A1 — Data Governance Foundation
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: eliminare le molteplici “verità” sullo stato del progetto senza duplicare il catalogo canonico.
 
-- [ ] **A1.1** Audit del percorso canonico `site-data.json` → materializzatori → output pubblicato; documentare esattamente quali trasformazioni possono modificare/arricchire il catalogo visibile.
-- [ ] **A1.2** Definire una vista derivata e riproducibile del catalogo effettivamente pubblicato, senza introdurre un nuovo inventario canonico.
-- [ ] **A1.3** Introdurre invarianti automatiche sugli ID: `pubblicati = censiti = monitorati = rappresentati nello Stato dati`, salvo eccezioni dichiarate e motivate.
+- [x] **A1.1** Audit del percorso canonico `site-data.json` → materializzatori → output pubblicato; documentare esattamente quali trasformazioni possono modificare/arricchire il catalogo visibile.
+- [x] **A1.2** Definire una vista derivata e riproducibile del catalogo effettivamente pubblicato, senza introdurre un nuovo inventario canonico.
+- [x] **A1.3** Introdurre invarianti automatiche sugli ID: `pubblicati = censiti = monitorati = rappresentati nello Stato dati`, salvo eccezioni dichiarate e motivate.
 - [ ] **A1.4** Generare automaticamente i blocchi di stato del README a partire dalle fonti canoniche/derivate.
 - [ ] **A1.5** Generare automaticamente lo Stato dati dalla stessa pipeline di verità.
 - [ ] **A1.6** Riconciliare versioni, conteggi, date di aggiornamento e copertura tra README, homepage, Stato dati e pipeline.
 - [ ] **A1.7** Inserire i gate nel preflight generale, evitando test release-specifici.
 - [ ] **A1.8** Documentare data lineage minimo: fonte → acquisizione/raw → trasformazione/materializzatore → indicatore → visualizzazione.
+
+Nota A1.3: in questo workstream “monitorati” significa che ogni ID pubblicato risolve una policy fonte strutturalmente valida. Freschezza, ultimo controllo riuscito e copertura operativa del monitor sono responsabilità di `A2`.
 
 **Definition of done:** non è possibile pubblicare o materializzare un indicatore senza che documentazione, Stato dati e controlli di copertura ne conoscano lo stesso ID.
 

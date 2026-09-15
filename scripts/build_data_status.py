@@ -5,7 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import build_data_status_impl as _impl
-from public_build_snapshot import build_aware_load, validate_public_snapshot
+from public_build_snapshot import (
+    build_aware_load,
+    validate_public_governance,
+    validate_public_snapshot,
+)
 
 _ORIGINAL_LOAD = _impl.load
 
@@ -21,6 +25,14 @@ def main() -> None:
         _impl.main()
     finally:
         _impl.load = _ORIGINAL_LOAD
+
+    governance = validate_public_governance()
+    print(
+        "Governance catalogo pubblico verificata: "
+        f"{governance['public_metrics']} ID pubblicati = "
+        f"{governance['status_metrics']} ID Stato dati = "
+        f"{governance['source_policies']} policy fonte."
+    )
 
 
 if __name__ == "__main__":
