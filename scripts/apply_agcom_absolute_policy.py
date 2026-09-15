@@ -12,6 +12,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+import audit_agcom_primary as primary  # noqa: E402
 import update_agid_indicators as base  # noqa: E402
 import restore_partial_agcom_metrics as restore  # noqa: E402
 
@@ -25,6 +26,21 @@ OUTPUT_KEYS = [
     "ftthUnreachedHouseholds",
     "ftthCoverage20m",
 ]
+
+
+def _align_absolute_sources(data):
+    """Allinea i conteggi FTTH alla mappa pubblica AGCOM corrente.
+
+    ``restore_partial_agcom_metrics`` nasce prima della migrazione dalla vecchia
+    pagina ``geo.agcom.it/reportistica/ai`` a ``maps.agcom.it``. La policy fonte
+    del catalogo governa la mappa pubblica corrente e il dataset ArcGIS ufficiale,
+    quindi i due indicatori assoluti devono usare lo stesso URL dei percentuali.
+    """
+    for key in restore.PARTIAL_KEYS:
+        metric = data.get("metrics", {}).get(key)
+        if isinstance(metric, dict):
+            metric["sourceUrl"] = primary.AI_READY_PAGE
+    return data
 
 
 def apply_policy(data, snapshot):
@@ -43,6 +59,7 @@ def apply_policy(data, snapshot):
 
     if len(invalid) <= restore.MAX_MISSING_TOWNS:
         data, snapshot = restore.apply_partial_coverage(data, snapshot)
+        _align_absolute_sources(data)
         status = "published_partial" if invalid else "published_full"
     else:
         for key in restore.PARTIAL_KEYS:
