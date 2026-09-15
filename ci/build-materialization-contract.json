@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "entrypoint": "scripts/build_static_brand.py",
   "implementation": "scripts/build_static_brand_impl.py",
   "publicMaterializers": [
@@ -25,7 +25,13 @@
     "scripts/patch_salute_v140_runtime.py",
     "scripts/patch_salute_v140_runtime_core.py",
     "scripts/patch_salute_v140_demographics_runtime.py",
-    "scripts/apply_per_capita_reference_contract.py"
+    "scripts/apply_per_capita_reference_contract.py",
+    "scripts/patch_fragilita_runtime.py",
+    "scripts/materialize_territorio_v137.py",
+    "scripts/patch_territorio_v137_runtime.py",
+    "scripts/materialize_invalsi_v138_payload.py",
+    "scripts/run_invalsi_v138_runtime.py",
+    "scripts/patch_per_capita_reference_runtime.py"
   ],
   "publicSnapshotFiles": [
     "data/site-data.json",
@@ -64,5 +70,6 @@
     "scripts/preflight.py",
     "scripts/content_contract.py",
     "scripts/workflow_contract.py"
-  ]
+  ],
+  "lineageArtifact": "data/data-lineage.json"
 }
