@@ -86,6 +86,25 @@ jobs:
             --report-md /tmp/agid-data-check/report.md \
             --report-json /tmp/agid-data-check/report.json \
             --next-state /tmp/agid-data-check/state.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('/tmp/agid-data-check/report.json')
+          report = json.loads(path.read_text(encoding='utf-8'))
+          findings = report.get('findings') if isinstance(report.get('findings'), list) else []
+          errors = [item for item in findings if isinstance(item, dict) and item.get('level') == 'error']
+          if report.get('status') == 'attention_required' or errors:
+              details = '; '.join(
+                  f"{item.get('code', 'error')}: {item.get('message', '')}"
+                  for item in errors[:10]
+              )
+              raise SystemExit(
+                  f"Validazione dataset non superata: status={report.get('status')} · "
+                  f"errori={len(errors)}" + (f" · {details}" if details else '')
+              )
+          print(f"Validazione dataset verde: status={report.get('status')} · errori=0")
+          PY
 
       - name: Install preview browser
         run: |
