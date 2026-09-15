@@ -143,7 +143,9 @@ jobs:
           assert matrix_target == 89, replay
           assert replay_current == replay_municipal + replay_partnership, replay
           assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
-          assert 0 < replay_current <= matrix_target, replay
+          # La matrice del 7/9 definisce il pavimento storico verificato, non un
+          # tetto: nuove opportunità documentate possono far crescere il corpus.
+          assert replay_current >= matrix_target, replay
 
           municipal = p.get('municipalRelevance') or {}
           headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
@@ -362,7 +364,9 @@ jobs:
           assert matrix_target == 89, replay
           assert replay_current == replay_municipal + replay_partnership, replay
           assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
-          assert 0 < replay_current <= matrix_target, replay
+          # La matrice del 7/9 definisce il pavimento storico verificato, non un
+          # tetto: nuove opportunità documentate possono far crescere il corpus.
+          assert replay_current >= matrix_target, replay
 
           municipal = p.get('municipalRelevance') or {}
           headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
@@ -431,10 +435,11 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: radar-opportunita-daily-dryrun-20260909
+          name: radar-opportunita-daily-dryrun-${{ github.run_id }}
           path: |
             data/opportunity-daily-public.json
             reports/runtime/opportunity-daily-summary.md
             reports/runtime/opportunity-continuity-hold.json
+            reports/runtime/opportunity-publishability-diagnostic.json
           if-no-files-found: ignore
           retention-days: 7
