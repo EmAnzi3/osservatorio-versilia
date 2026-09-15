@@ -18,6 +18,7 @@
     {"path": ".github/workflows/pages.yml", "category": "canonical", "status": "active"},
     {"path": ".github/workflows/pages-live-status.yml", "category": "canonical", "status": "active"},
     {"path": ".github/workflows/monthly-data-refresh.yml", "category": "automation", "status": "active"},
+    {"path": ".github/workflows/source-monitor-light.yml", "category": "automation", "status": "active"},
     {"path": ".github/workflows/opportunity-radar-daily.yml", "category": "automation", "status": "active"},
     {"path": ".github/workflows/refresh-agid-indicators.yml", "category": "automation", "status": "active"},
     {"path": ".github/workflows/social-calendar.yml", "category": "automation", "status": "active"},
