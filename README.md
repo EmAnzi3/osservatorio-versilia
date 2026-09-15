@@ -4,35 +4,22 @@
 
 Sito pubblico: **https://osservatorioversilia.it**
 
-Release corrente: **v1.39.0** — aggiornata **13 settembre 2026**.
-
-Osservatorio Versilia è un progetto indipendente che raccoglie dati territoriali da fonti pubbliche, li rende confrontabili tra i Comuni e pubblica insieme ai valori anche fonte, annualità, metodo e stato dei dati. Il repository contiene il sito pubblico, i dataset incorporati, gli snapshot delle fonti, i materializzatori, gli audit e i test usati per produrre la versione pubblicata.
+<!-- OV_PUBLIC_STATUS_START -->
+Release corrente: **v1.40.0** — aggiornata **14 settembre 2026**.
 
 ## Stato del progetto
 
 - **7 Comuni**: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema e Viareggio;
 - **11 aree tematiche**;
-- **213 indicatori canonici**;
-- **209 indicatori incorporati**: 207 con scheda autonoma e 2 con route dedicate;
+- **225 indicatori pubblicati**;
+- **221 indicatori incorporati**: 219 con scheda autonoma e 2 con route dedicata;
 - **4 indicatori climatici esterni**, integrati nell'esperienza del sito con storici separati;
 - confronti territoriali, profili comunali, serie storiche e benchmark Versilia;
 - benchmark Toscana/Italia quando la comparabilità metodologica è adeguata;
 - esportazione CSV e stampa/PDF nelle viste che la supportano;
 - approfondimenti dedicati, tra cui PNRR, Atlante economico/ATECO, Opportunità e Percorsi;
 - Stato dati, metodologia, fonti e segnalazioni accessibili dal sito pubblico.
-
-### Novità della v1.39.0
-
-La release **Bilanci: liquidità, accantonamenti e missioni** porta il catalogo a 213 indicatori e aggiunge:
-
-- FCDE per residente;
-- fondo di cassa a fine esercizio per residente;
-- spesa impegnata per residente per Missione 01 — Servizi istituzionali, generali e di gestione;
-- Missione 08 — Assetto del territorio ed edilizia abitativa;
-- Missione 11 — Soccorso civile;
-- Missione 14 — Sviluppo economico e competitività.
-
-La stessa release uniforma inoltre il riferimento territoriale degli indicatori **pro capite**: quando esiste un vero aggregato territoriale, grafici e scostamenti comunali usano il **Valore pro capite Versilia**, non la media aritmetica dei valori dei sette Comuni.
+<!-- OV_PUBLIC_STATUS_END -->
 
 ## Metodo e qualità dei dati
 
@@ -55,7 +42,7 @@ Gli snapshot leggibili in `data/source-snapshots/` conservano, secondo il tipo d
 - `index.html` — homepage e accesso ai contenuti;
 - `confronta/` — confronti per tema e indicatore;
 - `comuni/` — profili dei sette Comuni;
-- `indicatori/` — 207 schede indicatore autonome generate dalla build;
+- `indicatori/` — schede indicatore autonome generate dalla build, salvo route dedicate e indicatori esterni;
 - `stato-dati/` — stato, annualità e copertura dei dati;
 - `progetto/` — finalità e metodo del progetto;
 - `segnala/` — canale per segnalazioni e correzioni;

@@ -6,41 +6,46 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A1 — Data Governance Foundation`
-- **Step attivo:** prima tranche A1 in PR draft; `A1.1`–`A1.3` completati e verificati sul catalogo pubblico
+- **Step attivo:** seconda tranche `A1.4`–`A1.8` in PR draft
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `850fad77dc506d19f33351e092e926fa8fc3728a`
+- **Baseline main:** `4b66e1a72790d0d0d74954da20e59da19ccfa1da`
 - **Catalogo sorgente / pubblico auditato:** 181 / 225 indicatori
-- **Branch:** `chore/a1-data-governance-foundation`
-- **PR corrente:** `#190` — draft
+- **Branch:** `chore/a1-data-governance-completion`
+- **PR corrente:** `#193` — draft
 
 ## Completato
 
-- `A0` chiuso con merge autorizzato della PR `#188`; foundation pubblicata.
-- `A1.1`: audit documentato in `docs/A1_DATA_GOVERNANCE_AUDIT.md`.
-- `A1.2`: formalizzato l'**Effective Public Catalog** come vista derivata `dist/data/site-data.json`, senza secondo catalogo canonico.
-- `A1.3`: aggiunto il gate per identità degli ID tra catalogo pubblico e Stato dati e per policy fonte valida su ogni ID pubblicato.
-- Verificata sulla release pubblica la relazione `225 ID pubblicati = 225 ID Stato dati = 225 policy fonte`.
-- Confermato che la copertura temporale/operativa del monitor resta separata e va chiusa in `A2`.
+- `A0` chiuso con merge autorizzato della PR `#188`.
+- `A1.1`–`A1.3` chiusi con merge autorizzato della PR `#190`.
+- Effective Public Catalog formalizzato come vista derivata `dist/data/site-data.json`, senza secondo catalogo canonico.
+- Gate ID verificato: `225 ID pubblicati = 225 ID Stato dati = 225 policy fonte`.
+- `A1.4`: introdotto blocco README derivato e verificabile dalla release materializzata.
+- `A1.5`: Stato dati resta sulla stessa pipeline build-aware ed entra nel gate unificato.
+- `A1.6`: versione, data e conteggi vengono riconciliati tra README, homepage, Stato dati e catalogo pubblico.
+- `A1.7`: gate generale `PUBLIC DATA GOVERNANCE` inserito nel percorso del preflight esistente.
+- `A1.8`: lineage minima derivata per tutti i 225 indicatori; contratto build schema 2 con 29 passaggi dichiarati.
 
 ## Decisioni vincolanti
 
 1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
 2. Il catalogo effettivamente pubblicato è una vista derivata della build, non un manifest da mantenere a mano.
-3. A1 controlla la copertura strutturale delle policy; A2 controlla esecuzione, freschezza e ultimo check delle fonti.
-4. Regola generale: nessun push senza Quick locale verde. Eccezione una tantum autorizzata dal proprietario il 2026-09-15 per la PR `#190`: il solo failure residuo locale è ambientale (`unpkg.com`/Leaflet nel test Percorsi) ed è stato isolato con prova causale. Nessun merge/pubblicazione senza ulteriore approvazione esplicita.
+3. README, Stato dati e lineage sono superfici derivate/verificate, non nuove fonti canoniche.
+4. A1 controlla la copertura strutturale delle policy; A2 controllerà esecuzione, freschezza e ultimo check delle fonti.
+5. La PR `#193` usa una deroga circoscritta autorizzata dal proprietario il 2026-09-15: i gate A1 e la build 225 sono verdi localmente, mentre il Quick locale si ferma esclusivamente sul noto test browser Percorsi nell'ambiente locale. GitHub Actions è la verifica ufficiale della PR.
+6. Nessun merge/pubblicazione senza Full verde e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Usare la CI della PR `#190` come verifica ufficiale nell'ambiente GitHub e registrare l'esito nell'handoff.
-2. Prima della merge readiness eseguire `python scripts/preflight.py --full` oppure documentare qualsiasi failure esclusivamente ambientale rimasto.
-3. Solo dopo approvazione esplicita del proprietario, rendere la PR pronta al merge e procedere.
-4. Dopo la prima tranche A1 proseguire con `A1.4`, `A1.5`, `A1.6`, `A1.7` e `A1.8` senza introdurre inventari paralleli.
+1. Verificare il Quick GitHub della PR `#193` mantenendola draft.
+2. Se Quick è verde, portare `#193` a Ready for review per eseguire il Full.
+3. Se Full è verde, attendere approvazione esplicita del proprietario prima del merge.
+4. Dopo il merge e il deploy post-merge, portare `A1` a `DONE` e avviare `A2 — Full Coverage Source Monitor`.
 
 ## Verifiche
 
-- Modifiche della prima tranche A1: documentazione e gate di governance; nessuna modifica UI intenzionale.
-- Il gate è inserito nel percorso esistente di `build_data_status.py`, già attraversato dal preflight generale.
-- Sul `main` precedente il Quick ha materializzato 225 indicatori e il gate ha verificato `225 = 225 = 225`; i controlli finali di consistency e stemmi sono verdi.
-- Il solo failure residuo locale è ambientale e fuori perimetro A1: Percorsi carica Leaflet da `unpkg.com`, irraggiungibile nel container; una prova con Leaflet locale ha confermato filtri e pagina funzionanti.
-- Il merge radar #189 non modifica `data/site-data.json` né `data/source-registry.json`, quindi l'audit A1 resta valido.
-- I numeri 181/225 documentano la baseline auditata e non devono diventare contatori hard-coded operativi.
+- Build completa locale: RC 0, release `v1.40.0`, 225 indicatori.
+- Gate locale: `PUBLIC DATA GOVERNANCE: GREEN`.
+- Lineage derivata: 225 indicatori / 29 passaggi dichiarati.
+- README derivato: `v1.40.0` / 225 indicatori / 14 settembre 2026.
+- Il Quick locale ha superato i gate A1 e si è fermato solo sul test Percorsi `Filtro tipologia non applicato dalla URL: all`, già risultato verde nell'ambiente GitHub sulla PR `#190`.
+- Il merge Radar `#192` è incluso nella baseline e non modifica catalogo dati, registry o file A1 di questa tranche.

@@ -55,13 +55,15 @@ Scopo: eliminare le molteplici “verità” sullo stato del progetto senza dupl
 - [x] **A1.1** Audit del percorso canonico `site-data.json` → materializzatori → output pubblicato; documentare esattamente quali trasformazioni possono modificare/arricchire il catalogo visibile.
 - [x] **A1.2** Definire una vista derivata e riproducibile del catalogo effettivamente pubblicato, senza introdurre un nuovo inventario canonico.
 - [x] **A1.3** Introdurre invarianti automatiche sugli ID: `pubblicati = censiti = monitorati = rappresentati nello Stato dati`, salvo eccezioni dichiarate e motivate.
-- [ ] **A1.4** Generare automaticamente i blocchi di stato del README a partire dalle fonti canoniche/derivate.
-- [ ] **A1.5** Generare automaticamente lo Stato dati dalla stessa pipeline di verità.
-- [ ] **A1.6** Riconciliare versioni, conteggi, date di aggiornamento e copertura tra README, homepage, Stato dati e pipeline.
-- [ ] **A1.7** Inserire i gate nel preflight generale, evitando test release-specifici.
-- [ ] **A1.8** Documentare data lineage minimo: fonte → acquisizione/raw → trasformazione/materializzatore → indicatore → visualizzazione.
+- [x] **A1.4** Generare automaticamente i blocchi di stato del README a partire dalle fonti canoniche/derivate.
+- [x] **A1.5** Generare automaticamente lo Stato dati dalla stessa pipeline di verità.
+- [x] **A1.6** Riconciliare versioni, conteggi, date di aggiornamento e copertura tra README, homepage, Stato dati e pipeline.
+- [x] **A1.7** Inserire i gate nel preflight generale, evitando test release-specifici.
+- [x] **A1.8** Documentare data lineage minimo: fonte → acquisizione/raw → trasformazione/materializzatore → indicatore → visualizzazione.
 
 Nota A1.3: in questo workstream “monitorati” significa che ogni ID pubblicato risolve una policy fonte strutturalmente valida. Freschezza, ultimo controllo riuscito e copertura operativa del monitor sono responsabilità di `A2`.
+
+Nota chiusura A1: l'implementazione `A1.4`–`A1.8` è nella PR draft `#193`. Il workstream resta `IN_PROGRESS` fino a Quick/Full verdi, approvazione esplicita e merge della PR, secondo il criterio generale di chiusura.
 
 **Definition of done:** non è possibile pubblicare o materializzare un indicatore senza che documentazione, Stato dati e controlli di copertura ne conoscano lo stesso ID.
 
