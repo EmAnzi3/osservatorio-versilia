@@ -5,47 +5,46 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 ## Stato corrente
 
 - **Programma:** consolidamento Osservatorio Versilia
-- **Workstream attivo:** `A1 — Data Governance Foundation`
-- **Step attivo:** seconda tranche `A1.4`–`A1.8` in PR draft
+- **Workstream attivo:** `A2 — Full Coverage Source Monitor`
+- **Step attivo:** `A2.2` — derivare il perimetro operativo del monitor dal catalogo pubblico
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `4b66e1a72790d0d0d74954da20e59da19ccfa1da`
+- **Baseline main:** `d498d2f931773cf8c30a8e051ccb340133d567a6`
 - **Catalogo sorgente / pubblico auditato:** 181 / 225 indicatori
-- **Branch:** `chore/a1-data-governance-completion`
-- **PR corrente:** `#193` — draft
+- **Branch:** `chore/a2-source-monitor-foundation`
+- **PR corrente:** da aprire
 
 ## Completato
 
 - `A0` chiuso con merge autorizzato della PR `#188`.
 - `A1.1`–`A1.3` chiusi con merge autorizzato della PR `#190`.
-- Effective Public Catalog formalizzato come vista derivata `dist/data/site-data.json`, senza secondo catalogo canonico.
-- Gate ID verificato: `225 ID pubblicati = 225 ID Stato dati = 225 policy fonte`.
-- `A1.4`: introdotto blocco README derivato e verificabile dalla release materializzata.
-- `A1.5`: Stato dati resta sulla stessa pipeline build-aware ed entra nel gate unificato.
-- `A1.6`: versione, data e conteggi vengono riconciliati tra README, homepage, Stato dati e catalogo pubblico.
-- `A1.7`: gate generale `PUBLIC DATA GOVERNANCE` inserito nel percorso del preflight esistente.
-- `A1.8`: lineage minima derivata per tutti i 225 indicatori; contratto build schema 2 con 29 passaggi dichiarati.
+- `A1.4`–`A1.8` chiusi con merge della PR `#193`; Quick e Full GitHub verdi.
+- Deploy post-merge della PR `#193`: Pages `#3219` verde; controllo live-status successivo verde.
+- `A1 — Data Governance Foundation` è formalmente `DONE`.
+- `A2.1` completato e documentato in `docs/A2_SOURCE_MONITOR_AUDIT.md`.
+- Audit A2.1: il monitor mensile usa il catalogo sorgente e il registry `181/177/4`, mentre l'Effective Public Catalog contiene 225 indicatori.
+- L'audit A1 aveva rilevato 180 ID nello stato operativo contro 225 pubblicati: gap operativo di 45 ID, pur con 225/225 policy fonte strutturalmente valide.
 
 ## Decisioni vincolanti
 
 1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
-2. Il catalogo effettivamente pubblicato è una vista derivata della build, non un manifest da mantenere a mano.
-3. README, Stato dati e lineage sono superfici derivate/verificate, non nuove fonti canoniche.
-4. A1 controlla la copertura strutturale delle policy; A2 controllerà esecuzione, freschezza e ultimo check delle fonti.
-5. La PR `#193` usa una deroga circoscritta autorizzata dal proprietario il 2026-09-15: i gate A1 e la build 225 sono verdi localmente, mentre il Quick locale si ferma esclusivamente sul noto test browser Percorsi nell'ambiente locale. GitHub Actions è la verifica ufficiale della PR.
-6. Nessun merge/pubblicazione senza Full verde e approvazione esplicita del proprietario.
+2. L'Effective Public Catalog resta una vista derivata della build; non va copiato in un secondo manifest manuale.
+3. A2 deve misurare la copertura operativa per identità degli ID pubblicati, non tramite un numero atteso mantenuto a mano.
+4. Non sostituire `expectedMetricCount: 181` con una nuova costante `225`: `A2.2` deve derivare il perimetro dal catalogo effettivamente monitorato.
+5. Il report futuro deve distinguere almeno `pubblicati`, `configurati`, `controllati` e `senza evidenza operativa`.
+6. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Verificare il Quick GitHub della PR `#193` mantenendola draft.
-2. Se Quick è verde, portare `#193` a Ready for review per eseguire il Full.
-3. Se Full è verde, attendere approvazione esplicita del proprietario prima del merge.
-4. Dopo il merge e il deploy post-merge, portare `A1` a `DONE` e avviare `A2 — Full Coverage Source Monitor`.
+1. Implementare `A2.2`: portare il monitor sul perimetro dell'Effective Public Catalog senza duplicare la catena di materializzazione.
+2. Eliminare dal percorso operativo i conteggi hard-coded quando derivabili dagli ID del dataset monitorato.
+3. Aggiungere test che dimostrino che un ID pubblico non coperto non può passare silenziosamente.
+4. Eseguire Quick; aprire/aggiornare la PR A2 e usare GitHub Actions come verifica ulteriore.
 
 ## Verifiche
 
-- Build completa locale: RC 0, release `v1.40.0`, 225 indicatori.
-- Gate locale: `PUBLIC DATA GOVERNANCE: GREEN`.
-- Lineage derivata: 225 indicatori / 29 passaggi dichiarati.
-- README derivato: `v1.40.0` / 225 indicatori / 14 settembre 2026.
-- Il Quick locale ha superato i gate A1 e si è fermato solo sul test Percorsi `Filtro tipologia non applicato dalla URL: all`, già risultato verde nell'ambiente GitHub sulla PR `#190`.
-- Il merge Radar `#192` è incluso nella baseline e non modifica catalogo dati, registry o file A1 di questa tranche.
+- Main post-A1: `d498d2f931773cf8c30a8e051ccb340133d567a6`.
+- Release pubblica: `v1.40.0`, 225 indicatori.
+- Governance A1: `225 pubblicati = 225 Stato dati = 225 policy fonte`.
+- Source registry sorgente: `expectedMetricCount=181`, `expectedInlineMetricCount=177`, `expectedExternalMetricCount=4`.
+- Workflow mensile: prima del monitor materializza soltanto PNRR e invoca `monthly_data_check_status.py` senza override di `--data`/`--registry`.
+- Stato operativo persistito: ultimo `checkedAt` generale `2026-08-31T17:19:31+02:00`.
