@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import build_static_brand as public_build
@@ -78,11 +79,13 @@ def materialize(output_dir: Path) -> dict[str, int | str]:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     previous_release_build = os.environ.get("OV_RELEASE_BUILD")
+    previous_argv = list(sys.argv)
     original_run_path = public_build.runpy.run_path
     reached_boundary = False
 
     try:
         os.environ["OV_RELEASE_BUILD"] = "1"
+        sys.argv = [str(public_build.IMPLEMENTATION)]
         with public_build.public_build_workspace():
             public_build._ORIGINAL_RUN_PATH(
                 str(public_build.OPPORTUNITY_MATERIALIZER),
@@ -125,6 +128,7 @@ def materialize(output_dir: Path) -> dict[str, int | str]:
             }
     finally:
         public_build.runpy.run_path = original_run_path
+        sys.argv = previous_argv
         if previous_release_build is None:
             os.environ.pop("OV_RELEASE_BUILD", None)
         else:
