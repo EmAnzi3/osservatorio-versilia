@@ -21,10 +21,7 @@ concurrency:
 jobs:
   quick:
     name: quick
-    # Automation snapshot PRs are already validated by the scheduled Radar
-    # refresh and its explicit Pages dispatch. Skipping this self-trigger
-    # prevents a bot-only `action_required` check; all human PR checks remain.
-    if: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'ready_for_review')) && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'ready_for_review') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -140,6 +137,25 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-ci.txt
 
+      - name: Select latest verified Radar runtime snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH="automation/opportunity-radar-daily"
+          SNAPSHOT="data/opportunity-daily-public.json"
+          cp "$SNAPSHOT" /tmp/opportunity-daily-repository.json
+          git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
+          if git show "refs/remotes/origin/$BRANCH:$SNAPSHOT" > /tmp/opportunity-daily-runtime.json 2>/dev/null; then
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-repository.json \
+              --candidate /tmp/opportunity-daily-runtime.json \
+              --output "$SNAPSHOT"
+          else
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-repository.json \
+              --output "$SNAPSHOT"
+          fi
+
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
@@ -150,8 +166,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          restore_radar_snapshot() {
+            cp /tmp/opportunity-daily-repository.json data/opportunity-daily-public.json
+          }
+          trap restore_radar_snapshot EXIT
           python scripts/build_static_brand.py
-          git diff --exit-code -- . ':(exclude)dist'
           python scripts/build_data_status.py
           python scripts/inject_data_status_runtime.py
           python scripts/build_pnrr_toscana_deep_dive.py
@@ -160,6 +179,9 @@ jobs:
           node --check dist/assets/app-bundle.js
           python scripts/test_affluenza_release.py
           python scripts/test_site_consistency.py
+          restore_radar_snapshot
+          trap - EXIT
+          git diff --exit-code -- . ':(exclude)dist'
 
       - name: Upload static site for deployment
         uses: actions/upload-pages-artifact@v3

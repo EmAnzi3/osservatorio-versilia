@@ -2,7 +2,7 @@ name: Report GitHub Pages live status
 
 on:
   workflow_run:
-    workflows: ["Deploy GitHub Pages"]
+    workflows: ["Deploy GitHub Pages", "Radar Opportunità · refresh giornaliero"]
     types: [completed]
 
 permissions:
@@ -32,7 +32,13 @@ jobs:
           import os
 
           jobs = json.load(open("/tmp/ov-pages-jobs.json", encoding="utf-8")).get("jobs", [])
-          deploy = next((job for job in jobs if job.get("name") == "deploy"), None)
+          deploy = next(
+              (
+                  job for job in jobs
+                  if job.get("name") in {"deploy", "publish verified Radar"}
+              ),
+              None,
+          )
           conclusion = deploy.get("conclusion") if deploy else "missing"
           published = conclusion == "success"
           description = "GitHub Pages pubblicato" if published else f"GitHub Pages non pubblicato: deploy {conclusion}"
