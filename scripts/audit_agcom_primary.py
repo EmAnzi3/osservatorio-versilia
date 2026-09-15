@@ -13,6 +13,7 @@ import io
 import json
 import math
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -32,6 +33,8 @@ OFFICIAL_CSV_URL = (
     "https://geo.agcom.it/arcgis/sharing/rest/content/items/"
     "25830559c5784c1eb5eb1cf748889f4c/data"
 )
+FETCH_ATTEMPTS = 3
+FETCH_RETRY_SECONDS = 2
 
 
 def fetch_bytes(url: str, accept: str = "*/*") -> bytes:
@@ -77,15 +80,24 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
             continue
     if text is None:
         raise base.DataError("CSV AGCOM: encoding non riconosciuto")
+
     reader = csv.reader(io.StringIO(text), delimiter=";")
-    try:
-        header = next(reader)
-    except StopIteration as exc:
-        raise base.DataError("CSV AGCOM vuoto") from exc
-    if len(header) < 19:
-        raise base.DataError(f"CSV AGCOM: colonne inattese ({len(header)})")
+    header = next((row for row in reader if any(str(cell).strip() for cell in row)), None)
+    if header is None:
+        raise base.DataError("CSV AGCOM vuoto")
+
+    normalized_header = [str(cell).replace("\ufeff", "").strip().lower() for cell in header]
+    if len(normalized_header) < 19:
+        raise base.DataError(f"CSV AGCOM: colonne inattese ({len(normalized_header)})")
+    if normalized_header[3] != "pro_com":
+        raise base.DataError(
+            f"CSV AGCOM: schema inatteso, colonna 4={normalized_header[3]!r}"
+        )
+
     result: dict[str, dict[str, Any]] = {}
     for raw in reader:
+        if not any(str(cell).strip() for cell in raw):
+            continue
         if len(raw) < 19:
             raw += [""] * (19 - len(raw))
         code = raw[3].strip().zfill(6)
@@ -106,7 +118,27 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
                 "copertura_ftth_20m_pct": raw[18],
             },
         }
+    if not result:
+        raise base.DataError("CSV AGCOM: nessuna riga comunale valida")
     return result
+
+
+def fetch_primary_rows(url: str, attempts: int = FETCH_ATTEMPTS) -> dict[str, dict[str, Any]]:
+    """Acquisisce e valida il CSV primario, ritentando risposte transitorie non utilizzabili."""
+    failures: list[str] = []
+    for attempt in range(1, attempts + 1):
+        body = b""
+        try:
+            body = fetch_bytes(url, "text/csv,application/octet-stream,*/*")
+            return parse_csv(body)
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, base.DataError) as exc:
+            failures.append(f"tentativo {attempt}/{attempts}: {exc}; bytes={len(body)}")
+            if attempt < attempts:
+                time.sleep(FETCH_RETRY_SECONDS * attempt)
+    raise base.DataError(
+        f"CSV primario AGCOM non acquisibile dopo {attempts} tentativi: "
+        + " | ".join(failures)
+    )
 
 
 def population_by_code(data: dict[str, Any]) -> dict[str, float]:
@@ -136,11 +168,7 @@ def plausibility(population: float | None, households: int | None, reached: int 
 
 def audit(data: dict[str, Any], snapshot: dict[str, Any]) -> tuple[dict[str, Any], str, str]:
     csv_url, discovery = discover_csv_url()
-    try:
-        body = fetch_bytes(csv_url, "text/csv,application/octet-stream,*/*")
-        rows = parse_csv(body)
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, base.DataError) as exc:
-        raise base.DataError(f"CSV primario AGCOM non acquisibile: {exc}") from exc
+    rows = fetch_primary_rows(csv_url)
 
     population = population_by_code(data)
     town_names = {str(t.get("code")): t.get("name") for t in data.get("towns", [])}
