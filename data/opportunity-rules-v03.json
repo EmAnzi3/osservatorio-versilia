@@ -96,6 +96,28 @@
       "deadline_override": "2026-09-18",
       "deadline_evidence": "Scadenza presentazione domande 18 settembre 2026 ore 13:00.",
       "evidence_url": "https://www.regione.toscana.it/it/-/celebrazioni-storiche-2026-sostegno-a-progetti-dedicati-a-san-francesco-collodi-e-alluvione-firenze"
+    },
+    {
+      "id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "source_id": "regione-toscana",
+      "title_pattern": "^Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni$",
+      "force_eligibility": "eligible",
+      "applicant_eligibility_override": "eligible",
+      "beneficiary_evidence": "La riapertura è rivolta direttamente ai Comuni: i nuovi Comuni chiedono le credenziali di accesso entro il 25 settembre 2026; i Comuni già aderenti trasmettono la documentazione entro il 6 ottobre 2026.",
+      "municipality_reason": "Il Comune è il soggetto direttamente chiamato ad aderire o completare la procedura regionale Nidi gratis 2026-2027.",
+      "applicant_type": "Comune della Toscana",
+      "municipality_role": "direct_applicant",
+      "final_beneficiaries": "Famiglie con bambine e bambini iscritti ai servizi educativi per la prima infanzia aderenti alla misura",
+      "partnership_required": false,
+      "geographic_scope": "Toscana",
+      "geographic_eligibility": "eligible",
+      "territorial_relevance": "direct",
+      "actionable": true,
+      "decision_class": "direct_municipal_programme_reopening",
+      "project_requirements": "Per i nuovi Comuni: richiesta delle credenziali entro il 25 settembre 2026. Per i Comuni già ammessi: trasmissione della documentazione prevista dalla procedura entro il 6 ottobre 2026.",
+      "deadline_override": "2026-10-06",
+      "deadline_evidence": "Scadenza intermedia 25 settembre 2026 per la richiesta credenziali dei nuovi Comuni; scadenza finale 6 ottobre 2026 per la documentazione dei Comuni già aderenti.",
+      "evidence_url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni"
     }
   ]
 }

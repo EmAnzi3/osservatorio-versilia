@@ -17,6 +17,7 @@
   "rules": {
     "rt-amianto-2026": {"category":"ambiente","description":"Contributi agli Enti locali per rimuovere e smaltire materiali contenenti amianto dagli edifici pubblici."},
     "rt-nidi-qualita-2026": {"category":"istruzione","description":"Contributi ai Comuni per sostenere i servizi educativi della prima infanzia e migliorare qualità e accessibilità dei nidi."},
+    "rt-nidi-gratis-comuni-reopening-2026-2027": {"category":"istruzione","description":"Riapertura della procedura regionale Nidi gratis 2026-2027 per l'adesione e gli adempimenti dei Comuni toscani.","conditionLabel":"Nuovi Comuni: credenziali entro il 25 settembre"},
     "fcrl-progett-azioni-2026": {"category":"sociale","description":"Sostegno alla progettazione sociale degli enti pubblici insieme alla società civile e agli enti del Terzo settore.","conditionLabel":"Richiede partenariato"},
     "fcrl-opere-pubbliche-2026": {"category":"opere","description":"Finanzia la progettazione di manutenzioni straordinarie, restauri, risanamenti e nuove opere pubbliche."},
     "rt-toscanaincontemporanea-2026": {"category":"cultura","description":"Sostegno a progetti per la produzione, la conoscenza e la diffusione della creatività contemporanea.","conditionLabel":"Richiede progetto culturale ammissibile"},

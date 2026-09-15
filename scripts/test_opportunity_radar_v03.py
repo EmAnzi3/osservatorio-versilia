@@ -34,6 +34,7 @@ class RadarV03Test(unittest.TestCase):
             ('sviluppo-toscana','Avviso Mercati Rionali','st-mercati-rionali-2026','2026-09-15'),
             ('mic-spettacolo','Bando per la PROMOZIONE DELLA MUSICA JAZZ / 2027 – Avviso pubblico e apertura dei termini di presentazione delle domande','mic-jazz-2027','2026-09-10'),
             ('ministero-interno-prefetture','Videosorveglianza - D.M. 2026','mi-videosorveglianza-2026','2026-08-24'),
+            ('regione-toscana','Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni','rt-nidi-gratis-comuni-reopening-2026-2027','2026-10-06'),
         )
         for source,title,rule_id,deadline in cases:
             with self.subTest(rule=rule_id):
@@ -44,6 +45,20 @@ class RadarV03Test(unittest.TestCase):
                 self.assertEqual(rule['municipality_role'],'direct_applicant')
                 self.assertEqual(rule['deadline_override'],deadline)
                 self.assertTrue(rule['evidence_url'].startswith('https://'))
+
+    def test_nidi_gratis_comuni_is_distinct_from_family_measure(self):
+        rules,_,_=radar.load_rules()
+        municipal=radar.v021.matching_rule({
+            'source_id':'regione-toscana',
+            'title':'Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni',
+        },rules)
+        family=radar.v021.matching_rule({
+            'source_id':'regione-toscana',
+            'title':'Bando Nidi gratis 2026-2027 per i servizi educativi rivolto alle famiglie',
+        },rules)
+        self.assertIsNotNone(municipal)
+        self.assertEqual(municipal['id'],'rt-nidi-gratis-comuni-reopening-2026-2027')
+        self.assertIsNone(family)
 
     def test_discovery_candidates_are_internal_only(self):
         source={'id':'anci-toscana','label':'ANCI Toscana','publisher':'ANCI Toscana','territory':'Toscana','includeTerms':['bando','contribut'],'municipalTerms':['comun','edifici pubblici']}

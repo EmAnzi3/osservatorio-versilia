@@ -151,6 +151,32 @@ def test_final_reconciliation_removes_stale_regional_hold() -> None:
     assert result["coverageHold"] == [external_hold]
 
 
+def test_nidi_gratis_comuni_rule_clears_overdue_regional_hold() -> None:
+    candidate = {
+        "title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni",
+        "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni",
+        "summary": "Comuni della Toscana · Stato: Aperto",
+        "published_at": "2026-09-07",
+        "age_days": 8,
+        "deadline_at": "2026-09-25",
+    }
+    result = {
+        "opportunities": [{
+            **copy.deepcopy(candidate),
+            "rule_id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+            "deadline_at": "2026-10-06",
+        }],
+        "reviewQueue": [copy.deepcopy(candidate)],
+        "discoveryQueue": [],
+        "coverageHold": [],
+        "counts": {},
+    }
+    guard.apply(result, date(2026, 9, 15), candidates=[copy.deepcopy(candidate)])
+    assert result["regionalCompleteness"]["status"] == "pass", result
+    assert result["regionalCompleteness"]["overdue"] == []
+    assert result["coverageHold"] == []
+
+
 def main() -> int:
     test_audience_detection()
     test_accounted_public_is_not_duplicated()
@@ -159,8 +185,9 @@ def main() -> int:
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
     test_final_reconciliation_removes_stale_regional_hold()
+    test_nidi_gratis_comuni_rule_clears_overdue_regional_hold()
     assert audit_fixes.main() == 0
-    print("Regione Toscana guard: 7 test PASS + audit gap contracts PASS")
+    print("Regione Toscana guard: 8 test PASS + audit gap contracts PASS")
     return 0
 
 
