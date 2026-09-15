@@ -92,7 +92,70 @@ def test_absolute_source_policy_alignment():
     )
 
 
+def primary_csv_fixture(*, leading_blank_lines: bool = False) -> bytes:
+    header = [f"col_{index}" for index in range(19)]
+    header[3] = "pro_com"
+    row = [""] * 19
+    row[2] = "Comune test"
+    row[3] = "046001"
+    row[13] = "1000"
+    row[14] = "700"
+    row[15] = "650"
+    row[16] = "70,0"
+    row[18] = "65,0"
+    prefix = "\n\n" if leading_blank_lines else ""
+    return (prefix + ";".join(header) + "\n" + ";".join(row) + "\n").encode("utf-8-sig")
+
+
+def assert_primary_data_error(payload: bytes):
+    primary = absolute_policy.primary
+    try:
+        primary.parse_csv(payload)
+    except primary.base.DataError:
+        return
+    raise AssertionError("Il payload AGCOM non valido doveva essere rifiutato")
+
+
+def test_primary_csv_tolerates_leading_blank_lines():
+    primary = absolute_policy.primary
+    rows = primary.parse_csv(primary_csv_fixture(leading_blank_lines=True))
+    assert rows["046001"]["famiglie_residenti"] == 1000
+    assert rows["046001"]["famiglie_ftth"] == 700
+    assert rows["046001"]["copertura_ftth_desi_pct"] == 70.0
+
+
+def test_primary_csv_rejects_invalid_payloads():
+    assert_primary_data_error(b"\n\n")
+    assert_primary_data_error(b"<html><body>errore</body></html>")
+
+
+def test_primary_csv_retries_malformed_payload():
+    primary = absolute_policy.primary
+    original_fetch = primary.fetch_bytes
+    original_sleep = primary.time.sleep
+    payloads = [b"\n", primary_csv_fixture()]
+    calls = []
+
+    def fake_fetch(url: str, accept: str = "*/*") -> bytes:
+        calls.append((url, accept))
+        return payloads.pop(0)
+
+    primary.fetch_bytes = fake_fetch
+    primary.time.sleep = lambda _seconds: None
+    try:
+        rows = primary.fetch_primary_rows("https://example.invalid/agcom.csv", attempts=2)
+    finally:
+        primary.fetch_bytes = original_fetch
+        primary.time.sleep = original_sleep
+
+    assert len(calls) == 2
+    assert "046001" in rows
+
+
 if __name__ == "__main__":
     test_apply_primary_percentages()
     test_absolute_source_policy_alignment()
-    print("OK: test percentuali FTTH primarie AGCOM e policy fonte")
+    test_primary_csv_tolerates_leading_blank_lines()
+    test_primary_csv_rejects_invalid_payloads()
+    test_primary_csv_retries_malformed_payload()
+    print("OK: test percentuali FTTH primarie AGCOM, policy fonte e resilienza CSV")
