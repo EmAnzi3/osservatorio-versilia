@@ -16,3 +16,4 @@ scripts/public_readme_status.py
 scripts/public_data_lineage.py
 scripts/public_data_governance.py
 scripts/materialize_source_monitor_snapshot.py
+scripts/test_source_monitor_public_partial.py

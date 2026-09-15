@@ -29,6 +29,7 @@ on:
       - "scripts/pnrr_toscana_audit.py"
       - "scripts/source_policy.py"
       - "scripts/test_monthly_data_check.py"
+      - "scripts/test_source_monitor_public_partial.py"
       - "scripts/test_pnrr_toscana_audit.py"
       - "scripts/test_pnrr_status_integration.py"
       - "scripts/restore_partial_agcom_metrics.py"
@@ -75,12 +76,14 @@ jobs:
       - name: Run monitor unit tests
         run: |
           python scripts/test_monthly_data_check.py
+          python scripts/test_source_monitor_public_partial.py
           python scripts/test_pnrr_toscana_audit.py
           python scripts/test_pnrr_status_integration.py
           python -m py_compile \
             scripts/monthly_data_check_coverage.py \
             scripts/monthly_data_check_status.py \
             scripts/materialize_source_monitor_snapshot.py \
+            scripts/test_source_monitor_public_partial.py \
             scripts/data_status_model.py \
             scripts/pnrr_toscana_audit.py \
             scripts/test_pnrr_toscana_audit.py \
