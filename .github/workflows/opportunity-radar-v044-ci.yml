@@ -21,9 +21,6 @@ concurrency:
 
 jobs:
   test:
-    # Do not request approval for the bot's own snapshot-only review PR.
-    # Human PRs continue to run the full Radar regression suite.
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -58,10 +55,13 @@ jobs:
             scripts/opportunity_regione_toscana_guard.py \
             scripts/opportunity_issue_notification.py \
             scripts/opportunity_run_report.py \
+            scripts/opportunity_runtime_snapshot.py \
             scripts/test_opportunity_regione_toscana_guard.py \
             scripts/test_opportunity_issue_notification.py \
             scripts/test_opportunity_content_sanitization.py \
             scripts/test_opportunity_run_report.py \
+            scripts/test_opportunity_runtime_snapshot.py \
+            scripts/test_opportunity_automation_workflow.py \
             scripts/test_opportunity_daily_continuity.py \
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
@@ -79,6 +79,8 @@ jobs:
           python scripts/test_opportunity_issue_notification.py
           python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
+          python scripts/test_opportunity_runtime_snapshot.py
+          python scripts/test_opportunity_automation_workflow.py
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py
@@ -244,62 +246,25 @@ jobs:
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
 
-      - name: Seed dry-run from latest accepted or pending snapshot
+      - name: Seed dry-run from latest verified runtime snapshot
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           BRANCH="automation/opportunity-radar-daily"
           SNAPSHOT="data/opportunity-daily-public.json"
           cp "$SNAPSHOT" /tmp/opportunity-daily-main.json
-          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
-          OPEN_PR="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
           git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
           if git show "refs/remotes/origin/$BRANCH:$SNAPSHOT" > /tmp/opportunity-daily-pending.json 2>/dev/null; then
-            export OPEN_PR
-            python - <<'PY'
-          import json
-          import os
-          import shutil
-          from datetime import date
-          from pathlib import Path
-          main_path = Path('/tmp/opportunity-daily-main.json')
-          pending_path = Path('/tmp/opportunity-daily-pending.json')
-          target_path = Path('data/opportunity-daily-public.json')
-          previous_path = Path('/tmp/opportunity-daily-previous.json')
-          main = json.loads(main_path.read_text(encoding='utf-8'))
-          pending = json.loads(pending_path.read_text(encoding='utf-8'))
-          def parsed_date(payload):
-              try:
-                  return date.fromisoformat(str(payload.get('referenceDate') or ''))
-              except ValueError:
-                  return None
-          def pending_is_valid(payload):
-              return (
-                  payload.get('releaseVersion') == '0.4.4'
-                  and payload.get('dailyHardeningVersion') == '0.4.4-h5'
-                  and not payload.get('continuityHold')
-                  and not payload.get('coverageHold')
-                  and (payload.get('coverageAudit') or {}).get('status') == 'pass'
-              )
-          main_date = parsed_date(main)
-          pending_date = parsed_date(pending)
-          open_pr = bool(os.environ.get('OPEN_PR'))
-          use_pending = (
-              pending_is_valid(pending)
-              and pending_date is not None
-              and (main_date is None or pending_date > main_date or (pending_date == main_date and open_pr))
-          )
-          source = pending_path if use_pending else main_path
-          shutil.copyfile(source, target_path)
-          shutil.copyfile(source, previous_path)
-          selected = pending if use_pending else main
-          print('Dry-run baseline:', 'pending automation snapshot' if use_pending else 'main snapshot', selected.get('referenceDate'))
-          PY
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-main.json \
+              --candidate /tmp/opportunity-daily-pending.json \
+              --output "$SNAPSHOT"
           else
-            echo "Nessuno snapshot pendente sul branch di automazione: uso main."
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-main.json \
+              --output "$SNAPSHOT"
           fi
+          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
 
       - name: Materialize verified baseline
         run: python scripts/materialize_opportunity_release_snapshot.py

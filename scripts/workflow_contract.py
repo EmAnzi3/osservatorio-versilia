@@ -60,7 +60,12 @@ def validate_workflow_contract() -> dict[str, Any]:
     reporter_path = ROOT / canonical["liveStatusWorkflow"]
     reporter = reporter_path.read_text(encoding="utf-8")
     assert canonical["liveStatusContext"] in reporter, "Context live status non dichiarato nel reporter"
-    assert 'job.get("name") == "deploy"' in reporter, "Reporter non verifica il vero job deploy"
+    assert '{"deploy", "publish verified Radar"}' in reporter, (
+        "Reporter non verifica entrambi i job che possono pubblicare Pages"
+    )
+    assert '"Radar Opportunità · refresh giornaliero"' in reporter, (
+        "Reporter live non osserva la pubblicazione automatica del Radar"
+    )
     assert 'deploy.get("conclusion")' in reporter, "Reporter non legge la conclusione del deploy"
     assert 'published = conclusion == "success"' in reporter, "Reporter non vincola il live status al successo del deploy"
 

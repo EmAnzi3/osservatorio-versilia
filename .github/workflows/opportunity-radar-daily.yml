@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Esegue scan e gate senza aggiornare branch, PR o notifiche"
+        description: "Esegue scan e gate senza persistere, pubblicare o notificare"
         required: false
         default: false
         type: boolean
@@ -25,6 +25,8 @@ permissions:
   actions: write
   pull-requests: write
   issues: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: opportunity-radar-daily
@@ -34,15 +36,16 @@ concurrency:
 
 jobs:
   refresh:
-    # The daily bot opens a review PR containing only its verified snapshot.
-    # GitHub requires an approval before running pull_request workflows started
-    # by github-actions[bot], which otherwise leaves a false red
-    # `action_required` check. The scheduled refresh and the explicit Pages
-    # gate have already validated that snapshot; keep this job for every human
-    # PR (including Radar code/data changes) and skip only the bot self-check.
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      content_changed: ${{ steps.run_report.outputs.content_changed }}
+      reference_date: ${{ steps.run_report.outputs.reference_date }}
+      fingerprint: ${{ steps.run_report.outputs.fingerprint }}
+      added: ${{ steps.run_report.outputs.added }}
+      modified: ${{ steps.run_report.outputs.modified }}
+      archived: ${{ steps.run_report.outputs.archived }}
+      removed: ${{ steps.run_report.outputs.removed }}
     steps:
       - name: Checkout workflow ref
         uses: actions/checkout@v4
@@ -72,79 +75,30 @@ jobs:
           python scripts/test_opportunity_expired_lifecycle.py
           python scripts/test_opportunity_content_sanitization.py
           python scripts/test_opportunity_run_report.py
+          python scripts/test_opportunity_runtime_snapshot.py
+          python scripts/test_opportunity_automation_workflow.py
           python scripts/test_opportunity_radar_v044.py
           python scripts/run_opportunity_radar_v044.py --backtest-only
 
-      - name: Seed refresh from latest accepted or pending snapshot
+      - name: Seed refresh from latest verified runtime snapshot
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           BRANCH="automation/opportunity-radar-daily"
           SNAPSHOT="data/opportunity-daily-public.json"
-
           cp "$SNAPSHOT" /tmp/opportunity-daily-main.json
-          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
-
-          OPEN_PR="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
           git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
-
           if git show "refs/remotes/origin/$BRANCH:$SNAPSHOT" > /tmp/opportunity-daily-pending.json 2>/dev/null; then
-            export OPEN_PR
-            python - <<'PY'
-          import json
-          import os
-          import shutil
-          from datetime import date
-          from pathlib import Path
-
-          main_path = Path('/tmp/opportunity-daily-main.json')
-          pending_path = Path('/tmp/opportunity-daily-pending.json')
-          target_path = Path('data/opportunity-daily-public.json')
-          previous_path = Path('/tmp/opportunity-daily-previous.json')
-
-          main = json.loads(main_path.read_text(encoding='utf-8'))
-          pending = json.loads(pending_path.read_text(encoding='utf-8'))
-
-          def parsed_date(payload):
-              try:
-                  return date.fromisoformat(str(payload.get('referenceDate') or ''))
-              except ValueError:
-                  return None
-
-          def pending_is_valid(payload):
-              return (
-                  payload.get('releaseVersion') == '0.4.4'
-                  and payload.get('dailyHardeningVersion') == '0.4.4-h5'
-                  and not payload.get('continuityHold')
-                  and not payload.get('coverageHold')
-                  and (payload.get('coverageAudit') or {}).get('status') == 'pass'
-              )
-
-          main_date = parsed_date(main)
-          pending_date = parsed_date(pending)
-          open_pr = bool(os.environ.get('OPEN_PR'))
-          use_pending = (
-              pending_is_valid(pending)
-              and pending_date is not None
-              and (
-                  main_date is None
-                  or pending_date > main_date
-                  or (pending_date == main_date and open_pr)
-              )
-          )
-
-          source = pending_path if use_pending else main_path
-          shutil.copyfile(source, target_path)
-          shutil.copyfile(source, previous_path)
-          selected = pending if use_pending else main
-          label = 'pending automation snapshot' if use_pending else 'main snapshot'
-          print(f"Baseline refresh: {label} · {selected.get('referenceDate')}")
-          PY
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-main.json \
+              --candidate /tmp/opportunity-daily-pending.json \
+              --output "$SNAPSHOT"
           else
-            echo "Nessuno snapshot pendente sul branch di automazione: uso main."
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-daily-main.json \
+              --output "$SNAPSHOT"
           fi
+          cp "$SNAPSHOT" /tmp/opportunity-daily-previous.json
 
       - name: Materialize verified baseline
         run: python scripts/materialize_opportunity_release_snapshot.py
@@ -318,6 +272,17 @@ jobs:
             --validation-status "${{ steps.validate_snapshot.outcome }}" \
             --build-status "${{ steps.validate_build.outcome }}"
           cat reports/runtime/opportunity-run-report.md >> "$GITHUB_STEP_SUMMARY"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          report = json.load(open('reports/runtime/opportunity-run-report.json', encoding='utf-8'))
+          counts = report['counts']
+          changed = any(int(counts[key]) > 0 for key in ('added', 'modified', 'archived', 'removed'))
+          print(f"content_changed={'true' if changed else 'false'}")
+          print(f"reference_date={report.get('referenceDate') or 'n.d.'}")
+          print(f"fingerprint={report['fingerprint']}")
+          for key in ('added', 'modified', 'archived', 'removed'):
+              print(f"{key}={int(counts[key])}")
+          PY
 
       - name: Upload complete run evidence
         if: always()
@@ -334,6 +299,36 @@ jobs:
             reports/runtime/opportunity-publishability-diagnostic.json
           if-no-files-found: warn
           retention-days: 90
+
+      - name: Notify owner about blocked publication
+        if: >-
+          ${{ always() && github.ref == 'refs/heads/main' &&
+              (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)) &&
+              steps.run_report.outcome == 'success' &&
+              (steps.live_scan.outcome != 'success' || steps.validate_snapshot.outcome != 'success' || steps.validate_build.outcome != 'success') }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          marker="radar-failure:${{ steps.run_report.outputs.reference_date }}:${{ steps.run_report.outputs.fingerprint }}"
+          if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
+            echo "Blocco Radar già notificato: ${marker}"
+            exit 0
+          fi
+          {
+            echo "<!-- ${marker} -->"
+            echo "# Pubblicazione Radar bloccata"
+            echo
+            echo "Nessun dato è stato pubblicato. [Apri il run GitHub](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})."
+            echo
+            cat reports/runtime/opportunity-run-report.md
+          } > /tmp/opportunity-radar-failure.md
+          gh issue create \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Radar bloccato · ${{ steps.run_report.outputs.reference_date }}" \
+            --body-file /tmp/opportunity-radar-failure.md \
+            --assignee "$GITHUB_REPOSITORY_OWNER"
 
       - name: Enforce complete green run
         if: always()
@@ -365,144 +360,102 @@ jobs:
           print('Contratto del run Radar: scan, snapshot, build/browser e report PASS.')
           PY
 
-      - name: Commit verified daily snapshot to automation branch
-        id: commit
-        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)
+      - name: Persist verified snapshot as runtime state
+        if: >-
+          ${{ github.ref == 'refs/heads/main' &&
+              (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)) }}
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           BRANCH="automation/opportunity-radar-daily"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
+          git checkout -B "$BRANCH"
           git add data/opportunity-daily-public.json
           if git diff --cached --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Nessuna variazione dello snapshot."
+            echo "Stato runtime già aggiornato."
             exit 0
           fi
-          git commit -m "Aggiorna Radar Opportunità $(date -u +%F)"
+          git commit -m "Aggiorna stato Radar $(date -u +%F)"
 
           git restore --worktree -- .
           if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
-            echo "Working tree tracciato non pulito prima del rebase:"
+            echo "Working tree tracciato non pulito prima del push:"
             git status --short --untracked-files=no
             exit 1
           fi
 
-          git fetch origin main
-          git rebase origin/main
-
-          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
-          if [ -n "$PR_NUMBER" ]; then
-            IS_DRAFT="$(gh pr view "$PR_NUMBER" --json isDraft --jq '.isDraft')"
-            if [ "$IS_DRAFT" != "true" ]; then
-              echo "PR #${PR_NUMBER} riutilizzata: ritorno a draft prima di aggiornare il branch."
-              gh pr ready "$PR_NUMBER" --undo
-            fi
-          fi
-
           git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" || true
           git push --force-with-lease origin HEAD:"$BRANCH"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: Create or update Radar review pull request
-        if: steps.commit.outputs.changed == 'true'
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BRANCH: ${{ steps.commit.outputs.branch }}
-        run: |
-          set -euo pipefail
-          REFERENCE_DATE="$(python - <<'PY'
-          import json
-          print(json.load(open('data/opportunity-daily-public.json', encoding='utf-8'))['referenceDate'])
-          PY
-          )"
-          TITLE="Aggiorna Radar Opportunità ${REFERENCE_DATE}"
-          cp reports/runtime/opportunity-run-report.md /tmp/opportunity-radar-pr.md
-          cat >> /tmp/opportunity-radar-pr.md <<EOF
+      - name: Upload verified site for automatic publication
+        if: >-
+          ${{ github.ref == 'refs/heads/main' &&
+              (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)) }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
-          ## Pubblicazione
+  publish:
+    name: publish verified Radar
+    needs: refresh
+    if: >-
+      ${{ github.ref == 'refs/heads/main' &&
+          (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run != true)) }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy verified Radar
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-          - la pipeline ha superato i contratti Radar, il controllo di continuità, la copertura fonti e il browser test;
-          - lo snapshot è proposto tramite branch di automazione, **mai con push diretto su \`main\`**;
-          - la pubblicazione resta subordinata ai gate \`quick\` + \`full\` e al merge della PR secondo il ruleset di \`main\`.
+      - name: Download readable run report
+        if: needs.refresh.outputs.content_changed == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: opportunity-radar-daily-report
+          path: reports/runtime
 
-          Nessun dato viene pubblicato automaticamente da questo workflow.
-          EOF
-
-          PR_NUMBER="$(gh pr list --state open --head "$BRANCH" --base main --json number --jq '.[0].number // empty')"
-          if [ -z "$PR_NUMBER" ]; then
-            gh pr create \
-              --draft \
-              --base main \
-              --head "$BRANCH" \
-              --title "$TITLE" \
-              --body-file /tmp/opportunity-radar-pr.md
-          else
-            IS_DRAFT="$(gh pr view "$PR_NUMBER" --json isDraft --jq '.isDraft')"
-            if [ "$IS_DRAFT" != "true" ]; then
-              gh pr ready "$PR_NUMBER" --undo
-            fi
-            gh pr edit "$PR_NUMBER" \
-              --title "$TITLE" \
-              --body-file /tmp/opportunity-radar-pr.md
-          fi
-
-      - name: Run quick and full gates on the automation branch
-        if: steps.commit.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run pages.yml --ref "${{ steps.commit.outputs.branch }}"
-
-      - name: Notify owner about new opportunities
-        if: steps.commit.outputs.changed == 'true'
+      - name: Notify owner after successful publication
+        if: needs.refresh.outputs.content_changed == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test -s /tmp/opportunity-daily-previous.json
-          echo "Confronto con l'ultima baseline effettiva usata dal refresh."
-
-          python scripts/opportunity_issue_notification.py \
-            --previous /tmp/opportunity-daily-previous.json \
-            --current data/opportunity-daily-public.json \
-            --json-out /tmp/radar-new-opportunities.json \
-            --body-out /tmp/radar-new-opportunities.md
-
-          count=$(python - <<'PY'
-          import json
-          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['count'])
-          PY
-          )
-          if [ "$count" -eq 0 ]; then
-            echo "Nessuna nuova identità: nessuna Issue da creare."
-            exit 0
-          fi
-
-          fingerprint=$(python - <<'PY'
-          import json
-          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['fingerprint'])
-          PY
-          )
-          marker="radar-new:${fingerprint}"
+          marker="radar-published:${{ needs.refresh.outputs.fingerprint }}"
           if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
-            echo "Notifica ${fingerprint} già presente: nessun duplicato creato."
+            echo "Pubblicazione già notificata: ${marker}"
             exit 0
           fi
-
-          title=$(python - <<'PY'
-          import json
-          print(json.load(open('/tmp/radar-new-opportunities.json', encoding='utf-8'))['issueTitle'])
-          PY
-          )
+          {
+            echo "<!-- ${marker} -->"
+            echo "# Radar aggiornato e pubblicato"
+            echo
+            echo "La pubblicazione è conclusa. [Apri il Radar Opportunità](https://osservatorioversilia.it/opportunita/)."
+            echo
+            cat reports/runtime/opportunity-run-report.md
+          } > /tmp/opportunity-radar-published.md
+          title="Radar pubblicato · ${{ needs.refresh.outputs.reference_date }} · +${{ needs.refresh.outputs.added }} ~${{ needs.refresh.outputs.modified }} −${{ needs.refresh.outputs.archived }}"
           gh issue create \
             --repo "$GITHUB_REPOSITORY" \
             --title "$title" \
-            --body-file /tmp/radar-new-opportunities.md \
+            --body-file /tmp/opportunity-radar-published.md \
             --assignee "$GITHUB_REPOSITORY_OWNER"
+
+      - name: Close legacy daily snapshot pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_NUMBER="$(gh pr list --state open --head automation/opportunity-radar-daily --base main --json number --jq '.[0].number // empty')"
+          if [ -n "$PR_NUMBER" ]; then
+            gh pr close "$PR_NUMBER" --comment "Il Radar pubblica ora automaticamente solo dopo tutti i gate verdi; questa PR giornaliera non è più necessaria."
+          fi
