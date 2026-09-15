@@ -11,6 +11,7 @@ from typing import Iterator
 
 import monthly_data_check as base
 import monthly_data_check_status as status
+import source_monitor_strategy as strategy
 
 DEPTH_LABELS = {
     "light": "light — raggiungibilità, redirect e struttura; senza hash o verifiche semantiche profonde",
@@ -58,14 +59,14 @@ def monitor_depth(depth: str) -> Iterator[None]:
             os.environ["MONITOR_CHECK_DEPTH"] = previous_depth
 
 
-def _option_path(args: list[str], name: str) -> Path | None:
+def _option_path(args: list[str], name: str, default: Path | None = None) -> Path | None:
     prefix = name + "="
     for index, value in enumerate(args):
         if value.startswith(prefix):
             return Path(value[len(prefix):])
         if value == name and index + 1 < len(args):
             return Path(args[index + 1])
-    return None
+    return default
 
 
 def _write_json_depth(path: Path | None, depth: str) -> None:
@@ -107,12 +108,38 @@ def annotate_outputs(forwarded: list[str], depth: str) -> None:
             handle.write(f"depth={depth}\n")
 
 
+def build_strategy_artifact(forwarded: list[str]) -> dict:
+    data_path = _option_path(forwarded, "--data", Path("data/site-data.json"))
+    registry_path = _option_path(forwarded, "--registry", Path("data/source-registry.json"))
+    previous_state = _option_path(forwarded, "--state", Path("data/source-monitor-state.json"))
+    next_state = _option_path(forwarded, "--next-state")
+    report_json = _option_path(forwarded, "--report-json")
+    if not all((data_path, registry_path, previous_state, next_state, report_json)):
+        raise RuntimeError("Argomenti insufficienti per derivare la strategia Source Monitor")
+    output = report_json.parent / "source-monitor-strategy.json"
+    return strategy.write_strategy(
+        data_path,
+        registry_path,
+        next_state,
+        previous_state,
+        output,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     args, forwarded = parse_args(argv)
     with monitor_depth(args.depth):
         code = status.main(forwarded)
     if code == 0:
         annotate_outputs(forwarded, args.depth)
+        payload = build_strategy_artifact(forwarded)
+        summary = payload["summary"]
+        print(
+            "Source monitor strategy: "
+            f"{summary['metricsWithStrategy']}/{summary['publicMetricCount']} indicatori · "
+            f"{summary['sourceCount']} fonti · "
+            f"{summary['sourcesWithKnownSuccessfulCheck']} con ultimo successo noto"
+        )
     print(f"Source monitor depth: {args.depth}")
     return code
 

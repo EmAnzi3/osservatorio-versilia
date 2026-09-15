@@ -9,12 +9,14 @@ on:
     paths:
       - ".github/workflows/source-monitor-light.yml"
       - "scripts/source_monitor_runner.py"
+      - "scripts/source_monitor_strategy.py"
       - "scripts/materialize_source_monitor_snapshot.py"
       - "scripts/monthly_data_check.py"
       - "scripts/monthly_data_check_coverage.py"
       - "scripts/monthly_data_check_status.py"
       - "scripts/source_policy.py"
       - "scripts/test_source_monitor_depth.py"
+      - "scripts/test_source_monitor_strategy.py"
       - "ci/build-materialization-contract.json"
       - "data/source-registry.json"
       - "data/source-monitor-state.json"
@@ -49,9 +51,12 @@ jobs:
       - name: Run light monitor unit tests
         run: |
           python scripts/test_source_monitor_depth.py
+          python scripts/test_source_monitor_strategy.py
           python -m py_compile \
             scripts/source_monitor_runner.py \
+            scripts/source_monitor_strategy.py \
             scripts/test_source_monitor_depth.py \
+            scripts/test_source_monitor_strategy.py \
             scripts/materialize_source_monitor_snapshot.py
 
       - name: Materialize effective public catalog for monitor
