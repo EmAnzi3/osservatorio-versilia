@@ -44,7 +44,7 @@ L'unità minima è la coppia:
 
 `indicatore pubblico × dimensione enrichment`
 
-L'audit A3.2 dovrà essere derivato dal catalogo pubblico effettivo e produrre per ogni coppia almeno:
+L'audit A3.2 deve essere derivato dal catalogo pubblico effettivo e produrre per ogni coppia almeno:
 
 - ID indicatore;
 - fonte/policy sorgente risolta;
@@ -53,6 +53,32 @@ L'audit A3.2 dovrà essere derivato dal catalogo pubblico effettivo e produrre p
 - evidenza o motivazione sintetica;
 - riferimento alla fonte quando necessario per distinguere `AVAILABLE_MISSING` da `SOURCE_UNAVAILABLE`.
 
+## A3.2 — Matrice derivata di classificazione
+
+`scripts/enrichment_audit_matrix.py` costruisce una vista derivata dell'Effective Public Catalog senza enumerare manualmente gli indicatori. Per ogni indicatore pubblico genera esattamente una riga per ciascuna delle nove dimensioni A3.
+
+La risoluzione segue questo ordine:
+
+1. **evidenza strutturata nel catalogo pubblico** → `ACQUIRED`;
+2. **override della metrica** in `metricOverrides[*].enrichmentDimensions` → stato esplicito per eccezioni semantiche o disponibilità specifica;
+3. **profilo fonte** in `sourceProfiles[*].enrichmentDimensions` → disponibilità o indisponibilità documentata a livello di fonte;
+4. in assenza di evidenza sufficiente la coppia resta operativamente **non classificata** con `state: null`.
+
+`state: null` non è un quinto stato A3: è esclusivamente un indicatore di lavoro incompleto. La modalità strict rifiuta qualunque matrice che contenga coppie non classificate, per impedire di dichiarare A3.2 concluso sulla base di assunzioni.
+
+Vincoli delle annotazioni:
+
+- `ACQUIRED` non può essere dichiarato manualmente: deve essere rilevato da dati strutturati;
+- `AVAILABLE_MISSING` e `SOURCE_UNAVAILABLE` richiedono sia una motivazione sia un riferimento verificabile alla fonte;
+- `NOT_APPLICABLE` è ammesso solo come override della singola metrica, non come default di un intero profilo fonte;
+- le annotazioni sono eccezioni/evidenze nel registry esistente, non un secondo catalogo degli indicatori.
+
+Il Full preflight verifica la matrice sull'Effective Public Catalog realmente materializzato e controlla che il numero di coppie sia sempre `indicatori pubblici × 9`, derivato a runtime.
+
 ## Criterio A3.1
 
 A3.1 è completo quando questa tassonomia è adottata come vocabolario unico del workstream e le successive classificazioni non introducono stati o dimensioni parallele senza una modifica esplicita di questo contratto metodologico.
+
+## Criterio A3.2
+
+A3.2 è completo soltanto quando la stessa matrice derivata passa la validazione strict con `unclassifiedPairCount = 0`. Fino a quel momento il conteggio delle coppie non classificate misura il lavoro residuo di raccolta delle evidenze, senza trasformare l'assenza di informazione in `SOURCE_UNAVAILABLE` o `NOT_APPLICABLE`.
