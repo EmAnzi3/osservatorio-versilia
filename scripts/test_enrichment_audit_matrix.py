@@ -47,7 +47,7 @@ def fixtures():
                     },
                 }
             },
-            "profile-b": {},
+            "profile-b": {"publisher": "Fixture source B"},
         },
         "sourceProfileByUrl": {
             "https://example.test/a.csv": "profile-a",
@@ -131,7 +131,7 @@ def test_age_token_does_not_match_aggregate() -> None:
     }
     registry = {
         "defaults": {},
-        "sourceProfiles": {"profile-gamma": {}},
+        "sourceProfiles": {"profile-gamma": {"publisher": "Fixture source gamma"}},
         "sourceProfileByUrl": {"https://example.test/gamma.csv": "profile-gamma"},
         "metricOverrides": {},
     }
