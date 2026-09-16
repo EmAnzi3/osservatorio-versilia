@@ -8,12 +8,13 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `6becbda8c228634c563e7a64297fdc8c0615f53e`
+- **Baseline main:** `d20e3bb9f53b4ef438095427cb9239cc71f78ba7`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2:** 2.025 coppie; 694 classificate, 1.331 da auditare alla baseline post-`#209`
-- **Branch:** `chore/a3-2-evidence-audit-4`
-- **PR corrente:** `#210` — Ready
+- **Matrice A3.2 su main:** 2.025 coppie; 804 classificate, 1.221 da auditare dopo il merge della `#210`
+- **Branch corrente:** `chore/a3-2-evidence-audit-5`
+- **PR corrente:** `#211` — Ready, non mergiata
+- **Full verificato della #211:** 920/2.025 coppie classificate; 1.105 residue
 
 ## Completato
 
@@ -25,7 +26,37 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - La PR `#207` ha portato la baseline A3.2 a `357/2.025` coppie classificate.
 - La PR `#208` ha portato la baseline a `539/2.025`.
 - La PR `#209` è stata mergiata dopo Quick/Full verdi; il Full ha confermato `694/2.025` coppie classificate e `1.331` residue.
-- La PR `#210` estende l'audit a ulteriori profili ufficiali e introduce i primi `NOT_APPLICABLE` metric-specific, senza enumerare il catalogo pubblico.
+- La PR `#210` è stata mergiata dopo Quick/Full verdi; il Full ha confermato `804/2.025` coppie classificate e `1.221` residue.
+- La PR `#211` estende le evidenze ad alto impatto con classificazioni source-level solo dove omogenee e override metric-specific per vere eccezioni semantiche. Il Full sull'head `19082aa4cfa361093a6c6ab08914b5581c16d32b` ha confermato `920/2.025` coppie classificate e `1.105` residue.
+
+## Residuo A3.2 verificato sulla #211
+
+Per dimensione:
+
+- `serie_storica`: 74
+- `sesso`: 131
+- `eta`: 154
+- `dettaglio_territoriale`: 58
+- `benchmark_toscana_italia`: 108
+- `assoluto_normalizzato`: 186
+- `frequenza_infra_annuale`: 105
+- `numeratore_denominatore`: 186
+- `categorie_specifiche`: 103
+
+Source profile con più residuo:
+
+- `ars-toscana-mixed`: 74
+- `istat-business-annual`: 64
+- `openbdap-annual`: 48
+- `istat-demography-annual`: 44
+- `regione-toscana-indicatori-comunali`: 35
+- `percorsi-curated`: 30
+- `lamma-copernicus-climate`: 28
+- `cb1-pmo-status-2026`: 28
+- `istat-geografia-comunale-2021`: 27
+- `mim-school-year`: 26
+- `istat-census-annual`: 25
+- `rgs-conto-annuale-annual`: 23
 
 ## Decisioni vincolanti
 
@@ -42,15 +73,16 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 ## Prossima azione esatta
 
-1. Leggere dal Full della `#210` il nuovo conteggio classificato/residuo e il ranking aggiornato per dimensione/source profile.
-2. Correggere eventuali evidenze troppo ampie se i gate mostrano conflitti o incongruenze; non indebolire la matrice per far passare la CI.
-3. Proseguire con evidenze source-level sui profili residui e ampliare gli override metric-specific solo dove `NOT_APPLICABLE` è semanticamente dimostrabile.
-4. Ripetere fino a `unclassifiedPairCount = 0`; solo allora chiudere `A3.2` e passare ad `A3.3`.
+1. Mantenere la `#211` ferma prima del merge finché non arriva approvazione esplicita del proprietario.
+2. Dopo l'eventuale merge autorizzato, aprire la tranche A3.2 successiva dal nuovo `main`, ricostruendo il residuo dal Full effettivo.
+3. Dare priorità ai profili ad alto residuo, trattando `ars-toscana-mixed` in modo metric-specific quando la dimensione non è omogenea sull'intero profilo.
+4. Ripetere tranche verificabili fino a `unclassifiedPairCount = 0`; solo allora chiudere `A3.2` e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza della quarta tranche A3.2: `6becbda8c228634c563e7a64297fdc8c0615f53e`.
-- Full della `#209`: `694` coppie classificate, `1.331` residue; Quick e Full verdi.
+- Main di partenza della quinta tranche A3.2: `d20e3bb9f53b4ef438095427cb9239cc71f78ba7`.
+- `#210` mergiata; baseline main: `804` coppie classificate, `1.221` residue.
+- Full della `#211` sull'head `19082aa4cfa361093a6c6ab08914b5581c16d32b`: `920` coppie classificate, `1.105` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
 - I gate GitHub Actions restano obbligatori prima del merge.
