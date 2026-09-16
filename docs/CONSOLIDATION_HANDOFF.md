@@ -8,21 +8,22 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `e35dd64e56b03da78dc983be32b69ae8488ee529`
+- **Baseline main:** `11392b87deabf8c28b79c01fa11c4eadb5f3f61e`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Branch:** `chore/a3-enrichment-audit-foundation`
-- **PR corrente:** `#204` — Ready
+- **Branch:** `chore/a3-2-enrichment-matrix`
+- **PR corrente:** `#206` — Ready
 
 ## Completato
 
 - `A0` chiuso con merge autorizzato della PR `#188`.
 - `A1 — Data Governance Foundation` chiuso con le PR `#190` e `#193`.
-- `A2.1`–`A2.3` hanno portato il monitor sul catalogo pubblico effettivo e separato controllo light frequente e deep periodico.
-- La PR `#194` ha implementato `A2.4`–`A2.7`: strategia derivata per fonte, report operativo, visibilità GitHub Actions/artifact e gate sulla copertura applicabile.
-- Gli interventi successivi `#195`–`#203` e il refresh dati `#202` hanno irrobustito acquisizione AGCOM, refresh e gate senza indebolire i contratti A2.
-- `A2 — Full Coverage Source Monitor` è formalmente `DONE`.
-- `A3.1` completato: `docs/A3_ENRICHMENT_AUDIT.md` definisce le nove dimensioni comuni di enrichment e la semantica unica di `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
+- `A2 — Full Coverage Source Monitor` chiuso con la PR `#194`; gli interventi `#195`–`#203` e il refresh `#202` hanno poi irrobustito acquisizione e gate senza indebolire i contratti.
+- `A3.1` chiuso con merge autorizzato della PR `#204`: nove dimensioni comuni e quattro stati finali (`ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`).
+- In `A3.2`, `scripts/enrichment_audit_matrix.py` deriva una riga per ogni coppia `indicatore pubblico × dimensione` dall'Effective Public Catalog e dalle source policy esistenti.
+- L'evidenza strutturata prevale e può assegnare `ACQUIRED`; disponibilità/indisponibilità e non-applicabilità richiedono annotazioni documentate nel registry esistente.
+- La modalità strict rifiuta qualunque coppia non classificata: `state: null` è solo lavoro residuo, non un quinto stato A3.
+- Il Full post-build verifica la matrice sul catalogo pubblico realmente materializzato e la copertura `indicatori × 9`.
 
 ## Decisioni vincolanti
 
@@ -30,21 +31,22 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 2. A3 non deve introdurre una seconda lista manuale di indicatori o fonti.
 3. L'unità di audit A3 è `indicatore pubblico × dimensione enrichment`.
 4. Le dimensioni comuni sono: serie storica, sesso, età, dettaglio territoriale, benchmark Toscana/Italia, assoluto/normalizzato, frequenza infra-annuale, numeratore/denominatore, categorie specifiche.
-5. Ogni coppia deve avere esattamente uno stato tra `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
-6. `AVAILABLE_MISSING` richiede evidenza verificabile presso la fonte ufficiale; `NOT_APPLICABLE` è una decisione semantica e non una scorciatoia per una mancata acquisizione.
-7. A3 misura il potenziale informativo disponibile alla fonte; nuove integrazioni entrano solo in A3.5 dopo backlog e QA.
-8. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
+5. Ogni coppia finale deve avere esattamente uno stato tra `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
+6. `ACQUIRED` richiede evidenza strutturata; non può essere dichiarato manualmente.
+7. `AVAILABLE_MISSING` e `SOURCE_UNAVAILABLE` richiedono evidenza e riferimento verificabile alla fonte; `NOT_APPLICABLE` è ammesso solo a livello di singola metrica.
+8. A3.2 non è chiuso finché la matrice strict non raggiunge `unclassifiedPairCount = 0`.
+9. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Implementare `A3.2` come vista derivata dal catalogo pubblico effettivo e dalle policy/source profile già esistenti, senza enumerare manualmente i 225 indicatori.
-2. Produrre per ogni coppia indicatore/dimensione: ID indicatore, fonte risolta, stato, evidenza/motivazione e riferimento fonte quando necessario.
-3. Rendere la classificazione riproducibile e testabile prima di avviare l'audit fonte-per-fonte di `A3.3`.
+1. Verificare Quick e Full della PR `#206` e leggere dal Full il conteggio reale di coppie classificate/non classificate sul catalogo pubblico materializzato.
+2. Restando dentro `A3.2`, colmare le coppie residue tramite evidenze riusabili a livello di source profile e soli override metric-specific necessari, senza enumerare manualmente i 225 indicatori.
+3. Portare la stessa matrice a validazione strict (`unclassifiedPairCount = 0`) prima di segnare `A3.2` come completato e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza A3: `e35dd64e56b03da78dc983be32b69ae8488ee529`.
+- Main di partenza A3.2: `11392b87deabf8c28b79c01fa11c4eadb5f3f61e`.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
-- La tassonomia A3.1 è metodologica: nessuna modifica a UI, dati pubblicati o pipeline di acquisizione.
-- Il container della sessione non risolve `github.com`; il preflight locale non è eseguibile e non viene dichiarato come eseguito. I gate GitHub restano obbligatori prima del merge.
+- A3.1 mergiato con PR `#204`.
+- Il container della sessione non risolve `github.com`; il preflight locale completo non è eseguibile e non viene dichiarato come eseguito. I gate GitHub restano obbligatori prima del merge.
