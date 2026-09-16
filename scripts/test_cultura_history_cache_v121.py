@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
 SW = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 PART = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
-BUILD_BRAND = (ROOT / "scripts" / "build_static_brand_impl.py").read_text(encoding="utf-8")
+BUILD_BRAND = (ROOT / "scripts" / "build_static_brand_impl.py").read_text(encoding="utf-8", errors="surrogateescape")
 BUILD_SAFE = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
 UX_HISTORY = (ROOT / "assets" / "ux-history.js").read_text(encoding="utf-8")
 
