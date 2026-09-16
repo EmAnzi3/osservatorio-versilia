@@ -238,9 +238,10 @@ jobs:
           La preview e gli audit sono disponibili negli Artifacts del workflow.
           EOF
 
-          if gh pr view "$branch" --json number >/dev/null 2>&1; then
-            gh pr edit "$branch" --title "Aggiorna ASIA, ATECO e banda larga" --body-file "$body_file"
-            pr_url="$(gh pr view "$branch" --json url --jq .url)"
+          open_pr_number="$(gh pr list --base main --head "$branch" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$open_pr_number" ]; then
+            gh pr edit "$open_pr_number" --title "Aggiorna ASIA, ATECO e banda larga" --body-file "$body_file"
+            pr_url="$(gh pr view "$open_pr_number" --json url --jq .url)"
           else
             pr_url="$(gh pr create --draft --base main --head "$branch" --title "Aggiorna ASIA, ATECO e banda larga" --body-file "$body_file")"
           fi
