@@ -27,6 +27,7 @@
     "scripts/patch_salute_v140_demographics_runtime.py",
     "scripts/apply_enrichment_evidence.py",
     "scripts/apply_enrichment_evidence_audit5.py",
+    "scripts/apply_enrichment_evidence_audit6.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",
