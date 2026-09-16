@@ -118,6 +118,29 @@ def test_acquired_evidence_wins_over_registry_annotation() -> None:
     assert history["classificationOrigin"] == "catalog_structure"
 
 
+def test_age_token_does_not_match_aggregate() -> None:
+    data = {
+        "version": "v-test",
+        "updated": "16 settembre 2026",
+        "metrics": {
+            "gamma": {
+                "sourceUrl": "https://example.test/gamma.csv",
+                "aggregate": {"value": 42, "label": "Media Versilia"},
+            }
+        },
+    }
+    registry = {
+        "defaults": {},
+        "sourceProfiles": {"profile-gamma": {}},
+        "sourceProfileByUrl": {"https://example.test/gamma.csv": "profile-gamma"},
+        "metricOverrides": {},
+    }
+    payload = audit.build_matrix(data, registry)
+    age = _row(payload, "gamma", "eta")
+    assert age["state"] is None
+    assert age["classificationOrigin"] == "pending_source_evidence"
+
+
 def test_strict_validation_rejects_unclassified_pairs() -> None:
     data, registry = fixtures()
     payload = audit.build_matrix(data, registry)
@@ -148,6 +171,7 @@ def test_profile_not_applicable_is_rejected() -> None:
 if __name__ == "__main__":
     test_derived_matrix_and_precedence()
     test_acquired_evidence_wins_over_registry_annotation()
+    test_age_token_does_not_match_aggregate()
     test_strict_validation_rejects_unclassified_pairs()
     test_profile_not_applicable_is_rejected()
     print("A3.2 enrichment matrix regression passed.")
