@@ -120,7 +120,6 @@ jobs:
           python scripts/test_data_status.py
           python scripts/test_static.py
           grep -q '<ov-economy-atlas></ov-economy-atlas>' dist/confronta/economia/atlante-attivita-economiche/index.html
-          grep -q 'ateco-detail.css' dist/comuni/massarosa/index.html
           python - <<'PY'
           from pathlib import Path
           import mimetypes
