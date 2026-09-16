@@ -12,7 +12,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
 - **Branch:** `chore/a3-enrichment-audit-foundation`
-- **PR corrente:** da aprire
+- **PR corrente:** `#204` — Ready
 
 ## Completato
 
