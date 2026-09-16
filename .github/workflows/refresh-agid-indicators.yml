@@ -119,7 +119,7 @@ jobs:
           python scripts/inject_data_status_runtime.py
           python scripts/test_data_status.py
           python scripts/test_static.py
-          grep -q 'ateco-detail.js' dist/confronta/economia/index.html
+          grep -q '<ov-economy-atlas></ov-economy-atlas>' dist/confronta/economia/atlante-attivita-economiche/index.html
           grep -q 'ateco-detail.css' dist/comuni/massarosa/index.html
           python - <<'PY'
           from pathlib import Path
