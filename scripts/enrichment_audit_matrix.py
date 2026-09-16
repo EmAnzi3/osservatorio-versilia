@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 """Derived A3 enrichment classification matrix.
 
-The public metric inventory is always read from the Effective Public Catalog.
-This module does not introduce a second canonical list of metrics. It combines
-structured acquisition evidence with optional source-profile / metric evidence
-stored in the existing source registry.
-
-Only the four final states defined by A3.1 are accepted. A row with ``state``
-set to ``None`` is an operationally unclassified pair, not a fifth state; strict
-validation rejects such rows before A3.2 can be declared complete.
+The public metric inventory is always derived from the Effective Public Catalog.
+Only the four final states defined by A3.1 are accepted. ``state: null`` means
+"not classified yet" and strict validation rejects it; it is not a fifth state.
 """
 from __future__ import annotations
 
@@ -49,9 +44,22 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def _norm(value: Any) -> str:
-    text = unicodedata.normalize("NFKD", str(value))
+    raw = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", str(value))
+    text = unicodedata.normalize("NFKD", raw)
     text = "".join(ch for ch in text if not unicodedata.combining(ch))
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+
+def _token_in_text(value: Any, token: str) -> bool:
+    text = _norm(value)
+    normalized = _norm(token)
+    if not text or not normalized:
+        return False
+    if text == normalized:
+        return True
+    if "_" in normalized:
+        return normalized in text
+    return normalized in text.split("_")
 
 
 def _path_text(path: tuple[str, ...]) -> str:
@@ -79,10 +87,7 @@ def _has_value(value: Any) -> bool:
 
 
 def _key_matches(path: tuple[str, ...], tokens: set[str]) -> bool:
-    if not path:
-        return False
-    key = _norm(path[-1])
-    return any(token == key or token in key for token in tokens)
+    return bool(path) and any(_token_in_text(path[-1], token) for token in tokens)
 
 
 def _find_key(metric: dict[str, Any], tokens: set[str]) -> str | None:
@@ -100,24 +105,23 @@ def _find_series(metric: dict[str, Any]) -> str | None:
             continue
         if _key_matches(path, series_tokens):
             return _path_text(path)
-        if all(isinstance(item, dict) for item in value):
-            periods: set[str] = set()
-            for item in value:
-                assert isinstance(item, dict)
-                for key, candidate in item.items():
-                    normalized = _norm(key)
-                    if any(token == normalized or token in normalized for token in period_tokens):
-                        if _has_value(candidate):
-                            periods.add(str(candidate))
-            if len(periods) >= 2:
-                return _path_text(path)
+        if not all(isinstance(item, dict) for item in value):
+            continue
+        periods: set[str] = set()
+        for item in value:
+            assert isinstance(item, dict)
+            for key, candidate in item.items():
+                if any(_token_in_text(key, token) for token in period_tokens) and _has_value(candidate):
+                    periods.add(str(candidate))
+        if len(periods) >= 2:
+            return _path_text(path)
     return None
 
 
 def _find_labeled_dimension(metric: dict[str, Any], tokens: set[str]) -> str | None:
-    key_hit = _find_key(metric, tokens)
-    if key_hit:
-        return key_hit
+    direct = _find_key(metric, tokens)
+    if direct:
+        return direct
     label_keys = {
         "dimension",
         "dimensions",
@@ -135,111 +139,122 @@ def _find_labeled_dimension(metric: dict[str, Any], tokens: set[str]) -> str | N
     for path, value in _walk(metric):
         if not path or not isinstance(value, str):
             continue
-        parent = _norm(path[-1])
-        if parent not in label_keys:
+        if _norm(path[-1]) not in label_keys:
             continue
-        normalized = _norm(value)
-        if any(token in normalized for token in tokens):
+        if any(_token_in_text(value, token) for token in tokens):
             return _path_text(path)
     return None
 
 
 def _find_benchmark(metric: dict[str, Any]) -> str | None:
-    geography_tokens = {"toscana", "italia", "italy", "nazionale", "national", "regionale"}
+    geographies = {"toscana", "italia", "italy", "nazionale", "national", "regionale"}
     for path, value in _walk(metric):
-        if not _has_value(value):
+        if not path or not _has_value(value):
             continue
-        key = _norm(path[-1]) if path else ""
-        if any(token in key for token in geography_tokens):
+        key = path[-1]
+        if any(_token_in_text(key, token) for token in geographies):
             return _path_text(path)
-        if "benchmark" in key or "reference" in key or "riferimento" in key:
-            if isinstance(value, dict):
-                flattened = " ".join(_norm(item) for item in value.keys())
-                if any(token in flattened for token in geography_tokens):
-                    return _path_text(path)
-            elif isinstance(value, str):
-                normalized = _norm(value)
-                if any(token in normalized for token in geography_tokens):
-                    return _path_text(path)
+        if not any(_token_in_text(key, token) for token in {"benchmark", "reference", "riferimento"}):
+            continue
+        candidates: list[Any]
+        if isinstance(value, dict):
+            candidates = [*value.keys(), *value.values()]
+        elif isinstance(value, list):
+            candidates = value
+        else:
+            candidates = [value]
+        if any(
+            _token_in_text(candidate, token)
+            for candidate in candidates
+            for token in geographies
+            if isinstance(candidate, (str, int, float))
+        ):
+            return _path_text(path)
     return None
 
 
 def _find_territorial_detail(metric: dict[str, Any]) -> str | None:
-    tokens = {
-        "frazione",
-        "sezione",
-        "quartiere",
-        "provincia",
-        "province",
-        "area_vasta",
-        "regione",
-        "region",
-        "toscana",
-        "italia",
-        "italy",
-        "national",
-        "nazionale",
-    }
-    return _find_labeled_dimension(metric, tokens)
+    return _find_labeled_dimension(
+        metric,
+        {
+            "frazione",
+            "sezione",
+            "quartiere",
+            "provincia",
+            "province",
+            "area_vasta",
+            "regione",
+            "region",
+            "toscana",
+            "italia",
+            "italy",
+            "national",
+            "nazionale",
+        },
+    )
 
 
 def _find_absolute_normalized(metric: dict[str, Any]) -> str | None:
-    absolute_tokens = {
-        "absolute",
-        "assoluto",
-        "count",
-        "conteggio",
-        "numero",
-        "totale",
-        "households",
-        "famiglie",
-        "population",
-        "popolazione",
-    }
-    normalized_tokens = {
-        "normalized",
-        "normalizzato",
-        "per_capita",
-        "percapita",
-        "rate",
-        "tasso",
-        "percent",
-        "percentage",
-        "quota",
-        "per_1000",
-        "per_10000",
-        "per_100000",
-    }
-    absolute = _find_key(metric, absolute_tokens)
-    normalized = _find_key(metric, normalized_tokens)
+    absolute = _find_key(
+        metric,
+        {
+            "absolute",
+            "assoluto",
+            "count",
+            "conteggio",
+            "numero",
+            "totale",
+            "households",
+            "famiglie",
+            "population",
+            "popolazione",
+        },
+    )
+    normalized = _find_key(
+        metric,
+        {
+            "normalized",
+            "normalizzato",
+            "per_capita",
+            "percapita",
+            "rate",
+            "tasso",
+            "percent",
+            "percentage",
+            "quota",
+            "per_1000",
+            "per_10000",
+            "per_100000",
+        },
+    )
     if absolute and normalized and absolute != normalized:
         return f"{absolute} + {normalized}"
     return None
 
 
 def _find_infra_annual(metric: dict[str, Any]) -> str | None:
-    tokens = {
-        "monthly",
-        "mensile",
-        "month",
-        "mese",
-        "quarter",
-        "quarterly",
-        "trimestre",
-        "trimestrale",
-        "semester",
-        "semestrale",
-    }
-    direct = _find_labeled_dimension(metric, tokens)
+    direct = _find_labeled_dimension(
+        metric,
+        {
+            "monthly",
+            "mensile",
+            "month",
+            "mese",
+            "quarter",
+            "quarterly",
+            "trimestre",
+            "trimestrale",
+            "semester",
+            "semestrale",
+        },
+    )
     if direct:
         return direct
-    period_pattern = re.compile(r"^(?:20\d{2})[-/](?:0?[1-9]|1[0-2])(?:[-/]\d{1,2})?$")
-    quarter_pattern = re.compile(r"^(?:20\d{2})[-_ ]?q[1-4]$", re.IGNORECASE)
+    month = re.compile(r"^(?:20\d{2})[-/](?:0?[1-9]|1[0-2])(?:[-/]\d{1,2})?$")
+    quarter = re.compile(r"^(?:20\d{2})[-_ ]?q[1-4]$", re.IGNORECASE)
     for path, value in _walk(metric):
-        if isinstance(value, str):
-            text = value.strip()
-            if period_pattern.match(text) or quarter_pattern.match(text):
-                return _path_text(path)
+        if isinstance(value, str) and (month.match(value.strip()) or quarter.match(value.strip())):
+            return _path_text(path)
     return None
 
 
@@ -252,47 +267,49 @@ def _find_numerator_denominator(metric: dict[str, Any]) -> str | None:
 
 
 def _find_specific_categories(metric: dict[str, Any]) -> str | None:
-    tokens = {
-        "categories",
-        "categorie",
-        "breakdown",
-        "disaggregation",
-        "disaggregazione",
-        "classi",
-        "classes",
-        "tipologie",
-        "types",
-        "ateco",
-        "settore",
-        "sector",
-        "modalita",
-        "specie",
-        "ordine_scolastico",
-        "classe_potenza",
-    }
-    return _find_labeled_dimension(metric, tokens)
+    return _find_labeled_dimension(
+        metric,
+        {
+            "categories",
+            "categorie",
+            "breakdown",
+            "disaggregation",
+            "disaggregazione",
+            "classi",
+            "classes",
+            "tipologie",
+            "types",
+            "ateco",
+            "settore",
+            "sector",
+            "modalita",
+            "specie",
+            "ordine_scolastico",
+            "classe_potenza",
+        },
+    )
 
 
 def acquired_evidence(metric: dict[str, Any], dimension: str) -> str | None:
-    if dimension == "serie_storica":
-        return _find_series(metric)
-    if dimension == "sesso":
-        return _find_labeled_dimension(metric, {"sesso", "sex", "gender", "maschi", "femmine", "male", "female"})
-    if dimension == "eta":
-        return _find_labeled_dimension(metric, {"eta", "age", "fascia_eta", "classe_eta", "age_class"})
-    if dimension == "dettaglio_territoriale":
-        return _find_territorial_detail(metric)
-    if dimension == "benchmark_toscana_italia":
-        return _find_benchmark(metric)
-    if dimension == "assoluto_normalizzato":
-        return _find_absolute_normalized(metric)
-    if dimension == "frequenza_infra_annuale":
-        return _find_infra_annual(metric)
-    if dimension == "numeratore_denominatore":
-        return _find_numerator_denominator(metric)
-    if dimension == "categorie_specifiche":
-        return _find_specific_categories(metric)
-    raise RuntimeError(f"Dimensione A3 non riconosciuta: {dimension}")
+    detectors = {
+        "serie_storica": _find_series,
+        "sesso": lambda item: _find_labeled_dimension(
+            item, {"sesso", "sex", "gender", "maschi", "femmine", "male", "female"}
+        ),
+        "eta": lambda item: _find_labeled_dimension(
+            item, {"eta", "age", "fascia_eta", "classe_eta", "age_class"}
+        ),
+        "dettaglio_territoriale": _find_territorial_detail,
+        "benchmark_toscana_italia": _find_benchmark,
+        "assoluto_normalizzato": _find_absolute_normalized,
+        "frequenza_infra_annuale": _find_infra_annual,
+        "numeratore_denominatore": _find_numerator_denominator,
+        "categorie_specifiche": _find_specific_categories,
+    }
+    detector = detectors.get(dimension)
+    if detector is None:
+        raise RuntimeError(f"Dimensione A3 non riconosciuta: {dimension}")
+    return detector(metric)
 
 
 def _annotation(
@@ -345,9 +362,7 @@ def _validate_annotation(
         raise RuntimeError(f"Evidenza enrichment assente: {metric_id}/{dimension}")
     source_reference = str(annotation.get("sourceReference") or "").strip()
     if state in {"AVAILABLE_MISSING", "SOURCE_UNAVAILABLE"} and not source_reference:
-        raise RuntimeError(
-            f"Riferimento fonte obbligatorio per {state}: {metric_id}/{dimension}"
-        )
+        raise RuntimeError(f"Riferimento fonte obbligatorio per {state}: {metric_id}/{dimension}")
     return state, evidence, source_reference
 
 
@@ -358,7 +373,7 @@ def build_matrix(data: dict[str, Any], registry: dict[str, Any]) -> dict[str, An
 
     rows: list[dict[str, Any]] = []
     profiles: set[str] = set()
-    state_counts = {state: 0 for state in sorted(FINAL_STATES)}
+    counts = {state: 0 for state in sorted(FINAL_STATES)}
     unclassified = 0
 
     for metric_id, metric in sorted(metrics.items()):
@@ -368,13 +383,12 @@ def build_matrix(data: dict[str, Any], registry: dict[str, Any]) -> dict[str, An
         if not policy.get("resolved"):
             raise RuntimeError(f"Policy fonte non risolta per {metric_id}")
         profile_id = str(policy.get("profileId") or "")
-        profiles.add(profile_id)
         source_url = str(policy.get("sourceUrl") or metric.get("sourceUrl") or "").strip()
         if not source_url:
             raise RuntimeError(f"sourceUrl assente per {metric_id}")
+        profiles.add(profile_id)
 
         for dimension in DIMENSIONS:
-            acquired = acquired_evidence(metric, dimension)
             row: dict[str, Any] = {
                 "metricId": metric_id,
                 "sourceUrl": source_url,
@@ -385,39 +399,33 @@ def build_matrix(data: dict[str, Any], registry: dict[str, Any]) -> dict[str, An
                 "sourceReference": "",
                 "classificationOrigin": "pending_source_evidence",
             }
-            if acquired:
+            structured = acquired_evidence(metric, dimension)
+            if structured:
                 row.update(
-                    {
-                        "state": "ACQUIRED",
-                        "evidence": f"structured:{acquired}",
-                        "sourceReference": source_url,
-                        "classificationOrigin": "catalog_structure",
-                    }
+                    state="ACQUIRED",
+                    evidence=f"structured:{structured}",
+                    sourceReference=source_url,
+                    classificationOrigin="catalog_structure",
                 )
             else:
                 annotation, origin = _annotation(metric_id, policy, registry, dimension)
                 if annotation is not None:
-                    state, evidence, source_reference = _validate_annotation(
+                    state, evidence, reference = _validate_annotation(
                         annotation, origin, metric_id, dimension
                     )
                     row.update(
-                        {
-                            "state": state,
-                            "evidence": evidence,
-                            "sourceReference": source_reference,
-                            "classificationOrigin": origin,
-                        }
+                        state=state,
+                        evidence=evidence,
+                        sourceReference=reference,
+                        classificationOrigin=origin,
                     )
-
-            state = row["state"]
-            if state is None:
+            if row["state"] is None:
                 unclassified += 1
             else:
-                state_counts[str(state)] += 1
+                counts[str(row["state"])] += 1
             rows.append(row)
 
     pair_count = len(rows)
-    classified = pair_count - unclassified
     payload = {
         "schemaVersion": 1,
         "generatedFrom": {
@@ -429,10 +437,10 @@ def build_matrix(data: dict[str, Any], registry: dict[str, Any]) -> dict[str, An
             "publicMetricCount": len(metrics),
             "dimensionCount": len(DIMENSIONS),
             "pairCount": pair_count,
-            "classifiedPairCount": classified,
+            "classifiedPairCount": pair_count - unclassified,
             "unclassifiedPairCount": unclassified,
             "sourceProfileCount": len(profiles),
-            **{f"state_{state}": count for state, count in state_counts.items()},
+            **{f"state_{state}": count for state, count in counts.items()},
         },
         "rows": rows,
     }
@@ -449,11 +457,9 @@ def validate_matrix(payload: dict[str, Any], *, require_complete: bool) -> None:
     if not isinstance(rows, list) or not isinstance(summary, dict):
         raise RuntimeError("Matrice enrichment non valida")
 
-    expected_pairs = int(summary.get("publicMetricCount") or 0) * len(DIMENSIONS)
-    if len(rows) != expected_pairs or summary.get("pairCount") != expected_pairs:
-        raise RuntimeError(
-            f"Copertura coppie enrichment incoerente: {len(rows)} != {expected_pairs}"
-        )
+    expected = int(summary.get("publicMetricCount") or 0) * len(DIMENSIONS)
+    if len(rows) != expected or summary.get("pairCount") != expected:
+        raise RuntimeError(f"Copertura coppie enrichment incoerente: {len(rows)} != {expected}")
 
     seen: set[tuple[str, str]] = set()
     unclassified = 0
@@ -510,11 +516,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--data", type=Path, required=True)
     parser.add_argument("--registry", type=Path, required=True)
     parser.add_argument("--output", type=Path)
-    parser.add_argument(
-        "--allow-unclassified",
-        action="store_true",
-        help="Convalida la matrice derivata senza richiedere che A3.2 sia già completo.",
-    )
+    parser.add_argument("--allow-unclassified", action="store_true")
     return parser.parse_args(argv)
 
 
