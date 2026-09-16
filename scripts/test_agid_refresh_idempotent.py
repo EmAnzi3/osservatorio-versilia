@@ -48,7 +48,77 @@ def test_rerun_with_managed_metrics_already_present() -> None:
     assert len(second["metrics"]) == 8
 
 
+def test_refresh_preserves_catalog_contract() -> None:
+    source = fixtures.base_data()
+    asia, agcom = fixtures.source_maps()
+
+    source["version"] = "v9.9.0"
+    source["updated"] = "16 settembre 2026"
+    source["themes"]["economia"]["description"] = "Descrizione economia corrente"
+    source["themes"]["economia"]["featured"] = ["microUnits"]
+    source["themes"]["economia"]["sections"][0]["description"] = (
+        "Descrizione produzione corrente"
+    )
+
+    mobility = source["themes"]["mobilita"]
+    mobility["label"] = "Mobilità corrente"
+    mobility["question"] = "Domanda corrente"
+    mobility["description"] = "Descrizione mobilità corrente"
+    mobility["featured"] = ["roadInjuries"]
+    mobility["metrics"] = [
+        "evPoints",
+        "ftthCoverageDesi",
+        "ftthReachedHouseholds",
+        "ftthUnreachedHouseholds",
+        "ftthCoverage20m",
+        "roadInjuries",
+    ]
+    mobility["sections"] = [
+        {"key": "veicoli", "metrics": ["evPoints"]},
+        {
+            "key": "connettivita",
+            "label": "Connettività digitale",
+            "description": "Descrizione connettività corrente",
+            "metrics": [
+                "ftthCoverageDesi",
+                "ftthReachedHouseholds",
+                "ftthUnreachedHouseholds",
+                "ftthCoverage20m",
+            ],
+        },
+        {"key": "sicurezza", "metrics": ["roadInjuries"]},
+    ]
+
+    updated, snapshot = resilient.apply_policy(
+        copy.deepcopy(source), asia, agcom, "2026-09-16T00:00:00+00:00"
+    )
+
+    assert updated["version"] == source["version"]
+    assert updated["updated"] == source["updated"]
+    assert updated["themes"]["economia"]["description"] == source["themes"]["economia"]["description"]
+    assert updated["themes"]["economia"]["featured"] == source["themes"]["economia"]["featured"]
+    assert updated["themes"]["economia"]["sections"][0]["description"] == source["themes"]["economia"]["sections"][0]["description"]
+    assert updated["themes"]["mobilita"]["label"] == mobility["label"]
+    assert updated["themes"]["mobilita"]["question"] == mobility["question"]
+    assert updated["themes"]["mobilita"]["description"] == mobility["description"]
+    assert updated["themes"]["mobilita"]["featured"] == mobility["featured"]
+    assert [section["key"] for section in updated["themes"]["mobilita"]["sections"]] == [
+        "veicoli",
+        "connettivita",
+        "sicurezza",
+    ]
+    assert updated["themes"]["mobilita"]["sections"][1]["metrics"] == resilient.PUBLISHED_BROADBAND_KEYS
+    assert updated["themes"]["mobilita"]["metrics"] == [
+        "evPoints",
+        "ftthCoverageDesi",
+        "ftthCoverage20m",
+        "roadInjuries",
+    ]
+    assert snapshot["sources"]["agcom"]["url"] == resilient.AGCOM_PUBLIC_MAP_URL
+
+
 if __name__ == "__main__":
     test_old_dataset()
     test_rerun_with_managed_metrics_already_present()
-    print("OK: aggiornamento ASIA/AGCOM idempotente")
+    test_refresh_preserves_catalog_contract()
+    print("OK: aggiornamento ASIA/AGCOM idempotente e catalogo preservato")
