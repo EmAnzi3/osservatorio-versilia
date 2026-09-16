@@ -71,17 +71,17 @@ Nota chiusura A1: la PR `#193` è stata mergiata su `main` dopo Quick e Full Git
 
 ## A2 — Full Coverage Source Monitor
 
-**Stato:** `IN_PROGRESS`
+**Stato:** `DONE`
 
 Scopo: avere prova periodica che tutti gli indicatori pubblicati siano controllati per aggiornamenti delle rispettive fonti.
 
 - [x] **A2.1** Audit della copertura reale dell'attuale source registry/monitor rispetto al catalogo effettivamente pubblicato.
 - [x] **A2.2** Eliminare conteggi attesi hard-coded quando derivabili dal catalogo canonico.
 - [x] **A2.3** Separare controllo leggero frequente e controllo profondo periodico.
-- [ ] **A2.4** Definire per ogni fonte frequenza attesa, modalità di rilevazione cambiamenti e ultimo controllo riuscito.
-- [ ] **A2.5** Produrre report leggibile con almeno: coperti/totali, aggiornamenti disponibili, nuove release, fonti irraggiungibili, cambi di schema, dati invariati.
-- [ ] **A2.6** Rendere evidente l'esito tramite GitHub Actions/issue o altro canale già coerente con l'architettura della repo.
-- [ ] **A2.7** Fallire chiaramente se esistono indicatori pubblicati privi di monitoraggio applicabile.
+- [x] **A2.4** Definire per ogni fonte frequenza attesa, modalità di rilevazione cambiamenti e ultimo controllo riuscito.
+- [x] **A2.5** Produrre report leggibile con almeno: coperti/totali, aggiornamenti disponibili, nuove release, fonti irraggiungibili, cambi di schema, dati invariati.
+- [x] **A2.6** Rendere evidente l'esito tramite GitHub Actions/issue o altro canale già coerente con l'architettura della repo.
+- [x] **A2.7** Fallire chiaramente se esistono indicatori pubblicati privi di monitoraggio applicabile.
 
 Nota A2.1: l'audit è documentato in `docs/A2_SOURCE_MONITOR_AUDIT.md`. Il workflow mensile usava il catalogo sorgente e un registry con conteggi attesi `181/177/4`, mentre l'Effective Public Catalog contiene 225 indicatori.
 
@@ -89,22 +89,26 @@ Nota A2.2: `materialize_source_monitor_snapshot.py` riusa la stessa catena di ma
 
 Nota A2.3: il controllo profondo resta mensile e conserva hash/verifiche semantiche; `source-monitor-light.yml` introduce un controllo frequente read-only sullo stesso perimetro pubblico, senza hash dei contenuti né verifiche semantiche PNRR/MIMIT. Il workflow light non modifica baseline, issue o PR e produce un artifact diagnostico separato.
 
+Nota chiusura A2: la PR `#194` ha implementato A2.4–A2.7 e ha chiuso il perimetro operativo a 225 indicatori / 122 fonti con Quick, Full, monitor light e deep verdi. I successivi interventi di hardening sulla pipeline di refresh hanno preservato questi contratti e rimosso regressioni legacy senza introdurre un secondo inventario canonico.
+
 **Definition of done:** ogni indicatore pubblicato ha una strategia di monitoraggio verificabile oppure un'eccezione esplicita; ogni run produce un responso comprensibile.
 
 ---
 
 ## A3 — Enrichment Audit globale
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti offrono, invece di scoprire gli arricchimenti per caso.
 
-- [ ] **A3.1** Definire le dimensioni comuni di enrichment: serie storica, sesso, età, dettaglio territoriale, benchmark Toscana/Italia, assoluto/normalizzato, frequenza infra-annuale, numeratore/denominatore, categorie specifiche.
+- [x] **A3.1** Definire le dimensioni comuni di enrichment: serie storica, sesso, età, dettaglio territoriale, benchmark Toscana/Italia, assoluto/normalizzato, frequenza infra-annuale, numeratore/denominatore, categorie specifiche.
 - [ ] **A3.2** Classificare ogni coppia indicatore/dimensione come `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
 - [ ] **A3.3** Eseguire audit fonte per fonte sul catalogo completo.
 - [ ] **A3.4** Trasformare `AVAILABLE_MISSING` in backlog ordinato per valore informativo e costo di acquisizione.
 - [ ] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
 - [ ] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
+
+Nota A3.1: la tassonomia e la semantica dei quattro stati sono definite in `docs/A3_ENRICHMENT_AUDIT.md`. Il documento è metodologico e non introduce un secondo catalogo o una matrice manuale di indicatori.
 
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
