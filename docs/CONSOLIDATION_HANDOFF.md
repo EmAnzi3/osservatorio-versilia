@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `7cb50da9583c99dfdb99523e9bbb5ce260e0c035`
+- **Baseline main:** `6becbda8c228634c563e7a64297fdc8c0615f53e`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2:** 2.025 coppie; 539 classificate, 1.486 da auditare alla baseline post-`#208`
-- **Branch:** `chore/a3-2-evidence-audit-3`
-- **PR corrente:** `#209` — Ready
+- **Matrice A3.2:** 2.025 coppie; 694 classificate, 1.331 da auditare alla baseline post-`#209`
+- **Branch:** `chore/a3-2-evidence-audit-4`
+- **PR corrente:** `#210` — Ready
 
 ## Completato
 
@@ -23,8 +23,9 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `A3.1` chiuso con merge autorizzato della PR `#204`: nove dimensioni comuni e quattro stati finali (`ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`).
 - La PR `#206` ha introdotto e pubblicato la matrice derivata A3.2 sull'Effective Public Catalog, con strict mode e regressioni.
 - La PR `#207` ha portato la baseline A3.2 a `357/2.025` coppie classificate.
-- La PR `#208` è stata mergiata dopo Quick/Full verdi; il Full ha confermato `539/2.025` coppie classificate e `1.486` residue.
-- La PR `#209` prosegue l'audit source-profile con evidenze ufficiali aggiuntive su Censimento Istat, Frame SBS, OpenBDAP, MIM, Turismo e indicatori comunali Regione Toscana, MEF IRPEF, AGCOM e Conto Annuale RGS.
+- La PR `#208` ha portato la baseline a `539/2.025`.
+- La PR `#209` è stata mergiata dopo Quick/Full verdi; il Full ha confermato `694/2.025` coppie classificate e `1.331` residue.
+- La PR `#210` estende l'audit a ulteriori profili ufficiali e introduce i primi `NOT_APPLICABLE` metric-specific, senza enumerare il catalogo pubblico.
 
 ## Decisioni vincolanti
 
@@ -41,15 +42,15 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 ## Prossima azione esatta
 
-1. Leggere dal Full della `#209` il nuovo conteggio classificato/residuo e il ranking aggiornato per dimensione/source profile.
+1. Leggere dal Full della `#210` il nuovo conteggio classificato/residuo e il ranking aggiornato per dimensione/source profile.
 2. Correggere eventuali evidenze troppo ampie se i gate mostrano conflitti o incongruenze; non indebolire la matrice per far passare la CI.
-3. Proseguire sui profili residui ad alto impatto e introdurre override metric-specific solo dove la semantica della singola metrica lo richiede.
+3. Proseguire con evidenze source-level sui profili residui e ampliare gli override metric-specific solo dove `NOT_APPLICABLE` è semanticamente dimostrabile.
 4. Ripetere fino a `unclassifiedPairCount = 0`; solo allora chiudere `A3.2` e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza della terza tranche evidenze A3.2: `7cb50da9583c99dfdb99523e9bbb5ce260e0c035`.
-- Full della `#208`: `539` coppie classificate, `1.486` residue; Quick e Full verdi.
+- Main di partenza della quarta tranche A3.2: `6becbda8c228634c563e7a64297fdc8c0615f53e`.
+- Full della `#209`: `694` coppie classificate, `1.331` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
 - I gate GitHub Actions restano obbligatori prima del merge.

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Materializza evidenze A3.2 riusabili nei source profile della release pubblica.
 
-Le annotazioni sono source-level: non enumerano indicatori e non costituiscono un
-secondo catalogo. Vengono applicate al registry nello stesso workspace effimero
-che costruisce l'Effective Public Catalog, dopo gli overlay di release.
+Le annotazioni source-level non enumerano indicatori e non costituiscono un secondo
+catalogo. Gli override metric-specific sono ammessi solo per eccezioni semantiche
+reali (per esempio NOT_APPLICABLE) e vengono applicati nello stesso workspace
+effimero che costruisce l'Effective Public Catalog.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 
 AVAILABLE = "AVAILABLE_MISSING"
 UNAVAILABLE = "SOURCE_UNAVAILABLE"
+NOT_APPLICABLE = "NOT_APPLICABLE"
 
 EVIDENCE = {
     "openbdap-annual": {
@@ -241,10 +243,25 @@ EVIDENCE = {
         },
     },
     "istat-agriculture-census-2020": {
+        "serie_storica": {
+            "state": AVAILABLE,
+            "evidence": "Istat rende disponibili il Censimento Agricoltura 2020 e il Censimento 2010 con le stesse principali famiglie di variabili e supporta confronti evolutivi.",
+            "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+        },
         "dettaglio_territoriale": {
             "state": AVAILABLE,
             "evidence": "Istat descrive il Censimento Agricoltura 2020 come banca dati nazionale con dettaglio fino al livello comunale, quindi con scale territoriali più ampie coerenti.",
             "sourceReference": "https://www.istat.it/dati/banche-dati/",
+        },
+        "benchmark_toscana_italia": {
+            "state": AVAILABLE,
+            "evidence": "Le Story Map e la dashboard del Censimento Agricoltura consentono comparazioni territoriali interne alla regione e rispetto alla ripartizione e all'Italia, con dati regionali, provinciali e comunali.",
+            "sourceReference": "https://www.istat.it/notizia/lagricoltura-nelle-regioni-italiane/",
+        },
+        "assoluto_normalizzato": {
+            "state": AVAILABLE,
+            "evidence": "La dashboard comunale del Censimento Agricoltura consente di scaricare nello stesso prodotto dati assoluti e indicatori sulle principali variabili.",
+            "sourceReference": "https://www.istat.it/notizia/lagricoltura-nelle-regioni-italiane/",
         },
         "frequenza_infra_annuale": {
             "state": UNAVAILABLE,
@@ -282,18 +299,6 @@ EVIDENCE = {
             "state": AVAILABLE,
             "evidence": "La fonte MEF espone classi di reddito, tipologie di contribuente e diverse componenti reddituali e fiscali come classificazioni strutturate.",
             "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
-        },
-    },
-    "agcom-quarterly": {
-        "dettaglio_territoriale": {
-            "state": AVAILABLE,
-            "evidence": "La reportistica Broadband Map AGCOM diffonde indicatori di copertura a livello comunale, provinciale e regionale.",
-            "sourceReference": "https://geo.agcom.it/reportistica/",
-        },
-        "categorie_specifiche": {
-            "state": AVAILABLE,
-            "evidence": "La Broadband Map distingue tecnologie e prestazioni di accesso, incluse reti fisse cablate, FTTH, FTTC/VDSL, FWA e reti mobili.",
-            "sourceReference": "https://geo.agcom.it/visura/estratto-completo.html",
         },
     },
     "rgs-conto-annuale-annual": {
@@ -340,7 +345,171 @@ EVIDENCE = {
             "sourceReference": "https://www.istat.it/notizia/matrici-di-contiguita-distanza-e-pendolarismo/",
         },
     },
+    "regione-toscana-biblioteche-annual": {
+        "serie_storica": {
+            "state": AVAILABLE,
+            "evidence": "Regione Toscana pubblica una serie storica dal 1998 dei valori assoluti per singola biblioteca e degli indicatori IFLA a livello comunale.",
+            "sourceReference": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+        },
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "Il monitoraggio regionale contiene dati per singola biblioteca e indicatori comunali, quindi una granularità più fine del Comune e scale territoriali ulteriori.",
+            "sourceReference": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+        },
+        "benchmark_toscana_italia": {
+            "state": AVAILABLE,
+            "evidence": "Gli indicatori IFLA comunali sono pubblicati con confronto territoriale rispetto al livello regionale e alla rete di appartenenza.",
+            "sourceReference": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+        },
+        "frequenza_infra_annuale": {
+            "state": UNAVAILABLE,
+            "evidence": "Regione Toscana descrive il monitoraggio delle biblioteche come annuale; non è diffusa per questo set una serie infra-annuale omogenea.",
+            "sourceReference": "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
+        },
+    },
+    "ispra-environment-annual": {
+        "serie_storica": {
+            "state": AVAILABLE,
+            "evidence": "Il Catasto Rifiuti ISPRA pubblica dati comunali su produzione e raccolta differenziata dal 2010 e dati sui costi dal 2011, consentendo serie storiche omogenee.",
+            "sourceReference": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=ru",
+        },
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "Il Catasto Rifiuti diffonde dati fino al dettaglio comunale e provinciale e consente il download dei dati comunali di ciascuna regione.",
+            "sourceReference": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=ru",
+        },
+        "assoluto_normalizzato": {
+            "state": AVAILABLE,
+            "evidence": "Il Catasto Rifiuti espone valori assoluti di produzione e raccolta differenziata insieme a percentuali e valori pro capite; per i costi pubblica misure pro capite e per chilogrammo.",
+            "sourceReference": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=findComune",
+        },
+        "frequenza_infra_annuale": {
+            "state": UNAVAILABLE,
+            "evidence": "Le serie comunali del Catasto Rifiuti sono pubblicate per anno; non è diffusa una serie mensile, trimestrale o semestrale equivalente delle stesse misure.",
+            "sourceReference": "https://www.catasto-rifiuti.isprambiente.it/index.php?pg=ru",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "Il Catasto Rifiuti pubblica dettaglio per frazioni della raccolta differenziata e componenti dei costi del servizio di igiene urbana.",
+            "sourceReference": "https://www.catasto-rifiuti.isprambiente.it/",
+        },
+    },
+    "regione-toscana-gtfs-scheduled": {
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "Il GTFS regionale contiene fermate e coordinate delle corse, quindi una granularità territoriale più fine del Comune su tutta la Toscana.",
+            "sourceReference": "https://dati.toscana.it/dataset/rt-oraritb",
+        },
+        "frequenza_infra_annuale": {
+            "state": AVAILABLE,
+            "evidence": "Il GTFS espone calendari di servizio e orari di arrivo e partenza per ogni corsa e fermata, rendendo disponibile una granularità temporale infra-annuale.",
+            "sourceReference": "https://dati.toscana.it/dataset/rt-oraritb",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "Il dataset distingue aziende, fermate, linee, corse e modalità di trasporto tra treni, traghetti, tram e autobus.",
+            "sourceReference": "https://dati.toscana.it/dataset/rt-oraritb",
+        },
+    },
+    "istat-fragility-2022": {
+        "serie_storica": {
+            "state": AVAILABLE,
+            "evidence": "Istat presenta l'Indice di Fragilità Comunale in serie storica e documenta l'evoluzione nel periodo 2018-2022.",
+            "sourceReference": "https://www.istat.it/comunicato-stampa/la-fragilita-dei-comuni-italiani-anno-2022/",
+        },
+        "frequenza_infra_annuale": {
+            "state": UNAVAILABLE,
+            "evidence": "L'IFC è diffuso con riferimento annuale e la serie documentata è 2018-2022; non è prevista una cadenza infra-annuale equivalente.",
+            "sourceReference": "https://www.istat.it/comunicato-stampa/la-fragilita-dei-comuni-italiani-anno-2022/",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "Istat integra l'indice con indicatori elementari e consente letture per domini territoriali e componenti del profilo di fragilità.",
+            "sourceReference": "https://www.istat.it/comunicato-stampa/aggiornato-indice-di-fragilita-comunale/",
+        },
+    },
+    "agcom-quarterly": {
+        "serie_storica": {
+            "state": AVAILABLE,
+            "evidence": "La Broadband Map AGCOM mette a disposizione il confronto con mappe storicizzate e i report evidenziano le variazioni rispetto alla rilevazione precedente.",
+            "sourceReference": "https://maps.agcom.it/",
+        },
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "La reportistica Broadband Map AGCOM diffonde indicatori di copertura a livello comunale, provinciale e regionale.",
+            "sourceReference": "https://geo.agcom.it/reportistica/",
+        },
+        "benchmark_toscana_italia": {
+            "state": AVAILABLE,
+            "evidence": "La Broadband Map consente il download dei tabulati comunali, provinciali e regionali e offre statistiche nazionali e regionali sulle tecnologie di accesso.",
+            "sourceReference": "https://maps.agcom.it/",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "La Broadband Map distingue tecnologie e prestazioni di accesso, incluse reti fisse cablate, FTTH, FTTC/VDSL, FWA e reti mobili.",
+            "sourceReference": "https://geo.agcom.it/visura/estratto-completo.html",
+        },
+    },
+    "lamma-copernicus-climate": {
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "LaMMA pubblica temperature minime/massime e precipitazioni giornaliere su griglia regolare a 1 km per l'intera Toscana, più fine del livello comunale.",
+            "sourceReference": "https://dati.lamma.toscana.it/dataset?tags=spazializzazione",
+        },
+        "frequenza_infra_annuale": {
+            "state": AVAILABLE,
+            "evidence": "LaMMA pubblica dataset giornalieri di temperature minime, massime e precipitazioni, quindi una frequenza molto più fine dell'anno.",
+            "sourceReference": "https://dati.lamma.toscana.it/group/6e8d2ab2-6afd-47e4-a8a7-04675f25e383?groups=meteo",
+        },
+    },
+    "cb1-pmo-status-2026": {
+        "dettaglio_territoriale": {
+            "state": AVAILABLE,
+            "evidence": "Il portale PMO del Consorzio Toscana Nord espone i lavori per Comune, corso d'acqua e tratto, con dettaglio territoriale inferiore al Comune.",
+            "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "Il portale PMO consente filtri e campi per stagione, corso d'acqua, intervento previsto, tratto e importo, oltre allo scarico CSV.",
+            "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+        },
+    },
 }
+
+METRIC_EVIDENCE = {
+    metric_id: {
+        "sesso": {
+            "state": NOT_APPLICABLE,
+            "evidence": "La metrica conta percorsi o itinerari territoriali; una disaggregazione per sesso non ha significato semantico per l'oggetto misurato.",
+        },
+        "eta": {
+            "state": NOT_APPLICABLE,
+            "evidence": "La metrica conta percorsi o itinerari territoriali; una disaggregazione per età non ha significato semantico per l'oggetto misurato.",
+        },
+        "numeratore_denominatore": {
+            "state": NOT_APPLICABLE,
+            "evidence": "La metrica è un conteggio di percorsi o itinerari e non è definita come rapporto, tasso, quota o indice con numeratore e denominatore.",
+        },
+    }
+    for metric_id in (
+        "slowMobilityRoutes",
+        "slowMobilityTrekking",
+        "slowMobilityCammini",
+        "slowMobilityBici",
+        "slowMobilityMtb",
+    )
+}
+
+
+def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
+    applied = 0
+    for dimension, annotation in dimensions.items():
+        existing = target.get(dimension)
+        if existing is not None and existing != annotation:
+            raise RuntimeError(f"A3.2: evidenza già presente ma diversa: {owner}/{dimension}")
+        target[dimension] = annotation
+        applied += 1
+    return applied
 
 
 def main() -> None:
@@ -349,7 +518,7 @@ def main() -> None:
     if not isinstance(profiles, dict):
         raise RuntimeError("A3.2: sourceProfiles assente dal registry")
 
-    applied = 0
+    applied_profiles = 0
     for profile_id, dimensions in EVIDENCE.items():
         profile = profiles.get(profile_id)
         if not isinstance(profile, dict):
@@ -357,20 +526,31 @@ def main() -> None:
         target = profile.setdefault("enrichmentDimensions", {})
         if not isinstance(target, dict):
             raise RuntimeError(f"A3.2: enrichmentDimensions non-oggetto: {profile_id}")
-        for dimension, annotation in dimensions.items():
-            existing = target.get(dimension)
-            if existing is not None and existing != annotation:
-                raise RuntimeError(
-                    f"A3.2: evidenza già presente ma diversa: {profile_id}/{dimension}"
-                )
-            target[dimension] = annotation
-            applied += 1
+        applied_profiles += _merge_dimensions(target, dimensions, profile_id)
+
+    overrides = registry.setdefault("metricOverrides", {})
+    if not isinstance(overrides, dict):
+        raise RuntimeError("A3.2: metricOverrides non-oggetto nel registry")
+
+    applied_metrics = 0
+    for metric_id, dimensions in METRIC_EVIDENCE.items():
+        override = overrides.setdefault(metric_id, {})
+        if not isinstance(override, dict):
+            raise RuntimeError(f"A3.2: metric override non-oggetto: {metric_id}")
+        target = override.setdefault("enrichmentDimensions", {})
+        if not isinstance(target, dict):
+            raise RuntimeError(f"A3.2: enrichmentDimensions override non-oggetto: {metric_id}")
+        applied_metrics += _merge_dimensions(target, dimensions, metric_id)
 
     REGISTRY_PATH.write_text(
         json.dumps(registry, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(f"A3.2 source-profile evidence materializzata: {applied} dimensioni su {len(EVIDENCE)} profili")
+    print(
+        "A3.2 evidence materializzata: "
+        f"{applied_profiles} dimensioni su {len(EVIDENCE)} profili; "
+        f"{applied_metrics} override su {len(METRIC_EVIDENCE)} metriche"
+    )
 
 
 if __name__ == "__main__":
