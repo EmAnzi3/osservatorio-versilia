@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
 SW = (ROOT / "service-worker.js").read_text(encoding="utf-8")
 PART = (ROOT / "assets" / "app-parts" / "03.txt").read_text(encoding="utf-8")
-BUILD_BRAND = (ROOT / "scripts" / "build_static_brand.py").read_text(encoding="utf-8")
+BUILD_BRAND = (ROOT / "scripts" / "build_static_brand_impl.py").read_text(encoding="utf-8", errors="surrogateescape")
 BUILD_SAFE = (ROOT / "scripts" / "build_static_safe.py").read_text(encoding="utf-8")
 UX_HISTORY = (ROOT / "assets" / "ux-history.js").read_text(encoding="utf-8")
 
@@ -21,7 +21,7 @@ def constant(text: str, pattern: str, label: str) -> str:
 
 
 # La preview e la produzione non caricano assets/app.js: build_static.py crea
-# assets/app-bundle.js e build_static_brand.py ne decide la query di cache-busting.
+# assets/app-bundle.js e build_static_brand_impl.py ne decide la query di cache-busting.
 # Il gate verifica quindi che tutte le revisioni correnti restino sincronizzate,
 # senza fissarsi sulla release che introdusse per prima gli storici Cultura.
 app_version = constant(APP, r"const VERSION='([^']+)';", "VERSION app")
