@@ -9,6 +9,9 @@ il valore nullo nello snapshot della fonte.
 
 Lo script è idempotente: gli indicatori ASIA/FTTH gestiti da questa pipeline
 vengono sostituiti, non conteggiati come nuove aggiunte a ogni esecuzione.
+Il refresh preserva inoltre il contratto editoriale del catalogo in ingresso:
+versione, data, descrizioni, featured e ordine delle sezioni non vengono
+retrocessi a metadati storici del generatore base.
 """
 from __future__ import annotations
 
@@ -30,6 +33,7 @@ import update_agid_indicators as base  # noqa: E402
 PUBLISHED_BROADBAND_KEYS = ["ftthCoverageDesi", "ftthCoverage20m"]
 OMITTED_ABSOLUTE_KEYS = ["ftthReachedHouseholds", "ftthUnreachedHouseholds"]
 MANAGED_KEYS = set(base.NEW_ECONOMY_KEYS + base.NEW_BROADBAND_KEYS)
+AGCOM_PUBLIC_MAP_URL = "https://maps.agcom.it/"
 
 
 def _number(value: Any, label: str) -> float:
@@ -118,6 +122,106 @@ def expected_metric_count(source_data: dict[str, Any]) -> int:
     return len(unmanaged) + len(regenerated)
 
 
+def _ensure_metrics_after(
+    items: list[str], after: str, required: list[str]
+) -> list[str]:
+    """Mantiene l'ordine esistente; inserisce i managed solo se assenti."""
+    current = list(items)
+    if all(key in current for key in required):
+        return current
+    return base._insert_after(current, after, required)
+
+
+def _restore_catalog_contract(
+    source_data: dict[str, Any], data: dict[str, Any]
+) -> None:
+    """Preserva metadati e struttura editoriale non posseduti dal refresh.
+
+    ``update_agid_indicators.py`` nasce come materializzatore della release
+    v1.7.0 e contiene ancora metadati di quella release. Il refresh operativo
+    deve invece aggiornare esclusivamente il proprio perimetro di metriche,
+    senza retrocedere versione/data o riscrivere descrizioni, featured e ordine
+    delle sezioni del catalogo corrente.
+    """
+    for field in ("version", "updated"):
+        if field in source_data:
+            data[field] = copy.deepcopy(source_data[field])
+        else:
+            data.pop(field, None)
+
+    source_themes = source_data.get("themes", {})
+    target_themes = data.get("themes", {})
+
+    source_economy = source_themes.get("economia", {})
+    economy = target_themes.get("economia", {})
+    for field in ("label", "question", "description", "featured"):
+        if field in source_economy:
+            economy[field] = copy.deepcopy(source_economy[field])
+    economy["metrics"] = _ensure_metrics_after(
+        list(source_economy.get("metrics", economy.get("metrics", []))),
+        "localUnits",
+        list(base.NEW_ECONOMY_KEYS),
+    )
+    economy_sections = copy.deepcopy(source_economy.get("sections", []))
+    for section in economy_sections:
+        if section.get("key") == "produzione":
+            section["metrics"] = _ensure_metrics_after(
+                list(section.get("metrics", [])),
+                "localUnits",
+                list(base.NEW_ECONOMY_KEYS),
+            )
+    if economy_sections:
+        economy["sections"] = economy_sections
+
+    source_mobility = source_themes.get("mobilita", {})
+    mobility = target_themes.get("mobilita", {})
+    for field in ("label", "question", "description", "featured"):
+        if field in source_mobility:
+            mobility[field] = copy.deepcopy(source_mobility[field])
+
+    source_mobility_metrics = [
+        key
+        for key in source_mobility.get("metrics", mobility.get("metrics", []))
+        if key not in OMITTED_ABSOLUTE_KEYS
+    ]
+    mobility["metrics"] = _ensure_metrics_after(
+        source_mobility_metrics,
+        "evPoints",
+        list(PUBLISHED_BROADBAND_KEYS),
+    )
+
+    mobility_sections = copy.deepcopy(source_mobility.get("sections", []))
+    connectivity = None
+    for section in mobility_sections:
+        if section.get("key") == "connettivita":
+            connectivity = section
+            break
+    if connectivity is None:
+        connectivity = {
+            "key": "connettivita",
+            "label": "Connettività digitale",
+            "description": "",
+            "metrics": [],
+        }
+        insert_at = next(
+            (
+                index
+                for index, section in enumerate(mobility_sections)
+                if section.get("key") == "sicurezza"
+            ),
+            len(mobility_sections),
+        )
+        mobility_sections.insert(insert_at, connectivity)
+
+    connectivity["label"] = connectivity.get("label") or "Connettività digitale"
+    connectivity["metrics"] = list(PUBLISHED_BROADBAND_KEYS)
+    connectivity["description"] = (
+        "Copertura comunale della rete fissa FTTH secondo le due metriche "
+        "ufficiali AGCOM disponibili per tutti i sette Comuni."
+    )
+    mobility["sections"] = mobility_sections
+
+
 def apply_policy(
     source_data: dict[str, Any],
     asia: dict[str, dict[str, Any]],
@@ -135,17 +239,7 @@ def apply_policy(
     for key in OMITTED_ABSOLUTE_KEYS:
         data["metrics"].pop(key, None)
 
-    mobility = data["themes"]["mobilita"]
-    mobility["metrics"] = [
-        key for key in mobility["metrics"] if key not in OMITTED_ABSOLUTE_KEYS
-    ]
-    for section in mobility.get("sections", []):
-        if section.get("key") == "connettivita":
-            section["metrics"] = PUBLISHED_BROADBAND_KEYS
-            section["description"] = (
-                "Copertura comunale della rete fissa FTTH secondo le due metriche "
-                "ufficiali AGCOM disponibili per tutti i sette Comuni."
-            )
+    _restore_catalog_contract(source_data, data)
 
     desi_aggregate = _weighted_official_percentage(
         agcom, "copertura_ftth_desi_pct"
@@ -195,6 +289,9 @@ def apply_policy(
         )
 
     snapshot.get("formulas", {}).pop("ftthUnreachedHouseholds", None)
+    snapshot.setdefault("sources", {}).setdefault("agcom", {})["url"] = (
+        AGCOM_PUBLIC_MAP_URL
+    )
     snapshot["coveragePolicy"] = {
         "publishedBroadbandMetrics": PUBLISHED_BROADBAND_KEYS,
         "omittedBroadbandMetrics": OMITTED_ABSOLUTE_KEYS,
