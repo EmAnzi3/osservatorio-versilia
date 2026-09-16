@@ -46488,104 +46488,6 @@
         "coverage": "7/7"
       }
     },
-    "ftthCoverage20m": {
-      "meta": {
-        "key": "ftthCoverage20m",
-        "theme": "mobilita",
-        "label": "Copertura FTTH entro 20 metri",
-        "shortLabel": "FTTH entro 20 metri",
-        "description": "Quota delle famiglie residenti con infrastruttura FTTH dichiarata entro 20 metri dall’abitazione.",
-        "unit": "percent",
-        "year": "31 dicembre 2025",
-        "source": "AGCOM — Broadband Map, reportistica comunale",
-        "polarity": "neutral"
-      },
-      "sourceUrl": "https://maps.agcom.it/",
-      "rows": [
-        {
-          "town": "Massarosa",
-          "code": "046018",
-          "slug": "massarosa",
-          "value": 34.3,
-          "formatted": "34,3%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 34.3
-        },
-        {
-          "town": "Viareggio",
-          "code": "046033",
-          "slug": "viareggio",
-          "value": 86.0,
-          "formatted": "86,0%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 86.0
-        },
-        {
-          "town": "Camaiore",
-          "code": "046005",
-          "slug": "camaiore",
-          "value": 80.1,
-          "formatted": "80,1%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 80.1
-        },
-        {
-          "town": "Pietrasanta",
-          "code": "046024",
-          "slug": "pietrasanta",
-          "value": 44.2,
-          "formatted": "44,2%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 44.2
-        },
-        {
-          "town": "Seravezza",
-          "code": "046028",
-          "slug": "seravezza",
-          "value": 0.1,
-          "formatted": "0,1%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 0.1
-        },
-        {
-          "town": "Forte dei Marmi",
-          "code": "046013",
-          "slug": "forte-dei-marmi",
-          "value": 0.0,
-          "formatted": "0,0%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 0.0
-        },
-        {
-          "town": "Stazzema",
-          "code": "046030",
-          "slug": "stazzema",
-          "value": 77.4,
-          "formatted": "77,4%",
-          "series": null,
-          "normalized": null,
-          "benchmarkValue": 77.4
-        }
-      ],
-      "aggregate": {
-        "value": 61.37692766295708,
-        "label": "Media ponderata Versilia",
-        "note": "Media delle percentuali comunali AGCOM, ponderata per le famiglie residenti del CSV primario."
-      },
-      "normalizedAggregate": null,
-      "method": {
-        "type": "Dato ufficiale; aggregato elaborato dall'Osservatorio",
-        "formula": "Copertura FTTH entro 20 metri comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM",
-        "caveat": "La copertura descrive la disponibilità dichiarata della rete, non il numero di abbonamenti, la velocità effettiva o la certezza di attivazione per ogni singolo civico.",
-        "coverage": "7/7"
-      }
-    },
     "ftthReachedHouseholds": {
       "meta": {
         "key": "ftthReachedHouseholds",
@@ -46780,6 +46682,104 @@
         "formula": "famiglie residenti AGCOM − famiglie raggiunte da FTTH DESI",
         "caveat": "È il complemento aritmetico della copertura dichiarata AGCOM, non un censimento dei civici privi di servizio attivabile. Dato non calcolabile per Forte dei Marmi; nessuna stima effettuata.",
         "coverage": "6/7"
+      }
+    },
+    "ftthCoverage20m": {
+      "meta": {
+        "key": "ftthCoverage20m",
+        "theme": "mobilita",
+        "label": "Copertura FTTH entro 20 metri",
+        "shortLabel": "FTTH entro 20 metri",
+        "description": "Quota delle famiglie residenti con infrastruttura FTTH dichiarata entro 20 metri dall’abitazione.",
+        "unit": "percent",
+        "year": "31 dicembre 2025",
+        "source": "AGCOM — Broadband Map, reportistica comunale",
+        "polarity": "neutral"
+      },
+      "sourceUrl": "https://maps.agcom.it/",
+      "rows": [
+        {
+          "town": "Massarosa",
+          "code": "046018",
+          "slug": "massarosa",
+          "value": 34.3,
+          "formatted": "34,3%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 34.3
+        },
+        {
+          "town": "Viareggio",
+          "code": "046033",
+          "slug": "viareggio",
+          "value": 86.0,
+          "formatted": "86,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 86.0
+        },
+        {
+          "town": "Camaiore",
+          "code": "046005",
+          "slug": "camaiore",
+          "value": 80.1,
+          "formatted": "80,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 80.1
+        },
+        {
+          "town": "Pietrasanta",
+          "code": "046024",
+          "slug": "pietrasanta",
+          "value": 44.2,
+          "formatted": "44,2%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 44.2
+        },
+        {
+          "town": "Seravezza",
+          "code": "046028",
+          "slug": "seravezza",
+          "value": 0.1,
+          "formatted": "0,1%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.1
+        },
+        {
+          "town": "Forte dei Marmi",
+          "code": "046013",
+          "slug": "forte-dei-marmi",
+          "value": 0.0,
+          "formatted": "0,0%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 0.0
+        },
+        {
+          "town": "Stazzema",
+          "code": "046030",
+          "slug": "stazzema",
+          "value": 77.4,
+          "formatted": "77,4%",
+          "series": null,
+          "normalized": null,
+          "benchmarkValue": 77.4
+        }
+      ],
+      "aggregate": {
+        "value": 61.37692766295708,
+        "label": "Media ponderata Versilia",
+        "note": "Media delle percentuali comunali AGCOM, ponderata per le famiglie residenti del CSV primario."
+      },
+      "normalizedAggregate": null,
+      "method": {
+        "type": "Dato ufficiale; aggregato elaborato dall'Osservatorio",
+        "formula": "Copertura FTTH entro 20 metri comunale pubblicata da AGCOM; media Versilia ponderata per famiglie residenti AGCOM",
+        "caveat": "La copertura descrive la disponibilità dichiarata della rete, non il numero di abbonamenti, la velocità effettiva o la certezza di attivazione per ogni singolo civico.",
+        "coverage": "7/7"
       }
     },
     "slowMobilityRoutes": {
