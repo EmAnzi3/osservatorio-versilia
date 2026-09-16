@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `fe07ff52201e4de31ac4bcdf1bf3ad176417023b`
+- **Baseline main:** `7cb50da9583c99dfdb99523e9bbb5ce260e0c035`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2:** 2.025 coppie; 357 classificate, 1.668 da auditare alla baseline post-`#207`
-- **Branch:** `chore/a3-2-evidence-audit-2`
-- **PR corrente:** `#208` — Ready
+- **Matrice A3.2:** 2.025 coppie; 539 classificate, 1.486 da auditare alla baseline post-`#208`
+- **Branch:** `chore/a3-2-evidence-audit-3`
+- **PR corrente:** `#209` — Ready
 
 ## Completato
 
@@ -22,8 +22,9 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `A2 — Full Coverage Source Monitor` chiuso con la PR `#194`; gli interventi `#195`–`#203` e il refresh `#202` hanno poi irrobustito acquisizione e gate senza indebolire i contratti.
 - `A3.1` chiuso con merge autorizzato della PR `#204`: nove dimensioni comuni e quattro stati finali (`ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`).
 - La PR `#206` ha introdotto e pubblicato la matrice derivata A3.2 sull'Effective Public Catalog, con strict mode e regressioni.
-- La PR `#207` è stata mergiata dopo Quick/Full verdi e ha portato la baseline A3.2 a `357/2.025` coppie classificate, con `1.668` residue.
-- La PR `#208` estende l'audit source-profile usando evidenze ufficiali per Frame SBS Istat, ARS Toscana, MIM, turismo Regione Toscana, indicatori comunali Regione Toscana, Censimento Agricoltura, MEF IRPEF e pendolarismo Istat 2021.
+- La PR `#207` ha portato la baseline A3.2 a `357/2.025` coppie classificate.
+- La PR `#208` è stata mergiata dopo Quick/Full verdi; il Full ha confermato `539/2.025` coppie classificate e `1.486` residue.
+- La PR `#209` prosegue l'audit source-profile con evidenze ufficiali aggiuntive su Censimento Istat, Frame SBS, OpenBDAP, MIM, Turismo e indicatori comunali Regione Toscana, MEF IRPEF, AGCOM e Conto Annuale RGS.
 
 ## Decisioni vincolanti
 
@@ -40,15 +41,15 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 ## Prossima azione esatta
 
-1. Leggere dal Full della `#208` il nuovo conteggio classificato/residuo e il ranking aggiornato per dimensione/source profile.
+1. Leggere dal Full della `#209` il nuovo conteggio classificato/residuo e il ranking aggiornato per dimensione/source profile.
 2. Correggere eventuali evidenze troppo ampie se i gate mostrano conflitti o incongruenze; non indebolire la matrice per far passare la CI.
 3. Proseguire sui profili residui ad alto impatto e introdurre override metric-specific solo dove la semantica della singola metrica lo richiede.
 4. Ripetere fino a `unclassifiedPairCount = 0`; solo allora chiudere `A3.2` e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza della seconda tranche evidenze A3.2: `fe07ff52201e4de31ac4bcdf1bf3ad176417023b`.
-- Full della `#207`: `357` coppie classificate, `1.668` residue; Quick e Full verdi.
+- Main di partenza della terza tranche evidenze A3.2: `7cb50da9583c99dfdb99523e9bbb5ce260e0c035`.
+- Full della `#208`: `539` coppie classificate, `1.486` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
-- Il container della sessione non viene usato per dichiarare preflight GitHub: i gate Actions restano obbligatori prima del merge.
+- I gate GitHub Actions restano obbligatori prima del merge.
