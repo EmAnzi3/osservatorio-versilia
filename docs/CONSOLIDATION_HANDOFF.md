@@ -5,52 +5,46 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 ## Stato corrente
 
 - **Programma:** consolidamento Osservatorio Versilia
-- **Workstream attivo:** `A2 — Full Coverage Source Monitor`
-- **Step attivo:** `A2.4` — strategia verificabile per ogni fonte
+- **Workstream attivo:** `A3 — Enrichment Audit globale`
+- **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `d498d2f931773cf8c30a8e051ccb340133d567a6`
-- **Catalogo sorgente / pubblico auditato:** 181 / 225 indicatori
-- **Perimetro monitor pubblico verificato:** 225 indicatori / 122 fonti
-- **Branch:** `chore/a2-source-monitor-foundation`
-- **PR corrente:** `#194` — draft
+- **Baseline main:** `e35dd64e56b03da78dc983be32b69ae8488ee529`
+- **Catalogo pubblico governato:** 225 indicatori
+- **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
+- **Branch:** `chore/a3-enrichment-audit-foundation`
+- **PR corrente:** `#204` — Ready
 
 ## Completato
 
 - `A0` chiuso con merge autorizzato della PR `#188`.
-- `A1.1`–`A1.3` chiusi con merge autorizzato della PR `#190`.
-- `A1.4`–`A1.8` chiusi con merge della PR `#193`; Quick e Full GitHub verdi.
-- Deploy post-merge della PR `#193`: Pages `#3219` verde; controllo live-status successivo verde.
-- `A1 — Data Governance Foundation` è formalmente `DONE`.
-- `A2.1` completato e documentato in `docs/A2_SOURCE_MONITOR_AUDIT.md`.
-- `A2.2` verificato: `materialize_source_monitor_snapshot.py` riusa la catena della build pubblica e si arresta prima del prerender; il monitor riceve lo snapshot derivato v1.40.0 con 225 indicatori, 221 inline, 4 esterni e 69 source profile.
-- Il run `Controllo mensile dati #615` ha validato il perimetro A2.2: 225 indicatori, 122 fonti, 0 errori strutturali.
-- `A2.3` implementato: workflow giornaliero read-only `Controllo frequente fonti` in modalità `light`, mentre il controllo mensile resta `deep`.
-- Il primo run light `#1` è verde: 225 indicatori, 122 fonti, 0 errori strutturali; unit test `light/deep` verde e artifact diagnostico prodotto.
-- Il Pages Quick `#3224` ha bloccato correttamente il nuovo workflow perché non era ancora dichiarato in `ci/workflow-contract.json`; la correzione consiste esclusivamente nell'aggiungerlo all'inventario workflow, senza indebolire il gate.
+- `A1 — Data Governance Foundation` chiuso con le PR `#190` e `#193`.
+- `A2.1`–`A2.3` hanno portato il monitor sul catalogo pubblico effettivo e separato controllo light frequente e deep periodico.
+- La PR `#194` ha implementato `A2.4`–`A2.7`: strategia derivata per fonte, report operativo, visibilità GitHub Actions/artifact e gate sulla copertura applicabile.
+- Gli interventi successivi `#195`–`#203` e il refresh dati `#202` hanno irrobustito acquisizione AGCOM, refresh e gate senza indebolire i contratti A2.
+- `A2 — Full Coverage Source Monitor` è formalmente `DONE`.
+- `A3.1` completato: `docs/A3_ENRICHMENT_AUDIT.md` definisce le nove dimensioni comuni di enrichment e la semantica unica di `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
 
 ## Decisioni vincolanti
 
-1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
-2. L'Effective Public Catalog resta una vista derivata della build; non va copiato in un secondo manifest manuale.
-3. A2 misura la copertura operativa per identità degli ID pubblicati, non tramite un numero atteso mantenuto a mano.
-4. Non sostituire `expectedMetricCount: 181` con una nuova costante `225`: il perimetro operativo è derivato dalla stessa materializzazione della release.
-5. Il controllo `light` è frequente, read-only e diagnostico: niente hash dei contenuti, niente verifiche semantiche PNRR/MIMIT, niente scrittura di baseline/issue/PR.
-6. Il controllo `deep` resta periodico e conserva hash, confronti di contenuto e verifiche semantiche disponibili.
-7. `A2.4` deve derivare una strategia per ogni fonte dal catalogo pubblico, registry e stato operativo esistenti; non va introdotto un manifest manuale parallelo.
+1. `data/site-data.json` resta l'unico catalogo canonico sorgente; l'Effective Public Catalog resta una vista derivata.
+2. A3 non deve introdurre una seconda lista manuale di indicatori o fonti.
+3. L'unità di audit A3 è `indicatore pubblico × dimensione enrichment`.
+4. Le dimensioni comuni sono: serie storica, sesso, età, dettaglio territoriale, benchmark Toscana/Italia, assoluto/normalizzato, frequenza infra-annuale, numeratore/denominatore, categorie specifiche.
+5. Ogni coppia deve avere esattamente uno stato tra `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
+6. `AVAILABLE_MISSING` richiede evidenza verificabile presso la fonte ufficiale; `NOT_APPLICABLE` è una decisione semantica e non una scorciatoia per una mancata acquisizione.
+7. A3 misura il potenziale informativo disponibile alla fonte; nuove integrazioni entrano solo in A3.5 dopo backlog e QA.
 8. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Verificare il Quick dopo l'allineamento di `ci/workflow-contract.json` con `source-monitor-light.yml`.
-2. Proseguire con `A2.4`: per ciascuna delle 122 fonti derivare frequenza attesa, modalità di rilevazione del cambiamento e ultimo controllo riuscito.
-3. Usare la stessa vista derivata come base per `A2.5` e `A2.7`, evitando nuove tabelle manuali di copertura.
+1. Implementare `A3.2` come vista derivata dal catalogo pubblico effettivo e dalle policy/source profile già esistenti, senza enumerare manualmente i 225 indicatori.
+2. Produrre per ogni coppia indicatore/dimensione: ID indicatore, fonte risolta, stato, evidenza/motivazione e riferimento fonte quando necessario.
+3. Rendere la classificazione riproducibile e testabile prima di avviare l'audit fonte-per-fonte di `A3.3`.
 
 ## Verifiche
 
-- Main post-A1: `d498d2f931773cf8c30a8e051ccb340133d567a6`.
-- Release pubblica: `v1.40.0`, 225 indicatori.
-- Governance A1: `225 pubblicati = 225 Stato dati = 225 policy fonte`.
-- A2.2 deep PR run `#615`: `metrics=225`, `sources=122`, `errors=0`.
-- A2.3 light PR run `#1`: `metrics=225`, `sources=122`, `errors=0`; `Source monitor depth: light`.
-- Il risultato `changes=45` nei run PR/offline è la transizione dalla vecchia baseline operativa incompleta al perimetro pubblico completo, non un errore strutturale.
-- Stato operativo persistito su `main`: ultimo `checkedAt` generale `2026-08-31T17:19:31+02:00`; persistenza/freschezza per fonte è il perimetro di `A2.4`.
+- Main di partenza A3: `e35dd64e56b03da78dc983be32b69ae8488ee529`.
+- Release pubblica governata: 225 indicatori.
+- A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
+- La tassonomia A3.1 è metodologica: nessuna modifica a UI, dati pubblicati o pipeline di acquisizione.
+- Il container della sessione non risolve `github.com`; il preflight locale non è eseguibile e non viene dichiarato come eseguito. I gate GitHub restano obbligatori prima del merge.
