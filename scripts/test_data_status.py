@@ -25,6 +25,7 @@ def _validate_enrichment_matrix() -> None:
     # Exercise annotation precedence and strict-mode semantics with small fixtures.
     _enrichment_tests.test_derived_matrix_and_precedence()
     _enrichment_tests.test_acquired_evidence_wins_over_registry_annotation()
+    _enrichment_tests.test_age_token_does_not_match_aggregate()
     _enrichment_tests.test_strict_validation_rejects_unclassified_pairs()
     _enrichment_tests.test_profile_not_applicable_is_rejected()
 
