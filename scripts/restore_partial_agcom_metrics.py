@@ -67,6 +67,24 @@ def _partial_aggregate(
     }
 
 
+def _insert_metrics_before(
+    metrics: dict[str, Any], before_key: str, additions: dict[str, Any]
+) -> dict[str, Any]:
+    """Reinserisce metriche rigenerate senza spostarle in fondo al catalogo."""
+    result: dict[str, Any] = {}
+    inserted = False
+    for key, value in metrics.items():
+        if key in additions:
+            continue
+        if key == before_key and not inserted:
+            result.update(additions)
+            inserted = True
+        result[key] = value
+    if not inserted:
+        result.update(additions)
+    return result
+
+
 def _metric_rows(
     towns: list[dict[str, str]], snapshot_by_code: dict[str, dict[str, Any]]
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str], list[str]]:
@@ -174,8 +192,14 @@ def apply_partial_coverage(
     )
     unreached["method"]["coverage"] = coverage
 
-    data["metrics"]["ftthReachedHouseholds"] = reached
-    data["metrics"]["ftthUnreachedHouseholds"] = unreached
+    data["metrics"] = _insert_metrics_before(
+        data["metrics"],
+        "ftthCoverage20m",
+        {
+            "ftthReachedHouseholds": reached,
+            "ftthUnreachedHouseholds": unreached,
+        },
+    )
 
     mobility = data["themes"]["mobilita"]
     mobility["metrics"] = base._insert_after(

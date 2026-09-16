@@ -117,6 +117,24 @@ def test_policy_six_of_seven():
     assert updated_snapshot["coveragePolicy"]["minimumAcceptedCoverage"] == "6/7"
 
 
+def test_policy_restores_canonical_metric_order():
+    data = base_data()
+    data["metrics"].pop("ftthReachedHouseholds")
+    data["metrics"].pop("ftthUnreachedHouseholds")
+    snapshot = snapshot_data(["046013"])
+
+    updated, _, status, _ = policy.apply_policy(data, snapshot)
+    assert status == "published_partial"
+    keys = list(updated["metrics"])
+    start = keys.index("ftthCoverageDesi")
+    assert keys[start : start + 4] == [
+        "ftthCoverageDesi",
+        "ftthReachedHouseholds",
+        "ftthUnreachedHouseholds",
+        "ftthCoverage20m",
+    ]
+
+
 def test_policy_five_of_seven_omits_counts():
     data = base_data()
     snapshot = snapshot_data(["046013", "046018"])
@@ -132,5 +150,6 @@ def test_policy_five_of_seven_omits_counts():
 if __name__ == "__main__":
     test_ateco_detail()
     test_policy_six_of_seven()
+    test_policy_restores_canonical_metric_order()
     test_policy_five_of_seven_omits_counts()
     print("OK: test dettaglio ATECO e policy AGCOM 6/7")
