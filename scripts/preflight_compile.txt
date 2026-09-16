@@ -21,3 +21,5 @@ scripts/source_monitor_runner.py
 scripts/test_source_monitor_depth.py
 scripts/source_monitor_strategy.py
 scripts/test_source_monitor_strategy.py
+scripts/enrichment_audit_matrix.py
+scripts/test_enrichment_audit_matrix.py
