@@ -30,6 +30,7 @@ SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_d
 PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_reference_contract.py"
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
+A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -73,6 +74,10 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         # testo esatto lasciato dalle release precedenti.
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_CORE), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH), run_name="__main__")
+        # A3.2 annota il registry pubblico effettivo dopo tutti gli overlay dati:
+        # nessuna metrica viene enumerata e il workspace transazionale ripristina
+        # il registry sorgente al termine della build.
+        _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)

@@ -2,6 +2,7 @@
 """Verifica Stato dati e matrice A3 contro lo snapshot realmente pubblicato in dist/."""
 from __future__ import annotations
 
+from collections import Counter
 from pathlib import Path
 
 import enrichment_audit_matrix as _enrichment
@@ -19,6 +20,20 @@ _ORIGINAL_LOAD = _impl.load
 
 def _public_load(path: Path):
     return build_aware_load(_ORIGINAL_LOAD, path)
+
+
+def _print_enrichment_progress(payload: dict) -> None:
+    pending = [row for row in payload["rows"] if row.get("state") is None]
+    by_dimension = Counter(str(row.get("dimension") or "") for row in pending)
+    by_profile = Counter(str(row.get("sourceProfileId") or "") for row in pending)
+
+    print("A3.2 residuo per dimensione:")
+    for dimension in _enrichment.DIMENSIONS:
+        print(f"  - {dimension}: {by_dimension[dimension]}")
+
+    print("A3.2 source profile con più coppie residue:")
+    for profile_id, count in by_profile.most_common(20):
+        print(f"  - {profile_id}: {count}")
 
 
 def _validate_enrichment_matrix() -> None:
@@ -43,6 +58,7 @@ def _validate_enrichment_matrix() -> None:
         f"{summary['pairCount']} coppie; {summary['classifiedPairCount']} classificate, "
         f"{summary['unclassifiedPairCount']} da auditare."
     )
+    _print_enrichment_progress(payload)
 
 
 def main() -> None:

@@ -8,11 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `11392b87deabf8c28b79c01fa11c4eadb5f3f61e`
+- **Baseline main:** `3768ca5ae0d53db37c2c7ac526c93e9b125ac6ef`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Branch:** `chore/a3-2-enrichment-matrix`
-- **PR corrente:** `#206` — Ready
+- **Matrice A3.2:** 2.025 coppie; 139 classificate, 1.886 da auditare alla baseline post-`#206`
+- **Branch:** `chore/a3-2-evidence-audit`
+- **PR corrente:** `#207` — Ready
 
 ## Completato
 
@@ -20,10 +21,9 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `A1 — Data Governance Foundation` chiuso con le PR `#190` e `#193`.
 - `A2 — Full Coverage Source Monitor` chiuso con la PR `#194`; gli interventi `#195`–`#203` e il refresh `#202` hanno poi irrobustito acquisizione e gate senza indebolire i contratti.
 - `A3.1` chiuso con merge autorizzato della PR `#204`: nove dimensioni comuni e quattro stati finali (`ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`).
-- In `A3.2`, `scripts/enrichment_audit_matrix.py` deriva una riga per ogni coppia `indicatore pubblico × dimensione` dall'Effective Public Catalog e dalle source policy esistenti.
-- L'evidenza strutturata prevale e può assegnare `ACQUIRED`; disponibilità/indisponibilità e non-applicabilità richiedono annotazioni documentate nel registry esistente.
-- La modalità strict rifiuta qualunque coppia non classificata: `state: null` è solo lavoro residuo, non un quinto stato A3.
-- Il Full post-build verifica la matrice sul catalogo pubblico realmente materializzato e la copertura `indicatori × 9`.
+- La PR `#206` ha introdotto e pubblicato la matrice derivata A3.2 sull'Effective Public Catalog, con strict mode e regressioni; Quick e Full sono verdi.
+- Il Full della `#206` ha misurato la baseline reale: `225 × 9 = 2.025` coppie, `139` già classificate e `1.886` residue.
+- La PR `#207` aggiunge il report derivato del residuo per dimensione e source profile per guidare l'audit per fonte, senza inventari paralleli.
 
 ## Decisioni vincolanti
 
@@ -35,18 +35,21 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 6. `ACQUIRED` richiede evidenza strutturata; non può essere dichiarato manualmente.
 7. `AVAILABLE_MISSING` e `SOURCE_UNAVAILABLE` richiedono evidenza e riferimento verificabile alla fonte; `NOT_APPLICABLE` è ammesso solo a livello di singola metrica.
 8. A3.2 non è chiuso finché la matrice strict non raggiunge `unclassifiedPairCount = 0`.
-9. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
+9. Le classificazioni vanno riusate a livello di source profile quando metodologicamente valide; override metric-specific solo per eccezioni reali.
+10. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Verificare Quick e Full della PR `#206` e leggere dal Full il conteggio reale di coppie classificate/non classificate sul catalogo pubblico materializzato.
-2. Restando dentro `A3.2`, colmare le coppie residue tramite evidenze riusabili a livello di source profile e soli override metric-specific necessari, senza enumerare manualmente i 225 indicatori.
-3. Portare la stessa matrice a validazione strict (`unclassifiedPairCount = 0`) prima di segnare `A3.2` come completato e passare ad `A3.3`.
+1. Leggere dal Full della `#207` il residuo per dimensione e i source profile con più coppie non classificate.
+2. Auditare prima i profili ad alto impatto usando riferimenti ufficiali verificabili e aggiungere `enrichmentDimensions` riusabili nel registry esistente.
+3. Usare override metric-specific solo dove `NOT_APPLICABLE` o la disponibilità della dimensione dipendono davvero dalla singola metrica.
+4. Ripetere il ciclo finché la validazione strict raggiunge `unclassifiedPairCount = 0`, quindi chiudere `A3.2` e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza A3.2: `11392b87deabf8c28b79c01fa11c4eadb5f3f61e`.
+- Main di partenza della tranche evidenze A3.2: `3768ca5ae0d53db37c2c7ac526c93e9b125ac6ef`.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
-- A3.1 mergiato con PR `#204`.
+- A3.1 mergiato con PR `#204`; fondazione matrice A3.2 mergiata e pubblicata con PR `#206`.
+- Pages post-merge `#206` e live-status sono verdi.
 - Il container della sessione non risolve `github.com`; il preflight locale completo non è eseguibile e non viene dichiarato come eseguito. I gate GitHub restano obbligatori prima del merge.
