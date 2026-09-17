@@ -70,6 +70,7 @@ jobs:
             scripts/test_opportunity_expired_lifecycle.py \
             scripts/test_opportunity_municipal_relevance.py \
             scripts/test_opportunity_audit_corpus_promotions.py \
+            scripts/test_opportunity_snapshot_lifecycle.py \
             scripts/build_opportunity_preview_v044.py \
             scripts/materialize_opportunity_release_snapshot.py \
             scripts/build_opportunity_release.py \
@@ -106,82 +107,7 @@ jobs:
       - name: Materialize current public snapshot with audit corpus
         run: |
           python scripts/materialize_opportunity_release_snapshot.py
-          python - <<'PY'
-          import json
-          from datetime import date
-
-          p = json.load(open('data/opportunity-release.json', encoding='utf-8'))
-          assert p['releaseVersion'] == '0.4.4'
-          reference = date.fromisoformat(str(p.get('referenceDate') or ''))
-          assert reference >= date(2026, 9, 8), reference
-          opportunities = list(p.get('opportunities') or [])
-          assert opportunities
-          counts = p.get('counts') or {}
-          assert counts.get('new') == sum(bool(x.get('is_new')) for x in opportunities)
-
-          expired = []
-          for item in opportunities:
-              if str(item.get('lifecycle_stage') or 'application_open') != 'application_open':
-                  continue
-              deadline_text = str(item.get('deadline_at') or '')
-              if not deadline_text:
-                  continue
-              try:
-                  deadline = date.fromisoformat(deadline_text)
-              except ValueError:
-                  continue
-              if deadline < reference:
-                  expired.append((item.get('title'), deadline_text))
-          assert not expired, expired
-
-          replay = p.get('auditCorpusPromotion') or {}
-          replay_current = int(replay.get('currentOrRollingAdded') or 0)
-          replay_municipal = int(replay.get('municipalCurrentOrRollingAdded') or 0)
-          replay_partnership = int(replay.get('partnershipCurrentOrRollingAdded') or 0)
-          replay_municipal_upcoming = int(replay.get('municipalUpcomingAdded') or 0)
-          replay_partnership_upcoming = int(replay.get('partnershipUpcomingAdded') or 0)
-          replay_added = int(replay.get('added') or 0)
-          matrix_target = int(replay.get('matrixCurrentTarget') or 0)
-          assert matrix_target == 89, replay
-          assert replay_current == replay_municipal + replay_partnership, replay
-          assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
-          # La matrice del 7/9 definisce il pavimento storico verificato, non un
-          # tetto: nuove opportunità documentate possono far crescere il corpus.
-          assert replay_current >= matrix_target, replay
-
-          municipal = p.get('municipalRelevance') or {}
-          headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
-          headline_upcoming = int(municipal.get('headlineUpcoming') or 0)
-          headline_total = int(municipal.get('headlineTotal') or 0)
-          partnership_current = int(municipal.get('partnershipCurrentOrRolling') or 0)
-          partnership_upcoming = int(municipal.get('partnershipUpcoming') or 0)
-          partnership_total = int(municipal.get('partnershipTotal') or 0)
-          review_excluded = int(municipal.get('reviewExcluded') or 0)
-          assert headline_total == headline_current + headline_upcoming, municipal
-          assert partnership_total == partnership_current + partnership_upcoming, municipal
-          assert len(opportunities) == headline_total + partnership_total + review_excluded, municipal
-          assert headline_current > 0 and partnership_current > 0, municipal
-
-          assert not p.get('continuityHold')
-          assert not p.get('coverageHold')
-          backtest = p.get('backtest') or {}
-          if backtest:
-              assert backtest.get('passed') is True, backtest
-          audit = p.get('coverageAudit') or {}
-          if audit:
-              assert audit.get('status') == 'pass', audit
-          regional = p.get('regionalCompleteness') or {}
-          if regional:
-              assert regional.get('status') in {'pass', 'degraded'}, regional
-          print(
-              f"Snapshot pubblico verificato: {len(opportunities)} schede · "
-              f"headline current/rolling {headline_current} · "
-              f"headline upcoming {headline_upcoming} · "
-              f"partnership current/rolling {partnership_current} · "
-              f"partnership upcoming {partnership_upcoming} · "
-              f"replay {replay_current}/{matrix_target} current/rolling · riferimento {p.get('referenceDate')}"
-          )
-          PY
+          python scripts/test_opportunity_snapshot_lifecycle.py --file data/opportunity-release.json --mode release
 
       - name: Build public site
         run: |
@@ -273,96 +199,7 @@ jobs:
         run: python scripts/opportunity_daily_refresh_stable.py --date "$(date -u +%F)"
 
       - name: Validate current daily snapshot
-        run: |
-          python - <<'PY'
-          import json
-          from datetime import date, datetime, timezone
-          from pathlib import Path
-
-          p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
-          expected = datetime.now(timezone.utc).date()
-          expected_date = expected.isoformat()
-          assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
-          assert p.get('releaseVersion') == '0.4.4'
-          assert p.get('dailyHardeningVersion') == '0.4.4-h5'
-          assert p.get('sourceHealthGraceDays') == 2
-          assert not p.get('continuityHold')
-          assert not p.get('coverageHold')
-          assert (p.get('backtest') or {}).get('passed') is True
-          assert (p.get('coverageAudit') or {}).get('status') == 'pass'
-          assert not ((p.get('coverageAudit') or {}).get('runtimeUncoveredFamilies') or [])
-          assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
-          assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
-
-          opportunities = list(p.get('opportunities') or [])
-          assert opportunities
-          expired = []
-          for item in opportunities:
-              if str(item.get('lifecycle_stage') or 'application_open') != 'application_open':
-                  continue
-              deadline_text = str(item.get('deadline_at') or '')
-              if not deadline_text:
-                  continue
-              try:
-                  deadline = date.fromisoformat(deadline_text)
-              except ValueError:
-                  continue
-              if deadline < expected:
-                  expired.append((item.get('title'), deadline_text))
-          assert not expired, expired
-
-          transport = p.get('transportAudit') or {}
-          assert transport.get('schemaVersion') == '1.2', transport
-          summary = transport.get('summary') or {}
-          assert int(summary.get('configuredSources') or 0) > 0
-          assert int(summary.get('configuredEndpoints') or 0) > 0
-          assert int(summary.get('sourceHealthGraceDays') or 0) == 2
-
-          replay = p.get('auditCorpusPromotion') or {}
-          replay_current = int(replay.get('currentOrRollingAdded') or 0)
-          replay_municipal = int(replay.get('municipalCurrentOrRollingAdded') or 0)
-          replay_partnership = int(replay.get('partnershipCurrentOrRollingAdded') or 0)
-          replay_municipal_upcoming = int(replay.get('municipalUpcomingAdded') or 0)
-          replay_partnership_upcoming = int(replay.get('partnershipUpcomingAdded') or 0)
-          replay_added = int(replay.get('added') or 0)
-          matrix_target = int(replay.get('matrixCurrentTarget') or 0)
-          assert matrix_target == 89, replay
-          assert replay_current == replay_municipal + replay_partnership, replay
-          assert replay_added == replay_current + replay_municipal_upcoming + replay_partnership_upcoming, replay
-          # La matrice del 7/9 definisce il pavimento storico verificato, non un
-          # tetto: nuove opportunità documentate possono far crescere il corpus.
-          assert replay_current >= matrix_target, replay
-
-          municipal = p.get('municipalRelevance') or {}
-          headline_current = int(municipal.get('headlineCurrentOrRolling') or 0)
-          headline_upcoming = int(municipal.get('headlineUpcoming') or 0)
-          headline_total = int(municipal.get('headlineTotal') or 0)
-          partnership_current = int(municipal.get('partnershipCurrentOrRolling') or 0)
-          partnership_upcoming = int(municipal.get('partnershipUpcoming') or 0)
-          partnership_total = int(municipal.get('partnershipTotal') or 0)
-          review_excluded = int(municipal.get('reviewExcluded') or 0)
-          assert headline_total == headline_current + headline_upcoming, municipal
-          assert partnership_total == partnership_current + partnership_upcoming, municipal
-          assert len(opportunities) == headline_total + partnership_total + review_excluded, municipal
-          assert headline_current > 0 and partnership_current > 0, municipal
-
-          required = {
-              'pcm-sport-eventi-2026',
-              'life-2026-cet-heatcoolplan',
-              'life-2026-cet-pda',
-              'life-2026-cet-enercom',
-              'life-2026-cet-empower',
-          }
-          ids = {x.get('coverage_id') for x in opportunities}
-          assert required <= ids, sorted(required - ids)
-          print(
-              'Dry-run daily validato:', len(opportunities), 'schede ·',
-              headline_current, 'comunali current/rolling ·',
-              partnership_current, 'partnership current/rolling ·',
-              'replay', replay_current, '/', matrix_target, 'current/rolling ·',
-              'fallback', summary.get('fallbackSuccesses', 0), '· grace', summary.get('sourcesInGrace', 0),
-          )
-          PY
+        run: python scripts/test_opportunity_snapshot_lifecycle.py --file data/opportunity-daily-public.json --mode daily
 
       - name: Build tomorrow public Radar
         run: |

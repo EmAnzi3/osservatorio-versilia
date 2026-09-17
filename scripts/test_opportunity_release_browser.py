@@ -86,8 +86,34 @@ def verify_release(base: str) -> None:
 
             body = page.locator('body').inner_text()
             assert date_expected in body and 'Radar v0.4.4' in body
-            assert 'Eventi sportivi di rilevanza nazionale e internazionale 2026' in body
-            assert 'LIFE 2026 · Piani locali di riscaldamento e raffrescamento' in body
+            card_titles = cards.locator('h3')
+            card_sources = cards.locator('a.op-source-link')
+            assert card_titles.count() == total_expected
+            assert card_titles.evaluate_all("els=>els.every(e=>(e.textContent||'').trim().length>0)")
+            assert card_sources.count() == total_expected
+            assert card_sources.evaluate_all(
+                "els=>els.every(e=>e.href.startsWith('http://')||e.href.startsWith('https://'))"
+            )
+            assert card_sources.evaluate_all(
+                "els=>els.every(e=>e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+            )
+            archive = page.locator('details.op-archive')
+            assert archive.count() == 1
+            archive_rows = archive.locator('.op-archive-row')
+            archive_expected = int(archive.locator('summary strong').inner_text() or 0)
+            assert archive_expected == archive_rows.count(), (archive_expected, archive_rows.count())
+            if archive_expected:
+                assert archive_rows.locator('.op-archive-copy strong').count() == archive_expected
+                assert archive_rows.locator('.op-archive-copy strong').evaluate_all(
+                    "els=>els.every(e=>(e.textContent||'').trim().length>0)"
+                )
+                archive_links = archive_rows.locator('a')
+                assert archive_links.count() == archive_expected
+                assert archive_links.evaluate_all(
+                    "els=>els.every(e=>(e.href.startsWith('http://')||e.href.startsWith('https://'))&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+                )
+                archive.locator('summary').click()
+                assert archive.evaluate('el=>el.open')
             for token in FORBIDDEN:
                 assert token.lower() not in body.lower(), token
 
@@ -137,13 +163,20 @@ def verify_release(base: str) -> None:
 
             source = page.locator('[data-op-source]')
             assert source.count() == 1 and source.locator('option').count() >= 40
-            current = source.locator('option[data-current-count]').evaluate_all(
-                "els=>els.map(o=>({value:o.value,count:Number(o.dataset.currentCount||0)})).filter(x=>x.value&&x.count>0)"
-            )
-            assert current
-            source.select_option(current[0]['value'])
+            source_values = set(source.locator('option').evaluate_all(
+                "els=>els.map(o=>o.value).filter(Boolean)"
+            ))
+            card_source_values = set(cards.evaluate_all(
+                "els=>els.map(e=>e.dataset.source||'').filter(Boolean)"
+            ))
+            filterable_sources = sorted(source_values & card_source_values)
+            assert filterable_sources, (sorted(source_values), sorted(card_source_values))
+            selected_source = filterable_sources[0]
+            source.select_option(selected_source)
             page.wait_for_timeout(120)
-            assert page.locator('[data-opportunity-card]:not([hidden])').count() >= 1
+            source_visible = page.locator(f'[data-opportunity-card][data-source="{selected_source}"]:not([hidden])')
+            assert source_visible.count() >= 1, selected_source
+            assert page.locator('[data-opportunity-card]:not([hidden])').count() == source_visible.count()
             page.locator('[data-op-reset]').click()
             lifecycle = page.locator('[data-op-lifecycle]')
             lifecycle.select_option('rolling_open')
