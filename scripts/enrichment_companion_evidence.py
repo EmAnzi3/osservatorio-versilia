@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Resolve A3.2 evidence supplied by a separately materialized companion metric.
 
-The relationship contract is declarative and intentionally small: it records
-semantic links between public indicators, never final A3 states. A relationship
-can become ACQUIRED only when the referenced companion exists in the canonical
-catalog and the requested dimension is independently detected in that
-companion's own structured payload or declared storage route.
+The relationship contract records semantic links between public indicators,
+never final A3 states. A relationship can become ACQUIRED only when the
+referenced companion exists in the canonical catalog and the requested
+dimension is independently detected in that companion's own structured payload
+or declared storage route.
 """
 from __future__ import annotations
 
@@ -69,12 +69,10 @@ def companion_acquired_evidence(
             f"Companion A3 assente dal catalogo: {metric_id}/{dimension} -> {companion_id}"
         )
 
-    evidence = _structural.acquired_evidence(
-        companion,
-        dimension,
-        metric_id=companion_id,
-        catalog=catalog,
-    )
+    # Deliberately verify only local/route evidence on the companion. Do not
+    # recurse through companion relationships, which would turn a declared
+    # semantic edge into transitive ACQUIRED evidence.
+    evidence = _structural.acquired_evidence(companion, dimension)
     if not evidence:
         evidence = structured_route_evidence(companion, dimension, repo_root)
     if not evidence:
