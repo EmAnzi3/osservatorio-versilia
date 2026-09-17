@@ -92,7 +92,10 @@ def verify_release(base: str) -> None:
             assert card_titles.evaluate_all("els=>els.every(e=>(e.textContent||'').trim().length>0)")
             assert card_sources.count() == total_expected
             assert card_sources.evaluate_all(
-                "els=>els.every(e=>/^https?:\/\//.test(e.href)&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+                "els=>els.every(e=>e.href.startsWith('http://')||e.href.startsWith('https://'))"
+            )
+            assert card_sources.evaluate_all(
+                "els=>els.every(e=>e.target==='_blank'&&(e.rel||'').includes('noopener'))"
             )
             archive = page.locator('details.op-archive')
             assert archive.count() == 1
@@ -107,7 +110,7 @@ def verify_release(base: str) -> None:
                 archive_links = archive_rows.locator('a')
                 assert archive_links.count() == archive_expected
                 assert archive_links.evaluate_all(
-                    "els=>els.every(e=>/^https?:\/\//.test(e.href)&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+                    "els=>els.every(e=>(e.href.startsWith('http://')||e.href.startsWith('https://'))&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
                 )
                 archive.locator('summary').click()
                 assert archive.evaluate('el=>el.open')
@@ -160,13 +163,15 @@ def verify_release(base: str) -> None:
 
             source = page.locator('[data-op-source]')
             assert source.count() == 1 and source.locator('option').count() >= 40
-            current = source.locator('option[data-current-count]').evaluate_all(
-                "els=>els.map(o=>({value:o.value,count:Number(o.dataset.currentCount||0)})).filter(x=>x.value&&x.count>0)"
-            )
-            assert current
-            source.select_option(current[0]['value'])
+            first_card = page.locator('[data-opportunity-card]').first
+            first_source = first_card.get_attribute('data-source')
+            assert first_source
+            assert source.locator(f'option[value="{first_source}"]').count() == 1, first_source
+            source.select_option(first_source)
             page.wait_for_timeout(120)
-            assert page.locator('[data-opportunity-card]:not([hidden])').count() >= 1
+            source_visible = page.locator(f'[data-opportunity-card][data-source="{first_source}"]:not([hidden])')
+            assert source_visible.count() >= 1, first_source
+            assert page.locator('[data-opportunity-card]:not([hidden])').count() == source_visible.count()
             page.locator('[data-op-reset]').click()
             lifecycle = page.locator('[data-op-lifecycle]')
             lifecycle.select_option('rolling_open')
