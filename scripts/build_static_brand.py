@@ -30,7 +30,7 @@ SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH = ROOT / "scripts" / "patch_salute_v140_d
 PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_reference_contract.py"
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
-A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit10.py"
+A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit12.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -54,29 +54,15 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(TERRITORIO_V137_RUNTIME_PATCH), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(INVALSI_V138_PAYLOAD), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(INVALSI_V138_RUNTIME_RUNNER), run_name="__main__")
-        # v1.39 è un overlay esclusivamente locale: la snapshot OpenBDAP è già
-        # versionata e viene applicata soltanto dopo che la catena v1.38 è completa.
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_MATERIALIZER), run_name="__main__")
-        # Il benchmark pro capite è un contratto trasversale della release v1.39:
-        # viene verificato prima che la tranche Salute incrementi la versione.
         _ORIGINAL_RUN_PATH(str(PER_CAPITA_REFERENCE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(PER_CAPITA_REFERENCE_RUNTIME_PATCH), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(BILANCI_V139_TEST), run_name="__main__")
-        # v1.40 è l'ultimo overlay della catena pubblica e porta il catalogo a 225.
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_MATERIALIZER), run_name="__main__")
-        # Il materializzatore demografico espone main() e come CLI termina con
-        # SystemExit(0). Nel builder lo carichiamo come modulo per non interrompere
-        # la catena prima del runtime patch e del prerender statico.
         demographic_ns = _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_MATERIALIZER))
         demographic_ns["main"]()
-        # Manteniamo separati il contratto runtime stabile v1.40 e l'arricchimento
-        # demografico opzionale: il secondo usa anchor strutturali e non dipende dal
-        # testo esatto lasciato dalle release precedenti.
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_CORE), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH), run_name="__main__")
-        # A3.2 annota il registry pubblico effettivo dopo tutti gli overlay dati:
-        # nessuna metrica viene enumerata e il workspace transazionale ripristina
-        # il registry sorgente al termine della build.
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
@@ -113,9 +99,6 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
 
 if __name__ == "__main__":
     with public_build_workspace():
-        # Il Radar pubblico deve essere ricostruito nello stesso workspace effimero
-        # della build. In questo modo Pages applica sempre replay audit + matrice al
-        # daily verificato disponibile, senza riscrivere i dati canonici nel repo.
         _ORIGINAL_RUN_PATH(str(OPPORTUNITY_MATERIALIZER), run_name="__main__")
         runpy.run_path = _run_path_with_fragilita_r3_fix
         try:
