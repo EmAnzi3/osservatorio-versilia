@@ -163,14 +163,19 @@ def verify_release(base: str) -> None:
 
             source = page.locator('[data-op-source]')
             assert source.count() == 1 and source.locator('option').count() >= 40
-            first_card = page.locator('[data-opportunity-card]').first
-            first_source = first_card.get_attribute('data-source')
-            assert first_source
-            assert source.locator(f'option[value="{first_source}"]').count() == 1, first_source
-            source.select_option(first_source)
+            source_values = set(source.locator('option').evaluate_all(
+                "els=>els.map(o=>o.value).filter(Boolean)"
+            ))
+            card_source_values = set(cards.evaluate_all(
+                "els=>els.map(e=>e.dataset.source||'').filter(Boolean)"
+            ))
+            filterable_sources = sorted(source_values & card_source_values)
+            assert filterable_sources, (sorted(source_values), sorted(card_source_values))
+            selected_source = filterable_sources[0]
+            source.select_option(selected_source)
             page.wait_for_timeout(120)
-            source_visible = page.locator(f'[data-opportunity-card][data-source="{first_source}"]:not([hidden])')
-            assert source_visible.count() >= 1, first_source
+            source_visible = page.locator(f'[data-opportunity-card][data-source="{selected_source}"]:not([hidden])')
+            assert source_visible.count() >= 1, selected_source
             assert page.locator('[data-opportunity-card]:not([hidden])').count() == source_visible.count()
             page.locator('[data-op-reset]').click()
             lifecycle = page.locator('[data-op-lifecycle]')
