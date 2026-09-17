@@ -8,11 +8,11 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `92b32cf80839774aeb1f153a16a66c359e4e38c5`
+- **Baseline main:** `bc17396efae8fc2896a5f011c371bd07ff860104`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 su main:** 2.025 coppie; 1.464 classificate, 561 da auditare dopo il merge della `#215`
-- **Branch corrente:** `chore/a3-2-evidence-audit-10`
+- **Matrice A3.2 su main:** 2.025 coppie; 1.498 classificate, 527 da auditare dopo il merge della `#217`
+- **Branch corrente:** `chore/a3-2-structural-detector-11`
 - **PR corrente:** da aprire
 
 ## Completato
@@ -27,20 +27,21 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#212`: `1.101/2.025`.
 - `#213`: `1.245/2.025`.
 - `#214`: `1.373/2.025`.
-- La PR `#215` è stata mergiata e pubblicata dopo tutti i gate verdi; il Full del run `35199903735`, job `105134200426`, ha confermato `1.464/2.025` coppie classificate e `561` residue.
+- `#215`: `1.464/2.025`.
+- La PR `#217` è stata mergiata dopo Quick/Full verdi; il Full del run `35214401001`, job `105181107927`, ha confermato `1.498/2.025` coppie classificate e `527` residue.
 
-## Residuo A3.2 verificato sulla #215
+## Residuo A3.2 verificato sulla #217
 
 Per dimensione:
 
 - `serie_storica`: 54
-- `sesso`: 60
-- `eta`: 87
-- `dettaglio_territoriale`: 24
-- `benchmark_toscana_italia`: 25
-- `assoluto_normalizzato`: 114
+- `sesso`: 56
+- `eta`: 77
+- `dettaglio_territoriale`: 21
+- `benchmark_toscana_italia`: 22
+- `assoluto_normalizzato`: 108
 - `frequenza_infra_annuale`: 61
-- `numeratore_denominatore`: 71
+- `numeratore_denominatore`: 63
 - `categorie_specifiche`: 65
 
 Source profile con più residuo:
@@ -48,9 +49,7 @@ Source profile con più residuo:
 - `ars-toscana-mixed`: 74
 - `istat-demography-annual`: 44
 - `regione-toscana-indicatori-comunali`: 35
-- `istat-agriculture-census-2020`: 19
-- `istat-fragility-2022`: 18
-- `mim-school-year`: 17
+- `istat-agriculture-census-2020`: 14
 - `mit-sid-demanio-irregular`: 14
 - `istat-road-annual`: 14
 - `regione-toscana-tourism-annual`: 12
@@ -65,6 +64,8 @@ Source profile con più residuo:
 - `erp-lucca-annual-balance-sheet`: 9
 - `pun-continuous`: 9
 - `regione-toscana-opere-idrauliche-2021`: 9
+- `regione-toscana-ucs-2007-2019`: 9
+- `regione-toscana-biblioteche-annual`: 9
 
 ## Decisioni vincolanti
 
@@ -81,16 +82,16 @@ Source profile con più residuo:
 
 ## Prossima azione esatta
 
-1. Eseguire la tranche `audit-10` dalla branch `chore/a3-2-evidence-audit-10`, nata dal `main` post-`#215`.
-2. La tranche interviene in modo conservativo su `istat-fragility-2022`, su coppie MIM selezionate e su numeratore/denominatore di metriche Agricoltura; non usa classificazioni broad su `ars-toscana-mixed`.
-3. Le coppie che risultano già presenti strutturalmente ma non rilevate dal detector restano fuori dalle annotazioni manuali e saranno gestite con correzione strutturale dedicata.
-4. Eseguire Quick/Full, registrare il conteggio effettivo e aggiornare questo handoff prima del merge.
+1. Eseguire la tranche strutturale `audit-11` dalla branch `chore/a3-2-structural-detector-11`, nata dal `main` post-`#217`.
+2. Estendere esclusivamente il riconoscimento automatico `ACQUIRED` a tre forme già presenti nel catalogo: serie compatte `years + values`, coppie assoluto/normalizzato dichiarate da `meta.normalized`, e categorie selezionabili `selectorLabel + aggregate.parts`.
+3. Mantenere guardie negative per evitare falsi positivi; nessuna nuova classificazione manuale in questa tranche.
+4. Eseguire Quick/Full e aggiornare questo handoff con il conteggio effettivo prima del merge.
 5. Ripetere tranche verificabili fino a `unclassifiedPairCount = 0`; solo allora chiudere `A3.2` e passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza della decima tranche A3.2: `92b32cf80839774aeb1f153a16a66c359e4e38c5`.
-- `#215` mergiata e pubblicata; Full `35199903735` / job `105134200426`: `1.464` coppie classificate, `561` residue; Quick e Full verdi.
+- Main di partenza della tranche strutturale A3.2: `bc17396efae8fc2896a5f011c371bd07ff860104`.
+- `#217` mergiata; Full `35214401001` / job `105181107927`: `1.498` coppie classificate, `527` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su perimetro operativo 225 indicatori / 122 fonti.
 - I gate GitHub Actions restano obbligatori prima del merge.

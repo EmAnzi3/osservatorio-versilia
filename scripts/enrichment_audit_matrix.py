@@ -115,6 +115,30 @@ def _find_series(metric: dict[str, Any]) -> str | None:
                     periods.add(str(candidate))
         if len(periods) >= 2:
             return _path_text(path)
+
+    # Several materialized public metrics store history as a compact object
+    # ``{"years": [...], "values": [...]}`` rather than as a list of points.
+    # Treat it as structural evidence only when both vectors are aligned and
+    # contain at least two actual observations.
+    period_vector_keys = {"years", "anni", "periods", "periodi", "dates"}
+    value_vector_keys = {"values", "valori"}
+    for path, value in _walk(metric):
+        if not isinstance(value, dict):
+            continue
+        normalized = {_norm(key): item for key, item in value.items()}
+        periods = next(
+            (normalized[key] for key in period_vector_keys if key in normalized), None
+        )
+        values = next(
+            (normalized[key] for key in value_vector_keys if key in normalized), None
+        )
+        if not isinstance(periods, list) or not isinstance(values, list):
+            continue
+        if len(periods) < 2 or len(periods) != len(values):
+            continue
+        if sum(1 for item in values if _has_value(item)) < 2:
+            continue
+        return _path_text(path)
     return None
 
 
@@ -229,6 +253,34 @@ def _find_absolute_normalized(metric: dict[str, Any]) -> str | None:
     )
     if absolute and normalized and absolute != normalized:
         return f"{absolute} + {normalized}"
+
+    # The public catalog also has an explicit normalization contract: metadata
+    # under ``meta.normalized`` plus a base ``value`` and its normalized twin.
+    # This is stronger evidence than inferring normalization from labels alone.
+    meta = metric.get("meta")
+    meta = meta if isinstance(meta, dict) else {}
+    normalized_meta = meta.get("normalized")
+    if not isinstance(normalized_meta, dict) or not normalized_meta:
+        return None
+
+    rows = metric.get("rows")
+    if isinstance(rows, list):
+        for index, row in enumerate(rows):
+            if not isinstance(row, dict):
+                continue
+            normalized_value = row.get("normalized")
+            normalized_key = "normalized"
+            if not _has_value(normalized_value):
+                normalized_value = row.get("normalizedValue")
+                normalized_key = "normalizedValue"
+            if _has_value(row.get("value")) and _has_value(normalized_value):
+                return f"rows.{index}.value + rows.{index}.{normalized_key}"
+
+    aggregate = metric.get("aggregate")
+    normalized_aggregate = metric.get("normalizedAggregate")
+    if isinstance(aggregate, dict) and isinstance(normalized_aggregate, dict):
+        if _has_value(aggregate.get("value")) and _has_value(normalized_aggregate.get("value")):
+            return "aggregate.value + normalizedAggregate.value"
     return None
 
 
@@ -267,7 +319,7 @@ def _find_numerator_denominator(metric: dict[str, Any]) -> str | None:
 
 
 def _find_specific_categories(metric: dict[str, Any]) -> str | None:
-    return _find_labeled_dimension(
+    labeled = _find_labeled_dimension(
         metric,
         {
             "categories",
@@ -288,6 +340,31 @@ def _find_specific_categories(metric: dict[str, Any]) -> str | None:
             "classe_potenza",
         },
     )
+    if labeled:
+        return labeled
+
+    # Composite public indicators expose categorical choices through the same
+    # structural contract used by the UI: a selector label and at least two
+    # identifiable ``aggregate.parts``. Do not infer categories from parts alone.
+    meta = metric.get("meta")
+    meta = meta if isinstance(meta, dict) else {}
+    selector_label = meta.get("selectorLabel")
+    aggregate = metric.get("aggregate")
+    aggregate = aggregate if isinstance(aggregate, dict) else {}
+    parts = aggregate.get("parts")
+    if not isinstance(selector_label, str) or not selector_label.strip():
+        return None
+    if not isinstance(parts, list) or len(parts) < 2:
+        return None
+    identifiable = sum(
+        1
+        for part in parts
+        if isinstance(part, dict)
+        and any(_has_value(part.get(key)) for key in ("key", "label", "selectorLabel"))
+    )
+    if identifiable >= 2:
+        return "meta.selectorLabel + aggregate.parts"
+    return None
 
 
 def acquired_evidence(metric: dict[str, Any], dimension: str) -> str | None:

@@ -104,6 +104,48 @@ def test_derived_matrix_and_precedence() -> None:
     beta_sex = _row(payload, "beta", "sesso")
     assert beta_sex["state"] == "ACQUIRED"
 
+    compact_history = {
+        "rows": [{"series": {"years": [2023, 2024, 2025], "values": [1, 2, 3]}}]
+    }
+    assert audit.acquired_evidence(compact_history, "serie_storica") == "rows.0.series"
+    one_point_history = {
+        "rows": [{"series": {"years": [2025], "values": [3]}}]
+    }
+    assert audit.acquired_evidence(one_point_history, "serie_storica") is None
+
+    normalized_pair = {
+        "meta": {"normalized": {"label": "Per residente", "unit": "per1000"}},
+        "rows": [{"value": 120, "normalized": 7.5}],
+    }
+    assert (
+        audit.acquired_evidence(normalized_pair, "assoluto_normalizzato")
+        == "rows.0.value + rows.0.normalized"
+    )
+    normalized_metadata_only = {
+        "meta": {"normalized": {"label": "Per residente", "unit": "per1000"}},
+        "rows": [{"value": 120}],
+    }
+    assert audit.acquired_evidence(normalized_metadata_only, "assoluto_normalizzato") is None
+
+    selectable_parts = {
+        "meta": {"selectorLabel": "Lettura"},
+        "aggregate": {
+            "parts": [
+                {"key": "a", "label": "Voce A"},
+                {"key": "b", "label": "Voce B"},
+            ]
+        },
+    }
+    assert (
+        audit.acquired_evidence(selectable_parts, "categorie_specifiche")
+        == "meta.selectorLabel + aggregate.parts"
+    )
+    single_part = {
+        "meta": {"selectorLabel": "Lettura"},
+        "aggregate": {"parts": [{"key": "a", "label": "Voce A"}]},
+    }
+    assert audit.acquired_evidence(single_part, "categorie_specifiche") is None
+
 
 def test_acquired_evidence_wins_over_registry_annotation() -> None:
     data, registry = fixtures()
