@@ -1,0 +1,71 @@
+name: A3 Enrichment Audit
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: a3-enrichment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run A3 regression suite
+        run: |
+          python scripts/test_enrichment_audit_matrix.py
+          python scripts/test_enrichment_structural_closure.py
+          python scripts/test_enrichment_route_evidence.py
+          python scripts/test_enrichment_companion_evidence.py
+
+      - name: Build live A3 matrix
+        run: |
+          python scripts/enrichment_audit_matrix.py \
+            --data data/site-data.json \
+            --registry data/source-registry.json \
+            --output /tmp/a3-enrichment-matrix.json \
+            --allow-unclassified
+
+      - name: Verify demographic companion closure
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          expected = {
+              ('population', 'eta'),
+              ('populationChange', 'eta'),
+              ('naturalDemographicDynamics', 'eta'),
+              ('internalResidentialMobility', 'eta'),
+              ('foreignResidentialMobility', 'eta'),
+              ('totalResidentialMobility', 'eta'),
+              ('foreignResidents', 'eta'),
+          }
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:companion:'), (pair, row)
+
+          summary = matrix['summary']
+          print(
+              'A3 live matrix: '
+              f"{summary['classifiedPairCount']} classified / "
+              f"{summary['unclassifiedPairCount']} residual; "
+              '7 demographic companion pairs verified.'
+          )
+          PY
