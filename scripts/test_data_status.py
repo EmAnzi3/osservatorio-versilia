@@ -8,6 +8,7 @@ from pathlib import Path
 import enrichment_audit_matrix as _enrichment
 import test_data_status_impl as _impl
 import test_enrichment_audit_matrix as _enrichment_tests
+import test_enrichment_structural_closure as _structural_closure_tests
 from public_build_snapshot import (
     build_aware_load,
     effective_public_catalog,
@@ -43,6 +44,7 @@ def _validate_enrichment_matrix() -> None:
     _enrichment_tests.test_age_token_does_not_match_aggregate()
     _enrichment_tests.test_strict_validation_rejects_unclassified_pairs()
     _enrichment_tests.test_profile_not_applicable_is_rejected()
+    _structural_closure_tests.test_structural_closure_patterns()
 
     # Then validate the derived matrix against the actual materialized release.
     catalog = effective_public_catalog()
