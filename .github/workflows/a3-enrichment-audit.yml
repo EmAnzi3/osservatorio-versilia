@@ -28,11 +28,30 @@ jobs:
           python scripts/test_enrichment_route_evidence.py
           python scripts/test_enrichment_companion_evidence.py
 
-      - name: Build live A3 matrix
+      - name: Materialize effective public catalog
+        env:
+          OV_RELEASE_BUILD: "1"
+        run: |
+          python scripts/build_static_brand.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data_path = Path('dist/data/site-data.json')
+          registry_path = Path('dist/data/source-registry.json')
+          assert data_path.is_file(), data_path
+          assert registry_path.is_file(), registry_path
+          data = json.loads(data_path.read_text(encoding='utf-8'))
+          metrics = data.get('metrics') or {}
+          assert len(metrics) == 225, f"Effective Public Catalog inatteso: {len(metrics)} indicatori"
+          print('Effective Public Catalog: 225 indicatori materializzati in dist/.')
+          PY
+
+      - name: Build effective A3 matrix
         run: |
           python scripts/enrichment_audit_matrix.py \
-            --data data/site-data.json \
-            --registry data/source-registry.json \
+            --data dist/data/site-data.json \
+            --registry dist/data/source-registry.json \
             --output /tmp/a3-enrichment-matrix.json \
             --allow-unclassified
 
@@ -42,6 +61,10 @@ jobs:
           import json
 
           matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          summary = matrix['summary']
+          assert summary['metricCount'] == 225, summary
+          assert summary['pairCount'] == 2025, summary
+
           expected = {
               ('population', 'eta'),
               ('populationChange', 'eta'),
@@ -61,9 +84,8 @@ jobs:
               assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
               assert row['evidence'].startswith('structured:companion:'), (pair, row)
 
-          summary = matrix['summary']
           print(
-              'A3 live matrix: '
+              'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
               '7 demographic companion pairs verified.'
