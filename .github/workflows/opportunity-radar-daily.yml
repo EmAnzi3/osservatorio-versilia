@@ -178,53 +178,21 @@ jobs:
         continue-on-error: true
         run: |
           python -m json.tool data/opportunity-daily-public.json > /dev/null
+          python scripts/test_opportunity_snapshot_lifecycle.py --file data/opportunity-daily-public.json --mode daily
           python - <<'PY'
           import json
-          from datetime import datetime, timezone
           from pathlib import Path
 
-          path = Path('data/opportunity-daily-public.json')
-          p = json.loads(path.read_text(encoding='utf-8'))
-          expected_date = datetime.now(timezone.utc).date().isoformat()
-          assert p.get('referenceDate') == expected_date, (p.get('referenceDate'), expected_date)
-          assert p.get('releaseVersion') == '0.4.4'
-          assert p.get('dailyHardeningVersion') == '0.4.4-h5'
-          assert p.get('sourceHealthGraceDays') == 2
-          assert not p.get('continuityHold')
-          assert not p.get('coverageHold')
-          assert (p.get('backtest') or {}).get('passed') is True
-          assert (p.get('coverageAudit') or {}).get('status') == 'pass'
-          assert not ((p.get('coverageAudit') or {}).get('runtimeUncoveredFamilies') or [])
-          assert (p.get('regionalCompleteness') or {}).get('status') in {'pass', 'degraded'}
-          assert (p.get('continuityReconciliation') or {}).get('remaining') == 0
-
-          transport = p.get('transportAudit') or {}
-          assert transport.get('schemaVersion') == '1.2', transport
-          transport_summary = transport.get('summary') or {}
-          assert int(transport_summary.get('configuredSources') or 0) > 0, transport_summary
-          assert int(transport_summary.get('configuredEndpoints') or 0) > 0, transport_summary
-          assert int(transport_summary.get('sourceHealthGraceDays') or 0) == 2, transport_summary
+          p = json.loads(Path('data/opportunity-daily-public.json').read_text(encoding='utf-8'))
+          transport_summary = ((p.get('transportAudit') or {}).get('summary') or {})
           assert (p.get('counts') or {}).get('transportFallbacks') == int(transport_summary.get('fallbackSuccesses') or 0)
           assert (p.get('counts') or {}).get('transportProxyFallbacks') == int(transport_summary.get('proxySuccesses') or 0)
           assert (p.get('counts') or {}).get('transportFailures') == int(transport_summary.get('endpointFailures') or 0)
-
-          ids = {x.get('coverage_id') for x in p.get('opportunities') or []}
-          required = {
-              'pcm-sport-eventi-2026',
-              'life-2026-cet-heatcoolplan',
-              'life-2026-cet-pda',
-              'life-2026-cet-enercom',
-              'life-2026-cet-empower',
-          }
-          assert required <= ids, sorted(required - ids)
           print(
-              f"Daily snapshot validato: {len(p.get('opportunities') or [])} opportunità · "
-              f"{(p.get('counts') or {}).get('new', 0)} nuove · data {expected_date} · "
-              f"fallback trasporto {transport_summary.get('fallbackSuccesses', 0)} · "
+              f"Trasporto daily coerente: fallback {transport_summary.get('fallbackSuccesses', 0)} · "
               f"fonti in grace {transport_summary.get('sourcesInGrace', 0)} · "
               f"fonti unhealthy {transport_summary.get('unhealthySources', 0)} · "
-              f"fallimenti endpoint {transport_summary.get('endpointFailures', 0)} · "
-              f"continuità riconciliata {(p.get('continuityReconciliation') or {}).get('reconciled', 0)}"
+              f"fallimenti endpoint {transport_summary.get('endpointFailures', 0)}"
           )
           PY
 
