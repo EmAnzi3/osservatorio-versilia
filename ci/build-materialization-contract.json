@@ -31,6 +31,7 @@
     "scripts/apply_enrichment_evidence_audit7.py",
     "scripts/apply_enrichment_evidence_audit8.py",
     "scripts/apply_enrichment_evidence_audit9.py",
+    "scripts/apply_enrichment_evidence_audit10.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
     "scripts/materialize_territorio_v137.py",
