@@ -28,11 +28,7 @@ def _numeric(value: Any) -> bool:
 
 
 def _find_aligned_numeric_series(metric: dict[str, Any]) -> str | None:
-    """Recognize ``years`` plus any aligned numeric observation vector.
-
-    The previous detector required the vector to be literally named ``values``.
-    Composite public metrics also use names such as ``ha`` and ``pct``.
-    """
+    """Recognize ``years`` plus any aligned numeric observation vector."""
     period_keys = {"years", "anni", "periods", "periodi", "dates"}
     for path, value in _core._walk(metric):
         if not isinstance(value, dict):
@@ -56,25 +52,30 @@ def _find_aligned_numeric_series(metric: dict[str, Any]) -> str | None:
     return None
 
 
-def _ratio_scale(metric: dict[str, Any]) -> float | None:
-    meta = metric.get("meta")
-    meta = meta if isinstance(meta, dict) else {}
-    unit = _core._norm(meta.get("unit") or "")
-    if unit in {"percent", "percentage", "pct", "per_100", "per100"}:
+def _unit_scale(unit: Any) -> float | None:
+    raw = str(unit or "").strip()
+    normalized = _core._norm(raw)
+    if raw == "%" or normalized in {"percent", "percentage", "pct", "per_100", "per100"}:
         return 100.0
-    match = re.fullmatch(r"per_?(\d+)", unit)
+    aliases = {"per1000": 1000.0, "per_1000": 1000.0, "per100k": 100000.0, "per_100k": 100000.0}
+    if normalized in aliases:
+        return aliases[normalized]
+    match = re.fullmatch(r"per_?(\d+)", normalized)
     if match:
         return float(match.group(1))
+    if "_per_" in normalized:
+        return 1.0
     return None
 
 
-def _find_ratio_components(metric: dict[str, Any]) -> tuple[str, str, float] | None:
-    """Find two row fields that reproduce the published normalized value.
+def _ratio_scale(metric: dict[str, Any]) -> float | None:
+    meta = metric.get("meta")
+    meta = meta if isinstance(meta, dict) else {}
+    return _unit_scale(meta.get("unit"))
 
-    This is deliberately arithmetic rather than name-based. The same pair of
-    fields must reproduce at least 90% of the usable municipal rows and at least
-    two observations. A single-row numerical coincidence is never sufficient.
-    """
+
+def _find_ratio_components(metric: dict[str, Any]) -> tuple[str, str, float] | None:
+    """Find two row fields that reproduce the published normalized value."""
     scale = _ratio_scale(metric)
     rows = metric.get("rows")
     if scale is None or not isinstance(rows, list):
@@ -87,12 +88,7 @@ def _find_ratio_components(metric: dict[str, Any]) -> tuple[str, str, float] | N
         return None
 
     excluded = {
-        "value",
-        "benchmark_value",
-        "normalized",
-        "normalized_value",
-        "year",
-        "code",
+        "value", "benchmark_value", "normalized", "normalized_value", "year", "code",
     }
     counts: dict[str, int] = {}
     for row in usable_rows:
@@ -142,21 +138,266 @@ def _find_absolute_from_ratio(metric: dict[str, Any]) -> str | None:
     return f"rows.*.{numerator} + rows.*.value"
 
 
+def _absolute_field(part: dict[str, Any]) -> tuple[str, float] | None:
+    absolute_keys = {
+        "ha", "hectares", "count", "absolute", "assoluto", "km", "sqm", "m2",
+        "numerator", "numeratore", "people", "persons", "number",
+    }
+    for key, candidate in part.items():
+        if _core._norm(key) in absolute_keys and _numeric(candidate):
+            return str(key), float(candidate)
+    return None
+
+
+def _part_scale(part: dict[str, Any], metric_unit: Any) -> float | None:
+    return _unit_scale(part.get("unit") or metric_unit)
+
+
 def _find_parts_absolute_normalized(metric: dict[str, Any]) -> str | None:
-    normalized_units = {"percent", "percentage", "pct", "per100", "per_100", "per1000", "per_1000"}
-    absolute_keys = {"ha", "hectares", "count", "absolute", "assoluto", "km", "sqm", "m2"}
+    meta = metric.get("meta")
+    meta = meta if isinstance(meta, dict) else {}
+    metric_unit = meta.get("unit")
     for path, value in _core._walk(metric):
         if not path or path[-1] != "parts" or not isinstance(value, list):
             continue
         for part in value:
             if not isinstance(part, dict) or not _numeric(part.get("value")):
                 continue
-            unit = _core._norm(part.get("unit") or "")
-            if unit not in normalized_units:
+            if _part_scale(part, metric_unit) is None:
                 continue
-            if any(_core._norm(key) in absolute_keys and _numeric(candidate) for key, candidate in part.items()):
+            if _absolute_field(part) is not None:
                 return _core._path_text(path)
     return None
+
+
+def _ratio_matches(numerator: Any, denominator: Any, observed: Any, scale: float) -> bool:
+    if not (_numeric(numerator) and _numeric(denominator) and _numeric(observed)):
+        return False
+    denominator_value = float(denominator)
+    if denominator_value == 0:
+        return False
+    expected = float(numerator) / denominator_value * scale
+    observed_value = float(observed)
+    # Some official payloads publish percentages rounded to two decimals.
+    tolerance = max(0.02 if scale == 100.0 else 1e-3, abs(observed_value) * 5e-5)
+    return abs(expected - observed_value) <= tolerance
+
+
+def _enough(matches: list[bool]) -> bool:
+    return len(matches) >= 2 and sum(matches) / len(matches) >= 0.9
+
+
+def _find_parts_row_denominator(metric: dict[str, Any]) -> str | None:
+    """Recognize nested normalized parts divided by a top-level row denominator."""
+    rows = [row for row in metric.get("rows", []) if isinstance(row, dict)]
+    if len(rows) < 2:
+        return None
+    meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
+    metric_unit = meta.get("unit")
+    first_parts = rows[0].get("parts")
+    if not isinstance(first_parts, list):
+        return None
+    denominator_keys = [
+        str(key) for key, value in rows[0].items()
+        if key not in {"value", "year", "code", "benchmarkValue", "normalized"} and _numeric(value)
+    ]
+    for index, part in enumerate(first_parts):
+        if not isinstance(part, dict) or not _numeric(part.get("value")):
+            continue
+        absolute = _absolute_field(part)
+        scale = _part_scale(part, metric_unit)
+        if absolute is None or scale is None:
+            continue
+        absolute_key, _ = absolute
+        for denominator_key in denominator_keys:
+            checks: list[bool] = []
+            for row in rows:
+                parts = row.get("parts")
+                if not isinstance(parts, list) or index >= len(parts) or not isinstance(parts[index], dict):
+                    continue
+                checks.append(_ratio_matches(
+                    parts[index].get(absolute_key), row.get(denominator_key), parts[index].get("value"), scale
+                ))
+            if _enough(checks):
+                return f"rows.*.parts[{index}].{absolute_key} / rows.*.{denominator_key}"
+    return None
+
+
+def _find_parts_map_denominator(metric: dict[str, Any]) -> str | None:
+    """Recognize normalized parts against a structured top-level denominator map."""
+    rows = [row for row in metric.get("rows", []) if isinstance(row, dict)]
+    if len(rows) < 2:
+        return None
+    meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
+    metric_unit = meta.get("unit")
+    first_parts = rows[0].get("parts")
+    if not isinstance(first_parts, list):
+        return None
+    map_keys = [
+        str(key) for key, value in rows[0].items()
+        if isinstance(value, dict) and value and all(_numeric(item) for item in value.values())
+    ]
+    for index, part in enumerate(first_parts):
+        if not isinstance(part, dict) or not _numeric(part.get("value")):
+            continue
+        absolute = _absolute_field(part)
+        scale = _part_scale(part, metric_unit)
+        if absolute is None or scale is None:
+            continue
+        absolute_key, _ = absolute
+        for map_key in map_keys:
+            common = set(rows[0][map_key])
+            for row in rows[1:]:
+                candidate = row.get(map_key)
+                if not isinstance(candidate, dict):
+                    common.clear()
+                    break
+                common &= set(candidate)
+            for subkey in sorted(common):
+                checks: list[bool] = []
+                for row in rows:
+                    parts = row.get("parts")
+                    denominator_map = row.get(map_key)
+                    if (
+                        not isinstance(parts, list) or index >= len(parts) or not isinstance(parts[index], dict)
+                        or not isinstance(denominator_map, dict)
+                    ):
+                        continue
+                    checks.append(_ratio_matches(
+                        parts[index].get(absolute_key), denominator_map.get(subkey), parts[index].get("value"), scale
+                    ))
+                if _enough(checks):
+                    return f"rows.*.parts[{index}].{absolute_key} / rows.*.{map_key}.{subkey}"
+    return None
+
+
+def _find_nested_sibling_ratio(metric: dict[str, Any]) -> str | None:
+    """Recognize top-level normalized value from two numeric siblings in a child object."""
+    scale = _ratio_scale(metric)
+    rows = [row for row in metric.get("rows", []) if isinstance(row, dict) and _numeric(row.get("value"))]
+    if scale is None or len(rows) < 2:
+        return None
+    for child_key, child in rows[0].items():
+        if not isinstance(child, dict):
+            continue
+        numeric_keys = [str(key) for key, value in child.items() if _numeric(value)]
+        for numerator, denominator in permutations(numeric_keys, 2):
+            checks: list[bool] = []
+            for row in rows:
+                nested = row.get(child_key)
+                if not isinstance(nested, dict):
+                    continue
+                checks.append(_ratio_matches(
+                    nested.get(numerator), nested.get(denominator), row.get("value"), scale
+                ))
+            if _enough(checks):
+                return f"rows.*.{child_key}.{numerator} / rows.*.{child_key}.{denominator}"
+    return None
+
+
+def _find_density_parts_ratio(metric: dict[str, Any]) -> str | None:
+    """Recognize absolute-length and density parts sharing a row-level area denominator."""
+    rows = [row for row in metric.get("rows", []) if isinstance(row, dict)]
+    if len(rows) < 2:
+        return None
+    first_parts = rows[0].get("parts")
+    if not isinstance(first_parts, list):
+        return None
+    denominator_keys = [
+        str(key) for key, value in rows[0].items()
+        if key not in {"value", "year", "code"} and _numeric(value)
+    ]
+    for numerator_index, numerator_part in enumerate(first_parts):
+        if not isinstance(numerator_part, dict) or not _numeric(numerator_part.get("value")):
+            continue
+        numerator_unit = _core._norm(numerator_part.get("unit") or "")
+        if "_per_" in numerator_unit:
+            continue
+        for value_index, normalized_part in enumerate(first_parts):
+            if not isinstance(normalized_part, dict) or not _numeric(normalized_part.get("value")):
+                continue
+            normalized_unit = _core._norm(normalized_part.get("unit") or "")
+            if "_per_" not in normalized_unit:
+                continue
+            for denominator_key in denominator_keys:
+                checks: list[bool] = []
+                for row in rows:
+                    parts = row.get("parts")
+                    if not isinstance(parts, list) or max(numerator_index, value_index) >= len(parts):
+                        continue
+                    checks.append(_ratio_matches(
+                        parts[numerator_index].get("value"), row.get(denominator_key),
+                        parts[value_index].get("value"), 1.0,
+                    ))
+                if _enough(checks):
+                    return (
+                        f"rows.*.parts[{numerator_index}].value / rows.*.{denominator_key} "
+                        f"= rows.*.parts[{value_index}].value"
+                    )
+    return None
+
+
+def _find_exhaustive_parts_ratio(metric: dict[str, Any]) -> str | None:
+    """Recognize exhaustive distributions where counts generate every published share."""
+    rows = [row for row in metric.get("rows", []) if isinstance(row, dict)]
+    if len(rows) < 2:
+        return None
+    meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
+    scale = _unit_scale(meta.get("unit"))
+    if scale is None:
+        return None
+    checks: list[bool] = []
+    absolute_key: str | None = None
+    for row in rows:
+        parts = row.get("parts")
+        if not isinstance(parts, list) or len(parts) < 2:
+            continue
+        observations: list[tuple[float, float]] = []
+        row_key: str | None = None
+        for part in parts:
+            if not isinstance(part, dict):
+                observations = []
+                break
+            absolute = _absolute_field(part)
+            if absolute is None or not _numeric(part.get("value")):
+                observations = []
+                break
+            key, absolute_value = absolute
+            if row_key is None:
+                row_key = key
+            elif row_key != key:
+                observations = []
+                break
+            observations.append((absolute_value, float(part["value"])))
+        if not observations or row_key is None:
+            continue
+        if absolute_key is None:
+            absolute_key = row_key
+        elif absolute_key != row_key:
+            return None
+        denominator = sum(item[0] for item in observations)
+        if denominator == 0:
+            continue
+        checks.append(all(
+            _ratio_matches(absolute, denominator, normalized, scale)
+            for absolute, normalized in observations
+        ))
+    if _enough(checks) and absolute_key:
+        return (
+            f"rows.*.parts.*.{absolute_key} / "
+            f"sum(rows.*.parts.*.{absolute_key})"
+        )
+    return None
+
+
+def _find_nested_ratio_evidence(metric: dict[str, Any]) -> str | None:
+    return (
+        _find_parts_row_denominator(metric)
+        or _find_parts_map_denominator(metric)
+        or _find_nested_sibling_ratio(metric)
+        or _find_density_parts_ratio(metric)
+        or _find_exhaustive_parts_ratio(metric)
+    )
 
 
 def _identifiable_parts(value: Any) -> bool:
@@ -176,7 +417,6 @@ def _find_structured_categories(metric: dict[str, Any]) -> str | None:
     definitions = metric.get("categoryDefinitions")
     if _identifiable_parts(definitions):
         return "categoryDefinitions"
-
     meta = metric.get("meta")
     meta = meta if isinstance(meta, dict) else {}
     if not str(meta.get("compositeType") or "").strip():
@@ -195,17 +435,17 @@ def acquired_evidence(metric: dict[str, Any], dimension: str) -> str | None:
     if dimension == "serie_storica":
         return _find_aligned_numeric_series(metric)
     if dimension == "numeratore_denominatore":
-        return _find_ratio_evidence(metric)
+        return _find_ratio_evidence(metric) or _find_nested_ratio_evidence(metric)
     if dimension == "assoluto_normalizzato":
+        nested = _find_nested_ratio_evidence(metric)
+        if nested:
+            return nested
         return _find_parts_absolute_normalized(metric) or _find_absolute_from_ratio(metric)
     if dimension == "categorie_specifiche":
         return _find_structured_categories(metric)
     return None
 
 
-# The core matrix engine resolves ``acquired_evidence`` from its own module
-# globals. Patch that single hook so build_matrix/write_matrix/main all use the
-# enhanced structural detector without duplicating matrix semantics.
 _core.acquired_evidence = acquired_evidence
 
 
