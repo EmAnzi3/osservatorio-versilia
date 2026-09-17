@@ -8,11 +8,11 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `f2f40daa67832119ea2bd559c7047f05f29a6f2f`
+- **Baseline main:** `0b430ab521f7e8d806cfb157f0ee798dec3dc69a`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 su main:** 2.025 coppie; 1.596 classificate, 429 da auditare dopo il merge della `#221`
-- **Branch corrente:** `chore/a3-2-evidence-audit-14`
+- **Matrice A3.2 su main:** 2.025 coppie; 1.636 classificate, 389 da auditare dopo il merge della `#222`
+- **Branch corrente:** `chore/a3-2-evidence-audit-15`
 - **PR corrente:** da aprire
 
 ## Completato
@@ -22,22 +22,22 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `A2` chiuso con `#194`; `#195`–`#203` hanno irrobustito acquisizione e gate.
 - `A3.1` chiuso con `#204`.
 - `#206` ha introdotto la matrice A3.2 derivata sull'Effective Public Catalog.
-- Progressione A3.2: `#207`–`#210` → `804/2.025`; `#211` → `920`; `#212` → `1.101`; `#213` → `1.245`; `#214` → `1.373`; `#215` → `1.464`; `#217` → `1.498`; `#218` → `1.532`; `#220` → `1.556`.
-- `#221` ha classificato sei profili territoriali/servizio; il Full `35231378479`, job `105238449213`, ha confermato `1.596/2.025` coppie classificate e `429` residue.
+- Progressione A3.2: `#207`–`#210` → `804/2.025`; `#211` → `920`; `#212` → `1.101`; `#213` → `1.245`; `#214` → `1.373`; `#215` → `1.464`; `#217` → `1.498`; `#218` → `1.532`; `#220` → `1.556`; `#221` → `1.596`.
+- `#222` ha classificato PUN, OpenBDAP, GAIA, CB1 PAB e RSA Toscana; il Full `35236341306`, job `105255541089`, ha confermato `1.636/2.025` coppie classificate e `389` residue.
 
-## Residuo A3.2 verificato sulla #221
+## Residuo A3.2 verificato sulla #222
 
 Per dimensione:
 
-- `serie_storica`: 39
-- `sesso`: 43
-- `eta`: 64
-- `dettaglio_territoriale`: 15
-- `benchmark_toscana_italia`: 14
-- `assoluto_normalizzato`: 97
-- `frequenza_infra_annuale`: 53
-- `numeratore_denominatore`: 59
-- `categorie_specifiche`: 45
+- `serie_storica`: 36
+- `sesso`: 38
+- `eta`: 59
+- `dettaglio_territoriale`: 10
+- `benchmark_toscana_italia`: 9
+- `assoluto_normalizzato`: 92
+- `frequenza_infra_annuale`: 48
+- `numeratore_denominatore`: 56
+- `categorie_specifiche`: 41
 
 Source profile con più residuo:
 
@@ -50,15 +50,16 @@ Source profile con più residuo:
 - `regione-toscana-tourism-annual`: 11
 - `istat-road-annual`: 11
 - `istat-business-annual`: 10
-- `regione-toscana-rsa`: 9
-- `gaia-quality-semiannual`: 9
 - `regione-toscana-infocamere-annual`: 9
-- `pun-continuous`: 9
 - `regione-toscana-ucs-2007-2019`: 9
 - `regione-toscana-biblioteche-annual`: 9
-- `cb1-pmo-2026`: 9
-- `openbdap-continuous`: 9
 - `dait-eligendo-irregular`: 9
+- `istat-geografia-comunale-2021`: 8
+- `lamma-copernicus-climate`: 8
+- `erp-lucca-annual-balance-sheet`: 8
+- `pefc-sinfor-foreste-in-comune-2026`: 8
+- `runts-continuous`: 8
+- `istat-tourism-annual`: 8
 
 ## Decisioni vincolanti
 
@@ -71,20 +72,21 @@ Source profile con più residuo:
 7. A3.2 non è chiuso finché `unclassifiedPairCount = 0`.
 8. Le classificazioni vanno riusate a livello source profile solo quando metodologicamente valide; override metric-specific per eccezioni reali.
 9. Coppie già materializzate ma non riconosciute dal detector non vanno etichettate artificialmente `AVAILABLE_MISSING`: richiedono correzione strutturale dedicata.
-10. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
+10. I rapporti che usano denominatori esterni alla fonte non vanno trattati come `ACQUIRED` o `NOT_APPLICABLE` solo per chiudere la matrice.
+11. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Eseguire `audit-14` dalla branch `chore/a3-2-evidence-audit-14`, nata dal `main` post-`#221`.
-2. Classificare in modo conservativo PUN, OpenBDAP, GAIA qualità acqua, CB1 PAB e RSA Toscana.
-3. La tranche comprende 40 coppie: lascia volutamente aperto `numeratore_denominatore` per PUN/OpenBDAP, la serie storica GAIA e serie/categorie RSA dove la fonte non dimostra abbastanza.
+1. Eseguire `audit-15` dalla branch `chore/a3-2-evidence-audit-15`, nata dal `main` post-`#222`.
+2. Classificare 38 coppie ad alta confidenza su MIMIT carburanti, Istat geografia comunale, Istat geografie funzionali, PAB Toscana, GTFS Toscana e RUNTS.
+3. Lasciare aperte le serie geografiche non dimostrate e trattare esplicitamente come `SOURCE_UNAVAILABLE` i denominatori demografici assenti dai feed GTFS.
 4. Non introdurre `ACQUIRED` manuali né classificazioni broad su `ars-toscana-mixed`, `istat-demography-annual` o `regione-toscana-indicatori-comunali`.
 5. Eseguire Quick/Full e aggiornare questo handoff con il conteggio effettivo prima del merge.
 6. Ripetere tranche verificabili fino a `unclassifiedPairCount = 0`; solo allora passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza audit-14: `f2f40daa67832119ea2bd559c7047f05f29a6f2f`.
-- `#221` mergiata; Full `35231378479` / job `105238449213`: `1.596` classificate, `429` residue; Quick e Full verdi.
+- Main di partenza audit-15: `0b430ab521f7e8d806cfb157f0ee798dec3dc69a`.
+- `#222` mergiata; Full `35236341306` / job `105255541089`: `1.636` classificate, `389` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su 225 indicatori / 122 fonti.
