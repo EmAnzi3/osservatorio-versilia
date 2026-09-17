@@ -179,7 +179,12 @@ def _find_ratio_pair(payload: Any) -> str | None:
 def _has_normalized_contract(storage: dict[str, Any]) -> str | None:
     for key, value in storage.items():
         norm = _norm(key)
-        if norm in {"normalized_percent", "normalizedpercentage", "normalized_percentage"} and value is True:
+        if norm in {
+            "normalizedpercent",
+            "normalized_percent",
+            "normalizedpercentage",
+            "normalized_percentage",
+        } and value is True:
             return f"dataStorage.{key}=true"
         if norm in {"unit", "value_unit", "normalized_unit"} and _norm(value) in {"percent", "percentage", "pct", "per_100", "per100"}:
             return f"dataStorage.{key}={value}"
