@@ -86,8 +86,31 @@ def verify_release(base: str) -> None:
 
             body = page.locator('body').inner_text()
             assert date_expected in body and 'Radar v0.4.4' in body
-            assert 'Eventi sportivi di rilevanza nazionale e internazionale 2026' in body
-            assert 'LIFE 2026 · Piani locali di riscaldamento e raffrescamento' in body
+            card_titles = cards.locator('h3')
+            card_sources = cards.locator('a.op-source-link')
+            assert card_titles.count() == total_expected
+            assert card_titles.evaluate_all("els=>els.every(e=>(e.textContent||'').trim().length>0)")
+            assert card_sources.count() == total_expected
+            assert card_sources.evaluate_all(
+                "els=>els.every(e=>/^https?:\/\//.test(e.href)&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+            )
+            archive = page.locator('details.op-archive')
+            assert archive.count() == 1
+            archive_rows = archive.locator('.op-archive-row')
+            archive_expected = int(archive.locator('summary strong').inner_text() or 0)
+            assert archive_expected == archive_rows.count(), (archive_expected, archive_rows.count())
+            if archive_expected:
+                assert archive_rows.locator('.op-archive-copy strong').count() == archive_expected
+                assert archive_rows.locator('.op-archive-copy strong').evaluate_all(
+                    "els=>els.every(e=>(e.textContent||'').trim().length>0)"
+                )
+                archive_links = archive_rows.locator('a')
+                assert archive_links.count() == archive_expected
+                assert archive_links.evaluate_all(
+                    "els=>els.every(e=>/^https?:\/\//.test(e.href)&&e.target==='_blank'&&(e.rel||'').includes('noopener'))"
+                )
+                archive.locator('summary').click()
+                assert archive.evaluate('el=>el.open')
             for token in FORBIDDEN:
                 assert token.lower() not in body.lower(), token
 
