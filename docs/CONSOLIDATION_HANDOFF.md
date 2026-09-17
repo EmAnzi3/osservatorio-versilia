@@ -8,11 +8,11 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `da27fb3608acc28a8073d7f721dbf8685be60ef1`
+- **Baseline main:** `f2f40daa67832119ea2bd559c7047f05f29a6f2f`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 su main:** 2.025 coppie; 1.556 classificate, 469 da auditare dopo il merge della `#220`
-- **Branch corrente:** `chore/a3-2-evidence-audit-13`
+- **Matrice A3.2 su main:** 2.025 coppie; 1.596 classificate, 429 da auditare dopo il merge della `#221`
+- **Branch corrente:** `chore/a3-2-evidence-audit-14`
 - **PR corrente:** da aprire
 
 ## Completato
@@ -22,22 +22,22 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `A2` chiuso con `#194`; `#195`–`#203` hanno irrobustito acquisizione e gate.
 - `A3.1` chiuso con `#204`.
 - `#206` ha introdotto la matrice A3.2 derivata sull'Effective Public Catalog.
-- Progressione A3.2: `#207`–`#210` → `804/2.025`; `#211` → `920`; `#212` → `1.101`; `#213` → `1.245`; `#214` → `1.373`; `#215` → `1.464`; `#217` → `1.498`; `#218` → `1.532`.
-- `#220` ha aggiunto evidenza ufficiale mirata MIT/SID, MEF IRPEF e Agricoltura; il Full `35225796180`, job `105219100711`, ha confermato `1.556/2.025` coppie classificate e `469` residue.
+- Progressione A3.2: `#207`–`#210` → `804/2.025`; `#211` → `920`; `#212` → `1.101`; `#213` → `1.245`; `#214` → `1.373`; `#215` → `1.464`; `#217` → `1.498`; `#218` → `1.532`; `#220` → `1.556`.
+- `#221` ha classificato sei profili territoriali/servizio; il Full `35231378479`, job `105238449213`, ha confermato `1.596/2.025` coppie classificate e `429` residue.
 
-## Residuo A3.2 verificato sulla #220
+## Residuo A3.2 verificato sulla #221
 
 Per dimensione:
 
-- `serie_storica`: 42
-- `sesso`: 49
-- `eta`: 70
-- `dettaglio_territoriale`: 21
-- `benchmark_toscana_italia`: 20
-- `assoluto_normalizzato`: 99
-- `frequenza_infra_annuale`: 59
-- `numeratore_denominatore`: 61
-- `categorie_specifiche`: 48
+- `serie_storica`: 39
+- `sesso`: 43
+- `eta`: 64
+- `dettaglio_territoriale`: 15
+- `benchmark_toscana_italia`: 14
+- `assoluto_normalizzato`: 97
+- `frequenza_infra_annuale`: 53
+- `numeratore_denominatore`: 59
+- `categorie_specifiche`: 45
 
 Source profile con più residuo:
 
@@ -52,16 +52,12 @@ Source profile con più residuo:
 - `istat-business-annual`: 10
 - `regione-toscana-rsa`: 9
 - `gaia-quality-semiannual`: 9
-- `regione-toscana-early-childhood`: 9
 - `regione-toscana-infocamere-annual`: 9
 - `pun-continuous`: 9
-- `regione-toscana-opere-idrauliche-2021`: 9
 - `regione-toscana-ucs-2007-2019`: 9
 - `regione-toscana-biblioteche-annual`: 9
-- `regione-toscana-reticolo-v137`: 9
 - `cb1-pmo-2026`: 9
 - `openbdap-continuous`: 9
-- `sisbon-weekly`: 9
 - `dait-eligendo-irregular`: 9
 
 ## Decisioni vincolanti
@@ -79,16 +75,16 @@ Source profile con più residuo:
 
 ## Prossima azione esatta
 
-1. Eseguire `audit-13` dalla branch `chore/a3-2-evidence-audit-13`, nata dal `main` post-`#220`.
-2. Classificare con fonti ufficiali sei profili territoriali/servizio: opere idrauliche, reticolo, aree protette, Iter.Net, SISBON e prima infanzia.
-3. La tranche comprende 40 coppie ad alta confidenza; non introduce `ACQUIRED` manuali e lascia aperte le coppie già presenti nel payload ma non ancora riconosciute strutturalmente.
-4. Non introdurre classificazioni broad su `ars-toscana-mixed`, `istat-demography-annual` o `regione-toscana-indicatori-comunali`.
+1. Eseguire `audit-14` dalla branch `chore/a3-2-evidence-audit-14`, nata dal `main` post-`#221`.
+2. Classificare in modo conservativo PUN, OpenBDAP, GAIA qualità acqua, CB1 PAB e RSA Toscana.
+3. La tranche comprende 40 coppie: lascia volutamente aperto `numeratore_denominatore` per PUN/OpenBDAP, la serie storica GAIA e serie/categorie RSA dove la fonte non dimostra abbastanza.
+4. Non introdurre `ACQUIRED` manuali né classificazioni broad su `ars-toscana-mixed`, `istat-demography-annual` o `regione-toscana-indicatori-comunali`.
 5. Eseguire Quick/Full e aggiornare questo handoff con il conteggio effettivo prima del merge.
 6. Ripetere tranche verificabili fino a `unclassifiedPairCount = 0`; solo allora passare ad `A3.3`.
 
 ## Verifiche
 
-- Main di partenza audit-13: `da27fb3608acc28a8073d7f721dbf8685be60ef1`.
-- `#220` mergiata; Full `35225796180` / job `105219100711`: `1.556` classificate, `469` residue; Quick e Full verdi.
+- Main di partenza audit-14: `f2f40daa67832119ea2bd559c7047f05f29a6f2f`.
+- `#221` mergiata; Full `35231378479` / job `105238449213`: `1.596` classificate, `429` residue; Quick e Full verdi.
 - Release pubblica governata: 225 indicatori.
 - A2 chiuso su 225 indicatori / 122 fonti.
