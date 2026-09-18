@@ -536,13 +536,13 @@ METRIC_EVIDENCE.update(
         "roadFinesPerResident": {
             "assoluto_normalizzato": {
                 "state": AVAILABLE,
-                "evidence": "La nota metodologica ufficiale Istat definisce l'indicatore come Totale proventi violazioni al codice della strada / Popolazione residente media e indica come fonte il rendiconto del Ministero dell'Interno. Il canonico pubblicato conserva il valore per abitante e la serie, ma non il totale proventi come componente assoluta strutturata.",
-                "sourceReference": "https://www.istat.it/wp-content/uploads/2025/06/Nota-metodologica.pdf",
+                "evidence": "Istat definisce l'indicatore come Totale proventi violazioni al codice della strada / Popolazione residente media e identifica come fonte il Rendiconto proventi violazione codice della strada del Ministero dell'Interno. La banca dati Finanza Locale violazioniCdS pubblica i rendiconti comunali trasmessi al Ministero, nei quali il Quadro 1 espone il totale proventi; il canonico conserva invece soltanto il valore per abitante e la serie.",
+                "sourceReference": "https://finanzalocale.interno.gov.it/apps/floc.php/violazioniCdS/index",
             },
             "numeratore_denominatore": {
                 "state": AVAILABLE,
-                "evidence": "Istat documenta esplicitamente numeratore (Totale proventi violazioni al codice della strada), denominatore (Popolazione residente media) e fonte DAIT/Ministero dell'Interno. La metrica canonica conserva soltanto il rapporto finale, quindi i componenti ufficialmente disponibili non sono acquisiti come campi strutturati.",
-                "sourceReference": "https://www.istat.it/wp-content/uploads/2025/06/Nota-metodologica.pdf",
+                "evidence": "Il Portale Finanza Locale del Ministero pubblica i rendiconti comunali violazioniCdS con il totale proventi; Istat documenta che il rapporto usa quel totale come numeratore e la popolazione residente media come denominatore. Nel canonico roadFinesPerResident i due componenti non sono conservati come campi strutturati, pur essendo disponibili nelle fonti ufficiali governate.",
+                "sourceReference": "https://finanzalocale.interno.gov.it/apps/floc.php/violazioniCdS/index",
             },
         },
     }
