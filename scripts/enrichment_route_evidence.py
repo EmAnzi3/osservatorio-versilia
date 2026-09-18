@@ -30,7 +30,8 @@ DIMENSIONS = (
 
 
 def _norm(value: Any) -> str:
-    return re.sub(r"[^a-z0-9]+", "_", str(value or "").lower()).strip("_")
+    text = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", str(value or ""))
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
 def _walk(value: Any, path: tuple[str, ...] = ()) -> Iterable[tuple[tuple[str, ...], Any]]:
@@ -198,7 +199,7 @@ def _find_absolute_and_normalized(payload: Any) -> str | None:
             if not isinstance(value, dict):
                 continue
             keys = {_norm(key) for key in value}
-            if keys & {"pct", "percent", "percentage", "rate", "ratio", "share", "normalized", "value"}:
+            if keys & {"pct", "percent", "percentage", "rate", "ratio", "share", "normalized", "value", "turnout"}:
                 return ratio
     return None
 
@@ -228,7 +229,7 @@ def structured_route_evidence(metric: dict[str, Any], dimension: str, repo_root:
     elif dimension == "eta":
         hit = _find_key(payload, {"age", "eta", "age_group", "classe_eta"})
     elif dimension == "dettaglio_territoriale":
-        hit = _find_key(payload, {"section", "sezione", "frazione", "district", "quartiere", "province", "provincia", "region", "regione", "territory", "territorio"})
+        hit = _find_key(payload, {"section", "sezione", "frazione", "district", "quartiere", "province", "provincia", "region", "regione", "territory", "territorio", "municipality", "municipalities", "town", "towns", "comune", "comuni"})
     elif dimension == "benchmark_toscana_italia":
         hit = _find_key(payload, {"toscana", "italia", "italy", "regional", "regionale", "national", "nazionale", "benchmark"})
     elif dimension == "assoluto_normalizzato":
@@ -238,6 +239,6 @@ def structured_route_evidence(metric: dict[str, Any], dimension: str, repo_root:
     elif dimension == "numeratore_denominatore":
         hit = _find_ratio_pair(payload)
     else:  # categorie_specifiche
-        hit = _find_key(payload, {"category", "categories", "categoria", "categorie", "taxonomy", "taxon", "type", "tipologia"})
+        hit = _find_key(payload, {"category", "categories", "categoria", "categorie", "taxonomy", "taxon", "type", "tipologia", "family", "families"})
 
     return f"{prefix}{hit}" if hit else None
