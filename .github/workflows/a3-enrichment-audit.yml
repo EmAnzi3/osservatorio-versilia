@@ -165,6 +165,22 @@ jobs:
               ('roadFinesPerResident', 'assoluto_normalizzato'),
               ('roadFinesPerResident', 'numeratore_denominatore'),
           }
+          semantic_not_applicable_expected = {
+              ('agriculturalUsedArea', 'sesso'),
+              ('agriculturalUsedArea', 'eta'),
+              ('averageAgriculturalFarmSize', 'sesso'),
+              ('averageAgriculturalFarmSize', 'eta'),
+              ('cropProfile', 'sesso'),
+              ('cropProfile', 'eta'),
+              ('irrigatedAgriculturalArea', 'sesso'),
+              ('irrigatedAgriculturalArea', 'eta'),
+              ('forestCoverIndex', 'sesso'),
+              ('forestCoverIndex', 'eta'),
+              ('landCoverProfile', 'sesso'),
+              ('landCoverProfile', 'eta'),
+              ('extractiveSites', 'sesso'),
+              ('extractiveSites', 'eta'),
+          }
           rows = {
               (row['metricId'], row['dimension']): row
               for row in matrix['rows']
@@ -217,12 +233,18 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['sourceReference'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1791, summary
-          assert summary['unclassifiedPairCount'] == 234, summary
+          for pair in sorted(semantic_not_applicable_expected):
+              row = rows[pair]
+              assert row['state'] == 'NOT_APPLICABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['evidence'], (pair, row)
+
+          assert summary['classifiedPairCount'] == 1805, summary
+          assert summary['unclassifiedPairCount'] == 220, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 14 semantic N/A pairs verified.'
           )
           PY

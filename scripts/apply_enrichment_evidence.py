@@ -549,6 +549,82 @@ METRIC_EVIDENCE.update(
 )
 
 
+METRIC_EVIDENCE.update(
+    {
+        "agriculturalUsedArea": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura ettari di superficie agricola utilizzata localizzati nel territorio comunale. Il sesso non è una dimensione semantica della superficie misurata.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura ettari di superficie agricola utilizzata localizzati nel territorio comunale. L'età non è una dimensione semantica della superficie misurata.",
+            },
+        },
+        "averageAgriculturalFarmSize": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la dimensione fisica media delle aziende in ettari per azienda; una disaggregazione per sesso descriverebbe eventualmente il conduttore, non l'oggetto metrico superficie/azienda.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la dimensione fisica media delle aziende in ettari per azienda; una disaggregazione per età descriverebbe eventualmente il conduttore, non l'oggetto metrico superficie/azienda.",
+            },
+        },
+        "cropProfile": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive ettari di territorio per tipologia di coltura. Il sesso non è una dimensione semantica della superficie o della coltura misurata.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive ettari di territorio per tipologia di coltura. L'età non è una dimensione semantica della superficie o della coltura misurata.",
+            },
+        },
+        "irrigatedAgriculturalArea": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura superficie irrigata in ettari e relativa quota sulla SAU. Il sesso non è una dimensione semantica della superficie irrigata.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura superficie irrigata in ettari e relativa quota sulla SAU. L'età non è una dimensione semantica della superficie irrigata.",
+            },
+        },
+        "forestCoverIndex": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive copertura forestale e superficie del territorio; una disaggregazione per sesso non è semanticamente applicabile all'oggetto fisico misurato.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive copertura forestale e superficie del territorio; una disaggregazione per età non è semanticamente applicabile all'oggetto fisico misurato.",
+            },
+        },
+        "landCoverProfile": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive la composizione fisica dell'uso/copertura del suolo per categorie territoriali. Il sesso non è una dimensione semantica dell'oggetto misurato.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive la composizione fisica dell'uso/copertura del suolo per categorie territoriali. L'età non è una dimensione semantica dell'oggetto misurato.",
+            },
+        },
+        "extractiveSites": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica conta e classifica siti estrattivi censiti. Il sesso non è una dimensione semantica dei siti fisici misurati.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica conta e classifica siti estrattivi censiti. L'età non è una dimensione semantica dei siti fisici misurati.",
+            },
+        },
+    }
+)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
