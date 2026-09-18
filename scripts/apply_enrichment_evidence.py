@@ -625,8 +625,7 @@ METRIC_EVIDENCE.update(
 )
 
 
-METRIC_EVIDENCE.update(
-    {
+for metric_id, dimensions in {
         "emsResponseTimeP75": {
             "numeratore_denominatore": {
                 "state": NOT_APPLICABLE,
@@ -669,8 +668,8 @@ METRIC_EVIDENCE.update(
                 "evidence": "La metrica è il conteggio diretto dei posti letto disponibili nelle strutture ricettive e non è definita come rapporto, tasso, quota o indice.",
             },
         },
-    }
-)
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
