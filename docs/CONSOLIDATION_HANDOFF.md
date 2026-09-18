@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `a0b0a8086fee747fc762d767d98092b924d76ac5` (post-`#230`)
+- **Baseline main:** `158daf512578ac40237dbabf2dfc14655c1a3dc3` (post-`#233`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#230:** 2.025 coppie; **1.755 classificate, 270 residue**
-- **Branch corrente:** `chore/a3-2-cross-source-ratios`
-- **PR corrente:** `#233`
+- **Matrice A3.2 post-#233:** 2.025 coppie; **1.759 classificate, 266 residue**
+- **Branch corrente:** `chore/a3-2-demographic-formulas`
+- **PR corrente:** `#234`
 
 ## Completato
 
@@ -26,30 +26,29 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#227` ha introdotto il resolver route-aware ma senza chiudere le 12 coppie special-route; ha invece reso riconoscibile il contratto climate normalizzato poi verificato nella matrice effettiva.
 - `#228` ha chiuso 7 coppie demografiche `eta` tramite companion verificato; A3 gate, Quick e Full verdi. Matrice effettiva post-merge: **1.743 classificate / 282 residue**.
 - `#229` ha chiuso le 6 coppie `voterTurnout` tramite il payload `archive-v2-*`; `#230` ha chiuso le 6 coppie `economyActivityAtlas` con schema compatto verificato. Baseline post-merge: **1.755 / 270**.
+- `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#230
+## Residual Closure Audit post-#233
 
-Le **270 residue** reali si ricompongono così:
+Le **266 residue** reali si ricompongono così:
 
-- **B — cross-source / companion:** 36
+- **B — cross-source / companion:** 32
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
-Il bucket A strutturale è chiuso. La prima tranche B usa soltanto rapporti ricalcolabili da metriche pubbliche companion già governate.
+Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
 
-## Intervento corrente — #233
+## Intervento corrente — #234
 
-`#233` estende il contratto companion con un resolver generico `ratio_formula` che:
+`#234` aggiunge due contratti companion generici e fail-closed:
 
-- allinea le righe per identità territoriale;
-- seleziona il valore del denominatore nell'anno della metrica target;
-- ricalcola il rapporto con la scala derivata dall'unità;
-- produce `ACQUIRED` soltanto se tutte le righe pubbliche coincidono numericamente.
+- `series_change_formula`: ricalcola `populationChange` dalla serie pubblica `population` 2019→2026;
+- `parts_ratio_formula`: ricalcola `dependencyIndices` dai conteggi pubblici per fascia di `ageDistribution`.
 
-Prima tranche: `tourismIntensity` e `commuterBalanceRate`, per entrambe le dimensioni `assoluto_normalizzato` e `numeratore_denominatore`. `outboundCommutersRate` e `inboundCommutersRate` restano residui per disallineamento temporale del denominatore; `tourismBedsPer1000` resta residuo perché il catalogo effettivo materializza un numeratore `tourismBeds` non coerente con il valore del rapporto pubblicato.
+Le formule sono verificate riga per riga su tutti i 7 Comuni; una discordanza in una sola riga lascia la coppia non classificata.
 
-Esito verificato dal primo gate effettivo: **+4 coppie → 1.759 classificate / 266 residue**; B scende da 36 a 32.
+**Esito atteso e già verificato sui dati sorgente:** +5 coppie → **1.764 classificate / 261 residue**; B da 32 a 27. GitHub A3/Quick/Full restano autoritativi sull'head finale.
 
 ## Decisioni vincolanti
 
@@ -67,7 +66,7 @@ Esito verificato dal primo gate effettivo: **+4 coppie → 1.759 classificate / 
 
 ## Prossima azione esatta
 
-1. Portare `#233` a A3 gate, Quick e Full GREEN sullo stesso head e verificare **1.759 / 266**.
-2. Dopo merge autorizzato, proseguire sulle **32 B residue** con ulteriori contratti cross-source verificabili.
+1. Portare `#234` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.764 / 261**.
+2. Dopo merge autorizzato, proseguire sulle **27 B residue** con ulteriori contratti cross-source verificabili.
 3. Chiudere quindi C semantic closure e D official-source evidence.
 4. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
