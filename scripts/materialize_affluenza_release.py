@@ -80,7 +80,12 @@ def make_metric() -> dict:
             "formula": "Affluenza = votanti / elettori × 100.",
             "coverage": "7/7 Comuni; profondità storica secondo disponibilità ufficiale digitale.",
         },
-        "dataStorage": {"type": "special-route", "detailRoute": CANONICAL_ROUTE},
+        "dataStorage": {
+            "type": "special-route",
+            "detailRoute": CANONICAL_ROUTE,
+            "path": "data/affluenza",
+            "prefix": "archive-v2-",
+        },
     }
 
 
@@ -180,7 +185,7 @@ def main() -> None:
     for path in (
         ROOT / "confronta" / "comunita" / "affluenza" / "index.html",
         ROOT / "assets" / "affluenza-v3.js",
-        ROOT / "data" / "affluenza" / "archive-00.b64",
+        *(ROOT / "data" / "affluenza" / f"archive-v2-{index:02d}.b64" for index in range(4)),
     ):
         if not path.exists() or path.stat().st_size == 0:
             raise RuntimeError(f"Asset Affluenza mancante: {path.relative_to(ROOT)}")

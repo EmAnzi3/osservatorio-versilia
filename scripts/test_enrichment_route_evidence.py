@@ -66,6 +66,60 @@ def test_route_evidence() -> None:
         assert structured_route_evidence(metric, "eta", root) is None
         assert structured_route_evidence(metric, "frequenza_infra_annuale", root) is None
 
+        turnout_payload = {
+            "families": {
+                "referendum": {
+                    "events": [
+                        {
+                            "year": 2024,
+                            "municipalities": [
+                                {
+                                    "town": "Massarosa",
+                                    "voters": 60,
+                                    "electors": 100,
+                                    "turnout": 60.0,
+                                    "maleTurnout": 62.0,
+                                    "femaleTurnout": 58.0,
+                                }
+                            ],
+                        },
+                        {
+                            "year": 2025,
+                            "municipalities": [
+                                {
+                                    "town": "Massarosa",
+                                    "voters": 70,
+                                    "electors": 100,
+                                    "turnout": 70.0,
+                                    "maleTurnout": 71.0,
+                                    "femaleTurnout": 69.0,
+                                }
+                            ],
+                        },
+                    ]
+                }
+            }
+        }
+        _write_packed(root, "data/turnout", turnout_payload)
+        turnout_metric = {
+            "dataStorage": {
+                "path": "data/turnout",
+                "prefix": "payload-",
+            }
+        }
+        for dimension in {
+            "serie_storica",
+            "sesso",
+            "dettaglio_territoriale",
+            "assoluto_normalizzato",
+            "numeratore_denominatore",
+            "categorie_specifiche",
+        }:
+            assert structured_route_evidence(turnout_metric, dimension, root), dimension
+        assert structured_route_evidence(turnout_metric, "eta", root) is None
+        assert structured_route_evidence(turnout_metric, "benchmark_toscana_italia", root) is None
+        assert structured_route_evidence(turnout_metric, "frequenza_infra_annuale", root) is None
+
         climate = {"dataStorage": {"backend": "external-climate", "normalizedPercent": True}}
         evidence = structured_route_evidence(climate, "assoluto_normalizzato", root) or ""
         assert "normalizedPercent" in evidence
