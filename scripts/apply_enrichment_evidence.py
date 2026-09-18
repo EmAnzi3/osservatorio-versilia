@@ -625,6 +625,53 @@ METRIC_EVIDENCE.update(
 )
 
 
+for metric_id, dimensions in {
+        "emsResponseTimeP75": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica pubblica un percentile temporale espresso in minuti. Non è un rapporto, tasso, quota o indice generato da una coppia numeratore/denominatore.",
+            },
+        },
+        "extractiveSites": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è un conteggio diretto di siti estrattivi censiti (COUNT DISTINCT) e non è definita come rapporto, tasso, quota o indice.",
+            },
+        },
+        "hospitals": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è il conteggio diretto dei presidi ospedalieri localizzati nel Comune e non è definita come rapporto, tasso, quota o indice.",
+            },
+        },
+        "lifeExpectancy": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica pubblica la speranza di vita in anni come indicatore sintetico di tavola di mortalità; non è un rapporto, tasso o quota rappresentabile tramite una singola coppia numeratore/denominatore.",
+            },
+        },
+        "municipalStaffTraining": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica pubblica valori RGS di giornate e medie di formazione, inclusa la Media Totale, senza definire il valore esposto come rapporto, tasso, quota o indice con componenti numeratore/denominatore.",
+            },
+        },
+        "population": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è il numero diretto di residenti al 1° gennaio e non è definita come rapporto, tasso, quota o indice.",
+            },
+        },
+        "tourismBeds": {
+            "numeratore_denominatore": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è il conteggio diretto dei posti letto disponibili nelle strutture ricettive e non è definita come rapporto, tasso, quota o indice.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
