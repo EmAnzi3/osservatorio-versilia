@@ -221,6 +221,57 @@
       "partSelectorField": "label",
       "partCountField": "count",
       "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "currentPayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "currentPayments2025"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "capitalPayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "capitalPayments2025"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "siopePayments",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "details"
+        ],
+        "recordsByIdentity": true,
+        "valuePath": [
+          "government",
+          "payments"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_next_year"
     }
   ]
 }

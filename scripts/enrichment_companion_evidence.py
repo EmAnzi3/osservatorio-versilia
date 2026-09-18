@@ -675,6 +675,186 @@ def _row_field_ratio_formula_evidence(
 
 
 
+
+def _nested_value(value: Any, path: list[str]) -> Any:
+    current = value
+    for key in path:
+        if not isinstance(current, dict) or key not in current:
+            return None
+        current = current[key]
+    return current
+
+
+def _canonical_field_ratio_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+    repo_root: Path,
+) -> str | None:
+    """Verify a ratio using a numerator stored in canonical site-data plus a companion denominator."""
+    if dimension != "numeratore_denominatore":
+        return None
+
+    numerator_spec = relationship.get("canonicalNumerator")
+    denominator_id = str(relationship.get("denominatorMetricId") or "").strip()
+    denominator_year_mode = str(
+        relationship.get("denominatorYearMode") or "target_year"
+    ).strip()
+    if not isinstance(numerator_spec, dict) or not denominator_id:
+        raise RuntimeError(
+            f"Relazione canonical-field ratio A3 incompleta: {metric_id}/{dimension}"
+        )
+    if denominator_id == metric_id:
+        raise RuntimeError(
+            f"Relazione canonical-field ratio A3 autoreferenziale: {metric_id}/{dimension}"
+        )
+    if denominator_year_mode not in {"target_year", "target_next_year", "metric_current"}:
+        raise RuntimeError(
+            f"Modalità anno denominatore canonical-field A3 non valida: "
+            f"{metric_id}/{dimension} -> {denominator_year_mode}"
+        )
+
+    collection_path = numerator_spec.get("collectionPath")
+    value_path = numerator_spec.get("valuePath")
+    records_by_identity = numerator_spec.get("recordsByIdentity") is True
+    canonical_identity_field = str(numerator_spec.get("identityField") or "").strip()
+    target_identity_field = str(
+        numerator_spec.get("targetIdentityField") or canonical_identity_field or "code"
+    ).strip()
+    denominator_identity_field = str(
+        relationship.get("denominatorIdentityField") or target_identity_field
+    ).strip()
+    if (
+        not isinstance(collection_path, list)
+        or not collection_path
+        or not all(isinstance(item, str) and item for item in collection_path)
+        or not isinstance(value_path, list)
+        or not value_path
+        or not all(isinstance(item, str) and item for item in value_path)
+        or not target_identity_field
+        or not denominator_identity_field
+        or (not records_by_identity and not canonical_identity_field)
+    ):
+        raise RuntimeError(
+            f"Specifica canonical numerator A3 non valida: {metric_id}/{dimension}"
+        )
+
+    target = catalog.get(metric_id)
+    denominator_metric = catalog.get(denominator_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(denominator_metric, dict):
+        raise RuntimeError(
+            f"Denominatore companion A3 assente: {metric_id}/{dimension} -> {denominator_id}"
+        )
+
+    target_year = _metric_year(target)
+    if target_year is None:
+        return None
+    if denominator_year_mode == "target_year":
+        denominator_year: str | None = target_year
+    elif denominator_year_mode == "target_next_year":
+        denominator_year = str(int(target_year) + 1)
+    else:
+        denominator_year = None
+
+    canonical_path = repo_root / "data" / "site-data.json"
+    try:
+        canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    collection = _nested_value(canonical, collection_path)
+
+    canonical_records: dict[str, dict[str, Any]] = {}
+    if records_by_identity:
+        if not isinstance(collection, dict):
+            return None
+        for identity, record in collection.items():
+            if not isinstance(record, dict) or not str(identity):
+                return None
+            canonical_records[str(identity)] = record
+    else:
+        if not isinstance(collection, list):
+            return None
+        for record in collection:
+            if not isinstance(record, dict):
+                return None
+            identity = record.get(canonical_identity_field)
+            if identity in (None, ""):
+                return None
+            key = str(identity)
+            if key in canonical_records:
+                return None
+            canonical_records[key] = record
+
+    denominator_rows: dict[str, dict[str, Any]] = {}
+    raw_denominator_rows = denominator_metric.get("rows")
+    if not isinstance(raw_denominator_rows, list):
+        return None
+    for row in raw_denominator_rows:
+        if not isinstance(row, dict):
+            return None
+        identity = row.get(denominator_identity_field)
+        if identity in (None, ""):
+            return None
+        key = str(identity)
+        if key in denominator_rows:
+            return None
+        denominator_rows[key] = row
+
+    target_rows = target.get("rows")
+    if not isinstance(target_rows, list) or not target_rows:
+        return None
+
+    scale = _ratio_scale(target)
+    verified = 0
+    for target_row in target_rows:
+        if not isinstance(target_row, dict):
+            return None
+        identity = target_row.get(target_identity_field)
+        if identity in (None, ""):
+            return None
+        key = str(identity)
+        canonical_record = canonical_records.get(key)
+        denominator_row = denominator_rows.get(key)
+        if canonical_record is None or denominator_row is None:
+            return None
+
+        observed = _row_value_for_year(target, target_row, target_year)
+        numerator = _nested_value(canonical_record, value_path)
+        denominator = _row_value_for_year(
+            denominator_metric, denominator_row, denominator_year
+        )
+        if (
+            observed is None
+            or not _is_number(numerator)
+            or denominator in (None, 0)
+        ):
+            return None
+
+        expected = float(numerator) / float(denominator) * scale
+        if not math.isclose(observed, expected, rel_tol=1e-9, abs_tol=1e-9):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    collection_tag = ".".join(collection_path)
+    value_tag = ".".join(value_path)
+    year_tag = (
+        "current"
+        if denominator_year is None
+        else denominator_year
+    )
+    return (
+        f"canonical_field_ratio_formula:{collection_tag}.{value_tag}/"
+        f"{denominator_id}:{target_year}->{year_tag}:"
+        f"scale={scale:g}:{verified}/{len(target_rows)}"
+    )
+
+
 def companion_acquired_evidence(
     *,
     metric_id: str,
@@ -742,6 +922,16 @@ def companion_acquired_evidence(
             dimension=dimension,
             relationship=relationship,
             catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "canonical_field_ratio_formula":
+        evidence = _canonical_field_ratio_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+            repo_root=repo_root,
         )
         return f"companion:{evidence}" if evidence else None
 
