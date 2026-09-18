@@ -122,6 +122,18 @@
       "denominatorYearMode": "metric_current"
     },
     {
+      "metricId": "tourismBedsPer1000",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "tourismBeds",
+      "denominatorMetricId": "population",
+      "numeratorYearMode": "metric_current",
+      "denominatorYearMode": "metric_current"
+    },
+    {
       "metricId": "municipalStaffTurnover",
       "dimension": "eta",
       "companionMetricId": "municipalStaffAgeStructure",
@@ -130,10 +142,15 @@
     {
       "metricId": "municipalStaffTurnover",
       "dimension": "numeratore_denominatore",
-      "relationship": "row_field_ratio_formula",
-      "targetNumeratorField": "netTurnoverHeadcount",
-      "denominatorMetricId": "municipalStaffAgeStructure",
-      "denominatorField": "staffAt31Dec"
+      "relationship": "target_fields_ratio_formula",
+      "targetNumeratorFields": [
+        "netHires",
+        "netCessations"
+      ],
+      "targetNumeratorOperation": "difference",
+      "targetNumeratorCheckField": "netTurnoverHeadcount",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "companionDenominatorField": "staffAt31Dec"
     }
   ]
 }
