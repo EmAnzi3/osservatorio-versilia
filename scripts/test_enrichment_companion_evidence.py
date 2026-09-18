@@ -274,6 +274,58 @@ def test_companion_evidence() -> None:
         repo_root=ratio_root,
     ) is None
 
+    row_field_relationship = {
+        "metricId": "staffTurnover",
+        "dimension": "numeratore_denominatore",
+        "relationship": "row_field_ratio_formula",
+        "targetNumeratorField": "netTurnoverHeadcount",
+        "denominatorMetricId": "staffAge",
+        "denominatorField": "staffAt31Dec",
+    }
+    row_field_root = _root_with_contract([row_field_relationship])
+    row_field_catalog = {
+        "staffTurnover": {
+            "meta": {"unit": "percent", "year": "2024"},
+            "rows": [
+                {"code": "001", "value": -1.0, "netTurnoverHeadcount": -1},
+                {"code": "002", "value": 5.0, "netTurnoverHeadcount": 2},
+            ],
+        },
+        "staffAge": {
+            "meta": {"unit": "percent", "year": "2024"},
+            "rows": [
+                {"code": "001", "value": 40.0, "staffAt31Dec": 100},
+                {"code": "002", "value": 35.0, "staffAt31Dec": 40},
+            ],
+        },
+    }
+    row_field_evidence = companion_acquired_evidence(
+        metric_id="staffTurnover",
+        dimension="numeratore_denominatore",
+        catalog=row_field_catalog,
+        repo_root=row_field_root,
+    ) or ""
+    assert row_field_evidence.startswith(
+        "companion:row_field_ratio_formula:"
+        "staffTurnover.netTurnoverHeadcount/staffAge.staffAt31Dec:"
+        "scale=100:2/2"
+    )
+
+    broken_row_field_catalog = dict(row_field_catalog)
+    broken_row_field_catalog["staffTurnover"] = {
+        **row_field_catalog["staffTurnover"],
+        "rows": [
+            {"code": "001", "value": -1.0, "netTurnoverHeadcount": -1},
+            {"code": "002", "value": 4.9, "netTurnoverHeadcount": 2},
+        ],
+    }
+    assert companion_acquired_evidence(
+        metric_id="staffTurnover",
+        dimension="numeratore_denominatore",
+        catalog=broken_row_field_catalog,
+        repo_root=row_field_root,
+    ) is None
+
     missing = {"population": catalog["population"]}
     try:
         companion_acquired_evidence(
