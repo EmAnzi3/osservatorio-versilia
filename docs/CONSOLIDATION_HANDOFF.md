@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `17d6b436161a6ad765c6c5e9100eb1e0e8e17b31` (post-`#235` e `#237`)
+- **Baseline main:** `e3688f93053cb9f335f0477d813e5fcc7e978568` (post-`#238`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#235:** 2.025 coppie; **1.768 classificate, 257 residue**
-- **Branch corrente:** `chore/a3-2-staff-turnover-companion`
-- **PR corrente:** `#238`
+- **Matrice A3.2 post-#238:** 2.025 coppie; **1.770 classificate, 255 residue**
+- **Branch corrente:** `chore/a3-2-tourism-staff-formulas`
+- **PR corrente:** `#239`
 
 ## Completato
 
@@ -27,29 +27,31 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#228` ha chiuso 7 coppie demografiche `eta` tramite companion verificato; A3 gate, Quick e Full verdi. Matrice effettiva post-merge: **1.743 classificate / 282 residue**.
 - `#229` ha chiuso le 6 coppie `voterTurnout` tramite il payload `archive-v2-*`; `#230` ha chiuso le 6 coppie `economyActivityAtlas` con schema compatto verificato. Baseline post-merge: **1.755 / 270**.
 - `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.\n- `#234` ha chiuso 5 coppie demografiche tramite `series_change_formula` e `parts_ratio_formula` → **1.764 / 261**.
-- `#235` ha chiuso 4 coppie ratio companion su `inboundCommutersRate` e `outboundCommutersRate` → **1.768 / 257**. A3 e Pages verdi prima del merge.
+- `#235` ha chiuso 4 coppie commuter-rate (`inboundCommutersRate`, `outboundCommutersRate`) → **1.768 / 257**; A3, Quick e Full verdi prima del merge.
+- `#237` riguarda il Radar opportunità e non modifica la matrice A3.2.
+- `#238` ha chiuso 2 coppie `municipalStaffTurnover` → **1.770 / 255**; A3 e Pages verdi prima del merge.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#235
+## Residual Closure Audit post-#238
 
-Le **257 residue** reali si ricompongono così:
+Le **255 residue** reali si ricompongono così:
 
-- **B — cross-source / companion:** 23
+- **B — cross-source / companion:** 21
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
 Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
 
-## Intervento corrente — #238
+## Intervento corrente — #239
 
-`#238` chiude 2 coppie B di `municipalStaffTurnover`:
+`#239` aggiunge 2 nuove chiusure B e rafforza una formula già acquisita:
 
-- `eta` tramite evidenza strutturale del companion `municipalStaffAgeStructure`;
-- `numeratore_denominatore` tramite il nuovo contratto generico `row_field_ratio_formula`.
+- `tourismBedsPer1000` / assoluto-normalizzato + numeratore-denominatore: `tourismBeds / population × 1000`, verificato su tutti i 7 Comuni;
+- `municipalStaffTurnover / numeratore_denominatore`: sostituisce la verifica basata sul solo `netTurnoverHeadcount` con `(netHires - netCessations) / staffAt31Dec × 100`, controllando anche la coerenza di `netTurnoverHeadcount`.
 
-La formula `netTurnoverHeadcount / staffAt31Dec × 100` è verificata esattamente su tutti i 7 Comuni; una riga discordante, un campo mancante o denominatore zero lascia la coppia non classificata.
+Il resolver `ratio_formula` supporta ora in modo generico `numeratorYearMode=metric_current`, senza hard-code di metriche.
 
-**Esito atteso:** **1.770 classificate / 255 residue**; B da 23 a 21.
+**Esito atteso:** +2 nuove coppie → **1.772 classificate / 253 residue**; B da 21 a 19. La coppia staff resta classificata ma con evidenza più forte. GitHub A3/Quick/Full restano autoritativi sull'head finale.
 
 ## Decisioni vincolanti
 
@@ -67,7 +69,7 @@ La formula `netTurnoverHeadcount / staffAt31Dec × 100` è verificata esattament
 
 ## Prossima azione esatta
 
-1. Portare `#238` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.770 / 255**.
-2. Dopo merge autorizzato, proseguire sulle **21 B residue** con ulteriori contratti cross-source verificabili.
+1. Portare `#239` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.772 / 253**.
+2. Dopo merge autorizzato, ricalcolare le **19 B residue** e chiudere la tranche successiva solo con formule/companion verificabili.
 3. Chiudere quindi C semantic closure e D official-source evidence.
 4. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.

@@ -109,11 +109,19 @@ def test_companion_evidence() -> None:
     current_relationship = {
         **ratio_relationship,
         "metricId": "currentRateMetric",
+        "numeratorYearMode": "metric_current",
         "denominatorYearMode": "metric_current",
     }
     current_root = _root_with_contract([current_relationship])
     current_catalog = {
         **ratio_catalog,
+        "absoluteMetric": {
+            "meta": {"unit": "number", "year": "2024"},
+            "rows": [
+                {"code": "001", "value": 100.0},
+                {"code": "002", "value": 50.0},
+            ],
+        },
         "currentRateMetric": {
             "meta": {"unit": "per1000", "year": "2025"},
             "rows": [
@@ -128,7 +136,81 @@ def test_companion_evidence() -> None:
         catalog=current_catalog,
         repo_root=current_root,
     ) or ""
+    assert "numerator=metric_current" in current_evidence
     assert "denominator=metric_current" in current_evidence
+
+    fields_relationship = {
+        "metricId": "staffTurnover",
+        "dimension": "numeratore_denominatore",
+        "relationship": "target_fields_ratio_formula",
+        "targetNumeratorFields": ["netHires", "netCessations"],
+        "targetNumeratorOperation": "difference",
+        "targetNumeratorCheckField": "netTurnoverHeadcount",
+        "companionMetricId": "staffAge",
+        "companionDenominatorField": "staffAt31Dec",
+    }
+    fields_root = _root_with_contract([fields_relationship])
+    fields_catalog = {
+        "staffTurnover": {
+            "meta": {"unit": "percent", "year": "2024"},
+            "rows": [
+                {
+                    "code": "001",
+                    "value": -1.0 / 87.0 * 100.0,
+                    "netHires": 2,
+                    "netCessations": 3,
+                    "netTurnoverHeadcount": -1,
+                },
+                {
+                    "code": "002",
+                    "value": 19.0 / 412.0 * 100.0,
+                    "netHires": 41,
+                    "netCessations": 22,
+                    "netTurnoverHeadcount": 19,
+                },
+            ],
+        },
+        "staffAge": {
+            "meta": {"unit": "percent", "year": "2024"},
+            "rows": [
+                {"code": "001", "staffAt31Dec": 87},
+                {"code": "002", "staffAt31Dec": 412},
+            ],
+        },
+    }
+    fields_evidence = companion_acquired_evidence(
+        metric_id="staffTurnover",
+        dimension="numeratore_denominatore",
+        catalog=fields_catalog,
+        repo_root=fields_root,
+    ) or ""
+    assert fields_evidence.startswith(
+        "companion:target_fields_ratio_formula:netHires-netCessations/"
+        "staffAge.staffAt31Dec:scale=100:2/2"
+    )
+
+    broken_fields_catalog = {
+        **fields_catalog,
+        "staffTurnover": {
+            **fields_catalog["staffTurnover"],
+            "rows": [
+                {
+                    "code": "001",
+                    "value": 0.0,
+                    "netHires": 2,
+                    "netCessations": 3,
+                    "netTurnoverHeadcount": -1,
+                },
+                fields_catalog["staffTurnover"]["rows"][1],
+            ],
+        },
+    }
+    assert companion_acquired_evidence(
+        metric_id="staffTurnover",
+        dimension="numeratore_denominatore",
+        catalog=broken_fields_catalog,
+        repo_root=fields_root,
+    ) is None
 
     series_change_relationship = {
         "metricId": "populationChange",
