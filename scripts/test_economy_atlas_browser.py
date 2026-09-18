@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
 import os
 import socket
 import threading
@@ -21,14 +22,32 @@ TOWNS = {
     "stazzema": "Stazzema",
     "viareggio": "Viareggio",
 }
-SECTION_COUNTS = {
-    "redditi": 6,
-    "costi-fiscalita": 4,
-    "produzione": 10,
-    "imprenditorialita": 2,
-    "turismo": 9,
-    "atlante": 1,
-}
+SECTION_COUNTS: dict[str, int] = {}
+EXPECTED_PUBLIC_METRICS = 0
+EXPECTED_ECONOMY_METRICS = 0
+
+
+def load_catalog_expectations(directory: Path) -> None:
+    """Derive browser expectations from the exact public catalog under test."""
+    global SECTION_COUNTS, EXPECTED_PUBLIC_METRICS, EXPECTED_ECONOMY_METRICS
+    catalog_path = directory / "data" / "site-data.json"
+    data = json.loads(catalog_path.read_text(encoding="utf-8"))
+    metrics = data.get("metrics")
+    economy = (data.get("themes") or {}).get("economia")
+    assert isinstance(metrics, dict) and metrics, "Catalogo pubblico privo di metriche"
+    assert isinstance(economy, dict), "Tema Economia assente dal catalogo pubblico"
+    sections = economy.get("sections")
+    assert isinstance(sections, list) and sections, "Sezioni Economia assenti"
+
+    SECTION_COUNTS = {
+        str(section["key"]): len(section.get("metrics") or [])
+        for section in sections
+    }
+    EXPECTED_PUBLIC_METRICS = len(metrics)
+    EXPECTED_ECONOMY_METRICS = len(economy.get("metrics") or [])
+    assert SECTION_COUNTS.get("atlante") == 1, SECTION_COUNTS
+    atlas_section = next(section for section in sections if section.get("key") == "atlante")
+    assert atlas_section.get("metrics") == ["economyActivityAtlas"], atlas_section
 CASES = ("30", "301", "56.1", "68.1", "68.2", "68.3", "68.31", "56.10.11")
 ATLAS_ROUTE = "confronta/economia/atlante-attivita-economiche/"
 
@@ -112,7 +131,7 @@ def assert_section_contract(page, town: str | None = None):
         actual = group.locator(".metric-group-buttons").locator("button, a.metric-route-link").count()
         assert actual == expected, (key, actual, expected)
         total += actual
-    assert total == 32, total
+    assert total == sum(SECTION_COUNTS.values()), (total, SECTION_COUNTS)
 
     atlas_group = page.locator('.metric-group[data-section="atlante"]')
     assert "atlante delle attività economiche" in atlas_group.inner_text().casefold()
@@ -234,9 +253,9 @@ def test_towns(page, base: str, screenshots: Path):
 def test_catalog_and_search(page, base: str):
     page.set_viewport_size({"width": 1440, "height": 980})
     page.goto(base, wait_until="networkidle")
-    assert "184 indicatori" in page.locator("body").inner_text().casefold()
+    assert f"{EXPECTED_PUBLIC_METRICS} indicatori" in page.locator("body").inner_text().casefold()
     economy_card = page.locator('[data-theme="economia"]')
-    assert "32 indicatori" in economy_card.inner_text().casefold()
+    assert f"{EXPECTED_ECONOMY_METRICS} indicatori" in economy_card.inner_text().casefold()
     page.locator(".global-search-trigger").click()
     search = page.locator(".search-overlay input")
     search.fill("atlante attività economiche")
@@ -267,6 +286,7 @@ def main() -> None:
     directory = Path(args.directory).resolve()
     screenshots = Path(args.screenshots_dir).resolve()
     screenshots.mkdir(parents=True, exist_ok=True)
+    load_catalog_expectations(directory)
 
     with server(directory) as base, sync_playwright() as pw:
         launch_kwargs = {"headless": True}
@@ -289,7 +309,11 @@ def main() -> None:
         blocking = [item for item in console_errors if "favicon" not in item.lower()]
         assert not blocking, f"Console errors: {blocking[:5]}"
 
-    print("Atlante browser OK: 32 visibili, sezione autonoma, 7 deep link comunali, territorio esclusivo, responsive.")
+    print(
+        "Atlante browser OK: "
+        f"{sum(SECTION_COUNTS.values())} indicatori Economia visibili, "
+        "sezione autonoma, 7 deep link comunali, territorio esclusivo, responsive."
+    )
 
 
 if __name__ == "__main__":

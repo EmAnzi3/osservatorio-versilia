@@ -13,6 +13,7 @@ import base64
 import gzip
 import json
 import re
+import zlib
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -94,9 +95,15 @@ def _decode_chunked_payload(directory: Path, prefix: str | None = None) -> Any |
         encoded = "".join(path.read_text(encoding="utf-8").strip() for path in candidates)
         raw = base64.b64decode(encoded, validate=False)
         if raw[:2] == b"\x1f\x8b":
-            raw = gzip.decompress(raw)
+            try:
+                raw = gzip.decompress(raw)
+            except EOFError:
+                # Some browser-served legacy payloads omit the gzip trailer.
+                # Accept them only when the deflate stream still yields valid JSON.
+                decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
+                raw = decoder.decompress(raw) + decoder.flush()
         return json.loads(raw.decode("utf-8"))
-    except (OSError, ValueError, gzip.BadGzipFile, UnicodeDecodeError, json.JSONDecodeError):
+    except (OSError, ValueError, EOFError, zlib.error, gzip.BadGzipFile, UnicodeDecodeError, json.JSONDecodeError):
         return None
 
 
@@ -210,8 +217,114 @@ def _find_absolute_and_normalized(payload: Any) -> str | None:
             if not isinstance(value, dict):
                 continue
             keys = {_norm(key) for key in value}
-            if keys & {"pct", "percent", "percentage", "rate", "ratio", "share", "normalized", "value", "turnout"}:
+            if keys & {"pct", "percent", "percentage", "rate", "ratio", "share", "normalized", "value", "turnout", "affluenza"}:
                 return ratio
+    return None
+
+
+def _compact_schema_evidence(
+    payload: Any,
+    storage: dict[str, Any],
+    dimension: str,
+) -> str | None:
+    """Validate a declared compact route schema against the decoded payload."""
+    schema = storage.get("compactSchema")
+    if not isinstance(schema, dict) or not isinstance(payload, dict):
+        return None
+
+    period_key = schema.get("periodAxis")
+    territory_key = schema.get("territoryAxis")
+    category_key = schema.get("categoryRows")
+    if not all(isinstance(key, str) and key for key in (period_key, territory_key, category_key)):
+        return None
+
+    periods = payload.get(period_key)
+    territories = payload.get(territory_key)
+    categories = payload.get(category_key)
+    if not (
+        isinstance(periods, list) and len(periods) >= 2
+        and isinstance(territories, list) and len(territories) >= 2
+        and isinstance(categories, list) and len(categories) >= 2
+    ):
+        return None
+
+    try:
+        regional_index = int(schema["regionalSeriesIndex"])
+        town_start = int(schema["townSeriesStartIndex"])
+        town_series_index = int(schema["townSeriesIndex"])
+    except (KeyError, TypeError, ValueError):
+        return None
+
+    secondary_index = schema.get("townSecondaryIndex")
+    if secondary_index is not None:
+        try:
+            secondary_index = int(secondary_index)
+        except (TypeError, ValueError):
+            return None
+
+    territory_totals_key = schema.get("territoryTotals")
+    regional_totals_key = schema.get("regionalTotals")
+    territory_totals = payload.get(territory_totals_key) if isinstance(territory_totals_key, str) else None
+    regional_totals = payload.get(regional_totals_key) if isinstance(regional_totals_key, str) else None
+
+    verified_rows = []
+    for row in categories:
+        if not isinstance(row, list) or len(row) < town_start + len(territories):
+            continue
+        if regional_index >= len(row) or not isinstance(row[regional_index], list):
+            continue
+        if len(row[regional_index]) != len(periods):
+            continue
+        town_blocks = row[town_start:town_start + len(territories)]
+        if not town_blocks:
+            continue
+        valid_towns = True
+        for block in town_blocks:
+            if not isinstance(block, list) or town_series_index >= len(block):
+                valid_towns = False
+                break
+            series = block[town_series_index]
+            if not isinstance(series, list) or len(series) != len(periods):
+                valid_towns = False
+                break
+        if valid_towns:
+            verified_rows.append(row)
+
+    if not verified_rows:
+        return None
+
+    has_totals = (
+        isinstance(territory_totals, list)
+        and len(territory_totals) == len(territories)
+        and all(isinstance(series, list) and len(series) == len(periods) for series in territory_totals)
+        and isinstance(regional_totals, list)
+        and len(regional_totals) == len(periods)
+    )
+    has_secondary = (
+        secondary_index is not None
+        and all(
+            isinstance(block, list) and secondary_index < len(block)
+            for row in verified_rows[:3]
+            for block in row[town_start:town_start + len(territories)]
+        )
+    )
+
+    evidence = f"compactSchema:{period_key}/{territory_key}/{category_key}"
+    if dimension == "serie_storica":
+        return evidence
+    if dimension == "dettaglio_territoriale":
+        return evidence
+    if dimension == "benchmark_toscana_italia" and has_totals:
+        return evidence + f":regional={regional_index}"
+    if dimension == "assoluto_normalizzato" and has_totals:
+        return evidence + ":derived-normalization"
+    if dimension == "numeratore_denominatore" and has_totals:
+        return evidence + ":ratio-components"
+    if dimension == "categorie_specifiche":
+        if all(row and row[0] not in (None, "") for row in verified_rows[:2]):
+            return evidence + ":category-codes"
+    if dimension == "assoluto_normalizzato" and has_secondary:
+        return evidence + ":secondary-share"
     return None
 
 
@@ -233,14 +346,18 @@ def structured_route_evidence(metric: dict[str, Any], dimension: str, repo_root:
         return None
     prefix = f"storage:{declared_path}:"
 
+    compact = _compact_schema_evidence(payload, storage, dimension)
+    if compact:
+        return f"{prefix}{compact}"
+
     if dimension == "serie_storica":
         hit = _find_series(payload)
     elif dimension == "sesso":
-        hit = _find_key(payload, {"sex", "sesso", "male", "female", "maschi", "femmine", "men", "women"})
+        hit = _find_key(payload, {"sex", "sesso", "male", "female", "maschi", "femmine", "men", "women", "maleturnout", "femaleturnout", "male_turnout", "female_turnout"})
     elif dimension == "eta":
         hit = _find_key(payload, {"age", "eta", "age_group", "classe_eta"})
     elif dimension == "dettaglio_territoriale":
-        hit = _find_key(payload, {"section", "sezione", "frazione", "district", "quartiere", "province", "provincia", "region", "regione", "territory", "territorio", "municipality", "municipalities", "town", "towns", "comune", "comuni"})
+        hit = _find_key(payload, {"section", "sezione", "frazione", "district", "quartiere", "province", "provincia", "region", "regione", "territory", "territorio", "town", "towns", "comune", "comuni", "municipality", "municipalities"})
     elif dimension == "benchmark_toscana_italia":
         hit = _find_exact_key(payload, {"toscana", "italia", "italy", "regional", "regionale", "national", "nazionale", "benchmark"})
     elif dimension == "assoluto_normalizzato":

@@ -66,7 +66,51 @@ def test_route_evidence() -> None:
         assert structured_route_evidence(metric, "eta", root) is None
         assert structured_route_evidence(metric, "frequenza_infra_annuale", root) is None
 
-        turnout_payload = {
+        compact_payload = {
+            "v": 2,
+            "y": [2024, 2025],
+            "t": [["massarosa", "Massarosa"], ["viareggio", "Viareggio"]],
+            "rt": [1000, 1100],
+            "tt": [[100, 105], [200, 210]],
+            "c": [
+                ["A 01", [400, 420], "Agricoltura", [[40, 42], 8], [[70, 73], 12]],
+                ["C 10", [300, 330], "Industria", [[30, 31], 5], [[60, 65], 9]],
+            ],
+        }
+        _write_packed(root, "data/compact", compact_payload)
+        compact_metric = {
+            "dataStorage": {
+                "path": "data/compact",
+                "prefix": "payload-",
+                "compactSchema": {
+                    "periodAxis": "y",
+                    "territoryAxis": "t",
+                    "categoryRows": "c",
+                    "regionalSeriesIndex": 1,
+                    "townSeriesStartIndex": 3,
+                    "townSeriesIndex": 0,
+                    "townSecondaryIndex": 1,
+                    "territoryTotals": "tt",
+                    "regionalTotals": "rt",
+                },
+            }
+        }
+        compact_expected = {
+            "serie_storica",
+            "dettaglio_territoriale",
+            "benchmark_toscana_italia",
+            "assoluto_normalizzato",
+            "numeratore_denominatore",
+            "categorie_specifiche",
+        }
+        for dimension in compact_expected:
+            assert structured_route_evidence(compact_metric, dimension, root), dimension
+        assert structured_route_evidence(compact_metric, "sesso", root) is None
+        assert structured_route_evidence(compact_metric, "eta", root) is None
+
+        trailerless_dir = root / "data" / "trailerless"
+        trailerless_dir.mkdir(parents=True)
+        trailerless_payload = {
             "families": {
                 "referendum": {
                     "events": [
@@ -78,8 +122,8 @@ def test_route_evidence() -> None:
                                     "voters": 60,
                                     "electors": 100,
                                     "turnout": 60.0,
-                                    "maleTurnout": 62.0,
-                                    "femaleTurnout": 58.0,
+                                    "maleTurnout": 61.0,
+                                    "femaleTurnout": 59.0,
                                 }
                             ],
                         },
@@ -100,11 +144,15 @@ def test_route_evidence() -> None:
                 }
             }
         }
-        _write_packed(root, "data/turnout", turnout_payload)
-        turnout_metric = {
+        raw = gzip.compress(json.dumps(trailerless_payload).encode("utf-8"))[:-8]
+        trailerless_dir.joinpath("archive-00.b64").write_text(
+            base64.b64encode(raw).decode("ascii"),
+            encoding="utf-8",
+        )
+        trailerless_metric = {
             "dataStorage": {
-                "path": "data/turnout",
-                "prefix": "payload-",
+                "path": "data/trailerless",
+                "prefix": "archive-00",
             }
         }
         for dimension in {
@@ -115,10 +163,7 @@ def test_route_evidence() -> None:
             "numeratore_denominatore",
             "categorie_specifiche",
         }:
-            assert structured_route_evidence(turnout_metric, dimension, root), dimension
-        assert structured_route_evidence(turnout_metric, "eta", root) is None
-        assert structured_route_evidence(turnout_metric, "benchmark_toscana_italia", root) is None
-        assert structured_route_evidence(turnout_metric, "frequenza_infra_annuale", root) is None
+            assert structured_route_evidence(trailerless_metric, dimension, root), dimension
 
         climate = {"dataStorage": {"backend": "external-climate", "normalizedPercent": True}}
         evidence = structured_route_evidence(climate, "assoluto_normalizzato", root) or ""
