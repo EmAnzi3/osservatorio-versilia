@@ -14,7 +14,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **A3 #241:** run `35370483761` **GREEN**
 - **Pages #241:** run `35370483766` **GREEN**
 - **Branch corrente:** `chore/a3-2-siope-canonical-ratios`
-- **PR corrente:** da aprire
+- **PR corrente:** `#242`
 
 ## Residuo effettivo post-#241
 
@@ -72,9 +72,8 @@ Verifica preliminare sul canonico post-#241: **7/7 Comuni** coerenti per tutte e
 
 ## Prossima azione esatta
 
-1. Aprire la PR della tranche SIOPE e aggiornare qui il numero PR.
-2. Portare A3 Enrichment Audit, Quick e Full GREEN sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.783 / 242** e l'evidenza `canonical_field_ratio_formula` sulle tre coppie.
-4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, ricostruire le 8 B residue effettive e procedere per sottoinsiemi omogenei; poi C e D.
-6. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+1. Portare `#242` a A3 Enrichment Audit, Quick e Full GREEN sul final head.
+2. Verificare nel log A3 il conteggio esatto **1.783 / 242** e l'evidenza `canonical_field_ratio_formula` sulle tre coppie.
+3. Fermarsi prima del merge.
+4. Dopo merge autorizzato, ricostruire le 8 B residue effettive e procedere per sottoinsiemi omogenei; poi C e D.
+5. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
