@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `158daf512578ac40237dbabf2dfc14655c1a3dc3` (post-`#233`)
+- **Baseline main:** `0fc2c51d4ebc72fc825ce790c70ed0fed1c62275` (post-`#234`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#233:** 2.025 coppie; **1.759 classificate, 266 residue**
-- **Branch corrente:** `chore/a3-2-demographic-formulas`
-- **PR corrente:** `#234`
+- **Matrice A3.2 post-#234:** 2.025 coppie; **1.764 classificate, 261 residue**
+- **Branch corrente:** `chore/a3-2-mobility-rate-formulas`
+- **PR corrente:** `#235`
 
 ## Completato
 
@@ -26,14 +26,14 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#227` ha introdotto il resolver route-aware ma senza chiudere le 12 coppie special-route; ha invece reso riconoscibile il contratto climate normalizzato poi verificato nella matrice effettiva.
 - `#228` ha chiuso 7 coppie demografiche `eta` tramite companion verificato; A3 gate, Quick e Full verdi. Matrice effettiva post-merge: **1.743 classificate / 282 residue**.
 - `#229` ha chiuso le 6 coppie `voterTurnout` tramite il payload `archive-v2-*`; `#230` ha chiuso le 6 coppie `economyActivityAtlas` con schema compatto verificato. Baseline post-merge: **1.755 / 270**.
-- `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.
+- `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.\n- `#234` ha chiuso 5 coppie demografiche tramite `series_change_formula` e `parts_ratio_formula` → **1.764 / 261**.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#233
+## Residual Closure Audit post-#234
 
-Le **266 residue** reali si ricompongono così:
+Le **261 residue** reali si ricompongono così:
 
-- **B — cross-source / companion:** 32
+- **B — cross-source / companion:** 27
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
