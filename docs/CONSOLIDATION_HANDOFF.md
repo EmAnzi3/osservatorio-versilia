@@ -15,7 +15,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Pages final head #244:** run `35387050727` **GREEN**
 - **Pages post-merge #244:** run `35391343566` **GREEN**
 - **Branch corrente:** `chore/a3-2-semantic-territory-na`
-- **PR corrente:** da aprire
+- **PR corrente:** `#245`
 
 ## Residuo effettivo post-#244
 
@@ -65,10 +65,9 @@ Dopo la tranche:
 
 ## Prossima azione esatta
 
-1. Aprire la PR della prima tranche C.
-2. Portare A3 Enrichment Audit, Quick e Full GREEN sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.805 / 220** e le 14 coppie `NOT_APPLICABLE`.
-4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, ricostruire le 20 C residue effettive e proseguire per sottogruppi semantici omogenei.
-6. Solo dopo C=0 passare al bucket D.
-7. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+1. Portare `#245` a A3 Enrichment Audit, Quick e Full GREEN sul final head.
+2. Verificare nel log A3 il conteggio esatto **1.805 / 220** e le 14 coppie `NOT_APPLICABLE`.
+3. Fermarsi prima del merge.
+4. Dopo merge autorizzato, ricostruire le 20 C residue effettive e proseguire per sottogruppi semantici omogenei.
+5. Solo dopo C=0 passare al bucket D.
+6. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
