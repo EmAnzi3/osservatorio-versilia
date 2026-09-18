@@ -145,7 +145,7 @@ def test_companion_evidence() -> None:
         "relationship": "part_count_average_population_formula",
         "companionMetricId": "population",
         "numeratorPartLabel": "Saldo",
-        "partSelectorField": "selectorLabel",
+        "partSelectorField": "label",
         "partCountField": "count",
         "populationYearMode": "target_and_next_average",
     }
@@ -154,8 +154,8 @@ def test_companion_evidence() -> None:
         "mobilityRate": {
             "meta": {"unit": "per1000", "year": "2024"},
             "rows": [
-                {"code": "001", "value": 10.0 / 1050.0 * 1000.0, "parts": [{"selectorLabel": "Saldo", "count": 10}]},
-                {"code": "002", "value": -5.0 / 2050.0 * 1000.0, "parts": [{"selectorLabel": "Saldo", "count": -5}]},
+                {"code": "001", "value": 10.0 / 1050.0 * 1000.0, "parts": [{"label": "Saldo", "count": 10}]},
+                {"code": "002", "value": -5.0 / 2050.0 * 1000.0, "parts": [{"label": "Saldo", "count": -5}]},
             ],
         },
         "population": {
@@ -182,7 +182,7 @@ def test_companion_evidence() -> None:
         "mobilityRate": {
             **average_population_catalog["mobilityRate"],
             "rows": [
-                {"code": "001", "value": 9.0, "parts": [{"selectorLabel": "Saldo", "count": 10}]},
+                {"code": "001", "value": 9.0, "parts": [{"label": "Saldo", "count": 10}]},
                 average_population_catalog["mobilityRate"]["rows"][1],
             ],
         },
