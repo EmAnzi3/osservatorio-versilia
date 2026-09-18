@@ -130,6 +130,128 @@ def test_companion_evidence() -> None:
     ) or ""
     assert "denominator=metric_current" in current_evidence
 
+    series_change_relationship = {
+        "metricId": "populationChange",
+        "dimensions": ["assoluto_normalizzato", "numeratore_denominatore"],
+        "relationship": "series_change_formula",
+        "companionMetricId": "population",
+        "startYear": "2019",
+        "endYear": "2026",
+    }
+    series_change_root = _root_with_contract([series_change_relationship])
+    series_change_catalog = {
+        "populationChange": {
+            "meta": {"unit": "percent", "year": "2019–2026"},
+            "rows": [
+                {"code": "001", "value": 10.0},
+                {"code": "002", "value": -10.0},
+            ],
+        },
+        "population": {
+            "meta": {"unit": "number", "year": "2026"},
+            "rows": [
+                {"code": "001", "value": 110, "series": {"years": [2019, 2026], "values": [100, 110]}},
+                {"code": "002", "value": 180, "series": {"years": [2019, 2026], "values": [200, 180]}},
+            ],
+        },
+    }
+    for dimension in ("assoluto_normalizzato", "numeratore_denominatore"):
+        evidence = companion_acquired_evidence(
+            metric_id="populationChange",
+            dimension=dimension,
+            catalog=series_change_catalog,
+            repo_root=series_change_root,
+        ) or ""
+        assert evidence.startswith(
+            "companion:series_change_formula:population:2019->2026:scale=100:2/2"
+        )
+
+    broken_change_catalog = dict(series_change_catalog)
+    broken_change_catalog["populationChange"] = {
+        **series_change_catalog["populationChange"],
+        "rows": [{"code": "001", "value": 9.0}, {"code": "002", "value": -10.0}],
+    }
+    assert companion_acquired_evidence(
+        metric_id="populationChange",
+        dimension="numeratore_denominatore",
+        catalog=broken_change_catalog,
+        repo_root=series_change_root,
+    ) is None
+
+    parts_ratio_relationship = {
+        "metricId": "dependencyIndices",
+        "dimensions": ["eta", "assoluto_normalizzato", "numeratore_denominatore"],
+        "relationship": "parts_ratio_formula",
+        "companionMetricId": "ageDistribution",
+        "numeratorParts": ["0–14", "65–79", "80–84", "85+"],
+        "denominatorParts": ["15–19", "20–34", "35–49", "50–64"],
+        "partSelectorField": "selectorLabel",
+        "partValueField": "count",
+    }
+    parts_ratio_root = _root_with_contract([parts_ratio_relationship])
+    parts_ratio_catalog = {
+        "dependencyIndices": {
+            "meta": {"unit": "per100", "year": "2026"},
+            "rows": [
+                {"code": "001", "value": 30.0 / 70.0 * 100.0},
+                {"code": "002", "value": 75.0},
+            ],
+        },
+        "ageDistribution": {
+            "meta": {"unit": "percent", "year": "2026"},
+            "rows": [
+                {
+                    "code": "001",
+                    "parts": [
+                        {"selectorLabel": "0–14", "count": 10},
+                        {"selectorLabel": "15–19", "count": 10},
+                        {"selectorLabel": "20–34", "count": 20},
+                        {"selectorLabel": "35–49", "count": 20},
+                        {"selectorLabel": "50–64", "count": 20},
+                        {"selectorLabel": "65–79", "count": 10},
+                        {"selectorLabel": "80–84", "count": 4},
+                        {"selectorLabel": "85+", "count": 6},
+                    ],
+                },
+                {
+                    "code": "002",
+                    "parts": [
+                        {"selectorLabel": "0–14", "count": 20},
+                        {"selectorLabel": "15–19", "count": 10},
+                        {"selectorLabel": "20–34", "count": 20},
+                        {"selectorLabel": "35–49", "count": 20},
+                        {"selectorLabel": "50–64", "count": 10},
+                        {"selectorLabel": "65–79", "count": 15},
+                        {"selectorLabel": "80–84", "count": 5},
+                        {"selectorLabel": "85+", "count": 5},
+                    ],
+                },
+            ],
+        },
+    }
+    for dimension in ("eta", "assoluto_normalizzato", "numeratore_denominatore"):
+        evidence = companion_acquired_evidence(
+            metric_id="dependencyIndices",
+            dimension=dimension,
+            catalog=parts_ratio_catalog,
+            repo_root=parts_ratio_root,
+        ) or ""
+        assert evidence.startswith(
+            "companion:parts_ratio_formula:ageDistribution:scale=100:2/2"
+        )
+
+    broken_parts_catalog = dict(parts_ratio_catalog)
+    broken_parts_catalog["dependencyIndices"] = {
+        **parts_ratio_catalog["dependencyIndices"],
+        "rows": [{"code": "001", "value": 49.0}, {"code": "002", "value": 75.0}],
+    }
+    assert companion_acquired_evidence(
+        metric_id="dependencyIndices",
+        dimension="eta",
+        catalog=broken_parts_catalog,
+        repo_root=parts_ratio_root,
+    ) is None
+
     broken_ratio_catalog = dict(ratio_catalog)
     broken_ratio_catalog["rateMetric"] = {
         **ratio_catalog["rateMetric"],
