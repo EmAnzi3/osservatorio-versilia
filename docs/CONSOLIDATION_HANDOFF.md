@@ -8,52 +8,54 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Parent #240 head:** `f89b75129c2f8be152a398113796fdf4ab690978` (post-`#239` main + tranche #240)
+- **Main verificato prima della tranche:** `405b08b5e98828934bcea1df74562e5a5310242a` (merge `#241`)
 - **Catalogo pubblico governato:** 225 indicatori
-- **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Parent #240 atteso/verificabile:** 2.025 coppie; **1.776 classificate, 249 residue**
-- **Branch corrente:** `chore/a3-2-demographic-average-denominators`
-- **PR corrente:** `#241` (stacked su `#240`)
+- **Matrice A3.2 post-#241:** 2.025 coppie; **1.780 classificate, 245 residue**
+- **A3 #241:** run `35370483761` **GREEN**
+- **Pages #241:** run `35370483766` **GREEN**
+- **Branch corrente:** `chore/a3-2-siope-canonical-ratios`
+- **PR corrente:** da aprire
 
-## Completato
+## Residuo effettivo post-#241
 
-- `A0` chiuso con `#188`; `A1` con `#190/#193`; `A2` con `#194` e hardening `#195–#203`; `A3.1` con `#204`.
-- `#206` ha introdotto la matrice A3.2 derivata dall'Effective Public Catalog.
-- Progressione A3.2: `#207–#210` → `804/2.025`; `#211` → `920`; `#212` → `1.101`; `#213` → `1.245`; `#214` → `1.373`; `#215` → `1.464`; `#217` → `1.498`; `#218` → `1.532`; `#220` → `1.556`; `#221` → `1.596`; `#222` → `1.636`; `#223` → `1.674`; `#225` → **1.705**.
-- `#224` ha prodotto il primo Residual Closure Audit sulle 351 residue post-#223.
-- `#225` ha separato il core della matrice e migliorato i detector strutturali; Full `35259611965` / job `105333898344`: **GREEN**, 1.705 classificate / 320 residue.
-- `#226` ha chiuso 30 falsi residui same-payload → **1.735 / 290**.
-- `#227` ha introdotto il resolver route-aware ma senza chiudere le 12 coppie special-route; ha invece reso riconoscibile il contratto climate normalizzato poi verificato nella matrice effettiva.
-- `#228` ha chiuso 7 coppie demografiche `eta` tramite companion verificato; A3 gate, Quick e Full verdi. Matrice effettiva post-merge: **1.743 classificate / 282 residue**.
-- `#229` ha chiuso le 6 coppie `voterTurnout` tramite il payload `archive-v2-*`; `#230` ha chiuso le 6 coppie `economyActivityAtlas` con schema compatto verificato. Baseline post-merge: **1.755 / 270**.
-- `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.\n- `#234` ha chiuso 5 coppie demografiche tramite `series_change_formula` e `parts_ratio_formula` → **1.764 / 261**.
-- `#235` ha chiuso 4 coppie commuter-rate (`inboundCommutersRate`, `outboundCommutersRate`) → **1.768 / 257**; A3, Quick e Full verdi prima del merge.
-- `#237` riguarda il Radar opportunità e non modifica la matrice A3.2.
-- `#238` ha chiuso 2 coppie `municipalStaffTurnover` → **1.770 / 255**; A3 e Pages verdi prima del merge.
-- La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
+La matrice è stata ricostruita dal log A3 finale di `#241`, non dall'handoff precedente.
 
-## Residual Closure Audit parent #240
+- **A — falsi residui strutturali:** 0
+- **B — cross-source / companion:** **11**
+- **C — semanticamente `NOT_APPLICABLE`:** **34**
+- **D — verifica fonte ufficiale necessaria:** **200**
+- **Totale:** **245**
 
-Le **249 residue** attese sul parent #240 si ricompongono così:
+Le 11 coppie B residue sono:
 
-- **B — cross-source / companion:** 15
-- **C — semanticamente `NOT_APPLICABLE`:** 34
-- **D — verifica fonte ufficiale necessaria:** 200
+- `currentPayments / numeratore_denominatore`
+- `capitalPayments / numeratore_denominatore`
+- `siopePayments / numeratore_denominatore`
+- `evPoints / numeratore_denominatore`
+- `publicWorks / numeratore_denominatore`
+- `roadFinesPerResident / assoluto_normalizzato`
+- `roadFinesPerResident / numeratore_denominatore`
+- `pharmaciesPer1000 / assoluto_normalizzato`
+- `pharmaciesPer1000 / numeratore_denominatore`
+- `tourismStructuresPer1000 / assoluto_normalizzato`
+- `tourismStructuresPer1000 / numeratore_denominatore`
 
-Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
+## Intervento corrente — tranche SIOPE
 
-## Intervento corrente — tranche demografia
+La tranche chiude soltanto le tre coppie SIOPE `numeratore_denominatore`.
 
-La tranche stacked successiva a `#240` chiude 4 residue B `numeratore_denominatore`:
+Il contratto `canonical_field_ratio_formula` dichiara il percorso concreto del numeratore già strutturato nel canonico `data/site-data.json` e usa `population` come companion del denominatore. Il detector resta generico e:
 
-- `internalResidentialMobility`;
-- `foreignResidentialMobility`;
-- `totalResidentialMobility`;
-- `naturalDemographicDynamics`.
+- allinea i record per identità comunale;
+- legge soltanto percorsi dichiarati dal contratto;
+- usa la popolazione dell'anno successivo al target (`target_next_year`);
+- verifica numericamente il rapporto per tutti i record;
+- fallisce chiuso su record, campo, anno, denominatore o valore discordante;
+- richiede almeno due verifiche e non contiene ID metrici hard-coded.
 
-Il contratto generico `part_count_average_population_formula` verifica per tutti i Comuni il conteggio assoluto nel `part` selezionato contro la popolazione media annua derivata dalla serie pubblica `population`: media tra popolazione all'inizio dell'anno target e all'inizio dell'anno successivo. La formula è validata 7/7 e fallisce su label, conteggi, anni, denominatori o valori discordanti.
+Verifica preliminare sul canonico post-#241: **7/7 Comuni** coerenti per tutte e tre le metriche.
 
-**Esito atteso:** **1.780 classificate / 245 residue**; B da 15 a 11.
+**Esito atteso:** **1.783 classificate / 242 residue**; bucket B da **11 a 8**. C e D restano invariati a 34 e 200.
 
 ## Decisioni vincolanti
 
@@ -61,18 +63,18 @@ Il contratto generico `part_count_average_population_formula` verifica per tutti
 2. A3 non deve introdurre una seconda lista manuale di indicatori o fonti.
 3. L'unità di audit è `indicatore pubblico × dimensione enrichment`.
 4. Ogni coppia finale deve avere uno stato tra `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
-5. `ACQUIRED` richiede evidenza strutturata e non può essere dichiarato manualmente.
+5. `ACQUIRED` richiede evidenza strutturata/formula verificata e non può essere dichiarato manualmente.
 6. `AVAILABLE_MISSING` e `SOURCE_UNAVAILABLE` richiedono evidenza ufficiale verificabile; `NOT_APPLICABLE` solo metric-specific.
-7. A3.2 non è chiuso finché `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
-8. Le classificazioni source-profile sono ammesse solo quando valide per l'intero profilo; altrimenti override metric-specific.
-9. Coppie già materializzate ma non riconosciute dal detector richiedono correzione strutturale, non annotazioni artificiali.
-10. I rapporti con componenti provenienti da fonti/metriche companion richiedono un contratto cross-source esplicito.
-11. Nessun merge/pubblicazione senza Quick/Full pertinenti e approvazione esplicita del proprietario.
+7. I detector generici non devono hard-codare ID metrici; le relazioni concrete appartengono ai contratti.
+8. Ogni formula deve essere fail-closed.
+9. A3.2 non è chiuso finché `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+10. Nessun merge/pubblicazione senza A3, Quick e Full pertinenti GREEN e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
-1. Chiudere `#239` sul final head soltanto con A3, Quick e Full GREEN.
-2. Riallineare e portare `#240` a **1.776 / 249** su `main` post-`#239`.
-3. Riallineare questa tranche sul `main` post-`#240`, aprire la PR e verificare **1.780 / 245** con A3, Quick e Full.
-4. Dopo merge autorizzato, ricalcolare le **11 B residue**, poi chiudere C e D.
-5. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+1. Aprire la PR della tranche SIOPE e aggiornare qui il numero PR.
+2. Portare A3 Enrichment Audit, Quick e Full GREEN sul final head.
+3. Verificare nel log A3 il conteggio esatto **1.783 / 242** e l'evidenza `canonical_field_ratio_formula` sulle tre coppie.
+4. Fermarsi prima del merge.
+5. Dopo merge autorizzato, ricostruire le 8 B residue effettive e procedere per sottoinsiemi omogenei; poi C e D.
+6. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
