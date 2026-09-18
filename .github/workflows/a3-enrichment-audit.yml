@@ -113,6 +113,12 @@ jobs:
               ('economyActivityAtlas', 'numeratore_denominatore'),
               ('economyActivityAtlas', 'categorie_specifiche'),
           }
+          ratio_expected = {
+              ('tourismIntensity', 'assoluto_normalizzato'),
+              ('tourismIntensity', 'numeratore_denominatore'),
+              ('commuterBalanceRate', 'assoluto_normalizzato'),
+              ('commuterBalanceRate', 'numeratore_denominatore'),
+          }
           rows = {
               (row['metricId'], row['dimension']): row
               for row in matrix['rows']
@@ -129,12 +135,18 @@ jobs:
               assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
               assert row['evidence'].startswith('structured:storage:'), (pair, row)
 
-          assert summary['classifiedPairCount'] == 1755, summary
-          assert summary['unclassifiedPairCount'] == 270, summary
+          for pair in sorted(ratio_expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:companion:ratio_formula:'), (pair, row)
+
+          assert summary['classifiedPairCount'] == 1759, summary
+          assert summary['unclassifiedPairCount'] == 266, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 7 demographic companion pairs verified.'
+              '12 special-route + 7 demographic companion + 4 ratio companion pairs verified.'
           )
           PY

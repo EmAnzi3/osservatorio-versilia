@@ -42,6 +42,27 @@
       "dimension": "eta",
       "companionMetricId": "ageDistribution",
       "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "tourismIntensity",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "tourismPresences",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "commuterBalanceRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "commuterBalance",
+      "denominatorMetricId": "population"
     }
   ]
 }
