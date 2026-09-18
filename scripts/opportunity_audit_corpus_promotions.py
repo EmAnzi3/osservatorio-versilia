@@ -285,13 +285,18 @@ def _municipality_map(title: str, reason: str) -> dict[str, dict[str, str]]:
     return mapped
 
 
-def _candidate_to_item(item: dict[str, Any], today: date) -> dict[str, Any] | None:
+def _candidate_to_item(
+    item: dict[str, Any],
+    today: date,
+    *,
+    include_expired: bool = False,
+) -> dict[str, Any] | None:
     url = _first_url(item)
     if not url:
         return None
     deadline = _parse_day(item.get("deadlineAt"))
     opens = _parse_day(item.get("opensAt"))
-    if deadline and deadline < today:
+    if deadline and deadline < today and not include_expired:
         return None
 
     audit_class = str(item.get("auditClass") or "").casefold()
@@ -367,7 +372,11 @@ def _candidate_to_item(item: dict[str, Any], today: date) -> dict[str, Any] | No
     }
 
 
-def discover_promotions(today: date) -> list[dict[str, Any]]:
+def discover_promotions(
+    today: date,
+    *,
+    include_expired: bool = False,
+) -> list[dict[str, Any]]:
     latest: dict[str, dict[str, Any]] = {}
     for path in _audit_paths():
         try:
@@ -389,7 +398,7 @@ def discover_promotions(today: date) -> list[dict[str, Any]]:
     for candidate in latest.values():
         if not _class_is_publishable(candidate, today):
             continue
-        item = _candidate_to_item(candidate, today)
+        item = _candidate_to_item(candidate, today, include_expired=include_expired)
         if item is None:
             continue
         title_key = _normalized_title(item.get("title"))
@@ -407,8 +416,13 @@ def discover_promotions(today: date) -> list[dict[str, Any]]:
     return output
 
 
-def apply_audit_corpus_promotions(result: dict[str, Any], today: date) -> dict[str, Any]:
-    promotions = discover_promotions(today)
+def apply_audit_corpus_promotions(
+    result: dict[str, Any],
+    today: date,
+    *,
+    include_expired: bool = False,
+) -> dict[str, Any]:
+    promotions = discover_promotions(today, include_expired=include_expired)
     opportunities = result.setdefault("opportunities", [])
     existing_ids = {str(x.get("coverage_id") or x.get("rule_id") or "") for x in opportunities}
     existing_titles = {_normalized_title(x.get("title")) for x in opportunities}

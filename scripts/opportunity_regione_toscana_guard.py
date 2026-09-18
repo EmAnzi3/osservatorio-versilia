@@ -154,6 +154,24 @@ def _default_fetch(url: str) -> str:
     return radar.v025.v022.fetch_resilient(url, timeout=30, attempts=1)
 
 
+def _documented_exclusion_rule(candidate: dict[str, Any]) -> dict[str, Any] | None:
+    """Return an explicit non-municipal rule that resolves a safety-net candidate."""
+    rules, _policy, aliases = radar.load_rules()
+    source_id = "regione-toscana"
+    working = {
+        "source_id": aliases.get(source_id, source_id),
+        "title": str(candidate.get("title") or ""),
+    }
+    rule = radar.v021.matching_rule(working, rules)
+    if not isinstance(rule, dict):
+        return None
+    if rule.get("municipality_role") == "none" or rule.get("actionable") is False:
+        return rule
+    if rule.get("geographic_eligibility") == "not_applicable":
+        return rule
+    return None
+
+
 def scan_recent_municipal_candidates(
     today: date,
     *,
@@ -266,10 +284,20 @@ def apply(
     added = 0
     unresolved: list[dict[str, Any]] = []
     overdue: list[dict[str, Any]] = []
+    documented_excluded: list[dict[str, Any]] = []
 
     for candidate in candidates:
         state = _account_state(result, candidate)
         if state is None:
+            exclusion_rule = _documented_exclusion_rule(candidate)
+            if exclusion_rule is not None:
+                documented_excluded.append({
+                    **candidate,
+                    "account_state": "documented_exclusion",
+                    "rule_id": exclusion_rule.get("id"),
+                    "reason": exclusion_rule.get("suppress_reason"),
+                })
+                continue
             queue.append(
                 {
                     "source_id": "regione-toscana-safety-net",
@@ -327,11 +355,13 @@ def apply(
         "safetyNetAdded": added,
         "unresolved": unresolved,
         "overdue": overdue,
+        "documentedExcluded": documented_excluded,
         "errors": errors,
     }
     result.setdefault("counts", {})["regionalSafetyNetAdded"] = added
     result.setdefault("counts", {})["regionalUnresolved"] = len(unresolved)
     result.setdefault("counts", {})["regionalOverdue"] = len(overdue)
+    result.setdefault("counts", {})["regionalDocumentedExcluded"] = len(documented_excluded)
     return result
 
 

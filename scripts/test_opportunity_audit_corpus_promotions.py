@@ -55,6 +55,18 @@ def main() -> int:
         x.get("title") for x in result.get("municipalRelevanceReview") or []
     ]
 
+    future = promotions.apply_complete_promotions(copy.deepcopy(baseline), date(2026, 9, 18))
+    retained = {
+        str(item.get("coverage_id") or "")
+        for item in list(future.get("opportunities") or []) + list(future.get("archive") or [])
+        if str(item.get("source_id") or "") in {"audit-corpus-v1", "municipal-matrix-v1"}
+        and item.get("coverage_id")
+    }
+    assert len(retained) >= promotions.MATRIX_CURRENT_TARGET, (
+        len(retained), promotions.MATRIX_CURRENT_TARGET
+    )
+    assert "horizon-cl6-2026-01-zeropollution-03" in retained
+
     print(
         "Replay audit corpus completo: "
         f"scoperte={replay['discovered']} · aggiunte={replay['added']} · "
