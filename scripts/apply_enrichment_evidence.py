@@ -500,6 +500,42 @@ METRIC_EVIDENCE = {
     )
 }
 
+METRIC_EVIDENCE.update(
+    {
+        "evPoints": {
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "La Piattaforma Unica Nazionale rende disponibile per Comune il numero dei punti di ricarica. La pipeline pubblica il tasso ogni 1.000 residenti ma non conserva il conteggio assoluto come componente strutturata della metrica.",
+                "sourceReference": "https://www.piattaformaunicanazionale.it/territory-idr",
+            },
+        },
+        "pharmaciesPer1000": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "L'open data del Ministero della Salute contiene l'elenco completo delle farmacie aperte al pubblico con il Comune di localizzazione, quindi il conteggio assoluto comunale è direttamente ricostruibile. La metrica pubblicata conserva soltanto la densità ogni 1.000 residenti.",
+                "sourceReference": "https://www.dati.salute.gov.it/it/dataset/farmacie/",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "L'open data del Ministero della Salute contiene ogni farmacia con il Comune di localizzazione, rendendo disponibile il numeratore assoluto; il denominatore demografico è governato separatamente. Il conteggio comunale non è però conservato nella metrica pubblicata.",
+                "sourceReference": "https://www.dati.salute.gov.it/it/dataset/farmacie/",
+            },
+        },
+        "tourismStructuresPer1000": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "Regione Toscana pubblica per il 2025 la consistenza delle strutture ricettive per Comune e tipologia. La pipeline conserva la densità 2025 ogni 1.000 residenti, mentre il conteggio strutturato presente nel dettaglio canonico è riferito al 2024 e non è quindi un assoluto comparabile già acquisito per il target 2025.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "La tabella ufficiale Toscana 2025 espone la consistenza delle strutture ricettive per Comune e tipologia, quindi il numeratore 2025 è disponibile alla fonte; il denominatore demografico è governato separatamente. La pipeline non conserva oggi il numeratore 2025 come componente strutturata della metrica.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+        },
+    }
+)
+
 
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
