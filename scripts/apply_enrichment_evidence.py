@@ -533,6 +533,18 @@ METRIC_EVIDENCE.update(
                 "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
             },
         },
+        "roadFinesPerResident": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "Istat definisce l'indicatore come Totale proventi violazioni al codice della strada / Popolazione residente media e identifica come fonte il Rendiconto proventi violazione codice della strada del Ministero dell'Interno. La banca dati Finanza Locale violazioniCdS pubblica i rendiconti comunali trasmessi al Ministero, nei quali il Quadro 1 espone il totale proventi; il canonico conserva invece soltanto il valore per abitante e la serie.",
+                "sourceReference": "https://finanzalocale.interno.gov.it/apps/floc.php/violazioniCdS/index",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "Il Portale Finanza Locale del Ministero pubblica i rendiconti comunali violazioniCdS con il totale proventi; Istat documenta che il rapporto usa quel totale come numeratore e la popolazione residente media come denominatore. Nel canonico roadFinesPerResident i due componenti non sono conservati come campi strutturati, pur essendo disponibili nelle fonti ufficiali governate.",
+                "sourceReference": "https://finanzalocale.interno.gov.it/apps/floc.php/violazioniCdS/index",
+            },
+        },
     }
 )
 
