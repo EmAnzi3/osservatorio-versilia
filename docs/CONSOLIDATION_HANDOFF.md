@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `8e25437ca27ff9bb8b67ff3404bda8a163c755d8` (post-`#239`)
+- **Parent #240 head:** `f89b75129c2f8be152a398113796fdf4ab690978` (post-`#239` main + tranche #240)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#239:** 2.025 coppie; **1.772 classificate, 253 residue**
-- **Branch corrente:** `chore/a3-2-normalized-companions`
-- **PR corrente:** `#240`
+- **Parent #240 atteso/verificabile:** 2.025 coppie; **1.776 classificate, 249 residue**
+- **Branch corrente:** `chore/a3-2-demographic-average-denominators`
+- **PR corrente:** `#241` (stacked su `#240`)
 
 ## Completato
 
@@ -32,27 +32,28 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#238` ha chiuso 2 coppie `municipalStaffTurnover` → **1.770 / 255**; A3 e Pages verdi prima del merge.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#239
+## Residual Closure Audit parent #240
 
-Le **253 residue** reali post-#239 si ricompongono così:
+Le **249 residue** attese sul parent #240 si ricompongono così:
 
-- **B — cross-source / companion:** 19
+- **B — cross-source / companion:** 15
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
 Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
 
-## Intervento corrente — #240
+## Intervento corrente — tranche demografia
 
-`#240` è stacked sul parent `#239` e chiude 4 residue B:
+La tranche stacked successiva a `#240` chiude 4 residue B `numeratore_denominatore`:
 
-- `municipalEmployeesPer1000 / eta` tramite `municipalStaffAgeStructure`;
-- `commuterBalance / assoluto_normalizzato` tramite rate companion e popolazione dell'anno target;
-- `inboundCommuters / assoluto_normalizzato` e `outboundCommuters / assoluto_normalizzato` tramite rate companion e popolazione corrente, coerentemente ai contratti già verificati.
+- `internalResidentialMobility`;
+- `foreignResidentialMobility`;
+- `totalResidentialMobility`;
+- `naturalDemographicDynamics`.
 
-Il nuovo `normalized_companion_formula` confronta tutte le righe del target assoluto con companion normalizzato e denominatore, derivando scala e anno dai metadati e fallendo su mismatch o dati mancanti.
+Il contratto generico `part_count_average_population_formula` verifica per tutti i Comuni il conteggio assoluto nel `part` selezionato contro la popolazione media annua derivata dalla serie pubblica `population`: media tra popolazione all'inizio dell'anno target e all'inizio dell'anno successivo. La formula è validata 7/7 e fallisce su label, conteggi, anni, denominatori o valori discordanti.
 
-**Esito atteso:** **1.776 classificate / 249 residue**; B da 19 a 15.
+**Esito atteso:** **1.780 classificate / 245 residue**; B da 15 a 11.
 
 ## Decisioni vincolanti
 
@@ -70,8 +71,8 @@ Il nuovo `normalized_companion_formula` confronta tutte le righe del target asso
 
 ## Prossima azione esatta
 
-1. Chiudere il merge di `#239` solo con A3, Quick e Full GREEN sul final head rebased.
-2. Riallineare `#240` sul nuovo `main` post-`#239` senza cambiare il contenuto funzionale.
-3. Portare `#240` a A3 audit, Quick e Full GREEN e verificare **1.776 / 249**.
-4. Dopo merge autorizzato, ricalcolare le **15 B residue**, poi chiudere C e D.
+1. Chiudere `#239` sul final head soltanto con A3, Quick e Full GREEN.
+2. Riallineare e portare `#240` a **1.776 / 249** su `main` post-`#239`.
+3. Riallineare questa tranche sul `main` post-`#240`, aprire la PR e verificare **1.780 / 245** con A3, Quick e Full.
+4. Dopo merge autorizzato, ricalcolare le **11 B residue**, poi chiudere C e D.
 5. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.

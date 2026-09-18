@@ -139,6 +139,61 @@ def test_companion_evidence() -> None:
     assert "numerator=metric_current" in current_evidence
     assert "denominator=metric_current" in current_evidence
 
+    average_population_relationship = {
+        "metricId": "mobilityRate",
+        "dimension": "numeratore_denominatore",
+        "relationship": "part_count_average_population_formula",
+        "companionMetricId": "population",
+        "numeratorPartLabel": "Saldo",
+        "partSelectorField": "selectorLabel",
+        "partCountField": "count",
+        "populationYearMode": "target_and_next_average",
+    }
+    average_population_root = _root_with_contract([average_population_relationship])
+    average_population_catalog = {
+        "mobilityRate": {
+            "meta": {"unit": "per1000", "year": "2024"},
+            "rows": [
+                {"code": "001", "value": 10.0 / 1050.0 * 1000.0, "parts": [{"selectorLabel": "Saldo", "count": 10}]},
+                {"code": "002", "value": -5.0 / 2050.0 * 1000.0, "parts": [{"selectorLabel": "Saldo", "count": -5}]},
+            ],
+        },
+        "population": {
+            "meta": {"unit": "number", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 1100, "series": {"years": [2024, 2025], "values": [1000, 1100]}},
+                {"code": "002", "value": 2100, "series": {"years": [2024, 2025], "values": [2000, 2100]}},
+            ],
+        },
+    }
+    average_population_evidence = companion_acquired_evidence(
+        metric_id="mobilityRate",
+        dimension="numeratore_denominatore",
+        catalog=average_population_catalog,
+        repo_root=average_population_root,
+    ) or ""
+    assert average_population_evidence.startswith(
+        "companion:part_count_average_population_formula:Saldo/"
+        "population:2024->2025:scale=1000:2/2"
+    )
+
+    broken_average_population_catalog = {
+        **average_population_catalog,
+        "mobilityRate": {
+            **average_population_catalog["mobilityRate"],
+            "rows": [
+                {"code": "001", "value": 9.0, "parts": [{"selectorLabel": "Saldo", "count": 10}]},
+                average_population_catalog["mobilityRate"]["rows"][1],
+            ],
+        },
+    }
+    assert companion_acquired_evidence(
+        metric_id="mobilityRate",
+        dimension="numeratore_denominatore",
+        catalog=broken_average_population_catalog,
+        repo_root=average_population_root,
+    ) is None
+
     normalized_companion_relationship = {
         "metricId": "absoluteSource",
         "dimension": "assoluto_normalizzato",
