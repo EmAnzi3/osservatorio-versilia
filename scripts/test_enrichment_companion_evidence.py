@@ -193,7 +193,7 @@ def test_companion_evidence() -> None:
         "dependencyIndices": {
             "meta": {"unit": "per100", "year": "2026"},
             "rows": [
-                {"code": "001", "value": 50.0},
+                {"code": "001", "value": 30.0 / 70.0 * 100.0},
                 {"code": "002", "value": 75.0},
             ],
         },
