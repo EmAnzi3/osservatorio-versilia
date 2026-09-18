@@ -181,6 +181,46 @@
       "normalizedMetricId": "outboundCommutersRate",
       "denominatorMetricId": "population",
       "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "internalResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo migratorio interno",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "foreignResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo migratorio con l’estero",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "totalResidentialMobility",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo complessivo dei trasferimenti",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
+    },
+    {
+      "metricId": "naturalDemographicDynamics",
+      "dimension": "numeratore_denominatore",
+      "relationship": "part_count_average_population_formula",
+      "companionMetricId": "population",
+      "numeratorPartLabel": "Saldo naturale",
+      "partSelectorField": "label",
+      "partCountField": "count",
+      "populationYearMode": "target_and_next_average"
     }
   ]
 }

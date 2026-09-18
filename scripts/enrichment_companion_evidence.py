@@ -292,6 +292,102 @@ def _normalized_companion_formula_evidence(
     )
 
 
+def _part_count_average_population_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+) -> str | None:
+    """Verify a part count divided by average population across target year boundaries."""
+    if dimension != "numeratore_denominatore":
+        return None
+
+    companion_id = str(relationship.get("companionMetricId") or "").strip()
+    part_label = str(relationship.get("numeratorPartLabel") or "").strip()
+    selector_field = str(relationship.get("partSelectorField") or "selectorLabel").strip()
+    count_field = str(relationship.get("partCountField") or "count").strip()
+    year_mode = str(relationship.get("populationYearMode") or "").strip()
+    if (
+        not companion_id
+        or not part_label
+        or not selector_field
+        or not count_field
+        or year_mode != "target_and_next_average"
+    ):
+        raise RuntimeError(
+            f"Relazione part-count/average-population A3 incompleta: {metric_id}/{dimension}"
+        )
+    if companion_id == metric_id:
+        raise RuntimeError(
+            f"Relazione part-count/average-population A3 autoreferenziale: {metric_id}/{dimension}"
+        )
+
+    target = catalog.get(metric_id)
+    population = catalog.get(companion_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(population, dict):
+        raise RuntimeError(
+            f"Companion popolazione A3 assente: {metric_id}/{dimension} -> {companion_id}"
+        )
+
+    year_text = _metric_year(target)
+    if year_text is None:
+        return None
+    try:
+        year = int(year_text)
+    except (TypeError, ValueError):
+        return None
+
+    target_rows = _rows_by_identity(target)
+    population_rows = _rows_by_identity(population)
+    if not target_rows:
+        return None
+
+    scale = _ratio_scale(target)
+    verified = 0
+    for identity, target_row in target_rows.items():
+        population_row = population_rows.get(identity)
+        if population_row is None:
+            return None
+        parts = target_row.get("parts")
+        if not isinstance(parts, list):
+            return None
+        matches = [
+            part for part in parts
+            if isinstance(part, dict) and part.get(selector_field) == part_label
+        ]
+        if len(matches) != 1:
+            return None
+        numerator = matches[0].get(count_field)
+        observed = target_row.get("value")
+        pop_start = _row_value_for_year(population, population_row, str(year))
+        pop_end = _row_value_for_year(population, population_row, str(year + 1))
+        if (
+            not _is_number(numerator)
+            or not _is_number(observed)
+            or pop_start in (None, 0)
+            or pop_end in (None, 0)
+        ):
+            return None
+        denominator = (float(pop_start) + float(pop_end)) / 2.0
+        if denominator == 0:
+            return None
+        expected = float(numerator) / denominator * scale
+        if not math.isclose(float(observed), expected, rel_tol=1e-9, abs_tol=1e-9):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    return (
+        f"part_count_average_population_formula:{part_label}/"
+        f"{companion_id}:{year}->{year + 1}:scale={scale:g}:"
+        f"{verified}/{len(target_rows)}"
+    )
+
+
 def _target_fields_ratio_formula_evidence(
     *,
     metric_id: str,
@@ -606,6 +702,15 @@ def companion_acquired_evidence(
 
     if relationship_type == "normalized_companion_formula":
         evidence = _normalized_companion_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "part_count_average_population_formula":
+        evidence = _part_count_average_population_formula_evidence(
             metric_id=metric_id,
             dimension=dimension,
             relationship=relationship,
