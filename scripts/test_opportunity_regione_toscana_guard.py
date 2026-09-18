@@ -90,6 +90,29 @@ def test_missing_recent_candidate_enters_discovery() -> None:
     assert result["coverageHold"] == []
 
 
+def test_documented_non_municipal_rule_resolves_recent_candidate() -> None:
+    candidate = {
+        "title": "Contributi per realizzazione e potenziamento di impianti di trattamento dei rifiuti per il loro recupero",
+        "url": "https://www.regione.toscana.it/it/-/contributi-per-la-realizzazione-e-potenziamento-di-impianti-di-trattamento.dei-rifiuti-per-il-loro-recupero",
+        "summary": "Pr Fesr 2021-2027 · Economia Circolare - Privati",
+        "published_at": "2026-09-10",
+        "age_days": 8,
+        "deadline_at": "2026-10-23",
+    }
+    result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
+    guard.apply(result, date(2026, 9, 18), candidates=[copy.deepcopy(candidate)])
+
+    regional = result["regionalCompleteness"]
+    assert regional["status"] == "pass", regional
+    assert regional["safetyNetAdded"] == 0
+    assert regional["unresolved"] == []
+    assert regional["overdue"] == []
+    assert result["coverageHold"] == []
+    assert result["discoveryQueue"] == []
+    assert regional["documentedExcluded"][0]["rule_id"] == "rt-rifiuti-impianti-privati-2026"
+    assert result["counts"]["regionalDocumentedExcluded"] == 1
+
+
 def test_overdue_unresolved_candidate_blocks_publish() -> None:
     result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
     guard.apply(result, TODAY, candidates=[_candidate(age_days=guard.REVIEW_GRACE_DAYS + 1)])
@@ -182,12 +205,13 @@ def main() -> int:
     test_accounted_public_is_not_duplicated()
     test_cross_source_market_identity_is_reconciled()
     test_missing_recent_candidate_enters_discovery()
+    test_documented_non_municipal_rule_resolves_recent_candidate()
     test_overdue_unresolved_candidate_blocks_publish()
     test_existing_review_becomes_overdue_without_duplicate_discovery()
     test_final_reconciliation_removes_stale_regional_hold()
     test_nidi_gratis_comuni_rule_clears_overdue_regional_hold()
     assert audit_fixes.main() == 0
-    print("Regione Toscana guard: 8 test PASS + audit gap contracts PASS")
+    print("Regione Toscana guard: 9 test PASS + audit gap contracts PASS")
     return 0
 
 
