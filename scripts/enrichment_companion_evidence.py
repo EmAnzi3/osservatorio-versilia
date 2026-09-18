@@ -208,6 +208,149 @@ def _ratio_formula_evidence(
     )
 
 
+
+def _series_change_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+) -> str | None:
+    if dimension not in {"assoluto_normalizzato", "numeratore_denominatore"}:
+        return None
+
+    companion_id = str(relationship.get("companionMetricId") or "").strip()
+    start_year = str(relationship.get("startYear") or "").strip()
+    end_year = str(relationship.get("endYear") or "").strip()
+    if not companion_id or not re.fullmatch(r"\d{4}", start_year) or not re.fullmatch(r"\d{4}", end_year):
+        raise RuntimeError(f"Relazione series-change A3 incompleta: {metric_id}/{dimension}")
+    if companion_id == metric_id or start_year == end_year:
+        raise RuntimeError(f"Relazione series-change A3 non valida: {metric_id}/{dimension}")
+
+    target = catalog.get(metric_id)
+    companion = catalog.get(companion_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(companion, dict):
+        raise RuntimeError(f"Companion A3 assente dal catalogo: {metric_id}/{dimension} -> {companion_id}")
+
+    target_rows = _rows_by_identity(target)
+    companion_rows = _rows_by_identity(companion)
+    if not target_rows:
+        return None
+
+    scale = _ratio_scale(target)
+    verified = 0
+    for identity, target_row in target_rows.items():
+        companion_row = companion_rows.get(identity)
+        if companion_row is None:
+            return None
+        observed = target_row.get("value")
+        start_value = _row_value_for_year(companion, companion_row, start_year)
+        end_value = _row_value_for_year(companion, companion_row, end_year)
+        if not _is_number(observed) or start_value in (None, 0) or end_value is None:
+            return None
+        expected = (end_value - start_value) / start_value * scale
+        if not math.isclose(float(observed), expected, rel_tol=1e-6, abs_tol=1e-6):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    return (
+        f"series_change_formula:{companion_id}:{start_year}->{end_year}:"
+        f"scale={scale:g}:{verified}/{len(target_rows)}"
+    )
+
+
+def _parts_ratio_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+) -> str | None:
+    if dimension not in {"eta", "assoluto_normalizzato", "numeratore_denominatore"}:
+        return None
+
+    companion_id = str(relationship.get("companionMetricId") or "").strip()
+    numerator_parts = relationship.get("numeratorParts")
+    denominator_parts = relationship.get("denominatorParts")
+    selector_field = str(relationship.get("partSelectorField") or "selectorLabel").strip()
+    value_field = str(relationship.get("partValueField") or "count").strip()
+    if (
+        not companion_id
+        or not isinstance(numerator_parts, list)
+        or not numerator_parts
+        or not all(isinstance(value, str) and value for value in numerator_parts)
+        or not isinstance(denominator_parts, list)
+        or not denominator_parts
+        or not all(isinstance(value, str) and value for value in denominator_parts)
+        or not selector_field
+        or not value_field
+    ):
+        raise RuntimeError(f"Relazione parts-ratio A3 incompleta: {metric_id}/{dimension}")
+    if companion_id == metric_id:
+        raise RuntimeError(f"Relazione parts-ratio A3 autoreferenziale: {metric_id}/{dimension}")
+
+    target = catalog.get(metric_id)
+    companion = catalog.get(companion_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(companion, dict):
+        raise RuntimeError(f"Companion A3 assente dal catalogo: {metric_id}/{dimension} -> {companion_id}")
+
+    target_rows = _rows_by_identity(target)
+    companion_rows = _rows_by_identity(companion)
+    if not target_rows:
+        return None
+
+    wanted_num = set(numerator_parts)
+    wanted_den = set(denominator_parts)
+    if wanted_num & wanted_den or len(wanted_num) != len(numerator_parts) or len(wanted_den) != len(denominator_parts):
+        raise RuntimeError(f"Parti ratio A3 duplicate/sovrapposte: {metric_id}/{dimension}")
+
+    scale = _ratio_scale(target)
+    verified = 0
+    for identity, target_row in target_rows.items():
+        companion_row = companion_rows.get(identity)
+        if companion_row is None:
+            return None
+        parts = companion_row.get("parts")
+        if not isinstance(parts, list):
+            return None
+
+        values: dict[str, float] = {}
+        for part in parts:
+            if not isinstance(part, dict):
+                continue
+            selector = part.get(selector_field)
+            raw = part.get(value_field)
+            if isinstance(selector, str) and selector and _is_number(raw):
+                if selector in values:
+                    return None
+                values[selector] = float(raw)
+
+        if not wanted_num.issubset(values) or not wanted_den.issubset(values):
+            return None
+        numerator = sum(values[label] for label in numerator_parts)
+        denominator = sum(values[label] for label in denominator_parts)
+        observed = target_row.get("value")
+        if not _is_number(observed) or denominator == 0:
+            return None
+        expected = numerator / denominator * scale
+        if not math.isclose(float(observed), expected, rel_tol=1e-6, abs_tol=1e-6):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    return (
+        f"parts_ratio_formula:{companion_id}:"
+        f"scale={scale:g}:{verified}/{len(target_rows)}"
+    )
+
+
 def companion_acquired_evidence(
     *,
     metric_id: str,
@@ -226,6 +369,24 @@ def companion_acquired_evidence(
 
     if relationship_type == "ratio_formula":
         evidence = _ratio_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "series_change_formula":
+        evidence = _series_change_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "parts_ratio_formula":
+        evidence = _parts_ratio_formula_evidence(
             metric_id=metric_id,
             dimension=dimension,
             relationship=relationship,

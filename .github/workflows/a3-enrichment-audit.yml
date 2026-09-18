@@ -119,6 +119,13 @@ jobs:
               ('commuterBalanceRate', 'assoluto_normalizzato'),
               ('commuterBalanceRate', 'numeratore_denominatore'),
           }
+          demographic_formula_expected = {
+              ('populationChange', 'assoluto_normalizzato'): 'structured:companion:series_change_formula:',
+              ('populationChange', 'numeratore_denominatore'): 'structured:companion:series_change_formula:',
+              ('dependencyIndices', 'eta'): 'structured:companion:parts_ratio_formula:',
+              ('dependencyIndices', 'assoluto_normalizzato'): 'structured:companion:parts_ratio_formula:',
+              ('dependencyIndices', 'numeratore_denominatore'): 'structured:companion:parts_ratio_formula:',
+          }
           rows = {
               (row['metricId'], row['dimension']): row
               for row in matrix['rows']
@@ -141,12 +148,18 @@ jobs:
               assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
               assert row['evidence'].startswith('structured:companion:ratio_formula:'), (pair, row)
 
-          assert summary['classifiedPairCount'] == 1759, summary
-          assert summary['unclassifiedPairCount'] == 266, summary
+          for pair, evidence_prefix in sorted(demographic_formula_expected.items()):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith(evidence_prefix), (pair, row)
+
+          assert summary['classifiedPairCount'] == 1764, summary
+          assert summary['unclassifiedPairCount'] == 261, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 7 demographic companion + 4 ratio companion pairs verified.'
+              '12 special-route + 7 age companion + 4 ratio + 5 demographic formula pairs verified.'
           )
           PY
