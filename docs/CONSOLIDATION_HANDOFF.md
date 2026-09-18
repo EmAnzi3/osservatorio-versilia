@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `0fc2c51d4ebc72fc825ce790c70ed0fed1c62275` (post-`#234`)
+- **Baseline main:** `17d6b436161a6ad765c6c5e9100eb1e0e8e17b31` (post-`#235` e `#237`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#234:** 2.025 coppie; **1.764 classificate, 261 residue**
-- **Branch corrente:** `chore/a3-2-mobility-rate-formulas`
-- **PR corrente:** `#235`
+- **Matrice A3.2 post-#235:** 2.025 coppie; **1.768 classificate, 257 residue**
+- **Branch corrente:** `chore/a3-2-staff-turnover-companion`
+- **PR corrente:** `#238`
 
 ## Completato
 
@@ -27,28 +27,29 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#228` ha chiuso 7 coppie demografiche `eta` tramite companion verificato; A3 gate, Quick e Full verdi. Matrice effettiva post-merge: **1.743 classificate / 282 residue**.
 - `#229` ha chiuso le 6 coppie `voterTurnout` tramite il payload `archive-v2-*`; `#230` ha chiuso le 6 coppie `economyActivityAtlas` con schema compatto verificato. Baseline post-merge: **1.755 / 270**.
 - `#232` ha reso esplicito nel gate A3 il report di tutte le residue; `#233` ha chiuso 4 coppie ratio companion (`tourismIntensity`, `commuterBalanceRate`) → **1.759 / 266**.\n- `#234` ha chiuso 5 coppie demografiche tramite `series_change_formula` e `parts_ratio_formula` → **1.764 / 261**.
+- `#235` ha chiuso 4 coppie ratio companion su `inboundCommutersRate` e `outboundCommutersRate` → **1.768 / 257**. A3 e Pages verdi prima del merge.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#234
+## Residual Closure Audit post-#235
 
-Le **261 residue** reali si ricompongono così:
+Le **257 residue** reali si ricompongono così:
 
-- **B — cross-source / companion:** 27
+- **B — cross-source / companion:** 23
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
 Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
 
-## Intervento corrente — #234
+## Intervento corrente — #238
 
-`#234` aggiunge due contratti companion generici e fail-closed:
+`#238` chiude 2 coppie B di `municipalStaffTurnover`:
 
-- `series_change_formula`: ricalcola `populationChange` dalla serie pubblica `population` 2019→2026;
-- `parts_ratio_formula`: ricalcola `dependencyIndices` dai conteggi pubblici per fascia di `ageDistribution`.
+- `eta` tramite evidenza strutturale del companion `municipalStaffAgeStructure`;
+- `numeratore_denominatore` tramite il nuovo contratto generico `row_field_ratio_formula`.
 
-Le formule sono verificate riga per riga su tutti i 7 Comuni; una discordanza in una sola riga lascia la coppia non classificata.
+La formula `netTurnoverHeadcount / staffAt31Dec × 100` è verificata esattamente su tutti i 7 Comuni; una riga discordante, un campo mancante o denominatore zero lascia la coppia non classificata.
 
-**Esito atteso e già verificato sui dati sorgente:** +5 coppie → **1.764 classificate / 261 residue**; B da 32 a 27. GitHub A3/Quick/Full restano autoritativi sull'head finale.
+**Esito atteso:** **1.770 classificate / 255 residue**; B da 23 a 21.
 
 ## Decisioni vincolanti
 
@@ -66,7 +67,7 @@ Le formule sono verificate riga per riga su tutti i 7 Comuni; una discordanza in
 
 ## Prossima azione esatta
 
-1. Portare `#234` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.764 / 261**.
-2. Dopo merge autorizzato, proseguire sulle **27 B residue** con ulteriori contratti cross-source verificabili.
+1. Portare `#238` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.770 / 255**.
+2. Dopo merge autorizzato, proseguire sulle **21 B residue** con ulteriori contratti cross-source verificabili.
 3. Chiudere quindi C semantic closure e D official-source evidence.
 4. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.

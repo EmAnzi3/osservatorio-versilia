@@ -120,6 +120,20 @@
       "numeratorMetricId": "outboundCommuters",
       "denominatorMetricId": "population",
       "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "municipalStaffTurnover",
+      "dimension": "eta",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "municipalStaffTurnover",
+      "dimension": "numeratore_denominatore",
+      "relationship": "row_field_ratio_formula",
+      "targetNumeratorField": "netTurnoverHeadcount",
+      "denominatorMetricId": "municipalStaffAgeStructure",
+      "denominatorField": "staffAt31Dec"
     }
   ]
 }
