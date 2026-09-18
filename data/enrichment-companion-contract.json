@@ -98,6 +98,28 @@
       ],
       "partSelectorField": "selectorLabel",
       "partValueField": "count"
+    },
+    {
+      "metricId": "inboundCommutersRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "inboundCommuters",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "outboundCommutersRate",
+      "dimensions": [
+        "assoluto_normalizzato",
+        "numeratore_denominatore"
+      ],
+      "relationship": "ratio_formula",
+      "numeratorMetricId": "outboundCommuters",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
     }
   ]
 }
