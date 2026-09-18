@@ -235,7 +235,7 @@ def structured_route_evidence(metric: dict[str, Any], dimension: str, repo_root:
     elif dimension == "assoluto_normalizzato":
         hit = _find_absolute_and_normalized(payload)
     elif dimension == "frequenza_infra_annuale":
-        hit = _find_key(payload, {"month", "mese", "quarter", "trimestre", "date", "data"})
+        hit = _find_key(payload, {"month", "months", "mese", "mesi", "quarter", "quarters", "trimestre", "trimestri"})
     elif dimension == "numeratore_denominatore":
         hit = _find_ratio_pair(payload)
     else:  # categorie_specifiche
