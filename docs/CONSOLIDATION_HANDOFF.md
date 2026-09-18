@@ -14,7 +14,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **A3 final head #243:** run `35380701626` **GREEN**
 - **Pages post-merge #243:** run `35383489445` **GREEN**
 - **Branch corrente:** `chore/a3-2-close-road-fines-ratios`
-- **PR corrente:** da aprire
+- **PR corrente:** `#244`
 
 ## Residuo effettivo post-#243
 
@@ -56,9 +56,8 @@ Nel canonico `roadFinesPerResident` sono presenti soltanto il valore per abitant
 
 ## Prossima azione esatta
 
-1. Aprire la PR della tranche road fines.
-2. Portare A3 Enrichment Audit, Quick e Full GREEN sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.791 / 234** e i due `AVAILABLE_MISSING`.
-4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, il bucket B è chiuso: procedere con C semantic closure, quindi D official-source evidence.
-6. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+1. Portare `#244` a A3 Enrichment Audit, Quick e Full GREEN sul final head.
+2. Verificare nel log A3 il conteggio esatto **1.791 / 234** e i due `AVAILABLE_MISSING`.
+3. Fermarsi prima del merge.
+4. Dopo merge autorizzato, il bucket B è chiuso: procedere con C semantic closure, quindi D official-source evidence.
+5. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
