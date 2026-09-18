@@ -272,6 +272,24 @@
       },
       "denominatorMetricId": "population",
       "denominatorYearMode": "target_next_year"
+    },
+    {
+      "metricId": "publicWorks",
+      "dimension": "numeratore_denominatore",
+      "relationship": "canonical_field_ratio_formula",
+      "canonicalNumerator": {
+        "collectionPath": [
+          "towns"
+        ],
+        "identityField": "code",
+        "valuePath": [
+          "governance",
+          "works",
+          "value"
+        ]
+      },
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_year"
     }
   ]
 }

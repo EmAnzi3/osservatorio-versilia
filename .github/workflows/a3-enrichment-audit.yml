@@ -154,6 +154,14 @@ jobs:
               ('currentPayments', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
               ('capitalPayments', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
               ('siopePayments', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
+              ('publicWorks', 'numeratore_denominatore'): 'structured:companion:canonical_field_ratio_formula:',
+          }
+          available_missing_expected = {
+              ('evPoints', 'numeratore_denominatore'),
+              ('pharmaciesPer1000', 'assoluto_normalizzato'),
+              ('pharmaciesPer1000', 'numeratore_denominatore'),
+              ('tourismStructuresPer1000', 'assoluto_normalizzato'),
+              ('tourismStructuresPer1000', 'numeratore_denominatore'),
           }
           rows = {
               (row['metricId'], row['dimension']): row
@@ -201,12 +209,18 @@ jobs:
                   assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
                   assert row['evidence'].startswith(evidence_prefix), (pair, row)
 
-          assert summary['classifiedPairCount'] == 1783, summary
-          assert summary['unclassifiedPairCount'] == 242, summary
+          for pair in sorted(available_missing_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          assert summary['classifiedPairCount'] == 1789, summary
+          assert summary['unclassifiedPairCount'] == 236, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 3 canonical-field ratio pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 5 available-missing population-ratio pairs verified.'
           )
           PY
