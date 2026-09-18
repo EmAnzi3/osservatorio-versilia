@@ -188,7 +188,7 @@
       "relationship": "part_count_average_population_formula",
       "companionMetricId": "population",
       "numeratorPartLabel": "Saldo migratorio interno",
-      "partSelectorField": "selectorLabel",
+      "partSelectorField": "label",
       "partCountField": "count",
       "populationYearMode": "target_and_next_average"
     },
@@ -198,7 +198,7 @@
       "relationship": "part_count_average_population_formula",
       "companionMetricId": "population",
       "numeratorPartLabel": "Saldo migratorio con l’estero",
-      "partSelectorField": "selectorLabel",
+      "partSelectorField": "label",
       "partCountField": "count",
       "populationYearMode": "target_and_next_average"
     },
@@ -208,7 +208,7 @@
       "relationship": "part_count_average_population_formula",
       "companionMetricId": "population",
       "numeratorPartLabel": "Saldo complessivo dei trasferimenti",
-      "partSelectorField": "selectorLabel",
+      "partSelectorField": "label",
       "partCountField": "count",
       "populationYearMode": "target_and_next_average"
     },
@@ -218,7 +218,7 @@
       "relationship": "part_count_average_population_formula",
       "companionMetricId": "population",
       "numeratorPartLabel": "Saldo naturale",
-      "partSelectorField": "selectorLabel",
+      "partSelectorField": "label",
       "partCountField": "count",
       "populationYearMode": "target_and_next_average"
     }
