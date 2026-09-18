@@ -63,6 +63,23 @@ jobs:
             --output /tmp/a3-enrichment-matrix.json \
             --allow-unclassified
 
+      - name: Report residual A3 pairs
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          residual = [
+              row for row in matrix['rows']
+              if row.get('state') is None
+          ]
+          counts = Counter(row['dimension'] for row in residual)
+          print('A3 residual dimensions:', dict(sorted(counts.items())))
+          for row in residual:
+              print(f"A3_RESIDUAL {row['metricId']} :: {row['dimension']} :: {row.get('sourceProfileId') or '-'}")
+          PY
+
       - name: Verify route and demographic closures
         run: |
           python - <<'PY'
