@@ -218,6 +218,80 @@ def _ratio_formula_evidence(
     )
 
 
+def _normalized_companion_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+) -> str | None:
+    """Verify that a normalized companion is the target value divided by a denominator."""
+    if dimension != "assoluto_normalizzato":
+        return None
+
+    normalized_id = str(relationship.get("normalizedMetricId") or "").strip()
+    denominator_id = str(relationship.get("denominatorMetricId") or "").strip()
+    denominator_year_mode = str(relationship.get("denominatorYearMode") or "target_year").strip()
+    if not normalized_id or not denominator_id:
+        raise RuntimeError(f"Relazione normalized-companion A3 incompleta: {metric_id}/{dimension}")
+    if metric_id in {normalized_id, denominator_id} or normalized_id == denominator_id:
+        raise RuntimeError(f"Relazione normalized-companion A3 autoreferenziale: {metric_id}/{dimension}")
+    if denominator_year_mode not in {"target_year", "metric_current"}:
+        raise RuntimeError(
+            f"Modalità anno denominatore normalized-companion A3 non valida: "
+            f"{metric_id}/{dimension} -> {denominator_year_mode}"
+        )
+
+    target = catalog.get(metric_id)
+    normalized = catalog.get(normalized_id)
+    denominator = catalog.get(denominator_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(normalized, dict):
+        raise RuntimeError(f"Companion normalizzato A3 assente: {metric_id} -> {normalized_id}")
+    if not isinstance(denominator, dict):
+        raise RuntimeError(f"Denominatore companion A3 assente: {metric_id} -> {denominator_id}")
+
+    target_year = _metric_year(target)
+    normalized_year = _metric_year(normalized)
+    if target_year is None or normalized_year is None or normalized_year != target_year:
+        return None
+    denominator_year = target_year if denominator_year_mode == "target_year" else None
+
+    target_rows = _rows_by_identity(target)
+    normalized_rows = _rows_by_identity(normalized)
+    denominator_rows = _rows_by_identity(denominator)
+    if not target_rows:
+        return None
+
+    scale = _ratio_scale(normalized)
+    verified = 0
+    for identity, target_row in target_rows.items():
+        normalized_row = normalized_rows.get(identity)
+        denominator_row = denominator_rows.get(identity)
+        if normalized_row is None or denominator_row is None:
+            return None
+
+        absolute_value = _row_value_for_year(target, target_row, target_year)
+        normalized_value = _row_value_for_year(normalized, normalized_row, normalized_year)
+        denominator_value = _row_value_for_year(denominator, denominator_row, denominator_year)
+        if absolute_value is None or normalized_value is None or denominator_value in (None, 0):
+            return None
+
+        expected = absolute_value / denominator_value * scale
+        if not math.isclose(normalized_value, expected, rel_tol=1e-6, abs_tol=1e-6):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    return (
+        f"normalized_companion_formula:{normalized_id}/{denominator_id}:"
+        f"{target_year}:denominator={denominator_year_mode}:"
+        f"scale={scale:g}:{verified}/{len(target_rows)}"
+    )
+
+
 def _target_fields_ratio_formula_evidence(
     *,
     metric_id: str,
@@ -523,6 +597,15 @@ def companion_acquired_evidence(
 
     if relationship_type == "ratio_formula":
         evidence = _ratio_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "normalized_companion_formula":
+        evidence = _normalized_companion_formula_evidence(
             metric_id=metric_id,
             dimension=dimension,
             relationship=relationship,

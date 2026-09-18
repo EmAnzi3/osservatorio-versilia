@@ -139,6 +139,98 @@ def test_companion_evidence() -> None:
     assert "numerator=metric_current" in current_evidence
     assert "denominator=metric_current" in current_evidence
 
+    normalized_companion_relationship = {
+        "metricId": "absoluteSource",
+        "dimension": "assoluto_normalizzato",
+        "relationship": "normalized_companion_formula",
+        "normalizedMetricId": "normalizedRate",
+        "denominatorMetricId": "population",
+        "denominatorYearMode": "target_year",
+    }
+    normalized_companion_root = _root_with_contract([normalized_companion_relationship])
+    normalized_companion_catalog = {
+        "absoluteSource": {
+            "meta": {"unit": "number", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 100.0},
+                {"code": "002", "value": 50.0},
+            ],
+        },
+        "normalizedRate": {
+            "meta": {"unit": "per1000", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 50.0},
+                {"code": "002", "value": 25.0},
+            ],
+        },
+        "population": {
+            "meta": {"unit": "number", "year": "2026"},
+            "rows": [
+                {"code": "001", "value": 2100, "series": {"years": [2025, 2026], "values": [2000, 2100]}},
+                {"code": "002", "value": 2200, "series": {"years": [2025, 2026], "values": [2000, 2200]}},
+            ],
+        },
+    }
+    normalized_companion_evidence = companion_acquired_evidence(
+        metric_id="absoluteSource",
+        dimension="assoluto_normalizzato",
+        catalog=normalized_companion_catalog,
+        repo_root=normalized_companion_root,
+    ) or ""
+    assert normalized_companion_evidence.startswith(
+        "companion:normalized_companion_formula:normalizedRate/population:"
+        "2025:denominator=target_year:scale=1000:2/2"
+    )
+
+    current_normalized_relationship = {
+        **normalized_companion_relationship,
+        "metricId": "absoluteCurrent",
+        "normalizedMetricId": "normalizedCurrent",
+        "denominatorYearMode": "metric_current",
+    }
+    current_normalized_root = _root_with_contract([current_normalized_relationship])
+    current_normalized_catalog = {
+        **normalized_companion_catalog,
+        "absoluteCurrent": {
+            "meta": {"unit": "number", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 100.0},
+                {"code": "002", "value": 50.0},
+            ],
+        },
+        "normalizedCurrent": {
+            "meta": {"unit": "per1000", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 100.0 / 2100.0 * 1000.0},
+                {"code": "002", "value": 50.0 / 2200.0 * 1000.0},
+            ],
+        },
+    }
+    current_normalized_evidence = companion_acquired_evidence(
+        metric_id="absoluteCurrent",
+        dimension="assoluto_normalizzato",
+        catalog=current_normalized_catalog,
+        repo_root=current_normalized_root,
+    ) or ""
+    assert "denominator=metric_current" in current_normalized_evidence
+
+    broken_normalized_catalog = {
+        **normalized_companion_catalog,
+        "normalizedRate": {
+            **normalized_companion_catalog["normalizedRate"],
+            "rows": [
+                {"code": "001", "value": 49.0},
+                normalized_companion_catalog["normalizedRate"]["rows"][1],
+            ],
+        },
+    }
+    assert companion_acquired_evidence(
+        metric_id="absoluteSource",
+        dimension="assoluto_normalizzato",
+        catalog=broken_normalized_catalog,
+        repo_root=normalized_companion_root,
+    ) is None
+
     fields_relationship = {
         "metricId": "staffTurnover",
         "dimension": "numeratore_denominatore",

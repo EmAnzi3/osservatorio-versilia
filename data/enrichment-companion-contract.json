@@ -151,6 +151,36 @@
       "targetNumeratorCheckField": "netTurnoverHeadcount",
       "companionMetricId": "municipalStaffAgeStructure",
       "companionDenominatorField": "staffAt31Dec"
+    },
+    {
+      "metricId": "municipalEmployeesPer1000",
+      "dimension": "eta",
+      "companionMetricId": "municipalStaffAgeStructure",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "commuterBalance",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "commuterBalanceRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "target_year"
+    },
+    {
+      "metricId": "inboundCommuters",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "inboundCommutersRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
+    },
+    {
+      "metricId": "outboundCommuters",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "outboundCommutersRate",
+      "denominatorMetricId": "population",
+      "denominatorYearMode": "metric_current"
     }
   ]
 }
