@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "relationships": [
+    {
+      "metricId": "population",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "populationChange",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "naturalDemographicDynamics",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "internalResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "foreignResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "totalResidentialMobility",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    },
+    {
+      "metricId": "foreignResidents",
+      "dimension": "eta",
+      "companionMetricId": "ageDistribution",
+      "relationship": "age_breakdown"
+    }
+  ]
+}
