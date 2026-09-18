@@ -80,7 +80,12 @@ def make_metric() -> dict:
             "formula": "Affluenza = votanti / elettori × 100.",
             "coverage": "7/7 Comuni; profondità storica secondo disponibilità ufficiale digitale.",
         },
-        "dataStorage": {"type": "special-route", "detailRoute": CANONICAL_ROUTE},
+        "dataStorage": {
+            "type": "special-route",
+            "detailRoute": CANONICAL_ROUTE,
+            "path": "data/affluenza",
+            "prefix": "archive-00",
+        },
     }
 
 
