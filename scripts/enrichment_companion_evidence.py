@@ -351,6 +351,70 @@ def _parts_ratio_formula_evidence(
     )
 
 
+
+def _row_field_ratio_formula_evidence(
+    *,
+    metric_id: str,
+    dimension: str,
+    relationship: dict[str, Any],
+    catalog: dict[str, Any],
+) -> str | None:
+    """Verify a target-row numerator against a field from a companion row."""
+    if dimension != "numeratore_denominatore":
+        return None
+
+    numerator_field = str(relationship.get("targetNumeratorField") or "").strip()
+    denominator_id = str(relationship.get("denominatorMetricId") or "").strip()
+    denominator_field = str(relationship.get("denominatorField") or "").strip()
+    if not numerator_field or not denominator_id or not denominator_field:
+        raise RuntimeError(f"Relazione row-field ratio A3 incompleta: {metric_id}/{dimension}")
+    if denominator_id == metric_id:
+        raise RuntimeError(f"Relazione row-field ratio A3 autoreferenziale: {metric_id}/{dimension}")
+
+    target = catalog.get(metric_id)
+    denominator_metric = catalog.get(denominator_id)
+    if not isinstance(target, dict):
+        raise RuntimeError(f"Metrica target A3 assente dal catalogo: {metric_id}")
+    if not isinstance(denominator_metric, dict):
+        raise RuntimeError(
+            f"Denominatore companion A3 assente: {metric_id}/{dimension} -> {denominator_id}"
+        )
+
+    target_rows = _rows_by_identity(target)
+    denominator_rows = _rows_by_identity(denominator_metric)
+    if not target_rows:
+        return None
+
+    scale = _ratio_scale(target)
+    verified = 0
+    for identity, target_row in target_rows.items():
+        denominator_row = denominator_rows.get(identity)
+        if denominator_row is None:
+            return None
+
+        observed = target_row.get("value")
+        numerator = target_row.get(numerator_field)
+        denominator = denominator_row.get(denominator_field)
+        if not _is_number(observed) or not _is_number(numerator) or not _is_number(denominator):
+            return None
+        if float(denominator) == 0:
+            return None
+
+        expected = float(numerator) / float(denominator) * scale
+        if not math.isclose(float(observed), expected, rel_tol=1e-6, abs_tol=1e-6):
+            return None
+        verified += 1
+
+    if verified < 2:
+        return None
+    return (
+        f"row_field_ratio_formula:{metric_id}.{numerator_field}/"
+        f"{denominator_id}.{denominator_field}:"
+        f"scale={scale:g}:{verified}/{len(target_rows)}"
+    )
+
+
+
 def companion_acquired_evidence(
     *,
     metric_id: str,
@@ -387,6 +451,15 @@ def companion_acquired_evidence(
 
     if relationship_type == "parts_ratio_formula":
         evidence = _parts_ratio_formula_evidence(
+            metric_id=metric_id,
+            dimension=dimension,
+            relationship=relationship,
+            catalog=catalog,
+        )
+        return f"companion:{evidence}" if evidence else None
+
+    if relationship_type == "row_field_ratio_formula":
+        evidence = _row_field_ratio_formula_evidence(
             metric_id=metric_id,
             dimension=dimension,
             relationship=relationship,
