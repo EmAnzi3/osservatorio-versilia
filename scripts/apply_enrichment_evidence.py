@@ -533,6 +533,18 @@ METRIC_EVIDENCE.update(
                 "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
             },
         },
+        "roadFinesPerResident": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La nota metodologica ufficiale Istat definisce l'indicatore come Totale proventi violazioni al codice della strada / Popolazione residente media e indica come fonte il rendiconto del Ministero dell'Interno. Il canonico pubblicato conserva il valore per abitante e la serie, ma non il totale proventi come componente assoluta strutturata.",
+                "sourceReference": "https://www.istat.it/wp-content/uploads/2025/06/Nota-metodologica.pdf",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "Istat documenta esplicitamente numeratore (Totale proventi violazioni al codice della strada), denominatore (Popolazione residente media) e fonte DAIT/Ministero dell'Interno. La metrica canonica conserva soltanto il rapporto finale, quindi i componenti ufficialmente disponibili non sono acquisiti come campi strutturati.",
+                "sourceReference": "https://www.istat.it/wp-content/uploads/2025/06/Nota-metodologica.pdf",
+            },
+        },
     }
 )
 
