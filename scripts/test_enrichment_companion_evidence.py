@@ -555,6 +555,125 @@ def test_companion_evidence() -> None:
         repo_root=row_field_root,
     ) is None
 
+    canonical_relationships = [
+        {
+            "metricId": "currentPayments",
+            "dimension": "numeratore_denominatore",
+            "relationship": "canonical_field_ratio_formula",
+            "canonicalNumerator": {
+                "collectionPath": ["towns"],
+                "identityField": "code",
+                "valuePath": ["governance", "currentPayments2025"],
+            },
+            "denominatorMetricId": "population",
+            "denominatorYearMode": "target_next_year",
+        },
+        {
+            "metricId": "capitalPayments",
+            "dimension": "numeratore_denominatore",
+            "relationship": "canonical_field_ratio_formula",
+            "canonicalNumerator": {
+                "collectionPath": ["towns"],
+                "identityField": "code",
+                "valuePath": ["governance", "capitalPayments2025"],
+            },
+            "denominatorMetricId": "population",
+            "denominatorYearMode": "target_next_year",
+        },
+        {
+            "metricId": "siopePayments",
+            "dimension": "numeratore_denominatore",
+            "relationship": "canonical_field_ratio_formula",
+            "canonicalNumerator": {
+                "collectionPath": ["details"],
+                "recordsByIdentity": True,
+                "valuePath": ["government", "payments"],
+            },
+            "denominatorMetricId": "population",
+            "denominatorYearMode": "target_next_year",
+        },
+    ]
+    canonical_root = _root_with_contract(canonical_relationships)
+    canonical_site_data = {
+        "towns": [
+            {
+                "code": "001",
+                "governance": {
+                    "currentPayments2025": 1000.0,
+                    "capitalPayments2025": 200.0,
+                },
+            },
+            {
+                "code": "002",
+                "governance": {
+                    "currentPayments2025": 3000.0,
+                    "capitalPayments2025": 600.0,
+                },
+            },
+        ],
+        "details": {
+            "001": {"government": {"payments": 1200.0}},
+            "002": {"government": {"payments": 3600.0}},
+        },
+    }
+    canonical_root.joinpath("data/site-data.json").write_text(
+        json.dumps(canonical_site_data),
+        encoding="utf-8",
+    )
+    canonical_catalog = {
+        "population": {
+            "meta": {"unit": "number", "year": "2026"},
+            "rows": [
+                {"code": "001", "value": 100.0},
+                {"code": "002", "value": 200.0},
+            ],
+        },
+        "currentPayments": {
+            "meta": {"unit": "currency", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 10.0},
+                {"code": "002", "value": 15.0},
+            ],
+        },
+        "capitalPayments": {
+            "meta": {"unit": "currency", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 2.0},
+                {"code": "002", "value": 3.0},
+            ],
+        },
+        "siopePayments": {
+            "meta": {"unit": "currency", "year": "2025"},
+            "rows": [
+                {"code": "001", "value": 12.0},
+                {"code": "002", "value": 18.0},
+            ],
+        },
+    }
+    for metric_id in ("currentPayments", "capitalPayments", "siopePayments"):
+        evidence = companion_acquired_evidence(
+            metric_id=metric_id,
+            dimension="numeratore_denominatore",
+            catalog=canonical_catalog,
+            repo_root=canonical_root,
+        ) or ""
+        assert evidence.startswith(
+            "companion:canonical_field_ratio_formula:"
+        ), (metric_id, evidence)
+
+    broken_canonical = json.loads(json.dumps(canonical_site_data))
+    broken_canonical["towns"][0]["governance"]["currentPayments2025"] = 999.0
+    canonical_root.joinpath("data/site-data.json").write_text(
+        json.dumps(broken_canonical),
+        encoding="utf-8",
+    )
+    assert companion_acquired_evidence(
+        metric_id="currentPayments",
+        dimension="numeratore_denominatore",
+        catalog=canonical_catalog,
+        repo_root=canonical_root,
+    ) is None
+
     missing = {"population": catalog["population"]}
     try:
         companion_acquired_evidence(
