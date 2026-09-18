@@ -569,11 +569,48 @@ def _build_item(spec: dict[str, Any], today: date) -> dict[str, Any]:
     }
 
 
+def _is_expired_application(item: dict[str, Any], today: date) -> bool:
+    if str(item.get("lifecycle_stage") or "application_open") != "application_open":
+        return False
+    deadline = item.get("deadline_at")
+    if not deadline:
+        return False
+    try:
+        return date.fromisoformat(str(deadline)) < today
+    except ValueError:
+        return False
+
+
+def _append_archive(result: dict[str, Any], item: dict[str, Any]) -> None:
+    coverage_id = str(item.get("coverage_id") or "")
+    existing = {
+        str(row.get("coverage_id") or row.get("id") or "")
+        for row in result.get("archive") or []
+    }
+    key = coverage_id or str(item.get("id") or "")
+    if not key or key in existing:
+        return
+    presentation = item.get("presentation") or {}
+    result.setdefault("archive", []).append({
+        "id": item.get("id"),
+        "coverage_id": item.get("coverage_id"),
+        "title": item.get("title"),
+        "url": item.get("url"),
+        "source_id": item.get("source_id"),
+        "source_label": presentation.get("source_label"),
+        "source_mark": presentation.get("source_mark"),
+        "source_class": presentation.get("source_class"),
+        "source_favicon": presentation.get("source_favicon"),
+        "deadline_at": item.get("deadline_at"),
+        "deadline_time": item.get("deadline_time"),
+    })
+
+
 def apply_complete_promotions(result: dict[str, Any], today: date) -> dict[str, Any]:
     before_ids = {str(x.get("coverage_id") or x.get("rule_id") or x.get("id") or "") for x in result.get("opportunities") or []}
     before_titles = {base._normalized_title(x.get("title")) for x in result.get("opportunities") or []}
 
-    base.apply_audit_corpus_promotions(result, today)
+    base.apply_audit_corpus_promotions(result, today, include_expired=True)
     opportunities = list(result.get("opportunities") or [])
     opportunities = [x for x in opportunities if str(x.get("coverage_id") or "") not in _SUPPRESS_IDS]
 
@@ -597,6 +634,14 @@ def apply_complete_promotions(result: dict[str, Any], today: date) -> dict[str, 
         opportunities.append(item)
         existing_ids.add(coverage_id)
         existing_titles.add(title_key)
+
+    active: list[dict[str, Any]] = []
+    for item in opportunities:
+        if _is_expired_application(item, today):
+            _append_archive(result, item)
+        else:
+            active.append(item)
+    opportunities = active
 
     order = {"application_open": 0, "rolling_open": 1, "announced_upcoming": 2}
     opportunities.sort(key=lambda x: (
