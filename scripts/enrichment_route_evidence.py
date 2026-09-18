@@ -133,6 +133,17 @@ def _find_key(payload: Any, tokens: set[str]) -> str | None:
     return None
 
 
+def _find_exact_key(payload: Any, tokens: set[str]) -> str | None:
+    """Match semantic field names without treating category labels as evidence."""
+    normalized = {_norm(token) for token in tokens}
+    for path, value in _walk(payload):
+        if not path or value in (None, "", [], {}):
+            continue
+        if _norm(path[-1]) in normalized:
+            return _path(path)
+    return None
+
+
 def _find_series(payload: Any) -> str | None:
     period_tokens = {"year", "years", "anno", "anni", "date", "period", "periods"}
     for path, value in _walk(payload):
@@ -231,7 +242,7 @@ def structured_route_evidence(metric: dict[str, Any], dimension: str, repo_root:
     elif dimension == "dettaglio_territoriale":
         hit = _find_key(payload, {"section", "sezione", "frazione", "district", "quartiere", "province", "provincia", "region", "regione", "territory", "territorio", "municipality", "municipalities", "town", "towns", "comune", "comuni"})
     elif dimension == "benchmark_toscana_italia":
-        hit = _find_key(payload, {"toscana", "italia", "italy", "regional", "regionale", "national", "nazionale", "benchmark"})
+        hit = _find_exact_key(payload, {"toscana", "italia", "italy", "regional", "regionale", "national", "nazionale", "benchmark"})
     elif dimension == "assoluto_normalizzato":
         hit = _find_absolute_and_normalized(payload)
     elif dimension == "frequenza_infra_annuale":
