@@ -38,7 +38,7 @@ Le 12 A residue sono esclusivamente le due special-route:
 
 ## Intervento corrente — #229
 
-`#229` chiude le 6 coppie `voterTurnout` collegando il contratto `dataStorage` al payload runtime reale `data/affluenza/archive-00.b64`.
+`#229` chiude le 6 coppie `voterTurnout` collegando il contratto `dataStorage` al payload runtime reale `data/affluenza/archive-v2-00…03.b64`.
 
 Il detector resta generico: supporta chiavi camelCase e vocabolario strutturale per territori, famiglie e turnout; una semplice data non viene più interpretata come frequenza infra-annuale.
 
