@@ -200,6 +200,19 @@ def make_metric(data: dict, payload: dict) -> dict:
         "dataStorage": {
             "type": "special-route",
             "detailRoute": CANONICAL_ROUTE,
+            "path": "data/economy-atlas",
+            "prefix": "atlas-",
+            "compactSchema": {
+                "periodAxis": "y",
+                "territoryAxis": "t",
+                "categoryRows": "c",
+                "regionalSeriesIndex": 1,
+                "townSeriesStartIndex": 3,
+                "townSeriesIndex": 0,
+                "townSecondaryIndex": 1,
+                "territoryTotals": "tt",
+                "regionalTotals": "rt",
+            },
         },
     }
 
