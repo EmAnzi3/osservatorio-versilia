@@ -8,12 +8,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Baseline main:** `e3688f93053cb9f335f0477d813e5fcc7e978568` (post-`#238`)
+- **Baseline main:** `8e25437ca27ff9bb8b67ff3404bda8a163c755d8` (post-`#239`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Perimetro monitor A2 verificato:** 225 indicatori / 122 fonti
-- **Matrice A3.2 post-#238:** 2.025 coppie; **1.770 classificate, 255 residue**
-- **Branch corrente:** `chore/a3-2-tourism-staff-formulas`
-- **PR corrente:** `#239`
+- **Matrice A3.2 post-#239:** 2.025 coppie; **1.772 classificate, 253 residue**
+- **Branch corrente:** `chore/a3-2-normalized-companions`
+- **PR corrente:** `#240`
 
 ## Completato
 
@@ -32,26 +32,27 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - `#238` ha chiuso 2 coppie `municipalStaffTurnover` → **1.770 / 255**; A3 e Pages verdi prima del merge.
 - La Residual Closure Audit è stata ricalcolata sulle 320 residue reali post-#225: **A 43 / B 43 / C 34 / D 200**.
 
-## Residual Closure Audit post-#238
+## Residual Closure Audit post-#239
 
-Le **255 residue** reali si ricompongono così:
+Le **253 residue** reali post-#239 si ricompongono così:
 
-- **B — cross-source / companion:** 21
+- **B — cross-source / companion:** 19
 - **C — semanticamente `NOT_APPLICABLE`:** 34
 - **D — verifica fonte ufficiale necessaria:** 200
 
 Il bucket A strutturale è chiuso. B procede soltanto con relazioni companion verificabili numericamente o strutturalmente.
 
-## Intervento corrente — #239
+## Intervento corrente — #240
 
-`#239` aggiunge 2 nuove chiusure B e rafforza una formula già acquisita:
+`#240` è stacked sul parent `#239` e chiude 4 residue B:
 
-- `tourismBedsPer1000` / assoluto-normalizzato + numeratore-denominatore: `tourismBeds / population × 1000`, verificato su tutti i 7 Comuni;
-- `municipalStaffTurnover / numeratore_denominatore`: sostituisce la verifica basata sul solo `netTurnoverHeadcount` con `(netHires - netCessations) / staffAt31Dec × 100`, controllando anche la coerenza di `netTurnoverHeadcount`.
+- `municipalEmployeesPer1000 / eta` tramite `municipalStaffAgeStructure`;
+- `commuterBalance / assoluto_normalizzato` tramite rate companion e popolazione dell'anno target;
+- `inboundCommuters / assoluto_normalizzato` e `outboundCommuters / assoluto_normalizzato` tramite rate companion e popolazione corrente, coerentemente ai contratti già verificati.
 
-Il resolver `ratio_formula` supporta ora in modo generico `numeratorYearMode=metric_current`, senza hard-code di metriche.
+Il nuovo `normalized_companion_formula` confronta tutte le righe del target assoluto con companion normalizzato e denominatore, derivando scala e anno dai metadati e fallendo su mismatch o dati mancanti.
 
-**Esito atteso:** +2 nuove coppie → **1.772 classificate / 253 residue**; B da 21 a 19. La coppia staff resta classificata ma con evidenza più forte. GitHub A3/Quick/Full restano autoritativi sull'head finale.
+**Esito atteso:** **1.776 classificate / 249 residue**; B da 19 a 15.
 
 ## Decisioni vincolanti
 
@@ -69,7 +70,8 @@ Il resolver `ratio_formula` supporta ora in modo generico `numeratorYearMode=met
 
 ## Prossima azione esatta
 
-1. Portare `#239` a A3 audit, Quick e Full GREEN sullo stesso head e verificare **1.772 / 253**.
-2. Dopo merge autorizzato, ricalcolare le **19 B residue** e chiudere la tranche successiva solo con formule/companion verificabili.
-3. Chiudere quindi C semantic closure e D official-source evidence.
-4. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+1. Chiudere il merge di `#239` solo con A3, Quick e Full GREEN sul final head rebased.
+2. Riallineare `#240` sul nuovo `main` post-`#239` senza cambiare il contenuto funzionale.
+3. Portare `#240` a A3 audit, Quick e Full GREEN e verificare **1.776 / 249**.
+4. Dopo merge autorizzato, ricalcolare le **15 B residue**, poi chiudere C e D.
+5. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
