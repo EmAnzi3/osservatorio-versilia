@@ -516,6 +516,28 @@ EVIDENCE.setdefault("ars-toscana-mixed", {}).update(
 )
 
 
+
+EVIDENCE.setdefault("cb1-pmo-status-2026", {}).update(
+    {
+        "frequenza_infra_annuale": {
+            "state": AVAILABLE,
+            "evidence": "Il Sistema Informativo Territoriale del Consorzio consente di seguire i lavori in tempo reale con aggiornamenti costanti durante l'esecuzione del Piano 2026; la pipeline conserva oggi uno snapshot puntuale e non acquisisce questa frequenza operativa.",
+            "sourceReference": "https://cbtoscananord.it/contributo-bonifica-normativa-lavori-legittimo/",
+        },
+        "serie_storica": {
+            "state": UNAVAILABLE,
+            "evidence": "Il WFS governato del progetto pmo_stato_lavori espone lo stato operativo corrente degli interventi e i relativi campi di inizio/fine, ma non una sequenza versionata di snapshot storici dello stesso stato.",
+            "sourceReference": "https://geoportale.cbtoscananord.it/",
+        },
+        "assoluto_normalizzato": {
+            "state": UNAVAILABLE,
+            "evidence": "Il WFS PMO espone conteggi di interventi, importi lordi e metri di attività come valori assoluti; non pubblica per queste metriche un corrispondente indicatore normalizzato per popolazione, superficie o altra base comparabile.",
+            "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+        },
+    }
+)
+
+
 METRIC_EVIDENCE = {
     metric_id: {
         "sesso": {
