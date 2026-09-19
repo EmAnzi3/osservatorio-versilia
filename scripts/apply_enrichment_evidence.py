@@ -476,6 +476,34 @@ EVIDENCE = {
     },
 }
 
+
+EVIDENCE.update(
+    {
+        "mef-municipal-tax-annual": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Il profilo è costruito su aliquote e tariffe deliberate per singolo anno. Il Dipartimento delle Finanze organizza gli archivi IMU e degli altri tributi comunali per anno; non esiste per questi scenari standardizzati una serie mensile, trimestrale o semestrale metodologicamente equivalente.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/sceltaanno.htm",
+            },
+        },
+        "istat-tourism-annual": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "La rilevazione Istat sulla Capacità degli esercizi ricettivi è definita con periodicità annuale e misura la capacità lorda riferita all'anno. Non pubblica una misura infra-annuale equivalente dei posti letto della stessa rilevazione.",
+                "sourceReference": "https://indata.istat.it/ctur/index.php",
+            },
+        },
+        "erp-lucca-annual-balance-sheet": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Il profilo deriva dal bilancio d'esercizio ERP Lucca chiuso al 31 dicembre e approvato annualmente. La morosità ricostruita da questi prospetti non dispone nella stessa fonte di una serie mensile, trimestrale o semestrale metodologicamente equivalente.",
+                "sourceReference": "https://at.erplucca.it/default?path=75&t=1",
+            },
+        },
+    }
+)
+
+
 METRIC_EVIDENCE = {
     metric_id: {
         "sesso": {
