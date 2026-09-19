@@ -1050,6 +1050,65 @@ for metric_id, annotation in {
     )
 
 
+for metric_id, indicator_id in {
+        "diagnosticImagingServices": 1325,
+        "elderlyHomeCare": 260,
+        "emergencyAccess": 1657,
+        "lifeExpectancy": 1290,
+        "mortalityAll": 1438,
+        "mortalityCancer": 1499,
+        "mortalityCirculatory": 1327,
+        "mortalityRespiratory": 1606,
+        "permanentRsaAssisted": 261,
+        "specialistVisits7Psr": 1425
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(
+        {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "L'export ufficiale ARS dell'indicatore contiene il valore complessivo e, dove previsto, la dimensione sesso, ma non espone strati per classe di età; l'età è usata per la standardizzazione e non come disaggregazione pubblicata della metrica.",
+                "sourceReference": f"https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-{indicator_id}",
+            },
+        }
+    )
+
+
+METRIC_EVIDENCE.setdefault("chronicTotal", {}).update(
+    {
+        "assoluto_normalizzato": {
+            "state": AVAILABLE,
+            "evidence": "ARS documenta per la prevalenza dei malati cronici sia il numero di persone sia la prevalenza/tasso standardizzato; il catalogo pubblico conserva oggi soltanto il tasso standardizzato.",
+            "sourceReference": "https://www.ars.toscana.it/images/a_ns_pubblicazioni/relazioni/welfare_salute_2025/VOL_3_WES_2025.pdf",
+        },
+        "numeratore_denominatore": {
+            "state": AVAILABLE,
+            "evidence": "La scheda metodologica ARS della prevalenza dei malati cronici dichiara esplicitamente numeratore (residenti prevalenti per almeno una patologia MaCro) e denominatore (popolazione residente al 1° gennaio), componenti non acquisite nella metrica pubblicata.",
+            "sourceReference": "https://www.ars.toscana.it/images/a_ns_pubblicazioni/relazioni/welfare_salute_2025/VOL_3_WES_2025.pdf",
+        },
+    }
+)
+
+METRIC_EVIDENCE.setdefault("hospitalizedAll", {}).update(
+    {
+        "sesso": {
+            "state": AVAILABLE,
+            "evidence": "Il portale ARS La salute dei comuni espone i soggetti ricoverati per tutte le cause con selezione Totale/Maschi/Femmine; la metrica pubblicata non acquisisce il dettaglio per sesso.",
+            "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+        },
+        "assoluto_normalizzato": {
+            "state": AVAILABLE,
+            "evidence": "La famiglia di indicatori ARS sui soggetti ricoverati pubblica il numero di ricoverati insieme a tasso grezzo e tasso standardizzato per età; la metrica pubblicata conserva oggi il solo tasso standardizzato.",
+            "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+        },
+        "numeratore_denominatore": {
+            "state": AVAILABLE,
+            "evidence": "La metodologia ARS dei soggetti ricoverati usa come numeratore i residenti ricoverati almeno una volta e come denominatore la popolazione residente del periodo; tali componenti non sono acquisite nella metrica pubblicata.",
+            "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+        },
+    }
+)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
