@@ -8,50 +8,18 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Main verificato:** `2443882c819c95a43256a1612c9bc3f11b6ae4c1` (merge `#254`)
+- **Main verificato:** `f3abad3dd3b9fd89bcbae55e7f34da99303130ac` (merge `#255`)
 - **Catalogo pubblico governato:** 225 indicatori
-- **Matrice A3.2 post-#254:** 2.025 coppie; **1.937 classificate, 88 residue**
-- **A3 final head #254:** run `35437400106` **GREEN**
-- **Pages final head #254:** run `35437400105` **GREEN** (Quick + Full)
-- **Pages post-merge #254:** run `35438509913` **GREEN** (build + deploy)
-- **Live status post-merge #254:** `ov-pages-live` **SUCCESS**
-- **Branch corrente:** `chore/a3-2-ars-climate-evidence-batch`
+- **Matrice A3.2 post-#255:** 2.025 coppie; **1.960 classificate, 65 residue**
+- **A3 final head #255:** run `35439271702` **GREEN**
+- **Pages final head #255:** run `35439271705` **GREEN** (Quick + Full)
+- **Pages post-merge #255:** run `35440479037` **GREEN** (build + deploy)
+- **Live status post-merge #255:** `ov-pages-live` **SUCCESS**
+- **Branch corrente:** `chore/a3-2-territorial-services-evidence-batch`
 
-## Residuo effettivo post-#254
+## Residuo effettivo post-#255
 
-Le **88** coppie residue sono distribuite su:
-
-- `serie_storica`: 19
-- `eta`: 17
-- `categorie_specifiche`: 17
-- `assoluto_normalizzato`: 12
-- `sesso`: 6
-- `benchmark_toscana_italia`: 5
-- `numeratore_denominatore`: 5
-- `frequenza_infra_annuale`: 4
-- `dettaglio_territoriale`: 3
-
-## Intervento corrente — batch ARS/clima
-
-Il batch classifica **23** coppie metric-specific:
-
-- **ARS Toscana:** **18** coppie su cronicità, ospedalizzazione, mortalità, assistenza e specialistica: **7 `AVAILABLE_MISSING`** per dimensioni esplicitamente offerte dalla fonte ma non acquisite (conteggi/tassi/componenti/cause/sesso) e **11 `SOURCE_UNAVAILABLE`** per classi d'età non esposte sulla stessa metrica comunale.
-- **Speranza di vita alla nascita:** `lifeExpectancy × eta` è **`NOT_APPLICABLE`** perché una speranza di vita condizionata a una diversa età è un altro indicatore.
-- **Trend climatici:** 4 coppie `categorie_specifiche` sono **`NOT_APPLICABLE`**; le metriche misurano singole variabili/trend e Tmin/Tmax sono già indicatori separati.
-
-Nota: `chronicTotal × sesso` resta deliberatamente residuo perché l'evidenza ufficiale trovata non dimostra in modo sufficientemente diretto la disponibilità per l'aggregato specifico.
-
-Tutti gli override sono additivi con `METRIC_EVIDENCE.setdefault(...).update(...)`; nessun profilo ARS eterogeneo viene classificato in blocco.
-
-**Esito atteso:** **1.960 classificate / 65 residue**.
-
-Composizione batch:
-
-- `AVAILABLE_MISSING`: **7**
-- `SOURCE_UNAVAILABLE`: **11**
-- `NOT_APPLICABLE`: **5**
-
-Residuo atteso dopo il batch:
+Le **65** coppie residue sono distribuite su:
 
 - `serie_storica`: 19
 - `categorie_specifiche`: 11
@@ -62,6 +30,39 @@ Residuo atteso dopo il batch:
 - `frequenza_infra_annuale`: 4
 - `numeratore_denominatore`: 3
 - `dettaglio_territoriale`: 3
+
+## Intervento corrente — batch territoriale/servizi
+
+Il batch classifica **22** coppie metric-specific su sette famiglie:
+
+- **Istat / sicurezza stradale:** 5 coppie. Valori assoluti e componenti di `roadSafety` sono disponibili ma non acquisiti (**2 `AVAILABLE_MISSING`**); sesso/età non sono disponibili con la stessa granularità comunale e la disaggregazione dei proventi da sanzioni non è sufficientemente affidabile (**3 `SOURCE_UNAVAILABLE`**).
+- **Regione Toscana — PNRR:** 4 coppie. Importo assoluto e componenti della misura per residente sono disponibili (**2 `AVAILABLE_MISSING`**); il dataset mensile espone lo stato corrente ma non una serie storica ufficiale di snapshot (**2 `SOURCE_UNAVAILABLE`**).
+- **Regione Toscana — Biblioteche:** 3 coppie. Categorie di prestito e fasce di apertura sono disponibili (**2 `AVAILABLE_MISSING`**); per gli iscritti attivi, oltre alle classi di età già trattate, non risultano ulteriori categorie comparabili (**1 `SOURCE_UNAVAILABLE`**).
+- **Regione Toscana — Uso e Copertura del Suolo:** dettaglio poligonale e benchmark Toscana disponibili (**2 `AVAILABLE_MISSING`**); nessuna frequenza infra-annuale (**1 `SOURCE_UNAVAILABLE`**).
+- **Regione Toscana — RTCave:** benchmark Toscana disponibile (**1 `AVAILABLE_MISSING`**); serie storica, misura normalizzata e osservazioni infra-annuali storicizzate non disponibili (**3 `SOURCE_UNAVAILABLE`**).
+- **Istat — pendolarismo:** conteggi assoluti companion di `outsideMunicipality` e `selfContainment` disponibili (**2 `AVAILABLE_MISSING`**).
+- **Regione Toscana — turismo:** `tourismArrivals × assoluto_normalizzato` è **`SOURCE_UNAVAILABLE`** perché la fonte pubblica gli arrivi assoluti ma non una normalizzazione ufficiale coerente.
+
+Tutti gli override sono additivi con `METRIC_EVIDENCE.setdefault(...).update(...)`; nessun nuovo `EVIDENCE.update(...)` è stato introdotto.
+
+**Esito atteso:** **1.982 classificate / 43 residue**.
+
+Composizione batch:
+
+- `AVAILABLE_MISSING`: **11**
+- `SOURCE_UNAVAILABLE`: **11**
+
+Residuo atteso dopo il batch:
+
+- `serie_storica`: 16
+- `categorie_specifiche`: 7
+- `sesso`: 4
+- `eta`: 4
+- `assoluto_normalizzato`: 4
+- `benchmark_toscana_italia`: 3
+- `dettaglio_territoriale`: 2
+- `frequenza_infra_annuale`: 2
+- `numeratore_denominatore`: 1
 
 ## Decisioni vincolanti
 
@@ -80,6 +81,6 @@ Residuo atteso dopo il batch:
 
 1. Aprire una sola PR sul branch corrente.
 2. Eseguire A3 Enrichment Audit + Quick + Full sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.960 / 65** e le 23 classificazioni.
+3. Verificare nel log A3 il conteggio esatto **1.982 / 43** e le 22 classificazioni.
 4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, ricostruire le 65 residue e preparare il prossimo batch sostanzioso.
+5. Dopo merge autorizzato, ricostruire le 43 residue e preparare il prossimo batch sostanzioso.
