@@ -103,7 +103,7 @@ Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti 
 
 - [x] **A3.1** Definire le dimensioni comuni di enrichment: serie storica, sesso, età, dettaglio territoriale, benchmark Toscana/Italia, assoluto/normalizzato, frequenza infra-annuale, numeratore/denominatore, categorie specifiche.
 - [x] **A3.2** Classificare ogni coppia indicatore/dimensione come `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
-- [ ] **A3.3** Eseguire audit fonte per fonte sul catalogo completo.
+- [x] **A3.3** Eseguire audit fonte per fonte sul catalogo completo.
 - [ ] **A3.4** Trasformare `AVAILABLE_MISSING` in backlog ordinato per valore informativo e costo di acquisizione.
 - [ ] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
 - [ ] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
@@ -111,6 +111,8 @@ Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti 
 Nota A3.1: la tassonomia e la semantica dei quattro stati sono definite in `docs/A3_ENRICHMENT_AUDIT.md`. Il documento è metodologico e non introduce un secondo catalogo o una matrice manuale di indicatori.
 
 Nota A3.2: la chiusura è governata dalla matrice strict derivata dall'Effective Public Catalog: 225 indicatori × 9 dimensioni = 2.025 coppie, con `unclassifiedPairCount = 0`. Il gate A3 verifica inoltre le evidenze strutturali e tutte le classificazioni esplicite; nessun `ACQUIRED` è dichiarato manualmente.
+
+Nota A3.3: l'audit fonte-per-fonte è derivato dalla matrice A3 strict e dal source registry. Il gate verifica tutti i source profile effettivamente usati dal catalogo, la copertura esatta metriche × 9 dimensioni, i metadati operativi della fonte e i conteggi per stato; produce artifact JSON/Markdown senza introdurre un inventario canonico parallelo.
 
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
