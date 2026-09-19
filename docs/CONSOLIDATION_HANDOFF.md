@@ -42,6 +42,8 @@ Il branch corregge il comportamento:
 3. lo strict gate viene applicato in uno step successivo;
 4. un regression test verifica che l'output resti disponibile anche quando lo strict gate fallisce.
 
+Il primo run A3.3 ha inoltre rilevato che il materializzatore Salute v1.40 creava `regione-toscana-rsa` con `licenseUrl` vuota. Il branch corregge il materializzatore sulla pagina ufficiale regionale e aggiunge un regression test sui metadati completi del profilo RSA.
+
 ## Decisioni vincolanti
 
 1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
