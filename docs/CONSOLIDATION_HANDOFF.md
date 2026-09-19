@@ -7,12 +7,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.5` — integrazione nuove dimensioni in lotti controllati
-- **Stato:** `IN_PROGRESS` — lotto 1 mergiato; lotto 2 OpenBDAP numeratore/denominatore implementato sul branch e in attesa dei gate final-head
+- **Stato:** `IN_PROGRESS` — lotto 1 mergiato; lotto 2 OpenBDAP numeratore/denominatore in PR **#261 Ready**, in attesa dei gate final-head
 - **Main verificato:** `ee86142708a0c42731c67a1b12eb925902bc388d` (merge `#260`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; **2.025 classificate, 0 residue**
 - **Backlog A3.4 post-#260:** **869 AVAILABLE_MISSING · 263 pacchetti · 63 source profile**
-- **Branch corrente:** `feat/a3-5-enrichment-lot-2`
+- **Branch corrente:** `feat/a3-5-enrichment-lot-2` · PR **#261** Ready
 - **Merge/pubblicazione:** vietati senza A3 + Quick + Full GREEN sul final head e approvazione esplicita del proprietario
 
 ## A3.5 — acquisizioni
@@ -51,8 +51,7 @@ A3.5 resta `IN_PROGRESS`.
 
 ## Prossima azione esatta
 
-1. Aprire una sola PR Ready per il lotto 2.
-2. Verificare A3 + Quick + Full sul final head.
-3. Dall'artifact A3.4 final-head confermare `853 AVAILABLE_MISSING` e `unclassifiedPairCount = 0`.
-4. Correggere soltanto eventuali regressioni reali, senza indebolire detector o contratti.
-5. Fermarsi prima del merge e attendere approvazione esplicita del proprietario.
+1. Verificare A3 + Quick + Full sul final head della PR #261.
+2. Dall'artifact A3.4 final-head confermare `853 AVAILABLE_MISSING` e `unclassifiedPairCount = 0`.
+3. Correggere soltanto eventuali regressioni reali, senza indebolire detector o contratti.
+4. Fermarsi prima del merge e attendere approvazione esplicita del proprietario.
