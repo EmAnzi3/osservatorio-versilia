@@ -171,6 +171,43 @@ jobs:
               ('tourismBeds', 'frequenza_infra_annuale'),
               ('erpArrears', 'frequenza_infra_annuale'),
           }
+          frequency_available_missing_expected = {
+              ('population', 'frequenza_infra_annuale'),
+              ('populationChange', 'frequenza_infra_annuale'),
+              ('naturalDemographicDynamics', 'frequenza_infra_annuale'),
+              ('internalResidentialMobility', 'frequenza_infra_annuale'),
+              ('foreignResidentialMobility', 'frequenza_infra_annuale'),
+              ('totalResidentialMobility', 'frequenza_infra_annuale'),
+              ('roadSafety', 'frequenza_infra_annuale'),
+          }
+          frequency_metric_unavailable_expected = {
+              ('ageDistribution', 'frequenza_infra_annuale'),
+              ('dependencyIndices', 'frequenza_infra_annuale'),
+              ('foreignResidents', 'frequenza_infra_annuale'),
+              ('roadFinesPerResident', 'frequenza_infra_annuale'),
+              ('incomeVsInflation', 'frequenza_infra_annuale'),
+          }
+          ars_frequency_unavailable_expected = {
+              ('chronicTotal', 'frequenza_infra_annuale'),
+              ('copdPrevalence', 'frequenza_infra_annuale'),
+              ('dementia', 'frequenza_infra_annuale'),
+              ('diabetes', 'frequenza_infra_annuale'),
+              ('diagnosticImagingServices', 'frequenza_infra_annuale'),
+              ('elderlyHomeCare', 'frequenza_infra_annuale'),
+              ('emergencyAccess', 'frequenza_infra_annuale'),
+              ('heartFailurePrevalence', 'frequenza_infra_annuale'),
+              ('hospitalizedAll', 'frequenza_infra_annuale'),
+              ('hypertensionPrevalence', 'frequenza_infra_annuale'),
+              ('ischemicHeartDiseasePrevalence', 'frequenza_infra_annuale'),
+              ('lifeExpectancy', 'frequenza_infra_annuale'),
+              ('mortalityAll', 'frequenza_infra_annuale'),
+              ('mortalityCancer', 'frequenza_infra_annuale'),
+              ('mortalityCirculatory', 'frequenza_infra_annuale'),
+              ('mortalityRespiratory', 'frequenza_infra_annuale'),
+              ('permanentRsaAssisted', 'frequenza_infra_annuale'),
+              ('priorStrokePrevalence', 'frequenza_infra_annuale'),
+              ('specialistVisits7Psr', 'frequenza_infra_annuale'),
+          }
           semantic_not_applicable_expected = {
               ('agriculturalUsedArea', 'sesso'),
               ('agriculturalUsedArea', 'eta'),
@@ -259,6 +296,24 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['sourceReference'], (pair, row)
 
+          for pair in sorted(frequency_available_missing_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(frequency_metric_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(ars_frequency_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'source_profile', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
           for pair in sorted(annual_source_unavailable_expected):
               row = rows[pair]
               assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
@@ -271,12 +326,12 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1829, summary
-          assert summary['unclassifiedPairCount'] == 196, summary
+          assert summary['classifiedPairCount'] == 1860, summary
+          assert summary['unclassifiedPairCount'] == 165, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 4 annual source-unavailable + 34 semantic N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 34 semantic N/A pairs verified.'
           )
           PY
