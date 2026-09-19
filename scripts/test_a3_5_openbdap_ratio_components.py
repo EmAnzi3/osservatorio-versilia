@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import copy
 import json
+import tempfile
 from pathlib import Path
 
+import apply_bilanci_v139 as bilanci_v139
 import enrichment_audit_matrix_core as matrix_core
 import enrichment_audit_matrix_structural_base as structural_base
 import materialize_a3_5_openbdap_ratio_components as enrichment
@@ -14,14 +16,36 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 BILANCI_PATH = ROOT / "data" / "source-snapshots" / "bilanci-v1.6.0.json"
 SIOPE_PATH = ROOT / "data" / "source-snapshots" / "siope-history-v1.6.0.json"
+REGISTRY_PATH = ROOT / "data" / "source-registry.json"
 
 
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def effective_seed_after_bilanci_v139() -> dict:
+    """Riproduce il prerequisito reale della build senza mutare file tracciati."""
+    with tempfile.TemporaryDirectory(prefix="a3-5-openbdap-") as temp_dir:
+        temp = Path(temp_dir)
+        data_path = temp / "site-data.json"
+        registry_path = temp / "source-registry.json"
+        data_path.write_text(SITE_PATH.read_text(encoding="utf-8"), encoding="utf-8")
+        registry_path.write_text(REGISTRY_PATH.read_text(encoding="utf-8"), encoding="utf-8")
+
+        original_data_path = bilanci_v139.DATA_PATH
+        original_registry_path = bilanci_v139.REGISTRY_PATH
+        try:
+            bilanci_v139.DATA_PATH = data_path
+            bilanci_v139.REGISTRY_PATH = registry_path
+            bilanci_v139.main()
+            return load(data_path)
+        finally:
+            bilanci_v139.DATA_PATH = original_data_path
+            bilanci_v139.REGISTRY_PATH = original_registry_path
+
+
 def test_openbdap_ratio_components_enrichment() -> None:
-    site = copy.deepcopy(load(SITE_PATH))
+    site = copy.deepcopy(effective_seed_after_bilanci_v139())
     bilanci = load(BILANCI_PATH)
     siope = load(SIOPE_PATH)
 
