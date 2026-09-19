@@ -1349,6 +1349,153 @@ for metric_id, dimensions in {
 }.items():
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
+
+for metric_id, dimensions in {
+        "chronicTotal": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte comunale ARS pubblica la prevalenza complessiva standardizzata per età; la documentazione elenca le classi della popolazione standard, ma non espone per lo stesso indicatore comunale una serie di valori per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+            },
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La documentazione ARS della prevalenza dei malati cronici espone il numeratore assoluto dei residenti con almeno una patologia e la prevalenza standardizzata; la pipeline governa oggi solo il tasso standardizzato comunale.",
+                "sourceReference": "https://www.ars.toscana.it/images/a_ns_pubblicazioni/relazioni/welfare_salute_2025/VOL_3_WES_2025.pdf",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "ARS definisce esplicitamente numeratore (residenti prevalenti per almeno una patologia MaCro) e denominatore (popolazione residente al 1° gennaio) della prevalenza; i componenti non sono acquisiti strutturalmente nella metrica corrente.",
+                "sourceReference": "https://www.ars.toscana.it/images/a_ns_pubblicazioni/relazioni/welfare_salute_2025/VOL_3_WES_2025.pdf",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "La documentazione MaCro elenca le patologie croniche che compongono l'indicatore e la banca dati ARS pubblica indicatori specifici per singola patologia; la metrica aggregata corrente non acquisisce tale articolazione.",
+                "sourceReference": "https://www.ars.toscana.it/images/a_ns_pubblicazioni/relazioni/welfare_salute_2025/VOL_3_WES_2025.pdf",
+            },
+        },
+        "diagnosticImagingServices": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina comunale ARS degli accessi per diagnostica per immagini espone selezioni per anno e geografia, senza una disaggregazione della stessa misura per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1325-accessi-prestazioni-diagnostica-strumentale",
+            },
+        },
+        "elderlyHomeCare": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "L'indicatore comunale ARS misura gli anziani assistiti a domicilio come tasso standardizzato; la fonte governata non espone la stessa misura per ulteriori classi di età interne alla popolazione anziana.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+            },
+        },
+        "emergencyAccess": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La vista comunale ARS degli accessi al pronto soccorso governa il tasso complessivo standardizzato per età e non espone, per la stessa metrica, valori comunali distinti per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+            },
+        },
+        "hospitalizedAll": {
+            "sesso": {
+                "state": AVAILABLE,
+                "evidence": "Il portale ARS La salute dei comuni include l'ospedalizzazione per tutte le cause tra gli indicatori leggibili per Totale, Maschi e Femmine; la pipeline corrente conserva solo il totale.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dati-sintesi?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=dettaglio_comuni",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Le pagine comunali ARS di ospedalizzazione espongono Totale/Maschi/Femmine e tassi standardizzati per età, ma non la stessa misura come valori comunali per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+            },
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "Le tavole ARS di ospedalizzazione pubblicano il numero di ricoverati insieme al tasso grezzo e al tasso standardizzato per età; la metrica corrente governa solo il tasso standardizzato.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "La famiglia ARS di ospedalizzazione definisce il numeratore come residenti ricoverati almeno una volta e il denominatore come popolazione residente; tali componenti non sono materializzati nella metrica corrente.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1308-soggetti-ricoverati-traumatismi",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "La banca dati ARS pubblica l'ospedalizzazione comunale anche per cause specifiche, tra cui tumori, apparato respiratorio e traumatismi; la metrica 'tutte le cause' non acquisisce questa articolazione.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1332-soggetti-ricoverati-tutte-le-cause",
+            },
+        },
+        "lifeExpectancy": {
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è la speranza di vita alla nascita: introdurre una classe di età trasformerebbe l'oggetto statistico in una diversa speranza di vita condizionata all'età, non in una disaggregazione della stessa misura.",
+            },
+        },
+        "mortalityAll": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina comunale ARS pubblica mortalità totale con Totale/Maschi/Femmine e tasso standardizzato per età, ma non espone la stessa misura comunale per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1438-mortalita-tutte-le-cause",
+            },
+        },
+        "mortalityCancer": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina comunale ARS della mortalità per tumori espone Totale/Maschi/Femmine e tassi standardizzati, ma non una disaggregazione comunale della stessa metrica per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1499-mortalita-tumori",
+            },
+        },
+        "mortalityCirculatory": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina ARS della mortalità per malattie del sistema circolatorio governa anno/geografia e tasso standardizzato, senza valori comunali della stessa metrica distinti per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1327-mortalita-malattie-del-sistema-circolatorio",
+            },
+        },
+        "mortalityRespiratory": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina comunale ARS della mortalità respiratoria espone Totale/Maschi/Femmine, numero, tasso grezzo e standardizzato, ma non la stessa metrica per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1606-mortalita-malattie-apparato-respiratorio",
+            },
+        },
+        "permanentRsaAssisted": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "L'indicatore ARS sugli inserimenti permanenti in RSA riguarda già la popolazione anziana e la fonte governata non espone la stessa misura comunale per ulteriori classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/",
+            },
+        },
+        "specialistVisits7Psr": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La pagina comunale ARS degli accessi per visite specialistiche nelle sette specialità PSR espone anno e geografia, senza una disaggregazione della stessa misura per classi di età.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dettaglio_indicatore-1425-accessi-visite-specialistiche-",
+            },
+        },
+        "climatePrecipitationTrend50y": {
+            "categorie_specifiche": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura una singola variazione del totale annuo di precipitazione stimata dalla retta di tendenza 1975-2025; non esistono categorie interne coerenti alla stessa misura.",
+            },
+        },
+        "climateTemperatureTrend50y": {
+            "categorie_specifiche": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la variazione della temperatura media territoriale lungo una singola retta di tendenza; minime e massime sono governate come metriche distinte, non come categorie di questa misura.",
+            },
+        },
+        "climateTmaxTrend": {
+            "categorie_specifiche": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è già specifica alle temperature massime giornaliere e alla relativa tendenza; una categoria ulteriore cambierebbe la variabile climatica misurata.",
+            },
+        },
+        "climateTminTrend": {
+            "categorie_specifiche": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è già specifica alle temperature minime giornaliere e alla relativa tendenza; una categoria ulteriore cambierebbe la variabile climatica misurata.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
