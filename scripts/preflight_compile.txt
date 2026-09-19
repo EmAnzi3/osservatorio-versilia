@@ -24,3 +24,9 @@ scripts/test_source_monitor_strategy.py
 scripts/enrichment_audit_matrix.py
 scripts/test_enrichment_audit_matrix.py
 scripts/apply_enrichment_evidence.py
+scripts/enrichment_source_audit.py
+scripts/test_enrichment_source_audit.py
+scripts/enrichment_backlog.py
+scripts/test_enrichment_backlog.py
+scripts/materialize_a3_5_demography_sex.py
+scripts/test_a3_5_demography_sex.py
