@@ -145,6 +145,11 @@
         "label": "A3.5 Istat Census components",
         "script": "scripts/test_a3_5_istat_census_components.py",
         "args": []
+      },
+      {
+        "label": "A3.5 source-backed companions",
+        "script": "scripts/test_a3_5_source_backed_companions.py",
+        "args": []
       }
     ]
   },

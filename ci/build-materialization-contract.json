@@ -26,6 +26,7 @@
     "scripts/materialize_a3_5_openbdap_ratio_components.py",
     "scripts/materialize_a3_5_frame_sbs_dimensions.py",
     "scripts/materialize_a3_5_istat_census_components.py",
+    "scripts/materialize_a3_5_source_backed_companions.py",
     "scripts/patch_salute_v140_runtime.py",
     "scripts/patch_salute_v140_runtime_core.py",
     "scripts/patch_salute_v140_demographics_runtime.py",
