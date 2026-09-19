@@ -39,6 +39,7 @@ jobs:
           python scripts/test_enrichment_backlog.py
           python scripts/test_a3_5_demography_sex.py
           python scripts/test_a3_5_openbdap_ratio_components.py
+          python scripts/test_a3_5_frame_sbs_dimensions.py
 
       - name: Materialize effective public catalog
         env:
@@ -524,14 +525,34 @@ jobs:
           final_structured_category_expected = {
               ('foreignResidents', 'categorie_specifiche'),
           }
+          frame_sbs_acquired_expected = {
+              ('businessTurnover', 'categorie_specifiche'): 'frameSbsCategories',
+              ('businessValueAdded', 'categorie_specifiche'): 'frameSbsCategories',
+              ('labourProductivity', 'categorie_specifiche'): 'frameSbsCategories',
+              ('turnoverPerPersonEmployed', 'categorie_specifiche'): 'frameSbsCategories',
+              ('valueAddedTurnoverShare', 'categorie_specifiche'): 'frameSbsCategories',
+              ('averageGrossRemunerationPerEmployee', 'categorie_specifiche'): 'frameSbsCategories',
+              ('labourCost', 'categorie_specifiche'): 'frameSbsCategories',
+              ('grossOperatingMargin', 'categorie_specifiche'): 'frameSbsCategories',
+              ('businessTurnover', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('businessValueAdded', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('labourProductivity', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('turnoverPerPersonEmployed', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('valueAddedTurnoverShare', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('averageGrossRemunerationPerEmployee', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('labourCost', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('grossOperatingMargin', 'assoluto_normalizzato'): 'frameSbsScaleCompanion',
+              ('labourProductivity', 'numeratore_denominatore'): 'frameSbsRatioComponents',
+              ('turnoverPerPersonEmployed', 'numeratore_denominatore'): 'frameSbsRatioComponents',
+              ('valueAddedTurnoverShare', 'numeratore_denominatore'): 'frameSbsRatioComponents',
+              ('averageGrossRemunerationPerEmployee', 'numeratore_denominatore'): 'frameSbsRatioComponents',
+          }
           final_available_missing_expected = {
               ('incomeVsInflation', 'benchmark_toscana_italia'),
               ('incomeVsInflation', 'numeratore_denominatore'),
               ('forestCoverIndex', 'dettaglio_territoriale'),
               ('voterTurnout', 'benchmark_toscana_italia'),
               ('erpArrears', 'dettaglio_territoriale'),
-              ('grossOperatingMargin', 'assoluto_normalizzato'),
-              ('labourCost', 'assoluto_normalizzato'),
               ('municipalSurface', 'serie_storica'),
               ('populationDensity', 'serie_storica'),
               ('accreditedRsaCount', 'serie_storica'),
@@ -749,6 +770,13 @@ jobs:
               assert row['evidence'].startswith('structured:'), (pair, row)
               assert 'foreignOrigins' in row['evidence'], (pair, row)
 
+          for pair, evidence_token in sorted(frame_sbs_acquired_expected.items()):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              assert evidence_token in row['evidence'], (pair, row)
+
           for pair in sorted(final_available_missing_expected):
               row = rows[pair]
               assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
@@ -803,6 +831,6 @@ jobs:
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 4 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable + 1 final structured category + 10 final available-missing + 24 final source-unavailable + 7 final N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 4 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable + 1 final structured category + 20 Frame SBS structured + 8 final available-missing + 24 final source-unavailable + 7 final N/A pairs verified.'
           )
           PY
