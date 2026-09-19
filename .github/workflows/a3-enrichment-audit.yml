@@ -36,6 +36,7 @@ jobs:
           python scripts/test_enrichment_route_evidence.py
           python scripts/test_enrichment_companion_evidence.py
           python scripts/test_enrichment_source_audit.py
+          python scripts/test_enrichment_backlog.py
 
       - name: Materialize effective public catalog
         env:
@@ -135,6 +136,65 @@ jobs:
           path: |
             /tmp/a3-source-audit.json
             /tmp/a3-source-audit.md
+          if-no-files-found: error
+
+      - name: Build A3.4 enrichment backlog
+        run: |
+          python scripts/enrichment_backlog.py \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --source-audit /tmp/a3-source-audit.json \
+            --json-output /tmp/a3-enrichment-backlog.json \
+            --markdown-output /tmp/a3-enrichment-backlog.md
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          source_audit = json.load(open('/tmp/a3-source-audit.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+
+          ms = matrix['summary']
+          source_summary = source_audit['summary']
+          summary = backlog['summary']
+
+          assert summary['publicMetricCount'] == ms['publicMetricCount'], (summary, ms)
+          assert summary['sourceProfileCount'] == ms['sourceProfileCount'], (summary, ms)
+          assert summary['dimensionCount'] == ms['dimensionCount'], (summary, ms)
+          assert summary['availableMissingPairCount'] == ms['state_AVAILABLE_MISSING'], (summary, ms)
+          assert summary['availableMissingPairCount'] == source_summary['availableMissingPairCount'], (
+              summary,
+              source_summary,
+          )
+
+          covered = {
+              (bundle['profileId'], pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          expected = {
+              (row['sourceProfileId'], row['metricId'], row['dimension'])
+              for row in matrix['rows']
+              if row['state'] == 'AVAILABLE_MISSING'
+          }
+          assert covered == expected, (len(covered), len(expected))
+          assert [bundle['rank'] for bundle in backlog['bundles']] == list(
+              range(1, summary['bundleCount'] + 1)
+          )
+
+          print(
+              'A3.4 backlog coverage: '
+              f"{summary['availableMissingPairCount']} AVAILABLE_MISSING -> "
+              f"{summary['bundleCount']} pacchetti su "
+              f"{summary['profilesWithBacklog']} profili."
+          )
+          PY
+
+      - name: Upload A3.4 enrichment backlog
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-enrichment-backlog
+          path: |
+            /tmp/a3-enrichment-backlog.json
+            /tmp/a3-enrichment-backlog.md
           if-no-files-found: error
 
       - name: Verify route and demographic closures
