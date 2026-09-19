@@ -135,6 +135,11 @@
         "label": "A3.5 OpenBDAP numeratore/denominatore",
         "script": "scripts/test_a3_5_openbdap_ratio_components.py",
         "args": []
+      },
+      {
+        "label": "A3.5 Frame SBS dimensions",
+        "script": "scripts/test_a3_5_frame_sbs_dimensions.py",
+        "args": []
       }
     ]
   },
