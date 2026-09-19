@@ -7,31 +7,36 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.5` — integrazione nuove dimensioni in lotti controllati
-- **Stato:** `IN_PROGRESS` — lotto 1 demografia/sesso mergiato; selezione lotto 2 dal backlog A3.4 LIVE
+- **Stato:** `IN_PROGRESS` — lotto 1 mergiato; lotto 2 OpenBDAP numeratore/denominatore implementato sul branch e in attesa dei gate final-head
 - **Main verificato:** `ee86142708a0c42731c67a1b12eb925902bc388d` (merge `#260`)
-- **Final head #260:** `e54b90143aa636db5b53386f401e52130016642d`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; **2.025 classificate, 0 residue**
-- **A3 final head #260:** run `35458115502` **GREEN**
-- **Pages final head #260:** run `35458115505` **GREEN**
-- **Controllo mensile dati final head #260:** run `35458115508` **GREEN**
-- **Controllo frequente fonti final head #260:** run `35458115532` **GREEN**
+- **Backlog A3.4 post-#260:** **869 AVAILABLE_MISSING · 263 pacchetti · 63 source profile**
 - **Branch corrente:** `feat/a3-5-enrichment-lot-2`
+- **Merge/pubblicazione:** vietati senza A3 + Quick + Full GREEN sul final head e approvazione esplicita del proprietario
 
-## A3.5 — stato acquisizioni
+## A3.5 — acquisizioni
 
-Il lotto 1, mergiato con PR **#260**, ha acquisito dal backlog A3.4:
+### Lotto 1 — mergiato con #260
 
-- `population × sesso`;
-- `dependencyIndices × sesso`;
-- `foreignResidents × sesso`.
+Acquisite `population × sesso`, `dependencyIndices × sesso`, `foreignResidents × sesso` da snapshot Istat POSAS/RCS già versionati. Le tre coppie risultano `ACQUIRED / catalog_structure` tramite `sexDimension`.
 
-Fonti governate:
+### Lotto 2 — branch corrente
 
-- Istat POSAS 2026: `data/source-snapshots/istat-demography-lotto-a-2026-08.json`;
-- Istat RCS 2025: `data/source-snapshots/istat-rcs-demography-2025.json`.
+Dal backlog LIVE è stato selezionato il pacchetto ad alto valore `openbdap-annual × numeratore_denominatore`. Vengono acquisite **16 delle 24 coppie** per cui entrambi i componenti sono realmente presenti negli snapshot versionati:
 
-Le tre coppie sono materializzate nel dataset pubblico come `sexDimension` e devono risultare `ACQUIRED / catalog_structure`. A3.5 resta `IN_PROGRESS`.
+- 14 indicatori da `data/source-snapshots/bilanci-v1.6.0.json`;
+- `cashReceiptsPerResident` e `cashBalancePerResident` da `data/source-snapshots/siope-history-v1.6.0.json`.
+
+Il materializzatore aggiunge `ratioComponents` a 7/7 Comuni con numeratore, denominatore, scala, anno, fonte e snapshot e riconcilia la formula con il valore pubblico. Non modifica valori, grafici o layout.
+
+Le altre 8 coppie dello stesso pacchetto restano `AVAILABLE_MISSING`: gli snapshot correnti non contengono entrambi i componenti richiesti e non è ammesso ricavarli a ritroso dal rapporto pubblicato.
+
+Effetto atteso A3.4/A3.5 sul final head:
+
+`AVAILABLE_MISSING: 869 → 853`
+
+A3.5 resta `IN_PROGRESS`.
 
 ## Decisioni vincolanti
 
@@ -41,15 +46,13 @@ Le tre coppie sono materializzate nel dataset pubblico come `sexDimension` e dev
 4. Un passaggio a `ACQUIRED` deve derivare da struttura/formula verificabile, mai da override manuale.
 5. A3.5 procede per lotti sostanziali ricavati dal backlog A3.4, con QA e fonte dichiarata.
 6. Non introdurre UI/rendering se il lotto riguarda soltanto enrichment del dataset.
-7. Nessun merge/pubblicazione senza A3, Quick e Full GREEN sul final head e approvazione esplicita del proprietario.
-8. Non dichiarare preflight locale eseguito se il runtime continua a fallire su `Could not resolve host: github.com`.
+7. Non retro-derivare componenti mancanti da percentuali/rapporti già pubblicati.
+8. Non dichiarare preflight locale eseguito se il runtime continua a fallire su risoluzione DNS verso GitHub/fonti esterne.
 
 ## Prossima azione esatta
 
-1. Leggere l'artifact A3.4 rigenerato sul final head di #260 e verificare il conteggio LIVE delle `AVAILABLE_MISSING`.
-2. Ordinare i pacchetti `sourceProfileId × dimensione` secondo la rubric A3.4 già governata.
-3. Scegliere il prossimo lotto A3.5 sostanziale esclusivamente dal backlog LIVE, verificando prima disponibilità e acquisibilità reale delle fonti.
-4. Implementare materializzazione, QA ed evidenza A3 sul presente branch.
-5. Aggiornare roadmap e questo handoff nella stessa PR.
-6. Aprire una sola PR Ready ed eseguire A3 + Quick + Full sul final head.
-7. Fermarsi prima del merge.
+1. Aprire una sola PR Ready per il lotto 2.
+2. Verificare A3 + Quick + Full sul final head.
+3. Dall'artifact A3.4 final-head confermare `853 AVAILABLE_MISSING` e `unclassifiedPairCount = 0`.
+4. Correggere soltanto eventuali regressioni reali, senza indebolire detector o contratti.
+5. Fermarsi prima del merge e attendere approvazione esplicita del proprietario.
