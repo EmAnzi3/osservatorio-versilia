@@ -33,6 +33,7 @@ BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
 A3_5_DEMOGRAPHY_SEX_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_demography_sex.py"
 A3_5_OPENBDAP_RATIO_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_openbdap_ratio_components.py"
 A3_5_FRAME_SBS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_frame_sbs_dimensions.py"
+A3_5_ISTAT_CENSUS_COMPONENTS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_istat_census_components.py"
 A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
@@ -69,6 +70,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_5_DEMOGRAPHY_SEX_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_5_OPENBDAP_RATIO_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_5_FRAME_SBS_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_5_ISTAT_CENSUS_COMPONENTS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:

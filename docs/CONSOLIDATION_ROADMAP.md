@@ -122,6 +122,8 @@ Nota A3.5 — lotto 2: il backlog A3.4 post-#260 contiene 869 coppie `AVAILABLE_
 
 Nota A3.5 — lotto 3: dal backlog A3.4 post-#261 di 853 coppie `AVAILABLE_MISSING` viene integrato un lotto coerente sul profilo `istat-business-annual`, riusando esclusivamente gli snapshot Frame SBS Territoriale Istat v1.34.0 già versionati. Per gli 8 indicatori di Economia prodotta il lotto acquisisce 8 coppie `categorie_specifiche` tramite i perimetri `Totale / Industria / Servizi`, 8 coppie `assoluto_normalizzato` tramite componenti economiche/occupazionali coerenti e 4 coppie `numeratore_denominatore` per produttività, fatturato per addetto, valore aggiunto sul fatturato e retribuzione media per dipendente. Il QA riconcilia le formule con i valori pubblici e ammette soltanto tolleranze motivate dall'arrotondamento delle tavole Istat; nessun nuovo numero esterno o benchmark viene introdotto. Effetto atteso: 853 → 833 `AVAILABLE_MISSING`; A3.5 resta `IN_PROGRESS`.
 
+Nota A3.5 — lotto 4: dal backlog A3.4 post-#262 di 833 coppie AVAILABLE_MISSING vengono riusati esclusivamente i componenti grezzi 2023 già congelati nello snapshot Istat delle sezioni di censimento v1.8.0. Per femaleEmploymentRate, maleEmploymentRate, housingStockPer1000, nonOccupiedHomesPer1000, vacantHomes e singleHouseholds il lotto espone numeratore e denominatore verificabili, riconcilia le formule con i valori pubblici e acquisisce 6 coppie numeratore_denominatore + 6 coppie assoluto_normalizzato. Nessun valore pubblico, benchmark o elemento UI viene modificato. Effetto atteso: 833 → 821 AVAILABLE_MISSING; A3.5 resta IN_PROGRESS.
+
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
 ---
