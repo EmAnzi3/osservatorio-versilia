@@ -947,6 +947,63 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "libraryActiveBorrowersPer100": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato ufficiale del monitoraggio biblioteche espone gli iscritti attivi totali e per classi d'età, ma non contiene campi di disaggregazione per sesso.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "eta": {
+                "state": AVAILABLE,
+                "evidence": "Il Dataset Biblioteche espone IscrittiAttivi014, IscrittiAttivi1524, IscrittiAttivi2564 e IscrittiAttivi65+, quindi la distribuzione per età degli utenti attivi è disponibile alla fonte ma non acquisita nella metrica pubblicata.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Per gli iscritti attivi il tracciato ufficiale espone il totale e le classi d'età, già ricondotte alla dimensione eta; non pubblica ulteriori categorie native comparabili per lo stesso indicatore comunale.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+        },
+        "libraryLoansPerResident": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato dei prestiti non contiene campi per sesso degli utenti.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il dataset distingue i prestiti della sezione ragazzi ma non pubblica i prestiti per classi di età degli utenti; la categoria editoriale 'ragazzi' non equivale a una disaggregazione anagrafica.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "Il Dataset Biblioteche distingue PrestitiRagazzi, PrestitiMultimediali e varie componenti del prestito interbibliotecario oltre ai PrestitiTotali; queste categorie native non sono acquisite dalla metrica pubblicata.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+        },
+        "libraryWeeklyOpeningHours": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "L'orario di apertura è rilevato come caratteristica della biblioteca e il dataset non contiene una disaggregazione per sesso.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "L'orario di apertura è rilevato come caratteristica della biblioteca e il dataset non contiene una disaggregazione per età.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "Il tracciato ufficiale distingue IndiceAperturaMattino, Pomeriggio, Sera, Sabato e Festivo oltre alle OreSettimanali; le fasce/giorni di apertura costituiscono categorie native disponibili ma non acquisite nella metrica pubblicata.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
