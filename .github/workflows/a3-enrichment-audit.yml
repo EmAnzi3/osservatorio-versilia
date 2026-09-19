@@ -60,8 +60,7 @@ jobs:
           python scripts/enrichment_audit_matrix.py \
             --data dist/data/site-data.json \
             --registry dist/data/source-registry.json \
-            --output /tmp/a3-enrichment-matrix.json \
-            --allow-unclassified
+            --output /tmp/a3-enrichment-matrix.json
 
       - name: Report residual A3 pairs
         run: |
@@ -140,6 +139,7 @@ jobs:
               ('commuterBalance', 'assoluto_normalizzato'): 'structured:companion:normalized_companion_formula:',
               ('inboundCommuters', 'assoluto_normalizzato'): 'structured:companion:normalized_companion_formula:',
               ('outboundCommuters', 'assoluto_normalizzato'): 'structured:companion:normalized_companion_formula:',
+              ('population', 'assoluto_normalizzato'): 'structured:companion:normalized_companion_formula:',
           }
           municipal_employee_age_expected = {
               ('municipalEmployeesPer1000', 'eta'): 'structured:companion:age_breakdown:municipalStaffAgeStructure:',
@@ -360,6 +360,57 @@ jobs:
               ('extractiveSites', 'frequenza_infra_annuale'),
               ('tourismArrivals', 'assoluto_normalizzato'),
           }
+
+          final_structured_category_expected = {
+              ('foreignResidents', 'categorie_specifiche'),
+          }
+          final_available_missing_expected = {
+              ('incomeVsInflation', 'benchmark_toscana_italia'),
+              ('incomeVsInflation', 'numeratore_denominatore'),
+              ('forestCoverIndex', 'dettaglio_territoriale'),
+              ('voterTurnout', 'benchmark_toscana_italia'),
+              ('erpArrears', 'dettaglio_territoriale'),
+              ('grossOperatingMargin', 'assoluto_normalizzato'),
+              ('labourCost', 'assoluto_normalizzato'),
+              ('municipalSurface', 'serie_storica'),
+              ('populationDensity', 'serie_storica'),
+              ('accreditedRsaCount', 'serie_storica'),
+          }
+          final_source_unavailable_expected = {
+              ('incomeVsInflation', 'sesso'),
+              ('incomeVsInflation', 'eta'),
+              ('incomeVsInflation', 'categorie_specifiche'),
+              ('agriculturalDiversificationAndModernization', 'sesso'),
+              ('agriculturalDiversificationAndModernization', 'eta'),
+              ('agriculturalFarms', 'sesso'),
+              ('agriculturalFarms', 'eta'),
+              ('population', 'categorie_specifiche'),
+              ('populationChange', 'categorie_specifiche'),
+              ('forestCoverIndex', 'serie_storica'),
+              ('forestCoverIndex', 'frequenza_infra_annuale'),
+              ('forestCoverIndex', 'categorie_specifiche'),
+              ('voterTurnout', 'eta'),
+              ('erpArrears', 'benchmark_toscana_italia'),
+              ('erpArrears', 'categorie_specifiche'),
+              ('accreditedRsaCount', 'categorie_specifiche'),
+              ('chronicTotal', 'sesso'),
+              ('drinkingWaterQuality', 'serie_storica'),
+              ('pharmaciesPer1000', 'serie_storica'),
+              ('floodExposure', 'serie_storica'),
+              ('statisticalCoastlineLength', 'serie_storica'),
+              ('protectedNaturalAreas', 'serie_storica'),
+              ('roadNetworkProfile', 'serie_storica'),
+              ('remediationProceedings', 'serie_storica'),
+          }
+          final_not_applicable_expected = {
+              ('incomeVsInflation', 'assoluto_normalizzato'),
+              ('slowMobilityBici', 'serie_storica'),
+              ('slowMobilityCammini', 'serie_storica'),
+              ('slowMobilityMtb', 'serie_storica'),
+              ('slowMobilityRoutes', 'serie_storica'),
+              ('slowMobilityTrekking', 'serie_storica'),
+              ('voterTurnout', 'frequenza_infra_annuale'),
+          }
           semantic_not_applicable_expected = {
               ('agriculturalUsedArea', 'sesso'),
               ('agriculturalUsedArea', 'eta'),
@@ -530,6 +581,32 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['sourceReference'], (pair, row)
 
+
+          for pair in sorted(final_structured_category_expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              assert 'foreignOrigins' in row['evidence'], (pair, row)
+
+          for pair in sorted(final_available_missing_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(final_source_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(final_not_applicable_expected):
+              row = rows[pair]
+              assert row['state'] == 'NOT_APPLICABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['evidence'], (pair, row)
+
           for pair in sorted(frequency_available_missing_expected):
               row = rows[pair]
               assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
@@ -560,12 +637,12 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1982, summary
-          assert summary['unclassifiedPairCount'] == 43, summary
+          assert summary['classifiedPairCount'] == 2025, summary
+          assert summary['unclassifiedPairCount'] == 0, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 4 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable + 1 final structured category + 10 final available-missing + 24 final source-unavailable + 7 final N/A pairs verified.'
           )
           PY
