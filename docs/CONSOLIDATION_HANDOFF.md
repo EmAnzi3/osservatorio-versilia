@@ -6,61 +6,59 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
-- **Step attivo:** `A3.3` — audit fonte per fonte sul catalogo completo
-- **Stato:** `IN_PROGRESS` fino a merge del gate A3.3
-- **Main verificato:** `ad3ad336d1d6467475f13a3c869f7aaa790e99e1` (merge `#257`)
+- **Step attivo:** `A3.4` — backlog ordinato degli `AVAILABLE_MISSING`
+- **Stato:** `IN_PROGRESS` fino al merge del gate A3.4
+- **Main verificato:** `8a945095b5275ee7efe178a620381d498a9a4a58` (merge `#258`)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; **2.025 classificate, 0 residue**
-- **A3 final head #257:** run `35443490785` **GREEN**
-- **Pages final head #257:** run `35443490711` **GREEN** (Quick + Full)
-- **Pages post-merge #257:** run `35446462208` **GREEN** (build + deploy)
-- **Live status post-merge #257:** `ov-pages-live` **SUCCESS**
-- **Branch corrente:** `chore/a3-3-source-audit`
+- **A3 final head #258:** run `35447973053` **GREEN**
+- **Pages final head #258:** run `35447973039` **GREEN** (Quick + Full)
+- **Pages post-merge #258:** run `35450390573` **GREEN**
+- **Live status post-merge #258:** run `35450681832` **GREEN**
+- **A3.3 source audit:** 63 profili fonte · 225 indicatori · 2.025 coppie · **872 AVAILABLE_MISSING**
+- **Branch corrente:** `chore/a3-4-enrichment-backlog`
 
-## Intervento corrente — A3.3 source audit
+## Intervento corrente — A3.4 enrichment backlog
 
-Il branch introduce un audit fonte-per-fonte completamente derivato:
+Il branch trasforma automaticamente tutte le coppie `AVAILABLE_MISSING` in un backlog operativo senza copiare indicatori in un nuovo inventario:
 
-- la matrice A3 resta strict-complete a **2.025 / 0**;
-- ogni metrica deve risolvere su un solo `sourceProfileId`;
-- ogni profilo fonte usato deve esistere nel registry e avere publisher, frequenza, release attesa, metodo di acquisizione e licenza;
-- per ogni profilo il numero di coppie deve essere esattamente `metriche × 9`;
-- i conteggi per stato e origine devono riconciliarsi con la matrice A3 globale;
-- le coppie `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE` e `NOT_APPLICABLE` vengono rese leggibili fonte per fonte;
-- il workflow produce artifact `a3-source-audit.json` e `a3-source-audit.md`, senza introdurre un secondo inventario canonico.
+- input esclusivi: matrice A3 strict + audit A3.3;
+- unità di copertura: coppia indicatore × dimensione;
+- unità operativa: pacchetto `sourceProfileId × dimensione`;
+- ogni `AVAILABLE_MISSING` deve comparire esattamente una volta;
+- valore informativo: policy esplicita e versionata per dimensione;
+- costo: proxy deterministico 1..5, non stima di tempi o euro;
+- ordinamento: `priorityIndex = informationValuePoints / costPoints`;
+- output derivati: `a3-enrichment-backlog.json` e `a3-enrichment-backlog.md`;
+- nessuna acquisizione dati in A3.4: l'integrazione resta A3.5.
 
-Il conteggio dei profili fonte usati non è hard-coded: viene derivato a runtime dalla matrice dell'Effective Public Catalog.
+Il workflow deve derivare il conteggio corrente (oggi 872) dalla matrice: **872 non è una costante del codice**.
 
-## Hardening del gate strict
+## Hardening A3.3 incluso
 
-La review di #257 ha individuato un difetto diagnostico: una futura coppia non classificata avrebbe fatto fallire la validazione prima della scrittura della matrice.
+La review automatica di #258 aveva lasciato due P2 validi non recepiti prima del merge. Il branch li chiude nello stesso intervento, senza micro-PR separata:
 
-Il branch corregge il comportamento:
-
-1. la matrice diagnostica viene sempre scritta;
-2. le residue vengono sempre riportate;
-3. lo strict gate viene applicato in uno step successivo;
-4. un regression test verifica che l'output resti disponibile anche quando lo strict gate fallisce.
-
-Il primo run A3.3 ha inoltre rilevato che il materializzatore Salute v1.40 creava `regione-toscana-rsa` con `licenseUrl` vuota. Il branch corregge il materializzatore sulla pagina ufficiale regionale e aggiunge un regression test sui metadati completi del profilo RSA.
+1. il regression test che verifica la persistenza della matrice diagnostica viene ora realmente invocato dal `__main__` e importa le dipendenze necessarie;
+2. il Markdown A3.3 espone anche licenza e conteggi delle origini di classificazione, coerentemente con la metodologia dichiarata.
 
 ## Decisioni vincolanti
 
 1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
-2. Nessun secondo inventario manuale di indicatori o fonti.
+2. Nessun secondo inventario manuale di indicatori, fonti o opportunità.
 3. A3.2 resta chiuso a `unclassifiedPairCount = 0`.
-4. A3.3 usa esclusivamente il perimetro derivato dal catalogo effettivo e dalla matrice A3.
-5. A3.3 non assegna priorità alle opportunità: la prioritizzazione appartiene ad A3.4.
-6. Nessun A3.4 in questa PR.
-7. Nessun merge/pubblicazione senza A3, Quick e Full GREEN sul final head e approvazione esplicita del proprietario.
-8. Il preflight locale non è stato eseguito perché il runtime della sessione non risolve `github.com`; non dichiararlo come eseguito.
+4. A3.3 resta derivato dalla matrice e dal source registry.
+5. A3.4 deve coprire esattamente tutte e sole le coppie `AVAILABLE_MISSING`.
+6. Il modello di priorità A3.4 è una policy trasparente, non una misura oggettiva del costo reale.
+7. Nessun A3.5 in questa PR.
+8. Nessun merge/pubblicazione senza A3, Quick e Full GREEN sul final head e approvazione esplicita del proprietario.
+9. Il preflight locale non è stato eseguito: il runtime continua a restituire `Could not resolve host: github.com`.
 
 ## Prossima azione esatta
 
-1. Aprire una sola PR sul branch corrente.
+1. Aprire una sola PR Ready dal branch corrente.
 2. Eseguire un unico ciclo A3 Enrichment Audit + Quick + Full sul final head.
 3. Verificare che A3 resti **2.025 / 0**.
-4. Verificare dal log A3.3 che tutti i profili fonte effettivamente usati coprano esattamente 225 indicatori e 2.025 coppie.
-5. Verificare la presenza dell'artifact `a3-source-audit`.
+4. Verificare che A3.4 copra tutte le **872** coppie correnti senza duplicati/perdite e riporti il numero derivato di pacchetti.
+5. Verificare la presenza degli artifact `a3-source-audit` e `a3-enrichment-backlog`.
 6. Fermarsi prima del merge.
-7. Solo dopo merge autorizzato, verificare deploy/live post-merge e avviare A3.4.
+7. Solo dopo merge autorizzato, verificare deploy/live post-merge e avviare A3.5.

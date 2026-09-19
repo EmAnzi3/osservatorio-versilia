@@ -101,6 +101,9 @@ def test_source_audit_covers_matrix_by_profile() -> None:
     assert "profile-a" in markdown
     assert "AVAILABLE_MISSING" in markdown
     assert "alpha x eta" in markdown
+    assert "Fixture license" in markdown
+    assert "https://example.test/license" in markdown
+    assert "metric_override=" in markdown
 
 
 def test_source_audit_rejects_missing_profile_metadata() -> None:

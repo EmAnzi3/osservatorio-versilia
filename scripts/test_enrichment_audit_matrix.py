@@ -2,6 +2,10 @@
 """Regression tests for the A3.2 enrichment matrix contract."""
 from __future__ import annotations
 
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
 import enrichment_audit_matrix as audit
 
 
@@ -240,5 +244,6 @@ if __name__ == "__main__":
     test_acquired_evidence_wins_over_registry_annotation()
     test_age_token_does_not_match_aggregate()
     test_strict_validation_rejects_unclassified_pairs()
+    test_strict_write_preserves_diagnostic_output()
     test_profile_not_applicable_is_rejected()
     print("A3.2 enrichment matrix regression passed.")
