@@ -38,6 +38,7 @@ jobs:
           python scripts/test_enrichment_source_audit.py
           python scripts/test_enrichment_backlog.py
           python scripts/test_a3_5_demography_sex.py
+          python scripts/test_a3_5_openbdap_ratio_components.py
 
       - name: Materialize effective public catalog
         env:

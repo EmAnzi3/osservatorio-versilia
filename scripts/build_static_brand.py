@@ -31,6 +31,7 @@ PER_CAPITA_REFERENCE_MATERIALIZER = ROOT / "scripts" / "apply_per_capita_referen
 PER_CAPITA_REFERENCE_RUNTIME_PATCH = ROOT / "scripts" / "patch_per_capita_reference_runtime.py"
 BILANCI_V139_TEST = ROOT / "scripts" / "test_bilanci_v139.py"
 A3_5_DEMOGRAPHY_SEX_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_demography_sex.py"
+A3_5_OPENBDAP_RATIO_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_openbdap_ratio_components.py"
 A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
@@ -65,6 +66,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_RUNTIME_CORE), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(SALUTE_V140_DEMOGRAPHICS_RUNTIME_PATCH), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_5_DEMOGRAPHY_SEX_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_5_OPENBDAP_RATIO_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:

@@ -30,3 +30,5 @@ scripts/enrichment_backlog.py
 scripts/test_enrichment_backlog.py
 scripts/materialize_a3_5_demography_sex.py
 scripts/test_a3_5_demography_sex.py
+scripts/materialize_a3_5_openbdap_ratio_components.py
+scripts/test_a3_5_openbdap_ratio_components.py
