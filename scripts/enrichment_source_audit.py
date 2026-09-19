@@ -260,6 +260,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
                 f"- Frequenza: {item['frequencyLabel']} ({item['frequency']})",
                 f"- Release attesa: {item['expectedRelease']}",
                 f"- Metodo acquisizione: {item['acquisitionMethod']}",
+                f"- Licenza: {item['licenseName']} — {item['licenseUrl']}",
+                "- Origini classificazione: " + ", ".join(
+                    f"{key}={value}"
+                    for key, value in item["classificationOriginCounts"].items()
+                ),
                 f"- Metriche: {', '.join(item['metricIds'])}",
                 f"- Coppie: {item['pairCount']}",
             ]
