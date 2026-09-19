@@ -1004,6 +1004,29 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id in (
+        "averageGrossRemunerationPerEmployee",
+        "labourCost",
+        "labourProductivity",
+        "turnoverPerPersonEmployed",
+):
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(
+        {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Le tavole Frame SBS Territoriale diffuse a livello comunale descrivono unità locali, occupazione, attività economica, localizzazione e variabili del conto economico; non pubblicano l'indicatore economico comunale disaggregato per sesso degli addetti.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Le tavole Frame SBS Territoriale diffuse a livello comunale descrivono unità locali, occupazione, attività economica, localizzazione e variabili del conto economico; non pubblicano l'indicatore economico comunale disaggregato per età degli addetti.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        }
+    )
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
