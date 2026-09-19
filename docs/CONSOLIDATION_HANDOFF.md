@@ -8,44 +8,54 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Main verificato:** `c8dbe2e076425cd847477925461c8cf5884d1051` (merge `#246`)
+- **Main verificato:** `ea22b9e6b6bce2d8472aef1d36ab1373385c156a` (merge `#247`)
 - **Catalogo pubblico governato:** 225 indicatori
-- **Matrice A3.2 post-#246:** 2.025 coppie; **1.812 classificate, 213 residue**
-- **A3 final head #246:** run `35396490755` **GREEN**
-- **Pages final head #246:** run `35396490786` **GREEN** (Quick + Full)
-- **Branch corrente:** `chore/a3-2-semantic-nonperson-demographics-na`
-- **PR corrente:** `#247`
+- **Matrice A3.2 post-#247:** 2.025 coppie; **1.818 classificate, 207 residue**
+- **A3 final head #247:** run `35401531994` **GREEN**
+- **Pages final head #247:** run `35401531985` **GREEN** (Quick + Full)
+- **Pages post-merge #247:** run `35420006901` **GREEN**
+- **Live status post-merge #247:** run `35420279341` **GREEN**
+- **Branch corrente:** `chore/a3-2-semantic-normalization-na`
+- **PR corrente:** `#248`
 
-## Residuo effettivo post-#246
+## Residuo effettivo post-#247
 
 Il bucket B è chiuso. Restano:
 
-- **C — semanticamente `NOT_APPLICABLE`: 13**
+- **C — semanticamente `NOT_APPLICABLE`: 7**
 - **D — verifica fonte ufficiale necessaria: 200**
-- **Totale:** **213**
+- **Totale:** **207**
 
-Distribuzione C ancora da chiudere:
+Le 7 C residue sono tutte sulla dimensione `assoluto_normalizzato`:
 
-- `sesso`: 3 — `economyActivityAtlas`, `erpArrears`, `roadFinesPerResident`
-- `eta`: 3 — stesse tre metriche
-- `assoluto_normalizzato`: 7 — `climateTemperatureTrend50y`, `climateTmaxTrend`, `climateTminTrend`, `emsResponseTimeP75`, `lifeExpectancy`, `municipalImuStandard`, `tariStandardHousehold`
+- `climateTemperatureTrend50y`
+- `climateTmaxTrend`
+- `climateTminTrend`
+- `emsResponseTimeP75`
+- `lifeExpectancy`
+- `municipalImuStandard`
+- `tariStandardHousehold`
 
-## Intervento corrente — terza tranche C
+## Intervento corrente — quarta tranche C
 
-La PR `#247` chiude le **6** coppie `sesso/eta` su tre metriche il cui oggetto pubblicato non è una persona:
+La PR `#248` chiude le ultime **7** coppie C su `assoluto_normalizzato`.
 
-- `economyActivityAtlas` — attività economiche/codici ATECO;
-- `erpArrears` — grandezza economica di morosità ERP;
-- `roadFinesPerResident` — proventi da sanzioni rapportati alla popolazione residente media.
+La definizione A3 richiede disponibilità congiunta di un valore assoluto e di una versione normalizzata coerente della **stessa misura**. Le metriche trattate sono:
 
-Sesso ed età descriverebbero eventualmente persone collegate all'oggetto (imprenditori, assegnatari/debitori, trasgressori o residenti), non la metrica pubblicata. Le classificazioni sono tutte metric-specific; nessuna regola `NOT_APPLICABLE` è applicata a un source profile.
+- grandezze intensive fisiche (`climate*`);
+- statistiche sintetiche già espresse nella propria scala (`emsResponseTimeP75`, `lifeExpectancy`);
+- importi già standardizzati su uno scenario fisso (`municipalImuStandard`, `tariStandardHousehold`).
 
-**Esito atteso:** **1.818 classificate / 207 residue**.
+Una ulteriore normalizzazione per abitante, superficie, famiglia o percentuale cambierebbe l'oggetto metrico invece di produrre una seconda forma della stessa misura. Le classificazioni sono tutte metric-specific; nessuna regola `NOT_APPLICABLE` è applicata a un source profile.
+
+**Esito atteso:** **1.825 classificate / 200 residue**.
 
 Dopo la tranche:
 
-- **C residue:** 7
+- **C residue:** 0
 - **D residue:** 200
+
+La chiusura di C non chiude A3.2: si passa al bucket D e A3.2 termina solo a `unclassifiedPairCount = 0`.
 
 ## Decisioni vincolanti
 
@@ -60,9 +70,9 @@ Dopo la tranche:
 
 ## Prossima azione esatta
 
-1. Portare `#247` a A3 Enrichment Audit, Quick e Full GREEN sul final head.
-2. Verificare nel log A3 il conteggio esatto **1.818 / 207** e le 6 coppie `NOT_APPLICABLE`.
+1. Portare `#248` a A3 Enrichment Audit, Quick e Full GREEN sul final head.
+2. Verificare nel log A3 il conteggio esatto **1.825 / 200** e le 7 nuove coppie `NOT_APPLICABLE`.
 3. Fermarsi prima del merge.
-4. Dopo merge autorizzato, chiudere le **7 C residue** su `assoluto_normalizzato` con una tranche metric-specific separata.
-5. Solo dopo C=0 passare al bucket D.
-6. A3.2 termina soltanto a `unclassifiedPairCount = 0`; nessun A3.3 prima dello zero.
+4. Dopo merge autorizzato, ricostruire le **200 D residue effettive** dalla matrice e dalla closure audit.
+5. Classificare D solo con verifica della fonte ufficiale in `AVAILABLE_MISSING` o `SOURCE_UNAVAILABLE` (o riclassificare A/B se emerge evidenza strutturata già acquisita).
+6. Nessun A3.3 prima di `unclassifiedPairCount = 0`.

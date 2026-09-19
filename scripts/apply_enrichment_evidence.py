@@ -708,6 +708,54 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "climateTemperatureTrend50y": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è una variazione di temperatura espressa in °C derivata dalla tendenza territoriale. Una versione per abitante, per superficie o percentuale non sarebbe una normalizzazione coerente della stessa misura fisica.",
+            },
+        },
+        "climateTmaxTrend": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura temperature massime e relativa tendenza in °C. La temperatura è già una grandezza intensiva: normalizzarla per popolazione, superficie o in percentuale produrrebbe un indicatore diverso e non metodologicamente equivalente.",
+            },
+        },
+        "climateTminTrend": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura temperature minime e relativa tendenza in °C. La temperatura è già una grandezza intensiva: normalizzarla per popolazione, superficie o in percentuale produrrebbe un indicatore diverso e non metodologicamente equivalente.",
+            },
+        },
+        "emsResponseTimeP75": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è il 75° percentile di un intervallo temporale espresso in minuti. Non esiste un corrispondente valore assoluto da normalizzare per abitante, superficie, famiglia o percentuale senza cambiare l'oggetto statistico misurato.",
+            },
+        },
+        "lifeExpectancy": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La speranza di vita è un indicatore sintetico di tavola di mortalità espresso in anni. Una normalizzazione per popolazione, superficie, famiglia o percentuale non rappresenterebbe la stessa misura.",
+            },
+        },
+        "municipalImuStandard": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è già un importo teorico standardizzato su una base imponibile fissa di 100.000 €. L'aliquota percentuale è un parametro della formula, non una versione normalizzata dello stesso importo; ulteriori normalizzazioni definirebbero un indicatore diverso.",
+            },
+        },
+        "tariStandardHousehold": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è già una spesa annua standardizzata su una stessa utenza teorica di 3 componenti e 100 m². Le componenti tariffarie per m² sono input della formula, non una versione normalizzata del costo totale; normalizzare ulteriormente cambierebbe l'indicatore.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():

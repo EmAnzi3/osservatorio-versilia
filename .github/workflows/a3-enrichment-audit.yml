@@ -193,6 +193,13 @@ jobs:
               ('erpArrears', 'eta'),
               ('roadFinesPerResident', 'sesso'),
               ('roadFinesPerResident', 'eta'),
+              ('climateTemperatureTrend50y', 'assoluto_normalizzato'),
+              ('climateTmaxTrend', 'assoluto_normalizzato'),
+              ('climateTminTrend', 'assoluto_normalizzato'),
+              ('emsResponseTimeP75', 'assoluto_normalizzato'),
+              ('lifeExpectancy', 'assoluto_normalizzato'),
+              ('municipalImuStandard', 'assoluto_normalizzato'),
+              ('tariStandardHousehold', 'assoluto_normalizzato'),
           }
           rows = {
               (row['metricId'], row['dimension']): row
@@ -252,12 +259,12 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1818, summary
-          assert summary['unclassifiedPairCount'] == 207, summary
+          assert summary['classifiedPairCount'] == 1825, summary
+          assert summary['unclassifiedPairCount'] == 200, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 27 semantic N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 34 semantic N/A pairs verified.'
           )
           PY
