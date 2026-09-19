@@ -1201,6 +1201,29 @@ for metric_id in ("socialSpendingByUserArea", "socialSpendingPerResident"):
     )
 
 
+
+METRIC_EVIDENCE.setdefault("municipalStaffTraining", {}).update(
+    {
+        "eta": {
+            "state": UNAVAILABLE,
+            "evidence": "L'API RGS Formazione pubblica giornate e medie per totale, uomini e donne; le fasce di età sono disponibili in un diverso dataset sullo stock di personale e non sono incrociate con la formazione per ente.",
+            "sourceReference": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+        },
+    }
+)
+
+for dimension in ("sesso", "eta"):
+    METRIC_EVIDENCE.setdefault("taxpayersAdultPopulationRate", {}).update(
+        {
+            dimension: {
+                "state": UNAVAILABLE,
+                "evidence": "Le statistiche MEF IRPEF su base comunale pubblicano numero di contribuenti e variabili reddituali per Comune; le classificazioni anagrafiche sono diffuse in dataset separati e non sono incrociate con il Comune, quindi non consentono lo stesso tasso comunale disaggregato.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
+            },
+        }
+    )
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
