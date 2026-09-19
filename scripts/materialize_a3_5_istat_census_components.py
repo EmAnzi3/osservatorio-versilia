@@ -190,6 +190,8 @@ def apply_enrichment(site: dict[str, Any], snapshot: dict[str, Any]) -> dict[str
                 "denominatorLabel": cfg["denominatorLabel"],
                 "numerator": numerator,
                 "denominator": denominator,
+                "absolute": numerator,
+                "normalized": observed,
             }
             enriched_rows += 1
 

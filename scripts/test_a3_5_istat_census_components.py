@@ -78,6 +78,8 @@ def test_census_components() -> None:
             assert payload["formula"] == cfg["formula"]
             assert payload["numerator"] == raw[town][cfg["numerator"]]
             assert payload["denominator"] == raw[town][cfg["denominator"]]
+            assert payload["absolute"] == payload["numerator"]
+            assert payload["normalized"] == row["value"]
             expected = float(payload["numerator"]) / float(payload["denominator"]) * float(cfg["scale"])
             assert math.isclose(
                 float(row["value"]),
