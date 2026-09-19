@@ -73,7 +73,7 @@ def test_demography_sex_enrichment() -> None:
     dependency = site["metrics"]["dependencyIndices"]
     for row in dependency["rows"]:
         for group in row["sexBreakdown"]["groups"]:
-            structural, elderly = group["parts"]
+            structural, elderly = group["indices"]
             assert structural["key"] == "structural"
             assert elderly["key"] == "elderly"
             assert structural["denominator"] > 0
