@@ -85,7 +85,7 @@ def test_frame_sbs_enrichment() -> None:
 
         normalized_evidence = structural_base.acquired_evidence(metric, "assoluto_normalizzato")
         assert normalized_evidence is not None, metric_id
-        assert "frameSbsAbsoluteNormalized" in normalized_evidence, (metric_id, normalized_evidence)
+        assert "frameSbsScaleCompanion" in normalized_evidence, (metric_id, normalized_evidence)
 
         if metric_id in enrichment.RATIO_TARGETS:
             ratio_evidence = structural_base.acquired_evidence(metric, "numeratore_denominatore")
@@ -100,7 +100,7 @@ def test_frame_sbs_enrichment() -> None:
             assert [item["key"] for item in categories["categories"]] == ["total", "industry", "services"]
             assert all(item["series"] for item in categories["categories"])
 
-            companion = row["frameSbsAbsoluteNormalized"]
+            companion = row["frameSbsScaleCompanion"]
             assert companion["dimension"] == "assoluto_normalizzato"
             assert companion["year"] == 2023
             assert companion["absolute"]["value"] is not None
