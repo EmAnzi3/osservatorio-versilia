@@ -317,7 +317,7 @@ def build_backlog(
         "generatedFrom": matrix.get("generatedFrom", {}),
         "rubric": {
             "dimensionValue": dict(DIMENSION_VALUE),
-            "costScale": dict(COST_LABELS),
+            "costScale": {str(key): value for key, value in COST_LABELS.items()},
             "formula": "priorityIndex = (informationValuePerPair * pairCount) / costPoints",
             "costSignals": {
                 "reuseSameDimension": "-1 se il profilo ha almeno una coppia ACQUIRED sulla stessa dimensione",

@@ -12,7 +12,126 @@
       "full": "python scripts/preflight.py --full --skip-quick",
       "buildSmoke": "python scripts/test_site_consistency.py"
     },
-    "liveStatusContext": "ov-pages-live"
+    "liveStatusContext": "ov-pages-live",
+    "quickChecks": [
+      {
+        "label": "finalize catalog",
+        "script": "scripts/finalize_catalog_release.py",
+        "args": [
+          "--check"
+        ]
+      },
+      {
+        "label": "catalog release",
+        "script": "scripts/test_catalog_release_v116.py",
+        "args": []
+      },
+      {
+        "label": "costi/fiscalita/redditi",
+        "script": "scripts/test_costi_fiscalita_redditi_draft.py",
+        "args": []
+      },
+      {
+        "label": "demography materialized",
+        "script": "scripts/test_demography_lotto_a_materialized.py",
+        "args": []
+      },
+      {
+        "label": "demography v5",
+        "script": "scripts/test_demography_lotto_a_v5.py",
+        "args": []
+      },
+      {
+        "label": "demography RCS",
+        "script": "scripts/test_demography_rcs_lotto_a.py",
+        "args": []
+      },
+      {
+        "label": "income",
+        "script": "scripts/test_income_lotto_a_v2.py",
+        "args": []
+      },
+      {
+        "label": "fiscal",
+        "script": "scripts/test_fiscal_lotto_b.py",
+        "args": []
+      },
+      {
+        "label": "PNRR draft",
+        "script": "scripts/test_pnrr_toscana_draft.py",
+        "args": []
+      },
+      {
+        "label": "PNRR review",
+        "script": "scripts/test_pnrr_toscana_review.py",
+        "args": []
+      },
+      {
+        "label": "amministrazione",
+        "script": "scripts/test_amministrazione_lotto_a.py",
+        "args": []
+      },
+      {
+        "label": "lavoro/istruzione",
+        "script": "scripts/test_lavoro_istruzione_eta_genere.py",
+        "args": []
+      },
+      {
+        "label": "mobilita TPL",
+        "script": "scripts/test_mobilita_tpl_v119.py",
+        "args": []
+      },
+      {
+        "label": "agricoltura",
+        "script": "scripts/test_agricoltura_territorio_v120.py",
+        "args": []
+      },
+      {
+        "label": "cultura",
+        "script": "scripts/test_cultura_biblioteche_v121.py",
+        "args": []
+      },
+      {
+        "label": "costa e mare",
+        "script": "scripts/test_costa_mare_v123.py",
+        "args": []
+      },
+      {
+        "label": "attivita estrattive",
+        "script": "scripts/test_attivita_estrattive_v128.py",
+        "args": []
+      },
+      {
+        "label": "ambiente/acqua",
+        "script": "scripts/test_ambiente_acqua_v124_ui.py",
+        "args": []
+      },
+      {
+        "label": "ERP",
+        "script": "scripts/test_erp_arrears_v125.py",
+        "args": []
+      },
+      {
+        "label": "investimenti",
+        "script": "scripts/test_investimenti_versilia.py",
+        "args": []
+      },
+      {
+        "label": "fragilità v1.33.0",
+        "script": "scripts/test_fragilita_release.py",
+        "args": []
+      },
+      {
+        "label": "A3.4 enrichment backlog",
+        "script": "scripts/test_enrichment_backlog.py",
+        "args": []
+      },
+      {
+        "label": "A3.5 demografia sesso",
+        "script": "scripts/test_a3_5_demography_sex.py",
+        "args": []
+      }
+    ]
   },
   "workflows": [
     {
