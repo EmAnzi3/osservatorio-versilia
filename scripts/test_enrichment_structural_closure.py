@@ -17,6 +17,32 @@ def test_structural_closure_patterns() -> None:
     composite_parts = {"meta": {"compositeType": "hydroNetworkProfile"}, "rows": [{"parts": [{"key": "full", "label": "Totale", "value": 12.0}, {"key": "managed", "label": "Gestito", "value": 8.0}]}]}
     assert audit.acquired_evidence(composite_parts, "categorie_specifiche") == "rows.0.parts"
 
+    named_categories = {
+        "meta": {"compositeType": "stock"},
+        "rows": [{
+            "foreignOrigins": {
+                "citizenshipTop": [
+                    {"label": "Paese A", "count": 30, "share": 60.0},
+                    {"label": "Paese B", "count": 20, "share": 40.0},
+                ]
+            }
+        }],
+    }
+    named_evidence = audit.acquired_evidence(named_categories, "categorie_specifiche") or ""
+    assert "foreignOrigins.citizenshipTop" in named_evidence
+
+    unlabeled_named_categories = {
+        "meta": {"compositeType": "stock"},
+        "rows": [{"foreignOrigins": {"citizenshipTop": [{"count": 30}, {"count": 20}]}}],
+    }
+    assert audit.acquired_evidence(unlabeled_named_categories, "categorie_specifiche") is None
+
+    unrelated_named_list = {
+        "meta": {"compositeType": "stock"},
+        "rows": [{"rankingTop": [{"label": "A", "count": 30}, {"label": "B", "count": 20}]}],
+    }
+    assert audit.acquired_evidence(unrelated_named_list, "categorie_specifiche") is None
+
     unlabeled_parts = {"rows": [{"parts": [{"key": "a"}, {"key": "b"}]}]}
     assert audit.acquired_evidence(unlabeled_parts, "categorie_specifiche") is None
 

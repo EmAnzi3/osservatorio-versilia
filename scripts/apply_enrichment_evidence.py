@@ -1635,6 +1635,246 @@ for metric_id, dimensions in {
 }.items():
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
+
+# A3.2 final residual closure: only metric-specific source/semantic evidence.
+for metric_id in (
+        "slowMobilityBici",
+        "slowMobilityCammini",
+        "slowMobilityMtb",
+        "slowMobilityRoutes",
+        "slowMobilityTrekking",
+):
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update({
+        "serie_storica": {
+            "state": NOT_APPLICABLE,
+            "evidence": "La metrica conta l'inventario editoriale corrente dei percorsi A0/B1 pubblicabili dell'Osservatorio. Le versioni passate del catalogo descriverebbero la storia editoriale del prodotto, non una serie temporale omogenea del fenomeno territoriale misurato.",
+        },
+    })
+
+for metric_id, dimensions in {
+        "incomeVsInflation": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il reddito imponibile medio comunale MEF usato nella serie 2016-2024 non è pubblicato, con lo stesso livello comunale e la stessa definizione, incrociato per sesso; le classificazioni demografiche disponibili sono tavole distinte.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il reddito imponibile medio comunale MEF usato nella serie 2016-2024 non è pubblicato, con lo stesso livello comunale e la stessa definizione, incrociato per classi di età; le classificazioni per età sono tavole distinte.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+            },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "Le statistiche fiscali MEF consentono aggregazioni territoriali superiori del reddito imponibile e l'indice NIC Istat è nazionale: la stessa formula di variazione reale può quindi essere applicata a Toscana/Italia, ma il benchmark non è materializzato nella metrica corrente.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+            },
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è una variazione reale percentuale rispetto al 2016 ottenuta da due indici. Un valore assoluto del reddito sarebbe una componente diversa, già governata da altre metriche, non la forma assoluta della stessa variazione reale.",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "La formula governata richiede la serie del reddito imponibile medio MEF e la serie NIC Istat, entrambe ufficiali. La pipeline conserva il risultato e componenti reddituali, ma non materializza congiuntamente i due indici sorgente come numeratore/denominatore della misura reale.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/prezzi-al-consumo-dati/",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "La combinazione MEF+NIC usata per la variazione reale comunale non pubblica una serie 2016-2024 omogenea della stessa misura per categorie reddituali o fonti di reddito; costruirla richiederebbe una nuova elaborazione su universi distinti.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php",
+            },
+        },
+        "agriculturalDiversificationAndModernization": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Censimento Agricoltura pubblica separatamente caratteristiche del conduttore/capo azienda e pratiche di diversificazione-modernizzazione, ma la fonte governata non espone il cross-tab comunale della stessa metrica per sesso del responsabile aziendale.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Censimento Agricoltura pubblica separatamente età del capo azienda e pratiche di diversificazione-modernizzazione, ma la fonte governata non espone il cross-tab comunale della stessa metrica per classi di età.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+            },
+        },
+        "agriculturalFarms": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il totale aziende usa l'universo generale del Censimento 2020, mentre l'indicatore di conduzione femminile usa un universo specifico dei record con conduttore. La fonte non offre quindi una scomposizione per sesso pienamente riconciliabile al totale comunale governato.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il totale aziende usa l'universo generale del Censimento 2020, mentre l'età fa riferimento al capo azienda e a un universo con copertura specifica. Non è una scomposizione per età pienamente riconciliabile al totale comunale governato.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/",
+            },
+        },
+        "population": {
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Il target corrente è lo stock totale al 1° gennaio 2026. Le categorie di cittadinanza/origine governate nel catalogo hanno un riferimento temporale diverso e non costituiscono una scomposizione completa e omogenea dello stesso stock 2026.",
+                "sourceReference": "https://demo.istat.it/",
+            },
+        },
+        "populationChange": {
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "La metrica misura la variazione cumulata 2019-2026 dello stock totale. Istat pubblica componenti demografiche e stock per caratteristiche, ma la fonte governata non espone una decomposizione categoriale completa della stessa variazione cumulata sul medesimo periodo.",
+                "sourceReference": "https://demo.istat.it/",
+            },
+        },
+        "forestCoverIndex": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Foreste in Comune 2026 usa una fotografia CFI nominale 2020 aggiornata al 2024; il materializzatore documenta esplicitamente che il dato non viene concatenato alla serie UCS perché fonti e metodologia non sono omogenee.",
+                "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+            },
+            "dettaglio_territoriale": {
+                "state": AVAILABLE,
+                "evidence": "Il file ufficiale 'Foreste in Comune - tutti i dati dei Comuni' copre l'intero perimetro nazionale con la stessa definizione TUFF e le stesse colonne; consente quindi aggregazioni e confronti territoriali oltre i sette Comuni, non materializzati nella metrica corrente.",
+                "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+            },
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Il profilo CFI/SINFor è un aggiornamento non periodico (riferimento nominale 2020, aggiornato al 2024) e non offre osservazioni mensili, trimestrali o semestrali comparabili dell'indice di boscosità.",
+                "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Il file comunale acquisito contiene superficie comunale, superficie forestale e indice di boscosità, ma non una tassonomia di tipi forestali o altre categorie forestali comunali comparabili.",
+                "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+            },
+        },
+        "voterTurnout": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Eligendo diffonde l'affluenza per evento e geografia ma non espone, per la stessa affluenza comunale, una disaggregazione per classi di età.",
+                "sourceReference": "https://dait.interno.gov.it/elezioni/app",
+            },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "Eligendo pubblica l'affluenza dello stesso evento elettorale lungo la gerarchia geografica ufficiale, consentendo il confronto con Toscana e/o Italia quando pertinenti; la pipeline corrente non materializza questi benchmark.",
+                "sourceReference": "https://dait.interno.gov.it/elezioni/app",
+            },
+            "frequenza_infra_annuale": {
+                "state": NOT_APPLICABLE,
+                "evidence": "L'affluenza è una misura riferita a uno specifico evento elettorale. Eventuali consultazioni diverse nello stesso anno sono eventi distinti, non osservazioni mensili/trimestrali della medesima elezione.",
+            },
+        },
+        "erpArrears": {
+            "dettaglio_territoriale": {
+                "state": AVAILABLE,
+                "evidence": "Il bilancio ERP Lucca 2024 pubblica la stessa tabella di importi emessi, morosità e percentuale per tutti i Comuni del LODE lucchese, non soltanto per i sette Comuni della Versilia; tale perimetro aggiuntivo non è acquisito.",
+                "sourceReference": "https://at.erplucca.it/upload/guido/1/estratto%20assemblea%20Soci%20Bilancio_2024.pdf",
+            },
+            "benchmark_toscana_italia": {
+                "state": UNAVAILABLE,
+                "evidence": "Il bilancio ERP Lucca è una rendicontazione del gestore locale e non pubblica un benchmark Toscana/Italia costruito con la stessa definizione contabile di importi emessi e morosità cumulata.",
+                "sourceReference": "https://at.erplucca.it/default?path=75&t=1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "La tabella comunale governata espone importi emessi, morosità e relativo rapporto. Le ulteriori distinzioni presenti nel bilancio non costituiscono una tassonomia comunale stabile della stessa metrica di morosità.",
+                "sourceReference": "https://at.erplucca.it/default?path=75&t=1",
+            },
+        },
+        "grossOperatingMargin": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "Frame SBS Territoriale fornisce nello stesso perimetro valore aggiunto, costo del lavoro e addetti; oltre al MOL assoluto già ricostruito è quindi disponibile una normalizzazione per addetto coerente, non materializzata nella metrica corrente.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "labourCost": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "Frame SBS Territoriale pubblica costo del lavoro assoluto e consistenza degli addetti/dipendenti nello stesso perimetro, rendendo possibile una misura normalizzata coerente; la pipeline conserva oggi il solo importo assoluto.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "municipalSurface": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Istat/SITUAS documenta la consistenza territoriale e la superficie delle unità amministrative a date di interesse e diffonde basi censuarie storiche, mentre la pipeline usa soltanto la superficie al 31 dicembre 2021.",
+                "sourceReference": "https://situas.istat.it/",
+            },
+        },
+        "populationDensity": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "La serie storica della popolazione è già governata e Istat/SITUAS rende disponibili superfici territoriali per date di interesse: una serie coerente di densità è quindi derivabile da componenti ufficiali ma non è materializzata nella metrica corrente.",
+                "sourceReference": "https://situas.istat.it/",
+            },
+        },
+        "accreditedRsaCount": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Regione Toscana pubblica gli elenchi delle strutture del sistema sociale integrato accreditate al 31 dicembre 2022, 2023, 2024 e 2025; filtrando la tipologia RSA è disponibile una serie annuale comunale non ancora acquisita.",
+                "sourceReference": "https://www.regione.toscana.it/-/elenco-strutture-del-sistema-sociale-integrato-accreditate",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Gli elenchi accreditati identificano la tipologia RSA, denominazione, impresa e data di accreditamento, ma non espongono una tassonomia stabile di sottocategorie RSA che scomponga il conteggio comunale governato.",
+                "sourceReference": "https://www.regione.toscana.it/-/elenco-strutture-del-sistema-sociale-integrato-accreditate",
+            },
+        },
+        "chronicTotal": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "ARS pubblica letture per sesso in altri livelli/indicatori di cronicità, ma l'evidenza governata non dimostra una disaggregazione Maschi/Femmine dello stesso aggregato comunale 'almeno una patologia cronica' con definizione e periodo equivalenti.",
+                "sourceReference": "https://www.ars.toscana.it/banche-dati/dati-sintesi-sintcomuni-la-salute-dei-comuni-i-dati-della-popolazione-residente-nei-comuni?dettaglio=ric_geo_comuni&par_top_geografia=090&provenienza=piuvisti",
+            },
+        },
+        "drinkingWaterQuality": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Il portale GAIA espone analisi riferite al periodo/località selezionato e la pipeline governa fotografie semestrali, ma la fonte utilizzata non pubblica una sequenza storica omogenea per località e parametro da materializzare come serie della stessa metrica.",
+                "sourceReference": "https://www.gaia-spa.it/analisiweb_v2/",
+            },
+        },
+        "pharmaciesPer1000": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "L'open data del Ministero della Salute è un'anagrafe corrente aggiornata giornalmente. La pagina indica la data di caricamento e l'ultimo aggiornamento ma non fornisce snapshot storici del numero di farmacie aperte per Comune.",
+                "sourceReference": "https://www.dati.salute.gov.it/it/dataset/farmacie/",
+            },
+        },
+        "floodExposure": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "ISPRA pubblica edizioni successive degli indicatori di rischio, ma gli aggiornamenti incorporano nuove mosaicature di pericolosità e basi demografiche; la fonte non offre una serie comunale omogenea direttamente confrontabile della stessa esposizione.",
+                "sourceReference": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+            },
+        },
+        "statisticalCoastlineLength": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "La linea litoranea statistica Istat è derivata dalle Basi Territoriali al 31 dicembre 2021. La fonte corrente non diffonde una serie multi-periodo della stessa linea costiera calcolata con metodologia omogenea.",
+                "sourceReference": "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/",
+            },
+        },
+        "protectedNaturalAreas": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Gli elenchi e le geometrie vigenti delle aree protette sono aggiornati tramite atti istitutivi e modifiche, ma la fonte cartografica governata non pubblica una serie storica armonizzata delle perimetrazioni necessaria a ricalcolare nel tempo la stessa quota territoriale.",
+                "sourceReference": "https://www502.regione.toscana.it/geoscopio/servizi/wms/AREE_PROTETTE.htm",
+            },
+        },
+        "roadNetworkProfile": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "La cartoteca regionale rende disponibile il pacchetto Iter.Net v4.48 di giugno 2022 usato dalla pipeline, ma non una sequenza pubblica di versioni storiche omogenee da concatenare nella stessa serie del profilo stradale.",
+                "sourceReference": "https://www502.regione.toscana.it/geoscopio/download/grafo_stradale/",
+            },
+        },
+        "remediationProceedings": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Il dataset GeoScopio/SISBON è un estratto settimanale dello stato corrente dei procedimenti. L'export governato conserva stato e classificazione del procedimento ma non una cronologia degli snapshot o delle transizioni necessaria a ricostruire una serie comunale omogenea.",
+                "sourceReference": "https://sisbon.regione.toscana.it/",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
