@@ -208,6 +208,51 @@ jobs:
               ('priorStrokePrevalence', 'frequenza_infra_annuale'),
               ('specialistVisits7Psr', 'frequenza_infra_annuale'),
           }
+          regional_indicator_metric_unavailable_expected = {
+              ('disability064Per1000', 'sesso'),
+              ('disability064Per1000', 'eta'),
+              ('disability064Per1000', 'assoluto_normalizzato'),
+              ('disability064Per1000', 'numeratore_denominatore'),
+              ('disability064Per1000', 'categorie_specifiche'),
+              ('emsResponseTimeP75', 'sesso'),
+              ('emsResponseTimeP75', 'eta'),
+              ('emsResponseTimeP75', 'categorie_specifiche'),
+              ('foreignBornSoleProprietorShare', 'sesso'),
+              ('foreignBornSoleProprietorShare', 'eta'),
+              ('foreignBornSoleProprietorShare', 'assoluto_normalizzato'),
+              ('foreignBornSoleProprietorShare', 'numeratore_denominatore'),
+              ('foreignBornSoleProprietorShare', 'categorie_specifiche'),
+              ('innovationBusinessShare', 'sesso'),
+              ('innovationBusinessShare', 'eta'),
+              ('innovationBusinessShare', 'assoluto_normalizzato'),
+              ('innovationBusinessShare', 'numeratore_denominatore'),
+              ('innovationBusinessShare', 'categorie_specifiche'),
+              ('municipalOnlineServicesAdvanced', 'sesso'),
+              ('municipalOnlineServicesAdvanced', 'eta'),
+              ('municipalOnlineServicesAdvanced', 'assoluto_normalizzato'),
+              ('municipalOnlineServicesAdvanced', 'numeratore_denominatore'),
+              ('municipalOnlineServicesAdvanced', 'categorie_specifiche'),
+              ('organicAgriculturalAreaShare', 'sesso'),
+              ('organicAgriculturalAreaShare', 'eta'),
+              ('organicAgriculturalAreaShare', 'assoluto_normalizzato'),
+              ('organicAgriculturalAreaShare', 'numeratore_denominatore'),
+              ('organicAgriculturalAreaShare', 'categorie_specifiche'),
+              ('youthOtherStatus', 'sesso'),
+              ('youthOtherStatus', 'eta'),
+              ('youthOtherStatus', 'assoluto_normalizzato'),
+              ('youthOtherStatus', 'numeratore_denominatore'),
+              ('youthOtherStatus', 'categorie_specifiche'),
+          }
+          tourism_beds_available_missing_expected = {
+              ('tourismBeds', 'serie_storica'),
+              ('tourismBeds', 'dettaglio_territoriale'),
+              ('tourismBeds', 'benchmark_toscana_italia'),
+              ('tourismBeds', 'categorie_specifiche'),
+          }
+          tourism_beds_unavailable_expected = {
+              ('tourismBeds', 'sesso'),
+              ('tourismBeds', 'eta'),
+          }
           semantic_not_applicable_expected = {
               ('agriculturalUsedArea', 'sesso'),
               ('agriculturalUsedArea', 'eta'),
@@ -320,18 +365,36 @@ jobs:
               assert row['classificationOrigin'] == 'source_profile', (pair, row)
               assert row['sourceReference'], (pair, row)
 
+          for pair in sorted(regional_indicator_metric_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(tourism_beds_available_missing_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(tourism_beds_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
           for pair in sorted(semantic_not_applicable_expected):
               row = rows[pair]
               assert row['state'] == 'NOT_APPLICABLE', (pair, row)
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1860, summary
-          assert summary['unclassifiedPairCount'] == 165, summary
+          assert summary['classifiedPairCount'] == 1899, summary
+          assert summary['unclassifiedPairCount'] == 126, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 34 semantic N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 33 regional-indicator source-unavailable + 4 tourism-beds available-missing + 2 tourism-beds source-unavailable + 34 semantic N/A pairs verified.'
           )
           PY
