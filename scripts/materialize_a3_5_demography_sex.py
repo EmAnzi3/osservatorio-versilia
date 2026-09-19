@@ -339,7 +339,7 @@ def apply_enrichment(
     return {"metricsEnriched": 3, "towns": len(towns), "pairsAcquired": 3}
 
 
-def main() -> int:
+def main() -> None:
     site = load(SITE_PATH)
     demography = load(DEMOGRAPHY_SNAPSHOT_PATH)
     rcs = load(RCS_SNAPSHOT_PATH)
@@ -350,8 +350,9 @@ def main() -> int:
         f"{summary['metricsEnriched']} metriche × {summary['towns']} comuni; "
         f"{summary['pairsAcquired']} coppie AVAILABLE_MISSING integrate."
     )
-    return 0
+    # Nessun SystemExit: il materializzatore viene eseguito anche via runpy
+    # dentro la build pubblica e deve restituire il controllo all'orchestratore.
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
