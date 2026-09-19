@@ -886,6 +886,182 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "disability064Per1000": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "L'indicatore regionale pubblica un unico valore comunale delle persone 0-64 anni con disabilità riconosciuta per 1.000 residenti 0-64. Nei metadati e nella batteria comunale non è esposta una disaggregazione per sesso.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale definisce e pubblica l'indicatore sulla fascia complessiva 0-64 anni; non espone classi d'età interne metodologicamente equivalenti per questo indicatore comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "emsResponseTimeP75": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica il 75° percentile comunale del tempo di risposta 118 come valore aggregato; non rende disponibile lo stesso percentile distinto per sesso.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica il 75° percentile comunale del tempo di risposta 118 come valore aggregato; non rende disponibile lo stesso percentile per classi d'età.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "foreignBornSoleProprietorShare": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale pubblica la quota comunale di ditte individuali attive con titolare nato all'estero, senza una disaggregazione del titolare per sesso.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale pubblica la quota comunale di ditte individuali attive con titolare nato all'estero, senza classi d'età del titolare per lo stesso indicatore.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "innovationBusinessShare": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è la quota di imprese attive appartenenti a specifiche divisioni ATECO. Il sesso non è una dimensione dell'impresa o del settore economico misurato.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica è la quota di imprese attive appartenenti a specifiche divisioni ATECO. L'età non è una dimensione dell'impresa o del settore economico misurato.",
+            },
+        },
+        "municipalOnlineServicesAdvanced": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la quota dei servizi comunali offerti online ai livelli più avanzati; il sesso non è una dimensione semantica dei servizi digitali conteggiati.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la quota dei servizi comunali offerti online ai livelli più avanzati; l'età non è una dimensione semantica dei servizi digitali conteggiati.",
+            },
+        },
+        "organicAgriculturalAreaShare": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la quota di superficie agricola utilizzata coltivata con metodo biologico. Il sesso non è una dimensione della superficie fisica misurata.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la quota di superficie agricola utilizzata coltivata con metodo biologico. L'età non è una dimensione della superficie fisica misurata.",
+            },
+        },
+        "youthOtherStatus": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica la quota comunale dei giovani 15-24 anni in altra condizione professionale come valore aggregato; non espone lo stesso indicatore per sesso.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale definisce la metrica sull'intera fascia 15-24 anni e non pubblica classi d'età interne comparabili per lo stesso indicatore comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "averageGrossRemunerationPerEmployee": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Le tavole Frame SBS Territoriale diffondono gli indicatori economici delle unità locali per territorio, attività economica, classe dimensionale e governance; non pubblicano la retribuzione lorda media comunale distinta per sesso.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Le tavole Frame SBS Territoriale diffondono gli indicatori economici delle unità locali per territorio, attività economica, classe dimensionale e governance; non pubblicano la retribuzione lorda media comunale per classi d'età.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "labourCost": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Frame SBS Territoriale pubblica il costo del lavoro delle unità locali con dettaglio territoriale/economico ma non lo disaggrega per sesso nel rilascio comunale governato.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Frame SBS Territoriale pubblica il costo del lavoro delle unità locali con dettaglio territoriale/economico ma non lo disaggrega per età nel rilascio comunale governato.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "labourProductivity": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La produttività territoriale è pubblicata dal Frame SBS come valore aggiunto per addetto delle unità locali; il rilascio ufficiale non espone una versione comunale distinta per sesso.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La produttività territoriale è pubblicata dal Frame SBS come valore aggiunto per addetto delle unità locali; il rilascio ufficiale non espone una versione comunale per classi d'età.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "turnoverPerPersonEmployed": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Frame SBS Territoriale diffonde fatturato e addetti per unità locale e territorio senza una disaggregazione comunale per sesso necessaria a costruire lo stesso rapporto.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il Frame SBS Territoriale diffonde fatturato e addetti per unità locale e territorio senza una disaggregazione comunale per età necessaria a costruire lo stesso rapporto.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/",
+            },
+        },
+        "libraryActiveBorrowersPer100": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato ufficiale del monitoraggio biblioteche contiene iscritti attivi totali e per classi d'età, ma non campi per sesso; lo stesso indicatore comunale non è quindi disaggregabile per sesso dalla fonte governata.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "eta": {
+                "state": AVAILABLE,
+                "evidence": "Il tracciato ufficiale espone gli iscritti attivi al prestito nelle classi 0-14, 15-24, 25-64 e 65+; la pipeline pubblica oggi soltanto l'indicatore totale per 100 residenti.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+        },
+        "libraryLoansPerResident": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato ufficiale pubblica i prestiti totali e alcune categorie documentarie/di servizio, ma non il sesso dell'utente; non è disponibile una versione dello stesso indicatore per sesso.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato distingue i prestiti totali e i prestiti della sezione ragazzi, ma non i prestiti per classi d'età dell'utente; la voce 'ragazzi' non è una disaggregazione anagrafica metodologicamente equivalente.",
+                "sourceReference": "https://dati.toscana.it/dataset/bf1166d3-b12a-4d07-a04f-49d9ca391a25/resource/b28e346a-9f71-49af-9bea-55f3909c366c/download/tracciato-dataset-biblioteche-3mag2023-1.pdf",
+            },
+        },
+        "libraryWeeklyOpeningHours": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura ore medie settimanali di apertura di un servizio bibliotecario. Il sesso non è una dimensione semanticamente pertinente dell'orario di apertura.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura ore medie settimanali di apertura di un servizio bibliotecario. L'età non è una dimensione semanticamente pertinente dell'orario di apertura.",
+            },
+        },
+        "tourismBeds": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica conta i posti letto disponibili nelle strutture ricettive; il sesso non è una dimensione del bene fisico conteggiato.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica conta i posti letto disponibili nelle strutture ricettive; l'età non è una dimensione del bene fisico conteggiato.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():

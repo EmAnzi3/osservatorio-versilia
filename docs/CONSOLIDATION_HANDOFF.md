@@ -8,35 +8,45 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Main verificato:** `1d5c7a55e1f8fb0c86270805e9bdeafd1889258e` (merge `#249`)
+- **Main verificato:** `0eab4a474518bd2c2d46e6f68041dd747c44bc43` (merge `#250`)
 - **Catalogo pubblico governato:** 225 indicatori
-- **Matrice A3.2 post-#249:** 2.025 coppie; **1.829 classificate, 196 residue**
-- **A3 final head #249:** run `35425030884` **GREEN**
-- **Pages final head #249:** run `35425030885` **GREEN** (Quick + Full)
-- **Pages post-merge #249:** run `35426730224` **GREEN**
-- **Live status post-merge #249:** run `35427006980` **GREEN**
-- **Bucket C:** **0**
-- **Bucket D:** **196**
-- **Branch corrente:** `chore/a3-2-frequency-evidence-batch`
+- **Matrice A3.2 post-#250:** 2.025 coppie; **1.860 classificate, 165 residue**
+- **A3 final head #250:** run `35427835657` **GREEN**
+- **Pages final head #250:** run `35427835778` **GREEN** (Quick + Full)
+- **Pages post-merge #250:** run `35429886826` **GREEN**
+- **Live status post-merge #250:** run `35430142810` **GREEN**
+- **Branch corrente:** `chore/a3-2-demographic-evidence-batch`
 
-## Residuo effettivo post-#249
+## Residuo effettivo post-#250
 
-Le **196** coppie residue coincidono con il bucket D. La dimensione più numerosa ancora aperta è `frequenza_infra_annuale`, con **41** coppie.
+Le **165** coppie residue sono distribuite su:
 
-La verifica delle fonti ha mostrato che i nomi dei source profile non bastano per classificare: Demo Istat espone dati demografici mensili per alcuni stock/flussi e la rilevazione Istat sugli incidenti è mensile. Le classificazioni devono quindi seguire la disponibilità reale della fonte, non l'etichetta del profilo.
+- `eta`: 36
+- `assoluto_normalizzato`: 25
+- `categorie_specifiche`: 25
+- `serie_storica`: 24
+- `sesso`: 24
+- `numeratore_denominatore`: 11
+- `frequenza_infra_annuale`: 10
+- `benchmark_toscana_italia`: 6
+- `dettaglio_territoriale`: 4
 
-## Intervento corrente — batch D frequenza
+## Intervento corrente — batch demografico D
 
-Il batch classifica **31** coppie `frequenza_infra_annuale` in una sola PR:
+Il batch classifica **30** coppie `sesso/eta` con evidenza ufficiale, senza regole source-profile eterogenee:
 
-- **19 ARS Toscana:** `SOURCE_UNAVAILABLE` a livello source-profile; il portale comunale espone ultimo anno disponibile e trend storico, con profilo annuale o pluriennale.
-- **6 Demo Istat:** `AVAILABLE_MISSING` per `population`, `populationChange`, `naturalDemographicDynamics`, `internalResidentialMobility`, `foreignResidentialMobility`, `totalResidentialMobility`, perché il Bilancio demografico mensile espone a livello comunale le componenti necessarie.
-- **3 Demo Istat:** `SOURCE_UNAVAILABLE` per `ageDistribution`, `dependencyIndices`, `foreignResidents`, perché età e cittadinanza sono diffuse negli stock annuali al 1° gennaio e non nel bilancio mensile equivalente.
-- **`roadSafety`:** `AVAILABLE_MISSING`; la rilevazione Istat sugli incidenti è mensile e contiene la data dell'evento.
-- **`roadFinesPerResident`:** `SOURCE_UNAVAILABLE`; la fonte governata espone la serie annuale dei proventi rendicontati.
-- **`incomeVsInflation`:** `SOURCE_UNAVAILABLE`; il reddito comunale MEF è annuale e vincola la frequenza dell'indicatore combinato anche se il NIC esiste mensilmente.
+- **Regione Toscana — Indicatori comunali:** 14 coppie su 7 metriche. I metadati ufficiali pubblicano valori comunali scalari; 8 coppie informative ma non disponibili sono `SOURCE_UNAVAILABLE`, 6 coppie non semanticamente pertinenti sono `NOT_APPLICABLE`.
+- **Istat — Frame SBS Territoriale:** 8 coppie su 4 indicatori economici, tutte `SOURCE_UNAVAILABLE`; il rilascio territoriale espone territorio, attività economica, dimensione e governance ma non sesso/età per gli indicatori comunali.
+- **Regione Toscana — Biblioteche:** 6 coppie. `libraryActiveBorrowersPer100 × eta` è `AVAILABLE_MISSING` perché il tracciato espone 0-14, 15-24, 25-64, 65+; tre coppie sono `SOURCE_UNAVAILABLE`; gli orari di apertura per sesso/età sono `NOT_APPLICABLE`.
+- **Istat — capacità ricettiva:** `tourismBeds × sesso/eta` è `NOT_APPLICABLE`.
 
-**Esito atteso:** **1.860 classificate / 165 residue**.
+**Esito atteso:** **1.890 classificate / 135 residue**.
+
+Composizione batch:
+
+- `AVAILABLE_MISSING`: **1**
+- `SOURCE_UNAVAILABLE`: **19**
+- `NOT_APPLICABLE`: **10**
 
 ## Decisioni vincolanti
 
@@ -48,13 +58,13 @@ Il batch classifica **31** coppie `frequenza_infra_annuale` in una sola PR:
 6. Classificazioni source-profile solo se valide per tutto il profilo.
 7. A3.2 non è chiuso finché `unclassifiedPairCount = 0`.
 8. Nessun A3.3 prima dello zero.
-9. Preferire batch sostanziosi verificati prima dell'apertura PR per evitare cicli CI ripetuti.
+9. Preferire batch sostanziosi preparati prima dell'apertura PR per evitare cicli CI ripetuti.
 10. Nessun merge/pubblicazione senza A3, Quick e Full GREEN sul final head e approvazione esplicita del proprietario.
 
 ## Prossima azione esatta
 
 1. Aprire una sola PR sul branch corrente.
 2. Eseguire un solo ciclo A3 Enrichment Audit + Quick + Full sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.860 / 165** e le 31 classificazioni.
+3. Verificare nel log A3 il conteggio esatto **1.890 / 135** e le 30 classificazioni.
 4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, ricostruire le 165 residue e preparare un altro batch sostanzioso, non una micro-tranche.
+5. Dopo merge autorizzato, ricostruire le 135 residue e preparare il prossimo batch sostanzioso.
