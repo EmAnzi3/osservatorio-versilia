@@ -219,7 +219,7 @@ jobs:
               assert row['state'] == 'ACQUIRED', (pair, row)
               assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
               assert row['evidence'].startswith('structured:'), (pair, row)
-              assert 'sexBreakdown' in row['evidence'], (pair, row)
+              assert 'sexDimension' in row['evidence'], (pair, row)
 
           backlog_pairs = {
               (pair['metricId'], bundle['dimension'])
