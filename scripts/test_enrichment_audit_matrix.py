@@ -195,6 +195,31 @@ def test_strict_validation_rejects_unclassified_pairs() -> None:
         raise AssertionError("La validazione strict deve fallire con coppie non classificate")
 
 
+def test_strict_write_preserves_diagnostic_output() -> None:
+    data, registry = fixtures()
+    with TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        data_path = root / "data.json"
+        registry_path = root / "registry.json"
+        output_path = root / "matrix.json"
+        data_path.write_text(json.dumps(data), encoding="utf-8")
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        try:
+            audit.write_matrix(
+                data_path,
+                registry_path,
+                output_path,
+                allow_unclassified=False,
+            )
+        except RuntimeError as exc:
+            assert "A3.2 incompleto" in str(exc)
+        else:
+            raise AssertionError("La validazione strict deve fallire con coppie non classificate")
+        assert output_path.is_file()
+        matrix = json.loads(output_path.read_text(encoding="utf-8"))
+        assert matrix["summary"]["unclassifiedPairCount"] > 0
+
+
 def test_profile_not_applicable_is_rejected() -> None:
     data, registry = fixtures()
     registry["sourceProfiles"]["profile-a"]["enrichmentDimensions"]["eta"] = {
