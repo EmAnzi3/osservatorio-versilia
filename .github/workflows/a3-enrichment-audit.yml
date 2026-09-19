@@ -41,6 +41,7 @@ jobs:
           python scripts/test_a3_5_openbdap_ratio_components.py
           python scripts/test_a3_5_frame_sbs_dimensions.py
           python scripts/test_a3_5_istat_census_components.py
+          python scripts/test_a3_5_source_backed_companions.py
 
       - name: Materialize effective public catalog
         env:
@@ -281,6 +282,82 @@ jobs:
           assert backlog['summary']['availableMissingPairCount'] == 821, backlog['summary']
           print(
               'A3.5 Istat Census components: '
+              f'{len(expected)} coppie strutturalmente ACQUIRED; '
+              f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
+          )
+          PY
+
+      - name: Verify A3.5 source-backed companions
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+
+          openbdap = {
+              'currentRevenueAccruedPerResident',
+              'currentExpenditureCommittedPerResident',
+              'capitalExpenditureCommittedPerResident',
+              'ownRevenueShare',
+              'currentCollectionCapacity',
+              'currentPaymentCapacity',
+              'availableAdministrationResultPerResident',
+              'educationMissionExpenditurePerResident',
+              'socialMissionExpenditurePerResident',
+              'environmentMissionExpenditurePerResident',
+              'mobilityMissionExpenditurePerResident',
+              'cultureSportMissionExpenditurePerResident',
+              'tourismDevelopmentMissionExpenditurePerResident',
+              'economicDevelopmentMissionExpenditurePerResident',
+              'cashReceiptsPerResident',
+              'cashBalancePerResident',
+          }
+          expected = {
+              (metric_id, 'assoluto_normalizzato')
+              for metric_id in openbdap
+          }
+          source_both = {
+              'cohabitingHouseholds',
+              'oldAgeIndex',
+              'averageAgriculturalFarmSize',
+              'employeesPerLocalUnit',
+              'localEmployeesChange',
+              'localUnitsChange',
+              'industryValueAddedShare',
+              'industryWorkerShare',
+          }
+          expected |= {
+              (metric_id, dimension)
+              for metric_id in source_both
+              for dimension in ('numeratore_denominatore', 'assoluto_normalizzato')
+          }
+          expected |= {
+              ('agriculturalUsedArea', 'numeratore_denominatore'),
+              ('irrigatedAgriculturalArea', 'numeratore_denominatore'),
+          }
+
+          assert len(expected) == 34, len(expected)
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              token = 'openBdapScaleCompanion' if pair[0] in openbdap else 'sourceBackedComponents'
+              assert token in row['evidence'], (pair, row)
+
+          backlog_pairs = {
+              (pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
+          assert backlog['summary']['availableMissingPairCount'] == 787, backlog['summary']
+          print(
+              'A3.5 source-backed companions: '
               f'{len(expected)} coppie strutturalmente ACQUIRED; '
               f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
           )
