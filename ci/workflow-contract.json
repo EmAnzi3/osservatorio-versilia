@@ -150,6 +150,11 @@
         "label": "A3.5 source-backed companions",
         "script": "scripts/test_a3_5_source_backed_companions.py",
         "args": []
+      },
+      {
+        "label": "A3.5 historical + MEF companions",
+        "script": "scripts/test_a3_5_historical_mef_companions.py",
+        "args": []
       }
     ]
   },

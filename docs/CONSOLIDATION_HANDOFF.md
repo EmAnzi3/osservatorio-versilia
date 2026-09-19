@@ -7,12 +7,12 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A3 — Enrichment Audit globale
 - **Step attivo:** A3.5 — integrazione nuove dimensioni in lotti controllati
-- **Stato:** IN_PROGRESS — lotti 1–4 mergiati; lotto 5 source-backed companions sul branch dedicato
-- **Main verificato:** b6d6196443ddae826244bdeefdf291dd5d41322d (merge #263)
+- **Stato:** IN_PROGRESS — lotti 1–5 mergiati; lotto 6 historical + MEF companions sul branch dedicato
+- **Main verificato:** 8da1ff52f7489e33e0c16c5d4dbd62a1e48ceb37 (merge #264)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; 2.025 classificate, 0 residue
-- **Backlog A3.4 post-#263:** 821 AVAILABLE_MISSING · 263 pacchetti · 63 source profile
-- **Branch corrente:** feat/a3-5-enrichment-lot-5
+- **Backlog A3.4 post-#264:** 787 AVAILABLE_MISSING · 262 pacchetti · 63 source profile
+- **Branch corrente:** feat/a3-5-enrichment-lot-6
 - **Autorizzazione operativa corrente:** proseguire sui lotti non-visivi; fermarsi quando serve verifica visiva del proprietario
 
 ## A3.5 — acquisizioni
@@ -20,25 +20,24 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Lotto 1 / #260:** 3 coppie sesso.
 - **Lotto 2 / #261:** 16 coppie OpenBDAP numeratore/denominatore.
 - **Lotto 3 / #262:** 20 coppie Frame SBS.
-- **Lotto 4 / #263:** 12 coppie Istat Census; backlog confermato 821.
+- **Lotto 4 / #263:** 12 coppie Istat Census.
+- **Lotto 5 / #264:** 34 coppie source-backed; backlog confermato a 787.
 
-### Lotto 5 — branch corrente
+### Lotto 6 — branch corrente
 
-Il lotto usa esclusivamente strutture e snapshot già versionati. Non modifica valori, testi, grafici o rendering pubblici.
+Usa esclusivamente snapshot già versionati e non modifica il payload pubblico consumato dalla UI.
 
 Acquisizioni attese:
-- 16 × OpenBDAP assoluto/normalizzato dai ratioComponents già governati;
-- 4 × Census (cohabitingHouseholds e oldAgeIndex);
-- 4 × Agricoltura (tre indicatori);
-- 10 × Business (cinque indicatori).
+- 6 × serie storica: due quote industriali Frame SBS, due variazioni ASIA, popolazione 2019–2026, rigidità della spesa OpenBDAP;
+- 2 × categorie specifiche industria/servizi per le due quote Frame SBS;
+- 4 × MEF numeratore/denominatore + assoluto/normalizzato per profilo fonti di reddito e peso dei redditi da pensione;
+- 1 × assoluto/normalizzato per addizionale comunale IRPEF sullo scenario standard 20.000 €.
 
-Totale: 34 coppie. Effetto atteso:
+Totale: 13 coppie. Effetto atteso:
 
-AVAILABLE_MISSING: 821 → 787
+AVAILABLE_MISSING: 787 → 774
 
-Per i due indicatori di variazione ASIA il valore assoluto è il delta 2023−2018; non viene usato il livello finale come falso assoluto. householdSize resta escluso per mancata riconciliazione sufficiente.
-
-A3.5 resta IN_PROGRESS; A3.6 non parte.
+Restano esclusi gli storici non riconciliabili 7/7 con gli snapshot disponibili. A3.5 resta IN_PROGRESS; A3.6 non parte.
 
 ## Decisioni vincolanti
 
@@ -51,8 +50,8 @@ A3.5 resta IN_PROGRESS; A3.6 non parte.
 
 ## Prossima azione esatta
 
-1. Aprire la PR Ready del lotto 5.
+1. Aprire la PR Ready del lotto 6.
 2. Verificare A3 + Quick + Full sullo stesso final head.
-3. Confermare 787 AVAILABLE_MISSING e 0 residue.
+3. Confermare 774 AVAILABLE_MISSING e 0 residue.
 4. Correggere solo regressioni reali senza indebolire detector o contratti.
 5. Se i gate sono verdi, merge secondo l'autorizzazione corrente e ripartenza dal backlog LIVE.
