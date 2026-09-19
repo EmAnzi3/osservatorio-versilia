@@ -47,33 +47,11 @@ JSON_CONTRACTS = (
     "data/source-snapshots/costa-mare-v123.json",
     "data/source-snapshots/attivita-estrattive-v128.json",
     "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
+    "ci/workflow-contract.json",
 )
 
-CANONICAL_TESTS = (
-    ("finalize catalog", "scripts/finalize_catalog_release.py", "--check"),
-    ("catalog release", "scripts/test_catalog_release_v116.py"),
-    ("costi/fiscalita/redditi", "scripts/test_costi_fiscalita_redditi_draft.py"),
-    ("demography materialized", "scripts/test_demography_lotto_a_materialized.py"),
-    ("demography v5", "scripts/test_demography_lotto_a_v5.py"),
-    ("demography RCS", "scripts/test_demography_rcs_lotto_a.py"),
-    ("income", "scripts/test_income_lotto_a_v2.py"),
-    ("fiscal", "scripts/test_fiscal_lotto_b.py"),
-    ("PNRR draft", "scripts/test_pnrr_toscana_draft.py"),
-    ("PNRR review", "scripts/test_pnrr_toscana_review.py"),
-    ("amministrazione", "scripts/test_amministrazione_lotto_a.py"),
-    ("lavoro/istruzione", "scripts/test_lavoro_istruzione_eta_genere.py"),
-    ("mobilita TPL", "scripts/test_mobilita_tpl_v119.py"),
-    ("agricoltura", "scripts/test_agricoltura_territorio_v120.py"),
-    ("cultura", "scripts/test_cultura_biblioteche_v121.py"),
-    ("costa e mare", "scripts/test_costa_mare_v123.py"),
-    ("attivita estrattive", "scripts/test_attivita_estrattive_v128.py"),
-    ("ambiente/acqua", "scripts/test_ambiente_acqua_v124_ui.py"),
-    ("ERP", "scripts/test_erp_arrears_v125.py"),
-    ("investimenti", "scripts/test_investimenti_versilia.py"),
-    ("fragilità v1.33.0", "scripts/test_fragilita_release.py"),
-    ("A3.4 enrichment backlog", "scripts/test_enrichment_backlog.py"),
-    ("A3.5 demografia sesso", "scripts/test_a3_5_demography_sex.py"),
-)
+WORKFLOW_CONTRACT = ROOT / "ci" / "workflow-contract.json"
+
 
 COMPILE_MANIFEST = "scripts/preflight_compile.txt"
 
@@ -111,6 +89,38 @@ def compile_targets() -> tuple[str, ...]:
 
 class PreflightError(RuntimeError):
     pass
+
+
+def load_canonical_tests() -> tuple[tuple[str, ...], ...]:
+    try:
+        payload = json.loads(WORKFLOW_CONTRACT.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PreflightError(f"Workflow contract non leggibile: {exc}") from exc
+
+    raw_checks = payload.get("canonical", {}).get("quickChecks")
+    if not isinstance(raw_checks, list) or not raw_checks:
+        raise PreflightError("Workflow contract senza canonical.quickChecks")
+
+    tests: list[tuple[str, ...]] = []
+    seen_scripts: set[str] = set()
+    for index, item in enumerate(raw_checks, start=1):
+        if not isinstance(item, dict):
+            raise PreflightError(f"quickChecks[{index}] non-oggetto")
+        label = str(item.get("label") or "").strip()
+        script = str(item.get("script") or "").strip()
+        args = item.get("args", [])
+        if not label or not script:
+            raise PreflightError(f"quickChecks[{index}] senza label/script")
+        if not isinstance(args, list) or any(not isinstance(arg, str) or not arg for arg in args):
+            raise PreflightError(f"quickChecks[{index}] args non validi")
+        if script in seen_scripts:
+            raise PreflightError(f"quickChecks duplicato: {script}")
+        seen_scripts.add(script)
+        tests.append((label, script, *args))
+    return tuple(tests)
+
+
+CANONICAL_TESTS = load_canonical_tests()
 
 
 def command_text(command: Sequence[str]) -> str:
