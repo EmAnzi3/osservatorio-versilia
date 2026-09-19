@@ -2,6 +2,8 @@
 """Regression tests for the A3.4 enrichment backlog."""
 from __future__ import annotations
 
+import json
+
 import enrichment_audit_matrix_core as matrix_core
 import enrichment_backlog as backlog
 import enrichment_source_audit as source_audit
@@ -140,6 +142,9 @@ def test_backlog_is_reproducible() -> None:
     matrix, audit = fixtures()
     payload = backlog.build_backlog(matrix, audit)
     backlog.validate_backlog(payload, matrix, audit)
+    round_tripped = json.loads(json.dumps(payload))
+    backlog.validate_backlog(round_tripped, matrix, audit)
+    assert set(round_tripped["rubric"]["costScale"]) == {"1", "2", "3", "4", "5"}
     markdown = backlog.render_markdown(payload)
     assert "Backlog ordinato" in markdown
     assert "profile-a" in markdown

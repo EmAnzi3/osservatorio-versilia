@@ -37,6 +37,7 @@ jobs:
           python scripts/test_enrichment_companion_evidence.py
           python scripts/test_enrichment_source_audit.py
           python scripts/test_enrichment_backlog.py
+          python scripts/test_a3_5_demography_sex.py
 
       - name: Materialize effective public catalog
         env:
@@ -196,6 +197,46 @@ jobs:
             /tmp/a3-enrichment-backlog.json
             /tmp/a3-enrichment-backlog.md
           if-no-files-found: error
+
+      - name: Verify A3.5 demography sex acquisition
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+          expected = {
+              ('population', 'sesso'),
+              ('dependencyIndices', 'sesso'),
+              ('foreignResidents', 'sesso'),
+          }
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              assert 'sexBreakdown' in row['evidence'], (pair, row)
+
+          backlog_pairs = {
+              (pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
+          assert (
+              backlog['summary']['availableMissingPairCount']
+              == matrix['summary']['state_AVAILABLE_MISSING']
+          )
+          print(
+              'A3.5 demography sex acquisition: '
+              f"{len(expected)} coppie strutturalmente ACQUIRED; "
+              f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
+          )
+          PY
 
       - name: Verify route and demographic closures
         run: |

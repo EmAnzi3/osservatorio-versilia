@@ -71,6 +71,8 @@ CANONICAL_TESTS = (
     ("ERP", "scripts/test_erp_arrears_v125.py"),
     ("investimenti", "scripts/test_investimenti_versilia.py"),
     ("fragilità v1.33.0", "scripts/test_fragilita_release.py"),
+    ("A3.4 enrichment backlog", "scripts/test_enrichment_backlog.py"),
+    ("A3.5 demografia sesso", "scripts/test_a3_5_demography_sex.py"),
 )
 
 COMPILE_MANIFEST = "scripts/preflight_compile.txt"
