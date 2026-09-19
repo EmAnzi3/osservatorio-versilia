@@ -58,15 +58,15 @@ def test_demography_sex_enrichment() -> None:
         metric = site["metrics"][metric_id]
         evidence = matrix_core.acquired_evidence(metric, "sesso")
         assert evidence is not None, (metric_id, evidence)
-        assert "sexBreakdown" in evidence, (metric_id, evidence)
+        assert "sexDimension" in evidence, (metric_id, evidence)
         rows = {row["town"]: row for row in metric["rows"]}
         assert set(rows) == EXPECTED_TOWNS
         for town, row in rows.items():
-            breakdown = row["sexBreakdown"]
+            breakdown = row["sexDimension"]
             assert breakdown["dimension"] == "sesso", (metric_id, town)
             assert breakdown["sourceUrl"], (metric_id, town)
             assert set(groups(breakdown)) == {"men", "women"}
-        aggregate = metric["aggregate"]["sexBreakdown"]
+        aggregate = metric["aggregate"]["sexDimension"]
         assert aggregate["dimension"] == "sesso", metric_id
         assert aggregate["sourceUrl"], metric_id
         assert set(groups(aggregate)) == {"men", "women"}
@@ -81,15 +81,15 @@ def test_demography_sex_enrichment() -> None:
 
     population = site["metrics"]["population"]
     for row in population["rows"]:
-        breakdown = row["sexBreakdown"]
+        breakdown = row["sexDimension"]
         by_sex = groups(breakdown)
         assert by_sex["men"]["count"] + by_sex["women"]["count"] == int(row["value"])
-    population_aggregate = population["aggregate"]["sexBreakdown"]
+    population_aggregate = population["aggregate"]["sexDimension"]
     assert population_aggregate["total"] == int(population["aggregate"]["value"])
 
     dependency = site["metrics"]["dependencyIndices"]
     for row in dependency["rows"]:
-        for group in row["sexBreakdown"]["groups"]:
+        for group in row["sexDimension"]["groups"]:
             structural, elderly = group["indices"]
             bands = group["populationBands"]
             denominator = bands["age15to64"]
@@ -109,14 +109,14 @@ def test_demography_sex_enrichment() -> None:
     rcs_towns = rcs["towns"]
     for row in foreign["rows"]:
         town = row["town"]
-        breakdown = row["sexBreakdown"]
+        breakdown = row["sexDimension"]
         by_sex = groups(breakdown)
         expected = int(rcs_towns[town]["citizenshipTotal"])
         assert breakdown["total"] == expected
         assert by_sex["men"]["count"] + by_sex["women"]["count"] == expected
         if row.get("count") is not None:
             assert int(row["count"]) == expected
-    foreign_aggregate = foreign["aggregate"]["sexBreakdown"]
+    foreign_aggregate = foreign["aggregate"]["sexDimension"]
     assert foreign_aggregate["total"] == int(
         rcs["aggregate"]["Versilia"]["citizenshipTotal"]
     )
