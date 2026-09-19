@@ -7,38 +7,31 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.5` — integrazione nuove dimensioni in lotti controllati
-- **Stato:** `IN_PROGRESS` — lotto 1 demografia/sesso
-- **Main verificato:** `466e370a233e78c074f97bf145f7d8794a4c1dbc` (merge `#259`)
+- **Stato:** `IN_PROGRESS` — lotto 1 demografia/sesso mergiato; selezione lotto 2 dal backlog A3.4 LIVE
+- **Main verificato:** `ee86142708a0c42731c67a1b12eb925902bc388d` (merge `#260`)
+- **Final head #260:** `e54b90143aa636db5b53386f401e52130016642d`
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; **2.025 classificate, 0 residue**
-- **A3 final head #259:** run `35451203191` **GREEN**
-- **Pages final head #259:** run `35451203130` **GREEN**
-- **Live status post-merge #259:** run `35452607256` / `ov-pages-live` **GREEN**
-- **A3.4 backlog post-#259:** **872 AVAILABLE_MISSING → 263 pacchetti su 63 profili**
-- **Branch corrente:** `feat/a3-5-demography-sex-enrichment` · PR **#260** Ready
+- **A3 final head #260:** run `35458115502` **GREEN**
+- **Pages final head #260:** run `35458115505` **GREEN**
+- **Controllo mensile dati final head #260:** run `35458115508` **GREEN**
+- **Controllo frequente fonti final head #260:** run `35458115532` **GREEN**
+- **Branch corrente:** `feat/a3-5-enrichment-lot-2`
 
-## Intervento corrente — A3.5 lotto 1
+## A3.5 — stato acquisizioni
 
-Il lotto integra realmente tre dimensioni oggi presenti nel backlog `istat-demography-annual × sesso`:
+Il lotto 1, mergiato con PR **#260**, ha acquisito dal backlog A3.4:
 
 - `population × sesso`;
 - `dependencyIndices × sesso`;
 - `foreignResidents × sesso`.
 
-Fonti già versionate e governate:
+Fonti governate:
 
 - Istat POSAS 2026: `data/source-snapshots/istat-demography-lotto-a-2026-08.json`;
 - Istat RCS 2025: `data/source-snapshots/istat-rcs-demography-2025.json`.
 
-Il nuovo materializzatore pubblico aggiunge `sexDimension` a righe comunali e aggregato Versilia con anno, unità e fonte. Il QA riconcilia i totali, ricalcola gli indici di dipendenza per sesso e verifica che il detector A3 classifichi le tre coppie come `ACQUIRED` da struttura del catalogo. L'effetto atteso è **872 → 869 AVAILABLE_MISSING**; A3.5 non si chiude con questo lotto.
-
-## Hardening #259 incluso
-
-Nello stesso PR vengono chiusi i due P2 validi emersi dalla review di #259:
-
-1. la rubric A3.4 usa chiavi JSON stabili e viene validata anche dopo serializzazione/deserializzazione;
-2. il regression test A3.4 e il nuovo test A3.5 entrano nel preflight canonico Quick/Full, oltre al workflow A3.
-3. `ci/workflow-contract.json` dichiara ora l'inventario dei regression check Quick e `preflight.py` lo usa come fonte, evitando una seconda lista divergente.
+Le tre coppie sono materializzate nel dataset pubblico come `sexDimension` e devono risultare `ACQUIRED / catalog_structure`. A3.5 resta `IN_PROGRESS`.
 
 ## Decisioni vincolanti
 
@@ -46,16 +39,17 @@ Nello stesso PR vengono chiusi i due P2 validi emersi dalla review di #259:
 2. Nessun secondo inventario manuale di indicatori, fonti o opportunità.
 3. A3.2 resta strict a `unclassifiedPairCount = 0`.
 4. Un passaggio a `ACQUIRED` deve derivare da struttura/formula verificabile, mai da override manuale.
-5. A3.5 procede per lotti piccoli ma sostanziali, con QA e fonte dichiarata; nessuna acquisizione opportunistica fuori backlog.
-6. Questo lotto modifica il dataset pubblico materializzato; non introduce un nuovo controllo UI dedicato.
+5. A3.5 procede per lotti sostanziali ricavati dal backlog A3.4, con QA e fonte dichiarata.
+6. Non introdurre UI/rendering se il lotto riguarda soltanto enrichment del dataset.
 7. Nessun merge/pubblicazione senza A3, Quick e Full GREEN sul final head e approvazione esplicita del proprietario.
-8. Il preflight locale non è stato eseguito: il runtime restituisce ancora `Could not resolve host: github.com` su `git ls-remote`.
+8. Non dichiarare preflight locale eseguito se il runtime continua a fallire su `Could not resolve host: github.com`.
 
 ## Prossima azione esatta
 
-1. Eseguire un unico ciclo finale A3 Enrichment Audit + Quick + Full sul final head di PR #260.
-2. Verificare matrice **2.025 / 0**.
-3. Verificare `population`, `dependencyIndices`, `foreignResidents` × `sesso` = `ACQUIRED` / `catalog_structure`.
-4. Verificare backlog A3.4 rigenerato a **869 AVAILABLE_MISSING** e assenza delle tre coppie dal backlog.
-5. Verificare artifact A3.3/A3.4, contract Quick e assenza di regressioni Quick/Full.
-6. Fermarsi prima del merge.
+1. Leggere l'artifact A3.4 rigenerato sul final head di #260 e verificare il conteggio LIVE delle `AVAILABLE_MISSING`.
+2. Ordinare i pacchetti `sourceProfileId × dimensione` secondo la rubric A3.4 già governata.
+3. Scegliere il prossimo lotto A3.5 sostanziale esclusivamente dal backlog LIVE, verificando prima disponibilità e acquisibilità reale delle fonti.
+4. Implementare materializzazione, QA ed evidenza A3 sul presente branch.
+5. Aggiornare roadmap e questo handoff nella stessa PR.
+6. Aprire una sola PR Ready ed eseguire A3 + Quick + Full sul final head.
+7. Fermarsi prima del merge.
