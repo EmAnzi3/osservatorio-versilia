@@ -1206,6 +1206,149 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "pabCompletedOperationalGrossValue": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Il layer operativo ufficiale del PMO espone le date di inizio e fine lavori usate per classificare le feature; questi eventi consentono di ricostruire l'evoluzione infrannuale dello stato e del relativo importo. La pipeline conserva oggi solo lo snapshot puntuale al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Le date lavori_inizio e lavori_fine del layer operativo PMO consentono di ricostruire lo stato a date interne al 2026; la materializzazione corrente espone soltanto il valore congelato al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "Il portale e il layer operativo espongono importi lordi assoluti e metri di attività, ma non definiscono una versione normalizzata ufficiale del valore lordo degli interventi completati; la scelta del denominatore sarebbe un'elaborazione analitica ulteriore.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+        },
+        "pabInProgressOperationalGrossValue": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Il layer operativo ufficiale del PMO espone le date di inizio e fine lavori usate per classificare le feature; questi eventi consentono di ricostruire l'evoluzione infrannuale dello stato e del relativo importo. La pipeline conserva oggi solo lo snapshot puntuale al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Le date lavori_inizio e lavori_fine del layer operativo PMO consentono di ricostruire lo stato a date interne al 2026; la materializzazione corrente espone soltanto il valore congelato al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "Il portale e il layer operativo espongono importi lordi assoluti e metri di attività, ma non definiscono una versione normalizzata ufficiale del valore lordo degli interventi in corso; la scelta del denominatore sarebbe un'elaborazione analitica ulteriore.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+        },
+        "pabInterventionsCompleted": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Il layer operativo ufficiale del PMO espone le date di inizio e fine lavori per ogni feature; tali eventi consentono di ricostruire nel tempo il numero di interventi completati, mentre la pipeline pubblica oggi solo lo snapshot al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Le date lavori_fine delle feature PMO consentono conteggi a date interne all'anno; la pipeline corrente materializza un solo stato puntuale e non la sequenza infrannuale.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte ufficiale espone il conteggio assoluto degli interventi e i metri di attività, ma non pubblica un tasso normalizzato ufficiale degli interventi completati; un rapporto per chilometro, abitante o superficie richiederebbe una scelta metodologica non definita dalla fonte.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+        },
+        "pabInterventionsInProgress": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "Il layer operativo ufficiale del PMO espone le date di inizio e fine lavori per ogni feature; tali eventi consentono di ricostruire nel tempo il numero di interventi in corso, mentre la pipeline pubblica oggi solo lo snapshot al 31 agosto 2026.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Le date lavori_inizio e lavori_fine delle feature PMO consentono conteggi dello stato 'in corso' a date interne all'anno; la pipeline corrente materializza un solo stato puntuale.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte ufficiale espone il conteggio assoluto degli interventi e i metri di attività, ma non pubblica un tasso normalizzato ufficiale degli interventi in corso; un rapporto per chilometro, abitante o superficie richiederebbe una scelta metodologica non definita dalla fonte.",
+                "sourceReference": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+            },
+        },
+        "socialSpendingByUserArea": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola Istat A misura di Comune 10a disaggrega la spesa per sette aree di utenza. Le tavole di genere del sistema contengono indicatori distinti, ma non pubblicano questa stessa composizione della spesa comunale per sesso.",
+                "sourceReference": "https://www.istat.it/statistica-sperimentale/aggiornamento-degli-indicatori-del-sistema-informativo-a-misura-di-comune/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola 10a usa aree di utenza miste come Famiglia e minori, Disabili, Anziani e Multiutenza; non espone la stessa spesa comunale per classi di età omogenee. Le aree di utenza non sono una disaggregazione anagrafica equivalente.",
+                "sourceReference": "https://www.istat.it/statistica-sperimentale/aggiornamento-degli-indicatori-del-sistema-informativo-a-misura-di-comune/",
+            },
+        },
+        "socialSpendingPerResident": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola Istat A misura di Comune 10b pubblica la spesa sociale per abitante per Comune e le scale territoriali superiori, senza una versione dello stesso indicatore distinta per sesso.",
+                "sourceReference": "https://www.istat.it/statistica-sperimentale/aggiornamento-degli-indicatori-del-sistema-informativo-a-misura-di-comune/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola Istat A misura di Comune 10b pubblica un unico valore comunale per abitante e non lo disaggrega per classi di età.",
+                "sourceReference": "https://www.istat.it/statistica-sperimentale/aggiornamento-degli-indicatori-del-sistema-informativo-a-misura-di-comune/",
+            },
+        },
+        "taxpayersAdultPopulationRate": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "L'Open Data Dichiarazioni MEF 2025 a.i. 2024 pubblica il Numero contribuenti su base comunale, mentre le classificazioni per sesso sono tavole separate e non incrociate con il Comune. Lo stesso numeratore comunale non è quindi disponibile per sesso.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "L'Open Data Dichiarazioni MEF 2025 a.i. 2024 pubblica il Numero contribuenti su base comunale, mentre le classi di età sono diffuse in classificazioni separate e non incrociate con il Comune. Lo stesso numeratore comunale non è quindi disponibile per età.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
+            },
+        },
+        "municipalStaffTraining": {
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La sezione Formazione del Conto Annuale espone giornate e medie Totale, Uomini e Donne e il relativo andamento storico, ma non una disaggregazione della formazione per classi di età.",
+                "sourceReference": "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc",
+            },
+        },
+        "foreignTourismShare": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La tavola regionale 2025 'Movimento per comune e macro provenienza' espone le presenze straniere in valore assoluto e le presenze complessive; la pipeline pubblica oggi la quota percentuale senza conservare il companion assoluto nella metrica.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+        },
+        "tourismAverageStay": {
+            "assoluto_normalizzato": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La permanenza media è già una misura intensiva definita come presenze divise per arrivi. Un valore 'assoluto' della permanenza media non è la stessa misura: le presenze totali sono un indicatore distinto.",
+            },
+        },
+        "tourismIntensity": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Regione Toscana pubblica per il 2025 il movimento turistico per Comune e mese. Le presenze mensili consentono la stessa misura di pressione turistica a frequenza mensile mantenendo il denominatore residente coerente; la pipeline espone oggi solo l'aggregato annuale.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+        },
+        "tourismSeasonality": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La fonte regionale pubblica le presenze per Comune e mese: sono quindi disponibili sia le presenze assolute dei tre mesi principali sia il totale annuale da cui deriva la quota di stagionalità. La pipeline conserva oggi soltanto la percentuale.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
