@@ -1496,6 +1496,145 @@ for metric_id, dimensions in {
 }.items():
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
+
+for metric_id, dimensions in {
+        "roadFinesPerResident": {
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola comunale Istat/Ministero dell'Interno distingue i proventi complessivi e il campo riferito ai limiti di velocità, ma il metodo governato documenta che tale campo può risultare zero anche in presenza di sanzioni per eccesso di velocità. La fonte non offre quindi una disaggregazione categoriale sufficientemente affidabile e comparabile per la metrica pubblicata.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+            },
+        },
+        "roadSafety": {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola comunale A misura di Comune espone incidenti, morti e feriti per territorio ma non una disaggregazione comunale della stessa metrica per sesso; le tavole Istat per sesso riguardano aggregati territoriali più ampi e non sono comparabili al livello comunale governato.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La tavola comunale A misura di Comune espone incidenti, morti e feriti per territorio ma non una disaggregazione comunale della stessa metrica per classi di età; le tavole Istat per età non mantengono il livello comunale della metrica governata.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+            },
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La fonte comunale pubblica i valori assoluti di incidenti con lesioni, morti e feriti, mentre la metrica dell'Osservatorio materializza tassi e indici normalizzati; i companion assoluti non sono oggi acquisiti nella stessa struttura.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "Le componenti che generano le letture pubblicate sono disponibili: incidenti, morti e feriti nella tavola comunale e popolazione residente Istat per i tassi per abitante. La pipeline conserva oggi gli indicatori derivati senza materializzare tali componenti come numeratore/denominatore.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+            },
+        },
+        "pnrrConcluded": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Il dataset regionale è aggiornato di norma mensilmente ma la risorsa pubblica espone lo stato corrente dei progetti; non rende disponibile una sequenza storica ufficiale delle fotografie mensili necessaria a ricostruire retrospettivamente la quota di progetti conclusi.",
+                "sourceReference": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+            },
+        },
+        "pnrrFunding": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "Il dataset regionale è aggiornato di norma mensilmente ma la risorsa pubblica espone lo stato corrente; non pubblica una serie storica ufficiale delle fotografie mensili dell'importo finanziato per Comune.",
+                "sourceReference": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+            },
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La fonte PNRR espone l'importo finanziato dei progetti e la metrica pubblicata lo rapporta alla popolazione residente; l'importo assoluto comunale è quindi disponibile ma non viene materializzato come companion della misura per residente.",
+                "sourceReference": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+            },
+            "numeratore_denominatore": {
+                "state": AVAILABLE,
+                "evidence": "La formula governata usa la somma di importo_finanziato_pnrr come numeratore e la popolazione residente Istat come denominatore. Entrambe le componenti ufficiali sono disponibili ma non sono esposte strutturalmente nella metrica corrente.",
+                "sourceReference": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+            },
+        },
+        "libraryActiveBorrowersPer100": {
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Il tracciato regionale disaggrega gli iscritti attivi per classi di età, già trattate dalla dimensione A3 'eta', ma non pubblica ulteriori categorie proprie della stessa metrica comunale degli iscritti attivi per 100 abitanti.",
+                "sourceReference": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
+            },
+        },
+        "libraryLoansPerResident": {
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "Il tracciato ufficiale delle biblioteche espone PrestitiTotali, PrestitiRagazzi, PrestitiMultimediali e varie componenti del prestito interbibliotecario; queste categorie di prestito non sono acquisite nella metrica comunale per residente.",
+                "sourceReference": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
+            },
+        },
+        "libraryWeeklyOpeningHours": {
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "Il tracciato ufficiale espone separatamente ore medie di apertura al mattino, pomeriggio, sera, sabato e festivi oltre alle ore settimanali; la pipeline pubblica il solo indicatore comunale complessivo.",
+                "sourceReference": "https://dati.toscana.it/dataset/rt-monit-bibi-ente-locale",
+            },
+        },
+        "landCoverProfile": {
+            "dettaglio_territoriale": {
+                "state": AVAILABLE,
+                "evidence": "Regione Toscana pubblica l'Uso e Copertura del Suolo come dataset poligonale in scala 1:10.000, quindi con dettaglio spaziale molto più fine del Comune; la pipeline aggrega oggi le classi al livello comunale.",
+                "sourceReference": "https://www502.regione.toscana.it/geonetwork/srv/search?keyword=copertura+del+suolo",
+            },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "Lo stesso dataset UCS copre l'intero territorio regionale con la medesima legenda e metodologia, consentendo un benchmark Toscana coerente con il profilo comunale; tale benchmark non è materializzato nella metrica corrente.",
+                "sourceReference": "https://www502.regione.toscana.it/geonetwork/srv/search?keyword=copertura+del+suolo",
+            },
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte UCS pubblica edizioni territoriali riferite a specifiche annualità pluriennali (2007, 2010, 2013, 2016, 2019) e non osservazioni mensili, trimestrali o semestrali comparabili della copertura del suolo.",
+                "sourceReference": "https://www502.regione.toscana.it/geoscopio/servizi/wms/USO_E_COPERTURA_DEL_SUOLO.htm",
+            },
+        },
+        "extractiveSites": {
+            "serie_storica": {
+                "state": UNAVAILABLE,
+                "evidence": "L'endpoint pubblico RTCave espone lo stato corrente dei record; non pubblica una sequenza storica ufficiale di snapshot o versioni temporali comparabili dei siti censiti.",
+                "sourceReference": "https://cave.regione.toscana.it/api/v1/cave_public",
+            },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "L'endpoint RTCave è regionale e consente di contare con la stessa definizione tutti i record della Toscana, rendendo disponibile un benchmark Toscana coerente rispetto ai conteggi comunali.",
+                "sourceReference": "https://cave.regione.toscana.it/api/v1/cave_public",
+            },
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "RTCave pubblica record e conteggi assoluti ma non definisce una versione normalizzata ufficiale del numero di siti per popolazione, superficie o altro denominatore; la scelta del denominatore sarebbe metodologia aggiuntiva.",
+                "sourceReference": "https://cave.regione.toscana.it/api/v1/cave_public",
+            },
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "La banca dati è aggiornata nel corso dell'anno ma l'endpoint pubblico restituisce lo stato corrente, senza osservazioni storicizzate mensili, trimestrali o semestrali comparabili della stessa metrica.",
+                "sourceReference": "https://cave.regione.toscana.it/api/v1/cave_public",
+            },
+        },
+        "outsideMunicipality": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La matrice ufficiale Istat dei flussi comunali contiene i conteggi assoluti degli occupati residenti che lavorano fuori Comune; la metrica corrente conserva soltanto la quota percentuale.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+            },
+        },
+        "selfContainment": {
+            "assoluto_normalizzato": {
+                "state": AVAILABLE,
+                "evidence": "La matrice ufficiale Istat dei flussi comunali consente il conteggio assoluto degli occupati residenti che lavorano nel proprio Comune; la pipeline pubblica oggi la sola quota percentuale di autocontenimento.",
+                "sourceReference": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
+            },
+        },
+        "tourismArrivals": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale pubblica gli arrivi turistici in valore assoluto per Comune e mese/anno ma non una misura normalizzata ufficiale coerente degli arrivi per residente, superficie o altra base; introdurla richiederebbe una scelta metodologica ulteriore.",
+                "sourceReference": "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
