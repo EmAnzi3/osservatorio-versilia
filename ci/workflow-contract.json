@@ -130,6 +130,11 @@
         "label": "A3.5 demografia sesso",
         "script": "scripts/test_a3_5_demography_sex.py",
         "args": []
+      },
+      {
+        "label": "A3.5 OpenBDAP numeratore/denominatore",
+        "script": "scripts/test_a3_5_openbdap_ratio_components.py",
+        "args": []
       }
     ]
   },
