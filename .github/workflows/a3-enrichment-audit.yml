@@ -333,6 +333,33 @@ jobs:
               ('climateTmaxTrend', 'categorie_specifiche'),
               ('climateTminTrend', 'categorie_specifiche'),
           }
+
+          territorial_services_available_missing_expected = {
+              ('roadSafety', 'assoluto_normalizzato'),
+              ('roadSafety', 'numeratore_denominatore'),
+              ('pnrrFunding', 'assoluto_normalizzato'),
+              ('pnrrFunding', 'numeratore_denominatore'),
+              ('libraryLoansPerResident', 'categorie_specifiche'),
+              ('libraryWeeklyOpeningHours', 'categorie_specifiche'),
+              ('landCoverProfile', 'dettaglio_territoriale'),
+              ('landCoverProfile', 'benchmark_toscana_italia'),
+              ('extractiveSites', 'benchmark_toscana_italia'),
+              ('outsideMunicipality', 'assoluto_normalizzato'),
+              ('selfContainment', 'assoluto_normalizzato'),
+          }
+          territorial_services_source_unavailable_expected = {
+              ('roadFinesPerResident', 'categorie_specifiche'),
+              ('roadSafety', 'sesso'),
+              ('roadSafety', 'eta'),
+              ('pnrrConcluded', 'serie_storica'),
+              ('pnrrFunding', 'serie_storica'),
+              ('libraryActiveBorrowersPer100', 'categorie_specifiche'),
+              ('landCoverProfile', 'frequenza_infra_annuale'),
+              ('extractiveSites', 'serie_storica'),
+              ('extractiveSites', 'assoluto_normalizzato'),
+              ('extractiveSites', 'frequenza_infra_annuale'),
+              ('tourismArrivals', 'assoluto_normalizzato'),
+          }
           semantic_not_applicable_expected = {
               ('agriculturalUsedArea', 'sesso'),
               ('agriculturalUsedArea', 'eta'),
@@ -490,6 +517,19 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
+
+          for pair in sorted(territorial_services_available_missing_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(territorial_services_source_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
           for pair in sorted(frequency_available_missing_expected):
               row = rows[pair]
               assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
@@ -520,12 +560,12 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1960, summary
-          assert summary['unclassifiedPairCount'] == 65, summary
+          assert summary['classifiedPairCount'] == 1982, summary
+          assert summary['unclassifiedPairCount'] == 43, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 1 demographic available-missing + 19 demographic source-unavailable + 10 demographic N/A + 34 prior semantic N/A + 19 scalar source-unavailable + 5 official-source available-missing + 11 operational available-missing + 11 operational source-unavailable + 1 operational N/A + 7 ARS available-missing + 11 ARS source-unavailable + 5 ARS/climate N/A + 11 territorial/services available-missing + 11 territorial/services source-unavailable pairs verified.'
           )
           PY
