@@ -1109,6 +1109,58 @@ METRIC_EVIDENCE.setdefault("hospitalizedAll", {}).update(
 )
 
 
+
+METRIC_EVIDENCE.setdefault("incomeVsInflation", {}).update(
+    {
+        "sesso": {
+            "state": UNAVAILABLE,
+            "evidence": "Il dataset MEF su base comunale utilizzato per la componente reddituale non incrocia il Comune con il sesso dei contribuenti; le statistiche per sesso sono diffuse in classificazioni separate e non sono metodologicamente combinabili con il valore comunale della metrica.",
+            "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+        },
+        "eta": {
+            "state": UNAVAILABLE,
+            "evidence": "Il dataset MEF su base comunale utilizzato per la componente reddituale non incrocia il Comune con le classi di età dei contribuenti; le statistiche per età sono diffuse in classificazioni separate e non sono metodologicamente combinabili con il valore comunale della metrica.",
+            "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+        },
+        "benchmark_toscana_italia": {
+            "state": AVAILABLE,
+            "evidence": "MEF diffonde le principali variabili IRPEF anche per aggregazioni territoriali superiori al Comune e ISTAT diffonde il NIC nazionale; è quindi disponibile un confronto territoriale coerente della componente reddituale, non acquisito nella metrica pubblicata.",
+            "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+        },
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "Il dataset comunale MEF conserva classi di reddito e principali fonti di reddito con frequenze e ammontari; queste categorie native non sono esposte dalla metrica Redditi vs inflazione.",
+            "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes",
+        },
+    }
+)
+
+METRIC_EVIDENCE.setdefault("roadSafety", {}).update(
+    {
+        "assoluto_normalizzato": {
+            "state": AVAILABLE,
+            "evidence": "La tavola Istat sugli incidenti stradali contiene i conteggi di incidenti, morti e feriti insieme agli indicatori normalizzati/rapportati pubblicati; la metrica espone oggi i tassi ma non acquisisce in forma strutturata tutti i corrispondenti valori assoluti.",
+            "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+        },
+        "numeratore_denominatore": {
+            "state": AVAILABLE,
+            "evidence": "La tavola Istat rende disponibili le componenti che generano incidentalità, mortalità e lesività (incidenti, morti, feriti e popolazione di riferimento); la metrica pubblicata non acquisisce tutte le coppie numeratore/denominatore come componenti strutturate.",
+            "sourceReference": "https://www.istat.it/storage/misura-comune/15a-Infrastrutture-e-mobilita-incidenti-stradali.xlsx",
+        },
+    }
+)
+
+METRIC_EVIDENCE.setdefault("roadFinesPerResident", {}).update(
+    {
+        "categorie_specifiche": {
+            "state": AVAILABLE,
+            "evidence": "La fonte Istat/Ministero dell'Interno sui proventi da sanzioni distingue componenti dei proventi, inclusa la quota riferita ai limiti di velocità. La metrica pubblicata usa solo il totale; il campo specifico resta disponibile alla fonte pur con il caveat metodologico già documentato dall'Osservatorio.",
+            "sourceReference": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+        },
+    }
+)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
