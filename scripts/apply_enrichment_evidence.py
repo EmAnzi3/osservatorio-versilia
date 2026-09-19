@@ -1183,6 +1183,24 @@ METRIC_EVIDENCE.setdefault("roadFinesPerResident", {}).update(
 )
 
 
+
+for metric_id in ("socialSpendingByUserArea", "socialSpendingPerResident"):
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(
+        {
+            "sesso": {
+                "state": UNAVAILABLE,
+                "evidence": "La rilevazione Istat sugli interventi e servizi sociali diffonde spesa e utenti per area di utenza e tipologia di servizio, ma non una disaggregazione comunale della spesa per sesso delle persone beneficiarie.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/interventi-e-servizi-sociali-dei-comuni/",
+            },
+            "eta": {
+                "state": UNAVAILABLE,
+                "evidence": "La rilevazione Istat articola la spesa per aree di utenza (famiglie e minori, disabili, anziani, ecc.) ma non pubblica, per la stessa metrica comunale, classi d'età quantitative dei beneficiari.",
+                "sourceReference": "https://www.istat.it/tavole-di-dati/interventi-e-servizi-sociali-dei-comuni/",
+            },
+        }
+    )
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
