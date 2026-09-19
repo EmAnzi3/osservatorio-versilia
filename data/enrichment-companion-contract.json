@@ -290,6 +290,14 @@
       },
       "denominatorMetricId": "population",
       "denominatorYearMode": "target_year"
+    },
+    {
+      "metricId": "population",
+      "dimension": "assoluto_normalizzato",
+      "relationship": "normalized_companion_formula",
+      "normalizedMetricId": "populationDensity",
+      "denominatorMetricId": "municipalSurface",
+      "denominatorYearMode": "metric_current"
     }
   ]
 }
