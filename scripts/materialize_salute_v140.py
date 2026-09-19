@@ -122,7 +122,7 @@ def apply_overlay():
   for url in (ars['indicators'][str(iid)]['indicatorUrl'],ars['indicators'][str(iid)]['exportUrl']): registry.setdefault('sourceProfileByUrl',{})[url]=ARS_PROFILE; registry.setdefault('sourceUrlProfiles',{})[url]=ARS_PROFILE
   registry.setdefault('metricOverrides',{})[spec['key']]={'profile':ARS_PROFILE}
  rsa_url='https://servizi.toscana.it/RT/RSA/'
- registry.setdefault('sourceProfiles',{})[RSA_PROFILE]={'publisher':'Regione Toscana','frequency':'annual_or_irregular','frequencyLabel':'Annuale o irregolare','expectedRelease':'Secondo aggiornamento dell’elenco regionale','acquisitionMethod':'Consultazione dell’elenco ufficiale regionale delle RSA accreditate; conteggio comunale senza stime.','licenseName':'Condizioni indicate dalla fonte','licenseUrl':''}
+ registry.setdefault('sourceProfiles',{})[RSA_PROFILE]={'publisher':'Regione Toscana','frequency':'annual_or_irregular','frequencyLabel':'Annuale o irregolare','expectedRelease':'Secondo aggiornamento dell’elenco regionale','acquisitionMethod':'Consultazione dell’elenco ufficiale regionale delle RSA accreditate; conteggio comunale senza stime.','licenseName':'Condizioni indicate dalla fonte','licenseUrl':'https://www.regione.toscana.it/-/elenco-strutture-del-sistema-sociale-integrato-accreditate'}
  registry.setdefault('sourceProfileByUrl',{})[rsa_url]=RSA_PROFILE; registry.setdefault('sourceUrlProfiles',{})[rsa_url]=RSA_PROFILE; registry.setdefault('metricOverrides',{})['accreditedRsaCount']={'profile':RSA_PROFILE}
  save(DATA,data); save(REGISTRY,registry)
  print(f"Salute v1.40 materializzata: {len(data['metrics'])} indicatori nel workspace")
