@@ -116,16 +116,12 @@ def _dependency_for_sex(detail: list[dict[str, Any]], sex_key: str) -> dict[str,
                 "label": "Indice di dipendenza strutturale",
                 "value": structural,
                 "unit": "per100",
-                "numerator": bands["age0to14"] + bands["age65plus"],
-                "denominator": denominator,
             },
             {
                 "key": "elderly",
                 "label": "Indice di dipendenza degli anziani",
                 "value": elderly,
                 "unit": "per100",
-                "numerator": bands["age65plus"],
-                "denominator": denominator,
             },
         ],
         "populationBands": bands,
@@ -258,10 +254,13 @@ def apply_enrichment(
         dependency_breakdown = _dependency_breakdown(detail, year=2026)
         men_dependency = _dependency_for_sex(detail, "men")
         women_dependency = _dependency_for_sex(detail, "women")
+        men_bands = men_dependency["populationBands"]
+        women_bands = women_dependency["populationBands"]
         combined_structural = (
-            men_dependency["indices"][0]["numerator"] + women_dependency["indices"][0]["numerator"]
+            men_bands["age0to14"] + men_bands["age65plus"]
+            + women_bands["age0to14"] + women_bands["age65plus"]
         ) / (
-            men_dependency["indices"][0]["denominator"] + women_dependency["indices"][0]["denominator"]
+            men_bands["age15to64"] + women_bands["age15to64"]
         ) * 100
         _assert_close(
             combined_structural,
@@ -306,10 +305,13 @@ def apply_enrichment(
     dependency_aggregate_breakdown = _dependency_breakdown(combined_age_sex, year=2026)
     total_men = _dependency_for_sex(combined_age_sex, "men")
     total_women = _dependency_for_sex(combined_age_sex, "women")
+    men_bands = total_men["populationBands"]
+    women_bands = total_women["populationBands"]
     combined_value = (
-        total_men["indices"][0]["numerator"] + total_women["indices"][0]["numerator"]
+        men_bands["age0to14"] + men_bands["age65plus"]
+        + women_bands["age0to14"] + women_bands["age65plus"]
     ) / (
-        total_men["indices"][0]["denominator"] + total_women["indices"][0]["denominator"]
+        men_bands["age15to64"] + women_bands["age15to64"]
     ) * 100
     _assert_close(
         combined_value,
