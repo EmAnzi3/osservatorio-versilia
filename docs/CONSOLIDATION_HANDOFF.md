@@ -30,7 +30,7 @@ Fonti già versionate e governate:
 - Istat POSAS 2026: `data/source-snapshots/istat-demography-lotto-a-2026-08.json`;
 - Istat RCS 2025: `data/source-snapshots/istat-rcs-demography-2025.json`.
 
-Il nuovo materializzatore pubblico aggiunge `sexBreakdown` a righe comunali e aggregato Versilia con anno, unità e fonte. Il QA riconcilia i totali, ricalcola gli indici di dipendenza per sesso e verifica che il detector A3 classifichi le tre coppie come `ACQUIRED` da struttura del catalogo. L'effetto atteso è **872 → 869 AVAILABLE_MISSING**; A3.5 non si chiude con questo lotto.
+Il nuovo materializzatore pubblico aggiunge `sexDimension` a righe comunali e aggregato Versilia con anno, unità e fonte. Il QA riconcilia i totali, ricalcola gli indici di dipendenza per sesso e verifica che il detector A3 classifichi le tre coppie come `ACQUIRED` da struttura del catalogo. L'effetto atteso è **872 → 869 AVAILABLE_MISSING**; A3.5 non si chiude con questo lotto.
 
 ## Hardening #259 incluso
 
