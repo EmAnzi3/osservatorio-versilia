@@ -247,7 +247,7 @@ def apply_enrichment(
             raise RuntimeError(
                 f"{town}: popolazione POSAS {pop_breakdown['total']} != catalogo {current_population}"
             )
-        population_rows[town]["sexBreakdown"] = pop_breakdown
+        population_rows[town]["sexDimension"] = pop_breakdown
 
         dependency_breakdown = _dependency_breakdown(detail, year=2026)
         men_dependency = _dependency_for_sex(detail, "men")
@@ -265,7 +265,7 @@ def apply_enrichment(
             float(dependency_rows[town]["value"]),
             f"{town}: dipendenza complessiva",
         )
-        dependency_rows[town]["sexBreakdown"] = dependency_breakdown
+        dependency_rows[town]["sexDimension"] = dependency_breakdown
 
         town_rcs = rcs_towns[town]
         citizenship = town_rcs.get("citizenship")
@@ -282,7 +282,7 @@ def apply_enrichment(
             raise RuntimeError(
                 f"{town}: count foreignResidents {existing_count} != RCS {expected_foreign}"
             )
-        foreign_rows[town]["sexBreakdown"] = foreign_breakdown
+        foreign_rows[town]["sexDimension"] = foreign_breakdown
         foreign_all.extend(citizenship)
 
     combined_age_sex = _combine_age_sex(all_age_sex)
@@ -298,7 +298,7 @@ def apply_enrichment(
     pop_aggregate_breakdown = _population_breakdown(combined_age_sex, year=2026)
     if pop_aggregate_breakdown["total"] != int(population_aggregate["value"]):
         raise RuntimeError("Popolazione Versilia non riconciliata")
-    population_aggregate["sexBreakdown"] = pop_aggregate_breakdown
+    population_aggregate["sexDimension"] = pop_aggregate_breakdown
 
     dependency_aggregate_breakdown = _dependency_breakdown(combined_age_sex, year=2026)
     total_men = _dependency_for_sex(combined_age_sex, "men")
@@ -316,7 +316,7 @@ def apply_enrichment(
         float(dependency_aggregate["value"]),
         "Versilia: dipendenza complessiva",
     )
-    dependency_aggregate["sexBreakdown"] = dependency_aggregate_breakdown
+    dependency_aggregate["sexDimension"] = dependency_aggregate_breakdown
 
     foreign_aggregate_breakdown = _foreign_breakdown(foreign_all, year=2025)
     rcs_versilia = rcs_snapshot.get("aggregate", {}).get("Versilia", {})
@@ -334,7 +334,7 @@ def apply_enrichment(
             f"foreignResidents aggregate count {existing_aggregate_count} != RCS "
             f"{expected_aggregate_foreign}"
         )
-    foreign_aggregate["sexBreakdown"] = foreign_aggregate_breakdown
+    foreign_aggregate["sexDimension"] = foreign_aggregate_breakdown
 
     return {"metricsEnriched": 3, "towns": len(towns), "pairsAcquired": 3}
 
