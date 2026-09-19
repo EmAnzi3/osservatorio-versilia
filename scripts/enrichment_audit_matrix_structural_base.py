@@ -413,6 +413,30 @@ def _identifiable_parts(value: Any) -> bool:
     return len(keys) >= 2
 
 
+def _find_named_category_collection(metric: dict[str, Any]) -> str | None:
+    """Recognize labeled category lists nested in a declared composite metric."""
+    category_tokens = {
+        "category", "categories", "categoria", "categorie",
+        "citizenship", "cittadinanza", "country", "countries",
+        "origin", "origins", "origine", "provenienza",
+    }
+    for path, value in _core._walk(metric):
+        if not path or not isinstance(value, list) or not _identifiable_parts(value):
+            continue
+        normalized_path = _core._norm("_".join(str(item) for item in path))
+        if not any(token in normalized_path for token in category_tokens):
+            continue
+        numeric_items = 0
+        for item in value:
+            if not isinstance(item, dict):
+                continue
+            if any(_numeric(item.get(key)) for key in ("value", "count", "share", "percent", "percentage")):
+                numeric_items += 1
+        if numeric_items >= 2:
+            return _core._path_text(path)
+    return None
+
+
 def _find_structured_categories(metric: dict[str, Any]) -> str | None:
     definitions = metric.get("categoryDefinitions")
     if _identifiable_parts(definitions):
@@ -424,7 +448,7 @@ def _find_structured_categories(metric: dict[str, Any]) -> str | None:
     for path, value in _core._walk(metric):
         if path and path[-1] == "parts" and _identifiable_parts(value):
             return _core._path_text(path)
-    return None
+    return _find_named_category_collection(metric)
 
 
 def acquired_evidence(metric: dict[str, Any], dimension: str) -> str | None:
