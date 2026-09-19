@@ -140,6 +140,11 @@
         "label": "A3.5 Frame SBS dimensions",
         "script": "scripts/test_a3_5_frame_sbs_dimensions.py",
         "args": []
+      },
+      {
+        "label": "A3.5 Istat Census components",
+        "script": "scripts/test_a3_5_istat_census_components.py",
+        "args": []
       }
     ]
   },

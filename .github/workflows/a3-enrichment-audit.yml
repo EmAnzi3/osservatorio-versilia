@@ -40,6 +40,7 @@ jobs:
           python scripts/test_a3_5_demography_sex.py
           python scripts/test_a3_5_openbdap_ratio_components.py
           python scripts/test_a3_5_frame_sbs_dimensions.py
+          python scripts/test_a3_5_istat_census_components.py
 
       - name: Materialize effective public catalog
         env:
@@ -236,6 +237,51 @@ jobs:
           print(
               'A3.5 demography sex acquisition: '
               f"{len(expected)} coppie strutturalmente ACQUIRED; "
+              f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
+          )
+          PY
+
+      - name: Verify A3.5 Istat census components
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+          metrics = {
+              'femaleEmploymentRate',
+              'maleEmploymentRate',
+              'housingStockPer1000',
+              'nonOccupiedHomesPer1000',
+              'vacantHomes',
+              'singleHouseholds',
+          }
+          expected = {
+              (metric_id, dimension)
+              for metric_id in metrics
+              for dimension in ('numeratore_denominatore', 'assoluto_normalizzato')
+          }
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              assert 'censusRatioComponents' in row['evidence'], (pair, row)
+
+          backlog_pairs = {
+              (pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
+          assert backlog['summary']['availableMissingPairCount'] == 821, backlog['summary']
+          print(
+              'A3.5 Istat Census components: '
+              f'{len(expected)} coppie strutturalmente ACQUIRED; '
               f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
           )
           PY
