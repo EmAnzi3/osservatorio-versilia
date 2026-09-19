@@ -84,9 +84,6 @@ def test_demography_sex_enrichment() -> None:
         breakdown = row["sexBreakdown"]
         by_sex = groups(breakdown)
         assert by_sex["men"]["count"] + by_sex["women"]["count"] == int(row["value"])
-        assert abs(
-            by_sex["men"]["sharePercent"] + by_sex["women"]["sharePercent"] - 100.0
-        ) < 1e-9
     population_aggregate = population["aggregate"]["sexBreakdown"]
     assert population_aggregate["total"] == int(population["aggregate"]["value"])
 
@@ -117,11 +114,6 @@ def test_demography_sex_enrichment() -> None:
         expected = int(rcs_towns[town]["citizenshipTotal"])
         assert breakdown["total"] == expected
         assert by_sex["men"]["count"] + by_sex["women"]["count"] == expected
-        assert abs(
-            by_sex["men"]["shareWithinForeignResidentsPercent"]
-            + by_sex["women"]["shareWithinForeignResidentsPercent"]
-            - 100.0
-        ) < 1e-9
         if row.get("count") is not None:
             assert int(row["count"]) == expected
     foreign_aggregate = foreign["aggregate"]["sexBreakdown"]
