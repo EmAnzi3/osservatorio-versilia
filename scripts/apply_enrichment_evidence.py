@@ -504,6 +504,18 @@ EVIDENCE.update(
 )
 
 
+
+EVIDENCE.setdefault("ars-toscana-mixed", {}).update(
+    {
+        "frequenza_infra_annuale": {
+            "state": UNAVAILABLE,
+            "evidence": "La banca dati ARS 'La salute dei comuni' espone per ciascun indicatore il valore aggiornato all'ultimo anno disponibile e il relativo trend storico; il profilo è annuale o pluriennale secondo l'indicatore e non offre osservazioni mensili, trimestrali o semestrali metodologicamente equivalenti.",
+            "sourceReference": "https://www.ars.toscana.it/aree-dintervento/la-salute-di/salute-dei-toscani/profilo-di-salute-dei-toscani/news/3394-da-oggi-tutti-gli-indicatori-dell-ars-accessibili-da-un-unica-pagina.html",
+        },
+    }
+)
+
+
 METRIC_EVIDENCE = {
     metric_id: {
         "sesso": {
@@ -778,6 +790,96 @@ for metric_id, dimensions in {
             "assoluto_normalizzato": {
                 "state": NOT_APPLICABLE,
                 "evidence": "La metrica è già una spesa annua standardizzata su una stessa utenza teorica di 3 componenti e 100 m². Le componenti tariffarie per m² sono input della formula, non una versione normalizzata del costo totale; normalizzare ulteriormente cambierebbe l'indicatore.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
+
+for metric_id, dimensions in {
+        "population": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Istat Demo diffonde il Bilancio demografico mensile con popolazione residente a dettaglio comunale. La metrica pubblicata usa oggi lo stock al 1° gennaio e non acquisisce la serie mensile.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "populationChange": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Istat Demo rende disponibile la popolazione residente mese per mese a livello comunale; da due stock mensili è ricostruibile una variazione coerente. La pipeline conserva oggi solo la variazione tra annualità.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "naturalDemographicDynamics": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Il Bilancio demografico mensile Istat pubblica per Comune nascite e decessi del mese di riferimento, quindi le componenti della dinamica naturale sono disponibili a frequenza infra-annuale ma non sono acquisite nella metrica pubblicata.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "internalResidentialMobility": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Il Bilancio demografico mensile Istat pubblica a livello comunale i trasferimenti di residenza interni avvenuti nel mese di riferimento. La pipeline espone oggi solo l'aggregato annuale.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "foreignResidentialMobility": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Il Bilancio demografico mensile Istat pubblica a livello comunale il movimento migratorio con l'estero del mese di riferimento. La pipeline espone oggi solo l'aggregato annuale.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "totalResidentialMobility": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "Il Bilancio demografico mensile Istat pubblica a livello comunale trasferimenti interni e movimento migratorio con l'estero, le stesse componenti che generano la mobilità residenziale complessiva. La pipeline conserva oggi solo l'aggregato annuale.",
+                "sourceReference": "https://demo.istat.it/app/?i=D7B",
+            },
+        },
+        "ageDistribution": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "La distribuzione per età deriva da POSAS, che Istat Demo pubblica come popolazione residente per sesso, età e stato civile al 1° gennaio di ciascun anno. Il Bilancio demografico mensile non espone l'età, quindi non esiste nella stessa fonte una serie infra-annuale equivalente della struttura per età.",
+                "sourceReference": "https://demo.istat.it/app/?i=POS",
+            },
+        },
+        "dependencyIndices": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Gli indici di dipendenza sono calcolati sulle classi di età POSAS al 1° gennaio. Istat Demo non diffonde la struttura per età con cadenza mensile, quindi le componenti necessarie non sono disponibili a frequenza infra-annuale comparabile.",
+                "sourceReference": "https://demo.istat.it/app/?i=POS",
+            },
+        },
+        "foreignResidents": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Istat Demo pubblica la popolazione straniera residente per sesso ed età al 1° gennaio e il relativo bilancio demografico su base annuale. Il bilancio mensile comunale riguarda la popolazione complessiva e non offre uno stock mensile equivalente per cittadinanza.",
+                "sourceReference": "https://demo.istat.it/app/?i=STR&l=it",
+            },
+        },
+        "roadSafety": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "La rilevazione Istat degli incidenti stradali con lesioni è svolta a cadenza mensile e i microdati contengono mese e giorno dell'evento. La metrica pubblicata aggrega invece gli incidenti su base annuale.",
+                "sourceReference": "https://www.istat.it/microdati/rilevazione-degli-incidenti-stradali-con-lesioni-a-persone-3/",
+            },
+        },
+        "roadFinesPerResident": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "La metrica usa i proventi rendicontati da sanzioni al Codice della strada pubblicati nella serie annuale Istat/Ministero dell'Interno. La fonte governata non espone per lo stesso indicatore una serie mensile, trimestrale o semestrale metodologicamente equivalente.",
+                "sourceReference": "https://www.istat.it/storage/misura-comune/15c-Infrastrutture-e-mobilita-per-tassi-di-motorizzazione-e-proventi-dalle-sanzioni.xlsx",
+            },
+        },
+        "incomeVsInflation": {
+            "frequenza_infra_annuale": {
+                "state": UNAVAILABLE,
+                "evidence": "Il reddito imponibile comunale MEF è diffuso per anno di dichiarazione/anno d'imposta. Anche se il NIC Istat esiste a frequenza mensile, la componente reddituale vincola l'indicatore combinato a una frequenza annuale; non esiste quindi una misura infra-annuale comparabile dello stesso indicatore.",
+                "sourceReference": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?opendata=yes&search_class%5B0%5D=cCOMUNE",
             },
         },
 }.items():
