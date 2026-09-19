@@ -7,7 +7,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.5` — integrazione nuove dimensioni in lotti controllati
-- **Stato:** `IN_PROGRESS` — lotti 1 e 2 mergiati; lotto 3 Frame SBS in lavorazione
+- **Stato:** `IN_PROGRESS` — lotti 1 e 2 mergiati; lotto 3 Frame SBS implementato sul branch dedicato
 - **Main verificato:** `36359352cf6d7fe74592768b71d473ce84d6807a` (merge `#261`)
 - **Deploy post-#261:** `35465415565` GREEN
 - **Catalogo pubblico governato:** 225 indicatori
@@ -30,7 +30,7 @@ Backlog verificato sul final head #261:
 
 `AVAILABLE_MISSING: 869 → 853`
 
-### Lotto 3 — in lavorazione
+### Lotto 3 — implementato sul branch
 
 Dal backlog A3.4 LIVE è stato selezionato un lotto coerente sul profilo `istat-business-annual`, riusando esclusivamente gli snapshot Frame SBS Territoriale Istat v1.34 già versionati.
 
@@ -58,8 +58,8 @@ A3.5 resta `IN_PROGRESS`; A3.6 non viene avviato.
 
 ## Prossima azione esatta
 
-1. Implementare e testare il materializzatore A3.5 Frame SBS sulle 20 coppie candidate.
-2. Registrarlo nei contratti build/Quick e nel workflow A3 senza indebolire i detector.
-3. Aggiornare la roadmap nello stesso branch.
-4. Aprire PR Ready e verificare A3 + Quick + Full sullo stesso final head.
-5. Confermare dall'artifact A3.4 il nuovo conteggio e fermarsi prima del merge.
+1. Aprire la PR Ready del lotto 3.
+2. Verificare A3 + Quick + Full sullo stesso final head.
+3. Confermare dall'artifact A3.4 `833 AVAILABLE_MISSING` e `unclassifiedPairCount = 0`.
+4. Correggere soltanto eventuali regressioni reali, senza indebolire detector o contratti.
+5. Fermarsi prima del merge e attendere approvazione esplicita del proprietario.
