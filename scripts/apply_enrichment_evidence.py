@@ -886,6 +886,67 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "disability064Per1000": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica il solo indicatore comunale complessivo per la popolazione 0-64, senza disaggregazione per sesso.", "sourceReference": "https://www.regione.toscana.it/statistiche/indicatori-comunali-per-le-politiche-locali"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica il valore complessivo 0-64 e non una scomposizione per classi di età interne alla fascia.", "sourceReference": "https://www.regione.toscana.it/statistiche/indicatori-comunali-per-le-politiche-locali"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "Il metadato ufficiale definisce l'indicatore come persone 0-64 con disabilità per 1.000 residenti 0-64; i CSV della batteria diffondono il valore dell'indicatore, non anche il corrispondente conteggio assoluto.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "Il metadato descrive il rapporto per 1.000 ma la batteria CSV non espone separatamente persone con disabilità e popolazione 0-64 come componenti dell'indicatore.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "La batteria regionale diffonde un unico valore comunale dell'indicatore e non pubblica categorie di gravità o tipologia di disabilità per questa metrica.", "sourceReference": "https://www.regione.toscana.it/statistiche/indicatori-comunali-per-le-politiche-locali"},
+        },
+        "emsResponseTimeP75": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica il 75° percentile comunale del tempo di risposta 118 senza disaggregazione per sesso.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica il 75° percentile comunale del tempo di risposta 118 senza disaggregazione per età.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "Il metadato ufficiale espone un unico indicatore P3 sul tempo tra allarme e arrivo del primo mezzo; la batteria non fornisce categorie di intervento o priorità per questa metrica.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+        },
+        "foreignBornSoleProprietorShare": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale diffonde la sola percentuale comunale di ditte individuali con conduttore nato all'estero, senza scomposizione per sesso.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La batteria regionale diffonde la sola percentuale comunale di ditte individuali con conduttore nato all'estero, senza classi di età del titolare.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "Il metadato definisce una percentuale; i file ufficiali della batteria pubblicano l'indicatore percentuale senza il corrispondente conteggio assoluto delle ditte con titolare nato all'estero.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "La batteria pubblica la percentuale finale e non espone separatamente, per la stessa metrica, numeratore e totale delle ditte individuali attive.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "La batteria regionale non articola l'indicatore per paese di nascita, settore ATECO o altra categoria del titolare.", "sourceReference": "https://www.regione.toscana.it/statistiche/indicatori-comunali-per-le-politiche-locali"},
+        },
+        "innovationBusinessShare": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica la quota di imprese nei settori dell'innovazione senza disaggregazione per sesso.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica la quota di imprese nei settori dell'innovazione senza disaggregazione per età.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "Il dato ufficiale è una percentuale di imprese attive; la batteria non pubblica, insieme alla quota, il conteggio assoluto delle imprese incluse.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "Il metadato elenca le divisioni ATECO considerate innovative ma i CSV della batteria non espongono separatamente imprese innovative e totale imprese come componenti della quota.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "Le divisioni ATECO che definiscono l'insieme innovazione sono documentate nel metadato, ma la batteria diffonde solo la quota aggregata e non valori distinti per singola divisione.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+        },
+        "municipalOnlineServicesAdvanced": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "L'indicatore riguarda servizi comunali online e la batteria non pubblica una disaggregazione degli utenti per sesso.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "L'indicatore riguarda servizi comunali online e la batteria non pubblica una disaggregazione degli utenti per età.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "La batteria diffonde la percentuale di servizi ai livelli massimi di disponibilità, non anche il numero assoluto dei servizi corrispondenti.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "Il metadato Istat/Regione descrive la percentuale ma i file della batteria non espongono separatamente numero di servizi avanzati e paniere totale usato nel calcolo.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "Il metadato descrive i livelli 3 e 4 ma la batteria pubblica il valore aggregato dell'indicatore senza valori separati per livello o tipologia di servizio.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+        },
+        "organicAgriculturalAreaShare": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica la quota comunale di SAU biologica senza disaggregazione per sesso dei conduttori.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La batteria regionale pubblica la quota comunale di SAU biologica senza classi di età dei conduttori.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "La batteria diffonde la percentuale di SAU biologica e non il corrispondente valore assoluto della superficie biologica per la stessa metrica.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "Il metadato definisce una quota di SAU biologica ma la batteria non espone separatamente SAU biologica e SAU totale come componenti strutturate.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "La batteria non articola la quota di SAU biologica per coltura, classe aziendale o altra categoria agricola.", "sourceReference": "https://www.regione.toscana.it/statistiche/indicatori-comunali-per-le-politiche-locali"},
+        },
+        "youthOtherStatus": {
+            "sesso": {"state": UNAVAILABLE, "evidence": "La batteria regionale diffonde la quota complessiva dei 15-24enni in altra condizione professionale senza disaggregazione per sesso.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La fascia 15-24 è il perimetro dell'indicatore; la batteria non la scompone in ulteriori classi o età puntuali.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "assoluto_normalizzato": {"state": UNAVAILABLE, "evidence": "La batteria pubblica la quota percentuale dei giovani in altra condizione professionale, non anche il conteggio assoluto corrispondente.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "numeratore_denominatore": {"state": UNAVAILABLE, "evidence": "Il metadato definisce la quota sui giovani 15-24, ma i CSV della batteria non espongono separatamente numeratore e popolazione 15-24 usati nel calcolo.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+            "categorie_specifiche": {"state": UNAVAILABLE, "evidence": "La batteria espone un'unica modalità aggregata 'altra condizione professionale' e non pubblica la composizione interna per specifica condizione.", "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1"},
+        },
+        "tourismBeds": {
+            "serie_storica": {"state": AVAILABLE, "evidence": "La rilevazione Istat sulla capacità ricettiva è annuale ed è disponibile su più annualità comparabili; la pipeline pubblica oggi il solo anno corrente per tourismBeds.", "sourceReference": "https://indata.istat.it/ctur/index.php"},
+            "sesso": {"state": UNAVAILABLE, "evidence": "La rilevazione misura strutture, letti, camere e bagni; non osserva persone per sesso per la capacità ricettiva.", "sourceReference": "https://indata.istat.it/ctur/index.php"},
+            "eta": {"state": UNAVAILABLE, "evidence": "La rilevazione misura strutture, letti, camere e bagni; non osserva persone per età per la capacità ricettiva.", "sourceReference": "https://indata.istat.it/ctur/index.php"},
+            "dettaglio_territoriale": {"state": AVAILABLE, "evidence": "Istat diffonde la capacità ricettiva a livello comunale e anche a livelli territoriali più ampi, inclusi provincia, regione e Italia.", "sourceReference": "https://www.istat.it/tavole-di-dati/capacita-degli-esercizi-ricettivi-anno-2010/"},
+            "benchmark_toscana_italia": {"state": AVAILABLE, "evidence": "La stessa rilevazione Istat diffonde dati comparabili a livello regionale e nazionale oltre al Comune, quindi sono disponibili benchmark Toscana/Italia coerenti.", "sourceReference": "https://www.istat.it/tavole-di-dati/capacita-degli-esercizi-ricettivi-anno-2010/"},
+            "categorie_specifiche": {"state": AVAILABLE, "evidence": "La rilevazione distingue tipologie di struttura ricettiva e, per gli alberghi, anche classe dimensionale; tali categorie non sono acquisite nella metrica tourismBeds.", "sourceReference": "https://indata.istat.it/ctur/index.php"},
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
