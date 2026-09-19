@@ -184,10 +184,16 @@ def acquire_indicator(indicator_id: int, metric: dict[str, Any]) -> dict[str, An
 
     meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
     expected_period = _norm_period(meta.get("year"))
-    if periods[-1] != expected_period:
+    if expected_period not in periods:
         raise RuntimeError(
-            f"ARS {indicator_id}: ultimo periodo {periods[-1]} != catalogo {expected_period}"
+            f"ARS {indicator_id}: periodo catalogo {expected_period} assente dalla fonte {periods}"
         )
+    expected_index = periods.index(expected_period)
+    periods = periods[: expected_index + 1]
+    series = {
+        geography: values[: expected_index + 1]
+        for geography, values in series.items()
+    }
 
     rows = _metric_rows(metric)
     for town, row in rows.items():
