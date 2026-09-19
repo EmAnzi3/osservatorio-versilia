@@ -279,7 +279,10 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 821, backlog['summary']
+          assert (
+              backlog['summary']['availableMissingPairCount']
+              == matrix['summary']['state_AVAILABLE_MISSING']
+          ), backlog['summary']
           print(
               'A3.5 Istat Census components: '
               f'{len(expected)} coppie strutturalmente ACQUIRED; '

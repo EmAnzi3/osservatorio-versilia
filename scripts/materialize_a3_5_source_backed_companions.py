@@ -375,13 +375,14 @@ def _apply_business(metrics: dict[str, Any], asia: dict[str, Any], frame: dict[s
                 formula = "((unità locali 2023 / unità locali 2018) − 1) × 100"
 
             normalized = _num(row["value"], f"{metric_id}/{town}: value")
+            absolute = numerator if transform == "ratio" else numerator - denominator
             _attach_source_component(
                 row=row,
                 metric_id=metric_id,
                 numerator=numerator,
                 denominator=denominator,
                 normalized=normalized,
-                absolute=numerator,
+                absolute=absolute,
                 scale=scale,
                 transform=transform,
                 formula=formula,

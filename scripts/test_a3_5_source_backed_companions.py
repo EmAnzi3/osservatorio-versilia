@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 import tempfile
 from pathlib import Path
 
@@ -158,6 +159,17 @@ def test_source_backed_companions() -> None:
                 openbdap._ratio_value(ratio),
                 f"test {metric_id}/{row['town']}",
             )
+
+    for metric_id in ("localEmployeesChange", "localUnitsChange"):
+        for row in site["metrics"][metric_id]["rows"]:
+            component = row["sourceBackedComponents"]
+            assert component["transform"] == "pct_change"
+            assert math.isclose(
+                float(component["absolute"]),
+                float(component["numerator"]) - float(component["denominator"]),
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            ), (metric_id, row["town"], component)
 
     assert sum(len(dimensions) for dimensions in pairs.values()) == 34
 
