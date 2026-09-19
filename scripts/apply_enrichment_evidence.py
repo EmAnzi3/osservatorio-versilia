@@ -672,6 +672,42 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "economyActivityAtlas": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive attività economiche e codici ATECO localizzati nel Comune. Il sesso non è una dimensione semantica dell'attività economica misurata; riguarderebbe eventualmente persone collegate all'impresa, cioè un oggetto diverso.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica descrive attività economiche e codici ATECO localizzati nel Comune. L'età non è una dimensione semantica dell'attività economica misurata; riguarderebbe eventualmente persone collegate all'impresa, cioè un oggetto diverso.",
+            },
+        },
+        "erpArrears": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la morosità ERP come grandezza economica riferita al patrimonio/gestione. Il sesso descriverebbe eventualmente gli assegnatari o debitori, non la grandezza economica pubblicata.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura la morosità ERP come grandezza economica riferita al patrimonio/gestione. L'età descriverebbe eventualmente gli assegnatari o debitori, non la grandezza economica pubblicata.",
+            },
+        },
+        "roadFinesPerResident": {
+            "sesso": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura i proventi da sanzioni al Codice della strada rapportati alla popolazione residente media. Il sesso non è una dimensione della grandezza economica pubblicata; descriverebbe eventualmente trasgressori o residenti, cioè un oggetto diverso.",
+            },
+            "eta": {
+                "state": NOT_APPLICABLE,
+                "evidence": "La metrica misura i proventi da sanzioni al Codice della strada rapportati alla popolazione residente media. L'età non è una dimensione della grandezza economica pubblicata; descriverebbe eventualmente trasgressori o residenti, cioè un oggetto diverso.",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
