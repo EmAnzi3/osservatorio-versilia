@@ -78,7 +78,6 @@ def _population_breakdown(detail: list[dict[str, Any]], *, year: int) -> dict[st
                 "label": label,
                 "count": count,
                 "value": count,
-                "sharePercent": count / total * 100 if total else 0.0,
             }
         )
     return {
@@ -168,7 +167,6 @@ def _foreign_breakdown(citizenship: list[dict[str, Any]], *, year: int) -> dict[
                 "label": label,
                 "count": count,
                 "value": count,
-                "shareWithinForeignResidentsPercent": count / total * 100,
             }
         )
     return {
@@ -181,8 +179,8 @@ def _foreign_breakdown(citizenship: list[dict[str, Any]], *, year: int) -> dict[
         "total": total,
         "groups": groups,
         "note": (
-            "Le percentuali descrivono la composizione per sesso dei residenti stranieri; "
-            "non sono quote calcolate sulla popolazione maschile o femminile complessiva."
+            "Il breakdown espone conteggi per sesso dei residenti stranieri; "
+            "non introduce quote su denominatori maschili o femminili non presenti nello snapshot."
         ),
     }
 
