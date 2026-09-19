@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import enrichment_audit_matrix_core as matrix_core
+import enrichment_audit_matrix_structural_base as structural_base
 import materialize_a3_5_demography_sex as enrichment
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,17 @@ def test_demography_sex_enrichment() -> None:
     demography = load(DEMOGRAPHY_SNAPSHOT_PATH)
     rcs = load(RCS_SNAPSHOT_PATH)
 
+    baseline_non_sex = {
+        metric_id: {
+            dimension: structural_base.acquired_evidence(
+                site["metrics"][metric_id], dimension
+            )
+            for dimension in matrix_core.DIMENSIONS
+            if dimension != "sesso"
+        }
+        for metric_id in TARGETS
+    }
+
     summary = enrichment.apply_enrichment(site, demography, rcs)
     assert summary == {"metricsEnriched": 3, "towns": 7, "pairsAcquired": 3}
 
@@ -58,6 +70,14 @@ def test_demography_sex_enrichment() -> None:
         assert aggregate["dimension"] == "sesso", metric_id
         assert aggregate["sourceUrl"], metric_id
         assert set(groups(aggregate)) == {"men", "women"}
+        for dimension, expected_evidence in baseline_non_sex[metric_id].items():
+            observed_evidence = structural_base.acquired_evidence(metric, dimension)
+            assert observed_evidence == expected_evidence, (
+                metric_id,
+                dimension,
+                expected_evidence,
+                observed_evidence,
+            )
 
     population = site["metrics"]["population"]
     for row in population["rows"]:
@@ -74,17 +94,18 @@ def test_demography_sex_enrichment() -> None:
     for row in dependency["rows"]:
         for group in row["sexBreakdown"]["groups"]:
             structural, elderly = group["indices"]
+            bands = group["populationBands"]
+            denominator = bands["age15to64"]
             assert structural["key"] == "structural"
             assert elderly["key"] == "elderly"
-            assert structural["denominator"] > 0
-            assert elderly["denominator"] == structural["denominator"]
+            assert denominator > 0
             assert abs(
                 structural["value"]
-                - structural["numerator"] / structural["denominator"] * 100
+                - (bands["age0to14"] + bands["age65plus"]) / denominator * 100
             ) < 1e-9
             assert abs(
                 elderly["value"]
-                - elderly["numerator"] / elderly["denominator"] * 100
+                - bands["age65plus"] / denominator * 100
             ) < 1e-9
 
     foreign = site["metrics"]["foreignResidents"]
