@@ -1062,6 +1062,150 @@ for metric_id, dimensions in {
     METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
 
 
+
+for metric_id, dimensions in {
+        "disability064Per1000": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica l'indicatore sintetico delle persone 0-64 anni con disabilità per 1.000 residenti 0-64; nel rilascio degli indicatori comunali non è esposto il conteggio assoluto companion necessario alla coppia assoluto/normalizzato.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "I metadati definiscono il tasso sulla popolazione 0-64, ma la batteria comunale diffonde il valore dell'indicatore senza pubblicare come campi separati numeratore e denominatore.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Il rilascio comunale espone un unico indicatore aggregato 0-64 anni con disabilità anche gravi e non pubblica, per lo stesso indicatore, categorie di disabilità o gravità.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "foreignBornSoleProprietorShare": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica la percentuale di ditte individuali attive con conduttore nato all'estero, ma non affianca il corrispondente conteggio assoluto nello stesso rilascio comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "Il valore diffuso è una percentuale sintetica; il file degli indicatori comunali non espone separatamente il numero di ditte con conduttore nato all'estero e il totale delle ditte individuali attive.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Per questo indicatore la batteria comunale non pubblica disaggregazioni per settore, paese di nascita o altra categoria del conduttore.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "innovationBusinessShare": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale diffonde la quota percentuale di imprese attive nei settori dell'innovazione e non il corrispondente conteggio assoluto companion nello stesso rilascio comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "I metadati identificano le divisioni ATECO incluse, ma la batteria pubblica l'indicatore percentuale aggregato senza i due conteggi che ne formano numeratore e denominatore.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Le divisioni ATECO che definiscono il perimetro sono documentate, ma il file degli indicatori comunali non diffonde valori separati per ciascuna divisione per questa metrica.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "municipalOnlineServicesAdvanced": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale diffonde la percentuale di servizi comunali offerti online al massimo livello di disponibilità senza affiancare il relativo conteggio assoluto dei servizi.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "Il rilascio comunale espone la quota sintetica dei servizi ai livelli avanzati, non i conteggi separati dei servizi avanzati e dei servizi complessivamente considerati.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "I metadati descrivono i livelli 3 e 4 della rilevazione ICT, ma la batteria comunale non pubblica per questa metrica valori distinti per livello o per tipologia di servizio.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "organicAgriculturalAreaShare": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria regionale pubblica la percentuale di SAU coltivata con metodo biologico e non affianca nello stesso rilascio comunale la superficie biologica assoluta.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "Il file degli indicatori comunali diffonde la quota percentuale di SAU biologica senza esporre separatamente come campi la SAU biologica e la SAU totale usate nel rapporto.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria pubblica un valore aggregato della quota biologica e non espone, per questa metrica, categorie di coltura o altre disaggregazioni agricole.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "youthOtherStatus": {
+            "assoluto_normalizzato": {
+                "state": UNAVAILABLE,
+                "evidence": "La fonte regionale diffonde la percentuale dei giovani 15-24 anni in altra condizione professionale senza il corrispondente conteggio assoluto companion nel rilascio comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "numeratore_denominatore": {
+                "state": UNAVAILABLE,
+                "evidence": "La batteria pubblica la quota sintetica sulla fascia 15-24 anni e non espone come campi separati il numero di giovani in altra condizione e la popolazione di riferimento.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "L'indicatore regionale aggrega la voce 'altra condizione professionale' e non la scompone in categorie ulteriori nel file comunale.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "emsResponseTimeP75": {
+            "categorie_specifiche": {
+                "state": UNAVAILABLE,
+                "evidence": "Il metadato regionale definisce un unico 75° percentile dell'intervallo tra allarme e arrivo del primo mezzo; la batteria comunale non espone lo stesso percentile per priorità, tipologia di mezzo o altra categoria d'intervento.",
+                "sourceReference": "https://www.regione.toscana.it/documents/d/guest/modellometadatinew-1",
+            },
+        },
+        "tourismBeds": {
+            "serie_storica": {
+                "state": AVAILABLE,
+                "evidence": "La rilevazione Istat sulla capacità ricettiva è annuale e viene diffusa su annualità successive; la pipeline governata conserva oggi il dato pubblicato senza acquisire una serie storica strutturata della metrica.",
+                "sourceReference": "https://indata.istat.it/ctur/index.php",
+            },
+            "dettaglio_territoriale": {
+                "state": AVAILABLE,
+                "evidence": "Istat rileva i posti letto a livello di singolo Comune e diffonde gli stessi aggregati anche a scale territoriali più ampie, rendendo disponibile un dettaglio territoriale coerente oltre alla vista comunale governata.",
+                "sourceReference": "https://www.istat.it/informazioni-sulla-rilevazione/capacita-degli-esercizi-ricettivi/",
+            },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "Istat diffonde la capacità ricettiva e i posti letto per Italia e regioni con la stessa famiglia statistica, consentendo il benchmark Toscana/Italia coerente con il dato comunale.",
+                "sourceReference": "https://noi-italia.istat.it/pagina.php?L=0&categoria=8&dove=ITALIA",
+            },
+            "categorie_specifiche": {
+                "state": AVAILABLE,
+                "evidence": "La rilevazione Istat distingue i posti letto per tipologia di struttura ricettiva e, per gli alberghi, anche per categoria e classe dimensionale; la pipeline pubblica oggi il totale senza questa disaggregazione strutturata.",
+                "sourceReference": "https://indata.istat.it/ctur/index.php",
+            },
+        },
+        "economyActivityAtlas": {
+            "frequenza_infra_annuale": {
+                "state": AVAILABLE,
+                "evidence": "La Banca dati Imprese Toscana usa il Registro Imprese InfoCamere: per imprese registrate e attive l'anno in corso è riferito all'ultimo trimestre disponibile e la Regione pubblica anche serie storiche trimestrali dal 2009. La pipeline governa oggi l'atlante su base annuale.",
+                "sourceReference": "https://www.regione.toscana.it/statistiche/banca-dati-imprese",
+            },
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(dimensions)
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():

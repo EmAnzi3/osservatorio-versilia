@@ -8,45 +8,58 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Workstream attivo:** `A3 — Enrichment Audit globale`
 - **Step attivo:** `A3.2` — classificazione indicatore × dimensione
 - **Stato:** `IN_PROGRESS`
-- **Main verificato:** `0eab4a474518bd2c2d46e6f68041dd747c44bc43` (merge `#250`)
+- **Main verificato:** `4628c3514cc83b2f404dcfc9ed61224307fba82c` (merge `#251`)
 - **Catalogo pubblico governato:** 225 indicatori
-- **Matrice A3.2 post-#250:** 2.025 coppie; **1.860 classificate, 165 residue**
-- **A3 final head #250:** run `35427835657` **GREEN**
-- **Pages final head #250:** run `35427835778` **GREEN** (Quick + Full)
-- **Pages post-merge #250:** run `35429886826` **GREEN**
-- **Live status post-merge #250:** run `35430142810` **GREEN**
-- **Branch corrente:** `chore/a3-2-demographic-evidence-batch`
+- **Matrice A3.2 post-#251:** 2.025 coppie; **1.890 classificate, 135 residue**
+- **A3 final head #251:** run `35430634616` **GREEN**
+- **Pages final head #251:** run `35430634633` **GREEN** (Quick + Full)
+- **Pages post-merge #251:** run `35431884819` **GREEN**
+- **Live status post-merge #251:** run `35432134481` **GREEN**
+- **Branch corrente:** `chore/a3-2-scalar-tourism-evidence-batch`
 
-## Residuo effettivo post-#250
+## Residuo effettivo post-#251
 
-Le **165** coppie residue sono distribuite su:
+Le **135** coppie residue sono distribuite su:
 
-- `eta`: 36
 - `assoluto_normalizzato`: 25
 - `categorie_specifiche`: 25
 - `serie_storica`: 24
-- `sesso`: 24
+- `eta`: 21
 - `numeratore_denominatore`: 11
 - `frequenza_infra_annuale`: 10
+- `sesso`: 9
 - `benchmark_toscana_italia`: 6
 - `dettaglio_territoriale`: 4
 
-## Intervento corrente — batch demografico D
+## Intervento corrente — batch scalar/tourism
 
-Il batch classifica **30** coppie `sesso/eta` con evidenza ufficiale, senza regole source-profile eterogenee:
+Il batch classifica **24** coppie con evidenza ufficiale verificata e solo override metric-specific:
 
-- **Regione Toscana — Indicatori comunali:** 14 coppie su 7 metriche. I metadati ufficiali pubblicano valori comunali scalari; 8 coppie informative ma non disponibili sono `SOURCE_UNAVAILABLE`, 6 coppie non semanticamente pertinenti sono `NOT_APPLICABLE`.
-- **Istat — Frame SBS Territoriale:** 8 coppie su 4 indicatori economici, tutte `SOURCE_UNAVAILABLE`; il rilascio territoriale espone territorio, attività economica, dimensione e governance ma non sesso/età per gli indicatori comunali.
-- **Regione Toscana — Biblioteche:** 6 coppie. `libraryActiveBorrowersPer100 × eta` è `AVAILABLE_MISSING` perché il tracciato espone 0-14, 15-24, 25-64, 65+; tre coppie sono `SOURCE_UNAVAILABLE`; gli orari di apertura per sesso/età sono `NOT_APPLICABLE`.
-- **Istat — capacità ricettiva:** `tourismBeds × sesso/eta` è `NOT_APPLICABLE`.
+- **Regione Toscana — Indicatori comunali:** 19 coppie residue su 7 metriche (`assoluto_normalizzato`, `numeratore_denominatore`, `categorie_specifiche`) come `SOURCE_UNAVAILABLE`; la batteria ufficiale diffonde gli indicatori comunali sintetici e i metadati, ma non i companion assoluti/componenti/disaggregazioni richiesti per queste specifiche metriche.
+- **Istat — capacità degli esercizi ricettivi:** 4 coppie di `tourismBeds` come `AVAILABLE_MISSING`: serie storica, dettaglio territoriale, benchmark Toscana/Italia e tipologie ricettive sono disponibili nella rilevazione ufficiale ma non acquisite strutturalmente dalla pipeline corrente.
+- **Regione Toscana / InfoCamere — Banca dati Imprese:** `economyActivityAtlas × frequenza_infra_annuale` come `AVAILABLE_MISSING`; la fonte ufficiale espone dati dell'anno in corso all'ultimo trimestre disponibile e serie storiche trimestrali.
 
-**Esito atteso:** **1.890 classificate / 135 residue**.
+Nessuna nuova classificazione source-profile è introdotta; gli override si aggiungono con `METRIC_EVIDENCE.setdefault(...).update(...)` e preservano tutta l'evidenza precedente.
+
+**Esito atteso:** **1.914 classificate / 111 residue**.
 
 Composizione batch:
 
-- `AVAILABLE_MISSING`: **1**
+- `AVAILABLE_MISSING`: **5**
 - `SOURCE_UNAVAILABLE`: **19**
-- `NOT_APPLICABLE`: **10**
+- `NOT_APPLICABLE`: **0**
+
+Residuo atteso dopo il batch:
+
+- `serie_storica`: 23
+- `eta`: 21
+- `assoluto_normalizzato`: 19
+- `categorie_specifiche`: 17
+- `sesso`: 9
+- `frequenza_infra_annuale`: 9
+- `benchmark_toscana_italia`: 5
+- `numeratore_denominatore`: 5
+- `dettaglio_territoriale`: 3
 
 ## Decisioni vincolanti
 
@@ -64,7 +77,7 @@ Composizione batch:
 ## Prossima azione esatta
 
 1. Aprire una sola PR sul branch corrente.
-2. Eseguire un solo ciclo A3 Enrichment Audit + Quick + Full sul final head.
-3. Verificare nel log A3 il conteggio esatto **1.890 / 135** e le 30 classificazioni.
+2. Eseguire A3 Enrichment Audit + Quick + Full sul final head.
+3. Verificare nel log A3 il conteggio esatto **1.914 / 111** e le 24 classificazioni.
 4. Fermarsi prima del merge.
-5. Dopo merge autorizzato, ricostruire le 135 residue e preparare il prossimo batch sostanzioso.
+5. Dopo merge autorizzato, ricostruire le 111 residue e preparare il prossimo batch sostanzioso.
