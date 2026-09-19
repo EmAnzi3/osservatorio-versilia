@@ -281,6 +281,25 @@ jobs:
               ('landCoverProfile', 'frequenza_infra_annuale'): 'SOURCE_UNAVAILABLE',
               ('tourismIntensity', 'frequenza_infra_annuale'): 'AVAILABLE_MISSING',
           }
+          ars_age_unavailable_expected = {
+              ('diagnosticImagingServices', 'eta'),
+              ('elderlyHomeCare', 'eta'),
+              ('emergencyAccess', 'eta'),
+              ('lifeExpectancy', 'eta'),
+              ('mortalityAll', 'eta'),
+              ('mortalityCancer', 'eta'),
+              ('mortalityCirculatory', 'eta'),
+              ('mortalityRespiratory', 'eta'),
+              ('permanentRsaAssisted', 'eta'),
+              ('specialistVisits7Psr', 'eta'),
+          }
+          ars_component_available_expected = {
+              ('chronicTotal', 'assoluto_normalizzato'),
+              ('chronicTotal', 'numeratore_denominatore'),
+              ('hospitalizedAll', 'sesso'),
+              ('hospitalizedAll', 'assoluto_normalizzato'),
+              ('hospitalizedAll', 'numeratore_denominatore'),
+          }
           semantic_not_applicable_expected = {
               ('agriculturalUsedArea', 'sesso'),
               ('agriculturalUsedArea', 'eta'),
@@ -435,18 +454,30 @@ jobs:
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['sourceReference'], (pair, row)
 
+          for pair in sorted(ars_age_unavailable_expected):
+              row = rows[pair]
+              assert row['state'] == 'SOURCE_UNAVAILABLE', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
+          for pair in sorted(ars_component_available_expected):
+              row = rows[pair]
+              assert row['state'] == 'AVAILABLE_MISSING', (pair, row)
+              assert row['classificationOrigin'] == 'metric_override', (pair, row)
+              assert row['sourceReference'], (pair, row)
+
           for pair in sorted(semantic_not_applicable_expected):
               row = rows[pair]
               assert row['state'] == 'NOT_APPLICABLE', (pair, row)
               assert row['classificationOrigin'] == 'metric_override', (pair, row)
               assert row['evidence'], (pair, row)
 
-          assert summary['classifiedPairCount'] == 1919, summary
-          assert summary['unclassifiedPairCount'] == 106, summary
+          assert summary['classifiedPairCount'] == 1934, summary
+          assert summary['unclassifiedPairCount'] == 91, summary
           print(
               'A3 effective matrix: '
               f"{summary['classifiedPairCount']} classified / "
               f"{summary['unclassifiedPairCount']} residual; "
-              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 33 regional-indicator source-unavailable + 4 tourism-beds available-missing + 2 tourism-beds source-unavailable + 3 library available-missing + 6 library source-unavailable + 8 Frame-SBS demographic source-unavailable + 3 additional infra-year classifications + 34 semantic N/A pairs verified.'
+              '12 special-route + 8 age companion + 10 ratio + 3 normalized companion + 9 demographic formula + 2 staff turnover + 4 canonical-field ratio + 7 available-missing ratio + 7 infra-year available-missing + 5 infra-year metric-unavailable + 19 ARS infra-year source-unavailable + 4 annual source-unavailable + 33 regional-indicator source-unavailable + 4 tourism-beds available-missing + 2 tourism-beds source-unavailable + 3 library available-missing + 6 library source-unavailable + 8 Frame-SBS demographic source-unavailable + 3 additional infra-year classifications + 10 ARS age source-unavailable + 5 ARS component available-missing + 34 semantic N/A pairs verified.'
           )
           PY
