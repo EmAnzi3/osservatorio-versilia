@@ -35,6 +35,7 @@ jobs:
           python scripts/test_enrichment_structural_closure.py
           python scripts/test_enrichment_route_evidence.py
           python scripts/test_enrichment_companion_evidence.py
+          python scripts/test_enrichment_source_audit.py
 
       - name: Materialize effective public catalog
         env:
@@ -60,7 +61,8 @@ jobs:
           python scripts/enrichment_audit_matrix.py \
             --data dist/data/site-data.json \
             --registry dist/data/source-registry.json \
-            --output /tmp/a3-enrichment-matrix.json
+            --output /tmp/a3-enrichment-matrix.json \
+            --allow-unclassified
 
       - name: Report residual A3 pairs
         run: |
@@ -78,6 +80,62 @@ jobs:
           for row in residual:
               print(f"A3_RESIDUAL {row['metricId']} :: {row['dimension']} :: {row.get('sourceProfileId') or '-'}")
           PY
+
+      - name: Enforce strict A3.2 completion
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          sys.path.insert(0, str(Path('scripts').resolve()))
+          import enrichment_audit_matrix_core as audit
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          audit.validate_matrix(matrix, require_complete=True)
+          summary = matrix['summary']
+          print(
+              'A3.2 strict gate: '
+              f"{summary['classifiedPairCount']} classificate / "
+              f"{summary['unclassifiedPairCount']} residue."
+          )
+          PY
+
+      - name: Build A3.3 source audit
+        run: |
+          python scripts/enrichment_source_audit.py \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --registry dist/data/source-registry.json \
+            --json-output /tmp/a3-source-audit.json \
+            --markdown-output /tmp/a3-source-audit.md
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          audit = json.load(open('/tmp/a3-source-audit.json', encoding='utf-8'))
+          ms = matrix['summary']
+          summary = audit['summary']
+          assert summary['publicMetricCount'] == ms['publicMetricCount'], (summary, ms)
+          assert summary['sourceProfileCount'] == ms['sourceProfileCount'], (summary, ms)
+          assert summary['pairCount'] == ms['pairCount'], (summary, ms)
+          assert summary['dimensionCount'] == ms['dimensionCount'], (summary, ms)
+          print(
+              'A3.3 source audit coverage: '
+              f"{summary['sourceProfileCount']} profili fonte · "
+              f"{summary['publicMetricCount']} indicatori · "
+              f"{summary['pairCount']} coppie · "
+              f"{summary['availableMissingPairCount']} AVAILABLE_MISSING."
+          )
+          PY
+
+      - name: Upload A3.3 source audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-source-audit
+          path: |
+            /tmp/a3-source-audit.json
+            /tmp/a3-source-audit.md
+          if-no-files-found: error
 
       - name: Verify route and demographic closures
         run: |

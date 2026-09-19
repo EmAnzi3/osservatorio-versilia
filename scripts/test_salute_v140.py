@@ -97,6 +97,21 @@ def main() -> None:
         assert data["release_version"] == "1.40.0"
         assert registry["expectedMetricCount"] == len(data["metrics"])
         assert registry["expectedInlineMetricCount"] + registry["expectedExternalMetricCount"] == len(data["metrics"])
+        rsa_profile = registry["sourceProfiles"]["regione-toscana-rsa"]
+        for field in (
+            "publisher",
+            "frequency",
+            "frequencyLabel",
+            "expectedRelease",
+            "acquisitionMethod",
+            "licenseName",
+            "licenseUrl",
+        ):
+            assert str(rsa_profile.get(field) or "").strip(), field
+        assert rsa_profile["licenseUrl"] == (
+            "https://www.regione.toscana.it/-/"
+            "elenco-strutture-del-sistema-sociale-integrato-accreditate"
+        )
 
         salute = data["themes"]["salute"]
         theme_keys = set(salute["metrics"])

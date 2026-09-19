@@ -579,12 +579,14 @@ def write_matrix(
     allow_unclassified: bool,
 ) -> dict[str, Any]:
     payload = build_matrix(load(data_path), load(registry_path))
-    validate_matrix(payload, require_complete=not allow_unclassified)
     if output_path is not None:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(
             json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
+    # Persist the diagnostic matrix before enforcing strict completion so a
+    # future unclassified pair remains inspectable by the following CI steps.
+    validate_matrix(payload, require_complete=not allow_unclassified)
     return payload
 
 
