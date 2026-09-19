@@ -15,7 +15,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Pages final head #259:** run `35451203130` **GREEN**
 - **Live status post-merge #259:** run `35452607256` / `ov-pages-live` **GREEN**
 - **A3.4 backlog post-#259:** **872 AVAILABLE_MISSING → 263 pacchetti su 63 profili**
-- **Branch corrente:** `feat/a3-5-demography-sex-enrichment`
+- **Branch corrente:** `feat/a3-5-demography-sex-enrichment` · PR **#260** Ready
 
 ## Intervento corrente — A3.5 lotto 1
 
@@ -38,6 +38,7 @@ Nello stesso PR vengono chiusi i due P2 validi emersi dalla review di #259:
 
 1. la rubric A3.4 usa chiavi JSON stabili e viene validata anche dopo serializzazione/deserializzazione;
 2. il regression test A3.4 e il nuovo test A3.5 entrano nel preflight canonico Quick/Full, oltre al workflow A3.
+3. `ci/workflow-contract.json` dichiara ora l'inventario dei regression check Quick e `preflight.py` lo usa come fonte, evitando una seconda lista divergente.
 
 ## Decisioni vincolanti
 
@@ -52,10 +53,9 @@ Nello stesso PR vengono chiusi i due P2 validi emersi dalla review di #259:
 
 ## Prossima azione esatta
 
-1. Completare il branch corrente e aprire una sola PR Ready.
-2. Eseguire un unico ciclo A3 Enrichment Audit + Quick + Full sul final head.
-3. Verificare matrice **2.025 / 0**.
-4. Verificare `population`, `dependencyIndices`, `foreignResidents` × `sesso` = `ACQUIRED` / `catalog_structure`.
-5. Verificare backlog A3.4 rigenerato a **869 AVAILABLE_MISSING** e assenza delle tre coppie dal backlog.
-6. Verificare artifact A3.3/A3.4 e assenza di regressioni Quick/Full.
-7. Fermarsi prima del merge.
+1. Eseguire un unico ciclo finale A3 Enrichment Audit + Quick + Full sul final head di PR #260.
+2. Verificare matrice **2.025 / 0**.
+3. Verificare `population`, `dependencyIndices`, `foreignResidents` × `sesso` = `ACQUIRED` / `catalog_structure`.
+4. Verificare backlog A3.4 rigenerato a **869 AVAILABLE_MISSING** e assenza delle tre coppie dal backlog.
+5. Verificare artifact A3.3/A3.4, contract Quick e assenza di regressioni Quick/Full.
+6. Fermarsi prima del merge.
