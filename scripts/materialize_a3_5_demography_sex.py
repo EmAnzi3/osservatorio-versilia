@@ -110,7 +110,7 @@ def _dependency_for_sex(detail: list[dict[str, Any]], sex_key: str) -> dict[str,
     elderly = bands["age65plus"] / denominator * 100
     return {
         "value": structural,
-        "parts": [
+        "indices": [
             {
                 "key": "structural",
                 "label": "Indice di dipendenza strutturale",
@@ -259,9 +259,9 @@ def apply_enrichment(
         men_dependency = _dependency_for_sex(detail, "men")
         women_dependency = _dependency_for_sex(detail, "women")
         combined_structural = (
-            men_dependency["parts"][0]["numerator"] + women_dependency["parts"][0]["numerator"]
+            men_dependency["indices"][0]["numerator"] + women_dependency["indices"][0]["numerator"]
         ) / (
-            men_dependency["parts"][0]["denominator"] + women_dependency["parts"][0]["denominator"]
+            men_dependency["indices"][0]["denominator"] + women_dependency["indices"][0]["denominator"]
         ) * 100
         _assert_close(
             combined_structural,
@@ -307,9 +307,9 @@ def apply_enrichment(
     total_men = _dependency_for_sex(combined_age_sex, "men")
     total_women = _dependency_for_sex(combined_age_sex, "women")
     combined_value = (
-        total_men["parts"][0]["numerator"] + total_women["parts"][0]["numerator"]
+        total_men["indices"][0]["numerator"] + total_women["indices"][0]["numerator"]
     ) / (
-        total_men["parts"][0]["denominator"] + total_women["parts"][0]["denominator"]
+        total_men["indices"][0]["denominator"] + total_women["indices"][0]["denominator"]
     ) * 100
     _assert_close(
         combined_value,
