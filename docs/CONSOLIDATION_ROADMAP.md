@@ -116,6 +116,8 @@ Nota A3.3: l'audit fonte-per-fonte è derivato dalla matrice A3 strict e dal sou
 
 Nota A3.4: il backlog è derivato da tutte le coppie `AVAILABLE_MISSING` e le raggruppa in pacchetti `sourceProfileId × dimensione`. L'ordinamento usa una policy esplicita e versionata di valore informativo e un proxy di costo 1..5 basato su riuso della stessa dimensione, livello dell'evidenza e frammentazione dei riferimenti fonte. Il gate verifica copertura 1:1 delle opportunità e pubblica artifact JSON/Markdown; nessun dato viene ancora acquisito.
 
+Nota A3.5 — lotto 1: la prima acquisizione controllata integra la dimensione `sesso` per `population`, `dependencyIndices` e `foreignResidents` riusando esclusivamente snapshot Istat POSAS/RCS già versionati e governati. Il materializzatore riconcilia 7/7 Comuni e aggregato Versilia, ricalcola gli indici di dipendenza per sesso e dichiara anno/unità/fonte nel nuovo `sexBreakdown`. Le tre coppie devono passare da `AVAILABLE_MISSING` a `ACQUIRED` per evidenza strutturale; A3.5 resta `IN_PROGRESS` dopo questo lotto.
+
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
 ---
