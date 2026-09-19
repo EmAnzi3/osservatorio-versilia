@@ -335,7 +335,7 @@ def apply_enrichment(site: dict[str, Any], snapshot_manifest: dict[str, Any]) ->
                 raise RuntimeError(f"{metric_id}/{town}: riga Frame SBS {YEAR}/total mancante")
             row_value = _num(row.get("value"), f"{metric_id}/{town}: value")
             row["frameSbsCategories"] = _category_payload(metric, row)
-            row["frameSbsAbsoluteNormalized"] = _absolute_normalized(metric_id, raw, row_value)
+            row["frameSbsScaleCompanion"] = _absolute_normalized(metric_id, raw, row_value)
             if metric_id in RATIO_TARGETS:
                 row["frameSbsRatioComponents"] = _ratio_payload(metric_id, raw, row_value)
             enriched_rows += 1
