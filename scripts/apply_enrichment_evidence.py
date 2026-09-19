@@ -1027,6 +1027,29 @@ for metric_id in (
     )
 
 
+
+for metric_id, annotation in {
+        "economyActivityAtlas": {
+            "state": UNAVAILABLE,
+            "evidence": "La diffusione regionale InfoCamere usata per l'atlante economico è organizzata per annualità e pubblica imprese registrate, attive, cessate e nuove iscritte nell'anno; non rende disponibile una serie mensile o trimestrale comunale metodologicamente equivalente per questo indicatore.",
+            "sourceReference": "https://www.regione.toscana.it/-/imprese-movimento-anagrafico-e-unit%C3%A0-locali-in-toscana-dati-infocamere-2024",
+        },
+        "landCoverProfile": {
+            "state": UNAVAILABLE,
+            "evidence": "La fonte UCS Toscana espone edizioni discrete della copertura del suolo (2007, 2010, 2013, 2016, 2019), non osservazioni mensili, trimestrali o semestrali della stessa classificazione territoriale.",
+            "sourceReference": "https://www502.regione.toscana.it/geoscopio/servizi/wms/USO_E_COPERTURA_DEL_SUOLO.htm",
+        },
+        "tourismIntensity": {
+            "state": AVAILABLE,
+            "evidence": "La Banca dati Turismo della Regione Toscana deriva dalla rilevazione Istat sul movimento dei clienti, svolta mensilmente, e rende disponibili serie mensili di arrivi e presenze; la metrica pubblicata non acquisisce questa frequenza infra-annuale.",
+            "sourceReference": "https://www.regione.toscana.it/statistiche/banca-dati-turismo",
+        },
+}.items():
+    METRIC_EVIDENCE.setdefault(metric_id, {}).update(
+        {"frequenza_infra_annuale": annotation}
+    )
+
+
 def _merge_dimensions(target: dict, dimensions: dict, owner: str) -> int:
     applied = 0
     for dimension, annotation in dimensions.items():
