@@ -505,14 +505,12 @@ EVIDENCE.update(
 
 
 
-EVIDENCE.update(
+EVIDENCE.setdefault("ars-toscana-mixed", {}).update(
     {
-        "ars-toscana-mixed": {
-            "frequenza_infra_annuale": {
-                "state": UNAVAILABLE,
-                "evidence": "La banca dati ARS 'La salute dei comuni' espone per ciascun indicatore il valore aggiornato all'ultimo anno disponibile e il relativo trend storico; il profilo è annuale o pluriennale secondo l'indicatore e non offre osservazioni mensili, trimestrali o semestrali metodologicamente equivalenti.",
-                "sourceReference": "https://www.ars.toscana.it/aree-dintervento/la-salute-di/salute-dei-toscani/profilo-di-salute-dei-toscani/news/3394-da-oggi-tutti-gli-indicatori-dell-ars-accessibili-da-un-unica-pagina.html",
-            },
+        "frequenza_infra_annuale": {
+            "state": UNAVAILABLE,
+            "evidence": "La banca dati ARS 'La salute dei comuni' espone per ciascun indicatore il valore aggiornato all'ultimo anno disponibile e il relativo trend storico; il profilo è annuale o pluriennale secondo l'indicatore e non offre osservazioni mensili, trimestrali o semestrali metodologicamente equivalenti.",
+            "sourceReference": "https://www.ars.toscana.it/aree-dintervento/la-salute-di/salute-dei-toscani/profilo-di-salute-dei-toscani/news/3394-da-oggi-tutti-gli-indicatori-dell-ars-accessibili-da-un-unica-pagina.html",
         },
     }
 )
