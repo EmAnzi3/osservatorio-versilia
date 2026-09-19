@@ -42,6 +42,7 @@ jobs:
           python scripts/test_a3_5_frame_sbs_dimensions.py
           python scripts/test_a3_5_istat_census_components.py
           python scripts/test_a3_5_source_backed_companions.py
+          python scripts/test_a3_5_historical_mef_companions.py
 
       - name: Materialize effective public catalog
         env:
@@ -358,9 +359,71 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 787, backlog['summary']
+          assert (
+              backlog['summary']['availableMissingPairCount']
+              == matrix['summary']['state_AVAILABLE_MISSING']
+          ), backlog['summary']
           print(
               'A3.5 source-backed companions: '
+              f'{len(expected)} coppie strutturalmente ACQUIRED; '
+              f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
+          )
+          PY
+
+      - name: Verify A3.5 historical and MEF companions
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+
+          expected = {
+              ('industryValueAddedShare', 'serie_storica'),
+              ('industryValueAddedShare', 'categorie_specifiche'),
+              ('industryWorkerShare', 'serie_storica'),
+              ('industryWorkerShare', 'categorie_specifiche'),
+              ('localEmployeesChange', 'serie_storica'),
+              ('localUnitsChange', 'serie_storica'),
+              ('populationChange', 'serie_storica'),
+              ('rigidExpenditureShare', 'serie_storica'),
+              ('incomeSourceProfile', 'numeratore_denominatore'),
+              ('incomeSourceProfile', 'assoluto_normalizzato'),
+              ('pensionIncomeShare', 'numeratore_denominatore'),
+              ('pensionIncomeShare', 'assoluto_normalizzato'),
+              ('municipalIrpef', 'assoluto_normalizzato'),
+          }
+          assert len(expected) == 13, len(expected)
+
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              metric_id, dimension = pair
+              if dimension == 'serie_storica':
+                  assert 'a3History' in row['evidence'], (pair, row)
+              elif dimension == 'categorie_specifiche':
+                  assert 'businessCategoryBreakdown' in row['evidence'], (pair, row)
+              elif metric_id in {'incomeSourceProfile', 'pensionIncomeShare'}:
+                  assert 'mefScaleComponents' in row['evidence'], (pair, row)
+              else:
+                  assert 'municipalIrpefScaleCompanion' in row['evidence'], (pair, row)
+
+          backlog_pairs = {
+              (pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
+          assert backlog['summary']['availableMissingPairCount'] == 774, backlog['summary']
+          assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
+          print(
+              'A3.5 historical + MEF companions: '
               f'{len(expected)} coppie strutturalmente ACQUIRED; '
               f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
           )

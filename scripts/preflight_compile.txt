@@ -38,3 +38,5 @@ scripts/materialize_a3_5_istat_census_components.py
 scripts/test_a3_5_istat_census_components.py
 scripts/materialize_a3_5_source_backed_companions.py
 scripts/test_a3_5_source_backed_companions.py
+scripts/materialize_a3_5_historical_mef_companions.py
+scripts/test_a3_5_historical_mef_companions.py
