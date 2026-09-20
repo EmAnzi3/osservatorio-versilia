@@ -167,15 +167,17 @@ Nota A4.5–A4.6: la PR #271 introduce un gate di regressione visuale rappresent
 
 ## A5 — Design System 2.0
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: migliorare gerarchia e leggibilità riducendo la predominanza del beige senza perdere l'identità del progetto.
 
-- [ ] **A5.1** Audit quantitativo/visivo di superfici, contrasto, densità e gerarchia.
-- [ ] **A5.2** Definire ruoli cromatici: canvas neutro, superfici analitiche chiare, colore tematico usato come informazione.
-- [ ] **A5.3** Definire token comuni per background, card, bordi, testo, stati e temi.
+- [x] **A5.1** Audit quantitativo/visivo di superfici, contrasto, densità e gerarchia.
+- [x] **A5.2** Definire ruoli cromatici: canvas neutro, superfici analitiche chiare, colore tematico usato come informazione.
+- [x] **A5.3** Definire token comuni per background, card, bordi, testo, stati e temi.
 - [ ] **A5.4** Applicare il nuovo sistema a una pagina pilota e verificarlo desktop/mobile.
 - [ ] **A5.5** Estendere progressivamente senza modifiche massive non verificabili.
+
+Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e definisce la fondazione DS2 senza modificare la UI. La baseline CSS contiene 246 colori HEX distinti; `--paper` e `--surface` hanno contrasto 1,11:1; `--muted` su `--paper` è 4,37:1; 177/288 dichiarazioni `font-size` in px sono <= 11 px. L'audit rileva inoltre due sistemi tematici sovrapposti e copertura cromatica esplicita per 9 temi su 11. A5.2 separa canvas, superfici, testo, bordi, stati e tema; A5.3 converge `--theme-color` / `--theme-accent` in un solo vocabolario DS2. La prima modifica visuale è A5.4 e deve restare Draft fino ad approvazione desktop/mobile.
 
 **Definition of done:** i dati emergono visivamente dal layout, i temi restano riconoscibili e contrasto/leggibilità migliorano in modo misurabile.
 
