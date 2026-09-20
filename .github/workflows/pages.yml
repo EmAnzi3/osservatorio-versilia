@@ -53,6 +53,69 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+
+      - name: Capture A5 review before and after
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 273 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          rm -rf /tmp/a5-before /tmp/a5-review
+          git worktree add --detach /tmp/a5-before FETCH_HEAD
+          (
+            cd /tmp/a5-before
+            python scripts/build_static_brand.py
+            python scripts/build_data_status.py
+            python scripts/inject_data_status_runtime.py
+            python scripts/build_pnrr_toscana_deep_dive.py
+            python scripts/inject_pnrr_town_experience.py
+            python scripts/copy_percorsi_dist.py
+          )
+          mkdir -p /tmp/a5-review
+          python -m http.server 8011 --directory /tmp/a5-before/dist >/tmp/a5-before.log 2>&1 &
+          BEFORE_PID=$!
+          python -m http.server 8012 --directory dist >/tmp/a5-after.log 2>&1 &
+          AFTER_PID=$!
+          trap 'kill $BEFORE_PID $AFTER_PID 2>/dev/null || true; git worktree remove --force /tmp/a5-before 2>/dev/null || true' EXIT
+          sleep 2
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          out = Path("/tmp/a5-review")
+          targets = {
+              "before": "http://127.0.0.1:8011/confronta/demografia/?indicatore=population",
+              "after": "http://127.0.0.1:8012/confronta/demografia/?indicatore=population",
+          }
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              for label, url in targets.items():
+                  page = browser.new_page(viewport={"width": 1440, "height": 1000})
+                  page.goto(url, wait_until="networkidle")
+                  page.screenshot(path=str(out / f"{label}-desktop-top.png"))
+                  page.locator(".topic-dashboard").screenshot(path=str(out / f"{label}-desktop-dashboard.png"))
+                  page.screenshot(path=str(out / f"{label}-desktop-full.png"), full_page=True)
+                  page.close()
+
+                  mobile = browser.new_page(viewport={"width": 390, "height": 844})
+                  mobile.goto(url, wait_until="networkidle")
+                  mobile.screenshot(path=str(out / f"{label}-mobile-top.png"))
+                  mobile.locator(".topic-dashboard").scroll_into_view_if_needed()
+                  mobile.screenshot(path=str(out / f"{label}-mobile-dashboard.png"))
+                  mobile.screenshot(path=str(out / f"{label}-mobile-full.png"), full_page=True)
+                  mobile.close()
+              browser.close()
+          PY
+
+      - name: Upload A5 review screenshots
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number == 273 }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-review-before-after
+          path: /tmp/a5-review/
+          if-no-files-found: error
+          retention-days: 14
+
   full:
     name: full
     needs: quick
