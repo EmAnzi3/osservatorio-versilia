@@ -32,19 +32,18 @@ Totale acquisito nei lotti 1–7: **105 coppie**.
 
 Il lotto usa esclusivamente numeri ufficiali già versionati e non modifica valori, testi, grafici o renderer pubblici.
 
-Target verificabile: **21 coppie**:
+Target verificabile: **15 coppie**:
 - **8 Istat lavoro:** sesso/età per `femaleEmploymentRate`, `maleEmploymentRate`, `employmentGenderGap`; categorie occupati/in cerca/inattivi per i due tassi per sesso;
-- **10 AGCOM FTTH:** assoluto/normalizzato e categorie per quattro indicatori FTTH, più numeratore/denominatore per le due percentuali di copertura;
+- **4 MIM scuola:** numeratore/denominatore + assoluto/normalizzato per `studentsPerClass` e `primaryFullTimeShare`;
 - **3 RGS:** assoluto/normalizzato + categorie assunzioni/cessazioni per `municipalStaffTurnover`; sesso per `municipalStaffTraining`.
 
 Fonti congelate:
 - `data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json`;
 - `data/source-snapshots/lia-v1.4.0.json` per la sola riconciliazione dei valori pubblici 2023;
-- `data/source-snapshots/agid-asia-agcom-2026-08.json`;
 - `data/source-snapshots/rgs-amministrazione-2024.json`;
 - `data/source-snapshots/rgs-formazione-2024.json`.
 
-Effetto atteso: **AVAILABLE_MISSING 767 → 746**. A3.5 resta `IN_PROGRESS`; A3.6 non parte.
+Effetto atteso: **AVAILABLE_MISSING 767 → 752**. A3.5 resta `IN_PROGRESS`; A3.6 non parte.
 
 ## Decisioni vincolanti
 
@@ -60,7 +59,7 @@ Effetto atteso: **AVAILABLE_MISSING 767 → 746**. A3.5 resta `IN_PROGRESS`; A3.
 
 1. Completare lotto 8 e aprire PR Ready.
 2. Verificare sul final head A3, Quick e Full verdi.
-3. Confermare matrice 2025/2025, `unclassifiedPairCount = 0` e 746 `AVAILABLE_MISSING`.
+3. Confermare matrice 2025/2025, `unclassifiedPairCount = 0` e 752 `AVAILABLE_MISSING`.
 4. Correggere solo regressioni reali senza indebolire detector o contratti.
 5. Merge soltanto dopo approvazione esplicita del proprietario.
 6. Dopo il merge ripartire dal backlog LIVE; non iniziare A3.6 finché A3.5 non è realmente chiuso.
