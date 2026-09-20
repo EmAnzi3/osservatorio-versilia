@@ -420,7 +420,10 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert (\n              backlog['summary']['availableMissingPairCount']\n              == matrix['summary']['state_AVAILABLE_MISSING']\n          ), backlog['summary']
+          assert (
+              backlog['summary']['availableMissingPairCount']
+              == matrix['summary']['state_AVAILABLE_MISSING']
+          ), backlog['summary']
           assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
           print(
               'A3.5 historical + MEF companions: '
