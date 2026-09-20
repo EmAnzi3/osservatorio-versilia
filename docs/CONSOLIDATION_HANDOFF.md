@@ -14,7 +14,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Confronti baseline:** 84 `comparisonReference=aggregate` · 141 fallback media semplice
 - **Missing baseline:** 22 righe `n.d.` · 24 righe `n.a.`
 - **Branch corrente:** `feat/a4-visual-content-contract-foundation`
-- **PR corrente:** da aprire — A4.1 + A4.2
+- **PR corrente:** #269 — `A4: establish visualization and content contract` — Ready
 - **Modifiche visive:** nessuna
 
 ## A4.1–A4.2
