@@ -1015,10 +1015,10 @@
   }
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
+    const metric = data.metrics[metricKey];
     const actions = document.getElementById('compare-actions');
     const contextualInsight = document.getElementById('compare-contextual-insight');
     const townCards = document.getElementById('compare-town-cards');
-    const metric = data.metrics[metricKey];
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
