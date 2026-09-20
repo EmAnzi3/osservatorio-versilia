@@ -13,6 +13,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **A5.1–A5.3:** mergiati
 - **Pagina pilota:** `confronta/demografia/`
 - **Branch corrente:** `feat/a5-design-system-pilot`
+- **PR corrente:** #273 — `A5: pilot Design System 2.0 on Demografia` — Draft
 - **Modifiche visive al prodotto:** sì, limitate alla pagina confronto Demografia
 
 ## A5.4 — pilot DS2
