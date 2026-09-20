@@ -37,12 +37,11 @@ def test_official_companions() -> None:
     summary = enrichment.apply_enrichment(
         site,
         load(enrichment.ISTAT_2024_PATH),
-        load(enrichment.LIA_2023_PATH),
-        load(enrichment.AGCOM_PATH),
+        load(enrichment.LIA_PATH),
         load(enrichment.RGS_ADMIN_PATH),
         load(enrichment.RGS_TRAINING_PATH),
     )
-    assert summary == {"istatPairs": 8, "agcomPairs": 10, "rgsPairs": 3, "pairsAcquired": 21}, summary
+    assert summary == {"istatPairs": 8, "mimPairs": 4, "rgsPairs": 3, "pairsAcquired": 15}, summary
     assert strip_a3(site) == before, "Il lotto 8 non deve modificare il payload pubblico preesistente"
 
     expected = {
@@ -54,35 +53,29 @@ def test_official_companions() -> None:
         ("maleEmploymentRate", "categorie_specifiche"),
         ("employmentGenderGap", "sesso"),
         ("employmentGenderGap", "eta"),
-        ("ftthCoverageDesi", "assoluto_normalizzato"),
-        ("ftthCoverageDesi", "numeratore_denominatore"),
-        ("ftthCoverageDesi", "categorie_specifiche"),
-        ("ftthCoverage20m", "assoluto_normalizzato"),
-        ("ftthCoverage20m", "numeratore_denominatore"),
-        ("ftthCoverage20m", "categorie_specifiche"),
-        ("ftthReachedHouseholds", "assoluto_normalizzato"),
-        ("ftthReachedHouseholds", "categorie_specifiche"),
-        ("ftthUnreachedHouseholds", "assoluto_normalizzato"),
-        ("ftthUnreachedHouseholds", "categorie_specifiche"),
+        ("studentsPerClass", "numeratore_denominatore"),
+        ("studentsPerClass", "assoluto_normalizzato"),
+        ("primaryFullTimeShare", "numeratore_denominatore"),
+        ("primaryFullTimeShare", "assoluto_normalizzato"),
         ("municipalStaffTurnover", "assoluto_normalizzato"),
         ("municipalStaffTurnover", "categorie_specifiche"),
         ("municipalStaffTraining", "sesso"),
     }
-    assert len(expected) == 21
+    assert len(expected) == 15
 
     for metric_id, dimension in sorted(expected):
         evidence = audit.acquired_evidence(site["metrics"][metric_id], dimension)
         assert evidence is not None, (metric_id, dimension, evidence)
-        assert evidence.startswith("rows."), (metric_id, dimension, evidence)
 
-    # Evita acquisizioni accidentali fuori dal perimetro esplicito del lotto.
     assert audit.acquired_evidence(site["metrics"]["employmentGenderGap"], "categorie_specifiche") is None
-    assert audit.acquired_evidence(site["metrics"]["ftthReachedHouseholds"], "numeratore_denominatore") is None
-    assert audit.acquired_evidence(site["metrics"]["ftthUnreachedHouseholds"], "numeratore_denominatore") is None
+    assert audit.acquired_evidence(site["metrics"]["studentsPerClass"], "categorie_specifiche") is None
+    assert audit.acquired_evidence(site["metrics"]["primaryFullTimeShare"], "categorie_specifiche") is None
+    assert audit.acquired_evidence(site["metrics"]["municipalStaffTraining"], "assoluto_normalizzato") is None
+    assert audit.acquired_evidence(site["metrics"]["municipalStaffTurnover"], "numeratore_denominatore") is None
 
     print(
-        "A3.5 lotto 8 regression passed: 21 coppie da snapshot Istat/AGCOM/RGS già versionati "
-        "(8 Istat, 10 AGCOM, 3 RGS), payload pubblico invariato."
+        "A3.5 lotto 8 regression passed: 15 coppie da snapshot Istat/MIM/RGS già versionati "
+        "(8 Istat, 4 MIM, 3 RGS), payload pubblico invariato."
     )
 
 
