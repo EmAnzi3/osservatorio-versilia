@@ -44,3 +44,5 @@ scripts/test_a3_5_historical_mef_companions.py
 scripts/acquire_a3_5_ars_legacy_history.py
 scripts/materialize_a3_5_ars_legacy_history.py
 scripts/test_a3_5_ars_legacy_history.py
+scripts/materialize_a3_5_official_companions.py
+scripts/test_a3_5_official_companions.py
