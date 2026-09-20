@@ -477,21 +477,15 @@ jobs:
               ('maleEmploymentRate', 'categorie_specifiche'),
               ('employmentGenderGap', 'sesso'),
               ('employmentGenderGap', 'eta'),
-              ('ftthCoverageDesi', 'assoluto_normalizzato'),
-              ('ftthCoverageDesi', 'numeratore_denominatore'),
-              ('ftthCoverageDesi', 'categorie_specifiche'),
-              ('ftthCoverage20m', 'assoluto_normalizzato'),
-              ('ftthCoverage20m', 'numeratore_denominatore'),
-              ('ftthCoverage20m', 'categorie_specifiche'),
-              ('ftthReachedHouseholds', 'assoluto_normalizzato'),
-              ('ftthReachedHouseholds', 'categorie_specifiche'),
-              ('ftthUnreachedHouseholds', 'assoluto_normalizzato'),
-              ('ftthUnreachedHouseholds', 'categorie_specifiche'),
+              ('studentsPerClass', 'numeratore_denominatore'),
+              ('studentsPerClass', 'assoluto_normalizzato'),
+              ('primaryFullTimeShare', 'numeratore_denominatore'),
+              ('primaryFullTimeShare', 'assoluto_normalizzato'),
               ('municipalStaffTurnover', 'assoluto_normalizzato'),
               ('municipalStaffTurnover', 'categorie_specifiche'),
               ('municipalStaffTraining', 'sesso'),
           }
-          assert len(expected) == 21, len(expected)
+          assert len(expected) == 15, len(expected)
 
           for pair in sorted(expected):
               row = rows[pair]
@@ -501,8 +495,8 @@ jobs:
               metric_id, _dimension = pair
               if metric_id in {'femaleEmploymentRate', 'maleEmploymentRate', 'employmentGenderGap'}:
                   token = 'a3LabourDimensions'
-              elif metric_id.startswith('ftth'):
-                  token = 'a3FtthDimensions'
+              elif metric_id in {'studentsPerClass', 'primaryFullTimeShare'}:
+                  token = 'a3SchoolComponents'
               elif metric_id == 'municipalStaffTurnover':
                   token = 'a3StaffTurnoverDimensions'
               else:
@@ -515,7 +509,7 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 746, backlog['summary']
+          assert backlog['summary']['availableMissingPairCount'] == 752, backlog['summary']
           assert backlog['summary']['availableMissingPairCount'] == matrix['summary']['state_AVAILABLE_MISSING']
           assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
           print(
