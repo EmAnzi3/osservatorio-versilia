@@ -110,7 +110,9 @@ def open_metric(page: Page, base: str, data: dict, metric_key: str) -> None:
 
 def screenshot_locator(locator: Locator) -> bytes:
     locator.wait_for(state="visible")
-    return locator.screenshot(animations="disabled")
+    image = locator.screenshot(animations="disabled", type="png")
+    require(image[:8] == b"\x89PNG\r\n\x1a\n", "Playwright non ha restituito uno screenshot PNG")
+    return image
 
 
 def _paeth(a: int, b: int, c: int) -> int:
@@ -124,7 +126,7 @@ def _paeth(a: int, b: int, c: int) -> int:
 
 
 def decode_png_rgb(data: bytes) -> tuple[int, int, list[bytes]]:
-    require(data[:8] == b"\\x89PNG\\r\\n\\x1a\\n", "Screenshot PNG non valido")
+    require(data[:8] == b"\x89PNG\r\n\x1a\n", "Screenshot PNG non valido")
     position = 8
     idat: list[bytes] = []
     width = height = bit_depth = color_type = interlace = None
