@@ -46,3 +46,5 @@ scripts/materialize_a3_5_ars_legacy_history.py
 scripts/test_a3_5_ars_legacy_history.py
 scripts/materialize_a3_5_official_companions.py
 scripts/test_a3_5_official_companions.py
+scripts/enrichment_coverage.py
+scripts/test_enrichment_coverage.py

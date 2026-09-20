@@ -82,3 +82,39 @@ A3.1 è completo quando questa tassonomia è adottata come vocabolario unico del
 ## Criterio A3.2
 
 A3.2 è completo soltanto quando la stessa matrice derivata passa la validazione strict con `unclassifiedPairCount = 0`. Fino a quel momento il conteggio delle coppie non classificate misura il lavoro residuo di raccolta delle evidenze, senza trasformare l'assenza di informazione in `SOURCE_UNAVAILABLE` o `NOT_APPLICABLE`.
+
+## Criterio A3.5
+
+A3.5 non richiede di azzerare il backlog `AVAILABLE_MISSING`. Il backlog A3.4 è una vista governata delle opportunità residue, non una lista di blocchi al consolidamento.
+
+A3.5 è completo quando:
+
+1. esiste un percorso riproducibile per trasformare una coppia `AVAILABLE_MISSING` in `ACQUIRED` soltanto tramite evidenza strutturale verificabile;
+2. tale percorso è stato applicato a più famiglie di fonte e a più dimensioni, con QA dedicato e senza override manuali `ACQUIRED`;
+3. le opportunità non integrate restano integralmente rappresentate nel backlog A3.4;
+4. nessuna coppia viene riclassificata solo per ridurre artificialmente il residuo.
+
+Baseline di chiusura del consolidamento A3.5: dopo otto lotti controllati sono state acquisite 120 coppie aggiuntive, portando `AVAILABLE_MISSING` da 872 a 752. Le 752 opportunità residue restano input governato per futuri incrementi di prodotto e non vengono reinterpretate come lavoro obbligatorio del programma di consolidamento.
+
+## A3.6 — Copertura enrichment
+
+La copertura interna è derivata direttamente dalla matrice A3 con la formula:
+
+`ACQUIRED / (ACQUIRED + AVAILABLE_MISSING)`
+
+Entrano quindi nel denominatore soltanto le dimensioni che la matrice considera ufficialmente disponibili. `SOURCE_UNAVAILABLE` e `NOT_APPLICABLE` sono escluse perché non rappresentano opportunità acquisibili.
+
+L'indicatore deve essere prodotto almeno:
+
+- a livello globale;
+- per dimensione enrichment;
+- per source profile.
+
+Non è un voto di qualità, non misura la qualità delle fonti e non implica un obiettivo del 100%. Un valore inferiore al 100% segnala semplicemente che il backlog contiene ancora opportunità ufficialmente disponibili ma non materializzate.
+
+Baseline post-#267: 544 `ACQUIRED`, 752 `AVAILABLE_MISSING`, 374 `SOURCE_UNAVAILABLE`, 355 `NOT_APPLICABLE`; opportunità acquisibili 1.296 e copertura pari a circa 42,0%.
+
+## Criterio A3.6
+
+A3.6 è completo quando il workflow A3 genera automaticamente un artifact JSON/Markdown della copertura a partire dalla matrice strict, verifica la riconciliazione dei conteggi di stato e non dipende da un inventario manuale parallelo.
+

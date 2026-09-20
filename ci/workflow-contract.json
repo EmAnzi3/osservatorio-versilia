@@ -165,6 +165,11 @@
         "label": "A3.5 official structural companions",
         "script": "scripts/test_a3_5_official_companions.py",
         "args": []
+      },
+      {
+        "label": "A3.6 enrichment coverage",
+        "script": "scripts/test_enrichment_coverage.py",
+        "args": []
       }
     ]
   },

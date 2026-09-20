@@ -45,6 +45,7 @@ jobs:
           python scripts/test_a3_5_historical_mef_companions.py
           python scripts/test_a3_5_ars_legacy_history.py
           python scripts/test_a3_5_official_companions.py
+          python scripts/test_enrichment_coverage.py
 
       - name: Materialize effective public catalog
         env:
@@ -203,6 +204,52 @@ jobs:
           path: |
             /tmp/a3-enrichment-backlog.json
             /tmp/a3-enrichment-backlog.md
+          if-no-files-found: error
+
+      - name: Build A3.6 enrichment coverage
+        run: |
+          python scripts/enrichment_coverage.py \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --json-output /tmp/a3-enrichment-coverage.json \
+            --markdown-output /tmp/a3-enrichment-coverage.md
+          python - <<'PY'
+          import json
+          import math
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          report = json.load(open('/tmp/a3-enrichment-coverage.json', encoding='utf-8'))
+          summary = report['summary']
+          ms = matrix['summary']
+
+          assert summary['classifiedPairCount'] == 2025, summary
+          assert summary['unclassifiedPairCount'] == 0, summary
+          assert summary['totalPairCount'] == 2025, summary
+          assert summary['acquiredPairCount'] == 544, summary
+          assert summary['availableMissingPairCount'] == 752, summary
+          assert summary['eligiblePairCount'] == 1296, summary
+          assert summary['sourceUnavailablePairCount'] == 374, summary
+          assert summary['notApplicablePairCount'] == 355, summary
+          assert summary['acquiredPairCount'] == ms['state_ACQUIRED'], (summary, ms)
+          assert summary['availableMissingPairCount'] == ms['state_AVAILABLE_MISSING'], (summary, ms)
+          assert summary['sourceUnavailablePairCount'] == ms['state_SOURCE_UNAVAILABLE'], (summary, ms)
+          assert summary['notApplicablePairCount'] == ms['state_NOT_APPLICABLE'], (summary, ms)
+          assert math.isclose(summary['coveragePercent'], 41.9753086419753, abs_tol=1e-12), summary
+
+          print(
+              'A3.6 coverage gate: '
+              f"{summary['acquiredPairCount']}/{summary['eligiblePairCount']} = "
+              f"{summary['coveragePercent']:.1f}% · "
+              f"{summary['availableMissingPairCount']} opportunities remain governed by A3.4."
+          )
+          PY
+
+      - name: Upload A3.6 enrichment coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-enrichment-coverage
+          path: |
+            /tmp/a3-enrichment-coverage.json
+            /tmp/a3-enrichment-coverage.md
           if-no-files-found: error
 
       - name: Verify A3.5 demography sex acquisition
