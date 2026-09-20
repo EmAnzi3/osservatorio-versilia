@@ -61,3 +61,20 @@ Mobile:
 4. Scaricare l'artifact visuale e verificare desktop/mobile.
 5. Solo dopo approvazione esplicita aggiornare le baseline A4 e portare la PR Ready.
 6. Merge solo dopo ulteriore approvazione esplicita del proprietario.
+
+## A5.4 — revisione visuale warm editorial
+
+La prima skin CSS-only è stata respinta in review perché troppo distante dal riferimento scelto. Il pilot corrente modifica anche la composizione della sola route `confronta/demografia/`, mantenendo invariati gli hook funzionali e i dati.
+
+Direzione corrente:
+- hero fotografico editoriale con asset canonico Versilia e testo sovrapposto;
+- ribbon temi compatta subito sotto;
+- testata Demografia a tre colonne;
+- workspace 270px + area grafico dominante;
+- solo il gruppo indicatore attivo è visivamente espanso;
+- `#compare-definition` spostato sotto il grafico accanto al richiamo metodologia;
+- schede comuni in griglia con stemmi reali;
+- footer navy con markup e link reali;
+- nessun cambio a dataset, tooltip, download, serie storiche o destinazioni link.
+
+Il riferimento approvato è lo screenshot warm-editorial fornito dal proprietario nella review di A5.4. La PR resta Draft e le baseline A4 non vanno aggiornate finché il nuovo draft navigabile non viene approvato.
