@@ -5,8 +5,9 @@
     "purpose": "Visual regression rappresentativa delle superfici analitiche senza inventario manuale di indicatori.",
     "noMetricInventory": true
   },
-  "baselineDirectory": "tests/visual-regression/baselines",
+  "baselineDirectory": "ci/visual-regression-baselines",
   "outputDirectory": "reports/visual-regression",
+  "hashGridSize": 24,
   "viewports": {
     "desktop": {
       "width": 1280,
@@ -63,9 +64,9 @@
     }
   },
   "comparison": {
-    "channelThreshold": 24,
-    "maxChangedPixelRatio": 0.015,
-    "maxMeanAbsoluteChannelDifference": 1.5,
+    "maxAverageHashHammingRatio": 0.08,
+    "maxDifferenceHashHammingRatio": 0.1,
+    "maxColorMeanAbsoluteDifference": 1,
     "dimensionsMustMatch": true
   }
 }
