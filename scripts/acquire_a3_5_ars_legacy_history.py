@@ -221,18 +221,27 @@ def acquire_indicator(indicator_id: int, metric: dict[str, Any]) -> dict[str, An
             f"ARS {indicator_id}/Versilia: catalogo {aggregate['value']} != fonte {aggregate_source}"
         )
 
+    values: dict[str, list[float]] = {}
+    for geography, records in series.items():
+        compact: list[float] = []
+        for record in records:
+            value = record["standardized"]
+            if value is None:
+                value = record["raw"]
+            if value is None:
+                raise RuntimeError(f"ARS {indicator_id}/{geography}: misura finale mancante")
+            compact.append(float(value))
+        values[geography] = compact
+
     return {
         "indicatorId": indicator_id,
-        "key": meta.get("key"),
         "exportUrl": f"https://www.ars.toscana.it/banche-dati/actions/esporta.php?indicatore={indicator_id}",
         "periods": periods,
-        "coverage": "7/7 + Zona Versilia",
-        "measurement": "misura_standardizzata; fallback misura_grezza solo se la standardizzata è assente",
+        "values": values,
         "sourceFile": {
             "sha256": sha,
             "bytes": len(raw),
         },
-        "series": series,
     }
 
 
@@ -249,7 +258,7 @@ def main() -> None:
     out: dict[str, Any] = {
         "schemaVersion": 1,
         "publisher": "ARS Toscana",
-        "scope": "A3.5 · storico di sette indicatori Salute legacy, sette Comuni + Zona Versilia",
+        "scope": "A3.5 lotto 7 · serie storiche di 7 indicatori Salute legacy · 7 Comuni + Zona Versilia",
         "retrievedBy": "scripts/acquire_a3_5_ars_legacy_history.py",
         "indicators": {},
     }

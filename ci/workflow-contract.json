@@ -155,6 +155,11 @@
         "label": "A3.5 historical + MEF companions",
         "script": "scripts/test_a3_5_historical_mef_companions.py",
         "args": []
+      },
+      {
+        "label": "A3.5 ARS legacy history",
+        "script": "scripts/test_a3_5_ars_legacy_history.py",
+        "args": []
       }
     ]
   },
@@ -330,4 +335,4 @@
       "status": "active"
     }
   ]
-}
+}\n

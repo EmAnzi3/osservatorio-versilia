@@ -420,13 +420,35 @@ jobs:
               for pair in bundle['pairs']
           }
           assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount'] == 774, backlog['summary']
+          assert (\n              backlog['summary']['availableMissingPairCount']\n              == matrix['summary']['state_AVAILABLE_MISSING']\n          ), backlog['summary']
           assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
           print(
               'A3.5 historical + MEF companions: '
               f'{len(expected)} coppie strutturalmente ACQUIRED; '
               f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
           )
+          PY
+
+      - name: Verify A3.5 ARS legacy history
+        run: |
+          python - <<'PY'
+          import json
+          matrix=json.load(open('/tmp/a3-enrichment-matrix.json',encoding='utf-8'))
+          backlog=json.load(open('/tmp/a3-enrichment-backlog.json',encoding='utf-8'))
+          rows={(row['metricId'],row['dimension']):row for row in matrix['rows']}
+          expected={(key,'serie_storica') for key in ('chronicTotal','dementia','diabetes','elderlyHomeCare','emergencyAccess','hospitalizedAll','mortalityAll')}
+          assert len(expected)==7
+          for pair in sorted(expected):
+              row=rows[pair]
+              assert row['state']=='ACQUIRED',(pair,row)
+              assert row['classificationOrigin']=='catalog_structure',(pair,row)
+              assert row['evidence'].startswith('structured:'),(pair,row)
+              assert 'a3History' in row['evidence'],(pair,row)
+          backlog_pairs={(pair['metricId'],bundle['dimension']) for bundle in backlog['bundles'] for pair in bundle['pairs']}
+          assert expected.isdisjoint(backlog_pairs),expected & backlog_pairs
+          assert backlog['summary']['availableMissingPairCount']==767,backlog['summary']
+          assert matrix['summary']['unclassifiedPairCount']==0,matrix['summary']
+          print(f"A3.5 ARS legacy history: {len(expected)} coppie strutturalmente ACQUIRED; {backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue.")
           PY
 
       - name: Verify route and demographic closures
