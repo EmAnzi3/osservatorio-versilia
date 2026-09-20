@@ -13,7 +13,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Matrice A3.2:** 2.025 coppie; 2.025 classificate, 0 residue
 - **Backlog A3.4 post-#266:** 767 AVAILABLE_MISSING · 259 pacchetti · 63 source profile
 - **Branch corrente:** feat/a3-5-enrichment-lot-8
-- **PR corrente:** da aprire — A3.5 lotto 8
+- **PR corrente:** #267 — `A3.5: acquire official structural companions` — Ready
 - **Autorizzazione operativa corrente:** proseguire sui lotti non-visivi; fermarsi quando serve verifica visiva del proprietario
 
 ## A3.5 — acquisizioni mergiate
