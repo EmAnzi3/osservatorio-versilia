@@ -17,7 +17,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **A3.5:** 8 lotti mergiati (#260–#267), 120 nuove coppie acquisite; backlog 872 → 752
 - **Backlog A3.4 residuo:** 752 opportunità · 257 pacchetti · 63 source profile
 - **Branch corrente:** `feat/a3-5-bulk-enrichment-lot-9`
-- **PR corrente:** da aprire — chiusura A3 + A3.6
+- **PR corrente:** #268 — `A3: close enrichment audit and add coverage` — Ready
 - **Prossimo workstream dopo il merge:** A4 — Visualization & Content Contract, a partire da A4.1
 
 ## Criterio di chiusura A3
