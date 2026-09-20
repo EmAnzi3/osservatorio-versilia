@@ -54,6 +54,62 @@
     });
   }
 
+  const compareTownPhotoFiles = {
+    'Massarosa': 'Massarosa.jpg',
+    'Viareggio': 'Viareggio, passeggiata a mare 2.JPG',
+    'Camaiore': 'Camaiore Countryside.jpg',
+    'Pietrasanta': 'Veduta di piazza duomo, Pietrasanta.jpg',
+    'Seravezza': 'Seravezza-panorama.jpg',
+    'Forte dei Marmi': 'Forte dei Marmi - Municipio.jpg',
+    'Stazzema': 'Stazzema.JPG'
+  };
+
+  function compareTownPhotoUrl(townName) {
+    const file = compareTownPhotoFiles[townName];
+    if (!file) return '';
+    return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file).replaceAll('%20','_')}?width=640`;
+  }
+
+  function compareContextInsightMarkup(data, themeKey, metricKey) {
+    if (themeKey !== 'demografia') return '';
+    const section = themeSections(data.themes[themeKey]).find(item => item.metrics?.includes(metricKey));
+    const identity = normalize(`${section?.key || ''} ${section?.label || ''}`);
+    return identity.includes('mobilita') ? brainDrainMarkup(data) : '';
+  }
+
+  function compareTownCardsMarkup(data, themeKey, metricKey, normalized = false, requestedView = null) {
+    const metric = data.metrics[metricKey];
+    if (!metric) return '';
+    const compositeType = metric.meta.compositeType || '';
+    const selectable = ['stock','mobility','securityMeasures','agricultureProfile','financialProfile','demographicBreakdown','sexBreakdown'].includes(compositeType);
+    const view = requestedView || (selectable ? compositeCompareDefaults(metric) : null);
+    return data.towns.map(town => {
+      const row = metric.rows.find(item => item.code === town.code || item.town === town.name);
+      let value = row?.value;
+      let unit = metric.meta.unit;
+      if (row && normalized && row.normalized) {
+        value = row.normalized.value;
+        unit = row.normalized.unit;
+      } else if (row && selectable) {
+        const selected = compositeCompareSelection(metric,row,view?.choice,view?.scale);
+        if (selected) {
+          value = selected.value;
+          unit = selected.unit;
+        }
+      } else if (row && compositeType === 'distribution' && row.summaryValue !== undefined) {
+        value = row.summaryValue;
+        unit = metric.meta.summaryUnit || unit;
+      }
+      const formatted = row ? formatMetricRowValue(row,value,unit) : 'n.d.';
+      const slug = normalize(town.name).replaceAll(' ','-');
+      const image = compareTownPhotoUrl(town.name);
+      return `<a class="topic-town-card" href="${route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`)}">
+        <span class="topic-town-card-media">${image ? `<img src="${image}" alt="${html(town.name)}" loading="lazy" referrerpolicy="no-referrer">` : `<img src="${mediaSrc(data.crests[town.name])}" alt="" loading="lazy">`}</span>
+        <span class="topic-town-card-copy"><strong>${html(town.name)}</strong><b>${html(formatted)}</b><small>${html(metric.meta.shortLabel || metric.meta.label)}</small><em>Apri la scheda →</em></span>
+      </a>`;
+    }).join('');
+  }
+
   function renderCompare(data) {
     const themeKey = pageTheme || Object.keys(data.themes)[0];
     const theme = data.themes[themeKey];
