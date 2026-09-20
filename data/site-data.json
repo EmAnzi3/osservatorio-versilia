@@ -43369,7 +43369,11 @@
         "unit": "percent",
         "year": "2025",
         "source": "OpenBDAP — rendiconto della gestione",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "comparisonReference": "aggregate",
+        "comparisonLabel": "valore ponderato Versilia",
+        "comparisonOverline": "Rispetto al valore ponderato Versilia",
+        "comparisonNote": "Il confronto usa il rapporto calcolato sui totali dei sette Comuni, non la media semplice delle percentuali comunali."
       },
       "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [
@@ -43600,7 +43604,11 @@
         "unit": "percent",
         "year": "2025",
         "source": "OpenBDAP — rendiconto della gestione",
-        "polarity": "positive"
+        "polarity": "positive",
+        "comparisonReference": "aggregate",
+        "comparisonLabel": "valore ponderato Versilia",
+        "comparisonOverline": "Rispetto al valore ponderato Versilia",
+        "comparisonNote": "Il confronto usa il rapporto calcolato sui totali dei sette Comuni, non la media semplice delle percentuali comunali."
       },
       "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [
@@ -43831,7 +43839,11 @@
         "unit": "percent",
         "year": "2025",
         "source": "OpenBDAP — rendiconto della gestione",
-        "polarity": "positive"
+        "polarity": "positive",
+        "comparisonReference": "aggregate",
+        "comparisonLabel": "valore ponderato Versilia",
+        "comparisonOverline": "Rispetto al valore ponderato Versilia",
+        "comparisonNote": "Il confronto usa il rapporto calcolato sui totali dei sette Comuni, non la media semplice delle percentuali comunali."
       },
       "sourceUrl": "https://openbdap.rgs.mef.gov.it/it/FET/Analizza",
       "rows": [

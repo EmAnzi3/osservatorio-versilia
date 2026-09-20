@@ -249,6 +249,43 @@ def browser_checks() -> None:
         page.wait_for_selector("#compare-bars .comparison-dot")
         assert_reading_scale(page, "Amministrativo")
 
+        # A4.3-A4.4: i rapporti dotati di numeratore/denominatore devono usare
+        # l'aggregato ponderato e mantenere coerenti legenda, asse, hover e aria.
+        effective_data = json.loads((DIST / "data" / "site-data.json").read_text(encoding="utf-8"))
+        weighted_by_unit = {}
+        weighted_ratio_count = 0
+        for metric_key, metric in effective_data["metrics"].items():
+            rows = metric.get("rows") or []
+            if not any(isinstance(row.get("ratioComponents"), dict) for row in rows):
+                continue
+            weighted_ratio_count += 1
+            meta = metric.get("meta") or {}
+            assert meta.get("comparisonReference") == "aggregate", metric_key
+            unit = meta.get("unit")
+            weighted_by_unit.setdefault(
+                unit,
+                (metric_key, meta.get("theme"), (metric.get("aggregate") or {}).get("label") or "Versilia"),
+            )
+
+        assert weighted_ratio_count >= 16, f"Audit rapporti ponderati troppo ristretto: {weighted_ratio_count}"
+        assert {"currency", "percent"}.issubset(weighted_by_unit), weighted_by_unit
+        for unit in ("currency", "percent"):
+            metric_key, theme, expected_reference = weighted_by_unit[unit]
+            page.goto(base + f"confronta/{theme}/?indicatore={metric_key}", wait_until="networkidle")
+            page.wait_for_selector("#compare-bars .comparison-dot")
+            legend = page.locator("#compare-bars .comparison-legend").inner_text().strip().lower()
+            assert expected_reference.lower() in legend, (metric_key, expected_reference, legend)
+            row = page.locator("#compare-bars .bar-row:not(.missing)").first
+            hover = row.locator(".bar-hover-label").inner_text().strip()
+            aria = row.get_attribute("aria-label") or ""
+            local_value = hover.split("·", 1)[-1].strip()
+            assert local_value and local_value in aria, (metric_key, hover, aria)
+            axis_text = page.locator("#compare-bars .comparison-axis").inner_text()
+            expected_suffix = "€" if unit == "currency" else "%"
+            assert expected_suffix in hover, (metric_key, hover)
+            assert expected_suffix in aria, (metric_key, aria)
+            assert expected_suffix in axis_text, (metric_key, axis_text)
+
         # Temi misti: la scala dipende dall'indicatore, non solo dal tema.
         page.goto(base + "confronta/salute/?indicatore=lifeExpectancy", wait_until="networkidle")
         assert_reading_scale(page, "Territoriale")
