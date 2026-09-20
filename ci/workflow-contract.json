@@ -160,6 +160,11 @@
         "label": "A3.5 ARS legacy history",
         "script": "scripts/test_a3_5_ars_legacy_history.py",
         "args": []
+      },
+      {
+        "label": "A3.5 official structural companions",
+        "script": "scripts/test_a3_5_official_companions.py",
+        "args": []
       }
     ]
   },
