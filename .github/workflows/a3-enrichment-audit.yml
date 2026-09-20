@@ -43,6 +43,8 @@ jobs:
           python scripts/test_a3_5_istat_census_components.py
           python scripts/test_a3_5_source_backed_companions.py
           python scripts/test_a3_5_historical_mef_companions.py
+          python scripts/test_a3_5_ars_legacy_history.py
+          python scripts/test_a3_5_official_companions.py
 
       - name: Materialize effective public catalog
         env:
@@ -449,9 +451,78 @@ jobs:
               assert 'a3History' in row['evidence'],(pair,row)
           backlog_pairs={(pair['metricId'],bundle['dimension']) for bundle in backlog['bundles'] for pair in bundle['pairs']}
           assert expected.isdisjoint(backlog_pairs),expected & backlog_pairs
-          assert backlog['summary']['availableMissingPairCount']==767,backlog['summary']
+          assert backlog['summary']['availableMissingPairCount']==matrix['summary']['state_AVAILABLE_MISSING'],backlog['summary']
           assert matrix['summary']['unclassifiedPairCount']==0,matrix['summary']
           print(f"A3.5 ARS legacy history: {len(expected)} coppie strutturalmente ACQUIRED; {backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue.")
+          PY
+
+      - name: Verify A3.5 official structural companions
+        run: |
+          python - <<'PY'
+          import json
+
+          matrix = json.load(open('/tmp/a3-enrichment-matrix.json', encoding='utf-8'))
+          backlog = json.load(open('/tmp/a3-enrichment-backlog.json', encoding='utf-8'))
+          rows = {
+              (row['metricId'], row['dimension']): row
+              for row in matrix['rows']
+          }
+
+          expected = {
+              ('femaleEmploymentRate', 'sesso'),
+              ('femaleEmploymentRate', 'eta'),
+              ('femaleEmploymentRate', 'categorie_specifiche'),
+              ('maleEmploymentRate', 'sesso'),
+              ('maleEmploymentRate', 'eta'),
+              ('maleEmploymentRate', 'categorie_specifiche'),
+              ('employmentGenderGap', 'sesso'),
+              ('employmentGenderGap', 'eta'),
+              ('ftthCoverageDesi', 'assoluto_normalizzato'),
+              ('ftthCoverageDesi', 'numeratore_denominatore'),
+              ('ftthCoverageDesi', 'categorie_specifiche'),
+              ('ftthCoverage20m', 'assoluto_normalizzato'),
+              ('ftthCoverage20m', 'numeratore_denominatore'),
+              ('ftthCoverage20m', 'categorie_specifiche'),
+              ('ftthReachedHouseholds', 'assoluto_normalizzato'),
+              ('ftthReachedHouseholds', 'categorie_specifiche'),
+              ('ftthUnreachedHouseholds', 'assoluto_normalizzato'),
+              ('ftthUnreachedHouseholds', 'categorie_specifiche'),
+              ('municipalStaffTurnover', 'assoluto_normalizzato'),
+              ('municipalStaffTurnover', 'categorie_specifiche'),
+              ('municipalStaffTraining', 'sesso'),
+          }
+          assert len(expected) == 21, len(expected)
+
+          for pair in sorted(expected):
+              row = rows[pair]
+              assert row['state'] == 'ACQUIRED', (pair, row)
+              assert row['classificationOrigin'] == 'catalog_structure', (pair, row)
+              assert row['evidence'].startswith('structured:'), (pair, row)
+              metric_id, _dimension = pair
+              if metric_id in {'femaleEmploymentRate', 'maleEmploymentRate', 'employmentGenderGap'}:
+                  token = 'a3LabourDimensions'
+              elif metric_id.startswith('ftth'):
+                  token = 'a3FtthDimensions'
+              elif metric_id == 'municipalStaffTurnover':
+                  token = 'a3StaffTurnoverDimensions'
+              else:
+                  token = 'a3TrainingGender'
+              assert token in row['evidence'], (pair, row)
+
+          backlog_pairs = {
+              (pair['metricId'], bundle['dimension'])
+              for bundle in backlog['bundles']
+              for pair in bundle['pairs']
+          }
+          assert expected.isdisjoint(backlog_pairs), expected & backlog_pairs
+          assert backlog['summary']['availableMissingPairCount'] == 746, backlog['summary']
+          assert backlog['summary']['availableMissingPairCount'] == matrix['summary']['state_AVAILABLE_MISSING']
+          assert matrix['summary']['unclassifiedPairCount'] == 0, matrix['summary']
+          print(
+              'A3.5 official structural companions: '
+              f'{len(expected)} coppie strutturalmente ACQUIRED; '
+              f"{backlog['summary']['availableMissingPairCount']} AVAILABLE_MISSING residue."
+          )
           PY
 
       - name: Verify route and demographic closures
