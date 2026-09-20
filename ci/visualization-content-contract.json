@@ -38,6 +38,15 @@
     "defaultDifferenceMode": "relativePercent",
     "declaredAggregateField": "aggregate"
   },
+  "aggregation": {
+    "ratioComponentsField": "ratioComponents",
+    "ratioFormula": "sum(numerator) / sum(denominator) * scale",
+    "requireDeclaredAggregateForRatioComponents": true,
+    "denominatorMustBeNonZero": true,
+    "absoluteTolerance": 1e-7,
+    "relativeTolerance": 1e-10,
+    "classifyAggregateAgainstTownValues": true
+  },
   "benchmarks": {
     "metricField": "meta.benchmark",
     "requiredFields": [
