@@ -29,7 +29,7 @@
               ${metricControls(data, themeKey, metricKey, true)}
             </aside>
             <div class="compare-main-column">
-              <header class="compare-panel-heading"><div><span class="overline">Confronto tra Comuni della Versilia</span><h2>Come si distribuisce il dato?</h2><p>I valori e gli strumenti sono quelli ufficiali dell’Osservatorio.</p></div><div id="compare-actions" class="compare-chart-actions" aria-label="Azioni sull'indicatore"></div></header>
+              <header class="compare-panel-heading"><div><span class="overline">Confronto tra Comuni della Versilia</span><h2>Come si distribuisce il dato?</h2><p>I valori e gli strumenti sono quelli ufficiali dell’Osservatorio.</p></div></header>
               <div id="compare-bars"></div>
               <div class="compare-summary-strip">
                 <div id="compare-definition"></div>
@@ -39,9 +39,9 @@
           </section>
           <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
           <section id="compare-benchmark" class="page-width"></section>
-          <div id="compare-contextual-insight">${compareContextInsightMarkup(data, themeKey, metricKey)}</div>
+          ${brainDrainMarkup(data)}
           <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div id="compare-town-cards" class="topic-town-card-grid">${compareTownCardsMarkup(data,themeKey,metricKey,false)}</div><p class="topic-town-photo-note">Foto di anteprima: Wikimedia Commons · asset esterni provvisori per la review visuale.</p></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${data.towns.map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
         </main>`
       : `<main class="inner-page" data-theme="${themeKey}">
           <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
@@ -1016,9 +1016,6 @@
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
-    const actions = document.getElementById('compare-actions');
-    const contextualInsight = document.getElementById('compare-contextual-insight');
-    const townCards = document.getElementById('compare-town-cards');
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
@@ -1166,19 +1163,9 @@
       : metric;
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || (metric.meta.compositeType && compositeType !== 'sexBreakdown')) ? '' : benchmarkMarkup(benchmarkMetric,aggregate,unit,null);
     const currentMethod = compositeType === 'financialProfile' ? financialProfileMethodDisclosure(metric,view.choice) : methodDisclosure(metric);
-    const actionMarkup = `<a class="compare-chart-action" href="${indicatorHref(metric)}" title="Apri la scheda indicatore"><span class="compare-action-icon" aria-hidden="true">▤</span><span>Scheda</span></a>${metricKey.startsWith('slowMobility') ? `<a class="compare-chart-action" href="${route('percorsi/')}" title="Esplora la cartografia"><span class="compare-action-icon" aria-hidden="true">⌖</span><span>Mappa</span></a>` : ''}<button class="compare-chart-action" type="button" data-download title="Scarica CSV"><span class="compare-action-file csv" aria-hidden="true">CSV</span><span>Scarica</span></button><button class="compare-chart-action" type="button" data-print title="Stampa o salva in PDF"><span class="compare-action-file pdf" aria-hidden="true">PDF</span><span>Stampa</span></button>`;
-    if (actions) {
-      actions.innerHTML = actionMarkup;
-      tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}`;
-      actions.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
-      actions.querySelector('[data-print]')?.addEventListener('click', () => window.print());
-    } else {
-      tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions">${actionMarkup}</div>`;
-      tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
-      tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
-    }
-    if (contextualInsight) contextualInsight.innerHTML = compareContextInsightMarkup(data,themeKey,metricKey);
-    if (townCards) townCards.innerHTML = compareTownCardsMarkup(data,themeKey,metricKey,normalized,view);
+    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+    tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
+    tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
   }
 
 
