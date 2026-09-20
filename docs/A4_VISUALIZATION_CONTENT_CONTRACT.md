@@ -111,10 +111,38 @@ Il valore mostrato nel tooltip, nella label hover e nell'`aria-label` deve usare
 
 Il validator è deliberatamente generico: nessun ID indicatore è copiato nel contratto.
 
-## Residui per A4.3–A4.4
+## A4.3 — Coerenza semantica delle superfici
 
-A4.3 deve verificare automaticamente la coerenza tra dato, unità, testo, asse, tooltip e legenda.
+Il contratto valida ora anche le unità presenti nelle parti composite e nei valori normalizzati, e verifica che l'unità della riga normalizzata coincida con quella dichiarata dalla metrica.
 
-A4.4 deve risolvere in modo esplicito i casi in cui il riferimento corretto è una media semplice, una media ponderata, un totale, un rapporto o un altro aggregato dichiarato. I 141 fallback attuali sono il perimetro di audit iniziale, non una lista di errori già accertati.
+Il gate blocca inoltre la grammatica runtime comune su invarianti non legati a singoli indicatori:
 
-Solo dopo questa chiusura semantica A4.5 introdurrà visual regression su un campione rappresentativo di famiglie visuali.
+- hover e `aria-label` usano lo stesso formatter del valore;
+- la legenda usa il riferimento di confronto risolto;
+- `n.d.` / “Dato non disponibile” e `n.a.` / “Non applicabile” restano distinti.
+
+La regressione browser deriva dal catalogo effettivo i rapporti strutturati e verifica su famiglie di unità rappresentative che legenda, asse, hover e testo accessibile espongano lo stesso riferimento e la stessa unità.
+
+## A4.4 — Media semplice, rapporti e denominatori
+
+Il contratto di aggregazione non assume che `aggregate.value` sia automaticamente il riferimento corretto. Quando `comparisonReference` è assente, il renderer continua a usare la media semplice dei Comuni con dato disponibile.
+
+Quando però il catalogo effettivo espone `ratioComponents`, il gate ricostruisce sia ogni valore comunale sia l'aggregato territoriale con la formula:
+
+`sum(numeratore) / sum(denominatore) × scala`
+
+e richiede:
+
+- denominatori comunali e aggregato non nulli;
+- scala uniforme;
+- riconciliazione del valore comunale;
+- riconciliazione dell'aggregato ponderato;
+- `comparisonReference = "aggregate"`, perché la media semplice dei rapporti non è semanticamente equivalente al rapporto sui totali.
+
+L'audit post-#269 individua 16 indicatori / 112 righe con componenti numeratore-denominatore. Tre indicatori OpenBDAP erano numericamente corretti nell'aggregato ma ricadevano ancora nel fallback della media semplice: `ownRevenueShare`, `currentCollectionCapacity` e `currentPaymentCapacity`. A4.4 li riallinea al valore ponderato Versilia già presente nel catalogo, senza modificare i dati sorgente.
+
+Dopo la correzione il catalogo effettivo atteso contiene 87 riferimenti aggregati espliciti e 138 fallback alla media semplice. Gli altri fallback non vengono riclassificati automaticamente: somme, totali, compositi e aggregati speciali restano distinti dalla semantica del confronto.
+
+## Residuo A4
+
+A4.5 introdurrà visual regression su un campione rappresentativo di famiglie visuali; A4.6 completerà l'integrazione finale dei nuovi gate nel preflight generale.
