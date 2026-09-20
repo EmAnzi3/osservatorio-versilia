@@ -144,16 +144,18 @@ Nota chiusura A3: tassonomia, matrice strict, audit fonte-per-fonte, backlog pri
 
 ## A4 — Visualization & Content Contract
 
-**Stato:** `NOT_STARTED`
+**Stato:** `IN_PROGRESS`
 
 Scopo: trasformare le attuali regole di coerenza da linee guida distribuite a invarianti globali testabili.
 
-- [ ] **A4.1** Consolidare le regole esistenti di UI, scale, tooltip, unità, medie, benchmark e dati mancanti.
-- [ ] **A4.2** Definire metadati/contratti derivabili che evitino duplicazioni per unità, precisione, semantica colore e formato tooltip.
+- [x] **A4.1** Consolidare le regole esistenti di UI, scale, tooltip, unità, medie, benchmark e dati mancanti.
+- [x] **A4.2** Definire metadati/contratti derivabili che evitino duplicazioni per unità, precisione, semantica colore e formato tooltip.
 - [ ] **A4.3** Testare coerenza tra dato, testo, asse, tooltip, legenda e unità.
 - [ ] **A4.4** Testare esplicitamente media semplice vs ponderata e denominatori quando applicabili.
 - [ ] **A4.5** Introdurre visual regression su un campione rappresentativo per famiglia di grafici/temi, non screenshot indiscriminati dell'intero sito.
 - [ ] **A4.6** Portare i nuovi gate nel preflight generale.
+
+Nota A4.1–A4.2: `docs/A4_VISUALIZATION_CONTENT_CONTRACT.md` consolida le regole già operative per unità/precisione, scale, confronti, benchmark, dati mancanti, polarità e tooltip. `ci/visualization-content-contract.json` ne definisce il vocabolario machine-readable senza enumerare indicatori; `scripts/visualization_content_contract.py` lo valida sia sul catalogo sorgente sia sull'Effective Public Catalog dopo la build. Baseline effettiva post-#268: 225 indicatori, 1.547 righe, 84 riferimenti aggregati espliciti, 141 fallback alla media semplice, 22 righe `n.d.` e 24 `n.a.`. A4 resta `IN_PROGRESS`: A4.3–A4.4 devono verificare semantica e aggregazioni prima della visual regression.
 
 **Definition of done:** una regressione semantica o visiva rilevante viene intercettata prima del merge senza affidarsi soltanto al controllo manuale.
 

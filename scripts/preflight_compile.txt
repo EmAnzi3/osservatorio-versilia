@@ -48,3 +48,5 @@ scripts/materialize_a3_5_official_companions.py
 scripts/test_a3_5_official_companions.py
 scripts/enrichment_coverage.py
 scripts/test_enrichment_coverage.py
+scripts/visualization_content_contract.py
+scripts/test_visualization_content_contract.py

@@ -5,52 +5,53 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 ## Stato corrente
 
 - **Programma:** consolidamento Osservatorio Versilia
-- **Workstream attivo:** A3 — Enrichment Audit globale
-- **Step attivo:** A3.6 — copertura enrichment e chiusura A3
-- **Stato:** IN_PROGRESS — PR di chiusura A3 in preparazione; target `DONE` al merge
-- **Main verificato:** `e445605a0121a089932acbc8686d8425ea032ad3` (merge #267)
-- **Catalogo pubblico governato:** 225 indicatori
-- **Matrice A3.2:** 2.025 coppie; 2.025 classificate; 0 residue
-- **Baseline post-#267:** 544 `ACQUIRED` · 752 `AVAILABLE_MISSING` · 374 `SOURCE_UNAVAILABLE` · 355 `NOT_APPLICABLE`
-- **Opportunità acquisibili:** 1.296 = `ACQUIRED + AVAILABLE_MISSING`
-- **Copertura enrichment:** 544 / 1.296 = **42,0%**
-- **A3.5:** 8 lotti mergiati (#260–#267), 120 nuove coppie acquisite; backlog 872 → 752
-- **Backlog A3.4 residuo:** 752 opportunità · 257 pacchetti · 63 source profile
-- **Branch corrente:** `feat/a3-5-bulk-enrichment-lot-9`
-- **PR corrente:** #268 — `A3: close enrichment audit and add coverage` — Ready
-- **Prossimo workstream dopo il merge:** A4 — Visualization & Content Contract, a partire da A4.1
+- **Workstream attivo:** A4 — Visualization & Content Contract
+- **Step attivo:** A4.3 — coerenza dato/testo/asse/tooltip/legenda
+- **Stato:** IN_PROGRESS — A4.1 e A4.2 implementati nel branch corrente
+- **Main verificato:** `571fb09ec2bb3bea7907b6ad61e4723cb25a2b78` (merge #268)
+- **A3:** DONE
+- **Catalogo effettivo baseline:** 225 indicatori · 1.547 righe
+- **Confronti baseline:** 84 `comparisonReference=aggregate` · 141 fallback media semplice
+- **Missing baseline:** 22 righe `n.d.` · 24 righe `n.a.`
+- **Branch corrente:** `feat/a4-visual-content-contract-foundation`
+- **PR corrente:** #269 — `A4: establish visualization and content contract` — Ready
+- **Modifiche visive:** nessuna
 
-## Criterio di chiusura A3
+## A4.1–A4.2
 
-A3.5 non richiede di azzerare `AVAILABLE_MISSING`. Il backlog A3.4 è una roadmap governata di opportunità di prodotto, non debito obbligatorio del consolidamento.
+Il lotto consolida le regole già presenti e introduce un contratto globale senza creare un inventario parallelo di indicatori.
 
-Gli otto lotti A3.5 hanno verificato end-to-end più famiglie di fonte e dimensioni con:
-- evidenza strutturale per ogni `ACQUIRED`;
-- QA e riconciliazione contro fonti/snapshot ufficiali;
-- nessun override manuale `ACQUIRED`;
-- nessuna retro-derivazione di valori mancanti;
-- nessuna modifica UI nei lotti puramente strutturali.
+Governati:
+- unità e precisione;
+- scale generiche;
+- dato mancante vs non applicabile;
+- polarità e semantica non valutativa del colore;
+- riferimenti di confronto e modi di differenza;
+- benchmark Toscana/Italia;
+- coerenza tra valore visibile, tooltip e accessibilità.
 
-A3.6 deriva automaticamente dalla matrice strict la copertura:
-`ACQUIRED / (ACQUIRED + AVAILABLE_MISSING)`.
+Il contratto è `ci/visualization-content-contract.json`.
+Il validator `scripts/visualization_content_contract.py` viene eseguito sul catalogo sorgente e sul catalogo effettivo materializzato.
 
-`SOURCE_UNAVAILABLE` e `NOT_APPLICABLE` non entrano nel denominatore. Il valore è diagnostico, non un punteggio di qualità e non implica un target del 100%.
+## Residuo A4 immediato
+
+1. **A4.3:** testare coerenza tra dato, unità, testo, asse, tooltip e legenda.
+2. **A4.4:** distinguere e testare media semplice, media ponderata, totale, rapporto e denominatori.
+3. **A4.5:** introdurre visual regression rappresentativa; qui potrà essere necessaria verifica visiva del proprietario.
+4. **A4.6:** completare l'integrazione dei gate nel preflight generale.
 
 ## Decisioni vincolanti
 
-1. `data/site-data.json` resta l'unico catalogo canonico sorgente.
-2. Nessun secondo inventario manuale.
-3. A3.2 resta strict a `unclassifiedPairCount = 0`.
-4. `ACQUIRED` deriva solo da struttura/formula/evidenza verificabile.
-5. Le 752 opportunità residue restano integralmente nel backlog A3.4; non vengono riclassificate per ridurre artificialmente il residuo.
-6. Le future acquisizioni A3.4 sono miglioramenti di prodotto e non riaprono A3 salvo modifica della metodologia o dei contratti.
-7. Nessuna modifica UI/rendering nella PR di chiusura A3.
+1. `data/site-data.json` resta la fonte canonica del catalogo.
+2. Il contratto A4 descrive regole, non ID di metriche.
+3. Nessuna semantica di aggregazione viene cambiata automaticamente in A4.1–A4.2.
+4. I 141 fallback alla media semplice sono un perimetro di audit A4.4, non 141 errori presunti.
+5. `n.d.` e `n.a.` devono restare distinti.
+6. Nessuna modifica visuale in questo lotto.
 
 ## Prossima azione esatta
 
-1. Aprire PR Ready per chiusura A3 + A3.6.
-2. Verificare sul final head A3, Quick e Full verdi.
-3. Confermare artifact A3.6 con 544/1.296 = 42,0% e 752 `AVAILABLE_MISSING`.
-4. Correggere solo regressioni reali senza indebolire detector o contratti.
-5. Merge soltanto dopo approvazione esplicita del proprietario.
-6. Dopo il merge avviare A4.1.
+1. Aprire PR Ready A4.1 + A4.2.
+2. Verificare Quick e Full sul final head.
+3. Se verdi, merge soltanto dopo approvazione esplicita del proprietario.
+4. Dopo il merge procedere direttamente con A4.3 + A4.4 in un lotto sostanziale non-visivo.

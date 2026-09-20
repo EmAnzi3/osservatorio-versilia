@@ -9,6 +9,7 @@ from content_contract import configured_paths, expected_pages as _expected_pages
 from ephemeral_build_workspace import validate_build_materialization_contract
 from site_consistency_impl import *  # noqa: F401,F403
 from workflow_contract import validate_workflow_contract
+from visualization_content_contract import validate_visualization_content_contract
 
 
 _ORIGINAL_BUILD_ASSERTIONS = _impl.build_assertions
@@ -19,6 +20,8 @@ def _build_assertions_from_dist_catalog(dist) -> None:
     catalog_path = dist / "data" / "site-data.json"
     assert catalog_path.exists(), f"Catalogo materializzato della build non trovato: {catalog_path}"
     build_catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+
+    validate_visualization_content_contract(catalog_path)
 
     previous_expected_pages = _impl.expected_pages
     _impl.expected_pages = lambda: _expected_pages(build_catalog)
@@ -32,6 +35,7 @@ def main() -> None:
     content = validate_content_contract()
     workflows = validate_workflow_contract()
     build_workspace = validate_build_materialization_contract()
+    visualization = validate_visualization_content_contract()
     _impl.SPECIAL_PUBLIC_PAGES = configured_paths("builderTraceExceptions")
     _impl.NO_SHELL_PAGES = configured_paths("noShell")
     _impl.NO_FOOTER_PAGES = configured_paths("noFooter")
@@ -40,7 +44,8 @@ def main() -> None:
     print(
         "Contratto architetturale verificato: "
         f"{content['metrics']} indicatori, {content['pages']} route, {workflows['workflows']} workflow, "
-        f"{build_workspace['allowed_mutations']} mutazioni build transitorie dichiarate."
+        f"{build_workspace['allowed_mutations']} mutazioni build transitorie dichiarate, "
+        f"{visualization['unitCount']} unità visuali governate nel catalogo sorgente."
     )
     _impl.main()
 

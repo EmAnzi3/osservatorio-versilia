@@ -66,6 +66,7 @@
     "frontendGlobs": [
       "assets/app-parts/*.txt",
       "assets/visual-grammar.js"
-    ]
+    ],
+    "contentContract": "ci/visualization-content-contract.json"
   }
 }

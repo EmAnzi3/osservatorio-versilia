@@ -170,6 +170,11 @@
         "label": "A3.6 enrichment coverage",
         "script": "scripts/test_enrichment_coverage.py",
         "args": []
+      },
+      {
+        "label": "A4 visualization/content contract",
+        "script": "scripts/test_visualization_content_contract.py",
+        "args": []
       }
     ]
   },

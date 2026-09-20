@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "catalog": "effective-public-catalog",
+    "purpose": "Regole comuni per formattazione, scale, confronto, benchmark e dati mancanti.",
+    "noMetricInventory": true
+  },
+  "missingData": {
+    "nullToken": "n.d.",
+    "nullLabel": "Dato non disponibile",
+    "notApplicableFlag": "notApplicable",
+    "notApplicableToken": "n.a.",
+    "notApplicableLabel": "Non applicabile",
+    "mustRemainDistinct": true
+  },
+  "polarity": {
+    "allowed": [
+      "neutral",
+      "positive",
+      "negative"
+    ],
+    "rankingOrder": "descending-numeric",
+    "colorMeaning": "theme-not-quality",
+    "interpretationOnly": true
+  },
+  "comparison": {
+    "referenceField": "meta.comparisonReference",
+    "allowedReferences": [
+      "aggregate"
+    ],
+    "fallbackWhenOmitted": "simple-mean-available-towns",
+    "differenceField": "meta.comparisonDifference",
+    "allowedDifferenceModes": [
+      "percentagePoints",
+      "absolute",
+      "shareOfAggregate"
+    ],
+    "defaultDifferenceMode": "relativePercent",
+    "declaredAggregateField": "aggregate"
+  },
+  "benchmarks": {
+    "metricField": "meta.benchmark",
+    "requiredFields": [
+      "year",
+      "source",
+      "url",
+      "note"
+    ],
+    "valueFields": [
+      "tuscany",
+      "italy"
+    ],
+    "allowPartialValues": true
+  },
+  "scales": {
+    "percent": {
+      "zeroBased": true,
+      "fullRangeThreshold": 60,
+      "fullRangeMax": 100
+    },
+    "nonNegative": {
+      "zeroBased": true
+    },
+    "nonPositive": {
+      "zeroAnchored": true
+    },
+    "signed": {
+      "symmetricAroundZero": true
+    },
+    "eurliter": {
+      "focused": true
+    }
+  },
+  "tooltips": {
+    "missingUsesNullToken": true,
+    "notApplicableUsesDistinctToken": true,
+    "ariaAndVisibleValueMustShareFormatter": true
+  },
+  "units": {
+    "number": {
+      "family": "count",
+      "fractionDigits": 0,
+      "suffix": "",
+      "genericSurface": true
+    },
+    "count": {
+      "family": "count",
+      "fractionDigits": 0,
+      "suffix": "",
+      "genericSurface": true
+    },
+    "people": {
+      "family": "count",
+      "fractionDigits": 0,
+      "suffix": " persone",
+      "genericSurface": true
+    },
+    "currency": {
+      "family": "currency",
+      "fractionDigits": 0,
+      "suffix": " €",
+      "genericSurface": true
+    },
+    "currency2": {
+      "family": "currency",
+      "fractionDigits": 2,
+      "suffix": " €",
+      "genericSurface": true
+    },
+    "millionCurrency": {
+      "family": "currency-million",
+      "fractionDigits": 1,
+      "suffix": " mln €",
+      "genericSurface": true
+    },
+    "percent": {
+      "family": "percent",
+      "fractionDigits": 1,
+      "suffix": "%",
+      "genericSurface": true
+    },
+    "%": {
+      "family": "percent",
+      "fractionDigits": 2,
+      "suffix": "%",
+      "genericSurface": true
+    },
+    "percent2": {
+      "family": "percent",
+      "fractionDigits": 2,
+      "suffix": "%",
+      "genericSurface": true
+    },
+    "percentagePoints": {
+      "family": "percentage-points",
+      "fractionDigits": 1,
+      "suffix": "%",
+      "genericSurface": true
+    },
+    "index": {
+      "family": "index",
+      "fractionDigits": 1,
+      "suffix": "",
+      "genericSurface": true
+    },
+    "invalsi_score": {
+      "family": "score",
+      "fractionDigits": 1,
+      "suffix": "",
+      "genericSurface": true
+    },
+    "decimal": {
+      "family": "decimal",
+      "fractionDigits": 2,
+      "suffix": "",
+      "genericSurface": true
+    },
+    "years": {
+      "family": "duration-years",
+      "fractionDigits": 2,
+      "suffix": " anni",
+      "genericSurface": true
+    },
+    "hours": {
+      "family": "duration-hours",
+      "fractionDigits": 2,
+      "suffix": " h",
+      "genericSurface": true
+    },
+    "nights": {
+      "family": "duration-nights",
+      "fractionDigits": 2,
+      "suffix": " notti",
+      "genericSurface": true
+    },
+    "studentsPerClass": {
+      "family": "ratio",
+      "fractionDigits": 1,
+      "suffix": " alunni/classe",
+      "genericSurface": true
+    },
+    "minutes": {
+      "family": "duration-minutes",
+      "fractionDigits": 1,
+      "suffix": " min",
+      "genericSurface": true
+    },
+    "decile": {
+      "family": "ordinal",
+      "fractionDigits": 0,
+      "suffix": "/10",
+      "genericSurface": true
+    },
+    "ventile": {
+      "family": "ordinal",
+      "fractionDigits": 0,
+      "suffix": "/20",
+      "genericSurface": true
+    },
+    "per100": {
+      "family": "rate",
+      "fractionDigits": 2,
+      "suffix": " ogni 100",
+      "genericSurface": true
+    },
+    "per1000": {
+      "family": "rate",
+      "fractionDigits": 2,
+      "suffix": " ogni 1.000",
+      "genericSurface": true
+    },
+    "per10k": {
+      "family": "rate",
+      "fractionDigits": 1,
+      "suffix": " ogni 10.000",
+      "genericSurface": true
+    },
+    "per100k": {
+      "family": "rate",
+      "fractionDigits": 2,
+      "suffix": " ogni 100.000",
+      "genericSurface": true
+    },
+    "eurm2": {
+      "family": "currency-area",
+      "fractionDigits": 0,
+      "suffix": " €/m²",
+      "genericSurface": true
+    },
+    "rentm2": {
+      "family": "currency-area-time",
+      "fractionDigits": 1,
+      "suffix": " €/m²/mese",
+      "genericSurface": true
+    },
+    "eurliter": {
+      "family": "currency-volume",
+      "fractionDigits": 3,
+      "suffix": " €/l",
+      "genericSurface": true
+    },
+    "eurPerResident": {
+      "family": "currency-person",
+      "fractionDigits": 2,
+      "suffix": " €/ab.",
+      "genericSurface": true
+    },
+    "kg": {
+      "family": "mass",
+      "fractionDigits": 0,
+      "suffix": " kg",
+      "genericSurface": true
+    },
+    "hectares": {
+      "family": "area",
+      "fractionDigits": 2,
+      "suffix": " ha",
+      "genericSurface": true
+    },
+    "sqm_per_resident": {
+      "family": "area-person",
+      "fractionDigits": 1,
+      "suffix": " m²/residente",
+      "genericSurface": true
+    },
+    "cubicMetres": {
+      "family": "volume",
+      "fractionDigits": 0,
+      "suffix": " m³",
+      "genericSurface": true
+    },
+    "hectaresPerFarm": {
+      "family": "area-entity",
+      "fractionDigits": 2,
+      "suffix": " ha/azienda",
+      "genericSurface": true
+    },
+    "squareKm": {
+      "family": "area",
+      "fractionDigits": 2,
+      "suffix": " km²",
+      "genericSurface": true
+    },
+    "peoplePerSquareKm": {
+      "family": "density",
+      "fractionDigits": 1,
+      "suffix": " ab./km²",
+      "genericSurface": true
+    },
+    "metres": {
+      "family": "length",
+      "fractionDigits": 0,
+      "suffix": " m",
+      "genericSurface": true
+    },
+    "km": {
+      "family": "length",
+      "fractionDigits": 2,
+      "suffix": " km",
+      "genericSurface": true
+    },
+    "km_per_km2": {
+      "family": "density-network",
+      "fractionDigits": 2,
+      "suffix": " km/km²",
+      "genericSurface": true
+    },
+    "kmIntervention": {
+      "family": "length-intervention",
+      "fractionDigits": 2,
+      "suffix": " km-intervento",
+      "genericSurface": true
+    },
+    "climateCelsius": {
+      "family": "special-climate",
+      "fractionDigits": 1,
+      "suffix": " °C",
+      "genericSurface": false
+    },
+    "climateMm": {
+      "family": "special-climate",
+      "fractionDigits": 1,
+      "suffix": " mm",
+      "genericSurface": false
+    }
+  }
+}
