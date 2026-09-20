@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""A3.5 lotto 8: dimensioni strutturali da snapshot Istat, AGCOM e RGS già versionati.
+"""A3.5 lotto 8: companion strutturali da snapshot ufficiali già versionati.
 
-Il lotto è esclusivamente non-visivo: aggiunge strutture A3 ignorate dal renderer
-senza cambiare valori, testi, metadati o aggregati pubblici. Ogni acquisizione è
-riconciliata contro conteggi ufficiali già congelati nella repository.
+Il lotto è esclusivamente non-visivo: aggiunge strutture A3 ignorate dal
+renderer senza cambiare valori, testi, metadati o aggregati pubblici.
+Ogni acquisizione è riconciliata contro numeri ufficiali già congelati.
 """
 from __future__ import annotations
 
@@ -15,16 +15,14 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SITE_PATH = ROOT / "data" / "site-data.json"
 ISTAT_2024_PATH = ROOT / "data" / "source-snapshots" / "istat-lavoro-istruzione-eta-genere-2024.json"
-LIA_2023_PATH = ROOT / "data" / "source-snapshots" / "lia-v1.4.0.json"
-AGCOM_PATH = ROOT / "data" / "source-snapshots" / "agid-asia-agcom-2026-08.json"
+LIA_PATH = ROOT / "data" / "source-snapshots" / "lia-v1.4.0.json"
 RGS_ADMIN_PATH = ROOT / "data" / "source-snapshots" / "rgs-amministrazione-2024.json"
 RGS_TRAINING_PATH = ROOT / "data" / "source-snapshots" / "rgs-formazione-2024.json"
 
 ISTAT_TARGETS = ("femaleEmploymentRate", "maleEmploymentRate", "employmentGenderGap")
-AGCOM_TARGETS = ("ftthCoverageDesi", "ftthCoverage20m", "ftthReachedHouseholds", "ftthUnreachedHouseholds")
+MIM_TARGETS = ("studentsPerClass", "primaryFullTimeShare")
 RGS_TURNOVER = "municipalStaffTurnover"
 RGS_TRAINING = "municipalStaffTraining"
-
 AGE_KEYS = ("15-24", "25-49", "50-64", "65plus", "25-64", "15plus")
 
 
@@ -99,7 +97,12 @@ def _apply_istat(metrics: dict[str, Any], istat: dict[str, Any], lia: dict[str, 
             raise RuntimeError(f"Metrica Istat mancante: {metric_id}")
         for town, row in _rows_by_town(metric, metric_id).items():
             public_expected = _istat_public_value_2023(metric_id, by_town_2023[town])
-            _assert_close(_num(row.get("value"), f"{metric_id}/{town}: value"), public_expected, f"{metric_id}/{town}: pubblico 2023", 0.12)
+            _assert_close(
+                _num(row.get("value"), f"{metric_id}/{town}: value"),
+                public_expected,
+                f"{metric_id}/{town}: pubblico 2023",
+                0.12,
+            )
 
             labour = towns[town].get("labour")
             if not isinstance(labour, dict):
@@ -122,7 +125,11 @@ def _apply_istat(metrics: dict[str, Any], istat: dict[str, Any], lia: dict[str, 
                     value = _employment_rate(labour[age_key]["men"])
                 else:
                     value = _employment_rate(labour[age_key]["men"]) - _employment_rate(labour[age_key]["women"])
-                age.append({"ageClass": age_key, "value": value, "unit": "percent" if metric_id != "employmentGenderGap" else "percentagePoints"})
+                age.append({
+                    "ageClass": age_key,
+                    "value": value,
+                    "unit": "percent" if metric_id != "employmentGenderGap" else "percentagePoints",
+                })
 
             payload: dict[str, Any] = {
                 "referenceYear": 2024,
@@ -142,7 +149,12 @@ def _apply_istat(metrics: dict[str, Any], istat: dict[str, Any], lia: dict[str, 
                 inactive = population - active
                 if min(employed, unemployed, inactive) < -1e-8:
                     raise RuntimeError(f"{metric_id}/{town}: categorie lavoro negative")
-                _assert_close(employed + unemployed + inactive, population, f"{metric_id}/{town}: partizione lavoro", 1e-6)
+                _assert_close(
+                    employed + unemployed + inactive,
+                    population,
+                    f"{metric_id}/{town}: partizione lavoro",
+                    1e-6,
+                )
                 payload["categories"] = [
                     {"key": "employed", "label": "Occupati", "value": employed, "unit": "people"},
                     {"key": "unemployed", "label": "In cerca di occupazione", "value": unemployed, "unit": "people"},
@@ -158,87 +170,50 @@ def _apply_istat(metrics: dict[str, Any], istat: dict[str, Any], lia: dict[str, 
     return pairs
 
 
-def _agcom_source(raw: dict[str, Any], metric_id: str, town: str) -> dict[str, float]:
-    agcom = raw.get("agcom")
-    if not isinstance(agcom, dict):
-        raise RuntimeError(f"{metric_id}/{town}: AGCOM mancante")
-    primary = agcom.get("primaryOfficialCsv")
-    if not isinstance(primary, dict):
-        raise RuntimeError(f"{metric_id}/{town}: CSV primario AGCOM mancante")
-    resident = _num(primary.get("famiglie_residenti"), f"{metric_id}/{town}: resident")
-    reached = _num(primary.get("famiglie_ftth"), f"{metric_id}/{town}: reached")
-    within20m = _num(primary.get("famiglie_ftth_20m"), f"{metric_id}/{town}: within20m")
-    desi_pct = _num(primary.get("copertura_ftth_desi_pct"), f"{metric_id}/{town}: desi pct")
-    within20m_pct = _num(primary.get("copertura_ftth_20m_pct"), f"{metric_id}/{town}: 20m pct")
-    if not (0 <= within20m <= reached <= resident):
-        raise RuntimeError(f"{metric_id}/{town}: conteggi AGCOM non annidati")
-    if resident <= 0:
-        raise RuntimeError(f"{metric_id}/{town}: famiglie residenti nulle")
-    _assert_close(reached / resident * 100.0, desi_pct, f"{metric_id}/{town}: DESI", 0.11)
-    _assert_close(within20m / resident * 100.0, within20m_pct, f"{metric_id}/{town}: 20m", 0.11)
-    return {
-        "resident": resident,
-        "reached": reached,
-        "within20m": within20m,
-        "desiPct": desi_pct,
-        "within20mPct": within20m_pct,
-    }
+def _apply_mim(metrics: dict[str, Any], lia: dict[str, Any]) -> int:
+    raw = lia.get("raw", {}).get("mim2024_25")
+    if not isinstance(raw, list) or len(raw) != 7:
+        raise RuntimeError("Snapshot MIM 2024/25 privo di 7 Comuni")
+    by_town = {str(item["town"]): item for item in raw}
 
-
-def _apply_agcom(metrics: dict[str, Any], snapshot: dict[str, Any]) -> int:
-    towns = snapshot.get("towns")
-    if not isinstance(towns, list) or len(towns) != 7:
-        raise RuntimeError("Snapshot AGCOM privo di 7 Comuni")
-    by_town = {str(item["town"]): item for item in towns}
-
-    pairs = 0
-    for metric_id in AGCOM_TARGETS:
+    for metric_id in MIM_TARGETS:
         metric = metrics.get(metric_id)
         if not isinstance(metric, dict):
-            raise RuntimeError(f"Metrica AGCOM mancante: {metric_id}")
+            raise RuntimeError(f"Metrica MIM mancante: {metric_id}")
         for town, row in _rows_by_town(metric, metric_id).items():
-            values = _agcom_source(by_town[town], metric_id, town)
-            if metric_id == "ftthCoverageDesi":
-                absolute = values["reached"]
-                normalized = values["desiPct"]
-                _assert_close(_num(row.get("value"), f"{metric_id}/{town}: value"), normalized, f"{metric_id}/{town}: pubblico", 0.11)
-            elif metric_id == "ftthCoverage20m":
-                absolute = values["within20m"]
-                normalized = values["within20mPct"]
-                _assert_close(_num(row.get("value"), f"{metric_id}/{town}: value"), normalized, f"{metric_id}/{town}: pubblico", 0.11)
-            elif metric_id == "ftthReachedHouseholds":
-                absolute = values["reached"]
-                normalized = values["desiPct"]
-                _assert_close(_num(row.get("value"), f"{metric_id}/{town}: value"), absolute, f"{metric_id}/{town}: pubblico", 0.51)
+            source = by_town[town]
+            if metric_id == "studentsPerClass":
+                numerator = _num(source.get("students"), f"{metric_id}/{town}: students")
+                denominator = _num(source.get("classes"), f"{metric_id}/{town}: classes")
+                scale = 1.0
+                formula = "alunni / classi"
             else:
-                absolute = values["resident"] - values["reached"]
-                normalized = absolute / values["resident"] * 100.0
-                _assert_close(_num(row.get("value"), f"{metric_id}/{town}: value"), absolute, f"{metric_id}/{town}: pubblico", 0.51)
-
-            payload: dict[str, Any] = {
-                "referencePeriod": "31/12/2025",
-                "source": "AGCOM — Broadband Map",
-                "sourceSnapshot": "data/source-snapshots/agid-asia-agcom-2026-08.json",
-                "absolute": absolute,
+                numerator = _num(source.get("full_time_students"), f"{metric_id}/{town}: full time")
+                denominator = _num(source.get("primary_students"), f"{metric_id}/{town}: primary")
+                scale = 100.0
+                formula = "alunni primaria a tempo pieno / alunni primaria × 100"
+            if denominator <= 0:
+                raise RuntimeError(f"{metric_id}/{town}: denominatore nullo")
+            normalized = numerator / denominator * scale
+            _assert_close(
+                _num(row.get("value"), f"{metric_id}/{town}: value"),
+                normalized,
+                f"{metric_id}/{town}: pubblico",
+                1e-8,
+            )
+            row["a3SchoolComponents"] = {
+                "referenceYear": "a.s. 2024/25",
+                "source": "MIM — Portale unico dei dati della scuola",
+                "sourceSnapshot": "data/source-snapshots/lia-v1.4.0.json",
+                "formula": formula,
+                "scale": scale,
+                "numerator": numerator,
+                "denominator": denominator,
+                "absolute": numerator,
                 "normalized": normalized,
-                "categories": [
-                    {"key": "within20m", "label": "FTTH entro 20 m", "value": values["within20m"], "unit": "households"},
-                    {"key": "desiBeyond20m", "label": "FTTH DESI oltre 20 m", "value": values["reached"] - values["within20m"], "unit": "households"},
-                    {"key": "unreached", "label": "Non raggiunte FTTH DESI", "value": values["resident"] - values["reached"], "unit": "households"},
-                ],
             }
-            _assert_close(sum(item["value"] for item in payload["categories"]), values["resident"], f"{metric_id}/{town}: categorie AGCOM", 1e-6)
-            if metric_id in {"ftthCoverageDesi", "ftthCoverage20m"}:
-                payload["numerator"] = absolute
-                payload["denominator"] = values["resident"]
-                _assert_close(absolute / values["resident"] * 100.0, normalized, f"{metric_id}/{town}: rapporto", 0.11)
-            row["a3FtthDimensions"] = payload
 
-        pairs += 2
-        if metric_id in {"ftthCoverageDesi", "ftthCoverage20m"}:
-            pairs += 1
-
-    return pairs
+    return 4
 
 
 def _apply_rgs(metrics: dict[str, Any], admin: dict[str, Any], training: dict[str, Any]) -> int:
@@ -256,7 +231,12 @@ def _apply_rgs(metrics: dict[str, Any], admin: dict[str, Any], training: dict[st
         raw = admin_towns[town]
         absolute = _num(raw.get("netTurnoverHeadcount"), f"{town}: turnover absolute")
         normalized = _num(raw.get("netTurnoverRatePct"), f"{town}: turnover rate")
-        _assert_close(_num(row.get("value"), f"{town}: turnover pubblico"), normalized, f"{town}: turnover", 0.0002)
+        _assert_close(
+            _num(row.get("value"), f"{town}: turnover pubblico"),
+            normalized,
+            f"{town}: turnover",
+            0.0002,
+        )
         row["a3StaffTurnoverDimensions"] = {
             "referenceYear": 2024,
             "source": "Ragioneria Generale dello Stato — Conto Annuale",
@@ -274,7 +254,12 @@ def _apply_rgs(metrics: dict[str, Any], admin: dict[str, Any], training: dict[st
         raise RuntimeError("Metrica formazione RGS mancante")
     for town, row in _rows_by_town(metric, RGS_TRAINING).items():
         raw = training_towns[town]
-        _assert_close(_num(row.get("value"), f"{town}: training pubblico"), _num(raw.get("meanTotalRgs"), f"{town}: mean total"), f"{town}: training", 1e-10)
+        _assert_close(
+            _num(row.get("value"), f"{town}: training pubblico"),
+            _num(raw.get("meanTotalRgs"), f"{town}: mean total"),
+            f"{town}: training",
+            1e-10,
+        )
         men_days = _num(raw.get("menDays"), f"{town}: men days")
         women_days = _num(raw.get("womenDays"), f"{town}: women days")
         total_days = _num(raw.get("totalDays"), f"{town}: total days")
@@ -296,28 +281,27 @@ def apply_enrichment(
     site: dict[str, Any],
     istat: dict[str, Any],
     lia: dict[str, Any],
-    agcom: dict[str, Any],
     rgs_admin: dict[str, Any],
     rgs_training: dict[str, Any],
 ) -> dict[str, int]:
     metrics = site.get("metrics")
     if not isinstance(metrics, dict):
         raise RuntimeError("Catalogo senza metrics")
-    required = set(ISTAT_TARGETS) | set(AGCOM_TARGETS) | {RGS_TURNOVER, RGS_TRAINING}
+    required = set(ISTAT_TARGETS) | set(MIM_TARGETS) | {RGS_TURNOVER, RGS_TRAINING}
     missing = sorted(required - set(metrics))
     if missing:
         raise RuntimeError(f"Metriche lotto 8 mancanti: {missing}")
 
     istat_pairs = _apply_istat(metrics, istat, lia)
-    agcom_pairs = _apply_agcom(metrics, agcom)
+    mim_pairs = _apply_mim(metrics, lia)
     rgs_pairs = _apply_rgs(metrics, rgs_admin, rgs_training)
-    pairs = istat_pairs + agcom_pairs + rgs_pairs
-    if pairs != 21:
+    pairs = istat_pairs + mim_pairs + rgs_pairs
+    if pairs != 15:
         raise RuntimeError(f"Conteggio coppie lotto 8 inatteso: {pairs}")
 
     return {
         "istatPairs": istat_pairs,
-        "agcomPairs": agcom_pairs,
+        "mimPairs": mim_pairs,
         "rgsPairs": rgs_pairs,
         "pairsAcquired": pairs,
     }
@@ -328,16 +312,15 @@ def main() -> None:
     summary = apply_enrichment(
         site,
         load(ISTAT_2024_PATH),
-        load(LIA_2023_PATH),
-        load(AGCOM_PATH),
+        load(LIA_PATH),
         load(RGS_ADMIN_PATH),
         load(RGS_TRAINING_PATH),
     )
     save(SITE_PATH, site)
     print(
-        "A3.5 Istat + AGCOM + RGS companions: "
+        "A3.5 Istat + MIM + RGS companions: "
         f"{summary['pairsAcquired']} coppie integrate "
-        f"({summary['istatPairs']} Istat, {summary['agcomPairs']} AGCOM, {summary['rgsPairs']} RGS)."
+        f"({summary['istatPairs']} Istat, {summary['mimPairs']} MIM, {summary['rgsPairs']} RGS)."
     )
 
 
