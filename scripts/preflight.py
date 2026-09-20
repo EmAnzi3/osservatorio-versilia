@@ -48,6 +48,7 @@ JSON_CONTRACTS = (
     "data/source-snapshots/attivita-estrattive-v128.json",
     "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
     "ci/workflow-contract.json",
+    "ci/visualization-content-contract.json",
 )
 
 WORKFLOW_CONTRACT = ROOT / "ci" / "workflow-contract.json"
