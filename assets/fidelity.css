@@ -1010,3 +1010,446 @@
     padding: 14px 15px 16px;
   }
 }
+
+
+/* A5.4 — Design System 2.0 pilot: confronto Demografia */
+:root {
+  --ds-canvas: #f5f7f6;
+  --ds-surface: #ffffff;
+  --ds-surface-secondary: #edf1f1;
+  --ds-surface-editorial: #f4eee2;
+  --ds-surface-inverse: #102f45;
+  --ds-text: #102f45;
+  --ds-text-secondary: #4f636d;
+  --ds-text-tertiary: #5d7078;
+  --ds-text-inverse: #ffffff;
+  --ds-border: #d9e1df;
+  --ds-border-strong: #b9c7c3;
+  --ds-focus: #145b78;
+  --ds-shadow-1: 0 10px 28px rgba(16, 47, 69, .07);
+  --ds-shadow-2: 0 20px 52px rgba(16, 47, 69, .11);
+  --ds-success: #356846;
+  --ds-success-soft: #edf5ef;
+  --ds-warning: #7a5b16;
+  --ds-warning-soft: #faf4df;
+  --ds-danger: #8a3f46;
+  --ds-danger-soft: #f8ecee;
+  --ds-info: #315d8b;
+  --ds-info-soft: #edf3f9;
+}
+
+[data-theme=demografia] {
+  --ds-theme-accent: #8a4f3d;
+  --ds-theme-soft: #f8eee9;
+  --ds-theme-line: #dfbfb3;
+}
+[data-theme=economia] {
+  --ds-theme-accent: #7a5b16;
+  --ds-theme-soft: #faf4df;
+  --ds-theme-line: #dccb8d;
+}
+[data-theme=lavoro] {
+  --ds-theme-accent: #5d4778;
+  --ds-theme-soft: #f2eef8;
+  --ds-theme-line: #cbbdde;
+}
+[data-theme=istruzione] {
+  --ds-theme-accent: #315d8b;
+  --ds-theme-soft: #edf3f9;
+  --ds-theme-line: #b9cee2;
+}
+[data-theme=salute] {
+  --ds-theme-accent: #8a3f55;
+  --ds-theme-soft: #f8edf1;
+  --ds-theme-line: #dfbcc7;
+}
+[data-theme=mobilita] {
+  --ds-theme-accent: #27636d;
+  --ds-theme-soft: #eaf4f5;
+  --ds-theme-line: #afd0d4;
+}
+[data-theme=abitare] {
+  --ds-theme-accent: #8b5c35;
+  --ds-theme-soft: #f7f0e9;
+  --ds-theme-line: #dec5ad;
+}
+[data-theme=ambiente] {
+  --ds-theme-accent: #3f6d43;
+  --ds-theme-soft: #edf5ed;
+  --ds-theme-line: #b9d1bb;
+}
+[data-theme=comunita] {
+  --ds-theme-accent: #5b596f;
+  --ds-theme-soft: #f0f0f5;
+  --ds-theme-line: #c7c5d2;
+}
+[data-theme=sicurezza] {
+  --ds-theme-accent: #466174;
+  --ds-theme-soft: #eef3f6;
+  --ds-theme-line: #bfd0d8;
+}
+[data-theme=bilanci] {
+  --ds-theme-accent: #326c67;
+  --ds-theme-soft: #edf5f3;
+  --ds-theme-line: #b8d3ce;
+}
+
+/* Pilot isolated to the theme comparison page. Historical aliases are mapped
+   locally so existing components can consume DS2 without a site-wide rewrite. */
+.inner-page[data-theme=demografia] {
+  --paper: var(--ds-canvas);
+  --surface: var(--ds-surface);
+  --ink: var(--ds-text);
+  --muted: var(--ds-text-secondary);
+  --line: var(--ds-border);
+  --theme-color: var(--ds-theme-accent);
+  --theme-accent: var(--ds-theme-accent);
+  --theme-soft: var(--ds-theme-soft);
+  --theme-line: var(--ds-theme-line);
+  color: var(--ds-text);
+  background: var(--ds-canvas);
+}
+
+.inner-page[data-theme=demografia] .breadcrumbs {
+  color: var(--ds-text-tertiary);
+  font-size: 12px;
+}
+.inner-page[data-theme=demografia] .breadcrumbs strong {
+  color: var(--ds-text);
+}
+
+.inner-page[data-theme=demografia] .compare-context-nav {
+  border-color: var(--ds-border);
+  background: color-mix(in srgb, var(--ds-surface) 94%, transparent);
+  box-shadow: 0 6px 18px rgba(16, 47, 69, .035);
+}
+.inner-page[data-theme=demografia] .context-nav-title small {
+  color: var(--ds-text-tertiary);
+  font-size: 9px;
+}
+.inner-page[data-theme=demografia] .context-nav-title strong {
+  color: var(--ds-text);
+  font-size: 12px;
+}
+.inner-page[data-theme=demografia] .context-nav-links a {
+  min-height: 38px;
+  color: var(--ds-text-secondary);
+  font-size: 11px;
+}
+.inner-page[data-theme=demografia] .context-nav-links a small {
+  color: var(--ds-text-tertiary);
+  font-size: 9px;
+}
+.inner-page[data-theme=demografia] .context-nav-links a:hover {
+  border-color: var(--ds-border-strong);
+  background: var(--ds-surface-secondary);
+}
+.inner-page[data-theme=demografia] .context-nav-links a.active {
+  border-color: var(--ds-theme-line);
+  background: var(--ds-theme-soft);
+  color: var(--ds-theme-accent);
+}
+.inner-page[data-theme=demografia] .context-nav-links a.active small {
+  color: var(--ds-theme-accent);
+}
+
+.inner-page[data-theme=demografia] .topic-hero {
+  min-height: 0;
+  border-bottom-color: var(--ds-border);
+  padding-top: 54px;
+  padding-bottom: 52px;
+}
+.inner-page[data-theme=demografia] .topic-hero::after {
+  height: 3px;
+  background: linear-gradient(90deg, var(--ds-theme-accent), var(--ds-theme-line) 38%, transparent 78%);
+}
+.inner-page[data-theme=demografia] .topic-symbol {
+  width: 70px;
+  height: 70px;
+  border: 1px solid var(--ds-theme-line);
+  background: var(--ds-theme-soft);
+  color: var(--ds-theme-accent);
+  box-shadow: none;
+}
+.inner-page[data-theme=demografia] .topic-symbol small {
+  font-size: 10px;
+}
+.inner-page[data-theme=demografia] .topic-hero .overline {
+  color: var(--ds-theme-accent);
+}
+.inner-page[data-theme=demografia] .topic-hero h1 {
+  max-width: 900px;
+  font-size: clamp(52px, 7vw, 86px);
+}
+.inner-page[data-theme=demografia] .topic-hero p {
+  max-width: 760px;
+  color: var(--ds-text-secondary);
+}
+
+.inner-page[data-theme=demografia] .topic-dashboard {
+  gap: 42px;
+  align-items: start;
+  padding-top: 48px;
+  padding-bottom: 64px;
+}
+.inner-page[data-theme=demografia] .topic-controls {
+  min-width: 0;
+  border: 1px solid var(--ds-border);
+  border-radius: 20px;
+  background: var(--ds-surface);
+  padding: 22px;
+  box-shadow: var(--ds-shadow-1);
+}
+.inner-page[data-theme=demografia] .topic-controls .metric-switch.metric-catalog {
+  gap: 18px;
+  margin-top: 0;
+}
+.inner-page[data-theme=demografia] .metric-catalog .metric-group {
+  border-color: var(--ds-border);
+  padding-bottom: 16px;
+}
+.inner-page[data-theme=demografia] .metric-group-heading {
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.inner-page[data-theme=demografia] .metric-group-heading strong {
+  color: var(--ds-text);
+  font-size: 12px;
+}
+.inner-page[data-theme=demografia] .metric-group-heading span {
+  color: var(--ds-text-secondary);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.inner-page[data-theme=demografia] .topic-controls .metric-group-buttons {
+  gap: 7px;
+}
+.inner-page[data-theme=demografia] .topic-controls .metric-group-buttons button {
+  min-height: 42px;
+  border-color: var(--ds-border);
+  color: var(--ds-text-secondary);
+  background: var(--ds-surface);
+  padding: 9px 11px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.inner-page[data-theme=demografia] .topic-controls .metric-group-buttons button:hover {
+  border-color: var(--ds-theme-line);
+  background: var(--ds-theme-soft);
+  color: var(--ds-theme-accent);
+}
+.inner-page[data-theme=demografia] .topic-controls .metric-group-buttons button.active {
+  border-color: var(--ds-theme-accent) !important;
+  background: var(--ds-theme-soft) !important;
+  color: var(--ds-theme-accent) !important;
+  box-shadow: inset 3px 0 0 var(--ds-theme-accent);
+}
+
+.inner-page[data-theme=demografia] .indicator-definition {
+  margin-top: 24px;
+  border: 1px solid var(--ds-border);
+  border-top: 4px solid var(--ds-theme-accent);
+  border-radius: 14px;
+  background: var(--ds-surface-secondary);
+  padding: 19px;
+}
+.inner-page[data-theme=demografia] .indicator-definition h2 {
+  color: var(--ds-text);
+  font-size: 27px;
+}
+.inner-page[data-theme=demografia] .indicator-definition > p {
+  color: var(--ds-text-secondary);
+  font-size: 13px;
+}
+.inner-page[data-theme=demografia] .indicator-definition dl div {
+  gap: 18px;
+  font-size: 12px;
+}
+.inner-page[data-theme=demografia] .indicator-definition dt {
+  color: var(--ds-text-secondary);
+}
+.inner-page[data-theme=demografia] .indicator-definition dd {
+  color: var(--ds-text);
+}
+.inner-page[data-theme=demografia] .aggregate-note,
+.inner-page[data-theme=demografia] .composite-compare-note {
+  color: var(--ds-text-tertiary);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.inner-page[data-theme=demografia] .scale-switch {
+  border-color: var(--ds-border);
+  background: var(--ds-surface-secondary);
+}
+.inner-page[data-theme=demografia] .scale-switch button {
+  min-height: 40px;
+  color: var(--ds-text-secondary);
+  font-size: 11px;
+}
+.inner-page[data-theme=demografia] .scale-switch button.active {
+  background: var(--ds-surface-inverse);
+  color: var(--ds-text-inverse);
+}
+
+.inner-page[data-theme=demografia] .data-actions button {
+  min-height: 40px;
+  border-color: var(--ds-border);
+  background: var(--ds-surface);
+  color: var(--ds-focus);
+  font-size: 11px;
+}
+.inner-page[data-theme=demografia] .data-actions button:hover,
+.inner-page[data-theme=demografia] .data-actions button:focus-visible {
+  border-color: var(--ds-theme-line);
+  background: var(--ds-theme-soft);
+  color: var(--ds-theme-accent);
+}
+
+.inner-page[data-theme=demografia] .topic-bars {
+  border: 1px solid var(--ds-border);
+  border-radius: 20px;
+  background: var(--ds-surface);
+  padding: 30px;
+  box-shadow: var(--ds-shadow-1);
+}
+.inner-page[data-theme=demografia] .topic-bars .bar-row {
+  min-height: 56px;
+}
+.inner-page[data-theme=demografia] .bar-row:hover,
+.inner-page[data-theme=demografia] .bar-row.selected {
+  background: var(--ds-theme-soft);
+}
+.inner-page[data-theme=demografia] .bar-rank {
+  color: var(--ds-text-tertiary);
+}
+.inner-page[data-theme=demografia] .bar-track {
+  background: var(--ds-surface-secondary);
+}
+.inner-page[data-theme=demografia] .bar-town {
+  color: var(--ds-text);
+}
+
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-section,
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-unavailable {
+  border: 1px solid var(--ds-border);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-1);
+}
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-card {
+  border-color: var(--ds-border);
+  background: var(--ds-surface-secondary);
+}
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-local {
+  border-color: var(--ds-theme-accent);
+  background: var(--ds-theme-accent);
+  color: var(--ds-text-inverse);
+}
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-note,
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-card > span,
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-card small {
+  color: var(--ds-text-secondary);
+}
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-local > span,
+.inner-page[data-theme=demografia] #compare-benchmark .benchmark-local small {
+  color: #fff4ef;
+}
+
+.inner-page[data-theme=demografia] .topic-town-links {
+  border-top: 1px solid var(--ds-border);
+  padding-top: 62px;
+}
+.inner-page[data-theme=demografia] .topic-town-links a {
+  min-height: 50px;
+  border-bottom-color: var(--ds-border);
+  color: var(--ds-text);
+}
+.inner-page[data-theme=demografia] .topic-town-links a:hover {
+  color: var(--ds-theme-accent);
+}
+
+@media (max-width: 1000px) {
+  .inner-page[data-theme=demografia] .topic-dashboard {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .inner-page[data-theme=demografia] .topic-controls {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .inner-page[data-theme=demografia] .breadcrumbs {
+    font-size: 11px;
+  }
+  .inner-page[data-theme=demografia] .compare-context-nav {
+    gap: 10px;
+  }
+  .inner-page[data-theme=demografia] .context-nav-title {
+    min-width: 58px;
+  }
+  .inner-page[data-theme=demografia] .context-nav-links a {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+  .inner-page[data-theme=demografia] .topic-hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-top: 34px;
+    padding-bottom: 38px;
+  }
+  .inner-page[data-theme=demografia] .topic-symbol {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px 16px 16px 5px;
+  }
+  .inner-page[data-theme=demografia] .topic-hero h1 {
+    font-size: clamp(44px, 13vw, 62px);
+  }
+  .inner-page[data-theme=demografia] .topic-hero p {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .inner-page[data-theme=demografia] .topic-dashboard {
+    gap: 20px;
+    padding-top: 30px;
+    padding-bottom: 46px;
+  }
+  .inner-page[data-theme=demografia] .topic-controls {
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .inner-page[data-theme=demografia] .topic-controls .metric-group-buttons button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+  .inner-page[data-theme=demografia] .metric-group-heading span {
+    font-size: 11px;
+  }
+  .inner-page[data-theme=demografia] .indicator-definition {
+    padding: 16px;
+  }
+  .inner-page[data-theme=demografia] .indicator-definition dl div {
+    font-size: 11px;
+  }
+  .inner-page[data-theme=demografia] .topic-bars {
+    border-radius: 16px;
+    padding: 18px;
+  }
+  .inner-page[data-theme=demografia] .aggregate-note,
+  .inner-page[data-theme=demografia] .composite-compare-note {
+    font-size: 11px;
+  }
+  .inner-page[data-theme=demografia] .topic-town-links {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-top: 46px;
+  }
+  .inner-page[data-theme=demografia] .topic-town-links > div:last-child {
+    grid-template-columns: 1fr;
+  }
+  .inner-page[data-theme=demografia] .topic-town-links a:nth-child(odd) {
+    margin-right: 0;
+  }
+}
