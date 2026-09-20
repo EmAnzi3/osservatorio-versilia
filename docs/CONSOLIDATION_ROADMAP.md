@@ -97,7 +97,7 @@ Nota chiusura A2: la PR `#194` ha implementato A2.4–A2.7 e ha chiuso il perime
 
 ## A3 — Enrichment Audit globale
 
-**Stato:** `IN_PROGRESS`
+**Stato:** `DONE`
 
 Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti offrono, invece di scoprire gli arricchimenti per caso.
 
@@ -105,8 +105,8 @@ Scopo: verificare sistematicamente se stiamo sfruttando tutto ciò che le fonti 
 - [x] **A3.2** Classificare ogni coppia indicatore/dimensione come `ACQUIRED`, `AVAILABLE_MISSING`, `SOURCE_UNAVAILABLE`, `NOT_APPLICABLE`.
 - [x] **A3.3** Eseguire audit fonte per fonte sul catalogo completo.
 - [x] **A3.4** Trasformare `AVAILABLE_MISSING` in backlog ordinato per valore informativo e costo di acquisizione.
-- [ ] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
-- [ ] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
+- [x] **A3.5** Integrare nuove dimensioni in lotti controllati con QA e fonte dichiarata.
+- [x] **A3.6** Introdurre un indicatore interno di copertura enrichment, derivato e non autocelebrativo.
 
 Nota A3.1: la tassonomia e la semantica dei quattro stati sono definite in `docs/A3_ENRICHMENT_AUDIT.md`. Il documento è metodologico e non introduce un secondo catalogo o una matrice manuale di indicatori.
 
@@ -131,6 +131,12 @@ Nota A3.5 — lotto 6: dal backlog post-#264 di 787 coppie `AVAILABLE_MISSING` v
 Nota A3.5 — lotto 7: dal backlog post-#265 di 774 coppie `AVAILABLE_MISSING` vengono acquisite 7 serie storiche del profilo `ars-toscana-mixed` per `chronicTotal`, `dementia`, `diabetes`, `elderlyHomeCare`, `emergencyAccess`, `hospitalizedAll` e `mortalityAll`. I numeri derivano dagli export ZIP/CSV ufficiali ARS, vengono congelati nello snapshot `data/source-snapshots/ars-a3-5-legacy-history.json` con SHA-256 del file sorgente e riconciliati 7/7 con il valore pubblico corrente e con l'aggregato ufficiale Zona Versilia. Le serie comprendono da 9 a 16 periodi; per `mortalityAll` la fonte espone già 2014–2023, ma il catalogo pubblico resta 2013–2022 e il lotto congela la serie soltanto fino a quel periodo, senza anticipare il normale refresh del dato. Totale: 7 nuove coppie strutturalmente `ACQUIRED`; effetto atteso 774 → 767 `AVAILABLE_MISSING`. Nessun valore, testo o renderer pubblico viene modificato; A3.5 resta `IN_PROGRESS`.
 
 Nota A3.5 — lotto 8: dal backlog post-#266 di 767 coppie `AVAILABLE_MISSING` viene integrato un lotto esclusivamente strutturale da numeri ufficiali già versionati. Il lotto acquisisce 8 coppie Istat lavoro (`sesso`, `eta` e categorie occupati/in cerca/inattivi dove semanticamente applicabili) usando il dettaglio 2024, senza alterare le serie pubbliche 2023; 4 coppie MIM per `studentsPerClass` e `primaryFullTimeShare`, esponendo numeratore/denominatore e companion assoluto/normalizzato direttamente dai conteggi 2024/25 già congelati; 3 coppie RGS su turnover del personale e formazione per sesso. Il candidato AGCOM viene escluso dal lotto perché per Forte dei Marmi il CSV ufficiale espone percentuali ma non i conteggi assoluti FTTH: in coerenza con la policy della repository nessun conteggio viene retro-derivato. Totale atteso: 15 nuove coppie strutturalmente `ACQUIRED`; effetto atteso 767 → 752 `AVAILABLE_MISSING`. Nessun valore, testo o renderer pubblico viene modificato; A3.5 resta `IN_PROGRESS`.
+
+Nota chiusura A3.5: il consolidamento non richiede l'azzeramento del backlog `AVAILABLE_MISSING`. Otto lotti controllati (#260–#267) hanno dimostrato end-to-end il percorso `AVAILABLE_MISSING → ACQUIRED` su più famiglie di fonte e dimensioni, con 120 nuove coppie strutturalmente acquisite e nessun override manuale `ACQUIRED`. Il residuo passa da 872 a 752 coppie e resta integralmente nel backlog A3.4 come roadmap di espansione dati futura, senza essere riclassificato artificialmente.
+
+Nota A3.6: `scripts/enrichment_coverage.py` deriva dalla matrice strict la copertura `ACQUIRED / (ACQUIRED + AVAILABLE_MISSING)`, globale, per dimensione e per source profile, ed esclude dal denominatore `SOURCE_UNAVAILABLE` e `NOT_APPLICABLE`. La baseline post-#267 è 544 / 1.296 opportunità acquisibili = 42,0%, con 752 opportunità residue. Il valore è diagnostico e non costituisce un punteggio di qualità né un target implicito del 100%.
+
+Nota chiusura A3: tassonomia, matrice strict, audit fonte-per-fonte, backlog prioritizzato, percorso di acquisizione controllato e copertura enrichment sono tutti derivati dalle fonti canoniche e verificati automaticamente. Le future acquisizioni del backlog A3.4 sono miglioramenti di prodotto e non riaprono il workstream salvo modifica della metodologia o dei contratti.
 
 **Definition of done:** per ogni indicatore sappiamo quali dimensioni la fonte rende disponibili, quali abbiamo acquisito e quali mancano ancora.
 
