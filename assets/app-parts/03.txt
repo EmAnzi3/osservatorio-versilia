@@ -1016,6 +1016,9 @@
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
+    const mobilityContextMetrics = new Set(['internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility']);
+    const brainDrain = document.querySelector('.brain-drain-context');
+    if (brainDrain) brainDrain.hidden = !(themeKey === 'demografia' && mobilityContextMetrics.has(metricKey));
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
@@ -1164,8 +1167,60 @@
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || (metric.meta.compositeType && compositeType !== 'sexBreakdown')) ? '' : benchmarkMarkup(benchmarkMetric,aggregate,unit,null);
     const currentMethod = compositeType === 'financialProfile' ? financialProfileMethodDisclosure(metric,view.choice) : methodDisclosure(metric);
     tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
-    tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
-    tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    const dataActions = tools.querySelector(':scope > .data-actions');
+    const chartHeading = document.querySelector('.compare-main-column > .compare-panel-heading');
+    chartHeading?.querySelector(':scope > .data-actions')?.remove();
+    if (dataActions && chartHeading) chartHeading.append(dataActions);
+    const actionHost = chartHeading || tools;
+    actionHost.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
+    actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+
+    const photoFiles = {
+      'Massarosa':'Massarosa.jpg',
+      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
+      'Camaiore':'Camaiore Countryside.jpg',
+      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
+      'Seravezza':'Seravezza-panorama.jpg',
+      'Forte dei Marmi':'Forte dei Marmi - Municipio.jpg',
+      'Stazzema':'Stazzema.JPG'
+    };
+    document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
+      const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
+      if (!name) return;
+      const town = data.towns.find(item => item.name === name);
+      const row = metric.rows.find(item => item.code === town?.code || item.town === name);
+      const copy = card.querySelector('.topic-town-card-copy');
+      const image = card.querySelector('.topic-town-card-media img');
+      const slug = normalize(name).replaceAll(' ','-');
+      card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
+      if (image && photoFiles[name]) {
+        const fallback = mediaSrc(data.crests[name]);
+        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        image.alt = name;
+        image.referrerPolicy = 'no-referrer';
+        image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
+      }
+      let value = row?.value;
+      let valueUnit = metric.meta.unit;
+      if (row && normalized && row.normalized) {
+        value = row.normalized.value;
+        valueUnit = row.normalized.unit;
+      } else if (row && selectableComposite) {
+        const selected = compositeCompareSelection(metric,row,view.choice,view.scale);
+        value = selected?.value;
+        valueUnit = selected?.unit || valueUnit;
+      } else if (row && compositeType === 'distribution' && row.summaryValue !== undefined) {
+        value = row.summaryValue;
+        valueUnit = metric.meta.summaryUnit || valueUnit;
+      }
+      copy?.querySelector('.town-current-value')?.remove();
+      if (copy && row) {
+        const detail = document.createElement('span');
+        detail.className = 'town-current-value';
+        detail.innerHTML = `<b>${html(formatMetricRowValue(row,value,valueUnit))}</b><small>${html(metric.meta.shortLabel || metric.meta.label)}</small>`;
+        copy.insertBefore(detail, copy.querySelector('small'));
+      }
+    });
   }
 
 
