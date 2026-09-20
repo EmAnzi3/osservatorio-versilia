@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "catalog": "effective-public-catalog",
+    "purpose": "Visual regression rappresentativa delle superfici analitiche senza inventario manuale di indicatori.",
+    "noMetricInventory": true
+  },
+  "baselineDirectory": "ci/visual-regression-baselines",
+  "outputDirectory": "reports/visual-regression",
+  "hashGridSize": 24,
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 900
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "samples": {
+    "themes": {
+      "deriveAllThemes": true,
+      "metricSelection": "first-canonical-theme-metric",
+      "viewport": "desktop",
+      "selector": "#compare-bars .topic-bars"
+    },
+    "genericFamilies": {
+      "deriveMetricByRenderedDataViz": true,
+      "requiredDataViz": [
+        "lollipop",
+        "percent-dotplot",
+        "signed-dotplot"
+      ],
+      "viewport": "mobile",
+      "selector": "#compare-bars .topic-bars"
+    },
+    "compositeFamilies": {
+      "deriveFrom": "meta.compositeType",
+      "metricSelection": "first-canonical-metric-per-composite-type",
+      "viewport": "mobile",
+      "selector": "#compare-bars .topic-bars"
+    },
+    "historyFamilies": {
+      "viewport": "desktop",
+      "selector": "#compare-bars .ux-history-card",
+      "variants": [
+        {
+          "id": "two-point",
+          "seriesPoints": 2
+        },
+        {
+          "id": "long",
+          "minimumSeriesPoints": 3
+        }
+      ]
+    },
+    "townHistory": {
+      "enabled": true,
+      "townSelection": "first-canonical-town",
+      "metricSelection": "first-long-series-metric",
+      "viewport": "desktop",
+      "selector": ".history-panel"
+    }
+  },
+  "comparison": {
+    "maxAverageHashHammingRatio": 0.08,
+    "maxDifferenceHashHammingRatio": 0.1,
+    "maxColorMeanAbsoluteDifference": 1,
+    "dimensionsMustMatch": true
+  }
+}

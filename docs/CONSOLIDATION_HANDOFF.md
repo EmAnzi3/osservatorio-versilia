@@ -6,48 +6,49 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A4 — Visualization & Content Contract
-- **Step attivo:** A4.5 — visual regression rappresentativa
-- **Stato:** IN_PROGRESS — A4.3 e A4.4 implementati in PR #270, in attesa di CI e verifica visiva
-- **Main verificato:** `c29fcf0bb419d421f41587230dc0f68b54870917` (merge #269)
+- **Step attivo:** chiusura A4.5–A4.6
+- **Stato:** IN_PROGRESS — implementazione completa in PR #271; in attesa del Full sul final head e del merge esplicito
+- **Main verificato:** `f28d09ce85bce6198392b4f9fbe86c6afc6dedd8` (merge #270)
 - **A3:** DONE
+- **A4.1–A4.4:** mergiati
 - **Catalogo effettivo baseline:** 225 indicatori · 1.547 righe
-- **Confronti attesi post-PR:** 87 `comparisonReference=aggregate` · 138 fallback media semplice
+- **Confronti:** 87 `comparisonReference=aggregate` · 138 fallback media semplice
 - **Rapporti strutturati:** 16 indicatori · 112 righe con `ratioComponents`
-- **Missing baseline:** 22 righe `n.d.` · 24 righe `n.a.`
-- **Branch corrente:** `feat/a4-semantic-aggregation-contract`
-- **PR corrente:** #270 — `A4: enforce semantic and weighted aggregation contract` — Draft
-- **Modifiche visive:** sì, limitate ai riferimenti/scostamenti di tre indicatori OpenBDAP
+- **Visual regression:** 40 campioni rappresentativi derivati dal catalogo
+- **Branch corrente:** `feat/a4-visual-regression`
+- **PR corrente:** #271 — `A4: add representative visual regression gate` — Ready
+- **Modifiche visive al prodotto:** nessuna
 
-## A4.3–A4.4
+## A4.5–A4.6
 
-Il lotto chiude la coerenza semantica delle superfici e governa esplicitamente i rapporti ponderati senza introdurre inventari manuali di metriche.
+Il lotto introduce una regressione visuale globale senza duplicare il catalogo.
 
-Il gate:
-- valida unità di valori principali, normalizzati e parti composite;
-- blocca la coerenza tra formatter, hover, `aria-label`, legenda e stati `n.d.` / `n.a.`;
-- classifica la relazione tra `aggregate.value` e valori comunali a fini diagnostici;
-- per ogni `ratioComponents` verifica valore comunale, denominatore, scala e aggregato territoriale;
-- richiede `comparisonReference = "aggregate"` quando il rapporto sui totali è la semantica corretta.
+Il campione viene risolto automaticamente dall'Effective Public Catalog e copre:
+- 11 temi;
+- 3 famiglie generiche `data-viz`;
+- 22 famiglie `compositeType`;
+- 2 varianti dello storico;
+- vista corrente + storico di una scheda comunale.
 
-L'audit ha individuato e corretto esclusivamente:
-- `ownRevenueShare`;
-- `currentCollectionCapacity`;
-- `currentPaymentCapacity`.
+Le baseline sono fingerprint visuali compatti in `ci/visual-regression-baselines/*.json`: dimensioni, average hash, difference hash e griglia colore 8×8. Gli screenshot PNG non vengono versionati; sono prodotti in `reports/visual-regression/` soltanto come diagnostica per baseline mancanti o mismatch.
 
-I tre aggregati erano già corretti; cambia soltanto il riferimento usato dal renderer, da media semplice dei Comuni a rapporto ponderato sui totali.
+Il primo Full completo, run `35522525947` sullo SHA `3c31b452c333ff5df94e58eb070293fdce586995`, ha superato tutti i test precedenti e si è arrestato esclusivamente sul bootstrap delle 40 baseline mancanti. L'artifact diagnostico è stato verificato prima di fissare i fingerprint.
 
-## Verifica visiva richiesta per PR #270
+Il gate è integrato nel Full di `scripts/preflight.py`; il workflow Pages carica sempre l'artifact diagnostico del visual regression. Il Quick resta invariato come gate rapido.
 
-Controllare almeno uno dei tre indicatori in `confronta/bilanci/` e nella pagina comunale:
-- legenda/riferimento: “Valore ponderato Versilia”;
-- asse e valori invariati come formato;
-- scostamento comunale coerente con il nuovo riferimento;
-- nessuna regressione di layout o tooltip.
+## Decisioni vincolanti
+
+1. `data/site-data.json` resta l'unica fonte canonica del catalogo.
+2. Il campione visuale deve restare derivato dal catalogo e dalle famiglie renderizzate; niente lista manuale di ID metriche nel contratto.
+3. I fingerprint visuali non sostituiscono i test semantici/DOM/browser già esistenti: li completano.
+4. Un mismatch va diagnosticato tramite lo screenshot prodotto; non si allargano le soglie per far passare una regressione.
+5. Un cambiamento visuale intenzionale richiede approvazione visiva prima dell'aggiornamento delle baseline.
+6. La PR #271 non modifica rendering, contenuti o dati pubblici.
 
 ## Prossima azione esatta
 
-1. Attendere Quick e Full sul final head di #270.
-2. Se verdi, verificare visivamente i tre confronti corretti.
-3. Dopo approvazione visiva, portare #270 da Draft a Ready.
-4. Merge solo dopo approvazione esplicita del proprietario.
-5. Dopo il merge procedere con A4.5, poi A4.6.
+1. Attendere Quick e Full sul final head di #271.
+2. Richiedere 40/40 campioni visuali conformi e nessuna regressione nei gate precedenti.
+3. Se verdi, #271 è pronta al merge; merge solo dopo approvazione esplicita del proprietario.
+4. Dopo il merge verificare deploy Pages e live-status.
+5. Procedere con A5.1 — audit quantitativo/visivo del Design System 2.0.

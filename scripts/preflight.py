@@ -49,6 +49,7 @@ JSON_CONTRACTS = (
     "data/source-snapshots/erp-lucca-arrears-2020-2024.json",
     "ci/workflow-contract.json",
     "ci/visualization-content-contract.json",
+    "ci/visual-regression-contract.json",
 )
 
 WORKFLOW_CONTRACT = ROOT / "ci" / "workflow-contract.json"
@@ -322,6 +323,7 @@ def browser_commands(base: str) -> list[tuple[str, tuple[str, ...]]]:
         ("Accordion persistence", (PYTHON, "scripts/test_accordion_tools_persistence.py")),
         ("Exports", (PYTHON, "scripts/test_exports_v161.py")),
         ("Percorsi mobile", (PYTHON, "scripts/test_percorsi_mobile_list_contract.py", "--base", base)),
+        ("A4 visual regression", (PYTHON, "scripts/test_visual_regression.py", "--base", base)),
         ("Site chrome browser", (PYTHON, "scripts/test_site_chrome_browser.py", "--base", base)),
     ]
 

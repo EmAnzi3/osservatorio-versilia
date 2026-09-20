@@ -143,6 +143,35 @@ L'audit post-#269 individua 16 indicatori / 112 righe con componenti numeratore-
 
 Dopo la correzione il catalogo effettivo atteso contiene 87 riferimenti aggregati espliciti e 138 fallback alla media semplice. Gli altri fallback non vengono riclassificati automaticamente: somme, totali, compositi e aggregati speciali restano distinti dalla semantica del confronto.
 
-## Residuo A4
+## A4.5 — Visual regression rappresentativa
 
-A4.5 introdurrà visual regression su un campione rappresentativo di famiglie visuali; A4.6 completerà l'integrazione finale dei nuovi gate nel preflight generale.
+`ci/visual-regression-contract.json` governa un campione visuale derivato dall'Effective Public Catalog, senza introdurre un inventario manuale di indicatori.
+
+Il bootstrap effettivo contiene 40 superfici rappresentative:
+
+- 11 pannelli, uno per ogni tema;
+- 3 famiglie generiche risolte dal `data-viz` renderizzato: `lollipop`, `percent-dotplot`, `signed-dotplot`;
+- 22 famiglie composite derivate dai `meta.compositeType` presenti nel catalogo effettivo;
+- 2 varianti dello storico: serie a due punti e serie lunga;
+- 2 stati della scheda comunale: vista corrente e storico.
+
+La selezione della metrica resta algoritmica: primo indicatore canonico pertinente alla famiglia richiesta. Il contratto non contiene ID di metriche.
+
+Le baseline versionate in `ci/visual-regression-baselines/*.json` sono fingerprint visuali compatti, non screenshot binari. Ogni fingerprint conserva dimensioni, average hash, difference hash e una griglia colore quantizzata 8×8. Il confronto tollera esclusivamente piccoli delta di rasterizzazione; una variazione oltre soglia fallisce il gate.
+
+I PNG reali vengono prodotti soltanto come diagnostica in `reports/visual-regression/` quando manca una baseline, si registra intenzionalmente una nuova baseline o viene rilevato un mismatch. Le baseline iniziali derivano dal run GitHub Actions `35522525947` sullo SHA `3c31b452c333ff5df94e58eb070293fdce586995`, dopo che tutte le regressioni preesistenti erano risultate verdi e le 40 candidate erano state verificate visivamente.
+
+## A4.6 — Integrazione nel preflight generale
+
+`scripts/test_visual_regression.py` è parte del Full preflight canonico tramite `scripts/preflight.py` ed è incluso nel manifest di compilazione CI. Il Quick resta il gate semantico/build rapido; la regressione visuale resta Full-only insieme agli altri controlli browser.
+
+Il workflow Pages conserva sempre `reports/visual-regression/` come artifact diagnostico del Full, anche in caso di failure del gate. Non è stato introdotto un workflow release-specifico.
+
+Per una modifica visuale intenzionale:
+
+1. il rendering deve essere verificato esplicitamente;
+2. si rigenerano i fingerprint solo dopo l'approvazione del nuovo aspetto;
+3. le soglie non vanno allargate per far passare una regressione;
+4. gli screenshot di mismatch restano diagnostica temporanea, non una seconda fonte di verità.
+
+Il lotto A4.5–A4.6 non modifica il rendering o i dati pubblici del sito.

@@ -50,3 +50,4 @@ scripts/enrichment_coverage.py
 scripts/test_enrichment_coverage.py
 scripts/visualization_content_contract.py
 scripts/test_visualization_content_contract.py
+scripts/test_visual_regression.py
