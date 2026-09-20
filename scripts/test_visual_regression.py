@@ -6,6 +6,8 @@ import argparse
 import base64
 import json
 import re
+import struct
+import zlib
 from pathlib import Path
 from urllib.parse import quote, urljoin
 
@@ -111,140 +113,270 @@ def screenshot_locator(locator: Locator) -> bytes:
     return locator.screenshot(animations="disabled")
 
 
-def canvas_diff(page: Page, actual: bytes, expected: bytes, channel_threshold: int) -> dict:
-    payload = {
-        "actual": base64.b64encode(actual).decode("ascii"),
-        "expected": base64.b64encode(expected).decode("ascii"),
-        "channelThreshold": channel_threshold,
-    }
-    return page.evaluate(
-        """async ({actual, expected, channelThreshold}) => {
-          const load = source => new Promise((resolve, reject) => {
-            const image = new Image();
-            image.onload = () => resolve(image);
-            image.onerror = reject;
-            image.src = 'data:image/png;base64,' + source;
-          });
-          const [a, b] = await Promise.all([load(actual), load(expected)]);
-          if (a.width !== b.width || a.height !== b.height) {
-            return {
-              dimensionsMatch: false,
-              actualWidth: a.width,
-              actualHeight: a.height,
-              expectedWidth: b.width,
-              expectedHeight: b.height,
-              changedPixelRatio: 1,
-              meanAbsoluteChannelDifference: 255,
-              maxChannelDifference: 255,
-            };
-          }
-          const canvasA = document.createElement('canvas');
-          const canvasB = document.createElement('canvas');
-          canvasA.width = canvasB.width = a.width;
-          canvasA.height = canvasB.height = a.height;
-          const ctxA = canvasA.getContext('2d', {willReadFrequently: true});
-          const ctxB = canvasB.getContext('2d', {willReadFrequently: true});
-          ctxA.drawImage(a, 0, 0);
-          ctxB.drawImage(b, 0, 0);
-          const da = ctxA.getImageData(0, 0, a.width, a.height).data;
-          const db = ctxB.getImageData(0, 0, b.width, b.height).data;
-          const pixels = a.width * a.height;
-          let changed = 0;
-          let sum = 0;
-          let max = 0;
-          for (let i = 0; i < da.length; i += 4) {
-            let pixelMax = 0;
-            for (let channel = 0; channel < 4; channel += 1) {
-              const delta = Math.abs(da[i + channel] - db[i + channel]);
-              sum += delta;
-              if (delta > pixelMax) pixelMax = delta;
-              if (delta > max) max = delta;
-            }
-            if (pixelMax > channelThreshold) changed += 1;
-          }
-          return {
-            dimensionsMatch: true,
-            actualWidth: a.width,
-            actualHeight: a.height,
-            expectedWidth: b.width,
-            expectedHeight: b.height,
-            changedPixelRatio: changed / pixels,
-            meanAbsoluteChannelDifference: sum / (pixels * 4),
-            maxChannelDifference: max,
-          };
-        }""",
-        payload,
+def _paeth(a: int, b: int, c: int) -> int:
+    p = a + b - c
+    pa, pb, pc = abs(p - a), abs(p - b), abs(p - c)
+    if pa <= pb and pa <= pc:
+        return a
+    if pb <= pc:
+        return b
+    return c
+
+
+def decode_png_rgb(data: bytes) -> tuple[int, int, list[bytes]]:
+    require(data[:8] == b"\\x89PNG\\r\\n\\x1a\\n", "Screenshot PNG non valido")
+    position = 8
+    idat: list[bytes] = []
+    width = height = bit_depth = color_type = interlace = None
+    while position < len(data):
+        length = struct.unpack(">I", data[position:position + 4])[0]
+        chunk_type = data[position + 4:position + 8]
+        chunk = data[position + 8:position + 8 + length]
+        position += 12 + length
+        if chunk_type == b"IHDR":
+            width, height, bit_depth, color_type, _compression, _filter, interlace = struct.unpack(
+                ">IIBBBBB", chunk
+            )
+        elif chunk_type == b"IDAT":
+            idat.append(chunk)
+        elif chunk_type == b"IEND":
+            break
+
+    require(
+        bit_depth == 8 and color_type in {2, 6} and interlace == 0,
+        f"Formato PNG screenshot non supportato: depth={bit_depth}, type={color_type}, interlace={interlace}",
     )
+    require(isinstance(width, int) and isinstance(height, int), "IHDR PNG assente")
+
+    bytes_per_pixel = 3 if color_type == 2 else 4
+    raw = zlib.decompress(b"".join(idat))
+    stride = width * bytes_per_pixel
+    offset = 0
+    previous = bytearray(stride)
+    rows: list[bytes] = []
+
+    for _ in range(height):
+        filter_type = raw[offset]
+        offset += 1
+        scanline = raw[offset:offset + stride]
+        offset += stride
+        reconstructed = bytearray(stride)
+        for index, value in enumerate(scanline):
+            left = reconstructed[index - bytes_per_pixel] if index >= bytes_per_pixel else 0
+            up = previous[index]
+            upper_left = previous[index - bytes_per_pixel] if index >= bytes_per_pixel else 0
+            if filter_type == 0:
+                decoded = value
+            elif filter_type == 1:
+                decoded = (value + left) & 255
+            elif filter_type == 2:
+                decoded = (value + up) & 255
+            elif filter_type == 3:
+                decoded = (value + ((left + up) // 2)) & 255
+            elif filter_type == 4:
+                decoded = (value + _paeth(left, up, upper_left)) & 255
+            else:
+                raise AssertionError(f"Filtro PNG inatteso: {filter_type}")
+            reconstructed[index] = decoded
+
+        if bytes_per_pixel == 3:
+            rows.append(bytes(reconstructed))
+        else:
+            rgb = bytearray(width * 3)
+            for pixel in range(width):
+                rgb[pixel * 3:pixel * 3 + 3] = reconstructed[pixel * 4:pixel * 4 + 3]
+            rows.append(bytes(rgb))
+        previous = reconstructed
+
+    return width, height, rows
+
+
+def _grid_rgb(width: int, height: int, rows: list[bytes], grid_size: int) -> list[tuple[int, int, int]]:
+    sums = [0] * (grid_size * grid_size * 3)
+    counts = [0] * (grid_size * grid_size)
+    for y, row in enumerate(rows):
+        gy = min(grid_size - 1, y * grid_size // height)
+        for x in range(width):
+            gx = min(grid_size - 1, x * grid_size // width)
+            cell = gy * grid_size + gx
+            source = x * 3
+            target = cell * 3
+            sums[target] += row[source]
+            sums[target + 1] += row[source + 1]
+            sums[target + 2] += row[source + 2]
+            counts[cell] += 1
+
+    result: list[tuple[int, int, int]] = []
+    for cell, count in enumerate(counts):
+        target = cell * 3
+        result.append(
+            (
+                round(sums[target] / count),
+                round(sums[target + 1] / count),
+                round(sums[target + 2] / count),
+            )
+        )
+    return result
+
+
+def _pack_bits(bits: list[bool]) -> str:
+    output = bytearray((len(bits) + 7) // 8)
+    for index, enabled in enumerate(bits):
+        if enabled:
+            output[index // 8] |= 1 << (7 - (index % 8))
+    return base64.b64encode(bytes(output)).decode("ascii")
+
+
+def visual_signature(image: bytes, grid_size: int) -> dict:
+    require(grid_size % 8 == 0, "hashGridSize deve essere divisibile per 8")
+    width, height, rows = decode_png_rgb(image)
+    rgb = _grid_rgb(width, height, rows, grid_size)
+    luminance = [round(0.2126 * red + 0.7152 * green + 0.0722 * blue) for red, green, blue in rgb]
+    mean_luminance = sum(luminance) / len(luminance)
+
+    average_hash = _pack_bits([value >= mean_luminance for value in luminance])
+    difference_hash = _pack_bits(
+        [
+            luminance[y * grid_size + x] >= luminance[y * grid_size + x + 1]
+            for y in range(grid_size)
+            for x in range(grid_size - 1)
+        ]
+    )
+
+    block = grid_size // 8
+    coarse = bytearray()
+    for by in range(8):
+        for bx in range(8):
+            cells = [
+                rgb[(by * block + yy) * grid_size + (bx * block + xx)]
+                for yy in range(block)
+                for xx in range(block)
+            ]
+            for channel in range(3):
+                average = sum(value[channel] for value in cells) / len(cells)
+                coarse.append(round(average / 255 * 31))
+
+    return {
+        "width": width,
+        "height": height,
+        "aHash": average_hash,
+        "dHash": difference_hash,
+        "color8x8": base64.b64encode(bytes(coarse)).decode("ascii"),
+    }
+
+
+def _hamming_ratio(left: str, right: str) -> float:
+    a = base64.b64decode(left)
+    b = base64.b64decode(right)
+    require(len(a) == len(b), "Hash visuali con lunghezza diversa")
+    changed = sum((x ^ y).bit_count() for x, y in zip(a, b))
+    return changed / (len(a) * 8)
+
+
+def compare_signatures(actual: dict, expected: dict, contract: dict) -> dict:
+    actual_color = base64.b64decode(actual["color8x8"])
+    expected_color = base64.b64decode(expected["color8x8"])
+    require(len(actual_color) == len(expected_color), "Fingerprint colore con lunghezza diversa")
+    color_mean = sum(abs(a - b) for a, b in zip(actual_color, expected_color)) / len(actual_color)
+    return {
+        "dimensionsMatch": actual["width"] == expected["width"] and actual["height"] == expected["height"],
+        "actualWidth": actual["width"],
+        "actualHeight": actual["height"],
+        "expectedWidth": expected["width"],
+        "expectedHeight": expected["height"],
+        "aHashHammingRatio": _hamming_ratio(actual["aHash"], expected["aHash"]),
+        "dHashHammingRatio": _hamming_ratio(actual["dHash"], expected["dHash"]),
+        "colorMeanAbsoluteDifference": color_mean,
+    }
 
 
 class Regression:
-    def __init__(self, contract: dict, page: Page, *, record: bool = False) -> None:
+    def __init__(self, contract: dict, *, record: bool = False) -> None:
         self.contract = contract
-        self.page = page
         self.record = record
         self.baseline_dir = ROOT / contract["baselineDirectory"]
         self.output_dir = ROOT / contract["outputDirectory"]
-        self.baseline_dir.mkdir(parents=True, exist_ok=True)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.expected_names: set[str] = set()
         self.results: list[dict] = []
         self.failures: list[str] = []
+        self.recorded: dict[str, dict] = {}
+
+        self.baselines: dict[str, dict] = {}
+        self.grid_size = int(contract["hashGridSize"])
+        require(self.baseline_dir.exists(), f"Directory baseline assente: {self.baseline_dir}")
+        baseline_files = sorted(self.baseline_dir.glob("*.json"))
+        require(baseline_files, f"Nessuna baseline JSON in {self.baseline_dir}")
+        for path in baseline_files:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            require(payload.get("schemaVersion") == 1, f"Baseline schema invalido: {path}")
+            require(int(payload.get("hashGridSize", 0)) == self.grid_size, f"Grid baseline incoerente: {path}")
+            samples = payload.get("samples")
+            require(isinstance(samples, dict) and samples, f"Baseline vuota: {path}")
+            overlap = set(samples) & set(self.baselines)
+            require(not overlap, f"Baseline duplicate tra file: {sorted(overlap)}")
+            self.baselines.update(samples)
 
     def check(self, name: str, image: bytes, metadata: dict) -> None:
-        filename = f"{name}.png"
-        self.expected_names.add(filename)
-        baseline = self.baseline_dir / filename
-        candidate = self.output_dir / filename
+        self.expected_names.add(name)
+        actual = visual_signature(image, self.grid_size)
 
         if self.record:
-            baseline.write_bytes(image)
+            self.recorded[name] = actual
             self.results.append({"sample": name, "status": "recorded", **metadata})
+            (self.output_dir / f"record--{name}.png").write_bytes(image)
             return
 
-        if not baseline.exists():
+        expected = self.baselines.get(name)
+        if expected is None:
+            candidate = self.output_dir / f"actual--{name}.png"
             candidate.write_bytes(image)
-            self.failures.append(f"baseline mancante: {filename}")
+            self.failures.append(f"baseline mancante: {name}")
             self.results.append({"sample": name, "status": "missing-baseline", "candidate": str(candidate), **metadata})
             return
 
-        expected = baseline.read_bytes()
-        comparison = canvas_diff(
-            self.page,
-            image,
-            expected,
-            int(self.contract["comparison"]["channelThreshold"]),
-        )
-        allowed_ratio = float(self.contract["comparison"]["maxChangedPixelRatio"])
-        allowed_mean = float(self.contract["comparison"]["maxMeanAbsoluteChannelDifference"])
-        dimensions_ok = comparison["dimensionsMatch"] or not self.contract["comparison"].get("dimensionsMustMatch", True)
+        comparison = compare_signatures(actual, expected, self.contract)
+        cfg = self.contract["comparison"]
+        dimensions_ok = comparison["dimensionsMatch"] or not cfg.get("dimensionsMustMatch", True)
         passed = (
             dimensions_ok
-            and comparison["changedPixelRatio"] <= allowed_ratio
-            and comparison["meanAbsoluteChannelDifference"] <= allowed_mean
+            and comparison["aHashHammingRatio"] <= float(cfg["maxAverageHashHammingRatio"])
+            and comparison["dHashHammingRatio"] <= float(cfg["maxDifferenceHashHammingRatio"])
+            and comparison["colorMeanAbsoluteDifference"] <= float(cfg["maxColorMeanAbsoluteDifference"])
         )
         status = "match" if passed else "mismatch"
-        entry = {"sample": name, "status": status, "comparison": comparison, **metadata}
-        self.results.append(entry)
+        self.results.append({"sample": name, "status": status, "comparison": comparison, **metadata})
         if not passed:
-            candidate = self.output_dir / f"actual--{filename}"
+            candidate = self.output_dir / f"actual--{name}.png"
             candidate.write_bytes(image)
             self.failures.append(
-                f"{filename}: ratio={comparison['changedPixelRatio']:.4%}, "
-                f"mean={comparison['meanAbsoluteChannelDifference']:.3f}, "
+                f"{name}: aHash={comparison['aHashHammingRatio']:.2%}, "
+                f"dHash={comparison['dHashHammingRatio']:.2%}, "
+                f"color={comparison['colorMeanAbsoluteDifference']:.3f}, "
                 f"size={comparison['actualWidth']}x{comparison['actualHeight']} "
                 f"vs {comparison['expectedWidth']}x{comparison['expectedHeight']}"
             )
 
     def finish(self) -> None:
-        actual_names = {path.name for path in self.baseline_dir.glob("*.png")}
-        stale = sorted(actual_names - self.expected_names)
+        stale = sorted(set(self.baselines) - self.expected_names)
         if stale and not self.record:
             self.failures.append(f"baseline obsolete: {', '.join(stale)}")
+
+        if self.record:
+            candidate = {
+                "schemaVersion": 1,
+                "hashGridSize": self.grid_size,
+                "samples": dict(sorted(self.recorded.items())),
+            }
+            (self.output_dir / "recorded-baselines.json").write_text(
+                json.dumps(candidate, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
 
         report = {
             "schemaVersion": 1,
             "sampleCount": len(self.expected_names),
-            "baselineCount": len(actual_names),
+            "baselineCount": len(self.baselines),
             "recordMode": self.record,
             "failures": self.failures,
             "results": self.results,
@@ -438,7 +570,7 @@ def main() -> None:
         )
         page = context.new_page()
         page.set_default_timeout(15000)
-        reg = Regression(contract, page, record=args.record_baselines)
+        reg = Regression(contract, record=args.record_baselines)
 
         capture_theme_samples(reg, page, base, data, contract)
         capture_generic_families(reg, page, base, data, contract)
