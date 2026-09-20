@@ -1,0 +1,101 @@
+name: A5 Review Capture
+
+on:
+  push:
+    branches: ["feat/a5-design-system-pilot"]
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout before
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: before
+
+      - name: Checkout after
+        uses: actions/checkout@v4
+        with:
+          path: after
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser dependencies
+        working-directory: after
+        run: |
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Build before
+        working-directory: before
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Build after
+        working-directory: after
+        run: |
+          python scripts/build_static_brand.py
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+
+      - name: Capture before and after
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8011 --directory before/dist >/tmp/a5-before.log 2>&1 &
+          BEFORE_PID=$!
+          python -m http.server 8012 --directory after/dist >/tmp/a5-after.log 2>&1 &
+          AFTER_PID=$!
+          trap 'kill $BEFORE_PID $AFTER_PID 2>/dev/null || true' EXIT
+          sleep 2
+          mkdir -p review
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          out = Path("review")
+          targets = {
+              "before": "http://127.0.0.1:8011/confronta/demografia/?indicatore=population",
+              "after": "http://127.0.0.1:8012/confronta/demografia/?indicatore=population",
+          }
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              for label, url in targets.items():
+                  page = browser.new_page(viewport={"width": 1440, "height": 1000})
+                  page.goto(url, wait_until="networkidle")
+                  page.screenshot(path=str(out / f"{label}-desktop-top.png"))
+                  page.locator(".topic-dashboard").screenshot(path=str(out / f"{label}-desktop-dashboard.png"))
+                  page.screenshot(path=str(out / f"{label}-desktop-full.png"), full_page=True)
+                  page.close()
+
+                  mobile = browser.new_page(viewport={"width": 390, "height": 844})
+                  mobile.goto(url, wait_until="networkidle")
+                  mobile.screenshot(path=str(out / f"{label}-mobile-top.png"))
+                  mobile.locator(".topic-dashboard").scroll_into_view_if_needed()
+                  mobile.screenshot(path=str(out / f"{label}-mobile-dashboard.png"))
+                  mobile.screenshot(path=str(out / f"{label}-mobile-full.png"), full_page=True)
+                  mobile.close()
+              browser.close()
+          PY
+
+      - name: Upload review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-review-before-after
+          path: review/
+          retention-days: 14
