@@ -100,7 +100,9 @@ def stable_page(page: Page) -> None:
 def open_metric(page: Page, base: str, data: dict, metric_key: str) -> None:
     response = page.goto(metric_url(base, data, metric_key), wait_until="networkidle")
     require(response is None or response.ok, f"Route non disponibile per {metric_key}")
-    page.wait_for_selector("#compare-bars .topic-bars", state="visible")
+    # La vista corrente o storico può persistere tra metriche. Il contenitore
+    # deve esistere, ma può essere intenzionalmente nascosto se lo storico è attivo.
+    page.wait_for_selector("#compare-bars .topic-bars", state="attached")
     stable_page(page)
 
 
@@ -333,7 +335,18 @@ def history_candidate(data: dict, variant: dict) -> str:
     raise AssertionError(f"Nessuna metrica per variante storico {variant}")
 
 
+def activate_current(page: Page, scope: str) -> None:
+    button = page.locator(f"{scope} [data-view-mode='current']").first
+    require(button.count() == 1, f"Comando corrente assente in {scope}")
+    if not button.is_disabled():
+        button.click()
+        page.wait_for_timeout(120)
+
+
 def activate_history(page: Page, scope: str) -> None:
+    history = page.locator(f"{scope} .ux-history-card").first
+    if history.count() == 1 and history.is_visible():
+        return
     button = page.locator(f"{scope} [data-view-mode='history']").first
     require(button.count() == 1, f"Comando storico assente in {scope}")
     require(not button.is_disabled(), f"Comando storico disabilitato in {scope}")
@@ -380,6 +393,7 @@ def capture_town_history(reg: Regression, page: Page, base: str, data: dict, con
     require(response is None or response.ok, f"Route comunale non disponibile: {url}")
     panel = page.locator(cfg["selector"]).first
     panel.wait_for(state="visible")
+    activate_current(page, cfg["selector"])
     stable_page(page)
     reg.check(
         f"town--current--{cfg['viewport']}",
