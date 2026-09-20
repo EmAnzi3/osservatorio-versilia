@@ -7,38 +7,44 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A3 — Enrichment Audit globale
 - **Step attivo:** A3.5 — integrazione nuove dimensioni in lotti controllati
-- **Stato:** IN_PROGRESS — lotti 1–6 mergiati; lotto 7 ARS legacy history in PR #266
-- **Main verificato:** eaf4b9079d45aedd00a5c53ac27c68de68258b37 (merge #265)
+- **Stato:** IN_PROGRESS — lotti 1–7 mergiati; lotto 8 in lavorazione
+- **Main verificato:** 5a6b7701c747dd99ed73754be485397e2df406eb (merge #266)
 - **Catalogo pubblico governato:** 225 indicatori
 - **Matrice A3.2:** 2.025 coppie; 2.025 classificate, 0 residue
-- **Backlog A3.4 post-#265:** 774 AVAILABLE_MISSING · 260 pacchetti · 63 source profile
-- **Branch corrente:** feat/a3-5-enrichment-lot-7
-- **PR corrente:** #266 — A3.5: acquire legacy ARS historical series
+- **Backlog A3.4 post-#266:** 767 AVAILABLE_MISSING · 259 pacchetti · 63 source profile
+- **Branch corrente:** feat/a3-5-enrichment-lot-8
+- **PR corrente:** da aprire — A3.5 lotto 8
 - **Autorizzazione operativa corrente:** proseguire sui lotti non-visivi; fermarsi quando serve verifica visiva del proprietario
 
-## A3.5 — acquisizioni
+## A3.5 — acquisizioni mergiate
 
 - **Lotto 1 / #260:** 3 coppie sesso.
 - **Lotto 2 / #261:** 16 coppie OpenBDAP numeratore/denominatore.
 - **Lotto 3 / #262:** 20 coppie Frame SBS.
 - **Lotto 4 / #263:** 12 coppie Istat Census.
 - **Lotto 5 / #264:** 34 coppie source-backed.
-- **Lotto 6 / #265:** 13 coppie historical + MEF; backlog confermato a 774.
+- **Lotto 6 / #265:** 13 coppie historical + MEF.
+- **Lotto 7 / #266:** 7 serie storiche ARS legacy.
 
-Totale acquisito nei lotti 1–6: **98 coppie**.
+Totale acquisito nei lotti 1–7: **105 coppie**.
 
-### Lotto 7 — PR #266
+## Lotto 8 — official structural companions
 
-Il lotto congela e versiona gli export ufficiali ARS Toscana e aggiunge esclusivamente una struttura `a3History` non consumata dal renderer.
+Il lotto usa esclusivamente numeri ufficiali già versionati e non modifica valori, testi, grafici o renderer pubblici.
 
-Acquisizioni:
-- 7 × `serie_storica` per `chronicTotal`, `dementia`, `diabetes`, `elderlyHomeCare`, `emergencyAccess`, `hospitalizedAll`, `mortalityAll`;
-- serie da 9 a 16 periodi a seconda dell'indicatore, validate sui 7 Comuni e sull'aggregato ufficiale Zona Versilia;
-- per `mortalityAll` ARS espone anche il periodo 2014–2023, ma il catalogo pubblico è ancora 2013–2022: A3.5 congela lo storico fino al periodo pubblicato e non anticipa il normale refresh della fonte.
+Target verificabile: **21 coppie**:
+- **8 Istat lavoro:** sesso/età per `femaleEmploymentRate`, `maleEmploymentRate`, `employmentGenderGap`; categorie occupati/in cerca/inattivi per i due tassi per sesso;
+- **10 AGCOM FTTH:** assoluto/normalizzato e categorie per quattro indicatori FTTH, più numeratore/denominatore per le due percentuali di copertura;
+- **3 RGS:** assoluto/normalizzato + categorie assunzioni/cessazioni per `municipalStaffTurnover`; sesso per `municipalStaffTraining`.
 
-Effetto atteso: `AVAILABLE_MISSING: 774 → 767`.
+Fonti congelate:
+- `data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json`;
+- `data/source-snapshots/lia-v1.4.0.json` per la sola riconciliazione dei valori pubblici 2023;
+- `data/source-snapshots/agid-asia-agcom-2026-08.json`;
+- `data/source-snapshots/rgs-amministrazione-2024.json`;
+- `data/source-snapshots/rgs-formazione-2024.json`.
 
-Il lotto non modifica valori, testi, grafici o rendering pubblici. A3.5 resta `IN_PROGRESS`; A3.6 non parte.
+Effetto atteso: **AVAILABLE_MISSING 767 → 746**. A3.5 resta `IN_PROGRESS`; A3.6 non parte.
 
 ## Decisioni vincolanti
 
@@ -52,8 +58,9 @@ Il lotto non modifica valori, testi, grafici o rendering pubblici. A3.5 resta `I
 
 ## Prossima azione esatta
 
-1. Verificare sul final head della PR #266: A3, Quick e Full verdi.
-2. Confermare matrice 2025/2025, `unclassifiedPairCount = 0` e 767 `AVAILABLE_MISSING`.
-3. Correggere solo regressioni reali senza indebolire detector o contratti.
-4. Se tutti i gate sono verdi, merge secondo l'autorizzazione corrente.
-5. Dopo il merge ripartire dal backlog LIVE; non iniziare A3.6 finché A3.5 non è realmente chiuso.
+1. Completare lotto 8 e aprire PR Ready.
+2. Verificare sul final head A3, Quick e Full verdi.
+3. Confermare matrice 2025/2025, `unclassifiedPairCount = 0` e 746 `AVAILABLE_MISSING`.
+4. Correggere solo regressioni reali senza indebolire detector o contratti.
+5. Merge soltanto dopo approvazione esplicita del proprietario.
+6. Dopo il merge ripartire dal backlog LIVE; non iniziare A3.6 finché A3.5 non è realmente chiuso.
