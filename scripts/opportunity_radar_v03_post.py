@@ -62,6 +62,7 @@ def _build_verified_item(
         "opens_at": None,
         "deadline_at": entry.get("deadline_at") or rule.get("deadline_override"),
         "deadline_time": entry.get("deadline_time"),
+        "source_updated_at": entry.get("source_updated_at"),
         "published_at": None,
         "beneficiary_text": rule.get("beneficiary_evidence") or "",
         "municipalities": towns[:],

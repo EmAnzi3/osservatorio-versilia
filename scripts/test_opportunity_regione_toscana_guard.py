@@ -29,6 +29,17 @@ def test_audience_detection() -> None:
     assert not guard._has_explicit_municipal_audience(
         "Beneficiari. Possono presentare domanda le micro e piccole imprese della Toscana."
     )
+    assert guard._has_explicit_municipal_audience(
+        "Le Amministrazioni comunali possono presentare la propria manifestazione di interesse."
+    )
+    assert guard._has_explicit_municipal_audience(
+        "Domande dei Comuni interessati entro le ore 12 del 17 ottobre 2026. Soggetti beneficiari."
+    )
+
+
+def test_recent_burt_date_wins_over_stale_editorial_date() -> None:
+    text = "Pubblicato il 04.02.2026. Pubblicato su BURT il 16.09.2026."
+    assert guard._publication_date(text) == date(2026, 9, 16)
 
 
 def test_accounted_public_is_not_duplicated() -> None:
@@ -52,7 +63,7 @@ def test_cross_source_market_identity_is_reconciled() -> None:
         "summary": "Comuni della Regione Toscana",
         "published_at": "2026-08-23",
         "age_days": 2,
-        "deadline_at": "2026-09-15",
+        "deadline_at": "2026-10-15",
     }
     result = {
         "opportunities": [
@@ -86,6 +97,9 @@ def test_missing_recent_candidate_enters_discovery() -> None:
     guard.apply(result, TODAY, candidates=[_candidate(age_days=2)])
     assert result["regionalCompleteness"]["status"] == "pass"
     assert result["regionalCompleteness"]["safetyNetAdded"] == 1
+    assert result["regionalCompleteness"]["detectionTargetDays"] == 3
+    assert result["regionalCompleteness"]["maxUnresolvedDetectionLagDays"] == 2
+    assert result["regionalCompleteness"]["detectionTargetMisses"] == 0
     assert len(result["discoveryQueue"]) == 1
     assert result["coverageHold"] == []
 
@@ -117,6 +131,8 @@ def test_overdue_unresolved_candidate_blocks_publish() -> None:
     result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
     guard.apply(result, TODAY, candidates=[_candidate(age_days=guard.REVIEW_GRACE_DAYS + 1)])
     assert result["regionalCompleteness"]["status"] == "fail"
+    assert result["regionalCompleteness"]["detectionTargetMisses"] == 1
+    assert result["regionalCompleteness"]["maxUnresolvedDetectionLagDays"] == 4
     assert len(result["coverageHold"]) == 1
     assert result["coverageHold"][0]["source_id"] == "regione-toscana"
 
@@ -202,6 +218,7 @@ def test_nidi_gratis_comuni_rule_clears_overdue_regional_hold() -> None:
 
 def main() -> int:
     test_audience_detection()
+    test_recent_burt_date_wins_over_stale_editorial_date()
     test_accounted_public_is_not_duplicated()
     test_cross_source_market_identity_is_reconciled()
     test_missing_recent_candidate_enters_discovery()
@@ -211,7 +228,7 @@ def main() -> int:
     test_final_reconciliation_removes_stale_regional_hold()
     test_nidi_gratis_comuni_rule_clears_overdue_regional_hold()
     assert audit_fixes.main() == 0
-    print("Regione Toscana guard: 9 test PASS + audit gap contracts PASS")
+    print("Regione Toscana guard: 10 test PASS + audit gap contracts PASS")
     return 0
 
 

@@ -2,6 +2,23 @@
   "schemaVersion": "0.3.2",
   "entries": [
     {
+      "rule_id": "st-mercati-rionali-2026",
+      "source_id": "sviluppo-toscana",
+      "title": "Avviso Mercati Rionali",
+      "url": "https://www.sviluppo.toscana.it/bando/avviso-mercati-rionali/",
+      "landing_url": "https://www.regione.toscana.it/it/-/mercati-rionali-contributi-ai-comuni-per-ammodernamento-ampliamento-e-riqualificazione",
+      "required_terms": [
+        "Comuni della Toscana",
+        "15 Ottobre 2026",
+        "80%"
+      ],
+      "deadline_at": "2026-10-15",
+      "deadline_time": "12:00",
+      "source_updated_at": "2026-09-11",
+      "summary": "Contributi in conto capitale fino all'80% per progetti comunali di ammodernamento, ampliamento e riqualificazione dei mercati rionali.",
+      "canonical": true
+    },
+    {
       "rule_id": "mic-jazz-2027",
       "source_id": "mic-spettacolo",
       "title": "Bando per la promozione della musica Jazz 2027",

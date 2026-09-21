@@ -22,7 +22,7 @@ base = radar.base
 
 LISTING_URL = "https://www.regione.toscana.it/it/bandi-tutti?delta=60&sortBy=desc&start=1"
 RECENT_WINDOW_DAYS = 21
-REVIEW_GRACE_DAYS = 7
+REVIEW_GRACE_DAYS = 3
 _GATE_ORIGIN = "regional_completeness"
 _HOLD_PREFIX = "rt-completeness-"
 
@@ -34,6 +34,9 @@ _MUNICIPAL_AUDIENCE_TERMS = (
     "unioni di comuni",
     "comune capofila",
     "amministrazioni comunali",
+    "comuni interessati",
+    "tutti i comuni",
+    "domande dei comuni",
 )
 _AUDIENCE_MARKERS = (
     "beneficiari",
@@ -42,6 +45,8 @@ _AUDIENCE_MARKERS = (
     "soggetti ammessi",
     "possono presentare domanda",
     "possono presentare istanza",
+    "possono presentare la propria manifestazione",
+    "manifestazione di interesse",
 )
 
 # Identità documentali note che possono arrivare da URL e titoli differenti.
@@ -52,7 +57,6 @@ _CROSS_SOURCE_IDENTITIES = (
     {
         "id": "rt-mercati-rionali-2026",
         "title_terms": ("mercati rionali",),
-        "deadline_at": "2026-09-15",
         "rule_ids": ("st-mercati-rionali-2026",),
     },
 )
@@ -65,25 +69,21 @@ def _fold(value: Any) -> str:
 def _publication_date(text: str) -> date | None:
     patterns = (
         r"(?:pubblicato il|pubblicazione[^\n:]{0,40})\s*:?[\s\xa0]*(\d{1,2}[./]\d{1,2}[./]\d{4})",
+        r"pubblicato su burt il\s*:?[\s\xa0]*(\d{1,2}[./]\d{1,2}[./]\d{4})",
         r"data di pubblicazione bando su burt\s*:?[\s\xa0]*(\d{1,2}[./]\d{1,2}[./]\d{4})",
     )
+    values: list[date] = []
     for pattern in patterns:
-        match = re.search(pattern, text, flags=re.I)
-        if not match:
-            continue
-        parsed = base.parse_date(match.group(1))
-        if parsed:
-            return parsed
-    return None
+        for match in re.finditer(pattern, text, flags=re.I):
+            parsed = base.parse_date(match.group(1))
+            if parsed:
+                values.append(parsed)
+    return max(values) if values else None
 
 
 def _deadline_date(text: str) -> date | None:
-    match = re.search(
-        r"scadenza(?: presentazione domande)?\s*:?[\s\xa0]*(\d{1,2}[./]\d{1,2}[./]\d{4})",
-        text,
-        flags=re.I,
-    )
-    return base.parse_date(match.group(1)) if match else None
+    _opens, deadline, _published = base.dates(text)
+    return base.parse_date(deadline) if deadline else None
 
 
 def _audience_context(text: str) -> str:
@@ -91,7 +91,7 @@ def _audience_context(text: str) -> str:
     starts = [folded.find(marker) for marker in _AUDIENCE_MARKERS if folded.find(marker) >= 0]
     if not starts:
         return folded[:5000]
-    start = min(starts)
+    start = max(0, min(starts) - 500)
     return folded[start : start + 3500]
 
 
@@ -110,13 +110,11 @@ def _stable_key(url: str, title: str) -> str:
 def _cross_source_identity(item: dict[str, Any]) -> str | None:
     title = _fold(item.get("title"))
     rule_id = str(item.get("rule_id") or "")
-    deadline = str(item.get("deadline_at") or "")
     for identity in _CROSS_SOURCE_IDENTITIES:
         if rule_id and rule_id in set(identity.get("rule_ids") or ()):
             return str(identity.get("id") or "") or None
         terms = tuple(str(term) for term in identity.get("title_terms") or ())
-        expected_deadline = str(identity.get("deadline_at") or "")
-        if terms and all(_fold(term) in title for term in terms) and deadline == expected_deadline:
+        if terms and all(_fold(term) in title for term in terms):
             return str(identity.get("id") or "") or None
     return None
 
@@ -346,11 +344,19 @@ def apply(
                 )
 
     status = "fail" if overdue else "degraded" if errors else "pass"
+    unresolved_lags = [
+        int(item["age_days"])
+        for item in unresolved
+        if isinstance(item.get("age_days"), int)
+    ]
     result["regionalCompleteness"] = {
         "status": status,
         "source": "Regione Toscana",
         "recentWindowDays": RECENT_WINDOW_DAYS,
         "reviewGraceDays": REVIEW_GRACE_DAYS,
+        "detectionTargetDays": REVIEW_GRACE_DAYS,
+        "maxUnresolvedDetectionLagDays": max(unresolved_lags) if unresolved_lags else None,
+        "detectionTargetMisses": len(overdue),
         "municipalCandidates": len(candidates),
         "safetyNetAdded": added,
         "unresolved": unresolved,

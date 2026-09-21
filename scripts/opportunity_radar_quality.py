@@ -125,11 +125,13 @@ def collect_html(
             continue
 
         opens, deadline, published = base.dates(listing)
-        if detail and (not deadline or not published):
+        if detail:
             detail_opens, detail_deadline, detail_published = base.dates(base.visible(detail))
             opens = opens or detail_opens
-            deadline = deadline or detail_deadline
-            published = published or detail_published
+            if detail_deadline and (not deadline or detail_deadline > deadline):
+                deadline = detail_deadline
+            if detail_published and (not published or detail_published > published):
+                published = detail_published
         if deadline and date.fromisoformat(deadline) < today:
             continue
 
