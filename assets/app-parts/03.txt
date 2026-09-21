@@ -27,14 +27,11 @@
             <aside class="topic-controls">
               <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
               ${metricControls(data, themeKey, metricKey, true)}
+              <div id="compare-definition" class="topic-side-definition"></div>
             </aside>
             <div class="compare-main-column">
-              <header class="compare-panel-heading"><div><span class="overline">Confronto tra Comuni della Versilia</span><h2>Come si distribuisce il dato?</h2><p>I valori e gli strumenti sono quelli ufficiali dell’Osservatorio.</p></div></header>
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
               <div id="compare-bars"></div>
-              <div class="compare-summary-strip">
-                <div id="compare-definition"></div>
-                <a class="compare-method-card" href="#compare-tools"><span class="compare-method-icon" aria-hidden="true">i</span><span><small>Metodo e comparabilità</small><strong>Come leggere correttamente questo indicatore</strong><em>Apri metodologia →</em></span></a>
-              </div>
             </div>
           </section>
           <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
