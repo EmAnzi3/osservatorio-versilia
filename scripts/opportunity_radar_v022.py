@@ -77,7 +77,12 @@ def resolve_municipalities(
     original_status = item.get("eligibility", "review")
 
     if rule and rule.get("deadline_override"):
-        working["deadline_at"] = rule["deadline_override"]
+        observed = str(working.get("deadline_at") or "")
+        override = str(rule["deadline_override"])
+        if rule.get("deadline_strategy") == "prefer_latest_observed" and observed:
+            working["deadline_at"] = max(observed, override)
+        else:
+            working["deadline_at"] = override
 
     resolved = v021.resolve_municipalities(working, profiles, today)
     rule = v021.matching_rule(working)

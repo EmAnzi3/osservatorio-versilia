@@ -74,14 +74,50 @@ def parse_date(s):
 
 def dates(text):
  text=clean(text);op=dl=pub=None
- m=re.search(r'Pubblicato il\s+(\d{1,2}[./]\d{1,2}[./]\d{4})',text,re.I)
- if m and (d:=parse_date(m.group(1))):pub=d.isoformat()
- m=re.search(r'Scadenza(?:\s+presentazione\s+domande)?\s+(\d{1,2}[./]\d{1,2}[./]\d{4})',text,re.I)
- if m and (d:=parse_date(m.group(1))):dl=d.isoformat()
+ token=r'(?:\d{1,2}[./]\d{1,2}[./]\d{4}|\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4})'
+
+ # I portali regionali possono conservare una vecchia data editoriale e
+ # pubblicare il bando sul BURT molti mesi dopo. La data utile al discovery è
+ # il segnale ufficiale più recente, non la prima occorrenza nel markup.
+ publication_dates=[]
+ for pattern in (
+  rf'Pubblicato\s+il\s+({token})',
+  rf'Pubblicato\s+su\s+BURT\s+il\s+({token})',
+  rf'Data\s+di\s+pubblicazione\s+bando\s+su\s+Burt\s*:?\s*({token})',
+ ):
+  for match in re.finditer(pattern,text,re.I):
+   if d:=parse_date(match.group(1)):publication_dates.append(d)
+ if publication_dates:pub=max(publication_dates).isoformat()
+
+ # La scheda può mostrare insieme la scadenza originaria e una proroga nel
+ # testo operativo. Consideriamo solo date in contesti di termine/domanda e
+ # scegliamo quella più recente; date di decreti, webinar o aggiornamenti non
+ # entrano nel confronto.
+ standard_deadlines=[]
+ for match in re.finditer(
+  rf'Scadenza(?:\s+(?:del\s+bando|presentazione\s+domande))?[^.;]{{0,90}}?({token})',
+  text,re.I,
+ ):
+  if d:=parse_date(match.group(1)):standard_deadlines.append(d)
+ if standard_deadlines:dl=max(standard_deadlines).isoformat()
+
+ operative_deadlines=[]
+ for pattern in (
+  rf'Prorogat[oaie][^.;]{{0,120}}?({token})',
+  rf'(?:domand[ae]|manifestazion[ei]\s+di\s+interesse)[^.;]{{0,100}}?\b(?:entro|fino)\b\s*(?:e\s+non\s+oltre\s+)?(?:alle?\s+ore\s+\d{{1,2}}(?::\d{{2}})?\s+)?(?:di\s+)?(?:sabato\s+)?(?:il\s+)?({token})',
+  rf'\bdalle?\b[^.;]{{0,70}}?{token}[^.;]{{0,100}}?\balle?\b\s*(?:(?:ore\s+){{1,2}}\d{{1,2}}(?::\d{{2}})?\s+)?(?:di\s+)?(?:sabato\s+)?({token})',
+ ):
+  for match in re.finditer(pattern,text,re.I):
+   if d:=parse_date(match.group(1)):operative_deadlines.append(d)
+ if operative_deadlines:
+  observed=max(operative_deadlines)
+  if not dl or observed>date.fromisoformat(dl):dl=observed.isoformat()
  for pat in (r'\bdal\s+(\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4})\s+al\s+(\d{1,2}\s+[A-Za-zÀ-ÿ]+\s+\d{4})',r'\bdal\s+(\d{1,2}[./]\d{1,2}[./]\d{4})\s+al\s+(\d{1,2}[./]\d{1,2}[./]\d{4})'):
   m=re.search(pat,text,re.I)
   if m:
-   a,b=parse_date(m.group(1)),parse_date(m.group(2));op=a.isoformat() if a else op;dl=b.isoformat() if b else dl;break
+   a,b=parse_date(m.group(1)),parse_date(m.group(2));op=a.isoformat() if a else op
+   if b and (not dl or b>date.fromisoformat(dl)):dl=b.isoformat()
+   break
  return op,dl,pub
 
 def amount(s,millions=False):
