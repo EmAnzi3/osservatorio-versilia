@@ -2073,3 +2073,218 @@ main.a5-editorial-pilot .town-current-value small {
     height:90px;
   }
 }
+
+
+/* A5.4 structural correction pass */
+/* 1. Remove the decorative circle: it competes with the Demografia title. */
+main.a5-editorial-pilot .topic-hero::after {
+  display:none !important;
+}
+main.a5-editorial-pilot .topic-hero-copy,
+main.a5-editorial-pilot .topic-symbol,
+main.a5-editorial-pilot .topic-hero-context {
+  position:relative;
+  z-index:1;
+}
+
+/* 2. Real accordion: one native summary control, no duplicate expansion affordance. */
+main.a5-editorial-pilot details.metric-group {
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-radius:8px;
+  background:#f7f2e8;
+  overflow:hidden;
+}
+main.a5-editorial-pilot details.metric-group + details.metric-group {
+  margin-top:7px;
+}
+main.a5-editorial-pilot details.metric-group > summary {
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+}
+main.a5-editorial-pilot details.metric-group > summary::-webkit-details-marker {
+  display:none;
+}
+main.a5-editorial-pilot details.metric-group > summary::marker {
+  content:"";
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading {
+  grid-template-columns:minmax(0,1fr) auto;
+  min-height:46px;
+  margin:0;
+  padding:8px 30px 8px 10px;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading::after {
+  content:"⌄";
+  position:absolute;
+  right:10px;
+  top:50%;
+  translate:0 -50%;
+  color:#6f7d82;
+  font-size:12px;
+}
+main.a5-editorial-pilot details.metric-group[open] > .metric-group-heading::after {
+  content:"⌃";
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading strong {
+  min-width:0;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading .metric-group-count {
+  color:#7c817e;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:6.5px;
+  font-weight:700;
+  white-space:nowrap;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading span {
+  grid-column:1 / -1;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-buttons {
+  display:grid !important;
+  gap:0;
+  padding:4px;
+  border-top:1px solid var(--ds-border);
+  background:#fff;
+}
+main.a5-editorial-pilot details.metric-group:not([open]) > .metric-group-buttons {
+  display:none !important;
+}
+/* Neutralize the old active-group pseudo logic now that <details> owns expansion. */
+main.a5-editorial-pilot .metric-group:has(button.active) .metric-group-heading::after {
+  content:unset;
+}
+main.a5-editorial-pilot details.metric-group[open] > .metric-group-heading::after {
+  content:"⌃";
+}
+main.a5-editorial-pilot details.metric-group:not([open]) > .metric-group-heading::after {
+  content:"⌄";
+}
+
+/* 3. Side definition fills the left rail instead of leaving a dead column. */
+main.a5-editorial-pilot .topic-controls {
+  align-self:start;
+}
+main.a5-editorial-pilot .topic-side-definition {
+  margin-top:10px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition {
+  height:auto;
+  margin:0;
+  border-radius:9px;
+  background:#fffaf3;
+  padding:12px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition h2 {
+  font-size:15px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition > p {
+  font-size:7.5px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition dl {
+  display:grid;
+  gap:6px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition dl div {
+  justify-content:space-between;
+  gap:10px;
+}
+
+/* 4. One coherent chart card: context strip above, actual reading toolbar below. */
+main.a5-editorial-pilot .compare-panel-heading {
+  min-height:38px;
+  align-items:center;
+  border-bottom:0;
+  padding:7px 12px;
+}
+main.a5-editorial-pilot .compare-panel-heading > .overline {
+  color:var(--ds-ink);
+  font-size:7px;
+  letter-spacing:.06em;
+}
+main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars {
+  border-top:1px solid var(--ds-border);
+  border-radius:0 0 11px 11px;
+  padding-top:10px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-shell {
+  gap:10px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+  align-items:center;
+  gap:16px;
+  padding:0 0 9px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy strong {
+  font-size:12px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy span {
+  font-size:8px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-note {
+  margin:-4px 0 0;
+  font-size:8px;
+}
+
+/* 5. Fix the actual dot-plot grid. Visual grammar removes the rank column;
+   the previous four-column pilot rule squeezed town+track into ~120 px. */
+main.a5-editorial-pilot .bar-row.comparison-row {
+  grid-template-columns:minmax(105px,1.05fr) minmax(320px,4fr) 96px !important;
+  gap:13px;
+  min-height:48px;
+  padding:4px 6px;
+}
+main.a5-editorial-pilot .topic-bars .bar-row.comparison-row {
+  min-height:50px;
+}
+main.a5-editorial-pilot .bar-row.comparison-row .bar-track {
+  height:24px !important;
+  border-radius:0;
+  background:transparent;
+  overflow:visible;
+}
+main.a5-editorial-pilot .bar-row.comparison-row .bar-town {
+  font-size:9px;
+}
+main.a5-editorial-pilot .bar-row.comparison-row > strong {
+  font-size:8.5px;
+}
+
+/* Keep axis aligned with the corrected three-column chart. */
+main.a5-editorial-pilot .comparison-axis {
+  margin-left:118px;
+  margin-right:108px;
+}
+
+/* Avoid a tall empty grid row beneath the controls. */
+main.a5-editorial-pilot .topic-dashboard {
+  align-items:start;
+}
+main.a5-editorial-pilot .compare-main-column {
+  align-self:start;
+}
+
+@media (max-width:1000px) {
+  main.a5-editorial-pilot .bar-row.comparison-row {
+    grid-template-columns:minmax(90px,1fr) minmax(220px,3fr) 88px !important;
+  }
+  main.a5-editorial-pilot .comparison-axis {
+    margin-left:103px;
+    margin-right:100px;
+  }
+}
+
+@media (max-width:720px) {
+  main.a5-editorial-pilot details.metric-group > .metric-group-heading {
+    min-height:48px;
+  }
+  main.a5-editorial-pilot .bar-row.comparison-row {
+    grid-template-columns:minmax(78px,.9fr) minmax(110px,2fr) 62px !important;
+    gap:7px;
+    padding-inline:2px;
+  }
+  main.a5-editorial-pilot .comparison-axis {
+    margin-left:88px;
+    margin-right:68px;
+  }
+}
