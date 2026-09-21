@@ -59,6 +59,11 @@ _CROSS_SOURCE_IDENTITIES = (
         "title_terms": ("mercati rionali",),
         "rule_ids": ("st-mercati-rionali-2026",),
     },
+    {
+        "id": "rt-microzonazione-sismica-2026",
+        "title_terms": ("microzonazione sismica",),
+        "rule_ids": ("rt-microzonazione-sismica-2026",),
+    },
 )
 
 
@@ -286,7 +291,7 @@ def apply(
 
     for candidate in candidates:
         state = _account_state(result, candidate)
-        if state is None:
+        if state in {None, "review", "discovery"}:
             exclusion_rule = _documented_exclusion_rule(candidate)
             if exclusion_rule is not None:
                 documented_excluded.append({
@@ -296,6 +301,7 @@ def apply(
                     "reason": exclusion_rule.get("suppress_reason"),
                 })
                 continue
+        if state is None:
             queue.append(
                 {
                     "source_id": "regione-toscana-safety-net",

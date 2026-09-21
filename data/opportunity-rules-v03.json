@@ -54,6 +54,17 @@
       "evidence_url": "https://www.regione.toscana.it/it/-/finanziamenti-per-studi-di-microzonazione-sismica-di-livello-2-e-3"
     },
     {
+      "id": "rt-fami-corsi-ets-2026",
+      "source_id": "regione-toscana",
+      "title_pattern": "^Erogazione di corsi di lingua e cultura italiana per cittadini di Paesi terzi.*Enti del terzo settore$",
+      "municipality_role": "none",
+      "geographic_eligibility": "not_applicable",
+      "territorial_relevance": "none",
+      "actionable": false,
+      "suppress_reason": "Il bando ammette esclusivamente ATS costituite o costituende tra Enti del Terzo settore iscritti al RUNTS; il Comune non è un richiedente ammissibile.",
+      "evidence_url": "https://www.regione.toscana.it/it/-/organzzazione-ed-erogazione-di-corsi-di-lingua-e-cultura-italiana-per-cittadini-di-paesi-terzi-bando-rivolto-agli-enti-del-terzo-settore"
+    },
+    {
       "id": "mic-jazz-2027",
       "source_id": "mic-spettacolo",
       "title_pattern": ".*PROMOZIONE DELLA MUSICA JAZZ.*2027.*",

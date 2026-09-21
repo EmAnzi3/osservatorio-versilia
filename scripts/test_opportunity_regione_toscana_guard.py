@@ -92,6 +92,32 @@ def test_cross_source_market_identity_is_reconciled() -> None:
     assert result["counts"]["regionalUnresolved"] == 0
 
 
+def test_cross_source_microzonation_identity_is_reconciled() -> None:
+    candidate = {
+        "title": "Studi di microzonazione sismica e analisi \"Condizioni limite per emergenza\": manifestazioni di interesse entro il 17 ottobre",
+        "url": "https://www.regione.toscana.it/it/-/studi-di-microzonazione-sismica-e-analisi-condizioni-limite-per-emergenza-manifestazioni-di-interesse-dei-comuni-entro-il-17-ottobre",
+        "summary": "Domande dei Comuni interessati",
+        "published_at": "2026-09-16",
+        "age_days": 5,
+        "deadline_at": "2026-10-17",
+    }
+    result = {
+        "opportunities": [{
+            "rule_id": "rt-microzonazione-sismica-2026",
+            "title": "Finanziamenti per studi di Microzonazione Sismica di livello 2 e 3",
+            "url": "https://www.regione.toscana.it/it/-/finanziamenti-per-studi-di-microzonazione-sismica-di-livello-2-e-3",
+            "deadline_at": "2026-10-17",
+        }],
+        "discoveryQueue": [],
+        "coverageHold": [],
+        "counts": {},
+    }
+    guard.apply(result, TODAY, candidates=[candidate])
+    assert result["regionalCompleteness"]["status"] == "pass"
+    assert result["regionalCompleteness"]["unresolved"] == []
+    assert result["coverageHold"] == []
+
+
 def test_missing_recent_candidate_enters_discovery() -> None:
     result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
     guard.apply(result, TODAY, candidates=[_candidate(age_days=2)])
@@ -113,7 +139,13 @@ def test_documented_non_municipal_rule_resolves_recent_candidate() -> None:
         "age_days": 8,
         "deadline_at": "2026-10-23",
     }
-    result = {"opportunities": [], "discoveryQueue": [], "coverageHold": [], "counts": {}}
+    result = {
+        "opportunities": [],
+        "reviewQueue": [{"title": candidate["title"], "url": candidate["url"]}],
+        "discoveryQueue": [],
+        "coverageHold": [],
+        "counts": {},
+    }
     guard.apply(result, date(2026, 9, 18), candidates=[copy.deepcopy(candidate)])
 
     regional = result["regionalCompleteness"]
@@ -221,6 +253,7 @@ def main() -> int:
     test_recent_burt_date_wins_over_stale_editorial_date()
     test_accounted_public_is_not_duplicated()
     test_cross_source_market_identity_is_reconciled()
+    test_cross_source_microzonation_identity_is_reconciled()
     test_missing_recent_candidate_enters_discovery()
     test_documented_non_municipal_rule_resolves_recent_candidate()
     test_overdue_unresolved_candidate_blocks_publish()
@@ -228,7 +261,7 @@ def main() -> int:
     test_final_reconciliation_removes_stale_regional_hold()
     test_nidi_gratis_comuni_rule_clears_overdue_regional_hold()
     assert audit_fixes.main() == 0
-    print("Regione Toscana guard: 10 test PASS + audit gap contracts PASS")
+    print("Regione Toscana guard: 11 test PASS + audit gap contracts PASS")
     return 0
 
 

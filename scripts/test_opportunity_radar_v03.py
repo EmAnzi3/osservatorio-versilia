@@ -56,6 +56,7 @@ class RadarV03Test(unittest.TestCase):
         self.assertEqual(entry['deadline_at'],'2026-10-15')
         self.assertTrue(entry['canonical'])
         self.assertIn('15 Ottobre 2026',entry['required_terms'])
+        self.assertIn('Comuni della Regione Toscana',entry['required_terms'])
 
         result={
             'municipalities':['Camaiore'],
@@ -73,7 +74,7 @@ class RadarV03Test(unittest.TestCase):
             run_opportunity_radar_v03._VERIFIED,
             detail_payloads={
                 entry['url']:(
-                    '<p>Possono presentare domanda i Comuni della Toscana. '
+                    '<p>Possono presentare domanda i Comuni della Regione Toscana. '
                     'Scadenza prorogata alle ore 12:00 del 15 Ottobre 2026. '
                     'Contributo fino all 80%.</p>'
                 )
@@ -84,6 +85,17 @@ class RadarV03Test(unittest.TestCase):
         self.assertEqual(item['deadline_at'],'2026-10-15')
         self.assertEqual(item['deadline_time'],'12:00')
         self.assertEqual(item['quality_gate']['status'],'pass')
+
+    def test_fami_language_courses_are_documented_non_municipal(self):
+        rules,_,_=radar.load_rules()
+        rule=radar.v021.matching_rule({
+            'source_id':'regione-toscana',
+            'title':'Erogazione di corsi di lingua e cultura italiana per cittadini di Paesi terzi: bando rivolto agli Enti del terzo settore',
+        },rules)
+        self.assertIsNotNone(rule)
+        self.assertEqual(rule['id'],'rt-fami-corsi-ets-2026')
+        self.assertEqual(rule['municipality_role'],'none')
+        self.assertFalse(rule['actionable'])
 
     def test_deadline_parser_prefers_operational_extension(self):
         text=(

@@ -40,6 +40,7 @@
     {"id":"n13","source_id":"regione-toscana-fse","title":"Finanziamenti per la promozione e la diffusione dell’apprendistato duale: il bando 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"},
     {"id":"n14","source_id":"regione-toscana-fse","title":"Finanziamento di voucher formativi individuali per professioniste e professionisti: il bando 2026","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/pr-fse-2021-2027/bandi-aperti"},
     {"id":"n15","source_id":"sviluppo-toscana","title":"Sostegno per la partecipazione a fiere di imprese toscane","expected":"non_operational","official_url":"https://www.sviluppo.toscana.it/bandi/"},
-    {"id":"n16","source_id":"mic-spettacolo","title":"Contributi a organismi professionali dello spettacolo dal vivo","expected":"non_operational","official_url":"https://spettacolo.cultura.gov.it/"}
+    {"id":"n16","source_id":"mic-spettacolo","title":"Contributi a organismi professionali dello spettacolo dal vivo","expected":"non_operational","official_url":"https://spettacolo.cultura.gov.it/"},
+    {"id":"n17","source_id":"regione-toscana","title":"Erogazione di corsi di lingua e cultura italiana per cittadini di Paesi terzi: bando rivolto agli Enti del terzo settore","expected":"non_operational","official_url":"https://www.regione.toscana.it/it/-/organzzazione-ed-erogazione-di-corsi-di-lingua-e-cultura-italiana-per-cittadini-di-paesi-terzi-bando-rivolto-agli-enti-del-terzo-settore"}
   ]
 }
