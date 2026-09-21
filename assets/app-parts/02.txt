@@ -13,10 +13,27 @@
       counts[label] = (counts[label] || 0) + 1;
       return counts;
     }, {});
-    return `<div class="metric-switch metric-catalog ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatori di ${html(theme.label)}">${groups.map(section => `<section class="metric-group" data-section="${html(section.key)}">
-      <div class="metric-group-heading"><strong>${html(section.label)}</strong>${compact && section.description ? `<span>${html(section.description)}</span>` : ''}</div>
-      <div class="metric-group-buttons">${section.metrics.map(key => { const meta = data.metrics[key].meta; const label = labelCounts[meta.shortLabel] > 1 ? meta.label : meta.shortLabel; return `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(label)}</button>`; }).join('')}</div>
-    </section>`).join('')}</div>`;
+    const pilotAccordion = themeKey === 'demografia' && compact;
+    const sections = groups.map(section => {
+      const activeSection = section.metrics.includes(metricKey);
+      const buttons = section.metrics.map(key => {
+        const meta = data.metrics[key].meta;
+        const label = labelCounts[meta.shortLabel] > 1 ? meta.label : meta.shortLabel;
+        return `<button type="button" role="tab" data-metric="${key}" class="${key === metricKey ? 'active' : ''}" aria-selected="${key === metricKey}" tabindex="${key === metricKey ? '0' : '-1'}">${html(label)}</button>`;
+      }).join('');
+      const description = compact && section.description ? `<span>${html(section.description)}</span>` : '';
+      if (pilotAccordion) {
+        return `<details class="metric-group" data-section="${html(section.key)}" name="compare-metric-groups" ${activeSection ? 'open' : ''}>
+          <summary class="metric-group-heading"><strong>${html(section.label)}</strong><b class="metric-group-count">${section.metrics.length} indicatori</b>${description}</summary>
+          <div class="metric-group-buttons">${buttons}</div>
+        </details>`;
+      }
+      return `<section class="metric-group" data-section="${html(section.key)}">
+        <div class="metric-group-heading"><strong>${html(section.label)}</strong>${description}</div>
+        <div class="metric-group-buttons">${buttons}</div>
+      </section>`;
+    }).join('');
+    return `<div class="metric-switch metric-catalog ${compact ? 'compact-list' : ''}" role="tablist" aria-label="Indicatori di ${html(theme.label)}">${sections}</div>`;
   }
 
   function groupedIndicatorCards(data, town, themeKey, activeKey) {
