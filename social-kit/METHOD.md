@@ -20,11 +20,11 @@ Le date di blackout editoriale non producono un post ordinario e non vengono rec
 Ogni uscita usa un carosello di quattro immagini PNG 1080×1350:
 
 1. valore attuale o quadro iniziale;
-2. andamento storico;
-3. variazione territoriale o confronto temporale metodologicamente corretto;
+2. andamento storico dei singoli Comuni, mai aggregato della Versilia;
+3. variazione territoriale o confronto temporale metodologicamente corretto, con testi e grafici in corsie non sovrapponibili;
 4. domanda aperta, invito a commentare indicando il Comune e invito a seguire Osservatorio Versilia.
 
-Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X.
+Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X. Se l'indicatore principale non dispone di storico, le tavole 2 e 3 usano indicatori affini soltanto quando la relazione è dichiarata nella configurazione editoriale e i dati hanno copertura 7/7. Servono sia una serie storica comunale sia un secondo dato di contesto; in caso contrario il pacchetto resta da gestire manualmente, senza riempitivi generici.
 
 ## Cosa rimane sempre uguale
 
@@ -56,9 +56,7 @@ Per produrre un contenuto servono:
 Per ciascun contenuto vengono prodotti:
 
 - quattro PNG 1080×1350;
-- testo per Facebook;
-- testo per Instagram;
-- testo per LinkedIn;
+- un unico testo condiviso per Facebook, Instagram e LinkedIn, con icone di lettura e hashtag dei sette Comuni;
 - testo per X;
 - testo alternativo completo;
 - provenienza con versione dati, valori, fonte e URL.

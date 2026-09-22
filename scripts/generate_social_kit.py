@@ -11,6 +11,7 @@ import os
 import shutil
 import subprocess
 import textwrap
+import xml.etree.ElementTree as ET
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +23,10 @@ ROOT = Path(__file__).resolve().parents[1]
 KIT = ROOT / "social-kit"
 DIST = KIT / "dist"
 SITE_URL = "https://osservatorioversilia.it"
+MUNICIPALITY_HASHTAGS = (
+    "#Camaiore #ForteDeiMarmi #Massarosa #Pietrasanta "
+    "#Seravezza #Stazzema #Viareggio"
+)
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -446,61 +451,55 @@ def current_slide(parts: list[str], box: dict[str, float], model: dict[str, Any]
 
 
 def history_slide(parts: list[str], box: dict[str, float], model: dict[str, Any], years: list[int], values: list[float], comp: dict[str, Any], theme: dict[str, str]) -> None:
+    """Mostra sette serie comunali come piccoli multipli, mai un aggregato."""
     x, y, w, h = box["x"], box["y"], box["width"], box["height"]
+    del values, comp
+    start_index = model["years"].index(years[0])
     hero_y = y + 28
-    direction = "in più" if comp["delta"] > 0 else "in meno" if comp["delta"] < 0 else "senza variazione"
-    if comp["display_unit"] == "celsius":
-        summary = f"{fmt_value(abs(comp['display']), 'celsius')} {direction}"
-    elif comp["display_unit"] == "percentage_points":
-        summary = f"{fmt_value(abs(comp['display']), 'percentage_points')} {direction}"
-    else:
-        unit_noun = f" {model['short_label'].lower()}" if model["unit"] in {"number", "people"} else ""
-        summary = f"{fmt_value(abs(comp['delta']), model['unit'])}{unit_noun} {direction}"
-    secondary = fmt_value(comp["display"], comp["display_unit"], True) if comp["display_unit"] == "percent" else ""
     parts.extend([
-        f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="126" rx="24" fill="{theme["accent"]}"/>',
-        fitted_text(comp["label"].upper(), x + 68, hero_y + 37, 510, 24, "white", 17, 14, 1, "comparison-period", "#FFFFFF"),
-        fitted_text(summary, x + 66, hero_y + 94, 610, 48, "white", 42, 28, 1, "comparison-summary", "#FFFFFF"),
-        f'<text x="{x + w - 64}" y="{hero_y + 94}" class="white" style="font-size:30px;font-weight:760" text-anchor="end">{esc(secondary)}</text>',
-        f'<text x="{x + 36}" y="{y + 195}" class="section" fill="{theme["accent"]}">{esc(model["label"].upper())}</text>',
+        f'<rect x="{x + 32}" y="{hero_y}" width="{w - 64}" height="84" rx="22" fill="{theme["soft"]}" stroke="{theme["line"]}" stroke-width="2"/>',
+        f'<text x="{x + 64}" y="{hero_y + 34}" class="hero-label" fill="{theme["accent"]}">EVOLUZIONE DEI SINGOLI COMUNI</text>',
+        f'<text x="{x + w - 64}" y="{hero_y + 57}" style="font-size:30px;font-weight:790" text-anchor="end">{years[0]}–{years[-1]}</text>',
+        f'<text x="{x + 36}" y="{y + 151}" class="section" fill="{theme["accent"]}">EVOLUZIONE COMUNE PER COMUNE · SERIE ANNUALE</text>',
     ])
-    chart_x, chart_y, chart_w, chart_h = x + 72, y + 225, w - 144, 315
-    raw_min, raw_max = min(values), max(values)
-    spread = max(0.01, raw_max - raw_min)
-    minimum, maximum = raw_min - spread * 0.14, raw_max + spread * 0.14
 
-    def px(index: int) -> float:
-        return chart_x + chart_w * index / max(1, len(years) - 1)
-
-    def py(value: float) -> float:
-        return chart_y + chart_h * (maximum - value) / (maximum - minimum)
-
-    for grid_index in range(4):
-        gy = chart_y + chart_h * grid_index / 3
-        parts.append(f'<line x1="{chart_x}" x2="{chart_x + chart_w}" y1="{gy:.1f}" y2="{gy:.1f}" stroke="#D8DFDC"/>')
-    points = " ".join(f"{px(index):.1f},{py(value):.1f}" for index, value in enumerate(values))
-    fill_points = f"{chart_x},{chart_y + chart_h} {points} {chart_x + chart_w},{chart_y + chart_h}"
+    label_x = x + 36
+    spark_x, spark_w = x + 268, 300
+    first_value_x, last_value_x = x + 704, x + w - 36
+    header_y = y + 184
     parts.extend([
-        f'<polygon points="{fill_points}" fill="{theme["soft"]}" opacity=".92"/>',
-        f'<polyline points="{points}" fill="none" stroke="{theme["accent"]}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+        f'<text x="{label_x}" y="{header_y}" class="axis">COMUNE</text>',
+        f'<text x="{spark_x}" y="{header_y}" class="axis">ANDAMENTO</text>',
+        f'<text x="{first_value_x}" y="{header_y}" class="axis" text-anchor="end">{years[0]}</text>',
+        f'<text x="{last_value_x}" y="{header_y}" class="axis" text-anchor="end">{years[-1]}</text>',
     ])
-    selected = {0, len(years) - 1}
-    if len(years) <= 12:
-        selected.update(range(len(years)))
-    else:
-        selected.update(index for index, year in enumerate(years) if year % 10 == 0)
-    for index in sorted(selected):
+
+    row_start, step, spark_h = y + 218, 59, 32
+    for row_index, row in enumerate(model["rows"]):
+        cy = row_start + row_index * step
+        series = row["series"][start_index:]
+        raw_min, raw_max = min(series), max(series)
+        spread = max(0.01, raw_max - raw_min)
+        minimum, maximum = raw_min - spread * 0.12, raw_max + spread * 0.12
+
+        def px(index: int) -> float:
+            return spark_x + spark_w * index / max(1, len(years) - 1)
+
+        def py(value: float) -> float:
+            return cy + spark_h * (maximum - value) / (maximum - minimum) - spark_h / 2
+
+        points = " ".join(f"{px(index):.1f},{py(value):.1f}" for index, value in enumerate(series))
         parts.extend([
-            f'<circle cx="{px(index):.1f}" cy="{py(values[index]):.1f}" r="7" fill="{theme["accent"]}" stroke="#FFF9F2" stroke-width="3"/>',
-            f'<text x="{px(index):.1f}" y="{chart_y + chart_h + 34}" class="axis" text-anchor="middle">{years[index]}</text>',
+            f'<text x="{label_x}" y="{cy + 7}" class="label">{esc(row["town"])}</text>',
+            f'<line x1="{spark_x}" x2="{spark_x + spark_w}" y1="{cy}" y2="{cy}" stroke="#D8DFDC" stroke-width="2"/>',
+            f'<polyline data-role="history-spark" data-row="{row_index}" x="{spark_x}" width="{spark_w}" points="{points}" fill="none" stroke="{theme["accent"]}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>',
+            f'<circle cx="{px(0):.1f}" cy="{py(series[0]):.1f}" r="5" fill="{theme["accent"]}" stroke="#FFF9F2" stroke-width="2"/>',
+            f'<circle cx="{px(len(series) - 1):.1f}" cy="{py(series[-1]):.1f}" r="5" fill="{theme["accent"]}" stroke="#FFF9F2" stroke-width="2"/>',
+            f'<text data-role="history-start-value" data-row="{row_index}" x="{first_value_x}" y="{cy + 7}" class="axis" text-anchor="end">{esc(compact_value(series[0], model["unit"]))}</text>',
+            f'<text x="{x + 748}" y="{cy + 7}" class="axis">→</text>',
+            f'<text data-role="history-end-value" data-row="{row_index}" data-left="{last_value_x - 112}" x="{last_value_x}" y="{cy + 8}" class="label" text-anchor="end">{esc(compact_value(series[-1], model["unit"]))}</text>',
         ])
-    parts.extend([
-        f'<rect x="{chart_x - 9}" y="{py(values[0]) - 42:.1f}" width="112" height="28" rx="14" fill="#FFFFFF" stroke="{theme["line"]}"/>',
-        f'<text x="{chart_x + 47}" y="{py(values[0]) - 22:.1f}" class="axis" text-anchor="middle">{esc(compact_value(values[0], model["unit"]))}</text>',
-        f'<rect x="{chart_x + chart_w - 103}" y="{py(values[-1]) - 42:.1f}" width="112" height="28" rx="14" fill="#FFFFFF" stroke="{theme["line"]}"/>',
-        f'<text x="{chart_x + chart_w - 47}" y="{py(values[-1]) - 22:.1f}" class="axis" text-anchor="middle">{esc(compact_value(values[-1], model["unit"]))}</text>',
-        f'<text x="{x + 36}" y="{y + h - 24}" class="small">Scala adattata alla serie: il grafico non parte da zero.</text>',
-    ])
+    parts.append(f'<text x="{x + 36}" y="{y + h - 24}" class="small">Scala adattata a ciascun Comune: confronta la forma, non l’altezza tra le righe.</text>')
 
 
 def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any], comp: dict[str, Any], theme: dict[str, str]) -> None:
@@ -515,7 +514,8 @@ def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any],
     ])
     rows = comp["rows"]
     maximum = max(abs(row["display"]) for row in rows) or 1.0
-    label_x, zero_x, value_x, half_w = x + 36, x + 570, x + w - 36, 250
+    # Corsie indipendenti: etichetta, grafico, valore. Nessuna barra entra nei numeri.
+    label_x, zero_x, value_x, half_w = x + 36, x + 570, x + w - 36, 170
     row_start, step = y + 205, 58
     axis_top = row_start - 18
     axis_bottom = row_start + (len(rows) - 1) * step + 34
@@ -527,13 +527,38 @@ def change_slide(parts: list[str], box: dict[str, float], model: dict[str, Any],
         cy = row_start + index * step
         width = max(3, half_w * abs(row["display"]) / maximum)
         bar_x = zero_x if row["display"] >= 0 else zero_x - width
+        value_text = fmt_value(row["display"], comp["display_unit"], True)
+        value_left = value_x - max(112, len(value_text) * 18)
         parts.extend([
             f'<text x="{label_x}" y="{cy + 20}" class="label">{esc(row["town"])}</text>',
             f'<line x1="{zero_x - half_w}" x2="{zero_x + half_w}" y1="{cy + 13}" y2="{cy + 13}" stroke="#D8DFDC" stroke-width="2"/>',
-            f'<rect x="{bar_x:.1f}" y="{cy}" width="{width:.1f}" height="26" rx="13" fill="{theme["accent"]}"/>',
-            f'<text data-role="numeric-value" x="{value_x}" y="{cy + 22}" class="number" text-anchor="end">{esc(fmt_value(row["display"], comp["display_unit"], True))}</text>',
+            f'<rect data-role="change-bar" data-row="{index}" x="{bar_x:.1f}" y="{cy}" width="{width:.1f}" height="26" rx="13" fill="{theme["accent"]}"/>',
+            f'<text data-role="change-value" data-row="{index}" data-left="{value_left:.1f}" x="{value_x}" y="{cy + 22}" class="number" text-anchor="end">{esc(value_text)}</text>',
         ])
     parts.append(f'<text x="{x + 36}" y="{y + h - 28}" class="small">La posizione rispetto allo zero indica la direzione, non un giudizio.</text>')
+
+
+def validate_slide_geometry(svg: str, post_id: str, slide_index: int) -> None:
+    """Blocca la generazione se grafico e testo condividono lo stesso spazio."""
+    root = ET.fromstring(svg)
+    by_role: dict[str, dict[str, ET.Element]] = {}
+    for element in root.iter():
+        role = element.attrib.get("data-role")
+        row = element.attrib.get("data-row")
+        if role and row is not None:
+            by_role.setdefault(role, {})[row] = element
+
+    def right_edge(element: ET.Element) -> float:
+        return float(element.attrib["x"]) + float(element.attrib["width"])
+
+    pairs = {2: ("history-spark", "history-end-value"), 3: ("change-bar", "change-value")}
+    if slide_index not in pairs:
+        return
+    graphic_role, value_role = pairs[slide_index]
+    for row, graphic in by_role.get(graphic_role, {}).items():
+        value = by_role.get(value_role, {}).get(row)
+        if value is None or right_edge(graphic) + 24 > float(value.attrib["data-left"]):
+            raise ValueError(f"Sovrapposizione grafico/testo: {post_id}, tavola {slide_index}, riga {int(row) + 1}")
 
 
 def context_slides(parts: list[str], box: dict[str, float], model: dict[str, Any], theme: dict[str, str], kind: str) -> None:
@@ -641,46 +666,32 @@ def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[s
         f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}."
         if comp else ""
     )
+    companion_line = post.get("companion_copy") or ""
     method_line = post.get("context_note") or model["description"]
     question_line = f"{post['questions'][0]} {post['questions'][1]}"
     participation = "Nei commenti indica il Comune a cui fai riferimento e segui la pagina per il prossimo dato."
     source_line = f"Fonte: {model['source']} · {model['year_label']} · dati {model['dataset_version']}"
     link_line = f"Dati, metodo e fonti: {model['link']}"
-    master = "\n\n".join(item for item in [fact, comparison_line, method_line, question_line, participation, link_line, source_line] if item)
+    observance = post.get("observance") or {}
+    observance_line = f"🌍 {observance.get('name')}" if observance.get("name") else "📊 Un dato per leggere la Versilia"
     theme_tag = "".join(word.capitalize() for word in model["theme"].split())
-    facebook = "\n\n".join(item for item in [
-        f"☀️ {fact}",
-        comparison_line,
-        method_line,
+    shared = "\n\n".join(item for item in [
+        observance_line,
+        f"📌 {fact}",
+        f"📈 {comparison_line}" if comparison_line else "",
+        f"📈 {companion_line}" if companion_line else "",
+        f"🧭 {method_line}",
         f"💬 {question_line}",
-        participation,
-        link_line,
-        source_line,
-    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag}"
-    instagram = "\n\n".join(item for item in [
-        f"Scorri il carosello →\n\n{fact}",
-        comparison_line,
-        method_line,
-        f"📍 {post['questions'][0]}\n🏘️ {post['questions'][1]}",
-        participation,
-        f"Approfondisci dal link: {model['link']}",
-        source_line,
-    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag} #DatiPubblici"
-    linkedin = "\n\n".join(item for item in [
-        "Un dato attuale e un confronto di lungo periodo per leggere questo indicatore nel territorio dei sette Comuni della Versilia.",
-        fact,
-        comparison_line,
-        method_line,
-        "Il dato descrive il fenomeno, ma non attribuisce da solo cause o responsabilità.",
-        question_line,
-        link_line,
-        source_line,
-    ] if item) + f"\n\n#OsservatorioVersilia #DatiPubblici #{theme_tag}"
+        f"👥 {participation}",
+        f"🔎 {link_line}",
+        f"📚 {source_line}",
+    ] if item) + f"\n\n#OsservatorioVersilia #Versilia #{theme_tag} #DatiPubblici {MUNICIPALITY_HASHTAGS}"
+    master = shared
     result = {
         "master": master,
-        "facebook": facebook,
-        "instagram": instagram,
-        "linkedin": linkedin,
+        "facebook": shared,
+        "instagram": shared,
+        "linkedin": shared,
     }
     change = f" Confronto: {fmt_value(comp['display'], comp['display_unit'], True)}." if comp else ""
     x_text = (
@@ -702,6 +713,35 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
     theme = themes["themes"][post["theme"]]
     years, history = history_slice(model, post)
     comp = comparison(model, post) if model["years"] else None
+    history_model = model
+    history_years = years
+    history_values = history
+    history_comp = comp
+    context_model: dict[str, Any] | None = None
+    if not model["years"] and post.get("history_metric"):
+        history_model = build_model({**post, "metric": post["history_metric"]})
+        history_post = {
+            **post,
+            "metric": post["history_metric"],
+            "history_from": post.get("history_from_by_metric", {}).get(post["history_metric"], history_model["years"][0]),
+            "comparison": post.get("comparison_by_metric", {}).get(
+                post["history_metric"], {"type": "base_year", "year": history_model["years"][0]}
+            ),
+        }
+        history_years, history_values = history_slice(history_model, history_post)
+        history_comp = comparison(history_model, history_post)
+    if not model["years"] and post.get("context_metric"):
+        context_model = build_model({**post, "metric": post["context_metric"]})
+    companion_parts: list[str] = []
+    if history_model is not model and history_years:
+        companion_parts.append(
+            f"la serie comunale di {history_model['short_label'].lower()} {history_years[0]}–{history_years[-1]}"
+        )
+    if context_model:
+        companion_parts.append(f"{context_model['short_label'].lower()} nel {context_model['year']}")
+    copy_post = {**post}
+    if companion_parts:
+        copy_post["companion_copy"] = "Il carosello affianca " + " e ".join(companion_parts) + "."
     titles, subtitles = default_titles(model, post)
     if len(titles) != 4 or len(subtitles) != 4 or len(post["questions"]) != 2:
         raise ValueError(f"Struttura editoriale incompleta: {post['id']}")
@@ -714,14 +754,25 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
             f"{model['label']} nel {model['year']}. " + "; ".join(f"{row['town']} {fmt_value(row['value'], model['unit'])}" for row in model["rows"]),
         ),
         (
-            "02-andamento-storico" if model["years"] else "02-cosa-misura",
-            (lambda parts, box: history_slide(parts, box, model, years, history, comp, theme)) if model["years"] else (lambda parts, box: context_slides(parts, box, model, theme, "history")),
-            (f"Andamento {model['label'].lower()} nei sette Comuni della Versilia, {years[0]}–{years[-1]}: " + "; ".join(f"{year} {fmt_value(value, model['unit'])}" for year, value in zip(years, history))) if model["years"] else model["description"],
+            "02-andamento-storico" if history_years else "02-cosa-misura",
+            (lambda parts, box: history_slide(parts, box, history_model, history_years, history_values, history_comp, theme)) if history_years else (lambda parts, box: context_slides(parts, box, model, theme, "history")),
+            (
+                f"Evoluzione {history_model['label'].lower()} nei singoli Comuni, {history_years[0]}–{history_years[-1]}: "
+                + "; ".join(
+                    f"{row['town']}: " + ", ".join(
+                        f"{year} {fmt_value(value, history_model['unit'])}"
+                        for year, value in zip(history_years, row["series"][history_model["years"].index(history_years[0]):])
+                    ) for row in history_model["rows"]
+                )
+            ) if history_years else model["description"],
         ),
         (
-            "03-variazione" if model["years"] else "03-come-leggerlo",
-            (lambda parts, box: change_slide(parts, box, model, comp, theme)) if model["years"] else (lambda parts, box: context_slides(parts, box, model, theme, "change")),
-            (f"{comp['label']}: " + "; ".join(f"{row['town']} {fmt_value(row['display'], comp['display_unit'], True)}" for row in comp["rows"])) if comp else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
+            "03-variazione" if comp else "03-dato-affine" if context_model else "03-come-leggerlo",
+            (lambda parts, box: change_slide(parts, box, model, comp, theme)) if comp else (lambda parts, box: current_slide(parts, box, context_model, theme)) if context_model else (lambda parts, box: context_slides(parts, box, model, theme, "change")),
+            (f"{comp['label']}: " + "; ".join(f"{row['town']} {fmt_value(row['display'], comp['display_unit'], True)}" for row in comp["rows"])) if comp else (
+                f"Dato affine: {context_model['label']} nel {context_model['year']}. "
+                + "; ".join(f"{row['town']} {fmt_value(row['value'], context_model['unit'])}" for row in context_model["rows"])
+            ) if context_model else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
         ),
         (
             "04-partecipa",
@@ -730,14 +781,26 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         ),
     ]
     for index, (filename, draw, alt) in enumerate(specs, start=1):
-        svg = make_page(index, titles[index - 1], subtitles[index - 1], model, post, design, theme, draw)
+        slide_model = history_model if index == 2 and history_years else context_model if index == 3 and context_model and not comp else model
+        if index == 2 and history_years:
+            slide_model = {**slide_model, "year_label": f"{history_years[0]}–{history_years[-1]}"}
+        slide_title = titles[index - 1]
+        slide_subtitle = subtitles[index - 1]
+        if index == 2 and history_model is not model:
+            slide_title = f"{history_model['short_label']}: {history_years[0]}–{history_years[-1]}"
+            slide_subtitle = "Evoluzione dei singoli Comuni"
+        if index == 3 and context_model:
+            slide_title = context_model["short_label"]
+            slide_subtitle = f"Un dato affine per completare la lettura · {context_model['year']}"
+        svg = make_page(index, slide_title, slide_subtitle, slide_model, post, design, theme, draw)
+        validate_slide_geometry(svg, post["id"], index)
         svg_path = cards_dir / f"{filename}.svg"
         png_path = cards_dir / f"{filename}.png"
         write(svg_path, svg)
         render_png(svg_path, png_path, design["format"]["width"], design["format"]["height"])
         write(destination / "alt" / f"{filename}.txt", alt + "\n")
         cards.append({"slide": index, "filename": filename, "title": titles[index - 1], "alt": alt})
-    for platform, copy in copy_for_platforms(post, model, comp).items():
+    for platform, copy in copy_for_platforms(copy_post, model, comp).items():
         write(destination / "testi" / f"{platform}.txt", copy + "\n")
     provenance = {
         "status": "draft",
@@ -760,6 +823,22 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         "current_year": model["year"],
         "current_values": {row["town"]: row["value"] for row in model["rows"]},
         "history": {str(year): value for year, value in zip(years, history)},
+        "history_by_town": {
+            row["town"]: {
+                str(year): value
+                for year, value in zip(history_years, row["series"][history_model["years"].index(history_years[0]):])
+            }
+            for row in history_model["rows"]
+        } if history_years else {},
+        "slide_metrics": {
+            "1": model["metric"],
+            "2": history_model["metric"] if history_years else model["metric"],
+            "3": context_model["metric"] if context_model else model["metric"],
+            "4": model["metric"],
+        },
+        "companion_values": {
+            context_model["metric"]: {row["town"]: row["value"] for row in context_model["rows"]}
+        } if context_model else {},
         "comparison": comp,
         "questions": post["questions"],
         "context_note": post.get("context_note"),
