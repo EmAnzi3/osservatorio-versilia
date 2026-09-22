@@ -2288,3 +2288,180 @@ main.a5-editorial-pilot .compare-main-column {
     margin-right:68px;
   }
 }
+
+
+/* A5.4 coherence pass — canonical accordion + unified chart shell */
+/* Canonical accordion owns expansion. Hide A5's old pseudo-chevron and obey [hidden]. */
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle::after {
+  content:none !important;
+  display:none !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons[hidden] {
+  display:none !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons:not([hidden]) {
+  display:grid !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] .ux-section-tools {
+  right:8px;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] .ux-section-chevron {
+  width:22px;
+  height:22px;
+  border-color:#d3c6b7;
+  background:#fffaf3;
+  color:#6f7d82;
+  font-size:12px;
+}
+
+/* Never expose the transient raw bar chart while runtime enhancers are rebuilding it. */
+main.a5-editorial-pilot #compare-bars > .topic-bars {
+  min-height:350px;
+  visibility:hidden;
+}
+main.a5-editorial-pilot #compare-bars > .ux-view-shell {
+  visibility:visible;
+}
+
+/* One visual component for context, actions, current/history and chart. */
+main.a5-editorial-pilot .compare-main-column {
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+main.a5-editorial-pilot .compare-panel-heading {
+  display:none !important;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-shell {
+  gap:0;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:10px;
+  align-items:center;
+  margin:0;
+  padding:11px 14px 9px;
+  border-bottom:1px solid #eee6da;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy {
+  min-width:0;
+}
+main.a5-editorial-pilot #compare-bars .a5-toolbar-overline {
+  display:block;
+  margin-bottom:2px;
+  color:#8d786b;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:6.5px;
+  font-weight:760;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy strong {
+  display:block;
+  color:var(--ds-ink);
+  font-size:12px;
+  line-height:1.2;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy span {
+  display:block;
+  margin-top:2px;
+  color:#748086;
+  font-size:7.5px;
+  line-height:1.35;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  margin:0;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions a,
+main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions button {
+  min-height:28px;
+  padding:5px 7px;
+  font-size:6.5px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-toggle {
+  flex:0 0 auto;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-note {
+  margin:0;
+  padding:7px 14px 9px;
+  border-bottom:1px solid #eee6da;
+  background:#fffdfa;
+  color:#7b8587;
+  font-size:7.5px;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="current"] > .topic-bars {
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:#fffdfa;
+  padding:12px 14px 14px;
+  box-shadow:none;
+}
+main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="history"] {
+  padding:12px 14px 14px;
+}
+
+/* Method/reading utilities do not reserve an empty half while visual grammar hydrates. */
+main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools {
+  grid-template-columns:1fr;
+}
+main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools:has(> .reading-scale) {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+}
+
+/* Town cards: alphabetical DOM order, equal columns and equal gaps. */
+main.a5-editorial-pilot .topic-town-card-grid {
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:10px;
+  align-items:stretch;
+}
+main.a5-editorial-pilot .topic-town-card {
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+}
+main.a5-editorial-pilot .topic-town-card-copy {
+  min-height:62px;
+}
+
+@media (max-width:1100px) {
+  main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+  main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    order:3;
+  }
+}
+@media (max-width:720px) {
+  main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+    grid-column:auto;
+    order:2;
+    overflow-x:auto;
+    justify-content:flex-start;
+  }
+  main.a5-editorial-pilot #compare-bars .ux-view-toggle {
+    order:3;
+    justify-self:start;
+  }
+  main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools:has(> .reading-scale) {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+}
