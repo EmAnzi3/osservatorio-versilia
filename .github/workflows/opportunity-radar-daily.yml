@@ -386,27 +386,25 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Download readable run report
-        if: needs.refresh.outputs.content_changed == 'true'
         uses: actions/download-artifact@v4
         with:
           name: opportunity-radar-daily-report
           path: reports/runtime
 
       - name: Notify owner after successful publication
-        if: needs.refresh.outputs.content_changed == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          marker="radar-published:${{ needs.refresh.outputs.fingerprint }}"
+          marker="radar-published:${{ needs.refresh.outputs.reference_date }}:${{ needs.refresh.outputs.fingerprint }}"
           if gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 100 --json body --jq '.[] | .body // ""' | grep -Fq "$marker"; then
             echo "Pubblicazione già notificata: ${marker}"
             exit 0
           fi
           {
             echo "<!-- ${marker} -->"
-            echo "# Radar aggiornato e pubblicato"
+            echo "# Radar verificato e pubblicato"
             echo
             echo "La pubblicazione è conclusa. [Apri il Radar Opportunità](https://osservatorioversilia.it/opportunita/)."
             echo
@@ -423,7 +421,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          PR_NUMBER="$(gh pr list --state open --head automation/opportunity-radar-daily --base main --json number --jq '.[0].number // empty')"
+          set -u
+          if ! PR_NUMBER="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --head automation/opportunity-radar-daily --base main --json number --jq '.[0].number // empty')"; then
+            echo "::warning::Impossibile verificare la PR legacy; la pubblicazione Radar resta valida."
+            exit 0
+          fi
           if [ -n "$PR_NUMBER" ]; then
-            gh pr close "$PR_NUMBER" --comment "Il Radar pubblica ora automaticamente solo dopo tutti i gate verdi; questa PR giornaliera non è più necessaria."
+            if ! gh pr close "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --comment "Il Radar pubblica ora automaticamente solo dopo tutti i gate verdi; questa PR giornaliera non è più necessaria."; then
+              echo "::warning::Impossibile chiudere la PR legacy #${PR_NUMBER}; la pubblicazione Radar resta valida."
+            fi
           fi
