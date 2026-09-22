@@ -41,6 +41,15 @@ Salvo autorizzazione esplicita del proprietario, non cambiare:
 
 Le modifiche specifiche del recovery non devono essere sparse in altri file.
 
+## Regola sulle modifiche manuali del proprietario
+
+Se il proprietario modifica direttamente `assets/a5-demografia-review.css` o `assets/a5-demografia-review.js`:
+
+- quelle modifiche diventano immediatamente fonte di verità;
+- prima di ogni nuovo intervento va riletto il branch LIVE;
+- non sovrascrivere né riformattare modifiche manuali non richieste;
+- eventuali conflitti vanno segnalati prima di scrivere altro codice.
+
 ## Regola di consegna
 
 Prima di produrre un artifact:
