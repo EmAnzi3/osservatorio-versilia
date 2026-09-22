@@ -491,6 +491,7 @@
     if (!data) return;
     enhanceCompare(data);
     enhanceTown(data);
+    window.dispatchEvent(new CustomEvent('ov:ux-history-enhanced'));
   }
 
   function schedule() {
@@ -526,5 +527,6 @@
   });
 
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
+  window.addEventListener('ov:compare-rendered', schedule);
   schedule();
 })();
