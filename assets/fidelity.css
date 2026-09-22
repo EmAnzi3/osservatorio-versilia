@@ -1169,6 +1169,8 @@ main.a5-editorial-pilot .compare-context-nav {
 }
 main.a5-editorial-pilot .context-nav-title {
   min-width:68px;
+  box-sizing:border-box;
+  padding-left:8px;
 }
 main.a5-editorial-pilot .context-nav-title small {
   color:#8c8a82;
@@ -1210,6 +1212,8 @@ main.a5-editorial-pilot .context-nav-links a[data-context-theme="mobilita"]:not(
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="sicurezza"]:not(.active){border-color:#ebcfbd;color:#a75a29;background:#fff7f1}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="ambiente"]:not(.active){border-color:#cbdfc5;color:#4d873f;background:#f4faf2}
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="abitare"]:not(.active){border-color:#d7d0e9;color:#6d5ca6;background:#f8f6fc}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="bilanci"]:not(.active){border-color:#b9c5cf;color:#425c6b;background:#f0f4f6}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="comunita"]:not(.active){border-color:#d7bfd1;color:#7a456b;background:#f8f0f5}
 
 /* Compact topic identity card: icon + title + explanatory column. */
 main.a5-editorial-pilot .topic-hero {
