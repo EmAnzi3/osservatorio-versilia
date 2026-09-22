@@ -2495,3 +2495,33 @@ main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong::before
   vertical-align: 0;
   flex: 0 0 auto;
 }
+
+
+/* Modifica 04 — solo switch UNITÀ della mobilità residenziale:
+   allineamento visivo ai controlli Demografia A5, senza toccare VOCE o altri componenti. */
+main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch {
+  border: 1px solid #d9b1a4;
+  border-radius: 10px;
+  background: #fffaf7;
+  padding: 3px;
+  box-shadow: none;
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button {
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #8b493a;
+  box-shadow: none;
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button:hover:not(.active) {
+  background: #fbefea;
+  color: var(--ds-demografia-dark);
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button.active {
+  background: var(--ds-demografia);
+  color: #fff;
+  box-shadow: none;
+}
