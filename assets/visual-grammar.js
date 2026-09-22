@@ -545,7 +545,13 @@
       track.innerHTML = markup;
       const hoverLabel = document.createElement('span');
       hoverLabel.className = 'bar-hover-label';
-      hoverLabel.textContent = `${row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune'} · ${formatAxis(value, unit)}`;
+      const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
+      const townValue = formatAxis(value, unit);
+      const showReferenceInTooltip = document.body.dataset.page === 'compare' && document.body.dataset.theme === 'demografia' && aggregate?.value !== null && aggregate?.value !== undefined;
+      const referenceLabel = String(aggregate?.label || 'Versilia').replace(' dei 7 comuni','');
+      hoverLabel.textContent = showReferenceInTooltip
+        ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(aggregate.value, unit)}`
+        : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
       if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
     });
