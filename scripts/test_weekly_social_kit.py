@@ -138,6 +138,9 @@ def main() -> int:
             rendered = visible_text(root)
             if BANNED.search(rendered):
                 errors.append(f"Lessico valutativo nella grafica: {svg_path}")
+            for jargon in ("dato affine", "indicatore di supporto", "per completare la lettura"):
+                if jargon in rendered.casefold():
+                    errors.append(f"Gergo di lavorazione nella grafica ({jargon}): {svg_path}")
             if re.search(r"\b0[1-9]\s*[·-]\s*", rendered):
                 errors.append(f"Chiave/numerazione tecnica visibile: {svg_path}")
 
@@ -153,8 +156,23 @@ def main() -> int:
                 errors.append(f"Lessico valutativo nel copy {platform}: {item['post_id']}")
             if platform == "x" and len(text) > 280:
                 errors.append(f"Copy X oltre 280 caratteri: {item['post_id']}")
-        if len({platform_texts.get("facebook"), platform_texts.get("instagram"), platform_texts.get("linkedin")}) != 3:
-            errors.append(f"Copy Facebook/Instagram/LinkedIn non differenziati: {item['post_id']}")
+        shared_copy = {platform_texts.get("facebook"), platform_texts.get("instagram"), platform_texts.get("linkedin")}
+        if len(shared_copy) != 1:
+            errors.append(f"Copy Facebook/Instagram/LinkedIn non identici: {item['post_id']}")
+        common = platform_texts.get("facebook", "")
+        for jargon in ("dato affine", "indicatore di supporto", "per completare la lettura"):
+            if jargon in common.casefold():
+                errors.append(f"Gergo di lavorazione nel copy pubblico ({jargon}): {item['post_id']}")
+        for hashtag in ["#Camaiore", "#ForteDeiMarmi", "#Massarosa", "#Pietrasanta", "#Seravezza", "#Stazzema", "#Viareggio"]:
+            if hashtag not in common:
+                errors.append(f"Hashtag comunale mancante ({hashtag}): {item['post_id']}")
+        if not all(icon in common for icon in ["📌", "📈", "🧭", "💬", "👥", "🔎", "📚"]):
+            errors.append(f"Icone guida incomplete nel copy condiviso: {item['post_id']}")
+
+        slide_metrics = provenance.get("slide_metrics") or {}
+        if item.get("post_id", "").find("-ricorrenza-") >= 0 and not provenance.get("history"):
+            if slide_metrics.get("2") == provenance.get("metric") and slide_metrics.get("3") == provenance.get("metric"):
+                errors.append(f"Ricorrenza senza storico né dati affini nelle tavole 2/4 e 3/4: {item['post_id']}")
 
     forbidden = [path for path in DIST.rglob("*") if path.is_file() and (path.suffix.lower() == ".pdf" or "story" in path.name.lower())]
     if forbidden:

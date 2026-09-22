@@ -84,6 +84,24 @@ def series_years(metric: dict[str, Any]) -> list[int]:
     return years
 
 
+def complete_metric(metric: dict[str, Any]) -> bool:
+    rows = metric.get("rows") or []
+    return len(rows) == 7 and all(row.get("town") and row.get("value") is not None for row in rows)
+
+
+def companion_metrics(item: dict[str, Any], primary_key: str, site: dict[str, Any]) -> tuple[str | None, str | None]:
+    """Sceglie solo indicatori esplicitamente collegati alla ricorrenza."""
+    candidates: list[str] = []
+    for field in ("preferred_indicators", "matching_metrics", "generator_ready_metrics"):
+        for key in item.get(field, []) or []:
+            metric = site.get("metrics", {}).get(key)
+            if key != primary_key and metric and complete_metric(metric) and metric.get("meta", {}).get("theme") == item.get("theme") and key not in candidates:
+                candidates.append(key)
+    history_key = next((key for key in candidates if len(series_years(site["metrics"][key])) >= 2), None)
+    context_key = next((key for key in candidates if key != history_key), None)
+    return history_key, context_key
+
+
 def temporal_spec(metric: dict[str, Any]) -> dict[str, Any]:
     years = series_years(metric)
     if not years:
@@ -111,11 +129,11 @@ def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[s
             if meta.get("unit") == "percent"
             else f"Differenza percentuale rispetto al {base}"
         )
-        titles = [short, f"Dal {base} al {year}", "La variazione per Comune", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
+        titles = [short, f"Dal {base} al {year}", f"Variazione: {short}", "Cosa vedi nel tuo Comune?"]
+        subtitles = [f"{meta['description']} · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
     else:
         titles = [short, "Che cosa misura il dato", "Come leggere il confronto", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
+        subtitles = [f"{meta['description']} · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
     return titles, subtitles
 
 
@@ -179,6 +197,26 @@ def post_from_item(
         "subtitles": subtitles,
     }
     post.update(temporal)
+    if not temporal:
+        history_metric, context_metric = companion_metrics(item, metric_key, site)
+        if not history_metric or not context_metric:
+            return None, {
+                "date": item["date"],
+                "id": item.get("id") or safe_id(item.get("title", "uscita")),
+                "title": item.get("title", metric["meta"].get("label", metric_key)),
+                "theme": item.get("theme"),
+                "reason": (
+                    "Indicatore privo di storico e senza due indicatori affini 7/7 esplicitamente dichiarati; "
+                    "il sistema non genera card riempitive."
+                ),
+            }
+        history_years = series_years(site["metrics"][history_metric])
+        post["history_metric"] = history_metric
+        post["history_from_by_metric"] = {history_metric: history_years[0]}
+        post["comparison_by_metric"] = {
+            history_metric: {"type": "base_year", "year": history_years[0]}
+        }
+        post["context_metric"] = context_metric
     if item["type"] == "observance":
         limitation = (item.get("limitations") or "").strip()
         angle = (item.get("angle") or "").strip()

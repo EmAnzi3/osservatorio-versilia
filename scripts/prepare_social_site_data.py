@@ -28,9 +28,13 @@ def load(path: Path) -> dict[str, Any]:
 def planned_metrics(plan: dict[str, Any]) -> list[str]:
     keys: list[str] = []
     for item in plan.get("scheduled", []):
-        key = item.get("metric")
-        if key and key not in keys:
-            keys.append(key)
+        for field in ("metric", "preferred_indicators", "matching_metrics", "generator_ready_metrics"):
+            values = item.get(field)
+            if isinstance(values, str):
+                values = [values]
+            for key in values or []:
+                if key and key not in keys:
+                    keys.append(key)
     return keys
 
 
