@@ -98,6 +98,17 @@ body.a5-demografia-recovery main.a5-editorial-pilot .topic-controls > #compare-d
 /* 06 — Area grafico: un solo componente, senza effetto collage.
  * NON alteriamo la grammatica del grafico o le sue dimensioni interne.
  */
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-summary-strip {
+  display: none !important;
+}
+
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
 body.a5-demografia-recovery main.a5-editorial-pilot .compare-main-column {
   overflow: hidden;
   border: 1px solid var(--a5-review-border);
