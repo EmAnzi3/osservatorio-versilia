@@ -24,7 +24,11 @@ Ogni uscita usa un carosello di quattro immagini PNG 1080×1350:
 3. variazione territoriale o confronto temporale metodologicamente corretto, con testi e grafici in corsie non sovrapponibili;
 4. domanda aperta, invito a commentare indicando il Comune e invito a seguire Osservatorio Versilia.
 
-Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X. Se l'indicatore principale non dispone di storico, le tavole 2 e 3 usano indicatori affini soltanto quando la relazione è dichiarata nella configurazione editoriale e i dati hanno copertura 7/7. Servono sia una serie storica comunale sia un secondo dato di contesto; in caso contrario il pacchetto resta da gestire manualmente, senza riempitivi generici.
+Il carosello è unico e viene utilizzato senza varianti su Facebook, Instagram, LinkedIn e X. Se l'indicatore principale non dispone di storico, le tavole 2 e 3 usano altri indicatori pertinenti soltanto quando la relazione è dichiarata nella configurazione editoriale e i dati hanno copertura 7/7. Servono sia una serie storica comunale sia un secondo dato di contesto; in caso contrario il pacchetto resta da gestire manualmente, senza riempitivi generici.
+
+La relazione tecnica fra gli indicatori non entra mai nel contenuto pubblico: sono vietate formule come “dato affine”, “indicatore di supporto” o “per completare la lettura”. Card, copy e ALT parlano esclusivamente del fenomeno osservato.
+
+Ogni valore deve essere interpretabile senza conoscere il catalogo: titolo o sottotitolo spiegano che cosa viene contato o quale universo rappresenta una percentuale. Il solo nome sintetico dell’indicatore non basta. Il copy segue una storia leggibile — dato attuale, evoluzione nel tempo, significato dell’eventuale terzo indicatore e domanda al lettore — mentre i dettagli tecnici restano nella provenienza, salvo quelli indispensabili per capire il numero.
 
 ## Cosa rimane sempre uguale
 

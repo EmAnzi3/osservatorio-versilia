@@ -129,11 +129,11 @@ def titles_for(metric: dict[str, Any], temporal: dict[str, Any]) -> tuple[list[s
             if meta.get("unit") == "percent"
             else f"Differenza percentuale rispetto al {base}"
         )
-        titles = [short, f"Dal {base} al {year}", "La variazione per Comune", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
+        titles = [short, f"Dal {base} al {year}", f"Variazione: {short}", "Cosa vedi nel tuo Comune?"]
+        subtitles = [f"{meta['description']} · {year}", meta["label"], comparison_subtitle, "I numeri aprono la conversazione. Il territorio la completa."]
     else:
         titles = [short, "Che cosa misura il dato", "Come leggere il confronto", "Cosa vedi nel tuo Comune?"]
-        subtitles = [f"I sette Comuni a confronto · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
+        subtitles = [f"{meta['description']} · {year}", meta["label"], "Contesto e limiti di lettura", "I numeri aprono la conversazione. Il territorio la completa."]
     return titles, subtitles
 
 

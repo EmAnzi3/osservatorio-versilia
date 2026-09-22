@@ -138,6 +138,9 @@ def main() -> int:
             rendered = visible_text(root)
             if BANNED.search(rendered):
                 errors.append(f"Lessico valutativo nella grafica: {svg_path}")
+            for jargon in ("dato affine", "indicatore di supporto", "per completare la lettura"):
+                if jargon in rendered.casefold():
+                    errors.append(f"Gergo di lavorazione nella grafica ({jargon}): {svg_path}")
             if re.search(r"\b0[1-9]\s*[·-]\s*", rendered):
                 errors.append(f"Chiave/numerazione tecnica visibile: {svg_path}")
 
@@ -157,6 +160,9 @@ def main() -> int:
         if len(shared_copy) != 1:
             errors.append(f"Copy Facebook/Instagram/LinkedIn non identici: {item['post_id']}")
         common = platform_texts.get("facebook", "")
+        for jargon in ("dato affine", "indicatore di supporto", "per completare la lettura"):
+            if jargon in common.casefold():
+                errors.append(f"Gergo di lavorazione nel copy pubblico ({jargon}): {item['post_id']}")
         for hashtag in ["#Camaiore", "#ForteDeiMarmi", "#Massarosa", "#Pietrasanta", "#Seravezza", "#Stazzema", "#Viareggio"]:
             if hashtag not in common:
                 errors.append(f"Hashtag comunale mancante ({hashtag}): {item['post_id']}")

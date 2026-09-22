@@ -79,6 +79,59 @@ def compact_value(value: float, unit: str) -> str:
     return fmt_it(value, 0 if float(value).is_integer() else 1)
 
 
+def sentence(text: str) -> str:
+    """Normalizza una definizione per usarla nel racconto rivolto al lettore."""
+    cleaned = " ".join(str(text).strip().split())
+    if not cleaned:
+        return ""
+    return cleaned[0].upper() + cleaned[1:].rstrip(".") + "."
+
+
+def measure_definition(model: dict[str, Any]) -> str:
+    """Definizione breve che rende interpretabile anche un valore isolato."""
+    return sentence(model.get("description") or model["label"])
+
+
+def history_story(model: dict[str, Any], years: list[int]) -> str:
+    if len(years) < 2:
+        return ""
+    start = model["years"].index(years[0])
+    increases = decreases = stable = 0
+    for row in model["rows"]:
+        first, last = float(row["series"][start]), float(row["series"][-1])
+        if last > first:
+            increases += 1
+        elif last < first:
+            decreases += 1
+        else:
+            stable += 1
+    movements = []
+    if increases:
+        movements.append(f"una crescita in {increases} Comuni")
+    if decreases:
+        movements.append(f"un calo in {decreases}")
+    if stable:
+        movements.append(f"stabilità in {stable}")
+    return (
+        f"Per {model['short_label'].lower()}, il confronto tra {years[0]} e {years[-1]} mostra "
+        + ", ".join(movements)
+        + ". La seconda card mostra il percorso di ciascun Comune."
+    )
+
+
+def context_story(model: dict[str, Any]) -> str:
+    rows = model["rows"]
+    low = min(rows, key=lambda row: row["value"])
+    high = max(rows, key=lambda row: row["value"])
+    range_name = "la quota" if model["unit"] in {"percent", "percentage_points"} else "il valore"
+    return (
+        f"{measure_definition(model)} Nel {model['year']} {range_name} va dal "
+        f"{fmt_value(low['value'], model['unit'])} di {low['town']} al "
+        f"{fmt_value(high['value'], model['unit'])} di {high['town']}; "
+        "sono estremi del confronto, non una classifica."
+    )
+
+
 def logo_uri() -> str:
     raw = (ROOT / "assets" / "brand-mark.svg").read_bytes()
     return "data:image/svg+xml;base64," + base64.b64encode(raw).decode("ascii")
@@ -637,11 +690,11 @@ def default_titles(model: dict[str, Any], post: dict[str, Any]) -> tuple[list[st
     titles = [
         f"{model['short_label']} oggi",
         f"Dal {start} a oggi" if model["years"] else "Che cosa misura il dato",
-        "La variazione per Comune" if model["years"] else "Come leggere il confronto",
+        f"Variazione: {model['short_label']}" if model["years"] else "Come leggere il confronto",
         "Cosa vedi nel tuo Comune?",
     ]
     subtitles = [
-        f"I sette Comuni a confronto · {model['year']}",
+        f"{model['description']} · {model['year']}",
         model["label"],
         comparison_subtitle,
         "I numeri aprono la conversazione. Il territorio la completa.",
@@ -666,8 +719,8 @@ def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[s
         f"Nel confronto {comp['label']}, la variazione complessiva è {fmt_value(comp['display'], comp['display_unit'], True)}."
         if comp else ""
     )
-    companion_line = post.get("companion_copy") or ""
-    method_line = post.get("context_note") or model["description"]
+    story_lines = post.get("story_lines") or []
+    method_line = measure_definition(model)
     question_line = f"{post['questions'][0]} {post['questions'][1]}"
     participation = "Nei commenti indica il Comune a cui fai riferimento e segui la pagina per il prossimo dato."
     source_line = f"Fonte: {model['source']} · {model['year_label']} · dati {model['dataset_version']}"
@@ -679,7 +732,7 @@ def copy_for_platforms(post: dict[str, Any], model: dict[str, Any], comp: dict[s
         observance_line,
         f"📌 {fact}",
         f"📈 {comparison_line}" if comparison_line else "",
-        f"📈 {companion_line}" if companion_line else "",
+        *(f"📈 {line}" for line in story_lines if line),
         f"🧭 {method_line}",
         f"💬 {question_line}",
         f"👥 {participation}",
@@ -732,16 +785,14 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
         history_comp = comparison(history_model, history_post)
     if not model["years"] and post.get("context_metric"):
         context_model = build_model({**post, "metric": post["context_metric"]})
-    companion_parts: list[str] = []
+    story_lines: list[str] = []
     if history_model is not model and history_years:
-        companion_parts.append(
-            f"la serie comunale di {history_model['short_label'].lower()} {history_years[0]}–{history_years[-1]}"
-        )
+        story_lines.append(history_story(history_model, history_years))
     if context_model:
-        companion_parts.append(f"{context_model['short_label'].lower()} nel {context_model['year']}")
+        story_lines.append(context_story(context_model))
     copy_post = {**post}
-    if companion_parts:
-        copy_post["companion_copy"] = "Il carosello affianca " + " e ".join(companion_parts) + "."
+    if story_lines:
+        copy_post["story_lines"] = story_lines
     titles, subtitles = default_titles(model, post)
     if len(titles) != 4 or len(subtitles) != 4 or len(post["questions"]) != 2:
         raise ValueError(f"Struttura editoriale incompleta: {post['id']}")
@@ -767,10 +818,10 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
             ) if history_years else model["description"],
         ),
         (
-            "03-variazione" if comp else "03-dato-affine" if context_model else "03-come-leggerlo",
+            "03-variazione" if comp else "03-chiave-di-lettura" if context_model else "03-come-leggerlo",
             (lambda parts, box: change_slide(parts, box, model, comp, theme)) if comp else (lambda parts, box: current_slide(parts, box, context_model, theme)) if context_model else (lambda parts, box: context_slides(parts, box, model, theme, "change")),
             (f"{comp['label']}: " + "; ".join(f"{row['town']} {fmt_value(row['display'], comp['display_unit'], True)}" for row in comp["rows"])) if comp else (
-                f"Dato affine: {context_model['label']} nel {context_model['year']}. "
+                f"{measure_definition(context_model)} Valori nel {context_model['year']}: "
                 + "; ".join(f"{row['town']} {fmt_value(row['value'], context_model['unit'])}" for row in context_model["rows"])
             ) if context_model else "Indicazioni per leggere il confronto senza attribuire cause non dimostrate.",
         ),
@@ -791,7 +842,7 @@ def generate_post(post: dict[str, Any], design: dict[str, Any], themes: dict[str
             slide_subtitle = "Evoluzione dei singoli Comuni"
         if index == 3 and context_model:
             slide_title = context_model["short_label"]
-            slide_subtitle = f"Un dato affine per completare la lettura · {context_model['year']}"
+            slide_subtitle = f"{measure_definition(context_model)} · {context_model['year']}"
         svg = make_page(index, slide_title, slide_subtitle, slide_model, post, design, theme, draw)
         validate_slide_geometry(svg, post["id"], index)
         svg_path = cards_dir / f"{filename}.svg"
