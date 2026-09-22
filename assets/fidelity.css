@@ -2471,3 +2471,27 @@ main.a5-editorial-pilot .topic-town-card-copy {
 body[data-page="compare"][data-theme="demografia"] main.a5-editorial-pilot #compare-bars .comparison-bars:not([data-viz]) {
   visibility:hidden;
 }
+
+
+/* Modifica 03 — solo due correzioni richieste:
+   1) coerenza visiva delle sezioni aperte della fisarmonica laterale;
+   2) allineamento ottico tra quadratino tema e titoli delle sezioni. */
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons:not([hidden]) {
+  gap: 0;
+  padding: 4px;
+  background: #fff;
+  border-top: 1px solid var(--ds-border);
+}
+
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong::before {
+  margin-right: 0;
+  margin-top: 1px;
+  vertical-align: 0;
+  flex: 0 0 auto;
+}
