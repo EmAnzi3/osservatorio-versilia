@@ -38,7 +38,7 @@
           <section id="compare-benchmark" class="page-width"></section>
           ${brainDrainMarkup(data)}
           <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${data.towns.map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
         </main>`
       : `<main class="inner-page" data-theme="${themeKey}">
           <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
@@ -1218,8 +1218,33 @@
         copy.insertBefore(detail, copy.querySelector('small'));
       }
     });
+    const townGrid = document.querySelector('#compare-territori .topic-town-card-grid');
+    if (townGrid) {
+      [...townGrid.children]
+        .sort((a,b) => (a.querySelector('.topic-town-card-copy strong')?.textContent || '').localeCompare(
+          b.querySelector('.topic-town-card-copy strong')?.textContent || '', 'it'
+        ))
+        .forEach(card => townGrid.append(card));
+    }
+    window.dispatchEvent(new CustomEvent('ov:compare-rendered', { detail:{ themeKey, metricKey } }));
   }
 
+  function syncA5CompareChrome() {
+    if (document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'demografia') return;
+    const main = document.querySelector('main.a5-editorial-pilot');
+    const toolbar = main?.querySelector('#compare-bars > .ux-view-shell > .ux-view-toolbar');
+    if (!toolbar) return;
+    const copy = toolbar.querySelector('.ux-view-toolbar-copy');
+    if (copy && !copy.querySelector('.a5-toolbar-overline')) {
+      copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
+    }
+    const heading = main.querySelector('.compare-panel-heading');
+    const actions = heading?.querySelector(':scope > .data-actions') || toolbar.querySelector(':scope > .data-actions');
+    const toggle = toolbar.querySelector('.ux-view-toggle');
+    if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions,toggle || null);
+  }
+
+  window.addEventListener('ov:ux-history-enhanced', syncA5CompareChrome);
 
   function libraryHistoryTableMarkup(metric) {
     const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
