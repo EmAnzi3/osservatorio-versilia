@@ -764,6 +764,8 @@
 
   const observer = new MutationObserver(scheduleEnhance);
   observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'aria-selected'] });
+  window.addEventListener('ov:ux-history-enhanced', scheduleEnhance);
+  window.addEventListener('ov:compare-rendered', scheduleEnhance);
 
   fetch(dataUrl, { cache: 'no-store' })
     .then(response => {
