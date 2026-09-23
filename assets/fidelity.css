@@ -1988,6 +1988,9 @@ main.a5-editorial-pilot #compare-tools > .reading-scale {
   border-radius:9px;
   background:#fffdfa;
 }
+main.a5-editorial-pilot #compare-tools > .method-disclosure {
+  border-left:3px solid #b57a57;
+}
 main.a5-editorial-pilot #compare-tools > .method-disclosure > summary {
   min-height:58px;
   box-sizing:border-box;

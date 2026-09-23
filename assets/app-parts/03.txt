@@ -1173,12 +1173,12 @@
     actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 
     const photoFiles = {
-      'Massarosa':'Massarosa.jpg',
+      'Massarosa':'MassarosaPanorama.JPG',
       'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
-      'Camaiore':'Camaiore Countryside.jpg',
+      'Camaiore':'Pontile di Lido di Camaiore, 55041 Lido di Camaiore LU, Italy - panoramio.jpg',
       'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
-      'Seravezza':'Seravezza-panorama.jpg',
-      'Forte dei Marmi':'Forte dei Marmi - Municipio.jpg',
+      'Seravezza':'Palazzo Mediceo a Seravezza.jpg',
+      'Forte dei Marmi':'Pontile Forte dei Marmi.jpg',
       'Stazzema':'Stazzema.JPG'
     };
     document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
