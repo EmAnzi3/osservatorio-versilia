@@ -1,19 +1,58 @@
 (location.search);
     let metricKey = params.get('indicatore');
     if (!theme.metrics.includes(metricKey)) metricKey = theme.metrics[0];
-    app.innerHTML = `<main class="inner-page" data-theme="${themeKey}">
-      <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
-      ${compareContextNav(data, themeKey)}
-      <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
-        <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
-      <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
-      <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
-      <section id="compare-benchmark" class="page-width"></section>
-      ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
-      ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
-      <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
-    </main>`;
+    app.innerHTML = themeKey === 'demografia'
+      ? `<main class="inner-page a5-editorial-pilot" data-theme="${themeKey}">
+          <section class="compare-showcase-hero" aria-label="Osservatorio Versilia">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Conoscere per costruire insieme</span>
+              <h1>La Versilia,<br><em>una comunità di dati.</em></h1>
+              <p>Dati pubblici per capire, confrontare e immaginare il futuro dei nostri territori.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori Demografia</span><span>Aggiornato ${html(data.updated)}</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
+          ${compareContextNav(data, themeKey)}
+          <section class="topic-hero page-width" data-theme="${themeKey}">
+            <div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
+            <div class="topic-hero-copy"><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div>
+            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || 'Confronta residenti, struttura per età e dinamiche demografiche nei sette Comuni della Versilia.')}</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
+            <aside class="topic-controls">
+              <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+              ${metricControls(data, themeKey, metricKey, true)}
+              <div id="compare-definition" class="topic-side-definition"></div>
+            </aside>
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars"></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width"></section>
+          ${brainDrainMarkup(data)}
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
+        </main>`
+      : `<main class="inner-page" data-theme="${themeKey}">
+          <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
+          ${compareContextNav(data, themeKey)}
+          <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
+            <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
+          <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width"></section>
+          ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
+          ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
+          <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
+        </main>`;
     const update = key => {
       metricKey = key;
       history.replaceState(history.state, '', `?indicatore=${encodeURIComponent(key)}`);
@@ -974,6 +1013,9 @@
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
+    const mobilityContextMetrics = new Set(['internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility']);
+    const brainDrain = document.querySelector('.brain-drain-context');
+    if (brainDrain) brainDrain.hidden = !(themeKey === 'demografia' && mobilityContextMetrics.has(metricKey));
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
@@ -1122,10 +1164,87 @@
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || (metric.meta.compositeType && compositeType !== 'sexBreakdown')) ? '' : benchmarkMarkup(benchmarkMetric,aggregate,unit,null);
     const currentMethod = compositeType === 'financialProfile' ? financialProfileMethodDisclosure(metric,view.choice) : methodDisclosure(metric);
     tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
-    tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
-    tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    const dataActions = tools.querySelector(':scope > .data-actions');
+    const chartHeading = document.querySelector('.compare-main-column > .compare-panel-heading');
+    chartHeading?.querySelector(':scope > .data-actions')?.remove();
+    if (dataActions && chartHeading) chartHeading.append(dataActions);
+    const actionHost = chartHeading || tools;
+    actionHost.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
+    actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+
+    const photoFiles = {
+      'Massarosa':'Massarosa.jpg',
+      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
+      'Camaiore':'Camaiore Countryside.jpg',
+      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
+      'Seravezza':'Seravezza-panorama.jpg',
+      'Forte dei Marmi':'Forte dei Marmi - Municipio.jpg',
+      'Stazzema':'Stazzema.JPG'
+    };
+    document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
+      const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
+      if (!name) return;
+      const town = data.towns.find(item => item.name === name);
+      const row = metric.rows.find(item => item.code === town?.code || item.town === name);
+      const copy = card.querySelector('.topic-town-card-copy');
+      const image = card.querySelector('.topic-town-card-media img');
+      const slug = normalize(name).replaceAll(' ','-');
+      card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
+      if (image && photoFiles[name]) {
+        const fallback = mediaSrc(data.crests[name]);
+        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        image.alt = name;
+        image.referrerPolicy = 'no-referrer';
+        image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
+      }
+      let value = row?.value;
+      let valueUnit = metric.meta.unit;
+      if (row && normalized && row.normalized) {
+        value = row.normalized.value;
+        valueUnit = row.normalized.unit;
+      } else if (row && selectableComposite) {
+        const selected = compositeCompareSelection(metric,row,view.choice,view.scale);
+        value = selected?.value;
+        valueUnit = selected?.unit || valueUnit;
+      } else if (row && compositeType === 'distribution' && row.summaryValue !== undefined) {
+        value = row.summaryValue;
+        valueUnit = metric.meta.summaryUnit || valueUnit;
+      }
+      copy?.querySelector('.town-current-value')?.remove();
+      if (copy && row) {
+        const detail = document.createElement('span');
+        detail.className = 'town-current-value';
+        detail.innerHTML = `<b>${html(formatMetricRowValue(row,value,valueUnit))}</b><small>${html(metric.meta.shortLabel || metric.meta.label)}</small>`;
+        copy.insertBefore(detail, copy.querySelector('small'));
+      }
+    });
+    const townGrid = document.querySelector('#compare-territori .topic-town-card-grid');
+    if (townGrid) {
+      [...townGrid.children]
+        .sort((a,b) => (a.querySelector('.topic-town-card-copy strong')?.textContent || '').localeCompare(
+          b.querySelector('.topic-town-card-copy strong')?.textContent || '', 'it'
+        ))
+        .forEach(card => townGrid.append(card));
+    }
+    window.dispatchEvent(new CustomEvent('ov:compare-rendered', { detail:{ themeKey, metricKey } }));
   }
 
+  function syncA5CompareChrome() {
+    if (document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'demografia') return;
+    const main = document.querySelector('main.a5-editorial-pilot');
+    const toolbar = main?.querySelector('#compare-bars > .ux-view-shell > .ux-view-toolbar');
+    if (!toolbar) return;
+    const copy = toolbar.querySelector('.ux-view-toolbar-copy');
+    if (copy && !copy.querySelector('.a5-toolbar-overline')) {
+      copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
+    }
+    const heading = main.querySelector('.compare-panel-heading');
+    const actions = heading?.querySelector(':scope > .data-actions') || toolbar.querySelector(':scope > .data-actions');
+    const toggle = toolbar.querySelector('.ux-view-toggle');
+    if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions,toggle || null);
+  }
+
+  window.addEventListener('ov:ux-history-enhanced', syncA5CompareChrome);
 
   function libraryHistoryTableMarkup(metric) {
     const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
