@@ -468,7 +468,14 @@
     }
     if (type === 'stock') {
       const count = choice === 'count';
-      return { value: count ? metric.aggregate?.count : metric.aggregate?.value, label: count ? 'Versilia · residenti stranieri' : 'Versilia · quota residenti stranieri' };
+      if (count) {
+        const values = (metric.rows || []).map(row => finite(row?.count)).filter(value => value !== null);
+        return {
+          value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+          label: `Media semplice dei ${values.length} comuni · residenti stranieri`
+        };
+      }
+      return { value: metric.aggregate?.value, label:'Versilia · quota residenti stranieri' };
     }
     if (type === 'omi') {
       const rent = choice === 'rent';
@@ -476,7 +483,14 @@
     }
     const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
     const part = metric.aggregate?.parts?.[index] || {};
-    return { value: scale === 'count' ? part.count : part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
+    if (scale === 'count') {
+      const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.count)).filter(value => value !== null);
+      return {
+        value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+        label:`Media semplice dei ${values.length} comuni · ${part.label || 'mobilità residenziale'}`
+      };
+    }
+    return { value: part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
   }
 
   function enhanceComparison(container) {
