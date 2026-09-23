@@ -1,0 +1,278 @@
+/*
+ * A5 Demografia — REVIEW LAYER
+ * EDITABILE: questo è l'unico file CSS da modificare durante il recovery.
+ * Baseline: 802ea5708a139ec60f7e62e991d1b3becb712386
+ *
+ * Regola: nessun selettore fuori da body.a5-demografia-recovery.
+ */
+
+body.a5-demografia-recovery {
+  --a5-review-accent: #b84b34;
+  --a5-review-accent-dark: #963925;
+  --a5-review-accent-soft: #fbefea;
+  --a5-review-reference: #72584b;
+  --a5-review-surface: #fffdfa;
+  --a5-review-border: #ded4c6;
+  --a5-review-gap: 10px;
+}
+
+/* 01 — Il titolo Demografia deve restare completamente libero. */
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-hero::after {
+  display: none !important;
+}
+
+/* 02 — Media Versilia: manteniamo il calcolo canonico, rendiamo visibile solo il marker. */
+body.a5-demografia-recovery main.a5-editorial-pilot .comparison-reference {
+  top: -6px;
+  bottom: -6px;
+  width: 2px;
+  z-index: 4;
+  background: var(--a5-review-reference);
+  opacity: .95;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .comparison-legend-reference {
+  width: 2px;
+  height: 14px;
+  border: 0;
+  background: var(--a5-review-reference);
+  opacity: .95;
+}
+
+/* 03 — Selettori compositi: stessa famiglia cromatica della tematica Demografia. */
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-chart-toolbar .compare-view-controls,
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-view-controls {
+  border-color: #e5c8bd;
+  background: var(--a5-review-accent-soft);
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-choice-select > span,
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-view-label {
+  color: #8b493a;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-choice-select select {
+  border-color: #d9b1a4;
+  background: #fffaf7;
+  color: var(--a5-review-accent-dark);
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-choice-select select:focus {
+  border-color: var(--a5-review-accent);
+}
+
+/* 04 — Accordion: ux-accordion.js resta l'unico owner.
+ * Nascondiamo il vecchio pseudo-chevron A5 e lasciamo un solo controllo canonico.
+ */
+body.a5-demografia-recovery main.a5-editorial-pilot .metric-group-heading::after {
+  content: none !important;
+  display: none !important;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons[hidden] {
+  display: none !important;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .metric-group[data-ux-accordion="true"].is-open > .metric-group-buttons:not([hidden]) {
+  display: grid !important;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .metric-group .ux-section-tools {
+  right: 8px;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .metric-group .ux-section-chevron {
+  width: 22px;
+  height: 22px;
+  border-color: #d3c6b7;
+  background: #fffaf3;
+  color: #6f7d82;
+}
+
+/* 05 — Definizione sotto i gruppi: riempie la colonna sinistra senza creare area morta. */
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-controls > #compare-definition {
+  margin-top: 10px;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-controls > #compare-definition .indicator-definition {
+  margin: 0;
+  border-radius: 9px;
+  background: #fffaf3;
+  padding: 12px;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-controls > #compare-definition .indicator-definition h2 {
+  font-size: 15px;
+}
+
+/* 06 — Area grafico: un solo componente, senza effetto collage.
+ * NON alteriamo la grammatica del grafico o le sue dimensioni interne.
+ */
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-summary-strip {
+  display: none !important;
+}
+
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-main-column {
+  overflow: hidden;
+  border: 1px solid var(--a5-review-border);
+  border-radius: 11px;
+  background: var(--a5-review-surface);
+  box-shadow: 0 8px 26px rgba(15,53,80,.065);
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #eee6da;
+  border-radius: 0;
+  background: var(--a5-review-surface);
+  box-shadow: none;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars,
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-bars > .ux-view-shell,
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="current"] > .topic-bars {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--a5-review-surface);
+  box-shadow: none;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+  margin: 0;
+  padding-inline: 14px;
+  background: var(--a5-review-surface);
+}
+
+/* 07 — Export: rimangono nel grafico e mantengono icone foglio / PDF. */
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading > .data-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading > .data-actions a,
+body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading > .data-actions button {
+  min-height: 31px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--a5-review-border);
+  border-radius: 7px;
+  background: #fbf7f0;
+  color: #0f3550;
+  padding: 5px 8px;
+  font-size: 7px;
+  font-weight: 760;
+  white-space: nowrap;
+}
+body.a5-demografia-recovery .a5-export-icon {
+  width: 19px;
+  height: 19px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 19px;
+}
+body.a5-demografia-recovery .a5-export-icon svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+}
+
+/* 08 — Metodo + Scala: secondari, compatti, senza rubare mezza pagina. */
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools.a5-has-reading-scale {
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools > .method-disclosure,
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools > .reading-scale {
+  min-height: 58px;
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid var(--a5-review-border);
+  border-radius: 9px;
+  background: var(--a5-review-surface);
+  box-shadow: none;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools > .method-disclosure > summary {
+  min-height: 58px;
+  box-sizing: border-box;
+  padding: 9px 12px;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools > .method-disclosure[open] {
+  grid-column: 1 / -1;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools > .reading-scale {
+  grid-template-columns: 105px minmax(0,1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 9px 12px;
+  border-left: 3px solid #b57a57;
+}
+
+/* 09 — Schede comunali: ordine gestito dal JS, qui fissiamo geometria e spaziatura. */
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-grid {
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: var(--a5-review-gap);
+  align-items: stretch;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card {
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  box-sizing: border-box;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-media {
+  height: 78px;
+  display: block;
+  overflow: hidden;
+  background: #eee7dd;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: none;
+}
+body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-copy {
+  min-height: 62px;
+  gap: 2px;
+}
+body.a5-demografia-recovery .a5-town-current-value {
+  display: grid;
+  gap: 1px;
+  margin-top: 2px;
+}
+body.a5-demografia-recovery .a5-town-current-value b {
+  color: #0f3550;
+  font-family: var(--font-geist-mono),"Geist Mono",monospace;
+  font-size: 8px;
+  font-weight: 780;
+}
+body.a5-demografia-recovery .a5-town-current-value small {
+  color: #7d878a;
+  font-size: 6px;
+  line-height: 1.2;
+}
+
+@media (max-width: 1000px) {
+  body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns: repeat(4,minmax(0,1fr));
+  }
+  body.a5-demografia-recovery main.a5-editorial-pilot .compare-panel-heading {
+    align-items: flex-start;
+  }
+}
+@media (max-width: 720px) {
+  body.a5-demografia-recovery main.a5-editorial-pilot #compare-tools.compare-post-benchmark-tools.a5-has-reading-scale {
+    grid-template-columns: 1fr;
+  }
+  body.a5-demografia-recovery main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}

@@ -231,5 +231,24 @@
     document.head.appendChild(climateScript);
   }
 
+  function loadA5DemografiaRecovery() {
+    if (document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'demografia') return;
+    if (document.querySelector('link[data-a5-demografia-review]')) return;
+
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = new URL('./a5-demografia-review.css?v=recovery-1', SCRIPT_URL).href;
+    stylesheet.dataset.a5DemografiaReview = '1';
+    document.head.appendChild(stylesheet);
+
+    const script = document.createElement('script');
+    script.src = new URL('./a5-demografia-review.js?v=recovery-1', SCRIPT_URL).href;
+    script.async = false;
+    script.dataset.a5DemografiaReview = '1';
+    document.head.appendChild(script);
+  }
+
+  loadA5DemografiaRecovery();
+
   loadClimateV3WhenReady();
 })();

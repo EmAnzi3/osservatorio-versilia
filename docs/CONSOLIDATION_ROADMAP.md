@@ -175,6 +175,8 @@ Scopo: migliorare gerarchia e leggibilità riducendo la predominanza del beige s
 - [x] **A5.2** Definire ruoli cromatici: canvas neutro, superfici analitiche chiare, colore tematico usato come informazione.
 - [x] **A5.3** Definire token comuni per background, card, bordi, testo, stati e temi.
 - [ ] **A5.4** Applicare il nuovo sistema a una pagina pilota e verificarlo desktop/mobile.
+
+Nota A5.4 — pilot in corso: `confronta/demografia/` applica il vocabolario DS2 in modo isolato, rimappando localmente canvas, superfici, testo, bordi e tema senza modificare dati, testi, ordine, tooltip o interazioni. Il pilot introduce inoltre token `--ds-theme-*` completi per 11/11 temi, inclusi `sicurezza` e `bilanci`, ma fuori dalla pagina pilota tali token non vengono ancora consumati. La PR deve restare Draft fino a verifica visiva desktop/mobile e approvazione esplicita delle nuove baseline A4.
 - [ ] **A5.5** Estendere progressivamente senza modifiche massive non verificabili.
 
 Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e definisce la fondazione DS2 senza modificare la UI. La baseline CSS contiene 246 colori HEX distinti; `--paper` e `--surface` hanno contrasto 1,11:1; `--muted` su `--paper` è 4,37:1; 177/288 dichiarazioni `font-size` in px sono <= 11 px. L'audit rileva inoltre due sistemi tematici sovrapposti e copertura cromatica esplicita per 9 temi su 11. A5.2 separa canvas, superfici, testo, bordi, stati e tema; A5.3 converge `--theme-color` / `--theme-accent` in un solo vocabolario DS2. La prima modifica visuale è A5.4 e deve restare Draft fino ad approvazione desktop/mobile.
