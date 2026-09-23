@@ -2497,9 +2497,9 @@ main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong::before
 }
 
 
-/* Modifica 04 — solo switch UNITÀ della mobilità residenziale:
-   allineamento visivo ai controlli Demografia A5, senza toccare VOCE o altri componenti. */
-main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch {
+/* Modifica 05 — coerenza di tutti gli switch di lettura/unità nel grafico Demografia:
+   stesso linguaggio visivo già approvato per Mobilità residenziale interna. */
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch {
   border: 1px solid #d9b1a4;
   border-radius: 10px;
   background: #fffaf7;
@@ -2507,7 +2507,7 @@ main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-sw
   box-shadow: none;
 }
 
-main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button {
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button {
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -2515,12 +2515,12 @@ main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-sw
   box-shadow: none;
 }
 
-main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button:hover:not(.active) {
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button:hover:not(.active) {
   background: #fbefea;
   color: var(--ds-demografia-dark);
 }
 
-main.a5-editorial-pilot .compare-chart-toolbar .mobility-view-controls .scale-switch button.active {
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
   background: var(--ds-demografia);
   color: #fff;
   box-shadow: none;
