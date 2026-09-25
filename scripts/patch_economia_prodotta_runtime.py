@@ -161,6 +161,23 @@ def replace_once_in_function(source: str, function_name: str, old: str, new: str
         raise RuntimeError(f"{label}: attesa 1 occorrenza nel corpo di {function_name}, trovate {count}")
     return source[:start] + block.replace(old, new, 1) + source[end:]
 
+def insert_after_function_header(source: str, function_name: str, code: str, label: str) -> str:
+    marker = f"  function {function_name}("
+    start = source.find(marker)
+    if start < 0:
+        raise RuntimeError(f"{label}: funzione {function_name} non trovata")
+    line_end = source.find("\n", start)
+    if line_end < 0:
+        raise RuntimeError(f"{label}: intestazione di {function_name} non terminata")
+    block_end = source.find("\n  function ", line_end + 1)
+    if block_end < 0:
+        block_end = len(source)
+    block = source[start:block_end]
+    if code.strip() in block:
+        return source
+    return source[:line_end + 1] + code + source[line_end + 1:]
+
+
 def patch_runtime_helpers() -> None:
     source = RUNTIME_TARGET.read_text(encoding="utf-8")
     if MARKER in source:
@@ -245,11 +262,10 @@ def patch_visual_grammar() -> None:
 def patch_compare_and_town() -> None:
     source = COMPARE_TARGET.read_text(encoding="utf-8")
 
-    source = replace_once_in_function(
+    source = insert_after_function_header(
         source,
         "renderCompareMetric",
-        "    const metric = data.metrics[metricKey];",
-        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
+        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const economicScope = economicContext.scope;\n",
         "scope locale nel confronto",
     )
     source = replace_once(
@@ -304,10 +320,10 @@ def patch_compare_and_town() -> None:
         "persistenza query nel confronto",
     )
 
-    source = replace_once(
+    source = insert_after_function_header(
         source,
-        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const metric = data.metrics[metricKey];\n    const row = metric.rows.find(r => r.code === town.code);",
-        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;\n    const row = metric.rows.find(r => r.code === town.code);",
+        "renderTownMetric",
+        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const economicScope = economicContext.scope;\n",
         "scope locale nella scheda comunale",
     )
     source = replace_once(
