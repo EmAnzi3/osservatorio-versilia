@@ -54,6 +54,18 @@
     });
   }
 
+  function a5MetricSidebarMarkup(data, themeKey, metricKey, options = {}) {
+    const theme = data.themes[themeKey];
+    const definitionId = options.definitionId || '';
+    const definitionClass = options.definitionClass || '';
+    const definitionMarkup = definitionId ? `<div id="${html(definitionId)}" class="${html(definitionClass)}"></div>` : '';
+    return `<aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      ${metricControls(data, themeKey, metricKey, true)}
+      ${definitionMarkup}
+    </aside>`;
+  }
+
   function isA5CompareTheme(themeKey) {
     return themeKey === 'demografia';
   }
@@ -82,11 +94,7 @@
             <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || 'Confronta residenti, struttura per età e dinamiche demografiche nei sette Comuni della Versilia.')}</p></div>
           </section>
           <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
-            <aside class="topic-controls">
-              <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
-              ${metricControls(data, themeKey, metricKey, true)}
-              <div id="compare-definition" class="topic-side-definition"></div>
-            </aside>
+            ${a5MetricSidebarMarkup(data, themeKey, metricKey, { definitionId:'compare-definition', definitionClass:'topic-side-definition' })}
             <div class="compare-main-column">
               <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
               <div id="compare-bars"></div>

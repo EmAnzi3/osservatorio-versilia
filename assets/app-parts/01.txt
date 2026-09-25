@@ -37,6 +37,14 @@
     }).join('');
   }
 
+  function a5ComparisonTopicMarkup(data, metricKey, options = {}) {
+    return `<div class="topic-bars"><div class="comparison-bars">${barRows(data, metricKey, options)}</div></div>`;
+  }
+
+  window.OVSharedRenderers = Object.assign(window.OVSharedRenderers || {}, {
+    comparisonTopicMarkup: a5ComparisonTopicMarkup
+  });
+
   function installTablist(root, onSelect) {
     if (!root) return;
     const tabs = [...root.querySelectorAll('[role="tab"]')];
