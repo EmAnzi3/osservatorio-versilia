@@ -348,6 +348,44 @@ def main() -> int:
                             errors.append(f"{post_id}: card confronto non contiene {row['town']} = {expected_text}")
                         rendered_checks += 1
 
+            slide_metrics = provenance.get("slide_metrics") or {}
+            history_metric_key = slide_metrics.get("2")
+            if dataset_path == "data/site-data.json" and history_metric_key and history_metric_key != metric_key and len(cards) >= 2:
+                history_metric = site_metric(site, str(history_metric_key))
+                history_by_town = provenance.get("history_by_town") or {}
+                history_svg = post_dir / "cards" / f"{cards[1]['filename']}.svg"
+                history_text = visible_text(history_svg) if history_svg.exists() else ""
+                for town in canonical_site_values(history_metric):
+                    canonical_series = canonical_site_series(history_metric, town)
+                    actual_series = history_by_town.get(town) or {}
+                    if set(map(int, actual_series)) != set(canonical_series):
+                        errors.append(f"{post_id}: anni del dato affine storico non coerenti per {town}")
+                        continue
+                    for year, expected in canonical_series.items():
+                        check_numeric(errors, f"{post_id}: storico affine {history_metric_key} {town} {year}", actual_series[str(year)], expected)
+                        numeric_checks += 1
+                    for expected in (canonical_series[min(canonical_series)], canonical_series[max(canonical_series)]):
+                        expected_text = fmt_value(expected, str(history_metric.get("meta", {}).get("unit")))
+                        if town not in history_text or expected_text not in history_text:
+                            errors.append(f"{post_id}: card storico affine non contiene {town} = {expected_text}")
+                        rendered_checks += 1
+
+            context_metric_key = slide_metrics.get("3")
+            if dataset_path == "data/site-data.json" and context_metric_key and context_metric_key != metric_key and len(cards) >= 3:
+                context_metric = site_metric(site, str(context_metric_key))
+                canonical_context = canonical_site_values(context_metric)
+                actual_context = (provenance.get("companion_values") or {}).get(str(context_metric_key)) or {}
+                context_svg = post_dir / "cards" / f"{cards[2]['filename']}.svg"
+                context_text = visible_text(context_svg) if context_svg.exists() else ""
+                context_unit = str(context_metric.get("meta", {}).get("unit"))
+                for town, expected in canonical_context.items():
+                    check_numeric(errors, f"{post_id}: dato affine {context_metric_key} {town}", actual_context.get(town), expected)
+                    numeric_checks += 1
+                    expected_text = fmt_value(expected, context_unit)
+                    if town not in context_text or expected_text not in context_text:
+                        errors.append(f"{post_id}: card dato affine non contiene {town} = {expected_text}")
+                    rendered_checks += 1
+
         post_reports.append({
             "post_id": post_id,
             "metric": metric_key,

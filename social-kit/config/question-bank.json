@@ -13,6 +13,10 @@
     "lifeExpectancy": {
       "data": "Quale differenza tra Comuni vorresti approfondire con altri dati?",
       "context": "Quale informazione affiancheresti alla speranza di vita per leggere meglio il territorio?"
+    },
+    "tourismArrivals": {
+      "data": "Nel tuo Comune, il turismo ti sembra concentrato in pochi mesi o distribuito durante l’anno?",
+      "context": "Che cosa cambia nel territorio tra alta e bassa stagione?"
     }
   },
   "themes": {

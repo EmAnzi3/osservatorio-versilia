@@ -29,6 +29,7 @@
     "rt-emergenza-abitativa-2026": {"category":"abitare","description":"Manifestazione di interesse per reperire, recuperare o acquisire immobili destinati a emergenza abitativa, ERP o residenza sociale.","conditionLabel":"Richiede patrimonio o progetto ammissibile"},
     "rt-sistema-integrato-0-6-2026": {"category":"istruzione","description":"Contributi ai Comuni per percorsi formativi e coordinamento della qualità del sistema educativo integrato 0-6 anni.","conditionLabel":"Partecipazione tramite Conferenza zonale"},
     "st-mercati-rionali-2026": {"category":"commercio","description":"Contributi fino all'80% per riqualificare, ammodernare e rendere più sostenibili i mercati rionali dei Comuni toscani.","conditionLabel":"Richiede mercato rionale ammissibile"},
+    "rt-microzonazione-sismica-2026": {"category":"sicurezza","description":"Finanzia studi comunali di microzonazione sismica di livello 2 o 3 e analisi delle condizioni limite per l'emergenza.","conditionLabel":"Verificare allegato 7, livello degli studi e cofinanziamento"},
     "mic-jazz-2027": {"category":"cultura","description":"Contributi fino a 35.000 euro per progetti innovativi di promozione e valorizzazione della musica jazz.","conditionLabel":"Richiede accordi di collaborazione"},
     "mi-videosorveglianza-2026": {"category":"sicurezza","description":"Finanziamenti statali per realizzare o potenziare sistemi comunali di videosorveglianza urbana.","conditionLabel":"Richiede requisiti del Patto per la sicurezza"}
   }

@@ -347,11 +347,29 @@ def _annotate_first_seen(
         if _identity(item) not in {"id:", "url:", "coverage:"}
     }
     new_items: list[dict[str, Any]] = []
+    lifecycle_updates: list[dict[str, Any]] = []
 
     for item in result.get("opportunities") or []:
         key = _identity(item)
         old = previous_by_key.get(key)
         if old is not None:
+            changes = []
+            for field in ("deadline_at", "status"):
+                before = old.get(field)
+                after = item.get(field)
+                if before not in {None, ""} and after not in {None, ""} and before != after:
+                    changes.append({"field": field, "before": before, "after": after})
+            if changes:
+                source_updated = radar.radar.base.parse_date(item.get("source_updated_at"))
+                update_lag = (today - source_updated).days if source_updated else None
+                lifecycle_updates.append({
+                    "identity": key,
+                    "title": item.get("title"),
+                    "detected_at": today.isoformat(),
+                    "source_updated_at": source_updated.isoformat() if source_updated else None,
+                    "update_lag_days": update_lag,
+                    "changes": changes,
+                })
             old_first = str(old.get("first_seen_at") or "").strip()
             if old_first:
                 item["first_seen_at"] = old_first
@@ -369,9 +387,21 @@ def _annotate_first_seen(
         new_items.append(item)
 
     result["newOpportunityWindowDays"] = radar.NEW_WINDOW_DAYS
+    result["lifecycleUpdates"] = lifecycle_updates
     result.setdefault("counts", {})["new"] = sum(
         bool(item.get("is_new")) for item in result.get("opportunities") or []
     )
+    result.setdefault("counts", {})["lifecycleUpdates"] = len(lifecycle_updates)
+    measured_lags = [
+        int(row["update_lag_days"])
+        for row in lifecycle_updates
+        if isinstance(row.get("update_lag_days"), int)
+    ]
+    result["lifecycleUpdateMetrics"] = {
+        "changedRecords": len(lifecycle_updates),
+        "measuredRecords": len(measured_lags),
+        "maxUpdateLagDays": max(measured_lags) if measured_lags else None,
+    }
     return new_items
 
 
@@ -410,6 +440,12 @@ def _render_report(result: dict[str, Any], new_items: list[dict[str, Any]]) -> s
             f"{regional.get('municipalCandidates', 0)} candidati comunali recenti controllati · "
             f"{regional.get('safetyNetAdded', 0)} aggiunti alla discovery · "
             f"{len(regional.get('overdue') or [])} oltre la finestra di revisione."
+        ),
+        (
+            "Lifecycle: "
+            f"**{(result.get('lifecycleUpdateMetrics') or {}).get('changedRecords', 0)}** variazioni rilevate · "
+            f"update lag massimo misurabile "
+            f"**{(result.get('lifecycleUpdateMetrics') or {}).get('maxUpdateLagDays', 'n.d.')} giorni**."
         ),
         "",
         "## Nuove opportunità pubblicabili",

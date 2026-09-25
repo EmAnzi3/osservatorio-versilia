@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 
 from opportunity_daily_refresh import (
+    _annotate_first_seen,
     _reconcile_final_continuity,
     _restore_recent_verified_continuity,
     _write_continuity_diagnostic,
@@ -170,9 +171,35 @@ def main() -> int:
     assert _restore_recent_verified_continuity(stale, previous_stale, date(2026, 8, 28)) == []
     assert len(stale["continuityHold"]) == 1
 
+    # Le variazioni di scadenza devono essere contabilizzate separatamente
+    # dal discovery, con update lag quando la fonte espone la data dell'atto.
+    lifecycle_previous = {
+        "opportunities": [{
+            "url": "https://example.test/mercati",
+            "title": "Avviso Mercati Rionali",
+            "deadline_at": "2026-09-15",
+            "status": "open",
+        }]
+    }
+    lifecycle_current = {
+        "opportunities": [{
+            "url": "https://example.test/mercati",
+            "title": "Avviso Mercati Rionali",
+            "deadline_at": "2026-10-15",
+            "status": "open",
+            "source_updated_at": "2026-09-11",
+        }],
+        "counts": {},
+    }
+    _annotate_first_seen(lifecycle_current, lifecycle_previous, date(2026, 9, 21))
+    assert lifecycle_current["counts"]["lifecycleUpdates"] == 1
+    assert lifecycle_current["lifecycleUpdates"][0]["update_lag_days"] == 10
+    assert lifecycle_current["lifecycleUpdateMetrics"]["maxUpdateLagDays"] == 10
+
     print("Riconciliazione finale continuità Radar: PASS")
     print("Diagnostica continuity hold Radar: PASS")
     print("Fallback continuità verificata: PASS")
+    print("Telemetria lifecycle update lag: PASS")
     return 0
 
 

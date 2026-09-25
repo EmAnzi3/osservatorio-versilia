@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import unittest
+import json
+from datetime import date
 import opportunity_radar_v03 as radar
 import run_opportunity_radar_v03  # noqa: F401 - attiva gli shim del runtime live
 
@@ -31,10 +33,12 @@ class RadarV03Test(unittest.TestCase):
     def test_recovered_municipal_rules_are_documented(self):
         rules,_,_=radar.load_rules()
         cases=(
-            ('sviluppo-toscana','Avviso Mercati Rionali','st-mercati-rionali-2026','2026-09-15'),
+            ('sviluppo-toscana','Avviso Mercati Rionali','st-mercati-rionali-2026','2026-10-15'),
             ('mic-spettacolo','Bando per la PROMOZIONE DELLA MUSICA JAZZ / 2027 – Avviso pubblico e apertura dei termini di presentazione delle domande','mic-jazz-2027','2026-09-10'),
             ('ministero-interno-prefetture','Videosorveglianza - D.M. 2026','mi-videosorveglianza-2026','2026-08-24'),
             ('regione-toscana','Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni','rt-nidi-gratis-comuni-reopening-2026-2027','2026-10-06'),
+            ('regione-toscana','Finanziamenti per studi di Microzonazione Sismica di livello 2 e 3','rt-microzonazione-sismica-2026','2026-10-17'),
+            ('regione-toscana','Studi di microzonazione sismica e analisi delle Condizioni limite per l’emergenza: avviso ai Comuni','rt-microzonazione-sismica-2026','2026-10-17'),
         )
         for source,title,rule_id,deadline in cases:
             with self.subTest(rule=rule_id):
@@ -45,6 +49,76 @@ class RadarV03Test(unittest.TestCase):
                 self.assertEqual(rule['municipality_role'],'direct_applicant')
                 self.assertEqual(rule['deadline_override'],deadline)
                 self.assertTrue(rule['evidence_url'].startswith('https://'))
+
+    def test_mercati_rionali_has_live_detail_fallback(self):
+        payload=json.loads(run_opportunity_radar_v03._VERIFIED.read_text(encoding='utf-8'))
+        entry=next(x for x in payload['entries'] if x['rule_id']=='st-mercati-rionali-2026')
+        self.assertEqual(entry['deadline_at'],'2026-10-15')
+        self.assertTrue(entry['canonical'])
+        self.assertIn('15 Ottobre 2026',entry['required_terms'])
+        self.assertIn('Comuni della Regione Toscana',entry['required_terms'])
+
+        result={
+            'municipalities':['Camaiore'],
+            'sources':[{'sourceId':'sviluppo-toscana','status':'ok','freshness':{'status':'current'}}],
+            'opportunities':[],
+            'qualityHold':[],
+            'counts':{},
+        }
+        run_opportunity_radar_v03.post.inject_verified_details(
+            radar,
+            result,
+            radar.DEFAULT_CONFIG,
+            date(2026,9,21),
+            radar.DEFAULT_PRESENTATION,
+            run_opportunity_radar_v03._VERIFIED,
+            detail_payloads={
+                entry['url']:(
+                    '<p>Possono presentare domanda i Comuni della Regione Toscana. '
+                    'Scadenza prorogata alle ore 12:00 del 15 Ottobre 2026. '
+                    'Contributo fino all 80%.</p>'
+                )
+            },
+            live=False,
+        )
+        item=next(x for x in result['opportunities'] if x['rule_id']=='st-mercati-rionali-2026')
+        self.assertEqual(item['deadline_at'],'2026-10-15')
+        self.assertEqual(item['deadline_time'],'12:00')
+        self.assertEqual(item['quality_gate']['status'],'pass')
+
+    def test_fami_language_courses_are_documented_non_municipal(self):
+        rules,_,_=radar.load_rules()
+        rule=radar.v021.matching_rule({
+            'source_id':'regione-toscana',
+            'title':'Erogazione di corsi di lingua e cultura italiana per cittadini di Paesi terzi: bando rivolto agli Enti del terzo settore',
+        },rules)
+        self.assertIsNotNone(rule)
+        self.assertEqual(rule['id'],'rt-fami-corsi-ets-2026')
+        self.assertEqual(rule['municipality_role'],'none')
+        self.assertFalse(rule['actionable'])
+
+    def test_deadline_parser_prefers_operational_extension(self):
+        text=(
+            'Data di pubblicazione bando su Burt: 25.06.2026. '
+            'Data di scadenza presentazione domande: 15.09.2026 12:00. '
+            'Scadenza del bando prorogata fino alle ore 12 del 15 ottobre 2026. '
+            'La domanda può essere presentata fino alle ore 12:00 del 15 ottobre 2026 '
+            '(scadenza iniziale 15 settembre 2026).'
+        )
+        _opens,deadline,published=radar.base.dates(text)
+        self.assertEqual(deadline,'2026-10-15')
+        self.assertEqual(published,'2026-06-25')
+
+    def test_microzonazione_uses_recent_burt_and_operational_deadline(self):
+        text=(
+            'Pubblicato il 04.02.2026. Pubblicato su BURT il 16.09.2026. '
+            'Data di scadenza presentazione domande: 07.10.2026 12:00. '
+            'Le Amministrazioni comunali possono presentare la manifestazione di interesse '
+            'fino alle ore 12:00 di sabato 17 ottobre 2026.'
+        )
+        _opens,deadline,published=radar.base.dates(text)
+        self.assertEqual(deadline,'2026-10-17')
+        self.assertEqual(published,'2026-09-16')
 
     def test_nidi_gratis_comuni_is_distinct_from_family_measure(self):
         rules,_,_=radar.load_rules()
