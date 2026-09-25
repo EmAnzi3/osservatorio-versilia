@@ -2210,21 +2210,21 @@ main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars {
   border-radius:0 0 11px 11px;
   padding-top:10px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-shell {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-shell {
   gap:10px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
   align-items:center;
   gap:16px;
   padding:0 0 9px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy strong {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy strong {
   font-size:12px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy span {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy span {
   font-size:8px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-note {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-note {
   margin:-4px 0 0;
   font-size:8px;
 }
@@ -2318,11 +2318,11 @@ main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] .ux-section-chev
 }
 
 /* Never expose the transient raw bar chart while runtime enhancers are rebuilding it. */
-main.a5-editorial-pilot #compare-bars > .topic-bars {
+main.a5-editorial-pilot .a5-shared-chart > .topic-bars {
   min-height:350px;
   visibility:hidden;
 }
-main.a5-editorial-pilot #compare-bars > .ux-view-shell {
+main.a5-editorial-pilot .a5-shared-chart > .ux-view-shell {
   visibility:visible;
 }
 
@@ -2337,11 +2337,11 @@ main.a5-editorial-pilot .compare-main-column {
 main.a5-editorial-pilot .compare-panel-heading {
   display:none !important;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-shell {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-shell {
   gap:0;
   background:#fffdfa;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
   display:grid;
   grid-template-columns:minmax(0,1fr) auto auto;
   gap:10px;
@@ -2351,10 +2351,10 @@ main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
   border-bottom:1px solid #eee6da;
   background:#fffdfa;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy {
   min-width:0;
 }
-main.a5-editorial-pilot #compare-bars .a5-toolbar-overline {
+main.a5-editorial-pilot .a5-shared-chart .a5-toolbar-overline {
   display:block;
   margin-bottom:2px;
   color:#8d786b;
@@ -2364,36 +2364,36 @@ main.a5-editorial-pilot #compare-bars .a5-toolbar-overline {
   letter-spacing:.08em;
   text-transform:uppercase;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy strong {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy strong {
   display:block;
   color:var(--ds-ink);
   font-size:12px;
   line-height:1.2;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar-copy span {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy span {
   display:block;
   margin-top:2px;
   color:#748086;
   font-size:7.5px;
   line-height:1.35;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
   display:flex;
   align-items:center;
   justify-content:flex-end;
   gap:5px;
   margin:0;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions a,
-main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions button {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions a,
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions button {
   min-height:28px;
   padding:5px 7px;
   font-size:6.5px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-toggle {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toggle {
   flex:0 0 auto;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-note {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-note {
   margin:0;
   padding:7px 14px 9px;
   border-bottom:1px solid #eee6da;
@@ -2401,7 +2401,7 @@ main.a5-editorial-pilot #compare-bars .ux-view-note {
   color:#7b8587;
   font-size:7.5px;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="current"] > .topic-bars {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-pane[data-view-pane="current"] > .topic-bars {
   margin:0;
   border:0;
   border-radius:0;
@@ -2409,7 +2409,7 @@ main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="current"] > 
   padding:12px 14px 14px;
   box-shadow:none;
 }
-main.a5-editorial-pilot #compare-bars .ux-view-pane[data-view-pane="history"] {
+main.a5-editorial-pilot .a5-shared-chart .ux-view-pane[data-view-pane="history"] {
   padding:12px 14px 14px;
 }
 
@@ -2437,26 +2437,26 @@ main.a5-editorial-pilot .topic-town-card-copy {
 }
 
 @media (max-width:1100px) {
-  main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
     grid-template-columns:minmax(0,1fr) auto;
   }
-  main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
     grid-column:1 / -1;
     justify-content:flex-start;
     order:3;
   }
 }
 @media (max-width:720px) {
-  main.a5-editorial-pilot #compare-bars .ux-view-toolbar {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
     grid-template-columns:1fr;
   }
-  main.a5-editorial-pilot #compare-bars .ux-view-toolbar > .data-actions {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
     grid-column:auto;
     order:2;
     overflow-x:auto;
     justify-content:flex-start;
   }
-  main.a5-editorial-pilot #compare-bars .ux-view-toggle {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toggle {
     order:3;
     justify-self:start;
   }
@@ -2471,7 +2471,7 @@ main.a5-editorial-pilot .topic-town-card-copy {
 
 
 /* A5 controlled: hide only the transient raw Demografia bars before visual-grammar turns them into the lollipop. */
-body[data-page="compare"][data-theme="demografia"] main.a5-editorial-pilot #compare-bars .comparison-bars:not([data-viz]) {
+body[data-page="compare"][data-theme="demografia"] main.a5-editorial-pilot .a5-shared-chart .comparison-bars:not([data-viz]) {
   visibility:hidden;
 }
 
@@ -2527,4 +2527,90 @@ main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
   background: var(--ds-demografia);
   color: #fff;
   box-shadow: none;
+}
+
+/* A5.4 — Viareggio golden-master pilot.
+   The analytical workspace reuses the same A5 sidebar/chart classes as the thematic page.
+   Scope is deliberately limited to Viareggio + Demografia until the golden masters match. */
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot {
+  width:min(1320px,calc(100% - 54px));
+}
+main.a5-town-pilot .town-topic.a5-town-topic {
+  display:grid;
+  grid-template-columns:236px minmax(0,1fr);
+  gap:10px 12px;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+main.a5-town-pilot .town-topic.a5-town-topic::before { display:none; }
+main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading {
+  grid-column:1 / -1;
+  margin:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls {
+  grid-column:1;
+  grid-row:2 / span 2;
+  align-self:start;
+  min-width:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout {
+  grid-column:2;
+  grid-row:2;
+  margin:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+  grid-column:2;
+  grid-row:3;
+  min-width:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title { display:none; }
+main.a5-town-pilot .town-metric-primary,
+main.a5-town-pilot .versilia-position {
+  border:1px solid var(--ds-border);
+  border-top:3px solid var(--theme-accent);
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected {
+  border-radius:10px;
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong {
+  color:var(--theme-accent);
+  font-weight:800;
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  background:var(--theme-accent);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  border-color:var(--theme-soft);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
+main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+main.a5-town-pilot .town-topic.a5-town-topic > .detail-disclosure,
+main.a5-town-pilot .town-topic.a5-town-topic > [data-financial-profile-method] {
+  grid-column:1 / -1;
+}
+@media (max-width:900px) {
+  main.a5-town-pilot .town-topic.a5-town-topic { grid-template-columns:1fr; }
+  main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+    grid-column:1;
+    grid-row:auto;
+  }
 }
