@@ -77,13 +77,20 @@ def main() -> None:
         # A5 town golden contract: municipal chrome must reuse the thematic components.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=population'), wait_until='networkidle')
         compare_theme_styles = page.locator('.compare-context-nav .context-nav-links a').evaluate_all(
-            '''links => links.map(link => ({
-              key: link.dataset.contextTheme,
-              bg: getComputedStyle(link).backgroundColor,
-              border: getComputedStyle(link).borderColor,
-              color: getComputedStyle(link).color,
-              radius: getComputedStyle(link).borderRadius,
-            }))'''
+            '''links => links.map(link => {
+              const s = getComputedStyle(link);
+              const r = link.getBoundingClientRect();
+              return {
+                key: link.dataset.contextTheme,
+                bg: s.backgroundColor,
+                border: s.borderColor,
+                color: s.color,
+                radius: s.borderRadius,
+                padding: s.padding,
+                fontSize: s.fontSize,
+                height: Math.round(r.height * 10) / 10,
+              };
+            })'''
         )
         require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
 
@@ -232,8 +239,7 @@ def main() -> None:
                         f'{metric_key}: griglia Metodo/Scala cambia rispetto a population')
             return geometry
 
-        # Preserve the thematic golden-master computed navigation as the municipal reference.
-        page.evaluate('(styles) => { window.__a5CompareThemeStyles = styles; }', compare_theme_styles)
+        # The thematic golden-master computed navigation is the municipal reference.
 
         a5_demography_matrix = [
             'population',
