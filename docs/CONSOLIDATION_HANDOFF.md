@@ -6,75 +6,40 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
-- **Step attivo:** A5.4 — pagina pilota
-- **Stato:** IN_PROGRESS — pilot visuale implementato, in attesa di CI e verifica manuale desktop/mobile
-- **Main verificato:** `b99a19a55ab34fd842f7fa20f417c407097e92c5` (merge #272)
-- **A4:** DONE
-- **A5.1–A5.3:** mergiati
-- **Pagina pilota:** `confronta/demografia/`
-- **Branch corrente:** `feat/a5-design-system-pilot`
-- **PR corrente:** #273 — `A5: pilot Design System 2.0 on Demografia` — Draft
-- **Modifiche visive al prodotto:** sì, limitate alla pagina confronto Demografia
+- **Step attivo:** A5.4 — consolidamento dei golden master prima di A5.5
+- **Stato:** IN_PROGRESS
+- **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
+- **Branch:** `feat/a5-controlled-iteration`
+- **PR:** #280 — Draft
+- **Riconciliazione:** commit `edb17ea5d44a38ad21d2eb6cf330a3420a0b69d1`; branch 0 commit dietro `main`
+- **A0–A4:** DONE
+- **A5.1–A5.3:** DONE
+- **A5.4:** IN_PROGRESS
+- **A5.5:** NOT_STARTED
 
-## A5.4 — pilot DS2
+## Golden master congelati
 
-Il pilot applica in modo isolato i ruoli definiti in A5.2–A5.3:
-- canvas neutro;
-- surface primaria bianca;
-- surface secondaria chiara;
-- testo primary/secondary/tertiary con contrasto maggiore;
-- bordi ed elevazione semplificati;
-- accento tematico Demografia coerente;
-- tab, metadati, note e controlli con dimensioni minime più leggibili.
+I due contratti approvati sono documentati in `docs/A5_GOLDEN_MASTERS.md`.
 
-Il CSS introduce anche token `--ds-theme-*` per tutti gli 11 temi. Fuori dal pilot questi token non vengono ancora consumati e non producono modifiche visive.
+1. **Pagina tematica:** `/confronta/demografia/?indicatore=population` sulla PR #280.
+2. **Scheda comunale:** Viareggio Draft 19, SHA-256 `d17c486cd5d24dd181b80884282c8017e92a4189e5804412605072ab23c75875`.
 
-## Vincoli
+Il Draft 19 è un riferimento visuale: il suo codice prototipale non va propagato.
 
-1. Dati, contenuti, ordine, tooltip, unità e interazioni devono restare invariati.
-2. Le baseline A4 non vanno aggiornate prima della verifica visiva.
-3. Il mismatch visuale atteso deve essere limitato alle superfici intenzionalmente modificate.
-4. La PR resta Draft fino ad approvazione desktop/mobile.
-5. Nessuna estensione A5.5 prima della chiusura del pilot.
+## Audit di propagazione
 
-## Verifica visiva richiesta
-
-Desktop:
-- separazione chiara fra canvas e pannelli;
-- gerarchia hero → selettori → dato → metadati;
-- leggibilità di sezioni, tab, note e fonti;
-- uso dell'accento terracotta senza dominare il grafico;
-- nessuna variazione nei dati o nell'ordine delle righe.
-
-Mobile:
-- nessun overflow della pagina;
-- navigazione temi confinata al proprio scroll orizzontale;
-- tab con target adeguati e testo leggibile;
-- pannello dati e definizione senza testi a ridosso dei bordi;
-- link ai Comuni in colonna singola.
+Verificato che:
+- il renderer delle pagine tematiche è condiviso; Demografia è il ramo A5 da generalizzare;
+- le schede comunali condividono `renderTown()` / `renderTownMetric()`;
+- grafici, storico e visual grammar sono già infrastrutture comuni;
+- le route speciali `meteo-clima`, atlante economia e affluenza vanno gestite separatamente;
+- nessun altro tema deve essere modificato prima che i due golden master siano riprodotti tramite componenti condivisi.
 
 ## Prossima azione esatta
 
-1. Aprire PR Draft per A5.4.
-2. Richiedere Quick e Full sul final head.
-3. Verificare che eventuali failure Full siano esclusivamente visual-regression intenzionali.
-4. Scaricare l'artifact visuale e verificare desktop/mobile.
-5. Solo dopo approvazione esplicita aggiornare le baseline A4 e portare la PR Ready.
-6. Merge solo dopo ulteriore approvazione esplicita del proprietario.
-
-## A5.4 — revisione visuale warm editorial
-
-La prima skin CSS-only è stata respinta in review perché troppo distante dal riferimento scelto. Il pilot corrente modifica anche la composizione della sola route `confronta/demografia/`, mantenendo invariati gli hook funzionali e i dati.
-
-Direzione corrente:
-- hero fotografico editoriale con asset canonico Versilia e testo sovrapposto;
-- ribbon temi compatta subito sotto;
-- testata Demografia a tre colonne;
-- workspace 270px + area grafico dominante;
-- solo il gruppo indicatore attivo è visivamente espanso;
-- `#compare-definition` spostato sotto il grafico accanto al richiamo metodologia;
-- schede comuni in griglia con stemmi reali;
-- footer navy con markup e link reali;
-- nessun cambio a dataset, tooltip, download, serie storiche o destinazioni link.
-
-Il riferimento approvato è lo screenshot warm-editorial fornito dal proprietario nella review di A5.4. La PR resta Draft e le baseline A4 non vanno aggiornate finché il nuovo draft navigabile non viene approvato.
+1. Generalizzare i componenti A5 del golden master tematico senza cambiare il rendering Demografia.
+2. Portare Viareggio sullo stesso renderer/component set condiviso, riproducendo il Draft 19 senza clone/fetch prototipali.
+3. Verificare i due golden master desktop/mobile.
+4. Eseguire Quick + Full sul final head.
+5. Solo dopo approvazione esplicita iniziare A5.5 sugli altri temi.
+6. Non aggiornare baseline A4 e non rendere la PR Ready/merge senza approvazione esplicita.
