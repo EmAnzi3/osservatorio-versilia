@@ -1494,18 +1494,6 @@
         : row.notApplicable
         ? `<aside class="versilia-position"><span class="overline">Applicabilità territoriale</span><strong>n.a.<small>Comune non costiero</small></strong><p>${html(row.applicabilityNote)}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`
         : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`);
-    const selectedTownSlug = normalize(town.name).replaceAll(' ', '-');
-    const legacyTownChartMarkup = extractiveProductionHistory
-      ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`)
-      : (composite
-        ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>`
-        : (historical
-          ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`)
-          : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: selectedTownSlug })}</div>`));
-    const sharedTownCurrentRenderer = window.OVSharedRenderers?.comparisonTopicMarkup;
-    const townChartMarkup = townPilot && !composite && typeof sharedTownCurrentRenderer === 'function'
-      ? sharedTownCurrentRenderer(data, metricKey, { selectedTown: selectedTownSlug })
-      : legacyTownChartMarkup;
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
       ${townPilot ? a5MetricSidebarMarkup(data, themeKey, metricKey) : metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
@@ -1515,7 +1503,7 @@
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         ${positionMarkup}</div>
       <section class="history-panel ${composite ? 'composite-history-panel ' : ''}${townPilot ? 'a5-shared-chart' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
-        ${townChartMarkup}</section>
+        ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>
       ${coastTownDetailMarkup(metric,row)}
       ${extractiveTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
