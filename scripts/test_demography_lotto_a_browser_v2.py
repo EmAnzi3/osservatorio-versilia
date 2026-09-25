@@ -94,6 +94,30 @@ def main() -> None:
         )
         require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
 
+        # Shared graph controls: the municipal selectors must compute to the same DS2 styles.
+        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=internalResidentialMobility'), wait_until='networkidle')
+        compare_control_styles = page.evaluate('''() => {
+          const root = document.querySelector('#compare-bars .compare-chart-toolbar .compare-view-controls');
+          const select = root?.querySelector('.compare-choice-select select');
+          const switchRoot = root?.querySelector('.scale-switch');
+          const active = switchRoot?.querySelector('button.active');
+          const pack = el => {
+            if (!el) return null;
+            const s = getComputedStyle(el);
+            return {
+              background:s.backgroundColor,
+              borderColor:s.borderColor,
+              color:s.color,
+              radius:s.borderRadius,
+              padding:s.padding,
+              minHeight:s.minHeight,
+            };
+          };
+          return {root:pack(root), select:pack(select), switchRoot:pack(switchRoot), active:pack(active)};
+        }''')
+        require(compare_control_styles['root'] is not None and compare_control_styles['select'] is not None,
+                'A5 compare: riferimento cromatico controlli non disponibile')
+
         def assert_a5_town(metric_key: str, reference_geometry: dict | None = None) -> dict:
             page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
             require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
@@ -179,8 +203,36 @@ def main() -> None:
 
             if metric_key in ('dependencyIndices','foreignResidents','internalResidentialMobility',
                               'foreignResidentialMobility','totalResidentialMobility','naturalDemographicDynamics'):
-                require(visual.locator('.compare-chart-toolbar .compare-view-controls').count() == 1,
-                        f'{metric_key}: controlli grafico condivisi assenti')
+                controls = visual.locator('.compare-chart-toolbar .compare-view-controls')
+                require(controls.count() == 1, f'{metric_key}: controlli grafico condivisi assenti')
+                control_styles = controls.evaluate('''root => {
+                  const select = root.querySelector('.compare-choice-select select');
+                  const switchRoot = root.querySelector('.scale-switch');
+                  const active = switchRoot?.querySelector('button.active');
+                  const pack = el => {
+                    if (!el) return null;
+                    const s = getComputedStyle(el);
+                    return {
+                      background:s.backgroundColor,
+                      borderColor:s.borderColor,
+                      color:s.color,
+                      radius:s.borderRadius,
+                      padding:s.padding,
+                      minHeight:s.minHeight,
+                    };
+                  };
+                  return {root:pack(root), select:pack(select), switchRoot:pack(switchRoot), active:pack(active)};
+                }''')
+                require(control_styles['root'] == compare_control_styles['root'],
+                        f'{metric_key}: cromia/geometria host controlli diversa dal confronto tematico')
+                if control_styles['select'] is not None:
+                    require(control_styles['select'] == compare_control_styles['select'],
+                            f'{metric_key}: select non conforme al controllo tematico')
+                if control_styles['switchRoot'] is not None:
+                    require(control_styles['switchRoot'] == compare_control_styles['switchRoot'],
+                            f'{metric_key}: switch non conforme al controllo tematico')
+                    require(control_styles['active'] == compare_control_styles['active'],
+                            f'{metric_key}: stato attivo switch non conforme al controllo tematico')
 
             # History: if enabled it must be a real rendered pane; otherwise the control must be disabled.
             history_button = shell.locator('[data-view-mode="history"]')

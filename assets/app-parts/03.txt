@@ -503,7 +503,7 @@
     return '';
   }
 
-  function compositeCompareBarRows(data, metricKey, choice, scale = 'value', options = {}) {
+  function compositeCompareBarRows(data, metricKey, choice, scale = 'value') {
     const metric = data.metrics[metricKey];
     const rows = metric.rows.map(row => {
       const selected = compositeCompareSelection(metric,row,choice,scale);
@@ -515,7 +515,7 @@
       const rowSlug=row.slug || normalize(row.town).replaceAll(' ','-');
       const href=route(`comuni/${rowSlug}/?${query}`);
       const formatted=formatMetricRowValue(row,row.displayValue,row.displayUnit);
-      return `<a href="${href}" class="bar-row ${rowSlug === options.selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatted)}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span><strong>${html(formatted)}</strong></a>`;
+      return `<a href="${href}" class="bar-row" aria-label="${html(row.town)}: ${html(formatted)}"><span class="bar-rank">${row.displayValue === null || row.displayValue === undefined ? '—' : index+1}</span><span class="bar-town">${html(row.town)}</span><span class="bar-track"><span class="bar-fill" style="width:${row.displayValue === null || row.displayValue === undefined ? 0 : Math.max(1.5,Math.abs(Number(row.displayValue)||0)/max*100)}%"></span><span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span><strong>${html(formatted)}</strong></a>`;
     }).join('');
   }
 
@@ -553,73 +553,22 @@
           </a>`;
         }).join('')}</div>`;
     }
-    const versiliaPyramid = !view.primaryOnly && metric.meta.key === 'ageDistribution' && metric.aggregate?.ageSexPyramid
+    const versiliaPyramid = metric.meta.key === 'ageDistribution' && metric.aggregate?.ageSexPyramid
       ? agePyramidMarkup(metric,{...metric.aggregate,town:'Versilia'})
       : '';
-    const incomeBandDetail = !view.primaryOnly && metric.meta.key === 'incomeDistribution' && rows.some(row => row.detailParts?.length)
+    const incomeBandDetail = metric.meta.key === 'incomeDistribution' && rows.some(row => row.detailParts?.length)
       ? `<details class="detail-disclosure income-bands-detail"><summary><span>${html(metric.meta.detailLabel || 'Dettaglio · 8 fasce MEF')}</span><small>${html(metric.meta.year)} · classi originali MEF</small></summary><div>${rows.map(row => `<section class="income-band-town-detail"><h4>${html(row.town)}</h4><div class="composite-town-detail">${(row.detailParts || []).map((part,index)=>`<div><span><i class="composite-swatch part-${index}"></i>${html(part.label)}</span><b>${part.value === null || part.value === undefined ? 'n.d.' : html(number1.format(part.value)) + '%'}</b><small>${part.count === null || part.count === undefined ? 'n.d.' : html(number0.format(part.count)) + ' dichiaranti'}</small></div>`).join('')}</div></section>`).join('')}</div></details>`
       : '';
     return `${compositePartLegend(metric)}<div class="composite-distribution-list">${rows.map(row => {
       const query = new URLSearchParams({ tema: metric.meta.theme, indicatore: metricKey });
-      const rowSlug = row.slug || normalize(row.town).replaceAll(' ','-');
       const parts = row.parts || [];
       const summary = compositeSummary(metric, row);
-      return `<div class="composite-distribution-row${rowSlug === view.selectedTown ? ' selected' : ''}">
+      return `<div class="composite-distribution-row">
         <div class="composite-row-head"><a class="composite-town-link" href="${route(`comuni/${row.slug}/?${query}`)}">${html(row.town)}</a><span>${html(summary.label)} <b>${html(summary.formatted)}</b></span></div>
         ${compositeStackMarkup(parts,{ ariaLabel:`${metric.meta.label} · ${row.town}`, minLabel:6 })}
       </div>`;
     }).join('')}</div>${incomeBandDetail}${versiliaPyramid}`;
   }
-
-
-  function a5MetricCurrentMarkup(data, metricKey, options = {}) {
-    const metric = data.metrics[metricKey];
-    const type = metric?.meta?.compositeType || '';
-    const selectedTown = options.selectedTown || '';
-    if (type === 'distribution') {
-      return `<div class="topic-bars composite-topic-bars a5-current-family-distribution">${compositeCompareMarkup(data,metricKey,{selectedTown,primaryOnly:true})}</div>`;
-    }
-    if (['stock','mobility','securityMeasures','demographicBreakdown','agricultureProfile','financialProfile','sexBreakdown'].includes(type)) {
-      const defaults = compositeCompareDefaults(metric);
-      const choice = options.choice || defaults.choice;
-      const scale = options.scale || defaults.scale;
-      return `<div class="topic-bars selectable-topic-bars a5-current-family-${html(type)}"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${compositeCompareControls(metric,choice,scale)}</div><div class="comparison-bars" data-composite-choice="${html(choice)}" data-composite-scale="${html(scale)}">${compositeCompareBarRows(data,metricKey,choice,scale,{selectedTown})}</div></div>`;
-    }
-    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
-    return typeof shared === 'function'
-      ? shared(data,metricKey,{selectedTown})
-      : `<div class="topic-bars"><div class="comparison-bars">${barRows(data,metricKey,{selectedTown})}</div></div>`;
-  }
-
-  function a5TownSelectionState(metric,row,choice,scale) {
-    const type = metric?.meta?.compositeType || '';
-    if (!['stock','mobility','securityMeasures','demographicBreakdown','agricultureProfile','financialProfile','sexBreakdown'].includes(type) || !row) return null;
-    const defaults = compositeCompareDefaults(metric);
-    const resolvedChoice = choice || defaults.choice;
-    const resolvedScale = scale || defaults.scale;
-    const selected = compositeCompareSelection(metric,row,resolvedChoice,resolvedScale);
-    const aggregate = compositeCompareAggregate(metric,resolvedChoice,resolvedScale);
-    const unit = selected?.unit || aggregate?.unit || metric.meta.unit;
-    const delta = compositeDeltaText(selected?.value,aggregate?.value,unit);
-    let label = selected?.part?.selectorLabel || selected?.part?.label || metric.meta.primaryLabel || metric.meta.label;
-    if (type === 'stock') label = resolvedChoice === 'count' ? 'Residenti di cittadinanza straniera' : 'Quota di residenti stranieri';
-    return {
-      choice:resolvedChoice,
-      scale:resolvedScale,
-      label,
-      formatted:formatMetricRowValue(row,selected?.value,unit),
-      aggregateLabel:aggregate?.label || 'Versilia',
-      aggregateFormatted:formatValue(aggregate?.value,aggregate?.unit || unit),
-      deltaHeadline:delta.headline,
-      deltaDirection:delta.direction
-    };
-  }
-
-  window.OVSharedRenderers = Object.assign(window.OVSharedRenderers || {}, {
-    metricCurrentMarkup:a5MetricCurrentMarkup,
-    metricViewDefaults:compositeCompareDefaults,
-    townSelectionState:a5TownSelectionState
-  });
 
   function financialProfileChoiceIndex(choice='part-0') {
     return Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
@@ -1278,6 +1227,13 @@
       const toolsAnchor = benchmarkHost || chart;
       if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
     }
+    const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail');
+    if (fixedDetail) {
+      fixedDetail.classList.add('a5-town-extra-context');
+      const detailAnchor = toolsHost || benchmarkHost || chart;
+      if (detailAnchor) detailAnchor.after(fixedDetail);
+    }
+
     const copy = toolbar.querySelector('.ux-view-toolbar-copy');
     if (copy && !copy.querySelector('.a5-toolbar-overline')) {
       copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
