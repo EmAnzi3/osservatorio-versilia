@@ -97,7 +97,7 @@
             ${a5MetricSidebarMarkup(data, themeKey, metricKey, { definitionId:'compare-definition', definitionClass:'topic-side-definition' })}
             <div class="compare-main-column">
               <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
-              <div id="compare-bars"></div>
+              <div id="compare-bars" class="a5-shared-chart"></div>
             </div>
           </section>
           <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
