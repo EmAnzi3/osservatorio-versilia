@@ -121,11 +121,6 @@ def f_render_indicator(b):
 s=patch_function(s,'renderIndicator',f_render_indicator)
 p.write_text(s)
 
-# app06
-p=ROOT/'assets/app-parts/06.txt'; s=p.read_text()
-s=replace_once(s,"        const isFlood = metricKey === 'floodExposure';\n        const isLandslide = metricKey === 'landslideExposure';","        const legacyRiskDetail = data.metrics?.[metricKey]?.meta?.compositeType !== 'hydroRisk';\n        const isFlood = legacyRiskDetail && metricKey === 'floodExposure';\n        const isLandslide = legacyRiskDetail && metricKey === 'landslideExposure';",'legacy risk detail')
-p.write_text(s)
-
 # visual grammar
 p=ROOT/'assets/visual-grammar.js'; s=p.read_text()
 s=replace_once(s,"    if (kind === 'percent') return `${formatted}%`;","    if (kind === 'percent') return `${formatted}%`;\n    if (kind === 'decile') return `${number0.format(n)}/10`;\n    if (kind === 'ventile') return `${number0.format(n)}/20`;",'visual units')
