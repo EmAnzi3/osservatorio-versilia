@@ -462,9 +462,12 @@
     const signature=`${metricKey}|${choice}|${scale}`;
 
     if (!visual) {
+      /* Remove the legacy current renderer entirely. Keeping it next to the
+         A5 renderer would create a visually plausible but semantically duplicate chart. */
+      [...currentPane.childNodes].forEach(node => node.remove());
       visual=document.createElement('div');
       visual.className='a5-town-current-visual';
-      currentPane.prepend(visual);
+      currentPane.append(visual);
     }
     if (visual.dataset.a5Signature !== signature) {
       if (type === 'distribution') {
