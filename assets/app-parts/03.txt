@@ -1,45 +1,8 @@
 (location.search);
     let metricKey = params.get('indicatore');
     if (!theme.metrics.includes(metricKey)) metricKey = theme.metrics[0];
-    app.innerHTML = themeKey === 'demografia'
-      ? `<main class="inner-page a5-editorial-pilot" data-theme="${themeKey}">
-          <section class="compare-showcase-hero" aria-label="Osservatorio Versilia">
-            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}')"></div>
-            <div class="compare-showcase-hero-copy page-width">
-              <span class="overline">Conoscere per costruire insieme</span>
-              <h1>La Versilia,<br><em>una comunità di dati.</em></h1>
-              <p>Dati pubblici per capire, confrontare e immaginare il futuro dei nostri territori.</p>
-              <div class="compare-showcase-actions">
-                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
-                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
-              </div>
-              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori Demografia</span><span>Aggiornato ${html(data.updated)}</span></div>
-            </div>
-          </section>
-          <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
-          ${compareContextNav(data, themeKey)}
-          <section class="topic-hero page-width" data-theme="${themeKey}">
-            <div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
-            <div class="topic-hero-copy"><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div>
-            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || 'Confronta residenti, struttura per età e dinamiche demografiche nei sette Comuni della Versilia.')}</p></div>
-          </section>
-          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
-            <aside class="topic-controls">
-              <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
-              ${metricControls(data, themeKey, metricKey, true)}
-              <div id="compare-definition" class="topic-side-definition"></div>
-            </aside>
-            <div class="compare-main-column">
-              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
-              <div id="compare-bars"></div>
-            </div>
-          </section>
-          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
-          <section id="compare-benchmark" class="page-width"></section>
-          ${brainDrainMarkup(data)}
-          <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
-        </main>`
+    app.innerHTML = isA5CompareTheme(themeKey)
+      ? a5CompareShellMarkup(data, themeKey, metricKey)
       : `<main class="inner-page" data-theme="${themeKey}">
           <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
           ${compareContextNav(data, themeKey)}
@@ -1230,7 +1193,7 @@
   }
 
   function syncA5CompareChrome() {
-    if (document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'demografia') return;
+    if (document.body.dataset.page !== 'compare' || !isA5CompareTheme(document.body.dataset.theme)) return;
     const main = document.querySelector('main.a5-editorial-pilot');
     const toolbar = main?.querySelector('#compare-bars > .ux-view-shell > .ux-view-toolbar');
     if (!toolbar) return;
