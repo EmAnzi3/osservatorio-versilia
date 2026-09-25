@@ -7,7 +7,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
 - **Step attivo:** A5.4 — consolidamento dei golden master prima di A5.5
-- **Stato:** IN_PROGRESS
+- **Stato:** IN_PROGRESS — sidebar, chart shell e toolbar condivisi applicati al pilot Viareggio/Demografia; golden master comunale non ancora completo
 - **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
 - **Branch:** `feat/a5-controlled-iteration`
 - **PR:** #280 — Draft
