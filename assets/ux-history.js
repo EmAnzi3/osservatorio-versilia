@@ -399,19 +399,12 @@
     return clone;
   }
 
-  function refreshTownCompositeCurrent(data, metric, shell, selectedTown, choice) {
-    if (!shell || !['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return;
-    const currentPane = shell.querySelector('[data-view-pane="current"]');
-    if (!currentPane) return;
-    const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
-    if (currentPane.dataset.compositeChoice === resolvedChoice) return;
-    const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
-    currentPane.innerHTML = townCurrentComparisonMarkup(data, { key:metric.meta.key }, selectedTown, viewMetric);
-    currentPane.dataset.compositeChoice = resolvedChoice;
+  function currentCompositeChoice() {
+    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || '';
   }
 
-  function currentCompositeChoice() {
-    return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || 'summary';
+  function currentCompositeScale() {
+    return document.querySelector('.comparison-bars[data-composite-scale]')?.dataset.compositeScale || '';
   }
 
   function withOfficialVersiliaSeries(metric, series) {
@@ -423,17 +416,88 @@
     return { ...series, rows:[...series.rows,{ town:'Versilia', slug:'versilia', color:'var(--ink)', map:new Map(), realMap:new Map(), values:series.years.map(year=>map.get(String(year))), realSeries:null }] };
   }
 
-  function townCurrentComparisonMarkup(data, selected, selectedTown, metric) {
-    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+  function townCurrentComparisonMarkup(data, selected, selectedTown, view = {}) {
     const a5TownPilot = Boolean(document.querySelector('main.a5-town-pilot'));
+    const shared = window.OVSharedRenderers?.metricCurrentMarkup;
     if (a5TownPilot && typeof shared === 'function') {
-      const sharedMetric = {
-        ...metric,
-        meta:{ ...metric.meta, compositeType:null }
-      };
-      return shared(data, selected.key, { selectedTown, metric:sharedMetric });
+      return shared(data,selected.key,{selectedTown,choice:view.choice,scale:view.scale});
     }
-    return toolkit.comparisonBarsMarkup(metric, selectedTown);
+    return toolkit.comparisonBarsMarkup(selected.metric,selectedTown);
+  }
+
+  function updateA5TownSummary(metric, selectedTown, choice, scale) {
+    const stateFor = window.OVSharedRenderers?.townSelectionState;
+    if (typeof stateFor !== 'function') return;
+    const row = metric.rows?.find(item => (item.slug || '') === selectedTown);
+    const state = stateFor(metric,row,choice,scale);
+    if (!state) return;
+    const topic = document.getElementById('town-topic');
+    const label = topic?.querySelector('[data-composite-primary-label]');
+    const value = topic?.querySelector('[data-composite-primary-value]');
+    const position = topic?.querySelector('.versilia-position');
+    if (label) label.textContent = state.label;
+    if (value) value.textContent = state.formatted;
+    if (!position) return;
+    position.classList.add('composite-versilia-position');
+    if (!position.querySelector('[data-composite-delta]')) {
+      position.innerHTML = '<span class="overline">Rispetto alla Versilia</span><strong data-composite-delta></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label></span><b data-composite-aggregate-value></b></div>';
+    }
+    const strong = position.querySelector('[data-composite-delta]');
+    if (strong) {
+      strong.textContent = state.deltaHeadline;
+      const small = document.createElement('small');
+      small.textContent = state.deltaDirection;
+      strong.append(small);
+    }
+    const aggregateLabel = position.querySelector('[data-composite-aggregate-label]');
+    const aggregateValue = position.querySelector('[data-composite-aggregate-value]');
+    if (aggregateLabel) aggregateLabel.textContent = state.aggregateLabel;
+    if (aggregateValue) aggregateValue.textContent = state.aggregateFormatted;
+  }
+
+  function renderA5TownCurrent(data, selected, shell, selectedTown, choice, scale) {
+    const visual = shell?.querySelector('[data-view-pane="current"] > .a5-town-current-visual');
+    if (!visual) return;
+    const defaultsFor = window.OVSharedRenderers?.metricViewDefaults;
+    const defaults = typeof defaultsFor === 'function' ? defaultsFor(selected.metric) : {choice:'',scale:'value'};
+    const resolvedChoice = choice || visual.dataset.choice || defaults.choice || '';
+    const resolvedScale = scale || visual.dataset.scale || defaults.scale || 'value';
+    visual.innerHTML = townCurrentComparisonMarkup(data,selected,selectedTown,{choice:resolvedChoice,scale:resolvedScale});
+    visual.dataset.choice = resolvedChoice;
+    visual.dataset.scale = resolvedScale;
+    updateA5TownSummary(selected.metric,selectedTown,resolvedChoice,resolvedScale);
+  }
+
+  function wireA5TownCurrentControls(data, selected, shell, selectedTown) {
+    if (!document.querySelector('main.a5-town-pilot') || !shell) return;
+    const pane = shell.querySelector('[data-view-pane="current"]');
+    const visual = pane?.querySelector(':scope > .a5-town-current-visual');
+    if (!pane || !visual) return;
+    updateA5TownSummary(selected.metric,selectedTown,visual.dataset.choice || '',visual.dataset.scale || '');
+    if (pane.dataset.a5TownControlsWired === '1') return;
+    pane.dataset.a5TownControlsWired = '1';
+    pane.addEventListener('click', event => {
+      const choiceButton = event.target.closest('button[data-composite-choice]');
+      const scaleButton = event.target.closest('button[data-composite-scale]');
+      if (!choiceButton && !scaleButton) return;
+      renderA5TownCurrent(
+        data,selected,shell,selectedTown,
+        choiceButton?.dataset.compositeChoice || visual.dataset.choice || '',
+        scaleButton?.dataset.compositeScale || visual.dataset.scale || ''
+      );
+    });
+    pane.addEventListener('change', event => {
+      const component = event.target.closest('select[data-composite-component]');
+      const age = event.target.closest('select[data-demographic-age]');
+      const gender = event.target.closest('select[data-demographic-gender]');
+      if (!component && !age && !gender) return;
+      let choice = component?.value || visual.dataset.choice || '';
+      if (age || gender) {
+        const current = String(visual.dataset.choice || '').split('|');
+        choice = `${age?.value || current[0] || ''}|${gender?.value || current[1] || ''}`;
+      }
+      renderA5TownCurrent(data,selected,shell,selectedTown,choice,visual.dataset.scale || '');
+    });
   }
 
   function enhanceTown(data) {
@@ -471,7 +535,7 @@
     }
     if (existingShell) {
       wireShell(existingShell, 'ov-town-view', selectedTown, false);
-      refreshTownCompositeCurrent(data, selected.metric, existingShell, selectedTown, currentCompositeChoice());
+      wireA5TownCurrentControls(data,selected,existingShell,selectedTown);
       return;
     }
 
@@ -483,8 +547,11 @@
       ? null
       : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
-    const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
-    const currentMarkup = townCurrentComparisonMarkup(data, selected, selectedTown, viewMetric);
+    const defaultsFor = window.OVSharedRenderers?.metricViewDefaults;
+    const defaults = typeof defaultsFor === 'function' ? defaultsFor(selected.metric) : {choice:currentCompositeChoice(),scale:currentCompositeScale() || 'value'};
+    const currentVisual = townCurrentComparisonMarkup(data,selected,selectedTown,defaults);
+    const currentDetail = fixedDetail ? `<div class="a5-town-current-detail">${fixedDetail}</div>` : '';
+    const currentMarkup = `<div class="a5-town-current-visual" data-choice="${toolkit.escapeHtml(defaults.choice || '')}" data-scale="${toolkit.escapeHtml(defaults.scale || 'value')}">${currentVisual}</div>${currentDetail}`;
     const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
     const note = historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
       ? selected.metric.historyPresentation?.note
@@ -496,8 +563,10 @@
             ? 'Nello storico il comune aperto è evidenziato; dalla legenda puoi mettere in primo piano un altro territorio.'
             : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
-    panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}${fixedDetail}`;
-    wireShell(panel.querySelector('.ux-view-shell'), 'ov-town-view', selectedTown, false);
+    panel.innerHTML = `<div class="panel-title"><div><span class="overline">Confronto dell’indicatore</span><h3>Valore attuale e andamento</h3></div><a class="source-pill" href="${toolkit.escapeHtml(selected.metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${toolkit.escapeHtml(selected.metric.meta.source)} ↗</a></div>${toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note)}`;
+    const shell = panel.querySelector('.ux-view-shell');
+    wireShell(shell, 'ov-town-view', selectedTown, false);
+    wireA5TownCurrentControls(data,selected,shell,selectedTown);
   }
 
   function enhance(data) {
@@ -524,8 +593,8 @@
       const metric = metricKey && data.metrics[metricKey] ? { ...data.metrics[metricKey], key: metricKey } : null;
       const shell = document.querySelector('.history-panel .ux-view-shell');
       if (!metric || !shell) return;
-      const choice = event.detail?.choice || 'summary';
-      refreshTownCompositeCurrent(data, metric, shell, document.body.dataset.town || '', choice);
+      const choice = event.detail?.choice || '';
+      renderA5TownCurrent(data,{key:metricKey,metric},shell,document.body.dataset.town || '',choice,currentCompositeScale());
       if (metric.meta?.compositeType === 'sexBreakdown') {
         const selectedTown = document.body.dataset.town || '';
         const historyView = historyMetric(compositeChoiceMetric(metric, choice));

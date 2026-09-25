@@ -146,16 +146,41 @@ def main() -> None:
             require(topic.locator(':scope > .town-data-actions').count() == 0,
                     f'{metric_key}: toolbar parallela rimasta fuori dallo shared chart shell')
 
-            # Current chart: when a lollipop row exists it must expose the exact shared reference tooltip.
+            # Correct graph family is part of the golden contract.
             current_pane = shell.locator('[data-view-pane="current"]')
-            require(current_pane.count() == 1 and current_pane.locator('.comparison-bars').count() >= 1,
-                    f'{metric_key}: vista corrente non usa la superficie di confronto condivisa')
-            selected_track = current_pane.locator('.bar-row.selected .bar-track').first
-            if selected_track.count() == 1:
-                selected_track.hover()
-                tooltip = current_pane.locator('.bar-row.selected .bar-hover-label').first.inner_text()
-                require(('Media semplice dei 7 comuni' in tooltip) or ('Versilia' in tooltip),
-                        f'{metric_key}: tooltip senza riferimento territoriale condiviso: {tooltip!r}')
+            visual = current_pane.locator(':scope > .a5-town-current-visual')
+            require(current_pane.count() == 1 and visual.count() == 1,
+                    f'{metric_key}: superficie corrente condivisa assente')
+            primary_selector = primary.locator('.composite-read-selector')
+            if primary_selector.count() == 1:
+                require(primary_selector.is_hidden(),
+                        f'{metric_key}: selettore duplicato ancora visibile nel KPI')
+
+            if metric_key == 'ageDistribution':
+                require(visual.locator('.composite-distribution-list').count() == 1,
+                        'ageDistribution: manca lo stacked distribution condiviso')
+                require(visual.locator('.composite-distribution-row').count() == 7,
+                        'ageDistribution: stacked comparison non 7/7')
+                require(visual.locator('.composite-distribution-row.selected').count() == 1,
+                        'ageDistribution: Comune aperto non evidenziato')
+                require(visual.locator('.comparison-bars').count() == 0,
+                        'ageDistribution: non deve degradare al lollipop dell’età media')
+                require(current_pane.locator(':scope > .a5-town-current-detail .composite-town-stack-shell').count() == 1,
+                        'ageDistribution: dettaglio comunale scollegato dal grafico')
+            else:
+                require(visual.locator('.comparison-bars').count() >= 1,
+                        f'{metric_key}: renderer comparativo condiviso assente')
+                selected_track = visual.locator('.bar-row.selected .bar-track').first
+                if selected_track.count() == 1:
+                    selected_track.hover()
+                    tooltip = visual.locator('.bar-row.selected .bar-hover-label').first.inner_text()
+                    require(('Media semplice dei 7 comuni' in tooltip) or ('Versilia' in tooltip),
+                            f'{metric_key}: tooltip senza riferimento territoriale condiviso: {tooltip!r}')
+
+            if metric_key in ('dependencyIndices','foreignResidents','internalResidentialMobility',
+                              'foreignResidentialMobility','totalResidentialMobility','naturalDemographicDynamics'):
+                require(visual.locator('.compare-chart-toolbar .compare-view-controls').count() == 1,
+                        f'{metric_key}: controlli grafico condivisi assenti')
 
             # History: if enabled it must be a real rendered pane; otherwise the control must be disabled.
             history_button = shell.locator('[data-view-mode="history"]')
@@ -310,6 +335,8 @@ def main() -> None:
             }''')
             require(layout['topicColumns'] == 1, f'{metric_key}@{width}: shell comunale non monocolonna: {layout}')
             require(layout['metricColumns'] == 1, f'{metric_key}@{width}: KPI/Versilia ancora affiancati: {layout}')
+            require(layout['position']['top'] >= layout['primary']['bottom'] - 2,
+                    f'{metric_key}@{width}: KPI e Versilia non sono realmente impilati: {layout}')
             require(abs(layout['primary']['width'] - layout['metric']['width']) <= 2,
                     f'{metric_key}@{width}: KPI primario non occupa la colonna: {layout}')
             require(abs(layout['position']['width'] - layout['metric']['width']) <= 2,

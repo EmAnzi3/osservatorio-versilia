@@ -651,6 +651,7 @@
     if (!metric || !row) return;
     if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractivePlanning'].includes(metricKey)) return;
     if (['distribution','agricultureProfile','financialProfile'].includes(metric.meta?.compositeType)) return;
+    if (document.querySelector('main.a5-town-pilot') && ['stock','mobility','securityMeasures','demographicBreakdown','sexBreakdown'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
     const overlineText = delta.overline || 'Rispetto alla media Versilia';
