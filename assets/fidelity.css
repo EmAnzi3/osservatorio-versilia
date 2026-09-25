@@ -3137,3 +3137,86 @@ body[data-page="town"][data-town="viareggio"] main.a5-town-pilot[data-theme="dem
   }
   body[data-page="town"][data-town="viareggio"] .town-brief { grid-template-columns:1fr; }
 }
+
+
+/* A5.4 town consistency contract — shared components, not metric-specific layout. */
+body[data-page="town"] main.a5-town-pilot .town-theme-row {
+  min-height:46px;
+  padding:5px 0;
+  border-bottom:0;
+}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links {
+  gap:5px;
+  padding-block:1px;
+}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a {
+  min-height:30px;
+  border:1px solid var(--ds-border);
+  border-radius:999px;
+  background:#fff;
+  color:#65747b;
+  padding:5px 9px;
+  font-size:8.5px;
+  box-shadow:0 2px 7px rgba(15,53,80,.025);
+}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a small {color:inherit;opacity:.68;font-size:7px}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a.active {border-color:var(--ds-demografia);background:var(--ds-demografia);color:#fff}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="economia"]:not(.active){border-color:#c8ddd1;color:#39795d;background:#f5faf6}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="lavoro"]:not(.active){border-color:#ead5a7;color:#9b6818;background:#fff9eb}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="istruzione"]:not(.active){border-color:#d8cfeb;color:#7357a8;background:#f8f5fc}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="salute"]:not(.active){border-color:#eccbd3;color:#aa465b;background:#fff5f7}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="mobilita"]:not(.active){border-color:#c5dfe9;color:#16749a;background:#f1f9fc}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="sicurezza"]:not(.active){border-color:#ebcfbd;color:#a75a29;background:#fff7f1}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="ambiente"]:not(.active){border-color:#cbdfc5;color:#4d873f;background:#f4faf2}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="abitare"]:not(.active){border-color:#d7d0e9;color:#6d5ca6;background:#f8f6fc}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="bilanci"]:not(.active){border-color:#b9c5cf;color:#425c6b;background:#f0f4f6}
+body[data-page="town"] main.a5-town-pilot .town-theme-row .context-nav-links a[data-context-theme="comunita"]:not(.active){border-color:#d7bfd1;color:#7a456b;background:#f8f0f5}
+
+body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host {
+  grid-column:1 / -1;
+  grid-row:4;
+  width:100%;
+  min-width:0;
+  margin:0;
+}
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host > .benchmark-section,
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host > .benchmark-unavailable {
+  width:100%;
+  margin:0;
+  border-color:var(--ds-border);
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host .benchmark-card {border-color:var(--ds-border);background:#fbf7f0}
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host .benchmark-local {border-color:var(--ds-navy);background:var(--ds-navy);color:#fff}
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host .benchmark-local small,
+body[data-page="town"] main.a5-town-pilot .town-benchmark-host .benchmark-local span {color:#d8eaee}
+
+body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools {
+  grid-column:1 / -1;
+  grid-row:5;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  width:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools:has(> .reading-scale) {grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .method-disclosure,
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .reading-scale {
+  min-height:58px;height:100%;box-sizing:border-box;margin:0;border:1px solid var(--ds-border);border-radius:9px;background:#fffdfa;box-shadow:none
+}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .method-disclosure {border-left:3px solid #b57a57}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .method-disclosure > summary {min-height:58px;box-sizing:border-box;padding:9px 12px}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .method-disclosure[open] {grid-column:1 / -1}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .reading-scale {
+  display:grid;grid-template-columns:105px minmax(0,1fr);gap:12px;align-items:center;padding:9px 12px;border-left:3px solid #b57a57
+}
+body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools > .reading-scale p {margin:0;font-size:8px;line-height:1.35}
+@media (max-width:720px) {
+  body[data-page="town"] main.a5-town-pilot .town-post-benchmark-tools:has(> .reading-scale) {grid-template-columns:1fr}
+}

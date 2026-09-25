@@ -74,6 +74,78 @@ def main() -> None:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={'width': 1440, 'height': 1100})
 
+        # A5 town golden contract: municipal chrome must reuse the thematic components.
+        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=population'), wait_until='networkidle')
+        compare_theme_styles = page.locator('.compare-context-nav .context-nav-links a').evaluate_all(
+            '''links => links.map(link => ({
+              key: link.dataset.contextTheme,
+              bg: getComputedStyle(link).backgroundColor,
+              border: getComputedStyle(link).borderColor,
+              color: getComputedStyle(link).color,
+              radius: getComputedStyle(link).borderRadius,
+            }))'''
+        )
+        require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
+
+        def assert_a5_town(metric_key: str, benchmark_selector: str) -> None:
+            page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
+                    f'{metric_key}: pilot comunale A5 assente')
+            town_theme_links = page.locator('.town-theme-row .context-nav-links a')
+            require(town_theme_links.count() == 11, f'{metric_key}: temi comunali non 11/11')
+            require(page.locator('.town-context-nav .theme-nav').count() == 0,
+                    f'{metric_key}: vecchia theme-nav ancora presente')
+            town_theme_styles = town_theme_links.evaluate_all(
+                '''links => links.map(link => ({
+                  key: link.dataset.contextTheme,
+                  bg: getComputedStyle(link).backgroundColor,
+                  border: getComputedStyle(link).borderColor,
+                  color: getComputedStyle(link).color,
+                  radius: getComputedStyle(link).borderRadius,
+                }))'''
+            )
+            require(town_theme_styles == compare_theme_styles,
+                    f'{metric_key}: cromie/pill temi diverse dalla pagina tematica')
+
+            shell = page.locator('#town-topic .history-panel.a5-shared-chart .ux-view-shell')
+            require(shell.count() == 1, f'{metric_key}: chart shell condivisa assente')
+            selected_track = shell.locator('[data-view-pane="current"] .bar-row.selected .bar-track').first
+            require(selected_track.count() == 1, f'{metric_key}: riga del Comune selezionato assente')
+            selected_track.hover()
+            tooltip = shell.locator('[data-view-pane="current"] .bar-row.selected .bar-hover-label').first.inner_text()
+            require('Media semplice dei 7 comuni' in tooltip,
+                    f'{metric_key}: tooltip senza valore medio: {tooltip!r}')
+
+            benchmark = page.locator(f'#town-topic > .town-benchmark-host {benchmark_selector}')
+            require(benchmark.count() == 1,
+                    f'{metric_key}: benchmark non usa il componente condiviso {benchmark_selector}')
+            tools = page.locator('#town-topic > .town-post-benchmark-tools')
+            require(tools.count() == 1, f'{metric_key}: tools post-chart condivisi assenti')
+            method = tools.locator(':scope > .method-disclosure')
+            scale = tools.locator(':scope > .reading-scale')
+            require(method.count() == 1 and scale.count() == 1,
+                    f'{metric_key}: Metodo/Scala non presenti nello stesso host')
+            boxes = page.evaluate('''() => {
+              const topic = document.querySelector('#town-topic');
+              const benchmark = document.querySelector('#town-topic > .town-benchmark-host');
+              const tools = document.querySelector('#town-topic > .town-post-benchmark-tools');
+              const method = tools?.querySelector(':scope > .method-disclosure');
+              const scale = tools?.querySelector(':scope > .reading-scale');
+              const r = el => el ? el.getBoundingClientRect() : null;
+              return { topic:r(topic), benchmark:r(benchmark), tools:r(tools), method:r(method), scale:r(scale) };
+            }''')
+            require(abs(boxes['benchmark']['width'] - boxes['topic']['width']) <= 2,
+                    f'{metric_key}: benchmark non allineato alla larghezza standard: {boxes}')
+            require(abs(boxes['tools']['width'] - boxes['topic']['width']) <= 2,
+                    f'{metric_key}: tools non allineati alla larghezza standard: {boxes}')
+            require(abs(boxes['method']['width'] - boxes['scale']['width']) <= 2,
+                    f'{metric_key}: Metodo/Scala con larghezze diverse: {boxes}')
+            require(abs(boxes['method']['height'] - boxes['scale']['height']) <= 2,
+                    f'{metric_key}: Metodo/Scala con altezze diverse: {boxes}')
+
+        assert_a5_town('population', '.benchmark-unavailable')
+        assert_a5_town('oldAgeIndex', '.benchmark-section')
+
         # 85+ deve essere una vera fascia della distribuzione, non un box autonomo.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
         require(page.get_by_text('Distribuzione per fasce d’età', exact=True).count() >= 1,

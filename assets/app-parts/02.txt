@@ -28,10 +28,14 @@
   }
 
 
+  function themeContextLinksMarkup(data, activeTheme, hrefFor, extraAttr = '') {
+    return Object.values(data.themes).map(theme => `<a href="${hrefFor(theme)}" data-context-theme="${theme.key}" ${extraAttr ? `${extraAttr}="${theme.key}"` : ''} class="${theme.key === activeTheme ? 'active' : ''}" ${theme.key === activeTheme ? 'aria-current="page"' : ''}><small>${html(theme.number)}</small><span>${html(theme.label)}</span></a>`).join('');
+  }
+
   function compareContextNav(data, activeTheme) {
     return `<nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
       <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
-      <div class="context-nav-links">${Object.values(data.themes).map(theme => `<a href="${route(`confronta/${theme.key}/?indicatore=${theme.metrics[0]}`)}" data-context-theme="${theme.key}" class="${theme.key === activeTheme ? 'active' : ''}" ${theme.key === activeTheme ? 'aria-current="page"' : ''}><small>${html(theme.number)}</small><span>${html(theme.label)}</span></a>`).join('')}</div>
+      <div class="context-nav-links">${themeContextLinksMarkup(data, activeTheme, theme => route(`confronta/${theme.key}/?indicatore=${theme.metrics[0]}`))}</div>
     </nav>`;
   }
 
@@ -41,10 +45,15 @@
       const slug = normalize(item.name).replaceAll(' ', '-');
       return `<a href="${route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`)}" data-town-link="${slug}" class="${slug === activeSlug ? 'active' : ''}" ${slug === activeSlug ? 'aria-current="page"' : ''}>${html(item.name)}</a>`;
     }).join('');
-    const themeButtons = Object.values(data.themes).map(theme => `<button type="button" data-profile-theme="${theme.key}" class="${theme.key === themeKey ? 'active' : ''}">${themeIcon(theme.key, 15)}<span>${html(theme.number)}</span>${html(theme.label)}</button>`).join('');
+    const themeLinks = themeContextLinksMarkup(
+      data,
+      themeKey,
+      theme => route(`comuni/${activeSlug}/?tema=${theme.key}&indicatore=${theme.metrics[0]}`),
+      'data-profile-theme'
+    );
     return `<div class="town-context-nav">
       <div class="context-nav-row"><div class="context-nav-title"><small>Esplora</small><strong>Comuni</strong></div><div class="context-nav-links">${townLinks}</div></div>
-      <nav class="theme-nav" aria-label="Temi della scheda">${themeButtons}</nav>
+      <nav class="context-nav-row town-theme-row" aria-label="Temi della scheda"><div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div><div class="context-nav-links">${themeLinks}</div></nav>
     </div>`;
   }
 
@@ -101,7 +110,7 @@
             </div>
           </section>
           <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
-          <section id="compare-benchmark" class="page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"></section>
           ${brainDrainMarkup(data)}
           <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
           <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>

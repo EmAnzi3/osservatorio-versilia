@@ -561,7 +561,7 @@
       hoverLabel.className = 'bar-hover-label';
       const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
       const townValue = formatAxis(value, unit);
-      const a5TownReferenceTooltip = document.body.dataset.page === 'town' && document.body.dataset.theme === 'demografia' && Boolean(document.querySelector('main.a5-town-pilot'));
+      const a5TownReferenceTooltip = document.body.dataset.page === 'town' && Boolean(document.querySelector('main.a5-town-pilot[data-theme="demografia"]'));
       const showReferenceInTooltip = (document.body.dataset.page === 'compare' && document.body.dataset.theme === 'demografia' || a5TownReferenceTooltip) && aggregate?.value !== null && aggregate?.value !== undefined;
       const referenceLabel = String(aggregate?.label || 'Versilia').replace(' dei 7 comuni','');
       hoverLabel.textContent = showReferenceInTooltip
@@ -616,19 +616,25 @@
       const metricKey = metricKeyFor(townLayout);
       const metric = data.metrics?.[metricKey];
       if (metric) {
-        const existing = townLayout.parentElement?.querySelector(':scope > .reading-scale');
+        const parent = townLayout.parentElement;
+        const sharedTools = parent?.querySelector(':scope > .town-post-benchmark-tools');
+        const existing = sharedTools?.querySelector(':scope > .reading-scale') || parent?.querySelector(':scope > .reading-scale');
         if (!existing || existing.dataset.readingMetric !== metricKey) {
           existing?.remove();
           const wrapper = document.createElement('div');
           wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
-          const parent = townLayout.parentElement;
-          const actions = parent?.querySelector(':scope > .town-data-actions');
-          const method = parent?.querySelector(':scope > .method-disclosure');
-          const benchmark = parent?.querySelector(':scope > .town-benchmark');
-          if (actions) parent.insertBefore(wrapper.firstElementChild, actions);
-          else if (method) method.insertAdjacentElement('afterend', wrapper.firstElementChild);
-          else if (benchmark) benchmark.insertAdjacentElement('afterend', wrapper.firstElementChild);
-          else townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          const block = wrapper.firstElementChild;
+          if (sharedTools) {
+            sharedTools.append(block);
+          } else {
+            const actions = parent?.querySelector(':scope > .town-data-actions');
+            const method = parent?.querySelector(':scope > .method-disclosure');
+            const benchmark = parent?.querySelector(':scope > .town-benchmark');
+            if (actions) parent.insertBefore(block, actions);
+            else if (method) method.insertAdjacentElement('afterend', block);
+            else if (benchmark) benchmark.insertAdjacentElement('afterend', block);
+            else townLayout.insertAdjacentElement('afterend', block);
+          }
         }
       }
     }

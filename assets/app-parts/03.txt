@@ -1428,7 +1428,10 @@
       renderTownMetric(data, town, themeKey, metricKey, selectMetric);
       scrollActiveControl(document.querySelector('.theme-nav'));
     };
-    document.querySelectorAll('[data-profile-theme]').forEach(button => button.addEventListener('click', () => selectTheme(button.dataset.profileTheme)));
+    document.querySelectorAll('[data-profile-theme]').forEach(control => control.addEventListener('click', event => {
+      event.preventDefault();
+      selectTheme(control.dataset.profileTheme);
+    }));
     renderTownMetric(data, town, themeKey, metricKey, selectMetric);
     scrollActiveControl(document.querySelector('.theme-nav'));
   }
@@ -1505,8 +1508,8 @@
       ${extractiveTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${erpArrearsDetailMarkup(metric,row)}
-      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}
-      ${financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric)}
+      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}
+      ${townPilot ? `<section class="compare-post-benchmark-tools town-post-benchmark-tools">${financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric)}</section>` : (financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric))}
       ${townPilot ? `<div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>` : `<div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`}`;
 
     if (selectable) {
