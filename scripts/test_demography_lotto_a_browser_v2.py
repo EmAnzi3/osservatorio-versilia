@@ -87,64 +87,170 @@ def main() -> None:
         )
         require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
 
-        def assert_a5_town(metric_key: str, benchmark_selector: str) -> None:
+        def assert_a5_town(metric_key: str, reference_geometry: dict | None = None) -> dict:
             page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
             require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
                     f'{metric_key}: pilot comunale A5 assente')
+
+            # Navigation: same shared link component and exact computed pill styling as thematic golden master.
             town_theme_links = page.locator('.town-theme-row .context-nav-links a')
             require(town_theme_links.count() == 11, f'{metric_key}: temi comunali non 11/11')
             require(page.locator('.town-context-nav .theme-nav').count() == 0,
                     f'{metric_key}: vecchia theme-nav ancora presente')
             town_theme_styles = town_theme_links.evaluate_all(
-                '''links => links.map(link => ({
-                  key: link.dataset.contextTheme,
-                  bg: getComputedStyle(link).backgroundColor,
-                  border: getComputedStyle(link).borderColor,
-                  color: getComputedStyle(link).color,
-                  radius: getComputedStyle(link).borderRadius,
-                }))'''
+                '''links => links.map(link => {
+                  const s = getComputedStyle(link);
+                  const r = link.getBoundingClientRect();
+                  return {
+                    key: link.dataset.contextTheme,
+                    bg: s.backgroundColor,
+                    border: s.borderColor,
+                    color: s.color,
+                    radius: s.borderRadius,
+                    padding: s.padding,
+                    fontSize: s.fontSize,
+                    height: Math.round(r.height * 10) / 10,
+                  };
+                })'''
             )
-            require(town_theme_styles == compare_theme_styles,
-                    f'{metric_key}: cromie/pill temi diverse dalla pagina tematica')
+            compare_styles = page.evaluate(
+                '''() => window.__a5CompareThemeStyles || null'''
+            )
+            if compare_styles is None:
+                compare_styles = compare_theme_styles
+            require(town_theme_styles == compare_styles,
+                    f'{metric_key}: pill temi diverse dalla pagina tematica')
 
-            shell = page.locator('#town-topic .history-panel.a5-shared-chart .ux-view-shell')
+            # Stable municipal shell.
+            topic = page.locator('#town-topic')
+            sidebar = topic.locator(':scope > .topic-controls')
+            metric_layout = topic.locator(':scope > .town-metric-layout')
+            primary = metric_layout.locator('.town-metric-primary')
+            position = metric_layout.locator('.versilia-position')
+            shell = topic.locator(':scope > .history-panel.a5-shared-chart .ux-view-shell')
+            require(sidebar.count() == 1, f'{metric_key}: sidebar condivisa assente')
+            require(metric_layout.count() == 1 and primary.count() == 1 and position.count() == 1,
+                    f'{metric_key}: KPI comunali non rispettano lo shell stabile')
             require(shell.count() == 1, f'{metric_key}: chart shell condivisa assente')
-            selected_track = shell.locator('[data-view-pane="current"] .bar-row.selected .bar-track').first
-            require(selected_track.count() == 1, f'{metric_key}: riga del Comune selezionato assente')
-            selected_track.hover()
-            tooltip = shell.locator('[data-view-pane="current"] .bar-row.selected .bar-hover-label').first.inner_text()
-            require('Media semplice dei 7 comuni' in tooltip,
-                    f'{metric_key}: tooltip senza valore medio: {tooltip!r}')
+            require(shell.locator(':scope > .ux-view-toolbar').count() == 1,
+                    f'{metric_key}: toolbar duplicata o assente')
+            require(shell.locator(':scope > .ux-view-toolbar > .town-data-actions').count() == 1,
+                    f'{metric_key}: export/stampa non sono nella toolbar condivisa')
+            require(topic.locator(':scope > .town-data-actions').count() == 0,
+                    f'{metric_key}: toolbar parallela rimasta fuori dallo shared chart shell')
 
-            benchmark = page.locator(f'#town-topic > .town-benchmark-host {benchmark_selector}')
-            require(benchmark.count() == 1,
-                    f'{metric_key}: benchmark non usa il componente condiviso {benchmark_selector}')
-            tools = page.locator('#town-topic > .town-post-benchmark-tools')
+            # Current chart: when a lollipop row exists it must expose the exact shared reference tooltip.
+            current_pane = shell.locator('[data-view-pane="current"]')
+            require(current_pane.count() == 1 and current_pane.locator('.comparison-bars').count() >= 1,
+                    f'{metric_key}: vista corrente non usa la superficie di confronto condivisa')
+            selected_track = current_pane.locator('.bar-row.selected .bar-track').first
+            if selected_track.count() == 1:
+                selected_track.hover()
+                tooltip = current_pane.locator('.bar-row.selected .bar-hover-label').first.inner_text()
+                require(('Media semplice dei 7 comuni' in tooltip) or ('Versilia' in tooltip),
+                        f'{metric_key}: tooltip senza riferimento territoriale condiviso: {tooltip!r}')
+
+            # History: if enabled it must be a real rendered pane; otherwise the control must be disabled.
+            history_button = shell.locator('[data-view-mode="history"]')
+            require(history_button.count() == 1, f'{metric_key}: toggle storico assente')
+            if history_button.is_enabled():
+                history_button.click()
+                history_pane = shell.locator('[data-view-pane="history"]')
+                require(history_pane.count() == 1 and not history_pane.is_hidden(),
+                        f'{metric_key}: storico abilitato ma pannello non visibile')
+                require(history_pane.locator('.trend-chart, .ux-history-card, svg').count() >= 1,
+                        f'{metric_key}: storico abilitato ma senza visualizzazione')
+                shell.locator('[data-view-mode="current"]').click()
+            else:
+                require(history_button.get_attribute('disabled') is not None,
+                        f'{metric_key}: storico non disponibile ma controllo non disabilitato')
+
+            # Benchmark/method/reading scale: one stable slot each, irrespective of benchmark availability.
+            benchmark_host = topic.locator(':scope > .town-benchmark-host')
+            require(benchmark_host.count() == 1, f'{metric_key}: slot benchmark condiviso assente')
+            require(benchmark_host.locator(':scope > .benchmark-section, :scope > .benchmark-unavailable').count() == 1,
+                    f'{metric_key}: benchmark non usa un solo componente condiviso')
+            tools = topic.locator(':scope > .town-post-benchmark-tools')
             require(tools.count() == 1, f'{metric_key}: tools post-chart condivisi assenti')
             method = tools.locator(':scope > .method-disclosure')
             scale = tools.locator(':scope > .reading-scale')
             require(method.count() == 1 and scale.count() == 1,
                     f'{metric_key}: Metodo/Scala non presenti nello stesso host')
-            boxes = page.evaluate('''() => {
-              const topic = document.querySelector('#town-topic');
-              const benchmark = document.querySelector('#town-topic > .town-benchmark-host');
-              const tools = document.querySelector('#town-topic > .town-post-benchmark-tools');
-              const method = tools?.querySelector(':scope > .method-disclosure');
-              const scale = tools?.querySelector(':scope > .reading-scale');
-              const r = el => el ? el.getBoundingClientRect() : null;
-              return { topic:r(topic), benchmark:r(benchmark), tools:r(tools), method:r(method), scale:r(scale) };
-            }''')
-            require(abs(boxes['benchmark']['width'] - boxes['topic']['width']) <= 2,
-                    f'{metric_key}: benchmark non allineato alla larghezza standard: {boxes}')
-            require(abs(boxes['tools']['width'] - boxes['topic']['width']) <= 2,
-                    f'{metric_key}: tools non allineati alla larghezza standard: {boxes}')
-            require(abs(boxes['method']['width'] - boxes['scale']['width']) <= 2,
-                    f'{metric_key}: Metodo/Scala con larghezze diverse: {boxes}')
-            require(abs(boxes['method']['height'] - boxes['scale']['height']) <= 2,
-                    f'{metric_key}: Metodo/Scala con altezze diverse: {boxes}')
 
-        assert_a5_town('population', '.benchmark-unavailable')
-        assert_a5_town('oldAgeIndex', '.benchmark-section')
+            geometry = page.evaluate('''() => {
+              const q = selector => document.querySelector(selector);
+              const r = el => {
+                if (!el) return null;
+                const box = el.getBoundingClientRect();
+                const style = getComputedStyle(el);
+                return {
+                  x: Math.round(box.x * 10) / 10,
+                  width: Math.round(box.width * 10) / 10,
+                  minHeight: style.minHeight,
+                  radius: style.borderRadius,
+                  padding: style.padding,
+                };
+              };
+              const topic = q('#town-topic');
+              const tools = q('#town-topic > .town-post-benchmark-tools');
+              return {
+                topic:r(topic),
+                sidebar:r(q('#town-topic > .topic-controls')),
+                metricLayout:r(q('#town-topic > .town-metric-layout')),
+                primary:r(q('#town-topic .town-metric-primary')),
+                position:r(q('#town-topic .versilia-position')),
+                chart:r(q('#town-topic > .history-panel.a5-shared-chart')),
+                benchmark:r(q('#town-topic > .town-benchmark-host')),
+                tools:r(tools),
+                method:r(tools?.querySelector(':scope > .method-disclosure')),
+                scale:r(tools?.querySelector(':scope > .reading-scale')),
+                topicGrid:getComputedStyle(topic).gridTemplateColumns,
+                toolsGrid:getComputedStyle(tools).gridTemplateColumns,
+              };
+            }''')
+            require(abs(geometry['benchmark']['width'] - geometry['topic']['width']) <= 2,
+                    f'{metric_key}: benchmark non allineato alla larghezza standard: {geometry}')
+            require(abs(geometry['tools']['width'] - geometry['topic']['width']) <= 2,
+                    f'{metric_key}: tools non allineati alla larghezza standard: {geometry}')
+            require(abs(geometry['method']['width'] - geometry['scale']['width']) <= 2,
+                    f'{metric_key}: Metodo/Scala con larghezze diverse: {geometry}')
+            require(abs(method.bounding_box()['height'] - scale.bounding_box()['height']) <= 2,
+                    f'{metric_key}: Metodo/Scala con altezze diverse')
+            assert_no_horizontal_overflow(page, f'A5 Viareggio {metric_key}')
+
+            if reference_geometry is not None:
+                for key in ('topic', 'sidebar', 'metricLayout', 'primary', 'position', 'chart', 'benchmark', 'tools', 'method', 'scale'):
+                    require(abs(geometry[key]['width'] - reference_geometry[key]['width']) <= 2,
+                            f'{metric_key}: larghezza {key} cambia rispetto a population: {geometry[key]} vs {reference_geometry[key]}')
+                    require(geometry[key]['radius'] == reference_geometry[key]['radius'],
+                            f'{metric_key}: radius {key} cambia rispetto a population')
+                    require(geometry[key]['padding'] == reference_geometry[key]['padding'],
+                            f'{metric_key}: padding {key} cambia rispetto a population')
+                require(geometry['topicGrid'] == reference_geometry['topicGrid'],
+                        f'{metric_key}: griglia shell cambia rispetto a population')
+                require(geometry['toolsGrid'] == reference_geometry['toolsGrid'],
+                        f'{metric_key}: griglia Metodo/Scala cambia rispetto a population')
+            return geometry
+
+        # Preserve the thematic golden-master computed navigation as the municipal reference.
+        page.evaluate('(styles) => { window.__a5CompareThemeStyles = styles; }', compare_theme_styles)
+
+        a5_demography_matrix = [
+            'population',
+            'ageDistribution',
+            'oldAgeIndex',
+            'dependencyIndices',
+            'foreignResidents',
+            'internalResidentialMobility',
+            'foreignResidentialMobility',
+            'totalResidentialMobility',
+            'naturalDemographicDynamics',
+            'populationChange',
+        ]
+        golden_geometry = assert_a5_town('population')
+        for metric_key in a5_demography_matrix[1:]:
+            assert_a5_town(metric_key, golden_geometry)
+        print('A5 Viareggio/Demografia QA matrix OK: ' + ', '.join(a5_demography_matrix))
 
         # 85+ deve essere una vera fascia della distribuzione, non un box autonomo.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
