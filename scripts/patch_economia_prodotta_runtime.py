@@ -346,6 +346,14 @@ def patch_compare_and_town() -> None:
             """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
             """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
         ),
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+        ),
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+        ),
     )
     matched = [(old, new) for old, new in town_benchmark_variants if old in source]
     if len(matched) != 1:
