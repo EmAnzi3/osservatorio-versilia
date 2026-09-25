@@ -271,8 +271,15 @@ def patch_compare_and_town() -> None:
     source = replace_once(
         source,
         "    const chartScaleControls = controls;\n",
-        "    const economicScopeControls = isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : '';\n    const chartScaleControls = `${economicScopeControls}${controls || ''}`;\n",
+        "    const chartScaleControls = controls;\n    const economicScopeControls = isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : \'\';\n",
         "markup scope nel confronto",
+    )
+    source = replace_once_in_function(
+        source,
+        "renderCompareMetric",
+        "      bars.innerHTML = compositeType ? `<div class=\\\"topic-bars composite-topic-bars\\\">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class=\\\"topic-bars\\\">${chartScaleControls ? `<div class=\\\"compare-chart-toolbar scale-toolbar\\\">${chartScaleControls}</div>` : \'\'}<div class=\\\"comparison-bars\\\">${barRows(data,metricKey,{normalized})}</div></div>`;",
+        "      bars.innerHTML = compositeType ? `<div class=\\\"topic-bars composite-topic-bars\\\">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class=\\\"topic-bars\\\">${economicScopeControls}${chartScaleControls ? `<div class=\\\"compare-chart-toolbar scale-toolbar\\\">${chartScaleControls}</div>` : \'\'}<div class=\\\"comparison-bars\\\">${barRows(data,metricKey,{normalized})}</div></div>`;",
+        "selettore Frame SBS locale al pannello grafico",
     )
 
     scope_delegate_anchor = """    } else {
