@@ -147,6 +147,20 @@ def replace_once(source: str, old: str, new: str, label: str) -> str:
     return source.replace(old, new, 1)
 
 
+def replace_once_in_function(source: str, function_name: str, old: str, new: str, label: str) -> str:
+    marker = f"  function {function_name}("
+    start = source.find(marker)
+    if start < 0:
+        raise RuntimeError(f"{label}: funzione {function_name} non trovata")
+    end = source.find("\n  function ", start + len(marker))
+    if end < 0:
+        end = len(source)
+    block = source[start:end]
+    count = block.count(old)
+    if count != 1:
+        raise RuntimeError(f"{label}: attesa 1 occorrenza nel corpo di {function_name}, trovate {count}")
+    return source[:start] + block.replace(old, new, 1) + source[end:]
+
 def patch_runtime_helpers() -> None:
     source = RUNTIME_TARGET.read_text(encoding="utf-8")
     if MARKER in source:
@@ -231,10 +245,11 @@ def patch_visual_grammar() -> None:
 def patch_compare_and_town() -> None:
     source = COMPARE_TARGET.read_text(encoding="utf-8")
 
-    source = replace_once(
+    source = replace_once_in_function(
         source,
-        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const metric = data.metrics[metricKey];",
-        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
+        "renderCompareMetric",
+        "    const metric = data.metrics[metricKey];",
+        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
         "scope locale nel confronto",
     )
     source = replace_once(
