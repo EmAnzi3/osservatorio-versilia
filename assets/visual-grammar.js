@@ -561,7 +561,7 @@
       hoverLabel.className = 'bar-hover-label';
       const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
       const townValue = formatAxis(value, unit);
-      const showReferenceInTooltip = document.body.dataset.page === 'compare' && document.body.dataset.theme === 'demografia' && aggregate?.value !== null && aggregate?.value !== undefined;
+      const a5TownReferenceTooltip = document.body.dataset.page === 'town' && document.body.dataset.theme === 'demografia' && Boolean(document.querySelector('main.a5-town-pilot'));\n      const showReferenceInTooltip = (document.body.dataset.page === 'compare' && document.body.dataset.theme === 'demografia' || a5TownReferenceTooltip) && aggregate?.value !== null && aggregate?.value !== undefined;
       const referenceLabel = String(aggregate?.label || 'Versilia').replace(' dei 7 comuni','');
       hoverLabel.textContent = showReferenceInTooltip
         ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(aggregate.value, unit)}`

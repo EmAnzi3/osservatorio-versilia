@@ -2614,3 +2614,526 @@ main.a5-town-pilot .town-topic.a5-town-topic > [data-financial-profile-method] {
     grid-row:auto;
   }
 }
+
+
+/* A5.4 golden-master alignment — Viareggio / Demografia.
+   This is the canonical implementation of the approved Draft 19 geometry.
+   It reuses shared sidebar/chart/runtime components; no clone/fetch prototype code. */
+body[data-page="town"][data-town="viareggio"] {
+  --ds-canvas:#f7f2e8;
+  --ds-surface:#fffdfa;
+  --ds-surface-soft:#f4eee4;
+  --ds-surface-warm:#fbf6ef;
+  --ds-ink:#0f3550;
+  --ds-muted:#62747d;
+  --ds-border:#ded4c6;
+  --ds-border-strong:#c8bbab;
+  --ds-navy:#0d3c58;
+  --ds-shadow:0 8px 26px rgba(15,53,80,.065);
+  background:var(--ds-canvas);
+  color:var(--ds-ink);
+}
+body[data-page="town"][data-town="viareggio"] #app {
+  background:
+    radial-gradient(circle at 8% 16%,rgba(184,75,52,.035),transparent 30%),
+    linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
+}
+body[data-page="town"][data-town="viareggio"] main.town-profile {
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 0 64px !important;
+}
+body[data-page="town"][data-town="viareggio"] main.town-profile > .breadcrumbs,
+body[data-page="town"][data-town="viareggio"] main.town-profile > .town-brief,
+body[data-page="town"][data-town="viareggio"] main.town-profile > .town-context-nav,
+body[data-page="town"][data-town="viareggio"] main.town-profile > .town-topic,
+body[data-page="town"][data-town="viareggio"] main.town-profile > #town-context {
+  width:min(1320px,calc(100% - 54px));
+  margin-inline:auto;
+}
+body[data-page="town"][data-town="viareggio"] main.town-profile > .breadcrumbs {
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#78848a;
+  font-size:9px;
+}
+
+/* Approved municipal hero. */
+body[data-page="town"][data-town="viareggio"] .town-hero {
+  position:relative;
+  min-height:360px;
+  width:100%;
+  margin:0;
+  padding:26px max(27px,calc((100vw - 1320px)/2)) 34px;
+  display:block;
+  overflow:hidden;
+  border:0;
+  border-radius:0;
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.61) 38%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG") center 52%/cover no-repeat;
+  box-shadow:none;
+  color:#fff;
+}
+body[data-page="town"][data-town="viareggio"] .town-hero::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,24,37,.17) 0%,rgba(3,24,37,.04) 48%,rgba(3,24,37,.20) 100%);
+}
+body[data-page="town"][data-town="viareggio"] .town-hero-shell {
+  position:relative;
+  z-index:1;
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(330px,.88fr) minmax(620px,1.12fr);
+  gap:34px;
+  align-items:start;
+}
+body[data-page="town"][data-town="viareggio"] .town-identity {
+  position:relative;
+  z-index:1;
+  align-items:flex-start;
+  gap:18px;
+  padding-top:2px;
+}
+body[data-page="town"][data-town="viareggio"] .town-identity img {
+  width:74px;
+  height:74px;
+  flex:0 0 74px;
+  object-fit:contain;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:16px;
+  background:rgba(255,253,250,.92);
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+body[data-page="town"][data-town="viareggio"] .town-identity .overline {
+  margin-bottom:6px;
+  color:#ffd765;
+  font-size:8px;
+  letter-spacing:.13em;
+}
+body[data-page="town"][data-town="viareggio"] .town-identity h1 {
+  margin:0;
+  color:#fff;
+  font-size:clamp(48px,5.1vw,72px);
+  line-height:.94;
+  letter-spacing:-.055em;
+  text-shadow:0 2px 18px rgba(0,0,0,.16);
+}
+body[data-page="town"][data-town="viareggio"] .town-identity p {
+  max-width:590px;
+  margin:10px 0 0;
+  color:rgba(255,255,255,.90);
+  font-size:12px;
+  line-height:1.5;
+}
+body[data-page="town"][data-town="viareggio"] .town-headline-stats {
+  position:relative;
+  z-index:1;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:0;
+}
+body[data-page="town"][data-town="viareggio"] .town-headline-stats > div {
+  min-width:0;
+  min-height:96px;
+  padding:14px 14px 13px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:10px;
+  background:rgba(9,43,66,.66);
+  backdrop-filter:blur(9px);
+}
+body[data-page="town"][data-town="viareggio"] .town-headline-stats dt {
+  display:flex;
+  align-items:center;
+  gap:2px;
+  color:rgba(255,255,255,.72);
+  font-size:7px;
+  font-weight:720;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+body[data-page="town"][data-town="viareggio"] .town-headline-stats dd {
+  margin:7px 0 0;
+  color:#fff;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:21px;
+  font-weight:780;
+  letter-spacing:-.035em;
+}
+body[data-page="town"][data-town="viareggio"] .town-headline-stats small {
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,.79);
+  font-size:8px;
+  line-height:1.35;
+}
+body[data-page="town"][data-town="viareggio"] .town-stat-icon,
+body[data-page="town"][data-town="viareggio"] .town-brief-icon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#ffd765;
+}
+body[data-page="town"][data-town="viareggio"] .town-stat-icon {
+  width:24px;
+  height:24px;
+  margin-right:7px;
+}
+body[data-page="town"][data-town="viareggio"] .town-stat-icon svg,
+body[data-page="town"][data-town="viareggio"] .town-brief-icon svg {
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+body[data-page="town"][data-town="viareggio"] .town-stat-icon svg { width:22px; height:22px; }
+body[data-page="town"][data-town="viareggio"] .town-hero-photo-credit {
+  position:absolute;
+  z-index:2;
+  right:max(27px,calc((100vw - 1320px)/2));
+  bottom:14px;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(8,38,59,.78);
+  color:rgba(255,255,255,.86);
+  font-size:7px;
+}
+body[data-page="town"][data-town="viareggio"] .town-hero-photo-credit a { color:#fff; font-weight:700; }
+
+/* Approved synthesis cards. */
+body[data-page="town"][data-town="viareggio"] .town-brief {
+  display:grid;
+  grid-template-columns:1.1fr repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief > div,
+body[data-page="town"][data-town="viareggio"] .town-brief > article {
+  min-height:92px;
+  box-sizing:border-box;
+  border:1px solid var(--ds-border);
+  border-radius:10px;
+  background:var(--ds-surface);
+  padding:14px 16px;
+  box-shadow:none;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief > div {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border-left:3px solid var(--theme-accent);
+}
+body[data-page="town"][data-town="viareggio"] .town-brief .overline {
+  color:var(--theme-accent);
+  font-size:7px;
+  letter-spacing:.1em;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief h2 {
+  margin:4px 0 0;
+  color:var(--ds-ink);
+  font-size:19px;
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief > div p {
+  margin:7px 0 0;
+  color:#7b8588;
+  font-size:8px;
+  line-height:1.35;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief-head {
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief-icon {
+  width:20px;
+  height:20px;
+  flex:0 0 20px;
+  color:var(--theme-accent);
+}
+body[data-page="town"][data-town="viareggio"] .town-brief-icon svg { width:18px; height:18px; }
+body[data-page="town"][data-town="viareggio"] .town-brief article span {
+  color:#7b8588;
+  font-size:8px;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief article strong {
+  display:block;
+  margin:8px 0 2px;
+  color:var(--ds-ink);
+  font-size:14px;
+}
+body[data-page="town"][data-town="viareggio"] .town-brief article small {
+  color:#7b8588;
+  font-size:7.5px;
+}
+
+/* Municipal context navigation. */
+body[data-page="town"][data-town="viareggio"] .town-context-nav {
+  margin-top:10px;
+  border-block:1px solid rgba(222,212,198,.86);
+  background:rgba(251,248,242,.94);
+}
+body[data-page="town"][data-town="viareggio"] .town-context-nav .context-nav-row {
+  min-height:43px;
+  grid-template-columns:72px minmax(0,1fr);
+  gap:10px;
+  padding:5px 0 4px;
+  border-bottom:1px solid #ece3d7;
+}
+
+/* Main municipal workspace mirrors the thematic pilot geometry. */
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic {
+  display:grid;
+  grid-template-columns:270px minmax(0,1fr);
+  column-gap:14px;
+  row-gap:10px;
+  align-items:start;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic::before { display:none; }
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading {
+  grid-column:1 / -1;
+  min-height:64px;
+  margin:0;
+  padding:12px 14px;
+  align-items:center;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic-heading h2 {
+  margin:0;
+  color:var(--ds-ink);
+  font-size:23px;
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic-heading > a {
+  min-height:30px;
+  border-color:#d8cbbd;
+  border-radius:8px;
+  padding:6px 9px;
+  background:#fbf6ef;
+  color:var(--theme-accent);
+  font-size:7.5px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls {
+  grid-column:1;
+  grid-row:2 / span 2;
+  align-self:start;
+  min-width:0;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout {
+  grid-column:2;
+  grid-row:2;
+  grid-template-columns:minmax(0,1.55fr) minmax(260px,.65fr);
+  gap:10px;
+  margin:0;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-metric-primary,
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .versilia-position {
+  min-height:200px;
+  box-sizing:border-box;
+  border:1px solid var(--ds-border);
+  border-top:3px solid var(--theme-accent);
+  border-radius:11px;
+  padding:20px 22px;
+  background:var(--ds-surface) !important;
+  color:var(--ds-ink) !important;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-metric-primary > strong {
+  margin:12px 0 9px;
+  color:var(--ds-ink) !important;
+  font-size:clamp(42px,4.8vw,62px);
+  line-height:.95;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-metric-primary > p {
+  max-width:680px;
+  color:#67777d !important;
+  font-size:9px;
+  line-height:1.5;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-metric-primary > div:last-child {
+  margin-top:auto;
+  padding-top:12px;
+  border-top:1px solid #eee6da;
+  color:#7c898d !important;
+  font-size:7.5px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-metric-primary .inline-source-link {
+  color:var(--theme-accent) !important;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .versilia-position .overline {
+  color:var(--theme-accent);
+  font-size:7px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .versilia-position > strong {
+  margin:12px 0 8px;
+  color:var(--ds-ink) !important;
+  font-size:38px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .versilia-position strong small {
+  color:#7b8588 !important;
+  font-size:11px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .versilia-position > p {
+  color:#748086 !important;
+  font-size:8px;
+}
+
+/* Shared thematic chart shell, now truly shared instead of cloned. */
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+  grid-column:2;
+  grid-row:3;
+  min-width:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title { display:none; }
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected {
+  border-radius:10px;
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong {
+  color:var(--theme-accent);
+  font-weight:800;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  background:var(--theme-accent);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  border-color:var(--theme-soft);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
+}
+
+/* Post-chart blocks: same dimensions and two-column tool row as the thematic golden master. */
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark {
+  grid-column:1 / -1;
+  grid-row:4;
+  width:100%;
+  margin:0;
+  padding:48px;
+  border:1px solid var(--ds-border);
+  border-radius:24px;
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark h2 {
+  color:var(--ds-ink);
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale {
+  grid-column:1 / -1;
+  grid-row:5;
+  width:calc(50% - 4px);
+  min-height:58px;
+  box-sizing:border-box;
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-left:3px solid #b57a57;
+  border-radius:9px;
+  background:#fffdfa;
+  box-shadow:none;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure {
+  justify-self:start;
+  overflow:hidden;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure > summary {
+  min-height:58px;
+  box-sizing:border-box;
+  padding:9px 12px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure[open] {
+  width:100%;
+  grid-row:5 / span 2;
+  z-index:2;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale {
+  justify-self:end;
+  display:grid;
+  grid-template-columns:105px minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+  padding:9px 12px;
+}
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale p {
+  margin:0;
+  font-size:8px;
+  line-height:1.35;
+}
+
+/* The toolbar is the only home for export/print actions in the pilot. */
+body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions {
+  display:none;
+}
+
+@media (max-width:1000px) {
+  body[data-page="town"][data-town="viareggio"] .town-hero { min-height:430px; padding-top:24px; }
+  body[data-page="town"][data-town="viareggio"] .town-hero-shell { grid-template-columns:1fr; gap:18px; }
+  body[data-page="town"][data-town="viareggio"] .town-headline-stats { width:min(100%,760px); }
+}
+@media (max-width:900px) {
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic { grid-template-columns:1fr; }
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+  body[data-page="town"][data-town="viareggio"][data-theme="demografia"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale {
+    grid-column:1;
+    grid-row:auto;
+    width:100%;
+    justify-self:stretch;
+  }
+}
+@media (max-width:720px) {
+  body[data-page="town"][data-town="viareggio"] main.town-profile > .breadcrumbs,
+  body[data-page="town"][data-town="viareggio"] main.town-profile > .town-brief,
+  body[data-page="town"][data-town="viareggio"] main.town-profile > .town-context-nav,
+  body[data-page="town"][data-town="viareggio"] main.town-profile > .town-topic,
+  body[data-page="town"][data-town="viareggio"] main.town-profile > #town-context {
+    width:calc(100% - 28px);
+  }
+  body[data-page="town"][data-town="viareggio"] .town-hero {
+    min-height:560px;
+    padding:22px 14px 46px;
+    background-position:center 50%;
+  }
+  body[data-page="town"][data-town="viareggio"] .town-hero-shell { gap:16px; }
+  body[data-page="town"][data-town="viareggio"] .town-headline-stats { grid-template-columns:1fr; }
+  body[data-page="town"][data-town="viareggio"] .town-hero-photo-credit {
+    left:14px;
+    right:auto;
+    bottom:12px;
+  }
+  body[data-page="town"][data-town="viareggio"] .town-brief { grid-template-columns:1fr; }
+}

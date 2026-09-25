@@ -423,6 +423,15 @@
     return { ...series, rows:[...series.rows,{ town:'Versilia', slug:'versilia', color:'var(--ink)', map:new Map(), realMap:new Map(), values:series.years.map(year=>map.get(String(year))), realSeries:null }] };
   }
 
+  function townCurrentComparisonMarkup(data, selected, selectedTown, metric) {
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    const a5TownPilot = Boolean(document.querySelector('main.a5-town-pilot'));
+    if (a5TownPilot && !metric?.meta?.compositeType && typeof shared === 'function') {
+      return shared(data, selected.key, { selectedTown });
+    }
+    return toolkit.comparisonBarsMarkup(metric, selectedTown);
+  }
+
   function enhanceTown(data) {
     if (document.body.dataset.page !== 'town') return;
     const panel = document.querySelector('.history-panel');
@@ -471,7 +480,7 @@
       : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
     const viewMetric = compositeChoiceMetric(selected.metric, currentCompositeChoice());
-    const currentMarkup = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
+    const currentMarkup = townCurrentComparisonMarkup(data, selected, selectedTown, viewMetric);
     const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
     const note = historyAvailable && selected.metric?.meta?.key === 'incomeVsInflation'
       ? selected.metric.historyPresentation?.note
