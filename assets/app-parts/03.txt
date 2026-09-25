@@ -1213,13 +1213,32 @@
     if (document.body.dataset.page !== 'town') return;
     const main = document.querySelector('main.a5-town-pilot');
     if (!main) return;
-    const toolbar = main.querySelector('#town-topic .history-panel.a5-shared-chart > .ux-view-shell > .ux-view-toolbar');
+    const topic = main.querySelector('#town-topic');
+    const chart = topic?.querySelector(':scope > .history-panel.a5-shared-chart');
+    const toolbar = chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
     if (!toolbar) return;
+
+    /* A5.4 structural contract: chart -> benchmark -> method/scale -> optional context.
+       Do this after runtime enhancement so indicator-specific markup cannot reorder the shell. */
+    const benchmarkHost = topic.querySelector(':scope > .town-benchmark-host');
+    const toolsHost = topic.querySelector(':scope > .town-post-benchmark-tools');
+    if (chart && benchmarkHost && chart.nextElementSibling !== benchmarkHost) chart.after(benchmarkHost);
+    if (toolsHost) {
+      const toolsAnchor = benchmarkHost || chart;
+      if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
+    }
+    const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail');
+    if (fixedDetail) {
+      fixedDetail.classList.add('a5-town-extra-context');
+      const detailAnchor = toolsHost || benchmarkHost || chart;
+      if (detailAnchor) detailAnchor.after(fixedDetail);
+    }
+
     const copy = toolbar.querySelector('.ux-view-toolbar-copy');
     if (copy && !copy.querySelector('.a5-toolbar-overline')) {
       copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
     }
-    const actions = main.querySelector('#town-topic > .town-data-actions') || toolbar.querySelector(':scope > .town-data-actions');
+    const actions = topic.querySelector(':scope > .town-data-actions') || toolbar.querySelector(':scope > .town-data-actions');
     const toggle = toolbar.querySelector('.ux-view-toggle');
     if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions, toggle || null);
   }

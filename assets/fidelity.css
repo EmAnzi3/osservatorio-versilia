@@ -3152,3 +3152,73 @@ body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post
   width:100%;
   margin:0;
 }
+
+
+/* A5.4 responsive invariant contract.
+   One mobile/tablet shell for every Demografia indicator: no fixed grid rows,
+   no two-column KPI squeeze, and optional context always follows the shared tools. */
+body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .a5-town-extra-context {
+  grid-column:1 / -1;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+@media (max-width:900px) {
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic {
+    grid-template-columns:minmax(0,1fr);
+  }
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools,
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .a5-town-extra-context {
+    grid-column:1 / -1;
+    grid-row:auto;
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout {
+    grid-template-columns:minmax(0,1fr);
+  }
+  body[data-page="town"] main.a5-town-pilot .town-metric-primary,
+  body[data-page="town"] main.a5-town-pilot .versilia-position,
+  body[data-page="town"] main.a5-town-pilot .a5-benchmark-host > *,
+  body[data-page="town"] main.a5-town-pilot .compare-post-benchmark-tools > * {
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  body[data-page="town"] main.a5-town-pilot .a5-benchmark-host h2,
+  body[data-page="town"] main.a5-town-pilot .a5-benchmark-host p,
+  body[data-page="town"] main.a5-town-pilot .compare-post-benchmark-tools p {
+    max-width:100%;
+    overflow-wrap:anywhere;
+  }
+}
+@media (max-width:720px) {
+  body[data-page="town"] main.a5-town-pilot .town-topic-heading {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:8px;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-topic-heading > a {
+    justify-self:start;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-metric-primary,
+  body[data-page="town"] main.a5-town-pilot .versilia-position {
+    min-height:0;
+    padding:16px 18px;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-metric-primary > strong {
+    font-size:clamp(38px,13vw,50px);
+  }
+  body[data-page="town"] main.a5-town-pilot .versilia-position > strong {
+    font-size:clamp(30px,11vw,38px);
+  }
+  body[data-page="town"] main.a5-town-pilot .compare-post-benchmark-tools > .reading-scale {
+    grid-template-columns:minmax(0,1fr);
+    gap:6px;
+  }
+}

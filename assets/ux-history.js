@@ -399,14 +399,14 @@
     return clone;
   }
 
-  function refreshTownCompositeCurrent(metric, shell, selectedTown, choice) {
+  function refreshTownCompositeCurrent(data, metric, shell, selectedTown, choice) {
     if (!shell || !['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return;
     const currentPane = shell.querySelector('[data-view-pane="current"]');
     if (!currentPane) return;
     const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
     if (currentPane.dataset.compositeChoice === resolvedChoice) return;
     const viewMetric = compositeChoiceMetric(metric, resolvedChoice);
-    currentPane.innerHTML = toolkit.comparisonBarsMarkup(viewMetric, selectedTown);
+    currentPane.innerHTML = townCurrentComparisonMarkup(data, { key:metric.meta.key }, selectedTown, viewMetric);
     currentPane.dataset.compositeChoice = resolvedChoice;
   }
 
@@ -426,8 +426,12 @@
   function townCurrentComparisonMarkup(data, selected, selectedTown, metric) {
     const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
     const a5TownPilot = Boolean(document.querySelector('main.a5-town-pilot'));
-    if (a5TownPilot && !metric?.meta?.compositeType && typeof shared === 'function') {
-      return shared(data, selected.key, { selectedTown });
+    if (a5TownPilot && typeof shared === 'function') {
+      const sharedMetric = {
+        ...metric,
+        meta:{ ...metric.meta, compositeType:null }
+      };
+      return shared(data, selected.key, { selectedTown, metric:sharedMetric });
     }
     return toolkit.comparisonBarsMarkup(metric, selectedTown);
   }
@@ -467,7 +471,7 @@
     }
     if (existingShell) {
       wireShell(existingShell, 'ov-town-view', selectedTown, false);
-      refreshTownCompositeCurrent(selected.metric, existingShell, selectedTown, currentCompositeChoice());
+      refreshTownCompositeCurrent(data, selected.metric, existingShell, selectedTown, currentCompositeChoice());
       return;
     }
 
@@ -521,7 +525,7 @@
       const shell = document.querySelector('.history-panel .ux-view-shell');
       if (!metric || !shell) return;
       const choice = event.detail?.choice || 'summary';
-      refreshTownCompositeCurrent(metric, shell, document.body.dataset.town || '', choice);
+      refreshTownCompositeCurrent(data, metric, shell, document.body.dataset.town || '', choice);
       if (metric.meta?.compositeType === 'sexBreakdown') {
         const selectedTown = document.body.dataset.town || '';
         const historyView = historyMetric(compositeChoiceMetric(metric, choice));

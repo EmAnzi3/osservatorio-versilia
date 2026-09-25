@@ -38,7 +38,10 @@
   }
 
   function a5ComparisonTopicMarkup(data, metricKey, options = {}) {
-    return `<div class="topic-bars"><div class="comparison-bars">${barRows(data, metricKey, options)}</div></div>`;
+    const renderData = options.metric
+      ? { ...data, metrics:{ ...data.metrics, [metricKey]:options.metric } }
+      : data;
+    return `<div class="topic-bars"><div class="comparison-bars">${barRows(renderData, metricKey, options)}</div></div>`;
   }
 
   window.OVSharedRenderers = Object.assign(window.OVSharedRenderers || {}, {

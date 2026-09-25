@@ -258,6 +258,86 @@ def main() -> None:
             assert_a5_town(metric_key, golden_geometry)
         print('A5 Viareggio/Demografia QA matrix OK: ' + ', '.join(a5_demography_matrix))
 
+        def assert_a5_town_responsive(metric_key: str, width: int, height: int) -> None:
+            page.set_viewport_size({'width': width, 'height': height})
+            page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            layout = page.evaluate('''() => {
+              const q = selector => document.querySelector(selector);
+              const rect = el => {
+                if (!el) return null;
+                const r = el.getBoundingClientRect();
+                return {
+                  x:Math.round(r.x * 10) / 10,
+                  top:Math.round(r.top * 10) / 10,
+                  bottom:Math.round(r.bottom * 10) / 10,
+                  width:Math.round(r.width * 10) / 10,
+                  clientWidth:el.clientWidth,
+                  scrollWidth:el.scrollWidth,
+                };
+              };
+              const topic = q('#town-topic');
+              const sidebar = q('#town-topic > .topic-controls');
+              const metric = q('#town-topic > .town-metric-layout');
+              const primary = q('#town-topic .town-metric-primary');
+              const position = q('#town-topic .versilia-position');
+              const chart = q('#town-topic > .history-panel.a5-shared-chart');
+              const benchmark = q('#town-topic > .town-benchmark-host');
+              const tools = q('#town-topic > .town-post-benchmark-tools');
+              const children = [...topic.children];
+              const directExtras = [...topic.children].filter(el =>
+                el.classList.contains('a5-town-extra-context') ||
+                el.classList.contains('detail-disclosure') ||
+                el.classList.contains('topic-deep-dive')
+              );
+              const columns = el => getComputedStyle(el).gridTemplateColumns.trim().split(/\\s+/).filter(Boolean).length;
+              return {
+                topicColumns:columns(topic),
+                metricColumns:columns(metric),
+                sidebar:rect(sidebar),
+                metric:rect(metric),
+                primary:rect(primary),
+                position:rect(position),
+                chart:rect(chart),
+                benchmark:rect(benchmark),
+                tools:rect(tools),
+                order:[children.indexOf(chart), children.indexOf(benchmark), children.indexOf(tools)],
+                extraBeforeTools:directExtras.some(el => children.indexOf(el) > -1 && children.indexOf(el) < children.indexOf(tools)),
+                fixedDetailInsideChart:Boolean(chart?.querySelector(':scope > .composite-fixed-detail')),
+                overflow:[
+                  ['primary',primary],['position',position],['benchmark',benchmark],['tools',tools]
+                ].filter(([,el]) => el && el.scrollWidth > el.clientWidth + 2).map(([name]) => name),
+              };
+            }''')
+            require(layout['topicColumns'] == 1, f'{metric_key}@{width}: shell comunale non monocolonna: {layout}')
+            require(layout['metricColumns'] == 1, f'{metric_key}@{width}: KPI/Versilia ancora affiancati: {layout}')
+            require(abs(layout['primary']['width'] - layout['metric']['width']) <= 2,
+                    f'{metric_key}@{width}: KPI primario non occupa la colonna: {layout}')
+            require(abs(layout['position']['width'] - layout['metric']['width']) <= 2,
+                    f'{metric_key}@{width}: KPI Versilia non occupa la colonna: {layout}')
+            require(layout['metric']['top'] >= layout['sidebar']['bottom'] - 2,
+                    f'{metric_key}@{width}: KPI sovrapposto alla sidebar: {layout}')
+            require(layout['chart']['top'] >= layout['metric']['bottom'] - 2,
+                    f'{metric_key}@{width}: grafico fuori ordine dopo i KPI: {layout}')
+            require(layout['benchmark']['top'] >= layout['chart']['bottom'] - 2,
+                    f'{metric_key}@{width}: benchmark precede il grafico: {layout}')
+            require(layout['tools']['top'] >= layout['benchmark']['bottom'] - 2,
+                    f'{metric_key}@{width}: Metodo/Scala precedono il benchmark: {layout}')
+            require(layout['order'][0] < layout['order'][1] < layout['order'][2],
+                    f'{metric_key}@{width}: ordine DOM chart/benchmark/tools non canonico: {layout}')
+            require(not layout['extraBeforeTools'],
+                    f'{metric_key}@{width}: contenuto opzionale inserito prima di Metodo/Scala: {layout}')
+            require(not layout['fixedDetailInsideChart'],
+                    f'{metric_key}@{width}: dettaglio composito ancora dentro lo shared chart shell')
+            require(not layout['overflow'],
+                    f'{metric_key}@{width}: testo/contenuto esce dai box {layout["overflow"]}')
+            assert_no_horizontal_overflow(page, f'A5 Viareggio {metric_key} responsive {width}px')
+
+        for viewport in ((768, 1024), (390, 844)):
+            for metric_key in a5_demography_matrix:
+                assert_a5_town_responsive(metric_key, *viewport)
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5 Viareggio responsive QA OK: 10/10 indicatori a 768px e 390px')
+
         # 85+ deve essere una vera fascia della distribuzione, non un box autonomo.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
         require(page.get_by_text('Distribuzione per fasce d’età', exact=True).count() >= 1,
