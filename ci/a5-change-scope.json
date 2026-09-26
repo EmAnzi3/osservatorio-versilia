@@ -1,0 +1,13 @@
+{
+  "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
+  "purpose": "Ripristino stati attivi delle schede comunali golden e introduzione dei lock anti-regressione",
+  "allowed_paths": [
+    "assets/fidelity.css",
+    "scripts/test_demography_lotto_a_browser_v2.py",
+    "scripts/test_a5_municipal_golden_lock.py",
+    ".github/workflows/a5-municipal-golden-lock.yml",
+    "ci/a5-change-scope.json",
+    "scripts/test_a5_change_scope.py",
+    ".github/workflows/a5-change-scope.yml"
+  ]
+}
