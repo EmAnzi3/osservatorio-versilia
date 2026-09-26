@@ -1304,7 +1304,7 @@
     return data.towns.find(t => normalize(t.name).replaceAll(' ', '-') === slug);
   }
 
-  const A5_TOWN_PILOT = Object.freeze({ town:'viareggio', theme:'demografia' });
+  const A5_TOWN_PILOT = Object.freeze({ towns:new Set(['viareggio','massarosa']), theme:'demografia' });
   const DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS = new Set([
     'internalResidentialMobility',
     'foreignResidentialMobility',
@@ -1312,7 +1312,8 @@
   ]);
 
   function isA5TownPilot(town, themeKey) {
-    return normalize(town?.name || '').replaceAll(' ', '-') === A5_TOWN_PILOT.town && themeKey === A5_TOWN_PILOT.theme;
+    const slug = normalize(town?.name || '').replaceAll(' ', '-');
+    return A5_TOWN_PILOT.towns.has(slug) && themeKey === A5_TOWN_PILOT.theme;
   }
 
   function syncA5TownPilotClass(main, town, themeKey) {
@@ -1328,6 +1329,9 @@
       institutionYear: '1820',
       heroCredit: 'Sailko / Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Viareggio,_passeggiata_a_mare_2.JPG'
+    },
+    massarosa: {
+      institutionYear: '1869'
     }
   });
 

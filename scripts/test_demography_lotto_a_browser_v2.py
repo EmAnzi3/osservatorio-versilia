@@ -118,8 +118,8 @@ def main() -> None:
         require(compare_control_styles['root'] is not None and compare_control_styles['select'] is not None,
                 'A5 compare: riferimento cromatico controlli non disponibile')
 
-        def assert_a5_town(metric_key: str, reference_geometry: dict | None = None) -> dict:
-            page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+        def assert_a5_town(metric_key: str, reference_geometry: dict | None = None, town_slug: str = 'viareggio') -> dict:
+            page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
             require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
                     f'{metric_key}: pilot comunale A5 assente')
 
@@ -300,7 +300,7 @@ def main() -> None:
                     f'{metric_key}: Metodo/Scala con larghezze diverse: {geometry}')
             require(abs(method.bounding_box()['height'] - scale.bounding_box()['height']) <= 2,
                     f'{metric_key}: Metodo/Scala con altezze diverse')
-            assert_no_horizontal_overflow(page, f'A5 Viareggio {metric_key}')
+            assert_no_horizontal_overflow(page, f'A5 {town_slug} {metric_key}')
 
             if reference_geometry is not None:
                 for key in ('topic', 'sidebar', 'metricLayout', 'primary', 'position', 'chart', 'benchmark', 'tools', 'method', 'scale'):
@@ -335,9 +335,20 @@ def main() -> None:
             assert_a5_town(metric_key, golden_geometry)
         print('A5 Viareggio/Demografia QA matrix OK: ' + ', '.join(a5_demography_matrix))
 
-        def assert_a5_town_responsive(metric_key: str, width: int, height: int) -> None:
+        # Second-town proof: the approved Viareggio shell must be data-driven, not Viareggio-specific.
+        for metric_key in a5_demography_matrix:
+            assert_a5_town(metric_key, golden_geometry, 'massarosa')
+        page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=population'), wait_until='networkidle')
+        require(page.locator('.town-hero-shell').count() == 1, 'Massarosa: hero A5 condiviso assente')
+        require(page.locator('.town-headline-stats > div').count() == 3, 'Massarosa: headline stats non 3/3')
+        require(page.locator('.town-brief > article').count() == 3, 'Massarosa: sintesi non 3/3')
+        require('1869' in page.locator('.town-headline-stats').inner_text(),
+                'Massarosa: anno di istituzione 1869 assente dal profilo A5')
+        print('A5 Massarosa/Demografia second-town proof OK: 10/10 indicatori')
+
+        def assert_a5_town_responsive(metric_key: str, width: int, height: int, town_slug: str = 'viareggio') -> None:
             page.set_viewport_size({'width': width, 'height': height})
-            page.goto(urljoin(args.base, f'comuni/viareggio/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
             layout = page.evaluate('''() => {
               const q = selector => document.querySelector(selector);
               const rect = el => {
@@ -409,13 +420,23 @@ def main() -> None:
                     f'{metric_key}@{width}: dettaglio composito ancora dentro lo shared chart shell')
             require(not layout['overflow'],
                     f'{metric_key}@{width}: testo/contenuto esce dai box {layout["overflow"]}')
-            assert_no_horizontal_overflow(page, f'A5 Viareggio {metric_key} responsive {width}px')
+            assert_no_horizontal_overflow(page, f'A5 {town_slug} {metric_key} responsive {width}px')
 
         for viewport in ((768, 1024), (390, 844)):
             for metric_key in a5_demography_matrix:
                 assert_a5_town_responsive(metric_key, *viewport)
+        massarosa_responsive_probe = (
+            'population',
+            'ageDistribution',
+            'foreignResidents',
+            'foreignResidentialMobility',
+        )
+        for viewport in ((768, 1024), (390, 844)):
+            for metric_key in massarosa_responsive_probe:
+                assert_a5_town_responsive(metric_key, *viewport, town_slug='massarosa')
         page.set_viewport_size({'width': 1440, 'height': 1100})
         print('A5 Viareggio responsive QA OK: 10/10 indicatori a 768px e 390px')
+        print('A5 Massarosa responsive proof OK: scalar/distribution/stock/mobility a 768px e 390px')
 
         # 85+ deve essere una vera fascia della distribuzione, non un box autonomo.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
