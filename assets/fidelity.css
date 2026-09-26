@@ -2050,6 +2050,11 @@ main.a5-editorial-pilot .a5-special-route-actions > a:hover {
   border-color:var(--ds-theme-accent);
   color:var(--ds-theme-accent);
 }
+main.a5-editorial-pilot .compare-post-benchmark-tools > .data-actions {
+  grid-column:1 / -1;
+  justify-self:end;
+  margin:0;
+}
 
 /* 5. Territory cards: fixed photo crop + current selected value. */
 main.a5-editorial-pilot .topic-town-card {

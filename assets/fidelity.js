@@ -136,16 +136,30 @@
     });
   }
 
+  const A5_TOOLS_ACTION_METRICS = new Set([
+    'bathingWaterQuality',
+    'bathingNonCompliantSamples',
+    'blueFlagBeaches',
+    'shorelineDynamics',
+    'rigidDefenceProtectedCoast'
+  ]);
+
   function syncA5CompareSpecialRouteActions() {
     if (document.body.dataset.page !== 'compare') return;
     const main=document.querySelector('main.a5-editorial-pilot');
     const tools=document.getElementById('compare-tools');
-    if (!main || !tools) return;
+    const heading=document.querySelector('.compare-main-column > .compare-panel-heading');
+    if (!main || !tools || !heading) return;
 
     const activeMetric=document.querySelector('.topic-controls [data-metric].active, .topic-controls [data-metric][aria-selected="true"]');
     const metricKey=activeMetric?.dataset.metric || '';
     const slowMobility=metricKey.startsWith('slowMobility');
     const existing=tools.querySelector(':scope > .a5-special-route-actions');
+
+    if (A5_TOOLS_ACTION_METRICS.has(metricKey)) {
+      const actions=heading.querySelector(':scope > .data-actions');
+      if (actions) tools.append(actions);
+    }
 
     if (!slowMobility) {
       existing?.remove();

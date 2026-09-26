@@ -300,6 +300,12 @@ def main() -> None:
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia contestuale assente')
                     require(page.locator('.compare-panel-heading .data-actions a[href*="percorsi/"]').count() == 0,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata nella toolbar')
+                if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
+                                  'shorelineDynamics','rigidDefenceProtectedCoast'):
+                    require(page.locator('#compare-tools > .data-actions [data-download]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: export costiero fuori dal tools host')
+                    require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
+                            f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere duplicate nella toolbar')
                 assert_no_horizontal_overflow(
                     page,
                     f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'
