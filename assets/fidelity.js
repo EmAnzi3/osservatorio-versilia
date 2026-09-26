@@ -167,18 +167,19 @@
       return;
     }
 
+    existing?.remove();
+    const actions=heading.querySelector(':scope > .data-actions')
+      || document.querySelector('#compare-bars .ux-view-toolbar > .data-actions');
+    if (!actions) return;
+
     document.querySelectorAll(
-      '.compare-panel-heading .data-actions a[href*="/percorsi/"], #compare-bars .ux-view-toolbar a[href*="/percorsi/"], #compare-tools > .data-actions a[href*="/percorsi/"]'
+      '.compare-panel-heading .data-actions a[href*="/percorsi/"], #compare-bars .ux-view-toolbar a[href*="/percorsi/"], #compare-tools a[href*="/percorsi/"]'
     ).forEach(link => link.remove());
 
-    if (existing) return;
-    const host=document.createElement('div');
-    host.className='a5-special-route-actions';
     const link=document.createElement('a');
     link.href=new URL('../percorsi/',SCRIPT_URL).href;
     link.innerHTML='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18 3.8 20.3A1 1 0 0 1 2.4 19.4V6.2a1 1 0 0 1 .6-.9L9 2.7m0 15.3 6 3.3m-6-3.3V2.7m6 18.6 6-2.7a1 1 0 0 0 .6-.9V4.5a1 1 0 0 0-1.4-.9L15 6m0 15.3V6m0 0L9 2.7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Esplora la cartografia</span>';
-    host.append(link);
-    tools.append(host);
+    actions.append(link);
   }
 
   function enhanceCharts(root = document) {

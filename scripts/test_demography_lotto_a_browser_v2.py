@@ -360,15 +360,18 @@ def main() -> None:
                                 'A5.5 bulk bilanci/financialDebtProfile: storico non segue la lettura selezionata')
                         page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key.startswith('slowMobility'):
-                    map_link = page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]')
+                    map_link = page.locator(
+                        '.compare-panel-heading .data-actions a[href*="percorsi/"], '
+                        '#compare-bars .ux-view-toolbar .data-actions a[href*="percorsi/"]'
+                    )
                     require(map_link.count() == 1,
-                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia contestuale assente')
-                    require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia non affiancata a export/stampa')
+                    require(page.locator('a[href*="percorsi/"]').count() == 1,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata')
                     require(map_link.locator('svg').count() == 1 and map_link.locator('svg').is_visible(),
                             f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente o invisibile')
-                    require(page.locator('.compare-panel-heading .data-actions a[href*="percorsi/"]').count() == 0,
-                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata nella toolbar')
+                    require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 0,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia spostata fuori dalla toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
                                   'shorelineDynamics','rigidDefenceProtectedCoast'):
                     require(page.locator('#compare-tools > .data-actions [data-download]').count() == 1,
