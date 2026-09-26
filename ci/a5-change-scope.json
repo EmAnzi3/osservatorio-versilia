@@ -8,6 +8,7 @@
     ".github/workflows/a5-municipal-golden-lock.yml",
     "ci/a5-change-scope.json",
     "scripts/test_a5_change_scope.py",
-    ".github/workflows/a5-change-scope.yml"
+    ".github/workflows/a5-change-scope.yml",
+    "ci/workflow-contract.json"
   ]
 }
