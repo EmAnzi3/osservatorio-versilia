@@ -1033,8 +1033,8 @@
 }
 
 /* Parametric DS2 theme roles. These aliases are inert outside A5 consumers. */
-body[data-theme="demografia"]{--ds-theme-accent:#b84b34;--ds-theme-dark:#963925;--ds-theme-soft:#fbe9e3;--ds-theme-line:#efc9be}
-body[data-theme="economia"]{--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1}
+body[data-theme="demografia"]{--ds-theme-accent:#b84b34;--ds-theme-dark:#963925;--ds-theme-soft:#fbe9e3;--ds-theme-line:#efc9be;--ds-theme-hover-soft:#fbf1ec;--ds-theme-control-label:#8b493a;--ds-theme-control-border:#d9b1a4;--ds-theme-control-bg:#fffaf7;--ds-theme-control-hover:#fbefea;--ds-theme-focus:rgba(184,75,52,.22);--ds-theme-glow:rgba(184,75,52,.035);--ds-theme-card-glow:rgba(184,75,52,.05)}
+body[data-theme="economia"]{--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1;--ds-theme-hover-soft:#eef6f1;--ds-theme-control-label:#39795d;--ds-theme-control-border:#c8ddd1;--ds-theme-control-bg:#f8fcf9;--ds-theme-control-hover:#eef6f1;--ds-theme-focus:rgba(57,121,93,.22);--ds-theme-glow:rgba(57,121,93,.035);--ds-theme-card-glow:rgba(57,121,93,.05)}
 body[data-theme="lavoro"]{--ds-theme-accent:#9b6818;--ds-theme-dark:#7e5311;--ds-theme-soft:#fff9eb;--ds-theme-line:#ead5a7}
 body[data-theme="istruzione"]{--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;--ds-theme-soft:#f8f5fc;--ds-theme-line:#d8cfeb}
 body[data-theme="salute"]{--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
@@ -1051,7 +1051,7 @@ body[data-page="compare"]:has(main.a5-editorial-pilot) {
 }
 body[data-page="compare"]:has(main.a5-editorial-pilot) #app {
   background:
-    radial-gradient(circle at 8% 20%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
+    radial-gradient(circle at 8% 20%,var(--ds-theme-glow,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent)),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 42%,#f9f5ee 100%);
 }
 body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width {
@@ -1419,7 +1419,7 @@ main.a5-editorial-pilot .topic-controls .metric-group-buttons button {
   text-align:left;
 }
 main.a5-editorial-pilot .topic-controls .metric-group-buttons button:hover {
-  background:var(--ds-theme-soft);
+  background:var(--ds-theme-hover-soft,var(--ds-theme-soft));
   color:var(--ds-theme-dark);
 }
 main.a5-editorial-pilot .topic-controls .metric-group-buttons button.active {
@@ -1730,7 +1730,7 @@ main.a5-editorial-pilot .topic-town-card-media {
   display:grid;
   place-items:center;
   background:
-    linear-gradient(135deg,rgba(15,60,88,.05),color-mix(in srgb,var(--ds-theme-accent) 5%,transparent)),
+    linear-gradient(135deg,rgba(15,60,88,.05),var(--ds-theme-card-glow,color-mix(in srgb,var(--ds-theme-accent) 5%,transparent))),
     #f1ece4;
 }
 main.a5-editorial-pilot .topic-town-card-media img {
@@ -1928,16 +1928,16 @@ main.a5-editorial-pilot .compare-chart-toolbar .compare-view-controls {
 }
 main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select > span,
 main.a5-editorial-pilot .compare-chart-toolbar .compare-view-label {
-  color:#8b493a;
+  color:var(--ds-theme-control-label,var(--ds-theme-dark));
 }
 main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select {
-  border-color:#d9b1a4;
-  background:#fffaf7;
+  border-color:var(--ds-theme-control-border,var(--ds-theme-line));
+  background:var(--ds-theme-control-bg,var(--ds-theme-soft));
   color:var(--ds-theme-dark);
 }
 main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select:focus {
   border-color:var(--ds-theme-accent);
-  outline-color:rgba(184,75,52,.22);
+  outline-color:var(--ds-theme-focus,rgba(22,132,184,.52));
 }
 
 /* 3. Export/actions: compact toolbar inside the existing chart heading. */
@@ -2514,24 +2514,24 @@ main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong::before
 /* Modifica 05 — coerenza di tutti gli switch di lettura/unità nel grafico Demografia:
    stesso linguaggio visivo già approvato per Mobilità residenziale interna. */
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch {
-  border: 1px solid #d9b1a4;
-  border-radius: 10px;
-  background: #fffaf7;
-  padding: 3px;
-  box-shadow: none;
+  border:1px solid var(--ds-theme-control-border,var(--ds-theme-line));
+  border-radius:10px;
+  background:var(--ds-theme-control-bg,var(--ds-theme-soft));
+  padding:3px;
+  box-shadow:none;
 }
 
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button {
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: #8b493a;
-  box-shadow: none;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:var(--ds-theme-control-label,var(--ds-theme-dark));
+  box-shadow:none;
 }
 
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button:hover:not(.active) {
-  background: #fbefea;
-  color: var(--ds-theme-dark);
+  background:var(--ds-theme-control-hover,var(--ds-theme-soft));
+  color:var(--ds-theme-dark);
 }
 
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
@@ -2646,7 +2646,7 @@ body[data-page="town"]:has(main.a5-town-pilot) {
 }
 body[data-page="town"]:has(main.a5-town-pilot) #app {
   background:
-    radial-gradient(circle at 8% 16%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
+    radial-gradient(circle at 8% 16%,rgba(184,75,52,.035),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
 }
 body[data-page="town"]:has(main.a5-town-pilot) main.town-profile {
