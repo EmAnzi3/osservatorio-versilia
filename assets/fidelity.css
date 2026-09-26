@@ -3187,6 +3187,17 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual > .topic-bars 
 body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-chart-toolbar {
   padding:12px 14px 0;
 }
+
+/* A5.4 final visual alignment: keep town labels clear of the selected-row inset
+   and lift graph controls without changing their shared DS2 geometry. */
+body[data-page="town"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-town,
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-town-link {
+  padding-inline-start:6px;
+  box-sizing:border-box;
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-chart-toolbar .compare-view-controls {
+  transform:translateY(-6px);
+}
 body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-topic-bars {
   padding:12px 14px 14px;
 }
