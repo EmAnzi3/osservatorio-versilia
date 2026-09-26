@@ -330,10 +330,34 @@ def main() -> None:
                     require(history_button.count() == 1 and not history_button.is_disabled(),
                             'A5.5 bulk mobilita/fuelPrices: storico carburanti non disponibile')
                     history_button.click()
-                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-card').is_visible(),
+                    history_pane = page.locator('#compare-bars [data-view-pane="history"]')
+                    require(history_pane.locator('.ux-history-card').is_visible(),
                             'A5.5 bulk mobilita/fuelPrices: storico carburanti non visibile')
-                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-legend button').count() == 6,
+                    require(history_pane.locator('.ux-history-legend button').count() == 6,
                             'A5.5 bulk mobilita/fuelPrices: storico deve contenere i 6 Comuni con impianti')
+                    require(history_pane.locator('[data-history-town] .chart-point').count() == 6 * 54,
+                            'A5.5 bulk mobilita/fuelPrices: attesi 54 mesi per ciascuno dei 6 Comuni')
+                    massarosa_points = history_pane.locator('[data-history-town="massarosa"] .chart-point')
+                    require(massarosa_points.count() == 54,
+                            'A5.5 bulk mobilita/fuelPrices: serie Massarosa non contiene 54 mesi')
+                    require('2022-01' in (massarosa_points.first.get_attribute('aria-label') or '')
+                            and '1,764 €/l' in (massarosa_points.first.get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: primo valore mensile benzina non coerente')
+                    require('2026-06' in (massarosa_points.nth(53).get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: ultimo mese atteso 2026-06 assente')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                    selector = page.locator('#compare-bars select[data-composite-component]:visible').first
+                    require(selector.count() == 1 and selector.locator('option').count() >= 2,
+                            'A5.5 bulk mobilita/fuelPrices: selettore Benzina/Gasolio assente')
+                    selector.select_option(index=1)
+                    page.wait_for_timeout(220)
+                    page.locator('#compare-bars [data-view-mode="history"]').first.click()
+                    gasolio_pane = page.locator('#compare-bars [data-view-pane="history"]')
+                    require(gasolio_pane.locator('svg[aria-label*="Gasolio self"]').count() == 1,
+                            'A5.5 bulk mobilita/fuelPrices: lo storico non segue il selettore Gasolio self')
+                    gasolio_massarosa = gasolio_pane.locator('[data-history-town="massarosa"] .chart-point').first
+                    require('1,637 €/l' in (gasolio_massarosa.get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: primo valore mensile gasolio non coerente')
                     page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key == 'financialDebtProfile':
                     require(page.locator('#compare-bars .ux-view-toggle [data-view-mode]').count() == 2,

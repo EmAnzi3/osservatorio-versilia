@@ -3,7 +3,7 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260903-v129-salute-finanziaria-selector';
+  const HOTFIX_VERSION = '20260926-a5-fuel-monthly-history';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -37,7 +37,7 @@
       if (!response.ok) throw new Error(`Errore dati ${response.status}`);
       return response.json();
     }),
-    fetch(new URL(`data/source-snapshots/fuel-history-mimit.json?v=${HOTFIX_VERSION}`, ROOT))
+    fetch(new URL(`data/source-snapshots/fuel-history-mimit-monthly.json?v=${HOTFIX_VERSION}`, ROOT))
       .then(response => response.ok ? response.json() : null)
       .catch(() => null),
   ])
@@ -156,6 +156,11 @@
         .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Sette Comuni più l’aggregato ufficiale Versilia; sono mostrati solo gli anni omogenei della fonte ARS.')
         .replace('confronto storico dei sette comuni', 'confronto storico dei sette Comuni e della Versilia')
         .replace('aria-label="Comuni"', 'aria-label="Territori"');
+    }
+    if (metric?.meta?.key === 'fuelPrices') {
+      return markup
+        .replace('Una linea per territorio; sono mostrati solo gli anni disponibili in modo omogeneo.', 'Medie mensili MIMIT: per ogni giorno si calcola la mediana comunale dei prezzi self-service, poi la media delle mediane giornaliere del mese.')
+        .replace('confronto storico dei sette comuni', 'confronto storico mensile dei sei Comuni con impianti attivi');
     }
     if (metric?.meta?.key !== 'incomeVsInflation' || !metric.inflationSeries?.years?.length) return markup;
     const referenceLabel = toolkit.escapeHtml(metric.inflationSeries.label || 'Inflazione · NIC Italia');
@@ -319,7 +324,7 @@
         : historyAvailable && selected.metric?.meta?.key === 'income'
           ? selected.metric.meta.longHistoryNote
           : historyAvailable && selected.metric?.meta?.key === 'fuelPrices'
-            ? 'Serie MIMIT validata per i sei Comuni con impianti attivi; Stazzema resta n.d. e non viene trasformata in zero.'
+            ? 'Serie mensile MIMIT gennaio 2022–giugno 2026: media delle mediane comunali giornaliere self-service; Stazzema resta n.d. perché non risultano impianti attivi.'
             : historyAvailable
               ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
               : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
