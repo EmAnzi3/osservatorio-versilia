@@ -3431,3 +3431,18 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-top
   color:var(--ds-theme-accent,var(--ds-navy)) !important;
   overflow:visible !important;
 }
+
+
+/* A5 municipal golden lock — active states must remain identical to approved A5.4. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-context-nav .context-nav-links a.active {
+  border-color:var(--ds-demografia) !important;
+  background:var(--ds-demografia) !important;
+  color:#fff !important;
+  opacity:1 !important;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .topic-controls .metric-group-buttons button.active {
+  border-color:var(--ds-demografia) !important;
+  background:var(--ds-demografia) !important;
+  color:#fff !important;
+  opacity:1 !important;
+}
