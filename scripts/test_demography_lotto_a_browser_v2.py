@@ -162,6 +162,18 @@ def main() -> None:
             require(sidebar.count() == 1, f'{metric_key}: sidebar condivisa assente')
             require(metric_layout.count() == 1 and primary.count() == 1 and position.count() == 1,
                     f'{metric_key}: KPI comunali non rispettano lo shell stabile')
+            primary_label = primary.locator(':scope > [data-composite-primary-label]')
+            require(primary_label.count() == 1 and primary_label.inner_text().strip(),
+                    f'{town_slug}/{metric_key}: label KPI primaria assente')
+            label_style = primary_label.evaluate('''el => {
+              const s=getComputedStyle(el);
+              const bg=getComputedStyle(el.parentElement).backgroundColor;
+              return {color:s.color, opacity:s.opacity, background:bg, display:s.display};
+            }''')
+            require(label_style['display'] != 'none' and label_style['opacity'] == '1',
+                    f'{town_slug}/{metric_key}: label KPI non visibile: {label_style}')
+            require(label_style['color'] != label_style['background'],
+                    f'{town_slug}/{metric_key}: label KPI senza contrasto: {label_style}')
             require(shell.count() == 1, f'{metric_key}: chart shell condivisa assente')
             require(shell.locator(':scope > .ux-view-toolbar').count() == 1,
                     f'{metric_key}: toolbar duplicata o assente')
@@ -344,6 +356,12 @@ def main() -> None:
         require(page.locator('.town-brief > article').count() == 3, 'Massarosa: sintesi non 3/3')
         require('1869' in page.locator('.town-headline-stats').inner_text(),
                 'Massarosa: anno di istituzione 1869 assente dal profilo A5')
+        massarosa_hero = page.locator('.town-hero')
+        massarosa_bg = massarosa_hero.evaluate("el => getComputedStyle(el).backgroundImage")
+        require('MassarosaPanorama.JPG' in massarosa_bg,
+                f'Massarosa: immagine hero dedicata assente: {massarosa_bg}')
+        require(page.locator('.town-hero-photo-credit').count() == 1,
+                'Massarosa: attribuzione foto hero assente')
         print('A5 Massarosa/Demografia second-town proof OK: 10/10 indicatori')
 
         def assert_a5_town_responsive(metric_key: str, width: int, height: int, town_slug: str = 'viareggio') -> None:

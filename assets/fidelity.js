@@ -395,6 +395,28 @@
     return `<div class="topic-bars selectable-topic-bars a5-current-family-${a5Escape(type)}"><div class="compare-chart-toolbar"><div class="compare-chart-legend-host" aria-live="polite"></div>${a5ControlsMarkup(metric,choice,scale)}</div><div class="comparison-bars" data-composite-choice="${a5Escape(choice)}" data-composite-scale="${a5Escape(scale)}">${a5ComparisonRows(metric,metricKey,selectedTown,choice,scale)}</div></div>`;
   }
 
+
+  function a5PrimaryLabel(metric) {
+    const explicit = metric?.meta?.primaryLabel || metric?.meta?.shortLabel || metric?.meta?.label;
+    return String(explicit || 'Valore dell’indicatore').trim();
+  }
+
+  function a5EnsurePrimaryLabel(metric) {
+    const primary=document.querySelector('#town-topic .town-metric-primary');
+    if (!primary) return null;
+    let label=primary.querySelector('[data-composite-primary-label]');
+    if (!label) {
+      label=document.createElement('span');
+      label.className='composite-primary-label a5-primary-label';
+      label.dataset.compositePrimaryLabel='';
+      primary.insertBefore(label,primary.querySelector('[data-composite-primary-value]') || primary.firstChild);
+    } else {
+      label.classList.add('a5-primary-label');
+    }
+    if (!label.textContent.trim()) label.textContent=a5PrimaryLabel(metric);
+    return label;
+  }
+
   function a5UpdateSummary(metric, row, choice, scale) {
     if (!['stock','mobility','securityMeasures'].includes(metric?.meta?.compositeType)) return;
     const selection=a5Selection(metric,row,choice,scale);
@@ -404,7 +426,7 @@
     const label=topic?.querySelector('[data-composite-primary-label]');
     const value=topic?.querySelector('[data-composite-primary-value]');
     const position=topic?.querySelector('.versilia-position');
-    if (label) label.textContent=selection.label;
+    if (label) label.textContent=selection.label || a5PrimaryLabel(metric);
     if (value) value.textContent=a5Format(selection.value,selection.unit);
     if (!position) return;
     position.classList.add('composite-versilia-position');
@@ -442,6 +464,7 @@
 
     const type=metric.meta.compositeType || '';
     const defaults=a5DefaultView(metric);
+    a5EnsurePrimaryLabel(metric);
     let visual=currentPane.querySelector(':scope > .a5-town-current-visual');
 
     if (!type) {

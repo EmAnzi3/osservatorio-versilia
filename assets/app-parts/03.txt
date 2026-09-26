@@ -1331,7 +1331,9 @@
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Viareggio,_passeggiata_a_mare_2.JPG'
     },
     massarosa: {
-      institutionYear: '1869'
+      institutionYear: '1869',
+      heroCredit: 'LigaDue / Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:MassarosaPanorama.JPG'
     }
   });
 

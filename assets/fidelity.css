@@ -2682,6 +2682,11 @@ body[data-page="town"][data-town="viareggio"]:has(main.a5-town-pilot) .town-hero
     linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.61) 38%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
     url("https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG") center 52%/cover no-repeat;
 }
+body[data-page="town"][data-town="massarosa"]:has(main.a5-town-pilot) .town-hero {
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.64) 39%,rgba(10,45,67,.27) 72%,rgba(10,45,67,.12) 100%),
+    url("https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG") center 58%/cover no-repeat;
+}
 body[data-page="town"]:has(main.a5-town-pilot) .town-hero::after {
   content:"";
   position:absolute;
@@ -2964,6 +2969,18 @@ body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-pos
   background:var(--ds-surface) !important;
   color:var(--ds-ink) !important;
   box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > .a5-primary-label,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > .composite-primary-label {
+  display:block;
+  margin:0 0 10px;
+  color:var(--theme-accent) !important;
+  opacity:1 !important;
+  font-size:10px;
+  font-weight:850;
+  line-height:1.2;
+  letter-spacing:.11em;
+  text-transform:uppercase;
 }
 body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > strong {
   margin:12px 0 9px;
