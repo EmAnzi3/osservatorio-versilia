@@ -98,12 +98,15 @@ Route da trattare come eccezioni/lotto separato e non forzare nel primo rollout 
 - `confronta/economia/atlante-attivita-economiche/`
 - `confronta/comunita/affluenza/`
 
-## Gate prima di A5.5
+## Esito del gate prima di A5.5
 
-Prima di toccare un altro tema:
+Il gate A5.4 è chiuso:
 
-1. estrarre/generalizzare i componenti del golden master tematico;
-2. far renderizzare Viareggio con gli stessi componenti condivisi, senza dipendere dal prototipo Draft 19;
-3. verificare che i due golden master restino visualmente invariati;
-4. eseguire Quick e Full;
-5. mantenere la PR Draft fino alla verifica browser desktop/mobile e all'approvazione esplicita.
+1. i componenti del golden master tematico sono stati generalizzati senza alterare il rendering approvato;
+2. Viareggio usa il sistema condiviso e non dipende dal codice prototipale Draft 19;
+3. Massarosa usa lo stesso shell come seconda prova comunale, con hero dedicato e senza hard-code strutturale su Viareggio;
+4. i 10 indicatori Demografia sono verificati nel browser su Viareggio e Massarosa, con controlli responsive e famiglie grafiche coerenti;
+5. Viareggio e Massarosa sono stati approvati visivamente;
+6. il commit di chiusura A5.4 è `7eadda666118f2450290a3b1c6edb93f061b7c7b`.
+
+A5.5 può iniziare solo come step successivo esplicito; la PR #280 resta Draft finché non viene deciso diversamente.
