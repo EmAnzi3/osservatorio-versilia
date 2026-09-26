@@ -3,18 +3,45 @@
 
   const SCRIPT_URL = document.currentScript?.src || location.href;
   const ROOT = new URL('../', SCRIPT_URL);
-  const HOTFIX_VERSION = '20260903-v129-salute-finanziaria-selector';
+  const HOTFIX_VERSION = '20260926-a5-fuel-history';
   const toolkit = window.OVUXHistory;
   if (!toolkit) return;
   const LIBRARY_HISTORY_KEYS = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
 
   let scheduled = false;
   const wiredShells = new WeakSet();
-  const dataPromise = fetch(new URL(`data/site-data.json?v=${HOTFIX_VERSION}`, ROOT))
-    .then(response => {
+  function applyFuelHistory(data, history) {
+    const metric=data?.metrics?.fuelPrices;
+    const points=Array.isArray(history?.points) ? history.points : [];
+    if (!metric || points.length < 2) return data;
+    const ordered=[...points].sort((a,b)=>String(a.referenceDate).localeCompare(String(b.referenceDate)));
+    const years=ordered.map(point=>String(point.referenceDate));
+    metric.rows?.forEach(row=>{
+      const readings=ordered.map(point=>point.towns?.[row.town] || {});
+      const benzina=readings.map(item=>item.benzina ?? null);
+      const gasolio=readings.map(item=>item.gasolio ?? null);
+      row.series={years,values:benzina};
+      row.componentSeries={
+        ...(row.componentSeries || {}),
+        'Benzina self':{years,values:benzina},
+        'Gasolio self':{years,values:gasolio},
+      };
+      row.fuelHistoryAvailable=benzina.filter(value=>value !== null && value !== undefined && Number.isFinite(Number(value))).length >= 2
+        || gasolio.filter(value=>value !== null && value !== undefined && Number.isFinite(Number(value))).length >= 2;
+    });
+    return data;
+  }
+
+  const dataPromise = Promise.all([
+    fetch(new URL(`data/site-data.json?v=${HOTFIX_VERSION}`, ROOT)).then(response => {
       if (!response.ok) throw new Error(`Errore dati ${response.status}`);
       return response.json();
-    })
+    }),
+    fetch(new URL(`data/source-snapshots/fuel-history-mimit.json?v=${HOTFIX_VERSION}`, ROOT))
+      .then(response => response.ok ? response.json() : null)
+      .catch(() => null),
+  ])
+    .then(([data,fuelHistory]) => applyFuelHistory(data,fuelHistory))
     .catch(error => {
       console.warn('Vista storica non disponibile', error);
       return null;
@@ -82,6 +109,15 @@
 }
 
   function historyMetric(metric) {
+    if (metric?.meta?.key === 'fuelPrices') {
+      return {
+        ...metric,
+        rows:(metric.rows || []).map(row=>({
+          ...row,
+          notApplicable:row.fuelHistoryAvailable ? row.notApplicable : true,
+        })),
+      };
+    }
     if (metric?.meta?.key === 'income' && metric.rows?.some(row => row.longSeries?.years?.length)) {
       return { ...metric, meta:{...metric.meta,label:metric.meta.longHistoryLabel || 'Reddito imponibile medio · serie lunga',unit:'currency'}, rows:metric.rows.map(row=>({...row,series:row.longSeries || row.series})) };
     }
@@ -269,7 +305,7 @@
     }
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const selectedChoice = (selected.metric?.meta?.compositeType === 'sexBreakdown' || selected.key === 'fuelPrices') ? currentCompositeChoice() : null;
     const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
     const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
@@ -281,9 +317,11 @@
         ? selected.metric.historyPresentation?.note
         : historyAvailable && selected.metric?.meta?.key === 'income'
           ? selected.metric.meta.longHistoryNote
-          : historyAvailable
-            ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
-            : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
+          : historyAvailable && selected.metric?.meta?.key === 'fuelPrices'
+            ? 'Serie MIMIT validata per i sei Comuni con impianti attivi; Stazzema resta n.d. e non viene trasformata in zero.'
+            : historyAvailable
+              ? 'Lo storico utilizza esclusivamente gli anni omogenei presenti per tutti e sette i comuni.'
+              : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
     wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);

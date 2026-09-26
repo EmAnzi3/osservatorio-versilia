@@ -325,6 +325,16 @@ def main() -> None:
                     direct = page.locator('#compare-bars > .topic-bars').first
                     require(direct.count() == 1 and direct.is_visible(),
                             f'A5.5 bulk {theme_key}/{metric_key}: renderer rischio invisibile')
+                if metric_key == 'fuelPrices':
+                    history_button = page.locator('#compare-bars [data-view-mode="history"]').first
+                    require(history_button.count() == 1 and not history_button.is_disabled(),
+                            'A5.5 bulk mobilita/fuelPrices: storico carburanti non disponibile')
+                    history_button.click()
+                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-card').is_visible(),
+                            'A5.5 bulk mobilita/fuelPrices: storico carburanti non visibile')
+                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-legend button').count() == 6,
+                            'A5.5 bulk mobilita/fuelPrices: storico deve contenere i 6 Comuni con impianti')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key.startswith('slowMobility'):
                     map_link = page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]')
                     require(map_link.count() == 1,

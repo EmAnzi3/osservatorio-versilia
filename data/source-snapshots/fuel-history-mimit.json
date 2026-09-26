@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "source": "MIMIT - Prezzi praticati e anagrafica impianti",
+  "statistic": "mediana comunale impianti attivi, self-service",
+  "provenance": "Ricostruito esclusivamente da snapshot validati già versionati nel repository.",
+  "points": [
+    {
+      "referenceDate": "2026-08-14",
+      "towns": {
+        "Camaiore": {
+          "benzina": 1.999,
+          "gasolio": 2.089,
+          "stations": 11
+        },
+        "Forte dei Marmi": {
+          "benzina": 1.979,
+          "gasolio": 2.089,
+          "stations": 4
+        },
+        "Massarosa": {
+          "benzina": 1.987,
+          "gasolio": 2.088,
+          "stations": 7
+        },
+        "Pietrasanta": {
+          "benzina": 1.999,
+          "gasolio": 2.099,
+          "stations": 15
+        },
+        "Seravezza": {
+          "benzina": 1.994,
+          "gasolio": 2.079,
+          "stations": 6
+        },
+        "Stazzema": {
+          "benzina": null,
+          "gasolio": null,
+          "stations": 0
+        },
+        "Viareggio": {
+          "benzina": 1.994,
+          "gasolio": 2.099,
+          "stations": 20
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-08-27",
+      "towns": {
+        "Camaiore": {
+          "benzina": 2.029,
+          "gasolio": 2.139,
+          "stations": 11
+        },
+        "Forte dei Marmi": {
+          "benzina": 2.009,
+          "gasolio": 2.134,
+          "stations": 4
+        },
+        "Massarosa": {
+          "benzina": 2.018,
+          "gasolio": 2.147,
+          "stations": 7
+        },
+        "Pietrasanta": {
+          "benzina": 2.019,
+          "gasolio": 2.149,
+          "stations": 15
+        },
+        "Seravezza": {
+          "benzina": 1.999,
+          "gasolio": 2.144,
+          "stations": 6
+        },
+        "Stazzema": {
+          "benzina": null,
+          "gasolio": null,
+          "stations": 0
+        },
+        "Viareggio": {
+          "benzina": 2.019,
+          "gasolio": 2.144,
+          "stations": 20
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-08-28",
+      "towns": {
+        "Camaiore": {
+          "benzina": 2.029,
+          "gasolio": 2.139,
+          "stations": 11
+        },
+        "Forte dei Marmi": {
+          "benzina": 1.999,
+          "gasolio": 2.129,
+          "stations": 4
+        },
+        "Massarosa": {
+          "benzina": 2.018,
+          "gasolio": 2.147,
+          "stations": 7
+        },
+        "Pietrasanta": {
+          "benzina": 2.019,
+          "gasolio": 2.149,
+          "stations": 15
+        },
+        "Seravezza": {
+          "benzina": 1.999,
+          "gasolio": 2.144,
+          "stations": 6
+        },
+        "Stazzema": {
+          "benzina": null,
+          "gasolio": null,
+          "stations": 0
+        },
+        "Viareggio": {
+          "benzina": 2.019,
+          "gasolio": 2.141,
+          "stations": 20
+        }
+      }
+    }
+  ]
+}
