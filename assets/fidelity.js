@@ -168,20 +168,20 @@
     }
 
     existing?.remove();
-    const actions=heading.querySelector(':scope > .data-actions')
-      || document.querySelector('#compare-bars .ux-view-toolbar > .data-actions');
+    const actions=document.querySelector('#compare-bars .ux-view-toolbar > .data-actions')
+      || heading.querySelector(':scope > .data-actions');
     if (!actions) return;
 
-    document.querySelectorAll(
+    const candidates=[...document.querySelectorAll(
       '.compare-panel-heading .data-actions a[href*="/percorsi/"], #compare-bars .ux-view-toolbar a[href*="/percorsi/"], #compare-tools a[href*="/percorsi/"]'
-    ).forEach(link => link.remove());
-
-    const link=document.createElement('a');
+    )];
+    const link=candidates[0] || document.createElement('a');
+    candidates.slice(1).forEach(candidate => candidate.remove());
     link.href=new URL('../percorsi/',SCRIPT_URL).href;
     link.className='a5-map-action';
     link.setAttribute('aria-label','Esplora la cartografia dei percorsi');
     link.innerHTML='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M9 18 3.8 20.3A1 1 0 0 1 2.4 19.4V6.2a1 1 0 0 1 .6-.9L9 2.7m0 15.3 6 3.3m-6-3.3V2.7m6 18.6 6-2.7a1 1 0 0 0 .6-.9V4.5a1 1 0 0 0-1.4-.9L15 6m0 15.3V6m0 0L9 2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Esplora la cartografia</span>';
-    actions.append(link);
+    if (link.parentElement !== actions) actions.append(link);
   }
 
   function enhanceCharts(root = document) {
