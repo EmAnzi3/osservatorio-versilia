@@ -202,8 +202,14 @@ def check_browser() -> None:
                 "Persistono box Percorsi fuori dalla grammatica degli indicatori")
         definition = page.locator("#compare-definition").inner_text()
         require("Percorsi pubblici" in definition, "Definizione Percorsi non renderizzata come indicatore")
-        require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
-                "CTA cartografia assente dall'indicatore Percorsi")
+        map_link = page.locator(
+            '.compare-panel-heading .data-actions a[href*="percorsi/"], '
+            '#compare-bars .ux-view-toolbar .data-actions a[href*="percorsi/"]'
+        )
+        require(map_link.count() == 1,
+                "CTA cartografia assente accanto alle azioni export/stampa")
+        require(map_link.locator("svg").count() == 1,
+                "Icona mappa assente dalla CTA cartografia")
         require(page.locator("#criminalita").count() == 0,
                 "Criminalità deve essere fuori da Mobilità")
 
