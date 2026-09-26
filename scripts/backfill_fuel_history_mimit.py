@@ -121,21 +121,15 @@ def station_map(archive: tarfile.TarFile, members: list[tarfile.TarInfo]) -> dic
     return mapping
 
 
-def representative_anag_members(
+def matching_anag_member(
     by_date: dict[date, tarfile.TarInfo],
-    year: int,
-    month: int,
-) -> list[tarfile.TarInfo]:
-    candidates = sorted(day for day in by_date if day.year == year and day.month == month)
-    if not candidates:
-        return []
-    targets = (1, 15, 31)
-    selected: list[date] = []
-    for target in targets:
-        chosen = min(candidates, key=lambda item: abs(item.day - target))
-        if chosen not in selected:
-            selected.append(chosen)
-    return [by_date[item] for item in selected]
+    day: date,
+) -> tarfile.TarInfo | None:
+    exact = by_date.get(day)
+    if exact is not None:
+        return exact
+    candidates = sorted(by_date, key=lambda item: abs((item - day).days))
+    return by_date[candidates[0]] if candidates else None
 
 
 def daily_town_medians(
@@ -224,23 +218,16 @@ def build(start: tuple[int, int], end: tuple[int, int], cache_dir: Path) -> dict
         with tarfile.open(anag_path, "r:gz") as anag, tarfile.open(price_path, "r:gz") as prices:
             anag_dates = member_dates(anag)
             price_dates = member_dates(prices)
-            station_maps: dict[tuple[int, int], dict[str, str]] = {}
-            for month in range((quarter - 1) * 3 + 1, quarter * 3 + 1):
-                if not (start <= (year, month) <= end):
-                    continue
-                reps = representative_anag_members(anag_dates, year, month)
-                if not reps:
-                    continue
-                station_maps[(year, month)] = station_map(anag, reps)
 
             used_days = 0
             for day in sorted(price_dates):
                 if not in_range(day, start, end):
                     continue
                 month_key = (day.year, day.month)
-                stations = station_maps.get(month_key)
-                if not stations:
+                anag_member = matching_anag_member(anag_dates, day)
+                if anag_member is None:
                     continue
+                stations = station_map(anag, [anag_member])
                 medians = daily_town_medians(prices, price_dates[day], stations)
                 daily_counts[month_key] += 1
                 used_days += 1
