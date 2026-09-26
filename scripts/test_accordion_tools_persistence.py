@@ -99,6 +99,27 @@ def main() -> None:
         page.wait_for_selector(".topic-controls .metric-group-heading.ux-section-toggle")
         assert_tools(page, "stato iniziale")
 
+        # Il gruppo che contiene l'indicatore attivo deve poter essere chiuso:
+        # la selezione resta attiva, ma la fisarmonica non viene riaperta dai
+        # successivi cicli di enhancement.
+        active_group = page.locator(".topic-controls .metric-group").filter(
+            has=page.locator("button.active")
+        ).first
+        active_heading = active_group.locator(":scope > .metric-group-heading.ux-section-toggle")
+        active_content = active_group.locator(":scope > .metric-group-buttons")
+        require(active_heading.get_attribute("aria-expanded") == "true",
+                "Il gruppo attivo deve partire aperto")
+        active_heading.tap()
+        page.wait_for_timeout(1100)
+        require(active_heading.get_attribute("aria-expanded") == "false" and active_content.is_hidden(),
+                "Il gruppo attivo viene riaperto automaticamente dopo la chiusura")
+        require(active_group.locator("button.active").count() == 1,
+                "La chiusura del gruppo attivo non deve perdere la selezione")
+        active_heading.tap()
+        page.wait_for_timeout(120)
+        require(active_heading.get_attribute("aria-expanded") == "true" and not active_content.is_hidden(),
+                "Il gruppo attivo non si riapre al secondo tap")
+
         # Ripete aperture e chiusure su sezioni diverse, aspettando abbastanza
         # da intercettare anche eventuali rimpiazzi asincroni delle intestazioni.
         for step, index in enumerate((1, 2, 3, 0, 1), start=1):

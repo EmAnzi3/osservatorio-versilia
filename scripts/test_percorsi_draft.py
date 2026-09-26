@@ -232,6 +232,23 @@ def check_browser() -> None:
         if map_style["printHeight"]:
             require(abs(map_style["height"] - map_style["printHeight"]) <= 1.5,
                     f"CTA cartografia non allineata a Stampa/PDF: {map_style}")
+
+        active_group = page.locator('.topic-controls [data-section="mobilita-lenta"]').first
+        active_heading = active_group.locator(':scope > .metric-group-heading.ux-section-toggle')
+        active_buttons = active_group.locator(':scope > .metric-group-buttons')
+        require(active_heading.get_attribute("aria-expanded") == "true" and not active_buttons.is_hidden(),
+                "La sezione attiva Mobilità lenta deve partire aperta")
+        active_heading.click()
+        page.wait_for_timeout(1100)
+        require(active_heading.get_attribute("aria-expanded") == "false" and active_buttons.is_hidden(),
+                "La fisarmonica attiva si riapre automaticamente dopo la chiusura")
+        require(active_group.locator('[data-metric="slowMobilityRoutes"].active').count() == 1,
+                "La chiusura della fisarmonica non deve perdere l'indicatore selezionato")
+        active_heading.click()
+        page.wait_for_timeout(120)
+        require(active_heading.get_attribute("aria-expanded") == "true" and not active_buttons.is_hidden(),
+                "La fisarmonica attiva non si riapre al secondo click")
+
         require(page.locator("#criminalita").count() == 0,
                 "Criminalità deve essere fuori da Mobilità")
 
