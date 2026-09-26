@@ -85,6 +85,8 @@ def main() -> None:
         assert '1975–2025' in tmin_shell.inner_text()
         assert tmin_shell.locator('.ov-climate-current-row').count() == 7
         assert tmin_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
+        tmin_shell.locator('[data-ov-climate-view="current"]').click()
+        assert tmin_shell.locator('[data-ov-climate-pane="current"]').is_visible(), 'Tmin current pane did not open'
         current_row = tmin_shell.locator('.ov-climate-current-row').first
         current_row.hover()
         current_tip = current_row.locator('.ov-climate-current-tooltip')
