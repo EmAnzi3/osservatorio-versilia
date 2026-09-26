@@ -105,6 +105,7 @@ def capture(page):
               } : null
             },
             layout: {
+              app:pack(q('#app')),
               hero:pack(q('.town-hero')),
               brief:pack(q('.town-brief')),
               contextNav:pack(q('.town-context-nav')),
@@ -198,6 +199,31 @@ def main():
                             "kind":"computed-state-diff",
                             "baseline":base_state,
                             "current":cur_state,
+                        })
+
+                    # Full rendered page is part of the immutable golden contract.
+                    # Same browser, same runner, same viewport: any pixel drift is a
+                    # regression until explicitly approved and the golden baseline is moved.
+                    base_full=base_page.screenshot(full_page=True, animations="disabled")
+                    cur_full=cur_page.screenshot(full_page=True, animations="disabled")
+                    if base_full != cur_full:
+                        if len([f for f in failures if f.get("kind") == "full-page-visual-diff"]) < 12:
+                            bpath=report_dir/f"{key}-full-baseline.png"
+                            cpath=report_dir/f"{key}-full-current.png"
+                            bpath.write_bytes(base_full)
+                            cpath.write_bytes(cur_full)
+                            baseline_image=bpath.name
+                            current_image=cpath.name
+                        else:
+                            baseline_image=None
+                            current_image=None
+                        failures.append({
+                            "key":key,
+                            "kind":"full-page-visual-diff",
+                            "baselineSha256":digest(base_full),
+                            "currentSha256":digest(cur_full),
+                            "baselineImage":baseline_image,
+                            "currentImage":current_image,
                         })
 
                     for region_name,selector in LOCK_REGIONS:
