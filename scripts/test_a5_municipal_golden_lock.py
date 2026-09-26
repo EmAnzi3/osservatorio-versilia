@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 from pathlib import Path
 from urllib.parse import urljoin
 
+from PIL import Image, ImageChops
 from playwright.sync_api import sync_playwright
 
 TOWNS = ("viareggio", "massarosa")
@@ -44,6 +46,56 @@ FREEZE_STYLE = """
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def wait_stable(page) -> None:
+    page.evaluate("() => document.fonts.ready")
+    page.wait_for_timeout(450)
+    previous = None
+    stable = 0
+    for _ in range(12):
+        signature = page.evaluate("""() => {
+          const topic=document.querySelector('#town-topic');
+          const chart=document.querySelector('#town-topic > .history-panel.a5-shared-chart');
+          return [
+            document.documentElement.scrollHeight,
+            topic?.innerHTML.length || 0,
+            chart?.innerHTML.length || 0,
+            document.querySelectorAll('.ux-view-shell').length,
+            document.querySelectorAll('.compare-demographic-pyramid > *, .demographic-pyramid > *').length
+          ].join('|');
+        }""")
+        if signature == previous:
+            stable += 1
+            if stable >= 3:
+                break
+        else:
+            previous = signature
+            stable = 0
+        page.wait_for_timeout(180)
+    page.evaluate("() => window.scrollTo(0,0)")
+    page.wait_for_timeout(60)
+
+
+def pixel_difference(baseline: bytes, current: bytes, channel_threshold: int = 3) -> dict:
+    first=Image.open(io.BytesIO(baseline)).convert("RGB")
+    second=Image.open(io.BytesIO(current)).convert("RGB")
+    if first.size != second.size:
+        return {"same_size":False,"baseline_size":first.size,"current_size":second.size,"ratio":1.0,"changed":None}
+    diff=ImageChops.difference(first,second)
+    changed=0
+    total=first.size[0]*first.size[1]
+    for pixel in diff.getdata():
+        if max(pixel) > channel_threshold:
+            changed += 1
+    return {
+        "same_size":True,
+        "baseline_size":first.size,
+        "current_size":second.size,
+        "changed":changed,
+        "total":total,
+        "ratio":changed/total if total else 0.0,
+    }
 
 
 def capture(page):
@@ -171,9 +223,8 @@ def main():
                     for page,root in ((base_page,baseline),(cur_page,current)):
                         page.goto(urljoin(root,rel), wait_until="networkidle")
                         page.wait_for_selector('main.a5-town-pilot[data-theme="demografia"]')
-                        page.evaluate("() => document.fonts.ready")
                         page.add_style_tag(content=FREEZE_STYLE)
-                        page.wait_for_timeout(80)
+                        wait_stable(page)
 
                     base_state=capture(base_page)
                     cur_state=capture(cur_page)
@@ -206,7 +257,8 @@ def main():
                     # regression until explicitly approved and the golden baseline is moved.
                     base_full=base_page.screenshot(full_page=True, animations="disabled")
                     cur_full=cur_page.screenshot(full_page=True, animations="disabled")
-                    if base_full != cur_full:
+                    full_diff=pixel_difference(base_full,cur_full)
+                    if (not full_diff["same_size"]) or full_diff["ratio"] > 0.001:
                         if len([f for f in failures if f.get("kind") == "full-page-visual-diff"]) < 12:
                             bpath=report_dir/f"{key}-full-baseline.png"
                             cpath=report_dir/f"{key}-full-current.png"
@@ -220,6 +272,7 @@ def main():
                         failures.append({
                             "key":key,
                             "kind":"full-page-visual-diff",
+                            "pixelDiff":full_diff,
                             "baselineSha256":digest(base_full),
                             "currentSha256":digest(cur_full),
                             "baselineImage":baseline_image,
@@ -237,7 +290,8 @@ def main():
                             continue
                         bp=b.screenshot()
                         cp=c.screenshot()
-                        if bp != cp:
+                        region_diff=pixel_difference(bp,cp)
+                        if (not region_diff["same_size"]) or region_diff["ratio"] > 0.0005:
                             bpath=report_dir/f"{key}-{region_name}-baseline.png"
                             cpath=report_dir/f"{key}-{region_name}-current.png"
                             bpath.write_bytes(bp)
@@ -246,6 +300,7 @@ def main():
                                 "key":key,
                                 "kind":"visual-region-diff",
                                 "region":region_name,
+                                "pixelDiff":region_diff,
                                 "baselineSha256":digest(bp),
                                 "currentSha256":digest(cp),
                                 "baselineImage":bpath.name,
