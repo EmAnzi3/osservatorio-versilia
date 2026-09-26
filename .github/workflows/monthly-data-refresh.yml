@@ -49,7 +49,7 @@ permissions:
 
 concurrency:
   group: monthly-data-refresh
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   check:
