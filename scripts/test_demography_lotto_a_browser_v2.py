@@ -521,6 +521,36 @@ def main() -> None:
             require(town_theme_styles == compare_styles,
                     f'{metric_key}: pill temi diverse dalla pagina tematica')
 
+            # Municipal golden lock: active Comune, Tema and Indicatore must
+            # retain the approved A5.4 opaque accent, independent of compare-page tokens.
+            active_states = page.evaluate("""() => {
+              const pack = el => {
+                const s=getComputedStyle(el);
+                return {
+                  background:s.backgroundColor,
+                  color:s.color,
+                  border:s.borderColor,
+                  opacity:s.opacity,
+                };
+              };
+              return {
+                nav:[...document.querySelectorAll('.town-context-nav .context-nav-links a.active')].map(pack),
+                metric:pack(document.querySelector('#town-topic .topic-controls [data-metric].active')),
+              };
+            }""")
+            expected_active = {
+                'background':'rgb(184, 75, 52)',
+                'color':'rgb(255, 255, 255)',
+                'border':'rgb(184, 75, 52)',
+                'opacity':'1',
+            }
+            require(len(active_states['nav']) == 2,
+                    f'{town_slug}/{metric_key}: attesi Comune e Tema attivi, trovati {active_states}')
+            require(all(state == expected_active for state in active_states['nav']),
+                    f'{town_slug}/{metric_key}: stato attivo Comune/Tema degradato: {active_states}')
+            require(active_states['metric'] == expected_active,
+                    f'{town_slug}/{metric_key}: indicatore attivo degradato: {active_states["metric"]}')
+
             # Stable municipal shell.
             topic = page.locator('#town-topic')
             sidebar = topic.locator(':scope > .topic-controls')
