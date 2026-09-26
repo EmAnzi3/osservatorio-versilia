@@ -1,0 +1,76 @@
+name: Import validated MIMIT fuel history once
+
+on:
+  pull_request:
+    branches: ["main"]
+    types: [synchronize]
+    paths:
+      - ".github/workflows/import-fuel-history-once.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Download validated merged artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACT_ID: "10909234549"
+        run: |
+          set -euo pipefail
+          curl --fail --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" \
+            -o /tmp/fuel-history.zip
+          rm -rf /tmp/fuel-history
+          mkdir -p /tmp/fuel-history
+          unzip -q /tmp/fuel-history.zip -d /tmp/fuel-history
+          test -f /tmp/fuel-history/fuel-history-mimit-monthly.json
+
+      - name: Validate and install snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          src=Path('/tmp/fuel-history/fuel-history-mimit-monthly.json')
+          data=json.loads(src.read_text(encoding='utf-8'))
+          points=data.get('points', [])
+          assert data.get('schemaVersion') == 2
+          assert data.get('frequency') == 'monthly'
+          assert data.get('periodStart') == '2022-01'
+          assert data.get('periodEnd') == '2026-06'
+          assert len(points) == 54
+          assert points[0]['referenceDate'] == '2022-01'
+          assert points[-1]['referenceDate'] == '2026-06'
+          for point in points:
+              assert 28 <= point['observationDays'] <= 31
+              stazzema=point['towns']['Stazzema']
+              assert stazzema['benzina'] is None
+              assert stazzema['gasolio'] is None
+
+          dest=Path('data/source-snapshots/fuel-history-mimit-monthly.json')
+          dest.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(f"Snapshot installato: {len(points)} mesi")
+          PY
+
+      - name: Commit snapshot to PR branch
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source-snapshots/fuel-history-mimit-monthly.json
+          git diff --cached --quiet && exit 0
+          git commit -m "data(fuel): add validated monthly MIMIT history"
+          git push origin "HEAD:$BRANCH"
