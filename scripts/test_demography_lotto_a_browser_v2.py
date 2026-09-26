@@ -93,6 +93,73 @@ def main() -> None:
             })'''
         )
         require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
+        demography_active_bg = page.locator('.compare-context-nav a[data-context-theme="demografia"].active').evaluate(
+            "el => getComputedStyle(el).backgroundColor"
+        )
+        demography_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+
+        # A5.5 lotto 1: Economia uses the exact A5 shell, with theme-parametric accents.
+        page.goto(urljoin(args.base, 'confronta/economia/'), wait_until='networkidle')
+        require(page.locator('main.a5-editorial-pilot[data-theme="economia"]').count() == 1,
+                'A5.5 Economia: shell condiviso A5 assente')
+        require(page.locator('.brain-drain-context').count() == 0,
+                'A5.5 Economia: contenuto Demografia propagato nel tema sbagliato')
+        require(page.locator('.topic-controls').count() == 1 and page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                'A5.5 Economia: workspace condiviso incompleto')
+        require(page.locator('#compare-territori .topic-town-card').count() == 7,
+                'A5.5 Economia: schede comunali non 7/7')
+        facts = page.locator('.compare-showcase-facts').inner_text()
+        require('indicatori Economia' in facts and 'indicatori Demografia' not in facts,
+                f'A5.5 Economia: hero non parametrico: {facts!r}')
+        economy_style = page.evaluate('''() => {
+          const active=document.querySelector('.compare-context-nav a[data-context-theme="economia"].active');
+          const symbol=document.querySelector('.topic-symbol');
+          return {
+            activeBg:getComputedStyle(active).backgroundColor,
+            symbolColor:getComputedStyle(symbol).color,
+            soft:getComputedStyle(document.querySelector('main.a5-editorial-pilot')).getPropertyValue('--ds-theme-soft').trim(),
+          };
+        }''')
+        require(economy_style['activeBg'] == economy_style['symbolColor'],
+                f'A5.5 Economia: accento DS2 incoerente: {economy_style}')
+        require(economy_style['activeBg'] != demography_active_bg,
+                'A5.5 Economia: accento rimasto Demografia')
+        economy_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+        require(economy_geometry == demography_geometry,
+                f'A5.5 Economia: geometria diverge dal golden Demografia: {economy_geometry} != {demography_geometry}')
+        assert_no_horizontal_overflow(page, 'A5.5 Economia desktop')
+        page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/economia/'), wait_until='networkidle')
+        assert_no_horizontal_overflow(page, 'A5.5 Economia mobile 390px')
+        require(page.locator('main.a5-editorial-pilot[data-theme="economia"]').count() == 1,
+                'A5.5 Economia mobile: shell A5 assente')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
 
         # Shared graph controls: the municipal selectors must compute to the same DS2 styles.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=internalResidentialMobility'), wait_until='networkidle')

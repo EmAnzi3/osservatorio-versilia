@@ -75,12 +75,17 @@
     </aside>`;
   }
 
+  const A5_COMPARE_THEMES = new Set(['demografia','economia']);
+
   function isA5CompareTheme(themeKey) {
-    return themeKey === 'demografia';
+    return A5_COMPARE_THEMES.has(themeKey);
   }
 
   function a5CompareShellMarkup(data, themeKey, metricKey) {
     const theme = data.themes[themeKey];
+    const themeExtra = themeKey === 'demografia'
+      ? brainDrainMarkup(data)
+      : (themeKey === 'sicurezza' ? crimeMarkup(data) : '');
     return `<main class="inner-page a5-editorial-pilot" data-theme="${themeKey}">
           <section class="compare-showcase-hero" aria-label="Osservatorio Versilia">
             <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}')"></div>
@@ -92,7 +97,7 @@
                 <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
                 <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
               </div>
-              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori Demografia</span><span>Aggiornato ${html(data.updated)}</span></div>
+              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori ${html(theme.label)}</span><span>Aggiornato ${html(data.updated)}</span></div>
             </div>
           </section>
           <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
@@ -100,7 +105,7 @@
           <section class="topic-hero page-width" data-theme="${themeKey}">
             <div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
             <div class="topic-hero-copy"><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div>
-            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || 'Confronta residenti, struttura per età e dinamiche demografiche nei sette Comuni della Versilia.')}</p></div>
+            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || `Confronta gli indicatori di ${theme.label} nei sette Comuni della Versilia.`)}</p></div>
           </section>
           <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
             ${a5MetricSidebarMarkup(data, themeKey, metricKey, { definitionId:'compare-definition', definitionClass:'topic-side-definition' })}
@@ -111,9 +116,9 @@
           </section>
           <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
           <section id="compare-benchmark" class="page-width a5-benchmark-host"></section>
-          ${brainDrainMarkup(data)}
+          ${themeExtra}
           <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi al profilo demografico e agli indicatori di dettaglio per ogni comune.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema ${html(theme.label)}.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
         </main>`;
   }
 

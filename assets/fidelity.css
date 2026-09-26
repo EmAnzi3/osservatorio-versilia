@@ -1012,9 +1012,9 @@
 }
 
 
-/* A5.4 — Design System 2.0 pilot: confronto Demografia
-   Warm editorial draft closely following the selected reference composition.
-   Scope remains the real compare/demografia route; canonical JS/data/hooks stay intact. */
+/* A5 — Design System 2.0 shared compare shell.
+   A5.4 froze Demografia; A5.5 rolls the same shell out theme by theme.
+   Canonical JS/data/hooks stay intact and visual roles consume DS2 theme tokens. */
 :root {
   --ds-canvas:#f7f2e8;
   --ds-surface:#fffdfa;
@@ -1032,23 +1032,36 @@
   --ds-shadow:0 8px 26px rgba(15,53,80,.065);
 }
 
-body[data-page="compare"][data-theme="demografia"] {
+/* Parametric DS2 theme roles. These aliases are inert outside A5 consumers. */
+body[data-theme="demografia"]{--ds-theme-accent:#b84b34;--ds-theme-dark:#963925;--ds-theme-soft:#fbe9e3;--ds-theme-line:#efc9be}
+body[data-theme="economia"]{--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1}
+body[data-theme="lavoro"]{--ds-theme-accent:#9b6818;--ds-theme-dark:#7e5311;--ds-theme-soft:#fff9eb;--ds-theme-line:#ead5a7}
+body[data-theme="istruzione"]{--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;--ds-theme-soft:#f8f5fc;--ds-theme-line:#d8cfeb}
+body[data-theme="salute"]{--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
+body[data-theme="mobilita"]{--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
+body[data-theme="sicurezza"]{--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
+body[data-theme="abitare"]{--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
+body[data-theme="ambiente"]{--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
+body[data-theme="bilanci"]{--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
+body[data-theme="comunita"]{--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
+
+body[data-page="compare"]:has(main.a5-editorial-pilot) {
   background:var(--ds-canvas);
   color:var(--ds-ink);
 }
-body[data-page="compare"][data-theme="demografia"] #app {
+body[data-page="compare"]:has(main.a5-editorial-pilot) #app {
   background:
-    radial-gradient(circle at 8% 20%,rgba(184,75,52,.035),transparent 30%),
+    radial-gradient(circle at 8% 20%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 42%,#f9f5ee 100%);
 }
-body[data-page="compare"][data-theme="demografia"] .page-width {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width {
   width:min(1320px,calc(100% - 54px));
 }
-body[data-page="compare"][data-theme="demografia"] #site-header-mount .site-header {
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header {
   border-bottom:1px solid rgba(200,187,171,.66);
   background:rgba(255,253,250,.97);
 }
-body[data-page="compare"][data-theme="demografia"] #site-header-mount .site-header-inner {
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner {
   width:min(1320px,calc(100% - 54px));
 }
 
@@ -1200,8 +1213,8 @@ main.a5-editorial-pilot .context-nav-links a small {
   font-size:7px;
 }
 main.a5-editorial-pilot .context-nav-links a.active {
-  border-color:var(--ds-demografia);
-  background:var(--ds-demografia);
+  border-color:var(--ds-theme-accent);
+  background:var(--ds-theme-accent);
   color:#fff;
 }
 main.a5-editorial-pilot .context-nav-links a[data-context-theme="economia"]:not(.active){border-color:#c8ddd1;color:#39795d;background:#f5faf6}
@@ -1238,23 +1251,23 @@ main.a5-editorial-pilot .topic-hero::after {
   right:-55px;
   bottom:-74px;
   border-radius:50%;
-  background:var(--ds-demografia-soft);
+  background:var(--ds-theme-soft);
   opacity:.62;
 }
 main.a5-editorial-pilot .topic-symbol {
   width:48px;
   height:48px;
-  border:1px solid #efc9be;
+  border:1px solid var(--ds-theme-line);
   border-radius:12px 12px 12px 4px;
-  background:var(--ds-demografia-soft);
-  color:var(--ds-demografia);
+  background:var(--ds-theme-soft);
+  color:var(--ds-theme-accent);
   box-shadow:none;
 }
 main.a5-editorial-pilot .topic-symbol small {
   font-size:8px;
 }
 main.a5-editorial-pilot .topic-hero .overline {
-  color:var(--ds-demografia);
+  color:var(--ds-theme-accent);
   font-size:8px;
   letter-spacing:.11em;
 }
@@ -1406,11 +1419,11 @@ main.a5-editorial-pilot .topic-controls .metric-group-buttons button {
   text-align:left;
 }
 main.a5-editorial-pilot .topic-controls .metric-group-buttons button:hover {
-  background:#fbf1ec;
-  color:var(--ds-demografia-dark);
+  background:var(--ds-theme-soft);
+  color:var(--ds-theme-dark);
 }
 main.a5-editorial-pilot .topic-controls .metric-group-buttons button.active {
-  background:var(--ds-demografia)!important;
+  background:var(--ds-theme-accent)!important;
   color:#fff!important;
   box-shadow:none!important;
 }
@@ -1468,7 +1481,7 @@ main.a5-editorial-pilot .scale-switch button {
   font-size:8px;
 }
 main.a5-editorial-pilot .scale-switch button.active {
-  background:var(--ds-demografia);
+  background:var(--ds-theme-accent);
   color:#fff;
 }
 main.a5-editorial-pilot .comparison-bars {
@@ -1623,7 +1636,7 @@ main.a5-editorial-pilot .compare-method-card strong {
 }
 main.a5-editorial-pilot .compare-method-card em {
   margin-top:6px;
-  color:var(--ds-demografia);
+  color:var(--ds-theme-accent);
   font-size:7.5px;
   font-style:normal;
   font-weight:730;
@@ -1683,7 +1696,7 @@ main.a5-editorial-pilot .topic-town-links-heading > p {
   line-height:1.4;
 }
 main.a5-editorial-pilot .topic-town-links-heading .overline {
-  color:var(--ds-demografia);
+  color:var(--ds-theme-accent);
   font-size:7px;
 }
 main.a5-editorial-pilot .topic-town-links-heading h2 {
@@ -1717,7 +1730,7 @@ main.a5-editorial-pilot .topic-town-card-media {
   display:grid;
   place-items:center;
   background:
-    linear-gradient(135deg,rgba(15,60,88,.05),rgba(184,75,52,.05)),
+    linear-gradient(135deg,rgba(15,60,88,.05),color-mix(in srgb,var(--ds-theme-accent) 5%,transparent)),
     #f1ece4;
 }
 main.a5-editorial-pilot .topic-town-card-media img {
@@ -1745,11 +1758,11 @@ main.a5-editorial-pilot .topic-town-card-copy small {
 }
 
 /* Dark footer, keeping the real footer markup and links. */
-body[data-page="compare"][data-theme="demografia"] #site-footer-mount {
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-footer-mount {
   margin-top:28px;
   background:var(--ds-navy);
 }
-body[data-page="compare"][data-theme="demografia"] .site-footer {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
   width:min(1320px,calc(100% - 54px));
   min-height:210px;
   margin:auto;
@@ -1757,35 +1770,35 @@ body[data-page="compare"][data-theme="demografia"] .site-footer {
   background:var(--ds-navy);
   color:#fff;
 }
-body[data-page="compare"][data-theme="demografia"] .site-footer strong,
-body[data-page="compare"][data-theme="demografia"] .site-footer a {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer strong,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer a {
   color:#fff;
 }
-body[data-page="compare"][data-theme="demografia"] .site-footer p,
-body[data-page="compare"][data-theme="demografia"] .site-footer .footer-disclaimer,
-body[data-page="compare"][data-theme="demografia"] .site-footer .footer-note span {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer p,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-disclaimer,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-note span {
   color:#bfd0d9;
 }
-body[data-page="compare"][data-theme="demografia"] .site-footer .footer-links {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-links {
   color:#dbe6eb;
 }
-body[data-page="compare"][data-theme="demografia"] .site-footer .footer-note span {
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-note span {
   border-color:rgba(255,255,255,.2);
   background:rgba(255,255,255,.04);
 }
 
 /* Focus stays explicit. */
-body[data-page="compare"][data-theme="demografia"] a:focus-visible,
-body[data-page="compare"][data-theme="demografia"] button:focus-visible,
-body[data-page="compare"][data-theme="demografia"] select:focus-visible {
+body[data-page="compare"]:has(main.a5-editorial-pilot) a:focus-visible,
+body[data-page="compare"]:has(main.a5-editorial-pilot) button:focus-visible,
+body[data-page="compare"]:has(main.a5-editorial-pilot) select:focus-visible {
   outline:3px solid rgba(22,132,184,.52);
   outline-offset:2px;
 }
 
 @media (max-width:1000px) {
-  body[data-page="compare"][data-theme="demografia"] .page-width,
-  body[data-page="compare"][data-theme="demografia"] #site-header-mount .site-header-inner,
-  body[data-page="compare"][data-theme="demografia"] .site-footer {
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
     width:min(100% - 34px,1100px);
   }
   main.a5-editorial-pilot .topic-hero {
@@ -1806,9 +1819,9 @@ body[data-page="compare"][data-theme="demografia"] select:focus-visible {
 }
 
 @media (max-width:720px) {
-  body[data-page="compare"][data-theme="demografia"] .page-width,
-  body[data-page="compare"][data-theme="demografia"] #site-header-mount .site-header-inner,
-  body[data-page="compare"][data-theme="demografia"] .site-footer {
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
     width:min(100% - 24px,680px);
   }
   .compare-showcase-hero,
@@ -1880,7 +1893,7 @@ body[data-page="compare"][data-theme="demografia"] select:focus-visible {
   main.a5-editorial-pilot .topic-town-card-grid {
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
-  body[data-page="compare"][data-theme="demografia"] .site-footer {
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
     grid-template-columns:1fr;
     gap:24px;
     padding-block:34px;
@@ -1920,10 +1933,10 @@ main.a5-editorial-pilot .compare-chart-toolbar .compare-view-label {
 main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select {
   border-color:#d9b1a4;
   background:#fffaf7;
-  color:var(--ds-demografia-dark);
+  color:var(--ds-theme-dark);
 }
 main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select:focus {
-  border-color:var(--ds-demografia);
+  border-color:var(--ds-theme-accent);
   outline-color:rgba(184,75,52,.22);
 }
 
@@ -2469,7 +2482,7 @@ main.a5-editorial-pilot .topic-town-card-copy {
 
 
 /* A5 controlled: hide only the transient raw Demografia bars before visual-grammar turns them into the lollipop. */
-body[data-page="compare"][data-theme="demografia"] main.a5-editorial-pilot .a5-shared-chart .comparison-bars:not([data-viz]) {
+body[data-page="compare"]:has(main.a5-editorial-pilot) main.a5-editorial-pilot .a5-shared-chart .comparison-bars:not([data-viz]) {
   visibility:hidden;
 }
 
@@ -2518,11 +2531,11 @@ main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button {
 
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button:hover:not(.active) {
   background: #fbefea;
-  color: var(--ds-demografia-dark);
+  color: var(--ds-theme-dark);
 }
 
 main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
-  background: var(--ds-demografia);
+  background: var(--ds-theme-accent);
   color: #fff;
   box-shadow: none;
 }
@@ -2633,7 +2646,7 @@ body[data-page="town"]:has(main.a5-town-pilot) {
 }
 body[data-page="town"]:has(main.a5-town-pilot) #app {
   background:
-    radial-gradient(circle at 8% 16%,rgba(184,75,52,.035),transparent 30%),
+    radial-gradient(circle at 8% 16%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
 }
 body[data-page="town"]:has(main.a5-town-pilot) main.town-profile {
