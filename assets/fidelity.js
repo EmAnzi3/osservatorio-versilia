@@ -157,8 +157,9 @@
     const existing=tools.querySelector(':scope > .a5-special-route-actions');
 
     if (A5_TOOLS_ACTION_METRICS.has(metricKey)) {
-      const actions=heading.querySelector(':scope > .data-actions');
-      if (actions) tools.append(actions);
+      const actions=heading.querySelector(':scope > .data-actions')
+        || document.querySelector('#compare-bars .ux-view-toolbar > .data-actions');
+      if (actions && actions.parentElement !== tools) tools.append(actions);
     }
 
     if (!slowMobility) {
