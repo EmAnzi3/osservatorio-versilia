@@ -161,6 +161,68 @@ def main() -> None:
                 'A5.5 Economia mobile: shell A5 assente')
         page.set_viewport_size({'width': 1440, 'height': 1100})
 
+        # A5.5 lotto 2: Lavoro reuses the same shell across every indicator in the theme.
+        page.goto(urljoin(args.base, 'confronta/lavoro/'), wait_until='networkidle')
+        require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                'A5.5 Lavoro: shell condiviso A5 assente')
+        lavoro_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+        require(lavoro_geometry == demography_geometry,
+                f'A5.5 Lavoro: geometria diverge dal golden Demografia: {lavoro_geometry} != {demography_geometry}')
+        lavoro_style = page.evaluate('''() => {
+          const active=document.querySelector('.compare-context-nav a[data-context-theme="lavoro"].active');
+          const symbol=document.querySelector('.topic-symbol');
+          return {
+            activeBg:getComputedStyle(active).backgroundColor,
+            symbolColor:getComputedStyle(symbol).color,
+          };
+        }''')
+        require(lavoro_style['activeBg'] == lavoro_style['symbolColor'],
+                f'A5.5 Lavoro: accento DS2 incoerente: {lavoro_style}')
+        require(lavoro_style['activeBg'] != demography_active_bg,
+                'A5.5 Lavoro: accento rimasto Demografia')
+        lavoro_metrics = page.locator('.topic-controls [data-metric]').evaluate_all(
+            "els => els.map(el => el.dataset.metric).filter(Boolean)"
+        )
+        require(len(lavoro_metrics) >= 1, 'A5.5 Lavoro: nessun indicatore trovato nella sidebar')
+        for metric_key in lavoro_metrics:
+            page.goto(urljoin(args.base, f'confronta/lavoro/?indicatore={metric_key}'), wait_until='networkidle')
+            require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                    f'A5.5 Lavoro/{metric_key}: shell A5 assente')
+            require(page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                    f'A5.5 Lavoro/{metric_key}: chart shell condiviso assente')
+            require(page.locator('.brain-drain-context').count() == 0,
+                    f'A5.5 Lavoro/{metric_key}: contenuto Demografia presente')
+            assert_no_horizontal_overflow(page, f'A5.5 Lavoro/{metric_key} desktop')
+            pyramid = page.locator('#compare-demographic-pyramid .demographic-rate-pyramid')
+            if pyramid.count():
+                sizes = pyramid.evaluate('''el => ({
+                  client:el.clientWidth,
+                  scroll:el.scrollWidth,
+                  svgClient:el.querySelector('svg')?.clientWidth || 0
+                })''')
+                require(sizes['scroll'] <= sizes['client'] + 2,
+                        f'A5.5 Lavoro/{metric_key}: piramide con overflow {sizes}')
+        page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/lavoro/'), wait_until='networkidle')
+        assert_no_horizontal_overflow(page, 'A5.5 Lavoro mobile 390px')
+        require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                'A5.5 Lavoro mobile: shell A5 assente')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5.5 Lavoro compare QA OK: tutti gli indicatori desktop + shell mobile 390px')
+
         # Shared graph controls: the municipal selectors must compute to the same DS2 styles.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=internalResidentialMobility'), wait_until='networkidle')
         compare_control_styles = page.evaluate('''() => {
