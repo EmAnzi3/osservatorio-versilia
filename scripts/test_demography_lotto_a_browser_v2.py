@@ -223,6 +223,108 @@ def main() -> None:
         page.set_viewport_size({'width': 1440, 'height': 1100})
         print('A5.5 Lavoro compare QA OK: tutti gli indicatori desktop + shell mobile 390px')
 
+        # A5.5 bulk gate: every thematic compare route and every sidebar indicator.
+        bulk_theme_keys = [item['key'] for item in compare_theme_styles]
+        require(len(bulk_theme_keys) == 11 and len(set(bulk_theme_keys)) == 11,
+                f'A5.5 bulk: temi inattesi {bulk_theme_keys}')
+
+        def assert_bulk_theme(theme_key: str, mobile: bool = False) -> int:
+            page.goto(urljoin(args.base, f'confronta/{theme_key}/'), wait_until='networkidle')
+            require(page.locator(f'main.a5-editorial-pilot[data-theme="{theme_key}"]').count() == 1,
+                    f'A5.5 bulk {theme_key}: shell A5 assente')
+            require(page.locator(f'.compare-context-nav a[data-context-theme="{theme_key}"].active').count() == 1,
+                    f'A5.5 bulk {theme_key}: navigazione tema attivo incoerente')
+            require(page.locator('#compare-territori .topic-town-card').count() == 7,
+                    f'A5.5 bulk {theme_key}: card comunali non 7/7')
+            if theme_key != 'demografia':
+                require(page.locator('.brain-drain-context').count() == 0,
+                        f'A5.5 bulk {theme_key}: contenuto Demografia presente')
+            if theme_key == 'sicurezza':
+                require(page.locator('.crime-context').count() <= 1,
+                        'A5.5 bulk sicurezza: contesto sicurezza duplicato')
+
+            theme_geometry = page.evaluate('''() => {
+              const rect = selector => {
+                const el=document.querySelector(selector);
+                const r=el.getBoundingClientRect();
+                const s=getComputedStyle(el);
+                return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+              };
+              return {
+                hero:rect('.topic-hero'),
+                sidebar:rect('.topic-controls'),
+                chart:rect('#compare-bars'),
+                dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+              };
+            }''')
+            require(theme_geometry == demography_geometry,
+                    f'A5.5 bulk {theme_key}: geometria diverge dal golden: {theme_geometry} != {demography_geometry}')
+
+            accent = page.evaluate(f'''() => {{
+              const active=document.querySelector('.compare-context-nav a[data-context-theme="{theme_key}"].active');
+              const symbol=document.querySelector('.topic-symbol');
+              return {{
+                active:getComputedStyle(active).backgroundColor,
+                symbol:getComputedStyle(symbol).color,
+              }};
+            }}''')
+            require(accent['active'] == accent['symbol'],
+                    f'A5.5 bulk {theme_key}: accento tema incoerente {accent}')
+
+            metric_keys = page.locator('.topic-controls [data-metric]').evaluate_all(
+                "els => [...new Set(els.map(el => el.dataset.metric).filter(Boolean))]"
+            )
+            require(len(metric_keys) >= 1, f'A5.5 bulk {theme_key}: nessun indicatore')
+
+            for metric_key in metric_keys:
+                button = page.locator(f'.topic-controls [data-metric="{metric_key}"]').first
+                button.click()
+                require(button.get_attribute('aria-selected') == 'true',
+                        f'A5.5 bulk {theme_key}/{metric_key}: controllo non attivo dopo click')
+                require(page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart shell assente')
+                chart_state = page.locator('#compare-bars').evaluate('''el => ({
+                  childCount:el.children.length,
+                  text:el.innerText.trim(),
+                  client:el.clientWidth,
+                  scroll:el.scrollWidth,
+                })''')
+                require(chart_state['childCount'] > 0 or bool(chart_state['text']),
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart vuoto')
+                require(chart_state['scroll'] <= chart_state['client'] + 2,
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart overflow {chart_state}')
+                require(page.locator('#compare-tools.compare-post-benchmark-tools').count() == 1,
+                        f'A5.5 bulk {theme_key}/{metric_key}: tools host assente')
+                assert_no_horizontal_overflow(
+                    page,
+                    f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'
+                )
+
+                pyramid = page.locator('#compare-demographic-pyramid .demographic-rate-pyramid')
+                if pyramid.count():
+                    pyramid_state = pyramid.evaluate('''el => ({
+                      client:el.clientWidth,
+                      scroll:el.scrollWidth,
+                    })''')
+                    require(pyramid_state['scroll'] <= pyramid_state['client'] + 2,
+                            f'A5.5 bulk {theme_key}/{metric_key}: pyramid overflow {pyramid_state}')
+            return len(metric_keys)
+
+        bulk_counts = {}
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        for theme_key in bulk_theme_keys:
+            bulk_counts[theme_key] = assert_bulk_theme(theme_key, mobile=False)
+
+        page.set_viewport_size({'width': 390, 'height': 844})
+        for theme_key in bulk_theme_keys:
+            mobile_count = assert_bulk_theme(theme_key, mobile=True)
+            require(mobile_count == bulk_counts[theme_key],
+                    f'A5.5 bulk {theme_key}: numero indicatori diverso desktop/mobile')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5.5 bulk compare QA OK: ' + ', '.join(
+            f'{theme}={count}' for theme, count in bulk_counts.items()
+        ))
+
         # Shared graph controls: the municipal selectors must compute to the same DS2 styles.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=internalResidentialMobility'), wait_until='networkidle')
         compare_control_styles = page.evaluate('''() => {

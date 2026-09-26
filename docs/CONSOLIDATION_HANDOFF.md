@@ -7,7 +7,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
 - **Step attivo:** A5.5 — propagazione progressiva DS2
-- **Stato:** IN_PROGRESS — lotto 1 Economia approvato; lotto 2 attivo sulla pagina tematica Lavoro; schede comunali ancora escluse
+- **Stato:** IN_PROGRESS — lotti Economia e Lavoro approvati; bulk tematico attivo su tutti gli 11 temi standard; schede comunali ancora escluse
 - **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
 - **Branch:** `feat/a5-controlled-iteration`
 - **PR:** #280 — Draft
@@ -38,8 +38,8 @@ Verificato che:
 
 ## Prossima azione esatta
 
-1. Completare il lotto 2 A5.5 su `confronta/lavoro/` e verificare preview desktop/mobile.
+1. Completare il bulk tematico A5.5 su tutti gli 11 `confronta/<tema>/` e verificare l’artifact desktop/mobile.
 2. Non modificare i golden master Viareggio/Massarosa salvo regressioni.
-3. Mantenere fuori dai lotti generici le route speciali censite, incluso l’Atlante Economia.
-4. Dopo approvazione visiva del lotto 2, scegliere il tema successivo; non propagare in massa.
+3. Mantenere fuori dal bulk le route speciali censite: `meteo-clima`, Atlante Economia e affluenza.
+4. Solo dopo approvazione visiva del bulk tematico pianificare il lotto separato sulle schede comunali.
 5. Non aggiornare baseline A4 e non rendere la PR Ready/merge senza approvazione esplicita.

@@ -75,7 +75,7 @@
     </aside>`;
   }
 
-  const A5_COMPARE_THEMES = new Set(['demografia','economia','lavoro']);
+  const A5_COMPARE_THEMES = new Set(['demografia','economia','lavoro','istruzione','salute','mobilita','sicurezza','abitare','ambiente','bilanci','comunita']);
 
   function isA5CompareTheme(themeKey) {
     return A5_COMPARE_THEMES.has(themeKey);
