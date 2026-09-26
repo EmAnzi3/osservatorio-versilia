@@ -2623,6 +2623,20 @@ main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
 /* A5.4 — municipal golden-master pilot.
    The analytical workspace reuses the same A5 sidebar/chart classes as the thematic page.
    Scope is deliberately limited to the A5 pilot towns + Demografia until the golden master is generalized. */
+body[data-page="town"]:has(main.a5-town-pilot[data-theme="demografia"]) {
+  --ds-theme-accent:#b84b34;
+  --ds-theme-dark:#963925;
+  --ds-theme-soft:#fbe9e3;
+  --ds-theme-line:#efc9be;
+  --ds-theme-hover-soft:#fbf1ec;
+  --ds-theme-control-label:#8b493a;
+  --ds-theme-control-border:#d9b1a4;
+  --ds-theme-control-bg:#fffaf7;
+  --ds-theme-control-hover:#fbefea;
+  --ds-theme-focus:rgba(184,75,52,.22);
+  --ds-theme-glow:rgba(184,75,52,.035);
+  --ds-theme-card-glow:rgba(184,75,52,.05);
+}
 body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] {
   width:min(1320px,calc(100% - 54px));
 }
@@ -3433,15 +3447,3 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-top
 }
 
 
-/* A5 municipal golden lock — active states must remain identical to approved A5.4. */
-body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-context-nav .context-nav-links a.active {
-  border-color:var(--ds-demografia) !important;
-  background:var(--ds-demografia) !important;
-  color:#fff !important;
-  opacity:1 !important;
-}
-body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .topic-controls .metric-group-buttons button.active {
-  background:var(--ds-demografia) !important;
-  color:#fff !important;
-  opacity:1 !important;
-}
