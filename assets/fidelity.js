@@ -184,6 +184,7 @@
   function enhanceCharts(root = document) {
     root.querySelectorAll?.('.trend-chart').forEach(addYAxisLabels);
     syncA5CompareSpecialRouteActions();
+    syncA5FinancialCompareHistory();
   }
 
   function stickyOffset(includeThemeNavigation = false) {
@@ -237,7 +238,10 @@
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
   function scheduleA5CompareContractSync() {
-    requestAnimationFrame(() => requestAnimationFrame(syncA5CompareSpecialRouteActions));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      syncA5CompareSpecialRouteActions();
+      syncA5FinancialCompareHistory();
+    }));
   }
 
   document.addEventListener('change', event => {
@@ -276,6 +280,76 @@
   const a5Number1 = new Intl.NumberFormat('it-IT', { minimumFractionDigits:1, maximumFractionDigits:1, useGrouping:'always' });
   let a5Data = null;
   let a5Scheduled = false;
+
+  function a5FinancialChoiceMetric(metric, choice) {
+    if (!metric || metric.meta?.compositeType !== 'financialProfile') return metric;
+    const index=Math.max(0,Number(String(choice || 'part-0').replace('part-','')) || 0);
+    const template=metric.rows?.[0]?.parts?.[index] || metric.aggregate?.parts?.[index] || {};
+    const rawUnit=template.unit || metric.meta.unit;
+    const unit=rawUnit === 'percent2' ? '%' : rawUnit;
+    const number1=new Intl.NumberFormat('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1,useGrouping:'always'});
+    const clone={...metric,meta:{...metric.meta,unit,label:template.label || metric.meta.label}};
+    clone.rows=(metric.rows || []).map(row=>{
+      const part=row.parts?.[index] || {};
+      const raw=part.value;
+      const value=raw === null || raw === undefined || raw === '' ? undefined : Number(raw);
+      let formatted='n.d.';
+      if (Number.isFinite(value)) {
+        if (unit === 'eurPerResident') formatted=`${number1.format(value)} €/ab.`;
+        else if (unit === '%') formatted=`${number1.format(value)}%`;
+        else formatted=number1.format(value);
+      }
+      return {...row,value,formatted,series:part.series || row.series};
+    });
+    return clone;
+  }
+
+  function a5FinancialChoice() {
+    return document.querySelector('#compare-bars select[data-composite-component]')?.value || 'part-0';
+  }
+
+  function syncA5FinancialCompareHistory() {
+    if (!a5Data || document.body.dataset.page !== 'compare' || document.body.dataset.theme !== 'bilanci') return;
+    const active=document.querySelector('.topic-controls [data-metric].active, .topic-controls [data-metric][aria-selected="true"]');
+    if (active?.dataset.metric !== 'financialDebtProfile') return;
+    const metric=a5Data.metrics?.financialDebtProfile;
+    const target=document.getElementById('compare-bars');
+    const toolkit=window.OVUXHistory;
+    if (!metric || !target || !toolkit) return;
+
+    let shell=target.querySelector(':scope > .ux-view-shell');
+    const selectedTown=(() => { try { return sessionStorage.getItem('ov-history-town') || ''; } catch { return ''; } })();
+    const choice=a5FinancialChoice();
+    const viewMetric=a5FinancialChoiceMetric(metric,choice);
+    const series=toolkit.comparableSeries(viewMetric);
+
+    if (!shell) {
+      const direct=target.querySelector(':scope > .topic-bars');
+      if (!direct) return;
+      direct.querySelector('.financial-aggregate-history')?.remove();
+      const currentMarkup=direct.outerHTML;
+      const historyMarkup=toolkit.historicalChartMarkup(viewMetric,series,selectedTown);
+      const note='Storico 2019–2025 dei sette Comuni per la lettura selezionata. Nessuna media Versilia sostituisce le serie comunali.';
+      target.innerHTML=toolkit.viewShellMarkup(currentMarkup,historyMarkup,Boolean(series),note);
+      shell=target.querySelector(':scope > .ux-view-shell');
+      if (!shell) return;
+      toolkit.wireViewShell(shell,'ov-compare-view',Boolean(series));
+      toolkit.wireHistorySelection(shell,selectedTown,true);
+      shell.dataset.financialChoice=choice;
+      return;
+    }
+
+    shell.querySelector('[data-view-pane="current"] .financial-aggregate-history')?.remove();
+    if (shell.dataset.financialChoice === choice) return;
+    const pane=shell.querySelector('[data-view-pane="history"]');
+    if (pane) {
+      pane.innerHTML=toolkit.historicalChartMarkup(viewMetric,series,selectedTown);
+      toolkit.wireHistorySelection(shell,selectedTown,true);
+    }
+    const historyButton=shell.querySelector('[data-view-mode="history"]');
+    if (historyButton) historyButton.disabled=!series;
+    shell.dataset.financialChoice=choice;
+  }
 
   function a5Escape(value) {
     return String(value ?? '')
@@ -620,6 +694,7 @@
     .then(payload => {
       a5Data=payload;
       scheduleA5Town();
+      scheduleEnhancement();
     })
     .catch(error => console.warn('A5 municipal adapter non applicato:',error));
 

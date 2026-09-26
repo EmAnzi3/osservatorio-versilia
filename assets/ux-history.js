@@ -268,7 +268,7 @@
     const selectedTown = safeStorageGet('ov-history-town') || '';
     const selected = selectedMetric(data);
     if (!selected) return;
-    if (['drinkingWaterQuality','remediationProceedings'].includes(selected.metric?.meta?.compositeType)) return;
+    if (['drinkingWaterQuality','remediationProceedings','financialProfile'].includes(selected.metric?.meta?.compositeType)) return;
     const existingShell = target.querySelector(':scope > .ux-view-shell');
     if (selected.key === 'extractiveProduction') {
       if (existingShell) {
@@ -301,21 +301,15 @@
 
     if (existingShell) {
       wireShell(existingShell, 'ov-compare-view', selectedTown, true);
-      if (selected.metric?.meta?.compositeType === 'financialProfile') {
-        refreshFinancialCompareHistory(selected.metric, existingShell, selectedTown);
-      }
       return;
     }
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const selectedChoice = ['sexBreakdown','financialProfile'].includes(selected.metric?.meta?.compositeType) ? currentCompositeChoice() : null;
+    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
     const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : selectedChoice;
     const historyView = historyMetric(historyChoice ? compositeChoiceMetric(selected.metric, historyChoice) : selected.metric);
     const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
-    if (selected.metric?.meta?.compositeType === 'financialProfile') {
-      target.querySelector('.financial-aggregate-history')?.remove();
-    }
     const currentMarkup = target.innerHTML;
     const historyMarkup = renderHistoryMarkup(historyView, series, selectedTown);
     const note = normalized
@@ -331,9 +325,7 @@
               : 'Per questo indicatore non esistono almeno due anni omogenei per tutti e sette i comuni.';
 
     target.innerHTML = toolkit.viewShellMarkup(currentMarkup, historyMarkup, historyAvailable, note);
-    const shell = target.querySelector('.ux-view-shell');
-    if (selected.metric?.meta?.compositeType === 'financialProfile') shell.dataset.financialChoice = historyChoice || 'part-0';
-    wireShell(shell, 'ov-compare-view', selectedTown, true);
+    wireShell(target.querySelector('.ux-view-shell'), 'ov-compare-view', selectedTown, true);
   }
 
   function forceItalianGrouping(formatted, value) {
@@ -357,7 +349,7 @@
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (!['distribution','omi','stock','securityMeasures','sexBreakdown','financialProfile'].includes(metric?.meta?.compositeType)) return metric;
+    if (!['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return metric;
     const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })), aggregate:metric.aggregate ? { ...metric.aggregate } : metric.aggregate };
     if (metric.meta.compositeType === 'sexBreakdown') {
       const selected = choice || metric.meta.defaultSex || 'totale';
@@ -370,29 +362,6 @@
       });
       const aggregatePart=(metric.aggregate?.parts || []).find(item=>item.key===selected) || metric.aggregate?.parts?.[0] || {};
       clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, formatted:aggregatePart.formatted, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || option?.label || ''}` };
-      return clone;
-    }
-    if (metric.meta.compositeType === 'financialProfile') {
-      const index = Math.max(0, Number(String(choice || 'part-0').replace('part-','')) || 0);
-      const template = metric.rows?.[0]?.parts?.[index] || metric.aggregate?.parts?.[index] || {};
-      const rawUnit = template.unit || metric.meta.unit;
-      const unit = rawUnit === 'percent2' ? '%' : rawUnit;
-      clone.meta.unit = unit;
-      clone.meta.label = template.label || metric.meta.label;
-      clone.rows = metric.rows.map(row => {
-        const part = row.parts?.[index] || {};
-        const rawValue = part.value;
-        const value = rawValue === null || rawValue === undefined || rawValue === '' ? undefined : Number(rawValue);
-        let formatted = 'n.d.';
-        if (Number.isFinite(value)) {
-          if (unit === 'eurPerResident') formatted = `${number1.format(value)} €/ab.`;
-          else if (unit === '%') formatted = `${number1.format(value)}%`;
-          else formatted = number1.format(value);
-        }
-        return { ...row, value, formatted, series:part.series || row.series };
-      });
-      const aggregatePart = metric.aggregate?.parts?.[index] || {};
-      clone.aggregate = { ...metric.aggregate, value:aggregatePart.value, series:aggregatePart.series, label:`Versilia · ${aggregatePart.label || template.label || ''}` };
       return clone;
     }
     if (metric.meta.compositeType === 'securityMeasures') {
@@ -482,23 +451,6 @@
 
   function currentCompositeChoice() {
     return document.querySelector('select[data-composite-choice]')?.value || document.querySelector('select[data-composite-component]')?.value || 'summary';
-  }
-
-  function refreshFinancialCompareHistory(metric, shell, selectedTown) {
-    if (!shell || metric?.meta?.compositeType !== 'financialProfile') return;
-    const choice = currentCompositeChoice() || 'part-0';
-    shell.querySelector('[data-view-pane="current"] .financial-aggregate-history')?.remove();
-    if (shell.dataset.financialChoice === choice) return;
-    const historyView = historyMetric(compositeChoiceMetric(metric, choice));
-    const series = toolkit.comparableSeries(historyView);
-    const pane = shell.querySelector('[data-view-pane="history"]');
-    if (pane) {
-      pane.innerHTML = renderHistoryMarkup(historyView, series, selectedTown);
-      toolkit.wireHistorySelection(shell, selectedTown, true);
-    }
-    const button = shell.querySelector('[data-view-mode="history"]');
-    if (button) button.disabled = !series;
-    shell.dataset.financialChoice = choice;
   }
 
   function withOfficialVersiliaSeries(metric, series) {
