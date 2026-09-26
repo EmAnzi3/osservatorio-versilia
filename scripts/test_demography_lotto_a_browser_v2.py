@@ -295,6 +295,11 @@ def main() -> None:
                         f'A5.5 bulk {theme_key}/{metric_key}: chart overflow {chart_state}')
                 require(page.locator('#compare-tools.compare-post-benchmark-tools').count() == 1,
                         f'A5.5 bulk {theme_key}/{metric_key}: tools host assente')
+                if metric_key.startswith('slowMobility'):
+                    require(page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia contestuale assente')
+                    require(page.locator('.compare-panel-heading .data-actions a[href*="percorsi/"]').count() == 0,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata nella toolbar')
                 assert_no_horizontal_overflow(
                     page,
                     f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'

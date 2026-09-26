@@ -136,8 +136,37 @@
     });
   }
 
+  function syncA5CompareSpecialRouteActions() {
+    if (document.body.dataset.page !== 'compare') return;
+    const main=document.querySelector('main.a5-editorial-pilot');
+    const tools=document.getElementById('compare-tools');
+    if (!main || !tools) return;
+
+    const activeMetric=document.querySelector('.topic-controls [data-metric].active, .topic-controls [data-metric][aria-selected="true"]');
+    const metricKey=activeMetric?.dataset.metric || '';
+    const slowMobility=metricKey.startsWith('slowMobility');
+    const existing=tools.querySelector(':scope > .a5-special-route-actions');
+
+    if (!slowMobility) {
+      existing?.remove();
+      return;
+    }
+
+    document.querySelectorAll('.compare-panel-heading .data-actions a[href*="/percorsi/"]').forEach(link => link.remove());
+
+    if (existing) return;
+    const host=document.createElement('div');
+    host.className='a5-special-route-actions';
+    const link=document.createElement('a');
+    link.href=new URL('../percorsi/',SCRIPT_URL).href;
+    link.textContent='Esplora la cartografia';
+    host.append(link);
+    tools.append(host);
+  }
+
   function enhanceCharts(root = document) {
     root.querySelectorAll?.('.trend-chart').forEach(addYAxisLabels);
+    syncA5CompareSpecialRouteActions();
   }
 
   function stickyOffset(includeThemeNavigation = false) {

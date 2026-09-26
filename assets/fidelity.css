@@ -2023,6 +2023,33 @@ main.a5-editorial-pilot .compare-post-benchmark-tools > .reading-scale p {
   font-size:8px;
   line-height:1.35;
 }
+main.a5-editorial-pilot .compare-post-benchmark-tools > .a5-special-route-actions {
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:flex-end;
+  min-height:0;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a {
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:7px 12px;
+  border:1px solid var(--ds-theme-line);
+  border-radius:8px;
+  background:var(--ds-theme-soft);
+  color:var(--ds-theme-dark);
+  font-size:8px;
+  font-weight:800;
+  text-decoration:none;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a:hover {
+  border-color:var(--ds-theme-accent);
+  color:var(--ds-theme-accent);
+}
 
 /* 5. Territory cards: fixed photo crop + current selected value. */
 main.a5-editorial-pilot .topic-town-card {
