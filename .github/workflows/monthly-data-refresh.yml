@@ -105,6 +105,55 @@ jobs:
           python scripts/materialize_source_monitor_snapshot.py \
             --output-dir "$MONITOR_PUBLIC_DIR"
 
+      - name: Inspect MIMIT historical fuel archive format
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import tarfile
+          import urllib.request
+          from pathlib import Path
+
+          out = Path("reports/runtime")
+          out.mkdir(parents=True, exist_ok=True)
+          sources = {
+              "anagrafica": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2025/2025_4_tr.tar.gz",
+              "prezzi": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2025/2025_4_tr.tar.gz",
+          }
+          result = {}
+          headers = {"User-Agent": "Mozilla/5.0 (compatible; OsservatorioVersilia/1.0)"}
+          for key, url in sources.items():
+              target = Path(f"/tmp/{key}-2025q4.tar.gz")
+              req = urllib.request.Request(url, headers=headers)
+              with urllib.request.urlopen(req, timeout=300) as response, target.open("wb") as handle:
+                  while chunk := response.read(1024 * 1024):
+                      handle.write(chunk)
+              with tarfile.open(target, "r:gz") as archive:
+                  members = [m for m in archive.getmembers() if m.isfile()]
+                  samples = []
+                  for member in members[:2] + members[-2:]:
+                      stream = archive.extractfile(member)
+                      raw = stream.read(1200) if stream else b""
+                      samples.append({
+                          "name": member.name,
+                          "size": member.size,
+                          "head": raw.decode("utf-8-sig", errors="replace"),
+                      })
+                  result[key] = {
+                      "url": url,
+                      "archiveBytes": target.stat().st_size,
+                      "memberCount": len(members),
+                      "firstMembers": [m.name for m in members[:5]],
+                      "lastMembers": [m.name for m in members[-5:]],
+                      "samples": samples,
+                  }
+          (out / "mimit-fuel-archive-inspect.json").write_text(
+              json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
       - name: Prepare check
         id: prepare
         env:
