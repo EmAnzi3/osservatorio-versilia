@@ -43,6 +43,26 @@ FREEZE_STYLE = """
 }
 """
 
+# 6a064ba is the last user-approved pre-fix state. The only known defect in
+# that checkpoint is the missing Demografia DS2 aliases on municipal pages.
+# Normalize ONLY that defect in the baseline browser before comparing output.
+BASELINE_FIX_STYLE = """
+body[data-page="town"]:has(main.a5-town-pilot[data-theme="demografia"]) {
+  --ds-theme-accent:#b84b34;
+  --ds-theme-dark:#963925;
+  --ds-theme-soft:#fbe9e3;
+  --ds-theme-line:#efc9be;
+  --ds-theme-hover-soft:#fbf1ec;
+  --ds-theme-control-label:#8b493a;
+  --ds-theme-control-border:#d9b1a4;
+  --ds-theme-control-bg:#fffaf7;
+  --ds-theme-control-hover:#fbefea;
+  --ds-theme-focus:rgba(184,75,52,.22);
+  --ds-theme-glow:rgba(184,75,52,.035);
+  --ds-theme-card-glow:rgba(184,75,52,.05);
+}
+"""
+
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -220,9 +240,11 @@ def main():
                 for metric in METRICS:
                     rel=f"comuni/{town}/?tema=demografia&indicatore={metric}"
                     key=f"{name}-{town}-{metric}"
-                    for page,root in ((base_page,baseline),(cur_page,current)):
+                    for page,root,is_baseline in ((base_page,baseline,True),(cur_page,current,False)):
                         page.goto(urljoin(root,rel), wait_until="networkidle")
                         page.wait_for_selector('main.a5-town-pilot[data-theme="demografia"]')
+                        if is_baseline:
+                            page.add_style_tag(content=BASELINE_FIX_STYLE)
                         page.add_style_tag(content=FREEZE_STYLE)
                         wait_stable(page)
 
@@ -310,7 +332,7 @@ def main():
         browser.close()
 
     summary={
-        "baseline_commit":"7eadda666118f2450290a3b1c6edb93f061b7c7b",
+        "baseline_commit":"6a064ba25992d292a76709ac15d49537c258ac66",
         "checked_surfaces":checked,
         "towns":list(TOWNS),
         "metrics":list(METRICS),

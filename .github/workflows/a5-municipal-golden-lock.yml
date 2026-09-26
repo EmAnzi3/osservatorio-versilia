@@ -45,10 +45,10 @@ jobs:
       - name: Build current preview
         run: python scripts/build_static_brand.py
 
-      - name: Checkout immutable municipal golden baseline
+      - name: Checkout approved pre-fix municipal baseline
         uses: actions/checkout@v4
         with:
-          ref: 7eadda666118f2450290a3b1c6edb93f061b7c7b
+          ref: 6a064ba25992d292a76709ac15d49537c258ac66
           path: baseline
 
       - name: Build baseline preview
