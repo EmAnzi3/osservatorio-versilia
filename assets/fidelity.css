@@ -3395,3 +3395,39 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-top
     gap:6px;
   }
 }
+
+
+/* A5 mobility map action — final toolbar contract */
+.a5-map-action {
+  min-height:28px !important;
+  box-sizing:border-box !important;
+  display:inline-flex !important;
+  flex:0 0 auto !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:5px !important;
+  padding:5px 7px !important;
+  border:1px solid var(--ds-border) !important;
+  border-radius:7px !important;
+  background:#fbf7f0 !important;
+  color:var(--ds-ink) !important;
+  font-size:6.5px !important;
+  font-weight:760 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  text-decoration:none !important;
+}
+.a5-map-action > span {
+  display:block !important;
+  white-space:nowrap !important;
+}
+.a5-map-action > svg {
+  display:block !important;
+  width:17px !important;
+  height:17px !important;
+  min-width:17px !important;
+  flex:0 0 17px !important;
+  color:var(--ds-theme-accent,var(--ds-navy)) !important;
+  overflow:visible !important;
+}
