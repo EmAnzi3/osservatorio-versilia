@@ -306,6 +306,14 @@ def main() -> None:
                             f'A5.5 bulk {theme_key}/{metric_key}: export costiero fuori dal tools host')
                     require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
                             f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere duplicate nella toolbar')
+                    selector = page.locator('#compare-bars select[data-composite-component]:visible').first
+                    if selector.count() and selector.locator('option').count() > 1:
+                        selector.select_option(index=1)
+                        page.wait_for_timeout(120)
+                        require(page.locator('#compare-tools > .data-actions [data-download]').count() == 1,
+                                f'A5.5 bulk {theme_key}/{metric_key}: export costiero perso dopo cambio selettore')
+                        require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
+                                f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere tornate nella toolbar dopo selettore')
                 assert_no_horizontal_overflow(
                     page,
                     f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'

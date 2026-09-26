@@ -232,6 +232,23 @@
 
   const observer = new MutationObserver(scheduleEnhancement);
   observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  function scheduleA5CompareContractSync() {
+    requestAnimationFrame(() => requestAnimationFrame(syncA5CompareSpecialRouteActions));
+  }
+
+  document.addEventListener('change', event => {
+    if (event.target.closest?.('main.a5-editorial-pilot .compare-chart-toolbar')) {
+      scheduleA5CompareContractSync();
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (event.target.closest?.('main.a5-editorial-pilot [data-composite-choice], main.a5-editorial-pilot [data-composite-scale]')) {
+      scheduleA5CompareContractSync();
+    }
+  });
+
   installMobileThemeJump();
   scheduleEnhancement();
 
