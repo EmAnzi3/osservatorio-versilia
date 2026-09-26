@@ -305,8 +305,9 @@
     }
 
     const normalized = Boolean(document.querySelector('[data-scale="normalized"].active'));
-    const selectedChoice = (selected.metric?.meta?.compositeType === 'sexBreakdown' || selected.key === 'fuelPrices') ? currentCompositeChoice() : null;
-    const historyView = historyMetric(selectedChoice ? compositeChoiceMetric(selected.metric, selectedChoice) : selected.metric);
+    const selectedChoice = selected.metric?.meta?.compositeType === 'sexBreakdown' ? currentCompositeChoice() : null;
+    const historyChoice = selected.key === 'fuelPrices' ? currentCompositeChoice() : selectedChoice;
+    const historyView = historyMetric(historyChoice ? compositeChoiceMetric(selected.metric, historyChoice) : selected.metric);
     const series = normalized ? null : withOfficialVersiliaSeries(historyView, toolkit.comparableSeries(historyView));
     const historyAvailable = Boolean(series);
     const currentMarkup = target.innerHTML;
