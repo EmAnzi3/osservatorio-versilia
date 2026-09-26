@@ -1,19 +1,21 @@
 (location.search);
     let metricKey = params.get('indicatore');
     if (!theme.metrics.includes(metricKey)) metricKey = theme.metrics[0];
-    app.innerHTML = `<main class="inner-page" data-theme="${themeKey}">
-      <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
-      ${compareContextNav(data, themeKey)}
-      <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
-        <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
-      <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
-      <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
-      <section id="compare-benchmark" class="page-width"></section>
-      ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
-      ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
-      <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
-      <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
-    </main>`;
+    app.innerHTML = isA5CompareTheme(themeKey)
+      ? a5CompareShellMarkup(data, themeKey, metricKey)
+      : `<main class="inner-page" data-theme="${themeKey}">
+          <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
+          ${compareContextNav(data, themeKey)}
+          <section class="topic-hero page-width" data-theme="${themeKey}"><div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
+            <div><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div></section>
+          <section class="topic-dashboard page-width" data-theme="${themeKey}"><aside class="topic-controls">${metricControls(data, themeKey, metricKey, true)}<div id="compare-definition"></div></aside><div id="compare-bars"></div></section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width"></section>
+          ${themeKey === 'sicurezza' ? crimeMarkup(data) : ''}
+          ${themeKey === 'demografia' ? brainDrainMarkup(data) : ''}
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
+          <section class="topic-town-links page-width"><div><span class="overline">Schede comunali</span><h2>Apri il territorio</h2></div><div>${data.towns.map(t => `<a href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span>${html(t.name)}</span><b>→</b></a>`).join('')}</div></section>
+        </main>`;
     const update = key => {
       metricKey = key;
       history.replaceState(history.state, '', `?indicatore=${encodeURIComponent(key)}`);
@@ -974,6 +976,9 @@
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
     const metric = data.metrics[metricKey];
+    const mobilityContextMetrics = new Set(['internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility']);
+    const brainDrain = document.querySelector('.brain-drain-context');
+    if (brainDrain) brainDrain.hidden = !(themeKey === 'demografia' && mobilityContextMetrics.has(metricKey));
     const def = document.getElementById('compare-definition');
     const bars = document.getElementById('compare-bars');
     const benchmark = document.getElementById('compare-benchmark');
@@ -1121,11 +1126,125 @@
       : metric;
     benchmark.innerHTML = (metricKey.startsWith('slowMobility') || (metric.meta.compositeType && compositeType !== 'sexBreakdown')) ? '' : benchmarkMarkup(benchmarkMetric,aggregate,unit,null);
     const currentMethod = compositeType === 'financialProfile' ? financialProfileMethodDisclosure(metric,view.choice) : methodDisclosure(metric);
-    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${route('percorsi/')}">Esplora la cartografia</a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
-    tools.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
-    tools.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+    tools.innerHTML = `${libraryHistoryTableMarkup(metric)}${currentMethod}<div class="data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a class="a5-map-action" href="${route('percorsi/')}" aria-label="Esplora la cartografia dei percorsi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M9 18 3.8 20.3A1 1 0 0 1 2.4 19.4V6.2a1 1 0 0 1 .6-.9L9 2.7m0 15.3 6 3.3m-6-3.3V2.7m6 18.6 6-2.7a1 1 0 0 0 .6-.9V4.5a1 1 0 0 0-1.4-.9L15 6m0 15.3V6m0 0L9 2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Esplora la cartografia</span></a>` : ''}<button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+    const dataActions = tools.querySelector(':scope > .data-actions');
+    const chartHeading = document.querySelector('.compare-main-column > .compare-panel-heading');
+    chartHeading?.querySelector(':scope > .data-actions')?.remove();
+    if (dataActions && chartHeading) chartHeading.append(dataActions);
+    const actionHost = chartHeading || tools;
+    actionHost.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data,metricKey,normalized));
+    actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+
+    const photoFiles = {
+      'Massarosa':'MassarosaPanorama.JPG',
+      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
+      'Camaiore':'Pontile di Lido di Camaiore, 55041 Lido di Camaiore LU, Italy - panoramio.jpg',
+      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
+      'Seravezza':'Palazzo Mediceo a Seravezza.jpg',
+      'Forte dei Marmi':'Pontile Forte dei Marmi.jpg',
+      'Stazzema':'Stazzema.JPG'
+    };
+    document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
+      const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
+      if (!name) return;
+      const town = data.towns.find(item => item.name === name);
+      const row = metric.rows.find(item => item.code === town?.code || item.town === name);
+      const copy = card.querySelector('.topic-town-card-copy');
+      const image = card.querySelector('.topic-town-card-media img');
+      const slug = normalize(name).replaceAll(' ','-');
+      card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
+      if (image && photoFiles[name]) {
+        const fallback = mediaSrc(data.crests[name]);
+        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        image.alt = name;
+        image.referrerPolicy = 'no-referrer';
+        image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
+      }
+      let value = row?.value;
+      let valueUnit = metric.meta.unit;
+      if (row && normalized && row.normalized) {
+        value = row.normalized.value;
+        valueUnit = row.normalized.unit;
+      } else if (row && selectableComposite) {
+        const selected = compositeCompareSelection(metric,row,view.choice,view.scale);
+        value = selected?.value;
+        valueUnit = selected?.unit || valueUnit;
+      } else if (row && compositeType === 'distribution' && row.summaryValue !== undefined) {
+        value = row.summaryValue;
+        valueUnit = metric.meta.summaryUnit || valueUnit;
+      }
+      copy?.querySelector('.town-current-value')?.remove();
+      if (copy && row) {
+        const detail = document.createElement('span');
+        detail.className = 'town-current-value';
+        detail.innerHTML = `<b>${html(formatMetricRowValue(row,value,valueUnit))}</b><small>${html(metric.meta.shortLabel || metric.meta.label)}</small>`;
+        copy.insertBefore(detail, copy.querySelector('small'));
+      }
+    });
+    const townGrid = document.querySelector('#compare-territori .topic-town-card-grid');
+    if (townGrid) {
+      [...townGrid.children]
+        .sort((a,b) => (a.querySelector('.topic-town-card-copy strong')?.textContent || '').localeCompare(
+          b.querySelector('.topic-town-card-copy strong')?.textContent || '', 'it'
+        ))
+        .forEach(card => townGrid.append(card));
+    }
+    window.dispatchEvent(new CustomEvent('ov:compare-rendered', { detail:{ themeKey, metricKey } }));
   }
 
+  function syncA5CompareChrome() {
+    if (document.body.dataset.page !== 'compare' || !isA5CompareTheme(document.body.dataset.theme)) return;
+    const main = document.querySelector('main.a5-editorial-pilot');
+    const toolbar = main?.querySelector('#compare-bars > .ux-view-shell > .ux-view-toolbar');
+    if (!toolbar) return;
+    const copy = toolbar.querySelector('.ux-view-toolbar-copy');
+    if (copy && !copy.querySelector('.a5-toolbar-overline')) {
+      copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
+    }
+    const heading = main.querySelector('.compare-panel-heading');
+    const actions = heading?.querySelector(':scope > .data-actions') || toolbar.querySelector(':scope > .data-actions');
+    const toggle = toolbar.querySelector('.ux-view-toggle');
+    if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions,toggle || null);
+  }
+
+  window.addEventListener('ov:ux-history-enhanced', syncA5CompareChrome);
+
+  function syncA5TownChrome() {
+    if (document.body.dataset.page !== 'town') return;
+    const main = document.querySelector('main.a5-town-pilot');
+    if (!main) return;
+    const topic = main.querySelector('#town-topic');
+    const chart = topic?.querySelector(':scope > .history-panel.a5-shared-chart');
+    const toolbar = chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
+    if (!toolbar) return;
+
+    /* A5.4 structural contract: chart -> benchmark -> method/scale -> optional context.
+       Do this after runtime enhancement so indicator-specific markup cannot reorder the shell. */
+    const benchmarkHost = topic.querySelector(':scope > .town-benchmark-host');
+    const toolsHost = topic.querySelector(':scope > .town-post-benchmark-tools');
+    if (chart && benchmarkHost && chart.nextElementSibling !== benchmarkHost) chart.after(benchmarkHost);
+    if (toolsHost) {
+      const toolsAnchor = benchmarkHost || chart;
+      if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
+    }
+    const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail');
+    if (fixedDetail) {
+      fixedDetail.classList.add('a5-town-extra-context');
+      const detailAnchor = toolsHost || benchmarkHost || chart;
+      if (detailAnchor) detailAnchor.after(fixedDetail);
+    }
+
+    const copy = toolbar.querySelector('.ux-view-toolbar-copy');
+    if (copy && !copy.querySelector('.a5-toolbar-overline')) {
+      copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
+    }
+    const actions = topic.querySelector(':scope > .town-data-actions') || toolbar.querySelector(':scope > .town-data-actions');
+    const toggle = toolbar.querySelector('.ux-view-toggle');
+    if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions, toggle || null);
+  }
+
+  window.addEventListener('ov:ux-history-enhanced', syncA5TownChrome);
+  window.addEventListener('ov:composite-choice', syncA5TownChrome);
 
   function libraryHistoryTableMarkup(metric) {
     const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
@@ -1185,6 +1304,93 @@
     return data.towns.find(t => normalize(t.name).replaceAll(' ', '-') === slug);
   }
 
+  const A5_TOWN_PILOT = Object.freeze({ towns:new Set(['viareggio','massarosa']), theme:'demografia' });
+  const DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS = new Set([
+    'internalResidentialMobility',
+    'foreignResidentialMobility',
+    'totalResidentialMobility'
+  ]);
+
+  function isA5TownPilot(town, themeKey) {
+    const slug = normalize(town?.name || '').replaceAll(' ', '-');
+    return A5_TOWN_PILOT.towns.has(slug) && themeKey === A5_TOWN_PILOT.theme;
+  }
+
+  function syncA5TownPilotClass(main, town, themeKey) {
+    if (!main) return false;
+    const active = isA5TownPilot(town, themeKey);
+    main.classList.toggle('a5-editorial-pilot', active);
+    main.classList.toggle('a5-town-pilot', active);
+    return active;
+  }
+
+  const A5_TOWN_PROFILE_META = Object.freeze({
+    viareggio: {
+      institutionYear: '1820',
+      heroCredit: 'Sailko / Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Viareggio,_passeggiata_a_mare_2.JPG'
+    },
+    massarosa: {
+      institutionYear: '1869',
+      heroCredit: 'LigaDue / Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:MassarosaPanorama.JPG'
+    }
+  });
+
+  function a5TownStatIcon(kind) {
+    const icons = {
+      population: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M17 11h5"></path><path d="M19.5 8.5v5"></path></svg>',
+      surface: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 5-2 8 3 5-2v13l-5 2-8-3-5 2Z"></path><path d="M8 4v13"></path><path d="M16 7v13"></path></svg>',
+      institution: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 22h18"></path><path d="M6 18V9"></path><path d="M10 18V9"></path><path d="M14 18V9"></path><path d="M18 18V9"></path><path d="m12 2 9 5H3Z"></path></svg>',
+      income: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7a6 6 0 1 0 0 10"></path><path d="M5 10h8"></path><path d="M5 14h7"></path></svg>',
+      work: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path><path d="M10 12v2h4v-2"></path></svg>',
+      life: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"></path><path d="M4.5 12h4l1.4-3 2.3 6 1.6-4 1.2 1h4.5"></path></svg>'
+    };
+    return icons[kind] || '';
+  }
+
+  function a5TownHeroMarkup(data, town, pop) {
+    const slug = normalize(town.name).replaceAll(' ', '-');
+    const profile = A5_TOWN_PROFILE_META[slug] || {};
+    const surfaceMetric = data.metrics.municipalSurface;
+    const surface = surfaceMetric?.rows?.find(row => row.code === town.code);
+    return `<header class="town-hero">
+      <div class="town-hero-shell">
+        <div class="town-identity">
+          <img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}">
+          <div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div>
+        </div>
+        <dl class="town-headline-stats">
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('population')}</span>Popolazione</dt><dd>${html(pop.formatted)}</dd><small>Residenti · ${html(data.metrics.population.meta.year)}</small></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('surface')}</span>Superficie</dt><dd>${html(surface?.formatted || formatValue(surface?.value, surfaceMetric?.meta?.unit))}</dd><small>Superficie comunale</small></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
+        </dl>
+      </div>
+      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · Passeggiata a mare · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
+    </header>`;
+  }
+
+  function a5TownBriefMarkup(data, town) {
+    const incomeMetric = data.metrics.income;
+    const employmentMetric = data.metrics.employmentRate;
+    const lifeMetric = data.metrics.lifeExpectancy;
+    const income = incomeMetric?.rows?.find(row => row.code === town.code);
+    const employment = employmentMetric?.rows?.find(row => row.code === town.code);
+    const life = lifeMetric?.rows?.find(row => row.code === town.code);
+    const incomeDifference = income && incomeMetric?.aggregate?.value
+      ? (Number(income.value) / Number(incomeMetric.aggregate.value) - 1) * 100
+      : null;
+    const employmentDifference = employment && employmentMetric?.aggregate?.value !== undefined
+      ? Number(employment.value) - Number(employmentMetric.aggregate.value)
+      : null;
+    return `<section class="town-brief" aria-labelledby="town-brief-title">
+      <div><span class="overline">Sintesi</span><h2 id="town-brief-title">${html(town.name)} in breve</h2><p>Tre dati essenziali per leggere in modo immediato economia, lavoro e salute del Comune.</p></div>
+      <article><div class="town-brief-head"><span class="town-brief-icon">${a5TownStatIcon('income')}</span><span>Reddito medio</span></div><strong>${html(income?.formatted || 'n.d.')}</strong><small>${html(incomeMetric?.meta?.year || '')} · ${incomeDifference === null ? 'confronto non disponibile' : `${incomeDifference >= 0 ? '+' : '−'}${number1.format(Math.abs(incomeDifference))}% rispetto alla media Versilia`}</small></article>
+      <article><div class="town-brief-head"><span class="town-brief-icon">${a5TownStatIcon('work')}</span><span>Tasso di occupazione</span></div><strong>${html(employment?.formatted || formatValue(employment?.value, employmentMetric?.meta?.unit))}</strong><small>${html(employmentMetric?.meta?.year || '')} · ${employmentDifference === null ? 'confronto non disponibile' : `${employmentDifference >= 0 ? '+' : '−'}${number1.format(Math.abs(employmentDifference))} punti rispetto alla media Versilia`}</small></article>
+      <article><div class="town-brief-head"><span class="town-brief-icon">${a5TownStatIcon('life')}</span><span>Speranza di vita</span></div><strong>${html(life?.formatted || formatValue(life?.value, lifeMetric?.meta?.unit))}</strong><small>${html(lifeMetric?.meta?.year || '')} · serie ufficiale ARS Toscana</small></article>
+    </section>`;
+  }
+
   function renderTown(data) {
     const town = findTown(data, pageTown);
     if (!town) return renderNotFound();
@@ -1202,14 +1408,22 @@
     const employmentDifference = Number(employment.value) - Number(data.metrics.employmentRate.aggregate.value);
     const incomeDifference = (Number(income.value) / Number(data.metrics.income.aggregate.value) - 1) * 100;
 
-    app.innerHTML = `<main class="page-width inner-page town-profile" data-theme="${themeKey}">
-      <div class="breadcrumbs"><a href="${route('')}">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>${html(town.name)}</strong></div>
-      <header class="town-hero"><div class="town-identity"><img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}"><div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div></div>
-        <dl class="town-headline-stats"><div><dt>Residenti · ${html(data.metrics.population.meta.year)}</dt><dd>${html(pop.formatted)}</dd></div><div><dt>Reddito medio · ${html(data.metrics.income.meta.year)}</dt><dd>${html(income.formatted)}</dd></div><div><dt>Occupazione · ${html(data.metrics.employmentRate.meta.year)}</dt><dd>${html(employment.formatted)}</dd></div></dl></header>
-      <section class="town-brief" aria-labelledby="town-brief-title"><div><span class="overline">Sintesi</span><h2 id="town-brief-title">${html(town.name)} in breve</h2></div>
+    const townPilot = isA5TownPilot(town, themeKey);
+    const heroMarkup = townPilot
+      ? a5TownHeroMarkup(data, town, pop)
+      : `<header class="town-hero"><div class="town-identity"><img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}"><div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div></div>
+        <dl class="town-headline-stats"><div><dt>Residenti · ${html(data.metrics.population.meta.year)}</dt><dd>${html(pop.formatted)}</dd></div><div><dt>Reddito medio · ${html(data.metrics.income.meta.year)}</dt><dd>${html(income.formatted)}</dd></div><div><dt>Occupazione · ${html(data.metrics.employmentRate.meta.year)}</dt><dd>${html(employment.formatted)}</dd></div></dl></header>`;
+    const briefMarkup = townPilot
+      ? a5TownBriefMarkup(data, town)
+      : `<section class="town-brief" aria-labelledby="town-brief-title"><div><span class="overline">Sintesi</span><h2 id="town-brief-title">${html(town.name)} in breve</h2></div>
         <article><span>Popolazione dal ${html(pop.series?.years?.[0] || '2019')}</span><strong>${populationChange >= 0 ? 'In crescita' : 'In calo'}</strong><small>${html(number1.format(Math.abs(populationChange)))}% ${populationChange >= 0 ? 'in più' : 'in meno'}</small></article>
         <article><span>Occupazione 25–64</span><strong>${employmentDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(employmentDifference)))} punti di differenza</small></article>
-        <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>
+        <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>`;
+
+    app.innerHTML = `<main class="page-width inner-page town-profile${townPilot ? ' a5-editorial-pilot a5-town-pilot' : ''}" data-theme="${themeKey}">
+      <div class="breadcrumbs"><a href="${route('')}">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>${html(town.name)}</strong></div>
+      ${heroMarkup}
+      ${briefMarkup}
       ${townContextNav(data, town, themeKey, metricKey)}
       <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
       <div id="town-context"></div>
@@ -1230,14 +1444,19 @@
     const selectTheme = key => {
       themeKey = key;
       metricKey = data.themes[key].metrics[0];
-      document.querySelector('main.town-profile').dataset.theme = key;
+      const townMain = document.querySelector('main.town-profile');
+      townMain.dataset.theme = key;
+      syncA5TownPilotClass(townMain, town, key);
       document.querySelectorAll('[data-profile-theme]').forEach(button => button.classList.toggle('active', button.dataset.profileTheme === key));
       updateUrl(themeKey, metricKey);
       updateTownContextLinks(data, themeKey, metricKey);
       renderTownMetric(data, town, themeKey, metricKey, selectMetric);
       scrollActiveControl(document.querySelector('.theme-nav'));
     };
-    document.querySelectorAll('[data-profile-theme]').forEach(button => button.addEventListener('click', () => selectTheme(button.dataset.profileTheme)));
+    document.querySelectorAll('[data-profile-theme]').forEach(control => control.addEventListener('click', event => {
+      event.preventDefault();
+      selectTheme(control.dataset.profileTheme);
+    }));
     renderTownMetric(data, town, themeKey, metricKey, selectMetric);
     scrollActiveControl(document.querySelector('.theme-nav'));
   }
@@ -1261,7 +1480,9 @@
     const ranked = metricRows(data, metricKey);
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
+    const townPilot = syncA5TownPilotClass(document.querySelector('main.town-profile'), town, themeKey);
     container.dataset.theme = themeKey;
+    container.classList.toggle('a5-town-topic', townPilot);
     container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');
     const historical = Boolean(row.series?.values?.length);
     const composite = Boolean(metric.meta.compositeType);
@@ -1299,22 +1520,22 @@
         ? `<aside class="versilia-position"><span class="overline">Applicabilità territoriale</span><strong>n.a.<small>Comune non costiero</small></strong><p>${html(row.applicabilityNote)}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`
         : `<aside class="versilia-position"><span class="overline">Ordine del valore</span><strong>${rank}<sup>°</sup> <small>su 7</small></strong><p>${html(interpretation(metric.meta))}</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value, metric.meta.unit))}</b></div></aside>`);
     container.innerHTML = `<div class="town-topic-heading"><div><h2>${html(theme.question)}</h2></div><a href="${route(`confronta/${themeKey}/?indicatore=${metricKey}`)}">Confronta i 7 comuni <span>→</span></a></div>
-      ${metricControls(data, themeKey, metricKey, true)}
+      ${townPilot ? a5MetricSidebarMarkup(data, themeKey, metricKey) : metricControls(data, themeKey, metricKey, true)}
       ${metricKey.startsWith('slowMobility') ? `<div class="slow-mobility-map-entry"><span>Vedi sulla mappa i percorsi di ${html(town.name)} corrispondenti alla selezione.</span><a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa <b>→</b></a></div>` : ''}
       <div class="town-metric-layout${drinkingQuality?' single-column':''}"><article class="town-metric-primary">${composite ? `<span class="composite-primary-label" data-composite-primary-label>${html(primaryLabel)}</span>` : ''}<strong data-composite-primary-value>${html(primaryValue)}</strong><p data-composite-primary-description>${html(primaryDescription)}</p>${row.notApplicable ? `<p class="normalized-companion"><b>Applicabilità:</b> ${html(row.applicabilityNote)}</p>` : ''}
         ${selector}
         ${row.normalized ? `<p class="normalized-companion"><b>${html(row.normalized.label)}:</b> ${html(formatValue(row.normalized.value, row.normalized.unit))}</p>` : ''}
         <div><span>${html(metric.meta.year)}</span><a class="inline-source-link" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte originale ↗</a></div></article>
         ${positionMarkup}</div>
-      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+      <section class="history-panel ${composite ? 'composite-history-panel ' : ''}${townPilot ? 'a5-shared-chart' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>
       ${coastTownDetailMarkup(metric,row)}
       ${extractiveTownDetailMarkup(metric,row)}
       ${deepDiveMarkup(data, town, themeKey, metricKey)}
       ${erpArrearsDetailMarkup(metric,row)}
-      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}
-      ${financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric)}
-      <div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`;
+      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}
+      ${townPilot ? `<section class="compare-post-benchmark-tools town-post-benchmark-tools">${financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric)}</section>` : (financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric))}
+      ${townPilot ? `<div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>` : `<div class="data-actions town-data-actions"><a href="${indicatorHref(metric)}">Scheda indicatore</a>${metricKey.startsWith('slowMobility') ? `<a href="${slowMobilityMapHref(town.name, metricKey)}">Esplora sulla mappa</a>` : ''}<button type="button" data-share>Condividi</button><button type="button" data-download>Scarica CSV</button><button type="button" data-print>Stampa / PDF</button></div>`}`;
 
     if (selectable) {
       const initialPosition=container.querySelector('.composite-versilia-position');
@@ -1404,7 +1625,8 @@
     scrollActiveControl(tablist);
 
     const context = document.getElementById('town-context');
-    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (themeKey === 'demografia' ? brainDrainMarkup(data) : '');
+    const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);
+    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (showBrainDrain ? brainDrainMarkup(data) : '');
     if (themeKey === 'sicurezza') installCrimeInteractions(data);
   }
 

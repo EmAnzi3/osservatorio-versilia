@@ -43,6 +43,7 @@ JSON_CONTRACTS = (
     "data/source-snapshots/rgs-formazione-2024.json",
     "data/source-snapshots/istat-lavoro-istruzione-eta-genere-2024.json",
     "data/source-snapshots/mobilita-tpl-2026-08-26.json",
+    "data/source-snapshots/fuel-history-mimit.json",
     "data/source-snapshots/istat-agricoltura-territorio-2020.json",
     "data/source-snapshots/costa-mare-v123.json",
     "data/source-snapshots/attivita-estrattive-v128.json",

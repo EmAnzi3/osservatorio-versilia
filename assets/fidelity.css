@@ -1010,3 +1010,2424 @@
     padding: 14px 15px 16px;
   }
 }
+
+
+/* A5 — Design System 2.0 shared compare shell.
+   A5.4 froze Demografia; A5.5 rolls the same shell out theme by theme.
+   Canonical JS/data/hooks stay intact and visual roles consume DS2 theme tokens. */
+:root {
+  --ds-canvas:#f7f2e8;
+  --ds-surface:#fffdfa;
+  --ds-surface-soft:#f4eee4;
+  --ds-surface-warm:#fbf6ef;
+  --ds-ink:#0f3550;
+  --ds-muted:#5f6f78;
+  --ds-border:#ded4c6;
+  --ds-border-strong:#c8bbab;
+  --ds-navy:#0d3c58;
+  --ds-blue:#1684b8;
+  --ds-demografia:#b84b34;
+  --ds-demografia-dark:#963925;
+  --ds-demografia-soft:#fbe9e3;
+  --ds-shadow:0 8px 26px rgba(15,53,80,.065);
+}
+
+/* Parametric DS2 theme roles. These aliases are inert outside A5 consumers. */
+body[data-theme="demografia"]{--ds-theme-accent:#b84b34;--ds-theme-dark:#963925;--ds-theme-soft:#fbe9e3;--ds-theme-line:#efc9be;--ds-theme-hover-soft:#fbf1ec;--ds-theme-control-label:#8b493a;--ds-theme-control-border:#d9b1a4;--ds-theme-control-bg:#fffaf7;--ds-theme-control-hover:#fbefea;--ds-theme-focus:rgba(184,75,52,.22);--ds-theme-glow:rgba(184,75,52,.035);--ds-theme-card-glow:rgba(184,75,52,.05)}
+body[data-theme="economia"]{--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1;--ds-theme-hover-soft:#eef6f1;--ds-theme-control-label:#39795d;--ds-theme-control-border:#c8ddd1;--ds-theme-control-bg:#f8fcf9;--ds-theme-control-hover:#eef6f1;--ds-theme-focus:rgba(57,121,93,.22);--ds-theme-glow:rgba(57,121,93,.035);--ds-theme-card-glow:rgba(57,121,93,.05)}
+body[data-theme="lavoro"]{--ds-theme-accent:#9b6818;--ds-theme-dark:#7e5311;--ds-theme-soft:#fff9eb;--ds-theme-line:#ead5a7}
+body[data-theme="istruzione"]{--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;--ds-theme-soft:#f8f5fc;--ds-theme-line:#d8cfeb}
+body[data-theme="salute"]{--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
+body[data-theme="mobilita"]{--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
+body[data-theme="sicurezza"]{--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
+body[data-theme="abitare"]{--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
+body[data-theme="ambiente"]{--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
+body[data-theme="bilanci"]{--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
+body[data-theme="comunita"]{--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
+
+body[data-page="compare"]:has(main.a5-editorial-pilot) {
+  background:var(--ds-canvas);
+  color:var(--ds-ink);
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) #app {
+  background:
+    radial-gradient(circle at 8% 20%,var(--ds-theme-glow,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent)),transparent 30%),
+    linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 42%,#f9f5ee 100%);
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width {
+  width:min(1320px,calc(100% - 54px));
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header {
+  border-bottom:1px solid rgba(200,187,171,.66);
+  background:rgba(255,253,250,.97);
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner {
+  width:min(1320px,calc(100% - 54px));
+}
+
+/* Reference-like editorial hero, but using the canonical Versilia asset. */
+.compare-showcase-hero {
+  position:relative;
+  min-height:250px;
+  overflow:hidden;
+  border-bottom:1px solid rgba(15,53,80,.12);
+  background:#123c55;
+}
+.compare-showcase-hero-media {
+  position:absolute;
+  inset:0;
+  background-position:center 43%;
+  background-size:cover;
+  filter:saturate(.96) contrast(1.01);
+}
+.compare-showcase-hero-copy {
+  position:relative;
+  z-index:1;
+  min-height:250px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  padding-block:30px;
+  color:#fff;
+}
+.compare-showcase-hero-copy .overline {
+  margin-bottom:8px;
+  color:#ffd765;
+  font-size:9px;
+  letter-spacing:.13em;
+}
+.compare-showcase-hero-copy h1 {
+  margin:0;
+  color:#fff;
+  font-size:clamp(42px,4.5vw,64px);
+  line-height:.93;
+  letter-spacing:-.055em;
+  text-shadow:0 2px 20px rgba(0,0,0,.16);
+}
+.compare-showcase-hero-copy h1 em {
+  color:#ffd55a;
+  font-style:normal;
+}
+.compare-showcase-hero-copy p {
+  max-width:520px;
+  margin:12px 0 0;
+  color:rgba(255,255,255,.93);
+  font-size:13px;
+  line-height:1.5;
+}
+.compare-showcase-actions {
+  display:flex;
+  gap:9px;
+  margin-top:17px;
+}
+.compare-showcase-actions a {
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+  gap:13px;
+  border-radius:7px;
+  padding:9px 13px;
+  font-size:10px;
+  font-weight:780;
+}
+.compare-showcase-primary {
+  background:#ffd34f;
+  color:#17384d;
+}
+.compare-showcase-secondary {
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(10,45,67,.28);
+  color:#fff;
+  backdrop-filter:blur(8px);
+}
+.compare-showcase-facts {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  margin-top:14px;
+  color:rgba(255,255,255,.78);
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:8px;
+}
+.compare-showcase-facts span::before {
+  content:"•";
+  margin-right:7px;
+  color:#ffd34f;
+}
+
+/* Breadcrumbs + coloured theme ribbon. */
+main.a5-editorial-pilot .breadcrumbs {
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#78848a;
+  font-size:9px;
+}
+main.a5-editorial-pilot .breadcrumbs strong {
+  color:var(--ds-ink);
+}
+main.a5-editorial-pilot .compare-context-nav {
+  top:70px;
+  min-height:46px;
+  margin-top:0;
+  margin-bottom:10px;
+  padding:5px 0;
+  border:0;
+  border-block:1px solid rgba(222,212,198,.86);
+  background:rgba(251,248,242,.95);
+  box-shadow:none;
+  backdrop-filter:blur(12px);
+}
+main.a5-editorial-pilot .context-nav-title {
+  min-width:68px;
+  box-sizing:border-box;
+  padding-left:8px;
+}
+main.a5-editorial-pilot .context-nav-title small {
+  color:#8c8a82;
+  font-size:7px;
+}
+main.a5-editorial-pilot .context-nav-title strong {
+  color:var(--ds-ink);
+  font-size:10px;
+}
+main.a5-editorial-pilot .context-nav-links {
+  gap:5px;
+  padding-block:1px;
+}
+main.a5-editorial-pilot .context-nav-links a {
+  min-height:30px;
+  border:1px solid var(--ds-border);
+  border-radius:999px;
+  background:#fff;
+  color:#65747b;
+  padding:5px 9px;
+  font-size:8.5px;
+  box-shadow:0 2px 7px rgba(15,53,80,.025);
+}
+main.a5-editorial-pilot .context-nav-links a small {
+  color:inherit;
+  opacity:.68;
+  font-size:7px;
+}
+main.a5-editorial-pilot .context-nav-links a.active {
+  border-color:var(--ds-theme-accent);
+  background:var(--ds-theme-accent);
+  color:#fff;
+}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="economia"]:not(.active){border-color:#c8ddd1;color:#39795d;background:#f5faf6}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="lavoro"]:not(.active){border-color:#ead5a7;color:#9b6818;background:#fff9eb}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="istruzione"]:not(.active){border-color:#d8cfeb;color:#7357a8;background:#f8f5fc}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="salute"]:not(.active){border-color:#eccbd3;color:#aa465b;background:#fff5f7}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="mobilita"]:not(.active){border-color:#c5dfe9;color:#16749a;background:#f1f9fc}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="sicurezza"]:not(.active){border-color:#ebcfbd;color:#a75a29;background:#fff7f1}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="ambiente"]:not(.active){border-color:#cbdfc5;color:#4d873f;background:#f4faf2}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="abitare"]:not(.active){border-color:#d7d0e9;color:#6d5ca6;background:#f8f6fc}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="bilanci"]:not(.active){border-color:#b9c5cf;color:#425c6b;background:#f0f4f6}
+main.a5-editorial-pilot .context-nav-links a[data-context-theme="comunita"]:not(.active){border-color:#d7bfd1;color:#7a456b;background:#f8f0f5}
+
+/* Compact topic identity card: icon + title + explanatory column. */
+main.a5-editorial-pilot .topic-hero {
+  position:relative;
+  grid-template-columns:58px minmax(0,.95fr) minmax(300px,.7fr);
+  gap:22px;
+  align-items:center;
+  min-height:118px;
+  margin-top:0;
+  padding:20px 24px;
+  border:1px solid var(--ds-border);
+  border-radius:12px;
+  background:rgba(255,253,250,.98);
+  box-shadow:0 4px 16px rgba(15,53,80,.035);
+  overflow:hidden;
+}
+main.a5-editorial-pilot .topic-hero::after {
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-55px;
+  bottom:-74px;
+  border-radius:50%;
+  background:var(--ds-theme-soft);
+  opacity:.62;
+}
+main.a5-editorial-pilot .topic-symbol {
+  width:48px;
+  height:48px;
+  border:1px solid var(--ds-theme-line);
+  border-radius:12px 12px 12px 4px;
+  background:var(--ds-theme-soft);
+  color:var(--ds-theme-accent);
+  box-shadow:none;
+}
+main.a5-editorial-pilot .topic-symbol small {
+  font-size:8px;
+}
+main.a5-editorial-pilot .topic-hero .overline {
+  color:var(--ds-theme-accent);
+  font-size:8px;
+  letter-spacing:.11em;
+}
+main.a5-editorial-pilot .topic-hero h1 {
+  margin:4px 0 5px;
+  color:var(--ds-ink);
+  font-size:40px;
+  letter-spacing:-.05em;
+  line-height:1;
+}
+main.a5-editorial-pilot .topic-hero p {
+  max-width:none;
+  margin:0;
+  color:var(--ds-muted);
+  font-size:11px;
+  line-height:1.45;
+}
+main.a5-editorial-pilot .topic-hero-context {
+  position:relative;
+  z-index:1;
+  min-height:66px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border-left:1px solid var(--ds-border);
+  padding-left:22px;
+}
+main.a5-editorial-pilot .topic-hero-context p {
+  max-width:430px;
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* Main workspace: proportions and density close to the selected reference. */
+main.a5-editorial-pilot .topic-dashboard {
+  grid-template-columns:270px minmax(0,1fr);
+  gap:12px;
+  align-items:start;
+  padding:12px 0 16px;
+}
+main.a5-editorial-pilot .topic-controls,
+main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars,
+main.a5-editorial-pilot .compare-summary-strip > *,
+main.a5-editorial-pilot .topic-town-links {
+  border:1px solid var(--ds-border);
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+main.a5-editorial-pilot .topic-controls {
+  min-width:0;
+  border-radius:11px;
+  padding:10px;
+}
+main.a5-editorial-pilot .topic-controls-heading {
+  display:grid;
+  gap:5px;
+  padding:2px 2px 9px;
+}
+main.a5-editorial-pilot .topic-controls-heading > div {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+main.a5-editorial-pilot .topic-controls-heading .overline {
+  color:#6c7880;
+  font-size:7px;
+}
+main.a5-editorial-pilot .topic-controls-heading strong {
+  color:#817f77;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:7px;
+  font-weight:700;
+}
+main.a5-editorial-pilot .topic-controls-heading small {
+  color:#8a918f;
+  font-size:8px;
+}
+main.a5-editorial-pilot .topic-controls .metric-switch.metric-catalog {
+  gap:7px;
+  margin:0;
+}
+main.a5-editorial-pilot .metric-catalog .metric-group {
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-radius:8px;
+  background:#f7f2e8;
+  padding:0;
+  overflow:hidden;
+}
+main.a5-editorial-pilot .metric-catalog .metric-group:first-child {
+  border-top:1px solid var(--ds-border);
+}
+main.a5-editorial-pilot .metric-group-heading {
+  position:relative;
+  min-height:42px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:3px 8px;
+  margin:0;
+  padding:7px 27px 7px 9px;
+  background:#f4eee3;
+}
+main.a5-editorial-pilot .metric-group-heading::after {
+  content:"⌄";
+  position:absolute;
+  right:9px;
+  top:50%;
+  translate:0 -50%;
+  color:#7b8588;
+  font-size:11px;
+}
+main.a5-editorial-pilot .metric-group:has(button.active) .metric-group-heading::after {
+  content:"⌃";
+}
+main.a5-editorial-pilot .metric-group-heading strong {
+  color:var(--ds-ink);
+  font-size:9px;
+  line-height:1.2;
+}
+main.a5-editorial-pilot .metric-group-heading span {
+  grid-column:1 / -1;
+  color:#737e82;
+  font-size:7.5px;
+  line-height:1.25;
+}
+main.a5-editorial-pilot .metric-group-buttons {
+  display:none;
+}
+main.a5-editorial-pilot .metric-group:has(button.active) .metric-group-buttons {
+  display:grid;
+  gap:0;
+  padding:4px;
+  background:#fff;
+  border-top:1px solid var(--ds-border);
+}
+main.a5-editorial-pilot .topic-controls .metric-group-buttons button {
+  width:100%;
+  min-height:31px;
+  margin:0;
+  border:0;
+  border-radius:5px;
+  background:transparent;
+  color:#526875;
+  padding:6px 8px;
+  font-size:8.5px;
+  line-height:1.25;
+  text-align:left;
+}
+main.a5-editorial-pilot .topic-controls .metric-group-buttons button:hover {
+  background:var(--ds-theme-hover-soft,var(--ds-theme-soft));
+  color:var(--ds-theme-dark);
+}
+main.a5-editorial-pilot .topic-controls .metric-group-buttons button.active {
+  background:var(--ds-theme-accent)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+
+/* Chart header + chart body */
+main.a5-editorial-pilot .compare-main-column {
+  min-width:0;
+}
+main.a5-editorial-pilot .compare-panel-heading {
+  min-height:57px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:0;
+  padding:7px 14px 8px;
+  border:1px solid var(--ds-border);
+  border-bottom:0;
+  border-radius:11px 11px 0 0;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot .compare-panel-heading .overline {
+  color:var(--ds-ink);
+  font-size:8px;
+  letter-spacing:.04em;
+  text-transform:none;
+}
+main.a5-editorial-pilot .compare-panel-heading h2 {
+  margin:2px 0 0;
+  color:var(--ds-ink);
+  font-size:15px;
+  letter-spacing:-.025em;
+}
+main.a5-editorial-pilot .compare-panel-heading p {
+  margin:2px 0 0;
+  color:#7a868a;
+  font-size:7.5px;
+}
+main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars {
+  border-radius:0 0 11px 11px;
+  padding:12px 14px 14px;
+  box-shadow:var(--ds-shadow);
+}
+main.a5-editorial-pilot .compare-chart-toolbar {
+  min-height:32px;
+  margin-bottom:7px;
+}
+main.a5-editorial-pilot .scale-switch {
+  border-color:var(--ds-border);
+  background:#f2ede4;
+}
+main.a5-editorial-pilot .scale-switch button {
+  min-height:29px;
+  padding:5px 10px;
+  color:#647278;
+  font-size:8px;
+}
+main.a5-editorial-pilot .scale-switch button.active {
+  background:var(--ds-theme-accent);
+  color:#fff;
+}
+main.a5-editorial-pilot .comparison-bars {
+  gap:3px;
+}
+main.a5-editorial-pilot .bar-row {
+  grid-template-columns:18px 100px minmax(140px,1fr) 72px;
+  gap:9px;
+  min-height:37px;
+  border-bottom:1px solid #eee8de;
+  border-radius:0;
+}
+main.a5-editorial-pilot .bar-row:last-child {
+  border-bottom:0;
+}
+main.a5-editorial-pilot .bar-row:hover,
+main.a5-editorial-pilot .bar-row.selected {
+  background:#fbf5ed;
+}
+main.a5-editorial-pilot .bar-rank {
+  color:#a09f98;
+  font-size:7px;
+}
+main.a5-editorial-pilot .bar-town {
+  color:var(--ds-ink);
+  font-size:9px;
+}
+main.a5-editorial-pilot .bar-track {
+  height:11px;
+  border-radius:4px;
+  background:#edf0ef;
+}
+main.a5-editorial-pilot .bar-fill {
+  height:100%;
+  border-radius:4px;
+  background:linear-gradient(90deg,#1477a6,#2197cb);
+}
+main.a5-editorial-pilot .bar-row:nth-child(-n+2) .bar-fill {
+  background:linear-gradient(90deg,#0f6f9e,#1788bd);
+}
+main.a5-editorial-pilot .bar-row strong {
+  color:var(--ds-ink);
+  font-size:8.5px;
+}
+main.a5-editorial-pilot .bar-hover-label {
+  background:var(--ds-navy);
+  color:#fff;
+}
+
+/* Definition + methodology row matches the mockup arrangement. */
+main.a5-editorial-pilot .compare-summary-strip {
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:10px;
+  margin-top:10px;
+}
+main.a5-editorial-pilot #compare-definition {
+  min-width:0;
+}
+main.a5-editorial-pilot .indicator-definition {
+  height:100%;
+  box-sizing:border-box;
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-radius:10px;
+  background:#fffdfa;
+  padding:11px 13px;
+}
+main.a5-editorial-pilot .indicator-definition::before {
+  content:"Indicatore selezionato";
+  display:block;
+  margin-bottom:4px;
+  color:#8d8075;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:6.5px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+main.a5-editorial-pilot .indicator-definition h2 {
+  margin:0 0 4px;
+  color:var(--ds-ink);
+  font-size:14px;
+}
+main.a5-editorial-pilot .indicator-definition > p {
+  margin:0;
+  color:#6d7b80;
+  font-size:7.5px;
+  line-height:1.35;
+}
+main.a5-editorial-pilot .indicator-definition dl {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px 16px;
+  margin:9px 0 0;
+  padding-top:8px;
+  border-top:1px solid #eee7dc;
+}
+main.a5-editorial-pilot .indicator-definition dl div {
+  display:flex;
+  gap:5px;
+  font-size:7.5px;
+}
+main.a5-editorial-pilot .indicator-definition dt {
+  color:#8b8e89;
+}
+main.a5-editorial-pilot .indicator-definition dd {
+  color:var(--ds-ink);
+}
+main.a5-editorial-pilot .indicator-definition .aggregate-note {
+  display:block;
+  margin-top:7px;
+  color:#8a918f;
+  font-size:6.5px;
+}
+main.a5-editorial-pilot .compare-method-card {
+  min-height:94px;
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:11px;
+  align-items:center;
+  border:1px solid var(--ds-border);
+  border-radius:10px;
+  background:#fffdfa;
+  padding:12px 14px;
+}
+main.a5-editorial-pilot .compare-method-icon {
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#f2e9dd;
+  color:#9c633d;
+  font-family:Georgia,serif;
+  font-size:15px;
+  font-weight:700;
+}
+main.a5-editorial-pilot .compare-method-card span:last-child {
+  display:flex;
+  flex-direction:column;
+}
+main.a5-editorial-pilot .compare-method-card small {
+  color:#8c8177;
+  font-size:7px;
+}
+main.a5-editorial-pilot .compare-method-card strong {
+  margin-top:3px;
+  color:var(--ds-ink);
+  font-size:10px;
+  line-height:1.3;
+}
+main.a5-editorial-pilot .compare-method-card em {
+  margin-top:6px;
+  color:var(--ds-theme-accent);
+  font-size:7.5px;
+  font-style:normal;
+  font-weight:730;
+}
+
+/* Downstream real components keep their functionality but join the same visual system. */
+main.a5-editorial-pilot .a5-benchmark-host > *,
+main.a5-editorial-pilot .compare-demographic-pyramid > *,
+main.a5-editorial-pilot .brain-drain,
+main.a5-editorial-pilot .compare-post-benchmark-tools > * {
+  border-color:var(--ds-border);
+  background:#fffdfa;
+}
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-section,
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-unavailable {
+  box-shadow:var(--ds-shadow);
+}
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-card {
+  border-color:var(--ds-border);
+  background:#fbf7f0;
+}
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-local {
+  border-color:var(--ds-navy);
+  background:var(--ds-navy);
+  color:#fff;
+}
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-local small,
+main.a5-editorial-pilot .a5-benchmark-host .benchmark-local span {
+  color:#d8e5eb;
+}
+main.a5-editorial-pilot .data-actions a,
+main.a5-editorial-pilot .data-actions button {
+  border-color:var(--ds-border);
+  background:#f8f2e9;
+  color:var(--ds-ink);
+}
+
+/* Territory section: same proportions as the reference, using real crest assets. */
+main.a5-editorial-pilot .topic-town-links {
+  display:block;
+  margin-top:12px;
+  padding:15px 16px 17px;
+  border-radius:11px;
+}
+main.a5-editorial-pilot .topic-town-links-heading {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:28px;
+  margin-bottom:11px;
+}
+main.a5-editorial-pilot .topic-town-links-heading > p {
+  max-width:430px;
+  margin:0;
+  color:#6f7c81;
+  font-size:8px;
+  line-height:1.4;
+}
+main.a5-editorial-pilot .topic-town-links-heading .overline {
+  color:var(--ds-theme-accent);
+  font-size:7px;
+}
+main.a5-editorial-pilot .topic-town-links-heading h2 {
+  margin:3px 0 0;
+  color:var(--ds-ink);
+  font-size:20px;
+}
+main.a5-editorial-pilot .topic-town-card-grid {
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:7px;
+}
+main.a5-editorial-pilot .topic-town-card {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  min-height:112px;
+  border:1px solid var(--ds-border);
+  border-radius:8px;
+  background:#fbf7f0;
+  overflow:hidden;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+main.a5-editorial-pilot .topic-town-card:hover {
+  transform:translateY(-2px);
+  border-color:#c9b9a8;
+  box-shadow:0 8px 20px rgba(15,53,80,.07);
+}
+main.a5-editorial-pilot .topic-town-card-media {
+  height:62px;
+  display:grid;
+  place-items:center;
+  background:
+    linear-gradient(135deg,rgba(15,60,88,.05),var(--ds-theme-card-glow,color-mix(in srgb,var(--ds-theme-accent) 5%,transparent))),
+    #f1ece4;
+}
+main.a5-editorial-pilot .topic-town-card-media img {
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 2px rgba(15,53,80,.14));
+}
+main.a5-editorial-pilot .topic-town-card-copy {
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  padding:7px 8px 8px;
+}
+main.a5-editorial-pilot .topic-town-card-copy strong {
+  color:var(--ds-ink);
+  font-size:8.5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+main.a5-editorial-pilot .topic-town-card-copy small {
+  color:#1979a6;
+  font-size:6.5px;
+}
+
+/* Dark footer, keeping the real footer markup and links. */
+body[data-page="compare"]:has(main.a5-editorial-pilot) #site-footer-mount {
+  margin-top:28px;
+  background:var(--ds-navy);
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
+  width:min(1320px,calc(100% - 54px));
+  min-height:210px;
+  margin:auto;
+  border-top:0;
+  background:var(--ds-navy);
+  color:#fff;
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer strong,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer a {
+  color:#fff;
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer p,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-disclaimer,
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-note span {
+  color:#bfd0d9;
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-links {
+  color:#dbe6eb;
+}
+body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer .footer-note span {
+  border-color:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.04);
+}
+
+/* Focus stays explicit. */
+body[data-page="compare"]:has(main.a5-editorial-pilot) a:focus-visible,
+body[data-page="compare"]:has(main.a5-editorial-pilot) button:focus-visible,
+body[data-page="compare"]:has(main.a5-editorial-pilot) select:focus-visible {
+  outline:3px solid rgba(22,132,184,.52);
+  outline-offset:2px;
+}
+
+@media (max-width:1000px) {
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
+    width:min(100% - 34px,1100px);
+  }
+  main.a5-editorial-pilot .topic-hero {
+    grid-template-columns:50px minmax(0,1fr);
+  }
+  main.a5-editorial-pilot .topic-hero-context {
+    grid-column:2;
+    border-left:0;
+    border-top:1px solid var(--ds-border);
+    padding:10px 0 0;
+  }
+  main.a5-editorial-pilot .topic-dashboard {
+    grid-template-columns:235px minmax(0,1fr);
+  }
+  main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+
+@media (max-width:720px) {
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .page-width,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) #site-header-mount .site-header-inner,
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
+    width:min(100% - 24px,680px);
+  }
+  .compare-showcase-hero,
+  .compare-showcase-hero-copy {
+    min-height:220px;
+  }
+  .compare-showcase-hero-media {
+    background-position:60% 45%;
+  }
+  .compare-showcase-hero-copy {
+    padding-block:24px;
+  }
+  .compare-showcase-hero-copy h1 {
+    font-size:38px;
+  }
+  .compare-showcase-hero-copy p {
+    max-width:310px;
+    font-size:11px;
+  }
+  .compare-showcase-facts {
+    font-size:7px;
+  }
+  main.a5-editorial-pilot .compare-context-nav {
+    width:100%;
+    max-width:none;
+    margin-inline:0;
+    padding-inline:12px;
+  }
+  main.a5-editorial-pilot .compare-context-nav .context-nav-title {
+    display:none;
+  }
+  main.a5-editorial-pilot .topic-hero {
+    grid-template-columns:44px minmax(0,1fr);
+    gap:11px;
+    padding:15px;
+  }
+  main.a5-editorial-pilot .topic-symbol {
+    width:42px;
+    height:42px;
+  }
+  main.a5-editorial-pilot .topic-hero h1 {
+    font-size:32px;
+  }
+  main.a5-editorial-pilot .topic-hero-context {
+    grid-column:1 / -1;
+    padding-top:9px;
+  }
+  main.a5-editorial-pilot .topic-dashboard {
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  main.a5-editorial-pilot .metric-group-buttons,
+  main.a5-editorial-pilot .metric-group:has(button.active) .metric-group-buttons {
+    overflow:visible;
+  }
+  main.a5-editorial-pilot .compare-summary-strip {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot .bar-row {
+    grid-template-columns:16px 82px minmax(80px,1fr) 58px;
+    gap:6px;
+  }
+  main.a5-editorial-pilot .topic-town-links-heading {
+    display:block;
+  }
+  main.a5-editorial-pilot .topic-town-links-heading > p {
+    margin-top:5px;
+  }
+  main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  body[data-page="compare"]:has(main.a5-editorial-pilot) .site-footer {
+    grid-template-columns:1fr;
+    gap:24px;
+    padding-block:34px;
+  }
+}
+
+
+/* A5.4 safe review refinements */
+/* Keep the approved stable pilot intact; only refine the five reviewed details. */
+
+/* 1. Versilia mean/reference: same canonical marker, clearer visual weight. */
+main.a5-editorial-pilot .comparison-reference {
+  top:-6px;
+  bottom:-6px;
+  width:2px;
+  background:#72584b;
+  opacity:.95;
+  z-index:4;
+}
+main.a5-editorial-pilot .comparison-legend-reference {
+  width:2px;
+  height:14px;
+  border:0;
+  background:#72584b;
+  opacity:.95;
+}
+
+/* 2. Composite/index selectors follow Demografia's warm accent. */
+main.a5-editorial-pilot .compare-chart-toolbar .compare-view-controls {
+  border-color:#e5c8bd;
+  background:#fbefea;
+}
+main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select > span,
+main.a5-editorial-pilot .compare-chart-toolbar .compare-view-label {
+  color:var(--ds-theme-control-label,var(--ds-theme-dark));
+}
+main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select {
+  border-color:var(--ds-theme-control-border,var(--ds-theme-line));
+  background:var(--ds-theme-control-bg,var(--ds-theme-soft));
+  color:var(--ds-theme-dark);
+}
+main.a5-editorial-pilot .compare-chart-toolbar .compare-choice-select select:focus {
+  border-color:var(--ds-theme-accent);
+  outline-color:var(--ds-theme-focus,rgba(22,132,184,.52));
+}
+
+/* 3. Export/actions: compact toolbar inside the existing chart heading. */
+main.a5-editorial-pilot .compare-panel-heading > .data-actions {
+  display:flex;
+  flex:0 0 auto;
+  align-items:center;
+  gap:6px;
+  margin:0;
+}
+main.a5-editorial-pilot .compare-panel-heading > .data-actions a,
+main.a5-editorial-pilot .compare-panel-heading > .data-actions button {
+  min-height:30px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--ds-border);
+  border-radius:7px;
+  background:#fbf7f0;
+  color:var(--ds-ink);
+  padding:5px 8px;
+  font-size:7px;
+  font-weight:760;
+  line-height:1;
+  white-space:nowrap;
+}
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions [data-download]::before {
+  content:"";
+  width:17px;
+  height:17px;
+  flex:0 0 17px;
+  margin-right:5px;
+  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23217346' d='M4 2h11l5 5v15H4z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='1.4' d='M15 2v5h5'/%3E%3Cpath fill='%23fff' d='M7.1 10h2.1l1.3 2.2 1.3-2.2h2l-2.2 3.5 2.4 3.8h-2.1l-1.5-2.4-1.5 2.4H6.8l2.4-3.8z'/%3E%3C/svg%3E");
+}
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions [data-print]::before {
+  content:"";
+  width:17px;
+  height:17px;
+  flex:0 0 17px;
+  margin-right:5px;
+  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23b84b34' d='M4 2h11l5 5v15H4z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='1.4' d='M15 2v5h5'/%3E%3Ctext x='6.2' y='16.2' fill='%23fff' font-size='6.1' font-family='Arial,sans-serif' font-weight='700'%3EPDF%3C/text%3E%3C/svg%3E");
+}
+main.a5-editorial-pilot .compare-panel-heading > .data-actions .a5-map-action,
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions .a5-map-action {
+  min-height:30px;
+  box-sizing:border-box;
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:1px solid var(--ds-border);
+  border-radius:7px;
+  background:#fbf7f0;
+  color:var(--ds-ink);
+  padding:5px 8px;
+  font-size:7px;
+  font-weight:760;
+  line-height:1;
+  white-space:nowrap;
+  text-decoration:none;
+}
+main.a5-editorial-pilot .compare-panel-heading > .data-actions .a5-map-action svg,
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions .a5-map-action svg {
+  display:block;
+  width:17px;
+  height:17px;
+  flex:0 0 17px;
+  color:var(--ds-theme-accent);
+  overflow:visible;
+}
+
+/* 4. Method + reading scale: useful but visually secondary. */
+main.a5-editorial-pilot .compare-post-benchmark-tools {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:8px;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .method-disclosure,
+main.a5-editorial-pilot .compare-post-benchmark-tools > .reading-scale {
+  min-height:58px;
+  box-sizing:border-box;
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-radius:9px;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .method-disclosure {
+  border-left:3px solid #b57a57;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .method-disclosure > summary {
+  min-height:58px;
+  box-sizing:border-box;
+  padding:9px 12px;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .method-disclosure[open] {
+  grid-column:1 / -1;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .reading-scale {
+  grid-template-columns:105px minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+  padding:9px 12px;
+  border-left:3px solid #b57a57;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .reading-scale p {
+  font-size:8px;
+  line-height:1.35;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .a5-special-route-actions {
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:flex-end;
+  min-height:0;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-height:34px;
+  padding:7px 12px;
+  border:1px solid var(--ds-theme-line);
+  border-radius:8px;
+  background:var(--ds-theme-soft);
+  color:var(--ds-theme-dark);
+  font-size:8px;
+  font-weight:800;
+  text-decoration:none;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a svg {
+  width:14px;
+  height:14px;
+  flex:none;
+  stroke:currentColor;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a:hover {
+  border-color:var(--ds-theme-accent);
+  color:var(--ds-theme-accent);
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .data-actions {
+  grid-column:1 / -1;
+  justify-self:end;
+  margin:0;
+}
+
+/* 5. Territory cards: fixed photo crop + current selected value. */
+main.a5-editorial-pilot .topic-town-card {
+  min-height:150px;
+}
+main.a5-editorial-pilot .topic-town-card-media {
+  height:78px;
+  display:block;
+  overflow:hidden;
+  background:#eee7dd;
+}
+main.a5-editorial-pilot .topic-town-card-media img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  filter:none;
+}
+main.a5-editorial-pilot .topic-town-card-copy {
+  gap:2px;
+}
+main.a5-editorial-pilot .town-current-value {
+  display:grid;
+  gap:1px;
+  margin-top:2px;
+}
+main.a5-editorial-pilot .town-current-value b {
+  color:var(--ds-ink);
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:8px;
+  font-weight:780;
+}
+main.a5-editorial-pilot .town-current-value small {
+  color:#7d878a;
+  font-size:6px;
+  line-height:1.2;
+}
+
+@media (max-width:1000px) {
+  main.a5-editorial-pilot .compare-panel-heading {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  main.a5-editorial-pilot .compare-panel-heading > .data-actions {
+    width:100%;
+    justify-content:flex-start;
+  }
+}
+@media (max-width:720px) {
+  main.a5-editorial-pilot .compare-post-benchmark-tools {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot .compare-post-benchmark-tools > .method-disclosure[open] {
+    grid-column:auto;
+  }
+  main.a5-editorial-pilot .compare-panel-heading > .data-actions {
+    overflow-x:auto;
+  }
+  main.a5-editorial-pilot .compare-panel-heading > .data-actions a,
+  main.a5-editorial-pilot .compare-panel-heading > .data-actions button {
+    flex:0 0 auto;
+  }
+  main.a5-editorial-pilot .topic-town-card-media {
+    height:90px;
+  }
+}
+
+
+/* A5.4 structural correction pass */
+/* 1. Remove the decorative circle: it competes with the Demografia title. */
+main.a5-editorial-pilot .topic-hero::after {
+  display:none !important;
+}
+main.a5-editorial-pilot .topic-hero-copy,
+main.a5-editorial-pilot .topic-symbol,
+main.a5-editorial-pilot .topic-hero-context {
+  position:relative;
+  z-index:1;
+}
+
+/* 2. Real accordion: one native summary control, no duplicate expansion affordance. */
+main.a5-editorial-pilot details.metric-group {
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-radius:8px;
+  background:#f7f2e8;
+  overflow:hidden;
+}
+main.a5-editorial-pilot details.metric-group + details.metric-group {
+  margin-top:7px;
+}
+main.a5-editorial-pilot details.metric-group > summary {
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+}
+main.a5-editorial-pilot details.metric-group > summary::-webkit-details-marker {
+  display:none;
+}
+main.a5-editorial-pilot details.metric-group > summary::marker {
+  content:"";
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading {
+  grid-template-columns:minmax(0,1fr) auto;
+  min-height:46px;
+  margin:0;
+  padding:8px 30px 8px 10px;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading::after {
+  content:"⌄";
+  position:absolute;
+  right:10px;
+  top:50%;
+  translate:0 -50%;
+  color:#6f7d82;
+  font-size:12px;
+}
+main.a5-editorial-pilot details.metric-group[open] > .metric-group-heading::after {
+  content:"⌃";
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading strong {
+  min-width:0;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading .metric-group-count {
+  color:#7c817e;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:6.5px;
+  font-weight:700;
+  white-space:nowrap;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-heading span {
+  grid-column:1 / -1;
+}
+main.a5-editorial-pilot details.metric-group > .metric-group-buttons {
+  display:grid !important;
+  gap:0;
+  padding:4px;
+  border-top:1px solid var(--ds-border);
+  background:#fff;
+}
+main.a5-editorial-pilot details.metric-group:not([open]) > .metric-group-buttons {
+  display:none !important;
+}
+/* Neutralize the old active-group pseudo logic now that <details> owns expansion. */
+main.a5-editorial-pilot .metric-group:has(button.active) .metric-group-heading::after {
+  content:unset;
+}
+main.a5-editorial-pilot details.metric-group[open] > .metric-group-heading::after {
+  content:"⌃";
+}
+main.a5-editorial-pilot details.metric-group:not([open]) > .metric-group-heading::after {
+  content:"⌄";
+}
+
+/* 3. Side definition fills the left rail instead of leaving a dead column. */
+main.a5-editorial-pilot .topic-controls {
+  align-self:start;
+}
+main.a5-editorial-pilot .topic-side-definition {
+  margin-top:10px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition {
+  height:auto;
+  margin:0;
+  border-radius:9px;
+  background:#fffaf3;
+  padding:12px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition h2 {
+  font-size:15px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition > p {
+  font-size:7.5px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition dl {
+  display:grid;
+  gap:6px;
+}
+main.a5-editorial-pilot .topic-side-definition .indicator-definition dl div {
+  justify-content:space-between;
+  gap:10px;
+}
+
+/* 4. One coherent chart card: context strip above, actual reading toolbar below. */
+main.a5-editorial-pilot .compare-panel-heading {
+  min-height:38px;
+  align-items:center;
+  border-bottom:0;
+  padding:7px 12px;
+}
+main.a5-editorial-pilot .compare-panel-heading > .overline {
+  color:var(--ds-ink);
+  font-size:7px;
+  letter-spacing:.06em;
+}
+main.a5-editorial-pilot .compare-main-column > #compare-bars > .topic-bars {
+  border-top:1px solid var(--ds-border);
+  border-radius:0 0 11px 11px;
+  padding-top:10px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-shell {
+  gap:10px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
+  align-items:center;
+  gap:16px;
+  padding:0 0 9px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy strong {
+  font-size:12px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy span {
+  font-size:8px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-note {
+  margin:-4px 0 0;
+  font-size:8px;
+}
+
+/* 5. Fix the actual dot-plot grid. Visual grammar removes the rank column;
+   the previous four-column pilot rule squeezed town+track into ~120 px. */
+main.a5-editorial-pilot .bar-row.comparison-row {
+  grid-template-columns:minmax(105px,1.05fr) minmax(320px,4fr) 96px !important;
+  gap:13px;
+  min-height:48px;
+  padding:4px 6px;
+}
+main.a5-editorial-pilot .topic-bars .bar-row.comparison-row {
+  min-height:50px;
+}
+main.a5-editorial-pilot .bar-row.comparison-row .bar-track {
+  height:24px !important;
+  border-radius:0;
+  background:transparent;
+  overflow:visible;
+}
+main.a5-editorial-pilot .bar-row.comparison-row .bar-town {
+  font-size:9px;
+}
+main.a5-editorial-pilot .bar-row.comparison-row > strong {
+  font-size:8.5px;
+}
+
+/* Keep axis aligned with the corrected three-column chart. */
+main.a5-editorial-pilot .comparison-axis {
+  margin-left:118px;
+  margin-right:108px;
+}
+
+/* Avoid a tall empty grid row beneath the controls. */
+main.a5-editorial-pilot .topic-dashboard {
+  align-items:start;
+}
+main.a5-editorial-pilot .compare-main-column {
+  align-self:start;
+}
+
+@media (max-width:1000px) {
+  main.a5-editorial-pilot .bar-row.comparison-row {
+    grid-template-columns:minmax(90px,1fr) minmax(220px,3fr) 88px !important;
+  }
+  main.a5-editorial-pilot .comparison-axis {
+    margin-left:103px;
+    margin-right:100px;
+  }
+}
+
+@media (max-width:720px) {
+  main.a5-editorial-pilot details.metric-group > .metric-group-heading {
+    min-height:48px;
+  }
+  main.a5-editorial-pilot .bar-row.comparison-row {
+    grid-template-columns:minmax(78px,.9fr) minmax(110px,2fr) 62px !important;
+    gap:7px;
+    padding-inline:2px;
+  }
+  main.a5-editorial-pilot .comparison-axis {
+    margin-left:88px;
+    margin-right:68px;
+  }
+}
+
+
+/* A5.4 coherence pass — canonical accordion + unified chart shell */
+/* Canonical accordion owns expansion. Hide A5's old pseudo-chevron and obey [hidden]. */
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle::after {
+  content:none !important;
+  display:none !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons[hidden] {
+  display:none !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons:not([hidden]) {
+  display:grid !important;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] .ux-section-tools {
+  right:8px;
+}
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] .ux-section-chevron {
+  width:22px;
+  height:22px;
+  border-color:#d3c6b7;
+  background:#fffaf3;
+  color:#6f7d82;
+  font-size:12px;
+}
+
+/* Never expose the transient raw bar chart while runtime enhancers are rebuilding it. */
+main.a5-editorial-pilot .a5-shared-chart > .topic-bars {
+  min-height:350px;
+  visibility:hidden;
+}
+main.a5-editorial-pilot .a5-shared-chart > .ux-view-shell {
+  visibility:visible;
+}
+/* A5.5 special thematic renderers bypass ux-history by design. The transient
+   hide is only for standard charts that are replaced by .ux-view-shell. */
+main.a5-editorial-pilot:has(.topic-controls [data-metric="territorialClassification"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="landCoverProfile"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="floodExposure"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="landslideExposure"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="drinkingWaterQuality"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="remediationProceedings"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="financialDebtProfile"].active) .a5-shared-chart > .topic-bars {
+  min-height:0;
+  visibility:visible;
+}
+
+/* One visual component for context, actions, current/history and chart. */
+main.a5-editorial-pilot .compare-main-column {
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+main.a5-editorial-pilot .compare-panel-heading {
+  display:none !important;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-shell {
+  gap:0;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:10px;
+  align-items:center;
+  margin:0;
+  padding:11px 14px 9px;
+  border-bottom:1px solid #eee6da;
+  background:#fffdfa;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy {
+  min-width:0;
+}
+main.a5-editorial-pilot .a5-shared-chart .a5-toolbar-overline {
+  display:block;
+  margin-bottom:2px;
+  color:#8d786b;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:6.5px;
+  font-weight:760;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy strong {
+  display:block;
+  color:var(--ds-ink);
+  font-size:12px;
+  line-height:1.2;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar-copy span {
+  display:block;
+  margin-top:2px;
+  color:#748086;
+  font-size:7.5px;
+  line-height:1.35;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  margin:0;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions a,
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions button {
+  min-height:28px;
+  padding:5px 7px;
+  font-size:6.5px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-toggle {
+  flex:0 0 auto;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-note {
+  margin:0;
+  padding:7px 14px 9px;
+  border-bottom:1px solid #eee6da;
+  background:#fffdfa;
+  color:#7b8587;
+  font-size:7.5px;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-pane[data-view-pane="current"] > .topic-bars {
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:#fffdfa;
+  padding:12px 14px 14px;
+  box-shadow:none;
+}
+main.a5-editorial-pilot .a5-shared-chart .ux-view-pane[data-view-pane="history"] {
+  padding:12px 14px 14px;
+}
+
+/* Method/reading utilities use a stable two-slot geometry.
+   Empty/hydrating slots must not change the external shell between indicators. */
+main.a5-editorial-pilot .compare-post-benchmark-tools {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+}
+
+/* Town cards: alphabetical DOM order, equal columns and equal gaps. */
+main.a5-editorial-pilot .topic-town-card-grid {
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:10px;
+  align-items:stretch;
+}
+main.a5-editorial-pilot .topic-town-card {
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+}
+main.a5-editorial-pilot .topic-town-card-copy {
+  min-height:62px;
+}
+
+@media (max-width:1100px) {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
+    grid-column:1 / -1;
+    justify-content:flex-start;
+    order:3;
+  }
+}
+@media (max-width:720px) {
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toolbar > .data-actions {
+    grid-column:auto;
+    order:2;
+    overflow-x:auto;
+    justify-content:flex-start;
+  }
+  main.a5-editorial-pilot .a5-shared-chart .ux-view-toggle {
+    order:3;
+    justify-self:start;
+  }
+  main.a5-editorial-pilot .compare-post-benchmark-tools {
+    grid-template-columns:1fr;
+  }
+  main.a5-editorial-pilot .topic-town-card-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+}
+
+
+/* A5 controlled: hide only the transient raw Demografia bars before visual-grammar turns them into the lollipop. */
+body[data-page="compare"]:has(main.a5-editorial-pilot) main.a5-editorial-pilot .a5-shared-chart .comparison-bars:not([data-viz]) {
+  visibility:hidden;
+}
+
+
+/* Modifica 03 — solo due correzioni richieste:
+   1) coerenza visiva delle sezioni aperte della fisarmonica laterale;
+   2) allineamento ottico tra quadratino tema e titoli delle sezioni. */
+main.a5-editorial-pilot .metric-group[data-ux-accordion="true"] > .metric-group-buttons:not([hidden]) {
+  gap: 0;
+  padding: 4px;
+  background: #fff;
+  border-top: 1px solid var(--ds-border);
+}
+
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+main.a5-editorial-pilot .metric-group-heading.ux-section-toggle > strong::before {
+  margin-right: 0;
+  margin-top: 1px;
+  vertical-align: 0;
+  flex: 0 0 auto;
+}
+
+
+/* Modifica 05 — coerenza di tutti gli switch di lettura/unità nel grafico Demografia:
+   stesso linguaggio visivo già approvato per Mobilità residenziale interna. */
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch {
+  border:1px solid var(--ds-theme-control-border,var(--ds-theme-line));
+  border-radius:10px;
+  background:var(--ds-theme-control-bg,var(--ds-theme-soft));
+  padding:3px;
+  box-shadow:none;
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button {
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:var(--ds-theme-control-label,var(--ds-theme-dark));
+  box-shadow:none;
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button:hover:not(.active) {
+  background:var(--ds-theme-control-hover,var(--ds-theme-soft));
+  color:var(--ds-theme-dark);
+}
+
+main.a5-editorial-pilot .compare-chart-toolbar .scale-switch button.active {
+  background: var(--ds-theme-accent);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* A5.4 — municipal golden-master pilot.
+   The analytical workspace reuses the same A5 sidebar/chart classes as the thematic page.
+   Scope is deliberately limited to the A5 pilot towns + Demografia until the golden master is generalized. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] {
+  width:min(1320px,calc(100% - 54px));
+}
+main.a5-town-pilot .town-topic.a5-town-topic {
+  display:grid;
+  grid-template-columns:236px minmax(0,1fr);
+  gap:10px 12px;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+main.a5-town-pilot .town-topic.a5-town-topic::before { display:none; }
+main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading {
+  grid-column:1 / -1;
+  margin:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls {
+  grid-column:1;
+  grid-row:2 / span 2;
+  align-self:start;
+  min-width:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout {
+  grid-column:2;
+  grid-row:2;
+  margin:0;
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+  grid-column:2;
+  grid-row:3;
+  min-width:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title { display:none; }
+main.a5-town-pilot .town-metric-primary,
+main.a5-town-pilot .versilia-position {
+  border:1px solid var(--ds-border);
+  border-top:3px solid var(--theme-accent);
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected {
+  border-radius:10px;
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong {
+  color:var(--theme-accent);
+  font-weight:800;
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  background:var(--theme-accent);
+}
+main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  border-color:var(--theme-soft);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
+}
+main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
+main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+main.a5-town-pilot .town-topic.a5-town-topic > .detail-disclosure,
+main.a5-town-pilot .town-topic.a5-town-topic > [data-financial-profile-method] {
+  grid-column:1 / -1;
+}
+@media (max-width:900px) {
+  main.a5-town-pilot .town-topic.a5-town-topic { grid-template-columns:1fr; }
+  main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+    grid-column:1;
+    grid-row:auto;
+  }
+}
+
+
+/* A5.4 golden-master alignment — municipal Demografia.
+   This is the canonical implementation of the approved Draft 19 geometry.
+   It reuses shared sidebar/chart/runtime components; no clone/fetch prototype code. */
+body[data-page="town"]:has(main.a5-town-pilot) {
+  --ds-canvas:#f7f2e8;
+  --ds-surface:#fffdfa;
+  --ds-surface-soft:#f4eee4;
+  --ds-surface-warm:#fbf6ef;
+  --ds-ink:#0f3550;
+  --ds-muted:#62747d;
+  --ds-border:#ded4c6;
+  --ds-border-strong:#c8bbab;
+  --ds-navy:#0d3c58;
+  --ds-shadow:0 8px 26px rgba(15,53,80,.065);
+  background:var(--ds-canvas);
+  color:var(--ds-ink);
+}
+body[data-page="town"]:has(main.a5-town-pilot) #app {
+  background:
+    radial-gradient(circle at 8% 16%,rgba(184,75,52,.035),transparent 30%),
+    linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
+}
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile {
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 0 64px !important;
+}
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .breadcrumbs,
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-brief,
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-context-nav,
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-topic,
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > #town-context {
+  width:min(1320px,calc(100% - 54px));
+  margin-inline:auto;
+}
+body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .breadcrumbs {
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#78848a;
+  font-size:9px;
+}
+
+/* Approved municipal hero. */
+body[data-page="town"]:has(main.a5-town-pilot) .town-hero {
+  position:relative;
+  min-height:360px;
+  width:100%;
+  margin:0;
+  padding:26px max(27px,calc((100vw - 1320px)/2)) 34px;
+  display:block;
+  overflow:hidden;
+  border:0;
+  border-radius:0;
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.94) 0%,rgba(10,45,67,.80) 42%,rgba(15,74,94,.58) 100%),
+    radial-gradient(circle at 78% 22%,rgba(255,215,101,.18),transparent 34%),
+    linear-gradient(135deg,#0b3149 0%,#13586d 100%);
+  box-shadow:none;
+  color:#fff;
+}
+body[data-page="town"][data-town="viareggio"]:has(main.a5-town-pilot) .town-hero {
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.61) 38%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG") center 52%/cover no-repeat;
+}
+body[data-page="town"][data-town="massarosa"]:has(main.a5-town-pilot) .town-hero {
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.64) 39%,rgba(10,45,67,.27) 72%,rgba(10,45,67,.12) 100%),
+    url("https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG") center 58%/cover no-repeat;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-hero::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,24,37,.17) 0%,rgba(3,24,37,.04) 48%,rgba(3,24,37,.20) 100%);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-hero-shell {
+  position:relative;
+  z-index:1;
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(330px,.88fr) minmax(620px,1.12fr);
+  gap:34px;
+  align-items:start;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-identity {
+  position:relative;
+  z-index:1;
+  align-items:flex-start;
+  gap:18px;
+  padding-top:2px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-identity img {
+  width:74px;
+  height:74px;
+  flex:0 0 74px;
+  object-fit:contain;
+  padding:8px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:16px;
+  background:rgba(255,253,250,.92);
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-identity .overline {
+  margin-bottom:6px;
+  color:#ffd765;
+  font-size:8px;
+  letter-spacing:.13em;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-identity h1 {
+  margin:0;
+  color:#fff;
+  font-size:clamp(48px,5.1vw,72px);
+  line-height:.94;
+  letter-spacing:-.055em;
+  text-shadow:0 2px 18px rgba(0,0,0,.16);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-identity p {
+  max-width:590px;
+  margin:10px 0 0;
+  color:rgba(255,255,255,.90);
+  font-size:12px;
+  line-height:1.5;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats {
+  position:relative;
+  z-index:1;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:0;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats > div {
+  min-width:0;
+  min-height:96px;
+  padding:14px 14px 13px;
+  border:1px solid rgba(255,255,255,.32);
+  border-radius:10px;
+  background:rgba(9,43,66,.66);
+  backdrop-filter:blur(9px);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats dt {
+  display:flex;
+  align-items:center;
+  gap:2px;
+  color:rgba(255,255,255,.72);
+  font-size:7px;
+  font-weight:720;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats dd {
+  margin:7px 0 0;
+  color:#fff;
+  font-family:var(--font-geist-mono),"Geist Mono",monospace;
+  font-size:21px;
+  font-weight:780;
+  letter-spacing:-.035em;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats small {
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,.79);
+  font-size:8px;
+  line-height:1.35;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-stat-icon,
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief-icon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#ffd765;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-stat-icon {
+  width:24px;
+  height:24px;
+  margin-right:7px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-stat-icon svg,
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief-icon svg {
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-stat-icon svg { width:22px; height:22px; }
+body[data-page="town"]:has(main.a5-town-pilot) .town-hero-photo-credit {
+  position:absolute;
+  z-index:2;
+  right:max(27px,calc((100vw - 1320px)/2));
+  bottom:14px;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(8,38,59,.78);
+  color:rgba(255,255,255,.86);
+  font-size:7px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-hero-photo-credit a { color:#fff; font-weight:700; }
+
+/* Approved synthesis cards. */
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief {
+  display:grid;
+  grid-template-columns:1.1fr repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief > div,
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief > article {
+  min-height:92px;
+  box-sizing:border-box;
+  border:1px solid var(--ds-border);
+  border-radius:10px;
+  background:var(--ds-surface);
+  padding:14px 16px;
+  box-shadow:none;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief > div {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border-left:3px solid var(--theme-accent);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief .overline {
+  color:var(--theme-accent);
+  font-size:7px;
+  letter-spacing:.1em;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief h2 {
+  margin:4px 0 0;
+  color:var(--ds-ink);
+  font-size:19px;
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief > div p {
+  margin:7px 0 0;
+  color:#7b8588;
+  font-size:8px;
+  line-height:1.35;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief-head {
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief-icon {
+  width:20px;
+  height:20px;
+  flex:0 0 20px;
+  color:var(--theme-accent);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief-icon svg { width:18px; height:18px; }
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief article span {
+  color:#7b8588;
+  font-size:8px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief article strong {
+  display:block;
+  margin:8px 0 2px;
+  color:var(--ds-ink);
+  font-size:14px;
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-brief article small {
+  color:#7b8588;
+  font-size:7.5px;
+}
+
+/* Municipal context navigation. */
+body[data-page="town"]:has(main.a5-town-pilot) .town-context-nav {
+  margin-top:10px;
+  border-block:1px solid rgba(222,212,198,.86);
+  background:rgba(251,248,242,.94);
+}
+body[data-page="town"]:has(main.a5-town-pilot) .town-context-nav .context-nav-row {
+  min-height:43px;
+  grid-template-columns:72px minmax(0,1fr);
+  gap:10px;
+  padding:5px 0 4px;
+  border-bottom:1px solid #ece3d7;
+}
+
+/* Main municipal workspace mirrors the thematic pilot geometry. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic {
+  display:grid;
+  grid-template-columns:270px minmax(0,1fr);
+  column-gap:14px;
+  row-gap:10px;
+  align-items:start;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic::before { display:none; }
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-topic-heading {
+  grid-column:1 / -1;
+  min-height:64px;
+  margin:0;
+  padding:12px 14px;
+  align-items:center;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic-heading h2 {
+  margin:0;
+  color:var(--ds-ink);
+  font-size:23px;
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic-heading > a {
+  min-height:30px;
+  border-color:#d8cbbd;
+  border-radius:8px;
+  padding:6px 9px;
+  background:#fbf6ef;
+  color:var(--theme-accent);
+  font-size:7.5px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .topic-controls {
+  grid-column:1;
+  grid-row:2 / span 2;
+  align-self:start;
+  min-width:0;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout {
+  grid-column:2;
+  grid-row:2;
+  grid-template-columns:minmax(0,1.55fr) minmax(260px,.65fr);
+  gap:10px;
+  margin:0;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position {
+  min-height:200px;
+  box-sizing:border-box;
+  border:1px solid var(--ds-border);
+  border-top:3px solid var(--theme-accent);
+  border-radius:11px;
+  padding:20px 22px;
+  background:var(--ds-surface) !important;
+  color:var(--ds-ink) !important;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > .a5-primary-label,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > .composite-primary-label {
+  display:block;
+  margin:0 0 10px;
+  color:var(--theme-accent) !important;
+  opacity:1 !important;
+  font-size:10px;
+  font-weight:850;
+  line-height:1.2;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > strong {
+  margin:12px 0 9px;
+  color:var(--ds-ink) !important;
+  font-size:clamp(42px,4.8vw,62px);
+  line-height:.95;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > p {
+  max-width:680px;
+  color:#67777d !important;
+  font-size:9px;
+  line-height:1.5;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > div:last-child {
+  margin-top:auto;
+  padding-top:12px;
+  border-top:1px solid #eee6da;
+  color:#7c898d !important;
+  font-size:7.5px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary .inline-source-link {
+  color:var(--theme-accent) !important;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position .overline {
+  color:var(--theme-accent);
+  font-size:7px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position > strong {
+  margin:12px 0 8px;
+  color:var(--ds-ink) !important;
+  font-size:38px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position strong small {
+  color:#7b8588 !important;
+  font-size:11px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position > p {
+  color:#748086 !important;
+  font-size:8px;
+}
+
+/* Shared thematic chart shell, now truly shared instead of cloned. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .history-panel.a5-shared-chart {
+  grid-column:2;
+  grid-row:3;
+  min-width:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart > .panel-title { display:none; }
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected {
+  border-radius:10px;
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong {
+  color:var(--theme-accent);
+  font-weight:800;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  background:var(--theme-accent);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot {
+  border-color:var(--theme-soft);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
+}
+
+/* Post-chart blocks: same dimensions and two-column tool row as the thematic golden master. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-benchmark {
+  grid-column:1 / -1;
+  grid-row:4;
+  width:100%;
+  margin:0;
+  padding:48px;
+  border:1px solid var(--ds-border);
+  border-radius:24px;
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-benchmark h2 {
+  color:var(--ds-ink);
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .method-disclosure,
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .reading-scale {
+  grid-column:1 / -1;
+  grid-row:5;
+  width:calc(50% - 4px);
+  min-height:58px;
+  box-sizing:border-box;
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-left:3px solid #b57a57;
+  border-radius:9px;
+  background:#fffdfa;
+  box-shadow:none;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .method-disclosure {
+  justify-self:start;
+  overflow:hidden;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .method-disclosure > summary {
+  min-height:58px;
+  box-sizing:border-box;
+  padding:9px 12px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .method-disclosure[open] {
+  width:100%;
+  grid-row:5 / span 2;
+  z-index:2;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .reading-scale {
+  justify-self:end;
+  display:grid;
+  grid-template-columns:105px minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+  padding:9px 12px;
+}
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .reading-scale p {
+  margin:0;
+  font-size:8px;
+  line-height:1.35;
+}
+
+/* The toolbar is the only home for export/print actions in the pilot. */
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-data-actions {
+  display:none;
+}
+
+@media (max-width:1000px) {
+  body[data-page="town"]:has(main.a5-town-pilot) .town-hero { min-height:430px; padding-top:24px; }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-hero-shell { grid-template-columns:1fr; gap:18px; }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats { width:min(100%,760px); }
+}
+@media (max-width:900px) {
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic { grid-template-columns:1fr; }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-benchmark,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .method-disclosure,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .reading-scale {
+    grid-column:1;
+    grid-row:auto;
+    width:100%;
+    justify-self:stretch;
+  }
+}
+@media (max-width:720px) {
+  body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .breadcrumbs,
+  body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-brief,
+  body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-context-nav,
+  body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > .town-topic,
+  body[data-page="town"]:has(main.a5-town-pilot) main.town-profile > #town-context {
+    width:calc(100% - 28px);
+  }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-hero {
+    min-height:560px;
+    padding:22px 14px 46px;
+    background-position:center 50%;
+  }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-hero-shell { gap:16px; }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats { grid-template-columns:1fr; }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-hero-photo-credit {
+    left:14px;
+    right:auto;
+    bottom:12px;
+  }
+  body[data-page="town"]:has(main.a5-town-pilot) .town-brief { grid-template-columns:1fr; }
+}
+
+
+/* A5.4 town consistency contract — stable municipal slots only.
+   Navigation, benchmark, method and reading-scale visuals are owned by the shared A5 rules above. */
+body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host {
+  grid-column:1 / -1;
+  grid-row:4;
+  width:100%;
+  min-width:0;
+  margin:0;
+}
+body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools {
+  grid-column:1 / -1;
+  grid-row:5;
+  width:100%;
+  margin:0;
+}
+
+/* A5.4 shared municipal workspace contract. */
+body[data-page="town"] main.a5-town-pilot {
+  container-type:inline-size;
+}
+body[data-page="town"] main.a5-town-pilot .town-metric-primary > .composite-read-selector {
+  display:none !important;
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-detail {
+  margin:0 14px 14px;
+  padding:14px 0 0;
+  border-top:1px solid #eee6da;
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-detail > .composite-fixed-detail {
+  margin:0;
+  padding:0;
+  border-top:0;
+}
+body[data-page="town"] main.a5-town-pilot .composite-distribution-row.selected {
+  border-color:var(--theme-accent);
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+body[data-page="town"] main.a5-town-pilot .composite-distribution-row.selected .composite-town-link {
+  color:var(--theme-accent);
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual > .topic-bars {
+  margin:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-chart-toolbar {
+  padding:12px 14px 0;
+}
+
+/* A5.4 final visual alignment: keep town labels clear of the selected-row inset
+   and lift graph controls without changing their shared DS2 geometry. */
+body[data-page="town"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-town,
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-town-link {
+  padding-inline-start:6px;
+  box-sizing:border-box;
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-chart-toolbar .compare-view-controls {
+  transform:translateY(-6px);
+}
+body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-topic-bars {
+  padding:12px 14px 14px;
+}
+
+@media (max-width:900px) {
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic {
+    grid-template-columns:minmax(0,1fr);
+  }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-post-benchmark-tools {
+    grid-column:1 / -1;
+    grid-row:auto;
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+  }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout {
+    grid-template-columns:minmax(0,1fr);
+  }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .versilia-position,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .a5-benchmark-host > *,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .compare-post-benchmark-tools > * {
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+}
+@container (max-width:900px) {
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic {
+    grid-template-columns:minmax(0,1fr);
+  }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-post-benchmark-tools {
+    grid-column:1 / -1;
+    grid-row:auto;
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+  }
+  body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-topic.a5-town-topic > .town-metric-layout {
+    grid-template-columns:minmax(0,1fr);
+  }
+}
+@media (max-width:720px) {
+  body[data-page="town"] main.a5-town-pilot .town-topic-heading {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:8px;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-topic-heading > a {
+    justify-self:start;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-metric-primary,
+  body[data-page="town"] main.a5-town-pilot .versilia-position {
+    min-height:0;
+    padding:16px 18px;
+  }
+  body[data-page="town"] main.a5-town-pilot .town-metric-primary > strong {
+    font-size:clamp(38px,13vw,50px);
+  }
+  body[data-page="town"] main.a5-town-pilot .versilia-position > strong {
+    font-size:clamp(30px,11vw,38px);
+  }
+  body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-chart-toolbar .compare-view-controls,
+  body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-choice-select,
+  body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .compare-choice-select select {
+    width:100%;
+    min-width:0;
+  }
+  body[data-page="town"] main.a5-town-pilot .compare-post-benchmark-tools > .reading-scale {
+    grid-template-columns:minmax(0,1fr);
+    gap:6px;
+  }
+}
+
+
+/* A5 mobility map action — final toolbar contract */
+.a5-map-action {
+  min-height:28px !important;
+  box-sizing:border-box !important;
+  display:inline-flex !important;
+  flex:0 0 auto !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:5px !important;
+  padding:5px 7px !important;
+  border:1px solid var(--ds-border) !important;
+  border-radius:7px !important;
+  background:#fbf7f0 !important;
+  color:var(--ds-ink) !important;
+  font-size:6.5px !important;
+  font-weight:760 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  text-decoration:none !important;
+}
+.a5-map-action > span {
+  display:block !important;
+  white-space:nowrap !important;
+}
+.a5-map-action > svg {
+  display:block !important;
+  width:17px !important;
+  height:17px !important;
+  min-width:17px !important;
+  flex:0 0 17px !important;
+  color:var(--ds-theme-accent,var(--ds-navy)) !important;
+  overflow:visible !important;
+}

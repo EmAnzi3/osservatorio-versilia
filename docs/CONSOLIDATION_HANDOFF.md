@@ -6,46 +6,40 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
-- **Step attivo:** A5.1–A5.3 — audit e fondazione non visuale
-- **Stato:** IN_PROGRESS — fondazione preparata in branch, A5.4 sarà la prima modifica UI
-- **Main verificato:** `df90fd9372c536cb4288488557cc863150e43791` (merge #271)
-- **A4:** DONE — deploy Pages post-merge verde, `ov-pages-live` success
-- **Catalogo effettivo:** 225 indicatori
-- **Visual regression A4:** 40 campioni rappresentativi
-- **Branch corrente:** `feat/a5-design-system-foundation`
-- **Modifiche visive al prodotto:** nessuna
+- **Step attivo:** A5.5 — propagazione progressiva DS2
+- **Stato:** IN_PROGRESS — lotti Economia e Lavoro approvati; bulk tematico attivo su tutti gli 11 temi standard; schede comunali ancora escluse
+- **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
+- **Branch:** `feat/a5-controlled-iteration`
+- **PR:** #280 — Draft
+- **Riconciliazione:** commit `edb17ea5d44a38ad21d2eb6cf330a3420a0b69d1`; branch 0 commit dietro `main`
+- **A0–A4:** DONE
+- **A5.1–A5.3:** DONE
+- **A5.4:** DONE
+- **A5.5:** IN_PROGRESS
 
-## A5.1 — audit
+## Golden master congelati
 
-Il referto completo è in `docs/A5_DESIGN_SYSTEM_AUDIT.md`.
+I contratti approvati sono documentati in `docs/A5_GOLDEN_MASTERS.md`.
 
-Baseline principali:
-- 246 colori HEX distinti nei quattro CSS pubblici principali;
-- 187 dichiarazioni background e 336 dichiarazioni di bordo;
-- contrasto `paper/surface`: 1,11:1;
-- contrasto `muted/paper`: 4,37:1;
-- 177/288 dichiarazioni font-size in px <= 11 px;
-- due sistemi tematici sovrapposti: `theme-color` e `theme-accent`;
-- token tematici espliciti per 9 temi su 11: mancano `sicurezza` e `bilanci`.
+1. **Pagina tematica:** `/confronta/demografia/?indicatore=population` sulla PR #280.
+2. **Scheda comunale:** Viareggio/Demografia, derivata dal Draft 19 e approvata visivamente.
+3. **Prova di generalizzazione:** Massarosa/Demografia sullo stesso shell condiviso, approvata visivamente.
 
-## A5.2–A5.3
+Il Draft 19 resta solo un riferimento visuale: il suo codice prototipale non è stato propagato.
 
-La fondazione DS2 separa:
-- canvas neutro;
-- surface primaria, secondaria ed editoriale;
-- testo primary/secondary/tertiary;
-- bordi e focus;
-- elevazione;
-- tema accent/soft/line;
-- stati semantici.
+## Audit di propagazione
 
-Il vocabolario nuovo usa prefisso `--ds-`. Gli alias storici restano temporaneamente durante la migrazione; `--theme-color` e `--theme-accent` devono convergere.
+Verificato che:
+- il renderer delle pagine tematiche è condiviso; Demografia è il ramo A5 da generalizzare;
+- le schede comunali condividono `renderTown()` / `renderTownMetric()`;
+- grafici, storico e visual grammar sono già infrastrutture comuni;
+- le route speciali `meteo-clima`, atlante economia e affluenza vanno gestite separatamente;
+- nessun altro tema deve essere modificato prima che i due golden master siano riprodotti tramite componenti condivisi.
 
 ## Prossima azione esatta
 
-1. Portare la fondazione A5.1–A5.3 in PR Ready e richiedere Quick + Full verdi.
-2. Merge solo dopo approvazione esplicita del proprietario.
-3. Dopo il merge aprire A5.4 sulla pagina pilota `confronta/demografia/`.
-4. A5.4 deve essere Draft perché modifica la UI.
-5. Il primo mismatch A4 intenzionale deve produrre screenshot diagnostici: verificarli desktop/mobile prima di aggiornare le baseline.
-6. Non modificare dati, contenuti, tooltip o semantica durante il pilot.
+1. Completare il bulk tematico A5.5 su tutti gli 11 `confronta/<tema>/` e verificare l’artifact desktop/mobile.
+2. Non modificare i golden master Viareggio/Massarosa salvo regressioni.
+3. Mantenere fuori dal bulk le route speciali censite: `meteo-clima`, Atlante Economia e affluenza.
+4. Solo dopo approvazione visiva del bulk tematico pianificare il lotto separato sulle schede comunali.
+5. Non aggiornare baseline A4 e non rendere la PR Ready/merge senza approvazione esplicita.

@@ -28,10 +28,14 @@
   }
 
 
+  function themeContextLinksMarkup(data, activeTheme, hrefFor, extraAttr = '') {
+    return Object.values(data.themes).map(theme => `<a href="${hrefFor(theme)}" data-context-theme="${theme.key}" ${extraAttr ? `${extraAttr}="${theme.key}"` : ''} class="${theme.key === activeTheme ? 'active' : ''}" ${theme.key === activeTheme ? 'aria-current="page"' : ''}><small>${html(theme.number)}</small><span>${html(theme.label)}</span></a>`).join('');
+  }
+
   function compareContextNav(data, activeTheme) {
     return `<nav class="compare-context-nav page-width" aria-label="Passa a un altro tema">
       <div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div>
-      <div class="context-nav-links">${Object.values(data.themes).map(theme => `<a href="${route(`confronta/${theme.key}/?indicatore=${theme.metrics[0]}`)}" data-context-theme="${theme.key}" class="${theme.key === activeTheme ? 'active' : ''}" ${theme.key === activeTheme ? 'aria-current="page"' : ''}><small>${html(theme.number)}</small><span>${html(theme.label)}</span></a>`).join('')}</div>
+      <div class="context-nav-links">${themeContextLinksMarkup(data, activeTheme, theme => route(`confronta/${theme.key}/?indicatore=${theme.metrics[0]}`))}</div>
     </nav>`;
   }
 
@@ -41,10 +45,15 @@
       const slug = normalize(item.name).replaceAll(' ', '-');
       return `<a href="${route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`)}" data-town-link="${slug}" class="${slug === activeSlug ? 'active' : ''}" ${slug === activeSlug ? 'aria-current="page"' : ''}>${html(item.name)}</a>`;
     }).join('');
-    const themeButtons = Object.values(data.themes).map(theme => `<button type="button" data-profile-theme="${theme.key}" class="${theme.key === themeKey ? 'active' : ''}">${themeIcon(theme.key, 15)}<span>${html(theme.number)}</span>${html(theme.label)}</button>`).join('');
+    const themeLinks = themeContextLinksMarkup(
+      data,
+      themeKey,
+      theme => route(`comuni/${activeSlug}/?tema=${theme.key}&indicatore=${theme.metrics[0]}`),
+      'data-profile-theme'
+    );
     return `<div class="town-context-nav">
       <div class="context-nav-row"><div class="context-nav-title"><small>Esplora</small><strong>Comuni</strong></div><div class="context-nav-links">${townLinks}</div></div>
-      <nav class="theme-nav" aria-label="Temi della scheda">${themeButtons}</nav>
+      <nav class="context-nav-row town-theme-row" aria-label="Temi della scheda"><div class="context-nav-title"><small>Esplora</small><strong>Temi</strong></div><div class="context-nav-links">${themeLinks}</div></nav>
     </div>`;
   }
 
@@ -52,6 +61,65 @@
     document.querySelectorAll('[data-town-link]').forEach(link => {
       link.href = route(`comuni/${link.dataset.townLink}/?tema=${themeKey}&indicatore=${metricKey}`);
     });
+  }
+
+  function a5MetricSidebarMarkup(data, themeKey, metricKey, options = {}) {
+    const theme = data.themes[themeKey];
+    const definitionId = options.definitionId || '';
+    const definitionClass = options.definitionClass || '';
+    const definitionMarkup = definitionId ? `<div id="${html(definitionId)}" class="${html(definitionClass)}"></div>` : '';
+    return `<aside class="topic-controls">
+      <div class="topic-controls-heading"><div><span class="overline">Gruppi di indicatori</span><strong>${theme.metrics.length} indicatori</strong></div><small>Scegli il dato da confrontare</small></div>
+      ${metricControls(data, themeKey, metricKey, true)}
+      ${definitionMarkup}
+    </aside>`;
+  }
+
+  const A5_COMPARE_THEMES = new Set(['demografia','economia','lavoro','istruzione','salute','mobilita','sicurezza','abitare','ambiente','bilanci','comunita']);
+
+  function isA5CompareTheme(themeKey) {
+    return A5_COMPARE_THEMES.has(themeKey);
+  }
+
+  function a5CompareShellMarkup(data, themeKey, metricKey) {
+    const theme = data.themes[themeKey];
+    const themeExtra = themeKey === 'demografia'
+      ? brainDrainMarkup(data)
+      : (themeKey === 'sicurezza' ? crimeMarkup(data) : '');
+    return `<main class="inner-page a5-editorial-pilot" data-theme="${themeKey}">
+          <section class="compare-showcase-hero" aria-label="Osservatorio Versilia">
+            <div class="compare-showcase-hero-media" style="background-image:linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.62) 43%,rgba(10,45,67,.16) 78%),url('${mediaSrc(data.heroImage || 'images/versilia-viareggio-apuane.jpg')}')"></div>
+            <div class="compare-showcase-hero-copy page-width">
+              <span class="overline">Conoscere per costruire insieme</span>
+              <h1>La Versilia,<br><em>una comunità di dati.</em></h1>
+              <p>Dati pubblici per capire, confrontare e immaginare il futuro dei nostri territori.</p>
+              <div class="compare-showcase-actions">
+                <a class="compare-showcase-primary" href="#compare-workspace">Esplora i dati <span aria-hidden="true">→</span></a>
+                <a class="compare-showcase-secondary" href="#compare-territori">Scopri i comuni</a>
+              </div>
+              <div class="compare-showcase-facts"><span>${data.towns.length} Comuni</span><span>${theme.metrics.length} indicatori ${html(theme.label)}</span><span>Aggiornato ${html(data.updated)}</span></div>
+            </div>
+          </section>
+          <div class="breadcrumbs page-width"><a href="${route('')}">Home</a><span>›</span><strong>${html(theme.label)}</strong></div>
+          ${compareContextNav(data, themeKey)}
+          <section class="topic-hero page-width" data-theme="${themeKey}">
+            <div class="topic-symbol">${themeIcon(themeKey, 26)}<small>${html(theme.number)}</small></div>
+            <div class="topic-hero-copy"><span class="overline">Confronto territoriale</span><h1>${html(theme.label)}</h1><p>${html(theme.description)}</p></div>
+            <div class="topic-hero-context"><span class="overline">Per leggere il territorio</span><p>${html(theme.question || `Confronta gli indicatori di ${theme.label} nei sette Comuni della Versilia.`)}</p></div>
+          </section>
+          <section id="compare-workspace" class="topic-dashboard page-width" data-theme="${themeKey}">
+            ${a5MetricSidebarMarkup(data, themeKey, metricKey, { definitionId:'compare-definition', definitionClass:'topic-side-definition' })}
+            <div class="compare-main-column">
+              <header class="compare-panel-heading"><span class="overline">Confronto tra Comuni della Versilia</span></header>
+              <div id="compare-bars" class="a5-shared-chart"></div>
+            </div>
+          </section>
+          <section id="compare-demographic-pyramid" class="compare-demographic-pyramid page-width"></section>
+          <section id="compare-benchmark" class="page-width a5-benchmark-host"></section>
+          ${themeExtra}
+          <section id="compare-tools" class="compare-post-benchmark-tools page-width"></section>
+          <section id="compare-territori" class="topic-town-links page-width"><div class="topic-town-links-heading"><span class="overline">Schede comunali</span><h2>Apri il territorio</h2><p>Accedi alla scheda comunale e agli indicatori di dettaglio del tema ${html(theme.label)}.</p></div><div class="topic-town-card-grid">${[...data.towns].sort((a,b)=>a.name.localeCompare(b.name,'it')).map(t => `<a class="topic-town-card" href="${route(`comuni/${normalize(t.name).replaceAll(' ', '-')}/?tema=${themeKey}&indicatore=${metricKey}`)}"><span class="topic-town-card-media"><img src="${mediaSrc(data.crests[t.name])}" alt="" loading="lazy"></span><span class="topic-town-card-copy"><strong>${html(t.name)}</strong><small>Apri la scheda →</small></span></a>`).join('')}</div></section>
+        </main>`;
   }
 
   function renderCompare(data) {

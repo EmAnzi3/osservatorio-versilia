@@ -1,4 +1,4 @@
-const VERSION = 'ov-pwa-20260903-v129-salute-finanziaria-selector';
+const VERSION = 'ov-pwa-20260926-a5-fuel-monthly-history';
 const STATIC_CACHE = `${VERSION}-static`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

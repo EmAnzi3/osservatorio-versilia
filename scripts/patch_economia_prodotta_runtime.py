@@ -147,6 +147,37 @@ def replace_once(source: str, old: str, new: str, label: str) -> str:
     return source.replace(old, new, 1)
 
 
+def replace_once_in_function(source: str, function_name: str, old: str, new: str, label: str) -> str:
+    marker = f"  function {function_name}("
+    start = source.find(marker)
+    if start < 0:
+        raise RuntimeError(f"{label}: funzione {function_name} non trovata")
+    end = source.find("\n  function ", start + len(marker))
+    if end < 0:
+        end = len(source)
+    block = source[start:end]
+    count = block.count(old)
+    if count != 1:
+        raise RuntimeError(f"{label}: attesa 1 occorrenza nel corpo di {function_name}, trovate {count}")
+    return source[:start] + block.replace(old, new, 1) + source[end:]
+
+def insert_after_function_header(source: str, function_name: str, code: str, label: str) -> str:
+    marker = f"  function {function_name}("
+    start = source.find(marker)
+    if start < 0:
+        raise RuntimeError(f"{label}: funzione {function_name} non trovata")
+    line_end = source.find("\n", start)
+    if line_end < 0:
+        raise RuntimeError(f"{label}: intestazione di {function_name} non terminata")
+    block_end = source.find("\n  function ", line_end + 1)
+    if block_end < 0:
+        block_end = len(source)
+    block = source[start:block_end]
+    if code.strip() in block:
+        return source
+    return source[:line_end + 1] + code + source[line_end + 1:]
+
+
 def patch_runtime_helpers() -> None:
     source = RUNTIME_TARGET.read_text(encoding="utf-8")
     if MARKER in source:
@@ -231,24 +262,26 @@ def patch_visual_grammar() -> None:
 def patch_compare_and_town() -> None:
     source = COMPARE_TARGET.read_text(encoding="utf-8")
 
-    source = replace_once(
+    source = insert_after_function_header(
         source,
-        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const metric = data.metrics[metricKey];",
-        "  function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;",
+        "renderCompareMetric",
+        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const economicScope = economicContext.scope;\n",
         "scope locale nel confronto",
     )
     source = replace_once(
         source,
         "    const chartScaleControls = controls;\n",
-        "    const chartScaleControls = controls;\n    const economicScopeControls = isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : '';\n",
+        "    const chartScaleControls = controls;\n    const economicScopeControls = isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : \'\';\n",
         "markup scope nel confronto",
     )
-    source = replace_once(
+    source = replace_once_in_function(
         source,
-        "      bars.innerHTML = compositeType ? `<div class=\"topic-bars composite-topic-bars\">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class=\"topic-bars\">${chartScaleControls ? `<div class=\"compare-chart-toolbar scale-toolbar\">${chartScaleControls}</div>` : ''}<div class=\"comparison-bars\">${barRows(data,metricKey,{normalized})}</div></div>`;",
-        "      bars.innerHTML = compositeType ? `<div class=\"topic-bars composite-topic-bars\">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class=\"topic-bars\">${economicScopeControls}${chartScaleControls ? `<div class=\"compare-chart-toolbar scale-toolbar\">${chartScaleControls}</div>` : ''}<div class=\"comparison-bars\">${barRows(data,metricKey,{normalized})}</div></div>`;",
-        "selettore dentro il pannello grafico",
+        "renderCompareMetric",
+        """      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class="topic-bars">${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;""",
+        """      bars.innerHTML = compositeType ? `<div class="topic-bars composite-topic-bars">${compositeCompareMarkup(data,metricKey,view)}</div>` : `<div class="topic-bars">${economicScopeControls}${chartScaleControls ? `<div class="compare-chart-toolbar scale-toolbar">${chartScaleControls}</div>` : ''}<div class="comparison-bars">${barRows(data,metricKey,{normalized})}</div></div>`;""",
+        "selettore Frame SBS locale al pannello grafico",
     )
+
     scope_delegate_anchor = """    } else {
       bars.onclick = null;
       bars.onchange = null;
@@ -289,17 +322,17 @@ def patch_compare_and_town() -> None:
         "persistenza query nel confronto",
     )
 
-    source = replace_once(
+    source = insert_after_function_header(
         source,
-        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const metric = data.metrics[metricKey];\n    const row = metric.rows.find(r => r.code === town.code);",
-        "  function renderTownMetric(data, town, themeKey, metricKey, onMetricSelect) {\n    const theme = data.themes[themeKey];\n    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const metric = economicContext.metric;\n    const economicScope = economicContext.scope;\n    const row = metric.rows.find(r => r.code === town.code);",
+        "renderTownMetric",
+        "    const economicContext = economicScopeData(data, metricKey);\n    data = economicContext.data;\n    const economicScope = economicContext.scope;\n",
         "scope locale nella scheda comunale",
     )
     source = replace_once(
         source,
-        """      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+        """      <section class="history-panel ${composite ? 'composite-history-panel ' : ''}${townPilot ? 'a5-shared-chart' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>""",
-        """      <section class="history-panel ${composite ? 'composite-history-panel' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
+        """      <section class="history-panel ${composite ? 'composite-history-panel ' : ''}${townPilot ? 'a5-shared-chart' : ''}"><div class="panel-title"><div><span class="overline" data-financial-panel-overline>${html(panelOverline)}</span><h3 data-financial-panel-title>${html(panelTitle)}</h3></div><a class="source-pill" href="${html(metric.sourceUrl)}" target="_blank" rel="noreferrer">Fonte ${html(metric.meta.source)} ↗</a></div>
         ${isEconomicScopeMetric(metric) ? economicScopeControlMarkup(economicScope) : ''}
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>""",
         "selettore dentro lo storico comunale",
@@ -312,6 +345,14 @@ def patch_compare_and_town() -> None:
         (
             """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)}""",
             """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : townBenchmarkMarkup(metric, row, town)}""",
+        ),
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+        ),
+        (
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
+            """      ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType) || (isEconomicScopeMetric(metric) && economicScope !== 'total')) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}""",
         ),
     )
     matched = [(old, new) for old, new in town_benchmark_variants if old in source]

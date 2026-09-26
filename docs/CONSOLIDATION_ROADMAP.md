@@ -174,8 +174,16 @@ Scopo: migliorare gerarchia e leggibilità riducendo la predominanza del beige s
 - [x] **A5.1** Audit quantitativo/visivo di superfici, contrasto, densità e gerarchia.
 - [x] **A5.2** Definire ruoli cromatici: canvas neutro, superfici analitiche chiare, colore tematico usato come informazione.
 - [x] **A5.3** Definire token comuni per background, card, bordi, testo, stati e temi.
-- [ ] **A5.4** Applicare il nuovo sistema a una pagina pilota e verificarlo desktop/mobile.
+- [x] **A5.4** Applicare il nuovo sistema a una pagina pilota e verificarlo desktop/mobile.
+
+Nota chiusura A5.4: il golden master tematico `confronta/demografia/` e il golden master comunale sono stati consolidati nella PR #280. Viareggio/Demografia è stato approvato visivamente su desktop/mobile; Massarosa è stata poi portata sullo stesso shell e sulle stesse famiglie grafiche come prova di generalizzazione, senza clone/fetch prototipali né hard-code strutturali su Viareggio. Il gate browser verifica 10/10 indicatori Demografia su entrambi i Comuni, famiglie grafiche, tooltip/riferimenti, controlli condivisi, KPI/label, benchmark, Metodo/Scala e responsive 768/390 px. Il commit di chiusura A5.4 è `7eadda666118f2450290a3b1c6edb93f061b7c7b`; Quick e release gate pertinenti sono verdi. A5.5 resta `NOT_STARTED` finché non viene avviato esplicitamente.
 - [ ] **A5.5** Estendere progressivamente senza modifiche massive non verificabili.
+
+Nota A5.5 — lotto 1 DONE: `confronta/economia/` usa lo shell A5 parametrico; geometria, accenti, desktop/mobile e 7/7 card comunali sono stati verificati automaticamente e il lotto è stato approvato visivamente. L’Atlante attività economiche e le schede comunali Economia sono rimasti fuori dal lotto.
+
+Nota A5.5 — lotto 2 DONE: `confronta/lavoro/` usa lo shell A5 condiviso; tutti gli indicatori Lavoro, incluse le superfici età/sesso, hanno superato i gate desktop/mobile e il lotto è stato approvato visivamente.
+
+Nota A5.5 — bulk tematico IN_PROGRESS: su richiesta del proprietario il rollout viene esteso in un unico lotto controllato a tutti gli 11 temi standard delle route `confronta/<tema>/`. Il gate carica ogni tema una volta e attraversa tutti i relativi indicatori tramite i controlli reali della sidebar, verificando shell, geometria, accento, chart non vuoto, overflow e superfici speciali sia a 1440 px sia a 390 px. Restano escluse le route speciali `meteo-clima`, Atlante Economia e affluenza; restano escluse anche le schede comunali, che saranno un lotto successivo separato.
 
 Nota A5.1–A5.3: `docs/A5_DESIGN_SYSTEM_AUDIT.md` misura il sistema corrente e definisce la fondazione DS2 senza modificare la UI. La baseline CSS contiene 246 colori HEX distinti; `--paper` e `--surface` hanno contrasto 1,11:1; `--muted` su `--paper` è 4,37:1; 177/288 dichiarazioni `font-size` in px sono <= 11 px. L'audit rileva inoltre due sistemi tematici sovrapposti e copertura cromatica esplicita per 9 temi su 11. A5.2 separa canvas, superfici, testo, bordi, stati e tema; A5.3 converge `--theme-color` / `--theme-accent` in un solo vocabolario DS2. La prima modifica visuale è A5.4 e deve restare Draft fino ad approvazione desktop/mobile.
 

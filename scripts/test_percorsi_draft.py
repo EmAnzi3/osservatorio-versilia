@@ -202,8 +202,36 @@ def check_browser() -> None:
                 "Persistono box Percorsi fuori dalla grammatica degli indicatori")
         definition = page.locator("#compare-definition").inner_text()
         require("Percorsi pubblici" in definition, "Definizione Percorsi non renderizzata come indicatore")
-        require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
-                "CTA cartografia assente dall'indicatore Percorsi")
+        map_link = page.locator(
+            '.compare-panel-heading .data-actions a[href*="percorsi/"], '
+            '#compare-bars .ux-view-toolbar .data-actions a[href*="percorsi/"]'
+        )
+        require(map_link.count() == 1,
+                "CTA cartografia assente accanto alle azioni export/stampa")
+        require(map_link.locator("svg").count() == 1 and map_link.locator("svg").is_visible(),
+                "Icona mappa assente dalla CTA cartografia")
+        map_style = map_link.evaluate("""el => {
+          const style=getComputedStyle(el);
+          const path=el.querySelector('svg path');
+          const svg=el.querySelector('svg');
+          const print=el.parentElement?.querySelector('[data-print]');
+          const box=el.getBoundingClientRect();
+          const printBox=print?.getBoundingClientRect();
+          return {
+            whiteSpace:style.whiteSpace,
+            height:box.height,
+            printHeight:printBox?.height || 0,
+            svgWidth:svg?.getBoundingClientRect().width || 0,
+            svgHeight:svg?.getBoundingClientRect().height || 0,
+            stroke:path?.getAttribute('stroke') || ''
+          };
+        }""")
+        require(map_style["whiteSpace"] == "nowrap", "CTA cartografia va a capo")
+        require(map_style["stroke"] == "currentColor" and map_style["svgWidth"] >= 16 and map_style["svgHeight"] >= 16,
+                f"Icona mappa non renderizzabile: {map_style}")
+        if map_style["printHeight"]:
+            require(abs(map_style["height"] - map_style["printHeight"]) <= 1.5,
+                    f"CTA cartografia non allineata a Stampa/PDF: {map_style}")
         require(page.locator("#criminalita").count() == 0,
                 "Criminalità deve essere fuori da Mobilità")
 

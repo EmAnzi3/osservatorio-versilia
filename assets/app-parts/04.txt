@@ -81,9 +81,10 @@ hidden>
         <details class="detail-disclosure"><summary><span>Mostra origini e destinazioni</span><small>Prime cinque relazioni di pendolarismo</small></summary><div class="deep-columns"><div><h4>Destinazioni principali</h4><ul class="deep-list deep-list--flows">${m.topDestinations.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div><div><h4>Origini principali</h4><ul class="deep-list deep-list--flows">${m.topOrigins.map(x => `<li><span>${html(x.name)}</span><span class="deep-list-value"><strong>${number0.format(x.people)}</strong><small>pendolari</small></span></li>`).join('')}</ul></div></div></details></section>`;
     }
     if (themeKey === 'ambiente') {
+      if (!['floodExposure','landslideExposure'].includes(metricKey)) return '';
       const e = detail.environment;
       return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Pressioni ambientali</h3></div><p>Andamento dei rifiuti, incremento netto di suolo consumato ed esposizione della popolazione ai rischi territoriali.</p></div>
-        <details class="detail-disclosure"><summary><span>Mostra il dettaglio dei rischi</span><small>Edifici esposti</small></summary><div class="risk-grid"><article><span>Edifici esposti ad alluvioni</span><strong>${number0.format(e.flood.buildings)}</strong></article><article><span>Edifici esposti a frane</span><strong>${number0.format(e.landslide.buildings)}</strong></article></div></details></section>`;
+        <details class="detail-disclosure" open><summary><span>Mostra il dettaglio dei rischi</span><small>Edifici esposti</small></summary><div class="risk-grid"><article><span>Edifici esposti ad alluvioni</span><strong>${number0.format(e.flood.buildings)}</strong></article><article><span>Edifici esposti a frane</span><strong>${number0.format(e.landslide.buildings)}</strong></article></div></details></section>`;
     }
     if (themeKey === 'comunita') {
       const g = detail.government;

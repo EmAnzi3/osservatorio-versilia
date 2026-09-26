@@ -21,11 +21,16 @@ ENTRY = ROOT / "scripts" / "build_static_brand.py"
 NEEDLE = b'    runpy.run_path(str(ROOT / "scripts" / "materialize_fragilita_release.py"), run_name="__main__")\n'
 INJECTION = NEEDLE + b'    runpy.run_path(str(ROOT / "scripts" / "materialize_economia_prodotta_release.py"), run_name="__main__")\n'
 MARKER = b"materialize_economia_prodotta_release.py"
+WRAPPER_MARKER = b"ECONOMIA_PRODOTTA_MATERIALIZER"
 
 
 def main() -> None:
+    # Il builder transazionale corrente aggancia già Economia prodotta subito dopo
+    # la materializzazione Fragilità. Non iniettare una seconda esecuzione nel
+    # builder implementation: renderebbe il patch runtime non idempotente.
+    wrapper_source = ENTRY.read_bytes()
     source = IMPL.read_bytes()
-    if MARKER not in source:
+    if WRAPPER_MARKER not in wrapper_source and MARKER not in source:
         if source.count(NEEDLE) != 1:
             raise RuntimeError("Hook fragilità del builder non trovato in modo univoco")
         IMPL.write_bytes(source.replace(NEEDLE, INJECTION, 1))

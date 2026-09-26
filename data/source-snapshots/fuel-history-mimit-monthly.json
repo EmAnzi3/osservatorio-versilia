@@ -1,0 +1,3122 @@
+{
+  "schemaVersion": 2,
+  "source": "MIMIT - Archivio storico prezzi praticati e anagrafica impianti",
+  "frequency": "monthly",
+  "statistic": "media mensile delle mediane comunali giornaliere, self-service",
+  "method": "Per ogni giorno si calcola la mediana tra gli impianti attivi del Comune; il valore mensile è la media aritmetica delle mediane giornaliere.",
+  "periodStart": "2022-01",
+  "periodEnd": "2026-06",
+  "towns": [
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio"
+  ],
+  "fuels": {
+    "benzina": "Benzina self",
+    "gasolio": "Gasolio self"
+  },
+  "points": [
+    {
+      "referenceDate": "2022-01",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.783,
+          "benzinaDays": 31,
+          "gasolio": 1.66,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.788,
+          "benzinaDays": 31,
+          "gasolio": 1.623,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.764,
+          "benzinaDays": 31,
+          "gasolio": 1.637,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.791,
+          "benzinaDays": 31,
+          "gasolio": 1.637,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.789,
+          "benzinaDays": 31,
+          "gasolio": 1.626,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.762,
+          "benzinaDays": 31,
+          "gasolio": 1.64,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-02",
+      "observationDays": 28,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 28,
+          "benzina": 1.876,
+          "benzinaDays": 28,
+          "gasolio": 1.75,
+          "gasolioDays": 28
+        },
+        "Forte dei Marmi": {
+          "observationDays": 28,
+          "benzina": 1.873,
+          "benzinaDays": 28,
+          "gasolio": 1.708,
+          "gasolioDays": 28
+        },
+        "Massarosa": {
+          "observationDays": 28,
+          "benzina": 1.849,
+          "benzinaDays": 28,
+          "gasolio": 1.727,
+          "gasolioDays": 28
+        },
+        "Pietrasanta": {
+          "observationDays": 28,
+          "benzina": 1.876,
+          "benzinaDays": 28,
+          "gasolio": 1.723,
+          "gasolioDays": 28
+        },
+        "Seravezza": {
+          "observationDays": 28,
+          "benzina": 1.86,
+          "benzinaDays": 28,
+          "gasolio": 1.707,
+          "gasolioDays": 28
+        },
+        "Stazzema": {
+          "observationDays": 28,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 28,
+          "benzina": 1.841,
+          "benzinaDays": 28,
+          "gasolio": 1.726,
+          "gasolioDays": 28
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-03",
+      "observationDays": 29,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 29,
+          "benzina": 2.066,
+          "benzinaDays": 29,
+          "gasolio": 2.02,
+          "gasolioDays": 29
+        },
+        "Forte dei Marmi": {
+          "observationDays": 29,
+          "benzina": 2.019,
+          "benzinaDays": 29,
+          "gasolio": 1.965,
+          "gasolioDays": 29
+        },
+        "Massarosa": {
+          "observationDays": 29,
+          "benzina": 1.994,
+          "benzinaDays": 29,
+          "gasolio": 1.964,
+          "gasolioDays": 29
+        },
+        "Pietrasanta": {
+          "observationDays": 29,
+          "benzina": 2.015,
+          "benzinaDays": 29,
+          "gasolio": 1.964,
+          "gasolioDays": 29
+        },
+        "Seravezza": {
+          "observationDays": 29,
+          "benzina": 2.033,
+          "benzinaDays": 29,
+          "gasolio": 1.968,
+          "gasolioDays": 29
+        },
+        "Stazzema": {
+          "observationDays": 29,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 29,
+          "benzina": 2.021,
+          "benzinaDays": 29,
+          "gasolio": 1.984,
+          "gasolioDays": 29
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-04",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.782,
+          "benzinaDays": 30,
+          "gasolio": 1.767,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.755,
+          "benzinaDays": 30,
+          "gasolio": 1.751,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.755,
+          "benzinaDays": 30,
+          "gasolio": 1.774,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.783,
+          "benzinaDays": 30,
+          "gasolio": 1.768,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.79,
+          "benzinaDays": 30,
+          "gasolio": 1.764,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.769,
+          "benzinaDays": 30,
+          "gasolio": 1.766,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-05",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.856,
+          "benzinaDays": 31,
+          "gasolio": 1.843,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.842,
+          "benzinaDays": 31,
+          "gasolio": 1.816,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.831,
+          "benzinaDays": 31,
+          "gasolio": 1.805,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.86,
+          "benzinaDays": 31,
+          "gasolio": 1.828,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.863,
+          "benzinaDays": 31,
+          "gasolio": 1.82,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.833,
+          "benzinaDays": 31,
+          "gasolio": 1.823,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-06",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 2.055,
+          "benzinaDays": 30,
+          "gasolio": 1.992,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 2.042,
+          "benzinaDays": 30,
+          "gasolio": 1.974,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 2.013,
+          "benzinaDays": 30,
+          "gasolio": 1.976,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 2.045,
+          "benzinaDays": 30,
+          "gasolio": 1.979,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 2.049,
+          "benzinaDays": 30,
+          "gasolio": 1.971,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 2.033,
+          "benzinaDays": 30,
+          "gasolio": 1.988,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-07",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.985,
+          "benzinaDays": 31,
+          "gasolio": 1.943,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.988,
+          "benzinaDays": 31,
+          "gasolio": 1.928,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.972,
+          "benzinaDays": 31,
+          "gasolio": 1.95,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.984,
+          "benzinaDays": 31,
+          "gasolio": 1.933,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 2.008,
+          "benzinaDays": 31,
+          "gasolio": 1.942,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.993,
+          "benzinaDays": 31,
+          "gasolio": 1.944,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-08",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.796,
+          "benzinaDays": 31,
+          "gasolio": 1.798,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.806,
+          "benzinaDays": 31,
+          "gasolio": 1.785,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.803,
+          "benzinaDays": 31,
+          "gasolio": 1.811,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.796,
+          "benzinaDays": 31,
+          "gasolio": 1.789,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.813,
+          "benzinaDays": 31,
+          "gasolio": 1.802,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.794,
+          "benzinaDays": 31,
+          "gasolio": 1.797,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-09",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.73,
+          "benzinaDays": 30,
+          "gasolio": 1.82,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.732,
+          "benzinaDays": 30,
+          "gasolio": 1.8,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.721,
+          "benzinaDays": 30,
+          "gasolio": 1.83,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.711,
+          "benzinaDays": 30,
+          "gasolio": 1.799,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.718,
+          "benzinaDays": 30,
+          "gasolio": 1.804,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.722,
+          "benzinaDays": 30,
+          "gasolio": 1.809,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-10",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.705,
+          "benzinaDays": 31,
+          "gasolio": 1.857,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.697,
+          "benzinaDays": 31,
+          "gasolio": 1.849,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.711,
+          "benzinaDays": 31,
+          "gasolio": 1.85,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.703,
+          "benzinaDays": 31,
+          "gasolio": 1.848,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.717,
+          "benzinaDays": 31,
+          "gasolio": 1.836,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.71,
+          "benzinaDays": 31,
+          "gasolio": 1.86,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-11",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.691,
+          "benzinaDays": 30,
+          "gasolio": 1.837,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.708,
+          "benzinaDays": 30,
+          "gasolio": 1.801,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.693,
+          "benzinaDays": 30,
+          "gasolio": 1.814,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.688,
+          "benzinaDays": 30,
+          "gasolio": 1.807,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.716,
+          "benzinaDays": 30,
+          "gasolio": 1.813,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.684,
+          "benzinaDays": 30,
+          "gasolio": 1.81,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2022-12",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.7,
+          "benzinaDays": 31,
+          "gasolio": 1.749,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.688,
+          "benzinaDays": 31,
+          "gasolio": 1.721,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.683,
+          "benzinaDays": 31,
+          "gasolio": 1.73,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.683,
+          "benzinaDays": 31,
+          "gasolio": 1.723,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.703,
+          "benzinaDays": 31,
+          "gasolio": 1.734,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.677,
+          "benzinaDays": 31,
+          "gasolio": 1.728,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-01",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.844,
+          "benzinaDays": 31,
+          "gasolio": 1.875,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.851,
+          "benzinaDays": 31,
+          "gasolio": 1.875,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.841,
+          "benzinaDays": 31,
+          "gasolio": 1.871,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.847,
+          "benzinaDays": 31,
+          "gasolio": 1.876,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.846,
+          "benzinaDays": 31,
+          "gasolio": 1.865,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.842,
+          "benzinaDays": 31,
+          "gasolio": 1.881,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-02",
+      "observationDays": 28,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 28,
+          "benzina": 1.869,
+          "benzinaDays": 28,
+          "gasolio": 1.857,
+          "gasolioDays": 28
+        },
+        "Forte dei Marmi": {
+          "observationDays": 28,
+          "benzina": 1.873,
+          "benzinaDays": 28,
+          "gasolio": 1.852,
+          "gasolioDays": 28
+        },
+        "Massarosa": {
+          "observationDays": 28,
+          "benzina": 1.873,
+          "benzinaDays": 28,
+          "gasolio": 1.845,
+          "gasolioDays": 28
+        },
+        "Pietrasanta": {
+          "observationDays": 28,
+          "benzina": 1.874,
+          "benzinaDays": 28,
+          "gasolio": 1.855,
+          "gasolioDays": 28
+        },
+        "Seravezza": {
+          "observationDays": 28,
+          "benzina": 1.856,
+          "benzinaDays": 28,
+          "gasolio": 1.842,
+          "gasolioDays": 28
+        },
+        "Stazzema": {
+          "observationDays": 28,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 28,
+          "benzina": 1.871,
+          "benzinaDays": 28,
+          "gasolio": 1.859,
+          "gasolioDays": 28
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-03",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.855,
+          "benzinaDays": 31,
+          "gasolio": 1.821,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.834,
+          "benzinaDays": 31,
+          "gasolio": 1.77,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.862,
+          "benzinaDays": 31,
+          "gasolio": 1.802,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.85,
+          "benzinaDays": 31,
+          "gasolio": 1.795,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.834,
+          "benzinaDays": 31,
+          "gasolio": 1.79,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.855,
+          "benzinaDays": 31,
+          "gasolio": 1.818,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-04",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.87,
+          "benzinaDays": 30,
+          "gasolio": 1.785,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.849,
+          "benzinaDays": 30,
+          "gasolio": 1.724,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.856,
+          "benzinaDays": 30,
+          "gasolio": 1.754,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.859,
+          "benzinaDays": 30,
+          "gasolio": 1.732,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.834,
+          "benzinaDays": 30,
+          "gasolio": 1.727,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.863,
+          "benzinaDays": 30,
+          "gasolio": 1.762,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-05",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.798,
+          "benzinaDays": 31,
+          "gasolio": 1.668,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.778,
+          "benzinaDays": 31,
+          "gasolio": 1.631,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.789,
+          "benzinaDays": 31,
+          "gasolio": 1.637,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.787,
+          "benzinaDays": 31,
+          "gasolio": 1.643,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.784,
+          "benzinaDays": 31,
+          "gasolio": 1.634,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.785,
+          "benzinaDays": 31,
+          "gasolio": 1.636,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-06",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.848,
+          "benzinaDays": 30,
+          "gasolio": 1.705,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.798,
+          "benzinaDays": 30,
+          "gasolio": 1.635,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.799,
+          "benzinaDays": 30,
+          "gasolio": 1.642,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.803,
+          "benzinaDays": 30,
+          "gasolio": 1.649,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.803,
+          "benzinaDays": 30,
+          "gasolio": 1.643,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.805,
+          "benzinaDays": 30,
+          "gasolio": 1.647,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-07",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.876,
+          "benzinaDays": 31,
+          "gasolio": 1.736,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.826,
+          "benzinaDays": 31,
+          "gasolio": 1.677,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.827,
+          "benzinaDays": 31,
+          "gasolio": 1.68,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.835,
+          "benzinaDays": 31,
+          "gasolio": 1.678,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.831,
+          "benzinaDays": 31,
+          "gasolio": 1.677,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.836,
+          "benzinaDays": 31,
+          "gasolio": 1.689,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-08",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.946,
+          "benzinaDays": 31,
+          "gasolio": 1.831,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.914,
+          "benzinaDays": 31,
+          "gasolio": 1.817,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.919,
+          "benzinaDays": 31,
+          "gasolio": 1.815,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.93,
+          "benzinaDays": 31,
+          "gasolio": 1.823,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.916,
+          "benzinaDays": 31,
+          "gasolio": 1.811,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.922,
+          "benzinaDays": 31,
+          "gasolio": 1.829,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-09",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.983,
+          "benzinaDays": 30,
+          "gasolio": 1.918,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.954,
+          "benzinaDays": 30,
+          "gasolio": 1.892,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.965,
+          "benzinaDays": 30,
+          "gasolio": 1.897,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.968,
+          "benzinaDays": 30,
+          "gasolio": 1.896,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.972,
+          "benzinaDays": 30,
+          "gasolio": 1.887,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.973,
+          "benzinaDays": 30,
+          "gasolio": 1.906,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-10",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.891,
+          "benzinaDays": 31,
+          "gasolio": 1.898,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.874,
+          "benzinaDays": 31,
+          "gasolio": 1.865,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.917,
+          "benzinaDays": 31,
+          "gasolio": 1.895,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.875,
+          "benzinaDays": 31,
+          "gasolio": 1.877,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.9,
+          "benzinaDays": 31,
+          "gasolio": 1.877,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.882,
+          "benzinaDays": 31,
+          "gasolio": 1.884,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-11",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.819,
+          "benzinaDays": 30,
+          "gasolio": 1.814,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.783,
+          "benzinaDays": 30,
+          "gasolio": 1.771,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.822,
+          "benzinaDays": 30,
+          "gasolio": 1.82,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.787,
+          "benzinaDays": 30,
+          "gasolio": 1.78,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.797,
+          "benzinaDays": 30,
+          "gasolio": 1.788,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.787,
+          "benzinaDays": 30,
+          "gasolio": 1.796,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2023-12",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.779,
+          "benzinaDays": 31,
+          "gasolio": 1.765,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.745,
+          "benzinaDays": 31,
+          "gasolio": 1.709,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.759,
+          "benzinaDays": 31,
+          "gasolio": 1.736,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.742,
+          "benzinaDays": 31,
+          "gasolio": 1.719,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.754,
+          "benzinaDays": 31,
+          "gasolio": 1.723,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.743,
+          "benzinaDays": 31,
+          "gasolio": 1.725,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-01",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.804,
+          "benzinaDays": 31,
+          "gasolio": 1.76,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.777,
+          "benzinaDays": 31,
+          "gasolio": 1.732,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.765,
+          "benzinaDays": 31,
+          "gasolio": 1.732,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.79,
+          "benzinaDays": 31,
+          "gasolio": 1.741,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.775,
+          "benzinaDays": 31,
+          "gasolio": 1.73,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.78,
+          "benzinaDays": 31,
+          "gasolio": 1.746,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-02",
+      "observationDays": 29,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 29,
+          "benzina": 1.872,
+          "benzinaDays": 29,
+          "gasolio": 1.845,
+          "gasolioDays": 29
+        },
+        "Forte dei Marmi": {
+          "observationDays": 29,
+          "benzina": 1.86,
+          "benzinaDays": 29,
+          "gasolio": 1.826,
+          "gasolioDays": 29
+        },
+        "Massarosa": {
+          "observationDays": 29,
+          "benzina": 1.849,
+          "benzinaDays": 29,
+          "gasolio": 1.818,
+          "gasolioDays": 29
+        },
+        "Pietrasanta": {
+          "observationDays": 29,
+          "benzina": 1.866,
+          "benzinaDays": 29,
+          "gasolio": 1.832,
+          "gasolioDays": 29
+        },
+        "Seravezza": {
+          "observationDays": 29,
+          "benzina": 1.859,
+          "benzinaDays": 29,
+          "gasolio": 1.824,
+          "gasolioDays": 29
+        },
+        "Stazzema": {
+          "observationDays": 29,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 29,
+          "benzina": 1.859,
+          "benzinaDays": 29,
+          "gasolio": 1.833,
+          "gasolioDays": 29
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-03",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.88,
+          "benzinaDays": 31,
+          "gasolio": 1.834,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.878,
+          "benzinaDays": 31,
+          "gasolio": 1.823,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.861,
+          "benzinaDays": 31,
+          "gasolio": 1.811,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.874,
+          "benzinaDays": 31,
+          "gasolio": 1.824,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.874,
+          "benzinaDays": 31,
+          "gasolio": 1.819,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.869,
+          "benzinaDays": 31,
+          "gasolio": 1.814,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-04",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.922,
+          "benzinaDays": 30,
+          "gasolio": 1.827,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.922,
+          "benzinaDays": 30,
+          "gasolio": 1.822,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.908,
+          "benzinaDays": 30,
+          "gasolio": 1.802,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.921,
+          "benzinaDays": 30,
+          "gasolio": 1.822,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.916,
+          "benzinaDays": 30,
+          "gasolio": 1.812,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.913,
+          "benzinaDays": 30,
+          "gasolio": 1.814,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-05",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.898,
+          "benzinaDays": 31,
+          "gasolio": 1.765,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.884,
+          "benzinaDays": 31,
+          "gasolio": 1.758,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.887,
+          "benzinaDays": 31,
+          "gasolio": 1.751,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.9,
+          "benzinaDays": 31,
+          "gasolio": 1.759,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.89,
+          "benzinaDays": 31,
+          "gasolio": 1.757,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.881,
+          "benzinaDays": 31,
+          "gasolio": 1.755,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-06",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.874,
+          "benzinaDays": 30,
+          "gasolio": 1.745,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.842,
+          "benzinaDays": 30,
+          "gasolio": 1.722,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.845,
+          "benzinaDays": 30,
+          "gasolio": 1.711,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.864,
+          "benzinaDays": 30,
+          "gasolio": 1.72,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.844,
+          "benzinaDays": 30,
+          "gasolio": 1.716,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.849,
+          "benzinaDays": 30,
+          "gasolio": 1.722,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-07",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.881,
+          "benzinaDays": 31,
+          "gasolio": 1.775,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.861,
+          "benzinaDays": 31,
+          "gasolio": 1.761,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.857,
+          "benzinaDays": 31,
+          "gasolio": 1.748,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.866,
+          "benzinaDays": 31,
+          "gasolio": 1.754,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.852,
+          "benzinaDays": 31,
+          "gasolio": 1.746,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.858,
+          "benzinaDays": 31,
+          "gasolio": 1.751,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-08",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.808,
+          "benzinaDays": 31,
+          "gasolio": 1.702,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.801,
+          "benzinaDays": 31,
+          "gasolio": 1.686,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.802,
+          "benzinaDays": 31,
+          "gasolio": 1.692,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.814,
+          "benzinaDays": 31,
+          "gasolio": 1.695,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.805,
+          "benzinaDays": 31,
+          "gasolio": 1.691,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.794,
+          "benzinaDays": 31,
+          "gasolio": 1.688,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-09",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.754,
+          "benzinaDays": 30,
+          "gasolio": 1.65,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.745,
+          "benzinaDays": 30,
+          "gasolio": 1.614,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.737,
+          "benzinaDays": 30,
+          "gasolio": 1.631,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.757,
+          "benzinaDays": 30,
+          "gasolio": 1.626,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.732,
+          "benzinaDays": 30,
+          "gasolio": 1.608,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.732,
+          "benzinaDays": 30,
+          "gasolio": 1.626,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-10",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.771,
+          "benzinaDays": 31,
+          "gasolio": 1.653,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.754,
+          "benzinaDays": 31,
+          "gasolio": 1.617,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.737,
+          "benzinaDays": 31,
+          "gasolio": 1.631,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.762,
+          "benzinaDays": 31,
+          "gasolio": 1.626,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.744,
+          "benzinaDays": 31,
+          "gasolio": 1.622,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.742,
+          "benzinaDays": 31,
+          "gasolio": 1.634,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-11",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.765,
+          "benzinaDays": 30,
+          "gasolio": 1.653,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.757,
+          "benzinaDays": 30,
+          "gasolio": 1.638,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.736,
+          "benzinaDays": 30,
+          "gasolio": 1.632,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.768,
+          "benzinaDays": 30,
+          "gasolio": 1.645,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.753,
+          "benzinaDays": 30,
+          "gasolio": 1.632,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.752,
+          "benzinaDays": 30,
+          "gasolio": 1.651,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2024-12",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.745,
+          "benzinaDays": 31,
+          "gasolio": 1.667,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.751,
+          "benzinaDays": 31,
+          "gasolio": 1.655,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.758,
+          "benzinaDays": 31,
+          "gasolio": 1.67,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.758,
+          "benzinaDays": 31,
+          "gasolio": 1.659,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.748,
+          "benzinaDays": 31,
+          "gasolio": 1.648,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.75,
+          "benzinaDays": 31,
+          "gasolio": 1.668,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-01",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.833,
+          "benzinaDays": 30,
+          "gasolio": 1.723,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.808,
+          "benzinaDays": 30,
+          "gasolio": 1.717,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.808,
+          "benzinaDays": 30,
+          "gasolio": 1.725,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.813,
+          "benzinaDays": 30,
+          "gasolio": 1.72,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.804,
+          "benzinaDays": 30,
+          "gasolio": 1.712,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.804,
+          "benzinaDays": 30,
+          "gasolio": 1.728,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-02",
+      "observationDays": 28,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 28,
+          "benzina": 1.828,
+          "benzinaDays": 28,
+          "gasolio": 1.733,
+          "gasolioDays": 28
+        },
+        "Forte dei Marmi": {
+          "observationDays": 28,
+          "benzina": 1.831,
+          "benzinaDays": 28,
+          "gasolio": 1.738,
+          "gasolioDays": 28
+        },
+        "Massarosa": {
+          "observationDays": 28,
+          "benzina": 1.821,
+          "benzinaDays": 28,
+          "gasolio": 1.736,
+          "gasolioDays": 28
+        },
+        "Pietrasanta": {
+          "observationDays": 28,
+          "benzina": 1.831,
+          "benzinaDays": 28,
+          "gasolio": 1.737,
+          "gasolioDays": 28
+        },
+        "Seravezza": {
+          "observationDays": 28,
+          "benzina": 1.827,
+          "benzinaDays": 28,
+          "gasolio": 1.726,
+          "gasolioDays": 28
+        },
+        "Stazzema": {
+          "observationDays": 28,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 28,
+          "benzina": 1.82,
+          "benzinaDays": 28,
+          "gasolio": 1.734,
+          "gasolioDays": 28
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-03",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.796,
+          "benzinaDays": 31,
+          "gasolio": 1.704,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.804,
+          "benzinaDays": 31,
+          "gasolio": 1.711,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.782,
+          "benzinaDays": 31,
+          "gasolio": 1.683,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.799,
+          "benzinaDays": 31,
+          "gasolio": 1.701,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.792,
+          "benzinaDays": 31,
+          "gasolio": 1.689,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.765,
+          "benzinaDays": 31,
+          "gasolio": 1.676,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-04",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.743,
+          "benzinaDays": 30,
+          "gasolio": 1.647,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.747,
+          "benzinaDays": 30,
+          "gasolio": 1.647,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.727,
+          "benzinaDays": 30,
+          "gasolio": 1.627,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.75,
+          "benzinaDays": 30,
+          "gasolio": 1.647,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.729,
+          "benzinaDays": 30,
+          "gasolio": 1.627,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.704,
+          "benzinaDays": 30,
+          "gasolio": 1.614,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-05",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.715,
+          "benzinaDays": 31,
+          "gasolio": 1.615,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.725,
+          "benzinaDays": 31,
+          "gasolio": 1.622,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.689,
+          "benzinaDays": 31,
+          "gasolio": 1.59,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.713,
+          "benzinaDays": 31,
+          "gasolio": 1.607,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.696,
+          "benzinaDays": 31,
+          "gasolio": 1.595,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.68,
+          "benzinaDays": 31,
+          "gasolio": 1.587,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-06",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.708,
+          "benzinaDays": 30,
+          "gasolio": 1.621,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.709,
+          "benzinaDays": 30,
+          "gasolio": 1.631,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.705,
+          "benzinaDays": 30,
+          "gasolio": 1.617,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.719,
+          "benzinaDays": 30,
+          "gasolio": 1.63,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.695,
+          "benzinaDays": 30,
+          "gasolio": 1.615,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.703,
+          "benzinaDays": 30,
+          "gasolio": 1.628,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-07",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.709,
+          "benzinaDays": 31,
+          "gasolio": 1.676,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.704,
+          "benzinaDays": 31,
+          "gasolio": 1.661,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.712,
+          "benzinaDays": 31,
+          "gasolio": 1.64,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.712,
+          "benzinaDays": 31,
+          "gasolio": 1.649,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.705,
+          "benzinaDays": 31,
+          "gasolio": 1.645,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.703,
+          "benzinaDays": 31,
+          "gasolio": 1.659,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-08",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.686,
+          "benzinaDays": 31,
+          "gasolio": 1.641,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.67,
+          "benzinaDays": 31,
+          "gasolio": 1.623,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.684,
+          "benzinaDays": 31,
+          "gasolio": 1.619,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.675,
+          "benzinaDays": 31,
+          "gasolio": 1.622,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.682,
+          "benzinaDays": 31,
+          "gasolio": 1.625,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.674,
+          "benzinaDays": 31,
+          "gasolio": 1.619,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-09",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.702,
+          "benzinaDays": 30,
+          "gasolio": 1.642,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.676,
+          "benzinaDays": 30,
+          "gasolio": 1.624,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.685,
+          "benzinaDays": 30,
+          "gasolio": 1.618,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.679,
+          "benzinaDays": 30,
+          "gasolio": 1.615,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.678,
+          "benzinaDays": 30,
+          "gasolio": 1.625,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.68,
+          "benzinaDays": 30,
+          "gasolio": 1.622,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-10",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.68,
+          "benzinaDays": 31,
+          "gasolio": 1.623,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.666,
+          "benzinaDays": 31,
+          "gasolio": 1.611,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.666,
+          "benzinaDays": 31,
+          "gasolio": 1.611,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.677,
+          "benzinaDays": 31,
+          "gasolio": 1.61,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.665,
+          "benzinaDays": 31,
+          "gasolio": 1.611,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.661,
+          "benzinaDays": 31,
+          "gasolio": 1.611,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-11",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.709,
+          "benzinaDays": 30,
+          "gasolio": 1.695,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.689,
+          "benzinaDays": 30,
+          "gasolio": 1.69,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.69,
+          "benzinaDays": 30,
+          "gasolio": 1.673,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.698,
+          "benzinaDays": 30,
+          "gasolio": 1.688,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.682,
+          "benzinaDays": 30,
+          "gasolio": 1.677,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.68,
+          "benzinaDays": 30,
+          "gasolio": 1.684,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2025-12",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.69,
+          "benzinaDays": 31,
+          "gasolio": 1.658,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.671,
+          "benzinaDays": 31,
+          "gasolio": 1.667,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.683,
+          "benzinaDays": 31,
+          "gasolio": 1.651,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.685,
+          "benzinaDays": 31,
+          "gasolio": 1.683,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.668,
+          "benzinaDays": 31,
+          "gasolio": 1.661,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.675,
+          "benzinaDays": 31,
+          "gasolio": 1.648,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-01",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.649,
+          "benzinaDays": 31,
+          "gasolio": 1.68,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.616,
+          "benzinaDays": 31,
+          "gasolio": 1.673,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.607,
+          "benzinaDays": 31,
+          "gasolio": 1.651,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.631,
+          "benzinaDays": 31,
+          "gasolio": 1.688,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.599,
+          "benzinaDays": 31,
+          "gasolio": 1.675,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.618,
+          "benzinaDays": 31,
+          "gasolio": 1.659,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-02",
+      "observationDays": 28,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 28,
+          "benzina": 1.66,
+          "benzinaDays": 28,
+          "gasolio": 1.709,
+          "gasolioDays": 28
+        },
+        "Forte dei Marmi": {
+          "observationDays": 28,
+          "benzina": 1.627,
+          "benzinaDays": 28,
+          "gasolio": 1.706,
+          "gasolioDays": 28
+        },
+        "Massarosa": {
+          "observationDays": 28,
+          "benzina": 1.632,
+          "benzinaDays": 28,
+          "gasolio": 1.687,
+          "gasolioDays": 28
+        },
+        "Pietrasanta": {
+          "observationDays": 28,
+          "benzina": 1.655,
+          "benzinaDays": 28,
+          "gasolio": 1.704,
+          "gasolioDays": 28
+        },
+        "Seravezza": {
+          "observationDays": 28,
+          "benzina": 1.642,
+          "benzinaDays": 28,
+          "gasolio": 1.702,
+          "gasolioDays": 28
+        },
+        "Stazzema": {
+          "observationDays": 28,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 28,
+          "benzina": 1.649,
+          "benzinaDays": 28,
+          "gasolio": 1.697,
+          "gasolioDays": 28
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-03",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.772,
+          "benzinaDays": 31,
+          "gasolio": 2.001,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.738,
+          "benzinaDays": 31,
+          "gasolio": 1.967,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.739,
+          "benzinaDays": 31,
+          "gasolio": 1.96,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.766,
+          "benzinaDays": 31,
+          "gasolio": 2.0,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.744,
+          "benzinaDays": 31,
+          "gasolio": 1.98,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.763,
+          "benzinaDays": 31,
+          "gasolio": 1.985,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-04",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.758,
+          "benzinaDays": 30,
+          "gasolio": 2.124,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.742,
+          "benzinaDays": 30,
+          "gasolio": 2.099,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.759,
+          "benzinaDays": 30,
+          "gasolio": 2.1,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.761,
+          "benzinaDays": 30,
+          "gasolio": 2.124,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.758,
+          "benzinaDays": 30,
+          "gasolio": 2.13,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.764,
+          "benzinaDays": 30,
+          "gasolio": 2.109,
+          "gasolioDays": 30
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-05",
+      "observationDays": 31,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 31,
+          "benzina": 1.943,
+          "benzinaDays": 31,
+          "gasolio": 2.019,
+          "gasolioDays": 31
+        },
+        "Forte dei Marmi": {
+          "observationDays": 31,
+          "benzina": 1.938,
+          "benzinaDays": 31,
+          "gasolio": 2.032,
+          "gasolioDays": 31
+        },
+        "Massarosa": {
+          "observationDays": 31,
+          "benzina": 1.938,
+          "benzinaDays": 31,
+          "gasolio": 2.017,
+          "gasolioDays": 31
+        },
+        "Pietrasanta": {
+          "observationDays": 31,
+          "benzina": 1.943,
+          "benzinaDays": 31,
+          "gasolio": 2.031,
+          "gasolioDays": 31
+        },
+        "Seravezza": {
+          "observationDays": 31,
+          "benzina": 1.939,
+          "benzinaDays": 31,
+          "gasolio": 2.043,
+          "gasolioDays": 31
+        },
+        "Stazzema": {
+          "observationDays": 31,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 31,
+          "benzina": 1.944,
+          "benzinaDays": 31,
+          "gasolio": 2.021,
+          "gasolioDays": 31
+        }
+      }
+    },
+    {
+      "referenceDate": "2026-06",
+      "observationDays": 30,
+      "towns": {
+        "Camaiore": {
+          "observationDays": 30,
+          "benzina": 1.879,
+          "benzinaDays": 30,
+          "gasolio": 1.967,
+          "gasolioDays": 30
+        },
+        "Forte dei Marmi": {
+          "observationDays": 30,
+          "benzina": 1.863,
+          "benzinaDays": 30,
+          "gasolio": 1.977,
+          "gasolioDays": 30
+        },
+        "Massarosa": {
+          "observationDays": 30,
+          "benzina": 1.867,
+          "benzinaDays": 30,
+          "gasolio": 1.971,
+          "gasolioDays": 30
+        },
+        "Pietrasanta": {
+          "observationDays": 30,
+          "benzina": 1.872,
+          "benzinaDays": 30,
+          "gasolio": 1.973,
+          "gasolioDays": 30
+        },
+        "Seravezza": {
+          "observationDays": 30,
+          "benzina": 1.88,
+          "benzinaDays": 30,
+          "gasolio": 1.991,
+          "gasolioDays": 30
+        },
+        "Stazzema": {
+          "observationDays": 30,
+          "benzina": null,
+          "benzinaDays": 0,
+          "gasolio": null,
+          "gasolioDays": 0
+        },
+        "Viareggio": {
+          "observationDays": 30,
+          "benzina": 1.868,
+          "benzinaDays": 30,
+          "gasolio": 1.984,
+          "gasolioDays": 30
+        }
+      }
+    }
+  ],
+  "provenance": [
+    {
+      "year": 2022,
+      "quarter": 1,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2022/2022_1_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2022/2022_1_tr.tar.gz",
+      "priceDaysUsed": 88
+    },
+    {
+      "year": 2022,
+      "quarter": 2,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2022/2022_2_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2022/2022_2_tr.tar.gz",
+      "priceDaysUsed": 91
+    },
+    {
+      "year": 2022,
+      "quarter": 3,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2022/2022_3_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2022/2022_3_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2022,
+      "quarter": 4,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2022/2022_4_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2022/2022_4_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2023,
+      "quarter": 1,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2023/2023_1_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2023/2023_1_tr.tar.gz",
+      "priceDaysUsed": 90
+    },
+    {
+      "year": 2023,
+      "quarter": 2,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2023/2023_2_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2023/2023_2_tr.tar.gz",
+      "priceDaysUsed": 91
+    },
+    {
+      "year": 2023,
+      "quarter": 3,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2023/2023_3_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2023/2023_3_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2023,
+      "quarter": 4,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2023/2023_4_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2023/2023_4_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2024,
+      "quarter": 1,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2024/2024_1_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2024/2024_1_tr.tar.gz",
+      "priceDaysUsed": 91
+    },
+    {
+      "year": 2024,
+      "quarter": 2,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2024/2024_2_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2024/2024_2_tr.tar.gz",
+      "priceDaysUsed": 91
+    },
+    {
+      "year": 2024,
+      "quarter": 3,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2024/2024_3_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2024/2024_3_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2024,
+      "quarter": 4,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2024/2024_4_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2024/2024_4_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2025,
+      "quarter": 1,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2025/2025_1_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2025/2025_1_tr.tar.gz",
+      "priceDaysUsed": 89
+    },
+    {
+      "year": 2025,
+      "quarter": 2,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2025/2025_2_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2025/2025_2_tr.tar.gz",
+      "priceDaysUsed": 91
+    },
+    {
+      "year": 2025,
+      "quarter": 3,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2025/2025_3_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2025/2025_3_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2025,
+      "quarter": 4,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2025/2025_4_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2025/2025_4_tr.tar.gz",
+      "priceDaysUsed": 92
+    },
+    {
+      "year": 2026,
+      "quarter": 1,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2026/2026_1_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2026/2026_1_tr.tar.gz",
+      "priceDaysUsed": 90
+    },
+    {
+      "year": 2026,
+      "quarter": 2,
+      "anagraficaUrl": "https://opendatacarburanti.mise.gov.it/categorized/anagrafica_impianti_attivi/2026/2026_2_tr.tar.gz",
+      "prezziUrl": "https://opendatacarburanti.mise.gov.it/categorized/prezzo_alle_8/2026/2026_2_tr.tar.gz",
+      "priceDaysUsed": 91
+    }
+  ]
+}

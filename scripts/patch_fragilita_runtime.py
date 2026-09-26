@@ -96,7 +96,7 @@ def f_render_town_metric(b):
     b=replace_once(b,"financialProfile ? `Indicatore ${initialFinancialReading.code}` : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo'","financialProfile ? `Indicatore ${initialFinancialReading.code}` : hydroRisk ? 'Matrice ufficiale ISPRA' : composite ? (metric.meta.compositeType === 'mobility' ? 'Flussi e saldo'",'town overline')
     b=replace_once(b,"financialProfile ? initialFinancialReading.label : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label)","financialProfile ? initialFinancialReading.label : hydroRisk ? `Territorio e residenti · ${html(metric.meta.year)}` : composite ? (metric.meta.compositeType === 'mobility' ? html(metric.meta.label)",'town title')
     b=replace_once(b,"    const positionMarkup = selectable\n      ? `<aside class=\"versilia-position composite-versilia-position\"","    const positionMarkup = ordinalScale\n      ? `<aside class=\"versilia-position ordinal-versilia-position\"><span class=\"overline\">Scala Istat</span><strong>${html(formatValue(row.value,metric.meta.unit))}<small>${html(ordinalScale.minLabel)} → ${html(ordinalScale.maxLabel)}</small></strong><p>Classe ordinale a scala fissa ${html(formatValue(ordinalScale.min,metric.meta.unit))}–${html(formatValue(ordinalScale.max,metric.meta.unit))}; non è una graduatoria di merito.</p><div><span>${html(metric.aggregate.label)}</span><b>${html(formatValue(metric.aggregate.value,metric.meta.unit))}</b></div></aside>`\n      : selectable\n      ? `<aside class=\"versilia-position composite-versilia-position\"",'ordinal position')
-    b=replace_once(b,"['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)","['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)) ? '' : townBenchmarkMarkup(metric, row, town)",'hydro no external benchmark')
+    b=replace_once(b,"['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)","['drinkingWaterQuality','remediationProceedings','hydroRisk'].includes(metric.meta.compositeType)",'hydro no external benchmark')
     return b
 s=patch_function(s,'renderTownMetric',f_render_town_metric)
 p.write_text(s)
@@ -119,11 +119,6 @@ def f_render_indicator(b):
     b=replace_once(b,tail,addition,'indicator hydro interactions')
     return b
 s=patch_function(s,'renderIndicator',f_render_indicator)
-p.write_text(s)
-
-# app06
-p=ROOT/'assets/app-parts/06.txt'; s=p.read_text()
-s=replace_once(s,"        const isFlood = metricKey === 'floodExposure';\n        const isLandslide = metricKey === 'landslideExposure';","        const legacyRiskDetail = data.metrics?.[metricKey]?.meta?.compositeType !== 'hydroRisk';\n        const isFlood = legacyRiskDetail && metricKey === 'floodExposure';\n        const isLandslide = legacyRiskDetail && metricKey === 'landslideExposure';",'legacy risk detail')
 p.write_text(s)
 
 # visual grammar

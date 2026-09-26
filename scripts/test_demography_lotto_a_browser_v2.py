@@ -74,6 +74,757 @@ def main() -> None:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={'width': 1440, 'height': 1100})
 
+        # A5 town golden contract: municipal chrome must reuse the thematic components.
+        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=population'), wait_until='networkidle')
+        compare_theme_styles = page.locator('.compare-context-nav .context-nav-links a').evaluate_all(
+            '''links => links.map(link => {
+              const s = getComputedStyle(link);
+              const r = link.getBoundingClientRect();
+              return {
+                key: link.dataset.contextTheme,
+                bg: s.backgroundColor,
+                border: s.borderColor,
+                color: s.color,
+                radius: s.borderRadius,
+                padding: s.padding,
+                fontSize: s.fontSize,
+                height: Math.round(r.height * 10) / 10,
+              };
+            })'''
+        )
+        require(len(compare_theme_styles) == 11, f'A5 compare: temi non 11/11: {len(compare_theme_styles)}')
+        demography_active_bg = page.locator('.compare-context-nav a[data-context-theme="demografia"].active').evaluate(
+            "el => getComputedStyle(el).backgroundColor"
+        )
+        demography_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+
+        # A5.5 lotto 1: Economia uses the exact A5 shell, with theme-parametric accents.
+        page.goto(urljoin(args.base, 'confronta/economia/'), wait_until='networkidle')
+        require(page.locator('main.a5-editorial-pilot[data-theme="economia"]').count() == 1,
+                'A5.5 Economia: shell condiviso A5 assente')
+        require(page.locator('.brain-drain-context').count() == 0,
+                'A5.5 Economia: contenuto Demografia propagato nel tema sbagliato')
+        require(page.locator('.topic-controls').count() == 1 and page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                'A5.5 Economia: workspace condiviso incompleto')
+        require(page.locator('#compare-territori .topic-town-card').count() == 7,
+                'A5.5 Economia: schede comunali non 7/7')
+        facts = page.locator('.compare-showcase-facts').inner_text()
+        require('indicatori Economia' in facts and 'indicatori Demografia' not in facts,
+                f'A5.5 Economia: hero non parametrico: {facts!r}')
+        economy_style = page.evaluate('''() => {
+          const active=document.querySelector('.compare-context-nav a[data-context-theme="economia"].active');
+          const symbol=document.querySelector('.topic-symbol');
+          return {
+            activeBg:getComputedStyle(active).backgroundColor,
+            symbolColor:getComputedStyle(symbol).color,
+            soft:getComputedStyle(document.querySelector('main.a5-editorial-pilot')).getPropertyValue('--ds-theme-soft').trim(),
+          };
+        }''')
+        require(economy_style['activeBg'] == economy_style['symbolColor'],
+                f'A5.5 Economia: accento DS2 incoerente: {economy_style}')
+        require(economy_style['activeBg'] != demography_active_bg,
+                'A5.5 Economia: accento rimasto Demografia')
+        economy_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+        require(economy_geometry == demography_geometry,
+                f'A5.5 Economia: geometria diverge dal golden Demografia: {economy_geometry} != {demography_geometry}')
+        assert_no_horizontal_overflow(page, 'A5.5 Economia desktop')
+        page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/economia/'), wait_until='networkidle')
+        assert_no_horizontal_overflow(page, 'A5.5 Economia mobile 390px')
+        require(page.locator('main.a5-editorial-pilot[data-theme="economia"]').count() == 1,
+                'A5.5 Economia mobile: shell A5 assente')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+
+        # A5.5 lotto 2: Lavoro reuses the same shell across every indicator in the theme.
+        page.goto(urljoin(args.base, 'confronta/lavoro/'), wait_until='networkidle')
+        require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                'A5.5 Lavoro: shell condiviso A5 assente')
+        lavoro_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
+        require(lavoro_geometry == demography_geometry,
+                f'A5.5 Lavoro: geometria diverge dal golden Demografia: {lavoro_geometry} != {demography_geometry}')
+        lavoro_style = page.evaluate('''() => {
+          const active=document.querySelector('.compare-context-nav a[data-context-theme="lavoro"].active');
+          const symbol=document.querySelector('.topic-symbol');
+          return {
+            activeBg:getComputedStyle(active).backgroundColor,
+            symbolColor:getComputedStyle(symbol).color,
+          };
+        }''')
+        require(lavoro_style['activeBg'] == lavoro_style['symbolColor'],
+                f'A5.5 Lavoro: accento DS2 incoerente: {lavoro_style}')
+        require(lavoro_style['activeBg'] != demography_active_bg,
+                'A5.5 Lavoro: accento rimasto Demografia')
+        lavoro_metrics = page.locator('.topic-controls [data-metric]').evaluate_all(
+            "els => els.map(el => el.dataset.metric).filter(Boolean)"
+        )
+        require(len(lavoro_metrics) >= 1, 'A5.5 Lavoro: nessun indicatore trovato nella sidebar')
+        for metric_key in lavoro_metrics:
+            page.goto(urljoin(args.base, f'confronta/lavoro/?indicatore={metric_key}'), wait_until='networkidle')
+            require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                    f'A5.5 Lavoro/{metric_key}: shell A5 assente')
+            require(page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                    f'A5.5 Lavoro/{metric_key}: chart shell condiviso assente')
+            require(page.locator('.brain-drain-context').count() == 0,
+                    f'A5.5 Lavoro/{metric_key}: contenuto Demografia presente')
+            assert_no_horizontal_overflow(page, f'A5.5 Lavoro/{metric_key} desktop')
+            pyramid = page.locator('#compare-demographic-pyramid .demographic-rate-pyramid')
+            if pyramid.count():
+                sizes = pyramid.evaluate('''el => ({
+                  client:el.clientWidth,
+                  scroll:el.scrollWidth,
+                  svgClient:el.querySelector('svg')?.clientWidth || 0
+                })''')
+                require(sizes['scroll'] <= sizes['client'] + 2,
+                        f'A5.5 Lavoro/{metric_key}: piramide con overflow {sizes}')
+        page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/lavoro/'), wait_until='networkidle')
+        assert_no_horizontal_overflow(page, 'A5.5 Lavoro mobile 390px')
+        require(page.locator('main.a5-editorial-pilot[data-theme="lavoro"]').count() == 1,
+                'A5.5 Lavoro mobile: shell A5 assente')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5.5 Lavoro compare QA OK: tutti gli indicatori desktop + shell mobile 390px')
+
+        # A5.5 bulk gate: every thematic compare route and every sidebar indicator.
+        bulk_theme_keys = [item['key'] for item in compare_theme_styles]
+        require(len(bulk_theme_keys) == 11 and len(set(bulk_theme_keys)) == 11,
+                f'A5.5 bulk: temi inattesi {bulk_theme_keys}')
+
+        def assert_bulk_theme(theme_key: str, mobile: bool = False) -> int:
+            page.goto(urljoin(args.base, f'confronta/{theme_key}/'), wait_until='networkidle')
+            require(page.locator(f'main.a5-editorial-pilot[data-theme="{theme_key}"]').count() == 1,
+                    f'A5.5 bulk {theme_key}: shell A5 assente')
+            require(page.locator(f'.compare-context-nav a[data-context-theme="{theme_key}"].active').count() == 1,
+                    f'A5.5 bulk {theme_key}: navigazione tema attivo incoerente')
+            require(page.locator('#compare-territori .topic-town-card').count() == 7,
+                    f'A5.5 bulk {theme_key}: card comunali non 7/7')
+            if theme_key != 'demografia':
+                require(page.locator('.brain-drain-context').count() == 0,
+                        f'A5.5 bulk {theme_key}: contenuto Demografia presente')
+            if theme_key == 'sicurezza':
+                require(page.locator('.crime-context').count() <= 1,
+                        'A5.5 bulk sicurezza: contesto sicurezza duplicato')
+
+            theme_geometry = page.evaluate('''() => {
+              const rect = selector => {
+                const el=document.querySelector(selector);
+                const r=el.getBoundingClientRect();
+                const s=getComputedStyle(el);
+                return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+              };
+              return {
+                hero:rect('.topic-hero'),
+                sidebar:rect('.topic-controls'),
+                chart:rect('#compare-bars'),
+                dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+              };
+            }''')
+            require(theme_geometry == demography_geometry,
+                    f'A5.5 bulk {theme_key}: geometria diverge dal golden: {theme_geometry} != {demography_geometry}')
+
+            accent = page.evaluate(f'''() => {{
+              const active=document.querySelector('.compare-context-nav a[data-context-theme="{theme_key}"].active');
+              const symbol=document.querySelector('.topic-symbol');
+              return {{
+                active:getComputedStyle(active).backgroundColor,
+                symbol:getComputedStyle(symbol).color,
+              }};
+            }}''')
+            require(accent['active'] == accent['symbol'],
+                    f'A5.5 bulk {theme_key}: accento tema incoerente {accent}')
+
+            metric_keys = page.locator('.topic-controls [data-metric]').evaluate_all(
+                "els => [...new Set(els.map(el => el.dataset.metric).filter(Boolean))]"
+            )
+            require(len(metric_keys) >= 1, f'A5.5 bulk {theme_key}: nessun indicatore')
+
+            for metric_key in metric_keys:
+                button = page.locator(f'.topic-controls [data-metric="{metric_key}"]').first
+                button.click()
+                require(button.get_attribute('aria-selected') == 'true',
+                        f'A5.5 bulk {theme_key}/{metric_key}: controllo non attivo dopo click')
+                require(page.locator('#compare-bars.a5-shared-chart').count() == 1,
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart shell assente')
+                chart_state = page.locator('#compare-bars').evaluate('''el => ({
+                  childCount:el.children.length,
+                  text:el.innerText.trim(),
+                  client:el.clientWidth,
+                  scroll:el.scrollWidth,
+                })''')
+                require(chart_state['childCount'] > 0 or bool(chart_state['text']),
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart vuoto')
+                require(chart_state['scroll'] <= chart_state['client'] + 2,
+                        f'A5.5 bulk {theme_key}/{metric_key}: chart overflow {chart_state}')
+                require(page.locator('#compare-tools.compare-post-benchmark-tools').count() == 1,
+                        f'A5.5 bulk {theme_key}/{metric_key}: tools host assente')
+
+                visible_surface = page.locator('#compare-bars').evaluate('''el => {
+                  const visible = node => {
+                    if (!node) return false;
+                    const style=getComputedStyle(node), rect=node.getBoundingClientRect();
+                    return style.visibility !== 'hidden' && style.display !== 'none' && rect.height > 20;
+                  };
+                  return {
+                    shell: visible(el.querySelector(':scope > .ux-view-shell')),
+                    direct: visible(el.querySelector(':scope > .topic-bars')),
+                  };
+                }''')
+                require(visible_surface['shell'] or visible_surface['direct'],
+                        f'A5.5 bulk {theme_key}/{metric_key}: nessuna superficie dati visibile {visible_surface}')
+
+                special_surfaces = {
+                    'territorialClassification': '.territorial-classification-shell',
+                    'landCoverProfile': '[data-land-cover-compare-shell]',
+                    'drinkingWaterQuality': '.water-quality-compare-shell',
+                    'remediationProceedings': '.remediation-compare-shell',
+                    'financialDebtProfile': '.financial-topic-bars',
+                }
+                if metric_key in special_surfaces:
+                    special = page.locator(f'#compare-bars {special_surfaces[metric_key]}').first
+                    require(special.count() == 1 and special.is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: renderer speciale invisibile')
+                if metric_key in ('floodExposure','landslideExposure'):
+                    direct = page.locator('#compare-bars > .topic-bars').first
+                    require(direct.count() == 1 and direct.is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: renderer rischio invisibile')
+                if metric_key == 'fuelPrices':
+                    history_button = page.locator('#compare-bars [data-view-mode="history"]').first
+                    require(history_button.count() == 1 and not history_button.is_disabled(),
+                            'A5.5 bulk mobilita/fuelPrices: storico carburanti non disponibile')
+                    history_button.click()
+                    history_pane = page.locator('#compare-bars [data-view-pane="history"]')
+                    require(history_pane.locator('.ux-history-card').is_visible(),
+                            'A5.5 bulk mobilita/fuelPrices: storico carburanti non visibile')
+                    require(history_pane.locator('.ux-history-legend button').count() == 6,
+                            'A5.5 bulk mobilita/fuelPrices: storico deve contenere i 6 Comuni con impianti')
+                    require(history_pane.locator('[data-history-town] .chart-point').count() == 6 * 54,
+                            'A5.5 bulk mobilita/fuelPrices: attesi 54 mesi per ciascuno dei 6 Comuni')
+                    massarosa_points = history_pane.locator('[data-history-town="massarosa"] .chart-point')
+                    require(massarosa_points.count() == 54,
+                            'A5.5 bulk mobilita/fuelPrices: serie Massarosa non contiene 54 mesi')
+                    require('2022-01' in (massarosa_points.first.get_attribute('aria-label') or '')
+                            and '1,764 €/l' in (massarosa_points.first.get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: primo valore mensile benzina non coerente')
+                    require('2026-06' in (massarosa_points.nth(53).get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: ultimo mese atteso 2026-06 assente')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                    selector = page.locator('#compare-bars select[data-composite-component]:visible').first
+                    require(selector.count() == 1 and selector.locator('option').count() >= 2,
+                            'A5.5 bulk mobilita/fuelPrices: selettore Benzina/Gasolio assente')
+                    selector.select_option(index=1)
+                    page.wait_for_timeout(220)
+                    page.locator('#compare-bars [data-view-mode="history"]').first.click()
+                    gasolio_pane = page.locator('#compare-bars [data-view-pane="history"]')
+                    require(gasolio_pane.locator('svg[aria-label*="Gasolio self"]').count() == 1,
+                            'A5.5 bulk mobilita/fuelPrices: lo storico non segue il selettore Gasolio self')
+                    gasolio_massarosa = gasolio_pane.locator('[data-history-town="massarosa"] .chart-point').first
+                    require('1,637 €/l' in (gasolio_massarosa.get_attribute('aria-label') or ''),
+                            'A5.5 bulk mobilita/fuelPrices: primo valore mensile gasolio non coerente')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                if metric_key == 'financialDebtProfile':
+                    require(page.locator('#compare-bars .ux-view-toggle [data-view-mode]').count() == 2,
+                            'A5.5 bulk bilanci/financialDebtProfile: switch attuale/storico assente')
+                    require(page.locator('#compare-bars .financial-aggregate-history').count() == 0,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato Versilia ancora nella vista attuale')
+                    history_button = page.locator('#compare-bars [data-view-mode="history"]').first
+                    require(not history_button.is_disabled(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale disabilitato')
+                    history_button.click()
+                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-card').is_visible(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale non visibile')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-select]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico non contiene 7 Comuni')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-town]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: serie storiche comunali non 7/7')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                    selector = page.locator('#compare-bars [data-view-pane="current"] select[data-composite-component]').first
+                    if selector.count() and selector.locator('option').count() > 1:
+                        selector.select_option(index=1)
+                        page.wait_for_timeout(180)
+                        page.locator('#compare-bars [data-view-mode="history"]').first.click()
+                        require(page.locator('#compare-bars [data-view-pane="history"] svg[aria-label*="Interessi sulle entrate correnti"]').count() == 1,
+                                'A5.5 bulk bilanci/financialDebtProfile: storico non segue la lettura selezionata')
+                        page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                if metric_key.startswith('slowMobility'):
+                    map_link = page.locator(
+                        '.compare-panel-heading .data-actions a[href*="percorsi/"], '
+                        '#compare-bars .ux-view-toolbar .data-actions a[href*="percorsi/"]'
+                    )
+                    require(map_link.count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia non affiancata a export/stampa')
+                    require(page.locator('a[href*="percorsi/"]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata')
+                    require(map_link.locator('svg').count() == 1 and map_link.locator('svg').is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente o invisibile')
+                    map_style = map_link.evaluate("""el => {
+                      const style=getComputedStyle(el);
+                      const path=el.querySelector('svg path');
+                      const svg=el.querySelector('svg');
+                      const print=el.parentElement?.querySelector('[data-print]');
+                      const box=el.getBoundingClientRect();
+                      const printBox=print?.getBoundingClientRect();
+                      return {
+                        whiteSpace:style.whiteSpace,
+                        height:box.height,
+                        printHeight:printBox?.height || 0,
+                        svgWidth:svg?.getBoundingClientRect().width || 0,
+                        svgHeight:svg?.getBoundingClientRect().height || 0,
+                        stroke:path?.getAttribute('stroke') || ''
+                      };
+                    }""")
+                    require(map_style['whiteSpace'] == 'nowrap',
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia va a capo')
+                    require(map_style['stroke'] == 'currentColor' and map_style['svgWidth'] >= 16 and map_style['svgHeight'] >= 16,
+                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa non renderizzabile {map_style}')
+                    if map_style['printHeight']:
+                        require(abs(map_style['height'] - map_style['printHeight']) <= 1.5,
+                                f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia non allineata a Stampa/PDF {map_style}')
+                    require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 0,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia spostata fuori dalla toolbar')
+                if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
+                                  'shorelineDynamics','rigidDefenceProtectedCoast'):
+                    require(page.locator('#compare-tools > .data-actions [data-download]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: export costiero fuori dal tools host')
+                    require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
+                            f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere duplicate nella toolbar')
+                    selector = page.locator('#compare-bars select[data-composite-component]:visible').first
+                    if selector.count() and selector.locator('option').count() > 1:
+                        selector.select_option(index=1)
+                        page.wait_for_timeout(120)
+                        require(page.locator('#compare-tools > .data-actions [data-download]').count() == 1,
+                                f'A5.5 bulk {theme_key}/{metric_key}: export costiero perso dopo cambio selettore')
+                        require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
+                                f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere tornate nella toolbar dopo selettore')
+                assert_no_horizontal_overflow(
+                    page,
+                    f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'
+                )
+
+                pyramid = page.locator('#compare-demographic-pyramid .demographic-rate-pyramid')
+                if pyramid.count():
+                    pyramid_state = pyramid.evaluate('''el => ({
+                      client:el.clientWidth,
+                      scroll:el.scrollWidth,
+                    })''')
+                    require(pyramid_state['scroll'] <= pyramid_state['client'] + 2,
+                            f'A5.5 bulk {theme_key}/{metric_key}: pyramid overflow {pyramid_state}')
+            return len(metric_keys)
+
+        bulk_counts = {}
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        for theme_key in bulk_theme_keys:
+            bulk_counts[theme_key] = assert_bulk_theme(theme_key, mobile=False)
+
+        page.set_viewport_size({'width': 390, 'height': 844})
+        for theme_key in bulk_theme_keys:
+            mobile_count = assert_bulk_theme(theme_key, mobile=True)
+            require(mobile_count == bulk_counts[theme_key],
+                    f'A5.5 bulk {theme_key}: numero indicatori diverso desktop/mobile')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5.5 bulk compare QA OK: ' + ', '.join(
+            f'{theme}={count}' for theme, count in bulk_counts.items()
+        ))
+
+        # Shared graph controls: the municipal selectors must compute to the same DS2 styles.
+        page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=internalResidentialMobility'), wait_until='networkidle')
+        compare_control_styles = page.evaluate('''() => {
+          const root = document.querySelector('#compare-bars .compare-chart-toolbar .compare-view-controls');
+          const select = root?.querySelector('.compare-choice-select select');
+          const switchRoot = root?.querySelector('.scale-switch');
+          const active = switchRoot?.querySelector('button.active');
+          const pack = el => {
+            if (!el) return null;
+            const s = getComputedStyle(el);
+            return {
+              background:s.backgroundColor,
+              borderColor:s.borderColor,
+              color:s.color,
+              radius:s.borderRadius,
+              padding:s.padding,
+              minHeight:s.minHeight,
+            };
+          };
+          return {root:pack(root), select:pack(select), switchRoot:pack(switchRoot), active:pack(active)};
+        }''')
+        require(compare_control_styles['root'] is not None and compare_control_styles['select'] is not None,
+                'A5 compare: riferimento cromatico controlli non disponibile')
+
+        def assert_a5_town(metric_key: str, reference_geometry: dict | None = None, town_slug: str = 'viareggio') -> dict:
+            page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            require(page.locator('main.a5-town-pilot[data-theme="demografia"]').count() == 1,
+                    f'{metric_key}: pilot comunale A5 assente')
+
+            # Navigation: same shared link component and exact computed pill styling as thematic golden master.
+            town_theme_links = page.locator('.town-theme-row .context-nav-links a')
+            require(town_theme_links.count() == 11, f'{metric_key}: temi comunali non 11/11')
+            require(page.locator('.town-context-nav .theme-nav').count() == 0,
+                    f'{metric_key}: vecchia theme-nav ancora presente')
+            town_theme_styles = town_theme_links.evaluate_all(
+                '''links => links.map(link => {
+                  const s = getComputedStyle(link);
+                  const r = link.getBoundingClientRect();
+                  return {
+                    key: link.dataset.contextTheme,
+                    bg: s.backgroundColor,
+                    border: s.borderColor,
+                    color: s.color,
+                    radius: s.borderRadius,
+                    padding: s.padding,
+                    fontSize: s.fontSize,
+                    height: Math.round(r.height * 10) / 10,
+                  };
+                })'''
+            )
+            compare_styles = page.evaluate(
+                '''() => window.__a5CompareThemeStyles || null'''
+            )
+            if compare_styles is None:
+                compare_styles = compare_theme_styles
+            require(town_theme_styles == compare_styles,
+                    f'{metric_key}: pill temi diverse dalla pagina tematica')
+
+            # Stable municipal shell.
+            topic = page.locator('#town-topic')
+            sidebar = topic.locator(':scope > .topic-controls')
+            metric_layout = topic.locator(':scope > .town-metric-layout')
+            primary = metric_layout.locator('.town-metric-primary')
+            position = metric_layout.locator('.versilia-position')
+            shell = topic.locator(':scope > .history-panel.a5-shared-chart .ux-view-shell')
+            require(sidebar.count() == 1, f'{metric_key}: sidebar condivisa assente')
+            require(metric_layout.count() == 1 and primary.count() == 1 and position.count() == 1,
+                    f'{metric_key}: KPI comunali non rispettano lo shell stabile')
+            primary_label = primary.locator(':scope > [data-composite-primary-label]')
+            require(primary_label.count() == 1 and primary_label.inner_text().strip(),
+                    f'{town_slug}/{metric_key}: label KPI primaria assente')
+            label_style = primary_label.evaluate('''el => {
+              const s=getComputedStyle(el);
+              const bg=getComputedStyle(el.parentElement).backgroundColor;
+              return {color:s.color, opacity:s.opacity, background:bg, display:s.display};
+            }''')
+            require(label_style['display'] != 'none' and label_style['opacity'] == '1',
+                    f'{town_slug}/{metric_key}: label KPI non visibile: {label_style}')
+            require(label_style['color'] != label_style['background'],
+                    f'{town_slug}/{metric_key}: label KPI senza contrasto: {label_style}')
+            require(shell.count() == 1, f'{metric_key}: chart shell condivisa assente')
+            require(shell.locator(':scope > .ux-view-toolbar').count() == 1,
+                    f'{metric_key}: toolbar duplicata o assente')
+            require(shell.locator(':scope > .ux-view-toolbar > .town-data-actions').count() == 1,
+                    f'{metric_key}: export/stampa non sono nella toolbar condivisa')
+            require(topic.locator(':scope > .town-data-actions').count() == 0,
+                    f'{metric_key}: toolbar parallela rimasta fuori dallo shared chart shell')
+
+            # Correct graph family is part of the golden contract.
+            current_pane = shell.locator('[data-view-pane="current"]')
+            visual = current_pane.locator(':scope > .a5-town-current-visual')
+            require(current_pane.count() == 1 and visual.count() == 1,
+                    f'{metric_key}: superficie corrente condivisa assente')
+            primary_selector = primary.locator('.composite-read-selector')
+            if primary_selector.count() == 1:
+                require(primary_selector.is_hidden(),
+                        f'{metric_key}: selettore duplicato ancora visibile nel KPI')
+
+            if metric_key == 'ageDistribution':
+                require(visual.locator('.composite-distribution-list').count() == 1,
+                        'ageDistribution: manca lo stacked distribution condiviso')
+                require(visual.locator('.composite-distribution-row').count() == 7,
+                        'ageDistribution: stacked comparison non 7/7')
+                require(visual.locator('.composite-distribution-row.selected').count() == 1,
+                        'ageDistribution: Comune aperto non evidenziato')
+                require(visual.locator('.comparison-bars').count() == 0,
+                        'ageDistribution: non deve degradare al lollipop dell’età media')
+                require(current_pane.locator(':scope > .a5-town-current-detail .composite-town-stack-shell').count() == 1,
+                        'ageDistribution: dettaglio comunale scollegato dal grafico')
+            else:
+                require(visual.locator('.comparison-bars').count() >= 1,
+                        f'{metric_key}: renderer comparativo condiviso assente')
+                selected_track = visual.locator('.bar-row.selected .bar-track').first
+                if selected_track.count() == 1:
+                    selected_track.hover()
+                    tooltip = visual.locator('.bar-row.selected .bar-hover-label').first.inner_text()
+                    require(('Media semplice dei 7 comuni' in tooltip) or ('Versilia' in tooltip),
+                            f'{metric_key}: tooltip senza riferimento territoriale condiviso: {tooltip!r}')
+
+            if metric_key in ('dependencyIndices','foreignResidents','internalResidentialMobility',
+                              'foreignResidentialMobility','totalResidentialMobility','naturalDemographicDynamics'):
+                controls = visual.locator('.compare-chart-toolbar .compare-view-controls')
+                require(controls.count() == 1, f'{metric_key}: controlli grafico condivisi assenti')
+                control_styles = controls.evaluate('''root => {
+                  const select = root.querySelector('.compare-choice-select select');
+                  const switchRoot = root.querySelector('.scale-switch');
+                  const active = switchRoot?.querySelector('button.active');
+                  const pack = el => {
+                    if (!el) return null;
+                    const s = getComputedStyle(el);
+                    return {
+                      background:s.backgroundColor,
+                      borderColor:s.borderColor,
+                      color:s.color,
+                      radius:s.borderRadius,
+                      padding:s.padding,
+                      minHeight:s.minHeight,
+                    };
+                  };
+                  return {root:pack(root), select:pack(select), switchRoot:pack(switchRoot), active:pack(active)};
+                }''')
+                require(control_styles['root'] == compare_control_styles['root'],
+                        f'{metric_key}: cromia/geometria host controlli diversa dal confronto tematico')
+                if control_styles['select'] is not None:
+                    require(control_styles['select'] == compare_control_styles['select'],
+                            f'{metric_key}: select non conforme al controllo tematico')
+                if control_styles['switchRoot'] is not None:
+                    require(control_styles['switchRoot'] == compare_control_styles['switchRoot'],
+                            f'{metric_key}: switch non conforme al controllo tematico')
+                    require(control_styles['active'] == compare_control_styles['active'],
+                            f'{metric_key}: stato attivo switch non conforme al controllo tematico')
+
+            # History: if enabled it must be a real rendered pane; otherwise the control must be disabled.
+            history_button = shell.locator('[data-view-mode="history"]')
+            require(history_button.count() == 1, f'{metric_key}: toggle storico assente')
+            if history_button.is_enabled():
+                history_button.click()
+                history_pane = shell.locator('[data-view-pane="history"]')
+                require(history_pane.count() == 1 and not history_pane.is_hidden(),
+                        f'{metric_key}: storico abilitato ma pannello non visibile')
+                require(history_pane.locator('.trend-chart, .ux-history-card, svg').count() >= 1,
+                        f'{metric_key}: storico abilitato ma senza visualizzazione')
+                shell.locator('[data-view-mode="current"]').click()
+            else:
+                require(history_button.get_attribute('disabled') is not None,
+                        f'{metric_key}: storico non disponibile ma controllo non disabilitato')
+
+            # Benchmark/method/reading scale: one stable slot each, irrespective of benchmark availability.
+            benchmark_host = topic.locator(':scope > .town-benchmark-host')
+            require(benchmark_host.count() == 1, f'{metric_key}: slot benchmark condiviso assente')
+            require(benchmark_host.locator(':scope > .benchmark-section, :scope > .benchmark-unavailable').count() == 1,
+                    f'{metric_key}: benchmark non usa un solo componente condiviso')
+            tools = topic.locator(':scope > .town-post-benchmark-tools')
+            require(tools.count() == 1, f'{metric_key}: tools post-chart condivisi assenti')
+            method = tools.locator(':scope > .method-disclosure')
+            scale = tools.locator(':scope > .reading-scale')
+            require(method.count() == 1 and scale.count() == 1,
+                    f'{metric_key}: Metodo/Scala non presenti nello stesso host')
+
+            geometry = page.evaluate('''() => {
+              const q = selector => document.querySelector(selector);
+              const r = el => {
+                if (!el) return null;
+                const box = el.getBoundingClientRect();
+                const style = getComputedStyle(el);
+                return {
+                  x: Math.round(box.x * 10) / 10,
+                  width: Math.round(box.width * 10) / 10,
+                  minHeight: style.minHeight,
+                  radius: style.borderRadius,
+                  padding: style.padding,
+                };
+              };
+              const topic = q('#town-topic');
+              const tools = q('#town-topic > .town-post-benchmark-tools');
+              return {
+                topic:r(topic),
+                sidebar:r(q('#town-topic > .topic-controls')),
+                metricLayout:r(q('#town-topic > .town-metric-layout')),
+                primary:r(q('#town-topic .town-metric-primary')),
+                position:r(q('#town-topic .versilia-position')),
+                chart:r(q('#town-topic > .history-panel.a5-shared-chart')),
+                benchmark:r(q('#town-topic > .town-benchmark-host')),
+                tools:r(tools),
+                method:r(tools?.querySelector(':scope > .method-disclosure')),
+                scale:r(tools?.querySelector(':scope > .reading-scale')),
+                topicGrid:getComputedStyle(topic).gridTemplateColumns,
+                toolsGrid:getComputedStyle(tools).gridTemplateColumns,
+              };
+            }''')
+            require(abs(geometry['benchmark']['width'] - geometry['topic']['width']) <= 2,
+                    f'{metric_key}: benchmark non allineato alla larghezza standard: {geometry}')
+            require(abs(geometry['tools']['width'] - geometry['topic']['width']) <= 2,
+                    f'{metric_key}: tools non allineati alla larghezza standard: {geometry}')
+            require(abs(geometry['method']['width'] - geometry['scale']['width']) <= 2,
+                    f'{metric_key}: Metodo/Scala con larghezze diverse: {geometry}')
+            require(abs(method.bounding_box()['height'] - scale.bounding_box()['height']) <= 2,
+                    f'{metric_key}: Metodo/Scala con altezze diverse')
+            assert_no_horizontal_overflow(page, f'A5 {town_slug} {metric_key}')
+
+            if reference_geometry is not None:
+                for key in ('topic', 'sidebar', 'metricLayout', 'primary', 'position', 'chart', 'benchmark', 'tools', 'method', 'scale'):
+                    require(abs(geometry[key]['width'] - reference_geometry[key]['width']) <= 2,
+                            f'{metric_key}: larghezza {key} cambia rispetto a population: {geometry[key]} vs {reference_geometry[key]}')
+                    require(geometry[key]['radius'] == reference_geometry[key]['radius'],
+                            f'{metric_key}: radius {key} cambia rispetto a population')
+                    require(geometry[key]['padding'] == reference_geometry[key]['padding'],
+                            f'{metric_key}: padding {key} cambia rispetto a population')
+                require(geometry['topicGrid'] == reference_geometry['topicGrid'],
+                        f'{metric_key}: griglia shell cambia rispetto a population')
+                require(geometry['toolsGrid'] == reference_geometry['toolsGrid'],
+                        f'{metric_key}: griglia Metodo/Scala cambia rispetto a population')
+            return geometry
+
+        # The thematic golden-master computed navigation is the municipal reference.
+
+        a5_demography_matrix = [
+            'population',
+            'ageDistribution',
+            'oldAgeIndex',
+            'dependencyIndices',
+            'foreignResidents',
+            'internalResidentialMobility',
+            'foreignResidentialMobility',
+            'totalResidentialMobility',
+            'naturalDemographicDynamics',
+            'populationChange',
+        ]
+        golden_geometry = assert_a5_town('population')
+        for metric_key in a5_demography_matrix[1:]:
+            assert_a5_town(metric_key, golden_geometry)
+        print('A5 Viareggio/Demografia QA matrix OK: ' + ', '.join(a5_demography_matrix))
+
+        # Second-town proof: the approved Viareggio shell must be data-driven, not Viareggio-specific.
+        for metric_key in a5_demography_matrix:
+            assert_a5_town(metric_key, golden_geometry, 'massarosa')
+        page.goto(urljoin(args.base, 'comuni/massarosa/?tema=demografia&indicatore=population'), wait_until='networkidle')
+        require(page.locator('.town-hero-shell').count() == 1, 'Massarosa: hero A5 condiviso assente')
+        require(page.locator('.town-headline-stats > div').count() == 3, 'Massarosa: headline stats non 3/3')
+        require(page.locator('.town-brief > article').count() == 3, 'Massarosa: sintesi non 3/3')
+        require('1869' in page.locator('.town-headline-stats').inner_text(),
+                'Massarosa: anno di istituzione 1869 assente dal profilo A5')
+        massarosa_hero = page.locator('.town-hero')
+        massarosa_bg = massarosa_hero.evaluate("el => getComputedStyle(el).backgroundImage")
+        require('MassarosaPanorama.JPG' in massarosa_bg,
+                f'Massarosa: immagine hero dedicata assente: {massarosa_bg}')
+        require(page.locator('.town-hero-photo-credit').count() == 1,
+                'Massarosa: attribuzione foto hero assente')
+        print('A5 Massarosa/Demografia second-town proof OK: 10/10 indicatori')
+
+        def assert_a5_town_responsive(metric_key: str, width: int, height: int, town_slug: str = 'viareggio') -> None:
+            page.set_viewport_size({'width': width, 'height': height})
+            page.goto(urljoin(args.base, f'comuni/{town_slug}/?tema=demografia&indicatore={metric_key}'), wait_until='networkidle')
+            layout = page.evaluate('''() => {
+              const q = selector => document.querySelector(selector);
+              const rect = el => {
+                if (!el) return null;
+                const r = el.getBoundingClientRect();
+                return {
+                  x:Math.round(r.x * 10) / 10,
+                  top:Math.round(r.top * 10) / 10,
+                  bottom:Math.round(r.bottom * 10) / 10,
+                  width:Math.round(r.width * 10) / 10,
+                  clientWidth:el.clientWidth,
+                  scrollWidth:el.scrollWidth,
+                };
+              };
+              const topic = q('#town-topic');
+              const sidebar = q('#town-topic > .topic-controls');
+              const metric = q('#town-topic > .town-metric-layout');
+              const primary = q('#town-topic .town-metric-primary');
+              const position = q('#town-topic .versilia-position');
+              const chart = q('#town-topic > .history-panel.a5-shared-chart');
+              const benchmark = q('#town-topic > .town-benchmark-host');
+              const tools = q('#town-topic > .town-post-benchmark-tools');
+              const children = [...topic.children];
+              const directExtras = [...topic.children].filter(el =>
+                el.classList.contains('a5-town-extra-context') ||
+                el.classList.contains('detail-disclosure') ||
+                el.classList.contains('topic-deep-dive')
+              );
+              const columns = el => getComputedStyle(el).gridTemplateColumns.trim().split(/\\s+/).filter(Boolean).length;
+              return {
+                topicColumns:columns(topic),
+                metricColumns:columns(metric),
+                sidebar:rect(sidebar),
+                metric:rect(metric),
+                primary:rect(primary),
+                position:rect(position),
+                chart:rect(chart),
+                benchmark:rect(benchmark),
+                tools:rect(tools),
+                order:[children.indexOf(chart), children.indexOf(benchmark), children.indexOf(tools)],
+                extraBeforeTools:directExtras.some(el => children.indexOf(el) > -1 && children.indexOf(el) < children.indexOf(tools)),
+                fixedDetailInsideChart:Boolean(chart?.querySelector(':scope > .composite-fixed-detail')),
+                overflow:[
+                  ['primary',primary],['position',position],['benchmark',benchmark],['tools',tools]
+                ].filter(([,el]) => el && el.scrollWidth > el.clientWidth + 2).map(([name]) => name),
+              };
+            }''')
+            require(layout['topicColumns'] == 1, f'{metric_key}@{width}: shell comunale non monocolonna: {layout}')
+            require(layout['metricColumns'] == 1, f'{metric_key}@{width}: KPI/Versilia ancora affiancati: {layout}')
+            require(layout['position']['top'] >= layout['primary']['bottom'] - 2,
+                    f'{metric_key}@{width}: KPI e Versilia non sono realmente impilati: {layout}')
+            require(abs(layout['primary']['width'] - layout['metric']['width']) <= 2,
+                    f'{metric_key}@{width}: KPI primario non occupa la colonna: {layout}')
+            require(abs(layout['position']['width'] - layout['metric']['width']) <= 2,
+                    f'{metric_key}@{width}: KPI Versilia non occupa la colonna: {layout}')
+            require(layout['metric']['top'] >= layout['sidebar']['bottom'] - 2,
+                    f'{metric_key}@{width}: KPI sovrapposto alla sidebar: {layout}')
+            require(layout['chart']['top'] >= layout['metric']['bottom'] - 2,
+                    f'{metric_key}@{width}: grafico fuori ordine dopo i KPI: {layout}')
+            require(layout['benchmark']['top'] >= layout['chart']['bottom'] - 2,
+                    f'{metric_key}@{width}: benchmark precede il grafico: {layout}')
+            require(layout['tools']['top'] >= layout['benchmark']['bottom'] - 2,
+                    f'{metric_key}@{width}: Metodo/Scala precedono il benchmark: {layout}')
+            require(layout['order'][0] < layout['order'][1] < layout['order'][2],
+                    f'{metric_key}@{width}: ordine DOM chart/benchmark/tools non canonico: {layout}')
+            require(not layout['extraBeforeTools'],
+                    f'{metric_key}@{width}: contenuto opzionale inserito prima di Metodo/Scala: {layout}')
+            require(not layout['fixedDetailInsideChart'],
+                    f'{metric_key}@{width}: dettaglio composito ancora dentro lo shared chart shell')
+            require(not layout['overflow'],
+                    f'{metric_key}@{width}: testo/contenuto esce dai box {layout["overflow"]}')
+            assert_no_horizontal_overflow(page, f'A5 {town_slug} {metric_key} responsive {width}px')
+
+        for viewport in ((768, 1024), (390, 844)):
+            for metric_key in a5_demography_matrix:
+                assert_a5_town_responsive(metric_key, *viewport)
+        massarosa_responsive_probe = (
+            'population',
+            'ageDistribution',
+            'foreignResidents',
+            'foreignResidentialMobility',
+        )
+        for viewport in ((768, 1024), (390, 844)):
+            for metric_key in massarosa_responsive_probe:
+                assert_a5_town_responsive(metric_key, *viewport, town_slug='massarosa')
+        page.set_viewport_size({'width': 1440, 'height': 1100})
+        print('A5 Viareggio responsive QA OK: 10/10 indicatori a 768px e 390px')
+        print('A5 Massarosa responsive proof OK: scalar/distribution/stock/mobility a 768px e 390px')
+
         # 85+ deve essere una vera fascia della distribuzione, non un box autonomo.
         page.goto(urljoin(args.base, 'confronta/demografia/?indicatore=ageDistribution'), wait_until='networkidle')
         require(page.get_by_text('Distribuzione per fasce d’età', exact=True).count() >= 1,
