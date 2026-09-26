@@ -2036,6 +2036,7 @@ main.a5-editorial-pilot .compare-post-benchmark-tools > .a5-special-route-action
 main.a5-editorial-pilot .a5-special-route-actions > a {
   display:inline-flex;
   align-items:center;
+  gap:6px;
   min-height:34px;
   padding:7px 12px;
   border:1px solid var(--ds-theme-line);
@@ -2045,6 +2046,12 @@ main.a5-editorial-pilot .a5-special-route-actions > a {
   font-size:8px;
   font-weight:800;
   text-decoration:none;
+}
+main.a5-editorial-pilot .a5-special-route-actions > a svg {
+  width:14px;
+  height:14px;
+  flex:none;
+  stroke:currentColor;
 }
 main.a5-editorial-pilot .a5-special-route-actions > a:hover {
   border-color:var(--ds-theme-accent);
@@ -2368,6 +2375,18 @@ main.a5-editorial-pilot .a5-shared-chart > .topic-bars {
   visibility:hidden;
 }
 main.a5-editorial-pilot .a5-shared-chart > .ux-view-shell {
+  visibility:visible;
+}
+/* A5.5 special thematic renderers bypass ux-history by design. The transient
+   hide is only for standard charts that are replaced by .ux-view-shell. */
+main.a5-editorial-pilot:has(.topic-controls [data-metric="territorialClassification"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="landCoverProfile"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="floodExposure"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="landslideExposure"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="drinkingWaterQuality"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="remediationProceedings"].active) .a5-shared-chart > .topic-bars,
+main.a5-editorial-pilot:has(.topic-controls [data-metric="financialDebtProfile"].active) .a5-shared-chart > .topic-bars {
+  min-height:0;
   visibility:visible;
 }
 

@@ -295,9 +295,42 @@ def main() -> None:
                         f'A5.5 bulk {theme_key}/{metric_key}: chart overflow {chart_state}')
                 require(page.locator('#compare-tools.compare-post-benchmark-tools').count() == 1,
                         f'A5.5 bulk {theme_key}/{metric_key}: tools host assente')
+
+                visible_surface = page.locator('#compare-bars').evaluate('''el => {
+                  const visible = node => {
+                    if (!node) return false;
+                    const style=getComputedStyle(node), rect=node.getBoundingClientRect();
+                    return style.visibility !== 'hidden' && style.display !== 'none' && rect.height > 20;
+                  };
+                  return {
+                    shell: visible(el.querySelector(':scope > .ux-view-shell')),
+                    direct: visible(el.querySelector(':scope > .topic-bars')),
+                  };
+                }''')
+                require(visible_surface['shell'] or visible_surface['direct'],
+                        f'A5.5 bulk {theme_key}/{metric_key}: nessuna superficie dati visibile {visible_surface}')
+
+                special_surfaces = {
+                    'territorialClassification': '.territorial-classification-shell',
+                    'landCoverProfile': '[data-land-cover-compare-shell]',
+                    'drinkingWaterQuality': '.water-quality-compare-shell',
+                    'remediationProceedings': '.remediation-compare-shell',
+                    'financialDebtProfile': '.financial-topic-bars',
+                }
+                if metric_key in special_surfaces:
+                    special = page.locator(f'#compare-bars {special_surfaces[metric_key]}').first
+                    require(special.count() == 1 and special.is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: renderer speciale invisibile')
+                if metric_key in ('floodExposure','landslideExposure'):
+                    direct = page.locator('#compare-bars > .topic-bars').first
+                    require(direct.count() == 1 and direct.is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: renderer rischio invisibile')
                 if metric_key.startswith('slowMobility'):
-                    require(page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]').count() == 1,
+                    map_link = page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]')
+                    require(map_link.count() == 1,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia contestuale assente')
+                    require(map_link.locator('svg').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente')
                     require(page.locator('.compare-panel-heading .data-actions a[href*="percorsi/"]').count() == 0,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata nella toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',

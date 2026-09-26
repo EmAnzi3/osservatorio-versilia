@@ -85,9 +85,14 @@ def main() -> None:
         assert '1975–2025' in tmin_shell.inner_text()
         assert tmin_shell.locator('.ov-climate-current-row').count() == 7
         assert tmin_shell.locator('.bar-rank, .ux-bar-rank').count() == 0
+        current_row = tmin_shell.locator('.ov-climate-current-row').first
+        current_row.hover()
+        current_tip = current_row.locator('.ov-climate-current-tooltip')
+        assert current_tip.count() == 1 and current_tip.get_attribute('hidden') is None, 'Tmin current tooltip did not open'
         tmin_shell.locator('[data-ov-climate-view="history"]').click()
         assert tmin_shell.locator('.chart-point[aria-label*="1975"]').count() >= 7, 'Tmin history must contain 1975 for all towns'
         assert tmin_shell.locator('.chart-point[aria-label*="2025"]').count() >= 7, 'Tmin history must contain 2025 for all towns'
+        assert_tooltip_works(tmin_shell.locator('.ov-climate-compare-lines .chart-point').first)
         assert 'Trend lineare 1975–2025' in tmin_shell.inner_text()
 
         # Town climate page: current annual value + Versilia benchmark card, but no
