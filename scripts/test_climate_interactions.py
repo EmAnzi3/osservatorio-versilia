@@ -22,6 +22,17 @@ def assert_tooltip_works(point) -> None:
     assert tooltip.get_attribute('hidden') is None, 'Tooltip did not open on hover'
 
 
+def assert_chart_pointer_tooltip(chart, point) -> None:
+    chart_box = chart.bounding_box()
+    dot_box = point.locator('.chart-dot').bounding_box()
+    assert chart_box and dot_box, 'Missing chart/dot geometry'
+    chart.hover(position={
+        'x': dot_box['x'] + dot_box['width'] / 2 - chart_box['x'],
+        'y': dot_box['y'] + dot_box['height'] / 2 - chart_box['y'],
+    })
+    assert chart.locator('.chart-tooltip:not([hidden])').count() == 1, 'Historical pointer tooltip did not open'
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base-url', default='http://127.0.0.1:8123')
@@ -94,7 +105,8 @@ def main() -> None:
         tmin_shell.locator('[data-ov-climate-view="history"]').click()
         assert tmin_shell.locator('.chart-point[aria-label*="1975"]').count() >= 7, 'Tmin history must contain 1975 for all towns'
         assert tmin_shell.locator('.chart-point[aria-label*="2025"]').count() >= 7, 'Tmin history must contain 2025 for all towns'
-        assert_tooltip_works(tmin_shell.locator('.ov-climate-compare-lines .chart-point').first)
+        tmin_chart = tmin_shell.locator('.ov-climate-compare-lines')
+        assert_chart_pointer_tooltip(tmin_chart, tmin_chart.locator('[data-climate-series="camaiore"] .chart-point').nth(25))
         assert 'Trend lineare 1975–2025' in tmin_shell.inner_text()
 
         # Town climate page: current annual value + Versilia benchmark card, but no
