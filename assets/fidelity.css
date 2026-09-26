@@ -1980,6 +1980,35 @@ main.a5-editorial-pilot .ux-view-toolbar > .data-actions [data-print]::before {
   margin-right:5px;
   background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23b84b34' d='M4 2h11l5 5v15H4z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='1.4' d='M15 2v5h5'/%3E%3Ctext x='6.2' y='16.2' fill='%23fff' font-size='6.1' font-family='Arial,sans-serif' font-weight='700'%3EPDF%3C/text%3E%3C/svg%3E");
 }
+main.a5-editorial-pilot .compare-panel-heading > .data-actions .a5-map-action,
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions .a5-map-action {
+  min-height:30px;
+  box-sizing:border-box;
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:1px solid var(--ds-border);
+  border-radius:7px;
+  background:#fbf7f0;
+  color:var(--ds-ink);
+  padding:5px 8px;
+  font-size:7px;
+  font-weight:760;
+  line-height:1;
+  white-space:nowrap;
+  text-decoration:none;
+}
+main.a5-editorial-pilot .compare-panel-heading > .data-actions .a5-map-action svg,
+main.a5-editorial-pilot .ux-view-toolbar > .data-actions .a5-map-action svg {
+  display:block;
+  width:17px;
+  height:17px;
+  flex:0 0 17px;
+  color:var(--ds-theme-accent);
+  overflow:visible;
+}
 
 /* 4. Method + reading scale: useful but visually secondary. */
 main.a5-editorial-pilot .compare-post-benchmark-tools {

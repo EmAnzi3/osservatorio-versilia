@@ -394,6 +394,29 @@ def main() -> None:
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata')
                     require(map_link.locator('svg').count() == 1 and map_link.locator('svg').is_visible(),
                             f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente o invisibile')
+                    map_style = map_link.evaluate("""el => {
+                      const style=getComputedStyle(el);
+                      const path=el.querySelector('svg path');
+                      const svg=el.querySelector('svg');
+                      const print=el.parentElement?.querySelector('[data-print]');
+                      const box=el.getBoundingClientRect();
+                      const printBox=print?.getBoundingClientRect();
+                      return {
+                        whiteSpace:style.whiteSpace,
+                        height:box.height,
+                        printHeight:printBox?.height || 0,
+                        svgWidth:svg?.getBoundingClientRect().width || 0,
+                        svgHeight:svg?.getBoundingClientRect().height || 0,
+                        stroke:path?.getAttribute('stroke') || ''
+                      };
+                    }""")
+                    require(map_style['whiteSpace'] == 'nowrap',
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia va a capo')
+                    require(map_style['stroke'] == 'currentColor' and map_style['svgWidth'] >= 16 and map_style['svgHeight'] >= 16,
+                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa non renderizzabile {map_style}')
+                    if map_style['printHeight']:
+                        require(abs(map_style['height'] - map_style['printHeight']) <= 1.5,
+                                f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia non allineata a Stampa/PDF {map_style}')
                     require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 0,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia spostata fuori dalla toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
