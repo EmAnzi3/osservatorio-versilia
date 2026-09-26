@@ -538,7 +538,7 @@ def main() -> None:
                 metric:pack(document.querySelector('#town-topic .topic-controls [data-metric].active')),
               };
             }""")
-            expected_active = {
+            expected_nav_active = {
                 'background':'rgb(184, 75, 52)',
                 'color':'rgb(255, 255, 255)',
                 'border':'rgb(184, 75, 52)',
@@ -546,10 +546,13 @@ def main() -> None:
             }
             require(len(active_states['nav']) == 2,
                     f'{town_slug}/{metric_key}: attesi Comune e Tema attivi, trovati {active_states}')
-            require(all(state == expected_active for state in active_states['nav']),
+            require(all(state == expected_nav_active for state in active_states['nav']),
                     f'{town_slug}/{metric_key}: stato attivo Comune/Tema degradato: {active_states}')
-            require(active_states['metric'] == expected_active,
-                    f'{town_slug}/{metric_key}: indicatore attivo degradato: {active_states["metric"]}')
+            metric_state = active_states['metric']
+            require(metric_state['background'] == 'rgb(184, 75, 52)'
+                    and metric_state['color'] == 'rgb(255, 255, 255)'
+                    and metric_state['opacity'] == '1',
+                    f'{town_slug}/{metric_key}: indicatore attivo degradato: {metric_state}')
 
             # Stable municipal shell.
             topic = page.locator('#town-topic')
