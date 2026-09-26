@@ -335,12 +335,38 @@ def main() -> None:
                     require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-legend button').count() == 6,
                             'A5.5 bulk mobilita/fuelPrices: storico deve contenere i 6 Comuni con impianti')
                     page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                if metric_key == 'financialDebtProfile':
+                    require(page.locator('#compare-bars .ux-view-toggle [data-view-mode]').count() == 2,
+                            'A5.5 bulk bilanci/financialDebtProfile: switch attuale/storico assente')
+                    require(page.locator('#compare-bars .financial-aggregate-history').count() == 0,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato Versilia ancora nella vista attuale')
+                    history_button = page.locator('#compare-bars [data-view-mode="history"]').first
+                    require(not history_button.is_disabled(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale disabilitato')
+                    history_button.click()
+                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-card').is_visible(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale non visibile')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-select]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico non contiene 7 Comuni')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-town]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: serie storiche comunali non 7/7')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                    selector = page.locator('#compare-bars [data-view-pane="current"] select[data-composite-component]').first
+                    if selector.count() and selector.locator('option').count() > 1:
+                        selector.select_option(index=1)
+                        page.wait_for_timeout(180)
+                        page.locator('#compare-bars [data-view-mode="history"]').first.click()
+                        require(page.locator('#compare-bars [data-view-pane="history"] svg[aria-label*="Interessi sulle entrate correnti"]').count() == 1,
+                                'A5.5 bulk bilanci/financialDebtProfile: storico non segue la lettura selezionata')
+                        page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key.startswith('slowMobility'):
                     map_link = page.locator('#compare-tools .a5-special-route-actions a[href*="percorsi/"]')
                     require(map_link.count() == 1,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia contestuale assente')
-                    require(map_link.locator('svg').count() == 1,
-                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente')
+                    require(page.locator('#compare-tools a[href*="percorsi/"]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata')
+                    require(map_link.locator('svg').count() == 1 and map_link.locator('svg').is_visible(),
+                            f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente o invisibile')
                     require(page.locator('.compare-panel-heading .data-actions a[href*="percorsi/"]').count() == 0,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata nella toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',

@@ -167,7 +167,9 @@
       return;
     }
 
-    document.querySelectorAll('.compare-panel-heading .data-actions a[href*="/percorsi/"]').forEach(link => link.remove());
+    document.querySelectorAll(
+      '.compare-panel-heading .data-actions a[href*="/percorsi/"], #compare-bars .ux-view-toolbar a[href*="/percorsi/"], #compare-tools > .data-actions a[href*="/percorsi/"]'
+    ).forEach(link => link.remove());
 
     if (existing) return;
     const host=document.createElement('div');

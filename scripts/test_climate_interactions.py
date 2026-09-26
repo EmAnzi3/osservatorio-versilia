@@ -82,10 +82,13 @@ def main() -> None:
         chart = shell.locator('.ov-climate-compare-lines')
         assert chart.is_visible()
         assert chart.locator('.trend').count() == 7
+        assert chart.locator('.chart-point.is-tooltip-disabled').count() == chart.locator('.chart-point').count()
         shell.locator('[data-climate-select="camaiore"]').click()
         assert 'trend 1975–2025' in shell.locator('.ux-history-summary').inner_text()
         compare_point = chart.locator('[data-climate-series="camaiore"] .chart-point').first
         assert_tooltip_works(compare_point)
+        other_point = chart.locator('[data-climate-series="viareggio"] .chart-point').first
+        assert 'is-tooltip-disabled' in (other_point.get_attribute('class') or '')
 
         # Tmin/Tmax current values use real 2025 data and their history/trend now
         # covers the same 1975-2025 50-year window as mean temperature and rain.
@@ -106,7 +109,10 @@ def main() -> None:
         assert tmin_shell.locator('.chart-point[aria-label*="1975"]').count() >= 7, 'Tmin history must contain 1975 for all towns'
         assert tmin_shell.locator('.chart-point[aria-label*="2025"]').count() >= 7, 'Tmin history must contain 2025 for all towns'
         tmin_chart = tmin_shell.locator('.ov-climate-compare-lines')
+        assert tmin_chart.locator('.chart-point.is-tooltip-disabled').count() == tmin_chart.locator('.chart-point').count()
+        tmin_shell.locator('[data-climate-select="camaiore"]').click()
         assert_chart_pointer_tooltip(tmin_chart, tmin_chart.locator('[data-climate-series="camaiore"] .chart-point').nth(25))
+        assert 'is-tooltip-disabled' in (tmin_chart.locator('[data-climate-series="massarosa"] .chart-point').first.get_attribute('class') or '')
         assert 'Trend lineare 1975–2025' in tmin_shell.inner_text()
 
         # Town climate page: current annual value + Versilia benchmark card, but no
