@@ -87,6 +87,5 @@ hidden>
         <details class="detail-disclosure" open><summary><span>Mostra il dettaglio dei rischi</span><small>Edifici esposti</small></summary><div class="risk-grid"><article><span>Edifici esposti ad alluvioni</span><strong>${number0.format(e.flood.buildings)}</strong></article><article><span>Edifici esposti a frane</span><strong>${number0.format(e.landslide.buildings)}</strong></article></div></details></section>`;
     }
     if (themeKey === 'comunita') {
-      if (!['pnrrFunding','pnrrConcluded'].includes(metricKey)) return '';
       const g = detail.government;
       return `<section class="topic-deep-dive"><div class="deep-heading"><div><span class="overline">Approfondimento comunale</span><h3>Cassa, opere e PNRR</h3></div><p>Pagamenti e

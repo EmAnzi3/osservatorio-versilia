@@ -1651,7 +1651,10 @@
     const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
     const primaryDescription = financialProfile ? initialFinancialReading.description : metric.meta.description;
-    const legacyDeepDive = rolloutTown && themeKey === 'economia'
+    const legacyDeepDive = rolloutTown && (
+      themeKey === 'economia'
+      || (themeKey === 'comunita' && !['pnrrFunding','pnrrConcluded'].includes(metricKey))
+    )
       ? ''
       : deepDiveMarkup(data, town, themeKey, metricKey);
     const positionMarkup = selectable
