@@ -584,7 +584,11 @@
         ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
         : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
-      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${effectiveAggregate?.label || 'Versilia'}: ${formatAxis(effectiveAggregate?.value, unit)}`);
+      if (row) {
+        const ariaReferenceLabel = renderedTownCurrent ? (effectiveAggregate?.label || 'Versilia') : (aggregate?.label || 'Versilia');
+        const ariaReferenceValue = renderedTownCurrent ? formatAxis(effectiveAggregate?.value, unit) : formatAxis(aggregate?.value, unit);
+        rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${ariaReferenceLabel}: ${ariaReferenceValue}`);
+      }
     });
 
     const axis = document.createElement('div');
