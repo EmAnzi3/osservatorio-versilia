@@ -21,16 +21,14 @@ def main() -> None:
     checkpoint=cfg["checkpoint"]
     allowed=set(cfg["allowed_paths"])
 
-    base_ref=os.environ.get("GITHUB_BASE_REF","").strip()
-    if base_ref:
-        baseline=f"origin/{base_ref}"
-        git("cat-file","-e",f"{baseline}^{{commit}}")
-        changed=set(filter(None,git("diff","--name-only",f"{baseline}...HEAD").splitlines()))
-        baseline_label=f"PR base: {baseline}"
-    else:
-        git("cat-file","-e",f"{checkpoint}^{{commit}}")
-        changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..HEAD").splitlines()))
-        baseline_label=f"Checkpoint: {checkpoint}"
+    git("cat-file","-e",f"{checkpoint}^{{commit}}")
+    target="HEAD"
+    if os.environ.get("GITHUB_EVENT_NAME","") == "pull_request":
+        parents=git("rev-list","--parents","-n","1","HEAD").split()
+        if len(parents) >= 3:
+            target=parents[2]
+    changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
+    baseline_label=f"Checkpoint: {checkpoint} · target: {target}"
 
     unexpected=sorted(changed-allowed)
     missing_policy=sorted(path for path in changed if path not in allowed)
