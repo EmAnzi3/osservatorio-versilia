@@ -3549,9 +3549,15 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
 @media(max-width:700px){
   body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
     grid-template-columns:1fr;
+    grid-auto-rows:auto;
     align-items:stretch;
+    flex:0 0 auto !important;
+    align-self:stretch;
     gap:7px;
     width:100%;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
     margin:16px 0 0;
     padding:9px 10px;
   }

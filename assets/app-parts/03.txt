@@ -1232,6 +1232,20 @@
     const actions = topic?.querySelector(':scope > .town-data-actions')
       || chart?.querySelector(':scope > .town-data-actions')
       || toolbar?.querySelector(':scope > .town-data-actions');
+
+    /* A5 municipal invariant: every non-Demografia primary card has a visible title.
+       Special renderers (notably Climate UX) may replace the primary markup after the
+       standard town renderer; restore only the missing title without touching frozen Demografia. */
+    if (rolloutTown && main.dataset.theme !== 'demografia') {
+      const primary = topic?.querySelector('.town-metric-primary');
+      const hasTitle = primary?.querySelector(':scope > .a5-primary-label, :scope > .composite-primary-label');
+      if (primary && !hasTitle) {
+        const activeControl = topic.querySelector('.topic-controls [data-metric].active');
+        const label = String(activeControl?.textContent || '').replace(/\s+/g,' ').trim();
+        if (label) primary.insertAdjacentHTML('afterbegin',`<span class="a5-primary-label">${html(label)}</span>`);
+      }
+    }
+
     if (!toolbar) {
       if (rolloutTown && actions) actions.classList.add('a5-town-fallback-actions');
       return;
