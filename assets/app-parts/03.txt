@@ -975,6 +975,10 @@
   }
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
+    if (isA5CompareTheme(themeKey)) {
+      document.getElementById('compare-territori')?.remove();
+      document.querySelector('.compare-showcase-secondary[href="#compare-territori"]')?.remove();
+    }
     const metric = data.metrics[metricKey];
     const mobilityContextMetrics = new Set(['internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility']);
     const brainDrain = document.querySelector('.brain-drain-context');
@@ -1380,8 +1384,8 @@
     },
     camaiore: {
       institutionYear: 'sec. XIII',
-      heroCredit: 'Ilmendicantediluce / Wikimedia Commons',
-      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Camaiore_-_Chiesa_di_Santo_Stefano_-_2025-09-12_09-03-52_001.jpg'
+      heroCredit: 'Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
     },
     massarosa: {
       institutionYear: '1869',
@@ -1419,7 +1423,7 @@
           <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
         </dl>
       </div>
-      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${slug === 'camaiore' ? 'panorama del centro' : 'Passeggiata a mare'} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
+      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${slug === 'camaiore' ? 'Pontile di Lido di Camaiore' : 'Passeggiata a mare'} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
     </header>`;
   }
 

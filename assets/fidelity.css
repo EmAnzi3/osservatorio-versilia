@@ -3462,7 +3462,7 @@ body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="
 body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Camaiore_-_Chiesa_di_Santo_Stefano_-_2025-09-12_09-03-52_001.jpg") center 48%/cover no-repeat;
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800") center 52%/cover no-repeat;
 }
 body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) #app {
   background:
@@ -3500,6 +3500,50 @@ body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme
 /* Non-Demografia composites must retain their native selector in Camaiore. */
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
   display:flex !important;
+  align-items:flex-end;
+  gap:10px;
+  width:min(100%,360px);
+  max-width:100%;
+  margin:22px 0 0;
+  padding:10px 12px;
+  box-sizing:border-box;
+  border:1px solid #9db8c0;
+  border-radius:14px;
+  background:#d8e8ec;
+  box-shadow:0 6px 18px rgba(16,47,69,.08);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector > span {
+  color:#315966;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select {
+  flex:1 1 220px;
+  width:100%;
+  min-width:0;
+  min-height:34px;
+  padding:6px 30px 6px 10px;
+  border:1px solid #7fa3ad;
+  border-radius:8px;
+  background:#f2f8f9;
+  color:#12384a;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+  font-size:9px;
+  font-weight:750;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:hover,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:focus {
+  border-color:#477b8a;
+  background:#fff;
+}
+@media(max-width:700px){
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
+    align-items:stretch;
+    flex-direction:column;
+    width:100%;
+  }
 }
 
 /* Special renderers keep the standard export/print actions visible until a runtime toolbar claims them. */

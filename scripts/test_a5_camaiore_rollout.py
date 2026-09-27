@@ -84,6 +84,18 @@ def state(page):
           background:getComputedStyle(q('.town-hero')).backgroundImage,
           credit:(q('.town-hero-photo-credit')?.textContent||'').replace(/\\s+/g,' ').trim()
         },
+        compositeSelector:(()=>{
+          const e=q('#town-topic .town-metric-primary > .composite-read-selector');
+          if(!e || !visible(e)) return null;
+          const select=e.querySelector('select');
+          const c=getComputedStyle(e), s=select?getComputedStyle(select):null;
+          return {
+            background:c.backgroundColor,
+            border:c.borderTopColor,
+            selectBackground:s?.backgroundColor||'',
+            selectBorder:s?.borderTopColor||''
+          };
+        })(),
         demographyPill:(()=>{const e=q('[data-profile-theme="demografia"]');if(!e)return null;const c=getComputedStyle(e);return {active:e.classList.contains('active'),background:c.backgroundColor,border:c.borderTopColor,color:c.color}})(),
         semantic:(()=>{
           const deep=q('#town-topic > .topic-deep-dive');
@@ -158,8 +170,13 @@ def validate(s,theme,metric,key,fail):
     if s["selected"] and not any("Camaiore" in x for x in s["selected"]):
         fail.append({"key":key,"kind":"selected-row","rows":s["selected"]})
     hero=s.get("hero") or {}
-    if "Camaiore_-_Chiesa_di_Santo_Stefano" not in hero.get("background","") or "Passeggiata a mare" in hero.get("credit",""):
+    if "Pontile_di_Lido_di_Camaiore" not in hero.get("background","") or "Pontile di Lido di Camaiore" not in hero.get("credit",""):
         fail.append({"key":key,"kind":"camaiore-hero","hero":hero})
+    selector=s.get("compositeSelector")
+    if theme!="demografia" and selector:
+        expected={"background":"rgb(216, 232, 236)","border":"rgb(157, 184, 192)","selectBackground":"rgb(242, 248, 249)","selectBorder":"rgb(127, 163, 173)"}
+        if any(selector.get(k)!=v for k,v in expected.items()):
+            fail.append({"key":key,"kind":"composite-selector-style","selector":selector,"expected":expected})
     pill=s.get("demographyPill") or {}
     expected_bg="rgb(184, 75, 52)" if theme=="demografia" else "rgb(251, 233, 227)"
     if pill.get("background")!=expected_bg:
