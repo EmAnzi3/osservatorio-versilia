@@ -59,6 +59,9 @@ def state(page):
     return page.evaluate("""() => {
       const q=s=>document.querySelector(s), visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};
       const main=q('main.town-profile'), body=getComputedStyle(document.body);
+      const standardToolbar=q('#town-topic>.history-panel.a5-shared-chart .ux-view-toolbar');
+      const fallbackActions=q('#town-topic>.history-panel.a5-shared-chart > .town-data-actions.a5-town-fallback-actions');
+      const actions=q('#town-topic .town-data-actions');
       return {
         classes:main?[...main.classList].sort():[], theme:main?.dataset.theme||'',
         activeTheme:q('[data-profile-theme].active')?.dataset.profileTheme||'',
@@ -68,14 +71,15 @@ def state(page):
           heading:visible(q('#town-topic>.town-topic-heading')),sidebar:visible(q('#town-topic>.topic-controls')),
           metricLayout:visible(q('#town-topic>.town-metric-layout')),
           chart:visible(q('#town-topic>.history-panel.a5-shared-chart')),
-          toolbar:visible(q('#town-topic>.history-panel.a5-shared-chart .ux-view-toolbar'))
+          toolbar:visible(standardToolbar) || visible(fallbackActions),
+          exportActions:visible(actions?.querySelector('[data-download]')) && visible(actions?.querySelector('[data-print]'))
         },
         tokens:{
           accent:body.getPropertyValue('--ds-theme-accent').trim(),
           soft:body.getPropertyValue('--ds-theme-soft').trim(),
           line:body.getPropertyValue('--ds-theme-line').trim()
         },
-        selected:[...document.querySelectorAll('#town-topic .bar-row.comparison-row.selected')].map(x=>(x.textContent||'').replace(/\s+/g,' ').trim()),
+        selected:[...document.querySelectorAll('#town-topic .bar-row.comparison-row.selected')].map(x=>(x.textContent||'').replace(/\\s+/g,' ').trim()),
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth]}
       };
     }""")
