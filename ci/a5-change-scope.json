@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5: rollout controllato Camaiore + rimozione esplicitamente autorizzata delle schede territoriali ridondanti in fondo alle pagine tematiche; golden comunali invarianti",
+  "purpose": "A5.5: rollout controllato della sola scheda comunale di Camaiore con lock tematici e golden comunali invarianti",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",

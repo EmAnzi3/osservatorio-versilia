@@ -104,7 +104,8 @@ def state(page):
           return {
             incomeText:deepHeading==='Redditi dichiarati' || /Mostra le fasce di reddito/i.test(deepSummary),
             economyDeepDive:visible(deep),
-            crimeContext:visible(q('#town-context .crime-context'))
+            crimeContext:visible(q('#town-context .crime-context')),
+            redundantCompositeDetail:visible(q('#town-topic > .composite-fixed-detail.a5-town-extra-context, #town-topic .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-extra-context'))
           };
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
@@ -188,6 +189,8 @@ def validate(s,theme,metric,key,fail):
         fail.append({"key":key,"kind":"economy-deep-dive-leak"})
     if theme=="sicurezza" and semantic.get("crimeContext"):
         fail.append({"key":key,"kind":"crime-context-leak"})
+    if metric=="incomeSourceProfile" and semantic.get("redundantCompositeDetail"):
+        fail.append({"key":key,"kind":"income-source-redundant-detail"})
     for extra in s.get("extras") or []:
         if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})

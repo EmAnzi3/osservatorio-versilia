@@ -975,10 +975,6 @@
   }
 
   function renderCompareMetric(data, themeKey, metricKey, normalized, requestedView = null) {
-    if (isA5CompareTheme(themeKey)) {
-      document.getElementById('compare-territori')?.remove();
-      document.querySelector('.compare-showcase-secondary[href="#compare-territori"]')?.remove();
-    }
     const metric = data.metrics[metricKey];
     const mobilityContextMetrics = new Set(['internalResidentialMobility','foreignResidentialMobility','totalResidentialMobility']);
     const brainDrain = document.querySelector('.brain-drain-context');
@@ -1254,7 +1250,9 @@
     const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail')
       || chart?.querySelector('[data-view-pane="current"] > .composite-fixed-detail');
     if (fixedDetail) {
-      if (rolloutTown && activeMetric === 'incomeDistribution') {
+      if (rolloutTown && activeMetric === 'incomeSourceProfile') {
+        fixedDetail.remove();
+      } else if (rolloutTown && activeMetric === 'incomeDistribution') {
         fixedDetail.classList.remove('a5-town-extra-context');
         fixedDetail.classList.add('a5-town-income-detail');
         if (!fixedDetail.querySelector(':scope > .a5-income-context-heading')) {
