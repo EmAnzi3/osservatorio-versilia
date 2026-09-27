@@ -493,6 +493,191 @@
     return { value: part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
   }
 
+
+  const A5_LIBRARY_CURRENT_KEYS = new Set([
+    'libraryLoansPerResident',
+    'libraryActiveBorrowersPer100',
+    'libraryWeeklyOpeningHours'
+  ]);
+
+  function isCamaioreTownPage() {
+    return document.body.dataset.page === 'town' && document.body.dataset.town === 'camaiore';
+  }
+
+  function activeCamaioreMetricKey() {
+    if (!isCamaioreTownPage()) return '';
+    return document.querySelector('#town-topic .topic-controls [data-metric].active')?.dataset.metric
+      || new URLSearchParams(location.search).get('indicatore')
+      || '';
+  }
+
+  function camaioreCompositeChoice(metric) {
+    if (!metric) return '';
+    if (metric.meta?.compositeType === 'demographicBreakdown') {
+      const age = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age]')?.value
+        || metric.meta.defaultAge || '';
+      const gender = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-gender]')?.value
+        || metric.meta.defaultGender || '';
+      return age && gender ? `${age}|${gender}` : '';
+    }
+    return document.querySelector('#town-topic .town-metric-primary select[data-composite-choice]')?.value || '';
+  }
+
+  function syncCamaioreCurrentChoice(container, metric) {
+    if (!isCamaioreTownPage() || !container?.closest('[data-view-pane="current"]')) return '';
+    const choice = camaioreCompositeChoice(metric);
+    if (choice) {
+      container.dataset.compositeChoice = choice;
+      if (!container.dataset.compositeScale) container.dataset.compositeScale = 'value';
+    }
+    return choice;
+  }
+
+  function deriveCamaioreSelectionMetric(metric, choice) {
+    if (!metric || !choice) return null;
+    const probe = { dataset:{ compositeChoice:choice, compositeScale:'value' } };
+    const rows = (metric.rows || []).map(row => {
+      const selected = compositeSelectionFor(probe, metric, row);
+      if (!selected) return { ...row };
+      return { ...row, value:selected.value, formatted:'', series:selected.part?.series || row.series };
+    });
+    const firstSource = (metric.rows || []).find(row => compositeSelectionFor(probe, metric, row));
+    const firstSelected = firstSource ? compositeSelectionFor(probe, metric, firstSource) : null;
+    const aggregate = compositeAggregateFor(probe, metric);
+    const unit = firstSelected?.unit || aggregate?.unit || metric.meta.unit;
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{ ...metric.meta, unit, compositeType:null },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregate?.value,
+        label:aggregate?.label || metric.aggregate?.label,
+        note:metric.aggregate?.note
+      }
+    };
+  }
+
+  function normalizeCamaioreSelectorCurrent() {
+    if (!isCamaioreTownPage()) return;
+    const metricKey = activeCamaioreMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || !['demographicBreakdown','agricultureProfile'].includes(metric.meta?.compositeType)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!pane || typeof shared !== 'function') return;
+    const choice = camaioreCompositeChoice(metric);
+    if (!choice || (pane.dataset.a5SelectorChoice === choice && pane.querySelector('.comparison-bars'))) return;
+    const derived = deriveCamaioreSelectionMetric(metric, choice);
+    if (!derived) return;
+    pane.innerHTML = shared(data, metricKey, { selectedTown:'camaiore', metric:derived });
+    pane.dataset.a5SelectorChoice = choice;
+    const bars = pane.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+  }
+
+  function normalizeCamaioreLibraryCurrent() {
+    if (!isCamaioreTownPage()) return;
+    const metricKey = activeCamaioreMetricKey();
+    if (!A5_LIBRARY_CURRENT_KEYS.has(metricKey)) return;
+    const metric = data?.metrics?.[metricKey];
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!metric || !pane || typeof shared !== 'function' || !pane.querySelector('.ux-comparison-bars')) return;
+    pane.innerHTML = shared(data, metricKey, {
+      selectedTown:'camaiore',
+      metric:{ ...metric, meta:{ ...metric.meta, compositeType:null } }
+    });
+    pane.dataset.a5LibraryCurrent = 'lollipop';
+  }
+
+  function financialCamaioreMetric(metric, index) {
+    const aggregatePart = metric?.aggregate?.parts?.[index] || {};
+    const rows = (metric?.rows || []).map(row => {
+      const part = row.parts?.[index] || {};
+      return { ...row, value:part.value, formatted:'', series:part.series || null };
+    });
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{
+        ...metric.meta,
+        label:aggregatePart.label || metric.meta.label,
+        unit:aggregatePart.unit || metric.meta.unit,
+        compositeType:null
+      },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregatePart.value,
+        label:`Versilia · ${aggregatePart.label || metric.meta.label}`,
+        series:aggregatePart.series || null
+      }
+    };
+  }
+
+  function normalizeCamaioreFinancialProfile() {
+    if (!isCamaioreTownPage()) return;
+    const metricKey = activeCamaioreMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || metric.meta?.compositeType !== 'financialProfile') return;
+    const panel = document.querySelector('#town-topic > .history-panel.a5-shared-chart');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    const toolkit = window.OVUXHistory;
+    if (!panel || typeof shared !== 'function' || !toolkit) return;
+
+    const choice = camaioreCompositeChoice(metric) || 'part-0';
+    const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+    const derived = financialCamaioreMetric(metric, index);
+    const currentMarkup = shared(data, metricKey, { selectedTown:'camaiore', metric:derived });
+    const series = toolkit.comparableSeries(derived);
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, 'camaiore');
+    const historyAvailable = Boolean(series);
+    let shell = panel.querySelector(':scope > .ux-view-shell');
+
+    if (!shell) {
+      const title = panel.querySelector(':scope > .panel-title')?.outerHTML || '';
+      panel.innerHTML = `${title}${toolkit.viewShellMarkup(
+        currentMarkup,
+        historyMarkup,
+        historyAvailable,
+        historyAvailable
+          ? 'Lo storico usa la stessa lettura selezionata e conserva i valori ufficiali annuali dei sette Comuni.'
+          : 'Per questa lettura non sono disponibili almeno due annualità omogenee per tutti i Comuni.'
+      )}`;
+      shell = panel.querySelector(':scope > .ux-view-shell');
+      if (!shell) return;
+      shell.dataset.a5FinancialChoice = choice;
+      toolkit.wireViewShell(shell, 'ov-town-view', historyAvailable);
+      toolkit.wireHistorySelection(shell, 'camaiore', false);
+      const bars = shell.querySelector('[data-view-pane="current"] .comparison-bars');
+      if (bars) {
+        bars.dataset.compositeChoice = choice;
+        bars.dataset.compositeScale = 'value';
+      }
+      return;
+    }
+
+    if (shell.dataset.a5FinancialChoice === choice) return;
+    const currentPane = shell.querySelector('[data-view-pane="current"]');
+    const historyPane = shell.querySelector('[data-view-pane="history"]');
+    if (currentPane) currentPane.innerHTML = currentMarkup;
+    if (historyPane) historyPane.innerHTML = historyMarkup;
+    shell.dataset.a5FinancialChoice = choice;
+    const historyButton = shell.querySelector('[data-view-mode="history"]');
+    if (historyButton) historyButton.disabled = !historyAvailable;
+    const bars = currentPane?.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+    toolkit.wireHistorySelection(shell, 'camaiore', false);
+  }
+
   function enhanceComparison(container) {
     if (!data || !container?.isConnected) return;
     const metricKey = metricKeyFor(container);
@@ -508,12 +693,15 @@
       && Boolean(container.closest('[data-view-pane="current"]'))
       && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
 
+    if (renderedTownCurrent) syncCamaioreCurrentChoice(container, metric);
     const compositeAggregate = compositeAggregateFor(container, metric);
     const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
       if (renderedTownCurrent) {
+        const liveSelected = compositeSelectionFor(container, metric, row);
+        if (liveSelected) return { rowEl, row, value:liveSelected.value, unit:liveSelected.unit || null };
         return { rowEl, row, value:finite(rowEl.dataset.vizValue), unit:rowEl.dataset.vizUnit || null };
       }
       const selected = compositeSelectionFor(container, metric, row);
@@ -524,9 +712,9 @@
     const renderedUnit = renderedTownCurrent ? (mapped.find(item => item.unit)?.unit || '') : '';
     const renderedValues = renderedTownCurrent ? mapped.map(item => finite(item.value)).filter(value => value !== null) : [];
     const effectiveAggregate = renderedTownCurrent
-      ? { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit }
+      ? (compositeAggregate || { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit })
       : aggregate;
-    const unit = renderedTownCurrent ? renderedUnit : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
+    const unit = renderedTownCurrent ? (renderedUnit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized)) : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
     const displayScale = renderedTownCurrent ? scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit) : scale;
     const referencePosition = position(effectiveAggregate?.value, displayScale);
@@ -806,6 +994,9 @@
   function enhance() {
     scheduled = false;
     if (!data) return;
+    normalizeCamaioreFinancialProfile();
+    normalizeCamaioreSelectorCurrent();
+    normalizeCamaioreLibraryCurrent();
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
     enhanceReadingScales();
     enhanceTownPosition();
@@ -823,6 +1014,7 @@
   observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'aria-selected'] });
   window.addEventListener('ov:ux-history-enhanced', scheduleEnhance);
   window.addEventListener('ov:compare-rendered', scheduleEnhance);
+  window.addEventListener('ov:composite-choice', scheduleEnhance);
 
   fetch(dataUrl, { cache: 'no-store' })
     .then(response => {

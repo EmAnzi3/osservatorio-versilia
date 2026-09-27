@@ -1226,12 +1226,28 @@
       'climateTmaxTrend'
     ].includes(activeMetric);
     const climateShell = climateMetric ? chart?.querySelector('[data-ov-climate-shell^="town-"]') : null;
-    const toolbar = climateMetric
+    let toolbar = climateMetric
       ? climateShell?.querySelector(':scope > .ux-view-toolbar')
-      : chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
+      : chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar, :scope > .a5-special-renderer-toolbar');
     const actions = topic?.querySelector(':scope > .town-data-actions')
       || chart?.querySelector(':scope > .town-data-actions')
       || toolbar?.querySelector(':scope > .town-data-actions');
+
+    /* Camaiore-only content scoping. PNRR detail belongs only to the two PNRR
+       indicators; Frame-SBS scope belongs to the primary reading card. */
+    if (rolloutTown) {
+      if (!['pnrrFunding','pnrrConcluded'].includes(activeMetric)) {
+        topic?.querySelectorAll('[data-pnrr-town-detail="true"], .pnrr-town-detail').forEach(node => node.remove());
+      }
+      const economicScope = chart?.querySelector(':scope > .economic-scope-control');
+      const primary = topic?.querySelector('.town-metric-primary');
+      if (economicScope && primary && main.dataset.theme === 'economia') {
+        economicScope.classList.add('a5-economic-primary-selector');
+        const footer = primary.querySelector(':scope > div:last-child');
+        if (footer) primary.insertBefore(economicScope, footer);
+        else primary.append(economicScope);
+      }
+    }
 
     /* A5 municipal invariant: every non-Demografia primary card has a visible title.
        Special renderers (notably Climate UX) may replace the primary markup after the
@@ -1246,6 +1262,15 @@
       }
     }
 
+    /* Special renderers that cannot use ux-history still receive the canonical A5
+       toolbar shell and its CSV / Stampa-PDF actions. */
+    if (!toolbar && rolloutTown && chart) {
+      const specialToolbar = document.createElement('div');
+      specialToolbar.className = 'ux-view-toolbar a5-special-renderer-toolbar';
+      specialToolbar.innerHTML = '<div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Lettura dell’indicatore</strong><span>Dettaglio disponibile per il Comune e strumenti di esportazione coerenti con il resto della scheda.</span></div>';
+      chart.prepend(specialToolbar);
+      toolbar = specialToolbar;
+    }
     if (!toolbar) {
       if (rolloutTown && actions) actions.classList.add('a5-town-fallback-actions');
       return;
@@ -1268,13 +1293,30 @@
       const repeatedCards = fixedDetail.querySelector(':scope > .composite-town-mobility');
       const normalizeLabel = value => normalize(String(value || '')).replace(/\s+/g,' ').trim();
       const selectorLabels = selector ? [...selector.options].map(option => normalizeLabel(option.textContent)) : [];
-      const cardLabels = repeatedCards ? [...repeatedCards.querySelectorAll(':scope > article > span')].map(node => normalizeLabel(node.textContent)) : [];
+      const cards = repeatedCards ? [...repeatedCards.querySelectorAll(':scope > article')] : [];
+      const cardLabels = cards.map(card => normalizeLabel(card.querySelector(':scope > span')?.textContent));
+      const cardNotes = cards.map(card => normalizeLabel(card.querySelector(':scope > small')?.textContent));
+      const labelsEquivalent = selectorLabels.length > 0
+        && selectorLabels.length === cardLabels.length
+        && selectorLabels.every(label => cardLabels.some(card => card === label || card.includes(label) || label.includes(card)));
+      const notesAreOnlyPeriod = cards.length > 0 && cardNotes.every(note => {
+        if (!note) return true;
+        if (/dichiarant|dipendent|persone|resident|zone|record|localit|comune non costiero/.test(note)) return false;
+        return /\b(19|20)\d{2}\b/.test(note);
+      });
       const selectorDrivenDuplicate = Boolean(
         rolloutTown
         && selectorLabels.length > 0
-        && selectorLabels.length === cardLabels.length
-        && selectorLabels.every(label => cardLabels.some(card => card === label || card.includes(label) || label.includes(card)))
+        && selectorLabels.length === cards.length
+        && (labelsEquivalent || notesAreOnlyPeriod)
       );
+
+      /* The canonical A5 shell already owns history. Remove only the legacy nested
+         historical chart; tables/pyramids that add dimensions remain available. */
+      if (rolloutTown && chart?.querySelector(':scope > .ux-view-shell')) {
+        fixedDetail.querySelectorAll('.demographic-history').forEach(node => node.remove());
+      }
+
       if (selectorDrivenDuplicate) {
         fixedDetail.remove();
       } else if (rolloutTown && activeMetric === 'incomeDistribution') {
@@ -1591,7 +1633,7 @@
     const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
     const primaryDescription = financialProfile ? initialFinancialReading.description : metric.meta.description;
-    const legacyDeepDive = rolloutTown && themeKey === 'economia' && metricKey !== 'incomeDistribution'
+    const legacyDeepDive = rolloutTown && themeKey === 'economia'
       ? ''
       : deepDiveMarkup(data, town, themeKey, metricKey);
     const positionMarkup = selectable

@@ -60,6 +60,7 @@ def state(page):
       const q=s=>document.querySelector(s), visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};
       const main=q('main.town-profile'), body=getComputedStyle(document.body);
       const standardToolbar=q('#town-topic>.history-panel.a5-shared-chart .ux-view-toolbar');
+      const specialToolbar=q('#town-topic>.history-panel.a5-shared-chart > .a5-special-renderer-toolbar');
       const fallbackActions=q('#town-topic > .town-data-actions.a5-town-fallback-actions');
       const actions=q('#town-topic .town-data-actions');
       return {
@@ -71,7 +72,7 @@ def state(page):
           heading:visible(q('#town-topic>.town-topic-heading')),sidebar:visible(q('#town-topic>.topic-controls')),
           metricLayout:visible(q('#town-topic>.town-metric-layout')),
           chart:visible(q('#town-topic>.history-panel.a5-shared-chart')),
-          toolbar:visible(standardToolbar) || visible(fallbackActions),
+          toolbar:visible(standardToolbar) || visible(specialToolbar) || visible(fallbackActions),
           exportActions:visible(actions?.querySelector('[data-download]')) && visible(actions?.querySelector('[data-print]'))
         },
         tokens:{
@@ -134,13 +135,30 @@ def state(page):
             selectorDrivenDuplicate:(()=>{
               const select=q('#town-topic .town-metric-primary > .composite-read-selector select[data-composite-choice]');
               const fixed=q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail, #town-topic .history-panel.a5-shared-chart [data-view-pane="current"] > .composite-fixed-detail');
-              const cards=fixed?.querySelector(':scope > .composite-town-mobility');
-              if(!select || !cards || !visible(fixed)) return false;
+              const cardHost=fixed?.querySelector(':scope > .composite-town-mobility');
+              if(!select || !cardHost || !visible(fixed)) return false;
               const norm=value=>String(value||'').toLocaleLowerCase('it').replace(/\\s+/g,' ').trim();
+              const cards=[...cardHost.querySelectorAll(':scope > article')];
               const opts=[...select.options].map(o=>norm(o.textContent));
-              const labels=[...cards.querySelectorAll(':scope > article > span')].map(e=>norm(e.textContent));
-              return opts.length>0 && opts.length===labels.length && opts.every(label=>labels.some(card=>card===label||card.includes(label)||label.includes(card)));
-            })()
+              const labels=cards.map(card=>norm(card.querySelector(':scope > span')?.textContent));
+              const notes=cards.map(card=>norm(card.querySelector(':scope > small')?.textContent));
+              const periodOnly=notes.every(note=>!note || (/\\b(19|20)\\d{2}\\b/.test(note) && !/dichiarant|dipendent|persone|resident|zone|record|localit/.test(note)));
+              const labelsEquivalent=opts.length===labels.length && opts.every(label=>labels.some(card=>card===label||card.includes(label)||label.includes(card)));
+              return opts.length>0 && opts.length===cards.length && (labelsEquivalent||periodOnly);
+            })(),
+            demographicHistoryDuplicate:visible(q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail .demographic-history')),
+            pnrrDetail:visible(q('#town-topic [data-pnrr-town-detail="true"], #town-topic .pnrr-town-detail')),
+            legacyLibraryCurrent:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .ux-comparison-bars')),
+            economicScope:{
+              inPrimary:visible(q('#town-topic .town-metric-primary > .economic-scope-control')),
+              inChart:visible(q('#town-topic .history-panel.a5-shared-chart > .economic-scope-control'))
+            },
+            financialShell:{
+              shell:visible(q('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')),
+              current:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars')),
+              historyButton:Boolean(q('#town-topic .history-panel.a5-shared-chart [data-view-mode="history"]')),
+              historyChart:Boolean(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-history-chart, #town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-two-point-chart'))
+            }
           };
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
@@ -192,6 +210,54 @@ def state(page):
       };
     }""")
 
+
+def selector_graph_response(page,metric,key,fail):
+    targets={
+      "employmentRate","unemploymentRate","activityRate","diplomaPlus","tertiary",
+      "hypertensionPrevalence","copdPrevalence","ischemicHeartDiseasePrevalence",
+      "heartFailurePrevalence","priorStrokePrevalence","diabetes","dementia",
+      "cropProfile","financialDebtProfile"
+    }
+    if metric not in targets:
+        return
+    before=page.evaluate("""() => {
+      const chart=document.querySelector('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars');
+      const select=document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age], #town-topic .town-metric-primary select[data-composite-choice]');
+      const signature=chart ? [...chart.querySelectorAll(':scope > .bar-row')].map(row=>[
+        row.querySelector(':scope > strong')?.textContent||'',
+        row.querySelector('.comparison-dot')?.style.left||'',
+        row.getAttribute('aria-label')||''
+      ].join('~')).join('|') : '';
+      return {signature,value:select?.value||'',options:select?[...select.options].map(o=>o.value):[]};
+    }""")
+    if not before["signature"] or len(before["options"])<2:
+        fail.append({"key":key,"kind":"selector-graph-test-unavailable","state":before})
+        return
+    changed=False
+    for option in before["options"]:
+        if option==before["value"]:
+            continue
+        page.evaluate("""value => {
+          const select=document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age], #town-topic .town-metric-primary select[data-composite-choice]');
+          if(!select)return;
+          select.value=value;
+          select.dispatchEvent(new Event('change',{bubbles:true}));
+        }""",option)
+        stable(page)
+        after=page.evaluate("""() => {
+          const chart=document.querySelector('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars');
+          return chart ? [...chart.querySelectorAll(':scope > .bar-row')].map(row=>[
+            row.querySelector(':scope > strong')?.textContent||'',
+            row.querySelector('.comparison-dot')?.style.left||'',
+            row.getAttribute('aria-label')||''
+          ].join('~')).join('|') : '';
+        }""")
+        if after and after!=before["signature"]:
+            changed=True
+            break
+    if not changed:
+        fail.append({"key":key,"kind":"selector-does-not-update-current-graph","metric":metric})
+
 def validate(s,theme,metric,key,fail):
     classes=set(s["classes"])
     if not {"a5-town-pilot","a5-editorial-pilot"}<=classes: fail.append({"key":key,"kind":"a5-shell","classes":s["classes"]})
@@ -228,12 +294,27 @@ def validate(s,theme,metric,key,fail):
     semantic=s.get("semantic") or {}
     if theme=="economia" and metric!="incomeDistribution" and semantic.get("incomeText"):
         fail.append({"key":key,"kind":"income-context-leak"})
-    if theme=="economia" and metric!="incomeDistribution" and semantic.get("economyDeepDive"):
+    if theme=="economia" and semantic.get("economyDeepDive"):
         fail.append({"key":key,"kind":"economy-deep-dive-leak"})
     if theme=="sicurezza" and semantic.get("crimeContext"):
         fail.append({"key":key,"kind":"crime-context-leak"})
     if semantic.get("selectorDrivenDuplicate"):
         fail.append({"key":key,"kind":"selector-driven-redundant-detail"})
+    if semantic.get("demographicHistoryDuplicate"):
+        fail.append({"key":key,"kind":"duplicate-demographic-history"})
+    pnrr_expected=theme=="comunita" and metric in {"pnrrFunding","pnrrConcluded"}
+    if bool(semantic.get("pnrrDetail")) != pnrr_expected:
+        fail.append({"key":key,"kind":"pnrr-detail-scope","expected":pnrr_expected,"actual":semantic.get("pnrrDetail")})
+    if metric in {"libraryLoansPerResident","libraryActiveBorrowersPer100","libraryWeeklyOpeningHours"} and semantic.get("legacyLibraryCurrent"):
+        fail.append({"key":key,"kind":"library-current-not-lollipop"})
+    economic_scope_metrics={"businessTurnover","businessValueAdded","labourProductivity","turnoverPerPersonEmployed","valueAddedTurnoverShare","averageGrossRemunerationPerEmployee","labourCost","grossOperatingMargin"}
+    scope=semantic.get("economicScope") or {}
+    if metric in economic_scope_metrics and (not scope.get("inPrimary") or scope.get("inChart")):
+        fail.append({"key":key,"kind":"economic-scope-placement","scope":scope})
+    if metric=="financialDebtProfile":
+        financial=semantic.get("financialShell") or {}
+        if not all(financial.get(name) for name in ("shell","current","historyButton","historyChart")):
+            fail.append({"key":key,"kind":"financial-standard-shell","financial":financial})
     for extra in s.get("extras") or []:
         if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
@@ -289,7 +370,10 @@ def main():
                 if theme==first_theme:
                     page.locator(".town-hero").screenshot(path=str(folder/f"hero-{vp}.png"),animations="disabled")
                 for metric in metrics:
-                    choose(page,metric);validate(state(page),theme,metric,f"{vp}:{theme}:{metric}",fail)
+                    choose(page,metric)
+                    key=f"{vp}:{theme}:{metric}"
+                    validate(state(page),theme,metric,key,fail)
+                    selector_graph_response(page,metric,key,fail)
                     if metric in review_metrics:
                         page.locator("#town-topic").screenshot(path=str(folder/f"review-{vp}-{theme}-{metric}.png"),animations="disabled")
             if errors: fail.append({"key":vp,"kind":"page-errors","errors":errors})
