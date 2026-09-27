@@ -527,9 +527,10 @@
       ? { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit }
       : aggregate;
     const unit = renderedTownCurrent ? renderedUnit : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
-    const scale = scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit);
-    const referencePosition = position(effectiveAggregate?.value, scale);
-    const zeroPosition = position(0, scale) ?? 0;
+    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
+    const displayScale = renderedTownCurrent ? scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit) : scale;
+    const referencePosition = position(effectiveAggregate?.value, displayScale);
+    const zeroPosition = position(0, displayScale) ?? 0;
     container.dataset.visualContract = renderedTownCurrent ? 'rendered' : 'canonical';
     container.dataset.visualUnit = unit || '';
     const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', effectiveAggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
@@ -537,7 +538,7 @@
     const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
     if (container.dataset.visualGrammarSignature === signature && existingLegend) return;
     container.dataset.visualGrammarSignature = signature;
-    container.dataset.viz = scale.kind === 'percent' ? 'percent-dotplot' : scale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
+    container.dataset.viz = displayScale.kind === 'percent' ? 'percent-dotplot' : displayScale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
 
     container.querySelector(':scope > .comparison-legend')?.remove();
     toolbarLegendHost?.querySelector('.comparison-legend')?.remove();
@@ -555,7 +556,7 @@
       rowEl.classList.add('comparison-row');
       const track = rowEl.querySelector('.bar-track');
       if (!track) return;
-      const x = position(value, scale);
+      const x = position(value, displayScale);
       if (x === null) {
         const missing = `<span class="comparison-missing">${row?.notApplicable ? 'Non applicabile' : 'Dato non disponibile'}</span>`;
         if (track.innerHTML !== missing) track.innerHTML = missing;
@@ -567,7 +568,7 @@
       const stemWidth = Math.abs(x - zeroPosition);
       const markup = `
         <span class="comparison-axis-line" aria-hidden="true"></span>
-        ${scale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
+        ${displayScale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
         ${referencePosition !== null ? `<span class="comparison-reference" style="left:${referencePosition}%" aria-hidden="true"></span>` : ''}
         <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
         <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
@@ -583,7 +584,7 @@
         ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
         : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
-      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${effectiveAggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
+      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${effectiveAggregate?.label || 'Versilia'}: ${formatAxis(effectiveAggregate?.value, unit)}`);
     });
 
     const axis = document.createElement('div');
@@ -595,7 +596,16 @@
         : scale.kind === 'focused'
           ? 'scala adattata ai prezzi'
           : 'scala con origine a zero';
-    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scaleLabel}</span><span>${formatAxis(scale.max, unit)}</span>`;
+    const displayScaleLabel = renderedTownCurrent
+      ? (displayScale.kind === 'percent'
+          ? (displayScale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(displayScale.max, unit)}`)
+          : displayScale.kind === 'signed'
+            ? 'lo zero è evidenziato'
+            : displayScale.kind === 'focused'
+              ? 'scala adattata ai prezzi'
+              : 'scala con origine a zero')
+      : scaleLabel;
+    axis.innerHTML = `<span>${formatAxis(displayScale.min, unit)}</span><span>${displayScaleLabel}</span><span>${formatAxis(displayScale.max, unit)}</span>`;
     container.append(axis);
 
     const note = document.createElement('p');
