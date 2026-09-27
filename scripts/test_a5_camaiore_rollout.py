@@ -91,6 +91,8 @@ def state(page):
           const parent=e.closest('.town-metric-primary');
           const c=getComputedStyle(e), s=select?getComputedStyle(select):null;
           const er=e.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
+          const pc=parent?getComputedStyle(parent):null;
+          const contentRight=pr && pc ? pr.right-parseFloat(pc.paddingRight||'0') : null;
           const resolveColor=value=>{
             const probe=document.createElement('i');
             probe.style.color=value;
@@ -104,7 +106,7 @@ def state(page):
             border:c.borderTopColor,
             selectBackground:s?.backgroundColor||'',
             selectBorder:s?.borderTopColor||'',
-            rightGap:pr?Math.round((pr.right-er.right)*10)/10:null,
+            rightGap:contentRight!==null?Math.round((contentRight-er.right)*10)/10:null,
             expectedSoft:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-soft').trim()),
             expectedLine:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-line').trim()),
             expectedAccent:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-accent').trim())
