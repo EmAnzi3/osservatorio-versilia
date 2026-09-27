@@ -1221,7 +1221,6 @@
       || toolbar?.querySelector(':scope > .town-data-actions');
     if (!toolbar) {
       const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '');
-      if (rolloutTown && chart && actions && actions.parentElement !== chart) chart.prepend(actions);
       if (rolloutTown && actions) actions.classList.add('a5-town-fallback-actions');
       return;
     }
@@ -1253,6 +1252,27 @@
 
   window.addEventListener('ov:ux-history-enhanced', syncA5TownChrome);
   window.addEventListener('ov:composite-choice', syncA5TownChrome);
+
+  function installA5TownChromeObserver() {
+    if (document.body.dataset.page !== 'town') return;
+    if (!A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '')) return;
+    const topic = document.getElementById('town-topic');
+    if (!topic || topic.dataset.a5ChromeObserver === '1') return;
+    topic.dataset.a5ChromeObserver = '1';
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        syncA5TownChrome();
+      });
+    };
+    new MutationObserver(schedule).observe(topic,{ childList:true, subtree:true });
+    schedule();
+  }
+
+  installA5TownChromeObserver();
 
   function libraryHistoryTableMarkup(metric) {
     const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);

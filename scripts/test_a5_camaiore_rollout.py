@@ -60,7 +60,7 @@ def state(page):
       const q=s=>document.querySelector(s), visible=e=>{if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>1&&r.height>1&&s.display!=='none'&&s.visibility!=='hidden'};
       const main=q('main.town-profile'), body=getComputedStyle(document.body);
       const standardToolbar=q('#town-topic>.history-panel.a5-shared-chart .ux-view-toolbar');
-      const fallbackActions=q('#town-topic>.history-panel.a5-shared-chart > .town-data-actions.a5-town-fallback-actions');
+      const fallbackActions=q('#town-topic > .town-data-actions.a5-town-fallback-actions');
       const actions=q('#town-topic .town-data-actions');
       return {
         classes:main?[...main.classList].sort():[], theme:main?.dataset.theme||'',
