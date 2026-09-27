@@ -1215,12 +1215,24 @@
     if (!main) return;
     const topic = main.querySelector('#town-topic');
     const chart = topic?.querySelector(':scope > .history-panel.a5-shared-chart');
-    const toolbar = chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
+    const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '');
+    const activeMetric = topic?.querySelector('.topic-controls [data-metric].active')?.dataset.metric
+      || new URL(location.href).searchParams.get('indicatore')
+      || '';
+    const climateMetric = rolloutTown && [
+      'climateTemperatureTrend50y',
+      'climatePrecipitationTrend50y',
+      'climateTminTrend',
+      'climateTmaxTrend'
+    ].includes(activeMetric);
+    const climateShell = climateMetric ? chart?.querySelector('[data-ov-climate-shell^="town-"]') : null;
+    const toolbar = climateMetric
+      ? climateShell?.querySelector(':scope > .ux-view-toolbar')
+      : chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
     const actions = topic?.querySelector(':scope > .town-data-actions')
       || chart?.querySelector(':scope > .town-data-actions')
       || toolbar?.querySelector(':scope > .town-data-actions');
     if (!toolbar) {
-      const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '');
       if (rolloutTown && actions) actions.classList.add('a5-town-fallback-actions');
       return;
     }
