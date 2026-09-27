@@ -97,10 +97,25 @@ def region(a,b,selector,key,fail,folder,threshold,tolerance):
 
 def choose(page,metric):
     active=page.locator('.topic-controls [data-metric].active')
-    if active.count()==1 and active.get_attribute("data-metric")==metric: return
-    loc=page.locator(f'.topic-controls [data-metric="{metric}"]')
-    if loc.count()!=1: raise AssertionError(f"Indicatore non selezionabile: {metric}")
-    loc.scroll_into_view_if_needed(); loc.click(); stable(page)
+    if active.count()==1 and active.get_attribute("data-metric")==metric:
+        return
+    selected=page.evaluate("""metric => {
+      const matches=[...document.querySelectorAll('.topic-controls [data-metric]')]
+        .filter(el => el.dataset.metric === metric);
+      if (matches.length !== 1) return matches.length;
+      // Native HTMLElement.click() intentionally bypasses Playwright's visibility
+      // precondition. The lock must traverse the complete metric catalog even when
+      // responsive/sidebar CSS places a valid tab outside the visible scroll area.
+      matches[0].click();
+      return true;
+    }""", metric)
+    if selected is not True:
+        raise AssertionError(f"Indicatore non selezionabile: {metric} (matches={selected})")
+    page.wait_for_function(
+        """metric => document.querySelector('.topic-controls [data-metric].active')?.dataset.metric === metric""",
+        metric,
+    )
+    stable(page)
 
 def overflow(s,key,fail):
     for name,dims in s["overflow"].items():
