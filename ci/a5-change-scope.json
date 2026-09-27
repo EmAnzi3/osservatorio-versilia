@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "Ripristino stati attivi delle schede comunali golden e lock permanenti anti-regressione su schede comunali e pagine tematiche approvate",
+  "purpose": "A5.5: rollout controllato della sola scheda comunale di Camaiore con lock tematici e golden comunali invarianti",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -12,6 +12,9 @@
     "ci/workflow-contract.json",
     "scripts/test_a5_thematic_golden_lock.py",
     ".github/workflows/a5-thematic-golden-lock.yml",
-    "ci/a5-thematic-golden-lock.json"
+    "ci/a5-thematic-golden-lock.json",
+    "assets/app-parts/03.txt",
+    "scripts/test_a5_camaiore_rollout.py",
+    ".github/workflows/a5-camaiore-rollout.yml"
   ]
 }
