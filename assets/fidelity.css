@@ -3433,6 +3433,15 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-top
 }
 
 
+/* A5 municipal mobility: one CTA, simultaneously toolbar action and contextual-map contract. */
+body[data-page="town"] main.a5-town-pilot .town-data-actions > .a5-town-map-entry {
+  display:contents;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+
 /* A5 mobility map action — final toolbar contract */
 .a5-map-action {
   min-height:28px !important;
