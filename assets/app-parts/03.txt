@@ -1216,7 +1216,16 @@
     const topic = main.querySelector('#town-topic');
     const chart = topic?.querySelector(':scope > .history-panel.a5-shared-chart');
     const toolbar = chart?.querySelector(':scope > .ux-view-shell > .ux-view-toolbar');
-    if (!toolbar) return;
+    const actions = topic?.querySelector(':scope > .town-data-actions')
+      || chart?.querySelector(':scope > .town-data-actions')
+      || toolbar?.querySelector(':scope > .town-data-actions');
+    if (!toolbar) {
+      const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '');
+      if (rolloutTown && chart && actions && actions.parentElement !== chart) chart.prepend(actions);
+      if (rolloutTown && actions) actions.classList.add('a5-town-fallback-actions');
+      return;
+    }
+    actions?.classList.remove('a5-town-fallback-actions');
 
     /* A5.4 structural contract: chart -> benchmark -> method/scale -> optional context.
        Do this after runtime enhancement so indicator-specific markup cannot reorder the shell. */
@@ -1238,7 +1247,6 @@
     if (copy && !copy.querySelector('.a5-toolbar-overline')) {
       copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
     }
-    const actions = topic.querySelector(':scope > .town-data-actions') || toolbar.querySelector(':scope > .town-data-actions');
     const toggle = toolbar.querySelector('.ux-view-toggle');
     if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions, toggle || null);
   }
@@ -1633,6 +1641,7 @@
     const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);
     context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (showBrainDrain ? brainDrainMarkup(data) : '');
     if (themeKey === 'sicurezza') installCrimeInteractions(data);
+    if (townPilot && A5_TOWN_PILOT.rolloutTowns.has(town.slug)) syncA5TownChrome();
   }
 
   function townBenchmarkMarkup(metric, row, town) {

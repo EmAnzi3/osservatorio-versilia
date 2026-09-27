@@ -3245,6 +3245,18 @@ body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-s
 body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions {
   display:none;
 }
+body[data-page="town"] main.a5-town-pilot .history-panel.a5-shared-chart > .town-data-actions.a5-town-fallback-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:0;
+  padding:10px 12px;
+  border:0;
+  border-bottom:1px solid var(--ds-border);
+  background:#fffdfa;
+}
 
 @media (max-width:1000px) {
   body[data-page="town"]:has(main.a5-town-pilot) .town-hero { min-height:430px; padding-top:24px; }
