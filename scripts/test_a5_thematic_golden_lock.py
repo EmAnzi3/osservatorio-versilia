@@ -113,7 +113,7 @@ def choose(page,metric):
         raise AssertionError(f"Indicatore non selezionabile: {metric} (matches={selected})")
     page.wait_for_function(
         """metric => document.querySelector('.topic-controls [data-metric].active')?.dataset.metric === metric""",
-        metric,
+        arg=metric,
     )
     stable(page)
 
