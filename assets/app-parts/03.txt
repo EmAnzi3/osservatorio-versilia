@@ -1524,7 +1524,7 @@
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
     const townPilot = syncA5TownPilotClass(document.querySelector('main.town-profile'), town, themeKey);
-    const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(town.slug);
+    const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(normalize(town?.name || '').replaceAll(' ', '-'));
     container.dataset.theme = themeKey;
     container.classList.toggle('a5-town-topic', townPilot);
     container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');
