@@ -588,10 +588,13 @@
     const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
     const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
     if (!metric || !pane || typeof shared !== 'function' || !pane.querySelector('.ux-comparison-bars')) return;
-    pane.innerHTML = shared(data, metricKey, {
+    const current = shared(data, metricKey, {
       selectedTown:'camaiore',
       metric:{ ...metric, meta:{ ...metric.meta, compositeType:null } }
     });
+    /* Preserve the v1.21 browser contract (.ux-comparison-bars) while replacing
+       only its visual renderer with the canonical A5 lollipop. */
+    pane.innerHTML = `<div class="ux-comparison-bars a5-library-current-host">${current}</div>`;
     pane.dataset.a5LibraryCurrent = 'lollipop';
   }
 

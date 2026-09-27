@@ -147,8 +147,8 @@ def state(page):
               return opts.length>0 && opts.length===cards.length && (labelsEquivalent||periodOnly);
             })(),
             demographicHistoryDuplicate:visible(q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail .demographic-history')),
-            pnrrDetail:visible(q('#town-topic [data-pnrr-town-detail="true"], #town-topic .pnrr-town-detail')),
-            legacyLibraryCurrent:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .ux-comparison-bars')),
+            communityPnrrDeepDive:visible(deep) && deepHeading==='Cassa, opere e PNRR',
+            legacyLibraryCurrent:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .ux-comparison-bars > .ux-bar-row')),
             economicScope:{
               inPrimary:visible(q('#town-topic .town-metric-primary > .economic-scope-control')),
               inChart:visible(q('#town-topic .history-panel.a5-shared-chart > .economic-scope-control'))
@@ -303,8 +303,8 @@ def validate(s,theme,metric,key,fail):
     if semantic.get("demographicHistoryDuplicate"):
         fail.append({"key":key,"kind":"duplicate-demographic-history"})
     pnrr_expected=theme=="comunita" and metric in {"pnrrFunding","pnrrConcluded"}
-    if bool(semantic.get("pnrrDetail")) != pnrr_expected:
-        fail.append({"key":key,"kind":"pnrr-detail-scope","expected":pnrr_expected,"actual":semantic.get("pnrrDetail")})
+    if bool(semantic.get("communityPnrrDeepDive")) != pnrr_expected:
+        fail.append({"key":key,"kind":"pnrr-detail-scope","expected":pnrr_expected,"actual":semantic.get("communityPnrrDeepDive")})
     if metric in {"libraryLoansPerResident","libraryActiveBorrowersPer100","libraryWeeklyOpeningHours"} and semantic.get("legacyLibraryCurrent"):
         fail.append({"key":key,"kind":"library-current-not-lollipop"})
     economic_scope_metrics={"businessTurnover","businessValueAdded","labourProductivity","turnoverPerPersonEmployed","valueAddedTurnoverShare","averageGrossRemunerationPerEmployee","labourCost","grossOperatingMargin"}

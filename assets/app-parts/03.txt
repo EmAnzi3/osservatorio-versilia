@@ -1233,12 +1233,10 @@
       || chart?.querySelector(':scope > .town-data-actions')
       || toolbar?.querySelector(':scope > .town-data-actions');
 
-    /* Camaiore-only content scoping. PNRR detail belongs only to the two PNRR
-       indicators; Frame-SBS scope belongs to the primary reading card. */
+    /* Camaiore-only content scoping: Frame-SBS scope belongs to the primary
+       reading card, not inside the chart. Community PNRR scoping is enforced
+       structurally by deepDiveMarkup, where the content is created. */
     if (rolloutTown) {
-      if (!['pnrrFunding','pnrrConcluded'].includes(activeMetric)) {
-        topic?.querySelectorAll('[data-pnrr-town-detail="true"], .pnrr-town-detail').forEach(node => node.remove());
-      }
       const economicScope = chart?.querySelector(':scope > .economic-scope-control');
       const primary = topic?.querySelector('.town-metric-primary');
       if (economicScope && primary && main.dataset.theme === 'economia') {
@@ -1338,7 +1336,27 @@
       copy.insertAdjacentHTML('afterbegin','<small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small>');
     }
     const toggle = toolbar.querySelector('.ux-view-toggle');
-    if (actions && actions.parentElement !== toolbar) toolbar.insertBefore(actions, toggle || null);
+
+    /* Keep the canonical action source in #town-topic. Moving it inside the
+       history toolbar made it vulnerable to runtime shell rebuilds, which could
+       delete CSV/PDF and the filtered map CTA. Render a toolbar clone instead
+       and delegate action buttons back to the canonical source. */
+    if (actions && !toolbar.querySelector(':scope > .a5-toolbar-actions')) {
+      const toolbarActions = actions.cloneNode(true);
+      toolbarActions.classList.add('a5-toolbar-actions');
+      toolbarActions.classList.remove('a5-town-fallback-actions');
+      ['[data-download]','[data-print]','[data-share]'].forEach(selector => {
+        const source = actions.querySelector(selector);
+        const clone = toolbarActions.querySelector(selector);
+        if (source && clone) {
+          clone.addEventListener('click', event => {
+            event.preventDefault();
+            source.click();
+          });
+        }
+      });
+      toolbar.insertBefore(toolbarActions, toggle || null);
+    }
   }
 
   window.addEventListener('ov:ux-history-enhanced', syncA5TownChrome);
