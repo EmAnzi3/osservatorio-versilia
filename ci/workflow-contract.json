@@ -358,6 +358,11 @@
       "path": ".github/workflows/a5-municipal-golden-lock.yml",
       "category": "specialized-gate",
       "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-thematic-golden-lock.yml",
+      "category": "specialized-gate",
+      "status": "active"
     }
   ]
 }
