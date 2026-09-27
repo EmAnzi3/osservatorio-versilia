@@ -3499,10 +3499,11 @@ body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme
 
 /* Non-Demografia composites must retain their native selector in Camaiore. */
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
-  display:flex !important;
-  align-items:flex-end;
+  display:grid !important;
+  grid-template-columns:max-content minmax(180px,1fr);
+  align-items:center;
   gap:10px;
-  width:min(100%,360px);
+  width:min(100%,400px);
   max-width:100%;
   margin:22px 0 0 auto;
   padding:10px 12px;
@@ -3513,17 +3514,23 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
   box-shadow:0 6px 18px rgba(16,47,69,.08);
 }
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector > span {
+  align-self:center;
+  margin:0;
   color:var(--ds-theme-accent);
   font-size:7px;
   font-weight:800;
+  line-height:1.2;
   letter-spacing:.08em;
   text-transform:uppercase;
+  white-space:nowrap;
 }
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select {
-  flex:1 1 220px;
+  display:block;
   width:100%;
   min-width:0;
+  height:34px;
   min-height:34px;
+  max-height:34px;
   padding:6px 30px 6px 10px;
   border:1px solid var(--ds-theme-accent);
   border-radius:8px;
@@ -3532,6 +3539,7 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
   font-size:9px;
   font-weight:750;
+  line-height:1.2;
 }
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:hover,
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:focus {
@@ -3540,10 +3548,20 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
 }
 @media(max-width:700px){
   body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
+    grid-template-columns:1fr;
     align-items:stretch;
-    flex-direction:column;
+    gap:7px;
     width:100%;
-    margin-left:0;
+    margin:16px 0 0;
+    padding:9px 10px;
+  }
+  body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector > span {
+    align-self:start;
+  }
+  body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select {
+    height:36px;
+    min-height:36px;
+    max-height:36px;
   }
 }
 

@@ -84,13 +84,19 @@ def state(page):
           background:getComputedStyle(q('.town-hero')).backgroundImage,
           credit:(q('.town-hero-photo-credit')?.textContent||'').replace(/\\s+/g,' ').trim()
         },
+        primaryTitle:(()=>{
+          const e=q('#town-topic .town-metric-primary > .a5-primary-label, #town-topic .town-metric-primary > .composite-primary-label');
+          return e ? {visible:visible(e),text:(e.textContent||'').trim()} : null;
+        })(),
         compositeSelector:(()=>{
           const e=q('#town-topic .town-metric-primary > .composite-read-selector');
           if(!e || !visible(e)) return null;
           const select=e.querySelector('select');
+          const label=e.querySelector(':scope > span');
           const parent=e.closest('.town-metric-primary');
           const c=getComputedStyle(e), s=select?getComputedStyle(select):null;
           const er=e.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
+          const lr=label?.getBoundingClientRect(), sr=select?.getBoundingClientRect();
           const pc=parent?getComputedStyle(parent):null;
           const contentRight=pr && pc ? pr.right-parseFloat(pc.paddingRight||'0') : null;
           const resolveColor=value=>{
@@ -107,6 +113,9 @@ def state(page):
             selectBackground:s?.backgroundColor||'',
             selectBorder:s?.borderTopColor||'',
             rightGap:contentRight!==null?Math.round((contentRight-er.right)*10)/10:null,
+            height:Math.round(er.height*10)/10,
+            selectHeight:sr?Math.round(sr.height*10)/10:null,
+            labelCenterDelta:lr&&sr?Math.round(Math.abs((lr.top+lr.height/2)-(sr.top+sr.height/2))*10)/10:null,
             expectedSoft:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-soft').trim()),
             expectedLine:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-line').trim()),
             expectedAccent:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-accent').trim())
@@ -199,12 +208,19 @@ def validate(s,theme,metric,key,fail):
     hero=s.get("hero") or {}
     if "Pontile_di_Lido_di_Camaiore" not in hero.get("background","") or "Pontile di Lido di Camaiore" not in hero.get("credit",""):
         fail.append({"key":key,"kind":"camaiore-hero","hero":hero})
+    title=s.get("primaryTitle")
+    if theme!="demografia" and (not title or not title.get("visible") or not title.get("text")):
+        fail.append({"key":key,"kind":"missing-primary-title","title":title})
     selector=s.get("compositeSelector")
     if theme!="demografia" and selector:
         if selector.get("background")!=selector.get("expectedSoft") or selector.get("border")!=selector.get("expectedLine") or selector.get("selectBorder")!=selector.get("expectedAccent"):
             fail.append({"key":key,"kind":"composite-selector-theme-color","selector":selector})
         if selector.get("rightGap") is not None and abs(selector["rightGap"])>2:
             fail.append({"key":key,"kind":"composite-selector-right-align","selector":selector})
+        if not key.startswith("mobile:") and selector.get("labelCenterDelta") is not None and selector["labelCenterDelta"]>2:
+            fail.append({"key":key,"kind":"selector-label-misaligned","selector":selector})
+        if key.startswith("mobile:") and (selector.get("height",0)>90 or selector.get("selectHeight",0)>42):
+            fail.append({"key":key,"kind":"selector-mobile-oversize","selector":selector})
     pill=s.get("demographyPill") or {}
     expected_bg="rgb(184, 75, 52)" if theme=="demografia" else "rgb(251, 233, 227)"
     if pill.get("background")!=expected_bg:
