@@ -96,6 +96,23 @@ def state(page):
           };
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
+        currentViz:(()=>{
+          const bars=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars');
+          if(!bars)return null;
+          const rows=[...bars.querySelectorAll(':scope > .bar-row')].map(el=>({
+            value:el.getAttribute('data-viz-value')||'',
+            unit:el.getAttribute('data-viz-unit')||'',
+            label:(el.querySelector('strong')?.textContent||'').trim(),
+            left:parseFloat(el.querySelector('.comparison-dot')?.style.left||'')
+          }));
+          return {
+            contract:bars.dataset.visualContract||'',
+            unit:bars.dataset.visualUnit||'',
+            axis:(bars.querySelector(':scope > .comparison-axis')?.textContent||'').replace(/\\s+/g,' ').trim(),
+            rows
+          };
+        })(),
+        incomeDetail:(()=>{const e=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] > .a5-town-income-detail');if(!e)return null;const r=e.getBoundingClientRect();const first=e.querySelector('.income-bands-detail > .composite-town-detail > div')?.getBoundingClientRect();return {visible:visible(e),heading:(e.querySelector('.a5-income-context-heading h4')?.textContent||'').trim(),leftPad:first?first.left-r.left:null,rightPad:first?r.right-first.right:null}})(),
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth]}
       };
     }""")
@@ -130,6 +147,35 @@ def validate(s,theme,metric,key,fail):
     for extra in s.get("extras") or []:
         if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
+    viz=s.get("currentViz")
+    if viz and viz.get("rows"):
+        if viz.get("contract")!="rendered":
+            fail.append({"key":key,"kind":"visual-contract-not-rendered","viz":viz})
+        units={row.get("unit","") for row in viz["rows"] if row.get("unit","")}
+        if len(units)>1:
+            fail.append({"key":key,"kind":"mixed-rendered-units","units":sorted(units)})
+        numeric=[]
+        for row in viz["rows"]:
+            try: value=float(row.get("value",""))
+            except (TypeError,ValueError): continue
+            left=row.get("left")
+            if isinstance(left,(int,float)):
+                numeric.append((value,left))
+        numeric.sort()
+        if any(numeric[i][1] > numeric[i+1][1] + 0.3 for i in range(len(numeric)-1)):
+            fail.append({"key":key,"kind":"value-position-mismatch","pairs":numeric})
+        suffix={"currency":"€","percent":"%","years":"anni","eurPerResident":"€/ab.","eurm2":"€/m²","rentm2":"€/m²"}.get(viz.get("unit"))
+        if suffix and suffix not in viz.get("axis",""):
+            fail.append({"key":key,"kind":"axis-unit-mismatch","unit":viz.get("unit"),"axis":viz.get("axis")})
+    if metric=="incomeDistribution":
+        viz=s.get("currentViz") or {}
+        if viz.get("unit")!="currency" or "€" not in viz.get("axis","") or "%" in viz.get("axis",""):
+            fail.append({"key":key,"kind":"income-summary-scale","viz":viz})
+        detail=s.get("incomeDetail") or {}
+        if not detail.get("visible") or "fascia di reddito" not in detail.get("heading","").lower():
+            fail.append({"key":key,"kind":"income-detail-placement","detail":detail})
+        if detail.get("leftPad") is not None and (detail["leftPad"]<18 or detail.get("rightPad",0)<18):
+            fail.append({"key":key,"kind":"income-detail-padding","detail":detail})
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--base",required=True);ap.add_argument("--report-dir",required=True);args=ap.parse_args()

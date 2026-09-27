@@ -15,6 +15,8 @@
     "ci/a5-thematic-golden-lock.json",
     "assets/app-parts/03.txt",
     "scripts/test_a5_camaiore_rollout.py",
-    ".github/workflows/a5-camaiore-rollout.yml"
+    ".github/workflows/a5-camaiore-rollout.yml",
+    "assets/app-parts/01.txt",
+    "assets/visual-grammar.js"
   ]
 }

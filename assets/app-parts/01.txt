@@ -28,7 +28,7 @@
       const href = route(`comuni/${rowSlug}/?${query}`);
       const missing = row.displayValue === null || row.displayValue === undefined;
       const formatted = formatMetricRowValue(row, row.displayValue, row.displayUnit);
-      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatted)}">
+      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" data-viz-value="${missing ? '' : html(String(row.displayValue))}" data-viz-unit="${html(row.displayUnit || '')}" aria-label="${html(row.town)}: ${html(formatted)}">
         <span class="bar-rank">${missing ? '—' : index + 1}</span><span class="bar-town">${html(row.town)}</span>
         <span class="bar-track"><span class="bar-fill" style="width:${missing ? 0 : Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
           <span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span>

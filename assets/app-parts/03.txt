@@ -1247,11 +1247,22 @@
       const toolsAnchor = benchmarkHost || chart;
       if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
     }
-    const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail');
+    const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail')
+      || chart?.querySelector('[data-view-pane="current"] > .composite-fixed-detail');
     if (fixedDetail) {
-      fixedDetail.classList.add('a5-town-extra-context');
-      const detailAnchor = toolsHost || benchmarkHost || chart;
-      if (detailAnchor) detailAnchor.after(fixedDetail);
+      if (rolloutTown && activeMetric === 'incomeDistribution') {
+        fixedDetail.classList.remove('a5-town-extra-context');
+        fixedDetail.classList.add('a5-town-income-detail');
+        if (!fixedDetail.querySelector(':scope > .a5-income-context-heading')) {
+          fixedDetail.insertAdjacentHTML('afterbegin',`<div class="a5-income-context-heading"><span class="overline">Approfondimento MEF</span><h4>Come si distribuiscono i dichiaranti per fascia di reddito</h4><p>La sintesi usa quattro gruppi leggibili; il dettaglio espandibile conserva separatamente le otto classi originali MEF e i relativi dichiaranti.</p></div>`);
+        }
+        const currentPane = chart.querySelector('[data-view-pane="current"]');
+        if (currentPane && fixedDetail.parentElement !== currentPane) currentPane.append(fixedDetail);
+      } else {
+        fixedDetail.classList.add('a5-town-extra-context');
+        const detailAnchor = toolsHost || benchmarkHost || chart;
+        if (detailAnchor) detailAnchor.after(fixedDetail);
+      }
     }
 
     const copy = toolbar.querySelector('.ux-view-toolbar-copy');

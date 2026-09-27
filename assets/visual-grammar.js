@@ -500,23 +500,38 @@
     if (!metric) return;
 
     const normalized = normalizedFor(container);
-    const compositeAggregate = compositeAggregateFor(container, metric);
-    const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const rows = [...container.querySelectorAll(':scope > .bar-row')];
     if (!rows.length) return;
 
+    const renderedTownCurrent = document.body.dataset.page === 'town'
+      && document.body.dataset.town === 'camaiore'
+      && Boolean(container.closest('[data-view-pane="current"]'))
+      && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
+
+    const compositeAggregate = renderedTownCurrent ? null : compositeAggregateFor(container, metric);
+    const canonicalAggregate = compositeAggregate || aggregateFor(metric, normalized);
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
+      if (renderedTownCurrent) {
+        return { rowEl, row, value:finite(rowEl.dataset.vizValue), unit:rowEl.dataset.vizUnit || null };
+      }
       const selected = compositeSelectionFor(container, metric, row);
       return { rowEl, row, value: selected ? selected.value : valueFor(row, metric, normalized), unit:selected?.unit || null };
     });
     const first = mapped.find(item => item.row);
     const firstRow = first?.row;
-    const unit = first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized);
+    const renderedUnit = renderedTownCurrent ? (mapped.find(item => item.unit)?.unit || '') : '';
+    const renderedValues = renderedTownCurrent ? mapped.map(item => finite(item.value)).filter(value => value !== null) : [];
+    const aggregate = renderedTownCurrent
+      ? { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit }
+      : canonicalAggregate;
+    const unit = renderedTownCurrent ? renderedUnit : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
     const referencePosition = position(aggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
+    container.dataset.visualContract = renderedTownCurrent ? 'rendered' : 'canonical';
+    container.dataset.visualUnit = unit || '';
     const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
     const toolbarLegendHost = container.closest('.selectable-topic-bars')?.querySelector('.compare-chart-legend-host');
     const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
