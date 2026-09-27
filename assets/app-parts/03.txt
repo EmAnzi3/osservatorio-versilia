@@ -1272,8 +1272,6 @@
     schedule();
   }
 
-  installA5TownChromeObserver();
-
   function libraryHistoryTableMarkup(metric) {
     const keys = new Set(['libraryLoansPerResident','libraryActiveBorrowersPer100','libraryWeeklyOpeningHours']);
     if (!keys.has(metric?.meta?.key)) return '';
@@ -1661,7 +1659,10 @@
     const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);
     context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (showBrainDrain ? brainDrainMarkup(data) : '');
     if (themeKey === 'sicurezza') installCrimeInteractions(data);
-    if (townPilot && A5_TOWN_PILOT.rolloutTowns.has(town.slug)) syncA5TownChrome();
+    if (townPilot && A5_TOWN_PILOT.rolloutTowns.has(town.slug)) {
+      installA5TownChromeObserver();
+      syncA5TownChrome();
+    }
   }
 
   function townBenchmarkMarkup(metric, row, town) {
