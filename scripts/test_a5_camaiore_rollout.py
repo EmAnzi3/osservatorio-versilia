@@ -99,20 +99,47 @@ def state(page):
         currentViz:(()=>{
           const bars=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars');
           if(!bars)return null;
-          const rows=[...bars.querySelectorAll(':scope > .bar-row')].map(el=>({
-            value:el.getAttribute('data-viz-value')||'',
-            unit:el.getAttribute('data-viz-unit')||'',
-            label:(el.querySelector('strong')?.textContent||'').trim(),
-            left:parseFloat(el.querySelector('.comparison-dot')?.style.left||'')
-          }));
+          const numberFromLabel=text=>{
+            const match=String(text||'').match(/-?[\\d.]+(?:,\\d+)?/);
+            if(!match)return null;
+            const value=Number(match[0].replaceAll('.','').replace(',','.'));
+            return Number.isFinite(value)?value:null;
+          };
+          const visibleUnit=text=>{
+            const value=String(text||'');
+            if(value.includes('€/ab.'))return 'eurPerResident';
+            if(value.includes('€/m²')||value.includes('€ /m²'))return 'eurArea';
+            if(value.includes('€/l')||value.includes('€ /l'))return 'eurLiter';
+            if(value.includes('€'))return 'currency';
+            if(value.includes('%'))return 'percent';
+            if(/ogni\\s+1\\.000/i.test(value))return 'per1000';
+            if(/ogni\\s+100/i.test(value))return 'per100';
+            if(/\\banni\\b/i.test(value))return 'years';
+            if(/\\/10\\b/.test(value))return 'decile';
+            if(/\\/20\\b/.test(value))return 'ventile';
+            return '';
+          };
+          const rows=[...bars.querySelectorAll(':scope > .bar-row')].map(el=>{
+            const label=(el.querySelector('strong')?.textContent||'').trim();
+            return {
+              value:el.getAttribute('data-viz-value')||'',
+              unit:el.getAttribute('data-viz-unit')||'',
+              label,
+              displayValue:numberFromLabel(label),
+              displayUnit:visibleUnit(label),
+              left:parseFloat(el.querySelector('.comparison-dot')?.style.left||'')
+            };
+          });
+          const axis=(bars.querySelector(':scope > .comparison-axis')?.textContent||'').replace(/\\s+/g,' ').trim();
           return {
             contract:bars.dataset.visualContract||'',
             unit:bars.dataset.visualUnit||'',
-            axis:(bars.querySelector(':scope > .comparison-axis')?.textContent||'').replace(/\\s+/g,' ').trim(),
+            axis,
+            axisVisibleUnit:visibleUnit(axis),
             rows
           };
         })(),
-        incomeDetail:(()=>{const e=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] > .a5-town-income-detail');if(!e)return null;const r=e.getBoundingClientRect();const first=e.querySelector('.income-bands-detail > .composite-town-detail > div')?.getBoundingClientRect();return {visible:visible(e),heading:(e.querySelector('.a5-income-context-heading h4')?.textContent||'').trim(),leftPad:first?first.left-r.left:null,rightPad:first?r.right-first.right:null}})(),
+        incomeDetail:(()=>{const e=q('#town-topic .history-panel.a5-shared-chart > .a5-town-income-detail');if(!e)return null;const r=e.getBoundingClientRect();const first=e.querySelector('.income-bands-detail > .composite-town-detail > div')?.getBoundingClientRect();return {visible:visible(e),heading:(e.querySelector('.a5-income-context-heading h4')?.textContent||'').trim(),leftPad:first?first.left-r.left:null,rightPad:first?r.right-first.right:null}})(),
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth]}
       };
     }""")
@@ -149,27 +176,30 @@ def validate(s,theme,metric,key,fail):
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
     viz=s.get("currentViz")
     if viz and viz.get("rows"):
-        if viz.get("contract")!="rendered":
-            fail.append({"key":key,"kind":"visual-contract-not-rendered","viz":viz})
-        units={row.get("unit","") for row in viz["rows"] if row.get("unit","")}
-        if len(units)>1:
-            fail.append({"key":key,"kind":"mixed-rendered-units","units":sorted(units)})
+        rendered_units={row.get("unit","") for row in viz["rows"] if row.get("unit","")}
+        if len(rendered_units)>1:
+            fail.append({"key":key,"kind":"mixed-rendered-units","units":sorted(rendered_units)})
         numeric=[]
         for row in viz["rows"]:
-            try: value=float(row.get("value",""))
-            except (TypeError,ValueError): continue
+            value=row.get("displayValue")
             left=row.get("left")
-            if isinstance(left,(int,float)):
-                numeric.append((value,left))
+            if isinstance(value,(int,float)) and isinstance(left,(int,float)):
+                numeric.append((float(value),float(left)))
         numeric.sort()
         if any(numeric[i][1] > numeric[i+1][1] + 0.3 for i in range(len(numeric)-1)):
-            fail.append({"key":key,"kind":"value-position-mismatch","pairs":numeric})
+            fail.append({"key":key,"kind":"visible-value-position-mismatch","pairs":numeric,"viz":viz})
+        visible_units={row.get("displayUnit","") for row in viz["rows"] if row.get("displayUnit","")}
+        axis_visible=viz.get("axisVisibleUnit","")
+        if len(visible_units)>1:
+            fail.append({"key":key,"kind":"mixed-visible-units","units":sorted(visible_units),"viz":viz})
+        elif visible_units and axis_visible and next(iter(visible_units))!=axis_visible:
+            fail.append({"key":key,"kind":"visible-axis-unit-mismatch","rowUnit":next(iter(visible_units)),"axisUnit":axis_visible,"viz":viz})
         suffix={"currency":"€","percent":"%","years":"anni","eurPerResident":"€/ab.","eurm2":"€/m²","rentm2":"€/m²"}.get(viz.get("unit"))
-        if suffix and suffix not in viz.get("axis",""):
+        if viz.get("contract")=="rendered" and suffix and suffix not in viz.get("axis",""):
             fail.append({"key":key,"kind":"axis-unit-mismatch","unit":viz.get("unit"),"axis":viz.get("axis")})
     if metric=="incomeDistribution":
         viz=s.get("currentViz") or {}
-        if viz.get("unit")!="currency" or "€" not in viz.get("axis","") or "%" in viz.get("axis",""):
+        if viz.get("contract")!="rendered" or viz.get("unit")!="currency" or "€" not in viz.get("axis","") or "%" in viz.get("axis",""):
             fail.append({"key":key,"kind":"income-summary-scale","viz":viz})
         detail=s.get("incomeDetail") or {}
         if not detail.get("visible") or "fascia di reddito" not in detail.get("heading","").lower():
