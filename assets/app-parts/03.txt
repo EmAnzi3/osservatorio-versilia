@@ -1345,6 +1345,7 @@
       const toolbarActions = actions.cloneNode(true);
       toolbarActions.classList.add('a5-toolbar-actions');
       toolbarActions.classList.remove('a5-town-fallback-actions');
+      toolbarActions.classList.remove('town-data-actions');
       ['[data-download]','[data-print]','[data-share]'].forEach(selector => {
         const source = actions.querySelector(selector);
         const clone = toolbarActions.querySelector(selector);

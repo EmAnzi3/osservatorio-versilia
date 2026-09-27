@@ -62,7 +62,10 @@ def state(page):
       const standardToolbar=q('#town-topic>.history-panel.a5-shared-chart .ux-view-toolbar');
       const specialToolbar=q('#town-topic>.history-panel.a5-shared-chart > .a5-special-renderer-toolbar');
       const fallbackActions=q('#town-topic > .town-data-actions.a5-town-fallback-actions');
-      const actions=q('#town-topic .town-data-actions');
+      const actions=standardToolbar?.querySelector(':scope > .data-actions')
+        || specialToolbar?.querySelector(':scope > .data-actions')
+        || fallbackActions
+        || q('#town-topic .town-data-actions');
       return {
         classes:main?[...main.classList].sort():[], theme:main?.dataset.theme||'',
         activeTheme:q('[data-profile-theme].active')?.dataset.profileTheme||'',
