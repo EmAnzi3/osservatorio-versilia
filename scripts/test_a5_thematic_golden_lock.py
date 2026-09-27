@@ -61,10 +61,8 @@ def state(page):
         layout:{nav:pack(q('.compare-context-nav')),topic:pack(q('.topic-hero')),sidebar:pack(q('#compare-workspace>.topic-controls')),workspace:pack(q('#compare-workspace')),chart:pack(chart),toolbar:pack(q('#compare-bars .ux-view-toolbar')),benchmark:pack(q('#compare-benchmark')),tools:pack(q('#compare-tools')),territories:pack(q('#compare-territori'))},
         structure:{themes:[...document.querySelectorAll('[data-context-theme]')].map(x=>x.dataset.contextTheme),metrics:[...document.querySelectorAll('.topic-controls [data-metric]')].map(x=>x.dataset.metric),groups:[...document.querySelectorAll('.topic-controls .metric-group')].map(x=>[x.dataset.section||'',x.querySelectorAll('[data-metric]').length]),children:[...(main?.children||[])].map(x=>[x.tagName,x.id||'', [...x.classList].sort().join(' ')]),chart:[chart?.querySelectorAll('svg').length||0,chart?.querySelectorAll('canvas').length||0,chart?.querySelectorAll('button').length||0,chart?.querySelectorAll('details').length||0]},
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth],workspace:q('#compare-workspace')?[q('#compare-workspace').scrollWidth,q('#compare-workspace').clientWidth]:null,chart:chart?[chart.scrollWidth,chart.clientWidth]:null},
-        html:main?.innerHTML||''
       };
     }""")
-    raw["htmlSha256"]=sha(raw.pop("html"))
     return raw
 
 def diff_pixels(a,b,threshold):
@@ -117,9 +115,24 @@ def choose(page,metric):
     )
     stable(page)
 
-def overflow(s,key,fail):
-    for name,dims in s["overflow"].items():
-        if dims and dims[0]>dims[1]+2: fail.append({"key":key,"kind":"horizontal-overflow","surface":name,"scrollWidth":dims[0],"clientWidth":dims[1]})
+def overflow(baseline,current,key,fail):
+    for name in sorted(set(baseline["overflow"]) | set(current["overflow"])):
+        before=baseline["overflow"].get(name)
+        after=current["overflow"].get(name)
+        if not before or not after:
+            continue
+        before_excess=max(0,before[0]-before[1])
+        after_excess=max(0,after[0]-after[1])
+        if after_excess>before_excess+2:
+            fail.append({
+                "key":key,
+                "kind":"horizontal-overflow-regression",
+                "surface":name,
+                "baselineExcess":before_excess,
+                "currentExcess":after_excess,
+                "baseline":before,
+                "current":after,
+            })
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--current-base",required=True); ap.add_argument("--baseline-base",required=True); ap.add_argument("--config",required=True); ap.add_argument("--report-dir",required=True); args=ap.parse_args()
@@ -138,7 +151,7 @@ def main():
                     choose(a,metric); choose(b,metric); key=f"{vp['name']}:{theme}:{metric}"; sa=state(a); sb=state(b)
                     if sa!=sb: fail.append({"key":key,"kind":"state-diff","baseline":sa,"current":sb})
                     if sb["main"]["theme"]!=theme or sb["active"]["metric"]!=metric: fail.append({"key":key,"kind":"active-state","state":sb["active"],"theme":sb["main"]["theme"]})
-                    overflow(sb,key,fail)
+                    overflow(sa,sb,key,fail)
                     for rn,sel in METRIC_REGIONS: region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
             if aerr: fail.append({"key":vp["name"],"kind":"baseline-page-errors","errors":aerr})
             if berr: fail.append({"key":vp["name"],"kind":"current-page-errors","errors":berr})
