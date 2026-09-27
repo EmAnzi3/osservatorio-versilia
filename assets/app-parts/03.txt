@@ -1370,8 +1370,8 @@
     },
     camaiore: {
       institutionYear: 'sec. XIII',
-      heroCredit: 'Raecid / Wikimedia Commons',
-      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Camaiore_Countryside.jpg'
+      heroCredit: 'Ilmendicantediluce / Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Camaiore_-_Chiesa_di_Santo_Stefano_-_2025-09-12_09-03-52_001.jpg'
     },
     massarosa: {
       institutionYear: '1869',
@@ -1409,7 +1409,7 @@
           <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
         </dl>
       </div>
-      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · Passeggiata a mare · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
+      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${slug === 'camaiore' ? 'panorama del centro' : 'Passeggiata a mare'} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
     </header>`;
   }
 
@@ -1524,6 +1524,7 @@
     const rank = ranked.findIndex(r => r.code === town.code) + 1;
     const container = document.getElementById('town-topic');
     const townPilot = syncA5TownPilotClass(document.querySelector('main.town-profile'), town, themeKey);
+    const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(town.slug);
     container.dataset.theme = themeKey;
     container.classList.toggle('a5-town-topic', townPilot);
     container.classList.toggle('erp-arrears-view', metricKey === 'erpArrears');
@@ -1553,6 +1554,9 @@
     const primaryLabel = drinkingQuality ? 'Consultazione analitica' : remediation ? 'Procedimenti SISBON' : selectable ? summary.label : (composite ? (metric.meta.primaryLabel || 'Valore di riferimento') : '');
     const primaryValue = drinkingQuality ? `${number0.format(metric.parameterDefinitions?.length||0)} parametri GAIA` : remediation ? `${number0.format(remediationPartValue(row,'active'))} attivi · ${number0.format(remediationPartValue(row,'closed'))} chiusi` : selectable ? summary.formatted : formatMetricRowValue(row,row.value,metric.meta.unit);
     const primaryDescription = financialProfile ? initialFinancialReading.description : metric.meta.description;
+    const legacyDeepDive = rolloutTown && themeKey === 'economia' && metricKey !== 'incomeDistribution'
+      ? ''
+      : deepDiveMarkup(data, town, themeKey, metricKey);
     const positionMarkup = selectable
       ? `<aside class="versilia-position composite-versilia-position" data-composite-selection="summary"><span class="overline">Rispetto alla Versilia</span><strong data-composite-delta>${html(summaryDelta.headline)}<small>${html(summaryDelta.direction)}</small></strong><p>Il confronto descrive soltanto lo scostamento numerico e non esprime un giudizio di qualità.</p><div><span data-composite-aggregate-label>${html(aggregateSummary.label)}</span><b data-composite-aggregate-value>${html(aggregateSummary.formatted)}</b></div></aside>`
       : (drinkingQuality
@@ -1574,7 +1578,7 @@
         ${extractiveProductionHistory ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : (composite ? `<div class="composite-fixed-detail">${compositeTownMarkup(metric, row)}</div>` : (historical ? seriesChart(row.series, metric.meta.unit, `${metric.meta.label} a ${town.name}`) : `<div class="comparison-bars">${barRows(data, metricKey, { selectedTown: normalize(town.name).replaceAll(' ', '-') })}</div>`))}</section>
       ${coastTownDetailMarkup(metric,row)}
       ${extractiveTownDetailMarkup(metric,row)}
-      ${deepDiveMarkup(data, town, themeKey, metricKey)}
+      ${legacyDeepDive}
       ${erpArrearsDetailMarkup(metric,row)}
       ${(metricKey.startsWith('slowMobility') || demographicBreakdown || sexBreakdown || ['drinkingWaterQuality','remediationProceedings'].includes(metric.meta.compositeType)) ? '' : (townPilot ? `<section class="a5-benchmark-host town-benchmark-host">${benchmarkMarkup(metric, metric.aggregate, metric.meta.unit, row)}</section>` : townBenchmarkMarkup(metric, row, town))}
       ${townPilot ? `<section class="compare-post-benchmark-tools town-post-benchmark-tools">${financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric)}</section>` : (financialProfile ? `<div data-financial-profile-method>${financialProfileMethodDisclosure(metric,'part-0')}</div>` : methodDisclosure(metric))}
@@ -1669,9 +1673,10 @@
 
     const context = document.getElementById('town-context');
     const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);
-    context.innerHTML = themeKey === 'sicurezza' ? crimeMarkup(data) : (showBrainDrain ? brainDrainMarkup(data) : '');
-    if (themeKey === 'sicurezza') installCrimeInteractions(data);
-    if (townPilot && A5_TOWN_PILOT.rolloutTowns.has(town.slug)) {
+    const showCrimeContext = themeKey === 'sicurezza' && !rolloutTown;
+    context.innerHTML = showCrimeContext ? crimeMarkup(data) : (showBrainDrain ? brainDrainMarkup(data) : '');
+    if (showCrimeContext) installCrimeInteractions(data);
+    if (townPilot && rolloutTown) {
       installA5TownChromeObserver();
       syncA5TownChrome();
     }

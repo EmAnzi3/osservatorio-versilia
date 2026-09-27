@@ -3462,13 +3462,40 @@ body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="
 body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Camaiore%20Countryside.jpg") center 54%/cover no-repeat;
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Camaiore_-_Chiesa_di_Santo_Stefano_-_2025-09-12_09-03-52_001.jpg") center 48%/cover no-repeat;
 }
 body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) #app {
   background:
     radial-gradient(circle at 8% 16%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
 }
+
+/* Camaiore theme navigation keeps each theme's own color instead of inheriting the active page theme. */
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme]{
+  --a5-pill-accent:#526974;
+  --a5-pill-soft:#f4f1eb;
+  --a5-pill-line:#d8d0c5;
+  border-color:var(--a5-pill-line) !important;
+  background:var(--a5-pill-soft) !important;
+  color:var(--a5-pill-accent) !important;
+}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="demografia"]{--a5-pill-accent:#b84b34;--a5-pill-soft:#fbe9e3;--a5-pill-line:#efc9be}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="economia"]{--a5-pill-accent:#39795d;--a5-pill-soft:#f5faf6;--a5-pill-line:#c8ddd1}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="lavoro"]{--a5-pill-accent:#9b6818;--a5-pill-soft:#fff9eb;--a5-pill-line:#ead5a7}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="istruzione"]{--a5-pill-accent:#7357a8;--a5-pill-soft:#f8f5fc;--a5-pill-line:#d8cfeb}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="salute"]{--a5-pill-accent:#aa465b;--a5-pill-soft:#fff5f7;--a5-pill-line:#eccbd3}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="mobilita"]{--a5-pill-accent:#16749a;--a5-pill-soft:#f1f9fc;--a5-pill-line:#c5dfe9}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="sicurezza"]{--a5-pill-accent:#a75a29;--a5-pill-soft:#fff7f1;--a5-pill-line:#ebcfbd}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="abitare"]{--a5-pill-accent:#6d5ca6;--a5-pill-soft:#f8f6fc;--a5-pill-line:#d7d0e9}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="ambiente"]{--a5-pill-accent:#4d873f;--a5-pill-soft:#f4faf2;--a5-pill-line:#cbdfc5}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="bilanci"]{--a5-pill-accent:#425c6b;--a5-pill-soft:#f0f4f6;--a5-pill-line:#b9c5cf}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="comunita"]{--a5-pill-accent:#7a456b;--a5-pill-soft:#f8f0f5;--a5-pill-line:#d7bfd1}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme].active{
+  border-color:var(--a5-pill-accent) !important;
+  background:var(--a5-pill-accent) !important;
+  color:#fff !important;
+}
+body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme].active small{color:rgba(255,255,255,.82) !important}
 
 /* Non-Demografia composites must retain their native selector in Camaiore. */
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
@@ -3707,6 +3734,18 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions{
   display:none;
 }
+/* A5.5 renderer containment: all non-core direct renderer blocks span the municipal workspace. */
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic >
+  :not(.town-topic-heading):not(.topic-controls):not(.town-metric-layout):not(.history-panel):not(.town-benchmark-host):not(.town-post-benchmark-tools):not(.town-data-actions){
+  grid-column:1 / -1;
+  grid-row:auto;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  justify-self:stretch;
+}
+
 @media (max-width:900px){
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{ grid-template-columns:1fr; }
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,

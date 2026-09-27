@@ -80,6 +80,17 @@ def state(page):
           line:body.getPropertyValue('--ds-theme-line').trim()
         },
         selected:[...document.querySelectorAll('#town-topic .bar-row.comparison-row.selected')].map(x=>(x.textContent||'').replace(/\\s+/g,' ').trim()),
+        hero:{
+          background:getComputedStyle(q('.town-hero')).backgroundImage,
+          credit:(q('.town-hero-photo-credit')?.textContent||'').replace(/\\s+/g,' ').trim()
+        },
+        demographyPill:(()=>{const e=q('[data-profile-theme="demografia"]');if(!e)return null;const c=getComputedStyle(e);return {active:e.classList.contains('active'),background:c.backgroundColor,border:c.borderTopColor,color:c.color}})(),
+        semantic:{
+          incomeText:/Redditi dichiarati|Mostra le fasce di reddito/i.test(document.body.innerText),
+          economyDeepDive:visible(q('#town-topic > .topic-deep-dive')),
+          crimeContext:visible(q('#town-context .crime-context'))
+        },
+        extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth]}
       };
     }""")
@@ -97,6 +108,23 @@ def validate(s,theme,metric,key,fail):
         if dims[0]>dims[1]+2: fail.append({"key":key,"kind":"horizontal-overflow","surface":name,"dims":dims})
     if s["selected"] and not any("Camaiore" in x for x in s["selected"]):
         fail.append({"key":key,"kind":"selected-row","rows":s["selected"]})
+    hero=s.get("hero") or {}
+    if "Camaiore_-_Chiesa_di_Santo_Stefano" not in hero.get("background","") or "Passeggiata a mare" in hero.get("credit",""):
+        fail.append({"key":key,"kind":"camaiore-hero","hero":hero})
+    pill=s.get("demographyPill") or {}
+    expected_bg="rgb(184, 75, 52)" if theme=="demografia" else "rgb(251, 233, 227)"
+    if pill.get("background")!=expected_bg:
+        fail.append({"key":key,"kind":"demography-pill-color","theme":theme,"pill":pill,"expectedBackground":expected_bg})
+    semantic=s.get("semantic") or {}
+    if theme=="economia" and metric!="incomeDistribution" and semantic.get("incomeText"):
+        fail.append({"key":key,"kind":"income-context-leak"})
+    if theme=="economia" and metric!="incomeDistribution" and semantic.get("economyDeepDive"):
+        fail.append({"key":key,"kind":"economy-deep-dive-leak"})
+    if theme=="sicurezza" and semantic.get("crimeContext"):
+        fail.append({"key":key,"kind":"crime-context-leak"})
+    for extra in s.get("extras") or []:
+        if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
+            fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--base",required=True);ap.add_argument("--report-dir",required=True);args=ap.parse_args()
@@ -108,6 +136,7 @@ def main():
         if total!=EXPECTED or unique!=EXPECTED:
             fail.append({"key":"catalog","kind":"metric-contract","expected":EXPECTED,"total":total,"unique":unique,"counts":{k:len(v) for k,v in contract.items()}})
         first_theme=next(iter(contract))
+        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","climateTemperatureTrend50y","financialDebtProfile"}
         for vp,w,h in VIEWPORTS:
             page=browser.new_page(viewport={"width":w,"height":h});errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
             for theme,metrics in contract.items():
@@ -117,6 +146,8 @@ def main():
                     page.locator(".town-hero").screenshot(path=str(folder/f"hero-{vp}.png"),animations="disabled")
                 for metric in metrics:
                     choose(page,metric);validate(state(page),theme,metric,f"{vp}:{theme}:{metric}",fail)
+                    if metric in review_metrics:
+                        page.locator("#town-topic").screenshot(path=str(folder/f"review-{vp}-{theme}-{metric}.png"),animations="disabled")
             if errors: fail.append({"key":vp,"kind":"page-errors","errors":errors})
             page.close()
         browser.close()
