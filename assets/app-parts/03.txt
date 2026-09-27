@@ -1250,7 +1250,18 @@
     const fixedDetail = chart?.querySelector(':scope > .composite-fixed-detail')
       || chart?.querySelector('[data-view-pane="current"] > .composite-fixed-detail');
     if (fixedDetail) {
-      if (rolloutTown && activeMetric === 'incomeSourceProfile') {
+      const selector = topic.querySelector('.town-metric-primary > .composite-read-selector select[data-composite-choice]');
+      const repeatedCards = fixedDetail.querySelector(':scope > .composite-town-mobility');
+      const normalizeLabel = value => normalize(String(value || '')).replace(/\s+/g,' ').trim();
+      const selectorLabels = selector ? [...selector.options].map(option => normalizeLabel(option.textContent)) : [];
+      const cardLabels = repeatedCards ? [...repeatedCards.querySelectorAll(':scope > article > span')].map(node => normalizeLabel(node.textContent)) : [];
+      const selectorDrivenDuplicate = Boolean(
+        rolloutTown
+        && selectorLabels.length > 0
+        && selectorLabels.length === cardLabels.length
+        && selectorLabels.every(label => cardLabels.some(card => card === label || card.includes(label) || label.includes(card)))
+      );
+      if (selectorDrivenDuplicate) {
         fixedDetail.remove();
       } else if (rolloutTown && activeMetric === 'incomeDistribution') {
         fixedDetail.classList.remove('a5-town-extra-context');

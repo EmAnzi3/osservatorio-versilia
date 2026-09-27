@@ -88,12 +88,26 @@ def state(page):
           const e=q('#town-topic .town-metric-primary > .composite-read-selector');
           if(!e || !visible(e)) return null;
           const select=e.querySelector('select');
+          const parent=e.closest('.town-metric-primary');
           const c=getComputedStyle(e), s=select?getComputedStyle(select):null;
+          const er=e.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
+          const resolveColor=value=>{
+            const probe=document.createElement('i');
+            probe.style.color=value;
+            document.body.append(probe);
+            const out=getComputedStyle(probe).color;
+            probe.remove();
+            return out;
+          };
           return {
             background:c.backgroundColor,
             border:c.borderTopColor,
             selectBackground:s?.backgroundColor||'',
-            selectBorder:s?.borderTopColor||''
+            selectBorder:s?.borderTopColor||'',
+            rightGap:pr?Math.round((pr.right-er.right)*10)/10:null,
+            expectedSoft:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-soft').trim()),
+            expectedLine:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-line').trim()),
+            expectedAccent:resolveColor(getComputedStyle(document.body).getPropertyValue('--ds-theme-accent').trim())
           };
         })(),
         demographyPill:(()=>{const e=q('[data-profile-theme="demografia"]');if(!e)return null;const c=getComputedStyle(e);return {active:e.classList.contains('active'),background:c.backgroundColor,border:c.borderTopColor,color:c.color}})(),
@@ -105,7 +119,17 @@ def state(page):
             incomeText:deepHeading==='Redditi dichiarati' || /Mostra le fasce di reddito/i.test(deepSummary),
             economyDeepDive:visible(deep),
             crimeContext:visible(q('#town-context .crime-context')),
-            redundantCompositeDetail:visible(q('#town-topic > .composite-fixed-detail.a5-town-extra-context, #town-topic .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-extra-context'))
+            redundantCompositeDetail:visible(q('#town-topic > .composite-fixed-detail.a5-town-extra-context, #town-topic .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-extra-context')),
+            selectorDrivenDuplicate:(()=>{
+              const select=q('#town-topic .town-metric-primary > .composite-read-selector select[data-composite-choice]');
+              const fixed=q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail, #town-topic .history-panel.a5-shared-chart [data-view-pane="current"] > .composite-fixed-detail');
+              const cards=fixed?.querySelector(':scope > .composite-town-mobility');
+              if(!select || !cards || !visible(fixed)) return false;
+              const norm=value=>String(value||'').toLocaleLowerCase('it').replace(/\\s+/g,' ').trim();
+              const opts=[...select.options].map(o=>norm(o.textContent));
+              const labels=[...cards.querySelectorAll(':scope > article > span')].map(e=>norm(e.textContent));
+              return opts.length>0 && opts.length===labels.length && opts.every(label=>labels.some(card=>card===label||card.includes(label)||label.includes(card)));
+            })()
           };
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
@@ -175,9 +199,10 @@ def validate(s,theme,metric,key,fail):
         fail.append({"key":key,"kind":"camaiore-hero","hero":hero})
     selector=s.get("compositeSelector")
     if theme!="demografia" and selector:
-        expected={"background":"rgb(216, 232, 236)","border":"rgb(157, 184, 192)","selectBackground":"rgb(242, 248, 249)","selectBorder":"rgb(127, 163, 173)"}
-        if any(selector.get(k)!=v for k,v in expected.items()):
-            fail.append({"key":key,"kind":"composite-selector-style","selector":selector,"expected":expected})
+        if selector.get("background")!=selector.get("expectedSoft") or selector.get("border")!=selector.get("expectedLine") or selector.get("selectBorder")!=selector.get("expectedAccent"):
+            fail.append({"key":key,"kind":"composite-selector-theme-color","selector":selector})
+        if selector.get("rightGap") is not None and abs(selector["rightGap"])>2:
+            fail.append({"key":key,"kind":"composite-selector-right-align","selector":selector})
     pill=s.get("demographyPill") or {}
     expected_bg="rgb(184, 75, 52)" if theme=="demografia" else "rgb(251, 233, 227)"
     if pill.get("background")!=expected_bg:
@@ -189,8 +214,8 @@ def validate(s,theme,metric,key,fail):
         fail.append({"key":key,"kind":"economy-deep-dive-leak"})
     if theme=="sicurezza" and semantic.get("crimeContext"):
         fail.append({"key":key,"kind":"crime-context-leak"})
-    if metric=="incomeSourceProfile" and semantic.get("redundantCompositeDetail"):
-        fail.append({"key":key,"kind":"income-source-redundant-detail"})
+    if semantic.get("selectorDrivenDuplicate"):
+        fail.append({"key":key,"kind":"selector-driven-redundant-detail"})
     for extra in s.get("extras") or []:
         if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
