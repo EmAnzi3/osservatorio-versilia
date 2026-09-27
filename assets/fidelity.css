@@ -3498,3 +3498,276 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-data-actio
   background:transparent;
 }
 
+/* A5.5 Camaiore complete municipal layout clone from frozen Demografia contract. */
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot{
+  width:min(1320px,calc(100% - 54px));
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+  display:grid;
+  grid-template-columns:270px minmax(0,1fr);
+  column-gap:14px;
+  row-gap:10px;
+  align-items:start;
+  margin-top:10px;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic::before{ display:none; }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading{
+  grid-column:1 / -1;
+  min-height:64px;
+  margin:0;
+  padding:12px 14px;
+  align-items:center;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic-heading h2{
+  margin:0;
+  color:var(--ds-ink);
+  font-size:23px;
+  line-height:1.08;
+  letter-spacing:-.035em;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic-heading > a{
+  min-height:30px;
+  border-color:#d8cbbd;
+  border-radius:8px;
+  padding:6px 9px;
+  background:#fbf6ef;
+  color:var(--theme-accent);
+  font-size:7.5px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls{
+  grid-column:1;
+  grid-row:2 / span 2;
+  align-self:start;
+  min-width:0;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+  grid-column:2;
+  grid-row:2;
+  grid-template-columns:minmax(0,1.55fr) minmax(260px,.65fr);
+  gap:10px;
+  margin:0;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position{
+  min-height:200px;
+  box-sizing:border-box;
+  border:1px solid var(--ds-border);
+  border-top:3px solid var(--theme-accent);
+  border-radius:11px;
+  padding:20px 22px;
+  background:var(--ds-surface) !important;
+  color:var(--ds-ink) !important;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-primary-label,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .composite-primary-label{
+  display:block;
+  margin:0 0 10px;
+  color:var(--theme-accent) !important;
+  opacity:1 !important;
+  font-size:10px;
+  font-weight:850;
+  line-height:1.2;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > strong{
+  margin:12px 0 9px;
+  color:var(--ds-ink) !important;
+  font-size:clamp(42px,4.8vw,62px);
+  line-height:.95;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > p{
+  max-width:680px;
+  color:#67777d !important;
+  font-size:9px;
+  line-height:1.5;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > div:last-child{
+  margin-top:auto;
+  padding-top:12px;
+  border-top:1px solid #eee6da;
+  color:#7c898d !important;
+  font-size:7.5px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary .inline-source-link{
+  color:var(--theme-accent) !important;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position .overline{
+  color:var(--theme-accent);
+  font-size:7px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position > strong{
+  margin:12px 0 8px;
+  color:var(--ds-ink) !important;
+  font-size:38px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position strong small{
+  color:#7b8588 !important;
+  font-size:11px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position > p{
+  color:#748086 !important;
+  font-size:8px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart{
+  grid-column:2;
+  grid-row:3;
+  min-width:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--ds-border);
+  border-radius:11px;
+  background:var(--ds-surface);
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title{ display:none; }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected{
+  border-radius:10px;
+  background:var(--theme-soft);
+  box-shadow:inset 4px 0 0 var(--theme-accent);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong{
+  color:var(--theme-accent);
+  font-weight:800;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
+  background:var(--theme-accent);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
+  border-color:var(--theme-soft);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark{
+  grid-column:1 / -1;
+  grid-row:4;
+  width:100%;
+  margin:0;
+  padding:48px;
+  border:1px solid var(--ds-border);
+  border-radius:24px;
+  background:#fffdfa;
+  box-shadow:var(--ds-shadow);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark h2{
+  color:var(--ds-ink);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+  grid-column:1 / -1;
+  grid-row:5;
+  width:calc(50% - 4px);
+  min-height:58px;
+  box-sizing:border-box;
+  margin:0;
+  border:1px solid var(--ds-border);
+  border-left:3px solid #b57a57;
+  border-radius:9px;
+  background:#fffdfa;
+  box-shadow:none;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure{
+  justify-self:start;
+  overflow:hidden;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure > summary{
+  min-height:58px;
+  box-sizing:border-box;
+  padding:9px 12px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure[open]{
+  width:100%;
+  grid-row:5 / span 2;
+  z-index:2;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+  justify-self:end;
+  display:grid;
+  grid-template-columns:105px minmax(0,1fr);
+  gap:12px;
+  align-items:center;
+  padding:9px 12px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale p{
+  margin:0;
+  font-size:8px;
+  line-height:1.35;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions{
+  display:none;
+}
+@media (max-width:900px){
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{ grid-template-columns:1fr; }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+    grid-column:1;
+    grid-row:auto;
+    width:100%;
+    justify-self:stretch;
+  }
+
+}
+@media (max-width:900px){
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+    grid-template-columns:minmax(0,1fr);
+  }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
+    grid-column:1 / -1;
+    grid-row:auto;
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+  }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+    grid-template-columns:minmax(0,1fr);
+  }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-benchmark-host > *,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .compare-post-benchmark-tools > *{
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+
+}
+@container (max-width:900px){
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+    grid-template-columns:minmax(0,1fr);
+  }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
+    grid-column:1 / -1;
+    grid-row:auto;
+    width:100%;
+    min-width:0;
+    justify-self:stretch;
+  }
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+}
+
