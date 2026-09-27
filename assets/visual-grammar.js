@@ -508,8 +508,8 @@
       && Boolean(container.closest('[data-view-pane="current"]'))
       && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
 
-    const compositeAggregate = renderedTownCurrent ? null : compositeAggregateFor(container, metric);
-    const canonicalAggregate = compositeAggregate || aggregateFor(metric, normalized);
+    const compositeAggregate = compositeAggregateFor(container, metric);
+    const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
@@ -523,16 +523,16 @@
     const firstRow = first?.row;
     const renderedUnit = renderedTownCurrent ? (mapped.find(item => item.unit)?.unit || '') : '';
     const renderedValues = renderedTownCurrent ? mapped.map(item => finite(item.value)).filter(value => value !== null) : [];
-    const aggregate = renderedTownCurrent
+    const effectiveAggregate = renderedTownCurrent
       ? { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit }
-      : canonicalAggregate;
+      : aggregate;
     const unit = renderedTownCurrent ? renderedUnit : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
-    const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
-    const referencePosition = position(aggregate?.value, scale);
+    const scale = scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit);
+    const referencePosition = position(effectiveAggregate?.value, scale);
     const zeroPosition = position(0, scale) ?? 0;
     container.dataset.visualContract = renderedTownCurrent ? 'rendered' : 'canonical';
     container.dataset.visualUnit = unit || '';
-    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
+    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', effectiveAggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
     const toolbarLegendHost = container.closest('.selectable-topic-bars')?.querySelector('.compare-chart-legend-host');
     const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
     if (container.dataset.visualGrammarSignature === signature && existingLegend) return;
@@ -546,7 +546,7 @@
 
     const legend = document.createElement('div');
     legend.className = 'comparison-legend';
-    legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${aggregate?.label || 'Versilia'}</span>`;
+    legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${effectiveAggregate?.label || 'Versilia'}</span>`;
     if (toolbarLegendHost) toolbarLegendHost.append(legend);
     else container.prepend(legend);
 
@@ -577,13 +577,13 @@
       const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
       const townValue = formatAxis(value, unit);
       const sharedA5Chart = Boolean(container.closest('.a5-shared-chart'));
-      const showReferenceInTooltip = sharedA5Chart && aggregate?.value !== null && aggregate?.value !== undefined;
-      const referenceLabel = String(aggregate?.label || 'Versilia');
+      const showReferenceInTooltip = sharedA5Chart && effectiveAggregate?.value !== null && effectiveAggregate?.value !== undefined;
+      const referenceLabel = String(effectiveAggregate?.label || 'Versilia');
       hoverLabel.textContent = showReferenceInTooltip
-        ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(aggregate.value, unit)}`
+        ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
         : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
-      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
+      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${effectiveAggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
     });
 
     const axis = document.createElement('div');
