@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 from pathlib import Path
 
@@ -20,12 +21,21 @@ def main() -> None:
     checkpoint=cfg["checkpoint"]
     allowed=set(cfg["allowed_paths"])
 
-    git("cat-file","-e",f"{checkpoint}^{{commit}}")
-    changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..HEAD").splitlines()))
+    base_ref=os.environ.get("GITHUB_BASE_REF","").strip()
+    if base_ref:
+        baseline=f"origin/{base_ref}"
+        git("cat-file","-e",f"{baseline}^{{commit}}")
+        changed=set(filter(None,git("diff","--name-only",f"{baseline}...HEAD").splitlines()))
+        baseline_label=f"PR base: {baseline}"
+    else:
+        git("cat-file","-e",f"{checkpoint}^{{commit}}")
+        changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..HEAD").splitlines()))
+        baseline_label=f"Checkpoint: {checkpoint}"
+
     unexpected=sorted(changed-allowed)
     missing_policy=sorted(path for path in changed if path not in allowed)
 
-    print(f"Checkpoint: {checkpoint}")
+    print(baseline_label)
     print(f"Scopo: {cfg.get('purpose','')}")
     print("File cambiati:")
     for path in sorted(changed):

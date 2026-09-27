@@ -85,11 +85,16 @@ def state(page):
           credit:(q('.town-hero-photo-credit')?.textContent||'').replace(/\\s+/g,' ').trim()
         },
         demographyPill:(()=>{const e=q('[data-profile-theme="demografia"]');if(!e)return null;const c=getComputedStyle(e);return {active:e.classList.contains('active'),background:c.backgroundColor,border:c.borderTopColor,color:c.color}})(),
-        semantic:{
-          incomeText:/Redditi dichiarati|Mostra le fasce di reddito/i.test(document.body.innerText),
-          economyDeepDive:visible(q('#town-topic > .topic-deep-dive')),
-          crimeContext:visible(q('#town-context .crime-context'))
-        },
+        semantic:(()=>{
+          const deep=q('#town-topic > .topic-deep-dive');
+          const deepHeading=(deep?.querySelector('.deep-heading h3')?.textContent||'').trim();
+          const deepSummary=(deep?.querySelector('details > summary')?.textContent||'').replace(/\\s+/g,' ').trim();
+          return {
+            incomeText:deepHeading==='Redditi dichiarati' || /Mostra le fasce di reddito/i.test(deepSummary),
+            economyDeepDive:visible(deep),
+            crimeContext:visible(q('#town-context .crime-context'))
+          };
+        })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth]}
       };
