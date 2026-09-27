@@ -2,6 +2,21 @@
   "schemaVersion": "0.3.2",
   "entries": [
     {
+      "rule_id": "rt-nidi-gratis-comuni-reopening-2026-2027",
+      "source_id": "regione-toscana",
+      "title": "Bando Nidi gratis 2026-2027 per i servizi educativi rivolto ai Comuni",
+      "url": "https://www.regione.toscana.it/it/-/bando-nidi-gratis-2026-2027-per-i-servizi-educativi-rivolto-ai-comuni",
+      "required_terms": [
+        "riaperte le adesioni alla misura Nidi Gratis",
+        "25 settembre 2026",
+        "6 ottobre 2026"
+      ],
+      "deadline_at": "2026-10-06",
+      "source_updated_at": "2026-09-03",
+      "summary": "Fino al 6 ottobre 2026 i Comuni già candidati alla misura Nidi gratis possono trasmettere via PEC la documentazione richiesta dalla procedura regionale.",
+      "canonical": true
+    },
+    {
       "rule_id": "st-mercati-rionali-2026",
       "source_id": "sviluppo-toscana",
       "title": "Avviso Mercati Rionali",
