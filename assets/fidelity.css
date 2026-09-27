@@ -3309,7 +3309,7 @@ body[data-page="town"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post
 body[data-page="town"] main.a5-town-pilot {
   container-type:inline-size;
 }
-body[data-page="town"] main.a5-town-pilot .town-metric-primary > .composite-read-selector {
+body[data-page="town"] main.a5-town-pilot[data-theme="demografia"] .town-metric-primary > .composite-read-selector {
   display:none !important;
 }
 body[data-page="town"] main.a5-town-pilot .a5-town-current-detail {
