@@ -368,6 +368,11 @@
       "path": ".github/workflows/a5-camaiore-rollout.yml",
       "category": "specialized-gate",
       "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-municipal-rollout-cohort.yml",
+      "category": "specialized-gate",
+      "status": "active"
     }
   ]
 }

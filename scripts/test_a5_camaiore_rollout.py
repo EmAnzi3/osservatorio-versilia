@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json
+import argparse, json, os
 from pathlib import Path
 from urllib.parse import urljoin
 from playwright.sync_api import sync_playwright
 
-TOWN="camaiore"
+TOWN=os.environ.get("A5_TOWN","camaiore")
+TOWN_META={
+  "camaiore":{"name":"Camaiore","heroBg":"Pontile_di_Lido_di_Camaiore","heroCredit":"Pontile di Lido di Camaiore"},
+  "pietrasanta":{"name":"Pietrasanta","heroBg":"Veduta_di_piazza_duomo","heroCredit":"Piazza Duomo"},
+  "seravezza":{"name":"Seravezza","heroBg":"Palazzo_Mediceo_a_Seravezza","heroCredit":"Palazzo Mediceo"},
+  "forte-dei-marmi":{"name":"Forte dei Marmi","heroBg":"Pontile_Forte_dei_Marmi","heroCredit":"Pontile"},
+  "stazzema":{"name":"Stazzema","heroBg":"Stazzema.JPG","heroCredit":"Stazzema"}
+}
+if TOWN not in TOWN_META:
+    raise SystemExit(f"A5_TOWN non supportato: {TOWN}")
+TOWN_NAME=TOWN_META[TOWN]["name"]
 EXPECTED=223
 VIEWPORTS=(("desktop",1440,1100),("mobile",390,844))
 FREEZE="*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}"
@@ -385,11 +395,12 @@ def validate(s,theme,metric,key,fail):
     if missing_tokens: fail.append({"key":key,"kind":"missing-theme-token","tokens":missing_tokens})
     for name,dims in s["overflow"].items():
         if dims[0]>dims[1]+2: fail.append({"key":key,"kind":"horizontal-overflow","surface":name,"dims":dims})
-    if s["selected"] and not any("Camaiore" in x for x in s["selected"]):
-        fail.append({"key":key,"kind":"selected-row","rows":s["selected"]})
+    if s["selected"] and not any(TOWN_NAME in x for x in s["selected"]):
+        fail.append({"key":key,"kind":"selected-row","town":TOWN_NAME,"rows":s["selected"]})
     hero=s.get("hero") or {}
-    if "Pontile_di_Lido_di_Camaiore" not in hero.get("background","") or "Pontile di Lido di Camaiore" not in hero.get("credit",""):
-        fail.append({"key":key,"kind":"camaiore-hero","hero":hero})
+    hero_meta=TOWN_META[TOWN]
+    if hero_meta["heroBg"] not in hero.get("background","") or hero_meta["heroCredit"] not in hero.get("credit",""):
+        fail.append({"key":key,"kind":"municipal-hero","town":TOWN,"hero":hero})
     title=s.get("primaryTitle")
     if theme!="demografia" and (not title or not title.get("visible") or not title.get("text")):
         fail.append({"key":key,"kind":"missing-primary-title","title":title})
@@ -558,8 +569,8 @@ def main():
         browser.close()
     report={"town":TOWN,"themes":list(contract),"themeMetricCounts":{k:len(v) for k,v in contract.items()},"metricStatesPerViewport":total,"uniqueMetricCount":unique,"failureCount":len(fail),"failures":fail}
     (folder/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    (folder/"summary.txt").write_text(f"A5 Camaiore rollout\nthemes={len(contract)}\nmetric_states_per_viewport={total}\nunique_metrics={unique}\nfailures={len(fail)}\n",encoding="utf-8")
-    if fail: raise SystemExit(f"A5 Camaiore rollout FAILED: {len(fail)} problemi\n"+json.dumps(fail[:12],ensure_ascii=False,indent=2))
-    print(f"A5 Camaiore rollout OK: {len(contract)} temi, {total} stati/viewport, {unique} indicatori unici.")
+    (folder/"summary.txt").write_text(f"A5 municipal rollout · {TOWN_NAME}\nthemes={len(contract)}\nmetric_states_per_viewport={total}\nunique_metrics={unique}\nfailures={len(fail)}\n",encoding="utf-8")
+    if fail: raise SystemExit(f"A5 municipal rollout {TOWN_NAME} FAILED: {len(fail)} problemi\n"+json.dumps(fail[:12],ensure_ascii=False,indent=2))
+    print(f"A5 municipal rollout {TOWN_NAME} OK: {len(contract)} temi, {total} stati/viewport, {unique} indicatori unici.")
 
 if __name__=="__main__": main()

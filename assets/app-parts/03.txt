@@ -1508,7 +1508,11 @@
     return data.towns.find(t => normalize(t.name).replaceAll(' ', '-') === slug);
   }
 
-  const A5_TOWN_PILOT = Object.freeze({ towns:new Set(['viareggio','massarosa']), theme:'demografia', rolloutTowns:new Set(['camaiore']) });
+  const A5_TOWN_PILOT = Object.freeze({
+    towns:new Set(['viareggio','massarosa']),
+    theme:'demografia',
+    rolloutTowns:new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema'])
+  });
   const DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS = new Set([
     'internalResidentialMobility',
     'foreignResidentialMobility',
@@ -1536,8 +1540,33 @@
     },
     camaiore: {
       institutionYear: 'sec. XIII',
+      heroLabel: 'Pontile di Lido di Camaiore',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
+    },
+    pietrasanta: {
+      institutionYear: '1255',
+      heroLabel: 'Piazza Duomo',
+      heroCredit: 'Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg'
+    },
+    seravezza: {
+      institutionYear: '1485',
+      heroLabel: 'Palazzo Mediceo',
+      heroCredit: 'Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Palazzo_Mediceo_a_Seravezza.jpg'
+    },
+    'forte-dei-marmi': {
+      institutionYear: '1914',
+      heroLabel: 'Pontile',
+      heroCredit: 'Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_Forte_dei_Marmi.jpg'
+    },
+    stazzema: {
+      institutionYear: '1776',
+      heroLabel: 'Stazzema',
+      heroCredit: 'Wikimedia Commons',
+      heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Stazzema.JPG'
     },
     massarosa: {
       institutionYear: '1869',
@@ -1575,7 +1604,7 @@
           <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
         </dl>
       </div>
-      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${slug === 'camaiore' ? 'Pontile di Lido di Camaiore' : 'Passeggiata a mare'} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
+      ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${html(profile.heroLabel || (slug === 'camaiore' ? 'Pontile di Lido di Camaiore' : 'Passeggiata a mare'))} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
     </header>`;
   }
 

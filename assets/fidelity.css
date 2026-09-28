@@ -3448,30 +3448,30 @@ body[data-page="town"] main.a5-town-pilot .a5-town-current-visual .composite-top
 
 /* A5.5 Camaiore pilot — additive town-only scope.
    Frozen Viareggio/Massarosa Demografia and thematic pages must never match these selectors. */
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="economia"]){--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="lavoro"]){--ds-theme-accent:#9b6818;--ds-theme-dark:#7e5311;--ds-theme-soft:#fff9eb;--ds-theme-line:#ead5a7}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="istruzione"]){--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;--ds-theme-soft:#f8f5fc;--ds-theme-line:#d8cfeb}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="salute"]){--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="mobilita"]){--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="sicurezza"]){--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="abitare"]){--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="ambiente"]){--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="bilanci"]){--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot[data-theme="comunita"]){--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="economia"]){--ds-theme-accent:#39795d;--ds-theme-dark:#2f654d;--ds-theme-soft:#f5faf6;--ds-theme-line:#c8ddd1}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="lavoro"]){--ds-theme-accent:#9b6818;--ds-theme-dark:#7e5311;--ds-theme-soft:#fff9eb;--ds-theme-line:#ead5a7}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="istruzione"]){--ds-theme-accent:#7357a8;--ds-theme-dark:#5d448d;--ds-theme-soft:#f8f5fc;--ds-theme-line:#d8cfeb}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="salute"]){--ds-theme-accent:#aa465b;--ds-theme-dark:#8c3749;--ds-theme-soft:#fff5f7;--ds-theme-line:#eccbd3}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="mobilita"]){--ds-theme-accent:#16749a;--ds-theme-dark:#115f7f;--ds-theme-soft:#f1f9fc;--ds-theme-line:#c5dfe9}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="sicurezza"]){--ds-theme-accent:#a75a29;--ds-theme-dark:#894820;--ds-theme-soft:#fff7f1;--ds-theme-line:#ebcfbd}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="abitare"]){--ds-theme-accent:#6d5ca6;--ds-theme-dark:#58488b;--ds-theme-soft:#f8f6fc;--ds-theme-line:#d7d0e9}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="ambiente"]){--ds-theme-accent:#4d873f;--ds-theme-dark:#3e6e33;--ds-theme-soft:#f4faf2;--ds-theme-line:#cbdfc5}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="bilanci"]){--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot[data-theme="comunita"]){--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
 
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) .town-hero {
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot) .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
     url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800") center 52%/cover no-repeat;
 }
-body[data-page="town"][data-town="camaiore"]:has(main.a5-town-pilot) #app {
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]):has(main.a5-town-pilot) #app {
   background:
     radial-gradient(circle at 8% 16%,color-mix(in srgb,var(--ds-theme-accent) 4%,transparent),transparent 30%),
     linear-gradient(180deg,#fbf8f2 0%,#f7f2e8 46%,#f9f5ee 100%);
 }
 
 /* Camaiore theme navigation keeps each theme's own color instead of inheriting the active page theme. */
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme]{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme]{
   --a5-pill-accent:#526974;
   --a5-pill-soft:#f4f1eb;
   --a5-pill-line:#d8d0c5;
@@ -3479,23 +3479,23 @@ body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme
   background:var(--a5-pill-soft) !important;
   color:var(--a5-pill-accent) !important;
 }
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="demografia"]{--a5-pill-accent:#b84b34;--a5-pill-soft:#fbe9e3;--a5-pill-line:#efc9be}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="economia"]{--a5-pill-accent:#39795d;--a5-pill-soft:#f5faf6;--a5-pill-line:#c8ddd1}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="lavoro"]{--a5-pill-accent:#9b6818;--a5-pill-soft:#fff9eb;--a5-pill-line:#ead5a7}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="istruzione"]{--a5-pill-accent:#7357a8;--a5-pill-soft:#f8f5fc;--a5-pill-line:#d8cfeb}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="salute"]{--a5-pill-accent:#aa465b;--a5-pill-soft:#fff5f7;--a5-pill-line:#eccbd3}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="mobilita"]{--a5-pill-accent:#16749a;--a5-pill-soft:#f1f9fc;--a5-pill-line:#c5dfe9}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="sicurezza"]{--a5-pill-accent:#a75a29;--a5-pill-soft:#fff7f1;--a5-pill-line:#ebcfbd}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="abitare"]{--a5-pill-accent:#6d5ca6;--a5-pill-soft:#f8f6fc;--a5-pill-line:#d7d0e9}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="ambiente"]{--a5-pill-accent:#4d873f;--a5-pill-soft:#f4faf2;--a5-pill-line:#cbdfc5}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="bilanci"]{--a5-pill-accent:#425c6b;--a5-pill-soft:#f0f4f6;--a5-pill-line:#b9c5cf}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme="comunita"]{--a5-pill-accent:#7a456b;--a5-pill-soft:#f8f0f5;--a5-pill-line:#d7bfd1}
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme].active{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="demografia"]{--a5-pill-accent:#b84b34;--a5-pill-soft:#fbe9e3;--a5-pill-line:#efc9be}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="economia"]{--a5-pill-accent:#39795d;--a5-pill-soft:#f5faf6;--a5-pill-line:#c8ddd1}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="lavoro"]{--a5-pill-accent:#9b6818;--a5-pill-soft:#fff9eb;--a5-pill-line:#ead5a7}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="istruzione"]{--a5-pill-accent:#7357a8;--a5-pill-soft:#f8f5fc;--a5-pill-line:#d8cfeb}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="salute"]{--a5-pill-accent:#aa465b;--a5-pill-soft:#fff5f7;--a5-pill-line:#eccbd3}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="mobilita"]{--a5-pill-accent:#16749a;--a5-pill-soft:#f1f9fc;--a5-pill-line:#c5dfe9}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="sicurezza"]{--a5-pill-accent:#a75a29;--a5-pill-soft:#fff7f1;--a5-pill-line:#ebcfbd}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="abitare"]{--a5-pill-accent:#6d5ca6;--a5-pill-soft:#f8f6fc;--a5-pill-line:#d7d0e9}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="ambiente"]{--a5-pill-accent:#4d873f;--a5-pill-soft:#f4faf2;--a5-pill-line:#cbdfc5}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="bilanci"]{--a5-pill-accent:#425c6b;--a5-pill-soft:#f0f4f6;--a5-pill-line:#b9c5cf}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme="comunita"]{--a5-pill-accent:#7a456b;--a5-pill-soft:#f8f0f5;--a5-pill-line:#d7bfd1}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme].active{
   border-color:var(--a5-pill-accent) !important;
   background:var(--a5-pill-accent) !important;
   color:#fff !important;
 }
-body[data-page="town"][data-town="camaiore"] .town-theme-row [data-profile-theme].active small{color:rgba(255,255,255,.82) !important}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) .town-theme-row [data-profile-theme].active small{color:rgba(255,255,255,.82) !important}
 
 /* Non-Demografia composites must retain their native selector in Camaiore. */
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector {
@@ -3576,7 +3576,7 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
 }
 
 /* Special renderers keep the standard export/print actions visible until a runtime toolbar claims them. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions.a5-town-fallback-actions {
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions.a5-town-fallback-actions {
   display:flex;
   align-items:center;
   justify-content:flex-end;
@@ -3590,7 +3590,7 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
 }
 
 /* Slow-mobility uses one contextual map action inside the A5 toolbar. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-data-actions > .a5-town-map-entry {
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-data-actions > .a5-town-map-entry {
   display:contents;
   margin:0;
   padding:0;
@@ -3599,10 +3599,10 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-data-actio
 }
 
 /* A5.5 Camaiore complete municipal layout clone from frozen Demografia contract. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot{
   width:min(1320px,calc(100% - 54px));
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic{
   display:grid;
   grid-template-columns:270px minmax(0,1fr);
   column-gap:14px;
@@ -3614,8 +3614,8 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   background:transparent;
   box-shadow:none;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic::before{ display:none; }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic::before{ display:none; }
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-topic-heading{
   grid-column:1 / -1;
   min-height:64px;
   margin:0;
@@ -3626,14 +3626,14 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   background:var(--ds-surface);
   box-shadow:var(--ds-shadow);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic-heading h2{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic-heading h2{
   margin:0;
   color:var(--ds-ink);
   font-size:23px;
   line-height:1.08;
   letter-spacing:-.035em;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic-heading > a{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic-heading > a{
   min-height:30px;
   border-color:#d8cbbd;
   border-radius:8px;
@@ -3642,21 +3642,21 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic-head
   color:var(--theme-accent);
   font-size:7.5px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls{
   grid-column:1;
   grid-row:2 / span 2;
   align-self:start;
   min-width:0;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
   grid-column:2;
   grid-row:2;
   grid-template-columns:minmax(0,1.55fr) minmax(260px,.65fr);
   gap:10px;
   margin:0;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position{
   min-height:200px;
   box-sizing:border-box;
   border:1px solid var(--ds-border);
@@ -3667,8 +3667,8 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-positi
   color:var(--ds-ink) !important;
   box-shadow:var(--ds-shadow);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-primary-label,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .composite-primary-label{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-primary-label,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .composite-primary-label{
   display:block;
   margin:0 0 10px;
   color:var(--theme-accent) !important;
@@ -3679,46 +3679,46 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-pri
   letter-spacing:.11em;
   text-transform:uppercase;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > strong{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > strong{
   margin:12px 0 9px;
   color:var(--ds-ink) !important;
   font-size:clamp(42px,4.8vw,62px);
   line-height:.95;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > p{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > p{
   max-width:680px;
   color:#67777d !important;
   font-size:9px;
   line-height:1.5;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > div:last-child{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > div:last-child{
   margin-top:auto;
   padding-top:12px;
   border-top:1px solid #eee6da;
   color:#7c898d !important;
   font-size:7.5px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary .inline-source-link{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary .inline-source-link{
   color:var(--theme-accent) !important;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position .overline{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position .overline{
   color:var(--theme-accent);
   font-size:7px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position > strong{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position > strong{
   margin:12px 0 8px;
   color:var(--ds-ink) !important;
   font-size:38px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position strong small{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position strong small{
   color:#7b8588 !important;
   font-size:11px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position > p{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position > p{
   color:#748086 !important;
   font-size:8px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart{
   grid-column:2;
   grid-row:3;
   min-width:0;
@@ -3730,26 +3730,26 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   background:var(--ds-surface);
   box-shadow:var(--ds-shadow);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title{ display:none; }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .panel-title{ display:none; }
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected{
   border-radius:10px;
   background:var(--theme-soft);
   box-shadow:inset 4px 0 0 var(--theme-accent);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .bar-town,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected > strong{
   color:var(--theme-accent);
   font-weight:800;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-stem,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
   background:var(--theme-accent);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .bar-row.comparison-row.selected .comparison-dot{
   border-color:var(--theme-soft);
   box-shadow:0 0 0 3px color-mix(in srgb,var(--theme-accent) 16%,transparent),0 2px 7px rgba(16,47,69,.20);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark{
   grid-column:1 / -1;
   grid-row:4;
   width:100%;
@@ -3760,11 +3760,11 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   background:#fffdfa;
   box-shadow:var(--ds-shadow);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark h2{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark h2{
   color:var(--ds-ink);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
   grid-column:1 / -1;
   grid-row:5;
   width:calc(50% - 4px);
@@ -3777,21 +3777,21 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   background:#fffdfa;
   box-shadow:none;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure{
   justify-self:start;
   overflow:hidden;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure > summary{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure > summary{
   min-height:58px;
   box-sizing:border-box;
   padding:9px 12px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure[open]{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure[open]{
   width:100%;
   grid-row:5 / span 2;
   z-index:2;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
   justify-self:end;
   display:grid;
   grid-template-columns:105px minmax(0,1fr);
@@ -3799,16 +3799,16 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
   align-items:center;
   padding:9px 12px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale p{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale p{
   margin:0;
   font-size:8px;
   line-height:1.35;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-data-actions{
   display:none;
 }
 /* A5.5 renderer containment: all non-core direct renderer blocks span the municipal workspace. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic >
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic >
   :not(.town-topic-heading):not(.topic-controls):not(.town-metric-layout):not(.history-panel):not(.town-benchmark-host):not(.town-post-benchmark-tools):not(.town-data-actions){
   grid-column:1 / -1;
   grid-row:auto;
@@ -3820,13 +3820,13 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
 }
 
 @media (max-width:900px){
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{ grid-template-columns:1fr; }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic{ grid-template-columns:1fr; }
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .method-disclosure,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .reading-scale{
     grid-column:1;
     grid-row:auto;
     width:100%;
@@ -3835,27 +3835,27 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-t
 
 }
 @media (max-width:900px){
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic{
     grid-template-columns:minmax(0,1fr);
   }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
     grid-column:1 / -1;
     grid-row:auto;
     width:100%;
     min-width:0;
     justify-self:stretch;
   }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
     grid-template-columns:minmax(0,1fr);
   }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .versilia-position,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-benchmark-host > *,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .compare-post-benchmark-tools > *{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .versilia-position,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-benchmark-host > *,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .compare-post-benchmark-tools > *{
     min-width:0;
     max-width:100%;
     box-sizing:border-box;
@@ -3863,28 +3863,28 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-pri
 
 }
 @container (max-width:900px){
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic{
     grid-template-columns:minmax(0,1fr);
   }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .topic-controls,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .history-panel.a5-shared-chart,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-benchmark-host,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-post-benchmark-tools{
     grid-column:1 / -1;
     grid-row:auto;
     width:100%;
     min-width:0;
     justify-self:stretch;
   }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-topic.a5-town-topic > .town-metric-layout{
     grid-template-columns:minmax(0,1fr);
   }
 
 }
 
 /* A5.5 Camaiore · income distribution context belongs to the current chart, not below Method/Scale. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail{
   box-sizing:border-box;
   margin:18px 14px 14px !important;
   padding:20px !important;
@@ -3892,77 +3892,77 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="econ
   border-radius:12px;
   background:#fffdfa;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading{
   display:grid;
   gap:5px;
   margin:0 0 18px;
   padding:0 0 15px;
   border-bottom:1px solid var(--ds-theme-line);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading .overline{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading .overline{
   color:var(--ds-theme-accent);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading h4{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading h4{
   margin:0;
   color:var(--ds-ink);
   font-size:18px;
   line-height:1.15;
   letter-spacing:-.02em;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading p{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-income-context-heading p{
   max-width:76ch;
   margin:0;
   color:var(--ds-muted);
   font-size:9px;
   line-height:1.55;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-legend{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-legend{
   margin:0 0 14px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-stack{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-stack{
   margin:0 0 16px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-town-detail{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-town-detail{
   gap:10px;
   margin:0;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-town-detail > div{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .composite-town-detail > div{
   box-sizing:border-box;
   padding:12px 14px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail{
   margin:20px 0 0;
   border-color:var(--ds-theme-line);
   border-radius:10px;
   background:var(--ds-theme-soft);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary{
   min-height:68px;
   padding:15px 18px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary span{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary span{
   font-size:13px;
   line-height:1.25;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary small{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > summary small{
   margin-top:3px;
   font-size:8px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail{
   box-sizing:border-box;
   gap:10px;
   padding:18px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail > div{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail > div{
   box-sizing:border-box;
   padding:13px 14px;
 }
 @media (max-width:700px){
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail{
     margin:14px 10px 10px !important;
     padding:15px !important;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot[data-theme="economia"] .a5-town-income-detail > .income-bands-detail > .composite-town-detail{
     padding:14px;
   }
 }
@@ -3971,48 +3971,48 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="econ
 
 /* A5.5 Camaiore · structural renderer coherence (2026-09-28).
    Strict town scope protects thematic pages and frozen Viareggio/Massarosa Demografia. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:grid !important;grid-template-columns:max-content minmax(150px,1fr);align-items:center;justify-self:end;gap:10px;width:min(100%,300px);max-width:100%;margin:18px 0 0 auto !important;padding:10px 12px !important;box-sizing:border-box;border:1px solid var(--ds-theme-line) !important;border-radius:14px !important;background:var(--ds-theme-soft) !important;box-shadow:0 6px 18px rgba(16,47,69,.08)}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector > div{display:none !important}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:10px;min-width:0}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{margin:0;color:var(--ds-theme-accent);font-size:7px;font-weight:800;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector select{width:100%;min-width:0;height:34px;min-height:34px;max-height:34px;padding:6px 30px 6px 10px;border:1px solid var(--ds-theme-accent);border-radius:8px;background:var(--ds-surface);color:var(--ds-theme-dark);font-size:9px;font-weight:750;line-height:1.2}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{margin:0;border:0;border-bottom:1px solid var(--ds-border);border-radius:0;background:#fffdfa}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-special-renderer-toolbar .town-data-actions{display:flex !important;align-items:center;flex-wrap:wrap;gap:6px;margin-left:auto}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail{min-width:0;max-width:100%;box-sizing:border-box;margin:0 !important;padding:18px 20px 20px !important;border-top:1px solid var(--ds-border)}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail > *{max-width:100%;box-sizing:border-box}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .indicator-table-scroll,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .water-quality-table-wrap{max-width:100%;overflow-x:auto}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .water-quality-town-disclosure > summary > i{display:grid !important}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .water-quality-town-disclosure > summary{padding-right:16px}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]{min-width:0;max-width:100%;box-sizing:border-box}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{min-width:0;max-width:100%;box-sizing:border-box;padding:16px 18px 20px}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .trend-chart{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;overflow:visible}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .trend-chart svg{display:block;width:100%;max-width:100%;height:auto;overflow:visible}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-history-scroll{width:100%;max-width:100%;box-sizing:border-box;overflow-x:auto}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-post-benchmark-tools .financial-method-disclosure{width:100%;max-width:100%;box-sizing:border-box;margin:0;overflow:hidden;border:1px solid var(--ds-border);border-left:3px solid #b57a57;border-radius:9px;background:#fffdfa}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-post-benchmark-tools .financial-method-disclosure > summary{min-height:58px;box-sizing:border-box;padding:9px 12px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:grid !important;grid-template-columns:max-content minmax(150px,1fr);align-items:center;justify-self:end;gap:10px;width:min(100%,300px);max-width:100%;margin:18px 0 0 auto !important;padding:10px 12px !important;box-sizing:border-box;border:1px solid var(--ds-theme-line) !important;border-radius:14px !important;background:var(--ds-theme-soft) !important;box-shadow:0 6px 18px rgba(16,47,69,.08)}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector > div{display:none !important}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:10px;min-width:0}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{margin:0;color:var(--ds-theme-accent);font-size:7px;font-weight:800;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector select{width:100%;min-width:0;height:34px;min-height:34px;max-height:34px;padding:6px 30px 6px 10px;border:1px solid var(--ds-theme-accent);border-radius:8px;background:var(--ds-surface);color:var(--ds-theme-dark);font-size:9px;font-weight:750;line-height:1.2}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{margin:0;border:0;border-bottom:1px solid var(--ds-border);border-radius:0;background:#fffdfa}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-special-renderer-toolbar .town-data-actions{display:flex !important;align-items:center;flex-wrap:wrap;gap:6px;margin-left:auto}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail{min-width:0;max-width:100%;box-sizing:border-box;margin:0 !important;padding:18px 20px 20px !important;border-top:1px solid var(--ds-border)}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail > *{max-width:100%;box-sizing:border-box}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .indicator-table-scroll,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart .water-quality-table-wrap{max-width:100%;overflow-x:auto}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .water-quality-town-disclosure > summary > i{display:grid !important}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .water-quality-town-disclosure > summary{padding-right:16px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]{min-width:0;max-width:100%;box-sizing:border-box}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{min-width:0;max-width:100%;box-sizing:border-box;padding:16px 18px 20px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .trend-chart{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;overflow:visible}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .trend-chart svg{display:block;width:100%;max-width:100%;height:auto;overflow:visible}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-history-scroll{width:100%;max-width:100%;box-sizing:border-box;overflow-x:auto}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-post-benchmark-tools .financial-method-disclosure{width:100%;max-width:100%;box-sizing:border-box;margin:0;overflow:hidden;border:1px solid var(--ds-border);border-left:3px solid #b57a57;border-radius:9px;background:#fffdfa}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-post-benchmark-tools .financial-method-disclosure > summary{min-height:58px;box-sizing:border-box;padding:9px 12px}
 @media(max-width:700px){
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:block !important;width:100%;height:58px;min-height:58px;max-height:58px;margin:14px 0 0 !important;padding:7px 9px !important;overflow:visible}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select{display:grid;grid-template-columns:1fr;grid-template-rows:10px 34px;gap:3px;width:100%;height:47px;min-height:47px}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{position:static;width:auto;height:auto;overflow:visible;clip:auto;margin:0 2px;color:var(--ds-theme-accent);font-size:7px;line-height:10px}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector select{display:block;width:100%;height:34px;min-height:34px;max-height:34px;opacity:1;visibility:visible}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail{padding:14px 12px 16px !important}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{padding:12px 10px 16px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:block !important;width:100%;height:58px;min-height:58px;max-height:58px;margin:14px 0 0 !important;padding:7px 9px !important;overflow:visible}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select{display:grid;grid-template-columns:1fr;grid-template-rows:10px 34px;gap:3px;width:100%;height:47px;min-height:47px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{position:static;width:auto;height:auto;overflow:visible;clip:auto;margin:0 2px;color:var(--ds-theme-accent);font-size:7px;line-height:10px}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector select{display:block;width:100%;height:34px;min-height:34px;max-height:34px;opacity:1;visibility:visible}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail{padding:14px 12px 16px !important}
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{padding:12px 10px 16px}
 }
 
 
 /* A5.5 Camaiore · second controlled review pass (Modifiche OV v2).
    These rules are town-scoped and do not alter approved thematic or frozen municipal surfaces. */
 
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
   margin:0 !important;
   padding:18px 22px 22px !important;
   border-top:1px solid var(--ds-border);
   background:#fffdfa;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .land-cover-shell,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .water-quality-town,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .remediation-shell{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .land-cover-shell,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .water-quality-town,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .remediation-shell{
   width:100%;
   max-width:100%;
   min-width:0;
@@ -4020,17 +4020,17 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a
   margin:0;
 }
 
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto auto;
   align-items:center;
   gap:10px;
   padding:10px 14px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
   justify-self:end;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars{
   margin:0;
   padding:18px 22px 20px;
   box-sizing:border-box;
@@ -4039,48 +4039,48 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a
   background:#fffdfa;
   overflow:visible;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars .bar-row{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars .bar-row{
   padding-inline:2px;
 }
 
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
   min-width:0;
   max-width:100%;
   box-sizing:border-box;
   padding:18px 24px 22px !important;
   overflow:visible;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
   padding:0 24px !important;
   margin:0 0 14px !important;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-list{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-list{
   padding:2px 8px 4px !important;
   box-sizing:border-box;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
   grid-template-columns:minmax(105px,160px) minmax(150px,1fr) minmax(96px,112px) !important;
   gap:14px !important;
   padding:8px 6px !important;
   box-sizing:border-box;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history{
   min-width:0;
   width:100%;
   box-sizing:border-box;
   padding:2px 6px 8px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-head,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-key,
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-summary{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-head,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-key,
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-summary{
   margin-inline:8px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-scroll{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-scroll{
   margin:4px 8px 0;
   width:calc(100% - 16px);
   max-width:calc(100% - 16px);
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .trend-chart{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .trend-chart{
   min-width:0 !important;
   width:100% !important;
   max-width:100% !important;
@@ -4089,45 +4089,68 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a
   overflow:visible !important;
 }
 
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure{
   margin:0;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure-body{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure-body{
   padding:0 18px 18px;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .remediation-town{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-town-inline-detail .remediation-town{
   padding:2px 0 0;
 }
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .remediation-summary{
+body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-town-inline-detail .remediation-summary{
   margin-top:0;
 }
 
 @media(max-width:700px){
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
     grid-template-columns:1fr;
     gap:8px;
     padding:10px 12px;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
     justify-self:start;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars,
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars,
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
     padding:14px 12px 16px !important;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
     padding:14px 12px 18px !important;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
     padding:0 14px !important;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
     grid-template-columns:minmax(92px,120px) minmax(85px,1fr) !important;
     padding:8px 2px !important;
   }
-  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row strong{
+  body[data-page="town"]:is([data-town="camaiore"],[data-town="pietrasanta"],[data-town="seravezza"],[data-town="forte-dei-marmi"],[data-town="stazzema"]) main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row strong{
     grid-column:1 / -1;
     justify-self:end;
     padding-right:2px;
   }
+}
+
+
+/* A5 municipal rollout cohort · evocative hero images match "Apri il territorio". */
+body[data-page="town"][data-town="pietrasanta"]:has(main.a5-town-pilot) .town-hero{
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800") center 52%/cover no-repeat;
+}
+body[data-page="town"][data-town="seravezza"]:has(main.a5-town-pilot) .town-hero{
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800") center 52%/cover no-repeat;
+}
+body[data-page="town"][data-town="forte-dei-marmi"]:has(main.a5-town-pilot) .town-hero{
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800") center 52%/cover no-repeat;
+}
+body[data-page="town"][data-town="stazzema"]:has(main.a5-town-pilot) .town-hero{
+  background:
+    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800") center 52%/cover no-repeat;
 }

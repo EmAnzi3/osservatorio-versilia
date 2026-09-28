@@ -506,18 +506,25 @@
     'climateTmaxTrend'
   ]);
 
-  function isCamaioreTownPage() {
-    return document.body.dataset.page === 'town' && document.body.dataset.town === 'camaiore';
+  const A5_MUNICIPAL_ROLLOUT_TOWNS = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema']);
+
+  function activeA5MunicipalTownSlug() {
+    const slug = document.body.dataset.town || '';
+    return document.body.dataset.page === 'town' && A5_MUNICIPAL_ROLLOUT_TOWNS.has(slug) ? slug : '';
   }
 
-  function activeCamaioreMetricKey() {
-    if (!isCamaioreTownPage()) return '';
+  function isA5MunicipalRolloutTownPage() {
+    return Boolean(activeA5MunicipalTownSlug());
+  }
+
+  function activeA5MunicipalMetricKey() {
+    if (!isA5MunicipalRolloutTownPage()) return '';
     return document.querySelector('#town-topic .topic-controls [data-metric].active')?.dataset.metric
       || new URLSearchParams(location.search).get('indicatore')
       || '';
   }
 
-  function camaioreCompositeChoice(metric) {
+  function a5MunicipalCompositeChoice(metric) {
     if (!metric) return '';
     if (metric.meta?.compositeType === 'demographicBreakdown') {
       const age = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age]')?.value
@@ -529,9 +536,9 @@
     return document.querySelector('#town-topic .town-metric-primary select[data-composite-choice]')?.value || '';
   }
 
-  function syncCamaioreCurrentChoice(container, metric) {
-    if (!isCamaioreTownPage() || !container?.closest('[data-view-pane="current"]')) return '';
-    const choice = camaioreCompositeChoice(metric);
+  function syncA5MunicipalCurrentChoice(container, metric) {
+    if (!isA5MunicipalRolloutTownPage() || !container?.closest('[data-view-pane="current"]')) return '';
+    const choice = a5MunicipalCompositeChoice(metric);
     if (choice) {
       container.dataset.compositeChoice = choice;
       if (!container.dataset.compositeScale) container.dataset.compositeScale = 'value';
@@ -539,7 +546,7 @@
     return choice;
   }
 
-  function deriveCamaioreSelectionMetric(metric, choice) {
+  function deriveA5MunicipalSelectionMetric(metric, choice) {
     if (!metric || !choice) return null;
     const probe = { dataset:{ compositeChoice:choice, compositeScale:'value' } };
     const rows = (metric.rows || []).map(row => {
@@ -565,19 +572,19 @@
     };
   }
 
-  function normalizeCamaioreSelectorCurrent() {
-    if (!isCamaioreTownPage()) return;
-    const metricKey = activeCamaioreMetricKey();
+  function normalizeA5MunicipalSelectorCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
     const metric = data?.metrics?.[metricKey];
     if (!metric || !['demographicBreakdown','agricultureProfile'].includes(metric.meta?.compositeType)) return;
     const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
     const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
     if (!pane || typeof shared !== 'function') return;
-    const choice = camaioreCompositeChoice(metric);
+    const choice = a5MunicipalCompositeChoice(metric);
     if (!choice || (pane.dataset.a5SelectorChoice === choice && pane.querySelector('.comparison-bars'))) return;
-    const derived = deriveCamaioreSelectionMetric(metric, choice);
+    const derived = deriveA5MunicipalSelectionMetric(metric, choice);
     if (!derived) return;
-    pane.innerHTML = shared(data, metricKey, { selectedTown:'camaiore', metric:derived });
+    pane.innerHTML = shared(data, metricKey, { selectedTown:activeA5MunicipalTownSlug(), metric:derived });
     pane.dataset.a5SelectorChoice = choice;
     const bars = pane.querySelector('.comparison-bars');
     if (bars) {
@@ -595,9 +602,9 @@
     return Number.isFinite(value) ? value : null;
   }
 
-  function normalizeCamaioreClimateCurrent() {
-    if (!isCamaioreTownPage()) return;
-    const metricKey = activeCamaioreMetricKey();
+  function normalizeA5MunicipalClimateCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
     if (!A5_CLIMATE_CURRENT_KEYS.has(metricKey)) return;
     const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"]');
     if (!pane) return;
@@ -656,16 +663,16 @@
     pane.dataset.a5ClimateCurrent = 'lollipop';
   }
 
-  function normalizeCamaioreLibraryCurrent() {
-    if (!isCamaioreTownPage()) return;
-    const metricKey = activeCamaioreMetricKey();
+  function normalizeA5MunicipalLibraryCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
     if (!A5_LIBRARY_CURRENT_KEYS.has(metricKey)) return;
     const metric = data?.metrics?.[metricKey];
     const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
     const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
     if (!metric || !pane || typeof shared !== 'function' || !pane.querySelector('.ux-comparison-bars')) return;
     const current = shared(data, metricKey, {
-      selectedTown:'camaiore',
+      selectedTown:activeA5MunicipalTownSlug(),
       metric:{ ...metric, meta:{ ...metric.meta, compositeType:null } }
     });
     /* Preserve the v1.21 browser contract (.ux-comparison-bars) while replacing
@@ -674,7 +681,7 @@
     pane.dataset.a5LibraryCurrent = 'lollipop';
   }
 
-  function financialCamaioreMetric(metric, index) {
+  function financialA5MunicipalMetric(metric, index) {
     const aggregatePart = metric?.aggregate?.parts?.[index] || {};
     const rows = (metric?.rows || []).map(row => {
       const part = row.parts?.[index] || {};
@@ -699,9 +706,9 @@
     };
   }
 
-  function normalizeCamaioreFinancialProfile() {
-    if (!isCamaioreTownPage()) return;
-    const metricKey = activeCamaioreMetricKey();
+  function normalizeA5MunicipalFinancialProfile() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
     const metric = data?.metrics?.[metricKey];
     if (!metric || metric.meta?.compositeType !== 'financialProfile') return;
     const panel = document.querySelector('#town-topic > .history-panel.a5-shared-chart');
@@ -709,12 +716,13 @@
     const toolkit = window.OVUXHistory;
     if (!panel || typeof shared !== 'function' || !toolkit) return;
 
-    const choice = camaioreCompositeChoice(metric) || 'part-0';
+    const choice = a5MunicipalCompositeChoice(metric) || 'part-0';
     const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
-    const derived = financialCamaioreMetric(metric, index);
-    const currentMarkup = shared(data, metricKey, { selectedTown:'camaiore', metric:derived });
+    const derived = financialA5MunicipalMetric(metric, index);
+    const townSlug = activeA5MunicipalTownSlug();
+    const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
     const series = toolkit.comparableSeries(derived);
-    const historyMarkup = toolkit.historicalChartMarkup(derived, series, 'camaiore');
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug);
     const historyAvailable = Boolean(series);
     let shell = panel.querySelector(':scope > .ux-view-shell');
 
@@ -732,7 +740,7 @@
       if (!shell) return;
       shell.dataset.a5FinancialChoice = choice;
       toolkit.wireViewShell(shell, 'ov-town-view', historyAvailable);
-      toolkit.wireHistorySelection(shell, 'camaiore', false);
+      toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
       const bars = shell.querySelector('[data-view-pane="current"] .comparison-bars');
       if (bars) {
         bars.dataset.compositeChoice = choice;
@@ -754,7 +762,7 @@
       bars.dataset.compositeChoice = choice;
       bars.dataset.compositeScale = 'value';
     }
-    toolkit.wireHistorySelection(shell, 'camaiore', false);
+    toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
   }
 
   function enhanceComparison(container) {
@@ -768,11 +776,11 @@
     if (!rows.length) return;
 
     const renderedTownCurrent = document.body.dataset.page === 'town'
-      && document.body.dataset.town === 'camaiore'
+      && A5_MUNICIPAL_ROLLOUT_TOWNS.has(document.body.dataset.town || '')
       && Boolean(container.closest('[data-view-pane="current"], [data-ov-climate-pane="current"]'))
       && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
 
-    if (renderedTownCurrent) syncCamaioreCurrentChoice(container, metric);
+    if (renderedTownCurrent) syncA5MunicipalCurrentChoice(container, metric);
     const compositeAggregate = compositeAggregateFor(container, metric);
     const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const mapped = rows.map(rowEl => {
@@ -1074,10 +1082,10 @@
   function enhance() {
     scheduled = false;
     if (!data) return;
-    normalizeCamaioreFinancialProfile();
-    normalizeCamaioreSelectorCurrent();
-    normalizeCamaioreLibraryCurrent();
-    normalizeCamaioreClimateCurrent();
+    normalizeA5MunicipalFinancialProfile();
+    normalizeA5MunicipalSelectorCurrent();
+    normalizeA5MunicipalLibraryCurrent();
+    normalizeA5MunicipalClimateCurrent();
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
     enhanceReadingScales();
     enhanceTownPosition();

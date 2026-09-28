@@ -7,7 +7,7 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
 - **Step attivo:** A5.5 — propagazione progressiva DS2
-- **Stato:** IN_PROGRESS — Camaiore completa approvata e congelata; avvio propagazione parametrica alle altre 6 schede comunali
+- **Stato:** IN_PROGRESS — Camaiore completa congelata; rollout parametrico attivo su Pietrasanta, Seravezza, Forte dei Marmi e Stazzema
 - **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
 - **Branch:** `feat/a5-controlled-iteration`
 - **PR:** #280 — Draft

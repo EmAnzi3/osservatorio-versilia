@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5: Camaiore completa congelata come golden master e propagazione controllata dello standard alle altre schede comunali",
+  "purpose": "A5.5: Camaiore full golden locked; controlled rollout of the approved municipal renderer to Pietrasanta, Seravezza, Forte dei Marmi and Stazzema",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -20,6 +20,7 @@
     "assets/visual-grammar.js",
     "scripts/test_a5_camaiore_full_golden_lock.py",
     "docs/A5_GOLDEN_MASTERS.md",
-    "docs/CONSOLIDATION_HANDOFF.md"
+    "docs/CONSOLIDATION_HANDOFF.md",
+    ".github/workflows/a5-municipal-rollout-cohort.yml"
   ]
 }

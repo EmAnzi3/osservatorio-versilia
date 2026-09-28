@@ -1,0 +1,72 @@
+name: A5 municipal rollout cohort
+
+on:
+  pull_request:
+    paths:
+      - "assets/app-parts/**"
+      - "assets/fidelity.css"
+      - "assets/fidelity.js"
+      - "assets/ux-history*.js"
+      - "assets/ux-history*.css"
+      - "assets/visual-grammar.js"
+      - "assets/visual-grammar.css"
+      - "data/site-data.json"
+      - "scripts/build_static_brand.py"
+      - "scripts/build_static_brand_impl.py"
+      - "scripts/build_static_safe.py"
+      - "scripts/test_a5_camaiore_rollout.py"
+      - ".github/workflows/a5-municipal-rollout-cohort.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  municipal-rollout:
+    strategy:
+      fail-fast: false
+      matrix:
+        town:
+          - pietrasanta
+          - seravezza
+          - forte-dei-marmi
+          - stazzema
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout current PR head
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Compile municipal rollout test
+        run: python -m py_compile scripts/test_a5_camaiore_rollout.py
+      - name: Build current preview
+        run: python scripts/build_static_brand.py
+      - name: Verify all municipal states
+        env:
+          A5_TOWN: ${{ matrix.town }}
+        run: |
+          set -euo pipefail
+          REPORT="/tmp/a5-municipal-rollout-${A5_TOWN}"
+          rm -rf "$REPORT"
+          mkdir -p "$REPORT"
+          python scripts/preview_dist.py --port 8127 --directory dist >"/tmp/${A5_TOWN}-preview.log" 2>&1 &
+          PREVIEW_PID=$!
+          cleanup() { kill "$PREVIEW_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_a5_camaiore_rollout.py --base http://127.0.0.1:8127 --report-dir "$REPORT"
+      - name: Upload municipal rollout review pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-municipal-rollout-${{ matrix.town }}
+          path: /tmp/a5-municipal-rollout-${{ matrix.town }}
+          if-no-files-found: ignore
