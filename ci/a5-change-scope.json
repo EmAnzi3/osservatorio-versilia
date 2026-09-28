@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5: rollout controllato della sola scheda comunale di Camaiore con lock tematici e golden comunali invarianti",
+  "purpose": "A5.5: Camaiore completa congelata come golden master e propagazione controllata dello standard alle altre schede comunali",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -17,6 +17,9 @@
     "scripts/test_a5_camaiore_rollout.py",
     ".github/workflows/a5-camaiore-rollout.yml",
     "assets/app-parts/01.txt",
-    "assets/visual-grammar.js"
+    "assets/visual-grammar.js",
+    "scripts/test_a5_camaiore_full_golden_lock.py",
+    "docs/A5_GOLDEN_MASTERS.md",
+    "docs/CONSOLIDATION_HANDOFF.md"
   ]
 }

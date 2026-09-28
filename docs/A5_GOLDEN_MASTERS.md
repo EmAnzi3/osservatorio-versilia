@@ -1,6 +1,6 @@
 # A5 — Golden master UI e regole di propagazione
 
-Questo documento congela i due riferimenti visuali approvati per il Design System 2.0 prima di A5.5. Non è un catalogo dati parallelo: indicatori, temi e contenuti restano derivati da `data/site-data.json`.
+Questo documento congela i riferimenti visuali approvati per il Design System 2.0 e i relativi lock di regressione. Non è un catalogo dati parallelo: indicatori, temi e contenuti restano derivati da `data/site-data.json`.
 
 ## Stato di riferimento
 
@@ -69,6 +69,24 @@ Contratto visuale/funzionale da preservare:
     - `internalResidentialMobility`
     - `foreignResidentialMobility`
     - `totalResidentialMobility`
+
+## Golden master 3 — Camaiore completa
+
+Dal **28 settembre 2026** Camaiore è approvata come scheda comunale A5 completa e **non deve più essere modificata** durante la propagazione agli altri Comuni.
+
+Checkpoint approvato:
+
+`5aaf159870912eb49bffbd044963549bfb920150`
+
+Perimetro congelato:
+
+- tutti gli **11 temi comunali standard**;
+- tutti i **223 indicatori comunali** esposti dal catalogo corrente;
+- viewport desktop `1440×1100`;
+- viewport mobile `390×844`;
+- hero, sintesi, navigazione, sidebar, card valore/Versilia, grafici, selettori, toolbar, CSV, Stampa/PDF, storico, tooltip, benchmark, approfondimenti, Metodo/Comparabilità, Scala di lettura e responsive.
+
+Il gate `A5 municipal golden lock` costruisce il checkpoint approvato e confronta ogni stato Camaiore con l'output corrente. Il lock usa confronto di stato/computed layout su tutti gli indicatori e confronto visuale sulle famiglie rappresentative. Non è ammesso aggiornare il checkpoint per far passare una regressione: un cambiamento di Camaiore richiede approvazione esplicita del proprietario.
 
 ## Regola di implementazione
 

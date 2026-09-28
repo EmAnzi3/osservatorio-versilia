@@ -17,6 +17,7 @@ on:
       - "scripts/build_static_brand_impl.py"
       - "scripts/build_static_safe.py"
       - "scripts/test_a5_municipal_golden_lock.py"
+      - "scripts/test_a5_camaiore_full_golden_lock.py"
       - ".github/workflows/a5-municipal-golden-lock.yml"
   workflow_dispatch:
 
@@ -55,6 +56,16 @@ jobs:
         working-directory: baseline
         run: python scripts/build_static_brand.py
 
+      - name: Checkout approved Camaiore full golden baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 5aaf159870912eb49bffbd044963549bfb920150
+          path: camaiore-baseline
+
+      - name: Build Camaiore golden baseline preview
+        working-directory: camaiore-baseline
+        run: python scripts/build_static_brand.py
+
       - name: Compare approved municipal surfaces against baseline
         run: |
           set -euo pipefail
@@ -64,8 +75,10 @@ jobs:
           CURRENT_PID=$!
           python baseline/scripts/preview_dist.py --port 8124 --directory baseline/dist >/tmp/baseline-preview.log 2>&1 &
           BASELINE_PID=$!
+          python scripts/preview_dist.py --port 8125 --directory camaiore-baseline/dist >/tmp/camaiore-baseline-preview.log 2>&1 &
+          CAMAIORE_BASELINE_PID=$!
           cleanup() {
-            kill "$CURRENT_PID" "$BASELINE_PID" 2>/dev/null || true
+            kill "$CURRENT_PID" "$BASELINE_PID" "$CAMAIORE_BASELINE_PID" 2>/dev/null || true
           }
           trap cleanup EXIT
           sleep 1
@@ -73,6 +86,10 @@ jobs:
             --current-base http://127.0.0.1:8123 \
             --baseline-base http://127.0.0.1:8124 \
             --report-dir /tmp/a5-municipal-golden-lock
+          python scripts/test_a5_camaiore_full_golden_lock.py \
+            --current-base http://127.0.0.1:8123 \
+            --baseline-base http://127.0.0.1:8125 \
+            --report-dir /tmp/a5-municipal-golden-lock/camaiore-full
 
       - name: Upload golden-lock diagnostics
         if: always()
