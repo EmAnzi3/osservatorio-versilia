@@ -38,11 +38,17 @@ def digest(data: bytes) -> str:
 
 
 def canonical_state(value):
-    """Normalize browser non-finite geometry sentinels without hiding real diffs."""
+    """Normalize browser sentinels and the rollout implementation marker only."""
     if isinstance(value, float) and not math.isfinite(value):
         return "__NONFINITE__"
     if isinstance(value, dict):
-        return {key: canonical_state(item) for key, item in value.items()}
+        normalized = {key: canonical_state(item) for key, item in value.items()}
+        if isinstance(normalized.get("classes"), list):
+            normalized["classes"] = [
+                name for name in normalized["classes"]
+                if name != "a5-municipal-rollout"
+            ]
+        return normalized
     if isinstance(value, list):
         return [canonical_state(item) for item in value]
     return value
@@ -168,8 +174,16 @@ def main() -> None:
                     choose(base_page, metric)
                     choose(cur_page, metric)
                     key = f"{viewport}:{theme}:{metric}"
-                    baseline_state = canonical_state(state(base_page))
-                    current_state = canonical_state(state(cur_page))
+                    baseline_raw = state(base_page)
+                    current_raw = state(cur_page)
+                    if "a5-municipal-rollout" not in current_raw.get("classes", []):
+                        failures.append({
+                            "key": key,
+                            "kind": "camaiore-rollout-marker-missing",
+                            "classes": current_raw.get("classes", []),
+                        })
+                    baseline_state = canonical_state(baseline_raw)
+                    current_state = canonical_state(current_raw)
                     checked += 1
 
                     if baseline_state != current_state:
