@@ -21,6 +21,8 @@
     "scripts/test_a5_camaiore_full_golden_lock.py",
     "docs/A5_GOLDEN_MASTERS.md",
     "docs/CONSOLIDATION_HANDOFF.md",
-    ".github/workflows/a5-municipal-rollout-cohort.yml"
+    ".github/workflows/a5-municipal-rollout-cohort.yml",
+    "scripts/test_climate_interactions.py",
+    "scripts/test_economia_prodotta_browser.py"
   ]
 }

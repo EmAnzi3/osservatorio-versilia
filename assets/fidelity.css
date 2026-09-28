@@ -3459,10 +3459,10 @@ body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[dat
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="bilanci"]){--ds-theme-accent:#425c6b;--ds-theme-dark:#334a57;--ds-theme-soft:#f0f4f6;--ds-theme-line:#b9c5cf}
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot[data-theme="comunita"]){--ds-theme-accent:#7a456b;--ds-theme-dark:#633756;--ds-theme-soft:#f8f0f5;--ds-theme-line:#d7bfd1}
 
-body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot) .town-hero {
+body[data-page="town"] main.a5-municipal-rollout .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800") center 52%/cover no-repeat;
+    var(--a5-town-hero-image) center 52%/cover no-repeat;
 }
 body[data-page="town"]:has(main.a5-municipal-rollout):has(main.a5-town-pilot) #app {
   background:
@@ -4133,38 +4133,3 @@ body[data-page="town"]:has(main.a5-municipal-rollout) main.a5-town-pilot .a5-tow
 }
 
 
-/* A5 municipal rollout cohort · evocative hero images match "Apri il territorio". */
-body[data-page="town"][data-town="pietrasanta"]:has(main.a5-town-pilot) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800") center 52%/cover no-repeat;
-}
-body[data-page="town"][data-town="seravezza"]:has(main.a5-town-pilot) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800") center 52%/cover no-repeat;
-}
-body[data-page="town"][data-town="forte-dei-marmi"]:has(main.a5-town-pilot) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800") center 52%/cover no-repeat;
-}
-body[data-page="town"][data-town="stazzema"]:has(main.a5-town-pilot) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.63) 39%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800") center 52%/cover no-repeat;
-}
-
-
-/* A5 final municipal rollout · Viareggio and Massarosa hero overrides.
-   Demografia remains frozen because these rules require .a5-municipal-rollout. */
-body[data-page="town"][data-town="viareggio"]:has(main.a5-municipal-rollout) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.61) 38%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG") center 52%/cover no-repeat;
-}
-body[data-page="town"][data-town="massarosa"]:has(main.a5-municipal-rollout) .town-hero{
-  background:
-    linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.64) 39%,rgba(10,45,67,.27) 72%,rgba(10,45,67,.12) 100%),
-    url("https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG") center 58%/cover no-repeat;
-}

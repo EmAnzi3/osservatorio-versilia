@@ -174,21 +174,21 @@ def main() -> int:
         page.get_by_role("heading", name="Massarosa", exact=True).wait_for(timeout=10_000)
         assert page.get_by_text("Economia prodotta", exact=True).count() >= 1
         assert page.locator("#town-topic > .economic-scope-control").count() == 0
-        assert page.locator("#town-topic .history-panel .economic-scope-control").count() == 1, "Selettore assente dal grafico comunale"
-        assert page.locator("#town-topic .history-panel select[data-economic-scope]").input_value() == "total"
+        assert page.locator("#town-topic .town-metric-primary > .economic-scope-control").count() == 1, "Selettore Frame assente dalla card principale comunale"
+        assert page.locator("#town-topic .town-metric-primary select[data-economic-scope]").input_value() == "total"
         page.locator('#town-topic .history-panel [data-view-mode="history"]').click()
         page.wait_for_timeout(250)
         total_history = page.locator('#town-topic .history-panel [data-view-pane="history"] svg').inner_html()
         page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
         town_total = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert page.locator("main.town-profile .town-benchmark").count() == 1
-        page.locator('#town-topic .history-panel select[data-economic-scope]').select_option("industry")
+        page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("industry")
         page.wait_for_timeout(500)
         town_industry = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_total != town_industry, "Il perimetro Industria non aggiorna il valore comunale"
         assert "perimetro=industry" in page.url
         assert page.locator("main.town-profile .town-benchmark").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
-        assert page.locator("#town-topic .history-panel .economic-scope-control").count() == 1, "ux-history ha rimosso il selettore Frame"
+        assert page.locator("#town-topic .town-metric-primary > .economic-scope-control").count() == 1, "Cambio vista ha rimosso il selettore Frame dalla card principale"
         industry_expected = expected_scope_rows(productivity_metric, "industry")
         current_order = page.locator('#town-topic .history-panel [data-view-pane="current"] .ux-bar-town').all_text_contents()
         assert current_order == [row["town"] for row in industry_expected], "Ordine comunale Industria non ricalcolato"
@@ -199,11 +199,11 @@ def main() -> int:
         assert page.locator('#town-topic .history-panel [data-view-pane="history"] .ux-history-card').count() == 1, "Storico comunale Frame non renderizzato"
         industry_history = page.locator('#town-topic .history-panel [data-view-pane="history"] svg').inner_html()
         assert total_history != industry_history, "Lo storico non è stato ricalcolato sul perimetro Industria"
-        assert page.locator('#town-topic .history-panel select[data-economic-scope]').input_value() == "industry", "Perimetro Industria perso nello storico"
+        assert page.locator('#town-topic .town-metric-primary select[data-economic-scope]').input_value() == "industry", "Perimetro Industria perso nello storico"
         page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
         page.wait_for_timeout(200)
         page.screenshot(path=str(shots / "economia-prodotta-massarosa-industria-desktop.png"), full_page=True)
-        page.locator('#town-topic .history-panel select[data-economic-scope]').select_option("services")
+        page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("services")
         page.wait_for_timeout(500)
         town_services = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_services not in (town_total, town_industry)

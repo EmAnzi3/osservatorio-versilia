@@ -1215,7 +1215,7 @@
     if (!main) return;
     const topic = main.querySelector('#town-topic');
     const chart = topic?.querySelector(':scope > .history-panel.a5-shared-chart');
-    const rolloutTown = A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '');
+    const rolloutTown = main.classList.contains('a5-municipal-rollout');
     const activeMetric = topic?.querySelector('.topic-controls [data-metric].active')?.dataset.metric
       || new URL(location.href).searchParams.get('indicatore')
       || '';
@@ -1433,7 +1433,7 @@
 
   function installA5TownChromeObserver() {
     if (document.body.dataset.page !== 'town') return;
-    if (!A5_TOWN_PILOT.rolloutTowns.has(document.body.dataset.town || '')) return;
+    if (!document.querySelector('main.a5-municipal-rollout')) return;
     const topic = document.getElementById('town-topic');
     if (!topic || topic.dataset.a5ChromeObserver === '1') return;
     topic.dataset.a5ChromeObserver = '1';
@@ -1544,41 +1544,50 @@
   const A5_TOWN_PROFILE_META = Object.freeze({
     viareggio: {
       institutionYear: '1820',
+      heroLabel: 'Passeggiata a mare',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG',
       heroCredit: 'Sailko / Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Viareggio,_passeggiata_a_mare_2.JPG'
     },
     camaiore: {
       institutionYear: 'sec. XIII',
       heroLabel: 'Pontile di Lido di Camaiore',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
     },
     pietrasanta: {
       institutionYear: '1255',
       heroLabel: 'Piazza Duomo',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg'
     },
     seravezza: {
       institutionYear: '1485',
       heroLabel: 'Palazzo Mediceo',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Palazzo_Mediceo_a_Seravezza.jpg'
     },
     'forte-dei-marmi': {
       institutionYear: '1914',
       heroLabel: 'Pontile',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_Forte_dei_Marmi.jpg'
     },
     stazzema: {
       institutionYear: '1776',
       heroLabel: 'Stazzema',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Stazzema.JPG'
     },
     massarosa: {
       institutionYear: '1869',
+      heroLabel: 'Passeggiata a mare',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG',
       heroCredit: 'LigaDue / Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:MassarosaPanorama.JPG'
     }
@@ -1601,7 +1610,8 @@
     const profile = A5_TOWN_PROFILE_META[slug] || {};
     const surfaceMetric = data.metrics.municipalSurface;
     const surface = surfaceMetric?.rows?.find(row => row.code === town.code);
-    return `<header class="town-hero">
+    const heroStyle = profile.heroImage ? ` style="--a5-town-hero-image:url('${html(profile.heroImage)}')"` : '';
+    return `<header class="town-hero"${heroStyle}>
       <div class="town-hero-shell">
         <div class="town-identity">
           <img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}">

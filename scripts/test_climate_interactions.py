@@ -166,8 +166,10 @@ def main() -> None:
             select_metric(page, key, 'town')
             assert page.locator('.town-metric-primary').count() == 1
             deep = page.locator('.topic-deep-dive')
+            inline_risk = page.locator('#town-topic .history-panel .composite-fixed-detail.a5-town-inline-detail')
             if key in {'floodExposure', 'landslideExposure'}:
-                assert deep.count() == 1 and deep.is_visible(), f'Risk detail not visible for {key}'
+                assert inline_risk.count() == 1 and inline_risk.is_visible(), f'Inline risk detail not visible for {key}'
+                assert deep.count() == 0 or not deep.is_visible(), f'Legacy duplicate risk detail visible for {key}'
             elif deep.count():
                 assert not deep.is_visible(), f'Risk detail incorrectly visible for {key}'
 
