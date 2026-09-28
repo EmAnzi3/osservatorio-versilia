@@ -181,13 +181,16 @@ def main() -> int:
         total_history = page.locator('#town-topic .history-panel [data-view-pane="history"] svg').inner_html()
         page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
         town_total = page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        assert page.locator("main.town-profile .town-benchmark").count() == 1
+        benchmark_host = page.locator("#town-topic > .town-benchmark-host")
+        assert benchmark_host.count() == 1, "Host benchmark A5 assente nel perimetro Totale"
+        assert benchmark_host.locator(":scope > .benchmark-section").count() == 1, "Benchmark condiviso A5 non renderizzato nel perimetro Totale"
+        assert "Toscana" in benchmark_host.inner_text(), "Benchmark Toscana assente nel perimetro Totale"
         page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("industry")
         page.wait_for_timeout(500)
         town_industry = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_total != town_industry, "Il perimetro Industria non aggiorna il valore comunale"
         assert "perimetro=industry" in page.url
-        assert page.locator("main.town-profile .town-benchmark").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
+        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
         assert page.locator("#town-topic .town-metric-primary > .economic-scope-control").count() == 1, "Cambio vista ha rimosso il selettore Frame dalla card principale"
         industry_expected = expected_scope_rows(productivity_metric, "industry")
         current_order = page.locator('#town-topic .history-panel [data-view-pane="current"] .ux-bar-town').all_text_contents()
@@ -206,7 +209,7 @@ def main() -> int:
         page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("services")
         page.wait_for_timeout(500)
         town_services = page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        assert town_services not in (town_total, town_industry)
+        assert town_services not in (town_total, town_industry)\n        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile nei Servizi"
         report["checks"].append({
             "townScopePlacement": "pass",
             "townTotal": town_total,
