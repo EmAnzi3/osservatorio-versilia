@@ -3543,7 +3543,7 @@ body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-m
 }
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:hover,
 body[data-page="town"] main.a5-town-pilot:not([data-theme="demografia"]) .town-metric-primary > .composite-read-selector select:focus {
-  border-color:var(--ds-theme-dark);
+  border-color:var(--ds-theme-accent);
   background:#fff;
 }
 @media(max-width:700px){
