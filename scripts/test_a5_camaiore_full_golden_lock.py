@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
 
 from PIL import Image, ImageChops
@@ -34,6 +35,17 @@ REVIEW_METRICS = {
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def canonical_state(value):
+    """Normalize browser non-finite geometry sentinels without hiding real diffs."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return "__NONFINITE__"
+    if isinstance(value, dict):
+        return {key: canonical_state(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [canonical_state(item) for item in value]
+    return value
 
 
 def pixel_difference(baseline: bytes, current: bytes, threshold: int = 3) -> dict:
@@ -156,8 +168,8 @@ def main() -> None:
                     choose(base_page, metric)
                     choose(cur_page, metric)
                     key = f"{viewport}:{theme}:{metric}"
-                    baseline_state = state(base_page)
-                    current_state = state(cur_page)
+                    baseline_state = canonical_state(state(base_page))
+                    current_state = canonical_state(state(cur_page))
                     checked += 1
 
                     if baseline_state != current_state:
