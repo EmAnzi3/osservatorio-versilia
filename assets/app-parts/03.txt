@@ -1350,7 +1350,12 @@
       /* Keep exactly one visible .slow-mobility-map-entry in the toolbar while
          retaining the canonical href inside the hidden source action host for
          legacy/deep-link contracts. */
-      const sourceMapEntry = actions.querySelector('.slow-mobility-map-entry');
+      const sourceMapEntry = actions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
+      const toolbarMapEntry = toolbarActions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
+      if (toolbarMapEntry) {
+        toolbarMapEntry.classList.add('slow-mobility-map-entry','a5-town-map-entry');
+        toolbarMapEntry.classList.remove('a5-canonical-map-source');
+      }
       if (sourceMapEntry) {
         sourceMapEntry.classList.remove('slow-mobility-map-entry','a5-town-map-entry');
         sourceMapEntry.classList.add('a5-canonical-map-source');
