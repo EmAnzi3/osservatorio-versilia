@@ -209,7 +209,8 @@ def main() -> int:
         page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("services")
         page.wait_for_timeout(500)
         town_services = page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        assert town_services not in (town_total, town_industry)\n        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile nei Servizi"
+        assert town_services not in (town_total, town_industry)
+        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile nei Servizi"
         report["checks"].append({
             "townScopePlacement": "pass",
             "townTotal": town_total,
