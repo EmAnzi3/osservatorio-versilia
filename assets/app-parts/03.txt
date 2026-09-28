@@ -1284,14 +1284,21 @@
     }
     actions?.classList.remove('a5-town-fallback-actions');
 
-    /* A5.4 structural contract: chart -> benchmark -> method/scale -> optional context.
-       Do this after runtime enhancement so indicator-specific markup cannot reorder the shell. */
+    /* A5.5 structural contract for municipal supplementary information:
+       chart -> municipal/additional detail -> external benchmark -> method/comparability/scale.
+       Renderer-specific detail nodes are detected by structure, not by indicator key. */
     const benchmarkHost = topic.querySelector(':scope > .town-benchmark-host');
     const toolsHost = topic.querySelector(':scope > .town-post-benchmark-tools');
-    if (chart && benchmarkHost && chart.nextElementSibling !== benchmarkHost) chart.after(benchmarkHost);
-    if (toolsHost) {
-      const toolsAnchor = benchmarkHost || chart;
-      if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
+    const inlineInfoThemes = new Set(['mobilita','abitare','ambiente','comunita']);
+    if (rolloutTown && chart && inlineInfoThemes.has(main.dataset.theme || '')) {
+      [...topic.children].forEach(node => {
+        if (node === chart || node === benchmarkHost || node === toolsHost || node === actions) return;
+        if (node.matches('.town-data-actions,.town-benchmark-host,.town-post-benchmark-tools')) return;
+        const afterChart = Boolean(chart.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_FOLLOWING);
+        if (!afterChart) return;
+        node.classList.add('a5-town-inline-info');
+        chart.append(node);
+      });
     }
     /* Salute v1.40 already materializes the same breakdown inside the canonical
        current/history shell. On the Camaiore rollout remove every duplicate legacy
@@ -1354,12 +1361,25 @@
         fixedDetail.classList.remove('a5-town-extra-context');
         fixedDetail.classList.add('a5-town-inline-detail');
         if (fixedDetail.parentElement !== chart) chart.append(fixedDetail);
+      } else if (rolloutTown && inlineInfoThemes.has(main.dataset.theme || '')) {
+        fixedDetail.classList.remove('a5-town-extra-context');
+        fixedDetail.classList.add('a5-town-inline-detail');
+        if (fixedDetail.parentElement !== chart) chart.append(fixedDetail);
       } else {
         fixedDetail.classList.remove('a5-town-inline-detail');
         fixedDetail.classList.add('a5-town-extra-context');
         const detailAnchor = toolsHost || benchmarkHost || chart;
         if (detailAnchor) detailAnchor.after(fixedDetail);
       }
+    }
+
+    /* Enforce the final sibling order only after every supplementary block has
+       been absorbed by the chart. This prevents runtime enhancement from pushing
+       municipal detail below comparison/method boxes. */
+    if (chart && benchmarkHost && chart.nextElementSibling !== benchmarkHost) chart.after(benchmarkHost);
+    if (toolsHost) {
+      const toolsAnchor = benchmarkHost || chart;
+      if (toolsAnchor && toolsAnchor.nextElementSibling !== toolsHost) toolsAnchor.after(toolsHost);
     }
 
     const copy = toolbar.querySelector('.ux-view-toolbar-copy');

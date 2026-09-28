@@ -127,7 +127,7 @@ def state(page):
         })(),
         demographyPill:(()=>{const e=q('[data-profile-theme="demografia"]');if(!e)return null;const c=getComputedStyle(e);return {active:e.classList.contains('active'),background:c.backgroundColor,border:c.borderTopColor,color:c.color}})(),
         semantic:(()=>{
-          const deep=q('#town-topic > .topic-deep-dive');
+          const deep=q('#town-topic .topic-deep-dive');
           const deepHeading=(deep?.querySelector('.deep-heading h3')?.textContent||'').trim();
           const deepSummary=(deep?.querySelector('details > summary')?.textContent||'').replace(/\\s+/g,' ').trim();
           return {
@@ -197,6 +197,20 @@ def state(page):
               historyChart:Boolean(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-history-chart, #town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-two-point-chart'))
             }
           };
+        })(),
+        additionalInfoPlacement:(()=>{
+          const topic=q('#town-topic');
+          const chart=q('#town-topic > .history-panel.a5-shared-chart');
+          const benchmark=q('#town-topic > .town-benchmark-host');
+          const tools=q('#town-topic > .town-post-benchmark-tools');
+          if(!topic||!chart)return null;
+          const children=[...topic.children];
+          const chartIndex=children.indexOf(chart);
+          const benchmarkIndex=children.indexOf(benchmark);
+          const toolsIndex=children.indexOf(tools);
+          const stray=children.slice(chartIndex+1).filter(e=>visible(e)&&!e.matches('.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>({tag:e.tagName,cls:e.className||'',text:(e.textContent||'').replace(/\\s+/g,' ').trim().slice(0,100)}));
+          const inline=[...chart.querySelectorAll(':scope > .a5-town-inline-info, :scope > .composite-fixed-detail.a5-town-inline-detail, :scope > .a5-town-income-detail')].filter(visible);
+          return {chartIndex,benchmarkIndex,toolsIndex,stray,inlineCount:inline.length};
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
         currentViz:(()=>{
@@ -451,6 +465,32 @@ def validate(s,theme,metric,key,fail):
         financial=semantic.get("financialShell") or {}
         if not all(financial.get(name) for name in ("shell","current","historyButton","historyChart")):
             fail.append({"key":key,"kind":"financial-standard-shell","financial":financial})
+    placement=s.get("additionalInfoPlacement") or {}
+    if theme in {"mobilita","abitare","ambiente","comunita"}:
+        if placement.get("stray"):
+            fail.append({"key":key,"kind":"additional-info-after-benchmark-tools","placement":placement})
+        chart_index=placement.get("chartIndex")
+        benchmark_index=placement.get("benchmarkIndex")
+        tools_index=placement.get("toolsIndex")
+        if isinstance(benchmark_index,int) and benchmark_index>=0 and isinstance(chart_index,int) and benchmark_index<=chart_index:
+            fail.append({"key":key,"kind":"benchmark-before-chart","placement":placement})
+        if isinstance(tools_index,int) and tools_index>=0:
+            anchor=benchmark_index if isinstance(benchmark_index,int) and benchmark_index>=0 else chart_index
+            if isinstance(anchor,int) and tools_index<=anchor:
+                fail.append({"key":key,"kind":"method-before-benchmark-or-chart","placement":placement})
+    v4_additional_info_metrics={
+      "outsideMunicipality","inboundCommuters","commuterBalance","selfContainment",
+      "commuterBalanceRate","outboundCommutersRate","inboundCommutersRate",
+      "scheduledTplTripsPer1000","activeTplAccessPoints","tplServiceSpan",
+      "omiResidential","erpArrears",
+      "altitudeProfile","forestCoverIndex",
+      "bathingWaterQuality","bathingNonCompliantSamples","blueFlagBeaches","shorelineDynamics",
+      "rigidDefenceProtectedCoast","maritimeConcessions","maritimeConcessionFeesDue",
+      "extractiveSites","extractiveProduction","extractivePlanning",
+      "pnrrFunding","pnrrConcluded"
+    }
+    if metric in v4_additional_info_metrics and (placement.get("inlineCount") or 0)<1:
+        fail.append({"key":key,"kind":"v4-additional-info-not-inline","placement":placement})
     for extra in s.get("extras") or []:
         if extra["width"] < extra["topicWidth"]*0.90 or abs(extra["left"]-extra["topicLeft"])>10:
             fail.append({"key":key,"kind":"misplaced-renderer-block","extra":extra})
@@ -497,7 +537,7 @@ def main():
         if total!=EXPECTED or unique!=EXPECTED:
             fail.append({"key":"catalog","kind":"metric-contract","expected":EXPECTED,"total":total,"unique":unique,"counts":{k:len(v) for k,v in contract.items()}})
         first_theme=next(iter(contract))
-        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","climateTminTrend","climateTmaxTrend","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
+        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","climateTminTrend","climateTmaxTrend","outsideMunicipality","scheduledTplTripsPer1000","omiResidential","erpArrears","altitudeProfile","forestCoverIndex","bathingWaterQuality","extractiveProduction","pnrrFunding","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
         for vp,w,h in VIEWPORTS:
             page=browser.new_page(viewport={"width":w,"height":h});errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
             for theme,metrics in contract.items():
