@@ -76,10 +76,17 @@ def nice_outer_bound(value):
     return stop * magnitude
 
 
+def normalize_display_text(value):
+    return " ".join(str(value).replace("\u00a0", " ").replace("\u202f", " ").split())
+
+
 def assert_chart_recomputed(actual, expected, aggregate_value):
-    assert [(row["town"], row["value"]) for row in actual] == [
-        (row["town"], row["value"]) for row in expected
-    ], "Valori o ordinamento non ricalcolati dal renderer canonico"
+    assert [row["town"] for row in actual] == [
+        row["town"] for row in expected
+    ], "Ordine non ricalcolato dal renderer canonico"
+    assert [normalize_display_text(row["value"]) for row in actual] == [
+        normalize_display_text(row["value"]) for row in expected
+    ], "Valori visualizzati non ricalcolati dal renderer canonico"
     maximum = nice_outer_bound(max(max(row["raw"] for row in expected), aggregate_value) * 1.06)
     expected_reference = aggregate_value / maximum * 100
     for row, expected_row in zip(actual, expected, strict=True):
