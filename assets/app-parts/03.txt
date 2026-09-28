@@ -1511,7 +1511,7 @@
   const A5_TOWN_PILOT = Object.freeze({
     towns:new Set(['viareggio','massarosa']),
     theme:'demografia',
-    rolloutTowns:new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema'])
+    rolloutTowns:new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa'])
   });
   const DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS = new Set([
     'internalResidentialMobility',
@@ -1519,16 +1519,25 @@
     'totalResidentialMobility'
   ]);
 
+  function isA5MunicipalRollout(town, themeKey) {
+    const slug = normalize(town?.name || '').replaceAll(' ', '-');
+    if (!A5_TOWN_PILOT.rolloutTowns.has(slug)) return false;
+    return !(A5_TOWN_PILOT.towns.has(slug) && themeKey === A5_TOWN_PILOT.theme);
+  }
+
   function isA5TownPilot(town, themeKey) {
     const slug = normalize(town?.name || '').replaceAll(' ', '-');
-    return A5_TOWN_PILOT.rolloutTowns.has(slug) || (A5_TOWN_PILOT.towns.has(slug) && themeKey === A5_TOWN_PILOT.theme);
+    return isA5MunicipalRollout(town, themeKey)
+      || (A5_TOWN_PILOT.towns.has(slug) && themeKey === A5_TOWN_PILOT.theme);
   }
 
   function syncA5TownPilotClass(main, town, themeKey) {
     if (!main) return false;
     const active = isA5TownPilot(town, themeKey);
+    const rollout = isA5MunicipalRollout(town, themeKey);
     main.classList.toggle('a5-editorial-pilot', active);
     main.classList.toggle('a5-town-pilot', active);
+    main.classList.toggle('a5-municipal-rollout', rollout);
     return active;
   }
 
@@ -1647,6 +1656,7 @@
     const incomeDifference = (Number(income.value) / Number(data.metrics.income.aggregate.value) - 1) * 100;
 
     const townPilot = isA5TownPilot(town, themeKey);
+    const townRollout = isA5MunicipalRollout(town, themeKey);
     const heroMarkup = townPilot
       ? a5TownHeroMarkup(data, town, pop)
       : `<header class="town-hero"><div class="town-identity"><img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}"><div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div></div>
@@ -1658,7 +1668,7 @@
         <article><span>Occupazione 25–64</span><strong>${employmentDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(employmentDifference)))} punti di differenza</small></article>
         <article><span>Reddito medio</span><strong>${incomeDifference >= 0 ? 'Sopra' : 'Sotto'} la Versilia</strong><small>${html(number1.format(Math.abs(incomeDifference)))}% di differenza</small></article></section>`;
 
-    app.innerHTML = `<main class="page-width inner-page town-profile${townPilot ? ' a5-editorial-pilot a5-town-pilot' : ''}" data-theme="${themeKey}">
+    app.innerHTML = `<main class="page-width inner-page town-profile${townPilot ? ' a5-editorial-pilot a5-town-pilot' : ''}${townRollout ? ' a5-municipal-rollout' : ''}" data-theme="${themeKey}">
       <div class="breadcrumbs"><a href="${route('')}">Home</a><span>/</span><span>Comuni</span><span>/</span><strong>${html(town.name)}</strong></div>
       ${heroMarkup}
       ${briefMarkup}

@@ -11,8 +11,11 @@ TOWN_META={
   "pietrasanta":{"name":"Pietrasanta","heroBg":"Veduta_di_piazza_duomo","heroCredit":"Piazza Duomo"},
   "seravezza":{"name":"Seravezza","heroBg":"Palazzo_Mediceo_a_Seravezza","heroCredit":"Palazzo Mediceo"},
   "forte-dei-marmi":{"name":"Forte dei Marmi","heroBg":"Pontile_Forte_dei_Marmi","heroCredit":"Pontile"},
-  "stazzema":{"name":"Stazzema","heroBg":"Stazzema.JPG","heroCredit":"Stazzema"}
+  "stazzema":{"name":"Stazzema","heroBg":"Stazzema.JPG","heroCredit":"Stazzema"},
+  "viareggio":{"name":"Viareggio","heroBg":"Viareggio%2C_passeggiata_a_mare_2.JPG","heroCredit":"Passeggiata a mare"},
+  "massarosa":{"name":"Massarosa","heroBg":"MassarosaPanorama.JPG","heroCredit":"Passeggiata a mare"}
 }
+PROTECTED_THEMES={"demografia"} if TOWN in {"viareggio","massarosa"} else set()
 if TOWN not in TOWN_META:
     raise SystemExit(f"A5_TOWN non supportato: {TOWN}")
 TOWN_NAME=TOWN_META[TOWN]["name"]
@@ -543,10 +546,13 @@ def main():
     folder=Path(args.report_dir);folder.mkdir(parents=True,exist_ok=True);fail=[]
     with sync_playwright() as p:
         browser=p.chromium.launch()
-        d=browser.new_page(viewport={"width":1440,"height":1100});contract=discover(d,args.base);d.close()
+        d=browser.new_page(viewport={"width":1440,"height":1100});all_contract=discover(d,args.base);d.close()
+        protected_count=sum(len(all_contract.get(theme,[])) for theme in PROTECTED_THEMES)
+        contract={theme:metrics for theme,metrics in all_contract.items() if theme not in PROTECTED_THEMES}
         total=sum(map(len,contract.values()));unique=len({m for ms in contract.values() for m in ms})
-        if total!=EXPECTED or unique!=EXPECTED:
-            fail.append({"key":"catalog","kind":"metric-contract","expected":EXPECTED,"total":total,"unique":unique,"counts":{k:len(v) for k,v in contract.items()}})
+        expected=EXPECTED-protected_count
+        if total!=expected or unique!=expected:
+            fail.append({"key":"catalog","kind":"metric-contract","expected":expected,"total":total,"unique":unique,"protectedThemes":sorted(PROTECTED_THEMES),"counts":{k:len(v) for k,v in contract.items()}})
         first_theme=next(iter(contract))
         review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","climateTminTrend","climateTmaxTrend","outsideMunicipality","scheduledTplTripsPer1000","omiResidential","erpArrears","altitudeProfile","forestCoverIndex","bathingWaterQuality","extractiveProduction","pnrrFunding","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
         for vp,w,h in VIEWPORTS:

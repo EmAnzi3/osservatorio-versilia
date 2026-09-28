@@ -28,8 +28,9 @@
       const href = route(`comuni/${rowSlug}/?${query}`);
       const missing = row.displayValue === null || row.displayValue === undefined;
       const formatted = formatMetricRowValue(row, row.displayValue, row.displayUnit);
-      const municipalVizTowns = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema']);
-      const vizContract = municipalVizTowns.has(selectedTown)
+      const municipalVizTowns = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa']);
+      const activeMunicipalRollout = Boolean(document.querySelector('main.a5-municipal-rollout'));
+      const vizContract = activeMunicipalRollout && municipalVizTowns.has(selectedTown)
         ? ` data-viz-value="${missing ? '' : html(String(row.displayValue))}" data-viz-unit="${html(row.displayUnit || '')}"`
         : '';
       return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}"${vizContract} aria-label="${html(row.town)}: ${html(formatted)}">

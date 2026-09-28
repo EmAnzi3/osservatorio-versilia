@@ -506,11 +506,12 @@
     'climateTmaxTrend'
   ]);
 
-  const A5_MUNICIPAL_ROLLOUT_TOWNS = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema']);
+  const A5_MUNICIPAL_ROLLOUT_TOWNS = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa']);
 
   function activeA5MunicipalTownSlug() {
     const slug = document.body.dataset.town || '';
-    return document.body.dataset.page === 'town' && A5_MUNICIPAL_ROLLOUT_TOWNS.has(slug) ? slug : '';
+    const rollout = Boolean(document.querySelector('main.a5-municipal-rollout'));
+    return document.body.dataset.page === 'town' && rollout && A5_MUNICIPAL_ROLLOUT_TOWNS.has(slug) ? slug : '';
   }
 
   function isA5MunicipalRolloutTownPage() {
