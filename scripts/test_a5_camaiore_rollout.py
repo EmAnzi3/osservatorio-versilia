@@ -155,13 +155,18 @@ def state(page):
             economicScope:(()=>{
               const e=q('#town-topic .town-metric-primary > .economic-scope-control');
               const parent=e?.closest('.town-metric-primary');
-              const er=e?.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
+              const select=e?.querySelector('select[data-economic-scope]');
+              const er=e?.getBoundingClientRect(), sr=select?.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
               const pc=parent?getComputedStyle(parent):null;
               const contentRight=pr&&pc?pr.right-parseFloat(pc.paddingRight||'0'):null;
               return {
                 inPrimary:visible(e),
                 inChart:visible(q('#town-topic .history-panel.a5-shared-chart > .economic-scope-control')),
-                rightGap:er&&contentRight!==null?Math.round((contentRight-er.right)*10)/10:null
+                rightGap:er&&contentRight!==null?Math.round((contentRight-er.right)*10)/10:null,
+                selectVisible:visible(select),
+                selectWidth:sr?Math.round(sr.width*10)/10:null,
+                selectHeight:sr?Math.round(sr.height*10)/10:null,
+                selectedText:(select?.selectedOptions?.[0]?.textContent||'').trim()
               };
             })(),
             healthRedundantDetail:visible(q('#town-topic .composite-fixed-detail .health-sex-detail, #town-topic .composite-fixed-detail .health-demographic-detail, #town-topic .composite-fixed-detail .demographic-history')),
@@ -195,7 +200,7 @@ def state(page):
         })(),
         extras:(()=>{const topic=q('#town-topic');if(!topic)return[];const tr=topic.getBoundingClientRect();return [...topic.children].filter(e=>visible(e)&&!e.matches('.town-topic-heading,.topic-controls,.town-metric-layout,.history-panel,.town-benchmark-host,.town-post-benchmark-tools,.town-data-actions')).map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,cls:e.className||'',width:r.width,topicWidth:tr.width,left:r.left,topicLeft:tr.left}})})(),
         currentViz:(()=>{
-          const bars=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars');
+          const bars=q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars, #town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"] .comparison-bars');
           if(!bars)return null;
           const numberFromLabel=text=>{
             const match=String(text||'').match(/-?[\\d.]+(?:,\\d+)?/);
@@ -213,6 +218,8 @@ def state(page):
             if(/ogni\\s+1\\.000/i.test(value))return 'per1000';
             if(/ogni\\s+100/i.test(value))return 'per100';
             if(/\\banni\\b/i.test(value))return 'years';
+            if(value.includes('°C'))return 'celsius';
+            if(/\\bmm\\b/i.test(value))return 'mm';
             if(/\\/10\\b/.test(value))return 'decile';
             if(/\\/20\\b/.test(value))return 'ventile';
             return '';
@@ -263,7 +270,7 @@ def climate_layout_response(page,metric,key,fail):
           const shell=document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]');
           const pane=shell?.querySelector(`[data-ov-climate-pane="${mode}"]`);
           const content=mode==='current'
-            ? pane?.querySelector('.ov-climate-current-list')
+            ? pane?.querySelector('.comparison-bars[data-a5-climate-current="true"]')
             : pane?.querySelector('.ov-climate-town-history');
           if(!pane||!content)return null;
           const pr=pane.getBoundingClientRect(), cr=content.getBoundingClientRect(), pc=getComputedStyle(pane);
@@ -283,6 +290,24 @@ def climate_layout_response(page,metric,key,fail):
             fail.append({"key":key,"kind":"climate-edge-spacing","mode":mode,"geometry":geometry})
         if geometry["scrollWidth"]>geometry["clientWidth"]+2:
             fail.append({"key":key,"kind":"climate-pane-overflow","mode":mode,"geometry":geometry})
+    lollipop=page.evaluate("""() => {
+      const pane=document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"]');
+      const bars=pane?.querySelector('.comparison-bars[data-a5-climate-current="true"]');
+      if(!bars)return null;
+      return {
+        legacy:Boolean(pane.querySelector('.ov-climate-current-list')),
+        rows:bars.querySelectorAll(':scope > .bar-row').length,
+        dots:bars.querySelectorAll(':scope > .bar-row .comparison-dot').length,
+        references:bars.querySelectorAll(':scope > .bar-row .comparison-reference').length,
+        legend:Boolean(bars.querySelector(':scope > .comparison-legend')),
+        axis:Boolean(bars.querySelector(':scope > .comparison-axis')),
+        contract:bars.dataset.visualContract||'',
+        unit:bars.dataset.visualUnit||''
+      };
+    }""")
+    expected_unit="mm" if metric=="climatePrecipitationTrend50y" else "°C"
+    if not lollipop or lollipop.get("legacy") or lollipop.get("rows")!=7 or lollipop.get("dots")!=7 or lollipop.get("references")!=7 or not lollipop.get("legend") or not lollipop.get("axis") or lollipop.get("contract")!="rendered" or lollipop.get("unit")!=expected_unit:
+        fail.append({"key":key,"kind":"climate-current-not-standard-lollipop","lollipop":lollipop,"expectedUnit":expected_unit})
     current=shell.locator('[data-ov-climate-view="current"]')
     if current.count()==1:
         current.click()
@@ -390,6 +415,13 @@ def validate(s,theme,metric,key,fail):
         fail.append({"key":key,"kind":"economic-scope-placement","scope":scope})
     if metric in economic_scope_metrics and not key.startswith("mobile:") and scope.get("rightGap") is not None and abs(scope["rightGap"])>2:
         fail.append({"key":key,"kind":"economic-scope-right-align","scope":scope})
+    if metric in economic_scope_metrics and key.startswith("mobile:") and (
+        not scope.get("selectVisible")
+        or not scope.get("selectedText")
+        or (scope.get("selectWidth") or 0) < 120
+        or (scope.get("selectHeight") or 0) < 30
+    ):
+        fail.append({"key":key,"kind":"economic-scope-mobile-unusable","scope":scope})
     health_metrics={
       "lifeExpectancy","mortalityAll","mortalityCancer","mortalityCirculatory","mortalityRespiratory",
       "hypertensionPrevalence","copdPrevalence","ischemicHeartDiseasePrevalence","heartFailurePrevalence",
@@ -465,7 +497,7 @@ def main():
         if total!=EXPECTED or unique!=EXPECTED:
             fail.append({"key":"catalog","kind":"metric-contract","expected":EXPECTED,"total":total,"unique":unique,"counts":{k:len(v) for k,v in contract.items()}})
         first_theme=next(iter(contract))
-        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
+        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","climateTminTrend","climateTmaxTrend","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
         for vp,w,h in VIEWPORTS:
             page=browser.new_page(viewport={"width":w,"height":h});errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
             for theme,metrics in contract.items():

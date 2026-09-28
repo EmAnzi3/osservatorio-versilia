@@ -499,6 +499,12 @@
     'libraryActiveBorrowersPer100',
     'libraryWeeklyOpeningHours'
   ]);
+  const A5_CLIMATE_CURRENT_KEYS = new Set([
+    'climateTemperatureTrend50y',
+    'climatePrecipitationTrend50y',
+    'climateTminTrend',
+    'climateTmaxTrend'
+  ]);
 
   function isCamaioreTownPage() {
     return document.body.dataset.page === 'town' && document.body.dataset.town === 'camaiore';
@@ -578,6 +584,76 @@
       bars.dataset.compositeChoice = choice;
       bars.dataset.compositeScale = 'value';
     }
+  }
+
+
+  function parseItalianDisplayedNumber(text) {
+    const raw = String(text || '').replace(/\u00a0/g,' ').trim();
+    const match = raw.match(/-?[\d.]+(?:,\d+)?/);
+    if (!match) return null;
+    const value = Number(match[0].replaceAll('.','').replace(',','.'));
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function normalizeCamaioreClimateCurrent() {
+    if (!isCamaioreTownPage()) return;
+    const metricKey = activeCamaioreMetricKey();
+    if (!A5_CLIMATE_CURRENT_KEYS.has(metricKey)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"]');
+    if (!pane) return;
+    if (pane.dataset.a5ClimateCurrent === 'lollipop' && pane.querySelector('.comparison-bars[data-a5-climate-current="true"]')) return;
+
+    const sourceRows = [...pane.querySelectorAll('.ov-climate-current-row')];
+    if (sourceRows.length !== 7) return;
+    const unit = metricKey === 'climatePrecipitationTrend50y' ? 'mm' : '°C';
+    const items = sourceRows.map(row => {
+      const town = row.querySelector('.town')?.textContent?.trim() || '';
+      const formatted = row.querySelector(':scope > strong')?.textContent?.trim() || '';
+      return {
+        town,
+        value:parseItalianDisplayedNumber(formatted),
+        formatted,
+        href:row.getAttribute('href') || '#',
+        selected:row.classList.contains('selected')
+      };
+    }).filter(item => item.town && item.value !== null);
+    if (items.length !== 7) return;
+    items.sort((a,b) => b.value - a.value || a.town.localeCompare(b.town,'it'));
+
+    const topic = document.createElement('div');
+    topic.className = 'topic-bars a5-climate-current-topic-bars';
+    const bars = document.createElement('div');
+    bars.className = 'comparison-bars';
+    bars.dataset.a5ClimateCurrent = 'true';
+    items.forEach((item,index) => {
+      const row = document.createElement('a');
+      row.className = `bar-row${item.selected ? ' selected' : ''}`;
+      row.href = item.href;
+      row.dataset.vizValue = String(item.value);
+      row.dataset.vizUnit = unit;
+      row.setAttribute('aria-label', `${item.town}: ${item.formatted}`);
+
+      const rank = document.createElement('span');
+      rank.className = 'bar-rank';
+      rank.textContent = String(index + 1);
+      const town = document.createElement('span');
+      town.className = 'bar-town';
+      town.textContent = item.town;
+      const track = document.createElement('span');
+      track.className = 'bar-track';
+      const fill = document.createElement('span');
+      fill.className = 'bar-fill';
+      fill.style.width = '1.5%';
+      track.append(fill);
+      const strong = document.createElement('strong');
+      strong.textContent = item.formatted;
+
+      row.append(rank,town,track,strong);
+      bars.append(row);
+    });
+    topic.append(bars);
+    pane.replaceChildren(topic);
+    pane.dataset.a5ClimateCurrent = 'lollipop';
   }
 
   function normalizeCamaioreLibraryCurrent() {
@@ -693,7 +769,7 @@
 
     const renderedTownCurrent = document.body.dataset.page === 'town'
       && document.body.dataset.town === 'camaiore'
-      && Boolean(container.closest('[data-view-pane="current"]'))
+      && Boolean(container.closest('[data-view-pane="current"], [data-ov-climate-pane="current"]'))
       && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
 
     if (renderedTownCurrent) syncCamaioreCurrentChoice(container, metric);
@@ -775,10 +851,11 @@
         ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
         : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
-      if (row) {
+      if (row || renderedTownCurrent) {
+        const ariaTown = row?.town || townLabel;
         const ariaReferenceLabel = renderedTownCurrent ? (effectiveAggregate?.label || 'Versilia') : (aggregate?.label || 'Versilia');
         const ariaReferenceValue = renderedTownCurrent ? formatAxis(effectiveAggregate?.value, unit) : formatAxis(aggregate?.value, unit);
-        rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${ariaReferenceLabel}: ${ariaReferenceValue}`);
+        rowEl.setAttribute('aria-label', `${ariaTown}: ${formatAxis(value, unit)}; ${ariaReferenceLabel}: ${ariaReferenceValue}`);
       }
     });
 
@@ -1000,6 +1077,7 @@
     normalizeCamaioreFinancialProfile();
     normalizeCamaioreSelectorCurrent();
     normalizeCamaioreLibraryCurrent();
+    normalizeCamaioreClimateCurrent();
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
     enhanceReadingScales();
     enhanceTownPosition();
