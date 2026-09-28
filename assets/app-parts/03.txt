@@ -1346,6 +1346,16 @@
       toolbarActions.classList.add('a5-toolbar-actions');
       toolbarActions.classList.remove('a5-town-fallback-actions');
       toolbarActions.classList.remove('town-data-actions');
+
+      /* Keep exactly one visible .slow-mobility-map-entry in the toolbar while
+         retaining the canonical href inside the hidden source action host for
+         legacy/deep-link contracts. */
+      const sourceMapEntry = actions.querySelector('.slow-mobility-map-entry');
+      if (sourceMapEntry) {
+        sourceMapEntry.classList.remove('slow-mobility-map-entry','a5-town-map-entry');
+        sourceMapEntry.classList.add('a5-canonical-map-source');
+      }
+
       ['[data-download]','[data-print]','[data-share]'].forEach(selector => {
         const source = actions.querySelector(selector);
         const clone = toolbarActions.querySelector(selector);
