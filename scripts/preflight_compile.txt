@@ -51,3 +51,6 @@ scripts/test_enrichment_coverage.py
 scripts/visualization_content_contract.py
 scripts/test_visualization_content_contract.py
 scripts/test_visual_regression.py
+scripts/opportunity_shadow_compare.py
+scripts/test_opportunity_shadow_compare.py
+scripts/test_opportunity_daily_v2_shadow.py
