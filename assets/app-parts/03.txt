@@ -1337,41 +1337,43 @@
     }
     const toggle = toolbar.querySelector('.ux-view-toggle');
 
-    /* Keep the canonical action source in #town-topic. Moving it inside the
-       history toolbar made it vulnerable to runtime shell rebuilds, which could
-       delete CSV/PDF and the filtered map CTA. Render a toolbar clone instead
-       and delegate action buttons back to the canonical source. */
-    if (actions && !toolbar.querySelector(':scope > .a5-toolbar-actions')) {
-      const toolbarActions = actions.cloneNode(true);
-      toolbarActions.classList.add('a5-toolbar-actions');
-      toolbarActions.classList.remove('a5-town-fallback-actions');
-      toolbarActions.classList.remove('town-data-actions');
+    /* Camaiore rollout only: keep the canonical action source in #town-topic.
+       Frozen Viareggio/Massarosa Demografia must retain the approved contract,
+       where the original action host itself is moved into the toolbar. */
+    if (rolloutTown) {
+      if (actions && !toolbar.querySelector(':scope > .a5-toolbar-actions')) {
+        const toolbarActions = actions.cloneNode(true);
+        toolbarActions.classList.add('a5-toolbar-actions');
+        toolbarActions.classList.remove('a5-town-fallback-actions');
+        toolbarActions.classList.remove('town-data-actions');
 
-      /* Keep exactly one visible .slow-mobility-map-entry in the toolbar while
-         retaining the canonical href inside the hidden source action host for
-         legacy/deep-link contracts. */
-      const sourceMapEntry = actions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
-      const toolbarMapEntry = toolbarActions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
-      if (toolbarMapEntry) {
-        toolbarMapEntry.classList.add('slow-mobility-map-entry','a5-town-map-entry');
-        toolbarMapEntry.classList.remove('a5-canonical-map-source');
-      }
-      if (sourceMapEntry) {
-        sourceMapEntry.classList.remove('slow-mobility-map-entry','a5-town-map-entry');
-        sourceMapEntry.classList.add('a5-canonical-map-source');
-      }
-
-      ['[data-download]','[data-print]','[data-share]'].forEach(selector => {
-        const source = actions.querySelector(selector);
-        const clone = toolbarActions.querySelector(selector);
-        if (source && clone) {
-          clone.addEventListener('click', event => {
-            event.preventDefault();
-            source.click();
-          });
+        /* Keep exactly one visible .slow-mobility-map-entry in the Camaiore
+           toolbar while retaining the canonical href in the source host. */
+        const sourceMapEntry = actions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
+        const toolbarMapEntry = toolbarActions.querySelector('.slow-mobility-map-entry, .a5-canonical-map-source');
+        if (toolbarMapEntry) {
+          toolbarMapEntry.classList.add('slow-mobility-map-entry','a5-town-map-entry');
+          toolbarMapEntry.classList.remove('a5-canonical-map-source');
         }
-      });
-      toolbar.insertBefore(toolbarActions, toggle || null);
+        if (sourceMapEntry) {
+          sourceMapEntry.classList.remove('slow-mobility-map-entry','a5-town-map-entry');
+          sourceMapEntry.classList.add('a5-canonical-map-source');
+        }
+
+        ['[data-download]','[data-print]','[data-share]'].forEach(selector => {
+          const source = actions.querySelector(selector);
+          const clone = toolbarActions.querySelector(selector);
+          if (source && clone) {
+            clone.addEventListener('click', event => {
+              event.preventDefault();
+              source.click();
+            });
+          }
+        });
+        toolbar.insertBefore(toolbarActions, toggle || null);
+      }
+    } else if (actions && actions.parentElement !== toolbar) {
+      toolbar.insertBefore(actions, toggle || null);
     }
   }
 
