@@ -291,7 +291,7 @@
   function drinkingWaterQualityTownMarkup(metric,row) {
     const localities=row.localities||[],defs=metric.parameterDefinitions||[];
     if(!localities.length||!defs.length) return '<p>Dato non disponibile.</p>';
-    return `<div class="water-quality-town"><details class="water-quality-town-disclosure"><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
+    return `<div class="water-quality-town"><details class="water-quality-town-disclosure" open><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
   }
 
   function remediationPartValue(source,key) {
@@ -1265,7 +1265,7 @@
     if (!toolbar && rolloutTown && chart) {
       const specialToolbar = document.createElement('div');
       specialToolbar.className = 'ux-view-toolbar a5-special-renderer-toolbar';
-      specialToolbar.innerHTML = '<div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Lettura dell’indicatore</strong><span>Dettaglio disponibile per il Comune e strumenti di esportazione coerenti con il resto della scheda.</span></div>';
+      specialToolbar.innerHTML = '<div class="ux-view-toolbar-copy"><small class="a5-toolbar-overline">Confronto tra Comuni della Versilia</small><strong>Lettura dell’indicatore</strong><span>Dettaglio disponibile per il Comune e strumenti di esportazione coerenti con il resto della scheda.</span></div><div class="ux-view-toggle a5-special-view-toggle" role="tablist" aria-label="Vista dell’indicatore"><button type="button" role="tab" class="active" aria-selected="true" data-view-mode="current">Valore attuale</button><button type="button" role="tab" aria-selected="false" data-view-mode="history" disabled>Storico</button></div>';
       chart.prepend(specialToolbar);
       toolbar = specialToolbar;
     }
@@ -1315,16 +1315,31 @@
         fixedDetail.querySelectorAll('.demographic-history').forEach(node => node.remove());
       }
 
-      if (selectorDrivenDuplicate) {
+      const healthDuplicate = rolloutTown
+        && main.dataset.theme === 'salute'
+        && Boolean(chart?.querySelector(':scope > .ux-view-shell'))
+        && Boolean(fixedDetail.querySelector('.health-sex-detail, .health-demographic-detail, .demographic-history'));
+      const financialDuplicate = rolloutTown && activeMetric === 'financialDebtProfile';
+      const inlineSpecialDetail = rolloutTown && (
+        ['landCoverProfile','landslideExposure','floodExposure','drinkingWaterQuality','remediationProceedings'].includes(activeMetric)
+        || Boolean(fixedDetail.querySelector('[data-land-cover-town-shell], .water-quality-town, .remediation-town'))
+      );
+
+      if (healthDuplicate || financialDuplicate || selectorDrivenDuplicate) {
         fixedDetail.remove();
       } else if (rolloutTown && activeMetric === 'incomeDistribution') {
-        fixedDetail.classList.remove('a5-town-extra-context');
+        fixedDetail.classList.remove('a5-town-extra-context','a5-town-inline-detail');
         fixedDetail.classList.add('a5-town-income-detail');
         if (!fixedDetail.querySelector(':scope > .a5-income-context-heading')) {
           fixedDetail.insertAdjacentHTML('afterbegin',`<div class="a5-income-context-heading"><span class="overline">Approfondimento MEF</span><h4>Come si distribuiscono i dichiaranti per fascia di reddito</h4><p>La sintesi usa quattro gruppi leggibili; il dettaglio espandibile conserva separatamente le otto classi originali MEF e i relativi dichiaranti.</p></div>`);
         }
         if (fixedDetail.parentElement !== chart) chart.append(fixedDetail);
+      } else if (inlineSpecialDetail) {
+        fixedDetail.classList.remove('a5-town-extra-context');
+        fixedDetail.classList.add('a5-town-inline-detail');
+        if (fixedDetail.parentElement !== chart) chart.append(fixedDetail);
       } else {
+        fixedDetail.classList.remove('a5-town-inline-detail');
         fixedDetail.classList.add('a5-town-extra-context');
         const detailAnchor = toolsHost || benchmarkHost || chart;
         if (detailAnchor) detailAnchor.after(fixedDetail);
@@ -1672,6 +1687,7 @@
     const legacyDeepDive = rolloutTown && (
       themeKey === 'economia'
       || (themeKey === 'comunita' && !['pnrrFunding','pnrrConcluded'].includes(metricKey))
+      || (themeKey === 'ambiente' && ['landslideExposure','floodExposure'].includes(metricKey))
     )
       ? ''
       : deepDiveMarkup(data, town, themeKey, metricKey);

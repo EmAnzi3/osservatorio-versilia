@@ -152,10 +152,39 @@ def state(page):
             demographicHistoryDuplicate:visible(q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail .demographic-history')),
             communityPnrrDeepDive:visible(deep) && deepHeading==='Cassa, opere e PNRR',
             legacyLibraryCurrent:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .ux-comparison-bars > .ux-bar-row')),
-            economicScope:{
-              inPrimary:visible(q('#town-topic .town-metric-primary > .economic-scope-control')),
-              inChart:visible(q('#town-topic .history-panel.a5-shared-chart > .economic-scope-control'))
-            },
+            economicScope:(()=>{
+              const e=q('#town-topic .town-metric-primary > .economic-scope-control');
+              const parent=e?.closest('.town-metric-primary');
+              const er=e?.getBoundingClientRect(), pr=parent?.getBoundingClientRect();
+              const pc=parent?getComputedStyle(parent):null;
+              const contentRight=pr&&pc?pr.right-parseFloat(pc.paddingRight||'0'):null;
+              return {
+                inPrimary:visible(e),
+                inChart:visible(q('#town-topic .history-panel.a5-shared-chart > .economic-scope-control')),
+                rightGap:er&&contentRight!==null?Math.round((contentRight-er.right)*10)/10:null
+              };
+            })(),
+            healthRedundantDetail:visible(q('#town-topic .composite-fixed-detail .health-sex-detail, #town-topic .composite-fixed-detail .health-demographic-detail, #town-topic .composite-fixed-detail .demographic-history')),
+            hydroRiskDeepDive:visible(deep) && /Dettaglio del rischio|Pressioni ambientali/i.test((deep.textContent||'')),
+            inlineDetail:(()=>{
+              const fixed=q('#town-topic .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail');
+              return {visible:visible(fixed),parentChart:Boolean(fixed?.parentElement?.matches('.history-panel.a5-shared-chart'))};
+            })(),
+            waterDetail:(()=>{
+              const d=q('#town-topic .water-quality-town-disclosure');
+              const icon=d?.querySelector(':scope > summary > i');
+              return {exists:Boolean(d),open:Boolean(d?.open),iconVisible:visible(icon)};
+            })(),
+            specialView:(()=>{
+              const tb=q('#town-topic .history-panel.a5-shared-chart > .a5-special-renderer-toolbar');
+              return {
+                toolbar:visible(tb),
+                current:Boolean(tb?.querySelector('[data-view-mode="current"]')),
+                history:Boolean(tb?.querySelector('[data-view-mode="history"]')),
+                historyDisabled:Boolean(tb?.querySelector('[data-view-mode="history"]')?.disabled)
+              };
+            })(),
+            financialDetachedHistory:visible(q('#town-topic > .financial-profile-history, #town-topic > .composite-fixed-detail .financial-profile-history, #town-topic .a5-town-extra-context .financial-profile-history')),
             financialShell:{
               shell:visible(q('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')),
               current:visible(q('#town-topic .history-panel.a5-shared-chart [data-view-pane="current"] .comparison-bars')),
@@ -213,6 +242,51 @@ def state(page):
       };
     }""")
 
+
+
+def climate_layout_response(page,metric,key,fail):
+    targets={"climateTemperatureTrend50y","climatePrecipitationTrend50y","climateTminTrend","climateTmaxTrend"}
+    if metric not in targets:
+        return
+    shell=page.locator('#town-topic .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]')
+    if shell.count()!=1:
+        fail.append({"key":key,"kind":"climate-shell-missing"})
+        return
+    for mode in ("current","history"):
+        button=shell.locator(f'[data-ov-climate-view="{mode}"]')
+        if button.count()!=1:
+            fail.append({"key":key,"kind":"climate-view-button-missing","mode":mode})
+            continue
+        button.click()
+        stable(page)
+        geometry=page.evaluate("""mode => {
+          const shell=document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]');
+          const pane=shell?.querySelector(`[data-ov-climate-pane="${mode}"]`);
+          const content=mode==='current'
+            ? pane?.querySelector('.ov-climate-current-list')
+            : pane?.querySelector('.ov-climate-town-history');
+          if(!pane||!content)return null;
+          const pr=pane.getBoundingClientRect(), cr=content.getBoundingClientRect(), pc=getComputedStyle(pane);
+          return {
+            paddingLeft:parseFloat(pc.paddingLeft||'0'),
+            paddingRight:parseFloat(pc.paddingRight||'0'),
+            leftInset:Math.round((cr.left-pr.left)*10)/10,
+            rightInset:Math.round((pr.right-cr.right)*10)/10,
+            scrollWidth:pane.scrollWidth,
+            clientWidth:pane.clientWidth
+          };
+        }""",mode)
+        if not geometry:
+            fail.append({"key":key,"kind":"climate-pane-content-missing","mode":mode})
+            continue
+        if geometry["paddingLeft"]<10 or geometry["paddingRight"]<10 or geometry["leftInset"]<8 or geometry["rightInset"]<8:
+            fail.append({"key":key,"kind":"climate-edge-spacing","mode":mode,"geometry":geometry})
+        if geometry["scrollWidth"]>geometry["clientWidth"]+2:
+            fail.append({"key":key,"kind":"climate-pane-overflow","mode":mode,"geometry":geometry})
+    current=shell.locator('[data-ov-climate-view="current"]')
+    if current.count()==1:
+        current.click()
+        stable(page)
 
 def selector_graph_response(page,metric,key,fail):
     targets={
@@ -314,6 +388,33 @@ def validate(s,theme,metric,key,fail):
     scope=semantic.get("economicScope") or {}
     if metric in economic_scope_metrics and (not scope.get("inPrimary") or scope.get("inChart")):
         fail.append({"key":key,"kind":"economic-scope-placement","scope":scope})
+    if metric in economic_scope_metrics and not key.startswith("mobile:") and scope.get("rightGap") is not None and abs(scope["rightGap"])>2:
+        fail.append({"key":key,"kind":"economic-scope-right-align","scope":scope})
+    health_metrics={
+      "lifeExpectancy","mortalityAll","mortalityCancer","mortalityCirculatory","mortalityRespiratory",
+      "hypertensionPrevalence","copdPrevalence","ischemicHeartDiseasePrevalence","heartFailurePrevalence",
+      "priorStrokePrevalence","diabetes","dementia","emergencyAccess","elderlyHomeCare",
+      "permanentRsaAssisted","specialistVisits7Psr","diagnosticImagingServices"
+    }
+    if metric in health_metrics and semantic.get("healthRedundantDetail"):
+        fail.append({"key":key,"kind":"health-redundant-detail"})
+    if metric in {"landslideExposure","floodExposure"} and semantic.get("hydroRiskDeepDive"):
+        fail.append({"key":key,"kind":"hydro-risk-redundant-deep-dive"})
+    inline_metrics={"landCoverProfile","landslideExposure","floodExposure","drinkingWaterQuality","remediationProceedings"}
+    if metric in inline_metrics:
+        inline=semantic.get("inlineDetail") or {}
+        if not inline.get("visible") or not inline.get("parentChart"):
+            fail.append({"key":key,"kind":"special-detail-detached","inline":inline})
+    if metric=="drinkingWaterQuality":
+        water=semantic.get("waterDetail") or {}
+        if not water.get("exists") or not water.get("open") or not water.get("iconVisible"):
+            fail.append({"key":key,"kind":"water-detail-default-state","water":water})
+    if metric=="extractiveProduction":
+        special=semantic.get("specialView") or {}
+        if not all(special.get(name) for name in ("toolbar","current","history","historyDisabled")):
+            fail.append({"key":key,"kind":"extractive-view-switch","special":special})
+    if metric=="financialDebtProfile" and semantic.get("financialDetachedHistory"):
+        fail.append({"key":key,"kind":"financial-detached-history"})
     if metric=="financialDebtProfile":
         financial=semantic.get("financialShell") or {}
         if not all(financial.get(name) for name in ("shell","current","historyButton","historyChart")):
@@ -364,7 +465,7 @@ def main():
         if total!=EXPECTED or unique!=EXPECTED:
             fail.append({"key":"catalog","kind":"metric-contract","expected":EXPECTED,"total":total,"unique":unique,"counts":{k:len(v) for k,v in contract.items()}})
         first_theme=next(iter(contract))
-        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","climateTemperatureTrend50y","financialDebtProfile"}
+        review_metrics={"ageDistribution","incomeDistribution","roadSafety","slowMobilityTrekking","bathingWaterQuality","lifeExpectancy","landCoverProfile","landslideExposure","floodExposure","climateTemperatureTrend50y","climatePrecipitationTrend50y","drinkingWaterQuality","remediationProceedings","extractiveProduction","financialDebtProfile"}
         for vp,w,h in VIEWPORTS:
             page=browser.new_page(viewport={"width":w,"height":h});errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
             for theme,metrics in contract.items():
@@ -377,6 +478,7 @@ def main():
                     key=f"{vp}:{theme}:{metric}"
                     validate(state(page),theme,metric,key,fail)
                     selector_graph_response(page,metric,key,fail)
+                    climate_layout_response(page,metric,key,fail)
                     if metric in review_metrics:
                         page.locator("#town-topic").screenshot(path=str(folder/f"review-{vp}-{theme}-{metric}.png"),animations="disabled")
             if errors: fail.append({"key":vp,"kind":"page-errors","errors":errors})

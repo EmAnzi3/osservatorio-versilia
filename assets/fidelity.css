@@ -3971,7 +3971,7 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot[data-theme="econ
 
 /* A5.5 Camaiore · structural renderer coherence (2026-09-28).
    Strict town scope protects thematic pages and frozen Viareggio/Massarosa Demografia. */
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:grid !important;grid-template-columns:max-content minmax(180px,1fr);align-items:center;gap:10px;width:min(100%,400px);max-width:100%;margin:18px 0 0 auto !important;padding:10px 12px !important;box-sizing:border-box;border:1px solid var(--ds-theme-line) !important;border-radius:14px !important;background:var(--ds-theme-soft) !important;box-shadow:0 6px 18px rgba(16,47,69,.08)}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .economic-scope-control.a5-economic-primary-selector{display:grid !important;grid-template-columns:max-content minmax(150px,1fr);align-items:center;justify-self:end;gap:10px;width:min(100%,300px);max-width:100%;margin:18px 0 0 auto !important;padding:10px 12px !important;box-sizing:border-box;border:1px solid var(--ds-theme-line) !important;border-radius:14px !important;background:var(--ds-theme-soft) !important;box-shadow:0 6px 18px rgba(16,47,69,.08)}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector > div{display:none !important}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:10px;min-width:0}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{margin:0;color:var(--ds-theme-accent);font-size:7px;font-weight:800;line-height:1.2;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -3982,7 +3982,7 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail > *{max-width:100%;box-sizing:border-box}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .indicator-table-scroll,
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart .water-quality-table-wrap{max-width:100%;overflow-x:auto}
-body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .water-quality-town-disclosure > summary > i{display:none !important}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .water-quality-town-disclosure > summary > i{display:grid !important}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .water-quality-town-disclosure > summary{padding-right:16px}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"]{min-width:0;max-width:100%;box-sizing:border-box}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{min-width:0;max-width:100%;box-sizing:border-box;padding:16px 18px 20px}
@@ -3997,4 +3997,136 @@ body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-pri
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .town-metric-primary > .a5-economic-primary-selector .economic-scope-select > span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail{padding:14px 12px 16px !important}
 body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ux-view-pane{padding:12px 10px 16px}
+}
+
+
+/* A5.5 Camaiore · second controlled review pass (Modifiche OV v2).
+   These rules are town-scoped and do not alter approved thematic or frozen municipal surfaces. */
+
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
+  margin:0 !important;
+  padding:18px 22px 22px !important;
+  border-top:1px solid var(--ds-border);
+  background:#fffdfa;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .land-cover-shell,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .water-quality-town,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-town-inline-detail .remediation-shell{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  margin:0;
+}
+
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
+  justify-self:end;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars{
+  margin:0;
+  padding:18px 22px 20px;
+  box-sizing:border-box;
+  border:0;
+  border-radius:0;
+  background:#fffdfa;
+  overflow:visible;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars .bar-row{
+  padding-inline:2px;
+}
+
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  padding:18px 24px 22px !important;
+  overflow:visible;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
+  padding:0 24px !important;
+  margin:0 0 14px !important;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-list{
+  padding:2px 8px 4px !important;
+  box-sizing:border-box;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
+  grid-template-columns:minmax(105px,160px) minmax(150px,1fr) minmax(96px,112px) !important;
+  gap:14px !important;
+  padding:8px 6px !important;
+  box-sizing:border-box;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history{
+  min-width:0;
+  width:100%;
+  box-sizing:border-box;
+  padding:2px 6px 8px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-head,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-key,
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-summary{
+  margin-inline:8px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .ux-history-scroll{
+  margin:4px 8px 0;
+  width:calc(100% - 16px);
+  max-width:calc(100% - 16px);
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-town-history .trend-chart{
+  min-width:0 !important;
+  width:100% !important;
+  max-width:100% !important;
+  padding:8px 10px 12px;
+  box-sizing:border-box;
+  overflow:visible !important;
+}
+
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure{
+  margin:0;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .water-quality-town-disclosure-body{
+  padding:0 18px 18px;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .remediation-town{
+  padding:2px 0 0;
+}
+body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-town-inline-detail .remediation-summary{
+  margin-top:0;
+}
+
+@media(max-width:700px){
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .a5-special-renderer-toolbar{
+    grid-template-columns:1fr;
+    gap:8px;
+    padding:10px 12px;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .a5-special-renderer-toolbar > .a5-special-view-toggle{
+    justify-self:start;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .comparison-bars,
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart > .composite-fixed-detail.a5-town-inline-detail{
+    padding:14px 12px 16px !important;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > [data-ov-climate-pane]{
+    padding:14px 12px 18px !important;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] > .ov-climate-view-note{
+    padding:0 14px !important;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row{
+    grid-template-columns:minmax(92px,120px) minmax(85px,1fr) !important;
+    padding:8px 2px !important;
+  }
+  body[data-page="town"][data-town="camaiore"] main.a5-town-pilot .history-panel.a5-shared-chart [data-ov-climate-shell^="town-"] .ov-climate-current-row strong{
+    grid-column:1 / -1;
+    justify-self:end;
+    padding-right:2px;
+  }
 }
