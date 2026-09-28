@@ -1263,9 +1263,14 @@
     /* Only renderers explicitly excluded from ux-history receive the fallback A5
        toolbar. Standard/library metrics must wait for their canonical view shell,
        otherwise we would create duplicate Attuale/Storico controls. */
-    const activeCompositeType = data.metrics?.[activeMetric]?.meta?.compositeType || '';
-    const specialToolbarMetric = activeMetric === 'extractiveProduction'
-      || ['drinkingWaterQuality','remediationProceedings','hydroRisk','territorialClassification','landCoverProfile'].includes(activeCompositeType);
+    const specialToolbarMetric = [
+      'extractiveProduction',
+      'drinkingWaterQuality',
+      'remediationProceedings',
+      'landCoverProfile',
+      'landslideExposure',
+      'floodExposure'
+    ].includes(activeMetric);
     if (!toolbar && rolloutTown && chart && specialToolbarMetric) {
       const specialToolbar = document.createElement('div');
       specialToolbar.className = 'ux-view-toolbar a5-special-renderer-toolbar';
