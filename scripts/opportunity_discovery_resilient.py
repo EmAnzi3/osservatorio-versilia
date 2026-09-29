@@ -291,7 +291,9 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
         diagnostics = {
             "status": "ok", "transport": "http_browser", "httpAttempts": http_attempts,
             "fallbackUsed": False, "proxyUsed": False, "initialFailureClass": None,
-            "browserFailureClass": None, "failureClass": None, "resolvedUrl": resolved_url,
+            "rootFailureClass": None, "browserFailureClass": None,
+            "readerFailureClass": None, "terminalFailureClass": None,
+            "failureClass": None, "resolvedUrl": resolved_url,
             "redirected": resolved_url != url, "errors": [],
         }
         _record_trace(url, diagnostics)
@@ -307,7 +309,9 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
             diagnostics = {
                 "status": "ok", "transport": "chromium", "httpAttempts": http_attempts,
                 "fallbackUsed": True, "proxyUsed": False, "initialFailureClass": failure_class,
-                "browserFailureClass": None, "failureClass": None, "resolvedUrl": resolved_url,
+                "rootFailureClass": failure_class, "browserFailureClass": None,
+                "readerFailureClass": None, "terminalFailureClass": failure_class,
+                "failureClass": None, "resolvedUrl": resolved_url,
                 "redirected": resolved_url != url, "errors": errors,
             }
             _record_trace(url, diagnostics)
@@ -323,7 +327,10 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
             diagnostics = {
                 "status": "ok", "transport": "reader_proxy", "httpAttempts": http_attempts,
                 "fallbackUsed": True, "proxyUsed": True, "initialFailureClass": failure_class,
-                "browserFailureClass": browser_failure_class, "failureClass": None,
+                "rootFailureClass": failure_class, "browserFailureClass": browser_failure_class,
+                "readerFailureClass": None,
+                "terminalFailureClass": browser_failure_class or failure_class,
+                "failureClass": None,
                 "resolvedUrl": url, "redirected": False, "errors": errors,
             }
             _record_trace(url, diagnostics)
@@ -331,11 +338,16 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
         except Exception as reader_error:  # pragma: no cover
             reader_class = classify_fetch_error(reader_error)
             errors.append(f"Reader [{reader_class}]: {reader_error}")
-            final_class = reader_class if reader_class != "fetch_error" else (browser_failure_class or failure_class)
+            # ``failureClass`` is the root failure observed against the configured
+            # endpoint.  A 403 returned by the optional reader proxy must not be
+            # reported as if it came from the institutional source itself.
+            root_class = failure_class
             diagnostics = {
                 "status": "error", "transport": "failed", "httpAttempts": http_attempts,
                 "fallbackUsed": True, "proxyUsed": True, "initialFailureClass": failure_class,
-                "browserFailureClass": browser_failure_class, "failureClass": final_class,
+                "rootFailureClass": root_class, "browserFailureClass": browser_failure_class,
+                "readerFailureClass": reader_class, "terminalFailureClass": reader_class,
+                "failureClass": root_class,
                 "resolvedUrl": None, "redirected": False, "errors": errors,
             }
             _record_trace(url, diagnostics)
@@ -344,7 +356,10 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
     diagnostics = {
         "status": "error", "transport": "failed", "httpAttempts": http_attempts,
         "fallbackUsed": False, "proxyUsed": False, "initialFailureClass": failure_class,
-        "browserFailureClass": browser_failure_class, "failureClass": failure_class,
+        "rootFailureClass": failure_class, "browserFailureClass": browser_failure_class,
+        "readerFailureClass": None,
+        "terminalFailureClass": browser_failure_class or failure_class,
+        "failureClass": failure_class,
         "resolvedUrl": None, "redirected": False, "errors": errors,
     }
     _record_trace(url, diagnostics)
@@ -354,6 +369,36 @@ def fetch_with_diagnostics(url: str, timeout: int = 30, attempts: int = 2) -> tu
 def fetch_resilient(url: str, timeout: int = 30, attempts: int = 2) -> str:
     payload, _ = fetch_with_diagnostics(url, timeout=timeout, attempts=attempts)
     return payload
+
+
+def _enforce_endpoint_content_signature(
+    radar_module: Any,
+    source: dict[str, Any],
+    url: str,
+    payload: str,
+    diagnostics: dict[str, Any],
+) -> None:
+    """Reject a reachable fallback page that does not expose its promised content."""
+    configured = source.get("endpointRequiredTerms") or {}
+    required = [str(term) for term in configured.get(url) or [] if str(term).strip()]
+    if not required:
+        return
+    visible = radar_module.v025.fold(radar_module.base.visible(payload))
+    missing = [term for term in required if radar_module.v025.fold(term) not in visible]
+    if not missing:
+        return
+    failed = {
+        **diagnostics,
+        "status": "error",
+        "failureClass": "content_signature_missing",
+        "rootFailureClass": "content_signature_missing",
+        "terminalFailureClass": "content_signature_missing",
+        "contentSignatureMissing": missing,
+        "errors": list(diagnostics.get("errors") or [])
+        + ["Firma contenuto assente: " + ", ".join(missing)],
+    }
+    _record_trace(url, failed)
+    raise DiscoveryFetchError("Firma contenuto attesa non trovata", failed)
 
 
 def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloads: dict[str, str] | None = None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
@@ -382,9 +427,10 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                         timeout=int(source.get("fetchTimeoutSeconds") or 25),
                         attempts=int(source.get("fetchAttempts") or 2),
                     )
-                endpoint_ok += 1
+                _enforce_endpoint_content_signature(radar_module, source, url, payload, diagnostics)
                 payload, payload_format = normalize_discovery_payload(payload, str(diagnostics.get("resolvedUrl") or url))
                 diagnostics = {**diagnostics, "payloadFormat": payload_format}
+                endpoint_ok += 1
                 endpoint_results.append({"url": url, **diagnostics})
                 page_url = str(diagnostics.get("resolvedUrl") or url)
                 source_candidates.extend(radar_module.discovery_candidates(source, payload, page_url))
@@ -396,7 +442,12 @@ def probe_discovery_sources(radar_module: Any, config: dict[str, Any], *, payloa
                     "url": url, "status": "error", "transport": diagnostics.get("transport") or "failed",
                     "fallbackUsed": bool(diagnostics.get("fallbackUsed")), "proxyUsed": bool(diagnostics.get("proxyUsed")),
                     "initialFailureClass": diagnostics.get("initialFailureClass"),
-                    "browserFailureClass": diagnostics.get("browserFailureClass"), "failureClass": failure,
+                    "rootFailureClass": diagnostics.get("rootFailureClass"),
+                    "browserFailureClass": diagnostics.get("browserFailureClass"),
+                    "readerFailureClass": diagnostics.get("readerFailureClass"),
+                    "terminalFailureClass": diagnostics.get("terminalFailureClass"),
+                    "failureClass": failure,
+                    "contentSignatureMissing": list(diagnostics.get("contentSignatureMissing") or []),
                     "resolvedUrl": diagnostics.get("resolvedUrl"), "redirected": bool(diagnostics.get("redirected")),
                     "errors": diagnostics.get("errors") or [str(exc)],
                 })
