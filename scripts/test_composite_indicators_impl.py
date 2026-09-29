@@ -202,15 +202,15 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         wait_until="networkidle",
     )
     selector = page.locator("#town-topic .town-metric-primary > .composite-read-selector select[data-composite-choice]")
-    page.wait_for_selector(".history-panel .ux-view-shell")
+    page.wait_for_selector(".history-panel .ux-view-shell", timeout=10000)
     choices = selector_choices(metric, row)
 
     if metric["meta"]["theme"] == "demografia" and metric["meta"].get("compositeType") == "distribution":
-        selector.wait_for(state="attached")
+        selector.wait_for(state="attached", timeout=5000)
         assert selector.is_hidden(), f"{town}/{metric_key}: il selettore legacy deve restare nascosto nel DS2"
         assert selector.locator("option").all_text_contents() == [choice[1] for choice in choices]
         visual = page.locator('[data-view-pane="current"] .a5-town-current-visual .a5-current-family-distribution')
-        visual.wait_for(state="visible")
+        visual.wait_for(state="visible", timeout=10000)
         assert visual.locator(".composite-distribution-row").count() == 7, f"{town}/{metric_key}: righe comunali A5 incomplete"
         expected_segments = sum(len(item.get("parts") or []) for item in metric["rows"])
         assert visual.locator(".composite-segment").count() == expected_segments, (
@@ -233,7 +233,7 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         assert widths["scroll"] <= widths["client"], f"Overflow pagina: {town}/{metric_key}/{widths}"
         return
 
-    selector.wait_for(state="visible")
+    selector.wait_for(state="visible", timeout=10000)
     assert selector.locator("option").all_text_contents() == [choice[1] for choice in choices]
     for choice, label, value, unit in choices:
         selector.select_option(choice)
@@ -347,8 +347,12 @@ def browser_checks(data: dict) -> None:
             page.locator(".search-field input").fill(term)
             assert page.locator(f'[data-search-result][href*="/indicatori/{slugify(data["metrics"][metric_key]["meta"]["label"])}/"]').count() == 1
 
-        towns = [town["name"] for town in data["towns"]]
-        for town in towns:
+        # Static checks validate composite data for all 7 municipalities and the
+        # A5 municipal rollout cohort already exercises every municipal metric.
+        # Keep this legacy suite focused on two representative municipal surfaces:
+        # Camaiore (shared rollout golden) and Viareggio (protected historical golden).
+        ui_towns = ("Camaiore", "Viareggio")
+        for town in ui_towns:
             verify_selector_page(page, base, data, town, "ageDistribution")
             verify_selector_page(page, base, data, town, "incomeDistribution")
         desktop.close()
@@ -357,7 +361,7 @@ def browser_checks(data: dict) -> None:
         mobile_page = mobile.new_page()
         tooltip_checks(mobile_page, base, "demografia", "ageDistribution", 7, 8)
         tooltip_checks(mobile_page, base, "economia", "incomeDistribution", 7, 4)
-        for town in towns:
+        for town in ui_towns:
             verify_selector_page(mobile_page, base, data, town, "ageDistribution")
             verify_selector_page(mobile_page, base, data, town, "incomeDistribution")
         mobile.close()
@@ -367,7 +371,7 @@ def browser_checks(data: dict) -> None:
 def main() -> None:
     data = static_checks()
     browser_checks(data)
-    print("Indicatori compositi verificati: 7 Comuni, tutti i selettori, desktop e mobile.")
+    print("Indicatori compositi verificati: dati 7/7, compare desktop/mobile e superfici municipali A5 rappresentative.")
 
 
 if __name__ == "__main__":
