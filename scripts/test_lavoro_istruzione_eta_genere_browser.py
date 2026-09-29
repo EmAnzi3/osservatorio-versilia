@@ -93,11 +93,18 @@ def town(page, base, theme, key):
     tooltip_text = page.locator(".demographic-rate-pyramid .age-pyramid-point .chart-tooltip").first.text_content() or ""
     req("%" in tooltip_text and "/" in tooltip_text, f"{key}: tooltip non contiene percentuale e numeratore/denominatore")
 
-    panel = page.locator(".history-panel").bounding_box()
+    detail_host = page.locator(".demographic-rate-pyramid").locator("xpath=..")
+    host_box = detail_host.bounding_box()
     pyramid = page.locator(".demographic-rate-pyramid").bounding_box()
-    req(panel is not None and pyramid is not None, f"{key}: bounding box non disponibile")
-    req(pyramid["x"] >= panel["x"] + 6, f"{key}: piramide troppo vicina al bordo sinistro")
-    req(pyramid["x"] + pyramid["width"] <= panel["x"] + panel["width"] - 6, f"{key}: piramide troppo vicina al bordo destro")
+    req(host_box is not None and pyramid is not None, f"{key}: bounding box non disponibile")
+    req(pyramid["x"] >= host_box["x"] - 1, f"{key}: piramide esce dal contenitore a sinistra")
+    req(pyramid["x"] + pyramid["width"] <= host_box["x"] + host_box["width"] + 1,
+        f"{key}: piramide esce dal contenitore a destra")
+    padding = page.locator(".demographic-rate-pyramid").evaluate(
+        """el => ({left: parseFloat(getComputedStyle(el).paddingLeft), right: parseFloat(getComputedStyle(el).paddingRight)})"""
+    )
+    req(padding["left"] >= 12 and padding["right"] >= 12,
+        f"{key}: padding interno piramide insufficiente: {padding}")
 
     initial = page.locator("[data-composite-primary-value]").inner_text()
     gender.select_option("women")
