@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: approved DS2 frozen; composite regression aligned to A5 bar-row/bar-town contract and promoted to quick fail-fast so legacy UI regressions are caught before the long full suite",
+  "purpose": "A5.5 closure: approved DS2 frozen; legacy CI aligned to canonical A5 toolbar/bar-row structure; composite and visual-grammar regressions promoted to quick fail-fast before the long full suite",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -28,6 +28,8 @@
     ".github/workflows/a5-municipal-rollout-cohort.yml",
     "scripts/test_climate_interactions.py",
     "scripts/test_economia_prodotta_browser.py",
-    "scripts/preflight.py"
+    "scripts/preflight.py",
+    "scripts/test_visual_grammar.py",
+    "scripts/test_amministrazione_lotto_a_browser.py"
   ]
 }
