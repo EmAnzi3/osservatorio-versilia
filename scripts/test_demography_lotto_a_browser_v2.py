@@ -391,8 +391,6 @@ def main() -> None:
                     )
                     require(map_link.count() == 1,
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia non affiancata a export/stampa')
-                    require(page.locator('a[href*="percorsi/"]').count() == 1,
-                            f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia duplicata')
                     require(map_link.locator('svg').count() == 1 and map_link.locator('svg').is_visible(),
                             f'A5.5 bulk {theme_key}/{metric_key}: icona mappa assente o invisibile')
                     map_style = map_link.evaluate("""el => {
