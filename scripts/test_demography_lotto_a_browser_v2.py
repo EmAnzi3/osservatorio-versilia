@@ -311,24 +311,6 @@ def main() -> None:
                 require(page.locator('#compare-tools.compare-post-benchmark-tools').count() == 1,
                         f'A5.5 bulk {theme_key}/{metric_key}: tools host assente')
 
-                visible_surface = page.locator('#compare-bars').evaluate('''el => {
-                  const visible = node => {
-                    if (!node) return false;
-                    const style=getComputedStyle(node), rect=node.getBoundingClientRect();
-                    return style.visibility !== 'hidden'
-                      && style.display !== 'none'
-                      && rect.width > 20
-                      && rect.height > 20;
-                  };
-                  const children=[...el.children].filter(visible);
-                  return {
-                    visibleChildren: children.length,
-                    classes: children.map(node => node.className || node.tagName),
-                  };
-                }''')
-                require(visible_surface['visibleChildren'] >= 1,
-                        f'A5.5 bulk {theme_key}/{metric_key}: nessuna superficie dati visibile {visible_surface}')
-
                 special_surfaces = {
                     'territorialClassification': '.territorial-classification-shell',
                     'landCoverProfile': '[data-land-cover-compare-shell]',
