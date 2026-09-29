@@ -50,11 +50,11 @@ jobs:
       - name: Run complete non-fail-fast sweep
         run: python scripts/a5_full_sweep_debug.py
 
-      - name: Upload visual regression diagnostics
+      - name: Upload debug reports
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: visual-regression-${{ github.run_id }}
-          path: reports/visual-regression/
+          name: a5-debug-reports-${{ github.run_id }}
+          path: reports/
           if-no-files-found: ignore
           retention-days: 14

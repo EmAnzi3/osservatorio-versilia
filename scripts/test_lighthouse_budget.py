@@ -206,6 +206,22 @@ def validate_reports(reports: list[Path], output_dir: Path) -> None:
                 failures.append(
                     f"{path.stem}: {category} {scores[category]} < {round(threshold * 100)}"
                 )
+                audit_refs = categories.get(category, {}).get("auditRefs", [])
+                audits = payload.get("audits", {})
+                for audit_ref in audit_refs:
+                    if float(audit_ref.get("weight") or 0) <= 0:
+                        continue
+                    audit_id = audit_ref.get("id")
+                    audit = audits.get(audit_id, {})
+                    audit_score = audit.get("score")
+                    if audit_score is None or float(audit_score) >= 1:
+                        continue
+                    title = audit.get("title") or audit_id
+                    display = audit.get("displayValue") or ""
+                    print(
+                        f"LIGHTHOUSE AUDIT {path.stem} · {category} · {audit_id}: "
+                        f"{title} · score={audit_score} {display}".rstrip()
+                    )
         summary[path.stem] = scores
 
     (output_dir / "summary.json").write_text(

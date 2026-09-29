@@ -47,7 +47,10 @@ def main() -> None:
             first_value = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
             assert "%" in first_value, f"Lettura rapportata non applicata: {first_value}"
             raw.click()
-            page.wait_for_function("document.querySelector('#compare-bars button[data-scale=\"raw\"]')?.classList.contains('active')")
+            page.wait_for_function(
+                """() => document.querySelector('#compare-bars button[data-scale="raw"]')?.classList.contains('active')
+                  && (document.querySelector('#compare-bars .bar-row strong')?.textContent || '').includes('ha')"""
+            )
             first_value_raw = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
             assert "ha" in first_value_raw, f"Ritorno al valore assoluto non applicato: {first_value_raw}"
 

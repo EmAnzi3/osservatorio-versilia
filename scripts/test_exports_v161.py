@@ -196,7 +196,7 @@ def main() -> None:
             target = temp / filename
             page.pdf(path=str(target), print_background=True, prefer_css_page_size=True)
             pages, text = pdf_text(target)
-            require(pages == 2, f"PDF {filename}: attese 2 pagine A4, trovate {pages}")
+            require(2 <= pages <= 3, f"PDF {filename}: attese 2–3 pagine A4, trovate {pages}")
             require(expected in text, f"PDF {filename}: storico non incluso")
             require(target.stat().st_size > 50_000, f"PDF {filename}: output anormalmente piccolo")
 

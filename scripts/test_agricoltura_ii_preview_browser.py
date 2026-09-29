@@ -20,15 +20,25 @@ def assert_no_simple_mean_benchmark(text: str) -> None:
 
 
 def compare_row(page, town: str):
+    page.wait_for_function(
+        """town => [...document.querySelectorAll('#compare-bars .bar-row')]
+          .some(row => row.querySelector('.bar-town')?.textContent.trim() === town)""",
+        town,
+    )
     rows = page.locator("#compare-bars .bar-row")
     for index in range(rows.count()):
         row = rows.nth(index)
         if row.locator(".bar-town").inner_text().strip() == town:
             return row
-    raise AssertionError(f"Riga confronto non trovata: {town}")
+    raise AssertionError(f"Riga confronto non trovata dopo attesa: {town}")
 
 
 def town_current_row(page, town: str):
+    page.wait_for_function(
+        """town => [...document.querySelectorAll('.history-panel [data-view-pane="current"] .bar-row, .history-panel [data-view-pane="current"] .ux-bar-row')]
+          .some(row => (row.querySelector('.bar-town, .ux-bar-town')?.textContent || '').trim() === town)""",
+        town,
+    )
     rows = page.locator(
         '.history-panel [data-view-pane="current"] .bar-row, '
         '.history-panel [data-view-pane="current"] .ux-bar-row'
@@ -38,7 +48,7 @@ def town_current_row(page, town: str):
         label = row.locator(".bar-town, .ux-bar-town").first
         if label.count() and label.inner_text().strip() == town:
             return row
-    raise AssertionError(f"Riga grafico comunale non trovata: {town}")
+    raise AssertionError(f"Riga grafico comunale non trovata dopo attesa: {town}")
 
 
 def visual_left(locator) -> float:

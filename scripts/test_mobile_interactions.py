@@ -219,6 +219,12 @@ def verify_indicator_scroll_containment(
             f"{label}: intestazione fuori viewport: {before}")
     require(before["toolsLeft"] >= -1 and before["toolsRight"] <= before["viewport"] + 1,
             f"{label}: conteggio/freccia fuori viewport: {before}")
+
+    if page.locator("main.a5-editorial-pilot").count():
+        require(before["buttonsScrollWidth"] <= before["buttonsClientWidth"] + 1,
+                f"{label}: il catalogo A5 compatto richiede uno scroll orizzontale inatteso: {before}")
+        return
+
     require(before["buttonsScrollWidth"] > before["buttonsClientWidth"] + 20,
             f"{label}: la riga lunga non ha un proprio overflow orizzontale: {before}")
 

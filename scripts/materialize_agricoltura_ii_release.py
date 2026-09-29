@@ -74,7 +74,7 @@ def patch_runtime_sources() -> None:
     )
 
     base_history = "['distribution','omi','stock','securityMeasures','sexBreakdown']"
-    ratio_history = "['distribution','omi','stock','securityMeasures','agricultureProfile','ratioProfile','sexBreakdown']"
+    ratio_history = "['distribution','omi','stock','securityMeasures','ratioProfile','sexBreakdown']"
     replace_exact(UX_HISTORY, base_history, ratio_history, expected=2)
 
 
