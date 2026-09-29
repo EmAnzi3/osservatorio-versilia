@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: bulk QA validates any visible direct A5 chart renderer instead of hard-coding only ux-view-shell/topic-bars; named special renderers retain their dedicated assertions",
+  "purpose": "A5.5 closure: bulk QA no longer duplicates thematic-golden visual visibility with a renderer-specific generic rule; host population, named special renderers and document overflow remain checked while the golden lock owns per-metric visual visibility",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
