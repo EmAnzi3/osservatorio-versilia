@@ -420,18 +420,28 @@ def main() -> None:
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia spostata fuori dalla toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
                                   'shorelineDynamics','rigidDefenceProtectedCoast'):
-                    require(page.locator('#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions [data-download]').count() == 1,
-                            f'A5.5 bulk {theme_key}/{metric_key}: export costiero fuori dalla toolbar A5')
-                    require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
-                            f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere duplicate nella toolbar')
+                    coast_actions = page.locator(
+                        '.compare-panel-heading > .data-actions, '
+                        '#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions'
+                    )
+                    require(coast_actions.count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: host azioni costiere non univoco')
+                    require(coast_actions.locator('[data-download]').count() == 1
+                            and coast_actions.locator('[data-print]').count() == 1,
+                            f'A5.5 bulk {theme_key}/{metric_key}: CSV/PDF costieri mancanti')
                     selector = page.locator('#compare-bars select[data-composite-component]:visible').first
                     if selector.count() and selector.locator('option').count() > 1:
                         selector.select_option(index=1)
                         page.wait_for_timeout(120)
-                        require(page.locator('#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions [data-download]').count() == 1,
-                                f'A5.5 bulk {theme_key}/{metric_key}: export costiero perso dalla toolbar A5 dopo cambio selettore')
-                        require(page.locator('.compare-panel-heading > .data-actions').count() == 0,
-                                f'A5.5 bulk {theme_key}/{metric_key}: azioni costiere tornate nella toolbar dopo selettore')
+                        coast_actions = page.locator(
+                            '.compare-panel-heading > .data-actions, '
+                            '#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions'
+                        )
+                        require(coast_actions.count() == 1,
+                                f'A5.5 bulk {theme_key}/{metric_key}: host azioni costiere perso/duplicato dopo cambio selettore')
+                        require(coast_actions.locator('[data-download]').count() == 1
+                                and coast_actions.locator('[data-print]').count() == 1,
+                                f'A5.5 bulk {theme_key}/{metric_key}: CSV/PDF costieri persi dopo cambio selettore')
                 assert_no_horizontal_overflow(
                     page,
                     f'A5.5 bulk {theme_key}/{metric_key} {"mobile" if mobile else "desktop"}'
