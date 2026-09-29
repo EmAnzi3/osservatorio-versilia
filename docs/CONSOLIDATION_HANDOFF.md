@@ -7,40 +7,40 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
 - **Step attivo:** A5.5 — propagazione progressiva DS2
-- **Stato:** IN_PROGRESS — Camaiore completa congelata; rollout parametrico esteso a tutti i Comuni, con Viareggio/Massarosa Demografia esclusa e protetta dai golden lock
-- **Main verificato e incorporato:** `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
+- **Stato:** DONE tecnicamente — chiusura formale A5 sospesa soltanto fino ad approvazione esplicita e merge della PR #280
+- **Main incorporato:** `46a31d3ca60717827ac92c709349b0c77355c3b4`
+- **Merge di allineamento main:** `bde1c5ab82f85c6655908cd3002139caddc6245b`
+- **Checkpoint UI approvato:** `bc9e5086aa796637828e1a5ae6e9952873024ef7`
+- **Commit closure docs/scope:** `6fa94b4a569d5ee90b24fd061e3aeae379546162`
 - **Branch:** `feat/a5-controlled-iteration`
-- **PR:** #280 — Draft
-- **Riconciliazione:** commit `edb17ea5d44a38ad21d2eb6cf330a3420a0b69d1`; branch 0 commit dietro `main`
+- **PR:** #280 — Draft, OPEN, non mergiata
 - **A0–A4:** DONE
-- **A5.1–A5.3:** DONE
-- **A5.4:** DONE
-- **A5.5:** IN_PROGRESS
+- **A5.1–A5.5:** DONE tecnicamente
+- **A6:** NOT_STARTED
 
-## Golden master congelati
+## Contratti congelati
 
 I contratti approvati sono documentati in `docs/A5_GOLDEN_MASTERS.md`.
 
-1. **Pagina tematica:** `/confronta/demografia/?indicatore=population` sulla PR #280.
-2. **Scheda comunale:** Viareggio/Demografia, derivata dal Draft 19 e approvata visivamente.
-3. **Prova di generalizzazione:** Massarosa/Demografia sullo stesso shell condiviso, approvata visivamente.
-4. **Scheda comunale completa:** Camaiore, tutti gli 11 temi e 223 indicatori su desktop/mobile, approvata al checkpoint `5aaf159870912eb49bffbd044963549bfb920150` e protetta dal full golden lock.
+- 11 pagine tematiche standard DS2 consolidate.
+- 7 schede comunali consolidate sul renderer parametrico condiviso.
+- Camaiore completa protetta dal checkpoint `5aaf159870912eb49bffbd044963549bfb920150`.
+- Viareggio/Massarosa Demografia restano protette dal golden lock storico.
+- Navigazione Comuni e Home “Esplora per territorio” in ordine alfabetico: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema, Viareggio.
+- Route speciali mantenute come eccezioni intenzionali: `meteo-clima`, Atlante attività economiche, Affluenza.
 
-Camaiore non va più modificata durante il rollout. Il Draft 19 resta solo un riferimento visuale: il suo codice prototipale non è stato propagato.
+## Closure audit route speciali
 
-## Audit di propagazione
+- **Meteo/clima:** workspace specializzato; shell canonica e gate clima dedicati.
+- **Atlante attività economiche:** web component autonomo con browser contract dedicato desktop/tablet/mobile.
+- **Affluenza:** archivio/event selector specifico; token/componenti canonici e responsive dedicato.
 
-Verificato che:
-- il renderer delle pagine tematiche è condiviso; Demografia è il ramo A5 da generalizzare;
-- le schede comunali condividono `renderTown()` / `renderTownMetric()`;
-- grafici, storico e visual grammar sono già infrastrutture comuni;
-- le route speciali `meteo-clima`, atlante economia e affluenza vanno gestite separatamente;
-- nessun altro tema deve essere modificato prima che i due golden master siano riprodotti tramite componenti condivisi.
+Nessuna delle tre route richiede un rollout forzato nello shell standard A5.
 
 ## Prossima azione esatta
 
-1. Congelare Camaiore completa sul checkpoint `5aaf159870912eb49bffbd044963549bfb920150` nel municipal golden lock.
-2. Generalizzare il renderer A5 comunale senza branch/CSS specifici per singolo Comune.
-3. Propagare lo standard a Pietrasanta, Seravezza, Forte dei Marmi e Stazzema con gate automatico completo.
-4. Applicare poi lo stesso standard a Viareggio e Massarosa sugli altri temi, lasciando **Demografia invariata** e protetta dal golden lock esistente.
-5. Non aggiornare baseline/golden per ottenere verde e non rendere la PR Ready/merge senza approvazione esplicita.
+1. Attendere e verificare che tutti i gate della PR siano verdi sul nuovo head di closure.
+2. Se verdi, fermarsi e chiedere al proprietario autorizzazione esplicita a rendere #280 Ready e mergiarla.
+3. Solo dopo il merge: segnare A5 `DONE` e avviare A6.1 — modello semantico minimo.
+
+Non aggiornare golden/baseline per ottenere verde e non mergiare senza approvazione esplicita.
