@@ -17,6 +17,7 @@
     "scripts/test_a5_camaiore_rollout.py",
     ".github/workflows/a5-camaiore-rollout.yml",
     "assets/app-parts/01.txt",
+    "assets/app-parts/02.txt",
     "assets/visual-grammar.js",
     "scripts/test_a5_camaiore_full_golden_lock.py",
     "docs/A5_GOLDEN_MASTERS.md",

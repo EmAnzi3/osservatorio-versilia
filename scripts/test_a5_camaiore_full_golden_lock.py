@@ -14,6 +14,38 @@ from playwright.sync_api import sync_playwright
 from test_a5_camaiore_rollout import EXPECTED, VIEWPORTS, choose, discover, go, stable, state
 
 APPROVED_COMMIT = "5aaf159870912eb49bffbd044963549bfb920150"
+EXPECTED_TOWN_ORDER = (
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio",
+)
+
+
+def town_nav_order(page) -> list[str]:
+    return page.evaluate("""() => [
+      ...document.querySelectorAll('.town-context-nav .context-nav-row:first-child .context-nav-links > a')
+    ].map(el => (el.textContent || '').trim())""")
+
+
+def normalize_baseline_town_order(page) -> None:
+    result = page.evaluate("""expected => {
+      const host = document.querySelector('.town-context-nav .context-nav-row:first-child .context-nav-links');
+      if (!host) return {ok:false, reason:'host-missing'};
+      const links = [...host.querySelectorAll(':scope > a')];
+      const byName = new Map(links.map(link => [(link.textContent || '').trim(), link]));
+      const missing = expected.filter(name => !byName.has(name));
+      if (missing.length) return {ok:false, reason:'links-missing', missing};
+      expected.forEach(name => host.append(byName.get(name)));
+      return {ok:true};
+    }""", list(EXPECTED_TOWN_ORDER))
+    if not result.get("ok"):
+        raise AssertionError(f"Camaiore baseline town-nav normalization failed: {result}")
+
+
 REVIEW_METRICS = {
     "population",
     "incomeDistribution",
@@ -159,6 +191,25 @@ def main() -> None:
             for theme, metrics in current_contract.items():
                 go(base_page, args.baseline_base, theme, metrics[0])
                 go(cur_page, args.current_base, theme, metrics[0])
+                normalize_baseline_town_order(base_page)
+
+                expected_town_order = list(EXPECTED_TOWN_ORDER)
+                baseline_town_order = town_nav_order(base_page)
+                current_town_order = town_nav_order(cur_page)
+                if baseline_town_order != expected_town_order:
+                    failures.append({
+                        "key": f"{viewport}:{theme}:baseline-town-order",
+                        "kind": "camaiore-baseline-town-order-normalization",
+                        "value": baseline_town_order,
+                        "expected": expected_town_order,
+                    })
+                if current_town_order != expected_town_order:
+                    failures.append({
+                        "key": f"{viewport}:{theme}:current-town-order",
+                        "kind": "camaiore-current-town-order",
+                        "value": current_town_order,
+                        "expected": expected_town_order,
+                    })
 
                 if theme == next(iter(current_contract)):
                     compare_screenshot(

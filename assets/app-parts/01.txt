@@ -171,6 +171,15 @@
       </div></section>
     </main>`;
 
+    const townGrid = document.querySelector('.town-card-grid');
+    if (townGrid) {
+      [...townGrid.children]
+        .sort((a,b) => (a.querySelector('h3')?.textContent || '').localeCompare(
+          b.querySelector('h3')?.textContent || '', 'it'
+        ))
+        .forEach(card => townGrid.append(card));
+    }
+
     let selectedTheme = 'demografia';
     let selectedMetric = featuredMetrics(data.themes[selectedTheme])[0] || data.themes[selectedTheme].metrics[0];
     const cards = [...document.querySelectorAll('.theme-card')];

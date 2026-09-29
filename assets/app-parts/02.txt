@@ -41,7 +41,7 @@
 
   function townContextNav(data, town, themeKey, metricKey) {
     const activeSlug = normalize(town.name).replaceAll(' ', '-');
-    const townLinks = data.towns.map(item => {
+    const townLinks = [...data.towns].sort((a,b) => a.name.localeCompare(b.name, 'it')).map(item => {
       const slug = normalize(item.name).replaceAll(' ', '-');
       return `<a href="${route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`)}" data-town-link="${slug}" class="${slug === activeSlug ? 'active' : ''}" ${slug === activeSlug ? 'aria-current="page"' : ''}>${html(item.name)}</a>`;
     }).join('');

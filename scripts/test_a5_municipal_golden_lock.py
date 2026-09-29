@@ -66,6 +66,43 @@ body[data-page="town"]:has(main.a5-town-pilot[data-theme="demografia"]) {
 }
 """
 
+EXPECTED_TOWN_ORDER = (
+    "Camaiore",
+    "Forte dei Marmi",
+    "Massarosa",
+    "Pietrasanta",
+    "Seravezza",
+    "Stazzema",
+    "Viareggio",
+)
+
+
+def town_nav_order(page) -> list[str]:
+    return page.evaluate("""() => [
+      ...document.querySelectorAll('.town-context-nav .context-nav-row:first-child .context-nav-links > a')
+    ].map(el => (el.textContent || '').trim())""")
+
+
+def home_town_order(page) -> list[str]:
+    return page.evaluate("""() => [
+      ...document.querySelectorAll('.town-card-grid .town-card h3')
+    ].map(el => (el.textContent || '').trim())""")
+
+
+def normalize_baseline_town_order(page) -> None:
+    result = page.evaluate("""expected => {
+      const host = document.querySelector('.town-context-nav .context-nav-row:first-child .context-nav-links');
+      if (!host) return {ok:false, reason:'host-missing'};
+      const links = [...host.querySelectorAll(':scope > a')];
+      const byName = new Map(links.map(link => [(link.textContent || '').trim(), link]));
+      const missing = expected.filter(name => !byName.has(name));
+      if (missing.length) return {ok:false, reason:'links-missing', missing};
+      expected.forEach(name => host.append(byName.get(name)));
+      return {ok:true};
+    }""", list(EXPECTED_TOWN_ORDER))
+    if not result.get("ok"):
+        raise AssertionError(f"Baseline town-nav normalization failed: {result}")
+
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -229,6 +266,19 @@ def main():
         browser=p.chromium.launch(headless=True)
         base_page=browser.new_page()
         cur_page=browser.new_page()
+
+        cur_page.goto(current, wait_until="networkidle")
+        cur_page.wait_for_selector('.town-card-grid .town-card')
+        expected_town_order = list(EXPECTED_TOWN_ORDER)
+        current_home_order = home_town_order(cur_page)
+        if current_home_order != expected_town_order:
+            failures.append({
+                "key": "home-town-order",
+                "kind": "current-home-town-order",
+                "value": current_home_order,
+                "expected": expected_town_order,
+            })
+
         for name,width,height in VIEWPORTS:
             base_page.set_viewport_size({"width":width,"height":height})
             cur_page.set_viewport_size({"width":width,"height":height})
@@ -242,8 +292,27 @@ def main():
                         page.wait_for_selector('main.a5-town-pilot[data-theme="demografia"]')
                         if is_baseline:
                             page.add_style_tag(content=BASELINE_FIX_STYLE)
+                            normalize_baseline_town_order(page)
                         page.add_style_tag(content=FREEZE_STYLE)
                         wait_stable(page)
+
+                    expected_town_order = list(EXPECTED_TOWN_ORDER)
+                    baseline_town_order = town_nav_order(base_page)
+                    current_town_order = town_nav_order(cur_page)
+                    if baseline_town_order != expected_town_order:
+                        failures.append({
+                            "key": key,
+                            "kind": "baseline-town-order-normalization",
+                            "value": baseline_town_order,
+                            "expected": expected_town_order,
+                        })
+                    if current_town_order != expected_town_order:
+                        failures.append({
+                            "key": key,
+                            "kind": "current-town-order",
+                            "value": current_town_order,
+                            "expected": expected_town_order,
+                        })
 
                     base_state=capture(base_page)
                     cur_state=capture(cur_page)
