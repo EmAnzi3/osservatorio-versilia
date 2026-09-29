@@ -30,13 +30,26 @@ def main() -> None:
             base=parents[1]
             target=parents[2]
 
+    changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
+    upstream_only=set()
     if base:
-        # Measure only the PR-owned delta against the current target branch.
-        # Upstream commits merged into the branch must not widen the A5 allowlist.
-        changed=set(filter(None,git("diff","--name-only",f"{base}...{target}").splitlines()))
-        baseline_label=f"PR scope: base {base} ... head {target} · approval checkpoint: {checkpoint}"
+        # Keep the approval checkpoint as the temporal boundary, but ignore a
+        # post-checkpoint path only when the PR head is byte-identical to the
+        # current base branch for that path. This admits merged upstream work
+        # without widening the A5 allowlist or hiding branch-owned changes.
+        for path in changed:
+            same_as_base=subprocess.run(
+                ["git","diff","--quiet",base,target,"--",path],
+                check=False,
+            ).returncode == 0
+            if same_as_base:
+                upstream_only.add(path)
+        changed -= upstream_only
+        baseline_label=(
+            f"Checkpoint: {checkpoint} · target: {target} · base: {base} · "
+            f"upstream-only ignored: {len(upstream_only)}"
+        )
     else:
-        changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
         baseline_label=f"Checkpoint: {checkpoint} · target: {target}"
 
     unexpected=sorted(changed-allowed)
