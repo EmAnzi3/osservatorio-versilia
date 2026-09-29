@@ -1327,6 +1327,7 @@
       });
       const selectorDrivenDuplicate = Boolean(
         rolloutTown
+        && activeMetric !== 'municipalStaffTraining'
         && selectorLabels.length > 0
         && selectorLabels.length === cards.length
         && (labelsEquivalent || notesAreOnlyPeriod)
