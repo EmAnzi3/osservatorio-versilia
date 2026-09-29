@@ -101,6 +101,42 @@ def _test_timeout_uses_reader_after_chromium_failure() -> None:
     assert "https://example.test/bandi/nuovo" in payload, payload
 
 
+def _test_reader_403_does_not_misattribute_source_failure() -> None:
+    original_http = discovery._fetch_browser_html_with_url
+    original_browser = discovery._fetch_playwright_html
+    original_reader = discovery._fetch_reader_markdown
+    try:
+        discovery._fetch_browser_html_with_url = lambda *args, **kwargs: (_ for _ in ()).throw(
+            TimeoutError("source timed out")
+        )
+        discovery._fetch_playwright_html = lambda *args, **kwargs: (_ for _ in ()).throw(
+            TimeoutError("browser timed out")
+        )
+        discovery._fetch_reader_markdown = lambda *args, **kwargs: (_ for _ in ()).throw(
+            urllib.error.HTTPError(
+                "https://r.jina.ai/https://example.test/list", 403, "Forbidden", hdrs=None, fp=None
+            )
+        )
+        try:
+            discovery.fetch_with_diagnostics(
+                "https://example.test/list", timeout=5, attempts=1
+            )
+        except discovery.DiscoveryFetchError as exc:
+            diagnostics = exc.diagnostics
+        else:
+            raise AssertionError("La catena esaurita deve fallire")
+    finally:
+        discovery._fetch_browser_html_with_url = original_http
+        discovery._fetch_playwright_html = original_browser
+        discovery._fetch_reader_markdown = original_reader
+
+    assert diagnostics["failureClass"] == "timeout_client", diagnostics
+    assert diagnostics["rootFailureClass"] == "timeout_client", diagnostics
+    assert diagnostics["browserFailureClass"] == "timeout_client", diagnostics
+    assert diagnostics["readerFailureClass"] == "http_403_waf", diagnostics
+    assert diagnostics["terminalFailureClass"] == "http_403_waf", diagnostics
+
+
 def _test_missing_endpoint_does_not_hide_configuration_drift() -> None:
     original_http = discovery._fetch_browser_html_with_url
     original_browser = discovery._fetch_playwright_html
@@ -293,6 +329,122 @@ def _test_probe_uses_resolved_url_for_relative_links() -> None:
     ), queue
 
 
+def _test_endpoint_content_signature_rejects_unrelated_200_page() -> None:
+    radar = daily_h4.radar_module
+    original_fetch = discovery.fetch_with_diagnostics
+    url = "https://mirror.example.test/"
+    config = {
+        "discoverySources": [{
+            "id": "signed-mirror",
+            "label": "Mirror firmato",
+            "publisher": "Mirror firmato",
+            "territory": "Italia",
+            "urls": [url],
+            "endpointRequiredTerms": {url: ["Notizie da ANCI Nazionale"]},
+            "includeTerms": ["bando"],
+            "municipalTerms": ["comuni"],
+        }]
+    }
+    try:
+        discovery.fetch_with_diagnostics = lambda *args, **kwargs: (
+            "<html><body><h1>Pagina di manutenzione</h1></body></html>",
+            {
+                "status": "ok", "transport": "http_browser", "httpAttempts": 2,
+                "fallbackUsed": False, "proxyUsed": False,
+                "initialFailureClass": None, "rootFailureClass": None,
+                "browserFailureClass": None, "readerFailureClass": None,
+                "terminalFailureClass": None, "failureClass": None,
+                "resolvedUrl": url, "redirected": False, "errors": [],
+            },
+        )
+        queue, states = discovery.probe_discovery_sources(radar, config)
+    finally:
+        discovery.fetch_with_diagnostics = original_fetch
+
+    assert queue == [], queue
+    assert states[0]["status"] == "error", states[0]
+    assert states[0]["endpointOk"] == 0, states[0]
+    endpoint = states[0]["endpointResults"][0]
+    assert endpoint["failureClass"] == "content_signature_missing", endpoint
+    assert endpoint["contentSignatureMissing"] == ["Notizie da ANCI Nazionale"], endpoint
+
+
+def _test_anci_independent_mirror_survives_national_endpoint_failures() -> None:
+    radar = daily_h4.radar_module
+    national_feed = "https://www.anci.it/feed/"
+    digital_feed = "https://sistemacomunidigitali.anci.it/feed/"
+    regional_mirror = "https://www.anci.piemonte.it/"
+    config = {
+        "discoverySources": [{
+            "id": "anci-nazionale",
+            "label": "ANCI nazionale",
+            "publisher": "ANCI",
+            "territory": "Italia",
+            "urls": [national_feed, digital_feed, regional_mirror],
+            "endpointRequiredTerms": {
+                regional_mirror: ["Notizie da ANCI Nazionale"],
+            },
+            "includeTerms": ["bando", "avviso", "contributi"],
+            "municipalTerms": ["comuni", "enti locali"],
+        }]
+    }
+    original_fetch = discovery.fetch_with_diagnostics
+
+    def fetch(url: str, **kwargs):
+        if url in {national_feed, digital_feed}:
+            raise discovery.DiscoveryFetchError(
+                "HTTP timeout; Chromium timeout; Reader 403",
+                {
+                    "status": "error", "transport": "failed", "fallbackUsed": True,
+                    "proxyUsed": True, "initialFailureClass": "timeout_client",
+                    "rootFailureClass": "timeout_client",
+                    "browserFailureClass": "timeout_client",
+                    "readerFailureClass": "http_403_waf",
+                    "terminalFailureClass": "http_403_waf",
+                    "failureClass": "timeout_client", "resolvedUrl": None,
+                    "redirected": False,
+                    "errors": ["HTTP timeout", "Chromium timeout", "Reader 403"],
+                },
+            )
+        return (
+            "<html><body><section><h2>Notizie da ANCI Nazionale</h2>"
+            "<article><a href='/bando-comuni'>Bando per i Comuni</a>"
+            "<p>Avviso per contributi destinati agli enti locali.</p></article>"
+            "</section></body></html>",
+            {
+                "status": "ok", "transport": "http_browser", "httpAttempts": 1,
+                "fallbackUsed": False, "proxyUsed": False,
+                "initialFailureClass": None, "rootFailureClass": None,
+                "browserFailureClass": None, "readerFailureClass": None,
+                "terminalFailureClass": None, "failureClass": None,
+                "resolvedUrl": regional_mirror, "redirected": False, "errors": [],
+            },
+        )
+
+    try:
+        discovery.fetch_with_diagnostics = fetch
+        queue, states = discovery.probe_discovery_sources(radar, config)
+    finally:
+        discovery.fetch_with_diagnostics = original_fetch
+
+    state = states[0]
+    assert state["status"] == "degraded", state
+    assert state["endpointOk"] == 1, state
+    assert state["endpointCount"] == 3, state
+    assert state["failureClasses"] == ["timeout_client"], state
+    assert state["candidateCount"] >= 1, state
+    assert any(
+        "Bando per i Comuni" in " ".join(
+            [str(item.get("title") or ""), str(item.get("summary") or "")]
+        )
+        for item in queue
+    ), queue
+    failed = [row for row in state["endpointResults"] if row["status"] == "error"]
+    assert len(failed) == 2, failed
+    assert all(row["rootFailureClass"] == "timeout_client" for row in failed), failed
+    assert all(row["readerFailureClass"] == "http_403_waf" for row in failed), failed
+
+
 def _test_runtime_compose_replaces_stale_sources() -> None:
     config, _ = daily_h4._compose_runtime_hardened()
     primary_ids = {str(source.get("id") or "") for source in config.get("sources") or []}
@@ -304,6 +456,7 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     }
     mare = discovery_by_id["pcm-politiche-mare"]
     scu = discovery_by_id["pcm-politiche-giovanili-scu"]
+    anci = discovery_by_id["anci-nazionale"]
 
     assert mare["urls"] == list(daily_h4._MARE_OFFICIAL_URLS), mare
     assert scu["urls"] == list(daily_h4._SCU_OFFICIAL_URLS), scu
@@ -317,6 +470,11 @@ def _test_runtime_compose_replaces_stale_sources() -> None:
     assert len({urlsplit(url).hostname for url in scu["urls"]}) == len(scu["urls"])
     assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in mare["urls"])
     assert not any("presidenza.governo.it/AmministrazioneTrasparente/" in url for url in scu["urls"])
+    assert "https://www.anci.piemonte.it/" in anci["urls"], anci
+    assert len({urlsplit(url).hostname for url in anci["urls"]}) >= 3, anci
+    assert anci["endpointRequiredTerms"]["https://www.anci.piemonte.it/"] == [
+        "Notizie da ANCI Nazionale"
+    ]
 
 
 def _test_transport_audit_exposes_endpoint_health() -> None:
@@ -359,12 +517,15 @@ def main() -> int:
     _test_403_uses_chromium_dom()
     _test_timeout_uses_chromium()
     _test_timeout_uses_reader_after_chromium_failure()
+    _test_reader_403_does_not_misattribute_source_failure()
     _test_missing_endpoint_does_not_hide_configuration_drift()
     _test_dns_error_does_not_hide_configuration_drift()
     _test_exhausted_transport_is_source_scoped_network_error()
     _test_probe_exposes_endpoint_diagnostics()
     _test_probe_marks_reader_as_degraded()
     _test_probe_uses_resolved_url_for_relative_links()
+    _test_endpoint_content_signature_rejects_unrelated_200_page()
+    _test_anci_independent_mirror_survives_national_endpoint_failures()
     _test_runtime_compose_replaces_stale_sources()
     _test_transport_audit_exposes_endpoint_health()
     print("Discovery resiliente Radar: PASS")

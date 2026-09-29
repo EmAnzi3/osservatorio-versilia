@@ -138,7 +138,10 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
                     "fallbackUsed": False,
                     "proxyUsed": False,
                     "initialFailureClass": None,
+                    "rootFailureClass": None,
                     "browserFailureClass": None,
+                    "readerFailureClass": None,
+                    "terminalFailureClass": None,
                     "failureClass": None,
                     "resolvedUrl": None,
                     "redirected": False,
@@ -173,6 +176,17 @@ def _build_transport_audit(result: dict[str, Any]) -> dict[str, Any]:
                 str(endpoint.get("failureClass"))
                 for endpoint in endpoints
                 if endpoint.get("failureClass")
+            }),
+            "transportFailureClasses": sorted({
+                str(endpoint.get(field))
+                for endpoint in endpoints
+                for field in (
+                    "rootFailureClass",
+                    "browserFailureClass",
+                    "readerFailureClass",
+                    "terminalFailureClass",
+                )
+                if endpoint.get(field)
             }),
             "endpoints": endpoints,
         })
