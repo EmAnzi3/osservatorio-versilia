@@ -107,7 +107,7 @@ def town(page, base, theme, key):
     age.select_option("50-64")
     page.wait_for_timeout(120)
     req("50–64" in page.locator(".composite-versilia-position").inner_text(), f"{key}: benchmark Versilia non segue età")
-    req(page.locator(".town-benchmark").count() == 0, f"{key}: benchmark esterno fisso non deve apparire con filtro dinamico")
+    req(page.locator(".town-benchmark-host").count() == 0, f"{key}: benchmark esterno fisso non deve apparire con filtro dinamico")
     if key == "employmentRate":
         gender.select_option("women")
         age.select_option("25-64")

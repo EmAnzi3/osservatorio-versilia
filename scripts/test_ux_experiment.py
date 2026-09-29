@@ -206,7 +206,7 @@ def browser_assertions() -> None:
             wait_until="networkidle",
         )
         page.wait_for_selector(".history-panel .ux-view-shell")
-        require(page.locator(".history-panel .ux-bar-row").count() == 7,
+        require(page.locator(".history-panel [data-view-pane="current"] .bar-row").count() == 7,
                 "Scheda comunale: confronto attuale non contiene sette comuni")
         page.locator('.history-panel [data-view-mode="history"]').click()
         require(page.locator(".history-panel .ux-series-group").count() == 7,

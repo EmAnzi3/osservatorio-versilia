@@ -369,10 +369,9 @@ def full(*, skip_quick: bool = False, plan: bool = False) -> None:
     if not plan and shutil.which("node") is None:
         raise PreflightError("Node.js non disponibile")
 
-    # Cheap post-build regressions always precede browser work.
-    for label, script, *args in STATIC_FULL_TESTS:
-        run_python(f"static full: {label}", script, *args, plan=plan)
-
+    # A5 closure is browser-first: after a green Quick, exercise the final UI
+    # contracts before spending time on the remaining long static regressions.
+    # Coverage is unchanged; only failure latency is reduced.
     (ROOT / "reports/mobilita-v119-browser").mkdir(parents=True, exist_ok=True)
     (ROOT / "reports/erp-arrears-v125-browser").mkdir(parents=True, exist_ok=True)
 
@@ -380,6 +379,8 @@ def full(*, skip_quick: bool = False, plan: bool = False) -> None:
         base = "http://127.0.0.1:<dynamic>/"
         for label, command in browser_commands(base):
             run(label, command, plan=True)
+        for label, script, *args in STATIC_FULL_TESTS:
+            run_python(f"static full: {label}", script, *args, plan=True)
         with tempfile.TemporaryDirectory(prefix="ov-preflight-") as temporary:
             validate_monthly_state(Path(temporary), plan=True)
         print("\nFULL PREFLIGHT PLAN: OK", flush=True)
@@ -410,6 +411,9 @@ def full(*, skip_quick: bool = False, plan: bool = False) -> None:
                     except subprocess.TimeoutExpired:
                         process.kill()
                         process.wait(timeout=5)
+
+    for label, script, *args in STATIC_FULL_TESTS:
+        run_python(f"static full: {label}", script, *args, plan=plan)
 
     print("\nFULL PREFLIGHT: GREEN", flush=True)
 
