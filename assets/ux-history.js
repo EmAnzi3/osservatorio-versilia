@@ -354,7 +354,7 @@
   const whole0 = formatterWithGrouping({ maximumFractionDigits: 0 });
 
   function compositeChoiceMetric(metric, choice) {
-    if (!['distribution','omi','stock','securityMeasures','sexBreakdown','agricultureProfile'].includes(metric?.meta?.compositeType)) return metric;
+    if (!['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return metric;
     const clone = { ...metric, meta: { ...metric.meta }, rows: metric.rows.map(row => ({ ...row })), aggregate:metric.aggregate ? { ...metric.aggregate } : metric.aggregate };
     if (metric.meta.compositeType === 'sexBreakdown') {
       const selected = choice || metric.meta.defaultSex || 'totale';
@@ -444,7 +444,7 @@
   }
 
   function refreshTownCompositeCurrent(data, metric, shell, selectedTown, choice) {
-    if (!shell || !['distribution','omi','stock','securityMeasures','sexBreakdown','agricultureProfile'].includes(metric?.meta?.compositeType)) return;
+    if (!shell || !['distribution','omi','stock','securityMeasures','sexBreakdown'].includes(metric?.meta?.compositeType)) return;
     const currentPane = shell.querySelector('[data-view-pane="current"]');
     if (!currentPane) return;
     const resolvedChoice = choice || (metric?.meta?.compositeType === 'omi' ? 'sale' : metric?.meta?.compositeType === 'stock' ? 'share' : metric?.meta?.compositeType === 'securityMeasures' ? 'part-0' : 'summary');
