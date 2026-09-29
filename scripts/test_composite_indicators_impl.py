@@ -201,12 +201,42 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
         base + f"comuni/{row['slug']}/?tema={metric['meta']['theme']}&indicatore={metric_key}",
         wait_until="networkidle",
     )
-    page.wait_for_selector("select[data-composite-choice]")
+    selector = page.locator("#town-topic .town-metric-primary > .composite-read-selector select[data-composite-choice]")
     page.wait_for_selector(".history-panel .ux-view-shell")
     choices = selector_choices(metric, row)
-    assert page.locator("select[data-composite-choice] option").all_text_contents() == [choice[1] for choice in choices]
+
+    if metric["meta"]["theme"] == "demografia" and metric["meta"].get("compositeType") == "distribution":
+        selector.wait_for(state="attached")
+        assert selector.is_hidden(), f"{town}/{metric_key}: il selettore legacy deve restare nascosto nel DS2"
+        assert selector.locator("option").all_text_contents() == [choice[1] for choice in choices]
+        visual = page.locator('[data-view-pane="current"] .a5-town-current-visual .a5-current-family-distribution')
+        visual.wait_for(state="visible")
+        assert visual.locator(".composite-distribution-row").count() == 7, f"{town}/{metric_key}: righe comunali A5 incomplete"
+        expected_segments = sum(len(item.get("parts") or []) for item in metric["rows"])
+        assert visual.locator(".composite-segment").count() == expected_segments, (
+            f"{town}/{metric_key}: segmenti distribuzione incompleti"
+        )
+        selected = visual.locator(".composite-distribution-row.selected")
+        assert selected.count() == 1, f"{town}/{metric_key}: riga comunale selezionata assente/duplicata"
+        assert normalized_text(selected.locator(".composite-town-link").inner_text()) == town
+        primary_label = normalized_text(page.locator("[data-composite-primary-label]").text_content() or "")
+        primary_value = normalized_text(page.locator("[data-composite-primary-value]").inner_text())
+        assert primary_label == metric["meta"]["summaryLabel"], (
+            f"{town}/{metric_key}: etichetta principale {primary_label!r}, attesa {metric['meta']['summaryLabel']!r}"
+        )
+        assert primary_value == expected_value(row["summaryValue"], metric["meta"]["summaryUnit"])
+        aggregate_label = normalized_text(page.locator("[data-composite-aggregate-label]").text_content() or "")
+        aggregate_value = normalized_text(page.locator("[data-composite-aggregate-value]").inner_text())
+        assert aggregate_label.startswith("Età media"), f"{town}/{metric_key}: etichetta Versilia inattesa {aggregate_label!r}"
+        assert aggregate_value == expected_value(metric["aggregate"]["summaryValue"], metric["meta"]["summaryUnit"])
+        widths = page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
+        assert widths["scroll"] <= widths["client"], f"Overflow pagina: {town}/{metric_key}/{widths}"
+        return
+
+    selector.wait_for(state="visible")
+    assert selector.locator("option").all_text_contents() == [choice[1] for choice in choices]
     for choice, label, value, unit in choices:
-        page.locator("select[data-composite-choice]").select_option(choice)
+        selector.select_option(choice)
         page.wait_for_function(
             "choice => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === choice",
             arg=choice,
