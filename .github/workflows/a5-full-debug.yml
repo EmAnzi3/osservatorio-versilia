@@ -47,8 +47,8 @@ jobs:
           python scripts/copy_percorsi_dist.py
           node --check dist/assets/app-bundle.js
 
-      - name: Run Agricoltura gate only
-        run: python scripts/test_agricoltura_review_interactions_v120.py
+      - name: Run complete non-fail-fast sweep
+        run: python scripts/a5_full_sweep_debug.py
 
       - name: Upload visual regression diagnostics
         if: ${{ always() }}
