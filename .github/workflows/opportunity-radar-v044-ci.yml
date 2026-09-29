@@ -56,12 +56,15 @@ jobs:
             scripts/opportunity_issue_notification.py \
             scripts/opportunity_run_report.py \
             scripts/opportunity_runtime_snapshot.py \
+            scripts/opportunity_shadow_compare.py \
             scripts/test_opportunity_regione_toscana_guard.py \
             scripts/test_opportunity_issue_notification.py \
             scripts/test_opportunity_content_sanitization.py \
             scripts/test_opportunity_run_report.py \
             scripts/test_opportunity_runtime_snapshot.py \
             scripts/test_opportunity_automation_workflow.py \
+            scripts/test_opportunity_shadow_compare.py \
+            scripts/test_opportunity_daily_v2_shadow.py \
             scripts/test_opportunity_daily_continuity.py \
             scripts/test_opportunity_primary_revalidation.py \
             scripts/test_opportunity_discovery_resilience.py \
@@ -82,6 +85,8 @@ jobs:
           python scripts/test_opportunity_run_report.py
           python scripts/test_opportunity_runtime_snapshot.py
           python scripts/test_opportunity_automation_workflow.py
+          python scripts/test_opportunity_shadow_compare.py
+          python scripts/test_opportunity_daily_v2_shadow.py
           python scripts/test_opportunity_daily_continuity.py
           python scripts/test_opportunity_primary_revalidation.py
           python scripts/test_opportunity_discovery_resilience.py

@@ -86,6 +86,44 @@ class RadarV03Test(unittest.TestCase):
         self.assertEqual(item['deadline_time'],'12:00')
         self.assertEqual(item['quality_gate']['status'],'pass')
 
+    def test_nidi_gratis_has_live_detail_fallback_after_listing_closes(self):
+        payload=json.loads(run_opportunity_radar_v03._VERIFIED.read_text(encoding='utf-8'))
+        entry=next(x for x in payload['entries'] if x['rule_id']=='rt-nidi-gratis-comuni-reopening-2026-2027')
+        self.assertEqual(entry['deadline_at'],'2026-10-06')
+        self.assertTrue(entry['canonical'])
+        self.assertIn('25 settembre 2026',entry['required_terms'])
+        self.assertIn('6 ottobre 2026',entry['required_terms'])
+
+        result={
+            'municipalities':['Camaiore'],
+            'sources':[{'sourceId':'regione-toscana','status':'ok','freshness':{'status':'current'}}],
+            'opportunities':[],
+            'qualityHold':[],
+            'counts':{},
+        }
+        run_opportunity_radar_v03.post.inject_verified_details(
+            radar,
+            result,
+            radar.DEFAULT_CONFIG,
+            date(2026,9,27),
+            radar.DEFAULT_PRESENTATION,
+            run_opportunity_radar_v03._VERIFIED,
+            detail_payloads={
+                entry['url']:(
+                    '<p>In evidenza: riaperte le adesioni alla misura Nidi Gratis da parte '
+                    'di nuovi Comuni entro il 25 settembre 2026. Per i Comuni già candidati '
+                    'invio della documentazione necessaria entro il 6 ottobre 2026.</p>'
+                )
+            },
+            live=False,
+        )
+        item=next(x for x in result['opportunities'] if x['rule_id']=='rt-nidi-gratis-comuni-reopening-2026-2027')
+        self.assertEqual(item['deadline_at'],'2026-10-06')
+        self.assertEqual(item['eligibility'],'conditional')
+        self.assertTrue(item['verified_direct'])
+        self.assertEqual(item['verified_at'],'2026-09-27')
+        self.assertEqual(item['quality_gate']['status'],'pass')
+
     def test_fami_language_courses_are_documented_non_municipal(self):
         rules,_,_=radar.load_rules()
         rule=radar.v021.matching_rule({

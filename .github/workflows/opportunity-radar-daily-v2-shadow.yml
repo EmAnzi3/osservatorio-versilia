@@ -1,0 +1,245 @@
+name: Radar Opportunità · v2 shadow
+
+on:
+  schedule:
+    # Dopo il workflow produttivo delle 06:15 UTC: confronta il candidato v2
+    # con l'ultimo stato accettato senza modificare repository o Pages.
+    - cron: "45 7 * * *"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/opportunity-radar-daily-v2-shadow.yml"
+      - "scripts/opportunity_*.py"
+      - "scripts/test_opportunity_*.py"
+      - "data/opportunity-*.json"
+      - "requirements-ci.txt"
+  workflow_dispatch:
+    inputs:
+      failure_stage:
+        description: "Inietta un guasto controllato nello shadow run"
+        required: false
+        default: "none"
+        type: choice
+        options:
+          - none
+          - scan
+          - validation
+          - build
+          - comparison
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: opportunity-radar-v2-shadow-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact ref
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Radar runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Seed from latest verified production snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch="automation/opportunity-radar-daily"
+          snapshot="data/opportunity-daily-public.json"
+          cp "$snapshot" /tmp/opportunity-shadow-main.json
+          git fetch origin "+refs/heads/$branch:refs/remotes/origin/$branch" || true
+          if git show "refs/remotes/origin/$branch:$snapshot" > /tmp/opportunity-shadow-runtime.json 2>/dev/null; then
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-shadow-main.json \
+              --candidate /tmp/opportunity-shadow-runtime.json \
+              --output "$snapshot"
+          else
+            python scripts/opportunity_runtime_snapshot.py \
+              --main /tmp/opportunity-shadow-main.json \
+              --output "$snapshot"
+          fi
+          cp "$snapshot" /tmp/opportunity-shadow-production.json
+          cp "$snapshot" /tmp/opportunity-shadow-previous.json
+
+      - name: Materialize verified shadow baseline
+        run: python scripts/materialize_opportunity_release_snapshot.py
+
+      - name: Scan live sources in shadow mode
+        id: scan
+        continue-on-error: true
+        shell: bash
+        env:
+          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
+        run: |
+          set -o pipefail
+          if [ "$FAILURE_STAGE" = "scan" ]; then
+            echo "Failure test: scan"
+            exit 97
+          fi
+          mkdir -p reports/runtime reports/shadow
+          python scripts/opportunity_daily_refresh_stable.py 2>&1 \
+            | tee reports/shadow/opportunity-shadow-scan.log
+
+      - name: Validate shadow candidate
+        id: validation
+        if: ${{ steps.scan.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
+        run: |
+          if [ "$FAILURE_STAGE" = "validation" ]; then
+            echo "Failure test: validation"
+            exit 97
+          fi
+          python -m json.tool data/opportunity-daily-public.json > /dev/null
+          python scripts/test_opportunity_snapshot_lifecycle.py \
+            --file data/opportunity-daily-public.json --mode daily
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("data/opportunity-daily-public.json").read_text(encoding="utf-8"))
+          summary = ((payload.get("transportAudit") or {}).get("summary") or {})
+          assert (payload.get("counts") or {}).get("transportFallbacks") == int(summary.get("fallbackSuccesses") or 0)
+          assert (payload.get("counts") or {}).get("transportProxyFallbacks") == int(summary.get("proxySuccesses") or 0)
+          assert (payload.get("counts") or {}).get("transportFailures") == int(summary.get("endpointFailures") or 0)
+          PY
+
+      - name: Build and smoke-test shadow candidate
+        id: build
+        if: ${{ steps.scan.outcome == 'success' && steps.validation.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
+        run: |
+          if [ "$FAILURE_STAGE" = "build" ]; then
+            echo "Failure test: build"
+            exit 97
+          fi
+          python scripts/build_static_brand.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("data/opportunity-daily-public.json").read_text(encoding="utf-8"))
+          html = Path("dist/opportunita/index.html").read_text(encoding="utf-8")
+          year, month, day = payload["referenceDate"].split("-")
+          assert f"{day}/{month}/{year}" in html
+          assert html.count("data-opportunity-card") == len(payload.get("opportunities") or [])
+          PY
+
+      - name: Generate shadow run report
+        id: report
+        if: always()
+        continue-on-error: true
+        run: |
+          python scripts/opportunity_run_report.py \
+            --previous /tmp/opportunity-shadow-previous.json \
+            --current data/opportunity-daily-public.json \
+            --diagnostic reports/runtime/opportunity-publishability-diagnostic.json \
+            --output-dir reports/shadow \
+            --scan-status "${{ steps.scan.outcome }}" \
+            --validation-status "${{ steps.validation.outcome }}" \
+            --build-status "${{ steps.build.outcome }}"
+
+      - name: Compare shadow candidate with production state
+        id: comparison
+        if: >-
+          ${{ steps.scan.outcome == 'success' &&
+              steps.validation.outcome == 'success' &&
+              steps.build.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          FAILURE_STAGE: ${{ inputs.failure_stage || 'none' }}
+        run: |
+          if [ "$FAILURE_STAGE" = "comparison" ]; then
+            echo "Failure test: comparison"
+            exit 97
+          fi
+          python scripts/opportunity_shadow_compare.py \
+            --reference /tmp/opportunity-shadow-production.json \
+            --candidate data/opportunity-daily-public.json \
+            --output-dir reports/shadow
+
+      - name: Publish shadow summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -s reports/shadow/opportunity-shadow-comparison.md ]; then
+            cat reports/shadow/opportunity-shadow-comparison.md >> "$GITHUB_STEP_SUMMARY"
+          elif [ -s reports/shadow/opportunity-run-report.md ]; then
+            cat reports/shadow/opportunity-run-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "# Radar v2 shadow" >> "$GITHUB_STEP_SUMMARY"
+            echo "Nessun rapporto prodotto: controllare gli step precedenti." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Preserve shadow candidate
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p reports/shadow
+          if [ -s data/opportunity-daily-public.json ]; then
+            cp data/opportunity-daily-public.json reports/shadow/opportunity-shadow-candidate.json
+          fi
+          cp /tmp/opportunity-shadow-production.json reports/shadow/opportunity-production-reference.json
+
+      - name: Upload complete shadow evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunity-radar-v2-shadow-${{ github.run_id }}
+          path: |
+            reports/shadow/
+            reports/runtime/opportunity-continuity-hold.json
+            reports/runtime/opportunity-publishability-diagnostic.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Enforce complete shadow run
+        if: always()
+        env:
+          SCAN_STATUS: ${{ steps.scan.outcome }}
+          VALIDATION_STATUS: ${{ steps.validation.outcome }}
+          BUILD_STATUS: ${{ steps.build.outcome }}
+          REPORT_STATUS: ${{ steps.report.outcome }}
+          COMPARISON_STATUS: ${{ steps.comparison.outcome }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+
+          sys.path.insert(0, "scripts")
+          from opportunity_run_report import incomplete_run_stages
+
+          statuses = {
+              "scan": os.environ.get("SCAN_STATUS"),
+              "validation": os.environ.get("VALIDATION_STATUS"),
+              "build": os.environ.get("BUILD_STATUS"),
+              "report": os.environ.get("REPORT_STATUS"),
+              "comparison": os.environ.get("COMPARISON_STATUS"),
+          }
+          failed = incomplete_run_stages(statuses)
+          if failed:
+              raise SystemExit(
+                  "Run shadow incompleto: "
+                  + ", ".join(f"{name}={status}" for name, status in failed.items())
+              )
+          print("Radar v2 shadow: scan, validazione, build, rapporto e confronto PASS.")
+          PY
