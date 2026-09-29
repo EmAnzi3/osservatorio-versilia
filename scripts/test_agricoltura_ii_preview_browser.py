@@ -29,10 +29,14 @@ def compare_row(page, town: str):
 
 
 def town_current_row(page, town: str):
-    rows = page.locator('.history-panel [data-view-pane="current"] .ux-bar-row')
+    rows = page.locator(
+        '.history-panel [data-view-pane="current"] .bar-row, '
+        '.history-panel [data-view-pane="current"] .ux-bar-row'
+    )
     for index in range(rows.count()):
         row = rows.nth(index)
-        if row.locator(".ux-bar-town").inner_text().strip() == town:
+        label = row.locator(".bar-town, .ux-bar-town").first
+        if label.count() and label.inner_text().strip() == town:
             return row
     raise AssertionError(f"Riga grafico comunale non trovata: {town}")
 
