@@ -23,12 +23,21 @@ def main() -> None:
 
     git("cat-file","-e",f"{checkpoint}^{{commit}}")
     target="HEAD"
+    base=None
     if os.environ.get("GITHUB_EVENT_NAME","") == "pull_request":
         parents=git("rev-list","--parents","-n","1","HEAD").split()
         if len(parents) >= 3:
+            base=parents[1]
             target=parents[2]
-    changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
-    baseline_label=f"Checkpoint: {checkpoint} · target: {target}"
+
+    if base:
+        # Measure only the PR-owned delta against the current target branch.
+        # Upstream commits merged into the branch must not widen the A5 allowlist.
+        changed=set(filter(None,git("diff","--name-only",f"{base}...{target}").splitlines()))
+        baseline_label=f"PR scope: base {base} ... head {target} · approval checkpoint: {checkpoint}"
+    else:
+        changed=set(filter(None,git("diff","--name-only",f"{checkpoint}..{target}").splitlines()))
+        baseline_label=f"Checkpoint: {checkpoint} · target: {target}"
 
     unexpected=sorted(changed-allowed)
     missing_policy=sorted(path for path in changed if path not in allowed)

@@ -6,8 +6,8 @@ Questo documento congela i riferimenti visuali approvati per il Design System 2.
 
 - PR: **#280 — A5: controlled Demografia iteration**
 - Branch: `feat/a5-controlled-iteration`
-- Commit di riconciliazione con `main`: `edb17ea5d44a38ad21d2eb6cf330a3420a0b69d1`
-- `main` incorporato: `9cc1f984f73c20e3c4a50ac9401ebf84fb9e4a81`
+- Checkpoint UI A5.5 approvato: `bc9e5086aa796637828e1a5ae6e9952873024ef7`
+- `main` incorporato per la chiusura: `46a31d3ca60717827ac92c709349b0c77355c3b4` tramite merge commit `bde1c5ab82f85c6655908cd3002139caddc6245b`
 - La PR resta **Draft** e non va mergiata senza approvazione esplicita.
 
 ## Golden master 1 — pagina tematica
@@ -69,6 +69,7 @@ Contratto visuale/funzionale da preservare:
     - `internalResidentialMobility`
     - `foreignResidentialMobility`
     - `totalResidentialMobility`
+13. la navigazione `Esplora Comuni` e le card Home `Esplora per territorio` usano l’ordine alfabetico: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema, Viareggio.
 
 ## Golden master 3 — Camaiore completa
 
@@ -110,13 +111,15 @@ L'audit A5.5 preliminare ha verificato che:
 - `data/site-data.json` resta la fonte canonica;
 - non servono decine di copie del layout.
 
-Route da trattare come eccezioni/lotto separato e non forzare nel primo rollout generico:
+Route speciali confermate come **eccezioni intenzionali** nel closure audit A5.5:
 
-- `confronta/meteo-clima/`
-- `confronta/economia/atlante-attivita-economiche/`
-- `confronta/comunita/affluenza/`
+- `confronta/meteo-clima/`: workspace climatico specializzato, con shell canonica, gate `Validate Meteo e clima page`, regressione interazioni clima e responsive dedicato;
+- `confronta/economia/atlante-attivita-economiche/`: web component autonomo `ov-economy-atlas`, con browser contract dedicato a 1440/1024/390 px, controllo overflow, ricerca, storico e deep-link comunali;
+- `confronta/comunita/affluenza/`: archivio elettorale con semantica/event selector propri; riusa token e componenti canonici e mantiene CSS specifico limitato agli adattamenti di layout/responsive.
 
-## Esito del gate prima di A5.5
+Queste route non vanno forzate nel renderer standard `confronta/<tema>/` finché la loro semantica richiede un’interazione diversa. Devono però continuare a rispettare header/footer, identità tematica, responsive e contratti sorgente/browser pertinenti.
+
+## Esito A5.5
 
 Il gate A5.4 è chiuso:
 
@@ -127,4 +130,4 @@ Il gate A5.4 è chiuso:
 5. Viareggio e Massarosa sono stati approvati visivamente;
 6. il commit di chiusura A5.4 è `7eadda666118f2450290a3b1c6edb93f061b7c7b`.
 
-A5.5 può iniziare solo come step successivo esplicito; la PR #280 resta Draft finché non viene deciso diversamente.
+A5.5 è completato sul checkpoint UI `bc9e5086aa796637828e1a5ae6e9952873024ef7`: rollout tematico e comunale, golden lock, cohort e ordinamento alfabetico sono verificati. La PR #280 resta Draft fino all’approvazione esplicita del proprietario; A5 diventa formalmente `DONE` solo dopo il merge.

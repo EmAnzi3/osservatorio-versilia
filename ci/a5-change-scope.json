@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5: Camaiore full golden locked; approved municipal renderer rolled out to all remaining towns while Viareggio/Massarosa Demografia stays frozen",
+  "purpose": "A5.5 closure: approved thematic and municipal DS2 rollout frozen; special routes documented as intentional exceptions; closure docs only before owner merge approval",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -21,6 +21,7 @@
     "assets/visual-grammar.js",
     "scripts/test_a5_camaiore_full_golden_lock.py",
     "docs/A5_GOLDEN_MASTERS.md",
+    "docs/CONSOLIDATION_ROADMAP.md",
     "docs/CONSOLIDATION_HANDOFF.md",
     ".github/workflows/a5-municipal-rollout-cohort.yml",
     "scripts/test_climate_interactions.py",
