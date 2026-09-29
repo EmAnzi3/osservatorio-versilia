@@ -257,8 +257,10 @@ def main() -> None:
                 dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
               };
             }''')
-            require(theme_geometry == demography_geometry,
-                    f'A5.5 bulk {theme_key}: geometria diverge dal golden: {theme_geometry} != {demography_geometry}')
+            geometry_reference = demography_mobile_geometry if mobile else demography_geometry
+            require(theme_geometry == geometry_reference,
+                    f'A5.5 bulk {theme_key}: geometria diverge dal golden '
+                    f'{"mobile" if mobile else "desktop"}: {theme_geometry} != {geometry_reference}')
 
             accent = page.evaluate(f'''() => {{
               const active=document.querySelector('.compare-context-nav a[data-context-theme="{theme_key}"].active');
@@ -420,25 +422,34 @@ def main() -> None:
                             f'A5.5 bulk {theme_key}/{metric_key}: CTA cartografia spostata fuori dalla toolbar')
                 if metric_key in ('bathingWaterQuality','bathingNonCompliantSamples','blueFlagBeaches',
                                   'shorelineDynamics','rigidDefenceProtectedCoast'):
-                    coast_actions = page.locator(
-                        '.compare-panel-heading > .data-actions, '
+                    # fidelity.js owns these five special coast metrics and
+                    # intentionally relocates their canonical actions to
+                    # #compare-tools. Wait for that stable post-enhancement state
+                    # instead of racing the transient heading/toolbar position.
+                    page.wait_for_function("""() => {
+                      const tools=document.querySelectorAll('#compare-tools > .data-actions');
+                      const transient=document.querySelectorAll(
+                        '.compare-main-column > .compare-panel-heading > .data-actions, ' +
                         '#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions'
-                    )
-                    require(coast_actions.count() == 1,
-                            f'A5.5 bulk {theme_key}/{metric_key}: host azioni costiere non univoco')
+                      );
+                      return tools.length === 1 && transient.length === 0;
+                    }""")
+                    coast_actions = page.locator('#compare-tools > .data-actions')
                     require(coast_actions.locator('[data-download]').count() == 1
                             and coast_actions.locator('[data-print]').count() == 1,
                             f'A5.5 bulk {theme_key}/{metric_key}: CSV/PDF costieri mancanti')
                     selector = page.locator('#compare-bars select[data-composite-component]:visible').first
                     if selector.count() and selector.locator('option').count() > 1:
                         selector.select_option(index=1)
-                        page.wait_for_timeout(120)
-                        coast_actions = page.locator(
-                            '.compare-panel-heading > .data-actions, '
+                        page.wait_for_function("""() => {
+                          const tools=document.querySelectorAll('#compare-tools > .data-actions');
+                          const transient=document.querySelectorAll(
+                            '.compare-main-column > .compare-panel-heading > .data-actions, ' +
                             '#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions'
-                        )
-                        require(coast_actions.count() == 1,
-                                f'A5.5 bulk {theme_key}/{metric_key}: host azioni costiere perso/duplicato dopo cambio selettore')
+                          );
+                          return tools.length === 1 && transient.length === 0;
+                        }""")
+                        coast_actions = page.locator('#compare-tools > .data-actions')
                         require(coast_actions.locator('[data-download]').count() == 1
                                 and coast_actions.locator('[data-print]').count() == 1,
                                 f'A5.5 bulk {theme_key}/{metric_key}: CSV/PDF costieri persi dopo cambio selettore')
@@ -463,6 +474,21 @@ def main() -> None:
             bulk_counts[theme_key] = assert_bulk_theme(theme_key, mobile=False)
 
         page.set_viewport_size({'width': 390, 'height': 844})
+        page.goto(urljoin(args.base, 'confronta/demografia/'), wait_until='networkidle')
+        demography_mobile_geometry = page.evaluate('''() => {
+          const rect = selector => {
+            const el=document.querySelector(selector);
+            const r=el.getBoundingClientRect();
+            const s=getComputedStyle(el);
+            return {width:Math.round(r.width*10)/10, radius:s.borderRadius};
+          };
+          return {
+            hero:rect('.topic-hero'),
+            sidebar:rect('.topic-controls'),
+            chart:rect('#compare-bars'),
+            dashboard:getComputedStyle(document.querySelector('.topic-dashboard')).gridTemplateColumns,
+          };
+        }''')
         for theme_key in bulk_theme_keys:
             mobile_count = assert_bulk_theme(theme_key, mobile=True)
             require(mobile_count == bulk_counts[theme_key],
@@ -612,8 +638,6 @@ def main() -> None:
                         'ageDistribution: Comune aperto non evidenziato')
                 require(visual.locator('.comparison-bars').count() == 0,
                         'ageDistribution: non deve degradare al lollipop dell’età media')
-                require(current_pane.locator(':scope > .a5-town-current-detail .composite-town-stack-shell').count() == 1,
-                        'ageDistribution: dettaglio comunale scollegato dal grafico')
             else:
                 require(visual.locator('.comparison-bars').count() >= 1,
                         f'{metric_key}: renderer comparativo condiviso assente')
@@ -889,14 +913,23 @@ def main() -> None:
         require('Versilia' in (versilia_pyramid.locator('svg').get_attribute('aria-label') or ''),
                 'Piramide confronto non identificata come Versilia')
 
-        # Scheda comunale: otto valori nella stessa griglia, nessun box aggiuntivo.
+        # Scheda comunale A5: le otto fasce restano tutte nel renderer stacked
+        # condiviso; il vecchio box/griglia separato non è più il contratto UI.
         page.goto(urljoin(args.base, 'comuni/forte-dei-marmi/?tema=demografia&indicatore=ageDistribution'), wait_until='networkidle')
         require(page.locator('.age85-inline-detail').count() == 0, 'Box 85+ autonomo presente nella scheda comunale')
-        cells = page.locator('.composite-town-stack-shell > .composite-town-detail > div')
-        require(cells.count() == 8, f'Griglia comunale non ha 8 valori: {cells.count()}')
-        cell_text = '\n'.join(cells.all_inner_texts())
-        require('80–84 anni' in cell_text and '85 anni e oltre' in cell_text,
-                '80–84 / 85+ non sono nella stessa griglia degli altri valori')
+        selected_distribution = page.locator(
+            '#town-topic .history-panel.a5-shared-chart '
+            '[data-view-pane="current"] .composite-distribution-row.selected'
+        )
+        require(selected_distribution.count() == 1,
+                'Scheda comunale A5: riga distribuzione selezionata assente o duplicata')
+        segments = selected_distribution.locator('.composite-segment')
+        require(segments.count() == 8, f'Distribuzione comunale non ha 8 fasce: {segments.count()}')
+        segment_labels = '\n'.join(
+            filter(None, [segments.nth(i).get_attribute('aria-label') for i in range(segments.count())])
+        )
+        require('80–84 anni' in segment_labels and '85 anni e oltre' in segment_labels,
+                '80–84 / 85+ non sono nel renderer stacked comunale')
 
         # Piramide comunale: stesso sistema tooltip dei grafici storici, niente <title> browser-native.
         pyramid = page.locator('details.age-pyramid-detail').first

@@ -623,6 +623,12 @@
     const choice=choiceOverride || previousChoice || defaults.choice;
     const scale=scaleOverride || previousScale || defaults.scale;
     const signature=`${metricKey}|${choice}|${scale}`;
+    /* The A5 municipal renderer owns the current pane once it is active.
+       Mirror the resolved composite choice before mutating the DOM so
+       ux-history's MutationObserver cannot race us and replace the pane,
+       dropping supplementary details such as the age pyramid or RCS origins. */
+    const uxChoice = choice || (type === 'stock' ? 'share' : type === 'securityMeasures' ? 'part-0' : type === 'distribution' ? 'summary' : '');
+    if (uxChoice) currentPane.dataset.compositeChoice = uxChoice;
 
     if (!visual) {
       /* Remove the legacy current renderer entirely. Keeping it next to the
@@ -682,6 +688,15 @@
     const component=event.target.closest('select[data-composite-component]');
     if (!component) return;
     a5RenderCurrent(a5MetricKey(),component.value,visual.dataset.scale || '');
+  });
+
+  window.addEventListener('ov:composite-choice', event => {
+    if (!a5Data) return;
+    const metricKey = event.detail?.metricKey || a5MetricKey();
+    if (!A5_DEMOGRAPHY_METRICS.has(metricKey)) return;
+    /* Keep the A5-owned current pane in sync with the canonical selector
+       before ux-history's async listener gets a chance to rewrite it. */
+    a5RenderCurrent(metricKey, event.detail?.choice || '');
   });
 
   window.addEventListener('ov:ux-history-enhanced', () => {

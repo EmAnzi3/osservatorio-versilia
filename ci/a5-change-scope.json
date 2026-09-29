@@ -1,8 +1,9 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: bulk QA no longer duplicates thematic-golden visual visibility with a renderer-specific generic rule; host population, named special renderers and document overflow remain checked while the golden lock owns per-metric visual visibility",
+  "purpose": "A5.5 closure: stabilize A5 municipal current-pane ownership, contain narrow-viewport navigation and library history scrolling, and align browser QA with the final shared renderers while golden locks remain authoritative",
   "allowed_paths": [
     "assets/fidelity.css",
+    "assets/fidelity.js",
     "scripts/test_demography_lotto_a_browser_v2.py",
     "scripts/test_a5_municipal_golden_lock.py",
     ".github/workflows/a5-municipal-golden-lock.yml",

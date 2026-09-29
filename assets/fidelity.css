@@ -1846,9 +1846,20 @@ body[data-page="compare"]:has(main.a5-editorial-pilot) select:focus-visible {
   }
   main.a5-editorial-pilot .compare-context-nav {
     width:100%;
-    max-width:none;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
     margin-inline:0;
     padding-inline:12px;
+    overflow:hidden;
+  }
+  main.a5-editorial-pilot .compare-context-nav .context-nav-links {
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    overflow-x:auto;
+    overflow-y:hidden;
   }
   main.a5-editorial-pilot .compare-context-nav .context-nav-title {
     display:none;
@@ -2090,6 +2101,25 @@ main.a5-editorial-pilot .compare-post-benchmark-tools > .data-actions {
   grid-column:1 / -1;
   justify-self:end;
   margin:0;
+}
+main.a5-editorial-pilot .compare-post-benchmark-tools > .library-history-detail {
+  grid-column:1 / -1;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+}
+main.a5-editorial-pilot .library-history-detail > .indicator-table-scroll {
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+main.a5-editorial-pilot .library-history-detail .library-history-table {
+  min-width:max-content;
 }
 
 /* 5. Territory cards: fixed photo crop + current selected value. */
