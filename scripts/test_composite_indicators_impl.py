@@ -264,9 +264,9 @@ def verify_selector_page(page: Page, base: str, data: dict, town: str, metric_ke
             key=lambda item: item["summaryValue"] if choice == "summary" else item["parts"][int(choice.removeprefix("part-"))]["value"],
             reverse=True,
         )
-        graph_order = page.locator('[data-view-pane="current"] .ux-bar-town').all_text_contents()
+        graph_order = page.locator('[data-view-pane="current"] .bar-town').all_text_contents()
         assert graph_order == [item["town"] for item in expected_order], f"Ranking non sincronizzato: {town}/{metric_key}/{choice}"
-        assert page.locator('[data-view-pane="current"] .ux-bar-row').count() == 7
+        assert page.locator('[data-view-pane="current"] .bar-row').count() == 7
 
     widths = page.evaluate("({client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth})")
     assert widths["scroll"] <= widths["client"], f"Overflow pagina: {town}/{metric_key}/{widths}"

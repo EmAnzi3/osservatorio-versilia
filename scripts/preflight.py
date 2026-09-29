@@ -63,7 +63,6 @@ STATIC_FULL_TESTS = (
     ("static regression", "scripts/test_static.py"),
     ("launch foundations", "scripts/test_launch_foundations.py"),
     ("indicator pages and SEO", "scripts/test_indicator_pages.py"),
-    ("composite indicators", "scripts/test_composite_indicators.py"),
     ("brand identity", "scripts/test_brand_identity.py"),
     ("PWA", "scripts/test_pwa.py"),
     ("visual grammar", "scripts/test_visual_grammar.py"),
@@ -258,6 +257,7 @@ def quick(*, plan: bool = False) -> None:
 
     run_python("build pre-rendered site", "scripts/build_static_brand.py", plan=plan)
     git_source_clean(plan=plan)
+    run_python("composite indicators fail-fast", "scripts/test_composite_indicators.py", plan=plan)
 
     run_python("materialize data status", "scripts/build_data_status.py", plan=plan)
     run_python("inject data status runtime", "scripts/inject_data_status_runtime.py", plan=plan)

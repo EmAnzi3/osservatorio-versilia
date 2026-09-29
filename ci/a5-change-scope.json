@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: approved DS2 frozen; fail-fast legacy compatibility aligned with approved town navigation and Demografia distribution renderer; composite data remain 7/7 while duplicate municipal browser checks use representative golden surfaces",
+  "purpose": "A5.5 closure: approved DS2 frozen; composite regression aligned to A5 bar-row/bar-town contract and promoted to quick fail-fast so legacy UI regressions are caught before the long full suite",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
@@ -27,6 +27,7 @@
     "docs/CONSOLIDATION_HANDOFF.md",
     ".github/workflows/a5-municipal-rollout-cohort.yml",
     "scripts/test_climate_interactions.py",
-    "scripts/test_economia_prodotta_browser.py"
+    "scripts/test_economia_prodotta_browser.py",
+    "scripts/preflight.py"
   ]
 }
