@@ -117,11 +117,15 @@ def assert_post_benchmark_tools(page, town: bool = False) -> None:
           return {
             present: {
               benchmarkHost: Boolean(benchmarkHost),
-              benchmarkContent: Boolean(benchmarkContent),
               method: Boolean(method),
               scale: Boolean(scale),
               actions: Boolean(actions),
             },
+            benchmarkState: !benchmarkHost
+              ? 'missing-host'
+              : benchmarkContent
+                ? (benchmarkContent.classList.contains('benchmark-unavailable') ? 'unavailable' : 'available')
+                : 'empty-by-contract',
             postOrder: follows(benchmarkHost, method) && follows(method, scale),
             actionsInToolbar: Boolean(actions?.closest('.ux-view-toolbar')),
             actionButtons: actions ? {
