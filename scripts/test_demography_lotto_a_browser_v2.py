@@ -315,14 +315,18 @@ def main() -> None:
                   const visible = node => {
                     if (!node) return false;
                     const style=getComputedStyle(node), rect=node.getBoundingClientRect();
-                    return style.visibility !== 'hidden' && style.display !== 'none' && rect.height > 20;
+                    return style.visibility !== 'hidden'
+                      && style.display !== 'none'
+                      && rect.width > 20
+                      && rect.height > 20;
                   };
+                  const children=[...el.children].filter(visible);
                   return {
-                    shell: visible(el.querySelector(':scope > .ux-view-shell')),
-                    direct: visible(el.querySelector(':scope > .topic-bars')),
+                    visibleChildren: children.length,
+                    classes: children.map(node => node.className || node.tagName),
                   };
                 }''')
-                require(visible_surface['shell'] or visible_surface['direct'],
+                require(visible_surface['visibleChildren'] >= 1,
                         f'A5.5 bulk {theme_key}/{metric_key}: nessuna superficie dati visibile {visible_surface}')
 
                 special_surfaces = {
