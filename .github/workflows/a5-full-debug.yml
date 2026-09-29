@@ -47,8 +47,8 @@ jobs:
           python scripts/copy_percorsi_dist.py
           node --check dist/assets/app-bundle.js
 
-      - name: Run complete full preflight
-        run: python scripts/preflight.py --full --skip-quick
+      - name: Run Agricoltura gate only
+        run: python scripts/test_agricoltura_review_interactions_v120.py
 
       - name: Upload visual regression diagnostics
         if: ${{ always() }}

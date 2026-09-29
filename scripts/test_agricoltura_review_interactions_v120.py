@@ -48,7 +48,9 @@ def main() -> None:
             assert "%" in first_value, f"Lettura rapportata non applicata: {first_value}"
             raw.click()
             page.wait_for_function("document.querySelector('#compare-bars button[data-scale=\"raw\"]')?.classList.contains('active')")
-            first_value_raw = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
+            first_raw = page.locator("#compare-bars .bar-row strong").first
+            expect(first_raw).to_contain_text("ha", timeout=5000)
+            first_value_raw = first_raw.inner_text().strip()
             assert "ha" in first_value_raw, f"Ritorno al valore assoluto non applicato: {first_value_raw}"
 
             # 2) Profilo colture comunale: quota sul totale Versilia della coltura, non scarto dalla media.
