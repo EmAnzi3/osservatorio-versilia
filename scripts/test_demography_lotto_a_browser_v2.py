@@ -278,7 +278,21 @@ def main() -> None:
 
             for metric_key in metric_keys:
                 button = page.locator(f'.topic-controls [data-metric="{metric_key}"]').first
-                button.click()
+                selected = page.evaluate("""metric => {
+                  const matches=[...document.querySelectorAll('.topic-controls [data-metric]')]
+                    .filter(el => el.dataset.metric === metric);
+                  if (matches.length !== 1) return matches.length;
+                  // Use the actual sidebar tab event even when its metric group is
+                  // collapsed/hidden by responsive catalog CSS.
+                  matches[0].click();
+                  return true;
+                }""", metric_key)
+                require(selected is True,
+                        f'A5.5 bulk {theme_key}/{metric_key}: controllo non univoco ({selected})')
+                page.wait_for_function(
+                    """metric => document.querySelector('.topic-controls [data-metric].active')?.dataset.metric === metric""",
+                    arg=metric_key,
+                )
                 require(button.get_attribute('aria-selected') == 'true',
                         f'A5.5 bulk {theme_key}/{metric_key}: controllo non attivo dopo click')
                 require(page.locator('#compare-bars.a5-shared-chart').count() == 1,

@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 from PIL import Image, ImageChops
 from playwright.sync_api import sync_playwright
 
-FREEZE="*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}"
+FREEZE="*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}#compare-territori .topic-town-card-media img{visibility:hidden!important}"
 THEME_REGIONS=(("hero",".compare-showcase-hero"),("nav",".compare-context-nav"),("topic",".topic-hero"),("territories","#compare-territori"))
 METRIC_REGIONS=(("workspace","#compare-workspace"),("pyramid","#compare-demographic-pyramid"),("benchmark","#compare-benchmark"),("tools","#compare-tools"))
 
@@ -59,7 +59,7 @@ def state(page):
         main:{theme:main?.dataset.theme||'',classes:main?[...main.classList].sort():[]},
         active:{theme:theme?.dataset.contextTheme||'',metric:metric?.dataset.metric||'',metricStyle:pack(metric),themeStyle:pack(theme)},
         layout:{nav:pack(q('.compare-context-nav')),topic:pack(q('.topic-hero')),sidebar:pack(q('#compare-workspace>.topic-controls')),workspace:pack(q('#compare-workspace')),chart:pack(chart),toolbar:pack(q('#compare-bars .ux-view-toolbar')),benchmark:pack(q('#compare-benchmark')),tools:pack(q('#compare-tools')),territories:pack(q('#compare-territori'))},
-        structure:{themes:[...document.querySelectorAll('[data-context-theme]')].map(x=>x.dataset.contextTheme),metrics:[...document.querySelectorAll('.topic-controls [data-metric]')].map(x=>x.dataset.metric),groups:[...document.querySelectorAll('.topic-controls .metric-group')].map(x=>[x.dataset.section||'',x.querySelectorAll('[data-metric]').length]),children:[...(main?.children||[])].map(x=>[x.tagName,x.id||'', [...x.classList].sort().join(' ')]),chart:[chart?.querySelectorAll('svg').length||0,chart?.querySelectorAll('canvas').length||0,chart?.querySelectorAll('button').length||0,chart?.querySelectorAll('details').length||0]},
+        structure:{themes:[...document.querySelectorAll('[data-context-theme]')].map(x=>x.dataset.contextTheme),metrics:[...document.querySelectorAll('.topic-controls [data-metric]')].map(x=>x.dataset.metric),groups:[...document.querySelectorAll('.topic-controls .metric-group')].map(x=>[x.dataset.section||'',x.querySelectorAll('[data-metric]').length]),children:[...(main?.children||[])].map(x=>[x.tagName,x.id||'', [...x.classList].sort().join(' ')]),chart:[chart?.querySelectorAll('svg').length||0,chart?.querySelectorAll('canvas').length||0,chart?.querySelectorAll('button').length||0,chart?.querySelectorAll('details').length||0],territoryImages:[...document.querySelectorAll('#compare-territori .topic-town-card-media img')].map(img=>[img.getAttribute('src')||'',img.getAttribute('alt')||''])},
         overflow:{doc:[document.documentElement.scrollWidth,document.documentElement.clientWidth],body:[document.body.scrollWidth,document.body.clientWidth],workspace:q('#compare-workspace')?[q('#compare-workspace').scrollWidth,q('#compare-workspace').clientWidth]:null,chart:chart?[chart.scrollWidth,chart.clientWidth]:null},
       };
     }""")
@@ -151,6 +151,8 @@ def main():
                     choose(a,metric); choose(b,metric); key=f"{vp['name']}:{theme}:{metric}"; sa=state(a); sb=state(b)
                     if sa!=sb: fail.append({"key":key,"kind":"state-diff","baseline":sa,"current":sb})
                     if sb["main"]["theme"]!=theme or sb["active"]["metric"]!=metric: fail.append({"key":key,"kind":"active-state","state":sb["active"],"theme":sb["main"]["theme"]})
+                    if len(sb["structure"].get("territoryImages") or []) != 7:
+                        fail.append({"key":key,"kind":"territory-images-contract","images":sb["structure"].get("territoryImages")})
                     overflow(sa,sb,key,fail)
                     for rn,sel in METRIC_REGIONS: region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
             if aerr: fail.append({"key":vp["name"],"kind":"baseline-page-errors","errors":aerr})

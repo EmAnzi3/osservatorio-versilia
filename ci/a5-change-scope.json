@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: batch-audited legacy browser compatibility aligned to final A5 toolbar/bar-row/benchmark contracts; full preflight is browser-first to fail fast without reducing coverage",
+  "purpose": "A5.5 closure: bulk sidebar traversal uses actual hidden-tab events deterministically; thematic golden masks only remote card raster pixels while preserving 7/7 image src/alt structural contract",
   "allowed_paths": [
     "assets/fidelity.css",
     "scripts/test_demography_lotto_a_browser_v2.py",
