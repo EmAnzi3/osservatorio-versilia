@@ -1136,13 +1136,13 @@
     actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 
     const photoFiles = {
-      'Massarosa':'https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG',
-      'Viareggio':'https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio,_passeggiata_a_mare_2.JPG',
-      'Camaiore':'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
-      'Pietrasanta':'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
-      'Seravezza':'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
-      'Forte dei Marmi':'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
-      'Stazzema':'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG'
+      'Massarosa':'MassarosaPanorama.JPG',
+      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
+      'Camaiore':'Pontile di Lido di Camaiore, 55041 Lido di Camaiore LU, Italy - panoramio.jpg',
+      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
+      'Seravezza':'Palazzo Mediceo a Seravezza.jpg',
+      'Forte dei Marmi':'Pontile Forte dei Marmi.jpg',
+      'Stazzema':'Stazzema.JPG'
     };
     document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
       const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
@@ -1155,7 +1155,7 @@
       card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
       if (image && photoFiles[name]) {
         const fallback = mediaSrc(data.crests[name]);
-        image.src = photoFiles[name];
+        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
         image.alt = name;
         image.referrerPolicy = 'no-referrer';
         image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
@@ -1554,35 +1554,35 @@
     camaiore: {
       institutionYear: 'sec. XIII',
       heroLabel: 'Pontile di Lido di Camaiore',
-      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
     },
     pietrasanta: {
       institutionYear: '1255',
       heroLabel: 'Piazza Duomo',
-      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg'
     },
     seravezza: {
       institutionYear: '1485',
       heroLabel: 'Palazzo Mediceo',
-      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Palazzo_Mediceo_a_Seravezza.jpg'
     },
     'forte-dei-marmi': {
       institutionYear: '1914',
       heroLabel: 'Pontile',
-      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_Forte_dei_Marmi.jpg'
     },
     stazzema: {
       institutionYear: '1776',
       heroLabel: 'Stazzema',
-      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG',
+      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Stazzema.JPG'
     },
