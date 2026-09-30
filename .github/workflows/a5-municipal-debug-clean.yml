@@ -1,0 +1,54 @@
+name: A5 municipal clean debug
+
+on:
+  push:
+    branches:
+      - "debug/a5-municipal-clean"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  municipal-clean-debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout debug head
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Compile focused browser gates
+        run: |
+          python -m py_compile scripts/test_a5_camaiore_rollout.py
+          python -m py_compile scripts/test_salute_finanziaria_v129_browser.py
+      - name: Build one coherent preview
+        run: python scripts/build_static_brand.py
+      - name: Verify Camaiore, Massarosa and financial shell
+        run: |
+          set -euo pipefail
+          ROOT="/tmp/a5-municipal-clean-debug"
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT/camaiore" "$ROOT/massarosa"
+          python scripts/preview_dist.py --port 8127 --directory dist >"$ROOT/preview.log" 2>&1 &
+          PREVIEW_PID=$!
+          cleanup() { kill "$PREVIEW_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          A5_TOWN=camaiore python scripts/test_a5_camaiore_rollout.py --base http://127.0.0.1:8127 --report-dir "$ROOT/camaiore"
+          A5_TOWN=massarosa python scripts/test_a5_camaiore_rollout.py --base http://127.0.0.1:8127 --report-dir "$ROOT/massarosa"
+          python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8127
+      - name: Upload focused debug evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-municipal-clean-debug
+          path: /tmp/a5-municipal-clean-debug
+          if-no-files-found: ignore
