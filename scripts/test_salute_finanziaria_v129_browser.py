@@ -160,6 +160,9 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
     town_text = page.locator("#town-topic").text_content()
     if slug == "massarosa":
         selector.select_option("part-0")
+        page.wait_for_function(
+            """() => document.querySelector('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')?.dataset.a5FinancialChoice === 'part-0'"""
+        )
         town_text = page.locator("#town-topic").text_content()
         assert "OSL" in town_text and "intero insieme delle passività" in town_text
     elif slug == "forte-dei-marmi":
