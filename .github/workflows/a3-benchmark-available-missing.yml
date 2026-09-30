@@ -1,0 +1,43 @@
+name: A3 Benchmark AVAILABLE_MISSING
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark-backlog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+      - name: Build effective public catalog
+        env:
+          OV_RELEASE_BUILD: "1"
+        run: python scripts/build_static_brand.py
+      - name: Build effective A3 matrix
+        run: |
+          python scripts/enrichment_audit_matrix.py             --data dist/data/site-data.json             --registry dist/data/source-registry.json             --output /tmp/a3-enrichment-matrix.json             --allow-unclassified
+      - name: Build benchmark AVAILABLE_MISSING manifest
+        run: |
+          python -m py_compile scripts/a3_benchmark_available_missing.py
+          python scripts/a3_benchmark_available_missing.py             --matrix /tmp/a3-enrichment-matrix.json             --json-output /tmp/a3-benchmark-available-missing.json             --markdown-output /tmp/A3_BENCHMARK_AVAILABLE_MISSING.md
+      - name: Upload benchmark backlog
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-benchmark-available-missing
+          path: |
+            /tmp/a3-benchmark-available-missing.json
+            /tmp/A3_BENCHMARK_AVAILABLE_MISSING.md
+          if-no-files-found: error
