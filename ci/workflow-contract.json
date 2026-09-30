@@ -362,7 +362,7 @@
     {
       "path": ".github/workflows/a5-change-scope.yml",
       "category": "specialized-gate",
-      "status": "active"
+      "status": "retired"
     },
     {
       "path": ".github/workflows/a5-municipal-golden-lock.yml",

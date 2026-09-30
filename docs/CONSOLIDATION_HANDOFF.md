@@ -28,6 +28,11 @@ Il modello minimo deve derivare e governare:
 
 Il contratto machine-readable è `ci/semantic-model-contract.json`; la specifica è `docs/A6_SEMANTIC_MODEL.md`.
 
+## Gate legacy A5
+
+- `a5-change-scope.yml` è ritirato dopo la chiusura A5: il suo checkpoint non può governare i workstream successivi.
+- I golden A5 restano attivi solo su modifiche UI/renderer pertinenti.
+
 ## Prossima azione esatta
 
 1. Validare il contratto A6.1 nel Quick preflight.
