@@ -410,7 +410,14 @@ def prerender() -> None:
             launch_args["executable_path"] = chromium_path
         browser = playwright.chromium.launch(**launch_args)
         page = browser.new_page(viewport={"width": 1440, "height": 1100})
+        current_route = {"value": ""}
+        page.on("pageerror", lambda error: print(f"PRERENDER PAGEERROR [{current_route['value']}]: {error}", flush=True))
+        page.on("console", lambda message: print(
+            f"PRERENDER CONSOLE [{current_route['value']}] {message.type}: {message.text}",
+            flush=True,
+        ) if message.type in {"error", "warning"} else None)
         for route in ROUTES:
+            current_route["value"] = route or "/"
             page.goto(server_url + route, wait_until="networkidle")
             page.wait_for_selector("#app main", timeout=30_000)
             page.wait_for_timeout(350)
