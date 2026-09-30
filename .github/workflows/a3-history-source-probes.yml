@@ -77,3 +77,27 @@ jobs:
           name: a3-history-istat-demography-source-probe
           path: audit-artifacts/istat-demography-source-scan.json
           if-no-files-found: error
+
+  mim-history-schema:
+    strategy:
+      fail-fast: false
+      matrix:
+        year: ["201920", "202021", "202122", "202223", "202324", "202425"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install MIM probe dependencies
+        run: python -m pip install requests beautifulsoup4
+      - name: Probe annual MIM CSV schemas
+        run: |
+          python scripts/probe_a3_mim_history_schema.py \
+            --year "${{ matrix.year }}" \
+            --output "reports/a3-mim-history-${{ matrix.year }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-mim-history-${{ matrix.year }}
+          path: reports/a3-mim-history-${{ matrix.year }}.json
+          if-no-files-found: error
