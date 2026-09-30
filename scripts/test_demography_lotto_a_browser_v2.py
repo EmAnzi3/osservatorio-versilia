@@ -363,28 +363,39 @@ def main() -> None:
                             'A5.5 bulk mobilita/fuelPrices: primo valore mensile gasolio non coerente')
                     page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key == 'financialDebtProfile':
-                    # Golden thematic contract: financialProfile is deliberately a special renderer,
-                    # not a generic Attuale/Storico UX shell. Keep strong coverage on the approved
-                    # financial surface instead of requiring a shell the immutable baseline excludes.
-                    require(page.locator('#compare-bars .ux-view-shell').count() == 0,
-                            'A5.5 bulk bilanci/financialDebtProfile: renderer finanziario avvolto in una shell non approvata')
-                    require(page.locator('#compare-bars .financial-topic-bars .bar-row').count() == 7,
-                            'A5.5 bulk bilanci/financialDebtProfile: confronto corrente non contiene 7 Comuni')
-                    selector = page.locator('#compare-bars select[data-composite-component]').first
-                    require(selector.count() == 1 and selector.locator('option').count() >= 3,
-                            'A5.5 bulk bilanci/financialDebtProfile: selettore delle letture finanziarie assente')
-                    aggregate_history = page.locator('#compare-bars .financial-aggregate-history').first
-                    require(aggregate_history.count() == 1 and aggregate_history.is_visible(),
-                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato Versilia assente')
-                    require('D1' in (aggregate_history.locator('.overline').text_content() or ''),
-                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato non allineato alla lettura D1')
-                    selector.select_option(index=1)
-                    page.wait_for_timeout(180)
-                    aggregate_history = page.locator('#compare-bars .financial-aggregate-history').first
-                    require(aggregate_history.count() == 1 and aggregate_history.is_visible(),
-                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato perso dopo cambio lettura')
-                    require(aggregate_history.locator('svg[aria-label*="Interessi sulle entrate correnti"]').count() == 1,
-                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato non segue la lettura selezionata')
+                    # fidelity.js materializes the dedicated financial history shell
+                    # asynchronously after renderCompareMetric. Wait for that contract
+                    # instead of racing the MutationObserver/requestAnimationFrame cycle.
+                    page.wait_for_function(
+                        """() => document.querySelectorAll(
+                          '#compare-bars > .ux-view-shell .ux-view-toggle [data-view-mode]'
+                        ).length === 2"""
+                    )
+                    require(page.locator('#compare-bars > .ux-view-shell .ux-view-toggle [data-view-mode]').count() == 2,
+                            'A5.5 bulk bilanci/financialDebtProfile: switch attuale/storico assente')
+                    require(page.locator('#compare-bars .financial-aggregate-history').count() == 0,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico aggregato Versilia ancora nella vista attuale')
+                    history_button = page.locator('#compare-bars [data-view-mode="history"]').first
+                    require(not history_button.is_disabled(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale disabilitato')
+                    history_button.click()
+                    require(page.locator('#compare-bars [data-view-pane="history"] .ux-history-card').is_visible(),
+                            'A5.5 bulk bilanci/financialDebtProfile: storico comunale non visibile')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-select]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: storico non contiene 7 Comuni')
+                    require(page.locator('#compare-bars [data-view-pane="history"] [data-history-town]').count() == 7,
+                            'A5.5 bulk bilanci/financialDebtProfile: serie storiche comunali non 7/7')
+                    page.locator('#compare-bars [data-view-mode="current"]').first.click()
+                    selector = page.locator('#compare-bars [data-view-pane="current"] select[data-composite-component]').first
+                    if selector.count() and selector.locator('option').count() > 1:
+                        selector.select_option(index=1)
+                        page.wait_for_function(
+                            """() => document.querySelector('#compare-bars > .ux-view-shell')?.dataset.financialChoice === 'part-1'"""
+                        )
+                        page.locator('#compare-bars [data-view-mode="history"]').first.click()
+                        require(page.locator('#compare-bars [data-view-pane="history"] svg[aria-label*="Interessi sulle entrate correnti"]').count() == 1,
+                                'A5.5 bulk bilanci/financialDebtProfile: storico non segue la lettura selezionata')
+                        page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key.startswith('slowMobility'):
                     map_link = page.locator(
                         '.compare-panel-heading .data-actions a[href*="percorsi/"], '
