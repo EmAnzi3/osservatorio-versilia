@@ -1327,6 +1327,7 @@
       });
       const selectorDrivenDuplicate = Boolean(
         rolloutTown
+        && activeMetric !== 'financialDebtProfile'
         && !(activeMetric === 'municipalStaffTraining' && document.body.dataset.town === 'massarosa')
         && selectorLabels.length > 0
         && selectorLabels.length === cards.length

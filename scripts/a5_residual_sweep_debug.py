@@ -14,14 +14,8 @@ if str(SCRIPTS) not in sys.path:
 import preflight  # noqa: E402
 
 RESIDUAL_LABELS = {
-    "Demography browser",
-    "Mobilita browser",
     "Agricoltura interactions",
-    "Costa browser",
-    "Investimenti browser",
     "Salute finanziaria browser",
-    "Accordion/history UX",
-    "Mobile interactions",
 }
 
 
