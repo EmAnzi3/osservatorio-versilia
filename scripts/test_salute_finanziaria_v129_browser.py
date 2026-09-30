@@ -38,7 +38,9 @@ def padded(page: Page, selector: str, label: str) -> None:
 
 
 def check_tooltip(page: Page, root: str, unit: str, label: str) -> None:
-    point = page.locator(f"{root} .chart-point").last
+    points = page.locator(f"{root} .chart-point:not(.is-tooltip-disabled)")
+    assert points.count() > 0, f"{label}: nessun punto storico interattivo"
+    point = points.last
     point.focus()
     tooltip = point.locator(".chart-tooltip:not([hidden])")
     tooltip.wait_for()

@@ -12,7 +12,7 @@ permissions:
 jobs:
   municipal-clean-debug:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 75
     steps:
       - name: Checkout debug head
         uses: actions/checkout@v4
@@ -31,19 +31,23 @@ jobs:
           python -m py_compile scripts/test_salute_finanziaria_v129_browser.py
       - name: Build one coherent preview
         run: python scripts/build_static_brand.py
-      - name: Verify Camaiore, Massarosa and financial shell
+      - name: Verify all seven municipal rollouts and financial shell
         run: |
           set -euo pipefail
           ROOT="/tmp/a5-municipal-clean-debug"
           rm -rf "$ROOT"
-          mkdir -p "$ROOT/camaiore" "$ROOT/massarosa"
+          mkdir -p "$ROOT"
           python scripts/preview_dist.py --port 8127 --directory dist >"$ROOT/preview.log" 2>&1 &
           PREVIEW_PID=$!
           cleanup() { kill "$PREVIEW_PID" 2>/dev/null || true; }
           trap cleanup EXIT
           sleep 1
-          A5_TOWN=camaiore python scripts/test_a5_camaiore_rollout.py --base http://127.0.0.1:8127 --report-dir "$ROOT/camaiore"
-          A5_TOWN=massarosa python scripts/test_a5_camaiore_rollout.py --base http://127.0.0.1:8127 --report-dir "$ROOT/massarosa"
+          for town in camaiore massarosa viareggio pietrasanta seravezza forte-dei-marmi stazzema; do
+            mkdir -p "$ROOT/$town"
+            A5_TOWN="$town" python scripts/test_a5_camaiore_rollout.py \
+              --base http://127.0.0.1:8127 \
+              --report-dir "$ROOT/$town"
+          done
           python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8127
       - name: Upload focused debug evidence
         if: always()
