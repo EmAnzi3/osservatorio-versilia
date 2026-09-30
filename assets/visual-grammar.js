@@ -709,14 +709,14 @@
     };
   }
 
-  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug) {
+  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug, escape) {
     const row=(metric?.rows || []).find(item => (item.slug || '') === townSlug);
     const part=row?.parts?.[index] || {};
     const provenance=part.provenance
-      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escapeHtml(part.provenance)}</p>`
+      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escape(part.provenance)}</p>`
       : '';
     const context=index === 0 && row?.contextNote
-      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escapeHtml(row.contextNote)}</p>`
+      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escape(row.contextNote)}</p>`
       : '';
     return provenance + context;
   }
@@ -738,7 +738,7 @@
     const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
     const series = toolkit.comparableSeries(derived);
     const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug)
-      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug);
+      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug, toolkit.escapeHtml);
     const historyAvailable = Boolean(series);
     let shell = panel.querySelector(':scope > .ux-view-shell');
 
