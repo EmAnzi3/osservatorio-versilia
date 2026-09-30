@@ -47,9 +47,18 @@ def main() -> None:
             first_value = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
             assert "%" in first_value, f"Lettura rapportata non applicata: {first_value}"
             raw.click()
-            page.wait_for_function("document.querySelector('#compare-bars button[data-scale=\"raw\"]')?.classList.contains('active')")
-            first_value_raw = page.locator("#compare-bars .bar-row strong").first.inner_text().strip()
-            assert "ha" in first_value_raw, f"Ritorno al valore assoluto non applicato: {first_value_raw}"
+            page.wait_for_function(
+                """() => document.querySelector('#compare-bars button[data-scale="raw"]')?.classList.contains('active')
+                  && (document.querySelector('#compare-bars .bar-row strong')?.textContent || '').includes('ha')"""
+            )
+            first_value_raw = page.locator("#compare-bars .bar-row strong").first
+            first_value_raw.wait_for(state="visible")
+            page.wait_for_function(
+                """() => (document.querySelector('#compare-bars .bar-row strong')?.textContent || '').includes('ha')"""
+            )
+            assert "ha" in first_value_raw.inner_text().strip(), (
+                f"Ritorno al valore assoluto non applicato: {first_value_raw.inner_text().strip()}"
+            )
 
             # 2) Profilo colture comunale: quota sul totale Versilia della coltura, non scarto dalla media.
             page.goto(f"{base}/comuni/pietrasanta/?tema=ambiente&indicatore=cropProfile", wait_until="networkidle")

@@ -20,21 +20,35 @@ def assert_no_simple_mean_benchmark(text: str) -> None:
 
 
 def compare_row(page, town: str):
+    page.wait_for_function(
+        """town => [...document.querySelectorAll('#compare-bars .bar-row')]
+          .some(row => row.querySelector('.bar-town')?.textContent.trim() === town)""",
+        arg=town,
+    )
     rows = page.locator("#compare-bars .bar-row")
     for index in range(rows.count()):
         row = rows.nth(index)
         if row.locator(".bar-town").inner_text().strip() == town:
             return row
-    raise AssertionError(f"Riga confronto non trovata: {town}")
+    raise AssertionError(f"Riga confronto non trovata dopo attesa: {town}")
 
 
 def town_current_row(page, town: str):
-    rows = page.locator('.history-panel [data-view-pane="current"] .ux-bar-row')
+    page.wait_for_function(
+        """town => [...document.querySelectorAll('.history-panel [data-view-pane="current"] .bar-row, .history-panel [data-view-pane="current"] .ux-bar-row')]
+          .some(row => (row.querySelector('.bar-town, .ux-bar-town')?.textContent || '').trim() === town)""",
+        arg=town,
+    )
+    rows = page.locator(
+        '.history-panel [data-view-pane="current"] .bar-row, '
+        '.history-panel [data-view-pane="current"] .ux-bar-row'
+    )
     for index in range(rows.count()):
         row = rows.nth(index)
-        if row.locator(".ux-bar-town").inner_text().strip() == town:
+        label = row.locator(".bar-town, .ux-bar-town").first
+        if label.count() and label.inner_text().strip() == town:
             return row
-    raise AssertionError(f"Riga grafico comunale non trovata: {town}")
+    raise AssertionError(f"Riga grafico comunale non trovata dopo attesa: {town}")
 
 
 def visual_left(locator) -> float:
@@ -163,11 +177,12 @@ def main() -> None:
             base + "comuni/massarosa/?tema=ambiente&indicatore=agriculturalRenewalAndLeadership",
             wait_until="networkidle",
         )
-        mobile.wait_for_selector(".composite-town-mobility article")
-        articles = mobile.locator(".composite-town-mobility article")
-        assert articles.count() >= 2, "Card composite comunale non materializzate"
-        padding_left = articles.first.evaluate("el => parseFloat(getComputedStyle(el).paddingLeft)")
-        padding_right = articles.first.evaluate("el => parseFloat(getComputedStyle(el).paddingRight)")
+        mobile.wait_for_selector("#town-topic .town-metric-primary")
+        primary = mobile.locator("#town-topic .town-metric-primary").first
+        selector = mobile.locator("#town-topic select[data-composite-choice]")
+        assert selector.count() == 1 and selector.is_visible(), "Selettore Agricoltura II non disponibile"
+        padding_left = primary.evaluate("el => parseFloat(getComputedStyle(el).paddingLeft)")
+        padding_right = primary.evaluate("el => parseFloat(getComputedStyle(el).paddingRight)")
         assert padding_left >= 16 and padding_right >= 16, (padding_left, padding_right)
         assert mobile.evaluate(
             "document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"

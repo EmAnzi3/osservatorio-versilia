@@ -361,9 +361,8 @@ def patch_compare_and_town() -> None:
     source = source.replace(matched[0][0], matched[0][1], 1)
     source = replace_once(
         source,
-        "    const tablist = container.querySelector('[role=\"tablist\"]');\n    installTablist(tablist, onMetricSelect);",
-        """    const tablist = container.querySelector('[role="tablist"]');
-    installTablist(tablist, onMetricSelect);
+        "    installTablist(container.querySelector('.metric-catalog'), onMetricSelect);",
+        """    installTablist(container.querySelector('.metric-catalog'), onMetricSelect);
     container.querySelectorAll('select[data-economic-scope]').forEach(select => select.addEventListener('change', () => {
       setEconomicScopeParam(select.value);
       renderTownMetric(data,town,themeKey,metricKey,onMetricSelect);

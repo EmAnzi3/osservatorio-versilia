@@ -19,19 +19,19 @@
     const update = key => {
       metricKey = key;
       history.replaceState(history.state, '', `?indicatore=${encodeURIComponent(key)}`);
-      const tablist = document.querySelector('.topic-controls [role="tablist"]');
-      tablist?.querySelectorAll('[role="tab"]').forEach(b => {
+      const catalog = document.querySelector('.topic-controls .metric-catalog');
+      catalog?.querySelectorAll('[role="tab"]').forEach(b => {
         const active = b.dataset.metric === key;
         b.classList.toggle('active', active);
         b.setAttribute('aria-selected', active ? 'true' : 'false');
         b.tabIndex = active ? 0 : -1;
       });
       renderCompareMetric(data, themeKey, key, false);
-      scrollActiveControl(tablist);
+      scrollActiveControl(catalog);
     };
-    installTablist(document.querySelector('.topic-controls [role="tablist"]'), update);
+    installTablist(document.querySelector('.topic-controls .metric-catalog'), update);
     renderCompareMetric(data, themeKey, metricKey, false);
-    scrollActiveControl(document.querySelector('.topic-controls [role="tablist"]'));
+    scrollActiveControl(document.querySelector('.topic-controls .metric-catalog'));
     installCrimeInteractions(data);
   }
 
@@ -291,7 +291,7 @@
   function drinkingWaterQualityTownMarkup(metric,row) {
     const localities=row.localities||[],defs=metric.parameterDefinitions||[];
     if(!localities.length||!defs.length) return '<p>Dato non disponibile.</p>';
-    return `<div class="water-quality-town"><details class="water-quality-town-disclosure" open><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
+    return `<div class="water-quality-town"><details class="water-quality-town-disclosure"><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
   }
 
   function remediationPartValue(source,key) {
@@ -620,6 +620,86 @@
     return `<div class="financial-profile-history" data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,selected.index)}</div>`;
   }
 
+  function installFinancialProfileTooltipDelegation(container) {
+    if (!container || container.dataset.financialTooltipDelegated === '1') return;
+    container.dataset.financialTooltipDelegated='1';
+
+    const resolvePoint=target=>target?.closest?.('[data-financial-profile-history] .chart-point');
+    const hideChart=chart=>chart?.querySelectorAll('.chart-point').forEach(point=>{
+      point.classList.remove('active');
+      point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
+    });
+    const showPoint=point=>{
+      if (!point || !container.contains(point)) return;
+      const chart=point.closest('.trend-chart');
+      hideChart(chart);
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+
+    container.addEventListener('focusin',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('focusout',event=>{
+      const point=resolvePoint(event.target);
+      const chart=point?.closest('.trend-chart');
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      hideChart(chart);
+    });
+    container.addEventListener('pointerover',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('pointerout',event=>{
+      const point=resolvePoint(event.target);
+      const chart=point?.closest('.trend-chart');
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      const focused=document.activeElement;
+      if (focused && chart.contains(focused) && focused.classList?.contains('chart-point')) return;
+      hideChart(chart);
+    });
+    container.addEventListener('click',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('keydown',event=>{
+      const point=resolvePoint(event.target);
+      if (!point || !container.contains(point)) return;
+      const chart=point.closest('.trend-chart');
+      const points=[...chart.querySelectorAll('.chart-point')];
+      const index=points.indexOf(point);
+      if (event.key === 'Escape') { hideChart(chart); point.blur(); return; }
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      let next=index;
+      if (event.key === 'ArrowLeft') next=(index-1+points.length)%points.length;
+      if (event.key === 'ArrowRight') next=(index+1)%points.length;
+      if (event.key === 'Home') next=0;
+      if (event.key === 'End') next=points.length-1;
+      points[next]?.focus();
+    });
+  }
+
+  function ensureFinancialProfileTownDetail(container,metric,row,choice='part-0') {
+    if (!container || metric?.meta?.compositeType !== 'financialProfile') return null;
+    const reading=financialProfileReading(metric,choice);
+    let detailHost=container.querySelector('[data-financial-profile-detail]');
+    if (!detailHost) {
+      const panel=container.querySelector(':scope > .history-panel');
+      if (!panel) return null;
+      let fixed=panel.querySelector(':scope > .composite-fixed-detail');
+      if (!fixed) {
+        fixed=document.createElement('div');
+        fixed.className='composite-fixed-detail';
+        panel.append(fixed);
+      }
+      detailHost=document.createElement('div');
+      detailHost.setAttribute('data-financial-profile-detail','');
+      fixed.append(detailHost);
+    }
+    const signature=`${row.code || row.slug || row.town || ''}|${reading.index}`;
+    const alreadyCurrent=detailHost.dataset.financialSignature === signature
+      && Boolean(detailHost.querySelector('[data-financial-profile-history]'));
+    if (!alreadyCurrent) {
+      detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+      detailHost.dataset.financialSignature=signature;
+      installChartInteractions(detailHost);
+    }
+    installFinancialProfileTooltipDelegation(container);
+    return detailHost;
+  }
   function compositeTownMarkup(metric, row) {
     if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityTownMarkup(metric,row);
     if (metric.meta.compositeType === 'remediationProceedings') return remediationTownMarkup(metric,row);
@@ -1136,13 +1216,13 @@
     actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 
     const photoFiles = {
-      'Massarosa':'MassarosaPanorama.JPG',
-      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
-      'Camaiore':'Pontile di Lido di Camaiore, 55041 Lido di Camaiore LU, Italy - panoramio.jpg',
-      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
-      'Seravezza':'Palazzo Mediceo a Seravezza.jpg',
-      'Forte dei Marmi':'Pontile Forte dei Marmi.jpg',
-      'Stazzema':'Stazzema.JPG'
+      'Massarosa':'https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG',
+      'Viareggio':'https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio,_passeggiata_a_mare_2.JPG',
+      'Camaiore':'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
+      'Pietrasanta':'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
+      'Seravezza':'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
+      'Forte dei Marmi':'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
+      'Stazzema':'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG'
     };
     document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
       const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
@@ -1155,7 +1235,7 @@
       card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
       if (image && photoFiles[name]) {
         const fallback = mediaSrc(data.crests[name]);
-        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        image.src = photoFiles[name];
         image.alt = name;
         image.referrerPolicy = 'no-referrer';
         image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
@@ -1327,7 +1407,8 @@
       });
       const selectorDrivenDuplicate = Boolean(
         rolloutTown
-        && activeMetric !== 'municipalStaffTraining'
+        && activeMetric !== 'financialDebtProfile'
+        && !(activeMetric === 'municipalStaffTraining' && document.body.dataset.town === 'massarosa')
         && selectorLabels.length > 0
         && selectorLabels.length === cards.length
         && (labelsEquivalent || notesAreOnlyPeriod)
@@ -1343,7 +1424,16 @@
         && main.dataset.theme === 'salute'
         && Boolean(chart?.querySelector(':scope > .ux-view-shell'))
         && Boolean(fixedDetail.querySelector('.health-sex-detail, .health-demographic-detail, .demographic-history'));
-      const financialDuplicate = rolloutTown && activeMetric === 'financialDebtProfile';
+      const canonicalFinancialDetail = activeMetric === 'financialDebtProfile'
+        ? [...topic.querySelectorAll('[data-financial-profile-detail]')]
+            .map(node => node.closest('.composite-fixed-detail'))
+            .find(node => node && node !== fixedDetail && !chart?.contains(node))
+        : null;
+      const financialDuplicate = Boolean(
+        rolloutTown
+        && activeMetric === 'financialDebtProfile'
+        && canonicalFinancialDetail
+      );
       const inlineSpecialDetail = rolloutTown && (
         ['landCoverProfile','landslideExposure','floodExposure','drinkingWaterQuality','remediationProceedings'].includes(activeMetric)
         || Boolean(fixedDetail.querySelector('[data-land-cover-town-shell], .water-quality-town, .remediation-town'))
@@ -1553,35 +1643,35 @@
     camaiore: {
       institutionYear: 'sec. XIII',
       heroLabel: 'Pontile di Lido di Camaiore',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
     },
     pietrasanta: {
       institutionYear: '1255',
       heroLabel: 'Piazza Duomo',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg'
     },
     seravezza: {
       institutionYear: '1485',
       heroLabel: 'Palazzo Mediceo',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Palazzo_Mediceo_a_Seravezza.jpg'
     },
     'forte-dei-marmi': {
       institutionYear: '1914',
       heroLabel: 'Pontile',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_Forte_dei_Marmi.jpg'
     },
     stazzema: {
       institutionYear: '1776',
       heroLabel: 'Stazzema',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Stazzema.JPG'
     },
@@ -1619,9 +1709,9 @@
           <div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div>
         </div>
         <dl class="town-headline-stats">
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('population')}</span>Popolazione</dt><dd>${html(pop.formatted)}</dd><small>Residenti · ${html(data.metrics.population.meta.year)}</small></div>
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('surface')}</span>Superficie</dt><dd>${html(surface?.formatted || formatValue(surface?.value, surfaceMetric?.meta?.unit))}</dd><small>Superficie comunale</small></div>
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('population')}</span>Popolazione</dt><dd>${html(pop.formatted)}</dd><dd class="town-stat-note">Residenti · ${html(data.metrics.population.meta.year)}</dd></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('surface')}</span>Superficie</dt><dd>${html(surface?.formatted || formatValue(surface?.value, surfaceMetric?.meta?.unit))}</dd><dd class="town-stat-note">Superficie comunale</dd></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><dd class="town-stat-note">Profilo storico-amministrativo</dd></div>
         </dl>
       </div>
       ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${html(profile.heroLabel || (slug === 'camaiore' ? 'Pontile di Lido di Camaiore' : 'Passeggiata a mare'))} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
@@ -1813,8 +1903,7 @@
       updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);
     }
 
-    const tablist = container.querySelector('[role="tablist"]');
-    installTablist(tablist, onMetricSelect);
+    installTablist(container.querySelector('.metric-catalog'), onMetricSelect);
     container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());
@@ -1846,8 +1935,7 @@
         updateExtractiveTownPosition(metric,row,choice,position);
         if(metric.meta.compositeType === 'financialProfile') {
           const reading=financialProfileReading(metric,choice);
-          const detailHost=container.querySelector('[data-financial-profile-detail]');
-          if(detailHost) detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+          const detailHost=ensureFinancialProfileTownDetail(container,metric,row,choice);
           const descriptionHost=container.querySelector('[data-composite-primary-description]');
           if(descriptionHost) descriptionHost.textContent=reading.description;
           const overlineHost=container.querySelector('[data-financial-panel-overline]');
@@ -1856,11 +1944,17 @@
           if(panelTitleHost) panelTitleHost.textContent=reading.label;
           const methodHost=container.querySelector('[data-financial-profile-method]');
           if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
-          if(detailHost) installChartInteractions(detailHost);
         }
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
+        if(metric.meta.compositeType === 'financialProfile') {
+          requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,choice)));
+        }
       };
       select?.addEventListener('change',()=>applyChoice(select.value));
+      if (financialProfile) {
+        ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0');
+        requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0')));
+      }
       const applyDemographic=()=>applyChoice(`${demoAge?.value || metric.meta.defaultAge || '25-64'}|${demoGender?.value || metric.meta.defaultGender || 'total'}`);
       demoAge?.addEventListener('change',applyDemographic);
       demoGender?.addEventListener('change',applyDemographic);
@@ -1889,7 +1983,7 @@
     }
     installChartInteractions(container);
     installAgePyramidDelegation(container);
-    scrollActiveControl(tablist);
+    scrollActiveControl(container.querySelector('.metric-catalog'));
 
     const context = document.getElementById('town-context');
     const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);

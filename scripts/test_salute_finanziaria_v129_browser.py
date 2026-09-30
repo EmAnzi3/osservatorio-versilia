@@ -51,22 +51,37 @@ def check_compare(page: Page, base: str) -> None:
     selector.wait_for()
     assert selector.locator("option").all_inner_texts() == [item[2] for item in READINGS]
     for choice, code, title, unit in READINGS:
-        selector.select_option(choice)
         selector = page.locator("#compare-bars select[data-composite-component]")
+        selector.select_option(choice)
+        page.wait_for_function(
+            """choice => document.querySelector('#compare-bars .ux-view-shell')?.dataset.financialChoice === choice""",
+            arg=choice,
+        )
         definition = page.locator("#compare-definition")
         assert code in definition.inner_text() and title in definition.inner_text()
         assert unit in definition.inner_text() and VERSILIA_2025[choice] in definition.inner_text()
-        assert page.locator("#compare-bars .bar-row").count() == 7
-        history = page.locator("#compare-bars .financial-aggregate-history")
-        assert "2019" in history.inner_text() and "2025" in history.inner_text()
-        assert unit in history.inner_text()
+        current = page.locator('#compare-bars [data-view-pane="current"]')
+        assert current.locator(".bar-row").count() == 7
+
+        history_button = page.locator('#compare-bars [data-view-mode="history"]')
+        assert history_button.count() == 1 and not history_button.is_disabled()
+        history_button.click()
+        history = page.locator('#compare-bars [data-view-pane="history"] .ux-history-card')
+        history.wait_for()
+        history_text = history.inner_text()
+        assert "2019" in history_text and "2025" in history_text
+        assert unit in history_text
+        check_tooltip(page, '#compare-bars [data-view-pane="history"]', unit, f"confronto {code}")
         assert code in page.locator("#compare-tools .financial-method-disclosure").text_content()
-        check_tooltip(page, "#compare-bars .financial-aggregate-history", unit, f"confronto {code}")
+
+        current_button = page.locator('#compare-bars [data-view-mode="current"]')
+        current_button.click()
+        current.wait_for()
+
     padded(page, "#compare-definition .financial-definition", "definizione confronto")
-    padded(page, "#compare-bars .financial-aggregate-history", "storico Versilia")
+    padded(page, '#compare-bars [data-view-pane="history"] .ux-history-card', "storico confronto")
     no_internal_units(page, "confronto")
     no_overflow(page, "confronto")
-
 
 def check_indicator(page: Page, base: str) -> None:
     page.goto(

@@ -1,6 +1,6 @@
 {
   "checkpoint": "6a064ba25992d292a76709ac15d49537c258ac66",
-  "purpose": "A5.5 closure: stabilize A5 municipal current-pane ownership, contain narrow-viewport navigation and library history scrolling, and align browser QA with the final shared renderers while golden locks remain authoritative",
+  "purpose": "A5.5 closure: port the clean batch proven by complete debug sweeps, preserve approved A5 golden surfaces, and align browser/visual contracts with the final shared municipal and thematic shell",
   "allowed_paths": [
     "assets/fidelity.css",
     "assets/fidelity.js",
@@ -33,6 +33,20 @@
     "scripts/test_visual_grammar.py",
     "scripts/test_amministrazione_lotto_a_browser.py",
     "scripts/test_ux_experiment.py",
-    "scripts/test_lavoro_istruzione_eta_genere_browser.py"
+    "scripts/test_lavoro_istruzione_eta_genere_browser.py",
+    "assets/app-parts/04.txt",
+    "ci/visual-regression-baselines/composites-a.json",
+    "ci/visual-regression-baselines/composites-b.json",
+    "ci/visual-regression-baselines/generic-history-town.json",
+    "ci/visual-regression-baselines/themes.json",
+    "scripts/patch_economia_prodotta_runtime.py",
+    "scripts/test_accordion_tools_persistence.py",
+    "scripts/test_agricoltura_ii_preview_browser.py",
+    "scripts/test_agricoltura_review_interactions_v120.py",
+    "scripts/test_chart_surfaces.py",
+    "scripts/test_exports_v161.py",
+    "scripts/test_lighthouse_budget.py",
+    "scripts/test_mobile_interactions.py",
+    "scripts/test_salute_finanziaria_v129_browser.py"
   ]
 }
