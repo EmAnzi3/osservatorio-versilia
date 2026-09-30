@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "sourceOfTruth": "data/site-data.json",
+  "scope": {
+    "noMunicipalityInventory": true,
+    "noThemeInventory": true,
+    "noIndicatorInventory": true,
+    "deriveFromCanonicalCatalog": true
+  },
+  "entities": {
+    "municipality": {
+      "id": "town.code",
+      "label": "town.name",
+      "rowIdFallback": "row.code",
+      "rowLabelFallback": "row.town"
+    },
+    "theme": {
+      "id": "themes.<key>",
+      "label": "themes.<key>.label",
+      "membership": "themes.<key>.metrics"
+    },
+    "indicator": {
+      "id": "metrics.<key>",
+      "label": "metrics.<key>.meta.label",
+      "theme": "metrics.<key>.meta.theme"
+    },
+    "period": {
+      "current": "metrics.<key>.meta.year",
+      "historical": "*.series.years"
+    },
+    "dimension": {
+      "policy": "explicit-source-backed-only",
+      "carriers": [
+        "rows[].parts",
+        "rows[].detailParts",
+        "rows[].normalized",
+        "rows[].ratioComponents",
+        "aggregate.parts"
+      ]
+    },
+    "source": {
+      "label": "metrics.<key>.meta.source",
+      "url": "metrics.<key>.sourceUrl"
+    },
+    "benchmark": {
+      "path": "metrics.<key>.meta.benchmark",
+      "optional": true,
+      "requiredFields": ["year", "source", "url"],
+      "valueFields": ["tuscany", "italy"]
+    }
+  },
+  "observation": {
+    "grain": ["municipality", "indicator", "period", "dimension?"],
+    "requiredSemanticFields": [
+      "municipalityId",
+      "indicatorId",
+      "themeId",
+      "period",
+      "unit",
+      "source"
+    ],
+    "nullPolicy": "preserve-missing-vs-not-applicable"
+  },
+  "rules": {
+    "themeMembershipMustBeBidirectional": true,
+    "municipalRowsMustResolveToCanonicalTown": true,
+    "sourceMustBeExplicit": true,
+    "periodMustBeExplicit": true,
+    "seriesYearsValuesMustAlign": true,
+    "dimensionMustNeverBeInferredFromLabelsAlone": true,
+    "benchmarkMustRemainSeparateFromMunicipalObservation": true
+  }
+}
