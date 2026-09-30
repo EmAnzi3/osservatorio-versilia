@@ -1851,7 +1851,6 @@ body[data-page="compare"]:has(main.a5-editorial-pilot) select:focus-visible {
     box-sizing:border-box;
     margin-inline:0;
     padding-inline:12px;
-    overflow:hidden;
   }
   main.a5-editorial-pilot .compare-context-nav .context-nav-links {
     width:100%;
@@ -4167,20 +4166,6 @@ body[data-page="town"]:has(main.a5-municipal-rollout) main.a5-town-pilot .a5-tow
 
 
 
-
-/* A5 accessibility: keep themed pills, but text must meet contrast on all palettes. */
-main.a5-editorial-pilot .context-nav-links a small,
-main.a5-editorial-pilot .context-nav-links a span,
-body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a small,
-body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a span {
-  color:#304b5b !important;
-}
-main.a5-editorial-pilot .context-nav-links a.active small,
-main.a5-editorial-pilot .context-nav-links a.active span,
-body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active small,
-body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active span {
-  color:#fff !important;
-}
 
 /* A5 financial town history: preserve the card's own readable inner spacing
    after the shared municipal shell moves/restores the complementary detail. */

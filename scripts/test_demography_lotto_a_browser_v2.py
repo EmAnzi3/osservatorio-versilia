@@ -363,7 +363,15 @@ def main() -> None:
                             'A5.5 bulk mobilita/fuelPrices: primo valore mensile gasolio non coerente')
                     page.locator('#compare-bars [data-view-mode="current"]').first.click()
                 if metric_key == 'financialDebtProfile':
-                    require(page.locator('#compare-bars .ux-view-toggle [data-view-mode]').count() == 2,
+                    # fidelity.js materializes the dedicated financial history shell
+                    # asynchronously after renderCompareMetric. Wait for that contract
+                    # instead of racing the MutationObserver/requestAnimationFrame cycle.
+                    page.wait_for_function(
+                        """() => document.querySelectorAll(
+                          '#compare-bars > .ux-view-shell .ux-view-toggle [data-view-mode]'
+                        ).length === 2"""
+                    )
+                    require(page.locator('#compare-bars > .ux-view-shell .ux-view-toggle [data-view-mode]').count() == 2,
                             'A5.5 bulk bilanci/financialDebtProfile: switch attuale/storico assente')
                     require(page.locator('#compare-bars .financial-aggregate-history').count() == 0,
                             'A5.5 bulk bilanci/financialDebtProfile: storico aggregato Versilia ancora nella vista attuale')
@@ -381,7 +389,9 @@ def main() -> None:
                     selector = page.locator('#compare-bars [data-view-pane="current"] select[data-composite-component]').first
                     if selector.count() and selector.locator('option').count() > 1:
                         selector.select_option(index=1)
-                        page.wait_for_timeout(180)
+                        page.wait_for_function(
+                            """() => document.querySelector('#compare-bars > .ux-view-shell')?.dataset.financialChoice === 'part-1'"""
+                        )
                         page.locator('#compare-bars [data-view-mode="history"]').first.click()
                         require(page.locator('#compare-bars [data-view-pane="history"] svg[aria-label*="Interessi sulle entrate correnti"]').count() == 1,
                                 'A5.5 bulk bilanci/financialDebtProfile: storico non segue la lettura selezionata')

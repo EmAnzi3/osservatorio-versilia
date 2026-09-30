@@ -684,6 +684,8 @@
 
   function financialA5MunicipalMetric(metric, index) {
     const aggregatePart = metric?.aggregate?.parts?.[index] || {};
+    const rawUnit = aggregatePart.unit || metric.meta.unit;
+    const unit = rawUnit === 'percent2' ? '%' : rawUnit;
     const rows = (metric?.rows || []).map(row => {
       const part = row.parts?.[index] || {};
       return { ...row, value:part.value, formatted:'', series:part.series || null };
@@ -694,7 +696,7 @@
       meta:{
         ...metric.meta,
         label:aggregatePart.label || metric.meta.label,
-        unit:aggregatePart.unit || metric.meta.unit,
+        unit,
         compositeType:null
       },
       rows,
@@ -705,6 +707,18 @@
         series:aggregatePart.series || null
       }
     };
+  }
+
+  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug, escape) {
+    const row=(metric?.rows || []).find(item => (item.slug || '') === townSlug);
+    const part=row?.parts?.[index] || {};
+    const provenance=part.provenance
+      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escape(part.provenance)}</p>`
+      : '';
+    const context=index === 0 && row?.contextNote
+      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escape(row.contextNote)}</p>`
+      : '';
+    return provenance + context;
   }
 
   function normalizeA5MunicipalFinancialProfile() {
@@ -723,7 +737,8 @@
     const townSlug = activeA5MunicipalTownSlug();
     const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
     const series = toolkit.comparableSeries(derived);
-    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug);
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug)
+      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug, toolkit.escapeHtml);
     const historyAvailable = Boolean(series);
     let shell = panel.querySelector(':scope > .ux-view-shell');
 
