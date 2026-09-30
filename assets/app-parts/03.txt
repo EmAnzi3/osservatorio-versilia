@@ -1918,7 +1918,7 @@
     }
     installChartInteractions(container);
     installAgePyramidDelegation(container);
-    scrollActiveControl(tablist);
+    scrollActiveControl(container.querySelector('.metric-catalog'));
 
     const context = document.getElementById('town-context');
     const showBrainDrain = themeKey === 'demografia' && DEMOGRAPHIC_MOBILITY_CONTEXT_METRICS.has(metricKey);
