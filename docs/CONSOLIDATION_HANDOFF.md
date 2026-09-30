@@ -9,7 +9,7 @@
 - **Main di partenza A6:** `a98b89995e01cd12f2ab8422a0a6ed6aa81b5578`
 - **A5:** DONE — PR #280 mergiata il 30/09/2026
 - **Branch:** `feat/a6-semantic-model`
-- **PR:** da aprire
+- **PR:** #301 — Ready, OPEN
 - **A0–A5:** DONE
 - **A7:** NOT_STARTED
 
