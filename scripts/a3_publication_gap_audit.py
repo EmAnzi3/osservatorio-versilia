@@ -81,6 +81,20 @@ def _any_history(metric: dict[str, Any]) -> bool:
 def _history_payload(value: Any) -> bool:
     if _valid_series(value):
         return True
+    if isinstance(value, dict):
+        years = value.get("years")
+        if isinstance(years, list) and len(years) >= 2:
+            parallel = [
+                raw
+                for key, raw in value.items()
+                if key != "years"
+                and isinstance(raw, list)
+                and len(raw) == len(years)
+                and sum(_finite(item) for item in raw) >= 2
+            ]
+            if parallel:
+                return True
+        return any(_history_payload(item) for item in value.values())
     if isinstance(value, list) and len(value) >= 2:
         rows = [item for item in value if isinstance(item, dict)]
         if len(rows) == len(value) and all("year" in item for item in rows):
@@ -88,8 +102,6 @@ def _history_payload(value: Any) -> bool:
                 any(_finite(raw) for key, raw in item.items() if key != "year")
                 for item in rows
             )
-    if isinstance(value, dict):
-        return any(_history_payload(item) for item in value.values())
     return False
 
 
