@@ -1,0 +1,58 @@
+name: A5 full browser-first validation
+
+on:
+  push:
+    branches:
+      - "debug/a5-full-browser-first"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-browser-first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+
+      - name: Install full dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+          npm install --global lighthouse@12.8.2
+
+      - name: Prepare coherent dist like pages full
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_static_brand.py
+          git diff --exit-code -- . ':(exclude)dist'
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+          node --check dist/assets/app-bundle.js
+
+      - name: Run full preflight browser-first
+        run: python scripts/preflight.py --full --skip-quick
+
+      - name: Upload full diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-full-browser-first-diagnostics
+          path: |
+            reports/
+          if-no-files-found: ignore
+          retention-days: 7
