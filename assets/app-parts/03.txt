@@ -620,6 +620,27 @@
     return `<div class="financial-profile-history" data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,selected.index)}</div>`;
   }
 
+  function ensureFinancialProfileTownDetail(container,metric,row,choice='part-0') {
+    if (!container || metric?.meta?.compositeType !== 'financialProfile') return null;
+    const reading=financialProfileReading(metric,choice);
+    let detailHost=container.querySelector('[data-financial-profile-detail]');
+    if (!detailHost) {
+      const panel=container.querySelector(':scope > .history-panel');
+      if (!panel) return null;
+      let fixed=panel.querySelector(':scope > .composite-fixed-detail');
+      if (!fixed) {
+        fixed=document.createElement('div');
+        fixed.className='composite-fixed-detail';
+        panel.append(fixed);
+      }
+      detailHost=document.createElement('div');
+      detailHost.setAttribute('data-financial-profile-detail','');
+      fixed.append(detailHost);
+    }
+    detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+    installChartInteractions(detailHost);
+    return detailHost;
+  }
   function compositeTownMarkup(metric, row) {
     if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityTownMarkup(metric,row);
     if (metric.meta.compositeType === 'remediationProceedings') return remediationTownMarkup(metric,row);
@@ -1846,8 +1867,7 @@
         updateExtractiveTownPosition(metric,row,choice,position);
         if(metric.meta.compositeType === 'financialProfile') {
           const reading=financialProfileReading(metric,choice);
-          const detailHost=container.querySelector('[data-financial-profile-detail]');
-          if(detailHost) detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+          const detailHost=ensureFinancialProfileTownDetail(container,metric,row,choice);
           const descriptionHost=container.querySelector('[data-composite-primary-description]');
           if(descriptionHost) descriptionHost.textContent=reading.description;
           const overlineHost=container.querySelector('[data-financial-panel-overline]');
@@ -1856,11 +1876,17 @@
           if(panelTitleHost) panelTitleHost.textContent=reading.label;
           const methodHost=container.querySelector('[data-financial-profile-method]');
           if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
-          if(detailHost) installChartInteractions(detailHost);
         }
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
+        if(metric.meta.compositeType === 'financialProfile') {
+          requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,choice)));
+        }
       };
       select?.addEventListener('change',()=>applyChoice(select.value));
+      if (financialProfile) {
+        ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0');
+        requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0')));
+      }
       const applyDemographic=()=>applyChoice(`${demoAge?.value || metric.meta.defaultAge || '25-64'}|${demoGender?.value || metric.meta.defaultGender || 'total'}`);
       demoAge?.addEventListener('change',applyDemographic);
       demoGender?.addEventListener('change',applyDemographic);

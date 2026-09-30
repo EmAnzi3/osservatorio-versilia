@@ -14,7 +14,6 @@ if str(SCRIPTS) not in sys.path:
 import preflight  # noqa: E402
 
 RESIDUAL_LABELS = {
-    "Agricoltura interactions",
     "Salute finanziaria browser",
 }
 
@@ -56,23 +55,14 @@ def main() -> None:
                     run_check(label, command, failures)
 
                 if not failures:
-                    print("\n===== A4: record approved A5 baselines =====", flush=True)
-                    record = (
+                    print("\n===== A4: validate existing baseline =====", flush=True)
+                    validate = (
                         preflight.PYTHON,
                         "scripts/test_visual_regression.py",
                         "--base",
                         base,
-                        "--record-baselines",
                     )
-                    run_check("A4 visual regression record", record, failures)
-                    if not failures:
-                        validate = (
-                            preflight.PYTHON,
-                            "scripts/test_visual_regression.py",
-                            "--base",
-                            base,
-                        )
-                        run_check("A4 visual regression validate", validate, failures)
+                    run_check("A4 visual regression validate", validate, failures)
             finally:
                 if process.poll() is None:
                     process.terminate()
@@ -89,7 +79,7 @@ def main() -> None:
         print(f"TOTAL RESIDUAL FAILURES: {len(failures)}", flush=True)
         raise SystemExit(1)
 
-    print("ALL RESIDUAL CHECKS + A4 RECORD/VALIDATE PASSED", flush=True)
+    print("ALL RESIDUAL CHECKS + A4 VALIDATION PASSED", flush=True)
 
 
 if __name__ == "__main__":
