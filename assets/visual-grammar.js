@@ -709,6 +709,18 @@
     };
   }
 
+  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug) {
+    const row=(metric?.rows || []).find(item => (item.slug || '') === townSlug);
+    const part=row?.parts?.[index] || {};
+    const provenance=part.provenance
+      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escapeHtml(part.provenance)}</p>`
+      : '';
+    const context=index === 0 && row?.contextNote
+      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escapeHtml(row.contextNote)}</p>`
+      : '';
+    return provenance + context;
+  }
+
   function normalizeA5MunicipalFinancialProfile() {
     if (!isA5MunicipalRolloutTownPage()) return;
     const metricKey = activeA5MunicipalMetricKey();
@@ -725,7 +737,8 @@
     const townSlug = activeA5MunicipalTownSlug();
     const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
     const series = toolkit.comparableSeries(derived);
-    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug);
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug)
+      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug);
     const historyAvailable = Boolean(series);
     let shell = panel.querySelector(':scope > .ux-view-shell');
 

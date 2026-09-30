@@ -70,8 +70,7 @@
     const number = Number(value);
     if (!Number.isFinite(number)) return 'n.d.';
     switch (unit) {
-      case '%':
-      case 'percent2': return `${formatNumber(number, 2)}%`;
+      case '%': return `${formatNumber(number, 2)}%`;
       case 'percent': return `${formatNumber(number, 1)}%`;
       case 'percentagePoints': return `${formatNumber(number, 1)}%`;
       case 'currency': return `${formatNumber(number, 0)} €`;
