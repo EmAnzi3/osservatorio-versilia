@@ -649,6 +649,8 @@
       const point=resolvePoint(event.target);
       const chart=point?.closest('.trend-chart');
       if (!chart || chart.contains(event.relatedTarget)) return;
+      const focused=document.activeElement;
+      if (focused && chart.contains(focused) && focused.classList?.contains('chart-point')) return;
       hideChart(chart);
     });
     container.addEventListener('click',event=>showPoint(resolvePoint(event.target)));

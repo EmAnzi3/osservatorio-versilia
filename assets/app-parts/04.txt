@@ -27,9 +27,14 @@ hidden>
         const tooltip = point.querySelector('.chart-tooltip');
         if (tooltip) tooltip.removeAttribute('hidden');
       };
+      const hideUnlessKeyboardFocused = () => {
+        const focused = document.activeElement;
+        if (focused && chart.contains(focused) && focused.classList?.contains('chart-point')) return;
+        hideAll();
+      };
       points.forEach((point, index) => {
         point.addEventListener('mouseenter', () => show(point));
-        point.addEventListener('mouseleave', hideAll);
+        point.addEventListener('mouseleave', hideUnlessKeyboardFocused);
         point.addEventListener('focus', () => show(point));
         point.addEventListener('blur', hideAll);
         point.addEventListener('click', () => show(point));
@@ -45,7 +50,7 @@ hidden>
           points[next]?.focus();
         });
       });
-      chart.addEventListener('mouseleave', hideAll);
+      chart.addEventListener('mouseleave', hideUnlessKeyboardFocused);
     });
   }
 
