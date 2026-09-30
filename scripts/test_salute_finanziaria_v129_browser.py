@@ -118,6 +118,10 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
     assert selector.locator("option").all_inner_texts() == [item[2] for item in READINGS]
     for choice, code, title, unit in READINGS:
         selector.select_option(choice)
+        page.wait_for_function(
+            """choice => document.querySelector('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')?.dataset.a5FinancialChoice === choice""",
+            arg=choice,
+        )
         value = page.locator("#town-topic [data-composite-primary-value]").inner_text()
         assert expected[choice] in value and unit in value
         rendered_title = page.locator("#town-topic [data-composite-primary-label]").inner_text()
@@ -125,12 +129,32 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
             f"{slug} {code}: etichetta inattesa {rendered_title!r}"
         )
         assert code in page.locator("#town-topic [data-financial-panel-overline]").inner_text()
-        history = page.locator("#town-topic [data-financial-profile-history]")
+
+        history_button = page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-mode="history"]'
+        )
+        assert history_button.count() == 1 and not history_button.is_disabled()
+        history_button.click()
+        history_selector = (
+            '#town-topic .history-panel.a5-shared-chart '
+            '[data-view-pane="history"]'
+        )
+        history = page.locator(history_selector)
+        history.wait_for()
         assert "2019" in history.inner_text() and "2025" in history.inner_text()
         assert unit in history.inner_text()
+        check_tooltip(page, history_selector, unit, f"{slug} {code}")
+
         method = page.locator("#town-topic [data-financial-profile-method]").text_content()
         assert code in method and unit in method
-        check_tooltip(page, "#town-topic [data-financial-profile-history]", unit, f"{slug} {code}")
+
+        current_button = page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-mode="current"]'
+        )
+        current_button.click()
+        page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-pane="current"]'
+        ).wait_for()
     town_text = page.locator("#town-topic").text_content()
     if slug == "massarosa":
         selector.select_option("part-0")
@@ -141,7 +165,11 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
     elif slug == "camaiore":
         assert "9,64" in town_text and "10,82" in town_text
     padded(page, "#town-topic .town-metric-primary", f"card {slug}")
-    padded(page, "#town-topic .financial-profile-history", f"storico {slug}")
+    padded(
+        page,
+        '#town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-history-card',
+        f"storico {slug}",
+    )
     no_internal_units(page, slug)
     no_overflow(page, slug)
 
