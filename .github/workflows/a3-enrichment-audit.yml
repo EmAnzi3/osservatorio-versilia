@@ -74,6 +74,13 @@ jobs:
             --output /tmp/a3-enrichment-matrix.json \
             --allow-unclassified
 
+      - name: Upload effective A3 matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: a3-enrichment-matrix
+          path: /tmp/a3-enrichment-matrix.json
+          if-no-files-found: error
+
       - name: Report residual A3 pairs
         run: |
           python - <<'PY'
