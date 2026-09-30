@@ -1,0 +1,69 @@
+name: A5 thematic golden lock
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  thematic-golden-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout current PR head
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m pip install Pillow==11.3.0
+          python -m playwright install --with-deps chromium
+
+      - name: Build current preview
+        run: python scripts/build_static_brand.py
+
+      - name: Checkout immutable approved thematic baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 3de730a006fcef67e91226c3191884e84b3cae3a
+          path: baseline
+
+      - name: Build baseline preview
+        working-directory: baseline
+        run: python scripts/build_static_brand.py
+
+      - name: Compare all approved thematic pages against baseline
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/a5-thematic-golden-lock
+          mkdir -p /tmp/a5-thematic-golden-lock
+          python scripts/preview_dist.py --port 8125 --directory dist >/tmp/current-thematic-preview.log 2>&1 &
+          CURRENT_PID=$!
+          python baseline/scripts/preview_dist.py --port 8126 --directory baseline/dist >/tmp/baseline-thematic-preview.log 2>&1 &
+          BASELINE_PID=$!
+          cleanup() {
+            kill "$CURRENT_PID" "$BASELINE_PID" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_a5_thematic_golden_lock.py \
+            --current-base http://127.0.0.1:8125 \
+            --baseline-base http://127.0.0.1:8126 \
+            --config ci/a5-thematic-golden-lock.json \
+            --report-dir /tmp/a5-thematic-golden-lock
+
+      - name: Upload thematic golden-lock diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-thematic-golden-lock
+          path: /tmp/a5-thematic-golden-lock
+          if-no-files-found: ignore

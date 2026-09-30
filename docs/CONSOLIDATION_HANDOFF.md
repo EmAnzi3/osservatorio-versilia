@@ -6,46 +6,41 @@ Questo file è il punto di ripartenza operativo per ogni nuova sessione dedicata
 
 - **Programma:** consolidamento Osservatorio Versilia
 - **Workstream attivo:** A5 — Design System 2.0
-- **Step attivo:** A5.1–A5.3 — audit e fondazione non visuale
-- **Stato:** IN_PROGRESS — fondazione preparata in branch, A5.4 sarà la prima modifica UI
-- **Main verificato:** `df90fd9372c536cb4288488557cc863150e43791` (merge #271)
-- **A4:** DONE — deploy Pages post-merge verde, `ov-pages-live` success
-- **Catalogo effettivo:** 225 indicatori
-- **Visual regression A4:** 40 campioni rappresentativi
-- **Branch corrente:** `feat/a5-design-system-foundation`
-- **Modifiche visive al prodotto:** nessuna
+- **Step attivo:** A5.5 — propagazione progressiva DS2
+- **Stato:** DONE tecnicamente — chiusura formale A5 sospesa soltanto fino ad approvazione esplicita e merge della PR #280
+- **Main incorporato:** `46a31d3ca60717827ac92c709349b0c77355c3b4`
+- **Merge di allineamento main:** `bde1c5ab82f85c6655908cd3002139caddc6245b`
+- **Checkpoint UI approvato:** `bc9e5086aa796637828e1a5ae6e9952873024ef7`
+- **Commit closure docs/scope:** `6fa94b4a569d5ee90b24fd061e3aeae379546162`
+- **Branch:** `feat/a5-controlled-iteration`
+- **PR:** #280 — Draft, OPEN, non mergiata
+- **A0–A4:** DONE
+- **A5.1–A5.5:** DONE tecnicamente
+- **A6:** NOT_STARTED
 
-## A5.1 — audit
+## Contratti congelati
 
-Il referto completo è in `docs/A5_DESIGN_SYSTEM_AUDIT.md`.
+I contratti approvati sono documentati in `docs/A5_GOLDEN_MASTERS.md`.
 
-Baseline principali:
-- 246 colori HEX distinti nei quattro CSS pubblici principali;
-- 187 dichiarazioni background e 336 dichiarazioni di bordo;
-- contrasto `paper/surface`: 1,11:1;
-- contrasto `muted/paper`: 4,37:1;
-- 177/288 dichiarazioni font-size in px <= 11 px;
-- due sistemi tematici sovrapposti: `theme-color` e `theme-accent`;
-- token tematici espliciti per 9 temi su 11: mancano `sicurezza` e `bilanci`.
+- 11 pagine tematiche standard DS2 consolidate.
+- 7 schede comunali consolidate sul renderer parametrico condiviso.
+- Camaiore completa protetta dal checkpoint `5aaf159870912eb49bffbd044963549bfb920150`.
+- Viareggio/Massarosa Demografia restano protette dal golden lock storico.
+- Navigazione Comuni e Home “Esplora per territorio” in ordine alfabetico: Camaiore, Forte dei Marmi, Massarosa, Pietrasanta, Seravezza, Stazzema, Viareggio.
+- Route speciali mantenute come eccezioni intenzionali: `meteo-clima`, Atlante attività economiche, Affluenza.
 
-## A5.2–A5.3
+## Closure audit route speciali
 
-La fondazione DS2 separa:
-- canvas neutro;
-- surface primaria, secondaria ed editoriale;
-- testo primary/secondary/tertiary;
-- bordi e focus;
-- elevazione;
-- tema accent/soft/line;
-- stati semantici.
+- **Meteo/clima:** workspace specializzato; shell canonica e gate clima dedicati.
+- **Atlante attività economiche:** web component autonomo con browser contract dedicato desktop/tablet/mobile.
+- **Affluenza:** archivio/event selector specifico; token/componenti canonici e responsive dedicato.
 
-Il vocabolario nuovo usa prefisso `--ds-`. Gli alias storici restano temporaneamente durante la migrazione; `--theme-color` e `--theme-accent` devono convergere.
+Nessuna delle tre route richiede un rollout forzato nello shell standard A5.
 
 ## Prossima azione esatta
 
-1. Portare la fondazione A5.1–A5.3 in PR Ready e richiedere Quick + Full verdi.
-2. Merge solo dopo approvazione esplicita del proprietario.
-3. Dopo il merge aprire A5.4 sulla pagina pilota `confronta/demografia/`.
-4. A5.4 deve essere Draft perché modifica la UI.
-5. Il primo mismatch A4 intenzionale deve produrre screenshot diagnostici: verificarli desktop/mobile prima di aggiornare le baseline.
-6. Non modificare dati, contenuti, tooltip o semantica durante il pilot.
+1. Attendere e verificare che tutti i gate della PR siano verdi sul nuovo head di closure.
+2. Se verdi, fermarsi e chiedere al proprietario autorizzazione esplicita a rendere #280 Ready e mergiarla.
+3. Solo dopo il merge: segnare A5 `DONE` e avviare A6.1 — modello semantico minimo.
+
+Non aggiornare golden/baseline per ottenere verde e non mergiare senza approvazione esplicita.

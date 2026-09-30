@@ -17,8 +17,8 @@ _original_bundle_application = build.bundle_application
 _original_prepare_shells = build.prepare_shells
 _original_inject_metadata = build.inject_metadata
 
-UX_ASSET_VERSION = "20260903-v129-salute-finanziaria-selector"
-HISTORY_ASSET_VERSION = "20260903-v129-salute-finanziaria-selector"
+UX_ASSET_VERSION = "20260926-a5-fuel-monthly-history"
+HISTORY_ASSET_VERSION = "20260926-a5-fuel-monthly-history"
 PUBLIC_CONTACT = "info@osservatorioversilia.it"
 LEGACY_CONTACT = "contatti@osservatorioversilia.it"
 SOCIAL_IMAGE = f"{build.BASE_URL}images/versilia-viareggio-apuane.jpg"

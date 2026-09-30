@@ -125,10 +125,11 @@ def browser_assertions() -> None:
         page.wait_for_timeout(100)
         header_box = page.locator("#site-header-mount").bounding_box()
         context_box = page.locator(".town-context-nav").bounding_box()
-        theme_box = page.locator(".town-context-nav .theme-nav").bounding_box()
+        theme_box = page.locator(".town-context-nav .town-theme-row").bounding_box()
         assert header_box and abs(header_box["y"]) <= 1, f"Header non sticky: {header_box}"
         assert context_box and 68 <= context_box["y"] <= 72, f"Navigazione contestuale non sticky: {context_box}"
-        assert theme_box, "Navigazione dei temi assente dalla barra contestuale"
+        assert theme_box, "Navigazione dei temi assente dalla barra contestuale DS2"
+        assert page.locator(".town-context-nav .town-theme-row .context-nav-links a").count() >= 11, "Link temi DS2 incompleti"
         assert context_box["y"] <= theme_box["y"], "Navigazione temi sopra il contenitore sticky"
         assert theme_box["y"] + theme_box["height"] <= context_box["y"] + context_box["height"] + 2, (
             f"Navigazione temi fuori dal contenitore sticky: tema={theme_box}, contenitore={context_box}"

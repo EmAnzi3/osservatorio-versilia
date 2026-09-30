@@ -173,8 +173,25 @@ def verify_all_theme_pages(page: Page, base: str) -> None:
         url = f"{base}confronta/{quote(theme_key)}/?indicatore={quote(metric)}"
         page.goto(url, wait_until="networkidle")
         page.wait_for_selector("#compare-bars .topic-bars")
-        assert_surface(page, "#compare-bars .topic-bars", f"Tema {theme_key} · confronto corrente")
-
+        if page.locator("main.a5-editorial-pilot").count():
+            body = page.locator("#compare-bars .topic-bars").first
+            body_style = surface_style(body)
+            require(
+                body_style["background"] == expected_surface(page),
+                f"Tema {theme_key} · confronto corrente: sfondo interno inatteso: {body_style}",
+            )
+            outer = page.locator("main.a5-editorial-pilot .compare-main-column").first
+            require(outer.count() == 1 and outer.is_visible(),
+                    f"Tema {theme_key}: contenitore A5 unificato assente")
+            style = surface_style(outer)
+            require(
+                style["borderStyle"] != "none" and px(style["borderWidth"]) >= 1,
+                f"Tema {theme_key}: bordo contenitore A5 assente: {style}",
+            )
+            require(px(style["radius"]) >= 10,
+                    f"Tema {theme_key}: raggio contenitore A5 insufficiente: {style}")
+        else:
+            assert_surface(page, "#compare-bars .topic-bars", f"Tema {theme_key} · confronto corrente")
 
 def verify_all_town_pages(page: Page, base: str) -> None:
     towns = DATA.get("towns", [])

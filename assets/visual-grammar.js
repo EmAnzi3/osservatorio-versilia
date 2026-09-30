@@ -468,7 +468,14 @@
     }
     if (type === 'stock') {
       const count = choice === 'count';
-      return { value: count ? metric.aggregate?.count : metric.aggregate?.value, label: count ? 'Versilia · residenti stranieri' : 'Versilia · quota residenti stranieri' };
+      if (count) {
+        const values = (metric.rows || []).map(row => finite(row?.count)).filter(value => value !== null);
+        return {
+          value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+          label: `Media semplice dei ${values.length} comuni · residenti stranieri`
+        };
+      }
+      return { value: metric.aggregate?.value, label:'Versilia · quota residenti stranieri' };
     }
     if (type === 'omi') {
       const rent = choice === 'rent';
@@ -476,7 +483,302 @@
     }
     const index = Math.max(0,Math.min(2,Number(String(choice).replace('part-','')) || 0));
     const part = metric.aggregate?.parts?.[index] || {};
-    return { value: scale === 'count' ? part.count : part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
+    if (scale === 'count') {
+      const values = (metric.rows || []).map(row => finite(row?.parts?.[index]?.count)).filter(value => value !== null);
+      return {
+        value: values.length ? values.reduce((sum,value) => sum + value, 0) / values.length : null,
+        label:`Media semplice dei ${values.length} comuni · ${part.label || 'mobilità residenziale'}`
+      };
+    }
+    return { value: part.value, label:`Versilia · ${part.label || 'mobilità residenziale'}` };
+  }
+
+
+  const A5_LIBRARY_CURRENT_KEYS = new Set([
+    'libraryLoansPerResident',
+    'libraryActiveBorrowersPer100',
+    'libraryWeeklyOpeningHours'
+  ]);
+  const A5_CLIMATE_CURRENT_KEYS = new Set([
+    'climateTemperatureTrend50y',
+    'climatePrecipitationTrend50y',
+    'climateTminTrend',
+    'climateTmaxTrend'
+  ]);
+
+  const A5_MUNICIPAL_ROLLOUT_TOWNS = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa']);
+
+  function activeA5MunicipalTownSlug() {
+    const slug = document.body.dataset.town || '';
+    const rollout = Boolean(document.querySelector('main.a5-municipal-rollout'));
+    return document.body.dataset.page === 'town' && rollout && A5_MUNICIPAL_ROLLOUT_TOWNS.has(slug) ? slug : '';
+  }
+
+  function isA5MunicipalRolloutTownPage() {
+    return Boolean(activeA5MunicipalTownSlug());
+  }
+
+  function activeA5MunicipalMetricKey() {
+    if (!isA5MunicipalRolloutTownPage()) return '';
+    return document.querySelector('#town-topic .topic-controls [data-metric].active')?.dataset.metric
+      || new URLSearchParams(location.search).get('indicatore')
+      || '';
+  }
+
+  function a5MunicipalCompositeChoice(metric) {
+    if (!metric) return '';
+    if (metric.meta?.compositeType === 'demographicBreakdown') {
+      const age = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-age]')?.value
+        || metric.meta.defaultAge || '';
+      const gender = document.querySelector('#town-topic .town-metric-primary [data-demographic-town-gender]')?.value
+        || metric.meta.defaultGender || '';
+      return age && gender ? `${age}|${gender}` : '';
+    }
+    return document.querySelector('#town-topic .town-metric-primary select[data-composite-choice]')?.value || '';
+  }
+
+  function syncA5MunicipalCurrentChoice(container, metric) {
+    if (!isA5MunicipalRolloutTownPage() || !container?.closest('[data-view-pane="current"]')) return '';
+    const choice = a5MunicipalCompositeChoice(metric);
+    if (choice) {
+      container.dataset.compositeChoice = choice;
+      if (!container.dataset.compositeScale) container.dataset.compositeScale = 'value';
+    }
+    return choice;
+  }
+
+  function deriveA5MunicipalSelectionMetric(metric, choice) {
+    if (!metric || !choice) return null;
+    const probe = { dataset:{ compositeChoice:choice, compositeScale:'value' } };
+    const rows = (metric.rows || []).map(row => {
+      const selected = compositeSelectionFor(probe, metric, row);
+      if (!selected) return { ...row };
+      return { ...row, value:selected.value, formatted:'', series:selected.part?.series || row.series };
+    });
+    const firstSource = (metric.rows || []).find(row => compositeSelectionFor(probe, metric, row));
+    const firstSelected = firstSource ? compositeSelectionFor(probe, metric, firstSource) : null;
+    const aggregate = compositeAggregateFor(probe, metric);
+    const unit = firstSelected?.unit || aggregate?.unit || metric.meta.unit;
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{ ...metric.meta, unit, compositeType:null },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregate?.value,
+        label:aggregate?.label || metric.aggregate?.label,
+        note:metric.aggregate?.note
+      }
+    };
+  }
+
+  function normalizeA5MunicipalSelectorCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || !['demographicBreakdown','agricultureProfile'].includes(metric.meta?.compositeType)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!pane || typeof shared !== 'function') return;
+    const choice = a5MunicipalCompositeChoice(metric);
+    if (!choice || (pane.dataset.a5SelectorChoice === choice && pane.querySelector('.comparison-bars'))) return;
+    const derived = deriveA5MunicipalSelectionMetric(metric, choice);
+    if (!derived) return;
+    pane.innerHTML = shared(data, metricKey, { selectedTown:activeA5MunicipalTownSlug(), metric:derived });
+    pane.dataset.a5SelectorChoice = choice;
+    const bars = pane.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+  }
+
+
+  function parseItalianDisplayedNumber(text) {
+    const raw = String(text || '').replace(/\u00a0/g,' ').trim();
+    const match = raw.match(/-?[\d.]+(?:,\d+)?/);
+    if (!match) return null;
+    const value = Number(match[0].replaceAll('.','').replace(',','.'));
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function normalizeA5MunicipalClimateCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    if (!A5_CLIMATE_CURRENT_KEYS.has(metricKey)) return;
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart [data-ov-climate-pane="current"]');
+    if (!pane) return;
+    if (pane.dataset.a5ClimateCurrent === 'lollipop' && pane.querySelector('.comparison-bars[data-a5-climate-current="true"]')) return;
+
+    const sourceRows = [...pane.querySelectorAll('.ov-climate-current-row')];
+    if (sourceRows.length !== 7) return;
+    const unit = metricKey === 'climatePrecipitationTrend50y' ? 'mm' : '°C';
+    const items = sourceRows.map(row => {
+      const town = row.querySelector('.town')?.textContent?.trim() || '';
+      const formatted = row.querySelector(':scope > strong')?.textContent?.trim() || '';
+      return {
+        town,
+        value:parseItalianDisplayedNumber(formatted),
+        formatted,
+        href:row.getAttribute('href') || '#',
+        selected:row.classList.contains('selected')
+      };
+    }).filter(item => item.town && item.value !== null);
+    if (items.length !== 7) return;
+    items.sort((a,b) => b.value - a.value || a.town.localeCompare(b.town,'it'));
+
+    const topic = document.createElement('div');
+    topic.className = 'topic-bars a5-climate-current-topic-bars';
+    const bars = document.createElement('div');
+    bars.className = 'comparison-bars';
+    bars.dataset.a5ClimateCurrent = 'true';
+    items.forEach((item,index) => {
+      const row = document.createElement('a');
+      row.className = `bar-row${item.selected ? ' selected' : ''}`;
+      row.href = item.href;
+      row.dataset.vizValue = String(item.value);
+      row.dataset.vizUnit = unit;
+      row.setAttribute('aria-label', `${item.town}: ${item.formatted}`);
+
+      const rank = document.createElement('span');
+      rank.className = 'bar-rank';
+      rank.textContent = String(index + 1);
+      const town = document.createElement('span');
+      town.className = 'bar-town';
+      town.textContent = item.town;
+      const track = document.createElement('span');
+      track.className = 'bar-track';
+      const fill = document.createElement('span');
+      fill.className = 'bar-fill';
+      fill.style.width = '1.5%';
+      track.append(fill);
+      const strong = document.createElement('strong');
+      strong.textContent = item.formatted;
+
+      row.append(rank,town,track,strong);
+      bars.append(row);
+    });
+    topic.append(bars);
+    pane.replaceChildren(topic);
+    pane.dataset.a5ClimateCurrent = 'lollipop';
+  }
+
+  function normalizeA5MunicipalLibraryCurrent() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    if (!A5_LIBRARY_CURRENT_KEYS.has(metricKey)) return;
+    const metric = data?.metrics?.[metricKey];
+    const pane = document.querySelector('#town-topic .history-panel.a5-shared-chart .ux-view-shell [data-view-pane="current"]');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    if (!metric || !pane || typeof shared !== 'function' || !pane.querySelector('.ux-comparison-bars')) return;
+    const current = shared(data, metricKey, {
+      selectedTown:activeA5MunicipalTownSlug(),
+      metric:{ ...metric, meta:{ ...metric.meta, compositeType:null } }
+    });
+    /* Preserve the v1.21 browser contract (.ux-comparison-bars) while replacing
+       only its visual renderer with the canonical A5 lollipop. */
+    pane.innerHTML = `<div class="ux-comparison-bars a5-library-current-host">${current}</div>`;
+    pane.dataset.a5LibraryCurrent = 'lollipop';
+  }
+
+  function financialA5MunicipalMetric(metric, index) {
+    const aggregatePart = metric?.aggregate?.parts?.[index] || {};
+    const rawUnit = aggregatePart.unit || metric.meta.unit;
+    const unit = rawUnit === 'percent2' ? '%' : rawUnit;
+    const rows = (metric?.rows || []).map(row => {
+      const part = row.parts?.[index] || {};
+      return { ...row, value:part.value, formatted:'', series:part.series || null };
+    });
+    return {
+      ...metric,
+      key:metric.meta?.key || metric.key,
+      meta:{
+        ...metric.meta,
+        label:aggregatePart.label || metric.meta.label,
+        unit,
+        compositeType:null
+      },
+      rows,
+      aggregate:{
+        ...(metric.aggregate || {}),
+        value:aggregatePart.value,
+        label:`Versilia · ${aggregatePart.label || metric.meta.label}`,
+        series:aggregatePart.series || null
+      }
+    };
+  }
+
+  function financialA5MunicipalEvidenceMarkup(metric, index, townSlug, escape) {
+    const row=(metric?.rows || []).find(item => (item.slug || '') === townSlug);
+    const part=row?.parts?.[index] || {};
+    const provenance=part.provenance
+      ? `<p class="aggregate-note financial-provenance-note"><b>Origine del dato:</b> ${escape(part.provenance)}</p>`
+      : '';
+    const context=index === 0 && row?.contextNote
+      ? `<p class="aggregate-note financial-context-note"><b>Nota di lettura:</b> ${escape(row.contextNote)}</p>`
+      : '';
+    return provenance + context;
+  }
+
+  function normalizeA5MunicipalFinancialProfile() {
+    if (!isA5MunicipalRolloutTownPage()) return;
+    const metricKey = activeA5MunicipalMetricKey();
+    const metric = data?.metrics?.[metricKey];
+    if (!metric || metric.meta?.compositeType !== 'financialProfile') return;
+    const panel = document.querySelector('#town-topic > .history-panel.a5-shared-chart');
+    const shared = window.OVSharedRenderers?.comparisonTopicMarkup;
+    const toolkit = window.OVUXHistory;
+    if (!panel || typeof shared !== 'function' || !toolkit) return;
+
+    const choice = a5MunicipalCompositeChoice(metric) || 'part-0';
+    const index = Math.max(0, Number(String(choice).replace('part-','')) || 0);
+    const derived = financialA5MunicipalMetric(metric, index);
+    const townSlug = activeA5MunicipalTownSlug();
+    const currentMarkup = shared(data, metricKey, { selectedTown:townSlug, metric:derived });
+    const series = toolkit.comparableSeries(derived);
+    const historyMarkup = toolkit.historicalChartMarkup(derived, series, townSlug)
+      + financialA5MunicipalEvidenceMarkup(metric, index, townSlug, toolkit.escapeHtml);
+    const historyAvailable = Boolean(series);
+    let shell = panel.querySelector(':scope > .ux-view-shell');
+
+    if (!shell) {
+      const title = panel.querySelector(':scope > .panel-title')?.outerHTML || '';
+      panel.innerHTML = `${title}${toolkit.viewShellMarkup(
+        currentMarkup,
+        historyMarkup,
+        historyAvailable,
+        historyAvailable
+          ? 'Lo storico usa la stessa lettura selezionata e conserva i valori ufficiali annuali dei sette Comuni.'
+          : 'Per questa lettura non sono disponibili almeno due annualità omogenee per tutti i Comuni.'
+      )}`;
+      shell = panel.querySelector(':scope > .ux-view-shell');
+      if (!shell) return;
+      shell.dataset.a5FinancialChoice = choice;
+      toolkit.wireViewShell(shell, 'ov-town-view', historyAvailable);
+      toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
+      const bars = shell.querySelector('[data-view-pane="current"] .comparison-bars');
+      if (bars) {
+        bars.dataset.compositeChoice = choice;
+        bars.dataset.compositeScale = 'value';
+      }
+      return;
+    }
+
+    if (shell.dataset.a5FinancialChoice === choice) return;
+    const currentPane = shell.querySelector('[data-view-pane="current"]');
+    const historyPane = shell.querySelector('[data-view-pane="history"]');
+    if (currentPane) currentPane.innerHTML = currentMarkup;
+    if (historyPane) historyPane.innerHTML = historyMarkup;
+    shell.dataset.a5FinancialChoice = choice;
+    const historyButton = shell.querySelector('[data-view-mode="history"]');
+    if (historyButton) historyButton.disabled = !historyAvailable;
+    const bars = currentPane?.querySelector('.comparison-bars');
+    if (bars) {
+      bars.dataset.compositeChoice = choice;
+      bars.dataset.compositeScale = 'value';
+    }
+    toolkit.wireHistorySelection(shell, activeA5MunicipalTownSlug(), false);
   }
 
   function enhanceComparison(container) {
@@ -486,29 +788,48 @@
     if (!metric) return;
 
     const normalized = normalizedFor(container);
-    const compositeAggregate = compositeAggregateFor(container, metric);
-    const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const rows = [...container.querySelectorAll(':scope > .bar-row')];
     if (!rows.length) return;
 
+    const renderedTownCurrent = document.body.dataset.page === 'town'
+      && A5_MUNICIPAL_ROLLOUT_TOWNS.has(document.body.dataset.town || '')
+      && Boolean(container.closest('[data-view-pane="current"], [data-ov-climate-pane="current"]'))
+      && rows.every(rowEl => rowEl.hasAttribute('data-viz-value') && rowEl.hasAttribute('data-viz-unit'));
+
+    if (renderedTownCurrent) syncA5MunicipalCurrentChoice(container, metric);
+    const compositeAggregate = compositeAggregateFor(container, metric);
+    const aggregate = compositeAggregate || aggregateFor(metric, normalized);
     const mapped = rows.map(rowEl => {
       const townName = rowEl.querySelector('.bar-town')?.textContent?.trim();
       const row = townRow(metric, townName);
+      if (renderedTownCurrent) {
+        const liveSelected = compositeSelectionFor(container, metric, row);
+        if (liveSelected) return { rowEl, row, value:liveSelected.value, unit:liveSelected.unit || null };
+        return { rowEl, row, value:finite(rowEl.dataset.vizValue), unit:rowEl.dataset.vizUnit || null };
+      }
       const selected = compositeSelectionFor(container, metric, row);
       return { rowEl, row, value: selected ? selected.value : valueFor(row, metric, normalized), unit:selected?.unit || null };
     });
     const first = mapped.find(item => item.row);
     const firstRow = first?.row;
-    const unit = first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized);
+    const renderedUnit = renderedTownCurrent ? (mapped.find(item => item.unit)?.unit || '') : '';
+    const renderedValues = renderedTownCurrent ? mapped.map(item => finite(item.value)).filter(value => value !== null) : [];
+    const effectiveAggregate = renderedTownCurrent
+      ? (compositeAggregate || { value:renderedValues.length ? renderedValues.reduce((sum,value)=>sum+value,0)/renderedValues.length : null, label:`Media semplice dei ${renderedValues.length} comuni`, unit:renderedUnit })
+      : aggregate;
+    const unit = renderedTownCurrent ? (renderedUnit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized)) : (first?.unit || compositeAggregate?.unit || unitFor(firstRow, metric, normalized));
     const scale = scaleFor(mapped.map(item => item.value), aggregate?.value, unit);
-    const referencePosition = position(aggregate?.value, scale);
-    const zeroPosition = position(0, scale) ?? 0;
-    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', aggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
+    const displayScale = renderedTownCurrent ? scaleFor(mapped.map(item => item.value), effectiveAggregate?.value, unit) : scale;
+    const referencePosition = position(effectiveAggregate?.value, displayScale);
+    const zeroPosition = position(0, displayScale) ?? 0;
+    container.dataset.visualContract = renderedTownCurrent ? 'rendered' : 'canonical';
+    container.dataset.visualUnit = unit || '';
+    const signature = [metricKey, normalized ? 'n' : 'r', container.dataset.compositeChoice || '', container.dataset.compositeScale || '', effectiveAggregate?.value, unit, ...mapped.map(item => item.value)].join('|');
     const toolbarLegendHost = container.closest('.selectable-topic-bars')?.querySelector('.compare-chart-legend-host');
     const existingLegend = toolbarLegendHost?.querySelector('.comparison-legend') || container.querySelector(':scope > .comparison-legend');
     if (container.dataset.visualGrammarSignature === signature && existingLegend) return;
     container.dataset.visualGrammarSignature = signature;
-    container.dataset.viz = scale.kind === 'percent' ? 'percent-dotplot' : scale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
+    container.dataset.viz = displayScale.kind === 'percent' ? 'percent-dotplot' : displayScale.kind === 'signed' ? 'signed-dotplot' : 'lollipop';
 
     container.querySelector(':scope > .comparison-legend')?.remove();
     toolbarLegendHost?.querySelector('.comparison-legend')?.remove();
@@ -517,7 +838,7 @@
 
     const legend = document.createElement('div');
     legend.className = 'comparison-legend';
-    legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${aggregate?.label || 'Versilia'}</span>`;
+    legend.innerHTML = `<span><i class="comparison-legend-dot" aria-hidden="true"></i>Comune</span><span><i class="comparison-legend-reference" aria-hidden="true"></i>${effectiveAggregate?.label || 'Versilia'}</span>`;
     if (toolbarLegendHost) toolbarLegendHost.append(legend);
     else container.prepend(legend);
 
@@ -526,7 +847,7 @@
       rowEl.classList.add('comparison-row');
       const track = rowEl.querySelector('.bar-track');
       if (!track) return;
-      const x = position(value, scale);
+      const x = position(value, displayScale);
       if (x === null) {
         const missing = `<span class="comparison-missing">${row?.notApplicable ? 'Non applicabile' : 'Dato non disponibile'}</span>`;
         if (track.innerHTML !== missing) track.innerHTML = missing;
@@ -538,16 +859,28 @@
       const stemWidth = Math.abs(x - zeroPosition);
       const markup = `
         <span class="comparison-axis-line" aria-hidden="true"></span>
-        ${scale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
+        ${displayScale.kind === 'signed' ? `<span class="comparison-zero" style="left:${zeroPosition}%" aria-hidden="true"></span>` : ''}
         ${referencePosition !== null ? `<span class="comparison-reference" style="left:${referencePosition}%" aria-hidden="true"></span>` : ''}
         <span class="comparison-stem" style="left:${stemLeft}%;width:${stemWidth}%" aria-hidden="true"></span>
         <span class="comparison-dot" style="left:${x}%" aria-hidden="true"></span>`;
       track.innerHTML = markup;
       const hoverLabel = document.createElement('span');
       hoverLabel.className = 'bar-hover-label';
-      hoverLabel.textContent = `${row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune'} · ${formatAxis(value, unit)}`;
+      const townLabel = row?.town || rowEl.querySelector('.bar-town')?.textContent?.trim() || 'Comune';
+      const townValue = formatAxis(value, unit);
+      const sharedA5Chart = Boolean(container.closest('.a5-shared-chart'));
+      const showReferenceInTooltip = sharedA5Chart && effectiveAggregate?.value !== null && effectiveAggregate?.value !== undefined;
+      const referenceLabel = String(effectiveAggregate?.label || 'Versilia');
+      hoverLabel.textContent = showReferenceInTooltip
+        ? `${townLabel}: ${townValue} · ${referenceLabel}: ${formatAxis(effectiveAggregate.value, unit)}`
+        : `${townLabel} · ${townValue}`;
       track.append(hoverLabel);
-      if (row) rowEl.setAttribute('aria-label', `${row.town}: ${formatAxis(value, unit)}; ${aggregate?.label || 'Versilia'}: ${formatAxis(aggregate?.value, unit)}`);
+      if (row || renderedTownCurrent) {
+        const ariaTown = row?.town || townLabel;
+        const ariaReferenceLabel = renderedTownCurrent ? (effectiveAggregate?.label || 'Versilia') : (aggregate?.label || 'Versilia');
+        const ariaReferenceValue = renderedTownCurrent ? formatAxis(effectiveAggregate?.value, unit) : formatAxis(aggregate?.value, unit);
+        rowEl.setAttribute('aria-label', `${ariaTown}: ${formatAxis(value, unit)}; ${ariaReferenceLabel}: ${ariaReferenceValue}`);
+      }
     });
 
     const axis = document.createElement('div');
@@ -559,7 +892,16 @@
         : scale.kind === 'focused'
           ? 'scala adattata ai prezzi'
           : 'scala con origine a zero';
-    axis.innerHTML = `<span>${formatAxis(scale.min, unit)}</span><span>${scaleLabel}</span><span>${formatAxis(scale.max, unit)}</span>`;
+    const displayScaleLabel = renderedTownCurrent
+      ? (displayScale.kind === 'percent'
+          ? (displayScale.max === 100 ? 'scala 0–100%' : `scala 0–${formatAxis(displayScale.max, unit)}`)
+          : displayScale.kind === 'signed'
+            ? 'lo zero è evidenziato'
+            : displayScale.kind === 'focused'
+              ? 'scala adattata ai prezzi'
+              : 'scala con origine a zero')
+      : scaleLabel;
+    axis.innerHTML = `<span>${formatAxis(displayScale.min, unit)}</span><span>${displayScaleLabel}</span><span>${formatAxis(displayScale.max, unit)}</span>`;
     container.append(axis);
 
     const note = document.createElement('p');
@@ -595,19 +937,25 @@
       const metricKey = metricKeyFor(townLayout);
       const metric = data.metrics?.[metricKey];
       if (metric) {
-        const existing = townLayout.parentElement?.querySelector(':scope > .reading-scale');
+        const parent = townLayout.parentElement;
+        const sharedTools = parent?.querySelector(':scope > .town-post-benchmark-tools');
+        const existing = sharedTools?.querySelector(':scope > .reading-scale') || parent?.querySelector(':scope > .reading-scale');
         if (!existing || existing.dataset.readingMetric !== metricKey) {
           existing?.remove();
           const wrapper = document.createElement('div');
           wrapper.innerHTML = readingScaleMarkup(metricKey, metric);
-          const parent = townLayout.parentElement;
-          const actions = parent?.querySelector(':scope > .town-data-actions');
-          const method = parent?.querySelector(':scope > .method-disclosure');
-          const benchmark = parent?.querySelector(':scope > .town-benchmark');
-          if (actions) parent.insertBefore(wrapper.firstElementChild, actions);
-          else if (method) method.insertAdjacentElement('afterend', wrapper.firstElementChild);
-          else if (benchmark) benchmark.insertAdjacentElement('afterend', wrapper.firstElementChild);
-          else townLayout.insertAdjacentElement('afterend', wrapper.firstElementChild);
+          const block = wrapper.firstElementChild;
+          if (sharedTools) {
+            sharedTools.append(block);
+          } else {
+            const actions = parent?.querySelector(':scope > .town-data-actions');
+            const method = parent?.querySelector(':scope > .method-disclosure');
+            const benchmark = parent?.querySelector(':scope > .town-benchmark');
+            if (actions) parent.insertBefore(block, actions);
+            else if (method) method.insertAdjacentElement('afterend', block);
+            else if (benchmark) benchmark.insertAdjacentElement('afterend', block);
+            else townLayout.insertAdjacentElement('afterend', block);
+          }
         }
       }
     }
@@ -624,6 +972,7 @@
     if (!metric || !row) return;
     if (['maritimeConcessions','maritimeConcessionFeesDue','extractiveSites','extractivePlanning'].includes(metricKey)) return;
     if (['distribution','agricultureProfile','financialProfile'].includes(metric.meta?.compositeType)) return;
+    if (document.querySelector('main.a5-town-pilot') && ['stock','mobility','securityMeasures','demographicBreakdown','sexBreakdown'].includes(metric.meta?.compositeType)) return;
 
     const delta = deltaFor(metric, row, metricKey);
     const overlineText = delta.overline || 'Rispetto alla media Versilia';
@@ -749,6 +1098,10 @@
   function enhance() {
     scheduled = false;
     if (!data) return;
+    normalizeA5MunicipalFinancialProfile();
+    normalizeA5MunicipalSelectorCurrent();
+    normalizeA5MunicipalLibraryCurrent();
+    normalizeA5MunicipalClimateCurrent();
     document.querySelectorAll('.comparison-bars').forEach(enhanceComparison);
     enhanceReadingScales();
     enhanceTownPosition();
@@ -764,6 +1117,9 @@
 
   const observer = new MutationObserver(scheduleEnhance);
   observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'aria-selected'] });
+  window.addEventListener('ov:ux-history-enhanced', scheduleEnhance);
+  window.addEventListener('ov:compare-rendered', scheduleEnhance);
+  window.addEventListener('ov:composite-choice', scheduleEnhance);
 
   fetch(dataUrl, { cache: 'no-store' })
     .then(response => {

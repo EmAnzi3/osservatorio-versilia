@@ -91,29 +91,55 @@ def assert_reading_scale(page, expected: str) -> None:
 
 
 def assert_post_benchmark_tools(page, town: bool = False) -> None:
+    # A5 keeps benchmark + method/scale after the chart, while export actions
+    # live in the canonical chart toolbar. Do not enforce the pre-A5 sibling
+    # order benchmark -> method -> scale -> actions.
     selectors = {
-        "benchmark": "#town-topic > .town-benchmark" if town else "#compare-benchmark",
-        "method": "#town-topic > .method-disclosure" if town else "#compare-tools > .method-disclosure",
-        "scale": "#town-topic > .reading-scale" if town else "#compare-tools > .reading-scale",
-        "actions": "#town-topic > .town-data-actions" if town else "#compare-tools > .data-actions",
+        "benchmark_host": "#town-topic > .town-benchmark-host" if town else "#compare-benchmark",
+        "method": "#town-topic > .town-post-benchmark-tools > .method-disclosure" if town else "#compare-tools > .method-disclosure",
+        "scale": "#town-topic > .town-post-benchmark-tools > .reading-scale" if town else "#compare-tools > .reading-scale",
+        "actions": (
+            "#town-topic > .history-panel.a5-shared-chart > .ux-view-shell > .ux-view-toolbar > .a5-toolbar-actions, "
+            "#town-topic > .history-panel.a5-shared-chart > .ux-view-shell > .ux-view-toolbar > .town-data-actions"
+        ) if town else "#compare-bars > .ux-view-shell > .ux-view-toolbar > .data-actions",
     }
+    page.wait_for_selector(selectors["actions"], state="visible", timeout=10000)
     result = page.evaluate(
         """selectors => {
-          const nodes = Object.fromEntries(
-            Object.entries(selectors).map(([key, selector]) => [key, document.querySelector(selector)])
+          const benchmarkHost = document.querySelector(selectors.benchmark_host);
+          const method = document.querySelector(selectors.method);
+          const scale = document.querySelector(selectors.scale);
+          const actions = document.querySelector(selectors.actions);
+          const benchmarkContent = benchmarkHost?.querySelector('.benchmark-section, .benchmark-unavailable');
+          const follows = (a, b) => Boolean(
+            a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
           );
-          const order = ['benchmark', 'method', 'scale', 'actions'];
           return {
-            present: Object.fromEntries(Object.entries(nodes).map(([key, node]) => [key, Boolean(node)])),
-            ordered: order.slice(0, -1).every((key, index) =>
-              Boolean(nodes[key]?.compareDocumentPosition(nodes[order[index + 1]]) & Node.DOCUMENT_POSITION_FOLLOWING)
-            ),
+            present: {
+              benchmarkHost: Boolean(benchmarkHost),
+              method: Boolean(method),
+              scale: Boolean(scale),
+              actions: Boolean(actions),
+            },
+            benchmarkState: !benchmarkHost
+              ? 'missing-host'
+              : benchmarkContent
+                ? (benchmarkContent.classList.contains('benchmark-unavailable') ? 'unavailable' : 'available')
+                : 'empty-by-contract',
+            postOrder: follows(benchmarkHost, method) && follows(method, scale),
+            actionsInToolbar: Boolean(actions?.closest('.ux-view-toolbar')),
+            actionButtons: actions ? {
+              download: Boolean(actions.querySelector('[data-download]')),
+              print: Boolean(actions.querySelector('[data-print]')),
+            } : {download:false, print:false},
           };
         }""",
         selectors,
     )
-    assert all(result["present"].values()), f"Blocchi post-confronto mancanti: {result}"
-    assert result["ordered"], f"Ordine post-confronto errato: {result}"
+    assert all(result["present"].values()), f"Blocchi A5 benchmark/metodo/azioni mancanti: {result}"
+    assert result["postOrder"], f"Ordine benchmark -> metodo -> scala errato: {result}"
+    assert result["actionsInToolbar"], f"Azioni A5 fuori dalla toolbar canonica: {result}"
+    assert all(result["actionButtons"].values()), f"Azioni export incomplete: {result}"
 
 
 def assert_uniform_comparison_color(page, selector: str) -> None:
@@ -329,7 +355,7 @@ def browser_checks() -> None:
         page.goto(base + "comuni/massarosa/?tema=istruzione&indicatore=diplomaPlus", wait_until="networkidle")
         page.wait_for_selector(".versilia-position")
         overline_text = page.locator(".versilia-position .overline").inner_text().strip().lower()
-        assert overline_text == "rispetto alla media versilia", f"Etichetta inattesa: {overline_text!r}"
+        assert overline_text == "rispetto alla versilia", f"Etichetta inattesa: {overline_text!r}"
         position_text = page.locator(".versilia-position").inner_text().lower()
         assert "su 7" not in position_text
         assert "%" in position_text, "Scostamento percentuale privo del simbolo %"

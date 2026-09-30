@@ -28,7 +28,12 @@
       const href = route(`comuni/${rowSlug}/?${query}`);
       const missing = row.displayValue === null || row.displayValue === undefined;
       const formatted = formatMetricRowValue(row, row.displayValue, row.displayUnit);
-      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}" aria-label="${html(row.town)}: ${html(formatted)}">
+      const municipalVizTowns = new Set(['camaiore','pietrasanta','seravezza','forte-dei-marmi','stazzema','viareggio','massarosa']);
+      const activeMunicipalRollout = Boolean(document.querySelector('main.a5-municipal-rollout'));
+      const vizContract = activeMunicipalRollout && municipalVizTowns.has(selectedTown)
+        ? ` data-viz-value="${missing ? '' : html(String(row.displayValue))}" data-viz-unit="${html(row.displayUnit || '')}"`
+        : '';
+      return `<a href="${href}" class="bar-row ${rowSlug === selectedTown ? 'selected' : ''}"${vizContract} aria-label="${html(row.town)}: ${html(formatted)}">
         <span class="bar-rank">${missing ? '—' : index + 1}</span><span class="bar-town">${html(row.town)}</span>
         <span class="bar-track"><span class="bar-fill" style="width:${missing ? 0 : Math.max(1.5, (Number(row.displayValue) || 0) / max * 100)}%"></span>
           <span class="bar-hover-label">${html(row.town)} · ${html(formatted)}</span></span>
@@ -36,6 +41,17 @@
       </a>`;
     }).join('');
   }
+
+  function a5ComparisonTopicMarkup(data, metricKey, options = {}) {
+    const renderData = options.metric
+      ? { ...data, metrics:{ ...data.metrics, [metricKey]:options.metric } }
+      : data;
+    return `<div class="topic-bars"><div class="comparison-bars">${barRows(renderData, metricKey, options)}</div></div>`;
+  }
+
+  window.OVSharedRenderers = Object.assign(window.OVSharedRenderers || {}, {
+    comparisonTopicMarkup: a5ComparisonTopicMarkup
+  });
 
   function installTablist(root, onSelect) {
     if (!root) return;
@@ -154,6 +170,15 @@
         <a href="https://openbdap.rgs.mef.gov.it/" target="_blank" rel="noreferrer">BDAP <span>↗</span></a>
       </div></section>
     </main>`;
+
+    const townGrid = document.querySelector('.town-card-grid');
+    if (townGrid) {
+      [...townGrid.children]
+        .sort((a,b) => (a.querySelector('h3')?.textContent || '').localeCompare(
+          b.querySelector('h3')?.textContent || '', 'it'
+        ))
+        .forEach(card => townGrid.append(card));
+    }
 
     let selectedTheme = 'demografia';
     let selectedMetric = featuredMetrics(data.themes[selectedTheme])[0] || data.themes[selectedTheme].metrics[0];

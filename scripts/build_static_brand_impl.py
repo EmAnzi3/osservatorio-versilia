@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build di produzione con identità OV, PWA e Radar Opportunità pubblico."""
+"""Build di produzione con identitÃ  OV, PWA e Radar OpportunitÃ  pubblico."""
 from __future__ import annotations
 
 import json
@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 BRAND_ASSET_VERSION = "20260824-ov4"
-APP_BUNDLE_ASSET_VERSION = "20260903-v129-salute-finanziaria-selector"
+APP_BUNDLE_ASSET_VERSION = "20260926-a5-fuel-monthly-history"
 PWA_ASSET_VERSION = "20260824-pwa9"
 PWA_JS_REVISION = "catalog-v129"
 MOBILE_ACCORDION_ASSET_VERSION = "20260809-3"
@@ -32,7 +32,7 @@ def materialize_agricoltura_ii_release_if_needed() -> None:
     workflow = os.environ.get("GITHUB_WORKFLOW")
     force_release = os.environ.get("OV_RELEASE_BUILD") == "1"
 
-    # build_static_brand.py è il builder di produzione: il preflight locale e
+    # build_static_brand.py Ã¨ il builder di produzione: il preflight locale e
     # il workflow Pages devono produrre lo stesso dist/. Gli altri workflow CI
     # conservano il proprio baseline salvo opt-in esplicito.
     if not force_release and workflow and workflow != "Deploy GitHub Pages":
@@ -216,7 +216,7 @@ def apply_brand_and_pwa() -> None:
         raise RuntimeError(f"Nuovo marchio assente in {len(missing_mark)} pagine")
 
     if OLD_MARK in bundle_path.read_text(encoding="utf-8"):
-        raise RuntimeError("Il vecchio marchio O è ancora presente nell'app bundle")
+        raise RuntimeError("Il vecchio marchio O Ã¨ ancora presente nell'app bundle")
 
     for relative in (*PWA_FILES, *(f"pwa/{name}" for name in PWA_ICONS)):
         path = DIST / relative
@@ -252,7 +252,7 @@ def select_opportunity_public_payload() -> Path:
 if __name__ == "__main__":
     materialize_agricoltura_ii_release_if_needed()
 
-    # La build non materializza n� riscrive data/opportunity-release.json: il baseline
+    # La build non materializza nã© riscrive data/opportunity-release.json: il baseline
     # resta canonico e immutabile; il daily verificato viene selezionato solo per dist.
     runpy.run_path(str(ROOT / "scripts" / "materialize_opportunity_public_shell.py"), run_name="__main__")
     runpy.run_path(str(ROOT / "scripts" / "materialize_percorsi_touch_release.py"), run_name="__main__")
@@ -260,7 +260,7 @@ if __name__ == "__main__":
 
     runpy.run_path(str(ROOT / "scripts" / "build_static_safe.py"), run_name="__main__")
 
-    # Import dopo la materializazione: il contratto di shell è quello pubblico.
+    # Import dopo la materializazione: il contratto di shell Ã¨ quello pubblico.
     from site_chrome import synchronize_native_page
 
     synchronize_native_page(DIST, DIST / "confronta" / "meteo-clima" / "index.html")
@@ -270,4 +270,4 @@ if __name__ == "__main__":
     opportunity_payload = select_opportunity_public_payload()
     build_opportunity_release(opportunity_payload, DIST)
     apply_brand_and_pwa()
-    print(f"Build statica completata con identità OV, PWA e Radar da {opportunity_payload.name}.")
+    print(f"Build statica completata con identitÃ  OV, PWA e Radar da {opportunity_payload.name}.")

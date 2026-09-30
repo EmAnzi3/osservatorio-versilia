@@ -117,7 +117,7 @@ def check_age_town(page, base: str) -> None:
     page.wait_for_function(
         "() => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === 'part-2'"
     )
-    require(page.locator('[data-view-pane="current"] .ux-bar-row').count() == 7, "Età personale: ranking comunale non 7/7")
+    require(page.locator('[data-view-pane="current"] .bar-row').count() == 7, "Età personale: ranking comunale non 7/7")
     no_overflow(page, "massarosa/eta-personale")
 
 
@@ -137,7 +137,7 @@ def check_training_town(page, base: str) -> None:
     page.wait_for_function(
         "() => document.querySelector('[data-view-pane=\"current\"]')?.dataset.compositeChoice === 'part-1'"
     )
-    require(page.locator('[data-view-pane="current"] .ux-bar-row').count() == 7, "Formazione: ranking comunale non 7/7")
+    require(page.locator('[data-view-pane="current"] .bar-row').count() == 7, "Formazione: ranking comunale non 7/7")
     no_overflow(page, "massarosa/formazione")
 
 

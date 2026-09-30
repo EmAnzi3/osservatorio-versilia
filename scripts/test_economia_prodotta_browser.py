@@ -76,12 +76,24 @@ def nice_outer_bound(value):
     return stop * magnitude
 
 
-def assert_chart_recomputed(actual, expected, aggregate_value):
-    assert [(row["town"], row["value"]) for row in actual] == [
-        (row["town"], row["value"]) for row in expected
-    ], "Valori o ordinamento non ricalcolati dal renderer canonico"
-    maximum = nice_outer_bound(max(max(row["raw"] for row in expected), aggregate_value) * 1.06)
-    expected_reference = aggregate_value / maximum * 100
+def normalize_display_text(value):
+    return " ".join(str(value).replace("\u00a0", " ").replace("\u202f", " ").split())
+
+
+def simple_mean_reference(expected):
+    values = [row["raw"] for row in expected]
+    return sum(values) / len(values)
+
+
+def assert_chart_recomputed(actual, expected, reference_value):
+    assert [row["town"] for row in actual] == [
+        row["town"] for row in expected
+    ], "Ordine non ricalcolato dal renderer canonico"
+    assert [normalize_display_text(row["value"]) for row in actual] == [
+        normalize_display_text(row["value"]) for row in expected
+    ], "Valori visualizzati non ricalcolati dal renderer canonico"
+    maximum = nice_outer_bound(max(max(row["raw"] for row in expected), reference_value) * 1.06)
+    expected_reference = reference_value / maximum * 100
     for row, expected_row in zip(actual, expected, strict=True):
         expected_width = expected_row["raw"] / maximum * 100
         assert abs(row["width"] - expected_width) < 0.15, (
@@ -174,24 +186,30 @@ def main() -> int:
         page.get_by_role("heading", name="Massarosa", exact=True).wait_for(timeout=10_000)
         assert page.get_by_text("Economia prodotta", exact=True).count() >= 1
         assert page.locator("#town-topic > .economic-scope-control").count() == 0
-        assert page.locator("#town-topic .history-panel .economic-scope-control").count() == 1, "Selettore assente dal grafico comunale"
-        assert page.locator("#town-topic .history-panel select[data-economic-scope]").input_value() == "total"
+        assert page.locator("#town-topic .town-metric-primary > .economic-scope-control").count() == 1, "Selettore Frame assente dalla card principale comunale"
+        assert page.locator("#town-topic .town-metric-primary select[data-economic-scope]").input_value() == "total"
         page.locator('#town-topic .history-panel [data-view-mode="history"]').click()
         page.wait_for_timeout(250)
         total_history = page.locator('#town-topic .history-panel [data-view-pane="history"] svg').inner_html()
         page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
         town_total = page.locator("#town-topic .town-metric-primary > strong").inner_text()
-        assert page.locator("main.town-profile .town-benchmark").count() == 1
-        page.locator('#town-topic .history-panel select[data-economic-scope]').select_option("industry")
+        town_total_expected = expected_scope_rows(productivity_metric, "total")
+        town_total_state = chart_state(page)
+        assert_chart_recomputed(town_total_state, town_total_expected, simple_mean_reference(town_total_expected))
+        benchmark_host = page.locator("#town-topic > .town-benchmark-host")
+        assert benchmark_host.count() == 1, "Host benchmark A5 assente nel perimetro Totale"
+        assert benchmark_host.locator(":scope > .benchmark-section").count() == 1, "Benchmark condiviso A5 non renderizzato nel perimetro Totale"
+        assert "Toscana" in benchmark_host.inner_text(), "Benchmark Toscana assente nel perimetro Totale"
+        page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("industry")
         page.wait_for_timeout(500)
         town_industry = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_total != town_industry, "Il perimetro Industria non aggiorna il valore comunale"
         assert "perimetro=industry" in page.url
-        assert page.locator("main.town-profile .town-benchmark").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
-        assert page.locator("#town-topic .history-panel .economic-scope-control").count() == 1, "ux-history ha rimosso il selettore Frame"
+        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile in Industria"
+        assert page.locator("#town-topic .town-metric-primary > .economic-scope-control").count() == 1, "Cambio vista ha rimosso il selettore Frame dalla card principale"
         industry_expected = expected_scope_rows(productivity_metric, "industry")
-        current_order = page.locator('#town-topic .history-panel [data-view-pane="current"] .ux-bar-town').all_text_contents()
-        assert current_order == [row["town"] for row in industry_expected], "Ordine comunale Industria non ricalcolato"
+        town_industry_state = chart_state(page)
+        assert_chart_recomputed(town_industry_state, industry_expected, simple_mean_reference(industry_expected))
         versilia_position_text = page.locator("#town-topic .versilia-position").inner_text().replace("\xa0", " ")
         assert productivity_metric["aggregate"]["economicScopes"]["industry"]["formatted"] in versilia_position_text, "Media Versilia Industria non ricalcolata"
         page.locator('#town-topic .history-panel [data-view-mode="history"]').click()
@@ -199,14 +217,18 @@ def main() -> int:
         assert page.locator('#town-topic .history-panel [data-view-pane="history"] .ux-history-card').count() == 1, "Storico comunale Frame non renderizzato"
         industry_history = page.locator('#town-topic .history-panel [data-view-pane="history"] svg').inner_html()
         assert total_history != industry_history, "Lo storico non è stato ricalcolato sul perimetro Industria"
-        assert page.locator('#town-topic .history-panel select[data-economic-scope]').input_value() == "industry", "Perimetro Industria perso nello storico"
+        assert page.locator('#town-topic .town-metric-primary select[data-economic-scope]').input_value() == "industry", "Perimetro Industria perso nello storico"
         page.locator('#town-topic .history-panel [data-view-mode="current"]').click()
         page.wait_for_timeout(200)
         page.screenshot(path=str(shots / "economia-prodotta-massarosa-industria-desktop.png"), full_page=True)
-        page.locator('#town-topic .history-panel select[data-economic-scope]').select_option("services")
+        page.locator('#town-topic .town-metric-primary select[data-economic-scope]').select_option("services")
         page.wait_for_timeout(500)
         town_services = page.locator("#town-topic .town-metric-primary > strong").inner_text()
         assert town_services not in (town_total, town_industry)
+        town_services_expected = expected_scope_rows(productivity_metric, "services")
+        town_services_state = chart_state(page)
+        assert_chart_recomputed(town_services_state, town_services_expected, simple_mean_reference(town_services_expected))
+        assert page.locator("#town-topic > .town-benchmark-host").count() == 0, "Benchmark Toscana/Italia visibile nei Servizi"
         report["checks"].append({
             "townScopePlacement": "pass",
             "townTotal": town_total,

@@ -38,7 +38,9 @@ def padded(page: Page, selector: str, label: str) -> None:
 
 
 def check_tooltip(page: Page, root: str, unit: str, label: str) -> None:
-    point = page.locator(f"{root} .chart-point").last
+    points = page.locator(f"{root} .chart-point:not(.is-tooltip-disabled)")
+    assert points.count() > 0, f"{label}: nessun punto storico interattivo"
+    point = points.last
     point.focus()
     tooltip = point.locator(".chart-tooltip:not([hidden])")
     tooltip.wait_for()
@@ -51,22 +53,37 @@ def check_compare(page: Page, base: str) -> None:
     selector.wait_for()
     assert selector.locator("option").all_inner_texts() == [item[2] for item in READINGS]
     for choice, code, title, unit in READINGS:
-        selector.select_option(choice)
         selector = page.locator("#compare-bars select[data-composite-component]")
+        selector.select_option(choice)
+        page.wait_for_function(
+            """choice => document.querySelector('#compare-bars .ux-view-shell')?.dataset.financialChoice === choice""",
+            arg=choice,
+        )
         definition = page.locator("#compare-definition")
         assert code in definition.inner_text() and title in definition.inner_text()
         assert unit in definition.inner_text() and VERSILIA_2025[choice] in definition.inner_text()
-        assert page.locator("#compare-bars .bar-row").count() == 7
-        history = page.locator("#compare-bars .financial-aggregate-history")
-        assert "2019" in history.inner_text() and "2025" in history.inner_text()
-        assert unit in history.inner_text()
+        current = page.locator('#compare-bars [data-view-pane="current"]')
+        assert current.locator(".bar-row").count() == 7
+
+        history_button = page.locator('#compare-bars [data-view-mode="history"]')
+        assert history_button.count() == 1 and not history_button.is_disabled()
+        history_button.click()
+        history = page.locator('#compare-bars [data-view-pane="history"] .ux-history-card')
+        history.wait_for()
+        history_text = history.inner_text()
+        assert "2019" in history_text and "2025" in history_text
+        assert unit in history_text
+        check_tooltip(page, '#compare-bars [data-view-pane="history"]', unit, f"confronto {code}")
         assert code in page.locator("#compare-tools .financial-method-disclosure").text_content()
-        check_tooltip(page, "#compare-bars .financial-aggregate-history", unit, f"confronto {code}")
+
+        current_button = page.locator('#compare-bars [data-view-mode="current"]')
+        current_button.click()
+        current.wait_for()
+
     padded(page, "#compare-definition .financial-definition", "definizione confronto")
-    padded(page, "#compare-bars .financial-aggregate-history", "storico Versilia")
+    padded(page, '#compare-bars [data-view-pane="history"] .ux-history-card', "storico confronto")
     no_internal_units(page, "confronto")
     no_overflow(page, "confronto")
-
 
 def check_indicator(page: Page, base: str) -> None:
     page.goto(
@@ -103,6 +120,10 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
     assert selector.locator("option").all_inner_texts() == [item[2] for item in READINGS]
     for choice, code, title, unit in READINGS:
         selector.select_option(choice)
+        page.wait_for_function(
+            """choice => document.querySelector('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')?.dataset.a5FinancialChoice === choice""",
+            arg=choice,
+        )
         value = page.locator("#town-topic [data-composite-primary-value]").inner_text()
         assert expected[choice] in value and unit in value
         rendered_title = page.locator("#town-topic [data-composite-primary-label]").inner_text()
@@ -110,15 +131,38 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
             f"{slug} {code}: etichetta inattesa {rendered_title!r}"
         )
         assert code in page.locator("#town-topic [data-financial-panel-overline]").inner_text()
-        history = page.locator("#town-topic [data-financial-profile-history]")
+
+        history_button = page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-mode="history"]'
+        )
+        assert history_button.count() == 1 and not history_button.is_disabled()
+        history_button.click()
+        history_selector = (
+            '#town-topic .history-panel.a5-shared-chart '
+            '[data-view-pane="history"]'
+        )
+        history = page.locator(history_selector)
+        history.wait_for()
         assert "2019" in history.inner_text() and "2025" in history.inner_text()
         assert unit in history.inner_text()
+        check_tooltip(page, history_selector, unit, f"{slug} {code}")
+
         method = page.locator("#town-topic [data-financial-profile-method]").text_content()
         assert code in method and unit in method
-        check_tooltip(page, "#town-topic [data-financial-profile-history]", unit, f"{slug} {code}")
+
+        current_button = page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-mode="current"]'
+        )
+        current_button.click()
+        page.locator(
+            '#town-topic .history-panel.a5-shared-chart [data-view-pane="current"]'
+        ).wait_for()
     town_text = page.locator("#town-topic").text_content()
     if slug == "massarosa":
         selector.select_option("part-0")
+        page.wait_for_function(
+            """() => document.querySelector('#town-topic .history-panel.a5-shared-chart > .ux-view-shell')?.dataset.a5FinancialChoice === 'part-0'"""
+        )
         town_text = page.locator("#town-topic").text_content()
         assert "OSL" in town_text and "intero insieme delle passività" in town_text
     elif slug == "forte-dei-marmi":
@@ -126,7 +170,11 @@ def check_town(page: Page, base: str, slug: str, expected: dict[str, str]) -> No
     elif slug == "camaiore":
         assert "9,64" in town_text and "10,82" in town_text
     padded(page, "#town-topic .town-metric-primary", f"card {slug}")
-    padded(page, "#town-topic .financial-profile-history", f"storico {slug}")
+    padded(
+        page,
+        '#town-topic .history-panel.a5-shared-chart [data-view-pane="history"] .ux-history-card',
+        f"storico {slug}",
+    )
     no_internal_units(page, slug)
     no_overflow(page, slug)
 

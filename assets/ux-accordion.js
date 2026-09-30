@@ -140,9 +140,6 @@
     if (container.dataset.uxAccordionReady !== 'true') {
       groups.forEach(group => setOpen(group, mobile || compact ? group === activeGroup : true));
       container.dataset.uxAccordionReady = 'true';
-    } else if (activeGroup && !activeGroup.classList.contains('is-open')) {
-      if (mobile) groups.forEach(group => setOpen(group, group === activeGroup));
-      else setOpen(activeGroup, true);
     }
   }
 

@@ -353,6 +353,31 @@
       "path": ".github/workflows/a3-enrichment-audit.yml",
       "category": "specialized-gate",
       "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-change-scope.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-municipal-golden-lock.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-thematic-golden-lock.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-camaiore-rollout.yml",
+      "category": "specialized-gate",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/a5-municipal-rollout-cohort.yml",
+      "category": "specialized-gate",
+      "status": "active"
     }
   ]
 }

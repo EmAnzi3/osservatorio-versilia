@@ -17,6 +17,7 @@ import audit_fuel_prices_mimit as audit
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "site-data.json"
 SNAPSHOT = ROOT / "data" / "source-snapshots" / "costi-fiscalita-validated-2026-08.json"
+HISTORY = ROOT / "data" / "source-snapshots" / "fuel-history-mimit.json"
 METRIC_KEY = "fuelPrices"
 
 MONTHS = {
@@ -127,7 +128,22 @@ def mean(values: list[float | None]) -> float | None:
     return statistics.fmean(valid) if valid else None
 
 
-def update_metric(data: dict[str, Any], fuel: dict[str, Any]) -> None:
+def update_history(history: dict[str, Any], fuel: dict[str, Any]) -> dict[str, Any]:
+    points = [item for item in history.get("points", []) if isinstance(item, dict)]
+    by_date = {str(item.get("referenceDate")): item for item in points if item.get("referenceDate")}
+    by_date[str(fuel["referenceDate"])] = {
+        "referenceDate": str(fuel["referenceDate"]),
+        "towns": fuel["towns"],
+    }
+    history["schemaVersion"] = 1
+    history["source"] = fuel["source"]
+    history["statistic"] = fuel["statistic"]
+    history.setdefault("provenance", "Snapshot MIMIT validati e versionati dall’Osservatorio.")
+    history["points"] = [by_date[key] for key in sorted(by_date)]
+    return history
+
+
+def update_metric(data: dict[str, Any], fuel: dict[str, Any], history: dict[str, Any]) -> None:
     metric = data.get("metrics", {}).get(METRIC_KEY)
     if not isinstance(metric, dict):
         raise RuntimeError(f"indicatore {METRIC_KEY} non trovato")
@@ -150,15 +166,19 @@ def update_metric(data: dict[str, Any], fuel: dict[str, Any]) -> None:
         gasolio = values["gasolio"]
         row["value"] = benzina
         row["benchmarkValue"] = benzina
-        row["series"] = {"years": [reference_date], "values": [benzina]}
+        history_points = history.get("points", [])
+        years = [str(point["referenceDate"]) for point in history_points]
+        benzina_series = [point.get("towns", {}).get(town, {}).get("benzina") for point in history_points]
+        gasolio_series = [point.get("towns", {}).get(town, {}).get("gasolio") for point in history_points]
+        row["series"] = {"years": years, "values": benzina_series}
         row["stationCount"] = int(values["stations"])
         row["parts"] = [
             {"label": "Benzina self", "selectorLabel": "Benzina self", "value": benzina, "unit": "eurliter"},
             {"label": "Gasolio self", "selectorLabel": "Gasolio self", "value": gasolio, "unit": "eurliter"},
         ]
         row["componentSeries"] = {
-            "Benzina self": {"years": [reference_date], "values": [benzina]},
-            "Gasolio self": {"years": [reference_date], "values": [gasolio]},
+            "Benzina self": {"years": years, "values": benzina_series},
+            "Gasolio self": {"years": years, "values": gasolio_series},
         }
 
     benzina_values = [fuel["towns"][town]["benzina"] for town in audit.TOWNS]
@@ -176,17 +196,21 @@ def update_metric(data: dict[str, Any], fuel: dict[str, Any]) -> None:
 
     method = metric.setdefault("method", {})
     method["coverage"] = str(fuel["coverage"])
-    method["caveat"] = f"Fotografia del {human_date(reference_date)}; Stazzema non ha impianti attivi nel dataset."
+    first_history = history.get("points", [{}])[0].get("referenceDate", reference_date)
+    method["caveat"] = f"Ultima fotografia: {human_date(reference_date)}. Serie validata dal {human_date(str(first_history))}; Stazzema non ha impianti attivi nel dataset."
 
 
 def main() -> int:
     current = collect()
     data = load(DATA)
     validated = load(SNAPSHOT)
+    history = load(HISTORY) if HISTORY.exists() else {"schemaVersion": 1, "points": []}
     previous = str(validated.get("fuel", {}).get("referenceDate") or "")
     validated["fuel"] = current
-    update_metric(data, current)
+    history = update_history(history, current)
+    update_metric(data, current, history)
     save(SNAPSHOT, validated)
+    save(HISTORY, history)
     save(DATA, data)
     print(json.dumps({
         "status": "updated" if previous != current["referenceDate"] else "refreshed_same_period",
