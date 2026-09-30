@@ -1732,6 +1732,11 @@ for metric_id, dimensions in {
                 "evidence": "Il file ufficiale 'Foreste in Comune - tutti i dati dei Comuni' copre l'intero perimetro nazionale con la stessa definizione TUFF e le stesse colonne; consente quindi aggregazioni e confronti territoriali oltre i sette Comuni, non materializzati nella metrica corrente.",
                 "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
             },
+            "benchmark_toscana_italia": {
+                "state": AVAILABLE,
+                "evidence": "Il file ufficiale 'Foreste in Comune - tutti i dati dei Comuni' copre l'intero perimetro nazionale con la stessa definizione TUFF e le stesse colonne; permette di derivare aggregati omogenei Toscana/Italia, ma tali benchmark non sono materializzati nella metrica pubblica corrente.",
+                "sourceReference": "https://uncem.it/il-rapporto-foreste-in-comune-presentato-a-marcetelli-con-pefc-uncem-legambiente-caire/",
+            },
             "frequenza_infra_annuale": {
                 "state": UNAVAILABLE,
                 "evidence": "Il profilo CFI/SINFor è un aggiornamento non periodico (riferimento nominale 2020, aggiornato al 2024) e non offre osservazioni mensili, trimestrali o semestrali comparabili dell'indice di boscosità.",
