@@ -78,6 +78,55 @@ def _any_history(metric: dict[str, Any]) -> bool:
     )
 
 
+def _history_payload(value: Any) -> bool:
+    if _valid_series(value):
+        return True
+    if isinstance(value, list) and len(value) >= 2:
+        rows = [item for item in value if isinstance(item, dict)]
+        if len(rows) == len(value) and all("year" in item for item in rows):
+            return all(
+                any(_finite(raw) for key, raw in item.items() if key != "year")
+                for item in rows
+            )
+    if isinstance(value, dict):
+        return any(_history_payload(item) for item in value.values())
+    return False
+
+
+def _special_history_fields(metric: dict[str, Any]) -> set[str]:
+    fields: set[str] = set()
+    containers = [
+        row for row in metric.get("rows", [])
+        if isinstance(row, dict)
+    ]
+    aggregate = metric.get("aggregate")
+    if isinstance(aggregate, dict):
+        containers.append(aggregate)
+    for container in containers:
+        for key, value in container.items():
+            if not re.search(r"(series|history|storico|andamento)", str(key), re.IGNORECASE):
+                continue
+            if _history_payload(value):
+                fields.add(str(key))
+    return fields
+
+
+def _runtime_metric_history_context(runtime: str, metric_id: str) -> bool:
+    if not metric_id or metric_id not in runtime:
+        return False
+    lower = runtime.lower()
+    needle = metric_id.lower()
+    start = 0
+    while True:
+        index = lower.find(needle, start)
+        if index < 0:
+            return False
+        window = lower[max(0, index - 600): index + len(needle) + 600]
+        if "history" in window or "storico" in window or "andamento" in window:
+            return True
+        start = index + len(needle)
+
+
 def _valid_meta_benchmark(metric: dict[str, Any]) -> bool:
     meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
     benchmark = meta.get("benchmark")
@@ -135,6 +184,25 @@ def _history_status(
             "PUBLIC_RENDERED",
             "canonical row.series years/values is consumable by the standard history renderer/export",
         )
+
+    special_fields = _special_history_fields(metric)
+    if special_fields:
+        meta = metric.get("meta") if isinstance(metric.get("meta"), dict) else {}
+        composite_type = str(meta.get("compositeType") or "")
+        runtime_fields = {field for field in special_fields if field in runtime}
+        specialist_contract = bool(
+            runtime_fields
+            and (
+                (composite_type and composite_type in runtime)
+                or _runtime_metric_history_context(runtime, metric_id)
+            )
+        )
+        if specialist_contract:
+            return (
+                "SPECIAL_ROUTE_RENDERED",
+                "specialist public runtime consumes historical field(s): "
+                + ", ".join(sorted(runtime_fields)),
+            )
 
     route = _route_index(dist, metric)
     if route is not None and route.is_file():
