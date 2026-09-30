@@ -57,5 +57,6 @@ jobs:
           path: |
             reports/
             ci/visual-regression-baselines/*.json
+            dist/
           if-no-files-found: ignore
           retention-days: 14

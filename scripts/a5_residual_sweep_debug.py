@@ -51,6 +51,14 @@ def main() -> None:
                 missing = RESIDUAL_LABELS - {label for label, _ in commands}
                 if missing:
                     raise RuntimeError(f"Residual labels mancanti: {sorted(missing)}")
+                probe = (
+                    preflight.PYTHON,
+                    "scripts/a5_financial_debug_probe.py",
+                    "--base",
+                    base,
+                )
+                run_check("Salute finanziaria DOM probe", probe, failures)
+
                 for label, command in commands:
                     run_check(label, command, failures)
 
