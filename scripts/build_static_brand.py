@@ -38,7 +38,8 @@ A3_5_SOURCE_BACKED_COMPANIONS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_
 A3_5_HISTORICAL_MEF_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_historical_mef_companions.py"
 A3_5_ARS_LEGACY_HISTORY_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_ars_legacy_history.py"
 A3_5_OFFICIAL_COMPANIONS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_official_companions.py"
-A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"\nA3_PUBLICATION_ADAPTER = ROOT / "scripts" / "materialize_a3_publication_adapter.py"
+A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
+A3_PUBLICATION_ADAPTER = ROOT / "scripts" / "materialize_a3_publication_adapter.py"
 
 _ORIGINAL_RUN_PATH = runpy.run_path
 
@@ -79,7 +80,8 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_5_HISTORICAL_MEF_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_5_ARS_LEGACY_HISTORY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_5_OFFICIAL_COMPANIONS_MATERIALIZER), run_name="__main__")
-        _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")\n        _ORIGINAL_RUN_PATH(str(A3_PUBLICATION_ADAPTER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_PUBLICATION_ADAPTER), run_name="__main__")
         return result
     if path != FRAGILITA_RUNTIME_PATCH:
         return _ORIGINAL_RUN_PATH(path_name, *args, **kwargs)
