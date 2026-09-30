@@ -684,6 +684,8 @@
 
   function financialA5MunicipalMetric(metric, index) {
     const aggregatePart = metric?.aggregate?.parts?.[index] || {};
+    const rawUnit = aggregatePart.unit || metric.meta.unit;
+    const unit = rawUnit === 'percent2' ? '%' : rawUnit;
     const rows = (metric?.rows || []).map(row => {
       const part = row.parts?.[index] || {};
       return { ...row, value:part.value, formatted:'', series:part.series || null };
@@ -694,7 +696,7 @@
       meta:{
         ...metric.meta,
         label:aggregatePart.label || metric.meta.label,
-        unit:aggregatePart.unit || metric.meta.unit,
+        unit,
         compositeType:null
       },
       rows,
