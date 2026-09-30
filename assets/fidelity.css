@@ -1846,9 +1846,19 @@ body[data-page="compare"]:has(main.a5-editorial-pilot) select:focus-visible {
   }
   main.a5-editorial-pilot .compare-context-nav {
     width:100%;
-    max-width:none;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
     margin-inline:0;
     padding-inline:12px;
+  }
+  main.a5-editorial-pilot .compare-context-nav .context-nav-links {
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    overflow-x:auto;
+    overflow-y:hidden;
   }
   main.a5-editorial-pilot .compare-context-nav .context-nav-title {
     display:none;
