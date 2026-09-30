@@ -47,6 +47,7 @@
     "scripts/test_exports_v161.py",
     "scripts/test_lighthouse_budget.py",
     "scripts/test_mobile_interactions.py",
-    "scripts/test_salute_finanziaria_v129_browser.py"
+    "scripts/test_salute_finanziaria_v129_browser.py",
+    "scripts/test_ambiente_acqua_v124_browser.py"
   ]
 }
