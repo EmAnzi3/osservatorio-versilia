@@ -1,0 +1,160 @@
+name: A5 final validation
+
+on:
+  push:
+    branches:
+      - "debug/a5-final-validation"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout final candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m pip install Pillow==11.3.0
+          python -m playwright install --with-deps chromium
+          npm install --global lighthouse@12.8.2
+
+      - name: Compile critical tests
+        run: |
+          python -m py_compile scripts/test_a5_camaiore_rollout.py
+          python -m py_compile scripts/test_salute_finanziaria_v129_browser.py
+          python -m py_compile scripts/test_a5_municipal_golden_lock.py
+          python -m py_compile scripts/test_a5_camaiore_full_golden_lock.py
+          python -m py_compile scripts/test_a5_thematic_golden_lock.py
+
+      - name: Build one coherent A5 preview
+        run: |
+          set -euo pipefail
+          python scripts/build_static_brand.py
+          git diff --exit-code -- . ':(exclude)dist'
+
+      - name: Verify financial shell and all seven municipal rollouts
+        run: |
+          set -euo pipefail
+          ROOT="/tmp/a5-final-validation"
+          rm -rf "$ROOT"
+          mkdir -p "$ROOT"
+          python scripts/preview_dist.py --port 8127 --directory dist >"$ROOT/current-preview.log" 2>&1 &
+          CURRENT_PID=$!
+          cleanup() { kill "$CURRENT_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_salute_finanziaria_v129_browser.py --base http://127.0.0.1:8127
+          for town in camaiore massarosa viareggio pietrasanta seravezza forte-dei-marmi stazzema; do
+            mkdir -p "$ROOT/rollout-$town"
+            A5_TOWN="$town" python scripts/test_a5_camaiore_rollout.py \
+              --base http://127.0.0.1:8127 \
+              --report-dir "$ROOT/rollout-$town"
+          done
+
+      - name: Checkout approved municipal baselines
+        uses: actions/checkout@v4
+        with:
+          ref: 6a064ba25992d292a76709ac15d49537c258ac66
+          path: baseline-municipal
+
+      - name: Build municipal baseline
+        working-directory: baseline-municipal
+        run: python scripts/build_static_brand.py
+
+      - name: Checkout approved Camaiore golden baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 5aaf159870912eb49bffbd044963549bfb920150
+          path: baseline-camaiore
+
+      - name: Build Camaiore baseline
+        working-directory: baseline-camaiore
+        run: python scripts/build_static_brand.py
+
+      - name: Verify municipal golden locks
+        run: |
+          set -euo pipefail
+          ROOT="/tmp/a5-final-validation/municipal-golden"
+          mkdir -p "$ROOT"
+          python scripts/preview_dist.py --port 8123 --directory dist >"$ROOT/current.log" 2>&1 &
+          CURRENT_PID=$!
+          python baseline-municipal/scripts/preview_dist.py --port 8124 --directory baseline-municipal/dist >"$ROOT/baseline.log" 2>&1 &
+          BASELINE_PID=$!
+          python scripts/preview_dist.py --port 8125 --directory baseline-camaiore/dist >"$ROOT/camaiore.log" 2>&1 &
+          CAMAIORE_PID=$!
+          cleanup() { kill "$CURRENT_PID" "$BASELINE_PID" "$CAMAIORE_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_a5_municipal_golden_lock.py \
+            --current-base http://127.0.0.1:8123 \
+            --baseline-base http://127.0.0.1:8124 \
+            --report-dir "$ROOT"
+          python scripts/test_a5_camaiore_full_golden_lock.py \
+            --current-base http://127.0.0.1:8123 \
+            --baseline-base http://127.0.0.1:8125 \
+            --report-dir "$ROOT/camaiore-full"
+
+      - name: Checkout approved thematic baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 3de730a006fcef67e91226c3191884e84b3cae3a
+          path: baseline-thematic
+
+      - name: Build thematic baseline
+        working-directory: baseline-thematic
+        run: python scripts/build_static_brand.py
+
+      - name: Verify thematic golden lock
+        run: |
+          set -euo pipefail
+          ROOT="/tmp/a5-final-validation/thematic-golden"
+          mkdir -p "$ROOT"
+          python scripts/preview_dist.py --port 8125 --directory dist >"$ROOT/current.log" 2>&1 &
+          CURRENT_PID=$!
+          python baseline-thematic/scripts/preview_dist.py --port 8126 --directory baseline-thematic/dist >"$ROOT/baseline.log" 2>&1 &
+          BASELINE_PID=$!
+          cleanup() { kill "$CURRENT_PID" "$BASELINE_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_a5_thematic_golden_lock.py \
+            --current-base http://127.0.0.1:8125 \
+            --baseline-base http://127.0.0.1:8126 \
+            --config ci/a5-thematic-golden-lock.json \
+            --report-dir "$ROOT"
+
+      - name: Prepare coherent dist exactly like pages full
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          python scripts/build_static_brand.py
+          git diff --exit-code -- . ':(exclude)dist'
+          python scripts/build_data_status.py
+          python scripts/inject_data_status_runtime.py
+          python scripts/build_pnrr_toscana_deep_dive.py
+          python scripts/inject_pnrr_town_experience.py
+          python scripts/copy_percorsi_dist.py
+          node --check dist/assets/app-bundle.js
+
+      - name: Run full-only preflight
+        run: python scripts/preflight.py --full --skip-quick
+
+      - name: Upload final validation diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-final-validation
+          path: /tmp/a5-final-validation
+          if-no-files-found: ignore
+          retention-days: 14
