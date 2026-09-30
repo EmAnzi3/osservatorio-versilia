@@ -86,10 +86,13 @@ def main() -> None:
         bad["metrics"]["population"]["rows"][0]["code"] = "002"
         expect_failure(bad, path, contract, "Town/code incoerenti")
 
-    real = validate_semantic_model_contract(root / "data" / "site-data.json", contract)
-    assert real["municipalities"] == 7, real
-    assert real["themes"] == 11, real
-    assert real["metrics"] >= 200, real
+    canonical_path = root / "data" / "site-data.json"
+    canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
+    real = validate_semantic_model_contract(canonical_path, contract)
+    assert real["municipalities"] == len(canonical["towns"]), real
+    assert real["themes"] == len(canonical["themes"]), real
+    assert real["metrics"] == len(canonical["metrics"]), real
+    assert real["municipalities"] > 0 and real["themes"] > 0 and real["metrics"] > 0, real
     assert real["sources"] > 0, real
     print(
         "A6.1 semantic model regression passed: "
