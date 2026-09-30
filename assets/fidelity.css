@@ -4181,3 +4181,15 @@ body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active small
 body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active span {
   color:#fff !important;
 }
+
+/* A5 financial town history: preserve the card's own readable inner spacing
+   after the shared municipal shell moves/restores the complementary detail. */
+body[data-page="town"] main.a5-town-pilot #town-topic .financial-profile-history {
+  box-sizing:border-box;
+  padding:20px !important;
+}
+@media (max-width:700px) {
+  body[data-page="town"] main.a5-town-pilot #town-topic .financial-profile-history {
+    padding:17px !important;
+  }
+}
