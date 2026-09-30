@@ -109,6 +109,55 @@ def pixel_difference(baseline: bytes, current: bytes, threshold: int = 3) -> dic
     }
 
 
+def public_history_state(page) -> dict:
+    return page.evaluate(
+        """() => {
+          const shell=document.querySelector('#town-topic > .history-panel.a5-shared-chart .ux-view-shell');
+          const button=shell?.querySelector('[data-view-mode="history"]');
+          const pane=shell?.querySelector('[data-view-pane="history"]');
+          const text=(pane?.textContent || '').trim();
+          return {
+            buttonExists:Boolean(button),
+            paneExists:Boolean(pane),
+            disabled:Boolean(button?.disabled),
+            chartCount:pane?.querySelectorAll('.trend-chart, .history-chart, [data-history-chart]').length || 0,
+            unavailable:Boolean(
+              pane?.querySelector('.ux-history-unavailable')
+              || /serie storica non disponibile/i.test(text)
+            ),
+            contentLength:text.length,
+          };
+        }"""
+    )
+
+
+def verified_history_upgrade(baseline_state: dict, current_state: dict, base_page, cur_page) -> tuple[bool, dict]:
+    baseline_shell = baseline_state.get("semantic", {}).get("financialShell", {})
+    current_shell = current_state.get("semantic", {}).get("financialShell", {})
+    if baseline_shell.get("historyChart") is not False or current_shell.get("historyChart") is not True:
+        return False, {}
+
+    normalized_current = json.loads(json.dumps(current_state))
+    normalized_current["semantic"]["financialShell"]["historyChart"] = False
+    if baseline_state != normalized_current:
+        return False, {}
+
+    baseline_dom = public_history_state(base_page)
+    current_dom = public_history_state(cur_page)
+    allowed = bool(
+        baseline_dom["buttonExists"]
+        and baseline_dom["paneExists"]
+        and baseline_dom["disabled"]
+        and current_dom["buttonExists"]
+        and current_dom["paneExists"]
+        and not current_dom["disabled"]
+        and current_dom["chartCount"] >= 1
+        and not current_dom["unavailable"]
+        and current_dom["contentLength"] > 0
+    )
+    return allowed, {"baseline": baseline_dom, "current": current_dom}
+
+
 def compare_screenshot(base_page, cur_page, selector: str, key: str, folder: Path, failures: list[dict]) -> None:
     base_loc = base_page.locator(selector)
     cur_loc = cur_page.locator(selector)
@@ -151,6 +200,7 @@ def main() -> None:
     folder = Path(args.report_dir)
     folder.mkdir(parents=True, exist_ok=True)
     failures: list[dict] = []
+    allowed_history_upgrades: list[dict] = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -238,12 +288,24 @@ def main() -> None:
                     checked += 1
 
                     if baseline_state != current_state:
-                        failures.append({
-                            "key": key,
-                            "kind": "camaiore-computed-golden-diff",
-                            "baseline": baseline_state,
-                            "current": current_state,
-                        })
+                        allowed_upgrade, history_detail = verified_history_upgrade(
+                            baseline_state,
+                            current_state,
+                            base_page,
+                            cur_page,
+                        )
+                        if allowed_upgrade:
+                            allowed_history_upgrades.append({
+                                "key": key,
+                                **history_detail,
+                            })
+                        else:
+                            failures.append({
+                                "key": key,
+                                "kind": "camaiore-computed-golden-diff",
+                                "baseline": baseline_state,
+                                "current": current_state,
+                            })
 
                     if metric == metrics[0] or metric in REVIEW_METRICS:
                         compare_screenshot(
@@ -272,6 +334,7 @@ def main() -> None:
         "metric_states_per_viewport": total,
         "unique_metric_count": unique,
         "viewports": [{"name": name, "width": width, "height": height} for name, width, height in VIEWPORTS],
+        "allowed_history_upgrades": allowed_history_upgrades,
         "failure_count": len(failures),
         "failures": failures,
     }
@@ -280,6 +343,7 @@ def main() -> None:
         "A5 Camaiore full golden lock\n"
         f"approved_commit={APPROVED_COMMIT}\n"
         f"checked_states={checked}\n"
+        f"allowed_history_upgrades={len(allowed_history_upgrades)}\n"
         f"failures={len(failures)}\n",
         encoding="utf-8",
     )
