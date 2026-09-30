@@ -620,6 +620,56 @@
     return `<div class="financial-profile-history" data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,selected.index)}</div>`;
   }
 
+  function installFinancialProfileTooltipDelegation(container) {
+    if (!container || container.dataset.financialTooltipDelegated === '1') return;
+    container.dataset.financialTooltipDelegated='1';
+
+    const resolvePoint=target=>target?.closest?.('[data-financial-profile-history] .chart-point');
+    const hideChart=chart=>chart?.querySelectorAll('.chart-point').forEach(point=>{
+      point.classList.remove('active');
+      point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
+    });
+    const showPoint=point=>{
+      if (!point || !container.contains(point)) return;
+      const chart=point.closest('.trend-chart');
+      hideChart(chart);
+      point.classList.add('active');
+      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
+    };
+
+    container.addEventListener('focusin',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('focusout',event=>{
+      const point=resolvePoint(event.target);
+      const chart=point?.closest('.trend-chart');
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      hideChart(chart);
+    });
+    container.addEventListener('pointerover',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('pointerout',event=>{
+      const point=resolvePoint(event.target);
+      const chart=point?.closest('.trend-chart');
+      if (!chart || chart.contains(event.relatedTarget)) return;
+      hideChart(chart);
+    });
+    container.addEventListener('click',event=>showPoint(resolvePoint(event.target)));
+    container.addEventListener('keydown',event=>{
+      const point=resolvePoint(event.target);
+      if (!point || !container.contains(point)) return;
+      const chart=point.closest('.trend-chart');
+      const points=[...chart.querySelectorAll('.chart-point')];
+      const index=points.indexOf(point);
+      if (event.key === 'Escape') { hideChart(chart); point.blur(); return; }
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+      event.preventDefault();
+      let next=index;
+      if (event.key === 'ArrowLeft') next=(index-1+points.length)%points.length;
+      if (event.key === 'ArrowRight') next=(index+1)%points.length;
+      if (event.key === 'Home') next=0;
+      if (event.key === 'End') next=points.length-1;
+      points[next]?.focus();
+    });
+  }
+
   function ensureFinancialProfileTownDetail(container,metric,row,choice='part-0') {
     if (!container || metric?.meta?.compositeType !== 'financialProfile') return null;
     const reading=financialProfileReading(metric,choice);
@@ -639,6 +689,7 @@
     }
     detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
     installChartInteractions(detailHost);
+    installFinancialProfileTooltipDelegation(container);
     return detailHost;
   }
   function compositeTownMarkup(metric, row) {
