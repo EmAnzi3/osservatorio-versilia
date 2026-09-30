@@ -120,7 +120,7 @@ def public_history_state(page) -> dict:
             buttonExists:Boolean(button),
             paneExists:Boolean(pane),
             disabled:Boolean(button?.disabled),
-            chartCount:pane?.querySelectorAll('.trend-chart, .history-chart, [data-history-chart]').length || 0,
+            chartCount:pane?.querySelectorAll('.ux-history-chart, .ux-two-point-chart, .trend-chart, .history-chart, [data-history-chart], svg, canvas').length || 0,
             unavailable:Boolean(
               pane?.querySelector('.ux-history-unavailable')
               || /serie storica non disponibile/i.test(text)
