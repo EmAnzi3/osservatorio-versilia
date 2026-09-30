@@ -79,6 +79,53 @@ def shot(page,selector):
     if not box or box["width"]<2 or box["height"]<2: return None,{"count":1,"box":box}
     return loc.screenshot(animations="disabled"),{"count":1,"box":box}
 
+def history_view_state(page):
+    return page.evaluate("""() => {
+      const shell=document.querySelector('#compare-bars .ux-view-shell');
+      const button=shell?.querySelector('[data-view-mode="history"]');
+      const pane=shell?.querySelector('[data-view-pane="history"]');
+      const text=(pane?.textContent || '').trim();
+      return {
+        buttonExists:Boolean(button),
+        paneExists:Boolean(pane),
+        disabled:Boolean(button?.disabled),
+        svgCount:pane?.querySelectorAll('svg').length || 0,
+        canvasCount:pane?.querySelectorAll('canvas').length || 0,
+        unavailable:Boolean(
+          pane?.querySelector('.ux-history-unavailable')
+          || /serie storica non disponibile/i.test(text)
+        ),
+        contentLength:text.length,
+      };
+    }""")
+
+
+def verified_history_upgrade(baseline_state,current_state,baseline_page,current_page):
+    before=history_view_state(baseline_page); after=history_view_state(current_page)
+    if not (
+        before["buttonExists"] and before["paneExists"] and before["disabled"]
+        and after["buttonExists"] and after["paneExists"] and not after["disabled"]
+        and (after["svgCount"] >= 1 or after["canvasCount"] >= 1)
+        and not after["unavailable"] and after["contentLength"] > 0
+    ):
+        return False, {}
+
+    normalized=json.loads(json.dumps(current_state))
+    normalized["structure"]["chart"]=baseline_state["structure"]["chart"]
+    if normalized != baseline_state:
+        return False, {}
+    return True, {"baseline":before,"current":after}
+
+
+def set_history_disabled(page,disabled):
+    return page.evaluate("""disabled => {
+      const button=document.querySelector('#compare-bars .ux-view-shell [data-view-mode="history"]');
+      if (!button) return false;
+      button.disabled=disabled;
+      return true;
+    }""", disabled)
+
+
 def region(a,b,selector,key,fail,folder,threshold,tolerance):
     ai,am=shot(a,selector); bi,bm=shot(b,selector)
     if ai is None or bi is None:
@@ -136,7 +183,7 @@ def overflow(baseline,current,key,fail):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--current-base",required=True); ap.add_argument("--baseline-base",required=True); ap.add_argument("--config",required=True); ap.add_argument("--report-dir",required=True); args=ap.parse_args()
-    cfg=json.loads(Path(args.config).read_text()); folder=Path(args.report_dir); folder.mkdir(parents=True,exist_ok=True); fail=[]
+    cfg=json.loads(Path(args.config).read_text()); folder=Path(args.report_dir); folder.mkdir(parents=True,exist_ok=True); fail=[]; allowed_history_upgrades=[]
     with sync_playwright() as p:
         browser=p.chromium.launch()
         d=browser.new_page(viewport={"width":1440,"height":1100}); contract=discover(d,args.baseline_base,cfg["seed_theme"]); current=discover(d,args.current_base,cfg["seed_theme"]); d.close()
@@ -149,20 +196,32 @@ def main():
                 for rn,sel in THEME_REGIONS: region(a,b,sel,f"{vp['name']}:{theme}:theme:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
                 for metric in metrics:
                     choose(a,metric); choose(b,metric); key=f"{vp['name']}:{theme}:{metric}"; sa=state(a); sb=state(b)
-                    if sa!=sb: fail.append({"key":key,"kind":"state-diff","baseline":sa,"current":sb})
+                    history_upgrade=False; history_detail={}
+                    if sa!=sb:
+                        history_upgrade,history_detail=verified_history_upgrade(sa,sb,a,b)
+                        if history_upgrade:
+                            allowed_history_upgrades.append({"key":key,**history_detail})
+                        else:
+                            fail.append({"key":key,"kind":"state-diff","baseline":sa,"current":sb})
                     if sb["main"]["theme"]!=theme or sb["active"]["metric"]!=metric: fail.append({"key":key,"kind":"active-state","state":sb["active"],"theme":sb["main"]["theme"]})
                     if len(sb["structure"].get("territoryImages") or []) != 7:
                         fail.append({"key":key,"kind":"territory-images-contract","images":sb["structure"].get("territoryImages")})
                     overflow(sa,sb,key,fail)
-                    for rn,sel in METRIC_REGIONS: region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
+                    for rn,sel in METRIC_REGIONS:
+                        if history_upgrade and rn=="workspace":
+                            set_history_disabled(b,True)
+                            region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
+                            set_history_disabled(b,False)
+                        else:
+                            region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
             if aerr: fail.append({"key":vp["name"],"kind":"baseline-page-errors","errors":aerr})
             if berr: fail.append({"key":vp["name"],"kind":"current-page-errors","errors":berr})
             a.close(); b.close()
         browser.close()
     total=sum(map(len,contract.values())); unique=len({m for ms in contract.values() for m in ms})
-    report={"baseline":cfg["baseline"],"themes":list(contract),"themeMetricCounts":{k:len(v) for k,v in contract.items()},"metricStatesPerViewport":total,"uniqueMetricCount":unique,"viewports":cfg["viewports"],"failureCount":len(fail),"failures":fail}
+    report={"baseline":cfg["baseline"],"themes":list(contract),"themeMetricCounts":{k:len(v) for k,v in contract.items()},"metricStatesPerViewport":total,"uniqueMetricCount":unique,"viewports":cfg["viewports"],"allowedHistoryUpgrades":allowed_history_upgrades,"failureCount":len(fail),"failures":fail}
     (folder/"report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
-    (folder/"summary.txt").write_text(f"A5 thematic golden lock\nbaseline={cfg['baseline']}\nthemes={len(contract)}\nmetric_states_per_viewport={total}\nunique_metrics={unique}\nfailures={len(fail)}\n")
+    (folder/"summary.txt").write_text(f"A5 thematic golden lock\nbaseline={cfg['baseline']}\nthemes={len(contract)}\nmetric_states_per_viewport={total}\nunique_metrics={unique}\nallowed_history_upgrades={len(allowed_history_upgrades)}\nfailures={len(fail)}\n")
     if fail: raise SystemExit(f"A5 thematic golden lock FAILED: {len(fail)} regressioni\n"+json.dumps(fail[:6],ensure_ascii=False,indent=2))
     print(f"A5 thematic golden lock OK: {len(contract)} temi, {total} stati/viewport, {unique} indicatori unici.")
 
