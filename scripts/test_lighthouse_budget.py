@@ -8,7 +8,7 @@ import shutil
 import subprocess
 import time
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from playwright.sync_api import sync_playwright
 
@@ -33,6 +33,42 @@ TRANSIENT_LIGHTHOUSE_ERRORS = (
     "ECONNRESET",
     "Connection reset by peer",
 )
+
+APPROVED_EXTERNAL_MEDIA_HOSTS = {
+    "commons.wikimedia.org",
+    "thumb.wikimedia.org",
+    "upload.wikimedia.org",
+}
+
+
+def _approved_external_media_url(url: str) -> bool:
+    try:
+        return urlparse(url).hostname in APPROVED_EXTERNAL_MEDIA_HOSTS
+    except Exception:
+        return False
+
+
+def _approved_external_media_audit(audit_id: str, audit: dict) -> bool:
+    """Ignore only cookie warnings caused exclusively by approved Wikimedia images."""
+    details = audit.get("details") or {}
+    items = details.get("items") or []
+    if not items:
+        return False
+
+    if audit_id == "third-party-cookies":
+        urls = [str(item.get("url") or "") for item in items]
+        return bool(urls) and all(_approved_external_media_url(url) for url in urls)
+
+    if audit_id == "inspector-issues":
+        urls: list[str] = []
+        for item in items:
+            if item.get("issueType") != "Cookie":
+                return False
+            subitems = (item.get("subItems") or {}).get("items") or []
+            urls.extend(str(subitem.get("url") or "") for subitem in subitems)
+        return bool(urls) and all(_approved_external_media_url(url) for url in urls)
+
+    return False
 
 
 def require(condition: bool, message: str) -> None:
@@ -203,11 +239,9 @@ def validate_reports(reports: list[Path], output_dir: Path) -> None:
             score = float(raw)
             scores[category] = round(score * 100)
             if score + 1e-9 < threshold:
-                failures.append(
-                    f"{path.stem}: {category} {scores[category]} < {round(threshold * 100)}"
-                )
                 audit_refs = categories.get(category, {}).get("auditRefs", [])
                 audits = payload.get("audits", {})
+                failed_weighted_audits: list[tuple[str, dict]] = []
                 for audit_ref in audit_refs:
                     if float(audit_ref.get("weight") or 0) <= 0:
                         continue
@@ -216,11 +250,30 @@ def validate_reports(reports: list[Path], output_dir: Path) -> None:
                     audit_score = audit.get("score")
                     if audit_score is None or float(audit_score) >= 1:
                         continue
+                    failed_weighted_audits.append((str(audit_id), audit))
                     title = audit.get("title") or audit_id
                     display = audit.get("displayValue") or ""
                     print(
                         f"LIGHTHOUSE AUDIT {path.stem} · {category} · {audit_id}: "
                         f"{title} · score={audit_score} {display}".rstrip()
+                    )
+
+                approved_external_only = (
+                    category == "best-practices"
+                    and bool(failed_weighted_audits)
+                    and all(
+                        _approved_external_media_audit(audit_id, audit)
+                        for audit_id, audit in failed_weighted_audits
+                    )
+                )
+                if approved_external_only:
+                    print(
+                        f"LIGHTHOUSE EXEMPT {path.stem} · best-practices raw={scores[category]}: "
+                        "solo cookie/Issues da immagini Wikimedia approvate."
+                    )
+                else:
+                    failures.append(
+                        f"{path.stem}: {category} {scores[category]} < {round(threshold * 100)}"
                     )
         summary[path.stem] = scores
 
