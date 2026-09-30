@@ -173,25 +173,34 @@ def verify_indicator_scroll_containment(
     label: str,
 ) -> None:
     headings = page.locator(f"{root_selector} .metric-group-heading.ux-section-toggle")
-    system_heading = headings.filter(has_text="Sistema produttivo").first
-    require(system_heading.count() == 1, f"{label}: intestazione Sistema produttivo non trovata")
+    require(headings.count() >= 1, f"{label}: nessuna intestazione indicatori trovata")
 
-    if system_heading.get_attribute("aria-expanded") != "true":
-        system_heading.tap()
+    best_index = 0
+    best_count = -1
+    for index in range(headings.count()):
+        candidate = headings.nth(index)
+        count = candidate.locator("xpath=..").locator(":scope > .metric-group-buttons > button").count()
+        if count > best_count:
+            best_index = index
+            best_count = count
+
+    target_heading = headings.nth(best_index)
+    section_name = (target_heading.locator(":scope > strong").text_content() or "").strip() or f"sezione {best_index + 1}"
+
+    if target_heading.get_attribute("aria-expanded") != "true":
+        target_heading.tap()
         page.wait_for_timeout(120)
-    require(system_heading.get_attribute("aria-expanded") == "true",
-            f"{label}: Sistema produttivo non si apre")
+    require(target_heading.get_attribute("aria-expanded") == "true",
+            f"{label}: {section_name} non si apre")
 
-    group = system_heading.locator("xpath=..")
+    group = target_heading.locator("xpath=..")
     buttons = group.locator(":scope > .metric-group-buttons")
     require(buttons.count() == 1 and buttons.is_visible(),
-            f"{label}: riga indicatori di Sistema produttivo assente")
+            f"{label}: riga indicatori di {section_name} assente")
 
-    before = page.evaluate(
-        """rootSelector => {
-          const heading = [...document.querySelectorAll(`${rootSelector} .metric-group-heading.ux-section-toggle`)]
-            .find(el => el.textContent.includes('Sistema produttivo'));
-          const group = heading?.parentElement;
+    before = target_heading.evaluate(
+        """heading => {
+          const group = heading.parentElement;
           const buttons = group?.querySelector(':scope > .metric-group-buttons');
           const tools = heading?.querySelector(':scope > .ux-section-tools');
           const hb = heading?.getBoundingClientRect();
@@ -208,8 +217,7 @@ def verify_indicator_scroll_containment(
             buttonsScrollWidth: buttons?.scrollWidth ?? 0,
             buttonsScrollLeft: buttons?.scrollLeft ?? -1
           };
-        }""",
-        root_selector,
+        }"""
     )
     require(before["documentScrollWidth"] <= before["viewport"] + 1,
             f"{label}: il documento scorre orizzontalmente: {before}")
@@ -228,14 +236,11 @@ def verify_indicator_scroll_containment(
     require(before["buttonsScrollWidth"] > before["buttonsClientWidth"] + 20,
             f"{label}: la riga lunga non ha un proprio overflow orizzontale: {before}")
 
-    # Scorre soltanto la riga dei pill: la testata deve restare immobile.
     buttons.evaluate("el => { el.scrollLeft = el.scrollWidth; }")
     page.wait_for_timeout(100)
-    after = page.evaluate(
-        """rootSelector => {
-          const heading = [...document.querySelectorAll(`${rootSelector} .metric-group-heading.ux-section-toggle`)]
-            .find(el => el.textContent.includes('Sistema produttivo'));
-          const group = heading?.parentElement;
+    after = target_heading.evaluate(
+        """heading => {
+          const group = heading.parentElement;
           const buttons = group?.querySelector(':scope > .metric-group-buttons');
           const tools = heading?.querySelector(':scope > .ux-section-tools');
           const hb = heading?.getBoundingClientRect();
@@ -249,8 +254,7 @@ def verify_indicator_scroll_containment(
             toolsRight: tb?.right ?? -1,
             buttonsScrollLeft: buttons?.scrollLeft ?? 0
           };
-        }""",
-        root_selector,
+        }"""
     )
     require(after["buttonsScrollLeft"] > 20,
             f"{label}: la riga indicatori non scorre autonomamente: {after}")
@@ -262,7 +266,6 @@ def verify_indicator_scroll_containment(
     require(abs(after["toolsLeft"] - before["toolsLeft"]) <= 1
             and abs(after["toolsRight"] - before["toolsRight"]) <= 1,
             f"{label}: conteggio/freccia si spostano insieme ai pill: prima={before}, dopo={after}")
-
 
 def verify_mobile_accordion_layout(page: Page, base: str) -> None:
     page.goto(base + "confronta/economia/?indicatore=income", wait_until="networkidle")

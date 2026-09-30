@@ -19,19 +19,20 @@
     const update = key => {
       metricKey = key;
       history.replaceState(history.state, '', `?indicatore=${encodeURIComponent(key)}`);
-      const tablist = document.querySelector('.topic-controls [role="tablist"]');
-      tablist?.querySelectorAll('[role="tab"]').forEach(b => {
+      const catalog = document.querySelector('.topic-controls .metric-catalog');
+      catalog?.querySelectorAll('[role="tab"]').forEach(b => {
         const active = b.dataset.metric === key;
         b.classList.toggle('active', active);
         b.setAttribute('aria-selected', active ? 'true' : 'false');
         b.tabIndex = active ? 0 : -1;
       });
       renderCompareMetric(data, themeKey, key, false);
-      scrollActiveControl(tablist);
+      scrollActiveControl(catalog);
     };
-    installTablist(document.querySelector('.topic-controls [role="tablist"]'), update);
+    document.querySelectorAll('.topic-controls .metric-group-buttons[role="tablist"]')
+      .forEach(tablist => installTablist(tablist, update));
     renderCompareMetric(data, themeKey, metricKey, false);
-    scrollActiveControl(document.querySelector('.topic-controls [role="tablist"]'));
+    scrollActiveControl(document.querySelector('.topic-controls .metric-catalog'));
     installCrimeInteractions(data);
   }
 
@@ -1155,10 +1156,12 @@
       card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
       if (image && photoFiles[name]) {
         const fallback = mediaSrc(data.crests[name]);
-        image.src = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        const remote = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
         image.alt = name;
         image.referrerPolicy = 'no-referrer';
-        image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
+        a5CredentiallessImageUrl(remote)
+          .then(url => { image.src = url; })
+          .catch(() => { image.src = fallback; image.alt = ''; });
       }
       let value = row?.value;
       let valueUnit = metric.meta.unit;
@@ -1327,7 +1330,7 @@
       });
       const selectorDrivenDuplicate = Boolean(
         rolloutTown
-        && activeMetric !== 'municipalStaffTraining'
+        && !(activeMetric === 'municipalStaffTraining' && document.body.dataset.town === 'massarosa')
         && selectorLabels.length > 0
         && selectorLabels.length === cards.length
         && (labelsEquivalent || notesAreOnlyPeriod)
@@ -1594,6 +1597,31 @@
     }
   });
 
+  const a5RemoteImageCache = new Map();
+
+  async function a5CredentiallessImageUrl(url) {
+    if (!url) return '';
+    if (!a5RemoteImageCache.has(url)) {
+      a5RemoteImageCache.set(url, fetch(url, {
+        mode:'cors',
+        credentials:'omit',
+        referrerPolicy:'no-referrer'
+      }).then(response => {
+        if (!response.ok) throw new Error(`Immagine remota non disponibile: ${response.status}`);
+        return response.blob();
+      }).then(blob => URL.createObjectURL(blob)));
+    }
+    return a5RemoteImageCache.get(url);
+  }
+
+  function a5ApplyCredentiallessHero(header) {
+    const remote = header?.dataset.a5TownHero;
+    if (!remote) return;
+    a5CredentiallessImageUrl(remote)
+      .then(url => header.style.setProperty('--a5-town-hero-image', `url("${url}")`))
+      .catch(() => {});
+  }
+
   function a5TownStatIcon(kind) {
     const icons = {
       population: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><path d="M17 11h5"></path><path d="M19.5 8.5v5"></path></svg>',
@@ -1611,17 +1639,17 @@
     const profile = A5_TOWN_PROFILE_META[slug] || {};
     const surfaceMetric = data.metrics.municipalSurface;
     const surface = surfaceMetric?.rows?.find(row => row.code === town.code);
-    const heroStyle = profile.heroImage ? ` style="--a5-town-hero-image:url('${html(profile.heroImage)}')"` : '';
-    return `<header class="town-hero"${heroStyle}>
+    const heroData = profile.heroImage ? ` data-a5-town-hero="${html(profile.heroImage)}"` : '';
+    return `<header class="town-hero"${heroData}>
       <div class="town-hero-shell">
         <div class="town-identity">
           <img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}">
           <div><span class="overline">Profilo comunale · Istat ${html(town.code)}</span><h1>${html(town.name)}</h1><p>Numeri, tendenze e confronti per leggere il territorio nel suo contesto.</p></div>
         </div>
         <dl class="town-headline-stats">
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('population')}</span>Popolazione</dt><dd>${html(pop.formatted)}</dd><small>Residenti · ${html(data.metrics.population.meta.year)}</small></div>
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('surface')}</span>Superficie</dt><dd>${html(surface?.formatted || formatValue(surface?.value, surfaceMetric?.meta?.unit))}</dd><small>Superficie comunale</small></div>
-          <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><small>Profilo storico-amministrativo</small></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('population')}</span>Popolazione</dt><dd>${html(pop.formatted)}</dd><dd class="town-stat-note">Residenti · ${html(data.metrics.population.meta.year)}</dd></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('surface')}</span>Superficie</dt><dd>${html(surface?.formatted || formatValue(surface?.value, surfaceMetric?.meta?.unit))}</dd><dd class="town-stat-note">Superficie comunale</dd></div>
+          <div><dt><span class="town-stat-icon">${a5TownStatIcon('institution')}</span>Anno di istituzione</dt><dd>${html(profile.institutionYear || 'n.d.')}</dd><dd class="town-stat-note">Profilo storico-amministrativo</dd></div>
         </dl>
       </div>
       ${profile.heroCreditUrl ? `<span class="town-hero-photo-credit">${html(town.name)} · ${html(profile.heroLabel || (slug === 'camaiore' ? 'Pontile di Lido di Camaiore' : 'Passeggiata a mare'))} · <a href="${html(profile.heroCreditUrl)}" target="_blank" rel="noreferrer">${html(profile.heroCredit)}</a></span>` : ''}
@@ -1687,6 +1715,7 @@
       <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
       <div id="town-context"></div>
     </main>`;
+    a5ApplyCredentiallessHero(app.querySelector('.town-hero[data-a5-town-hero]'));
 
     const updateUrl = (theme, metric) => {
       const url = new URL(location.href);
@@ -1813,8 +1842,8 @@
       updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);
     }
 
-    const tablist = container.querySelector('[role="tablist"]');
-    installTablist(tablist, onMetricSelect);
+    container.querySelectorAll('.metric-group-buttons[role="tablist"]')
+      .forEach(tablist => installTablist(tablist, onMetricSelect));
     container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());

@@ -23,7 +23,7 @@ def compare_row(page, town: str):
     page.wait_for_function(
         """town => [...document.querySelectorAll('#compare-bars .bar-row')]
           .some(row => row.querySelector('.bar-town')?.textContent.trim() === town)""",
-        town,
+        arg=town,
     )
     rows = page.locator("#compare-bars .bar-row")
     for index in range(rows.count()):
@@ -37,7 +37,7 @@ def town_current_row(page, town: str):
     page.wait_for_function(
         """town => [...document.querySelectorAll('.history-panel [data-view-pane="current"] .bar-row, .history-panel [data-view-pane="current"] .ux-bar-row')]
           .some(row => (row.querySelector('.bar-town, .ux-bar-town')?.textContent || '').trim() === town)""",
-        town,
+        arg=town,
     )
     rows = page.locator(
         '.history-panel [data-view-pane="current"] .bar-row, '

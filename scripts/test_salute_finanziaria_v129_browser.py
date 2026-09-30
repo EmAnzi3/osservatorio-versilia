@@ -55,7 +55,7 @@ def check_compare(page: Page, base: str) -> None:
         selector.select_option(choice)
         page.wait_for_function(
             """choice => document.querySelector('#compare-bars .ux-view-shell')?.dataset.financialChoice === choice""",
-            choice,
+            arg=choice,
         )
         definition = page.locator("#compare-definition")
         assert code in definition.inner_text() and title in definition.inner_text()

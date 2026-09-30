@@ -2817,12 +2817,12 @@ body[data-page="town"]:has(main.a5-town-pilot) .town-hero {
 body[data-page="town"][data-town="viareggio"]:has(main.a5-town-pilot) .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.86) 0%,rgba(10,45,67,.61) 38%,rgba(10,45,67,.24) 72%,rgba(10,45,67,.10) 100%),
-    url("https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio%2C_passeggiata_a_mare_2.JPG") center 52%/cover no-repeat;
+    var(--a5-town-hero-image) center 52%/cover no-repeat;
 }
 body[data-page="town"][data-town="massarosa"]:has(main.a5-town-pilot) .town-hero {
   background:
     linear-gradient(90deg,rgba(10,45,67,.88) 0%,rgba(10,45,67,.64) 39%,rgba(10,45,67,.27) 72%,rgba(10,45,67,.12) 100%),
-    url("https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG") center 58%/cover no-repeat;
+    var(--a5-town-hero-image) center 58%/cover no-repeat;
 }
 body[data-page="town"]:has(main.a5-town-pilot) .town-hero::after {
   content:"";
@@ -2915,11 +2915,14 @@ body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats dd {
   font-weight:780;
   letter-spacing:-.035em;
 }
-body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats small {
+body[data-page="town"]:has(main.a5-town-pilot) .town-headline-stats dd.town-stat-note {
   display:block;
-  margin-top:6px;
+  margin:6px 0 0;
   color:rgba(255,255,255,.79);
+  font-family:inherit;
   font-size:8px;
+  font-weight:400;
+  letter-spacing:normal;
   line-height:1.35;
 }
 body[data-page="town"]:has(main.a5-town-pilot) .town-stat-icon,
@@ -4163,3 +4166,18 @@ body[data-page="town"]:has(main.a5-municipal-rollout) main.a5-town-pilot .a5-tow
 }
 
 
+
+
+/* A5 accessibility: keep themed pills, but text must meet contrast on all palettes. */
+main.a5-editorial-pilot .context-nav-links a small,
+main.a5-editorial-pilot .context-nav-links a span,
+body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a small,
+body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a span {
+  color:#304b5b !important;
+}
+main.a5-editorial-pilot .context-nav-links a.active small,
+main.a5-editorial-pilot .context-nav-links a.active span,
+body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active small,
+body[data-page="town"]:has(main.a5-town-pilot) .context-nav-links a.active span {
+  color:#fff !important;
+}
