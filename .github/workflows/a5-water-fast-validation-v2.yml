@@ -1,0 +1,41 @@
+name: A5 water fast validation v2
+
+on:
+  push:
+    branches:
+      - "debug/a5-water-fast-validation-v2"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  water-fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Compile water contract
+        run: python -m py_compile scripts/test_ambiente_acqua_v124_browser.py
+      - name: Build candidate once
+        run: |
+          set -euo pipefail
+          python scripts/build_static_brand.py
+          git diff --exit-code -- . ':(exclude)dist'
+      - name: Water browser gate
+        run: |
+          set -euo pipefail
+          python scripts/preview_dist.py --port 8127 --directory dist >/tmp/a5-water-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          cleanup() { kill "$PREVIEW_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_ambiente_acqua_v124_browser.py --base http://127.0.0.1:8127/
