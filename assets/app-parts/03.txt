@@ -689,8 +689,14 @@
       detailHost.setAttribute('data-financial-profile-detail','');
       fixed.append(detailHost);
     }
-    detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
-    installChartInteractions(detailHost);
+    const signature=`${row.code || row.slug || row.town || ''}|${reading.index}`;
+    const alreadyCurrent=detailHost.dataset.financialSignature === signature
+      && Boolean(detailHost.querySelector('[data-financial-profile-history]'));
+    if (!alreadyCurrent) {
+      detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
+      detailHost.dataset.financialSignature=signature;
+      installChartInteractions(detailHost);
+    }
     installFinancialProfileTooltipDelegation(container);
     return detailHost;
   }
