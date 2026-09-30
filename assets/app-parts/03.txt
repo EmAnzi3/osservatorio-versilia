@@ -1418,7 +1418,16 @@
         && main.dataset.theme === 'salute'
         && Boolean(chart?.querySelector(':scope > .ux-view-shell'))
         && Boolean(fixedDetail.querySelector('.health-sex-detail, .health-demographic-detail, .demographic-history'));
-      const financialDuplicate = false;
+      const canonicalFinancialDetail = activeMetric === 'financialDebtProfile'
+        ? [...topic.querySelectorAll('[data-financial-profile-detail]')]
+            .map(node => node.closest('.composite-fixed-detail'))
+            .find(node => node && node !== fixedDetail && !chart?.contains(node))
+        : null;
+      const financialDuplicate = Boolean(
+        rolloutTown
+        && activeMetric === 'financialDebtProfile'
+        && canonicalFinancialDetail
+      );
       const inlineSpecialDetail = rolloutTown && (
         ['landCoverProfile','landslideExposure','floodExposure','drinkingWaterQuality','remediationProceedings'].includes(activeMetric)
         || Boolean(fixedDetail.querySelector('[data-land-cover-town-shell], .water-quality-town, .remediation-town'))
