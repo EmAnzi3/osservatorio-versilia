@@ -1,0 +1,44 @@
+name: A3 Historical source probes
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe MIM catalog
+        run: |
+          python scripts/probe_a3_history_source_links.py             --profile mim-school-year             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti"             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole"             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Edilizia+Scolastica"             --output /tmp/a3-history-mim-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-mim-source-probe
+          path: /tmp/a3-history-mim-source-probe.json
+          if-no-files-found: error
+
+  turismo-toscana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe Turismo Toscana bank
+        run: |
+          python scripts/probe_a3_history_source_links.py             --profile regione-toscana-tourism-annual             --url "https://www.regione.toscana.it/statistiche/banca-dati-turismo"             --url "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0"             --output /tmp/a3-history-tourism-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-tourism-source-probe
+          path: /tmp/a3-history-tourism-source-probe.json
+          if-no-files-found: error
