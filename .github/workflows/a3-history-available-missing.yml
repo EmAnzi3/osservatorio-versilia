@@ -27,9 +27,19 @@ jobs:
         env:
           OV_RELEASE_BUILD: "1"
         run: python scripts/build_static_brand.py
+      - name: Run A3 matrix regression
+        run: python scripts/test_enrichment_audit_matrix.py
       - name: Build effective A3 matrix
         run: |
           python scripts/enrichment_audit_matrix.py             --data dist/data/site-data.json             --registry dist/data/source-registry.json             --output /tmp/a3-enrichment-matrix.json             --allow-unclassified
+      - name: Verify acquired history is publicly consumable
+        run: |
+          python scripts/a3_publication_gap_audit.py \
+            --data dist/data/site-data.json \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --dist dist \
+            --json-output /tmp/a3-history-publication.json \
+            --strict
       - name: Build historical AVAILABLE_MISSING manifest
         run: |
           python -m py_compile scripts/a3_history_available_missing.py
@@ -41,4 +51,5 @@ jobs:
           path: |
             /tmp/a3-history-available-missing.json
             /tmp/A3_HISTORY_AVAILABLE_MISSING.md
+            /tmp/a3-history-publication.json
           if-no-files-found: error
