@@ -291,7 +291,7 @@
   function drinkingWaterQualityTownMarkup(metric,row) {
     const localities=row.localities||[],defs=metric.parameterDefinitions||[];
     if(!localities.length||!defs.length) return '<p>Dato non disponibile.</p>';
-    return `<div class="water-quality-town"><details class="water-quality-town-disclosure"><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
+    return `<div class="water-quality-town"><details class="water-quality-town-disclosure" open><summary><span><b>Consulta i valori per località</b><small>${html(number0.format(localities.length))} località GAIA · ${html(number0.format(defs.length))} parametri</small></span><i aria-hidden="true"></i></summary><div class="water-quality-town-disclosure-body"><div class="water-quality-town-controls"><label class="water-quality-selector"><span>Località GAIA</span><select data-water-quality-locality>${localities.map((locality,index)=>`<option value="${index}">${html(locality.name)}</option>`).join('')}</select></label><label class="water-quality-selector"><span>Parametro</span><select data-water-quality-parameter-town>${defs.map((def,index)=>`<option value="${index}">${html(def.name)}</option>`).join('')}</select></label></div><div data-water-quality-selected>${waterQualitySelectedMarkup(metric,row,0,0)}</div></div></details></div>`;
   }
 
   function remediationPartValue(source,key) {
@@ -620,86 +620,6 @@
     return `<div class="financial-profile-history" data-financial-profile-history>${financialProfileHistoryMarkup(metric,row,selected.index)}</div>`;
   }
 
-  function installFinancialProfileTooltipDelegation(container) {
-    if (!container || container.dataset.financialTooltipDelegated === '1') return;
-    container.dataset.financialTooltipDelegated='1';
-
-    const resolvePoint=target=>target?.closest?.('[data-financial-profile-history] .chart-point');
-    const hideChart=chart=>chart?.querySelectorAll('.chart-point').forEach(point=>{
-      point.classList.remove('active');
-      point.querySelector('.chart-tooltip')?.setAttribute('hidden','');
-    });
-    const showPoint=point=>{
-      if (!point || !container.contains(point)) return;
-      const chart=point.closest('.trend-chart');
-      hideChart(chart);
-      point.classList.add('active');
-      point.querySelector('.chart-tooltip')?.removeAttribute('hidden');
-    };
-
-    container.addEventListener('focusin',event=>showPoint(resolvePoint(event.target)));
-    container.addEventListener('focusout',event=>{
-      const point=resolvePoint(event.target);
-      const chart=point?.closest('.trend-chart');
-      if (!chart || chart.contains(event.relatedTarget)) return;
-      hideChart(chart);
-    });
-    container.addEventListener('pointerover',event=>showPoint(resolvePoint(event.target)));
-    container.addEventListener('pointerout',event=>{
-      const point=resolvePoint(event.target);
-      const chart=point?.closest('.trend-chart');
-      if (!chart || chart.contains(event.relatedTarget)) return;
-      const focused=document.activeElement;
-      if (focused && chart.contains(focused) && focused.classList?.contains('chart-point')) return;
-      hideChart(chart);
-    });
-    container.addEventListener('click',event=>showPoint(resolvePoint(event.target)));
-    container.addEventListener('keydown',event=>{
-      const point=resolvePoint(event.target);
-      if (!point || !container.contains(point)) return;
-      const chart=point.closest('.trend-chart');
-      const points=[...chart.querySelectorAll('.chart-point')];
-      const index=points.indexOf(point);
-      if (event.key === 'Escape') { hideChart(chart); point.blur(); return; }
-      if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-      event.preventDefault();
-      let next=index;
-      if (event.key === 'ArrowLeft') next=(index-1+points.length)%points.length;
-      if (event.key === 'ArrowRight') next=(index+1)%points.length;
-      if (event.key === 'Home') next=0;
-      if (event.key === 'End') next=points.length-1;
-      points[next]?.focus();
-    });
-  }
-
-  function ensureFinancialProfileTownDetail(container,metric,row,choice='part-0') {
-    if (!container || metric?.meta?.compositeType !== 'financialProfile') return null;
-    const reading=financialProfileReading(metric,choice);
-    let detailHost=container.querySelector('[data-financial-profile-detail]');
-    if (!detailHost) {
-      const panel=container.querySelector(':scope > .history-panel');
-      if (!panel) return null;
-      let fixed=panel.querySelector(':scope > .composite-fixed-detail');
-      if (!fixed) {
-        fixed=document.createElement('div');
-        fixed.className='composite-fixed-detail';
-        panel.append(fixed);
-      }
-      detailHost=document.createElement('div');
-      detailHost.setAttribute('data-financial-profile-detail','');
-      fixed.append(detailHost);
-    }
-    const signature=`${row.code || row.slug || row.town || ''}|${reading.index}`;
-    const alreadyCurrent=detailHost.dataset.financialSignature === signature
-      && Boolean(detailHost.querySelector('[data-financial-profile-history]'));
-    if (!alreadyCurrent) {
-      detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
-      detailHost.dataset.financialSignature=signature;
-      installChartInteractions(detailHost);
-    }
-    installFinancialProfileTooltipDelegation(container);
-    return detailHost;
-  }
   function compositeTownMarkup(metric, row) {
     if (metric.meta.compositeType === 'drinkingWaterQuality') return drinkingWaterQualityTownMarkup(metric,row);
     if (metric.meta.compositeType === 'remediationProceedings') return remediationTownMarkup(metric,row);
@@ -1424,16 +1344,7 @@
         && main.dataset.theme === 'salute'
         && Boolean(chart?.querySelector(':scope > .ux-view-shell'))
         && Boolean(fixedDetail.querySelector('.health-sex-detail, .health-demographic-detail, .demographic-history'));
-      const canonicalFinancialDetail = activeMetric === 'financialDebtProfile'
-        ? [...topic.querySelectorAll('[data-financial-profile-detail]')]
-            .map(node => node.closest('.composite-fixed-detail'))
-            .find(node => node && node !== fixedDetail && !chart?.contains(node))
-        : null;
-      const financialDuplicate = Boolean(
-        rolloutTown
-        && activeMetric === 'financialDebtProfile'
-        && canonicalFinancialDetail
-      );
+      const financialDuplicate = rolloutTown && activeMetric === 'financialDebtProfile';
       const inlineSpecialDetail = rolloutTown && (
         ['landCoverProfile','landslideExposure','floodExposure','drinkingWaterQuality','remediationProceedings'].includes(activeMetric)
         || Boolean(fixedDetail.querySelector('[data-land-cover-town-shell], .water-quality-town, .remediation-town'))
@@ -1935,7 +1846,8 @@
         updateExtractiveTownPosition(metric,row,choice,position);
         if(metric.meta.compositeType === 'financialProfile') {
           const reading=financialProfileReading(metric,choice);
-          const detailHost=ensureFinancialProfileTownDetail(container,metric,row,choice);
+          const detailHost=container.querySelector('[data-financial-profile-detail]');
+          if(detailHost) detailHost.innerHTML=financialProfileTownMarkup(metric,row,reading.index);
           const descriptionHost=container.querySelector('[data-composite-primary-description]');
           if(descriptionHost) descriptionHost.textContent=reading.description;
           const overlineHost=container.querySelector('[data-financial-panel-overline]');
@@ -1944,17 +1856,11 @@
           if(panelTitleHost) panelTitleHost.textContent=reading.label;
           const methodHost=container.querySelector('[data-financial-profile-method]');
           if(methodHost) methodHost.innerHTML=financialProfileMethodDisclosure(metric,choice);
+          if(detailHost) installChartInteractions(detailHost);
         }
         window.dispatchEvent(new CustomEvent('ov:composite-choice',{detail:{metricKey,choice,town:town.slug}}));
-        if(metric.meta.compositeType === 'financialProfile') {
-          requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,choice)));
-        }
       };
       select?.addEventListener('change',()=>applyChoice(select.value));
-      if (financialProfile) {
-        ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0');
-        requestAnimationFrame(()=>requestAnimationFrame(()=>ensureFinancialProfileTownDetail(container,metric,row,select?.value || 'part-0')));
-      }
       const applyDemographic=()=>applyChoice(`${demoAge?.value || metric.meta.defaultAge || '25-64'}|${demoGender?.value || metric.meta.defaultGender || 'total'}`);
       demoAge?.addEventListener('change',applyDemographic);
       demoGender?.addEventListener('change',applyDemographic);
