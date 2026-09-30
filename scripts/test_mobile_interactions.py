@@ -308,7 +308,7 @@ def verify_mobile_accordion_layout(page: Page, base: str) -> None:
         )
     verify_indicator_scroll_containment(
         page,
-        ".town-topic > .metric-switch.metric-catalog",
+        ".town-topic .metric-switch.metric-catalog",
         "Scheda Massarosa mobile",
     )
 

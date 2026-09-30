@@ -177,11 +177,12 @@ def main() -> None:
             base + "comuni/massarosa/?tema=ambiente&indicatore=agriculturalRenewalAndLeadership",
             wait_until="networkidle",
         )
-        mobile.wait_for_selector(".composite-town-mobility article")
-        articles = mobile.locator(".composite-town-mobility article")
-        assert articles.count() >= 2, "Card composite comunale non materializzate"
-        padding_left = articles.first.evaluate("el => parseFloat(getComputedStyle(el).paddingLeft)")
-        padding_right = articles.first.evaluate("el => parseFloat(getComputedStyle(el).paddingRight)")
+        mobile.wait_for_selector("#town-topic .town-metric-primary")
+        primary = mobile.locator("#town-topic .town-metric-primary").first
+        selector = mobile.locator("#town-topic select[data-composite-choice]")
+        assert selector.count() == 1 and selector.is_visible(), "Selettore Agricoltura II non disponibile"
+        padding_left = primary.evaluate("el => parseFloat(getComputedStyle(el).paddingLeft)")
+        padding_right = primary.evaluate("el => parseFloat(getComputedStyle(el).paddingRight)")
         assert padding_left >= 16 and padding_right >= 16, (padding_left, padding_right)
         assert mobile.evaluate(
             "document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"

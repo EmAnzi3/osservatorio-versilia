@@ -29,8 +29,7 @@
       renderCompareMetric(data, themeKey, key, false);
       scrollActiveControl(catalog);
     };
-    document.querySelectorAll('.topic-controls .metric-group-buttons[role="tablist"]')
-      .forEach(tablist => installTablist(tablist, update));
+    installTablist(document.querySelector('.topic-controls .metric-catalog'), update);
     renderCompareMetric(data, themeKey, metricKey, false);
     scrollActiveControl(document.querySelector('.topic-controls .metric-catalog'));
     installCrimeInteractions(data);
@@ -1137,13 +1136,13 @@
     actionHost.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 
     const photoFiles = {
-      'Massarosa':'MassarosaPanorama.JPG',
-      'Viareggio':'Viareggio, passeggiata a mare 2.JPG',
-      'Camaiore':'Pontile di Lido di Camaiore, 55041 Lido di Camaiore LU, Italy - panoramio.jpg',
-      'Pietrasanta':'Veduta di piazza duomo, Pietrasanta.jpg',
-      'Seravezza':'Palazzo Mediceo a Seravezza.jpg',
-      'Forte dei Marmi':'Pontile Forte dei Marmi.jpg',
-      'Stazzema':'Stazzema.JPG'
+      'Massarosa':'https://upload.wikimedia.org/wikipedia/commons/3/3b/MassarosaPanorama.JPG',
+      'Viareggio':'https://upload.wikimedia.org/wikipedia/commons/7/79/Viareggio,_passeggiata_a_mare_2.JPG',
+      'Camaiore':'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
+      'Pietrasanta':'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
+      'Seravezza':'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
+      'Forte dei Marmi':'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
+      'Stazzema':'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG'
     };
     document.querySelectorAll('#compare-territori .topic-town-card').forEach(card => {
       const name = card.querySelector('.topic-town-card-copy strong')?.textContent?.trim();
@@ -1156,12 +1155,10 @@
       card.href = route(`comuni/${slug}/?tema=${themeKey}&indicatore=${metricKey}`);
       if (image && photoFiles[name]) {
         const fallback = mediaSrc(data.crests[name]);
-        const remote = `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(photoFiles[name]).replaceAll('%20','_')}?width=640`;
+        image.src = photoFiles[name];
         image.alt = name;
         image.referrerPolicy = 'no-referrer';
-        a5CredentiallessImageUrl(remote)
-          .then(url => { image.src = url; })
-          .catch(() => { image.src = fallback; image.alt = ''; });
+        image.onerror = () => { image.onerror = null; image.src = fallback; image.alt = ''; };
       }
       let value = row?.value;
       let valueUnit = metric.meta.unit;
@@ -1346,7 +1343,7 @@
         && main.dataset.theme === 'salute'
         && Boolean(chart?.querySelector(':scope > .ux-view-shell'))
         && Boolean(fixedDetail.querySelector('.health-sex-detail, .health-demographic-detail, .demographic-history'));
-      const financialDuplicate = rolloutTown && activeMetric === 'financialDebtProfile';
+      const financialDuplicate = false;
       const inlineSpecialDetail = rolloutTown && (
         ['landCoverProfile','landslideExposure','floodExposure','drinkingWaterQuality','remediationProceedings'].includes(activeMetric)
         || Boolean(fixedDetail.querySelector('[data-land-cover-town-shell], .water-quality-town, .remediation-town'))
@@ -1556,35 +1553,35 @@
     camaiore: {
       institutionYear: 'sec. XIII',
       heroLabel: 'Pontile di Lido di Camaiore',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_di_Lido_di_Camaiore%2C_55041_Lido_di_Camaiore_LU%2C_Italy_-_panoramio.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_di_Lido_di_Camaiore,_55041_Lido_di_Camaiore_LU,_Italy_-_panoramio.jpg'
     },
     pietrasanta: {
       institutionYear: '1255',
       heroLabel: 'Piazza Duomo',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Veduta_di_piazza_duomo%2C_Pietrasanta.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Veduta_di_piazza_duomo,_Pietrasanta.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Veduta_di_piazza_duomo,_Pietrasanta.jpg'
     },
     seravezza: {
       institutionYear: '1485',
       heroLabel: 'Palazzo Mediceo',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Palazzo_Mediceo_a_Seravezza.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Palazzo_Mediceo_a_Seravezza.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Palazzo_Mediceo_a_Seravezza.jpg'
     },
     'forte-dei-marmi': {
       institutionYear: '1914',
       heroLabel: 'Pontile',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Pontile_Forte_dei_Marmi.jpg?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pontile_Forte_dei_Marmi.jpg',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Pontile_Forte_dei_Marmi.jpg'
     },
     stazzema: {
       institutionYear: '1776',
       heroLabel: 'Stazzema',
-      heroImage: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Stazzema.JPG?width=1800',
+      heroImage: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Stazzema.JPG',
       heroCredit: 'Wikimedia Commons',
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Stazzema.JPG'
     },
@@ -1596,31 +1593,6 @@
       heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:MassarosaPanorama.JPG'
     }
   });
-
-  const a5RemoteImageCache = new Map();
-
-  async function a5CredentiallessImageUrl(url) {
-    if (!url) return '';
-    if (!a5RemoteImageCache.has(url)) {
-      a5RemoteImageCache.set(url, fetch(url, {
-        mode:'cors',
-        credentials:'omit',
-        referrerPolicy:'no-referrer'
-      }).then(response => {
-        if (!response.ok) throw new Error(`Immagine remota non disponibile: ${response.status}`);
-        return response.blob();
-      }).then(blob => URL.createObjectURL(blob)));
-    }
-    return a5RemoteImageCache.get(url);
-  }
-
-  function a5ApplyCredentiallessHero(header) {
-    const remote = header?.dataset.a5TownHero;
-    if (!remote) return;
-    a5CredentiallessImageUrl(remote)
-      .then(url => header.style.setProperty('--a5-town-hero-image', `url("${url}")`))
-      .catch(() => {});
-  }
 
   function a5TownStatIcon(kind) {
     const icons = {
@@ -1639,8 +1611,8 @@
     const profile = A5_TOWN_PROFILE_META[slug] || {};
     const surfaceMetric = data.metrics.municipalSurface;
     const surface = surfaceMetric?.rows?.find(row => row.code === town.code);
-    const heroData = profile.heroImage ? ` data-a5-town-hero="${html(profile.heroImage)}"` : '';
-    return `<header class="town-hero"${heroData}>
+    const heroStyle = profile.heroImage ? ` style="--a5-town-hero-image:url('${html(profile.heroImage)}')"` : '';
+    return `<header class="town-hero"${heroStyle}>
       <div class="town-hero-shell">
         <div class="town-identity">
           <img alt="Stemma di ${html(town.name)}" src="${mediaSrc(data.crests[town.name])}">
@@ -1715,7 +1687,6 @@
       <section id="town-topic" class="town-topic" data-theme="${themeKey}"></section>
       <div id="town-context"></div>
     </main>`;
-    a5ApplyCredentiallessHero(app.querySelector('.town-hero[data-a5-town-hero]'));
 
     const updateUrl = (theme, metric) => {
       const url = new URL(location.href);
@@ -1842,8 +1813,7 @@
       updateExtractiveTownPosition(metric,row,initialChoice,initialPosition);
     }
 
-    container.querySelectorAll('.metric-group-buttons[role="tablist"]')
-      .forEach(tablist => installTablist(tablist, onMetricSelect));
+    installTablist(container.querySelector('.metric-catalog'), onMetricSelect);
     container.querySelector('[data-share]')?.addEventListener('click', event => shareCurrentPage(event.currentTarget));
     container.querySelector('[data-download]')?.addEventListener('click', () => downloadMetricCSV(data, metricKey));
     container.querySelector('[data-print]')?.addEventListener('click', () => window.print());

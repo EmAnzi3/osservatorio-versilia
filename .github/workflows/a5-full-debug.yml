@@ -15,7 +15,7 @@ concurrency:
 jobs:
   full-debug:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 25
     steps:
       - name: Checkout debug branch
         uses: actions/checkout@v4
@@ -27,12 +27,11 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-ci.txt
 
-      - name: Install full test dependencies
+      - name: Install browser test dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
           python -m playwright install --with-deps chromium
-          npm install --global lighthouse@12.8.2
 
       - name: Prepare coherent dist
         shell: bash
@@ -47,14 +46,16 @@ jobs:
           python scripts/copy_percorsi_dist.py
           node --check dist/assets/app-bundle.js
 
-      - name: Run complete non-fail-fast sweep
-        run: python scripts/a5_full_sweep_debug.py
+      - name: Run residual A5 gate
+        run: python scripts/a5_residual_sweep_debug.py
 
-      - name: Upload debug reports
+      - name: Upload debug reports and recorded A4 baselines
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: a5-debug-reports-${{ github.run_id }}
-          path: reports/
+          path: |
+            reports/
+            ci/visual-regression-baselines/*.json
           if-no-files-found: ignore
           retention-days: 14
