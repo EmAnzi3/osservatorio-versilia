@@ -38,9 +38,9 @@ jobs:
         run: python -m pip install requests
       - name: Probe official OpenBDAP Toscana archives
         run: |
-          python scripts/probe_bilanci_v139_sources.py             --output /tmp/a3-benchmark-openbdap-source-audit.json
+          python scripts/probe_bilanci_v139_sources.py             --output reports/a3-benchmark-openbdap-source-audit.json
       - uses: actions/upload-artifact@v4
         with:
           name: a3-benchmark-openbdap-probe
-          path: /tmp/a3-benchmark-openbdap-source-audit.json
+          path: reports/a3-benchmark-openbdap-source-audit.json
           if-no-files-found: error
