@@ -1,0 +1,55 @@
+name: A5 Lighthouse fast validation
+
+on:
+  push:
+    branches:
+      - "debug/a5-lighthouse-fast"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse-fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Lighthouse dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+          npm install --global lighthouse@13.4.1
+      - name: Compile Lighthouse budget
+        run: python -m py_compile scripts/test_lighthouse_budget.py
+      - name: Build candidate once
+        run: |
+          set -euo pipefail
+          python scripts/build_static_brand.py
+          git diff --exit-code -- . ':(exclude)dist'
+      - name: Lighthouse budget only
+        shell: bash
+        run: |
+          set -euo pipefail
+          PORT=8127
+          BASE="http://127.0.0.1:${PORT}/"
+          python scripts/preview_dist.py --port "${PORT}" --directory dist >/tmp/a5-lighthouse-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          cleanup() { kill "$PREVIEW_PID" 2>/dev/null || true; }
+          trap cleanup EXIT
+          sleep 1
+          python scripts/test_lighthouse_budget.py --base "${BASE}" --output-dir reports/lighthouse-fast
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a5-lighthouse-fast-reports
+          path: |
+            reports/lighthouse-fast/
+            /tmp/a5-lighthouse-preview.log
+          if-no-files-found: ignore
+          retention-days: 7
