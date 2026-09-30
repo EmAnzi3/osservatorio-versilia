@@ -42,3 +42,38 @@ jobs:
           name: a3-history-tourism-source-probe
           path: /tmp/a3-history-tourism-source-probe.json
           if-no-files-found: error
+
+  istat-census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe Istat Census result sources
+        run: |
+          python scripts/probe_a3_history_source_links.py \
+            --profile istat-census-annual \
+            --url "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/" \
+            --output /tmp/a3-history-istat-census-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-istat-census-source-probe
+          path: /tmp/a3-history-istat-census-source-probe.json
+          if-no-files-found: error
+
+  istat-demography:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run existing Istat Demo source audit
+        run: python scripts/audit_istat_demography_sources.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-istat-demography-source-probe
+          path: audit-artifacts/istat-demography-source-scan.json
+          if-no-files-found: error
