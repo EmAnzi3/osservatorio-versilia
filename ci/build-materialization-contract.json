@@ -44,6 +44,7 @@
     "scripts/apply_enrichment_evidence_audit13.py",
     "scripts/apply_enrichment_evidence_audit14.py",
     "scripts/apply_enrichment_evidence_audit15.py",
+    "scripts/materialize_a3_history_fuel.py",
     "scripts/materialize_a3_publication_adapter.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
