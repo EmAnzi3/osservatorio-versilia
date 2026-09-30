@@ -15,7 +15,7 @@
 
 ## Contratto A6.1
 
-La fonte di verità resta `data/site-data.json`. Non creare inventari paralleli di Comuni, temi o indicatori.
+La fonte canonica resta `data/site-data.json`, ma A6 deve validare anche l’Effective Public Catalog materializzato in `dist/data/site-data.json`. Nella release corrente i due layer contengono rispettivamente 181 e 225 indicatori. Non creare inventari paralleli: entrambi i conteggi devono essere derivati.
 
 Il modello minimo deve derivare e governare:
 - Comune;
@@ -24,7 +24,8 @@ Il modello minimo deve derivare e governare:
 - periodo;
 - dimensione esplicita/source-backed;
 - fonte;
-- benchmark separato dall'osservazione comunale.
+- benchmark separato dall'osservazione comunale;
+- copertura semantica completa dell’Effective Public Catalog, non soltanto del catalogo sorgente.
 
 Il contratto machine-readable è `ci/semantic-model-contract.json`; la specifica è `docs/A6_SEMANTIC_MODEL.md`.
 

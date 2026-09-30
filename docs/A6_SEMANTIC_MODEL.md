@@ -4,7 +4,13 @@
 
 A6 introduce un livello semantico deterministico sopra il catalogo canonico senza creare un secondo inventario di Comuni, temi o indicatori.
 
-La fonte di verità resta `data/site-data.json`. Il semantic layer normalizza identità e relazioni; non inventa nuovi numeri e non interpreta causalmente i dati.
+La fonte canonica resta `data/site-data.json`, ma A6 distingue due livelli: il **Source Catalog** (181 indicatori nella release corrente) e l’**Effective Public Catalog** generato dalla build (225 indicatori pubblici nella release corrente). Il semantic layer interrogabile deve governare l’Effective Public Catalog, perché è quello realmente esposto dal prodotto. Nessuno dei due conteggi viene duplicato nel contratto: sono derivati e verificati dai cataloghi stessi.
+
+## Livelli del catalogo
+
+- **Source Catalog** — `data/site-data.json`: input canonico versionato; nella release corrente contiene 181 indicatori.
+- **Effective Public Catalog** — `dist/data/site-data.json`: catalogo derivato dopo i materializzatori approvati; nella release corrente contiene 225 indicatori ed è la superficie semantica pubblica da interrogare.
+- I 44 indicatori aggiuntivi non sono un secondo inventario manuale: vengono materializzati dalla pipeline e devono essere validati dallo stesso contratto A6.
 
 ## Entità minime
 
@@ -50,7 +56,7 @@ Ogni osservazione utilizzabile dal futuro motore A6 deve poter restituire almeno
 
 `ci/semantic-model-contract.json` definisce il mapping e le invarianti senza elencare metriche o territori.
 
-`scripts/semantic_model_contract.py` valida il contratto sul catalogo reale e controlla:
+`scripts/semantic_model_contract.py` valida lo stesso contratto su entrambi i livelli. Il Quick controlla il Source Catalog prima della build e `test_site_consistency.py` controlla l’Effective Public Catalog dopo la materializzazione. In entrambi i casi verifica:
 
 - unicità dei Comuni;
 - coerenza bidirezionale tema ↔ indicatore;
@@ -63,4 +69,4 @@ Ogni osservazione utilizzabile dal futuro motore A6 deve poter restituire almeno
 
 ## Confine A6.1
 
-A6.1 definisce il modello e i suoi invarianti. Non implementa ancora confronto, trend, rango, correlazione o anomalie: quelle operazioni appartengono ad A6.2.
+A6.1 definisce il modello e i suoi invarianti su entrambi i layer, con l’Effective Public Catalog come superficie interrogabile. Non implementa ancora confronto, trend, rango, correlazione o anomalie: quelle operazioni appartengono ad A6.2.

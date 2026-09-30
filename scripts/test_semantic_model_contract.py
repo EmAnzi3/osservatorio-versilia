@@ -88,14 +88,14 @@ def main() -> None:
 
     canonical_path = root / "data" / "site-data.json"
     canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
-    real = validate_semantic_model_contract(canonical_path, contract)
+    real = validate_semantic_model_contract(canonical_path, contract, layer="source")
     assert real["municipalities"] == len(canonical["towns"]), real
     assert real["themes"] == len(canonical["themes"]), real
     assert real["metrics"] == len(canonical["metrics"]), real
     assert real["municipalities"] > 0 and real["themes"] > 0 and real["metrics"] > 0, real
     assert real["sources"] > 0, real
     print(
-        "A6.1 semantic model regression passed: "
+        "A6.1 source semantic model regression passed: "
         f"{real['municipalities']} Comuni, {real['themes']} temi, {real['metrics']} indicatori, "
         f"{real['periods']} periodi e {real['sources']} fonti derivati dal catalogo canonico."
     )

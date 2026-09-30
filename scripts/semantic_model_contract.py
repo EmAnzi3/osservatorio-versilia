@@ -84,6 +84,8 @@ def _metric_has_unit(metric: dict[str, Any]) -> bool:
 def validate_semantic_model_contract(
     data_path: Path | str = DEFAULT_DATA,
     contract_path: Path | str = DEFAULT_CONTRACT,
+    *,
+    layer: str = "source",
 ) -> dict[str, Any]:
     data = load_json(data_path)
     contract = load_json(contract_path)
@@ -94,7 +96,16 @@ def validate_semantic_model_contract(
     assert scope.get("noMunicipalityInventory") is True
     assert scope.get("noThemeInventory") is True
     assert scope.get("noIndicatorInventory") is True
-    assert contract.get("sourceOfTruth") == "data/site-data.json"
+
+    source_of_truth = contract.get("sourceOfTruth") or {}
+    assert source_of_truth.get("canonical") == "data/site-data.json"
+    assert source_of_truth.get("effective") == "dist/data/site-data.json"
+    layers = contract.get("layers") or {}
+    assert set(layers) == {"source", "effective"}, f"Layer semantici inattesi: {sorted(layers)}"
+    assert layer in layers, f"Layer semantico sconosciuto: {layer}"
+    assert layers["source"].get("querySurface") is False
+    assert layers["effective"].get("querySurface") is True
+    assert layers["effective"].get("derived") is True
 
     towns = data.get("towns")
     themes = data.get("themes")
@@ -210,6 +221,7 @@ def validate_semantic_model_contract(
     )
 
     return {
+        "layer": layer,
         "municipalities": len(town_by_code),
         "themes": len(themes),
         "metrics": int(counts["metrics"]),
@@ -227,13 +239,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data", type=Path, default=DEFAULT_DATA)
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
     parser.add_argument("--json-output", type=Path)
+    parser.add_argument("--layer", choices=("source", "effective"), default="source")
     args = parser.parse_args(argv)
-    report = validate_semantic_model_contract(args.data, args.contract)
+    report = validate_semantic_model_contract(args.data, args.contract, layer=args.layer)
     if args.json_output:
         args.json_output.parent.mkdir(parents=True, exist_ok=True)
         args.json_output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
-        "A6 semantic model contract: "
+        f"A6 semantic model contract [{report['layer']}]: "
         f"{report['municipalities']} Comuni · {report['themes']} temi · {report['metrics']} indicatori · "
         f"{report['periods']} periodi · {report['sources']} fonti · "
         f"{report['historicalSeries']} serie storiche."
