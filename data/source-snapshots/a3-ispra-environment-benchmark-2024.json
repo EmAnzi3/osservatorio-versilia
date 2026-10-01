@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-ispra-environment-benchmark-2024-v1",
+  "retrieved": "2026-10-02",
+  "publisher": "ISPRA — Catasto Nazionale Rifiuti",
+  "sourceProfileId": "ispra-environment-annual",
+  "candidateState": "ACQUIRED_CANDIDATE",
+  "sourceUrl": "https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&advice=si&pg=costiregione",
+  "qualityGate": {
+    "status": "PASS",
+    "publicReconciliation": "1 metric × 7/7 towns PASS",
+    "errors": []
+  },
+  "benchmarks": {
+    "wasteServiceCost": {
+      "year": "2024",
+      "unit": "currency",
+      "formula": "CTOTab regionale/nazionale ufficiale ISPRA",
+      "tuscany": 297.74,
+      "italy": 214.39
+    }
+  },
+  "components": {
+    "tuscany": {
+      "ctot": 297.74,
+      "municipalSampleCount": 252
+    },
+    "italy": {
+      "ctot": 214.39
+    }
+  },
+  "acquisitionEvidence": {
+    "runId": 36938919630,
+    "artifactId": 11199326029,
+    "head": "5ae21e94abafa4439184baecb045693a46825f1d"
+  }
+}\n
