@@ -1,0 +1,103 @@
+name: A3 Historical source probes
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe MIM catalog
+        run: |
+          python scripts/probe_a3_history_source_links.py             --profile mim-school-year             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Studenti"             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole"             --url "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Edilizia+Scolastica"             --output /tmp/a3-history-mim-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-mim-source-probe
+          path: /tmp/a3-history-mim-source-probe.json
+          if-no-files-found: error
+
+  turismo-toscana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe Turismo Toscana bank
+        run: |
+          python scripts/probe_a3_history_source_links.py             --profile regione-toscana-tourism-annual             --url "https://www.regione.toscana.it/statistiche/banca-dati-turismo"             --url "https://www.regione.toscana.it/-/arrivi-e-presenze-nelle-strutture-ricettive-e-struttura-dell-offerta-dati-2025%C2%A0"             --output /tmp/a3-history-tourism-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-tourism-source-probe
+          path: /tmp/a3-history-tourism-source-probe.json
+          if-no-files-found: error
+
+  istat-census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Probe Istat Census result sources
+        run: |
+          python scripts/probe_a3_history_source_links.py \
+            --profile istat-census-annual \
+            --url "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/" \
+            --output /tmp/a3-history-istat-census-source-probe.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-istat-census-source-probe
+          path: /tmp/a3-history-istat-census-source-probe.json
+          if-no-files-found: error
+
+  istat-demography:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run existing Istat Demo source audit
+        run: python scripts/audit_istat_demography_sources.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-istat-demography-source-probe
+          path: audit-artifacts/istat-demography-source-scan.json
+          if-no-files-found: error
+
+  mim-history-schema:
+    strategy:
+      fail-fast: false
+      matrix:
+        year: ["201920", "202021", "202122", "202223", "202324", "202425"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install MIM probe dependencies
+        run: python -m pip install requests beautifulsoup4
+      - name: Probe annual MIM CSV schemas
+        run: |
+          python scripts/probe_a3_mim_history_schema.py \
+            --year "${{ matrix.year }}" \
+            --output "reports/a3-mim-history-${{ matrix.year }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-mim-history-${{ matrix.year }}
+          path: reports/a3-mim-history-${{ matrix.year }}.json
+          if-no-files-found: error

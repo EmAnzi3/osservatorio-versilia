@@ -117,6 +117,25 @@ def test_derived_matrix_and_precedence() -> None:
     }
     assert audit.acquired_evidence(one_point_history, "serie_storica") is None
 
+    external_climate_history = {
+        "dataStorage": {
+            "type": "external-climate",
+            "builder": "annual-trend",
+            "path": "data/meteo-clima-poc.json",
+            "seriesKey": "temperature",
+        }
+    }
+    evidence = audit.acquired_evidence(external_climate_history, "serie_storica")
+    assert evidence == "dataStorage.external-climate:data/meteo-clima-poc.json#temperature"
+    incomplete_external_history = {
+        "dataStorage": {
+            "type": "external-climate",
+            "path": "data/meteo-clima-poc.json",
+            "seriesKey": "temperature",
+        }
+    }
+    assert audit.acquired_evidence(incomplete_external_history, "serie_storica") is None
+
     normalized_pair = {
         "meta": {"normalized": {"label": "Per residente", "unit": "per1000"}},
         "rows": [{"value": 120, "normalized": 7.5}],

@@ -1,0 +1,127 @@
+name: A3 Historical parallel source fan-out
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+  workflow_dispatch:
+
+concurrency:
+  group: a3-history-fanout-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-ci.txt
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-ci.txt
+          python -m playwright install --with-deps chromium
+      - name: Build effective public catalog once
+        env:
+          OV_RELEASE_BUILD: "1"
+        run: python scripts/build_static_brand.py
+      - name: Derive current A3 backlog
+        run: |
+          mkdir -p /tmp/a3-fanout-context
+          python scripts/enrichment_audit_matrix.py \
+            --data dist/data/site-data.json \
+            --registry dist/data/source-registry.json \
+            --output /tmp/a3-fanout-context/matrix.json \
+            --allow-unclassified
+          python scripts/enrichment_source_audit.py \
+            --matrix /tmp/a3-fanout-context/matrix.json \
+            --registry dist/data/source-registry.json \
+            --json-output /tmp/a3-fanout-context/source-audit.json
+          python scripts/enrichment_backlog.py \
+            --matrix /tmp/a3-fanout-context/matrix.json \
+            --source-audit /tmp/a3-fanout-context/source-audit.json \
+            --json-output /tmp/a3-fanout-context/backlog.json
+          cp dist/data/source-registry.json /tmp/a3-fanout-context/source-registry.json
+      - name: Select historical source workers dynamically
+        run: |
+          python scripts/a3_fanout_manifest.py \
+            --backlog /tmp/a3-fanout-context/backlog.json \
+            --dimension serie_storica \
+            --max-profiles 12 \
+            --output /tmp/a3-fanout-context/manifest.json \
+            --matrix-output /tmp/a3-fanout-context/github-matrix.json
+      - id: matrix
+        name: Publish worker matrix
+        run: echo "matrix=$(cat /tmp/a3-fanout-context/github-matrix.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-fanout-context
+          path: /tmp/a3-fanout-context
+          if-no-files-found: error
+
+  source-worker:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests openpyxl
+      - uses: actions/download-artifact@v4
+        with:
+          name: a3-history-fanout-context
+          path: /tmp/a3-fanout-context
+      - name: Probe isolated source profile
+        run: |
+          mkdir -p reports/history-fanout
+          python scripts/probe_a3_fanout_source.py \
+            --manifest /tmp/a3-fanout-context/manifest.json \
+            --registry /tmp/a3-fanout-context/source-registry.json \
+            --profile "${{ matrix.profileId }}" \
+            --deep-files 8 \
+            --output "reports/history-fanout/${{ matrix.profileId }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-source-${{ matrix.profileId }}
+          path: reports/history-fanout/${{ matrix.profileId }}.json
+          if-no-files-found: error
+
+  fan-in:
+    needs: [prepare, source-worker]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: a3-history-source-*
+          path: /tmp/a3-history-workers
+          merge-multiple: true
+      - name: Summarize historical source workers
+        run: |
+          mkdir -p reports
+          python scripts/a3_fanout_summary.py \
+            --input-dir /tmp/a3-history-workers \
+            --dimension serie_storica \
+            --json-output reports/a3-history-fanout-summary.json \
+            --markdown-output reports/A3_HISTORY_FANOUT_SUMMARY.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-history-fanout-summary
+          path: |
+            reports/a3-history-fanout-summary.json
+            reports/A3_HISTORY_FANOUT_SUMMARY.md
+          if-no-files-found: error

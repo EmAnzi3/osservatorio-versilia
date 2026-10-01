@@ -98,6 +98,21 @@ def _find_key(metric: dict[str, Any], tokens: set[str]) -> str | None:
 
 
 def _find_series(metric: dict[str, Any]) -> str | None:
+    storage = metric.get("dataStorage")
+    if isinstance(storage, dict):
+        storage_type = str(storage.get("type") or "").strip()
+        storage_path = str(storage.get("path") or "").strip()
+        series_key = str(storage.get("seriesKey") or "").strip()
+        builder = str(storage.get("builder") or "").strip()
+        if (
+            storage_type == "external-climate"
+            and storage_path.startswith("data/")
+            and storage_path.endswith(".json")
+            and series_key
+            and builder
+        ):
+            return f"dataStorage.{storage_type}:{storage_path}#{series_key}"
+
     series_tokens = {"series", "serie", "history", "historical", "storico", "trend"}
     period_tokens = {"year", "anno", "period", "periodo", "date", "data"}
     for path, value in _walk(metric):

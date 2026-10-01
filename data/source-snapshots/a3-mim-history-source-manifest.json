@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "publisher": "MIM — Portale unico dei dati della scuola",
+  "sourceProfileId": "mim-school-year",
+  "years": {
+    "2019/20": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20192020200831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20192020200831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20192020200831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20192020200831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20192020200831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20192020200831.csv"
+    },
+    "2020/21": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20202120210831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20202120210831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20202120210831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20202120210831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20202120210831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20202120210831.csv"
+    },
+    "2021/22": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20212220220831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20212220220831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20212220220831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20212220220831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20212220220831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20212220220831.csv"
+    },
+    "2022/23": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20222320230831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20222320230831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20222320230831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20222320230831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20222320230831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20222320230831.csv"
+    },
+    "2023/24": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20232420240831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20232420240831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20232420240831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20232420240831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20232420240831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20232420240831.csv"
+    },
+    "2024/25": {
+      "registry_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20242520250831.csv",
+      "registry_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFEPAR20242520250831.csv",
+      "classes_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLASTA20242520250831.csv",
+      "classes_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOINDCLAPAR20242520250831.csv",
+      "time_state": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLASTA20242520250831.csv",
+      "time_private": "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUTEMPOSCUOLAPAR20242520250831.csv"
+    }
+  }
+}

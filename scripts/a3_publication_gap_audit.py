@@ -176,6 +176,75 @@ def _runtime_corpus(dist: Path) -> str:
     return "\n".join(chunks)
 
 
+def _external_history_status(
+    metric_id: str,
+    metric: dict[str, Any],
+    dist: Path,
+    runtime: str,
+) -> tuple[str, str] | None:
+    storage = metric.get("dataStorage")
+    if not isinstance(storage, dict) or storage.get("type") != "external-climate":
+        return None
+    relative = str(storage.get("path") or "").strip()
+    series_key = str(storage.get("seriesKey") or "").strip()
+    if not relative.startswith("data/") or not relative.endswith(".json") or not series_key:
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            "external-climate storage contract is incomplete",
+        )
+    target = dist / relative
+    if not target.is_file():
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            f"external history file missing from public dist: {relative}",
+        )
+    try:
+        payload = json.loads(target.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            f"external history file is not readable JSON: {relative} ({type(exc).__name__})",
+        )
+    municipalities = payload.get("municipalities")
+    if not isinstance(municipalities, dict) or len(municipalities) < 7:
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            f"external history does not cover the seven municipalities: {relative}",
+        )
+    valid = 0
+    for town, series in municipalities.items():
+        if not isinstance(series, dict):
+            continue
+        years = series.get("years")
+        values = series.get(series_key)
+        if (
+            isinstance(years, list)
+            and isinstance(values, list)
+            and len(years) >= 2
+            and len(years) == len(values)
+            and sum(1 for value in values if _finite(value)) >= 2
+        ):
+            valid += 1
+    if valid < 7:
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            f"external history has valid aligned series for only {valid}/7 municipalities",
+        )
+    runtime_lower = runtime.lower()
+    filename = Path(relative).name.lower()
+    if metric_id.lower() not in runtime_lower or (
+        filename not in runtime_lower and series_key.lower() not in runtime_lower
+    ):
+        return (
+            "NOT_PUBLIC_DESPITE_ACQUIRED",
+            "external history exists but no public runtime consumption contract was found",
+        )
+    return (
+        "SPECIAL_ROUTE_RENDERED",
+        f"specialist public runtime consumes {relative}#{series_key} for 7/7 municipalities",
+    )
+
+
 def _history_status(
     metric_id: str,
     metric: dict[str, Any],
@@ -196,6 +265,10 @@ def _history_status(
             "PUBLIC_RENDERED",
             "canonical row.series years/values is consumable by the standard history renderer/export",
         )
+
+    external = _external_history_status(metric_id, metric, dist, runtime)
+    if external is not None:
+        return external
 
     special_fields = _special_history_fields(metric)
     if special_fields:
