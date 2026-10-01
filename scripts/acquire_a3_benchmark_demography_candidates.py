@@ -237,10 +237,10 @@ def rcs_benchmark(session:requests.Session)->dict[str,Any]:
     }
     towns={}
     for row in reader:
-        raw_code=re.sub(r"\\D","",str(row.get("Codice Istat") or "").strip())
+        raw_code=re.sub(r"\D","",str(row.get("Codice Istat") or "").strip())
         # RCS contiene anche righe territoriali aggregate con codici più corti.
         # Non zero-pad: solo codici comunali grezzi esattamente a 6 cifre.
-        if not re.fullmatch(r"\\d{6}",raw_code):
+        if not re.fullmatch(r"\d{6}",raw_code):
             continue
         code=raw_code
         value=num(row.get("Totale"))
