@@ -71,6 +71,20 @@ def localized_index(rows):
 def codes_for(index:dict[tuple[str,...],float],dtype:str)->set[str]:
     return {k[0] for k in index if len(k)>=2 and k[1]==dtype}
 
+def aggregate_value(rows,ref_area,dtype,*,crop=None,alt=None):
+    hits=[]
+    for row in rows:
+        if str(row.get("REF_AREA") or "").strip()!=ref_area: continue
+        if str(row.get("DATA_TYPE") or "").strip()!=dtype: continue
+        if crop is not None and str(row.get("TYPE_OF_CROP") or "").strip()!=crop: continue
+        if alt is not None and str(row.get("ALTIMETRIC_ZONE") or "").strip()!=alt: continue
+        hits.append(num(row.get("OBS_VALUE")))
+    if len(hits)!=1:
+        raise RuntimeError(
+            f"aggregato SDMX non univoco {ref_area}/{dtype}/{crop or '-'}/{alt or '-'}: {hits}"
+        )
+    return hits[0]
+
 def scope_sum(index,keys,scope):
     def pred(c): return True if scope=="italy" else c[:3] in TUSCANY_PREFIXES
     return sum(v for k,v in index.items() if k in keys and pred(k[0]))
@@ -146,19 +160,39 @@ def main():
         for field in ("farms","sauCenterHa"):
             if not math.isclose(raw[scope][field],OFFICIAL[scope][field],rel_tol=0.0,abs_tol=.05):
                 errors.append(f"{scope}/{field}: {raw[scope][field]} != official {OFFICIAL[scope][field]}")
-    # A livello Italia la SAU per localizzazione deve chiudere con la SAU nazionale per centro aziendale.
-    if not math.isclose(raw["italy"]["sauLocalizedHa"],OFFICIAL["italy"]["sauCenterHa"],rel_tol=0.0,abs_tol=.1):
-        errors.append(f"italy/sauLocalizedHa: {raw['italy']['sauLocalizedHa']} != official SAU {OFFICIAL['italy']['sauCenterHa']}")
+    # Gli stessi dataflow espongono aggregati ufficiali non comunali.
+    # ITE1 è il codice NUTS storico della Toscana usato dalla base 2020; IT è l'Italia.
+    direct={
+      "agriculturalUsedArea":{
+        "tuscany":aggregate_value(all_l,"ITE1","ARU",crop="ALL",alt="TOT"),
+        "italy":aggregate_value(all_l,"IT","ARU",crop="ALL",alt="TOT"),
+      },
+      "irrigatedAgriculturalArea":{
+        "tuscany":aggregate_value(all_i,"ITE1","IA"),
+        "italy":aggregate_value(all_i,"IT","IA"),
+      },
+    }
+    aggregate_errors=[]
+    for metric_id,field in (
+        ("agriculturalUsedArea","sauLocalizedHa"),
+        ("irrigatedAgriculturalArea","irrigatedAreaHa"),
+    ):
+        for scope in ("tuscany","italy"):
+            observed=raw[scope][field]
+            official=direct[metric_id][scope]
+            if not math.isclose(observed,official,rel_tol=0.0,abs_tol=.05):
+                aggregate_errors.append(
+                    f"{metric_id}/{scope}: municipal sum {observed} != direct aggregate {official}"
+                )
 
-    # Gate per-metrica: un mismatch sulla SAU localizzata non deve bloccare
-    # metriche indipendenti già riconciliate e controllate su totali ufficiali.
     core_errors=[e for e in errors if "sauLocalizedHa" not in e]
-    localized_errors=[e for e in errors if "sauLocalizedHa" in e]
     benchmarks={
       "agriculturalFarms":{"year":"2020","unit":"number","formula":"somma aziende agricole comunali","tuscany":raw["tuscany"]["farms"],"italy":raw["italy"]["farms"]},
+      "agriculturalUsedArea":{"year":"2020","unit":"hectares","formula":"ARU/ALL/TOT — SAU localizzata fisicamente nel territorio","tuscany":direct["agriculturalUsedArea"]["tuscany"],"italy":direct["agriculturalUsedArea"]["italy"]},
       "averageAgriculturalFarmSize":{"year":"2020","unit":"hectaresPerFarm","formula":"Σ SAU per centro aziendale / Σ aziende con SAU","tuscany":raw["tuscany"]["sauCenterHa"]/raw["tuscany"]["farmsWithSau"],"italy":raw["italy"]["sauCenterHa"]/raw["italy"]["farmsWithSau"]},
+      "irrigatedAgriculturalArea":{"year":"2020","unit":"hectares","formula":"IA — superficie irrigata delle aziende per centro aziendale","tuscany":direct["irrigatedAgriculturalArea"]["tuscany"],"italy":direct["irrigatedAgriculturalArea"]["italy"]},
     }
-    safe_gate="PASS" if not core_errors else "FAIL"
+    safe_gate="PASS" if not core_errors and not aggregate_errors else "FAIL"
     payload={
       "schemaVersion":5,"publisher":"Istat — 7° Censimento generale dell’agricoltura 2020","profileId":"istat-agriculture-census-2020","referenceYear":2020,
       "status":"ACQUIRED_CANDIDATE" if safe_gate=="PASS" else "CANDIDATE_REJECTED",
@@ -166,18 +200,12 @@ def main():
       "benchmarks":benchmarks,"raw":raw,"aggregateAreaSamples":aggregate_area_samples,
       "qualityGate":{
         "status":safe_gate,
-        "publicSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if safe_gate=="PASS" else "FAIL",
-        "officialTotalsControl":"HO + center SAU Tuscany/Italy PASS" if safe_gate=="PASS" else "FAIL",
-        "errors":core_errors,
+        "publicSnapshotReconciliation":"4 metrics × 7/7 towns PASS" if safe_gate=="PASS" else "FAIL",
+        "officialTotalsControl":"HO + center SAU + localized SAU + irrigated area Tuscany/Italy PASS" if safe_gate=="PASS" else "FAIL",
+        "directAggregates":direct,
+        "errors":core_errors+aggregate_errors,
       },
       "blocked":{
-        "agriculturalUsedArea":{
-          "reason":"SAU localizzata Italia non chiude il totale nazionale per centro aziendale; non forzata",
-          "candidate":{"tuscany":raw["tuscany"]["sauLocalizedHa"],"italy":raw["italy"]["sauLocalizedHa"]},
-          "errors":localized_errors,
-          "coverage":{"tuscany":raw["tuscany"]["coverage"]["localizedSau"],"italy":raw["italy"]["coverage"]["localizedSau"]},
-        },
-        "irrigatedAgriculturalArea":{"reason":"manca un controllo aggregato ufficiale indipendente","candidate":{"tuscany":raw["tuscany"]["irrigatedAreaHa"],"italy":raw["italy"]["irrigatedAreaHa"]}},
         "cropProfile":"composite: componente benchmark da certificare separatamente",
         "agriculturalRenewalAndLeadership":"fasce età aggregate non consentono <=40",
         "agriculturalDiversificationAndModernization":"serve totale distinto delle aziende con attività connesse",
