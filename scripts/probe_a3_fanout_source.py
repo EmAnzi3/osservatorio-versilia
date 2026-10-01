@@ -19,7 +19,7 @@ FILE_RE=re.compile(r"""(?:href|src)=["']([^"']+\.(?:csv|json|geojson|zip|xlsx?|o
 ABS_RE=re.compile(r"""https?://[^\s"'<>]+\.(?:csv|json|geojson|zip|xlsx?|ods)(?:\?[^\s"'<>]*)?""",re.I)
 YEAR_RE=re.compile(r"\b(?:19|20)\d{2}(?:\s*[-/]\s*(?:19|20)?\d{2})?\b")
 TARGET_WORDS=("toscana","italia","italy","nazionale","national")
-MAX_BODY=25*1024*1024
+MAX_BODY=60*1024*1024
 
 
 def load(path:Path)->dict[str,Any]:
@@ -112,16 +112,123 @@ def xlsx_probe(body:bytes)->dict[str,Any]:
     return {"sheets":sheets}
 
 
+def file_priority(profile_id:str,url:str)->tuple[int,str]:
+    text=url.lower()
+    score=0
+    for year,points in (("2026",12),("2025",11),("2024",10),("2023",9),("2022",6),("2021",5)):
+        if year in text:
+            score+=points
+            break
+    if "toscana" in text or "/reg_" in text or "dati_regionali" in text:
+        score+=25
+    if "italia" in text or "national" in text or "nazionale" in text:
+        score+=18
+    if text.endswith(".xlsx") or ".xlsx?" in text:
+        score+=7
+    elif text.endswith(".zip") or ".zip?" in text:
+        score+=6
+    elif text.endswith(".csv") or ".csv?" in text:
+        score+=5
+    elif text.endswith(".json") or ".json?" in text:
+        score+=3
+
+    if profile_id=="istat-census-annual":
+        if "dati_regionali_2023" in text: score+=80
+        if "comuni_2023" in text: score+=45
+    elif profile_id=="istat-demography-annual":
+        if "046_lucca" in text: score+=80
+        if "comuni" in text: score+=55
+        if "/p2_" in text or "/p02" in text: score+=20
+        if "posas" in text: score+=15
+    elif profile_id=="mim-school-year":
+        if "202425" in text: score+=70
+        if any(token in text for token in ("alucorsoindcla","alutemposcuola","scuanagrafe")): score+=30
+    elif profile_id=="mef-irpef-annual":
+        if "/reg_" in text: score+=70
+        if "base_comunale_csv_2024" in text: score+=65
+        if "tipo_reddito_2024" in text or "calcolo_irpef_2024" in text: score+=35
+    elif profile_id=="openbdap-annual":
+        score+=50
+    elif profile_id=="istat-business-annual":
+        if "tavole.zip" in text: score+=80
+    elif profile_id=="istat-agriculture-census-2020":
+        if "manifest.json" in text: score+=50
+    return (-score,url)
+
+
+def csv_geo_probe(body:bytes,max_rows:int=12000)->dict[str,Any]:
+    text=body.decode("utf-8-sig",errors="replace")
+    sample=text[:8192]
+    try:
+        delimiter=csv.Sniffer().sniff(sample,delimiters=",;|\t").delimiter
+    except csv.Error:
+        delimiter=","
+    reader=csv.reader(io.StringIO(text),delimiter=delimiter)
+    sample_rows=[]; geo_matches=[]; rows_scanned=0
+    for index,row in enumerate(reader):
+        rows_scanned=index+1
+        values=row[:100]
+        if index<6:
+            sample_rows.append(values)
+        joined=" | ".join(str(v) for v in values if v not in (None,"")).lower()
+        if any(word in joined for word in TARGET_WORDS):
+            geo_matches.append({"row":index+1,"values":values})
+            if len(geo_matches)>=25 and index>=100:
+                break
+        if index+1>=max_rows:
+            break
+    return {
+        "delimiter":delimiter,
+        "sampleRows":sample_rows,
+        "geoMatches":geo_matches,
+        "rowsScanned":rows_scanned,
+    }
+
+
 def zip_probe(body:bytes)->dict[str,Any]:
     with zipfile.ZipFile(io.BytesIO(body)) as archive:
         names=archive.namelist()
+        structured=[
+            name for name in names
+            if name.lower().endswith((".csv",".json",".geojson",".xlsx",".xlsm",".ods"))
+        ]
+        inspected=[]
+        def member_score(name:str)->tuple[int,str]:
+            low=name.lower()
+            score=0
+            if any(token in low for token in ("toscana","region","italia","national","nazionale")): score+=30
+            if "2025" in low: score+=12
+            elif "2024" in low: score+=11
+            elif "2023" in low: score+=10
+            if low.endswith(".csv"): score+=5
+            elif low.endswith((".xlsx",".xlsm")): score+=4
+            elif low.endswith((".json",".geojson")): score+=3
+            return (-score,name)
+        for name in sorted(structured,key=member_score)[:10]:
+            try:
+                raw=archive.read(name)
+                low=name.lower()
+                if low.endswith(".csv"):
+                    detail={"member":name,"bytes":len(raw),"kind":"csv",**csv_geo_probe(raw)}
+                elif low.endswith((".xlsx",".xlsm")):
+                    detail={"member":name,"bytes":len(raw),"kind":"xlsx",**xlsx_probe(raw)}
+                elif low.endswith((".json",".geojson")):
+                    value=json.loads(raw.decode("utf-8-sig",errors="replace"))
+                    detail={"member":name,"bytes":len(raw),"kind":"json"}
+                    if isinstance(value,dict):
+                        detail["keys"]=list(value)[:80]
+                    elif isinstance(value,list):
+                        detail["length"]=len(value); detail["sample"]=value[:2]
+                else:
+                    detail={"member":name,"bytes":len(raw),"kind":"other"}
+            except Exception as exc:
+                detail={"member":name,"kind":"parse-error","error":f"{type(exc).__name__}: {exc}"}
+            inspected.append(detail)
         return {
             "memberCount":len(names),
             "members":names[:120],
-            "structuredMembers":[
-                name for name in names
-                if name.lower().endswith((".csv",".json",".geojson",".xlsx",".xls",".ods"))
-            ][:120],
+            "structuredMembers":structured[:120],
+            "inspectedMembers":inspected,
         }
 
 
@@ -141,7 +248,7 @@ def structured_probe(url:str,response:requests.Response)->dict[str,Any]:
             if isinstance(value,list):
                 return {"kind":"json","topLevel":"array","length":len(value),"sample":value[:2]}
         if path.endswith(".csv") or "csv" in content_type or "text/plain" in content_type:
-            return {"kind":"csv",**csv_probe(body)}
+            return {"kind":"csv",**csv_geo_probe(body)}
     except Exception as exc:
         return {"kind":"structured-parse-error","error":f"{type(exc).__name__}: {exc}"}
     return {"kind":"other"}
@@ -182,6 +289,7 @@ def main()->int:
     ap.add_argument("--registry",type=Path,required=True)
     ap.add_argument("--profile",required=True)
     ap.add_argument("--output",type=Path,required=True)
+    ap.add_argument("--deep-files",type=int,default=0)
     args=ap.parse_args()
 
     manifest=load(args.manifest)
@@ -205,6 +313,9 @@ def main()->int:
             if link not in file_links:
                 file_links.append(link)
 
+    selected_deep=sorted(file_links,key=lambda url:file_priority(args.profile,url))[:max(0,args.deep_files)]
+    deep_probes=[probe_url(session,url) for url in selected_deep]
+
     status="SOURCE_UNREACHABLE"
     if any(item.get("ok") for item in probes):
         status="LANDING_SOURCE_REACHABLE"
@@ -212,6 +323,11 @@ def main()->int:
         status="STRUCTURED_SOURCE_REACHED"
     if file_links:
         status="STRUCTURED_FILES_DISCOVERED"
+    if any(
+        item.get("ok") and (item.get("structured") or {}).get("kind") in {"csv","json","xlsx","zip"}
+        for item in deep_probes
+    ):
+        status="DEEP_STRUCTURED_SOURCE_REACHED"
 
     payload={
         "schemaVersion":1,
@@ -228,6 +344,9 @@ def main()->int:
         "reachableCount":sum(1 for item in probes if item.get("ok")),
         "discoveredFileCount":len(file_links),
         "discoveredFiles":file_links[:120],
+        "deepFileCount":len(selected_deep),
+        "deepFiles":selected_deep,
+        "deepProbes":deep_probes,
         "probes":probes,
     }
     args.output.parent.mkdir(parents=True,exist_ok=True)
@@ -236,6 +355,7 @@ def main()->int:
         f"A3 fan-out worker {args.profile}: {status} · "
         f"{payload['reachableCount']}/{payload['probeCount']} URL raggiungibili · "
         f"{payload['discoveredFileCount']} file candidati · "
+        f"{payload['deepFileCount']} deep-probe · "
         f"{payload['pairCount']} pair."
     )
     # Source discovery failures are evidence, not CI infrastructure failures.
