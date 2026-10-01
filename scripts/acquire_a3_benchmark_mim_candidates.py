@@ -62,8 +62,10 @@ PERIOD_ORDER=[
     "tra il 1950 e il 1970",
     "tra il 1971 e il 1975",
     "tra il 1976 e il 1992",
+    "tra il 1993 e il 1996",
     "tra il 1997 e il 2008",
     "tra il 2009 e il 2017",
+    "dal 2018 in poi",
 ]
 UNKNOWN={"NON DEFINITO","","-","_"}
 
