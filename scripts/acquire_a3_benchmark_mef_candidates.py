@@ -29,12 +29,26 @@ def header(row,*tokens):
 def totals(rows):
     sample=rows[0]; class_h=list(sample)[0]; region_h=header(sample,"regione")
     grouped=defaultdict(list)
-    for r in rows: grouped[str(r.get(region_h) or "").strip()].append(r)
+    for r in rows:
+        reg=str(r.get(region_h) or "").strip()
+        if reg:
+            grouped[reg].append(r)
     out={}
     for reg,items in grouped.items():
         hits=[r for r in items if norm(r.get(class_h)) in {"totale","totale complessivo"}]
-        if hits: out[reg]=hits[0]
-    if "Toscana" not in out: raise RuntimeError("Riga TOTALE Toscana assente")
+        if hits:
+            out[reg]=hits[0]
+            continue
+        synthetic={h:"" for h in sample}
+        synthetic[region_h]=reg
+        synthetic[class_h]="TOTALE RICOSTRUITO DA CLASSI"
+        for h in sample:
+            if h in {region_h,class_h}:
+                continue
+            synthetic[h]=sum(val(r.get(h)) for r in items)
+        out[reg]=synthetic
+    if "Toscana" not in out:
+        raise RuntimeError(f"Toscana assente; regioni trovate={sorted(out)[:30]}")
     return out
 def sumfield(rows,h): return sum(val(r.get(h)) for r in rows.values())
 def main():
