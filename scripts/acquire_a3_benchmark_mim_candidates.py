@@ -180,6 +180,11 @@ def building_records(rows,school,fields):
     for row in rows:
         code=str(row.get("CODICESCUOLA") or "").strip()
         info=school.get(code)
+        if not info and code.startswith("AO"):
+            # La Valle d'Aosta usa codici scolastici AO* non presenti
+            # nell'anagrafica nazionale ordinaria. Per benchmark regionale/
+            # nazionale basta preservarne correttamente l'appartenenza regionale.
+            info={"region":"VALLE D'AOSTA","town":"","order":""}
         if not info:
             unmapped[code or "<blank>"]+=1
             continue
@@ -188,13 +193,15 @@ def building_records(rows,school,fields):
             continue
         rec=buildings.setdefault(bid,{"regions":set(),"towns":set(),"fields":{k:set() for k in fields}})
         rec["regions"].add(info["region"])
-        rec["towns"].add(info["town"])
+        if info["town"]:
+            rec["towns"].add(info["town"])
         for local,col in fields.items():
             rec["fields"][local].add(canon(local,row.get(col)))
     conflicts=[]
+    multi_town=0
     finalized={}
     for bid,rec in buildings.items():
-        if len(rec["regions"])!=1 or len(rec["towns"])!=1:
+        if len(rec["regions"])!=1:
             conflicts.append({"building":bid,"regions":sorted(rec["regions"]),"towns":sorted(rec["towns"])})
             continue
         vals={}
@@ -205,9 +212,22 @@ def building_records(rows,school,fields):
                 bad=True
             else:
                 vals[local]=next(iter(items))
-        if not bad:
-            finalized[bid]={"region":next(iter(rec["regions"])),"town":next(iter(rec["towns"])),"fields":vals}
-    return finalized,{"unmappedSchoolRows":sum(unmapped.values()),"unmappedSchoolCodes":dict(unmapped.most_common(20)),"conflicts":conflicts[:50],"conflictCount":len(conflicts)}
+        if bad:
+            continue
+        if len(rec["towns"])>1:
+            multi_town+=1
+        finalized[bid]={
+            "region":next(iter(rec["regions"])),
+            "towns":sorted(rec["towns"]),
+            "fields":vals,
+        }
+    return finalized,{
+        "unmappedSchoolRows":sum(unmapped.values()),
+        "unmappedSchoolCodes":dict(unmapped.most_common(20)),
+        "conflicts":conflicts[:50],
+        "conflictCount":len(conflicts),
+        "multiTownBuildings":multi_town,
+    }
 
 
 def aggregate_buildings(records,fields,scope):
@@ -231,9 +251,13 @@ def versilia_reconcile(records,fields,snapshot):
     actual={town:{"buildings":set(),"fields":{field:Counter() for field in fields}} for town in snapshot["towns"]}
     errors=[]
     for bid,rec in records.items():
-        town=town_lookup.get(rec["town"])
-        if not town:
+        matched=sorted({town_lookup[t] for t in rec.get("towns",[]) if t in town_lookup})
+        if len(matched)>1:
+            errors.append(f"{bid}: edificio associato a più Comuni Versilia {matched}")
             continue
+        if not matched:
+            continue
+        town=matched[0]
         actual[town]["buildings"].add(bid)
         for field in fields:
             actual[town]["fields"][field][rec["fields"][field]]+=1

@@ -19,6 +19,8 @@ def norm(x):
     return re.sub(r"[^a-z0-9]+"," ",s.lower()).strip()
 
 def val(x):
+    if isinstance(x,(int,float)) and not isinstance(x,bool):
+        return float(x)
     s=str(x or "").strip().replace(".","").replace(",",".")
     try:return float(s)
     except:return 0.0
@@ -53,6 +55,14 @@ def header(row,*tokens):
 def totals(rows):
     sample=rows[0]
     region_h=header(sample,"regione")
+    class_candidates=[
+        h for h in sample
+        if "classi" in norm(h) and "reddito complessivo" in norm(h)
+    ]
+    if len(class_candidates)!=1:
+        raise RuntimeError(f"Classificazione reddito non univoca: {class_candidates}")
+    class_h=class_candidates[0]
+
     grouped=defaultdict(list)
     for r in rows:
         reg=str(r.get(region_h) or "").strip()
@@ -61,41 +71,33 @@ def totals(rows):
 
     out={}
     diagnostics={}
-    accepted_total_labels={"totale","totale complessivo","totale redditi","totale contribuenti"}
     for reg,items in grouped.items():
-        row_hits=[]
-        for idx,row in enumerate(items):
-            hit_headers=[]
-            for h,v in row.items():
-                if h==region_h:
-                    continue
-                if norm(v) in accepted_total_labels:
-                    hit_headers.append(h)
-            if hit_headers:
-                row_hits.append((idx,row,hit_headers))
-        unique={idx:(row,headers) for idx,row,headers in row_hits}
-        if len(unique)!=1:
-            textual={}
-            for h in sample:
-                vals=[]
-                for row in items[:40]:
-                    value=str(row.get(h) or "").strip()
-                    if value and value not in vals:
-                        vals.append(value)
-                textual[h]=vals[:12]
-            raise RuntimeError(
-                f"{reg}: attesa una sola riga totale esplicita, trovate {len(unique)}; "
-                f"campione colonne={textual}"
-            )
-        idx,(row,hit_headers)=next(iter(unique.items()))
-        out[reg]=row
+        labels=[norm(r.get(class_h)) for r in items]
+        if not labels or any(not label for label in labels) or len(set(labels))!=len(labels):
+            raise RuntimeError(f"{reg}: classi reddito mancanti o duplicate")
+        # Le righe REG_* sono classi di reddito disgiunte, non totali cumulativi.
+        if not any(label=="zero" for label in labels):
+            raise RuntimeError(f"{reg}: classe zero assente")
+        if not any("minore" in label for label in labels):
+            raise RuntimeError(f"{reg}: classe inferiore assente")
+        if not any(("oltre" in label or "maggiore" in label) for label in labels):
+            raise RuntimeError(f"{reg}: classe superiore aperta assente")
+
+        synthetic={h:"" for h in sample}
+        synthetic[region_h]=reg
+        synthetic[class_h]="TOTALE RICOSTRUITO DA CLASSI DISGIUNTE"
+        for h in sample:
+            if h in {region_h,class_h}:
+                continue
+            synthetic[h]=sum(val(r.get(h)) for r in items)
+        out[reg]=synthetic
         diagnostics[reg]={
-            "method":"explicit_total",
+            "method":"sum_disjoint_income_classes",
             "rowCount":len(items),
-            "totalRowIndex":idx,
-            "totalLabelHeaders":hit_headers,
-            "totalLabelValues":{h:row.get(h) for h in hit_headers},
+            "classHeader":class_h,
+            "classLabels":labels,
         }
+
     if "Toscana" not in out:
         raise RuntimeError(f"Toscana assente; regioni trovate={sorted(out)[:30]}")
     return out,diagnostics
