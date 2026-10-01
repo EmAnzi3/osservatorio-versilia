@@ -37,9 +37,12 @@ jobs:
       - name: Install probe dependencies
         run: python -m pip install requests
       - name: Probe official OpenBDAP Toscana archives
+        id: openbdap_probe
+        continue-on-error: true
         run: |
           python scripts/probe_bilanci_v139_sources.py             --output reports/a3-benchmark-openbdap-source-audit.json
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: a3-benchmark-openbdap-probe
           path: reports/a3-benchmark-openbdap-source-audit.json
