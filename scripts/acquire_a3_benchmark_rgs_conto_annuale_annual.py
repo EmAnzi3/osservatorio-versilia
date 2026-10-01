@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, json, math
+import argparse, json, math, urllib.parse, urllib.request
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -10,10 +10,8 @@ import audit_rgs_amministrazione_values as src
 
 ROOT=Path(__file__).resolve().parents[1]
 LOCAL=ROOT/"data/source-snapshots/rgs-amministrazione-2024.json"
-ANAGRAFE_ENTE_URL=(
-    "https://bdap-opendata.rgs.mef.gov.it/metadata_download_page/"
-    "36378/csv/1686/c5638e9f-8613-4e6d-9e92-25412f464f85@rgs"
-)
+CKAN_PACKAGE_SEARCH="https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/action/package_search"
+ANAGRAFE_DATASET_TOKEN="STM_AEN_BDP_ENT_01"
 
 def groups(rows):
     out=defaultdict(list)
@@ -30,8 +28,39 @@ def clean_code(value):
     if raw.endswith(".0") and raw[:-2].isdigit(): raw=raw[:-2]
     return raw
 
+def discover_anagrafe_csv():
+    query=urllib.parse.urlencode({"q":ANAGRAFE_DATASET_TOKEN,"rows":20})
+    request=urllib.request.Request(
+        f"{CKAN_PACKAGE_SEARCH}?{query}",
+        headers={"User-Agent":src.UA,"Accept":"application/json"},
+    )
+    with urllib.request.urlopen(request,timeout=60) as response:
+        payload=json.loads(response.read().decode("utf-8",errors="replace"))
+    results=((payload or {}).get("result") or {}).get("results") or []
+    packages=[
+        item for item in results
+        if isinstance(item,dict) and (
+            ANAGRAFE_DATASET_TOKEN.lower() in json.dumps(item,ensure_ascii=False).lower()
+            or "anagrafe enti - ente" in str(item.get("title") or "").lower()
+        )
+    ]
+    if not packages:
+        raise RuntimeError("RGS: package CKAN Anagrafe Ente non trovato")
+    resources=[]
+    for package in packages:
+        for resource in package.get("resources") or []:
+            if not isinstance(resource,dict): continue
+            fmt=str(resource.get("format") or "").upper()
+            url=str(resource.get("url") or "").strip()
+            if url and (fmt=="CSV" or ".csv" in url.lower()):
+                resources.append((url,package.get("name"),resource.get("name")))
+    if not resources:
+        raise RuntimeError("RGS: package Anagrafe Ente senza risorsa CSV")
+    return resources[0]
+
 def anagrafe_region_map():
-    rows=src.parse(src.fetch(ANAGRAFE_ENTE_URL))
+    resource_url,package_name,resource_name=discover_anagrafe_csv()
+    rows=src.parse(src.fetch(resource_url))
     if not rows: raise RuntimeError("RGS: Anagrafe Ente BDAP vuota")
     keys=list(rows[0])
     by_norm={src.norm(k):k for k in keys}
@@ -39,9 +68,7 @@ def anagrafe_region_map():
     region_code_field=by_norm.get("CODICE REGIONE")
     region_label_field=by_norm.get("DIZIONE REGIONE")
     if not id_field or (not region_code_field and not region_label_field):
-        raise RuntimeError(
-            f"RGS: Anagrafe Ente senza ID/Regione; headers={keys}"
-        )
+        raise RuntimeError(f"RGS: Anagrafe Ente senza ID/Regione; headers={keys}")
     mapping={}
     for row in rows:
         entity_id=clean_code(row.get(id_field))
@@ -53,7 +80,11 @@ def anagrafe_region_map():
     if len(mapping)<5000:
         raise RuntimeError(f"RGS: Anagrafe Ente copertura inattesa {len(mapping)}")
     return mapping,{
-        "source":ANAGRAFE_ENTE_URL,
+        "catalogApi":CKAN_PACKAGE_SEARCH,
+        "datasetToken":ANAGRAFE_DATASET_TOKEN,
+        "package":package_name,
+        "resource":resource_name,
+        "source":resource_url,
         "rows":len(rows),
         "mappedEntities":len(mapping),
         "idField":id_field,
@@ -74,7 +105,7 @@ def geography_selector(rows):
         preferred=sorted(province_keys,key=lambda k:(0 if "SIGLA" in src.norm(k) else 1,len(k)))[0]
         return {"mode":"tuscany-provinces","field":preferred,"value":str(sample.get(preferred) or "").strip()}
     if "Codice Ente BDAP" in sample:
-        return {"mode":"bdap-anagrafe","field":"Codice Ente BDAP","source":ANAGRAFE_ENTE_URL}
+        return {"mode":"bdap-anagrafe","field":"Codice Ente BDAP","source":"CKAN:STM_AEN_BDP_ENT_01"}
     raise RuntimeError(f"RGS: nessun campo regione/provincia né Codice Ente BDAP; headers={list(sample)}")
 
 def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
