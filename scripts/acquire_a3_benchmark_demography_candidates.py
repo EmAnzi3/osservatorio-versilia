@@ -16,7 +16,6 @@ import requests
 
 POSAS_2026="https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip"
 P2_2019="https://demo.istat.it/data/p2/P2_2019_it_Comuni.zip"
-P2_2024="https://demo.istat.it/data/p2/P2_2024_it_Comuni.zip"
 P2_2025="https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip"
 TOSCANY_PROVINCES={"045","046","047","048","049","050","051","052","053","100"}
 
@@ -95,7 +94,9 @@ def aggregate_posas(headers:list[str],rows:list[dict[str,str]],predicate:Callabl
     women_h=pick(headers,("totale","femmine"))
     bands={"0-14":0.0,"15-19":0.0,"20-34":0.0,"35-49":0.0,"50-64":0.0,"65-79":0.0,"80-84":0.0,"85+":0.0}
     total=0.0
+    total_row=0.0
     age_weight=0.0
+    total_rows=0
     for row in rows:
         code=code_of(row)
         if not predicate(code):
@@ -107,6 +108,12 @@ def aggregate_posas(headers:list[str],rows:list[dict[str,str]],predicate:Callabl
         men=num(row.get(men_h)); women=num(row.get(women_h))
         if not math.isclose(value,men+women,rel_tol=0.0,abs_tol=0.1):
             raise RuntimeError(f"POSAS {code}/{age}: totale != uomini+donne")
+        if age==999:
+            total_row+=value
+            total_rows+=1
+            continue
+        if age<0 or age>120:
+            raise RuntimeError(f"POSAS età inattesa: {age}")
         total+=value
         age_weight+=age*value
         if age<=14: bands["0-14"]+=value
@@ -117,7 +124,11 @@ def aggregate_posas(headers:list[str],rows:list[dict[str,str]],predicate:Callabl
         elif age<=79: bands["65-79"]+=value
         elif age<=84: bands["80-84"]+=value
         else: bands["85+"]+=value
-    if total<=0 or not math.isclose(sum(bands.values()),total,rel_tol=0.0,abs_tol=0.1):
+    if total<=0 or total_rows<=0:
+        raise RuntimeError("POSAS: righe età o totale 999 mancanti")
+    if not math.isclose(total,total_row,rel_tol=0.0,abs_tol=0.1):
+        raise RuntimeError(f"POSAS: somma età {total} != totale 999 {total_row}")
+    if not math.isclose(sum(bands.values()),total,rel_tol=0.0,abs_tol=0.1):
         raise RuntimeError("POSAS: classi di età non esaustive")
     age0_14=bands["0-14"]
     age15_64=bands["15-19"]+bands["20-34"]+bands["35-49"]+bands["50-64"]
@@ -135,7 +146,6 @@ def aggregate_posas(headers:list[str],rows:list[dict[str,str]],predicate:Callabl
         "oldAgeDependencyIndex":age65plus/age15_64*100,
     }
 
-
 def pick_exact(headers:list[str],expected:str)->str:
     target=norm(expected)
     hits=[header for header in headers if norm(header)==target]
@@ -144,10 +154,24 @@ def pick_exact(headers:list[str],expected:str)->str:
     return hits[0]
 
 
+def pick_population_total(headers:list[str],day_token:str)->str:
+    hits=[]
+    for header in headers:
+        h=norm(header)
+        if "popolazione" not in h or day_token not in h or "totale" not in h:
+            continue
+        if "famiglia" in h or "convivenza" in h:
+            continue
+        hits.append(header)
+    if len(hits)!=1:
+        raise RuntimeError(f"Header popolazione {day_token} non univoco: {hits}")
+    return hits[0]
+
+
 def p2_population_headers(headers:list[str])->dict[str,str]:
     return {
-        "jan1":pick_exact(headers,"Popolazione censita al 1° gennaio - Totale"),
-        "dec31":pick_exact(headers,"Popolazione censita al 31 dicembre - Totale"),
+        "jan1":pick_population_total(headers,"gennaio"),
+        "dec31":pick_population_total(headers,"dicembre"),
     }
 
 
@@ -157,42 +181,6 @@ def p2_natural_headers(headers:list[str])->dict[str,str]:
         "births":pick_exact(headers,"Nati vivi - Totale"),
         "deaths":pick_exact(headers,"Morti - Totale"),
         "natural":pick_exact(headers,"Saldo naturale - Totale"),
-    }
-
-
-def pick_flow(headers:list[str],direction:str,place:str)->str:
-    candidates=[]
-    direction_tokens={
-        "in":("iscritti",),
-        "out":("cancellati",),
-    }[direction]
-    place_variants={
-        "internal":(("altri comuni",),("altro comune",),("altri comuni italiani",)),
-        "foreign":(("estero",),("estero estero",)),
-    }[place]
-    for header in headers:
-        h=norm(header)
-        if not all(token in h for token in direction_tokens):
-            continue
-        if not any(all(token in h for token in variant) for variant in place_variants):
-            continue
-        if "rettific" in h or "altri motivi" in h:
-            continue
-        candidates.append(header)
-    if len(candidates)!=1:
-        raise RuntimeError(
-            f"Header flusso non univoco direction={direction} place={place}: {candidates}"
-        )
-    return candidates[0]
-
-
-def p2_mobility_headers(headers:list[str])->dict[str,str]:
-    return {
-        **p2_population_headers(headers),
-        "internalIn":pick_flow(headers,"in","internal"),
-        "internalOut":pick_flow(headers,"out","internal"),
-        "foreignIn":pick_flow(headers,"in","foreign"),
-        "foreignOut":pick_flow(headers,"out","foreign"),
     }
 
 
@@ -206,8 +194,6 @@ def aggregate_p2(
         h=p2_population_headers(headers)
     elif mode=="natural":
         h=p2_natural_headers(headers)
-    elif mode=="mobility":
-        h=p2_mobility_headers(headers)
     else:
         raise RuntimeError(f"Modalità P02 non supportata: {mode}")
 
@@ -222,8 +208,7 @@ def aggregate_p2(
             out[key]+=num(row.get(header))
     if matched<=0:
         raise RuntimeError("P02: nessun Comune nel perimetro")
-    if "jan1" in out and "dec31" in out:
-        out["meanPopulation"]=(out["jan1"]+out["dec31"])/2.0
+    out["meanPopulation"]=(out["jan1"]+out["dec31"])/2.0
     return out
 
 def rate(value:float,pop:float)->float:
@@ -233,7 +218,6 @@ def rate(value:float,pop:float)->float:
 def scope_payload(
     posas:dict[str,Any],
     p2019:dict[str,float],
-    p2024:dict[str,float],
     p2025:dict[str,float],
 )->dict[str,Any]:
     population=p2025["dec31"]
@@ -241,20 +225,12 @@ def scope_payload(
         raise RuntimeError(f"Popolazione POSAS/P02 non riconciliata: {posas['population']} vs {population}")
     change=(population-p2019["jan1"])/p2019["jan1"]*100.0
     natural=rate(p2025["natural"],p2025["meanPopulation"])
-    internal_balance=p2024["internalIn"]-p2024["internalOut"]
-    foreign_balance=p2024["foreignIn"]-p2024["foreignOut"]
-    total_in=p2024["internalIn"]+p2024["foreignIn"]
-    total_out=p2024["internalOut"]+p2024["foreignOut"]
-    total_balance=total_in-total_out
     return {
         "population":population,
         "populationChange":change,
         "ageDistribution":posas["shares"]["20-34"],
         "dependencyIndices":posas["structuralDependencyIndex"],
         "naturalDemographicDynamics":natural,
-        "internalResidentialMobility":rate(internal_balance,p2024["meanPopulation"]),
-        "foreignResidentialMobility":rate(foreign_balance,p2024["meanPopulation"]),
-        "totalResidentialMobility":rate(total_balance,p2024["meanPopulation"]),
         "components":{
             "ageDistribution":posas,
             "naturalDemographicDynamics":{
@@ -264,22 +240,9 @@ def scope_payload(
                 "births":p2025["births"],"deaths":p2025["deaths"],"naturalBalance":p2025["natural"],
                 "meanPopulation":p2025["meanPopulation"],
             },
-            "internalResidentialMobility":{
-                "incoming":p2024["internalIn"],"outgoing":p2024["internalOut"],"balance":internal_balance,
-                "meanPopulation":p2024["meanPopulation"],
-            },
-            "foreignResidentialMobility":{
-                "incoming":p2024["foreignIn"],"outgoing":p2024["foreignOut"],"balance":foreign_balance,
-                "meanPopulation":p2024["meanPopulation"],
-            },
-            "totalResidentialMobility":{
-                "incoming":total_in,"outgoing":total_out,"balance":total_balance,
-                "meanPopulation":p2024["meanPopulation"],
-            },
             "populationChange":{"start2019":p2019["jan1"],"end2026":population},
         },
     }
-
 
 def main()->None:
     ap=argparse.ArgumentParser()
@@ -291,16 +254,14 @@ def main()->None:
 
     pos_h,pos_rows,pos_title=download_rows(session,POSAS_2026)
     h19,r19,t19=download_rows(session,P2_2019)
-    h24,r24,t24=download_rows(session,P2_2024)
     h25,r25,t25=download_rows(session,P2_2025)
 
     scopes={}
     for name,predicate in (("tuscany",pred_tuscany),("italy",pred_italy)):
         pos=aggregate_posas(pos_h,pos_rows,predicate)
         p19=aggregate_p2(h19,r19,predicate,"population")
-        p24=aggregate_p2(h24,r24,predicate,"mobility")
         p25=aggregate_p2(h25,r25,predicate,"natural")
-        scopes[name]=scope_payload(pos,p19,p24,p25)
+        scopes[name]=scope_payload(pos,p19,p25)
 
     specs={
         "population":{"unit":"number","year":"2026"},
@@ -308,9 +269,6 @@ def main()->None:
         "ageDistribution":{"unit":"percent","year":"2026","defaultPart":"20–34 anni"},
         "dependencyIndices":{"unit":"per100","year":"2026","defaultPart":"Indice di dipendenza strutturale"},
         "naturalDemographicDynamics":{"unit":"per1000","year":"2025","defaultPart":"Saldo naturale"},
-        "internalResidentialMobility":{"unit":"per1000","year":"2024","defaultPart":"Saldo migratorio interno"},
-        "foreignResidentialMobility":{"unit":"per1000","year":"2024","defaultPart":"Saldo migratorio con l’estero"},
-        "totalResidentialMobility":{"unit":"per1000","year":"2024","defaultPart":"Saldo complessivo dei trasferimenti"},
     }
     benchmarks={}
     for metric_id,spec in specs.items():
@@ -328,11 +286,16 @@ def main()->None:
         "sources":{
             "posas2026":{"url":POSAS_2026,"title":pos_title},
             "p2_2019":{"url":P2_2019,"title":t19},
-            "p2_2024":{"url":P2_2024,"title":t24},
             "p2_2025":{"url":P2_2025,"title":t25},
         },
         "benchmarks":benchmarks,
         "scopes":scopes,
+        "excludedFromThisAcquisition":{
+            "foreignResidents":"richiede dataset RCS cittadinanza 2025, non P02/POSAS",
+            "internalResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato",
+            "foreignResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato",
+            "totalResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato"
+        },
         "qualityGate":{
             "populationPosasP02Reconciled":True,
             "ageBandsExhaustive":True,
