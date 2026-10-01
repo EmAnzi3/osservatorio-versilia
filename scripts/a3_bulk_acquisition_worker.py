@@ -16,6 +16,7 @@ DEDICATED={
     "istat-geografia-comunale-2021":"scripts/acquire_a3_benchmark_geography_candidates.py",
     "istat-agriculture-census-2020":"scripts/acquire_a3_benchmark_agriculture_candidates.py",
     "siope-monthly":"scripts/acquire_a3_benchmark_siope_candidates.py",
+    "regione-toscana-indicatori-comunali":"scripts/acquire_a3_benchmark_toscana_indicators.py",
     "istat-demography-annual":"scripts/acquire_a3_benchmark_demography_candidates.py",
     "istat-census-annual":"scripts/acquire_a3_benchmark_census_candidates.py",
 }
