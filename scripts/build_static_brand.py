@@ -46,6 +46,8 @@ A3_BENCHMARK_MEF_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_mef
 A3_BENCHMARK_DEMOGRAPHY_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_demography.py"
 A3_BENCHMARK_CENSUS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_census.py"
 A3_BENCHMARK_CENSUS_2024_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_census_2024.py"
+A3_BENCHMARK_GEOGRAPHY_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_geography.py"
+A3_BENCHMARK_MEF_RESIDUAL_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_mef_residual.py"
 A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
 A3_PUBLICATION_ADAPTER = ROOT / "scripts" / "materialize_a3_publication_adapter.py"
 
@@ -96,6 +98,8 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_DEMOGRAPHY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_CENSUS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_CENSUS_2024_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_GEOGRAPHY_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_MEF_RESIDUAL_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_PUBLICATION_ADAPTER), run_name="__main__")
         return result
