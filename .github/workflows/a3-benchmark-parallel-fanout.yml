@@ -91,6 +91,7 @@ jobs:
             --manifest /tmp/a3-fanout-context/manifest.json \
             --registry /tmp/a3-fanout-context/source-registry.json \
             --profile "${{ matrix.profileId }}" \
+            --deep-files 8 \
             --output "reports/benchmark-fanout/${{ matrix.profileId }}.json"
       - uses: actions/upload-artifact@v4
         with:
