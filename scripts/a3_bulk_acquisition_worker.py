@@ -12,7 +12,9 @@ ROOT=Path(__file__).resolve().parents[1]
 DEDICATED={
     "istat-business-annual":"scripts/acquire_a3_benchmark_frame_sbs_candidates.py",
     "mim-school-year":"scripts/acquire_a3_benchmark_mim_candidates.py",
-    "mef-irpef-annual":"scripts/acquire_a3_benchmark_mef_candidates.py",
+    "mef-irpef-annual":"scripts/acquire_a3_benchmark_mef_residual_candidates.py",
+    "istat-geografia-comunale-2021":"scripts/acquire_a3_benchmark_geography_candidates.py",
+    "istat-agriculture-census-2020":"scripts/acquire_a3_benchmark_agriculture_candidates.py",
     "istat-demography-annual":"scripts/acquire_a3_benchmark_demography_candidates.py",
     "istat-census-annual":"scripts/acquire_a3_benchmark_census_candidates.py",
 }
