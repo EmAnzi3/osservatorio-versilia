@@ -24,6 +24,7 @@ scripts/test_source_monitor_strategy.py
 scripts/enrichment_audit_matrix.py
 scripts/test_enrichment_audit_matrix.py
 scripts/materialize_a3_publication_adapter.py
+scripts/materialize_a3_mim_history.py
 scripts/test_a3_publication_adapter.py
 scripts/a3_publication_gap_audit.py
 scripts/test_a3_publication_contract.py
