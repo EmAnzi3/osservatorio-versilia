@@ -34,6 +34,8 @@ def main()->int:
             "reachableCount":value.get("reachableCount"),
             "discoveredFileCount":value.get("discoveredFileCount"),
             "discoveredFiles":value.get("discoveredFiles") or [],
+            "deepFileCount":value.get("deepFileCount") or 0,
+            "deepFiles":value.get("deepFiles") or [],
         })
 
     rows.sort(key=lambda item:(int(item.get("rank") or 9999),str(item.get("profileId") or "")))
@@ -55,14 +57,14 @@ def main()->int:
         f"- Pair coperte dal fan-out: **{payload['pairCount']}**",
         "- Stati: "+", ".join(f"{k}={v}" for k,v in payload["statusCounts"].items()),
         "",
-        "| Rank | Profilo | Pair | Stato | URL raggiunti | File candidati |",
-        "| ---: | --- | ---: | --- | ---: | ---: |",
+        "| Rank | Profilo | Pair | Stato | URL raggiunti | File candidati | Deep probe |",
+        "| ---: | --- | ---: | --- | ---: | ---: | ---: |",
     ]
     for item in rows:
         lines.append(
             f"| {item.get('rank')} | {item.get('profileId')} | {item.get('pairCount')} | "
             f"{item.get('status')} | {item.get('reachableCount')}/{item.get('probeCount')} | "
-            f"{item.get('discoveredFileCount')} |"
+            f"{item.get('discoveredFileCount')} | {item.get('deepFileCount')} |"
         )
     args.markdown_output.write_text("\n".join(lines)+"\n",encoding="utf-8")
     print(
