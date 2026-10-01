@@ -14,11 +14,6 @@ BENCH_REF = "data/source-snapshots/a3-mef-benchmark-2024.json"
 SOURCE_URL = "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
 
 TARGETS = {
-    "income": {
-        "unit": "currency",
-        "year": "2024",
-        "note": "Reddito complessivo medio: ammontare complessivo / dichiaranti con reddito complessivo. Toscana e Italia sono ricostruite sui totali MEF, non come media dei Comuni.",
-    },
     "incomeSourceProfile": {
         "unit": "currency",
         "year": "2024",
@@ -79,7 +74,6 @@ def validate_benchmark_snapshot(snap: dict[str, Any]) -> None:
         emp_freq = num(raw.get("employmentIncomeFrequency"), f"{scope}: employmentIncomeFrequency")
         emp_amount = num(raw.get("employmentIncomeAmountEuro"), f"{scope}: employmentIncomeAmountEuro")
         pension_amount = num(raw.get("pensionIncomeAmountEuro"), f"{scope}: pensionIncomeAmountEuro")
-        close((bench["income"] or {}).get(scope), total_amount / total_freq, f"income/{scope}", 1e-12)
         close((bench["incomeSourceProfile"] or {}).get(scope), emp_amount / emp_freq, f"incomeSourceProfile/{scope}", 1e-12)
         close((bench["pensionIncomeShare"] or {}).get(scope), pension_amount / total_amount * 100.0, f"pensionIncomeShare/{scope}", 1e-12)
 
@@ -89,18 +83,14 @@ def validate_public(metrics: dict[str, Any], municipal: dict[str, Any]) -> None:
     if not isinstance(towns, dict) or len(towns) != 7:
         raise RuntimeError("Snapshot comunale MEF non 7/7")
 
-    income_rows = rows_by_town(metrics["income"], "income")
     source_rows = rows_by_town(metrics["incomeSourceProfile"], "incomeSourceProfile")
     pension_rows = rows_by_town(metrics["pensionIncomeShare"], "pensionIncomeShare")
-    if set(income_rows) != set(towns) or set(source_rows) != set(towns) or set(pension_rows) != set(towns):
+    if set(source_rows) != set(towns) or set(pension_rows) != set(towns):
         raise RuntimeError("Perimetro comunale MEF non riconciliato")
 
     for town, raw in towns.items():
         total = raw.get("totalIncome") or {}
-        total_freq = num(total.get("frequency"), f"{town}: totalIncome frequency")
         total_amount = num(total.get("amountEuro"), f"{town}: totalIncome amount")
-        close(income_rows[town].get("value"), total_amount / total_freq, f"income/{town}")
-
         sources = raw.get("incomeSources")
         if not isinstance(sources, list):
             raise RuntimeError(f"{town}: incomeSources mancanti")
