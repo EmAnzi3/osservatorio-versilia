@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "publisher": "Istat — Censimento permanente della popolazione e delle abitazioni",
+  "profileId": "istat-census-annual",
+  "referenceYear": 2023,
+  "source": {
+    "url": "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip",
+    "bytes": 261295722,
+    "sha256": "05661a6e248d4241c9fdd1b1fa1e740eae0706dd3fcfdbeb366f608269bfeb45",
+    "regionalWorkbookCount": 20,
+    "tuscanyWorkbook": {
+      "name": "R09_Toscana_2023_sezioni.xlsx",
+      "sha256": "ac4a4068e5ed2fb93ecbed96bc882914e7feef3d4d0db17013dceb4dcac95fdf"
+    }
+  },
+  "method": "Aggregazione delle variabili additive nei file regionali ufficiali per sezione 2023. Toscana = file R09; Italia = somma dei 20 file regionali. Nessuna derivazione dal solo perimetro comunale Versilia.",
+  "qualityGate": {
+    "status": "PASS",
+    "regionalFiles": 20,
+    "tuscanyVersiliaReconciliation": "7/7 PASS",
+    "publicMetricReconciliation": "8/8 metrics × 7/7 towns PASS",
+    "artifactRun": 36906397775,
+    "artifactId": 11185802810
+  },
+  "raw": {
+    "tuscany": {
+      "P1": 3660530,
+      "P102": 840041,
+      "P103": 707029,
+      "PF1": 1678776,
+      "PF3": 646151,
+      "PF9": 50287,
+      "A3": 502289,
+      "A8": 2147338,
+      "male1564": 1141971,
+      "female1564": 1136557
+    },
+    "italy": {
+      "P1": 58971230,
+      "P102": 13226055,
+      "P103": 10201041,
+      "PF1": 26562568,
+      "PF3": 10058659,
+      "PF9": 699236,
+      "A3": 9558791,
+      "A8": 35610473,
+      "male1564": 18817253,
+      "female1564": 18610974
+    }
+  },
+  "benchmarks": {
+    "femaleEmploymentRate": {
+      "year": 2023,
+      "unit": "percent",
+      "formula": "P103 / female1564 × 100",
+      "tuscany": 62.20796669238763,
+      "italy": 54.8119673908523
+    },
+    "maleEmploymentRate": {
+      "year": 2023,
+      "unit": "percent",
+      "formula": "P102 / male1564 × 100",
+      "tuscany": 73.5606245692754,
+      "italy": 70.28685324048095
+    },
+    "housingStockPer1000": {
+      "year": 2023,
+      "unit": "per1000",
+      "formula": "A8 / P1 × 1000",
+      "tuscany": 586.6194239631966,
+      "italy": 603.8617983718501
+    },
+    "nonOccupiedHomesPer1000": {
+      "year": 2023,
+      "unit": "per1000",
+      "formula": "A3 / P1 × 1000",
+      "tuscany": 137.2175613913832,
+      "italy": 162.09244745276638
+    },
+    "vacantHomes": {
+      "year": 2023,
+      "unit": "percent",
+      "formula": "A3 / A8 × 100",
+      "tuscany": 23.39124068963526,
+      "italy": 26.842639804307005
+    },
+    "singleHouseholds": {
+      "year": 2023,
+      "unit": "percent",
+      "formula": "PF3 / PF1 × 100",
+      "tuscany": 38.48941133301882,
+      "italy": 37.867795764325194
+    },
+    "cohabitingHouseholds": {
+      "year": 2023,
+      "unit": "percent",
+      "formula": "PF9 / PF1 × 100",
+      "tuscany": 2.995456213336383,
+      "italy": 2.6324111433804145
+    },
+    "employmentGenderGap": {
+      "year": 2023,
+      "unit": "percentagePoints",
+      "formula": "maleEmploymentRate − femaleEmploymentRate",
+      "tuscany": 11.352657876887776,
+      "italy": 15.474885849628649
+    }
+  },
+  "publicRows": {
+    "femaleEmploymentRate": {
+      "Massarosa": 56.43635321100918,
+      "Viareggio": 56.339951675596176,
+      "Camaiore": 55.84045584045584,
+      "Pietrasanta": 53.942953020134226,
+      "Seravezza": 53.10186367117692,
+      "Forte dei Marmi": 49.36086529006883,
+      "Stazzema": 49.941656942823805
+    },
+    "maleEmploymentRate": {
+      "Massarosa": 73.24876673713884,
+      "Viareggio": 70.24260197280725,
+      "Camaiore": 71.95942552977804,
+      "Pietrasanta": 69.71267772511848,
+      "Seravezza": 71.2913553895411,
+      "Forte dei Marmi": 64.37699680511182,
+      "Stazzema": 69.27966101694915
+    },
+    "housingStockPer1000": {
+      "Massarosa": 503.224331122799,
+      "Viareggio": 640.111924944449,
+      "Camaiore": 702.4855636454934,
+      "Pietrasanta": 804.2829559417237,
+      "Seravezza": 605.3880176919984,
+      "Forte dei Marmi": 1250.8484580197728,
+      "Stazzema": 1211.8498105408198
+    },
+    "nonOccupiedHomesPer1000": {
+      "Massarosa": 90.32700663160301,
+      "Viareggio": 172.67714591391655,
+      "Camaiore": 260.074064775295,
+      "Pietrasanta": 348.8678251711427,
+      "Seravezza": 163.8118214716526,
+      "Forte dei Marmi": 758.4476907186071,
+      "Stazzema": 741.991043747847
+    },
+    "vacantHomes": {
+      "Massarosa": 17.9,
+      "Viareggio": 27,
+      "Camaiore": 37,
+      "Pietrasanta": 43.4,
+      "Seravezza": 27.1,
+      "Forte dei Marmi": 60.6,
+      "Stazzema": 61.2
+    },
+    "singleHouseholds": {
+      "Massarosa": 29.2,
+      "Viareggio": 41.3,
+      "Camaiore": 36.6,
+      "Pietrasanta": 38.6,
+      "Seravezza": 34.9,
+      "Forte dei Marmi": 45.9,
+      "Stazzema": 42.2
+    },
+    "cohabitingHouseholds": {
+      "Massarosa": 1.471234079929732,
+      "Viareggio": 2.7579795475674,
+      "Camaiore": 2.1514389494272144,
+      "Pietrasanta": 2.665022761760243,
+      "Seravezza": 2.082211452162987,
+      "Forte dei Marmi": 1.7761989342806395,
+      "Stazzema": 0.87527352297593
+    },
+    "employmentGenderGap": {
+      "Massarosa": 16.81241352612966,
+      "Viareggio": 13.902650297211075,
+      "Camaiore": 16.118969689322206,
+      "Pietrasanta": 15.769724704984256,
+      "Seravezza": 18.189491718364174,
+      "Forte dei Marmi": 15.016131515042986,
+      "Stazzema": 19.338004074125344
+    }
+  }
+}
