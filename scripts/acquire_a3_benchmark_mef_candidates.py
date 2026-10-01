@@ -159,8 +159,8 @@ def main():
     sanity={
         "tuscanyTaxpayers":2_000_000 <= candidates["tuscany"]["taxpayers"] <= 4_000_000,
         "italyTaxpayers":35_000_000 <= candidates["italy"]["taxpayers"] <= 50_000_000,
-        "tuscanyAverageTotalIncome":10_000 <= (candidates["tuscany"]["averageTotalIncome"] or 0) <= 60_000,
-        "italyAverageTotalIncome":10_000 <= (candidates["italy"]["averageTotalIncome"] or 0) <= 60_000,
+        "tuscanyAverageTaxableIncome":10_000 <= (candidates["tuscany"]["averageTaxableIncome"] or 0) <= 60_000,
+        "italyAverageTaxableIncome":10_000 <= (candidates["italy"]["averageTaxableIncome"] or 0) <= 60_000,
     }
     status="ACQUIRED_CANDIDATE" if all(sanity.values()) else "CANDIDATE_REJECTED_SANITY"
     payload={
@@ -173,7 +173,7 @@ def main():
         "parsing":{"calcDelimiter":calc_delim,"typeDelimiter":type_delim,"calc":calc_diag,"type":type_diag},
         "candidates":candidates,
         "metricMapping":{
-            "income":"averageTotalIncome",
+            "income":"averageTaxableIncome",
             "pensionIncomeShare":"pensionIncomeAmountEuro / totalIncomeAmountEuro × 100",
             "incomeSourceProfile":"incomeSources.average",
             "taxpayersAdultPopulationRate":"numerator only: taxpayers; denominator must come from POSAS 18+",
