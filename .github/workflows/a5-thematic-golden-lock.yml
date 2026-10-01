@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   thematic-golden-lock:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'feat/a5-controlled-iteration' || github.head_ref == 'fix/a3-enrichment-publication-gap'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
