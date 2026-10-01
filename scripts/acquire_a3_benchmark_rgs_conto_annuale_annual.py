@@ -19,19 +19,34 @@ def groups(rows):
         if code: out[code].append(r)
     return out
 
-def region_field(rows):
+TUSCANY_PROVINCES={"AR","FI","GR","LI","LU","MS","PI","PO","PT","SI","AREZZO","FIRENZE","GROSSETO","LIVORNO","LUCCA","MASSA CARRARA","PISA","PRATO","PISTOIA","SIENA"}
+
+def geography_selector(rows):
     target=src.norm("COMUNE DI CAMAIORE")
     sample=next((r for r in rows if src.norm(r.get("Descrizione Ente",""))==target),None)
     if not sample: raise RuntimeError("RGS: Camaiore assente")
-    hits=[k for k,v in sample.items() if src.norm(v)=="TOSCANA"]
-    if len(hits)!=1: raise RuntimeError(f"RGS: campo Toscana non univoco {hits}")
-    return hits[0]
+    region_keys=[k for k in sample if "REGION" in src.norm(k) and str(sample.get(k) or "").strip()]
+    if region_keys:
+        preferred=sorted(region_keys,key=lambda k:(0 if "CODICE" in src.norm(k) else 1,len(k)))[0]
+        return {"mode":"same-value","field":preferred,"value":str(sample.get(preferred) or "").strip()}
+    province_keys=[k for k in sample if ("PROVINC" in src.norm(k) or src.norm(k) in {"PROV","SIGLA PROVINCIA"}) and str(sample.get(k) or "").strip()]
+    if province_keys:
+        preferred=sorted(province_keys,key=lambda k:(0 if "SIGLA" in src.norm(k) else 1,len(k)))[0]
+        return {"mode":"tuscany-provinces","field":preferred,"value":str(sample.get(preferred) or "").strip()}
+    raise RuntimeError(f"RGS: nessun campo regione/provincia; headers={list(sample)}")
 
-def scope_codes(turnover_rows,field,wanted_tuscany):
+def scope_codes(turnover_rows,selector,wanted_tuscany):
     result=set()
     for r in turnover_rows:
         if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
-        if wanted_tuscany and src.norm(r.get(field,""))!="TOSCANA": continue
+        if wanted_tuscany:
+            field=selector["field"]; value=src.norm(r.get(field,""))
+            if selector["mode"]=="same-value":
+                if value!=src.norm(selector["value"]): continue
+            elif selector["mode"]=="tuscany-provinces":
+                if value not in TUSCANY_PROVINCES: continue
+            else:
+                raise RuntimeError(f"RGS: selector inatteso {selector}")
         code=str(r.get("Codice Istituzione") or "").strip()
         if code: result.add(code)
     return result
@@ -52,9 +67,11 @@ def main():
     with ThreadPoolExecutor(max_workers=4) as pool:
         bodies=dict(zip(src.URLS,pool.map(src.fetch,src.URLS.values())))
     ds={k:src.parse(v) for k,v in bodies.items()}
-    rf=region_field(ds["turnover"])
+    selector=geography_selector(ds["turnover"])
     tg,ag,hg,cg=groups(ds["turnover"]),groups(ds["age"]),groups(ds["hires"]),groups(ds["cessations"])
-    tus_codes=scope_codes(ds["turnover"],rf,True); ita_codes=scope_codes(ds["turnover"],rf,False)
+    tus_codes=scope_codes(ds["turnover"],selector,True); ita_codes=scope_codes(ds["turnover"],selector,False)
+    if not 250<=len(tus_codes)<=300: raise RuntimeError(f"RGS: Comuni Toscana inattesi {len(tus_codes)} selector={selector}")
+    if not 7000<=len(ita_codes)<=9000: raise RuntimeError(f"RGS: Comuni Italia inattesi {len(ita_codes)}")
     tus=aggregate(tus_codes,tg,ag,hg,cg); ita=aggregate(ita_codes,tg,ag,hg,cg)
     local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
     errors=[]
@@ -81,7 +98,7 @@ def main():
         "municipalStaffTurnover":{"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus["turnoverRate"],"italy":ita["turnoverRate"]},
       },
       "raw":{"tuscany":tus,"italy":ita},
-      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","regionField":rf,"errors":errors},
+      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","geographySelector":selector,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"errors":errors},
       "blocked":{
         "municipalEmployeesPer1000":"denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
         "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"
