@@ -44,7 +44,12 @@ def main()->None:
 
     if args.profile in DEDICATED:
         script=DEDICATED[args.profile]
-        proc=run([sys.executable,script,"--output",str(raw_output)])
+        cmd=[sys.executable,script,"--output",str(raw_output)]
+        if args.profile=="istat-census-annual":
+            metric_ids=entry.get("metricIds") or []
+            if metric_ids:
+                cmd.extend(["--metrics", ",".join(str(x) for x in metric_ids)])
+        proc=run(cmd)
         if proc.returncode!=0:
             payload={
                 "schemaVersion":1,
