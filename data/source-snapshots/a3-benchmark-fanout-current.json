@@ -313,5 +313,7 @@
       "costPoints": 2,
       "priorityIndex": 7.5
     }
-  ]
+  ],
+  "workerGeneration": "parallel-v2",
+  "lastAcquisitionTriggerParent": "b697c865e25db43b4ab053f3492cc754f617a0ad"
 }

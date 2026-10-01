@@ -37,109 +37,11 @@ jobs:
             exit 0
           fi
           git diff --name-only HEAD^ HEAD > /tmp/changed-files
-          if grep -Eq '^(\.github/workflows/a3-benchmark-bulk-acquisition\.yml|scripts/a3_bulk_acquisition_worker\.py|scripts/acquire_a3_benchmark_.*\.py|scripts/probe_a3_fanout_source\.py|scripts/probe_bilanci_v139_sources\.py|data/source-snapshots/a3-benchmark-fanout-current\.json)
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Load certified fan-out manifest
-        run: |
-          mkdir -p /tmp/a3-bulk-context
-          cp data/source-snapshots/a3-benchmark-fanout-current.json /tmp/a3-bulk-context/manifest.json
-          cp data/source-registry.json /tmp/a3-bulk-context/source-registry.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          manifest=json.loads(Path("/tmp/a3-bulk-context/manifest.json").read_text(encoding="utf-8"))
-          profiles=manifest.get("profiles") or []
-          if not profiles:
-              raise SystemExit("Manifest fan-out certificato vuoto")
-          matrix={"include":[
-              {"profileId":p["profileId"],"rank":int(p.get("rank") or 0),"pairCount":int(p.get("pairCount") or 0)}
-              for p in profiles
-          ]}
-          Path("/tmp/a3-bulk-context/github-matrix.json").write_text(
-              json.dumps(matrix,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8"
-          )
-          print(f"A3 fast fan-out: {len(profiles)} profili · {sum(int(p.get('pairCount') or 0) for p in profiles)} coppie.")
-          PY
-      - id: matrix
-        name: Publish worker matrix
-        run: echo "matrix=$(cat /tmp/a3-bulk-context/github-matrix.json)" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: a3-benchmark-bulk-context
-          path: /tmp/a3-bulk-context
-          if-no-files-found: error
-
-  acquire:
-    needs: prepare
-    strategy:
-      fail-fast: false
-      max-parallel: 15
-      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install acquisition dependencies
-        run: python -m pip install requests openpyxl
-      - uses: actions/download-artifact@v4
-        with:
-          name: a3-benchmark-bulk-context
-          path: /tmp/a3-bulk-context
-      - name: Run routed acquisition worker
-        run: |
-          mkdir -p reports/a3-benchmark-bulk
-          python scripts/a3_bulk_acquisition_worker.py \
-            --manifest /tmp/a3-bulk-context/manifest.json \
-            --registry /tmp/a3-bulk-context/source-registry.json \
-            --profile "${{ matrix.profileId }}" \
-            --output "reports/a3-benchmark-bulk/${{ matrix.profileId }}.json"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: a3-benchmark-bulk-${{ matrix.profileId }}
-          path: reports/a3-benchmark-bulk/${{ matrix.profileId }}*.json
-          if-no-files-found: error
-
-  fan-in:
-    needs: [prepare, acquire]
-    if: always() && needs.prepare.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: a3-benchmark-bulk-*
-          path: /tmp/a3-benchmark-bulk
-          merge-multiple: true
-      - name: Build bulk acquisition summary
-        run: |
-          mkdir -p reports
-          python scripts/a3_bulk_acquisition_summary.py \
-            --input-dir /tmp/a3-benchmark-bulk \
-            --json-output reports/a3-benchmark-bulk-summary.json \
-            --markdown-output reports/A3_BENCHMARK_BULK_SUMMARY.md
-      - uses: actions/upload-artifact@v4
-        with:
-          name: a3-benchmark-bulk-summary
-          path: |
-            reports/a3-benchmark-bulk-summary.json
-            reports/A3_BENCHMARK_BULK_SUMMARY.md
-          if-no-files-found: error
- /tmp/changed-files; then
+          if grep -Eq '^(scripts/a3_bulk_acquisition_worker\.py|scripts/acquire_a3_benchmark_.*\.py|scripts/probe_a3_fanout_source\.py|scripts/probe_bilanci_v139_sources\.py|data/source-snapshots/a3-benchmark-fanout-current\.json)' /tmp/changed-files; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "Changed files:"
           cat /tmp/changed-files
 
   prepare:
