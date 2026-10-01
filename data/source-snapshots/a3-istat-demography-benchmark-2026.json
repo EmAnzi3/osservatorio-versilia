@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "a3-istat-demography-benchmark-2026-v2",
+  "version": "a3-istat-demography-benchmark-2026-v1",
   "retrieved": "2026-10-01",
   "publisher": "Istat",
   "sourceProfileId": "istat-demography-annual",
@@ -16,19 +16,13 @@
     "p2_2025": {
       "url": "https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip",
       "title": "Bilancio demografico e popolazione residente al 31 dicembre 2025"
-    },
-    "rcs_2025": {
-      "url": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip",
-      "archiveMember": "Dati_cittadinanza_2025.csv",
-      "title": "Popolazione residente per cittadinanza al 1° gennaio 2025"
     }
   },
   "qualityGate": {
     "status": "PASS",
     "populationPosasP02Reconciled": true,
     "ageBandsExhaustive": true,
-    "note": "Aggregati Toscana/Italia costruiti sui Comuni del perimetro Istat. Tassi, quote e indici sono ricalcolati su numeratori e denominatori aggregati; la riga POSAS Età=999 è usata solo come controllo del totale e non sommata alle età. foreignResidents usa RCS cittadinanza 2025 e deve riconciliare i 7/7 valori comunali già pubblici prima della materializzazione.",
-    "foreignResidentsRcs7of7Reconciled": true
+    "note": "Aggregati Toscana/Italia costruiti sui Comuni del perimetro Istat. Tassi, quote e indici sono ricalcolati su numeratori e denominatori aggregati; la riga POSAS Età=999 è usata solo come controllo del totale e non sommata alle età."
   },
   "benchmarks": {
     "population": {
@@ -63,12 +57,6 @@
       "defaultPart": "Saldo naturale",
       "tuscany": -6.485773147182606,
       "italy": -5.02848965679572
-    },
-    "foreignResidents": {
-      "unit": "percent",
-      "year": "2025",
-      "tuscany": 11.84840485155217,
-      "italy": 9.112547236789476
     }
   },
   "components": {
@@ -130,27 +118,9 @@
     }
   },
   "excluded": {
+    "foreignResidents": "Richiede dataset RCS cittadinanza 2025.",
     "internalResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02.",
     "foreignResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02.",
     "totalResidentialMobility": "Lineage comunale non versionata nello snapshot POSAS/P02."
-  },
-  "rcs": {
-    "source": "https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip",
-    "archiveMember": "Dati_cittadinanza_2025.csv",
-    "validation": "7/7 public rows reconciled",
-    "scopes": {
-      "tuscany": {
-        "foreign": 433381,
-        "population": 3657716,
-        "share": 11.84840485155217,
-        "municipalityCount": 273
-      },
-      "italy": {
-        "foreign": 26856255,
-        "population": 294717320,
-        "share": 9.112547236789476,
-        "municipalityCount": 8004
-      }
-    }
   }
 }

@@ -237,9 +237,12 @@ def rcs_benchmark(session:requests.Session)->dict[str,Any]:
     }
     towns={}
     for row in reader:
-        code=re.sub(r"\D","",str(row.get("Codice Istat") or "")).zfill(6)[-6:]
-        if not re.fullmatch(r"\d{6}",code):
+        raw_code=re.sub(r"\\D","",str(row.get("Codice Istat") or "").strip())
+        # RCS contiene anche righe territoriali aggregate con codici più corti.
+        # Non zero-pad: solo codici comunali grezzi esattamente a 6 cifre.
+        if not re.fullmatch(r"\\d{6}",raw_code):
             continue
+        code=raw_code
         value=num(row.get("Totale"))
         men=num(row.get("Maschi")); women=num(row.get("Femmine"))
         if not math.isclose(value,men+women,rel_tol=0.0,abs_tol=0.1):
@@ -339,11 +342,21 @@ def main()->None:
     rcs=rcs_benchmark(session)
 
     scopes={}
+    p02_population_2025={}
     for name,predicate in (("tuscany",pred_tuscany),("italy",pred_italy)):
         pos=aggregate_posas(pos_h,pos_rows,predicate)
         p19=aggregate_p2(h19,r19,predicate,"population")
         p25=aggregate_p2(h25,r25,predicate,"natural")
         scopes[name]=scope_payload(pos,p19,p25)
+        p02_population_2025[name]=p25["jan1"]
+
+    for name in ("tuscany","italy"):
+        rcs_population=float(rcs["scopes"][name]["population"])
+        p02_population=float(p02_population_2025[name])
+        if not math.isclose(rcs_population,p02_population,rel_tol=0.0,abs_tol=1.0):
+            raise RuntimeError(
+                f"RCS {name}: popolazione 1/1/2025 {rcs_population} != P02 1/1/2025 {p02_population}"
+            )
 
     specs={
         "population":{"unit":"number","year":"2026"},
