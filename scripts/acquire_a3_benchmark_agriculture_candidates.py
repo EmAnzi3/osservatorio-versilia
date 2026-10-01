@@ -102,6 +102,31 @@ def main():
                 errors.append(f"{code}/{field}: {value} != {d[field]}")
 
     si,ii,li=surface_index(all_s),irrigation_index(all_i),localized_index(all_l)
+    aggregate_area_samples={}
+    for label,rows,wanted in (
+        ("surface",all_s,{"HO","ARU","FUAA"}),
+        ("irrigation",all_i,{"IA"}),
+        ("localized",all_l,{"ARU"}),
+    ):
+        samples=[]
+        seen=set()
+        for row in rows:
+            area=str(row.get("REF_AREA") or "").strip()
+            dtype=str(row.get("DATA_TYPE") or "").strip()
+            if not area or six(area) or dtype not in wanted: continue
+            key=(area,dtype,str(row.get("TYPE_OF_CROP") or ""),str(row.get("ALTIMETRIC_ZONE") or ""),str(row.get("OBS_VALUE") or ""))
+            if key in seen: continue
+            seen.add(key)
+            samples.append({
+                "refArea":area,
+                "dataType":dtype,
+                "crop":str(row.get("TYPE_OF_CROP") or ""),
+                "altimetricZone":str(row.get("ALTIMETRIC_ZONE") or ""),
+                "value":str(row.get("OBS_VALUE") or ""),
+                "label":str(row.get("Territorio") or row.get("REF_AREA_LABEL") or row.get("Territory") or ""),
+            })
+            if len(samples)>=120: break
+        aggregate_area_samples[label]=samples
     raw={}
     for scope in ("tuscany","italy"):
         pred=lambda c: True if scope=="italy" else c[:3] in TUSCANY_PREFIXES
@@ -138,7 +163,7 @@ def main():
       "schemaVersion":5,"publisher":"Istat — 7° Censimento generale dell’agricoltura 2020","profileId":"istat-agriculture-census-2020","referenceYear":2020,
       "status":"ACQUIRED_CANDIDATE" if safe_gate=="PASS" else "CANDIDATE_REJECTED",
       "sources":{"townSurface":u1,"townIrrigation":u2,"townLocalizedSau":u3,"allMunicipalSurface":u4,"allMunicipalIrrigation":u5,"allMunicipalLocalizedSau":u6,"officialControl":OFFICIAL_TABLE},
-      "benchmarks":benchmarks,"raw":raw,
+      "benchmarks":benchmarks,"raw":raw,"aggregateAreaSamples":aggregate_area_samples,
       "qualityGate":{
         "status":safe_gate,
         "publicSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if safe_gate=="PASS" else "FAIL",
