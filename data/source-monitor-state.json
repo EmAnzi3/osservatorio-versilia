@@ -1,8 +1,38 @@
 {
   "schemaVersion": 2,
-  "checkedAt": "2026-08-31T17:19:31+02:00",
+  "checkedAt": "2026-09-05T09:08:37+00:00",
   "mode": "live",
   "sources": {
+    "https://at.erplucca.it/default?path=75&t=1": {
+      "url": "https://at.erplucca.it/default?path=75&t=1",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://at.erplucca.it/default?path=75&t=1",
+      "contentType": "text/html",
+      "contentLength": "134722",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "erpArrears"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "erp-lucca-annual-balance-sheet"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
     "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall": {
       "url": "https://bdap-opendata.rgs.mef.gov.it/opendata/spd_rnd_ent_sio_reg09_01_2025?metadati=showall",
       "ok": true,
@@ -16,6 +46,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -31,6 +63,102 @@
         "monthly"
       ]
     },
+    "https://cave.regione.toscana.it/": {
+      "url": "https://cave.regione.toscana.it/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cave.regione.toscana.it/",
+      "contentType": "text/html",
+      "contentLength": "13202",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractiveSites"
+      ],
+      "roles": [
+        "source:publicMap"
+      ],
+      "profileIds": [
+        "regione-toscana-rtcave-continuous"
+      ],
+      "frequencies": [
+        "continuous"
+      ]
+    },
+    "https://cave.regione.toscana.it/api/v1/cave_public": {
+      "url": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cave.regione.toscana.it/api/v1/cave_public",
+      "contentType": "application/json",
+      "contentLength": "416298",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "56dafd4d94eafd181f83fb2752d64d3445cfb6474348423c05c692dcf823b06a",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractiveSites"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-rtcave-continuous"
+      ],
+      "frequencies": [
+        "continuous"
+      ]
+    },
+    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": {
+      "url": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabCompletedOperationalGrossValue",
+        "pabInProgressOperationalGrossValue",
+        "pabInterventionsCompleted",
+        "pabInterventionsInProgress",
+        "pabProgrammedInterventionLength"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "cb1-pmo-2026",
+        "cb1-pmo-status-2026"
+      ],
+      "frequencies": [
+        "annual",
+        "irregular"
+      ]
+    },
     "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati": {
       "url": "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati",
       "ok": true,
@@ -44,6 +172,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -73,6 +203,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -101,6 +233,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -129,6 +263,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -157,6 +293,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -185,6 +323,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -213,6 +353,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -243,6 +385,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -271,6 +415,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -299,6 +445,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -327,6 +475,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -345,6 +495,37 @@
         "annual"
       ]
     },
+    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": {
+      "url": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
+      "contentType": "text/html",
+      "contentLength": "28176",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "maritimeConcessionFeesDue",
+        "maritimeConcessions"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "mit-sid-demanio-irregular"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
+    },
     "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs": {
       "url": "https://dati.toscana.it/dataset/8bb8f8fe-fe7d-41d0-90dc-49f2456180d1/resource/4f85393b-357d-443d-8378-65de4198505f/download/trenitalia.gtfs",
       "ok": true,
@@ -358,6 +539,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "informational",
       "contentChangeReason": "Feed GTFS ferroviario operativo continuo; gli indicatori TPL usano una fotografia di servizio datata e versionata.",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "Feed GTFS ferroviario operativo continuo; gli indicatori TPL usano una fotografia di servizio datata e versionata.",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -388,6 +571,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": true,
       "error": "",
       "metrics": [
@@ -418,6 +603,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -448,6 +635,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -478,6 +667,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -508,6 +699,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -537,6 +730,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -567,6 +762,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -597,6 +794,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -625,6 +824,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -663,6 +864,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -678,19 +881,51 @@
         "annual"
       ]
     },
+    "https://esploradati.istat.it/": {
+      "url": "https://esploradati.istat.it/",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://esploradati.istat.it/databrowser/",
+      "contentType": "text/html",
+      "contentLength": "5287",
+      "etag": "\"a2c8bf8696d0dc1:0:dtagent10343260715123811ujIG\"",
+      "lastModified": "Mon, 20 Apr 2026 07:23:02 GMT",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "Landing page Istat: un cambio di redirect tecnico non dimostra la disponibilità di una nuova annualità dell'indicatore.",
+      "redirectChangePolicy": "informational",
+      "redirectChangeReason": "Landing page Istat: un cambio di redirect tecnico non dimostra la disponibilità di una nuova annualità dell'indicatore.",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "waterNetworkLosses"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "istat-water-irregular"
+      ],
+      "frequencies": [
+        "census_or_irregular"
+      ]
+    },
     "https://esploradati.istat.it/databrowser/": {
       "url": "https://esploradati.istat.it/databrowser/",
       "ok": true,
       "status": 200,
       "finalUrl": "https://esploradati.istat.it/databrowser/",
       "contentType": "text/html",
-      "contentLength": "5285",
+      "contentLength": "5286",
       "etag": "\"a2c8bf8696d0dc1:0:dtagent10343260715123811ujIG\"",
       "lastModified": "Mon, 20 Apr 2026 07:23:02 GMT",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -722,6 +957,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -750,6 +987,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -778,6 +1017,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -809,6 +1050,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -823,6 +1066,7 @@
         "currentRevenueAccruedPerResident",
         "educationMissionExpenditurePerResident",
         "environmentMissionExpenditurePerResident",
+        "financialDebtProfile",
         "mobilityMissionExpenditurePerResident",
         "ownRevenueShare",
         "publicWorks",
@@ -849,13 +1093,15 @@
       "status": 200,
       "finalUrl": "https://osservatorioversilia.it/percorsi/metodo.html",
       "contentType": "text/html",
-      "contentLength": "12102",
-      "etag": "\"6a92c6fc-2f46\"",
-      "lastModified": "Sat, 29 Aug 2026 11:48:12 GMT",
+      "contentLength": "12248",
+      "etag": "\"6a9bcc69-2fd8\"",
+      "lastModified": "Sat, 05 Sep 2026 08:01:45 GMT",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -884,10 +1130,12 @@
       "contentLength": null,
       "etag": "",
       "lastModified": "",
-      "contentSha256": "b9d04e0ceb03d096a68662efd76d285934c881c8eb53df92b5c6abc83fca6675",
+      "contentSha256": "b8374537b4770b63c7238fd0dc1a8bfbce90c2d079dec8b740664b963681a8eb",
       "contentHashMode": "raw",
       "contentChangePolicy": "informational",
       "contentChangeReason": "Feed GTFS operativo continuo; gli indicatori TPL usano una fotografia di servizio datata e versionata.",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "Feed GTFS operativo continuo; gli indicatori TPL usano una fotografia di servizio datata e versionata.",
       "hashTruncated": true,
       "error": "",
       "metrics": [
@@ -918,6 +1166,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -933,19 +1183,51 @@
         "continuous"
       ]
     },
+    "https://sira.arpat.toscana.it/apex/f?p=SISBON%3AREPORT_PER_RT%3A%3ACSV%3AIR_REPORT_GEOSCOPIO": {
+      "url": "https://sira.arpat.toscana.it/apex/f?p=SISBON%3AREPORT_PER_RT%3A%3ACSV%3AIR_REPORT_GEOSCOPIO",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.arpat.toscana.it/sira/?p=SISBON%3AREPORT_PER_RT%3A%3ACSV%3AIR_REPORT_GEOSCOPIO",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "Endpoint SISBON ARPAT: il passaggio tecnico dal dominio sira.arpat.toscana.it al portale www.arpat.toscana.it/sira non equivale a un nuovo rilascio; periodo e dati restano verificati separatamente.",
+      "redirectChangePolicy": "informational",
+      "redirectChangeReason": "Endpoint SISBON ARPAT: il passaggio tecnico dal dominio sira.arpat.toscana.it al portale www.arpat.toscana.it/sira non equivale a un nuovo rilascio; periodo e dati restano verificati separatamente.",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "remediationProceedings"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "sisbon-weekly"
+      ],
+      "frequencies": [
+        "weekly"
+      ]
+    },
     "https://situas.istat.it/": {
       "url": "https://situas.istat.it/",
       "ok": true,
       "status": 200,
       "finalUrl": "https://situas.istat.it/web/",
       "contentType": "text/html",
-      "contentLength": "3928",
+      "contentLength": "3927",
       "etag": "\"089bdb364fedc1:0:dtagent10343260715123811Ofxg\"",
       "lastModified": "Wed, 17 Jun 2026 14:22:17 GMT",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -974,6 +1256,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1002,6 +1286,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1031,6 +1317,8 @@
       "contentHashMode": "zip-members",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1059,6 +1347,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1094,6 +1384,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1122,6 +1414,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1150,6 +1444,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1178,6 +1474,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1221,19 +1519,51 @@
         "annual"
       ]
     },
-    "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": {
-      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+    "https://www.gaia-spa.it/analisiweb_v2/": {
+      "url": "https://www.gaia-spa.it/analisiweb_v2/",
       "ok": true,
       "status": 200,
-      "finalUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "finalUrl": "https://www.gaia-spa.it/analisiweb_v2/",
       "contentType": "text/html",
-      "contentLength": "35257",
+      "contentLength": null,
       "etag": "",
       "lastModified": "",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "drinkingWaterQuality"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "gaia-quality-semiannual"
+      ],
+      "frequencies": [
+        "semiannual"
+      ]
+    },
+    "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo": {
+      "url": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo",
+      "contentType": "text/html",
+      "contentLength": "35254",
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1263,6 +1593,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1292,6 +1624,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1320,6 +1654,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1349,6 +1685,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1377,6 +1715,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1411,6 +1751,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1443,6 +1785,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1472,6 +1816,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1504,6 +1850,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1544,6 +1892,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": true,
       "error": "",
       "metrics": [
@@ -1574,6 +1924,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": true,
       "error": "",
       "metrics": [
@@ -1602,6 +1954,8 @@
       "contentHashMode": "zip-members",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1630,6 +1984,8 @@
       "contentHashMode": "zip-members",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1658,6 +2014,8 @@
       "contentHashMode": "zip-members",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1686,6 +2044,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1717,6 +2077,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1738,13 +2100,15 @@
       "status": 200,
       "finalUrl": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
       "contentType": "text/csv",
-      "contentLength": "3955226",
-      "etag": "\"3c5a1a-65a29e8e2a0c0\"",
-      "lastModified": "Sat, 29 Aug 2026 06:45:07 GMT",
-      "contentSha256": "09b9010c104d69759dee11bcc42d810652a8ceb37a7697b6c674c6c7e58d8481",
+      "contentLength": "3952577",
+      "etag": "\"3c4fc1-65aa29bf77573\"",
+      "lastModified": "Fri, 04 Sep 2026 06:45:08 GMT",
+      "contentSha256": "318276dd26caa7848c11b517ee4e228c17f331eea03c37ae97f9c4615c2e5fad",
       "contentHashMode": "raw",
-      "contentChangePolicy": "",
-      "contentChangeReason": "",
+      "contentChangePolicy": "informational",
+      "contentChangeReason": "Feed prezzi carburanti aggiornato ogni giorno; l'avanzamento ordinario viene verificato semanticamente e diventa rilascio da revisionare solo nel controllo mensile programmato.",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "Feed prezzi carburanti aggiornato ogni giorno; l'avanzamento ordinario viene verificato semanticamente e diventa rilascio da revisionare solo nel controllo mensile programmato.",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1773,6 +2137,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1801,6 +2167,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1823,19 +2191,112 @@
         "annual"
       ]
     },
+    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": {
+      "url": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "hydraulicWorksCensusElements"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-opere-idrauliche-2021"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
+    },
+    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": {
+      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "pabProgrammedInterventions",
+        "pabProgrammedMaintenanceValue"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-pab-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
+    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": {
+      "url": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "managedReticulumLength"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-reticolo-2025"
+      ],
+      "frequencies": [
+        "irregular"
+      ]
+    },
     "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria": {
       "url": "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
       "ok": true,
       "status": 200,
       "finalUrl": "https://www.regione.toscana.it/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria",
       "contentType": "text/html",
-      "contentLength": "164901",
+      "contentLength": "165572",
       "etag": "\"0\"",
       "lastModified": "",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1853,19 +2314,51 @@
         "annual"
       ]
     },
+    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": {
+      "url": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
+      "contentType": "text/html",
+      "contentLength": null,
+      "etag": "",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractiveProduction"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-prc-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
     "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali": {
       "url": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
       "ok": true,
       "status": 200,
       "finalUrl": "https://www.regione.toscana.it/it/statistiche/indicatori-comunali-per-le-politiche-locali",
       "contentType": "text/html",
-      "contentLength": "173378",
+      "contentLength": "174052",
       "etag": "\"0\"",
       "lastModified": "",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1887,6 +2380,36 @@
         "annual"
       ]
     },
+    "https://www.regione.toscana.it/piano-regionale-cave": {
+      "url": "https://www.regione.toscana.it/piano-regionale-cave",
+      "ok": true,
+      "status": 200,
+      "finalUrl": "https://www.regione.toscana.it/piano-regionale-cave",
+      "contentType": "text/html",
+      "contentLength": "195803",
+      "etag": "\"0\"",
+      "lastModified": "",
+      "contentSha256": "",
+      "contentHashMode": "raw",
+      "contentChangePolicy": "",
+      "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
+      "hashTruncated": false,
+      "error": "",
+      "metrics": [
+        "extractivePlanning"
+      ],
+      "roles": [
+        "primary"
+      ],
+      "profileIds": [
+        "regione-toscana-prc-annual"
+      ],
+      "frequencies": [
+        "annual"
+      ]
+    },
     "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie": {
       "url": "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
       "ok": true,
@@ -1895,11 +2418,13 @@
       "contentType": "text/html",
       "contentLength": null,
       "etag": "",
-      "lastModified": "Fri, 02 Jan 1970 08:00:00 GMT",
+      "lastModified": "",
       "contentSha256": "",
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1928,6 +2453,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1958,6 +2485,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -1986,6 +2515,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "metrics": [
@@ -2020,6 +2551,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "probeUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
@@ -2052,6 +2585,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "probeUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_at/dati/download.htm?anno=2026",
@@ -2084,6 +2619,8 @@
       "contentHashMode": "raw",
       "contentChangePolicy": "",
       "contentChangeReason": "",
+      "redirectChangePolicy": "",
+      "redirectChangeReason": "",
       "hashTruncated": false,
       "error": "",
       "probeUrl": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_imu/dati/download.htm?anno=2026",
@@ -2102,1238 +2639,978 @@
       "frequencies": [
         "annual"
       ]
-    },
-    "https://esploradati.istat.it/": {
-      "url": "https://esploradati.istat.it/",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://esploradati.istat.it/",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "waterNetworkLosses"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "istat-water-irregular"
-      ],
-      "frequencies": [
-        "census_or_irregular"
-      ]
-    },
-    "https://www.gaia-spa.it/analisiweb_v2/": {
-      "url": "https://www.gaia-spa.it/analisiweb_v2/",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.gaia-spa.it/analisiweb_v2/",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "drinkingWaterQuality"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "gaia-quality-semiannual"
-      ],
-      "frequencies": [
-        "semiannual"
-      ]
-    },
-    "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO": {
-      "url": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://sira.arpat.toscana.it/apex/f?p=SISBON:REPORT_PER_RT::CSV:IR_REPORT_GEOSCOPIO",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "remediationProceedings"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "sisbon-weekly"
-      ],
-      "frequencies": [
-        "weekly"
-      ]
-    },
-    "https://at.erplucca.it/default?path=75&t=1": {
-      "url": "https://at.erplucca.it/default?path=75&t=1",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://at.erplucca.it/default?path=75&t=1",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "erpArrears"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "erp-lucca-annual-balance-sheet"
-      ],
-      "frequencies": [
-        "annual"
-      ]
-    },
-    "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/": {
-      "url": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://cbtoscananord.it/comunicazione/pmo-manutenzione-mappa-navigabile/",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "pabProgrammedInterventionLength",
-        "pabInterventionsInProgress",
-        "pabInterventionsCompleted",
-        "pabInProgressOperationalGrossValue",
-        "pabCompletedOperationalGrossValue"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "cb1-pmo-2026",
-        "cb1-pmo-status-2026"
-      ],
-      "frequencies": [
-        "annual",
-        "irregular"
-      ]
-    },
-    "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica": {
-      "url": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.regione.toscana.it/-/manutenzione-del-reticolo-idrografico-piani-delle-attivit%C3%A0-dei-consorzi-di-bonifica",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "pabProgrammedInterventions",
-        "pabProgrammedMaintenanceValue"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-pab-annual"
-      ],
-      "frequencies": [
-        "annual"
-      ]
-    },
-    "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione": {
-      "url": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.regione.toscana.it/-/reticolo-idrografico-e-di-gestione",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "managedReticulumLength"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-reticolo-2025"
-      ],
-      "frequencies": [
-        "irregular"
-      ]
-    },
-    "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche": {
-      "url": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.regione.toscana.it/-/censimento-delle-opere-idrauliche",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "hydraulicWorksCensusElements"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-opere-idrauliche-2021"
-      ],
-      "frequencies": [
-        "irregular"
-      ]
-    },
-    "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026": {
-      "url": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://dati.mit.gov.it/catalog/dataset/concessioni-demaniali-marittime-a-agosto-2026",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "maritimeConcessions",
-        "maritimeConcessionFeesDue"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "mit-sid-demanio-irregular"
-      ],
-      "frequencies": [
-        "irregular"
-      ]
-    },
-    "https://cave.regione.toscana.it/api/v1/cave_public": {
-      "url": "https://cave.regione.toscana.it/api/v1/cave_public",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://cave.regione.toscana.it/api/v1/cave_public",
-      "contentType": "application/json",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "f507c5bb018619ac95bd8a681d24b9aaa3a584c41c3f8d67632b72dd685f62f2",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "extractiveSites"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-rtcave-continuous"
-      ],
-      "frequencies": [
-        "continuous"
-      ]
-    },
-    "https://www.regione.toscana.it/piano-regionale-cave": {
-      "url": "https://www.regione.toscana.it/piano-regionale-cave",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.regione.toscana.it/piano-regionale-cave",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "extractivePlanning"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-prc-annual"
-      ],
-      "frequencies": [
-        "annual"
-      ]
-    },
-    "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave": {
-      "url": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
-      "ok": true,
-      "status": 200,
-      "finalUrl": "https://www.regione.toscana.it/it/-/monitoraggio-del-piano-regionale-cave",
-      "contentType": "text/html",
-      "contentLength": null,
-      "etag": "",
-      "lastModified": "",
-      "contentSha256": "",
-      "hashTruncated": false,
-      "error": "",
-      "metrics": [
-        "extractiveProduction"
-      ],
-      "roles": [
-        "primary"
-      ],
-      "profileIds": [
-        "regione-toscana-prc-annual"
-      ],
-      "frequencies": [
-        "annual"
-      ]
     }
   },
   "metrics": {
     "population": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ageDistribution": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "oldAgeIndex": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "dependencyIndices": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "internalResidentialMobility": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "income": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "incomeDistribution": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "incomeSourceProfile": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "pensionIncomeShare": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "taxpayersAdultPopulationRate": {
       "publishedPeriod": "MEF a.i. 2024 · residenti 1.1.2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "businessValueAdded": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "labourProductivity": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "industryValueAddedShare": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "industryWorkerShare": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismPresences": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismBeds": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "localUnits": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "microUnits": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "foreignBornSoleProprietorShare": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "innovationBusinessShare": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "employmentRate": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "unemploymentRate": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "activityRate": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "femaleEmploymentRate": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "maleEmploymentRate": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "employmentGenderGap": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "youthOtherStatus": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "diplomaPlus": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tertiary": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolSites": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolStudents": {
       "publishedPeriod": "a.s. 2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "studentsPerClass": {
       "publishedPeriod": "a.s. 2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "primaryFullTimeShare": {
       "publishedPeriod": "a.s. 2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "lifeExpectancy": {
       "publishedPeriod": "2022",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "mortalityAll": {
       "publishedPeriod": "2013–2022",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "chronicTotal": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "diabetes": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "dementia": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "disability064Per1000": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "emergencyAccess": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "emsResponseTimeP75": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "hospitalizedAll": {
       "publishedPeriod": "2021–2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "elderlyHomeCare": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "pharmaciesPer1000": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "hospitals": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "outsideMunicipality": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "selfContainment": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "inboundCommuters": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "motorization": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "pollutingCars": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "evPoints": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "vacantHomes": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "housingStockPer1000": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "nonOccupiedHomesPer1000": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "singleHouseholds": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "householdSize": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "cohabitingHouseholds": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "landUse": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "landUseChange": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "floodExposure": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "landslideExposure": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "agriculturalFarms": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "agriculturalUsedArea": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "averageAgriculturalFarmSize": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "cropProfile": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "irrigatedAgriculturalArea": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "bathingWaterQuality": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2025",
       "status": "current"
     },
     "bathingNonCompliantSamples": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2025",
       "status": "current"
     },
     "blueFlagBeaches": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "shorelineDynamics": {
       "publishedPeriod": "2006–2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2006–2020",
       "status": "current"
     },
     "rigidDefenceProtectedCoast": {
       "publishedPeriod": "2020",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2020",
+      "status": "current"
+    },
+    "maritimeConcessions": {
+      "publishedPeriod": "agosto 2026",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2026-08",
+      "status": "release_detected"
+    },
+    "maritimeConcessionFeesDue": {
+      "publishedPeriod": "agosto 2026",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2026-08",
+      "status": "release_detected"
+    },
+    "waterNetworkLosses": {
+      "publishedPeriod": "2018",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2018",
+      "status": "current"
+    },
+    "drinkingWaterQuality": {
+      "publishedPeriod": "2° semestre 2025",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2° semestre 2025",
+      "status": "current"
+    },
+    "remediationProceedings": {
+      "publishedPeriod": "29 agosto 2026",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "29 agosto 2026",
       "status": "current"
     },
     "organicAgriculturalAreaShare": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
+    "extractiveSites": {
+      "publishedPeriod": "2 settembre 2026",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2026-09",
+      "status": "release_detected"
+    },
+    "extractiveProduction": {
+      "publishedPeriod": "2025",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2025",
+      "status": "current"
+    },
+    "extractivePlanning": {
+      "publishedPeriod": "PRC vigente · variante 2025",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2026-09",
+      "status": "release_detected"
+    },
     "wastePerResident": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "thirdSector": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "recycling": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "currentPayments": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "siopePayments": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "publicWorks": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "pnrrFunding": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current",
       "verificationEvidence": {
-        "provider": "Regione Toscana — Open Data PNRR",
-        "url": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
-        "datasetUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
-        "dataElaborationDates": [
-          "2026-08-11"
-        ],
+        "type": "pnrr_toscana_snapshot",
+        "dataset": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+        "resource": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
         "dataElaborationDate": "2026-08-11",
-        "match7of7": true,
-        "metric": "pnrrFunding",
-        "verdict": "match",
-        "recordsScanned": 45204,
-        "selectedProjects": 101
+        "sourceSnapshotSha256": "f7d4e46f4973efe92eef00a9fb9b41e95e5824600046c4b9fa57b16e932091db",
+        "selectedProjects": 101,
+        "concludedProjects": 74,
+        "fundingTotal": 36683107.64,
+        "match7of7": true
       }
     },
     "pnrrConcluded": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current",
       "verificationEvidence": {
-        "provider": "Regione Toscana — Open Data PNRR",
-        "url": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
-        "datasetUrl": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
-        "dataElaborationDates": [
-          "2026-08-11"
-        ],
+        "type": "pnrr_toscana_snapshot",
+        "dataset": "https://dati.toscana.it/dataset/regione-toscana-pnrr",
+        "resource": "https://www301.regione.toscana.it/bancadati/pnrrPerSitoWeb/getOpenData_v6.csv",
         "dataElaborationDate": "2026-08-11",
-        "match7of7": true,
-        "metric": "pnrrConcluded",
-        "verdict": "match",
-        "recordsScanned": 45204,
-        "selectedProjects": 101
+        "sourceSnapshotSha256": "f7d4e46f4973efe92eef00a9fb9b41e95e5824600046c4b9fa57b16e932091db",
+        "selectedProjects": 101,
+        "concludedProjects": 74,
+        "fundingTotal": 36683107.64,
+        "match7of7": true
       }
     },
     "populationChange": {
       "publishedPeriod": "2019–2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismSeasonality": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "foreignTourismShare": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "commuterBalanceRate": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "residualWaste": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "capitalPayments": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismIntensity": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismBedsPer1000": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismStructuresPer1000": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "outboundCommutersRate": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "inboundCommutersRate": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "scheduledTplTripsPer1000": {
       "publishedPeriod": "26 agosto 2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "activeTplAccessPoints": {
       "publishedPeriod": "26 agosto 2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tplServiceSpan": {
       "publishedPeriod": "26 agosto 2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "cashReceiptsPerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "cashBalancePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismArrivals": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismAverageStay": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "outboundCommuters": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "commuterBalance": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "currentRevenueAccruedPerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "currentExpenditureCommittedPerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "capitalExpenditureCommittedPerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ownRevenueShare": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "currentCollectionCapacity": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "currentPaymentCapacity": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "availableAdministrationResultPerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "rigidExpenditureShare": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "educationMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "socialMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "environmentMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "mobilityMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "cultureSportMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tourismDevelopmentMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "localEmployees": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "employeesPerLocalUnit": {
       "publishedPeriod": "2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "localUnitsChange": {
       "publishedPeriod": "2018–2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "localEmployeesChange": {
       "publishedPeriod": "2018–2023",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ftthCoverageDesi": {
       "publishedPeriod": "31 dicembre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ftthCoverage20m": {
       "publishedPeriod": "31 dicembre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ftthReachedHouseholds": {
       "publishedPeriod": "31 dicembre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "ftthUnreachedHouseholds": {
       "publishedPeriod": "31 dicembre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "slowMobilityRoutes": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "slowMobilityTrekking": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "slowMobilityCammini": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "slowMobilityBici": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "slowMobilityMtb": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "climateTemperatureTrend50y": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "climatePrecipitationTrend50y": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "climateTminTrend": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "climateTmaxTrend": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "foreignResidents": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "foreignResidentialMobility": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "totalResidentialMobility": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "naturalDemographicDynamics": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "omiResidential": {
       "publishedPeriod": "2° semestre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
+    "erpArrears": {
+      "publishedPeriod": "2024",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2024",
+      "status": "current"
+    },
     "roadSafety": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "roadFinesPerResident": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "securityMissionExpenditurePerResident": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalIrpef": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "tariStandardHousehold": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalImuStandard": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "fiscalRecoveryActivity": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "fuelPrices": {
       "publishedPeriod": "2026-08-28",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
-      "observedLatestPeriod": "2026-08-28",
-      "status": "current",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "2026-09-03",
+      "status": "release_detected",
       "verificationEvidence": {
         "provider": "Ministero delle Imprese e del Made in Italy",
         "url": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
-        "referenceDate": "2026-08-28",
+        "referenceDate": "2026-09-03",
         "coverage": "6/7",
-        "valuesMatchPublished": true,
+        "valuesMatchPublished": false,
         "towns": {
           "Camaiore": {
-            "benzina": 2.029,
-            "gasolio": 2.139,
+            "benzina": 2.059,
+            "gasolio": 2.159,
             "stations": 11
           },
           "Forte dei Marmi": {
-            "benzina": 1.999,
-            "gasolio": 2.129,
+            "benzina": 2.034,
+            "gasolio": 2.154,
             "stations": 4
           },
           "Massarosa": {
-            "benzina": 2.018,
-            "gasolio": 2.147,
-            "stations": 7
+            "benzina": 2.038,
+            "gasolio": 2.158,
+            "stations": 6
           },
           "Pietrasanta": {
-            "benzina": 2.019,
-            "gasolio": 2.149,
+            "benzina": 2.059,
+            "gasolio": 2.169,
             "stations": 15
           },
           "Seravezza": {
-            "benzina": 1.999,
-            "gasolio": 2.144,
+            "benzina": 2.029,
+            "gasolio": 2.139,
             "stations": 6
           },
           "Stazzema": {
@@ -3342,229 +3619,226 @@
             "stations": 0
           },
           "Viareggio": {
-            "benzina": 2.019,
-            "gasolio": 2.141,
+            "benzina": 2.059,
+            "gasolio": 2.179,
             "stations": 20
           }
         },
-        "verdict": "match"
+        "verdict": "new_period"
+      },
+      "releaseEvidence": {
+        "provider": "Ministero delle Imprese e del Made in Italy",
+        "url": "https://www.mimit.gov.it/images/exportCSV/prezzo_alle_8.csv",
+        "referenceDate": "2026-09-03",
+        "coverage": "6/7",
+        "valuesMatchPublished": false,
+        "towns": {
+          "Camaiore": {
+            "benzina": 2.059,
+            "gasolio": 2.159,
+            "stations": 11
+          },
+          "Forte dei Marmi": {
+            "benzina": 2.034,
+            "gasolio": 2.154,
+            "stations": 4
+          },
+          "Massarosa": {
+            "benzina": 2.038,
+            "gasolio": 2.158,
+            "stations": 6
+          },
+          "Pietrasanta": {
+            "benzina": 2.059,
+            "gasolio": 2.169,
+            "stations": 15
+          },
+          "Seravezza": {
+            "benzina": 2.029,
+            "gasolio": 2.139,
+            "stations": 6
+          },
+          "Stazzema": {
+            "benzina": null,
+            "gasolio": null,
+            "stations": 0
+          },
+          "Viareggio": {
+            "benzina": 2.059,
+            "gasolio": 2.179,
+            "stations": 20
+          }
+        },
+        "verdict": "new_period"
       }
     },
     "wasteServiceCost": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "incomeVsInflation": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalEmployeesPer1000": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalStaffTurnover": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalStaffAgeStructure": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalStaffTraining": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "municipalOnlineServicesAdvanced": {
       "publishedPeriod": "2022",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolBuildingSafetyDocs": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolBuildingAccessibility": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolBuildingFacilities": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolBuildingAge": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "schoolBuildingTransport": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "socialSpendingPerResident": {
       "publishedPeriod": "2022",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "socialSpendingByUserArea": {
       "publishedPeriod": "2022",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "libraryLoansPerResident": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "libraryActiveBorrowersPer100": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "libraryWeeklyOpeningHours": {
       "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
     "earlyChildhoodPotentialCapacityRate": {
       "publishedPeriod": "2024/25",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "",
       "status": "source_checked"
     },
-    "waterNetworkLosses": {
-      "publishedPeriod": "2018",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
-      "observedLatestPeriod": "2018",
-      "status": "current"
-    },
-    "drinkingWaterQuality": {
-      "publishedPeriod": "2° semestre 2025",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
-      "observedLatestPeriod": "2° semestre 2025",
-      "status": "current"
-    },
-    "remediationProceedings": {
-      "publishedPeriod": "29 agosto 2026",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
-      "observedLatestPeriod": "29 agosto 2026",
-      "status": "current"
-    },
-    "erpArrears": {
-      "publishedPeriod": "2024",
-      "checkedAt": "2026-08-29T12:22:42+00:00",
-      "observedLatestPeriod": "2024",
-      "status": "current"
-    },
     "pabProgrammedInterventionLength": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "pabProgrammedInterventions": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "pabProgrammedMaintenanceValue": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "managedReticulumLength": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2025",
       "status": "current"
     },
     "hydraulicWorksCensusElements": {
       "publishedPeriod": "2021",
-      "checkedAt": "2026-08-30T23:42:08+00:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2021",
       "status": "current"
     },
     "pabInterventionsInProgress": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "pabInterventionsCompleted": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "pabInProgressOperationalGrossValue": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
     "pabCompletedOperationalGrossValue": {
       "publishedPeriod": "2026",
-      "checkedAt": "2026-08-31T17:19:31+02:00",
+      "checkedAt": "2026-09-05T09:08:37+00:00",
       "observedLatestPeriod": "2026",
       "status": "current"
     },
-    "maritimeConcessions": {
-      "publishedPeriod": "2026-08",
-      "checkedAt": "2026-09-01T16:30:00+00:00",
-      "observedLatestPeriod": "2026-08",
-      "status": "current"
-    },
-    "maritimeConcessionFeesDue": {
-      "publishedPeriod": "2026-08",
-      "checkedAt": "2026-09-01T16:30:00+00:00",
-      "observedLatestPeriod": "2026-08",
-      "status": "current"
-    },
-    "extractiveSites": {
-      "publishedPeriod": "2026-09",
-      "checkedAt": "2026-09-02T10:49:00+00:00",
-      "observedLatestPeriod": "2026-09",
-      "status": "current"
-    },
-    "extractiveProduction": {
+    "financialDebtProfile": {
       "publishedPeriod": "2025",
-      "checkedAt": "2026-09-02T10:49:00+00:00",
-      "observedLatestPeriod": "2025",
-      "status": "current"
-    },
-    "extractivePlanning": {
-      "publishedPeriod": "2026-09",
-      "checkedAt": "2026-09-02T10:49:00+00:00",
-      "observedLatestPeriod": "2026-09",
-      "status": "current"
+      "checkedAt": "2026-09-05T09:08:37+00:00",
+      "observedLatestPeriod": "",
+      "status": "source_checked"
     }
   }
 }
