@@ -46,16 +46,27 @@ def discover_anagrafe_csv():
     ]
     if not packages:
         raise RuntimeError("RGS: package CKAN Anagrafe Ente non trovato")
-    resources=[]
+    resources=[]; diagnostics=[]
     for package in packages:
         for resource in package.get("resources") or []:
             if not isinstance(resource,dict): continue
             fmt=str(resource.get("format") or "").upper()
             url=str(resource.get("url") or "").strip()
-            if url and (fmt=="CSV" or ".csv" in url.lower()):
-                resources.append((url,package.get("name"),resource.get("name")))
+            name=str(resource.get("name") or "").strip()
+            diagnostics.append({"name":name,"format":fmt,"url":url})
+            lowered=f"{name} {url}".lower()
+            if (
+                fmt=="CSV"
+                and url.startswith(("https://","http://"))
+                and ".pdf" not in lowered
+                and "metadat" not in lowered
+            ):
+                resources.append((url,package.get("name"),name))
     if not resources:
-        raise RuntimeError("RGS: package Anagrafe Ente senza risorsa CSV")
+        raise RuntimeError(
+            "RGS: package Anagrafe Ente senza risorsa dati CSV governata; "
+            f"resources={diagnostics}"
+        )
     return resources[0]
 
 def anagrafe_region_map():
