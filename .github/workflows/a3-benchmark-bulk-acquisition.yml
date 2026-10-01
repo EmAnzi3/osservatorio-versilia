@@ -3,11 +3,18 @@ name: A3 Benchmark bulk acquisition
 on:
   pull_request:
     branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-bulk-acquisition.yml"
+      - "scripts/a3_bulk_acquisition_worker.py"
+      - "scripts/acquire_a3_benchmark_*.py"
+      - "scripts/probe_a3_fanout_source.py"
+      - "scripts/probe_bilanci_v139_sources.py"
+      - "data/source-snapshots/a3-benchmark-fanout-current.json"
   workflow_dispatch:
 
 concurrency:
-  group: a3-benchmark-bulk-acquisition-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: a3-benchmark-bulk-acquisition-${{ github.sha }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -22,42 +29,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements-ci.txt
-      - name: Install build dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements-ci.txt
-          python -m playwright install --with-deps chromium
-      - name: Build effective public catalog once
-        env:
-          OV_RELEASE_BUILD: "1"
-        run: python scripts/build_static_brand.py
-      - name: Derive current benchmark backlog
+      - name: Load certified fan-out manifest
         run: |
           mkdir -p /tmp/a3-bulk-context
-          python scripts/enrichment_audit_matrix.py \
-            --data dist/data/site-data.json \
-            --registry dist/data/source-registry.json \
-            --output /tmp/a3-bulk-context/matrix.json \
-            --allow-unclassified
-          python scripts/enrichment_source_audit.py \
-            --matrix /tmp/a3-bulk-context/matrix.json \
-            --registry dist/data/source-registry.json \
-            --json-output /tmp/a3-bulk-context/source-audit.json
-          python scripts/enrichment_backlog.py \
-            --matrix /tmp/a3-bulk-context/matrix.json \
-            --source-audit /tmp/a3-bulk-context/source-audit.json \
-            --json-output /tmp/a3-bulk-context/backlog.json
-          cp dist/data/source-registry.json /tmp/a3-bulk-context/source-registry.json
-          python scripts/a3_fanout_manifest.py \
-            --backlog /tmp/a3-bulk-context/backlog.json \
-            --dimension benchmark_toscana_italia \
-            --max-profiles 15 \
-            --output /tmp/a3-bulk-context/manifest.json \
-            --matrix-output /tmp/a3-bulk-context/github-matrix.json
+          cp data/source-snapshots/a3-benchmark-fanout-current.json /tmp/a3-bulk-context/manifest.json
+          cp data/source-registry.json /tmp/a3-bulk-context/source-registry.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("/tmp/a3-bulk-context/manifest.json").read_text(encoding="utf-8"))
+          profiles=manifest.get("profiles") or []
+          if not profiles:
+              raise SystemExit("Manifest fan-out certificato vuoto")
+          matrix={"include":[
+              {"profileId":p["profileId"],"rank":int(p.get("rank") or 0),"pairCount":int(p.get("pairCount") or 0)}
+              for p in profiles
+          ]}
+          Path("/tmp/a3-bulk-context/github-matrix.json").write_text(
+              json.dumps(matrix,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8"
+          )
+          print(f"A3 fast fan-out: {len(profiles)} profili · {sum(int(p.get('pairCount') or 0) for p in profiles)} coppie.")
+          PY
       - id: matrix
-        name: Publish 15-worker matrix
+        name: Publish worker matrix
         run: echo "matrix=$(cat /tmp/a3-bulk-context/github-matrix.json)" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with:

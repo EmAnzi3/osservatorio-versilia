@@ -3,6 +3,16 @@ name: A3 Benchmark AVAILABLE_MISSING
 on:
   pull_request:
     branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-available-missing.yml"
+      - "scripts/build_static_brand.py"
+      - "scripts/materialize_a3_benchmark_*.py"
+      - "scripts/a3_publication_gap_audit.py"
+      - "scripts/a3_benchmark_available_missing.py"
+      - "scripts/enrichment_audit_matrix.py"
+      - "data/source-snapshots/a3-*-benchmark-*.json"
+      - "data/site-data.json"
+      - "data/source-registry.json"
   workflow_dispatch:
 
 permissions:

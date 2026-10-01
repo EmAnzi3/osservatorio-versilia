@@ -3,6 +3,11 @@ name: A3 Benchmark source probes
 on:
   pull_request:
     branches: ["fix/a3-enrichment-publication-gap"]
+    paths:
+      - ".github/workflows/a3-benchmark-source-probes.yml"
+      - "scripts/probe_a3_benchmark_istat_business.py"
+      - "scripts/probe_bilanci_v139_sources.py"
+      - "scripts/probe_a3_istat_misura_comune.py"
   workflow_dispatch:
 
 permissions:
