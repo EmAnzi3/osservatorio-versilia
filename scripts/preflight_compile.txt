@@ -27,6 +27,7 @@ scripts/materialize_a3_publication_adapter.py
 scripts/materialize_a3_benchmark_frame_sbs.py
 scripts/materialize_a3_benchmark_istat_families.py
 scripts/materialize_a3_benchmark_mim.py
+scripts/materialize_a3_benchmark_demography.py
 scripts/test_a3_publication_adapter.py
 scripts/a3_publication_gap_audit.py
 scripts/test_a3_publication_contract.py
