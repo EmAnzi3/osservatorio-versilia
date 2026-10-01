@@ -18,7 +18,7 @@
       "publisher": "Presidenza del Consiglio dei Ministri · Dipartimento per le pari opportunità",
       "territory": "Italia",
       "family": "social-welfare-equality",
-      "urls": ["https://www.pariopportunita.gov.it/it/news-e-media/news/?c=39da032a-22db-4b74-a6d1-47169edb48f1"],
+      "urls": ["https://www.pariopportunita.gov.it/it/news-e-media/news/"],
       "fetchTimeoutSeconds": 18,
       "includeTerms": ["bando", "avviso", "finanzi", "progetti", "manifestazione di interesse", "co-progettazione"],
       "municipalTerms": ["comun", "enti locali", "città metropolitane", "territorial"]
