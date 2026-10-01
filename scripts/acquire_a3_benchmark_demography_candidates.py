@@ -136,17 +136,25 @@ def aggregate_posas(headers:list[str],rows:list[dict[str,str]],predicate:Callabl
     }
 
 
+def pick_exact(headers:list[str],expected:str)->str:
+    target=norm(expected)
+    hits=[header for header in headers if norm(header)==target]
+    if len(hits)!=1:
+        raise RuntimeError(f"Header esatto non univoco {expected!r}: {hits}")
+    return hits[0]
+
+
 def p2_headers(headers:list[str])->dict[str,str]:
     return {
-        "jan1":pick(headers,("popolazione","1 gennaio","totale")),
-        "dec31":pick(headers,("popolazione","31 dicembre","totale")),
-        "births":pick(headers,("nati vivi","totale")),
-        "deaths":pick(headers,("morti","totale")),
-        "natural":pick(headers,("saldo naturale","totale")),
-        "internalIn":pick(headers,("iscritti","altri comuni","totale")),
-        "internalOut":pick(headers,("cancellati","altri comuni","totale")),
-        "foreignIn":pick(headers,("iscritti","estero","totale")),
-        "foreignOut":pick(headers,("cancellati","estero","totale")),
+        "jan1":pick_exact(headers,"Popolazione censita al 1° gennaio - Totale"),
+        "dec31":pick_exact(headers,"Popolazione censita al 31 dicembre - Totale"),
+        "births":pick_exact(headers,"Nati vivi - Totale"),
+        "deaths":pick_exact(headers,"Morti - Totale"),
+        "natural":pick_exact(headers,"Saldo naturale - Totale"),
+        "internalIn":pick(headers,("iscritti","altri comuni","totale"),("rettifiche","altri motivi")),
+        "internalOut":pick(headers,("cancellati","altri comuni","totale"),("rettifiche","altri motivi")),
+        "foreignIn":pick(headers,("iscritti","estero","totale"),("rettifiche","altri motivi")),
+        "foreignOut":pick(headers,("cancellati","estero","totale"),("rettifiche","altri motivi")),
     }
 
 
