@@ -381,6 +381,117 @@ def reconcile_public_2024(site: dict[str, Any], local: dict[str, Any]) -> dict[s
     return {"status": "PASS" if not errors else "FAIL", "metrics": sorted(mapping), "towns": len(towns), "errors": errors[:100]}
 
 
+TUSCANY_PROVINCE_PREFIXES = {"045", "046", "047", "048", "049", "050", "051", "052", "053", "100"}
+
+
+def municipality_ref(value: Any) -> str:
+    code = str(value or "").strip()
+    return code if re.fullmatch(r"\d{6}", code) else ""
+
+
+def is_tuscany_municipality(code: str) -> bool:
+    return code[:3] in TUSCANY_PROVINCE_PREFIXES
+
+
+def sdmx_filtered_all(session: requests.Session, flow: str, key: str) -> list[dict[str, str]]:
+    url = f"{SDMX_BASE}/data/IT1,{flow},1.0/{key}/all"
+    response = session.get(
+        url,
+        params={"startPeriod": "2024", "endPeriod": "2024", "format": "csvfile"},
+        headers={"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"},
+        timeout=240,
+    )
+    response.raise_for_status()
+    import csv
+    return list(csv.DictReader(io.StringIO(response.content.decode("utf-8-sig", errors="replace"))))
+
+
+def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    labour_key = "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.ALL.1+12+22+99.."
+    education_key = "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.BL+ML_RDD+ALL.99.."
+    labour_rows = sdmx_filtered_all(session, SDMX_FLOWS["labour"], labour_key)
+    education_rows = sdmx_filtered_all(session, SDMX_FLOWS["education"], education_key)
+
+    labour_by: dict[str, dict[str, float]] = {}
+    for row in labour_rows:
+        code = municipality_ref(row.get("REF_AREA"))
+        if not code:
+            continue
+        age = row.get("AGE_NOCLASS")
+        stat = row.get("CUR_ACT_STAT")
+        if age not in {"Y25-49", "Y50-64"} or stat not in {"1", "12", "22", "99"}:
+            continue
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("GENDER") != "T" or row.get("CITIZENSHIP") != "TOTAL" or row.get("EDU_ATTAIN") != "ALL":
+            continue
+        labour_by.setdefault(code, {})[f"{age}|{stat}"] = number(row.get("OBS_VALUE"), f"labour/{code}/{age}/{stat}")
+
+    education_by: dict[str, dict[str, float]] = {}
+    for row in education_rows:
+        code = municipality_ref(row.get("REF_AREA"))
+        if not code:
+            continue
+        age = row.get("AGE_NOCLASS")
+        edu = row.get("EDU_ATTAIN")
+        if age not in {"Y25-49", "Y50-64"} or edu not in {"ALL", "BL", "ML_RDD"}:
+            continue
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("GENDER") != "T" or row.get("CITIZENSHIP") != "TOTAL" or row.get("CUR_ACT_STAT") != "99":
+            continue
+        education_by.setdefault(code, {})[f"{age}|{edu}"] = number(row.get("OBS_VALUE"), f"education/{code}/{age}/{edu}")
+
+    labour_required = {f"{age}|{stat}" for age in ("Y25-49", "Y50-64") for stat in ("1", "12", "22", "99")}
+    education_required = {f"{age}|{edu}" for age in ("Y25-49", "Y50-64") for edu in ("ALL", "BL", "ML_RDD")}
+
+    labour_complete = {code for code, vals in labour_by.items() if set(vals) == labour_required}
+    education_complete = {code for code, vals in education_by.items() if set(vals) == education_required}
+    common = labour_complete & education_complete
+
+    if not (7800 <= len(common) <= 8000):
+        raise RuntimeError(f"Copertura comunale nazionale inattesa: labour={len(labour_complete)} education={len(education_complete)} common={len(common)}")
+    tuscany_codes = {code for code in common if is_tuscany_municipality(code)}
+    if not (270 <= len(tuscany_codes) <= 280):
+        raise RuntimeError(f"Copertura comunale Toscana inattesa: {len(tuscany_codes)}")
+
+    def aggregate_scope(codes: set[str]) -> tuple[dict[str, float], dict[str, float]]:
+        labour = {"population": 0.0, "employed": 0.0, "unemployed": 0.0, "active": 0.0}
+        education = {"population": 0.0, "tertiary": 0.0}
+        for code in codes:
+            l = labour_by[code]
+            labour["population"] += l["Y25-49|99"] + l["Y50-64|99"]
+            labour["employed"] += l["Y25-49|1"] + l["Y50-64|1"]
+            labour["unemployed"] += l["Y25-49|12"] + l["Y50-64|12"]
+            labour["active"] += l["Y25-49|22"] + l["Y50-64|22"]
+            e = education_by[code]
+            education["population"] += e["Y25-49|ALL"] + e["Y50-64|ALL"]
+            education["tertiary"] += (
+                e["Y25-49|BL"] + e["Y25-49|ML_RDD"] +
+                e["Y50-64|BL"] + e["Y50-64|ML_RDD"]
+            )
+        if not math.isclose(labour["employed"] + labour["unemployed"], labour["active"], rel_tol=0.0, abs_tol=1e-4):
+            raise RuntimeError("Aggregato labour: employed + unemployed != active")
+        if not math.isclose(labour["population"], education["population"], rel_tol=0.0, abs_tol=1e-4):
+            raise RuntimeError(f"Aggregato 25-64: popolazione labour {labour['population']} != education {education['population']}")
+        labour["employmentRate"] = labour["employed"] / labour["population"] * 100.0
+        labour["unemploymentRate"] = labour["unemployed"] / labour["active"] * 100.0
+        labour["activityRate"] = labour["active"] / labour["population"] * 100.0
+        education["tertiaryRate"] = education["tertiary"] / education["population"] * 100.0
+        return labour, education
+
+    tus_labour, tus_education = aggregate_scope(tuscany_codes)
+    ita_labour, ita_education = aggregate_scope(common)
+
+    diagnostics = {
+        "labourRows": len(labour_rows),
+        "educationRows": len(education_rows),
+        "labourMunicipalitiesComplete": len(labour_complete),
+        "educationMunicipalitiesComplete": len(education_complete),
+        "commonMunicipalities": len(common),
+        "tuscanyMunicipalities": len(tuscany_codes),
+        "labourKey": labour_key,
+        "educationKey": education_key,
+    }
+    return {"labour": tus_labour, "education": tus_education}, {"labour": ita_labour, "education": ita_education}, diagnostics
+
+
 def resolve_scope_2024(session: requests.Session, candidates: list[str]) -> tuple[str, dict[str, float], dict[str, float]]:
     attempts = []
     for code in candidates:
@@ -401,8 +512,19 @@ def resolve_scope_2024(session: requests.Session, candidates: list[str]) -> tupl
 def acquire_residual_2024(session: requests.Session, site: dict[str, Any]) -> dict[str, Any]:
     local = json.loads(LOCAL_2024.read_text(encoding="utf-8"))
     reconcile = reconcile_public_2024(site, local)
-    tus_code, tus_labour, tus_education = resolve_scope_2024(session, ["09", "ITI1"])
-    ita_code, ita_labour, ita_education = resolve_scope_2024(session, ["IT"])
+    direct_error = None
+    try:
+        tus_code, tus_labour, tus_education = resolve_scope_2024(session, ["09", "ITI1"])
+        ita_code, ita_labour, ita_education = resolve_scope_2024(session, ["IT"])
+        diagnostics = {"mode": "direct-ref-area"}
+    except Exception as exc:
+        direct_error = f"{type(exc).__name__}: {exc}"
+        tus_scope, ita_scope, diagnostics = aggregate_all_municipal_2024(session)
+        tus_code = "SUM_MUNICIPALITIES_TOSCANA"
+        ita_code = "SUM_MUNICIPALITIES_ITALIA"
+        tus_labour, tus_education = tus_scope["labour"], tus_scope["education"]
+        ita_labour, ita_education = ita_scope["labour"], ita_scope["education"]
+        diagnostics = {"mode": "municipal-sum", "directScopeError": direct_error, **diagnostics}
     benchmarks = {
         "employmentRate": {"year": 2024, "unit": "percent", "tuscany": tus_labour["employmentRate"], "italy": ita_labour["employmentRate"]},
         "unemploymentRate": {"year": 2024, "unit": "percent", "tuscany": tus_labour["unemploymentRate"], "italy": ita_labour["unemploymentRate"]},
@@ -421,7 +543,8 @@ def acquire_residual_2024(session: requests.Session, site: dict[str, Any]) -> di
         "profileId": "istat-census-annual",
         "referenceYear": 2024,
         "source": {"api": SDMX_BASE, "flows": SDMX_FLOWS, "tuscanyRefArea": tus_code, "italyRefArea": ita_code},
-        "method": "Aggregazione diretta dei conteggi SDMX 2024 sulle classi 25–49 e 50–64; Toscana e Italia sono richieste direttamente come REF_AREA, non ricostruite da medie comunali.",
+        "method": "Aggregazione dei conteggi SDMX 2024 sulle classi 25–49 e 50–64. Se il dataflow comunale non espone aggregati territoriali, Toscana e Italia sono ottenute sommando i conteggi comunali completi prima del calcolo dei tassi; mai come media di percentuali.",
+        "diagnostics": diagnostics,
         "components": {"tuscany": {"labour": tus_labour, "education": tus_education}, "italy": {"labour": ita_labour, "education": ita_education}},
         "benchmarks": benchmarks,
         "publicMetricReconciliation": reconcile,
