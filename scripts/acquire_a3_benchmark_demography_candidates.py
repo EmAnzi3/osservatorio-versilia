@@ -144,22 +144,73 @@ def pick_exact(headers:list[str],expected:str)->str:
     return hits[0]
 
 
-def p2_headers(headers:list[str])->dict[str,str]:
+def p2_population_headers(headers:list[str])->dict[str,str]:
     return {
         "jan1":pick_exact(headers,"Popolazione censita al 1° gennaio - Totale"),
         "dec31":pick_exact(headers,"Popolazione censita al 31 dicembre - Totale"),
-        "births":pick_exact(headers,"Nati vivi - Totale"),
-        "deaths":pick_exact(headers,"Morti - Totale"),
-        "natural":pick_exact(headers,"Saldo naturale - Totale"),
-        "internalIn":pick(headers,("iscritti","altri comuni","totale"),("rettifiche","altri motivi")),
-        "internalOut":pick(headers,("cancellati","altri comuni","totale"),("rettifiche","altri motivi")),
-        "foreignIn":pick(headers,("iscritti","estero","totale"),("rettifiche","altri motivi")),
-        "foreignOut":pick(headers,("cancellati","estero","totale"),("rettifiche","altri motivi")),
     }
 
 
-def aggregate_p2(headers:list[str],rows:list[dict[str,str]],predicate:Callable[[str],bool])->dict[str,float]:
-    h=p2_headers(headers)
+def p2_natural_headers(headers:list[str])->dict[str,str]:
+    return {
+        **p2_population_headers(headers),
+        "births":pick_exact(headers,"Nati vivi - Totale"),
+        "deaths":pick_exact(headers,"Morti - Totale"),
+        "natural":pick_exact(headers,"Saldo naturale - Totale"),
+    }
+
+
+def pick_flow(headers:list[str],direction:str,place:str)->str:
+    candidates=[]
+    direction_tokens={
+        "in":("iscritti",),
+        "out":("cancellati",),
+    }[direction]
+    place_variants={
+        "internal":(("altri comuni",),("altro comune",),("altri comuni italiani",)),
+        "foreign":(("estero",),("estero estero",)),
+    }[place]
+    for header in headers:
+        h=norm(header)
+        if not all(token in h for token in direction_tokens):
+            continue
+        if not any(all(token in h for token in variant) for variant in place_variants):
+            continue
+        if "rettific" in h or "altri motivi" in h:
+            continue
+        candidates.append(header)
+    if len(candidates)!=1:
+        raise RuntimeError(
+            f"Header flusso non univoco direction={direction} place={place}: {candidates}"
+        )
+    return candidates[0]
+
+
+def p2_mobility_headers(headers:list[str])->dict[str,str]:
+    return {
+        **p2_population_headers(headers),
+        "internalIn":pick_flow(headers,"in","internal"),
+        "internalOut":pick_flow(headers,"out","internal"),
+        "foreignIn":pick_flow(headers,"in","foreign"),
+        "foreignOut":pick_flow(headers,"out","foreign"),
+    }
+
+
+def aggregate_p2(
+    headers:list[str],
+    rows:list[dict[str,str]],
+    predicate:Callable[[str],bool],
+    mode:str,
+)->dict[str,float]:
+    if mode=="population":
+        h=p2_population_headers(headers)
+    elif mode=="natural":
+        h=p2_natural_headers(headers)
+    elif mode=="mobility":
+        h=p2_mobility_headers(headers)
+    else:
+        raise RuntimeError(f"Modalità P02 non supportata: {mode}")
+
     out={key:0.0 for key in h}
     matched=0
     for row in rows:
@@ -171,9 +222,9 @@ def aggregate_p2(headers:list[str],rows:list[dict[str,str]],predicate:Callable[[
             out[key]+=num(row.get(header))
     if matched<=0:
         raise RuntimeError("P02: nessun Comune nel perimetro")
-    out["meanPopulation"]=(out["jan1"]+out["dec31"])/2.0
+    if "jan1" in out and "dec31" in out:
+        out["meanPopulation"]=(out["jan1"]+out["dec31"])/2.0
     return out
-
 
 def rate(value:float,pop:float)->float:
     return value/pop*1000.0 if pop else float("nan")
@@ -246,9 +297,9 @@ def main()->None:
     scopes={}
     for name,predicate in (("tuscany",pred_tuscany),("italy",pred_italy)):
         pos=aggregate_posas(pos_h,pos_rows,predicate)
-        p19=aggregate_p2(h19,r19,predicate)
-        p24=aggregate_p2(h24,r24,predicate)
-        p25=aggregate_p2(h25,r25,predicate)
+        p19=aggregate_p2(h19,r19,predicate,"population")
+        p24=aggregate_p2(h24,r24,predicate,"mobility")
+        p25=aggregate_p2(h25,r25,predicate,"natural")
         scopes[name]=scope_payload(pos,p19,p24,p25)
 
     specs={
