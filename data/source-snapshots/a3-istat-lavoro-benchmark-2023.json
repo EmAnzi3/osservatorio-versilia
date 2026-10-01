@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "a3-istat-lavoro-benchmark-2023-v1",
+  "retrieved": "2026-10-01",
+  "publisher": "Istat",
+  "sourceUrl": "https://www.istat.it/storage/misura-comune/5-Lavoro.xlsx",
+  "benchmarks": {
+    "employmentRate": {
+      "sheet": "Tav. 1.2 Province e regioni",
+      "title": "Tasso di occupazione per provincia e regione. Anni 2019, 2021-2023",
+      "year": 2023,
+      "unit": "percent",
+      "tuscany": 50.2053422874521,
+      "italy": null,
+      "sourceRow": ["Centro","09","Toscana","TOTALE",48.8926591721494,48.6515214208021,49.2616173196712,50.2053422874521]
+    },
+    "unemploymentRate": {
+      "sheet": "Tav. 2.2 Province e regioni",
+      "title": "Tasso di disoccupazione per provincia e regione. Anni 2019, 2021-2023",
+      "year": 2023,
+      "unit": "percent",
+      "tuscany": 5.99651756655271,
+      "italy": null,
+      "sourceRow": ["Centro","09","Toscana","TOTALE",9.77598665229618,7.87230364527556,6.57412829865909,5.99651756655271]
+    }
+  },
+  "note": "Il workbook ufficiale espone il totale regionale Toscana; nelle stesse tavole non è presente una riga nazionale Italia."
+}
