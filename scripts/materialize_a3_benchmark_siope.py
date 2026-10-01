@@ -44,7 +44,7 @@ def main()->None:
   rr=rows(metrics[mid],mid)
   expected=(hist.get("validation_2025") or {}).get(mid) or {}
   if set(rr)!=set(expected): raise RuntimeError(f"{mid}: perimetro storico non riconciliato")
-  for town,ev in expected.items(): close(rr[town].get("value"),ev.get("existing_2025"),f"{mid}/{town}",.02)
+  for town,ev in expected.items(): close(rr[town].get("value"),ev.get("calculated_2025"),f"{mid}/{town}",.02)
 
  rr=rows(metrics["fiscalRecoveryActivity"],"fiscalRecoveryActivity")
  towns=fiscal.get("towns") or {}
