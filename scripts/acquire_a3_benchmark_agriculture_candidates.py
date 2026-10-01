@@ -13,7 +13,13 @@ TOWNS={'046005','046013','046018','046024','046028','046030','046033'}
 def num(v:Any)->float:
     s=str(v or '').strip().replace(' ','').replace(',','.')
     return float(s) if s else 0.0
-def code(row): return str(row.get('REF_AREA') or '').strip()
+def code(row):
+    raw=str(row.get('REF_AREA') or '').strip()
+    digits=''.join(re.findall(r'\\d',raw))
+    if 1<=len(digits)<=6:
+        return digits.zfill(6)
+    hits=re.findall(r'(?<!\\d)(\\d{6})(?!\\d)',raw)
+    return hits[0] if len(hits)==1 else ''
 def fetch(flow:str,keys:list[str]):
     errors=[]
     for key in keys:
