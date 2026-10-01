@@ -79,7 +79,8 @@ def main() -> None:
                         "sheet": sheet.title,
                         "maxRow": sheet.max_row,
                         "maxColumn": sheet.max_column,
-                        "headerRows": [compact(row_values(sheet, header_row, max_col)) for header_row in range(1, min(12, max_row) + 1)],\n                            "matches": matches[:20],
+                        "headerRows": [compact(row_values(sheet, header_row, max_col)) for header_row in range(1, min(12, max_row) + 1)],
+                            "matches": matches[:20],
                     })
 
     output = Path(args.output)
