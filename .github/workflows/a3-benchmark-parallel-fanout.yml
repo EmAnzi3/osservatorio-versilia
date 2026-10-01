@@ -1,8 +1,6 @@
 name: A3 Benchmark parallel source fan-out
 
 on:
-  pull_request:
-    branches: ["fix/a3-enrichment-publication-gap"]
   workflow_dispatch:
 
 concurrency:
