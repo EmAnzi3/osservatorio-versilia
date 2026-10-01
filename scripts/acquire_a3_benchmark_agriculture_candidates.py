@@ -1,108 +1,118 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, io, json, re
+import argparse,csv,io,json,math
 from pathlib import Path
 from typing import Any
 import requests
-from openpyxl import load_workbook
 
 ROOT=Path(__file__).resolve().parents[1]
-LOCAL=ROOT/'data/source-snapshots/istat-agricoltura-territorio-2020.json'
-WORKBOOK_URL='https://www.regione.toscana.it/documents/10180/12003883/TOSCANA_AGRICOLTURA_CENSIMENTO2020.xlsx/8e641f76-e024-4d15-b722-5afb9aec5c8e?t=1708419413979'
-SDMX='https://esploradati.istat.it/SDMXWS/rest'
-TOWN_QUERY='046005+046013+046018+046024+046028+046030+046033'
+LOCAL=ROOT/"data/source-snapshots/istat-agricoltura-territorio-2020.json"
+BASE="https://esploradati.istat.it/SDMXWS/rest/data"
+TOWNS="046005+046013+046018+046024+046028+046030+046033"
+SCOPES={"tuscany":"ITI1","italy":"IT"}
 
-def norm(v:Any)->str:
-    s=str(v or '').strip().casefold()
-    s=re.sub(r'\s+',' ',s)
-    return s
+def fetch(session:requests.Session,flow:str,key:str)->tuple[list[dict[str,str]],str]:
+    errors=[]
+    for url in (f"{BASE}/{flow}/{key}/IT1",f"{BASE}/IT1,{flow},1.0/{key}/all"):
+        try:
+            r=session.get(url,params={"startPeriod":"2020","endPeriod":"2020","format":"csvfile"},timeout=240)
+            r.raise_for_status()
+            text=r.content.decode("utf-8-sig",errors="strict")
+            rows=list(csv.DictReader(io.StringIO(text)))
+            if rows and "REF_AREA" in rows[0] and "OBS_VALUE" in rows[0]:
+                return rows,r.url
+            errors.append(f"{r.url}: schema inatteso")
+        except Exception as exc:
+            errors.append(f"{url}: {type(exc).__name__}: {exc}")
+    raise RuntimeError(" | ".join(errors))
 
-def serial(v:Any)->Any:
-    if v is None or isinstance(v,(str,int,float,bool)): return v
-    return str(v)
+def num(v:Any)->float:
+    s=str(v or "").strip().replace(",",".")
+    if not s: raise RuntimeError("valore SDMX vuoto")
+    x=float(s)
+    if not math.isfinite(x): raise RuntimeError("valore SDMX non finito")
+    return x
 
-def row_values(ws,rownum:int,maxcol:int)->list[Any]:
-    return [serial(ws.cell(rownum,c).value) for c in range(1,maxcol+1)]
+def index(rows:list[dict[str,str]],extra:tuple[str,...]=())->dict[tuple[str,...],float]:
+    out={}
+    for r in rows:
+        k=(str(r.get("REF_AREA") or "").strip(),str(r.get("DATA_TYPE") or "").strip(),*(str(r.get(x) or "").strip() for x in extra))
+        v=num(r.get("OBS_VALUE"))
+        if k in out and not math.isclose(out[k],v,abs_tol=1e-9): raise RuntimeError(f"duplicato {k}")
+        out[k]=v
+    return out
 
-def workbook_scan(blob:bytes)->dict[str,Any]:
-    wb=load_workbook(io.BytesIO(blob),read_only=True,data_only=True)
-    try:
-        sheets=[]
-        for ws in wb.worksheets:
-            maxcol=min(ws.max_column or 1,90)
-            maxrow=min(ws.max_row or 1,5000)
-            top=[]
-            for r in range(1,min(maxrow,18)+1):
-                vals=row_values(ws,r,maxcol)
-                text=' | '.join(str(x) for x in vals if x not in (None,'')).strip()
-                if text: top.append(text[:1200])
-            matches=[]
-            for r in range(1,maxrow+1):
-                vals=row_values(ws,r,maxcol)
-                normalized=[norm(x) for x in vals]
-                labels=[x for x in normalized if x]
-                target=None
-                if any(x=='toscana' for x in labels): target='Toscana'
-                elif any(x in {'italia','totale italia'} for x in labels): target='Italia'
-                if not target: continue
-                window=[]
-                for rr in range(max(1,r-8),r+1):
-                    window.append({'row':rr,'values':row_values(ws,rr,maxcol)})
-                matches.append({'target':target,'row':r,'values':vals,'headerWindow':window})
-            if matches:
-                sheets.append({
-                    'title':ws.title,
-                    'maxRow':ws.max_row,
-                    'maxColumn':ws.max_column,
-                    'topText':top,
-                    'matches':matches[:20],
-                })
-        return {'sheetNames':wb.sheetnames,'matchedSheets':sheets}
-    finally:
-        wb.close()
+def direct(rows:list[dict[str,str]],area:str,data_type:str,extra:tuple[str,...]=(),extra_values:tuple[str,...]=())->float:
+    hits=[]
+    for r in rows:
+        if str(r.get("REF_AREA") or "").strip()!=area: continue
+        if str(r.get("DATA_TYPE") or "").strip()!=data_type: continue
+        if any(str(r.get(k) or "").strip()!=v for k,v in zip(extra,extra_values)): continue
+        hits.append(num(r.get("OBS_VALUE")))
+    if len(hits)!=1: raise RuntimeError(f"{area}/{data_type}/{extra_values}: righe={len(hits)}")
+    return hits[0]
 
-def sdmx_probe(session:requests.Session,flow:str,key:str)->dict[str,Any]:
-    url=f'{SDMX}/data/{flow}/{key}/IT1'
-    try:
-        r=session.get(url,params={'startPeriod':'2020','endPeriod':'2020','format':'csvfile'},timeout=180)
-        r.raise_for_status()
-        text=r.content.decode('utf-8-sig',errors='replace')
-        lines=text.splitlines()
-        return {'url':r.url,'status':r.status_code,'bytes':len(r.content),'preview':lines[:12]}
-    except Exception as exc:
-        return {'url':url,'error':f'{type(exc).__name__}: {exc}'}
+def main()->None:
+    ap=argparse.ArgumentParser(); ap.add_argument("--output",required=True); args=ap.parse_args()
+    session=requests.Session(); session.headers["User-Agent"]="OsservatorioVersilia-A3-agriculture/3.0"
+    local=json.loads(LOCAL.read_text(encoding="utf-8"))["towns"]
 
-def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('--output',required=True); a=ap.parse_args()
-    session=requests.Session()
-    session.headers.update({'User-Agent':'OsservatorioVersilia-A3-agriculture/2.0'})
-    response=session.get(WORKBOOK_URL,timeout=240)
-    response.raise_for_status()
-    scan=workbook_scan(response.content)
-    local=json.loads(LOCAL.read_text(encoding='utf-8'))
-    probes={
-      'surface7':sdmx_probe(session,'DF_DCAT_CENSAGRIC2020_SURF_ALL',f'A.{TOWN_QUERY}.HO+ARU+FUAA'),
-      'irrigation7':sdmx_probe(session,'DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS',f'A.{TOWN_QUERY}.IA'),
-      'localized7':sdmx_probe(session,'DF_DCAT_CENSAGRIC2020_UA_CROPS_2',f'A.{TOWN_QUERY}.ARU.ALL.TOT'),
+    town_surface,u1=fetch(session,"DF_DCAT_CENSAGRIC2020_SURF_ALL",f"A.{TOWNS}.HO+ARU+FUAA")
+    town_irr,u2=fetch(session,"DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS",f"A.{TOWNS}.IA")
+    town_loc,u3=fetch(session,"DF_DCAT_CENSAGRIC2020_UA_CROPS_2",f"A.{TOWNS}.ARU.ALL.TOT")
+    scope_codes="+".join(SCOPES.values())
+    scope_surface,u4=fetch(session,"DF_DCAT_CENSAGRIC2020_SURF_ALL",f"A.{scope_codes}.HO+ARU+FUAA")
+    scope_irr,u5=fetch(session,"DF_DCAT_CENSAGRIC2020_SURF_IRR_CONS",f"A.{scope_codes}.IA")
+    scope_loc,u6=fetch(session,"DF_DCAT_CENSAGRIC2020_UA_CROPS_2",f"A.{scope_codes}.ARU.ALL.TOT")
+
+    s=index(town_surface); irr=index(town_irr); loc=index(town_loc,("TYPE_OF_CROP","ALTIMETRIC_ZONE"))
+    errors=[]
+    for code,d in local.items():
+        checks={
+          "farms":s.get((code,"HO")),
+          "sauCenterHa":s.get((code,"ARU")),
+          "farmsWithSau":s.get((code,"FUAA")),
+          "irrigatedAreaHa":irr.get((code,"IA")),
+          "sauLocalizedHa":loc.get((code,"ARU","ALL","TOT")),
+        }
+        for field,value in checks.items():
+            if value is None or not math.isclose(float(value),float(d[field]),rel_tol=0.0,abs_tol=.02):
+                errors.append(f"{code}/{field}: {value} != {d[field]}")
+
+    benchmarks={}
+    raw={}
+    for scope,area in SCOPES.items():
+        farms=direct(scope_surface,area,"HO")
+        sau_center=direct(scope_surface,area,"ARU")
+        farms_sau=direct(scope_surface,area,"FUAA")
+        irrigated=direct(scope_irr,area,"IA")
+        sau_local=direct(scope_loc,area,"ARU",("TYPE_OF_CROP","ALTIMETRIC_ZONE"),("ALL","TOT"))
+        if farms<=0 or farms_sau<=0 or sau_center<=0 or sau_local<=0 or irrigated<0:
+            raise RuntimeError(f"{scope}: componenti aggregate non valide")
+        raw[scope]={"farms":farms,"sauCenterHa":sau_center,"farmsWithSau":farms_sau,"sauLocalizedHa":sau_local,"irrigatedAreaHa":irrigated}
+    specs={
+      "agriculturalFarms":("number",lambda x:x["farms"]),
+      "agriculturalUsedArea":("hectares",lambda x:x["sauLocalizedHa"]),
+      "averageAgriculturalFarmSize":("hectaresPerFarm",lambda x:x["sauCenterHa"]/x["farmsWithSau"]),
+      "irrigatedAgriculturalArea":("hectares",lambda x:x["irrigatedAreaHa"]),
     }
+    for metric,(unit,fn) in specs.items():
+        benchmarks[metric]={"year":"2020","unit":unit,"tuscany":fn(raw["tuscany"]),"italy":fn(raw["italy"])}
+    gate="PASS" if not errors else "FAIL"
     payload={
-      'schemaVersion':2,
-      'publisher':'Istat / Regione Toscana — Ufficio di Statistica',
-      'profileId':'istat-agriculture-census-2020',
-      'referenceYear':2020,
-      'status':'SOURCE_DIAGNOSTIC_READY',
-      'source':{'url':WORKBOOK_URL,'bytes':len(response.content)},
-      'workbook':scan,
-      'sdmxProbes':probes,
-      'publicSnapshot':{
-        'coverage':local.get('verification',{}).get('result'),
-        'townCount':len(local.get('towns') or {}),
-        'definitions':local.get('definitions'),
-        'derivations':local.get('derivations'),
-      },
-      'goal':'Identificare nello stesso artifact le righe Toscana/Italia delle tavole ufficiali e la forma reale delle risposte SDMX 7/7; nessun benchmark viene pubblicato finché definizione e denominatore non coincidono con il contratto pubblico.',
+      "schemaVersion":2,"publisher":"Istat — 7° Censimento generale dell’agricoltura 2020",
+      "profileId":"istat-agriculture-census-2020","referenceYear":2020,
+      "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
+      "sources":{"townSurface":u1,"townIrrigation":u2,"townLocalizedSau":u3,"scopeSurface":u4,"scopeIrrigation":u5,"scopeLocalizedSau":u6},
+      "benchmarks":benchmarks,"raw":raw,
+      "qualityGate":{"status":gate,"publicSnapshotReconciliation":"4 metrics × 7/7 towns PASS" if not errors else "FAIL","errors":errors},
+      "blocked":{
+        "cropProfile":"composite: benchmark della componente selezionata da certificare separatamente",
+        "agriculturalRenewalAndLeadership":"Tav.13 usa classi <=29 e 30-44, non consente di ricostruire <=40 senza una fonte più granulare",
+        "agriculturalDiversificationAndModernization":"attività connesse richiede il totale distinto delle aziende, non la somma delle sottocategorie"
+      }
     }
-    p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(json.dumps({'status':payload['status'],'matchedSheets':len(scan['matchedSheets']),'sheetNames':scan['sheetNames']},ensure_ascii=False))
-if __name__=='__main__': main()
+    p=Path(args.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    print(json.dumps({"status":payload["status"],"benchmarks":benchmarks,"gate":payload["qualityGate"]},ensure_ascii=False))
+
+if __name__=="__main__": main()
