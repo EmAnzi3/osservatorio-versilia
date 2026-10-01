@@ -15,6 +15,8 @@ def main():
 
     rows=[]
     for p in sorted(a.input_dir.rglob("*.json")):
+        if p.name.endswith(".raw.json"):
+            continue
         try:o=json.loads(p.read_text(encoding="utf-8"))
         except:continue
         if not isinstance(o,dict) or not o.get("profileId"):continue
@@ -22,8 +24,8 @@ def main():
         rows.append({
             "profileId":o.get("profileId"),
             "pairCount":int(o.get("pairCount") or 0),
-            "mode":o.get("mode"),
-            "status":o.get("status"),
+            "mode":str(o.get("mode") or "unknown"),
+            "status":str(o.get("status") or "UNKNOWN"),
             "candidateKeys":sorted((result.get("benchmarks") or {}).keys()) if isinstance(result.get("benchmarks"),dict) else [],
             "candidateScopes":sorted((result.get("candidates") or {}).keys()) if isinstance(result.get("candidates"),dict) else [],
             "discoveredFiles":int(result.get("discoveredFileCount") or 0),
