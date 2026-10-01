@@ -71,7 +71,7 @@ def main()->None:
             }
     elif args.profile=="openbdap-annual":
         audit=args.output.with_name("openbdap-source-audit.json")
-        proc=run([sys.executable,"scripts/probe_bilanci_v139_sources.py","--output",str(audit.relative_to(ROOT))])
+        proc=run([sys.executable,"scripts/probe_bilanci_v139_sources.py","--output",str(audit)])
         value=load(audit) if audit.exists() else {}
         payload={
             "schemaVersion":1,
