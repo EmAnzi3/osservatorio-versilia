@@ -126,6 +126,22 @@ def set_history_disabled(page,disabled):
     }""", disabled)
 
 
+def history_note_text(page):
+    return page.evaluate("""() => {
+      const note=document.querySelector('#compare-bars .ux-view-shell .ux-view-note');
+      return note ? note.textContent : null;
+    }""")
+
+
+def set_history_note_text(page,text):
+    return page.evaluate("""text => {
+      const note=document.querySelector('#compare-bars .ux-view-shell .ux-view-note');
+      if (!note) return false;
+      note.textContent=text;
+      return true;
+    }""", text)
+
+
 def region(a,b,selector,key,fail,folder,threshold,tolerance):
     ai,am=shot(a,selector); bi,bm=shot(b,selector)
     if ai is None or bi is None:
@@ -209,8 +225,14 @@ def main():
                     overflow(sa,sb,key,fail)
                     for rn,sel in METRIC_REGIONS:
                         if history_upgrade and rn=="workspace":
+                            baseline_note=history_note_text(a)
+                            current_note=history_note_text(b)
                             set_history_disabled(b,True)
+                            if baseline_note is not None and current_note is not None:
+                                set_history_note_text(b,baseline_note)
                             region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
+                            if current_note is not None:
+                                set_history_note_text(b,current_note)
                             set_history_disabled(b,False)
                         else:
                             region(a,b,sel,f"{key}:{rn}",fail,folder,cfg["channel_threshold"],cfg["pixel_tolerance"])
