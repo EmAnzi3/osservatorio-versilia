@@ -17,6 +17,8 @@ import requests
 POSAS_2026="https://demo.istat.it/data/posas/POSAS_2026_it_Comuni.zip"
 P2_2019="https://demo.istat.it/data/p2/P2_2019_it_Comuni.zip"
 P2_2025="https://demo.istat.it/data/p2/P2_2025_it_Comuni.zip"
+RCS_2025="https://demo.istat.it/data/rcs/Dati_RCS_cittadinanza_2025.zip"
+SITE_DATA=Path(__file__).resolve().parents[1]/"data"/"site-data.json"
 TOSCANY_PROVINCES={"045","046","047","048","049","050","051","052","053","100"}
 
 
@@ -215,6 +217,85 @@ def rate(value:float,pop:float)->float:
     return value/pop*1000.0 if pop else float("nan")
 
 
+def rcs_benchmark(session:requests.Session)->dict[str,Any]:
+    response=session.get(RCS_2025,timeout=300)
+    response.raise_for_status()
+    with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+        members=[name for name in archive.namelist() if name.lower().endswith((".csv",".txt"))]
+        if not members:
+            raise RuntimeError("RCS cittadinanza senza CSV/TXT")
+        member=max(members,key=lambda name:archive.getinfo(name).file_size)
+        raw=archive.read(member).decode("utf-8-sig",errors="strict")
+    reader=csv.DictReader(io.StringIO(raw),delimiter=";")
+    required={"Codice Istat","Codice stato di cittadinanza","Stato di cittadinanza","Maschi","Femmine","Totale"}
+    if not required.issubset(set(reader.fieldnames or [])):
+        raise RuntimeError(f"Schema RCS inatteso: {reader.fieldnames}")
+
+    scopes={
+        "tuscany":{"foreign":0.0,"population":0.0,"municipalities":set()},
+        "italy":{"foreign":0.0,"population":0.0,"municipalities":set()},
+    }
+    towns={}
+    for row in reader:
+        code=re.sub(r"\D","",str(row.get("Codice Istat") or "")).zfill(6)[-6:]
+        if not re.fullmatch(r"\d{6}",code):
+            continue
+        value=num(row.get("Totale"))
+        men=num(row.get("Maschi")); women=num(row.get("Femmine"))
+        if not math.isclose(value,men+women,rel_tol=0.0,abs_tol=0.1):
+            raise RuntimeError(f"RCS {code}: Totale != Maschi+Femmine")
+        citizenship_code=str(row.get("Codice stato di cittadinanza") or "").strip()
+        label=norm(row.get("Stato di cittadinanza"))
+        is_foreign=citizenship_code!="100" and label!="italia"
+
+        for scope,predicate in (("tuscany",pred_tuscany),("italy",pred_italy)):
+            if not predicate(code):
+                continue
+            scopes[scope]["population"]+=value
+            if is_foreign:
+                scopes[scope]["foreign"]+=value
+            scopes[scope]["municipalities"].add(code)
+
+        town=towns.setdefault(code,{"foreign":0.0,"population":0.0})
+        town["population"]+=value
+        if is_foreign:
+            town["foreign"]+=value
+
+    site=json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    public={str(row["code"]):row for row in site["metrics"]["foreignResidents"]["rows"]}
+    for code,row in public.items():
+        got=towns.get(code)
+        if not got:
+            raise RuntimeError(f"RCS: Comune pubblico assente {code}")
+        expected_count=float(row["count"])
+        expected_population=float(row["population"])
+        expected_share=float(row["value"])
+        got_share=got["foreign"]/got["population"]*100.0
+        if not math.isclose(got["foreign"],expected_count,rel_tol=0.0,abs_tol=0.1):
+            raise RuntimeError(f"RCS {code}: residenti stranieri {got['foreign']} != pubblico {expected_count}")
+        if not math.isclose(got["population"],expected_population,rel_tol=0.0,abs_tol=0.1):
+            raise RuntimeError(f"RCS {code}: popolazione {got['population']} != pubblico {expected_population}")
+        if not math.isclose(got_share,expected_share,rel_tol=0.0,abs_tol=1e-10):
+            raise RuntimeError(f"RCS {code}: quota {got_share} != pubblico {expected_share}")
+
+    out={}
+    for scope,value in scopes.items():
+        if value["population"]<=0:
+            raise RuntimeError(f"RCS {scope}: popolazione nulla")
+        out[scope]={
+            "foreign":value["foreign"],
+            "population":value["population"],
+            "share":value["foreign"]/value["population"]*100.0,
+            "municipalityCount":len(value["municipalities"]),
+        }
+    return {
+        "url":RCS_2025,
+        "archiveMember":member,
+        "validation":"7/7 public rows reconciled",
+        "scopes":out,
+    }
+
+
 def scope_payload(
     posas:dict[str,Any],
     p2019:dict[str,float],
@@ -255,6 +336,7 @@ def main()->None:
     pos_h,pos_rows,pos_title=download_rows(session,POSAS_2026)
     h19,r19,t19=download_rows(session,P2_2019)
     h25,r25,t25=download_rows(session,P2_2025)
+    rcs=rcs_benchmark(session)
 
     scopes={}
     for name,predicate in (("tuscany",pred_tuscany),("italy",pred_italy)):
@@ -269,13 +351,20 @@ def main()->None:
         "ageDistribution":{"unit":"percent","year":"2026","defaultPart":"20–34 anni"},
         "dependencyIndices":{"unit":"per100","year":"2026","defaultPart":"Indice di dipendenza strutturale"},
         "naturalDemographicDynamics":{"unit":"per1000","year":"2025","defaultPart":"Saldo naturale"},
+        "foreignResidents":{"unit":"percent","year":"2025"},
     }
     benchmarks={}
     for metric_id,spec in specs.items():
+        if metric_id=="foreignResidents":
+            tuscany=rcs["scopes"]["tuscany"]["share"]
+            italy=rcs["scopes"]["italy"]["share"]
+        else:
+            tuscany=scopes["tuscany"][metric_id]
+            italy=scopes["italy"][metric_id]
         benchmarks[metric_id]={
             **spec,
-            "tuscany":scopes["tuscany"][metric_id],
-            "italy":scopes["italy"][metric_id],
+            "tuscany":tuscany,
+            "italy":italy,
         }
 
     payload={
@@ -287,17 +376,19 @@ def main()->None:
             "posas2026":{"url":POSAS_2026,"title":pos_title},
             "p2_2019":{"url":P2_2019,"title":t19},
             "p2_2025":{"url":P2_2025,"title":t25},
+            "rcs_2025":{"url":RCS_2025,"archiveMember":rcs["archiveMember"]},
         },
         "benchmarks":benchmarks,
         "scopes":scopes,
+        "rcs":rcs,
         "excludedFromThisAcquisition":{
-            "foreignResidents":"richiede dataset RCS cittadinanza 2025, non P02/POSAS",
             "internalResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato",
             "foreignResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato",
             "totalResidentialMobility":"lineage comunale non versionata in snapshot P02/POSAS; benchmark non forzato"
         },
         "qualityGate":{
             "populationPosasP02Reconciled":True,
+            "foreignResidentsRcs7of7Reconciled":True,
             "ageBandsExhaustive":True,
             "tuscanyProvincePrefixes":sorted(TOSCANY_PROVINCES),
             "note":"I benchmark sono aggregati sui Comuni del perimetro; tassi e rapporti sono ricalcolati su numeratori e denominatori aggregati, non come media semplice dei Comuni.",
