@@ -15,6 +15,7 @@ DEDICATED={
     "mef-irpef-annual":"scripts/acquire_a3_benchmark_mef_residual_candidates.py",
     "istat-geografia-comunale-2021":"scripts/acquire_a3_benchmark_geography_candidates.py",
     "istat-agriculture-census-2020":"scripts/acquire_a3_benchmark_agriculture_candidates.py",
+    "siope-monthly":"scripts/acquire_a3_benchmark_siope_candidates.py",
     "istat-demography-annual":"scripts/acquire_a3_benchmark_demography_candidates.py",
     "istat-census-annual":"scripts/acquire_a3_benchmark_census_candidates.py",
 }
