@@ -268,21 +268,32 @@ def parse_csv(body: bytes) -> dict[str, dict[str, Any]]:
     if text is None:
         raise base.DataError("CSV AGCOM: encoding non riconosciuto")
 
-    reader = csv.reader(io.StringIO(text), delimiter=";")
-    header = next((row for row in reader if any(str(cell).strip() for cell in row)), None)
-    if header is None:
-        raise base.DataError("CSV AGCOM vuoto")
-
-    normalized_header = [str(cell).replace("\ufeff", "").strip().lower() for cell in header]
-    if len(normalized_header) < 19:
-        raise base.DataError(f"CSV AGCOM: colonne inattese ({len(normalized_header)})")
-    if normalized_header[3] != "pro_com":
+    data_rows = None
+    diagnostics = []
+    for delimiter in (";", ",", "\t", "|"):
+        parsed = list(csv.reader(io.StringIO(text), delimiter=delimiter))
+        header_index = next(
+            (i for i, row in enumerate(parsed) if any(str(cell).strip() for cell in row)),
+            None,
+        )
+        if header_index is None:
+            diagnostics.append(f"{delimiter!r}:empty")
+            continue
+        header = parsed[header_index]
+        normalized_header = [
+            str(cell).replace("\ufeff", "").strip().lower() for cell in header
+        ]
+        diagnostics.append(f"{delimiter!r}:{len(normalized_header)}")
+        if len(normalized_header) >= 19 and normalized_header[3] == "pro_com":
+            data_rows = parsed[header_index + 1 :]
+            break
+    if data_rows is None:
         raise base.DataError(
-            f"CSV AGCOM: schema inatteso, colonna 4={normalized_header[3]!r}"
+            "CSV AGCOM: schema/delimitatore inatteso (" + ", ".join(diagnostics) + ")"
         )
 
     result: dict[str, dict[str, Any]] = {}
-    for raw in reader:
+    for raw in data_rows:
         if not any(str(cell).strip() for cell in raw):
             continue
         if len(raw) < 19:

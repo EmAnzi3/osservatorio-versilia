@@ -10,6 +10,10 @@ import audit_rgs_amministrazione_values as src
 
 ROOT=Path(__file__).resolve().parents[1]
 LOCAL=ROOT/"data/source-snapshots/rgs-amministrazione-2024.json"
+ANAGRAFE_ENTE_URL=(
+    "https://bdap-opendata.rgs.mef.gov.it/metadata_download_page/"
+    "36378/csv/1686/c5638e9f-8613-4e6d-9e92-25412f464f85@rgs"
+)
 
 def groups(rows):
     out=defaultdict(list)
@@ -20,6 +24,42 @@ def groups(rows):
     return out
 
 TUSCANY_PROVINCES={"AR","FI","GR","LI","LU","MS","PI","PO","PT","SI","AREZZO","FIRENZE","GROSSETO","LIVORNO","LUCCA","MASSA CARRARA","PISA","PRATO","PISTOIA","SIENA"}
+
+def clean_code(value):
+    raw=str(value or "").strip()
+    if raw.endswith(".0") and raw[:-2].isdigit(): raw=raw[:-2]
+    return raw
+
+def anagrafe_region_map():
+    rows=src.parse(src.fetch(ANAGRAFE_ENTE_URL))
+    if not rows: raise RuntimeError("RGS: Anagrafe Ente BDAP vuota")
+    keys=list(rows[0])
+    by_norm={src.norm(k):k for k in keys}
+    id_field=by_norm.get("ID ENTE")
+    region_code_field=by_norm.get("CODICE REGIONE")
+    region_label_field=by_norm.get("DIZIONE REGIONE")
+    if not id_field or (not region_code_field and not region_label_field):
+        raise RuntimeError(
+            f"RGS: Anagrafe Ente senza ID/Regione; headers={keys}"
+        )
+    mapping={}
+    for row in rows:
+        entity_id=clean_code(row.get(id_field))
+        if not entity_id: continue
+        mapping[entity_id]={
+            "code":str(row.get(region_code_field) or "").strip() if region_code_field else "",
+            "label":str(row.get(region_label_field) or "").strip() if region_label_field else "",
+        }
+    if len(mapping)<5000:
+        raise RuntimeError(f"RGS: Anagrafe Ente copertura inattesa {len(mapping)}")
+    return mapping,{
+        "source":ANAGRAFE_ENTE_URL,
+        "rows":len(rows),
+        "mappedEntities":len(mapping),
+        "idField":id_field,
+        "regionCodeField":region_code_field,
+        "regionLabelField":region_label_field,
+    }
 
 def geography_selector(rows):
     target=src.norm("COMUNE DI CAMAIORE")
@@ -33,13 +73,25 @@ def geography_selector(rows):
     if province_keys:
         preferred=sorted(province_keys,key=lambda k:(0 if "SIGLA" in src.norm(k) else 1,len(k)))[0]
         return {"mode":"tuscany-provinces","field":preferred,"value":str(sample.get(preferred) or "").strip()}
-    raise RuntimeError(f"RGS: nessun campo regione/provincia; headers={list(sample)}")
+    if "Codice Ente BDAP" in sample:
+        return {"mode":"bdap-anagrafe","field":"Codice Ente BDAP","source":ANAGRAFE_ENTE_URL}
+    raise RuntimeError(f"RGS: nessun campo regione/provincia né Codice Ente BDAP; headers={list(sample)}")
 
-def scope_codes(turnover_rows,selector,wanted_tuscany):
-    result=set()
+def scope_codes(turnover_rows,selector,wanted_tuscany,region_by_bdap=None):
+    result=set(); missing=set()
     for r in turnover_rows:
         if src.norm(r.get("Descrizione Tipo Istituzione",""))!="COMUNI": continue
-        if wanted_tuscany:
+        if selector["mode"]=="bdap-anagrafe":
+            bdap=clean_code(r.get(selector["field"]))
+            geo=(region_by_bdap or {}).get(bdap)
+            if not bdap or geo is None:
+                missing.add(bdap or "<empty>")
+                continue
+            if wanted_tuscany:
+                region_code=src.norm(geo.get("code",""))
+                region_label=src.norm(geo.get("label",""))
+                if region_code not in {"9","09"} and region_label!="TOSCANA": continue
+        elif wanted_tuscany:
             field=selector["field"]; value=src.norm(r.get(field,""))
             if selector["mode"]=="same-value":
                 if value!=src.norm(selector["value"]): continue
@@ -49,7 +101,7 @@ def scope_codes(turnover_rows,selector,wanted_tuscany):
                 raise RuntimeError(f"RGS: selector inatteso {selector}")
         code=str(r.get("Codice Istituzione") or "").strip()
         if code: result.add(code)
-    return result
+    return result,missing
 
 def aggregate(codes,turn_g,age_g,hire_g,cess_g):
     staff=0.0; over55=0.0; net=0.0; valid=0
@@ -68,8 +120,16 @@ def main():
         bodies=dict(zip(src.URLS,pool.map(src.fetch,src.URLS.values())))
     ds={k:src.parse(v) for k,v in bodies.items()}
     selector=geography_selector(ds["turnover"])
+    region_by_bdap=None; anagrafe_meta=None
+    if selector["mode"]=="bdap-anagrafe":
+        region_by_bdap,anagrafe_meta=anagrafe_region_map()
     tg,ag,hg,cg=groups(ds["turnover"]),groups(ds["age"]),groups(ds["hires"]),groups(ds["cessations"])
-    tus_codes=scope_codes(ds["turnover"],selector,True); ita_codes=scope_codes(ds["turnover"],selector,False)
+    tus_codes,tus_missing=scope_codes(ds["turnover"],selector,True,region_by_bdap)
+    ita_codes,ita_missing=scope_codes(ds["turnover"],selector,False,region_by_bdap)
+    if ita_missing:
+        raise RuntimeError(
+            f"RGS: join Codice Ente BDAP→Anagrafe incompleto: {len(ita_missing)} mancanti; sample={sorted(ita_missing)[:20]}"
+        )
     if not 250<=len(tus_codes)<=300: raise RuntimeError(f"RGS: Comuni Toscana inattesi {len(tus_codes)} selector={selector}")
     if not 7000<=len(ita_codes)<=9000: raise RuntimeError(f"RGS: Comuni Italia inattesi {len(ita_codes)}")
     tus=aggregate(tus_codes,tg,ag,hg,cg); ita=aggregate(ita_codes,tg,ag,hg,cg)
@@ -98,7 +158,7 @@ def main():
         "municipalStaffTurnover":{"year":"2024","unit":"percent","formula":"(assunti netti da passaggi - cessati netti da passaggi) / personale al 31 dicembre × 100","tuscany":tus["turnoverRate"],"italy":ita["turnoverRate"]},
       },
       "raw":{"tuscany":tus,"italy":ita},
-      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","geographySelector":selector,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"errors":errors},
+      "qualityGate":{"status":gate,"publicSourceSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if gate=="PASS" else "FAIL","geographySelector":selector,"anagrafeEnte":anagrafe_meta,"tuscanyInstitutionCount":len(tus_codes),"italyInstitutionCount":len(ita_codes),"errors":errors},
       "blocked":{
         "municipalEmployeesPer1000":"denominatore regionale/nazionale 2024 da certificare sullo stesso riferimento temporale del contratto pubblico",
         "municipalStaffTraining":"l'API formazione è verificata 7/7 ma serve una strategia aggregata Toscana/Italia distinta"

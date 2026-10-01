@@ -22,7 +22,7 @@ def all_tuscany_rows():
             population=src.number(row[3])
             ctot=src.number(row[-1])
             name=src.norm(row[0])
-            if municipalities is not None and population is not None and population>0 and ctot is not None and name=="toscana" and int(round(municipalities))>1:
+            if municipalities is not None and population is not None and population>0 and ctot is not None and 230<=int(round(municipalities))<=280:
                 aggregates.append({"municipalityCount":int(round(municipalities)),"population":population,"ctot":ctot,"rawRow":row,"page":page})
                 continue
             if municipalities is None or int(round(municipalities))!=1 or population is None or population<=0 or ctot is None:
