@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -46,8 +47,12 @@ def main()->None:
     args.output.parent.mkdir(parents=True,exist_ok=True)
     raw_output=args.output.with_suffix(".raw.json")
 
-    if args.profile in DEDICATED:
-        script=DEDICATED[args.profile]
+    dynamic_script="scripts/acquire_a3_benchmark_"+re.sub(r"[^a-z0-9]+","_",args.profile.lower()).strip("_")+".py"
+    script=DEDICATED.get(args.profile)
+    if script is None and (ROOT/dynamic_script).exists():
+        script=dynamic_script
+
+    if script is not None:
         cmd=[sys.executable,script,"--output",str(raw_output)]
         if args.profile=="istat-census-annual":
             metric_ids=entry.get("metricIds") or []

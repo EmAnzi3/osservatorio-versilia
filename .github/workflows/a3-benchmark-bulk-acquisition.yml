@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/a3-benchmark-bulk-acquisition.yml"
       - "scripts/a3_bulk_acquisition_worker.py"
+      - "scripts/a3_acquisition_selection.py"
       - "scripts/acquire_a3_benchmark_*.py"
       - "scripts/probe_a3_fanout_source.py"
       - "scripts/probe_bilanci_v139_sources.py"
@@ -56,26 +57,24 @@ jobs:
         with:
           python-version: "3.12"
       - name: Load certified fan-out manifest
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
         run: |
           mkdir -p /tmp/a3-bulk-context
-          cp data/source-snapshots/a3-benchmark-fanout-current.json /tmp/a3-bulk-context/manifest.json
+          cp data/source-snapshots/a3-benchmark-fanout-current.json /tmp/a3-bulk-context/manifest-full.json
           cp data/source-registry.json /tmp/a3-bulk-context/source-registry.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          manifest=json.loads(Path("/tmp/a3-bulk-context/manifest.json").read_text(encoding="utf-8"))
-          profiles=manifest.get("profiles") or []
-          if not profiles:
-              raise SystemExit("Manifest fan-out certificato vuoto")
-          matrix={"include":[
-              {"profileId":p["profileId"],"rank":int(p.get("rank") or 0),"pairCount":int(p.get("pairCount") or 0)}
-              for p in profiles
-          ]}
-          Path("/tmp/a3-bulk-context/github-matrix.json").write_text(
-              json.dumps(matrix,ensure_ascii=False,separators=(",",":"))+"\n",encoding="utf-8"
-          )
-          print(f"A3 fast fan-out: {len(profiles)} profili · {sum(int(p.get('pairCount') or 0) for p in profiles)} coppie.")
-          PY
+          MODE="full"
+          if [[ "$EVENT_NAME" == "pull_request" && "$EVENT_ACTION" == "synchronize" ]]; then
+            git diff --name-only HEAD^ HEAD > /tmp/a3-bulk-context/changed-files.txt
+            MODE="auto"
+          fi
+          python scripts/a3_acquisition_selection.py \
+            --manifest /tmp/a3-bulk-context/manifest-full.json \
+            --changed-files /tmp/a3-bulk-context/changed-files.txt \
+            --mode "$MODE" \
+            --output /tmp/a3-bulk-context/manifest.json \
+            --matrix-output /tmp/a3-bulk-context/github-matrix.json
       - id: matrix
         name: Publish worker matrix
         run: echo "matrix=$(cat /tmp/a3-bulk-context/github-matrix.json)" >> "$GITHUB_OUTPUT"
