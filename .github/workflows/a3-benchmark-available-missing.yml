@@ -27,9 +27,19 @@ jobs:
         env:
           OV_RELEASE_BUILD: "1"
         run: python scripts/build_static_brand.py
+      - name: Run A3 matrix regression
+        run: python scripts/test_enrichment_audit_matrix.py
       - name: Build effective A3 matrix
         run: |
           python scripts/enrichment_audit_matrix.py             --data dist/data/site-data.json             --registry dist/data/source-registry.json             --output /tmp/a3-enrichment-matrix.json             --allow-unclassified
+      - name: Verify acquired benchmarks are publicly consumable
+        run: |
+          python scripts/a3_publication_gap_audit.py \
+            --data dist/data/site-data.json \
+            --matrix /tmp/a3-enrichment-matrix.json \
+            --dist dist \
+            --json-output /tmp/a3-benchmark-publication.json \
+            --strict
       - name: Build benchmark AVAILABLE_MISSING manifest
         run: |
           python -m py_compile scripts/a3_benchmark_available_missing.py
