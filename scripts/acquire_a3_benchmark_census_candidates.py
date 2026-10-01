@@ -408,7 +408,8 @@ def sdmx_filtered_all(session: requests.Session, flow: str, key: str) -> list[di
 
 def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     labour_key = "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.ALL.1+12+22+99.."
-    education_key = "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL.BL+ML_RDD+ALL.99.."
+    education_partition = ["NED", "PSE", "LSE", "USE_IF", "BL", "ML_RDD"]
+    education_key = "A..RESPOP_AV.T.Y25-49+Y50-64.TOTAL." + "+".join(["ALL", *education_partition]) + ".99.."
     labour_rows = sdmx_filtered_all(session, SDMX_FLOWS["labour"], labour_key)
     education_rows = sdmx_filtered_all(session, SDMX_FLOWS["education"], education_key)
 
@@ -425,6 +426,36 @@ def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, A
             continue
         labour_by.setdefault(code, {})[f"{age}|{stat}"] = number(row.get("OBS_VALUE"), f"labour/{code}/{age}/{stat}")
 
+    labour_zero_filled: list[str] = []
+    labour_invalid: list[str] = []
+    labour_required = {f"{age}|{stat}" for age in ("Y25-49", "Y50-64") for stat in ("1", "12", "22", "99")}
+    labour_complete: set[str] = set()
+    for code, vals in labour_by.items():
+        valid = True
+        for age in ("Y25-49", "Y50-64"):
+            pop = vals.get(f"{age}|99")
+            employed = vals.get(f"{age}|1")
+            active = vals.get(f"{age}|22")
+            unemployed_key = f"{age}|12"
+            if pop is None or employed is None or active is None:
+                valid = False
+                break
+            if unemployed_key not in vals:
+                residual = active - employed
+                if math.isclose(residual, 0.0, rel_tol=0.0, abs_tol=1e-9):
+                    vals[unemployed_key] = 0.0
+                    labour_zero_filled.append(f"{code}/{age}/12")
+                else:
+                    valid = False
+                    break
+            if not math.isclose(employed + vals[unemployed_key], active, rel_tol=0.0, abs_tol=1e-6):
+                valid = False
+                break
+        if valid and set(vals) == labour_required:
+            labour_complete.add(code)
+        else:
+            labour_invalid.append(code)
+
     education_by: dict[str, dict[str, float]] = {}
     for row in education_rows:
         code = municipality_ref(row.get("REF_AREA"))
@@ -432,21 +463,51 @@ def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, A
             continue
         age = row.get("AGE_NOCLASS")
         edu = row.get("EDU_ATTAIN")
-        if age not in {"Y25-49", "Y50-64"} or edu not in {"ALL", "BL", "ML_RDD"}:
+        if age not in {"Y25-49", "Y50-64"} or edu not in {"ALL", *education_partition}:
             continue
         if row.get("INDICATOR") != "RESPOP_AV" or row.get("GENDER") != "T" or row.get("CITIZENSHIP") != "TOTAL" or row.get("CUR_ACT_STAT") != "99":
             continue
         education_by.setdefault(code, {})[f"{age}|{edu}"] = number(row.get("OBS_VALUE"), f"education/{code}/{age}/{edu}")
 
-    labour_required = {f"{age}|{stat}" for age in ("Y25-49", "Y50-64") for stat in ("1", "12", "22", "99")}
-    education_required = {f"{age}|{edu}" for age in ("Y25-49", "Y50-64") for edu in ("ALL", "BL", "ML_RDD")}
+    education_zero_filled: list[str] = []
+    education_invalid: list[str] = []
+    education_required = {f"{age}|{edu}" for age in ("Y25-49", "Y50-64") for edu in ("ALL", *education_partition)}
+    education_complete: set[str] = set()
+    for code, vals in education_by.items():
+        valid = True
+        for age in ("Y25-49", "Y50-64"):
+            all_key = f"{age}|ALL"
+            if all_key not in vals:
+                valid = False
+                break
+            observed_parts = sum(vals.get(f"{age}|{edu}", 0.0) for edu in education_partition)
+            if not math.isclose(observed_parts, vals[all_key], rel_tol=0.0, abs_tol=1e-6):
+                valid = False
+                break
+            for edu in education_partition:
+                key = f"{age}|{edu}"
+                if key not in vals:
+                    vals[key] = 0.0
+                    education_zero_filled.append(f"{code}/{age}/{edu}")
+        if valid and set(vals) == education_required:
+            education_complete.add(code)
+        else:
+            education_invalid.append(code)
 
-    labour_complete = {code for code, vals in labour_by.items() if set(vals) == labour_required}
-    education_complete = {code for code, vals in education_by.items() if set(vals) == education_required}
     common = labour_complete & education_complete
+    labour_only = sorted(labour_complete - education_complete)
+    education_only = sorted(education_complete - labour_complete)
+    if labour_only or education_only:
+        raise RuntimeError(
+            f"Perimetri labour/education non coincidenti: labourOnly={labour_only[:30]} educationOnly={education_only[:30]}"
+        )
+    if not (7880 <= len(common) <= 8000):
+        raise RuntimeError(
+            f"Copertura comunale nazionale inattesa: labour={len(labour_complete)} "
+            f"education={len(education_complete)} common={len(common)} "
+            f"labourInvalid={labour_invalid[:30]} educationInvalid={education_invalid[:30]}"
+        )
 
-    if not (7800 <= len(common) <= 8000):
-        raise RuntimeError(f"Copertura comunale nazionale inattesa: labour={len(labour_complete)} education={len(education_complete)} common={len(common)}")
     tuscany_codes = {code for code in common if is_tuscany_municipality(code)}
     if not (270 <= len(tuscany_codes) <= 280):
         raise RuntimeError(f"Copertura comunale Toscana inattesa: {len(tuscany_codes)}")
@@ -469,7 +530,9 @@ def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, A
         if not math.isclose(labour["employed"] + labour["unemployed"], labour["active"], rel_tol=0.0, abs_tol=1e-4):
             raise RuntimeError("Aggregato labour: employed + unemployed != active")
         if not math.isclose(labour["population"], education["population"], rel_tol=0.0, abs_tol=1e-4):
-            raise RuntimeError(f"Aggregato 25-64: popolazione labour {labour['population']} != education {education['population']}")
+            raise RuntimeError(
+                f"Aggregato 25-64: popolazione labour {labour['population']} != education {education['population']}"
+            )
         labour["employmentRate"] = labour["employed"] / labour["population"] * 100.0
         labour["unemploymentRate"] = labour["unemployed"] / labour["active"] * 100.0
         labour["activityRate"] = labour["active"] / labour["population"] * 100.0
@@ -486,8 +549,13 @@ def aggregate_all_municipal_2024(session: requests.Session) -> tuple[dict[str, A
         "educationMunicipalitiesComplete": len(education_complete),
         "commonMunicipalities": len(common),
         "tuscanyMunicipalities": len(tuscany_codes),
+        "labourZeroCellsFilled": len(labour_zero_filled),
+        "educationZeroCellsFilled": len(education_zero_filled),
+        "labourInvalidMunicipalities": labour_invalid,
+        "educationInvalidMunicipalities": education_invalid,
         "labourKey": labour_key,
         "educationKey": education_key,
+        "zeroFillRule": "Missing cells are set to zero only when the official additive identity/partition closes exactly.",
     }
     return {"labour": tus_labour, "education": tus_education}, {"labour": ita_labour, "education": ita_education}, diagnostics
 
