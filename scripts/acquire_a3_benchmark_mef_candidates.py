@@ -50,50 +50,56 @@ def header(row,*tokens):
         raise RuntimeError("Header non trovato: "+"/".join(tokens))
     return hits[0]
 
-def find_class_header(sample):
-    headers=list(sample)
-    scored=[]
-    for h in headers:
-        n=norm(h)
-        score=0
-        if "classe" in n: score+=3
-        if "reddito" in n: score+=2
-        if "fascia" in n: score+=2
-        if "regione" in n: score-=10
-        if score>0: scored.append((score,h))
-    if scored:
-        scored.sort(reverse=True)
-        return scored[0][1]
-    return headers[0]
-
 def totals(rows):
     sample=rows[0]
-    class_h=find_class_header(sample)
     region_h=header(sample,"regione")
     grouped=defaultdict(list)
     for r in rows:
         reg=str(r.get(region_h) or "").strip()
-        if reg: grouped[reg].append(r)
-    out={}; diagnostics={}
+        if reg:
+            grouped[reg].append(r)
+
+    out={}
+    diagnostics={}
+    accepted_total_labels={"totale","totale complessivo","totale redditi","totale contribuenti"}
     for reg,items in grouped.items():
-        labels=[str(r.get(class_h) or "").strip() for r in items]
-        hits=[r for r in items if norm(r.get(class_h)) in {"totale","totale complessivo","totale redditi"}]
-        if len(hits)==1:
-            out[reg]=hits[0]; method="explicit_total"
-        elif len(hits)>1:
-            raise RuntimeError(f"{reg}: più righe totale nel file MEF")
-        else:
-            synthetic={h:"" for h in sample}
-            synthetic[region_h]=reg
-            synthetic[class_h]="TOTALE RICOSTRUITO DA CLASSI"
+        row_hits=[]
+        for idx,row in enumerate(items):
+            hit_headers=[]
+            for h,v in row.items():
+                if h==region_h:
+                    continue
+                if norm(v) in accepted_total_labels:
+                    hit_headers.append(h)
+            if hit_headers:
+                row_hits.append((idx,row,hit_headers))
+        unique={idx:(row,headers) for idx,row,headers in row_hits}
+        if len(unique)!=1:
+            textual={}
             for h in sample:
-                if h in {region_h,class_h}: continue
-                synthetic[h]=sum(val(r.get(h)) for r in items)
-            out[reg]=synthetic; method="sum_classes"
-        diagnostics[reg]={"method":method,"rowCount":len(items),"classHeader":class_h,"sampleLabels":labels[:20]}
+                vals=[]
+                for row in items[:40]:
+                    value=str(row.get(h) or "").strip()
+                    if value and value not in vals:
+                        vals.append(value)
+                textual[h]=vals[:12]
+            raise RuntimeError(
+                f"{reg}: attesa una sola riga totale esplicita, trovate {len(unique)}; "
+                f"campione colonne={textual}"
+            )
+        idx,(row,hit_headers)=next(iter(unique.items()))
+        out[reg]=row
+        diagnostics[reg]={
+            "method":"explicit_total",
+            "rowCount":len(items),
+            "totalRowIndex":idx,
+            "totalLabelHeaders":hit_headers,
+            "totalLabelValues":{h:row.get(h) for h in hit_headers},
+        }
     if "Toscana" not in out:
         raise RuntimeError(f"Toscana assente; regioni trovate={sorted(out)[:30]}")
     return out,diagnostics
+
 
 def sumfield(rows,h): return sum(val(r.get(h)) for r in rows.values())
 
