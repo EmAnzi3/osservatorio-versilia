@@ -61,6 +61,9 @@ def discover_anagrafe_csv():
                 and ".pdf" not in lowered
                 and "metadat" not in lowered
             ):
+                parsed=urllib.parse.urlsplit(url)
+                if parsed.scheme=="http" and parsed.hostname=="bdap-opendata.rgs.mef.gov.it":
+                    url=urllib.parse.urlunsplit(("https",parsed.netloc,parsed.path,parsed.query,parsed.fragment))
                 resources.append((url,package.get("name"),name))
     if not resources:
         raise RuntimeError(
