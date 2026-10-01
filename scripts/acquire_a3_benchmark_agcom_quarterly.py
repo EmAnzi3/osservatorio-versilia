@@ -9,7 +9,7 @@ from typing import Any
 
 import audit_agcom_primary as ag
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1]\nPARSER_SCHEMA_VERSION = 2
 SITE = ROOT / "data" / "site-data.json"
 TUSCANY_PREFIXES = {"045","046","047","048","049","050","051","052","053","100"}
 PERCENT_METRICS = {
@@ -160,7 +160,7 @@ def main() -> None:
         "profileId":"agcom-quarterly",
         "referenceDate":"31/12/2025",
         "status":status,
-        "source":{"url":url,"discovery":discovery,"rowCount":len(primary)},
+        "source":{"url":url,"discovery":discovery,"rowCount":len(primary),"parserSchemaVersion":PARSER_SCHEMA_VERSION},
         "benchmarks":benchmarks,
         "qualityGate":{
             "status":"PASS" if not errors else "FAIL",
