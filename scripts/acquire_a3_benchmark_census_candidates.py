@@ -18,11 +18,12 @@ from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
 GOVERNED = ROOT / "data" / "source-snapshots" / "istat-sections-history-v1.8.0.json"
+SITE_DATA = ROOT / "data" / "site-data.json"
 
 URL = "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip"
 YEAR = "2023"
 
-BASE_FIELDS = ["P1", "P102", "P103", "PF1", "PF3", "A3", "A8"]
+BASE_FIELDS = ["P1", "P102", "P103", "PF1", "PF3", "PF9", "A3", "A8"]
 MALE_FIELDS = [f"P{i}" for i in range(33, 43)]
 FEMALE_FIELDS = [f"P{i}" for i in range(70, 80)]
 REQUIRED_FIELDS = BASE_FIELDS + MALE_FIELDS + FEMALE_FIELDS
@@ -34,6 +35,7 @@ METRICS = {
     "nonOccupiedHomesPer1000": ("A3", "P1", 1000.0, "per1000"),
     "vacantHomes": ("A3", "A8", 100.0, "percent"),
     "singleHouseholds": ("PF3", "PF1", 100.0, "percent"),
+    "cohabitingHouseholds": ("PF9", "PF1", 100.0, "percent"),
 }
 
 MUNICIPALITY_HEADER_KEYS = {
@@ -164,6 +166,75 @@ def ratio(raw: dict[str, float], numerator: str, denominator: str, scale: float)
     return raw[numerator] / den * scale
 
 
+def reconcile_public_2023(
+    towns: dict[str, dict[str, float]],
+    site: dict[str, Any],
+    governed: dict[str, Any],
+) -> dict[str, Any]:
+    code_to_town = {
+        str(row["code"]): str(row["town"])
+        for row in ((governed.get("raw") or {}).get(YEAR) or [])
+        if isinstance(row, dict) and row.get("code") and row.get("town")
+    }
+    errors: list[str] = []
+    tolerances = {
+        "vacantHomes": 0.051,
+        "singleHouseholds": 0.051,
+        "cohabitingHouseholds": 1e-9,
+        "employmentGenderGap": 1e-9,
+    }
+
+    expected_specs = {
+        **METRICS,
+        "employmentGenderGap": (None, None, None, "percentagePoints"),
+    }
+
+    metrics = site.get("metrics") or {}
+    for metric_id, spec in expected_specs.items():
+        metric = metrics.get(metric_id)
+        if not isinstance(metric, dict):
+            errors.append(f"{metric_id}: metrica pubblica mancante")
+            continue
+        meta = metric.get("meta") or {}
+        if str(meta.get("year")) != YEAR:
+            errors.append(f"{metric_id}: anno pubblico {meta.get('year')!r} != {YEAR}")
+        if str(meta.get("unit")) != spec[3]:
+            errors.append(f"{metric_id}: unità pubblica {meta.get('unit')!r} != {spec[3]!r}")
+
+        rows = {
+            str(row.get("town")): row
+            for row in (metric.get("rows") or [])
+            if isinstance(row, dict) and row.get("town")
+        }
+        if set(rows) != set(code_to_town.values()):
+            errors.append(f"{metric_id}: perimetro pubblico non 7/7")
+            continue
+
+        for code, town_name in code_to_town.items():
+            raw = towns.get(code)
+            if raw is None:
+                errors.append(f"{metric_id}/{town_name}: componenti censuarie mancanti")
+                continue
+            if metric_id == "employmentGenderGap":
+                male = ratio(raw, "P102", "male1564", 100.0)
+                female = ratio(raw, "P103", "female1564", 100.0)
+                expected = male - female
+            else:
+                num, den, scale, _unit = spec
+                expected = ratio(raw, str(num), str(den), float(scale))
+            observed = number(rows[town_name].get("value"), f"{metric_id}/{town_name}: valore pubblico")
+            tolerance = tolerances.get(metric_id, 1e-6)
+            if not math.isclose(observed, expected, rel_tol=0.0, abs_tol=tolerance):
+                errors.append(f"{metric_id}/{town_name}: {observed} != {expected}")
+
+    return {
+        "status": "PASS" if not errors else "FAIL",
+        "metrics": sorted(expected_specs),
+        "towns": len(code_to_town),
+        "errors": errors[:120],
+    }
+
+
 def compare_governed(towns: dict[str, dict[str, float]], governed: dict[str, Any]) -> dict[str, Any]:
     expected_rows = {
         str(row["code"]): row
@@ -199,6 +270,7 @@ def main() -> None:
     args = ap.parse_args()
 
     governed = json.loads(GOVERNED.read_text(encoding="utf-8"))
+    site = json.loads(SITE_DATA.read_text(encoding="utf-8"))
     town_codes = {
         str(item["code"])
         for item in ((governed.get("scope") or {}).get("towns") or [])
@@ -266,6 +338,7 @@ def main() -> None:
 
     italy = finalize(italy_acc)
     reconcile = compare_governed(tuscany_towns, governed)
+    public_reconcile = reconcile_public_2023(tuscany_towns, site, governed)
 
     sanity = {
         "regionalFiles": 20 <= len(diagnostics) <= 22,
@@ -273,6 +346,7 @@ def main() -> None:
         "italyPopulation": 55_000_000 <= italy["P1"] <= 65_000_000,
         "tuscanyVsItaly": 0 < tuscany["P1"] < italy["P1"],
         "versiliaReconciliation": reconcile["status"] == "PASS",
+        "publicMetricReconciliation": public_reconcile["status"] == "PASS",
     }
 
     raw = {"tuscany": tuscany, "italy": italy}
@@ -289,6 +363,24 @@ def main() -> None:
                 "italy": {"numerator": italy[num], "denominator": italy[den]},
             },
         }
+
+    benchmarks["employmentGenderGap"] = {
+        "year": 2023,
+        "unit": "percentagePoints",
+        "formula": "maleEmploymentRate − femaleEmploymentRate",
+        "tuscany": benchmarks["maleEmploymentRate"]["tuscany"] - benchmarks["femaleEmploymentRate"]["tuscany"],
+        "italy": benchmarks["maleEmploymentRate"]["italy"] - benchmarks["femaleEmploymentRate"]["italy"],
+        "raw": {
+            "tuscany": {
+                "maleEmploymentRate": benchmarks["maleEmploymentRate"]["tuscany"],
+                "femaleEmploymentRate": benchmarks["femaleEmploymentRate"]["tuscany"],
+            },
+            "italy": {
+                "maleEmploymentRate": benchmarks["maleEmploymentRate"]["italy"],
+                "femaleEmploymentRate": benchmarks["femaleEmploymentRate"]["italy"],
+            },
+        },
+    }
 
     status = "ACQUIRED_CANDIDATE" if all(sanity.values()) else "CANDIDATE_REJECTED"
     payload = {
@@ -307,6 +399,7 @@ def main() -> None:
         "raw": raw,
         "benchmarks": benchmarks,
         "tuscanyVersiliaReconciliation": reconcile,
+        "publicMetricReconciliation": public_reconcile,
         "diagnostics": diagnostics,
         "sanityGate": sanity,
         "status": status,
@@ -321,6 +414,7 @@ def main() -> None:
         "tuscanyPopulation": tuscany["P1"],
         "italyPopulation": italy["P1"],
         "reconciliation": reconcile["status"],
+        "publicReconciliation": public_reconcile["status"],
         "output": str(out),
     }, ensure_ascii=False))
 
