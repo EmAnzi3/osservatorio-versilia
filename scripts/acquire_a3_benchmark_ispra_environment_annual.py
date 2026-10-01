@@ -1,13 +1,31 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, json, math
+import argparse, json, math, urllib.request
 from pathlib import Path
 
 import audit_waste_cost_ispra as src
 
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/"data/site-data.json"
+REGIONAL_URL="https://www.catasto-rifiuti.isprambiente.it/index.php?aa=2024&advice=si&pg=costiregione"
+
+def official_regional_costs():
+    request=urllib.request.Request(REGIONAL_URL,headers=src.UA)
+    with urllib.request.urlopen(request,timeout=45) as response:
+        text=response.read().decode("utf-8",errors="replace")
+    table=src.Tables(); table.feed(text)
+    out={}
+    for row in table.rows:
+        if len(row)<12: continue
+        name=src.norm(row[0])
+        if name not in {"toscana","italia"}: continue
+        value=src.number(row[-1])
+        if value is None or not 50<=value<=1000: continue
+        out[name]={"ctot":float(value),"rawRow":row}
+    if set(out)!={"toscana","italia"}:
+        raise RuntimeError(f"ISPRA: righe ufficiali Toscana/Italia CTOTab non univoche: {out}")
+    return out
 
 def all_tuscany_rows():
     found={}
@@ -43,13 +61,9 @@ def main():
     site=json.loads(SITE.read_text(encoding="utf-8"))
     rows,aggregates,pages=all_tuscany_rows()
     if not 230<=len(rows)<=280: raise RuntimeError(f"ISPRA: copertura comunale Toscana inattesa {len(rows)}")
-    unique_aggregates=[]
-    for item in aggregates:
-        if not any(math.isclose(item["ctot"],x["ctot"],abs_tol=.001) and item["municipalityCount"]==x["municipalityCount"] for x in unique_aggregates):
-            unique_aggregates.append(item)
-    if len(unique_aggregates)!=1:
-        raise RuntimeError(f"ISPRA: riga aggregata Toscana non univoca: {unique_aggregates}")
-    regional=unique_aggregates[0]
+    official=official_regional_costs()
+    regional={"ctot":official["toscana"]["ctot"],"rawRow":official["toscana"]["rawRow"],"source":REGIONAL_URL}
+    national={"ctot":official["italia"]["ctot"],"rawRow":official["italia"]["rawRow"],"source":REGIONAL_URL}
     errors=[]
     public={str(r["town"]):float(r["value"]) for r in site["metrics"]["wasteServiceCost"]["rows"]}
     if len(public)!=7: errors.append(f"wasteServiceCost pubblico {len(public)}/7")
@@ -66,16 +80,16 @@ def main():
       "schemaVersion":1,"publisher":"ISPRA — Catasto Nazionale Rifiuti","profileId":"ispra-environment-annual","referenceYear":2024,
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
       "sources":{"template":src.URL,"pagesScanned":pages},
-      "benchmarks":{"wasteServiceCost":{"year":"2024","unit":"currency","formula":"CTOTab regionale ufficiale ISPRA","tuscany":regional_value,"italy":None}},
-      "raw":{"tuscanyMunicipalitiesWithCost":len(rows),"municipalWeightedCheck":weighted,"regionalOfficial":regional},
+      "benchmarks":{"wasteServiceCost":{"year":"2024","unit":"currency","formula":"CTOTab regionale/nazionale ufficiale ISPRA","tuscany":regional_value,"italy":float(national["ctot"])}},
+      "raw":{"tuscanyMunicipalitiesWithCost":len(rows),"municipalWeightedCheck":weighted,"regionalOfficial":regional,"nationalOfficial":national},
       "qualityGate":{"status":gate,"publicReconciliation":"1 metric × 7/7 towns PASS" if gate=="PASS" else "FAIL","errors":errors},
       "blocked":{
         "recycling":"richiede la tabella RD/produzione comunale omogenea, non il dataset costi",
         "residualWaste":"richiede la tabella produzione comunale omogenea, non il dataset costi",
         "wastePerResident":"richiede la tabella produzione comunale omogenea, non il dataset costi",
-        "italy":"worker corrente acquisisce il perimetro regionale Toscana; aggregato nazionale non forzato"
+        "italy":"Riga Italia CTOTab acquisita dalla stessa tabella ufficiale ISPRA 2024"
       }
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"status":payload["status"],"candidateMetrics":["wasteServiceCost"],"tuscany":regional_value,"townsWithCost":len(rows),"regionalMunicipalityCount":regional["municipalityCount"],"weightedMunicipalCheck":weighted,"gate":payload["qualityGate"]},ensure_ascii=False))
+    print(json.dumps({"status":payload["status"],"candidateMetrics":["wasteServiceCost"],"tuscany":regional_value,"townsWithCost":len(rows),"officialItaly":float(national["ctot"]),"weightedMunicipalCheck":weighted,"gate":payload["qualityGate"]},ensure_ascii=False))
 if __name__=="__main__": main()
