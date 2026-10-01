@@ -67,6 +67,20 @@ PERIOD_ORDER=[
 ]
 UNKNOWN={"NON DEFINITO","","-","_"}
 
+# Il dataset edilizia contiene un plesso storico non presente nell'anagrafe
+# 2024/25 usata per il join. La collocazione è verificata dall'Ufficio
+# Scolastico Regionale Sicilia: TPEE816022 = Plesso "Cuore di Gesù", Marsala (TP).
+# L'override serve solo a preservare correttamente Toscana/Italia; qualunque
+# altro codice non mappato continua a far fallire il gate.
+REGISTRY_OVERRIDES={
+    "TPEE816022":{
+        "region":"SICILIA",
+        "town":"MARSALA",
+        "order":"PRIMARIA",
+        "source":"https://tp.usr.sicilia.it/download/1333/10758/10761/tabella-posti-sostegno-o-d-2025-2026.pdf",
+    },
+}
+
 
 def norm(x):
     return re.sub(r"\s+"," ",str(x or "").strip().upper())
@@ -177,9 +191,15 @@ def reconcile_school_sites(site,school,candidates):
 def building_records(rows,school,fields):
     buildings={}
     unmapped=Counter()
+    overrides_used=Counter()
     for row in rows:
         code=str(row.get("CODICESCUOLA") or "").strip()
         info=school.get(code)
+        if not info:
+            override=REGISTRY_OVERRIDES.get(code.upper())
+            if override:
+                info=override
+                overrides_used[code.upper()]+=1
         if not info and code.startswith("AO"):
             # La Valle d'Aosta usa codici scolastici AO* non presenti
             # nell'anagrafica nazionale ordinaria. Per benchmark regionale/
@@ -224,6 +244,8 @@ def building_records(rows,school,fields):
     return finalized,{
         "unmappedSchoolRows":sum(unmapped.values()),
         "unmappedSchoolCodes":dict(unmapped.most_common(20)),
+        "registryOverridesUsed":dict(overrides_used),
+        "registryOverrideSources":{code:REGISTRY_OVERRIDES[code]["source"] for code in overrides_used},
         "conflicts":conflicts[:50],
         "conflictCount":len(conflicts),
         "multiTownBuildings":multi_town,
