@@ -1,0 +1,28 @@
+name: A3 MIM historical acquisition
+
+on:
+  pull_request:
+    branches: ["fix/a3-enrichment-publication-gap"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-mim-history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install requests
+      - name: Acquire six MIM school years and reconcile latest public values
+        run: |
+          python scripts/acquire_a3_mim_history.py \
+            --output reports/a3-mim-history-acquired.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a3-mim-history-acquired
+          path: reports/a3-mim-history-acquired.json
+          if-no-files-found: error
