@@ -12,7 +12,6 @@
     "page": "https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php"
   },
   "definitions": {
-    "income": "reddito complessivo / numero di dichiaranti con reddito complessivo",
     "incomeSourceProfile": "ammontare redditi da lavoro dipendente / contribuenti che dichiarano quella fonte",
     "pensionIncomeShare": "ammontare redditi da pensione / reddito complessivo × 100"
   },
@@ -33,12 +32,6 @@
     }
   },
   "benchmarks": {
-    "income": {
-      "unit": "currency",
-      "year": "2024",
-      "tuscany": 26386.693538157117,
-      "italy": 25816.074680546048
-    },
     "incomeSourceProfile": {
       "unit": "currency",
       "year": "2024",
@@ -55,6 +48,6 @@
   },
   "acquisitionGate": {
     "status": "PASS",
-    "note": "Benchmark Toscana/Italia ricostruiti dalle classi regionali MEF 2025 (a.i. 2024). Le tre metriche pubblicate sono limitate a definizioni riconciliabili 7/7 con lo snapshot comunale MEF già versionato; incomeDistribution e taxpayersAdultPopulationRate restano esclusi."
+    "note": "Benchmark Toscana/Italia ricostruiti dalle classi regionali MEF 2025 (a.i. 2024). Sono pubblicate solo incomeSourceProfile e pensionIncomeShare, entrambe riconciliabili 7/7 con lo snapshot comunale MEF già versionato. income, incomeDistribution e taxpayersAdultPopulationRate restano esclusi finché non superano il rispettivo gate semantico."
   }
 }
