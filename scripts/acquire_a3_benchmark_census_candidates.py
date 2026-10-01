@@ -19,6 +19,10 @@ from openpyxl import load_workbook
 ROOT = Path(__file__).resolve().parents[1]
 GOVERNED = ROOT / "data" / "source-snapshots" / "istat-sections-history-v1.8.0.json"
 SITE_DATA = ROOT / "data" / "site-data.json"
+LOCAL_2024 = ROOT / "data" / "source-snapshots" / "istat-lavoro-istruzione-eta-genere-2024.json"
+SDMX_BASE = "https://esploradati.istat.it/SDMXWS/rest"
+SDMX_FLOWS = {"labour": "DF_DCSS_ISTR_LAV_PEN_2_TV_3", "education": "DF_DCSS_ISTR_LAV_PEN_2_TV_1"}
+RESIDUAL_2024 = {"activityRate", "employmentRate", "unemploymentRate", "tertiary"}
 
 URL = "https://esploradati.istat.it/databrowser/DWL/PERMPOP/SUBCOM/Dati_regionali_2023.zip"
 YEAR = "2023"
@@ -264,13 +268,186 @@ def compare_governed(towns: dict[str, dict[str, float]], governed: dict[str, Any
     }
 
 
+
+def sdmx_rows(session: requests.Session, flow: str, ref_area: str) -> list[dict[str, str]]:
+    key = ".".join(["A", ref_area] + [""] * 8)
+    url = f"{SDMX_BASE}/data/IT1,{flow},1.0/{key}/all"
+    response = session.get(
+        url,
+        params={"startPeriod": "2024", "endPeriod": "2024", "format": "csvfile"},
+        headers={"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"},
+        timeout=180,
+    )
+    if response.status_code >= 400:
+        return []
+    text = response.content.decode("utf-8-sig", errors="replace")
+    import csv
+    return list(csv.DictReader(io.StringIO(text)))
+
+
+def aggregate_labour_2024(rows: list[dict[str, str]], ref_area: str) -> dict[str, float]:
+    wanted_ages = {"Y25-49", "Y50-64"}
+    cells: dict[str, float] = {}
+    for row in rows:
+        if row.get("REF_AREA") != ref_area:
+            continue
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("CITIZENSHIP") != "TOTAL" or row.get("EDU_ATTAIN") != "ALL":
+            continue
+        if row.get("GENDER") != "T" or row.get("AGE_NOCLASS") not in wanted_ages:
+            continue
+        stat = row.get("CUR_ACT_STAT")
+        if stat not in {"1", "12", "22", "99"}:
+            continue
+        key = f"{row['AGE_NOCLASS']}|{stat}"
+        cells[key] = number(row.get("OBS_VALUE"), f"labour/{ref_area}/{key}")
+
+    for age in wanted_ages:
+        missing = {"1", "12", "22", "99"} - {k.split("|",1)[1] for k in cells if k.startswith(age+"|")}
+        if missing:
+            raise RuntimeError(f"labour/{ref_area}/{age}: celle mancanti {sorted(missing)}")
+    pop = sum(cells[f"{age}|99"] for age in wanted_ages)
+    employed = sum(cells[f"{age}|1"] for age in wanted_ages)
+    unemployed = sum(cells[f"{age}|12"] for age in wanted_ages)
+    active = sum(cells[f"{age}|22"] for age in wanted_ages)
+    if not math.isclose(employed + unemployed, active, rel_tol=0.0, abs_tol=1e-6):
+        raise RuntimeError(f"labour/{ref_area}: active mismatch")
+    return {
+        "population": pop,
+        "employed": employed,
+        "unemployed": unemployed,
+        "active": active,
+        "employmentRate": employed / pop * 100.0,
+        "unemploymentRate": unemployed / active * 100.0,
+        "activityRate": active / pop * 100.0,
+    }
+
+
+def aggregate_education_2024(rows: list[dict[str, str]], ref_area: str) -> dict[str, float]:
+    wanted_ages = {"Y25-49", "Y50-64"}
+    partition = ["NED", "PSE", "LSE", "USE_IF", "BL", "ML_RDD"]
+    by_age: dict[str, dict[str, float]] = {age: {} for age in wanted_ages}
+    for row in rows:
+        if row.get("REF_AREA") != ref_area:
+            continue
+        if row.get("INDICATOR") != "RESPOP_AV" or row.get("CITIZENSHIP") != "TOTAL" or row.get("CUR_ACT_STAT") != "99":
+            continue
+        if row.get("GENDER") != "T" or row.get("AGE_NOCLASS") not in wanted_ages:
+            continue
+        edu = row.get("EDU_ATTAIN")
+        if edu not in {"ALL", *partition}:
+            continue
+        by_age[row["AGE_NOCLASS"]][edu] = number(row.get("OBS_VALUE"), f"education/{ref_area}/{row['AGE_NOCLASS']}/{edu}")
+
+    population = 0.0
+    tertiary = 0.0
+    for age, vals in by_age.items():
+        if "ALL" not in vals:
+            raise RuntimeError(f"education/{ref_area}/{age}: ALL mancante")
+        parts = sum(vals.get(k, 0.0) for k in partition)
+        if not math.isclose(parts, vals["ALL"], rel_tol=0.0, abs_tol=1e-6):
+            raise RuntimeError(f"education/{ref_area}/{age}: partition mismatch ALL={vals['ALL']} parts={parts}")
+        population += vals["ALL"]
+        tertiary += vals.get("BL", 0.0) + vals.get("ML_RDD", 0.0)
+    if population <= 0:
+        raise RuntimeError(f"education/{ref_area}: popolazione nulla")
+    return {"population": population, "tertiary": tertiary, "tertiaryRate": tertiary / population * 100.0}
+
+
+def reconcile_public_2024(site: dict[str, Any], local: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    mapping = {
+        "employmentRate": ("labour", "employmentRate"),
+        "unemploymentRate": ("labour", "unemploymentRate"),
+        "activityRate": ("labour", "activityRate"),
+        "tertiary": ("education", "tertiaryRate"),
+    }
+    towns = local.get("towns") or {}
+    if len(towns) != 7:
+        return {"status": "FAIL", "errors": ["snapshot 2024 non 7/7"]}
+    for metric_id, (section, field) in mapping.items():
+        metric = (site.get("metrics") or {}).get(metric_id) or {}
+        meta = metric.get("meta") or {}
+        if str(meta.get("year")) != "2024":
+            errors.append(f"{metric_id}: anno pubblico {meta.get('year')!r} != 2024")
+        rows = {str(r.get("town")): r for r in metric.get("rows") or [] if isinstance(r, dict) and r.get("town")}
+        if set(rows) != set(towns):
+            errors.append(f"{metric_id}: perimetro pubblico non 7/7")
+            continue
+        for town, raw in towns.items():
+            expected = float(raw[section]["25-64"]["total"][field])
+            observed = float(rows[town]["value"])
+            if not math.isclose(observed, expected, rel_tol=0.0, abs_tol=0.11):
+                errors.append(f"{metric_id}/{town}: {observed} != {expected}")
+    return {"status": "PASS" if not errors else "FAIL", "metrics": sorted(mapping), "towns": len(towns), "errors": errors[:100]}
+
+
+def resolve_scope_2024(session: requests.Session, candidates: list[str]) -> tuple[str, dict[str, float], dict[str, float]]:
+    attempts = []
+    for code in candidates:
+        try:
+            labour_rows = sdmx_rows(session, SDMX_FLOWS["labour"], code)
+            education_rows = sdmx_rows(session, SDMX_FLOWS["education"], code)
+            if not labour_rows or not education_rows:
+                attempts.append({"code": code, "labourRows": len(labour_rows), "educationRows": len(education_rows), "status": "empty"})
+                continue
+            labour = aggregate_labour_2024(labour_rows, code)
+            education = aggregate_education_2024(education_rows, code)
+            return code, labour, education
+        except Exception as exc:
+            attempts.append({"code": code, "status": "error", "error": f"{type(exc).__name__}: {exc}"})
+    raise RuntimeError(f"REF_AREA 2024 non risolto: {attempts}")
+
+
+def acquire_residual_2024(session: requests.Session, site: dict[str, Any]) -> dict[str, Any]:
+    local = json.loads(LOCAL_2024.read_text(encoding="utf-8"))
+    reconcile = reconcile_public_2024(site, local)
+    tus_code, tus_labour, tus_education = resolve_scope_2024(session, ["09", "ITI1"])
+    ita_code, ita_labour, ita_education = resolve_scope_2024(session, ["IT"])
+    benchmarks = {
+        "employmentRate": {"year": 2024, "unit": "percent", "tuscany": tus_labour["employmentRate"], "italy": ita_labour["employmentRate"]},
+        "unemploymentRate": {"year": 2024, "unit": "percent", "tuscany": tus_labour["unemploymentRate"], "italy": ita_labour["unemploymentRate"]},
+        "activityRate": {"year": 2024, "unit": "percent", "tuscany": tus_labour["activityRate"], "italy": ita_labour["activityRate"]},
+        "tertiary": {"year": 2024, "unit": "percent", "tuscany": tus_education["tertiaryRate"], "italy": ita_education["tertiaryRate"]},
+    }
+    sanity = {
+        "publicMetricReconciliation": reconcile["status"] == "PASS",
+        "tuscanyResolved": bool(tus_code),
+        "italyResolved": bool(ita_code),
+        "ratesInRange": all(0.0 <= float(spec[scope]) <= 100.0 for spec in benchmarks.values() for scope in ("tuscany", "italy")),
+    }
+    return {
+        "schemaVersion": 3,
+        "publisher": "Istat — Censimento permanente della popolazione",
+        "profileId": "istat-census-annual",
+        "referenceYear": 2024,
+        "source": {"api": SDMX_BASE, "flows": SDMX_FLOWS, "tuscanyRefArea": tus_code, "italyRefArea": ita_code},
+        "method": "Aggregazione diretta dei conteggi SDMX 2024 sulle classi 25–49 e 50–64; Toscana e Italia sono richieste direttamente come REF_AREA, non ricostruite da medie comunali.",
+        "components": {"tuscany": {"labour": tus_labour, "education": tus_education}, "italy": {"labour": ita_labour, "education": ita_education}},
+        "benchmarks": benchmarks,
+        "publicMetricReconciliation": reconcile,
+        "sanityGate": sanity,
+        "status": "ACQUIRED_CANDIDATE" if all(sanity.values()) else "CANDIDATE_REJECTED",
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--output", required=True)
+    ap.add_argument("--metrics", default="")
     args = ap.parse_args()
 
     governed = json.loads(GOVERNED.read_text(encoding="utf-8"))
     site = json.loads(SITE_DATA.read_text(encoding="utf-8"))
+    requested = {x.strip() for x in args.metrics.split(",") if x.strip()}
+    if requested and requested.issubset(RESIDUAL_2024):
+        session = requests.Session()
+        session.headers["User-Agent"] = "OsservatorioVersilia-A3-census-benchmark/3.0"
+        payload = acquire_residual_2024(session, site)
+        out = Path(args.output)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps({"status": payload["status"], "metrics": sorted(payload["benchmarks"]), "tuscanyRefArea": payload["source"]["tuscanyRefArea"], "italyRefArea": payload["source"]["italyRefArea"], "publicReconciliation": payload["publicMetricReconciliation"]["status"], "output": str(out)}, ensure_ascii=False))
+        return
     town_codes = {
         str(item["code"])
         for item in ((governed.get("scope") or {}).get("towns") or [])
