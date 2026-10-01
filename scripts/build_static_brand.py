@@ -41,6 +41,7 @@ A3_5_OFFICIAL_COMPANIONS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_5_off
 A3_BENCHMARK_FRAME_SBS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_frame_sbs.py"
 A3_BENCHMARK_ISTAT_FAMILIES_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_istat_families.py"
 A3_BENCHMARK_MIM_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_mim.py"
+A3_BENCHMARK_MIM_BUILDINGS_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_mim_buildings.py"
 A3_BENCHMARK_MEF_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_mef.py"
 A3_BENCHMARK_DEMOGRAPHY_MATERIALIZER = ROOT / "scripts" / "materialize_a3_benchmark_demography.py"
 A3_ENRICHMENT_EVIDENCE_MATERIALIZER = ROOT / "scripts" / "apply_enrichment_evidence_audit15.py"
@@ -88,6 +89,7 @@ def _run_path_with_fragilita_r3_fix(path_name, *args, **kwargs):
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_FRAME_SBS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_ISTAT_FAMILIES_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_MIM_MATERIALIZER), run_name="__main__")
+        _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_MIM_BUILDINGS_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_MEF_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_BENCHMARK_DEMOGRAPHY_MATERIALIZER), run_name="__main__")
         _ORIGINAL_RUN_PATH(str(A3_ENRICHMENT_EVIDENCE_MATERIALIZER), run_name="__main__")
