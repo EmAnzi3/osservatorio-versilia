@@ -47,6 +47,7 @@
     "scripts/materialize_a3_benchmark_frame_sbs.py",
     "scripts/materialize_a3_benchmark_istat_families.py",
     "scripts/materialize_a3_benchmark_mim.py",
+    "scripts/materialize_a3_benchmark_demography.py",
     "scripts/materialize_a3_publication_adapter.py",
     "scripts/apply_per_capita_reference_contract.py",
     "scripts/patch_fragilita_runtime.py",
