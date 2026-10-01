@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/"data"/"site-data.json"
 SNAP=ROOT/"data"/"source-snapshots"/"a3-istat-demography-benchmark-2026.json"
 SNAP_REF="data/source-snapshots/a3-istat-demography-benchmark-2026.json"
+RCS_SNAP=ROOT/"data"/"source-snapshots"/"istat-rcs-demography-2025.json"
 
 TARGETS={
     "population":{
@@ -50,6 +51,12 @@ TARGETS={
         "source":"Istat — bilancio demografico comunale (P02)",
         "part":"Saldo naturale",
         "note":"Benchmark riferito alla voce predefinita «Saldo naturale». Il tasso è ricalcolato su eventi e popolazione media aggregati Toscana/Italia.",
+    },
+    "foreignResidents":{
+        "year":"2025","unit":"percent",
+        "sourceUrl":"https://demo.istat.it/",
+        "source":"Istat RCS — popolazione residente per cittadinanza",
+        "note":"Quota di residenti con cittadinanza non italiana al 1° gennaio 2025. Toscana e Italia sono ricalcolate su conteggi RCS aggregati; il benchmark è pubblicato solo se i 7/7 valori comunali già pubblici riconciliano lo stesso snapshot RCS.",
     },
 }
 
@@ -97,10 +104,39 @@ def reconcile_snapshot(snap:dict[str,Any])->None:
             raise RuntimeError(f"{scope}: ageDistribution non riconciliato")
 
 
+def reconcile_foreign_residents(site:dict[str,Any],snap:dict[str,Any],rcs:dict[str,Any])->None:
+    metric=(site.get("metrics") or {}).get("foreignResidents")
+    if not isinstance(metric,dict):
+        raise RuntimeError("foreignResidents: metrica pubblica mancante")
+    rows=metric.get("rows") or []
+    towns=rcs.get("towns") or {}
+    if not isinstance(towns,dict) or len(towns)!=7:
+        raise RuntimeError("foreignResidents: snapshot RCS non 7/7")
+    public_by_town={str(row.get("town") or ""):row for row in rows if isinstance(row,dict)}
+    if set(public_by_town)!=set(towns):
+        raise RuntimeError("foreignResidents: perimetro comunale pubblico non riconciliato con RCS")
+    for town,detail in towns.items():
+        if int(public_by_town[town].get("count"))!=int(detail.get("citizenshipTotal")):
+            raise RuntimeError(f"{town}: foreignResidents pubblico non riconciliato con RCS 2025")
+    bench=(snap.get("benchmarks") or {}).get("foreignResidents") or {}
+    rcs_gate=snap.get("rcs") or {}
+    if rcs_gate.get("validation")!="7/7 public rows reconciled":
+        raise RuntimeError("foreignResidents: snapshot benchmark senza gate RCS 7/7")
+    for scope in ("tuscany","italy"):
+        scope_data=(rcs_gate.get("scopes") or {}).get(scope) or {}
+        foreign=float(scope_data.get("foreign"))
+        population=float(scope_data.get("population"))
+        expected=foreign/population*100.0
+        if not math.isclose(expected,float(bench.get(scope)),rel_tol=0.0,abs_tol=1e-12):
+            raise RuntimeError(f"foreignResidents {scope}: quota benchmark non riconciliata")
+
+
 def main()->None:
     site=load(SITE)
     snap=load(SNAP)
     reconcile_snapshot(snap)
+    rcs=load(RCS_SNAP)
+    reconcile_foreign_residents(site,snap,rcs)
     metrics=site.get("metrics")
     if not isinstance(metrics,dict):
         raise RuntimeError("Catalogo senza metrics")
@@ -121,8 +157,9 @@ def main()->None:
         if str(metric.get("sourceUrl") or "")!=cfg["sourceUrl"]:
             raise RuntimeError(f"{metric_id}: sourceUrl inatteso {metric.get('sourceUrl')}")
         method=metric.get("method")
-        if not isinstance(method,dict) or norm(method.get("formula"))!=norm(cfg["formula"]):
-            raise RuntimeError(f"{metric_id}: formula pubblica non allineata")
+        if "formula" in cfg:
+            if not isinstance(method,dict) or norm(method.get("formula"))!=norm(cfg["formula"]):
+                raise RuntimeError(f"{metric_id}: formula pubblica non allineata")
 
         spec=benchmarks.get(metric_id)
         if not isinstance(spec,dict):
