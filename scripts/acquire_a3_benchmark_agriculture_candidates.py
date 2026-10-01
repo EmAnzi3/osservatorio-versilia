@@ -125,21 +125,38 @@ def main():
     if not math.isclose(raw["italy"]["sauLocalizedHa"],OFFICIAL["italy"]["sauCenterHa"],rel_tol=0.0,abs_tol=.1):
         errors.append(f"italy/sauLocalizedHa: {raw['italy']['sauLocalizedHa']} != official SAU {OFFICIAL['italy']['sauCenterHa']}")
 
+    # Gate per-metrica: un mismatch sulla SAU localizzata non deve bloccare
+    # metriche indipendenti già riconciliate e controllate su totali ufficiali.
+    core_errors=[e for e in errors if "sauLocalizedHa" not in e]
+    localized_errors=[e for e in errors if "sauLocalizedHa" in e]
     benchmarks={
-      "agriculturalFarms":{"year":"2020","unit":"number","tuscany":raw["tuscany"]["farms"],"italy":raw["italy"]["farms"]},
-      "agriculturalUsedArea":{"year":"2020","unit":"hectares","tuscany":raw["tuscany"]["sauLocalizedHa"],"italy":raw["italy"]["sauLocalizedHa"]},
-      "averageAgriculturalFarmSize":{"year":"2020","unit":"hectaresPerFarm","tuscany":raw["tuscany"]["sauCenterHa"]/raw["tuscany"]["farmsWithSau"],"italy":raw["italy"]["sauCenterHa"]/raw["italy"]["farmsWithSau"]},
+      "agriculturalFarms":{"year":"2020","unit":"number","formula":"somma aziende agricole comunali","tuscany":raw["tuscany"]["farms"],"italy":raw["italy"]["farms"]},
+      "averageAgriculturalFarmSize":{"year":"2020","unit":"hectaresPerFarm","formula":"Σ SAU per centro aziendale / Σ aziende con SAU","tuscany":raw["tuscany"]["sauCenterHa"]/raw["tuscany"]["farmsWithSau"],"italy":raw["italy"]["sauCenterHa"]/raw["italy"]["farmsWithSau"]},
     }
-    # Irrigazione resta evidence-only finché non è disponibile un totale regionale/nazionale ufficiale indipendente.
-    gate="PASS" if not errors else "FAIL"
+    safe_gate="PASS" if not core_errors else "FAIL"
     payload={
-      "schemaVersion":4,"publisher":"Istat — 7° Censimento generale dell’agricoltura 2020","profileId":"istat-agriculture-census-2020","referenceYear":2020,
-      "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
+      "schemaVersion":5,"publisher":"Istat — 7° Censimento generale dell’agricoltura 2020","profileId":"istat-agriculture-census-2020","referenceYear":2020,
+      "status":"ACQUIRED_CANDIDATE" if safe_gate=="PASS" else "CANDIDATE_REJECTED",
       "sources":{"townSurface":u1,"townIrrigation":u2,"townLocalizedSau":u3,"allMunicipalSurface":u4,"allMunicipalIrrigation":u5,"allMunicipalLocalizedSau":u6,"officialControl":OFFICIAL_TABLE},
       "benchmarks":benchmarks,"raw":raw,
-      "qualityGate":{"status":gate,"publicSnapshotReconciliation":"3 publishable metrics × 7/7 towns PASS" if not errors else "FAIL","officialTotalsControl":"HO + center SAU Tuscany/Italy PASS; Italy localized SAU closes national SAU" if not errors else "FAIL","errors":errors},
-      "evidenceOnly":{"irrigatedAgriculturalArea":{"tuscany":raw["tuscany"]["irrigatedAreaHa"],"italy":raw["italy"]["irrigatedAreaHa"],"reason":"manca un controllo aggregato ufficiale indipendente; non pubblicato in questo blocco"}},
-      "blocked":{"cropProfile":"composite: componente benchmark da certificare separatamente","agriculturalRenewalAndLeadership":"fasce età aggregate non consentono <=40","agriculturalDiversificationAndModernization":"serve totale distinto delle aziende con attività connesse"}
+      "qualityGate":{
+        "status":safe_gate,
+        "publicSnapshotReconciliation":"2 metrics × 7/7 towns PASS" if safe_gate=="PASS" else "FAIL",
+        "officialTotalsControl":"HO + center SAU Tuscany/Italy PASS" if safe_gate=="PASS" else "FAIL",
+        "errors":core_errors,
+      },
+      "blocked":{
+        "agriculturalUsedArea":{
+          "reason":"SAU localizzata Italia non chiude il totale nazionale per centro aziendale; non forzata",
+          "candidate":{"tuscany":raw["tuscany"]["sauLocalizedHa"],"italy":raw["italy"]["sauLocalizedHa"]},
+          "errors":localized_errors,
+          "coverage":{"tuscany":raw["tuscany"]["coverage"]["localizedSau"],"italy":raw["italy"]["coverage"]["localizedSau"]},
+        },
+        "irrigatedAgriculturalArea":{"reason":"manca un controllo aggregato ufficiale indipendente","candidate":{"tuscany":raw["tuscany"]["irrigatedAreaHa"],"italy":raw["italy"]["irrigatedAreaHa"]}},
+        "cropProfile":"composite: componente benchmark da certificare separatamente",
+        "agriculturalRenewalAndLeadership":"fasce età aggregate non consentono <=40",
+        "agriculturalDiversificationAndModernization":"serve totale distinto delle aziende con attività connesse",
+      }
     }
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":payload["status"],"benchmarks":benchmarks,"raw":raw,"gate":payload["qualityGate"]},ensure_ascii=False))
