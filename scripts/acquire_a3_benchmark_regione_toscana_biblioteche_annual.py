@@ -112,7 +112,7 @@ def main()->None:
         benchmarks[mid]={"year":"2024","unit":str(meta.get("unit") or "decimal"),"tuscany":distinct[0],"italy":None,
           "formula":ck}
     gate="PASS" if not errors and len(benchmarks)==3 else "FAIL"
-    payload={"schemaVersion":1,"publisher":"Regione Toscana","profileId":"regione-toscana-biblioteche-annual",
+    payload={"schemaVersion":2,"publisher":"Regione Toscana","profileId":"regione-toscana-biblioteche-annual",
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED","sourceUrl":LANDING,
       "dataUrl":URL,"referenceYear":year,"benchmarks":benchmarks,
       "qualityGate":{"status":gate,"publicReconciliation":"3 metrics × 5/7 numeric + Massarosa/Stazzema n.d. governed PASS" if gate=="PASS" else "FAIL","missingPolicy":"Massarosa n.d.; Stazzema absent; no zero imputation","errors":errors}}

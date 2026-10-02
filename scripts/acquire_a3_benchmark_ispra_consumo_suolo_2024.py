@@ -108,7 +108,7 @@ def main()->None:
         "tuscany":finite(tus["incremento_netto_2023_2024_ettari"]),"italy":italy_change},
     }
     gate="PASS" if not errors else "FAIL"
-    payload={"schemaVersion":1,"publisher":"ISPRA","profileId":"ispra-consumo-suolo-2024",
+    payload={"schemaVersion":2,"publisher":"ISPRA","profileId":"ispra-consumo-suolo-2024",
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED","sourceUrl":LANDING,"dataUrl":URL,
       "benchmarks":benchmarks if gate=="PASS" else {},"qualityGate":{"status":gate,"publicReconciliation":"2 metrics × 7/7 PASS" if gate=="PASS" else "FAIL","municipalSheet":ws.title,"regionalSheet":rws.title,"italyAggregation":italy_mode,"errors":errors}}
     out=Path(a.output); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
