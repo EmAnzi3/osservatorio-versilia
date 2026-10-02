@@ -125,6 +125,10 @@ def apply_overlay():
  print(f"Salute v1.40 materializzata: {len(data['metrics'])} indicatori nel workspace")
 
 def rsa_metric(population_rows):
+ """Build the same public RSA definition for the Salute overlay and source worker.
+
+ Fan-in attaches verified benchmark metadata after this source overlay.
+ """
  rows=[]
  for base in population_rows:
   town=base['town']
