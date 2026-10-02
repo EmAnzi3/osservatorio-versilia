@@ -187,13 +187,35 @@ def p2_natural_headers(headers:list[str])->dict[str,str]:
     }
 
 
+def pick_mobility(headers:list[str],movement:str,scope:str)->str:
+    hits=[]
+    for header in headers:
+        h=norm(header)
+        if movement not in h or "totale" not in h:
+            continue
+        if scope=="internal":
+            if "comun" not in h or "estero" in h or "motivi" in h:
+                continue
+        elif scope=="foreign":
+            if "estero" not in h:
+                continue
+        else:
+            raise RuntimeError(f"Scope mobilità inatteso: {scope}")
+        hits.append(header)
+    if len(hits)!=1:
+        raise RuntimeError(
+            f"Header mobilità non univoco movement={movement} scope={scope}: "
+            f"hits={hits}; headers={headers}"
+        )
+    return hits[0]
+
 def p2_mobility_headers(headers:list[str])->dict[str,str]:
     return {
         **p2_population_headers(headers),
-        "internalIn":pick(headers,("iscritti","altro","comune","totale")),
-        "internalOut":pick(headers,("cancellati","altro","comune","totale")),
-        "foreignIn":pick(headers,("iscritti","estero","totale")),
-        "foreignOut":pick(headers,("cancellati","estero","totale")),
+        "internalIn":pick_mobility(headers,"iscritti","internal"),
+        "internalOut":pick_mobility(headers,"cancellati","internal"),
+        "foreignIn":pick_mobility(headers,"iscritti","foreign"),
+        "foreignOut":pick_mobility(headers,"cancellati","foreign"),
     }
 
 def aggregate_p2(
