@@ -13,6 +13,10 @@ SNAPSHOTS = (
     ROOT / "data" / "source-snapshots" / "a3-istat-agriculture-benchmark-2020.json",
     ROOT / "data" / "source-snapshots" / "a3-regione-toscana-tourism-benchmark-2025.json",
     ROOT / "data" / "source-snapshots" / "a3-ispra-environment-benchmark-2024.json",
+    ROOT / "data" / "source-snapshots" / "a3-istat-agriculture-benchmark-2020-v2.json",
+    ROOT / "data" / "source-snapshots" / "a3-agcom-benchmark-2025.json",
+    ROOT / "data" / "source-snapshots" / "a3-ispra-environment-benchmark-2024-v2.json",
+    ROOT / "data" / "source-snapshots" / "a3-istat-demography-mobility-benchmark-2024.json",
 )
 
 def load(path: Path) -> dict[str, Any]:
@@ -42,10 +46,12 @@ def validate_agriculture_public(site: dict[str, Any]) -> None:
     towns = source.get("towns") or {}
     checks = {
         "agriculturalFarms": lambda row: finite(row.get("farms"), "farms"),
+        "agriculturalUsedArea": lambda row: finite(row.get("sauLocalizedHa"), "sauLocalizedHa"),
         "averageAgriculturalFarmSize": lambda row: (
             finite(row.get("sauCenterHa"), "sauCenterHa")
             / finite(row.get("farmsWithSau"), "farmsWithSau")
         ),
+        "irrigatedAgriculturalArea": lambda row: finite(row.get("irrigatedAreaHa"), "irrigatedAreaHa"),
     }
     for metric_id, expected_value in checks.items():
         metric = (site.get("metrics") or {}).get(metric_id) or {}
