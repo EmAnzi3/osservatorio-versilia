@@ -93,7 +93,63 @@ if(initialTown){
   const heading=$('#analysisHeading');
   if(heading&&townMeta) heading.textContent=`${townMeta.name} nel confronto territoriale`;
 }
+
+/* ov-atlas-export-actions: standalone Atlas only */
+function csvCell(value){
+  const text=String(value??'');
+  return /[;"\r\n]/.test(text)?'"'+text.replaceAll('"','""')+'"':text;
+}
+function csvLevel(n){return n.d?(LEVELS[n.d.length]||'Codice'):'Sezione'}
+function csvCode(n){return n.d?String(n.sec)+' '+displayCode(n.d):n.sec}
+function atlasCsvRows(){
+  const t=activeTerritoryMeta();
+  const territory=t?.name||'Versilia';
+  const ordered=[...nodes.values()].filter(n=>n&&n.sec).sort((a,b)=>{
+    const ac=String(a.sec)+' '+String(a.d||''),bc=String(b.sec)+' '+String(b.d||'');
+    return ac.localeCompare(bc,'it',{numeric:true});
+  });
+  const rows=[['Territorio','Codice ATECO','Livello','Descrizione','Anno','UL attive','UL artigiane (2025)','Fonte']];
+  ordered.forEach(n=>{
+    const agg=aggregateNode(n.sec,n.d);
+    years.forEach((yr,yi)=>{
+      const active=t?agg.towns[t.i][yi]:agg.vers[yi];
+      const artisan=yi===latest?(t?agg.art[t.i]:sumNullable(agg.art)):null;
+      if(active===null&&artisan===null)return;
+      rows.push([territory,csvCode(n),csvLevel(n),n.label||'',yr,active??'',artisan??'','Regione Toscana / Registro Imprese InfoCamere']);
+    });
+  });
+  return rows;
+}
+function downloadAtlasCsv(){
+  const rows=atlasCsvRows();
+  const csv='\ufeff'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='atlante-attivita-economiche-'+(state.territory||'versilia')+'-2014-2025.csv';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),0);
+}
+function ensureAtlasExportActions(){
+  if(root.host?.hasAttribute('embedded'))return;
+  if(root.querySelector('.atlas-export-actions'))return;
+  const explorer=root.querySelector('.explorer');
+  if(!explorer)return;
+  const style=document.createElement('style');
+  style.id='atlas-data-actions-style';
+  style.textContent='.data-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 18px}.data-actions button{min-height:30px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #c9d3d1;border-radius:7px;background:#fbf7f0;color:#102f45;padding:5px 8px;font-size:7px;font-weight:760;line-height:1;white-space:nowrap;cursor:pointer}.data-actions button:hover,.data-actions button:focus-visible{border-color:#145b78;background:#e4eff2;outline:none}.data-actions [data-download]::before,.data-actions [data-print]::before{content:"";width:17px;height:17px;flex:0 0 17px;margin-right:5px;background:center/contain no-repeat}.data-actions [data-download]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath fill=\\'%23217346\\' d=\\'M4 2h11l5 5v15H4z\\'/%3E%3Cpath fill=\\'none\\' stroke=\\'%23fff\\' stroke-width=\\'1.4\\' d=\\'M15 2v5h5\\'/%3E%3Cpath fill=\\'%23fff\\' d=\\'M7.1 10h2.1l1.3 2.2 1.3-2.2h2l-2.2 3.5 2.4 3.8h-2.1l-1.5-2.4-1.5 2.4H6.8l2.4-3.8z\\'/%3E%3C/svg%3E")}.data-actions [data-print]::before{background-image:url("data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath fill=\\'%23b84b34\\' d=\\'M4 2h11l5 5v15H4z\\'/%3E%3Cpath fill=\\'none\\' stroke=\\'%23fff\\' stroke-width=\\'1.4\\' d=\\'M15 2v5h5\\'/%3E%3Ctext x=\\'6.2\\' y=\\'16.2\\' fill=\\'%23fff\\' font-size=\\'6.1\\' font-family=\\'Arial,sans-serif\\' font-weight=\\'700\\'%3EPDF%3C/text%3E%3C/svg%3E")}@media print{.data-actions{display:none!important}}';
+  root.appendChild(style);
+  const bar=document.createElement('div');
+  bar.className='data-actions atlas-export-actions';
+  bar.innerHTML='<button type="button" id="atlasDownloadCsv" data-download>Scarica CSV</button><button type="button" id="atlasPrint" data-print>Stampa / PDF</button>';
+  explorer.insertAdjacentElement('beforebegin',bar);
+  bar.querySelector('#atlasDownloadCsv').onclick=downloadAtlasCsv;
+  bar.querySelector('#atlasPrint').onclick=()=>window.print();
+}
+
 renderAll();
+ensureAtlasExportActions();
 
     }
   }
