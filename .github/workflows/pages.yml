@@ -109,14 +109,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/build_static_brand.py
+          python scripts/build_public_site.py
           git diff --exit-code -- . ':(exclude)dist'
-          python scripts/build_data_status.py
-          python scripts/inject_data_status_runtime.py
-          python scripts/build_pnrr_toscana_deep_dive.py
-          python scripts/inject_pnrr_town_experience.py
-          python scripts/copy_percorsi_dist.py
-          node --check dist/assets/app-bundle.js
 
       - name: Run full-only preflight
         run: python scripts/preflight.py --full --skip-quick
@@ -179,13 +173,7 @@ jobs:
             cp /tmp/opportunity-daily-repository.json data/opportunity-daily-public.json
           }
           trap restore_radar_snapshot EXIT
-          python scripts/build_static_brand.py
-          python scripts/build_data_status.py
-          python scripts/inject_data_status_runtime.py
-          python scripts/build_pnrr_toscana_deep_dive.py
-          python scripts/inject_pnrr_town_experience.py
-          python scripts/copy_percorsi_dist.py
-          node --check dist/assets/app-bundle.js
+          python scripts/build_public_site.py
           python scripts/test_affluenza_release.py
           python scripts/test_site_consistency.py
           restore_radar_snapshot
