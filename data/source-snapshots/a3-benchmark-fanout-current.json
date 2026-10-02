@@ -9,8 +9,28 @@
     "availableMissing": 112
   },
   "selectedProfileCount": 15,
-  "selectedPairCount": 44,
+  "selectedPairCount": 48,
   "profiles": [
+    {
+      "profileId": "istat-business-annual",
+      "bundleId": "istat-business-annual::benchmark_toscana_italia",
+      "rank": 8,
+      "pairCount": 6,
+      "metricIds": [
+        "employeesPerLocalUnit",
+        "localEmployees",
+        "localEmployeesChange",
+        "localUnits",
+        "localUnitsChange",
+        "microUnits"
+      ],
+      "sourceReferences": [
+        "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/"
+      ],
+      "publisher": "Istat",
+      "costPoints": 1,
+      "priorityIndex": 30
+    },
     {
       "profileId": "istat-commuting-irregular",
       "bundleId": "istat-commuting-irregular::benchmark_toscana_italia",
@@ -138,22 +158,6 @@
       "priorityIndex": 7.5
     },
     {
-      "profileId": "agcom-quarterly",
-      "bundleId": "agcom-quarterly::benchmark_toscana_italia",
-      "rank": 35,
-      "pairCount": 2,
-      "metricIds": [
-        "ftthReachedHouseholds",
-        "ftthUnreachedHouseholds"
-      ],
-      "sourceReferences": [
-        "https://maps.agcom.it/"
-      ],
-      "publisher": "AGCOM",
-      "costPoints": 2,
-      "priorityIndex": 5
-    },
-    {
       "profileId": "regione-toscana-tourism-annual",
       "bundleId": "regione-toscana-tourism-annual::benchmark_toscana_italia",
       "rank": 16,
@@ -166,6 +170,22 @@
         "https://www.regione.toscana.it/statistiche/banca-dati-turismo"
       ],
       "publisher": "Regione Toscana",
+      "costPoints": 2,
+      "priorityIndex": 5
+    },
+    {
+      "profileId": "agcom-quarterly",
+      "bundleId": "agcom-quarterly::benchmark_toscana_italia",
+      "rank": 35,
+      "pairCount": 2,
+      "metricIds": [
+        "ftthReachedHouseholds",
+        "ftthUnreachedHouseholds"
+      ],
+      "sourceReferences": [
+        "https://maps.agcom.it/"
+      ],
+      "publisher": "AGCOM",
       "costPoints": 2,
       "priorityIndex": 5
     },
@@ -198,23 +218,6 @@
         "https://www.arpat.toscana.it/pubblicazione/il-controllo-delle-acque-di-balneazione-stagione-2025/"
       ],
       "publisher": "ARPAT",
-      "costPoints": 2,
-      "priorityIndex": 5
-    },
-    {
-      "profileId": "health-ministry-annual",
-      "bundleId": "health-ministry-annual::benchmark_toscana_italia",
-      "rank": 65,
-      "pairCount": 2,
-      "metricIds": [
-        "hospitals",
-        "pharmaciesPer1000"
-      ],
-      "sourceReferences": [
-        "https://www.dati.salute.gov.it/it/dataset/aziende-ospedaliere-aziende-ospedaliere-universitarie-e-irccs-pubblici-anche-costituiti/",
-        "https://www.dati.salute.gov.it/it/dataset/farmacie/"
-      ],
-      "publisher": "Ministero della Salute",
       "costPoints": 2,
       "priorityIndex": 5
     },
@@ -267,6 +270,6 @@
       "priorityIndex": 5
     }
   ],
-  "workerGeneration": "parallel-v3-residual-rotation",
-  "lastAcquisitionTriggerParent": "77c0a02010a487ee49dfd830c04c376b43bc43c0"
+  "workerGeneration": "parallel-v4-dedicated-mature-residuals",
+  "lastAcquisitionTriggerParent": "83d0ca2a93b82b4d0a23c1d4278d37f3821f6b60"
 }
