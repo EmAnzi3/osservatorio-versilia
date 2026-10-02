@@ -2,39 +2,58 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 36970000281,
-    "headSha": "02589b5979580f71871effa696979e5fc423f6d2",
-    "publicBenchmarks": "101/101",
+    "workflowRun": 36981655406,
+    "headSha": "c058502d9d3e07d8a8ef7cbfe02665c1e3d11434",
+    "publicBenchmarks": "111/111",
     "publicationGap": 0,
-    "availableMissing": 112
+    "availableMissing": 102
   },
   "selectedProfileCount": 15,
-  "selectedPairCount": 48,
+  "selectedPairCount": 65,
   "profiles": [
     {
-      "profileId": "istat-business-annual",
-      "bundleId": "istat-business-annual::benchmark_toscana_italia",
-      "rank": 8,
-      "pairCount": 6,
+      "profileId": "openbdap-annual",
+      "bundleId": "openbdap-annual::benchmark_toscana_italia",
+      "rank": 1,
+      "pairCount": 24,
       "metricIds": [
-        "employeesPerLocalUnit",
-        "localEmployees",
-        "localEmployeesChange",
-        "localUnits",
-        "localUnitsChange",
-        "microUnits"
+        "availableAdministrationResultPerResident",
+        "capitalExpenditureCommittedPerResident",
+        "cashBalancePerResident",
+        "cashReceiptsPerResident",
+        "civilProtectionMissionExpenditurePerResident",
+        "cultureSportMissionExpenditurePerResident",
+        "currentCollectionCapacity",
+        "currentExpenditureCommittedPerResident",
+        "currentPaymentCapacity",
+        "currentRevenueAccruedPerResident",
+        "economicDevelopmentMissionExpenditurePerResident",
+        "educationMissionExpenditurePerResident",
+        "environmentMissionExpenditurePerResident",
+        "fcdePerResident",
+        "financialDebtProfile",
+        "generalAdministrationMissionExpenditurePerResident",
+        "mobilityMissionExpenditurePerResident",
+        "ownRevenueShare",
+        "rigidExpenditureShare",
+        "securityMissionExpenditurePerResident",
+        "socialMissionExpenditurePerResident",
+        "territorialPlanningMissionExpenditurePerResident",
+        "tourismDevelopmentMissionExpenditurePerResident",
+        "yearEndCashFundPerResident"
       ],
       "sourceReferences": [
-        "https://www.istat.it/tavole-di-dati/risultati-economici-delle-imprese-e-delle-multinazionali-a-livello-territoriale-anno-2023/"
+        "https://openbdap.rgs.mef.gov.it/FET/Analizza",
+        "https://openbdap.rgs.mef.gov.it/it/FET/Analizza"
       ],
-      "publisher": "Istat",
-      "costPoints": 1,
-      "priorityIndex": 30
+      "publisher": "MEF / Ragioneria Generale dello Stato",
+      "costPoints": 2,
+      "priorityIndex": 60
     },
     {
       "profileId": "istat-commuting-irregular",
       "bundleId": "istat-commuting-irregular::benchmark_toscana_italia",
-      "rank": 14,
+      "rank": 2,
       "pairCount": 8,
       "metricIds": [
         "commuterBalance",
@@ -47,7 +66,8 @@
         "selfContainment"
       ],
       "sourceReferences": [
-        "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
+        "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+        "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/"
       ],
       "publisher": "Istat",
       "costPoints": 2,
@@ -56,7 +76,7 @@
     {
       "profileId": "lamma-copernicus-climate",
       "bundleId": "lamma-copernicus-climate::benchmark_toscana_italia",
-      "rank": 42,
+      "rank": 3,
       "pairCount": 4,
       "metricIds": [
         "climatePrecipitationTrend50y",
@@ -65,7 +85,8 @@
         "climateTminTrend"
       ],
       "sourceReferences": [
-        "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land"
+        "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land",
+        "https://dati.lamma.toscana.it/"
       ],
       "publisher": "Consorzio LaMMA / Copernicus Climate Change Service",
       "costPoints": 2,
@@ -74,7 +95,7 @@
     {
       "profileId": "rgs-conto-annuale-annual",
       "bundleId": "rgs-conto-annuale-annual::benchmark_toscana_italia",
-      "rank": 44,
+      "rank": 4,
       "pairCount": 4,
       "metricIds": [
         "municipalEmployeesPer1000",
@@ -83,7 +104,9 @@
         "municipalStaffTurnover"
       ],
       "sourceReferences": [
-        "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc"
+        "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dipendenti/abitanti-comune-acc",
+        "https://contoannuale.rgs.mef.gov.it/it/web/sicosito/dati-pubblicati",
+        "https://contoannuale.rgs.mef.gov.it/web/sicosito/assenze-e-turnover/formazione-acc"
       ],
       "publisher": "Ragioneria Generale dello Stato — Conto Annuale",
       "costPoints": 2,
@@ -92,7 +115,7 @@
     {
       "profileId": "istat-agriculture-census-2020",
       "bundleId": "istat-agriculture-census-2020::benchmark_toscana_italia",
-      "rank": 21,
+      "rank": 5,
       "pairCount": 3,
       "metricIds": [
         "agriculturalDiversificationAndModernization",
@@ -100,7 +123,8 @@
         "cropProfile"
       ],
       "sourceReferences": [
-        "https://www.istat.it/notizia/lagricoltura-nelle-regioni-italiane/"
+        "https://www.istat.it/notizia/lagricoltura-nelle-regioni-italiane/",
+        "https://www.istat.it/statistiche-per-temi/censimenti/agricoltura/7-censimento-generale/risultati/"
       ],
       "publisher": "Istat",
       "costPoints": 2,
@@ -109,7 +133,7 @@
     {
       "profileId": "istat-fragility-2022",
       "bundleId": "istat-fragility-2022::benchmark_toscana_italia",
-      "rank": 58,
+      "rank": 6,
       "pairCount": 3,
       "metricIds": [
         "essentialServicesAccessibility",
@@ -117,33 +141,17 @@
         "municipalFragility"
       ],
       "sourceReferences": [
-        "https://www.istat.it/comunicato-stampa/aggiornato-indice-di-fragilita-comunale/"
+        "https://www.istat.it/comunicato-stampa/aggiornato-indice-di-fragilita-comunale/",
+        "https://www.istat.it/comunicato-stampa/la-fragilita-dei-comuni-italiani-anno-2022/"
       ],
       "publisher": "Istat",
       "costPoints": 2,
       "priorityIndex": 7.5
     },
     {
-      "profileId": "regione-toscana-biblioteche-annual",
-      "bundleId": "regione-toscana-biblioteche-annual::benchmark_toscana_italia",
-      "rank": 61,
-      "pairCount": 3,
-      "metricIds": [
-        "libraryActiveBorrowersPer100",
-        "libraryLoansPerResident",
-        "libraryWeeklyOpeningHours"
-      ],
-      "sourceReferences": [
-        "https://www.regione.toscana.it/-/il-valore-delle-biblioteche-pubbliche-di-ente-locale-e-della-cooperazione-bibliotecaria"
-      ],
-      "publisher": "Regione Toscana",
-      "costPoints": 2,
-      "priorityIndex": 7.5
-    },
-    {
       "profileId": "regione-toscana-gtfs-scheduled",
       "bundleId": "regione-toscana-gtfs-scheduled::benchmark_toscana_italia",
-      "rank": 62,
+      "rank": 7,
       "pairCount": 3,
       "metricIds": [
         "activeTplAccessPoints",
@@ -158,41 +166,9 @@
       "priorityIndex": 7.5
     },
     {
-      "profileId": "regione-toscana-tourism-annual",
-      "bundleId": "regione-toscana-tourism-annual::benchmark_toscana_italia",
-      "rank": 16,
-      "pairCount": 2,
-      "metricIds": [
-        "tourismBedsPer1000",
-        "tourismStructuresPer1000"
-      ],
-      "sourceReferences": [
-        "https://www.regione.toscana.it/statistiche/banca-dati-turismo"
-      ],
-      "publisher": "Regione Toscana",
-      "costPoints": 2,
-      "priorityIndex": 5
-    },
-    {
-      "profileId": "agcom-quarterly",
-      "bundleId": "agcom-quarterly::benchmark_toscana_italia",
-      "rank": 35,
-      "pairCount": 2,
-      "metricIds": [
-        "ftthReachedHouseholds",
-        "ftthUnreachedHouseholds"
-      ],
-      "sourceReferences": [
-        "https://maps.agcom.it/"
-      ],
-      "publisher": "AGCOM",
-      "costPoints": 2,
-      "priorityIndex": 5
-    },
-    {
       "profileId": "aci-istat-annual",
       "bundleId": "aci-istat-annual::benchmark_toscana_italia",
-      "rank": 63,
+      "rank": 8,
       "pairCount": 2,
       "metricIds": [
         "motorization",
@@ -206,9 +182,25 @@
       "priorityIndex": 5
     },
     {
+      "profileId": "agcom-quarterly",
+      "bundleId": "agcom-quarterly::benchmark_toscana_italia",
+      "rank": 9,
+      "pairCount": 2,
+      "metricIds": [
+        "ftthReachedHouseholds",
+        "ftthUnreachedHouseholds"
+      ],
+      "sourceReferences": [
+        "https://maps.agcom.it/"
+      ],
+      "publisher": "AGCOM",
+      "costPoints": 2,
+      "priorityIndex": 5
+    },
+    {
       "profileId": "arpat-bathing-annual",
       "bundleId": "arpat-bathing-annual::benchmark_toscana_italia",
-      "rank": 64,
+      "rank": 10,
       "pairCount": 2,
       "metricIds": [
         "bathingNonCompliantSamples",
@@ -222,32 +214,36 @@
       "priorityIndex": 5
     },
     {
+      "profileId": "health-ministry-annual",
+      "bundleId": "health-ministry-annual::benchmark_toscana_italia",
+      "rank": 11,
+      "pairCount": 2,
+      "metricIds": [
+        "hospitals",
+        "pharmaciesPer1000"
+      ],
+      "sourceReferences": [
+        "https://www.dati.salute.gov.it/it/dataset/aziende-ospedaliere-aziende-ospedaliere-universitarie-e-irccs-pubblici-anche-costituiti/",
+        "https://www.salute.gov.it/new/it/banche-dati/elenco-aziende-sanitarie-locali-e-strutture-di-ricovero/?tema=Statistiche+sanitarie",
+        "https://www.dati.salute.gov.it/it/dataset/farmacie/",
+        "https://www.dati.salute.gov.it/"
+      ],
+      "publisher": "Ministero della Salute",
+      "costPoints": 2,
+      "priorityIndex": 5
+    },
+    {
       "profileId": "ispra-coast-irregular",
       "bundleId": "ispra-coast-irregular::benchmark_toscana_italia",
-      "rank": 66,
+      "rank": 12,
       "pairCount": 2,
       "metricIds": [
         "rigidDefenceProtectedCoast",
         "shorelineDynamics"
       ],
       "sourceReferences": [
-        "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta"
-      ],
-      "publisher": "ISPRA",
-      "costPoints": 2,
-      "priorityIndex": 5
-    },
-    {
-      "profileId": "ispra-consumo-suolo-2024",
-      "bundleId": "ispra-consumo-suolo-2024::benchmark_toscana_italia",
-      "rank": 67,
-      "pairCount": 2,
-      "metricIds": [
-        "landUse",
-        "landUseChange"
-      ],
-      "sourceReferences": [
-        "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/i-dati-sul-consumo-di-suolo"
+        "https://indicatoriambientali.isprambiente.it/it/coste/costa-protetta",
+        "https://indicatoriambientali.isprambiente.it/it/coste/dinamica-litoranea"
       ],
       "publisher": "ISPRA",
       "costPoints": 2,
@@ -256,20 +252,56 @@
     {
       "profileId": "ispra-idrogeo-risk",
       "bundleId": "ispra-idrogeo-risk::benchmark_toscana_italia",
-      "rank": 68,
+      "rank": 13,
       "pairCount": 2,
       "metricIds": [
         "floodExposure",
         "landslideExposure"
       ],
       "sourceReferences": [
-        "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio"
+        "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/dissesto-idrogeologico/indicatori-di-rischio",
+        "https://idrogeo.isprambiente.it/"
       ],
       "publisher": "ISPRA",
       "costPoints": 2,
       "priorityIndex": 5
+    },
+    {
+      "profileId": "istat-geografie-funzionali-2021",
+      "bundleId": "istat-geografie-funzionali-2021::benchmark_toscana_italia",
+      "rank": 14,
+      "pairCount": 2,
+      "metricIds": [
+        "statisticalCoastlineLength",
+        "territorialClassification"
+      ],
+      "sourceReferences": [
+        "https://www.istat.it/comunicato-stampa/geografie-funzionali-per-lanalisi-territoriale/",
+        "https://www.istat.it/classificazione/principali-statistiche-geografiche-sui-comuni/"
+      ],
+      "publisher": "Istat",
+      "costPoints": 2,
+      "priorityIndex": 5
+    },
+    {
+      "profileId": "istat-social-services-annual",
+      "bundleId": "istat-social-services-annual::benchmark_toscana_italia",
+      "rank": 15,
+      "pairCount": 2,
+      "metricIds": [
+        "socialSpendingByUserArea",
+        "socialSpendingPerResident"
+      ],
+      "sourceReferences": [
+        "https://www.istat.it/comunicato-stampa/la-spesa-dei-comuni-per-i-servizi-sociali-anno-2022/",
+        "https://www.istat.it/storage/misura-comune/10a-Servizi-sociali-per-tipologia-di-utenza.xlsx",
+        "https://www.istat.it/storage/misura-comune/10b-Servizi-sociali-per-abitante.xlsx"
+      ],
+      "publisher": "Istat",
+      "costPoints": 2,
+      "priorityIndex": 5
     }
   ],
-  "workerGeneration": "parallel-v4-dedicated-mature-residuals",
-  "lastAcquisitionTriggerParent": "83d0ca2a93b82b4d0a23c1d4278d37f3821f6b60"
+  "workerGeneration": "parallel-v5-post-111-certified",
+  "lastAcquisitionTriggerParent": "c058502d9d3e07d8a8ef7cbfe02665c1e3d11434"
 }
