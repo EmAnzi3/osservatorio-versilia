@@ -42,6 +42,11 @@ ALLOW_MISSING_PUBLIC = {
     "libraryWeeklyOpeningHours",
 }
 
+def same_optional_number(left: Any, right: Any, label: str) -> bool:
+    if left is None or right is None:
+        return left is None and right is None
+    return math.isclose(finite(left, f"{label}/existing"), finite(right, f"{label}/candidate"), rel_tol=0.0, abs_tol=1e-9)
+
 def public_rows(metric: dict[str, Any], metric_id: str) -> list[dict[str, Any]]:
     rows = metric.get("rows") or []
     if len(rows) != 7:
@@ -83,6 +88,7 @@ def main() -> None:
     validate_agriculture_public(site)
     metrics = site.get("metrics") or {}
     published: list[str] = []
+    already_present: list[str] = []
 
     for snapshot_path in SNAPSHOTS:
         snapshot = load(snapshot_path)
@@ -102,13 +108,6 @@ def main() -> None:
                 raise RuntimeError(f"{metric_id}: metrica pubblica assente")
             public_rows(metric, metric_id)
             meta = metric.setdefault("meta", {})
-            existing = meta.get("benchmark")
-            if isinstance(existing, dict) and any(
-                isinstance(existing.get(scope), (int, float)) and not isinstance(existing.get(scope), bool)
-                for scope in ("tuscany", "italy")
-            ):
-                raise RuntimeError(f"{metric_id}: benchmark già materializzato")
-
             year = str(benchmark.get("year") or "").strip()
             unit = str(benchmark.get("unit") or "").strip()
             if not year or not unit:
@@ -122,19 +121,40 @@ def main() -> None:
             if italy is not None:
                 finite(italy, f"{metric_id}/italy")
 
+            snapshot_ref = str(snapshot_path.relative_to(ROOT)).replace("\\", "/")
+            existing = meta.get("benchmark")
+            if isinstance(existing, dict) and any(
+                isinstance(existing.get(scope), (int, float)) and not isinstance(existing.get(scope), bool)
+                for scope in ("tuscany", "italy")
+            ):
+                same = (
+                    str(existing.get("year") or "").strip() == year
+                    and same_optional_number(existing.get("tuscany"), tuscany, f"{metric_id}/tuscany")
+                    and same_optional_number(existing.get("italy"), italy, f"{metric_id}/italy")
+                    and str(existing.get("sourceSnapshot") or snapshot_ref) == snapshot_ref
+                    and str(existing.get("url") or source_url) == source_url
+                )
+                if not same:
+                    raise RuntimeError(f"{metric_id}: benchmark già materializzato ma in conflitto col candidato")
+                already_present.append(metric_id)
+                continue
+
             meta["benchmark"] = {
                 "year": year,
                 "tuscany": tuscany,
                 "italy": italy,
                 "source": snapshot.get("publisher"),
                 "url": source_url,
-                "sourceSnapshot": str(snapshot_path.relative_to(ROOT)).replace("\\", "/"),
+                "sourceSnapshot": snapshot_ref,
                 "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS.",
             }
             published.append(metric_id)
 
     SITE.write_text(json.dumps(site, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-    print(f"A3 benchmark fan-in materialized: {len(published)} metrics :: {', '.join(sorted(published))}")
+    print(
+        f"A3 benchmark fan-in materialized: {len(published)} new metrics :: {', '.join(sorted(published))} | "
+        f"{len(already_present)} already present verified :: {', '.join(sorted(already_present))}"
+    )
 
 if __name__ == "__main__":
     main()
