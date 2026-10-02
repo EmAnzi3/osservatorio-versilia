@@ -2,27 +2,23 @@
   "schemaVersion": 2,
   "dimension": "benchmark_toscana_italia",
   "certifiedFrom": {
-    "workflowRun": 37023511530,
-    "headSha": "7a9160be29e7005ed853ee978446e619dfc92642",
-    "publicBenchmarks": "123/123",
+    "workflowRun": 37024640873,
+    "headSha": "a29bcd56833d08443acbf679022c0c6d7ef56ea5",
+    "publicBenchmarks": "128/128",
     "publicationGap": 0,
-    "availableMissing": 90,
-    "artifactId": 11234271437
+    "availableMissing": 85,
+    "artifactId": 11234877862
   },
   "selectedProfileCount": 1,
-  "selectedPairCount": 5,
+  "selectedPairCount": 1,
   "profiles": [
     {
       "profileId": "istat-commuting-irregular",
       "bundleId": "istat-commuting-irregular::benchmark_toscana_italia",
       "rank": 1,
-      "pairCount": 5,
+      "pairCount": 1,
       "metricIds": [
-        "inboundCommuters",
-        "outboundCommuters",
-        "commuterBalance",
-        "inboundCommutersRate",
-        "outboundCommutersRate"
+        "commuterBalanceRate"
       ],
       "sourceReferences": [
         "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/"
@@ -32,6 +28,6 @@
       "priorityIndex": 1
     }
   ],
-  "workerGeneration": "post-123-certified-commuting",
-  "selectionRationale": "Official ONLY_FILE attachment restores acquisition; five exact 7/7 reconciliations. Remaining three metrics retain diagnosed census/denominator differences. One dedicated worker, no historical replay."
+  "workerGeneration": "post-128-certified-commuting-balance",
+  "selectionRationale": "One remaining metric reconciled exactly 7/7 using native national P02 population at 1 January 2021. The worker revalidates the complete commuting snapshot, preserving five already certified benchmarks."
 }

@@ -40367,7 +40367,16 @@
         "unit": "per1000",
         "year": "2021",
         "source": "Istat — matrice di pendolarismo per lavoro",
-        "polarity": "neutral"
+        "polarity": "neutral",
+        "benchmark": {
+          "year": "2021",
+          "tuscany": -0.34174008527254585,
+          "italy": 0.0,
+          "source": "Istat — Matrice di pendolarismo per lavoro 2021",
+          "url": "https://www.istat.it/notizia/matrice-di-pendolarismo-per-lavoro/",
+          "sourceSnapshot": "data/source-snapshots/a3-istat-commuting-benchmark-2021.json",
+          "note": "Benchmark A3 materializzato da artifact di acquisizione con quality gate metric-level PASS."
+        }
       },
       "sourceUrl": "https://www.istat.it/statistiche-per-temi/censimenti/popolazione-e-abitazioni/risultati/",
       "rows": [
@@ -40451,7 +40460,7 @@
       "method": {
         "type": "Elaborazione Osservatorio",
         "formula": "(pendolari in entrata - pendolari in uscita) / popolazione residente × 1.000",
-        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani.",
+        "caveat": "I dati di pendolarismo si riferiscono al Censimento 2021 e non descrivono tutti gli spostamenti quotidiani. Denominatore: popolazione censita al 1° gennaio 2021, distinto dalla popolazione 2026 usata nei tassi di entrata e uscita.",
         "coverage": "7/7"
       }
     },

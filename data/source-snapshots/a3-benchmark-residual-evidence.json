@@ -67,21 +67,23 @@
           "outboundCommuters",
           "commuterBalance",
           "inboundCommutersRate",
-          "outboundCommutersRate"
+          "outboundCommutersRate",
+          "commuterBalanceRate"
         ],
-        "publicReconciliation": "5 metrics × 7/7 PASS",
-        "routingFix": "Official dataflow attachment used instead of unsupported SDMX data endpoint; HTTP 404 did not prove absence."
+        "publicReconciliation": "6 metrics × 7/7 PASS",
+        "routingFix": "Official dataflow attachment used instead of unsupported SDMX data endpoint; HTTP 404 did not prove absence.",
+        "population2021": {
+          "sourceUrl": "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip",
+          "archiveSha256": "c588cf76e5c0a562e32ebb358ff00e2a3ac05d4c912846cd3aa405ed333ba62c",
+          "municipalities": 7904,
+          "tuscanyMunicipalities": 273,
+          "tuscany": 3692865,
+          "italy": 59236213,
+          "componentReconciliation": "7904/7904 men + women = total",
+          "municipalDenominators": "7/7 exact public commuterBalanceRate"
+        }
       },
       "metricDiagnoses": {
-        "commuterBalanceRate": {
-          "diagnosis": "DENOMINATOR_PANEL_NOT_ACQUIRED",
-          "reason": "Numeratori matrice Istat 2021 riconciliati 7/7. Il denominatore effettivo coincide esattamente 7/7 con P02 al 1° gennaio 2021 dello snapshot demografico comunale, non popolazione 2026. Manca il pannello nazionale completo P02 2021 per aggregare con lo stesso periodo.",
-          "evidenceUrls": [
-            "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip",
-            "https://demo.istat.it/data/p2/P2_2021_it_Comuni.zip"
-          ],
-          "nextAction": "Acquisire pannello P02 nazionale 2021 e riconciliare i sette denominatori."
-        },
         "outsideMunicipality": {
           "diagnosis": "CENSUS_POPULATION_DEFINITION_MISMATCH",
           "reason": "Quote censuarie pubbliche non riconciliate con la sottopopolazione della matrice per lavoro.",
@@ -1203,6 +1205,160 @@
             "scripts/acquire_a3_benchmark_mim_candidates.py"
           ],
           "nextAction": "Risolvere la definizione delle sedi fisiche rispetto ai codici scuola, anno e filtro del pubblico; riconciliare 7/7 senza modificare i valori per forzare il gate."
+        }
+      },
+      "latestPhysicalSitesVerification": {
+        "status": "RECONCILIATION_FAILED",
+        "sourceArchiveSha256": {
+          "SCUANAGRAFESTAT20242520250831.csv": "91fac2ac891aa111ad448123e33a0118a854ce58237f985d21b1d7424f0be6fa",
+          "SCUANAGRAFEPAR20242520250831.csv": "fd8ec418966aea01537f0816f3e8fc911391eae2c34063e9ca411f14e7ec0c9b"
+        },
+        "schoolYear": "202425",
+        "municipalTests": {
+          "MASSAROSA": {
+            "public": 22,
+            "allCodes": 22,
+            "uniqueLiteralAddresses": 19,
+            "physicalSchoolRows": 19,
+            "orders": {
+              "SCUOLA PRIMO GRADO": 2,
+              "SCUOLA PRIMARIA": 9,
+              "ISTITUTO COMPRENSIVO": 2,
+              "SCUOLA INFANZIA": 9
+            }
+          },
+          "VIAREGGIO": {
+            "public": 49,
+            "allCodes": 60,
+            "uniqueLiteralAddresses": 52,
+            "physicalSchoolRows": 36,
+            "orders": {
+              "LICEO SCIENTIFICO": 2,
+              "SCUOLA PRIMARIA": 12,
+              "SCUOLA PRIMO GRADO": 5,
+              "ISTITUTO SUPERIORE": 3,
+              "SCUOLA INFANZIA": 15,
+              "ISTITUTO TECNICO COMMERCIALE": 2,
+              "ISTITUTO TECNICO NAUTICO": 2,
+              "ISTITUTO TECNICO INDUSTRIALE": 2,
+              "ISTITUTO COMPRENSIVO": 5,
+              "CENTRO TERRITORIALE": 1,
+              "LICEO CLASSICO": 1,
+              "IST PROF PER I SERVIZI ALBERGHIERI E RISTORAZIONE": 2,
+              "SCUOLA INFANZIA NON STATALE": 5,
+              "SCUOLA PRIMARIA NON STATALE": 3
+            }
+          },
+          "CAMAIORE": {
+            "public": 24,
+            "allCodes": 30,
+            "uniqueLiteralAddresses": 21,
+            "physicalSchoolRows": 19,
+            "orders": {
+              "SCUOLA PRIMARIA": 8,
+              "ISTITUTO COMPRENSIVO": 3,
+              "SCUOLA INFANZIA": 8,
+              "ISTITUTO SUPERIORE": 1,
+              "SCUOLA PRIMO GRADO": 3,
+              "ISTITUTO MAGISTRALE": 1,
+              "SCUOLA INFANZIA NON STATALE": 2,
+              "SCUOLA SEC. PRIMO GRADO NON STATALE": 1,
+              "SCUOLA PRIMARIA NON STATALE": 1,
+              "SCUOLA SEC. SECONDO GRADO NON STATALE": 2
+            }
+          },
+          "PIETRASANTA": {
+            "public": 24,
+            "allCodes": 26,
+            "uniqueLiteralAddresses": 21,
+            "physicalSchoolRows": 18,
+            "orders": {
+              "SCUOLA PRIMARIA": 8,
+              "SCUOLA INFANZIA": 8,
+              "ISTITUTO COMPRENSIVO": 2,
+              "SCUOLA PRIMO GRADO": 2,
+              "ISTITUTO SUPERIORE": 1,
+              "IST TEC COMMERCIALE E PER GEOMETRI": 2,
+              "ISTITUTO D'ARTE": 1,
+              "SCUOLA INFANZIA NON STATALE": 2
+            }
+          },
+          "SERAVEZZA": {
+            "public": 13,
+            "allCodes": 15,
+            "uniqueLiteralAddresses": 11,
+            "physicalSchoolRows": 11,
+            "orders": {
+              "IST PROF PER I SERVIZI ALBERGHIERI E RISTORAZIONE": 2,
+              "IST PROF INDUSTRIA E ARTIGIANATO": 2,
+              "SCUOLA INFANZIA": 4,
+              "SCUOLA PRIMARIA": 4,
+              "ISTITUTO COMPRENSIVO": 1,
+              "SCUOLA PRIMO GRADO": 1,
+              "SCUOLA INFANZIA NON STATALE": 1
+            }
+          },
+          "FORTE DEI MARMI": {
+            "public": 8,
+            "allCodes": 9,
+            "uniqueLiteralAddresses": 8,
+            "physicalSchoolRows": 7,
+            "orders": {
+              "LICEO SCIENTIFICO": 1,
+              "SCUOLA PRIMO GRADO": 1,
+              "SCUOLA PRIMARIA": 3,
+              "SCUOLA INFANZIA": 2,
+              "ISTITUTO COMPRENSIVO": 1,
+              "SCUOLA PRIMARIA NON STATALE": 1
+            }
+          },
+          "STAZZEMA": {
+            "public": 6,
+            "allCodes": 6,
+            "uniqueLiteralAddresses": 6,
+            "physicalSchoolRows": 5,
+            "orders": {
+              "SCUOLA INFANZIA": 3,
+              "SCUOLA PRIMARIA": 2,
+              "SCUOLA PRIMO GRADO": 1
+            }
+          }
+        },
+        "conclusion": "Neither school codes nor literal-address deduplication reconcile the public count 7/7. Address deduplication is diagnostic only, not an accepted definition of a physical site. No candidate total published.",
+        "stateOnlyDefinitionAudit": {
+          "stateCodeCounts": {
+            "MASSAROSA": 22,
+            "VIAREGGIO": 52,
+            "CAMAIORE": 24,
+            "PIETRASANTA": 24,
+            "SERAVEZZA": 14,
+            "FORTE DEI MARMI": 8,
+            "STAZZEMA": 6
+          },
+          "stateUniqueNameCounts": {
+            "MASSAROSA": 22,
+            "VIAREGGIO": 46,
+            "CAMAIORE": 24,
+            "PIETRASANTA": 24,
+            "SERAVEZZA": 13,
+            "FORTE DEI MARMI": 8,
+            "STAZZEMA": 6
+          },
+          "stateUniqueAddressAndOrderCounts": {
+            "MASSAROSA": 20,
+            "VIAREGGIO": 51,
+            "CAMAIORE": 24,
+            "PIETRASANTA": 24,
+            "SERAVEZZA": 12,
+            "FORTE DEI MARMI": 8,
+            "STAZZEMA": 6
+          },
+          "nativeAdultCourses": {
+            "VIAREGGIO": 4,
+            "PIETRASANTA": 1,
+            "SERAVEZZA": 2
+          },
+          "conclusion": "No tested native filter/deduplication reconciles 7/7. State-only codes reconcile 5/7; label/address grouping changes counts without establishing the intended site definition. No ad hoc municipality exceptions."
         }
       }
     },
