@@ -64,7 +64,8 @@ def main()->None:
 
     gate="PASS" if not errors else "FAIL"
     payload={
-      "schemaVersion":1,"publisher":"ISPRA — Costa protetta","profileId":"ispra-coast-irregular",
+      "schemaVersion":2,"publisher":"ISPRA — Costa protetta","profileId":"ispra-coast-irregular",
+      "scope":{"coastalTownCodes":sorted(COASTAL),"notApplicableTownCodes":sorted(NA),"reconciled":"4 coastal + 3 n.a."},
       "status":"ACQUIRED_CANDIDATE" if gate=="PASS" else "CANDIDATE_REJECTED",
       "sourceUrl":LANDING,"dataUrl":URL,
       "benchmarks":{"rigidDefenceProtectedCoast":{
