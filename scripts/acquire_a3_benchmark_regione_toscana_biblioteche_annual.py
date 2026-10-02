@@ -72,7 +72,24 @@ def main()->None:
         except Exception: continue
         year_rows.setdefault(year,{})[code]=row
     eligible=[y for y,m in year_rows.items() if set(m)==codes]
-    if not eligible: raise RuntimeError("Biblioteche: nessuna annualità 7/7")
+    if not eligible:
+        coverage={
+          str(y):{
+            "count":len(m),
+            "present":sorted(m),
+            "missing":sorted(codes-set(m)),
+          }
+          for y,m in sorted(year_rows.items())
+        }
+        payload={
+          "schemaVersion":2,"publisher":"Regione Toscana","profileId":"regione-toscana-biblioteche-annual",
+          "status":"CANDIDATE_REJECTED","sourceUrl":LANDING,"dataUrl":URL,
+          "benchmarks":{},"qualityGate":{"status":"FAIL","reason":"nessuna annualità 7/7","coverageByYear":coverage}
+        }
+        out=Path(a.output); out.parent.mkdir(parents=True,exist_ok=True)
+        out.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        print(json.dumps({"status":payload["status"],"coverageByYear":coverage},ensure_ascii=False))
+        return
     year=max(eligible); selected=year_rows[year]
     benchmarks={}; errors=[]
     tolerances={"libraryActiveBorrowersPer100":.011,"libraryLoansPerResident":.011,"libraryWeeklyOpeningHours":.011}
