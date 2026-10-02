@@ -1,5 +1,5 @@
 name: A3 Benchmark fan-in materialization
-# controlled fan-in revision 3
+# controlled fan-in revision 4
 
 on:
   pull_request:
@@ -41,12 +41,26 @@ jobs:
           PY
       - name: Materialize accumulated PASS candidates
         run: python scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Restore catalog formatting
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("data/site-data.json")
+          value=json.loads(p.read_text(encoding="utf-8"))
+          p.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
       - name: Verify fan-in scope
         shell: bash
         run: |
           git diff --name-only > /tmp/a3-fanin-changed.txt
           cat /tmp/a3-fanin-changed.txt
           test "$(cat /tmp/a3-fanin-changed.txt)" = "data/site-data.json"
+          read ADDED DELETED FILE <<< "$(git diff --numstat -- data/site-data.json)"
+          echo "added=$ADDED deleted=$DELETED file=$FILE"
+          test "$ADDED" -lt 1000
+          test "$DELETED" -lt 1000
           git diff --stat -- data/site-data.json > /tmp/a3-fanin-stat.txt
           cat /tmp/a3-fanin-stat.txt
       - uses: actions/upload-artifact@v4
