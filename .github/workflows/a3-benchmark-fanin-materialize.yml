@@ -22,6 +22,22 @@ jobs:
           python-version: "3.12"
       - name: Compile fan-in materializer
         run: python -m py_compile scripts/materialize_a3_benchmark_fanin_pass.py
+      - name: Show pending benchmark state
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          site=json.loads(Path("data/site-data.json").read_text(encoding="utf-8"))
+          mids=[
+            "localUnits","localUnitsChange","localEmployees","localEmployeesChange","employeesPerLocalUnit",
+            "libraryActiveBorrowersPer100","libraryLoansPerResident","libraryWeeklyOpeningHours",
+            "landUse","landUseChange"
+          ]
+          for mid in mids:
+              metric=(site.get("metrics") or {}).get(mid) or {}
+              print(mid, json.dumps((metric.get("meta") or {}).get("benchmark"), ensure_ascii=False, sort_keys=True))
+          PY
       - name: Materialize accumulated PASS candidates
         run: python scripts/materialize_a3_benchmark_fanin_pass.py
       - name: Verify fan-in scope
